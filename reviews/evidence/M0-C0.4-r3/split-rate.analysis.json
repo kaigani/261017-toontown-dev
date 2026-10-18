@@ -1,0 +1,392 @@
+{
+ "version": 3,
+ "web": {
+  "samples": 2556,
+  "strokes": [
+   {
+    "samples": 600,
+    "durationMs": 4989.67,
+    "rateHz": 120.04801920768307,
+    "medianIntervalMs": 8.329999999999927,
+    "maxIntervalMs": 8.330000000000837,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 511,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "below target",
+    "pointer": "pen#1",
+    "truncated": false,
+    "startT": 0.0
+   },
+   {
+    "samples": 50,
+    "durationMs": 3430,
+    "rateHz": 14.285714285714286,
+    "medianIntervalMs": 70,
+    "maxIntervalMs": 70,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 1,
+    "pressureLevelsImplied": null,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "below target",
+    "pointer": "pen#1",
+    "truncated": false,
+    "startT": 6000
+   },
+   {
+    "samples": 100,
+    "durationMs": 495,
+    "rateHz": 200.0,
+    "medianIntervalMs": 5,
+    "maxIntervalMs": 5,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 1,
+    "pressureLevelsImplied": null,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "meets target",
+    "pointer": "pen#1",
+    "truncated": false,
+    "startT": 10000
+   },
+   {
+    "samples": 600,
+    "durationMs": 4989.669999999998,
+    "rateHz": 120.04801920768311,
+    "medianIntervalMs": 8.329999999999927,
+    "maxIntervalMs": 8.330000000001746,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 511,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "below target",
+    "pointer": "pen#1",
+    "truncated": false,
+    "startT": 12000.0
+   },
+   {
+    "samples": 600,
+    "durationMs": 4989.669999999998,
+    "rateHz": 120.04801920768311,
+    "medianIntervalMs": 8.330000000001746,
+    "maxIntervalMs": 8.330000000001746,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 511,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "below target",
+    "pointer": "pen#1",
+    "truncated": false,
+    "startT": 24000.0
+   }
+  ],
+  "coalescedApi": true,
+  "coalescedObserved": false,
+  "coalescedPerDispatch": {
+   "n": 2497,
+   "min": 1,
+   "p50": 1,
+   "p95": 1,
+   "p99": 1,
+   "max": 1,
+   "mean": 1.0
+  },
+  "samplesPerFrame": null,
+  "handlerLatencyMs": {
+   "oldestCoalesced": {
+    "n": 2507,
+    "min": 1.0,
+    "p50": 1.0,
+    "p95": 1.0,
+    "p99": 1.0,
+    "max": 1.0,
+    "mean": 1.0
+   },
+   "newestCoalesced": {
+    "n": 2507,
+    "min": 1.0,
+    "p50": 1.0,
+    "p95": 1.0,
+    "p99": 1.0,
+    "max": 1.0,
+    "mean": 1.0
+   },
+   "allSamples": {
+    "n": 2556,
+    "min": 1.0,
+    "p50": 1.0,
+    "p95": 1.0,
+    "p99": 1.0,
+    "max": 1.0,
+    "mean": 1.0
+   }
+  },
+  "loss": "unknown, gap heuristic only",
+  "truncated": null
+ },
+ "native": {
+  "packets": 0,
+  "clock": "host",
+  "strokes": [],
+  "loss": "unknown, gap heuristic only",
+  "hostDropped": null,
+  "sendFailures": null,
+  "invalidBatches": null,
+  "truncated": null,
+  "info": null
+ },
+ "runs": [],
+ "actions": {
+  "actions": [
+   {
+    "id": "A1",
+    "state": "done",
+    "durationMs": 5200,
+    "web": {
+     "outcome": "episode 1",
+     "episodes": [
+      1
+     ],
+     "measured": 1
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null
+    }
+   },
+   {
+    "id": "A2",
+    "state": "done",
+    "durationMs": 5200,
+    "web": {
+     "outcome": "split: 2 episodes",
+     "episodes": [
+      2,
+      3
+     ],
+     "measured": 3
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null
+    }
+   },
+   {
+    "id": "A3",
+    "state": "done",
+    "durationMs": 5200,
+    "web": {
+     "outcome": "episode 4",
+     "episodes": [
+      4
+     ],
+     "measured": 4
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null
+    }
+   },
+   {
+    "id": "A4",
+    "state": "skipped",
+    "durationMs": 0,
+    "web": {
+     "outcome": "omitted",
+     "episodes": [],
+     "measured": null
+    },
+    "native": {
+     "outcome": "omitted",
+     "episodes": [],
+     "measured": null
+    }
+   },
+   {
+    "id": "A5",
+    "state": "done",
+    "durationMs": 5200,
+    "web": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null
+    }
+   },
+   {
+    "id": "A6",
+    "state": "done",
+    "durationMs": 5200,
+    "web": {
+     "outcome": "episode 5",
+     "episodes": [
+      5
+     ],
+     "measured": 5
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null
+    }
+   }
+  ],
+  "notRecorded": [],
+  "webOutside": [],
+  "nativeOutside": []
+ },
+ "decision": {
+  "outcome": "go-with-conditions: W",
+  "selected": "W",
+  "conditions": [
+   {
+    "row": 3,
+    "result": "partial",
+    "mitigation": "accept >= 256 levels"
+   },
+   {
+    "row": 4,
+    "result": "fail",
+    "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+   },
+   {
+    "row": 6,
+    "result": "partial",
+    "mitigation": "accept one sample per dispatch"
+   }
+  ],
+  "scores": {
+   "W": 5
+  },
+  "eligible": [
+   "W"
+  ],
+  "unmeasured": [
+   "R",
+   "H",
+   "D"
+  ],
+  "platform": "windows",
+  "rows": {
+   "W": {
+    "1": {
+     "result": "pass",
+     "note": "3 of 3 actions report a pen"
+    },
+    "2": {
+     "result": "pass",
+     "note": "512 levels"
+    },
+    "3": {
+     "result": "partial",
+     "note": "512 levels"
+    },
+    "4": {
+     "result": "fail",
+     "note": "x [0, 0], y [0, 0]"
+    },
+    "5": {
+     "result": "n/a",
+     "note": "pen has no barrel rotation"
+    },
+    "6": {
+     "result": "partial",
+     "note": "API True, batching False"
+    },
+    "7": {
+     "result": "pass",
+     "note": "200.000 Hz"
+    },
+    "8": {
+     "result": "pass",
+     "note": "200.000 Hz"
+    },
+    "9": {
+     "result": "pass",
+     "note": "600 samples, 120.0 Hz"
+    }
+   }
+  }
+ }
+}

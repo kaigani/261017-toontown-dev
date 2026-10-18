@@ -1,0 +1,1940 @@
+[
+  {
+    "case": "mapping-False",
+    "exit": 0,
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 4,
+        "H": 4
+      },
+      "eligible": [
+        "W",
+        "H"
+      ],
+      "unmeasured": [
+        "R",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        },
+        "H": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "native path"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "mapping-True",
+    "exit": 0,
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 5,
+          "result": "fail",
+          "mitigation": "barrel rotation unsupported on this platform"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 4,
+        "H": 4
+      },
+      "eligible": [
+        "W",
+        "H"
+      ],
+      "unmeasured": [
+        "R",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "fail",
+            "note": "range [0, 0]"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        },
+        "H": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "fail",
+            "note": "range [0, 0]"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "native path"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "rate-119.95",
+    "exit": 0,
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 7,
+          "result": "partial",
+          "mitigation": "interpolated sampling off; the >= 200 Hz target is recorded as below target"
+        },
+        {
+          "row": 8,
+          "result": "fail",
+          "mitigation": "recorded as below the 200 Hz target (row 7 decides eligibility)"
+        }
+      ],
+      "scores": {
+        "W": 3
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "partial",
+            "note": "119.950 Hz"
+          },
+          "8": {
+            "result": "fail",
+            "note": "119.950 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "rate-120.0",
+    "exit": 0,
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 4
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.000 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.000 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "rate-199.99",
+    "exit": 0,
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 4
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "199.990 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "199.990 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "rate-200.0",
+    "exit": 0,
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        }
+      ],
+      "scores": {
+        "W": 5
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "200.000 Hz"
+          },
+          "8": {
+            "result": "pass",
+            "note": "200.000 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "rate-None",
+    "exit": 0,
+    "decision": {
+      "outcome": "insufficient evidence: repeat the actions named for row 7 (W), row 8 (W)",
+      "selected": null,
+      "conditions": [],
+      "scores": {},
+      "eligible": [],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "insufficient",
+            "note": "A2 has a single sample: repeat A2"
+          },
+          "8": {
+            "result": "insufficient",
+            "note": "A2 has a single sample: repeat A2"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "rate-single",
+    "exit": 0,
+    "decision": {
+      "outcome": "insufficient evidence: repeat the actions named for row 7 (W), row 8 (W)",
+      "selected": null,
+      "conditions": [],
+      "scores": {},
+      "eligible": [],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "insufficient",
+            "note": "A2 has a single sample: repeat A2"
+          },
+          "8": {
+            "result": "insufficient",
+            "note": "A2 has a single sample: repeat A2"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "fractional-pressure-255.5",
+    "boundary": "real classify/aggregate; injected measurement",
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 2,
+          "result": "partial",
+          "mitigation": "accept the measured resolution of 16 to 255 levels; brush response quantised"
+        },
+        {
+          "row": 3,
+          "result": "fail",
+          "mitigation": "as row 2"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 3
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ]
+    }
+  },
+  {
+    "case": "fractional-pressure-256",
+    "boundary": "real classify/aggregate; injected measurement",
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 4
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ]
+    }
+  },
+  {
+    "case": "fractional-pressure-1023.9",
+    "boundary": "real classify/aggregate; injected measurement",
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 4
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ]
+    }
+  },
+  {
+    "case": "fractional-pressure-1024",
+    "boundary": "real classify/aggregate; injected measurement",
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 5
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ]
+    }
+  },
+  {
+    "case": "r2-windows",
+    "boundary": "real aggregate; R/D unimplemented capture paths",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "partial",
+        "3": "fail",
+        "4": "fail",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "R": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "fail",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "H": {
+        "1": "pass",
+        "2": "fail",
+        "3": "fail",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "D": {
+        "1": "pass",
+        "2": "fail",
+        "3": "fail",
+        "4": "fail",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "outcome": "go-with-conditions: R",
+      "selected": "R",
+      "conditions": [
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        }
+      ],
+      "scores": {
+        "W": 6,
+        "R": 7,
+        "H": 6,
+        "D": 5
+      },
+      "eligible": [
+        "W",
+        "R"
+      ],
+      "unmeasured": []
+    }
+  },
+  {
+    "case": "r2-macos",
+    "boundary": "real aggregate; R/D unimplemented capture paths",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "fail",
+        "8": "fail",
+        "9": "pass"
+      },
+      "A": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "partial",
+        "8": "fail",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "outcome": "go-with-conditions: A",
+      "selected": "A",
+      "conditions": [
+        {
+          "row": 7,
+          "result": "partial",
+          "mitigation": "interpolated sampling off; the >= 200 Hz target is recorded as below target"
+        },
+        {
+          "row": 8,
+          "result": "fail",
+          "mitigation": "recorded as below the 200 Hz target (row 7 decides eligibility)"
+        }
+      ],
+      "scores": {
+        "W": 7,
+        "A": 6
+      },
+      "eligible": [
+        "A"
+      ],
+      "unmeasured": []
+    }
+  },
+  {
+    "case": "tie-W-R",
+    "boundary": "real aggregate; R/D unimplemented capture paths",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "partial",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "R": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        }
+      ],
+      "scores": {
+        "W": 8,
+        "R": 8
+      },
+      "eligible": [
+        "W",
+        "R"
+      ],
+      "unmeasured": [
+        "H",
+        "D"
+      ]
+    }
+  },
+  {
+    "case": "tie-R-H-D",
+    "boundary": "real aggregate; R/D unimplemented capture paths",
+    "inputs": {
+      "R": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "fail",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "H": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "fail",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "D": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "fail",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "outcome": "go-with-conditions: R",
+      "selected": "R",
+      "conditions": [
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        }
+      ],
+      "scores": {
+        "R": 7,
+        "H": 7,
+        "D": 7
+      },
+      "eligible": [
+        "R",
+        "H",
+        "D"
+      ],
+      "unmeasured": [
+        "W"
+      ]
+    }
+  },
+  {
+    "case": "D-wins-under-added-filter",
+    "boundary": "real aggregate; R/D unimplemented capture paths",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "fail",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "R": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "fail",
+        "5": "fail",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "H": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "fail",
+        "8": "pass",
+        "9": "pass"
+      },
+      "D": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "outcome": "go: D",
+      "selected": "D",
+      "conditions": [],
+      "scores": {
+        "W": 8,
+        "R": 6,
+        "H": 7,
+        "D": 8
+      },
+      "eligible": [
+        "R",
+        "D"
+      ],
+      "unmeasured": []
+    }
+  },
+  {
+    "case": "unruled-core-filter",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "fail",
+        "3": "fail",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "R": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "fail",
+        "5": "fail",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "ruledWinner": "W",
+    "decision": {
+      "outcome": "go-with-conditions: R",
+      "selected": "R",
+      "conditions": [
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 5,
+          "result": "fail",
+          "mitigation": "barrel rotation unsupported on this platform"
+        }
+      ],
+      "scores": {
+        "W": 7,
+        "R": 6
+      },
+      "eligible": [
+        "R"
+      ],
+      "unmeasured": [
+        "H",
+        "D"
+      ]
+    }
+  },
+  {
+    "case": "identity-only-native",
+    "exit": 0,
+    "decision": {
+      "outcome": "insufficient evidence: repeat the actions named for row 7 (H), row 8 (H)",
+      "selected": null,
+      "conditions": [],
+      "scores": {},
+      "eligible": [],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        },
+        "H": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "fail",
+            "note": "1 levels"
+          },
+          "3": {
+            "result": "fail",
+            "note": "1 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x None, y None"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "native path"
+          },
+          "7": {
+            "result": "insufficient",
+            "note": "A2 has a single sample: repeat A2"
+          },
+          "8": {
+            "result": "insufficient",
+            "note": "A2 has a single sample: repeat A2"
+          },
+          "9": {
+            "result": "fail",
+            "note": "only the down sample or one pressure value"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "wrong-order",
+    "exit": 2,
+    "decision": null
+  },
+  {
+    "case": "duplicate",
+    "exit": 2,
+    "decision": null
+  },
+  {
+    "case": "reversed",
+    "exit": 2,
+    "decision": null
+  },
+  {
+    "case": "perf-overlap",
+    "exit": 2,
+    "decision": null
+  },
+  {
+    "case": "epoch-overlap-accepted",
+    "exit": 0,
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 4,
+        "H": 4
+      },
+      "eligible": [
+        "W",
+        "H"
+      ],
+      "unmeasured": [
+        "R",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        },
+        "H": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "native path"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "coalescing-baseline",
+    "exit": 0,
+    "decision": {
+      "outcome": "go-with-conditions: H",
+      "selected": "H",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 4,
+        "H": 5
+      },
+      "eligible": [
+        "W",
+        "H"
+      ],
+      "unmeasured": [
+        "R",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        },
+        "H": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "pass",
+            "note": "x [-45, 45], y [-45, 45]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "native path"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "coalescing-outside",
+    "exit": 0,
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "scores": {
+        "W": 5,
+        "H": 5
+      },
+      "eligible": [
+        "W",
+        "H"
+      ],
+      "unmeasured": [
+        "R",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "pass",
+            "note": "API True, batching True"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        },
+        "H": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "pass",
+            "note": "x [-45, 45], y [-45, 45]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "native path"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "split-rate",
+    "exit": 0,
+    "decision": {
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        }
+      ],
+      "scores": {
+        "W": 5
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "200.000 Hz"
+          },
+          "8": {
+            "result": "pass",
+            "note": "200.000 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "canvas-missing-backend",
+    "exit": 0,
+    "decision": {
+      "cells": {
+        "webgpu": {
+          "paths100k": "not measured",
+          "groups1k": "not measured",
+          "brush10k": "not measured"
+        },
+        "webgl2": {
+          "paths100k": "met",
+          "groups1k": "met",
+          "brush10k": "met"
+        }
+      },
+      "scores": {
+        "webgl2": 59.99940000599995
+      },
+      "selected": "webgl2",
+      "outcome": "go as written",
+      "provisional": true,
+      "notMeasured": [
+        "webgpu paths100k: not measured: repeat with --spike canvas --spike-auto (WebGPU needs an adapter)",
+        "webgpu groups1k: not measured: repeat with --spike canvas --spike-auto (WebGPU needs an adapter)",
+        "webgpu brush10k: not measured: repeat with --spike canvas --spike-auto (WebGPU needs an adapter)"
+      ],
+      "insufficient": []
+    }
+  },
+  {
+    "case": "canvas-missing-scene",
+    "exit": 0,
+    "decision": {
+      "cells": {
+        "webgpu": {
+          "paths100k": "met",
+          "groups1k": "not measured",
+          "brush10k": "met"
+        },
+        "webgl2": {
+          "paths100k": "met",
+          "groups1k": "not measured",
+          "brush10k": "met"
+        }
+      },
+      "scores": {},
+      "selected": null,
+      "outcome": "insufficient evidence: no back end has a valid measurement of all three scenes; repeat the listed runs",
+      "provisional": false,
+      "notMeasured": [
+        "webgpu groups1k: not measured: repeat with --spike canvas --spike-auto (WebGPU needs an adapter)",
+        "webgl2 groups1k: not measured: repeat with --spike canvas --spike-auto --spike-renderer webgl2"
+      ],
+      "insufficient": []
+    }
+  },
+  {
+    "case": "canvas-null-one",
+    "exit": 0,
+    "decision": {
+      "cells": {
+        "webgpu": {
+          "paths100k": "insufficient evidence",
+          "groups1k": "insufficient evidence",
+          "brush10k": "insufficient evidence"
+        },
+        "webgl2": {
+          "paths100k": "met",
+          "groups1k": "met",
+          "brush10k": "met"
+        }
+      },
+      "scores": {
+        "webgl2": 59.99940000599995
+      },
+      "selected": "webgl2",
+      "outcome": "go as written",
+      "provisional": true,
+      "notMeasured": [],
+      "insufficient": [
+        "webgpu paths100k: insufficient evidence (no cadence estimate): repeat with --spike canvas --spike-auto (WebGPU needs an adapter)",
+        "webgpu groups1k: insufficient evidence (no cadence estimate): repeat with --spike canvas --spike-auto (WebGPU needs an adapter)",
+        "webgpu brush10k: insufficient evidence (no cadence estimate): repeat with --spike canvas --spike-auto (WebGPU needs an adapter)"
+      ]
+    }
+  },
+  {
+    "case": "canvas-null-both",
+    "exit": 0,
+    "decision": {
+      "cells": {
+        "webgpu": {
+          "paths100k": "insufficient evidence",
+          "groups1k": "insufficient evidence",
+          "brush10k": "insufficient evidence"
+        },
+        "webgl2": {
+          "paths100k": "insufficient evidence",
+          "groups1k": "insufficient evidence",
+          "brush10k": "insufficient evidence"
+        }
+      },
+      "scores": {},
+      "selected": null,
+      "outcome": "insufficient evidence: no back end has a valid measurement of all three scenes; repeat the listed runs",
+      "provisional": false,
+      "notMeasured": [],
+      "insufficient": [
+        "webgpu paths100k: insufficient evidence (no cadence estimate): repeat with --spike canvas --spike-auto (WebGPU needs an adapter)",
+        "webgpu groups1k: insufficient evidence (no cadence estimate): repeat with --spike canvas --spike-auto (WebGPU needs an adapter)",
+        "webgpu brush10k: insufficient evidence (no cadence estimate): repeat with --spike canvas --spike-auto (WebGPU needs an adapter)",
+        "webgl2 paths100k: insufficient evidence (no cadence estimate): repeat with --spike canvas --spike-auto --spike-renderer webgl2",
+        "webgl2 groups1k: insufficient evidence (no cadence estimate): repeat with --spike canvas --spike-auto --spike-renderer webgl2",
+        "webgl2 brush10k: insufficient evidence (no cadence estimate): repeat with --spike canvas --spike-auto --spike-renderer webgl2"
+      ]
+    }
+  },
+  {
+    "case": "canvas-ci-windows",
+    "exit": 0,
+    "decision": {
+      "cells": {
+        "webgpu": {
+          "paths100k": "unavailable",
+          "groups1k": "unavailable",
+          "brush10k": "unavailable"
+        },
+        "webgl2": {
+          "paths100k": "missed",
+          "groups1k": "missed",
+          "brush10k": "missed"
+        }
+      },
+      "scores": {
+        "webgl2": 0.6070487026502013
+      },
+      "selected": "webgl2",
+      "outcome": "no-go for the webview canvas as designed: native-wgpu integration prototype required in M4",
+      "provisional": false,
+      "notMeasured": [],
+      "insufficient": []
+    }
+  },
+  {
+    "case": "canvas-ci-macos",
+    "exit": 0,
+    "decision": {
+      "cells": {
+        "webgpu": {
+          "paths100k": "unavailable",
+          "groups1k": "unavailable",
+          "brush10k": "unavailable"
+        },
+        "webgl2": {
+          "paths100k": "missed",
+          "groups1k": "met",
+          "brush10k": "met"
+        }
+      },
+      "scores": {
+        "webgl2": 22.031701724653573
+      },
+      "selected": "webgl2",
+      "outcome": "go; M4 adds culling and level-of-detail for drawings of the paths100k size",
+      "provisional": false,
+      "notMeasured": [],
+      "insufficient": []
+    }
+  },
+  {
+    "case": "canvas-mac-no-adapter",
+    "exit": 0,
+    "decision": {
+      "cells": {
+        "webgpu": {
+          "paths100k": "unavailable",
+          "groups1k": "unavailable",
+          "brush10k": "unavailable"
+        },
+        "webgl2": {
+          "paths100k": "met",
+          "groups1k": "met",
+          "brush10k": "met"
+        }
+      },
+      "scores": {
+        "webgl2": 59.99940000599995
+      },
+      "selected": "webgl2",
+      "outcome": "go as written",
+      "provisional": false,
+      "notMeasured": [],
+      "insufficient": []
+    }
+  },
+  {
+    "case": "canvas-malformed",
+    "exit": 2,
+    "decision": null
+  }
+]

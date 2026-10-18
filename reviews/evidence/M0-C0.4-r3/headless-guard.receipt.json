@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python",
+    "scripts/check-headless-deps.py",
+    "target/release/toontown-headless.exe"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+  "started": "2026-10-18T15:42:17.682063+00:00",
+  "seconds": 0.152,
+  "exit": 0
+}
