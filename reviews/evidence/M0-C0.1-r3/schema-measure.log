@@ -1,0 +1,28 @@
+1MiB certify, 10 warmups + 100 iterations, ms {
+  p50: 0.38630000000000564,
+  p95: 0.8651000000000124,
+  max: 1.9709000000000003
+}
+false accept { length: 1, holes: 1, extras: 1 }
+false accept { length: 2, holes: 1, extras: 1 }
+false accept { length: 2, holes: 2, extras: 2 }
+false accept { length: 3, holes: 1, extras: 1 }
+false accept { length: 3, holes: 2, extras: 2 }
+false accept { length: 3, holes: 3, extras: 3 }
+false accept { length: 4, holes: 1, extras: 1 }
+false accept { length: 4, holes: 2, extras: 2 }
+false accept { length: 4, holes: 3, extras: 3 }
+false accept { length: 4, holes: 4, extras: 4 }
+false accept { length: 5, holes: 1, extras: 1 }
+false accept { length: 5, holes: 2, extras: 2 }
+false accept { length: 5, holes: 3, extras: 3 }
+false accept { length: 5, holes: 4, extras: 4 }
+false accept { length: 5, holes: 5, extras: 5 }
+false accept { length: 6, holes: 1, extras: 1 }
+false accept { length: 6, holes: 2, extras: 2 }
+false accept { length: 6, holes: 3, extras: 3 }
+false accept { length: 6, holes: 4, extras: 4 }
+false accept { length: 6, holes: 5, extras: 5 }
+false accept { length: 6, holes: 6, extras: 6 }
+array property matrix { cases: 196, falseAccepts: 21 }
+source C:\Users\kaiga\work\review\m0-c01-r3\desktop\src\ipc\schema.ts

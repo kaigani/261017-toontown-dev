@@ -1,0 +1,6 @@
+5f32f4a docs(review): M0 C0.1 round 2 response
+b0f63a0 docs: IPC boundary (bundler + linter), SPDX operand validation, traceability and handoff after review r2
+5c0938f fix(desktop): enforce the IPC boundary in the bundler as well as the linter (C01-R2-01)
+65fec88 fix(ipc): own-property, plain-data schema validation with validated snapshots (C01-R2-02)
+43575b6 fix(licences): validate every SPDX operand against Annex D and the SPDX lists (C01-R2-03)
+5402a45 merge: Codex review round 2 of C0.1 (report, evidence, adversarial tests)
