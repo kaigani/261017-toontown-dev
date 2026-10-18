@@ -1,0 +1,9 @@
+{
+  "vello_cpu_fallback": [
+    "aa_edge_angles",
+    "glyph_evenodd",
+    "glyph_nonzero",
+    "perf_2000_cubics_512"
+  ],
+  "vello_cpu_mt3": []
+}

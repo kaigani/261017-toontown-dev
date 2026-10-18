@@ -1,0 +1,23 @@
+{
+  "command": [
+    "cargo",
+    "run",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-render",
+    "--example",
+    "c03_raster",
+    "--",
+    "--repeat",
+    "1",
+    "--canvas-bench",
+    "--report",
+    "reviews/evidence/M0-C0.3-r1/raster-canvas-bench.json",
+    "--out",
+    "target/reviewer-canvas-raster"
+  ],
+  "startedUtc": "2026-10-18T11:45:05.520360+00:00",
+  "elapsedSeconds": 8.563346399983857,
+  "exitCode": 0
+}

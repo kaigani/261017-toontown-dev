@@ -1,0 +1,11 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm --dir desktop exec vitest run --config vite.config.ts src/test/c03-r1-binary.test.ts"
+  ],
+  "startedUtc": "2026-10-18T11:41:04.597443+00:00",
+  "elapsedSeconds": 2.550010700011626,
+  "exitCode": 1
+}

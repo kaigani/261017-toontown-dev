@@ -1,0 +1,13 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "ac78acb..11247ff",
+    "--",
+    "crates/render/src",
+    "deny.toml"
+  ],
+  "startedUtc": "2026-10-18T11:42:54.887990+00:00",
+  "elapsedSeconds": 0.015512000012677163,
+  "exitCode": 0
+}

@@ -1,0 +1,42 @@
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.15s
+     Running `target\release\examples\c03_raster.exe --repeat 1 --canvas-bench --report reviews/evidence/M0-C0.3-r1/raster-canvas-bench.json --out target/reviewer-canvas-raster`
+"windows" "x86_64" (vello_cpu detected SIMD level "Avx2(Avx2 { _private: () })")
+| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | ttraster vs vello max diff |
+|---|---|---|---|---|---|
+| cubic_blobs | 0.128 | 0.151 | 0.121 | 0.318 | 62 |
+| thin_strokes | 0.074 | 0.079 | 0.083 | 0.215 | 1 |
+| aa_edge_angles | 0.285 | 0.147 | 0.170 | 0.366 | 3 |
+| translucent_overlap | 0.126 | 0.061 | 0.044 | 0.221 | 30 |
+| alpha_stack | 0.323 | 0.100 | 0.084 | 0.160 | 1 |
+| linear_gradient | 0.252 | 0.055 | 0.064 | 0.259 | 1 |
+| radial_gradient | 0.258 | 0.054 | 0.065 | 0.356 | 48 |
+| gradient_transformed | 0.159 | 0.050 | 0.062 | 0.157 | 2 |
+| clip_circle | 0.119 | 0.113 | 0.091 | 0.160 | 43 |
+| clip_nested | 0.164 | 0.076 | 0.110 | 0.199 | 68 |
+| glyph_nonzero | 0.070 | 0.046 | 0.055 | 0.202 | 58 |
+| glyph_evenodd | 0.085 | 0.053 | 0.059 | 0.310 | 58 |
+| degenerate | 0.044 | 0.036 | 0.050 | 0.174 | 0 |
+| star_nonzero | 0.066 | 0.044 | 0.023 | 0.583 | 1 |
+| star_evenodd | 0.088 | 0.048 | 0.051 | 0.174 | 1 |
+| coincident_edges | 0.054 | 0.044 | 0.055 | 0.710 | 2 |
+| extreme_coordinates | 0.178 | 0.044 | 0.051 | 0.289 | 3 |
+| subpixel_translation | 0.095 | 0.070 | 0.069 | 0.563 | 51 |
+| non_integer_scales | 0.234 | 0.094 | 0.061 | 0.454 | 61 |
+| stroked_curves | 0.196 | 0.075 | 0.068 | 0.185 | 132 |
+| many_small_paths | 0.391 | 0.383 | 0.226 | 0.325 | 15 |
+| hairline_grid | 0.111 | 0.140 | 0.111 | 0.252 | 1 |
+| perf_2000_cubics_512 | 18.351 | 6.617 | 4.989 | 3.829 | 89 |
+
+canvas-spike scenes with vello_cpu (host-raster fallback), median ms:
+  "Paths100k" 1280x720 "vello_cpu_simd": 552.3 ms
+  "Paths100k" 1280x720 "vello_cpu_mt3": 195.8 ms
+  "Paths100k" 1920x1080 "vello_cpu_simd": 1158.8 ms
+  "Paths100k" 1920x1080 "vello_cpu_mt3": 393.4 ms
+  "Groups1k" 1280x720 "vello_cpu_simd": 76.5 ms
+  "Groups1k" 1280x720 "vello_cpu_mt3": 26.8 ms
+  "Groups1k" 1920x1080 "vello_cpu_simd": 82.5 ms
+  "Groups1k" 1920x1080 "vello_cpu_mt3": 30.1 ms
+  "Brush10k" 1280x720 "vello_cpu_simd": 75.0 ms
+  "Brush10k" 1280x720 "vello_cpu_mt3": 31.9 ms
+  "Brush10k" 1920x1080 "vello_cpu_simd": 86.3 ms
+  "Brush10k" 1920x1080 "vello_cpu_mt3": 30.1 ms

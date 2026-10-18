@@ -1,0 +1,21 @@
+{
+  "command": [
+    "rustc",
+    "--edition",
+    "2024",
+    "reviews/evidence/M0-C0.3-r1/raster_profiles.rs",
+    "-o",
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r1\\target\\profile-o3-native-lto.exe",
+    "-C",
+    "opt-level=3",
+    "-C",
+    "codegen-units=1",
+    "-C",
+    "lto=fat",
+    "-C",
+    "target-cpu=native"
+  ],
+  "startedUtc": "2026-10-18T11:38:35.070044+00:00",
+  "elapsedSeconds": 1.6060094999847934,
+  "exitCode": 0
+}

@@ -1,0 +1,13 @@
+    Checking webview2-com-sys v0.39.1
+    Checking tao v0.37.1
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\render)
+   Compiling tauri-build v2.7.3
+   Compiling tauri-codegen v2.7.3
+   Compiling tauri v2.12.4
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\desktop\src-tauri)
+   Compiling tauri-macros v2.7.3
+    Checking webview2-com v0.39.1
+    Checking wry v0.57.0
+    Checking tauri-runtime v2.12.2
+    Checking tauri-runtime-wry v2.12.2
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.65s

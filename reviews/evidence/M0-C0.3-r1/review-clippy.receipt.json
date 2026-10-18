@@ -1,0 +1,15 @@
+{
+  "command": [
+    "cargo",
+    "clippy",
+    "--workspace",
+    "--all-targets",
+    "--locked",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "startedUtc": "2026-10-18T11:43:54.807693+00:00",
+  "elapsedSeconds": 27.424932699999772,
+  "exitCode": 101
+}

@@ -1,0 +1,11 @@
+
+> @toontown/desktop@0.0.1 tauri C:\Users\kaiga\work\review\m0-c03-r1\desktop
+> tauri "build" "--no-bundle" "--config" "../reviews/evidence/M0-C0.3-r1/tauri-probe.json" "--" "--locked"
+
+        Info `tauri-build` dependency has workspace inheritance enabled. The features array won't be automatically rewritten. Expected features: []
+        Info `tauri` dependency has workspace inheritance enabled. The features array won't be automatically rewritten. Expected features: []
+        Info Looking up installed tauri packages to check mismatched versions...
+        Warn The bundle identifier "dev.toontown.app" set in `"tauri.conf.json" identifier` ends with `.app`. This is not recommended because it conflicts with the application bundle extension on macOS.
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\desktop\src-tauri)
+    Finished `release` profile [optimized + debuginfo] target(s) in 35.11s
+       Built application at: C:\Users\kaiga\work\review\m0-c03-r1\target\release\toontown.exe

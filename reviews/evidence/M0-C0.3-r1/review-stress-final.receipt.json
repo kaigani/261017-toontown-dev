@@ -1,0 +1,17 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-render",
+    "--test",
+    "c03_r1_stress",
+    "--",
+    "--nocapture"
+  ],
+  "startedUtc": "2026-10-18T11:47:06.370305+00:00",
+  "elapsedSeconds": 1.2420258999918588,
+  "exitCode": 101
+}

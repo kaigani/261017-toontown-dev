@@ -1,0 +1,237 @@
+{
+ "version": 1,
+ "runs": [
+  {
+   "backend": "webgl2",
+   "scene": "paths100k",
+   "outcome": "ok",
+   "error": null,
+   "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+   "canvas": {
+    "cssHeight": 757,
+    "cssWidth": 1904,
+    "dpr": 1,
+    "height": 757,
+    "width": 1904
+   },
+   "bytesPerTransfer": 8700096.0,
+   "transferMs": {
+    "n": 10,
+    "p50": 50.5,
+    "p95": 56.60000002384186,
+    "max": 56.60000002384186,
+    "mean": 51.26000000238419
+   },
+   "transferMBps": 169.72485367919128,
+   "encodeMs": {
+    "n": 10,
+    "p50": 1.9377,
+    "p95": 2.6462,
+    "max": 2.6462,
+    "mean": 2.0415099999999997
+   },
+   "generateMs": 4.4077,
+   "ipcPerFrameCeilingFps": 19.801980198019802,
+   "decodeMs": 93.69999998807909,
+   "decode": {
+    "cubics": 200000,
+    "fillBytes": 0,
+    "fillPaths": 0,
+    "fillVertices": 0,
+    "paths": 100000,
+    "segments": 2832713,
+    "strokeBytes": 90646816,
+    "strokePaths": 100000,
+    "tolerance": 0.5,
+    "triangles": 0
+   },
+   "uploadMs": {
+    "completeMs": 44.5,
+    "cpuMs": 44.5
+   },
+   "refreshMs": 16.66833333333334,
+   "frames": 600,
+   "intervalMs": {
+    "n": 599,
+    "p50": 16.699999999999818,
+    "p95": 16.899999999999636,
+    "max": 17.100000000000364,
+    "mean": 16.667111853088482
+   },
+   "fps": 59.99839737168957,
+   "longFrames": 0,
+   "cpuMs": {
+    "n": 600,
+    "p50": 0.09999996423721312,
+    "p95": 0.19999998807907104,
+    "max": 0.40000003576278687,
+    "mean": 0.07683333367109299
+   },
+   "gpuMs": null,
+   "meetsTarget": true
+  },
+  {
+   "backend": "webgl2",
+   "scene": "groups1k",
+   "outcome": "ok",
+   "error": null,
+   "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+   "canvas": {
+    "cssHeight": 757,
+    "cssWidth": 1904,
+    "dpr": 1,
+    "height": 757,
+    "width": 1904
+   },
+   "bytesPerTransfer": 2024072.0,
+   "transferMs": {
+    "n": 10,
+    "p50": 12.5,
+    "p95": 21.30000001192093,
+    "max": 21.30000001192093,
+    "mean": 13.710000002384186
+   },
+   "transferMBps": 147.6347191574042,
+   "encodeMs": {
+    "n": 10,
+    "p50": 0.5111,
+    "p95": 0.6173,
+    "max": 0.6173,
+    "mean": 0.51917
+   },
+   "generateMs": 1.5077,
+   "ipcPerFrameCeilingFps": 80.0,
+   "decodeMs": 29.19999998807907,
+   "decode": {
+    "cubics": 50000,
+    "fillBytes": 4565620,
+    "fillPaths": 10000,
+    "fillVertices": 175915,
+    "paths": 20000,
+    "segments": 101961,
+    "strokeBytes": 3262752,
+    "strokePaths": 10000,
+    "tolerance": 0.5,
+    "triangles": 145915
+   },
+   "uploadMs": {
+    "completeMs": 2.299999952316284,
+    "cpuMs": 2.299999952316284
+   },
+   "refreshMs": 16.666666666666668,
+   "frames": 600,
+   "intervalMs": {
+    "n": 599,
+    "p50": 16.69999999999891,
+    "p95": 16.899999999999636,
+    "max": 17,
+    "mean": 16.666277128547584
+   },
+   "fps": 60.001402370005295,
+   "longFrames": 0,
+   "cpuMs": {
+    "n": 600,
+    "p50": 0,
+    "p95": 0.10000002384185792,
+    "max": 1.399999976158142,
+    "mean": 0.02266666660706202
+   },
+   "gpuMs": null,
+   "meetsTarget": true
+  },
+  {
+   "backend": "webgl2",
+   "scene": "brush10k",
+   "outcome": "ok",
+   "error": null,
+   "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+   "canvas": {
+    "cssHeight": 757,
+    "cssWidth": 1904,
+    "dpr": 1,
+    "height": 757,
+    "width": 1904
+   },
+   "bytesPerTransfer": 10085716.0,
+   "transferMs": {
+    "n": 10,
+    "p50": 69.39999997615814,
+    "p95": 83.69999998807907,
+    "max": 83.69999998807907,
+    "mean": 71.53999999761581
+   },
+   "transferMBps": 140.9800950564177,
+   "encodeMs": {
+    "n": 10,
+    "p50": 2.8913,
+    "p95": 2.9657,
+    "max": 2.9657,
+    "mean": 2.90118
+   },
+   "generateMs": 14.4296,
+   "ipcPerFrameCeilingFps": 14.409221906967472,
+   "decodeMs": 237.19999998807907,
+   "decode": {
+    "cubics": 0,
+    "fillBytes": 30166256,
+    "fillPaths": 10000,
+    "fillVertices": 1088402,
+    "paths": 10000,
+    "segments": 0,
+    "strokeBytes": 0,
+    "strokePaths": 0,
+    "tolerance": 0.5,
+    "triangles": 1062652
+   },
+   "uploadMs": {
+    "completeMs": 14.5,
+    "cpuMs": 14.5
+   },
+   "refreshMs": 16.66833333333337,
+   "frames": 600,
+   "intervalMs": {
+    "n": 599,
+    "p50": 16.69999999999709,
+    "p95": 16.900000000001455,
+    "max": 17.0,
+    "mean": 16.666277128547584
+   },
+   "fps": 60.001402370005295,
+   "longFrames": 0,
+   "cpuMs": {
+    "n": 600,
+    "p50": 0,
+    "p95": 0.10000002384185792,
+    "max": 0.19999998807907104,
+    "mean": 0.01833333452542623
+   },
+   "gpuMs": null,
+   "meetsTarget": true
+  }
+ ],
+ "pixelRuns": [
+  {
+   "backend": "webgl2",
+   "outcome": "ok",
+   "width": 1904,
+   "height": 757,
+   "bytes": 5765328,
+   "transferMs": {
+    "n": 20,
+    "p50": 43.60000002384186,
+    "p95": 48.19999998807907,
+    "max": 48.80000001192093,
+    "mean": 44.31999998986721
+   },
+   "uploadMs": {
+    "n": 20,
+    "p50": 0.30000001192092896,
+    "p95": 0.40000003576278687,
+    "max": 1.399999976158142,
+    "mean": 0.3850000023841858
+   },
+   "transferMBps": 130.08411555320657,
+   "frameCostP50Ms": 43.90000003576279
+  }
+ ]
+}

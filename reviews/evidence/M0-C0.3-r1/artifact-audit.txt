@@ -1,0 +1,293 @@
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run1\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Windows\run2\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run1\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-macOS\run2\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run1\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-current\c03-raster-Linux\run2\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run1\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Windows\run2\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run1\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-macOS\run2\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run1\vello_cpu_simd\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_fallback\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_fallback\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_fallback\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_fallback\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_fallback\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_fallback\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_mt3\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_mt3\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_mt3\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_mt3\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_mt3\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_mt3\translucent_overlap.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_simd\cubic_blobs.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_simd\many_small_paths.png [250, 251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_simd\perf_2000_cubics_512.png [251, 252, 253, 254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_simd\radial_gradient.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_simd\stroked_curves.png [254, 255]
+nonopaque C:\Users\kaiga\work\review\m0-c03-r1\target\review-ci-historical\c03-raster-Linux\run2\vello_cpu_simd\translucent_overlap.png [254, 255]
+{
+  "entriesRecomputed": 1104,
+  "provenance": [
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\raster-report-ci-Windows-39121780905.json",
+      "byteIdentical": true
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\raster-report-ci-macOS-39121780905.json",
+      "byteIdentical": true
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\raster-report-ci-Linux-39121780905.json",
+      "byteIdentical": true
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\canvas-ci-windows-runner-39121780905.json.gz",
+      "byteIdentical": true,
+      "sha256": "49012eb8c399b854600d6b9f6e553ce3f6404fb3eb843a8347114c1f112e09b4"
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\canvas-ci-macos-runner-39121780905.json.gz",
+      "byteIdentical": true,
+      "sha256": "e83f56b359c60e0a49d77b102d6a07858a03e17057a32d6649b67c21e563dd6f"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:17:56Z",
+      "end": "2026-10-18T11:18:13Z"
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:18:01Z",
+      "end": "2026-10-18T11:20:26Z"
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:17:57Z",
+      "end": "2026-10-18T11:18:34Z"
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:18:02Z",
+      "end": "2026-10-18T11:21:30Z"
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:18:03Z",
+      "end": "2026-10-18T11:18:57Z"
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:17:57Z",
+      "end": "2026-10-18T11:24:07Z"
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:17:57Z",
+      "end": "2026-10-18T11:18:56Z"
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:17:56Z",
+      "end": "2026-10-18T11:22:29Z"
+    }
+  ]
+}

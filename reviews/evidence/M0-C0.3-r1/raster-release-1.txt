@@ -1,0 +1,73 @@
+    Blocking waiting for file lock on build directory
+   Compiling proc-macro2 v1.0.107
+   Compiling crossbeam-utils v0.8.23
+   Compiling crossbeam-epoch v0.9.21
+   Compiling arrayvec v0.7.8
+   Compiling crossbeam-deque v0.8.8
+   Compiling simd-adler32 v0.3.10
+   Compiling thiserror v2.0.21
+   Compiling smallvec v1.16.3
+   Compiling adler2 v2.0.1
+   Compiling rayon-core v1.13.0
+   Compiling linebender_resource_handle v0.1.1
+   Compiling serde_core v1.0.229
+   Compiling fearless_simd v0.7.0
+   Compiling foldhash v0.2.0
+   Compiling serde_json v1.0.154
+   Compiling either v1.19.0
+   Compiling memchr v2.8.3
+   Compiling bitflags v2.13.2
+   Compiling num-traits v0.2.19
+   Compiling crc32fast v1.5.2
+   Compiling thread_local v1.1.10
+   Compiling miniz_oxide v0.9.1
+   Compiling miniz_oxide v0.8.9
+   Compiling fdeflate v0.3.7
+   Compiling polycool v0.4.0
+   Compiling hashbrown v0.17.1
+   Compiling kurbo v0.13.1
+   Compiling flate2 v1.1.10
+   Compiling quote v1.0.47
+   Compiling png v0.18.1
+   Compiling crossbeam-channel v0.5.17
+   Compiling syn v3.0.9
+   Compiling euclid v0.22.14
+   Compiling ordered-channel v1.2.0
+   Compiling guillotiere v0.7.0
+   Compiling rayon v1.12.0
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling bytemuck v1.25.2
+   Compiling color v0.3.3
+   Compiling peniko v0.6.1
+   Compiling vello_common v0.3.0
+   Compiling vello_cpu v0.3.0
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\render)
+    Finished `release` profile [optimized + debuginfo] target(s) in 35.90s
+     Running `target\release\examples\c03_raster.exe --repeat 50 --check crates/render/examples/c03_raster/hashes.json --report C:\Users\kaiga\work\review\m0-c03-r1\reviews\evidence\M0-C0.3-r1\raster-release-1.json --out C:\Users\kaiga\work\review\m0-c03-r1\target\raster-release-1`
+"windows" "x86_64" (vello_cpu detected SIMD level "Avx2(Avx2 { _private: () })")
+| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | ttraster vs vello max diff |
+|---|---|---|---|---|---|
+| cubic_blobs | 0.107 | 0.023 | 0.016 | 0.101 | 62 |
+| thin_strokes | 0.080 | 0.044 | 0.028 | 0.099 | 1 |
+| aa_edge_angles | 0.258 | 0.120 | 0.071 | 0.147 | 3 |
+| translucent_overlap | 0.109 | 0.026 | 0.018 | 0.109 | 30 |
+| alpha_stack | 0.323 | 0.059 | 0.039 | 0.113 | 1 |
+| linear_gradient | 0.267 | 0.027 | 0.016 | 0.094 | 1 |
+| radial_gradient | 0.267 | 0.038 | 0.022 | 0.100 | 48 |
+| gradient_transformed | 0.169 | 0.025 | 0.015 | 0.102 | 2 |
+| clip_circle | 0.130 | 0.075 | 0.046 | 0.110 | 43 |
+| clip_nested | 0.167 | 0.042 | 0.028 | 0.108 | 68 |
+| glyph_nonzero | 0.041 | 0.019 | 0.014 | 0.090 | 58 |
+| glyph_evenodd | 0.056 | 0.021 | 0.015 | 0.093 | 58 |
+| degenerate | 0.023 | 0.012 | 0.009 | 0.091 | 0 |
+| star_nonzero | 0.041 | 0.018 | 0.012 | 0.097 | 1 |
+| star_evenodd | 0.068 | 0.020 | 0.012 | 0.091 | 1 |
+| coincident_edges | 0.038 | 0.018 | 0.013 | 0.103 | 2 |
+| extreme_coordinates | 0.079 | 0.015 | 0.011 | 0.091 | 3 |
+| subpixel_translation | 0.059 | 0.029 | 0.021 | 0.094 | 51 |
+| non_integer_scales | 0.185 | 0.035 | 0.025 | 0.096 | 61 |
+| stroked_curves | 0.165 | 0.031 | 0.021 | 0.093 | 132 |
+| many_small_paths | 0.346 | 0.231 | 0.159 | 0.188 | 15 |
+| hairline_grid | 0.079 | 0.085 | 0.052 | 0.129 | 1 |
+| perf_2000_cubics_512 | 18.457 | 6.516 | 4.679 | 2.430 | 89 |

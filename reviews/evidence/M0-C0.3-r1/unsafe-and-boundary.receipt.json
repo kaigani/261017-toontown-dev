@@ -1,0 +1,13 @@
+{
+  "command": [
+    "rg",
+    "-n",
+    "unsafe|@tauri-apps|__TAURI",
+    "desktop/src/spikes/canvas",
+    "desktop/src-tauri/src/spikes/canvas",
+    "crates/render/examples/c03_raster"
+  ],
+  "startedUtc": "2026-10-18T11:42:54.954845+00:00",
+  "elapsedSeconds": 0.01231369999004528,
+  "exitCode": 1
+}

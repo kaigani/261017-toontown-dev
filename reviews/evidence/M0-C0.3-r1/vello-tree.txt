@@ -1,0 +1,52 @@
+vello_cpu v0.3.0
+bytemuck v1.25.2
+bytemuck_derive v1.12.1 (proc-macro)
+proc-macro2 v1.0.107
+unicode-ident v1.0.27
+quote v1.0.47
+proc-macro2 v1.0.107 (*)
+syn v3.0.9
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+unicode-ident v1.0.27
+crossbeam-channel v0.5.17
+crossbeam-utils v0.8.23
+hashbrown v0.17.1
+foldhash v0.2.0
+ordered-channel v1.2.0
+crossbeam-channel v0.5.17 (*)
+rayon v1.12.0
+either v1.19.0
+rayon-core v1.13.0
+crossbeam-deque v0.8.8
+crossbeam-epoch v0.9.21
+crossbeam-utils v0.8.23
+crossbeam-utils v0.8.23
+crossbeam-utils v0.8.23
+thread_local v1.1.10
+cfg-if v1.0.5
+vello_common v0.3.0
+bytemuck v1.25.2 (*)
+fearless_simd v0.7.0
+guillotiere v0.7.0
+euclid v0.22.14
+num-traits v0.2.19
+autocfg v1.5.1
+log v0.4.34
+peniko v0.6.1
+bytemuck v1.25.2 (*)
+color v0.3.3
+bytemuck v1.25.2 (*)
+kurbo v0.13.1
+arrayvec v0.7.8
+polycool v0.4.0
+arrayvec v0.7.8
+smallvec v1.16.3
+linebender_resource_handle v0.1.1
+smallvec v1.16.3
+smallvec v1.16.3
+thiserror v2.0.21
+thiserror-impl v2.0.21 (proc-macro)
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+syn v3.0.9 (*)
