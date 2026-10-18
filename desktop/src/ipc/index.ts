@@ -5,6 +5,7 @@ import { createTauriTransport, isTauriRuntime } from './tauriTransport';
 
 export { createHostApi, HostError, MENU_COMMAND_EVENT, toHostError, type HostApi } from './hostApi';
 export { createMockTransport, MOCK_ENGINE_INFO, type MockTransport } from './mockTransport';
+export type { SpikeApi } from './spikeApi';
 export type { HostTransport, Unlisten } from './transport';
 export type * from './types';
 export { useHost } from './context';

@@ -49,3 +49,62 @@ export interface BenchPlan {
   count: number;
   payloadBytes: number[];
 }
+
+// ---- M0 spike: C0.2 tablet input (desktop/src-tauri/src/spikes/tablet). Not product API. ----
+
+export interface SpikeMode {
+  name: 'tablet';
+  logPath: string | null;
+  nativeBackend: 'octotablet-ink' | 'appkit-nsevent' | null;
+  penSimulation: boolean;
+  auto: boolean;
+}
+
+export interface NativePacket {
+  kind: 'pose' | 'down' | 'up' | 'in' | 'out' | 'frame' | 'proximity';
+  hostEpochMs: number;
+  deviceMs: number | null;
+  x: number;
+  y: number;
+  pressure: number | null;
+  tiltX: number | null;
+  tiltY: number | null;
+  twist: number | null;
+  tool: string;
+}
+
+export interface NativeBatch {
+  packets: NativePacket[];
+}
+
+export interface NativeStartInfo {
+  backend: 'octotablet-ink' | 'appkit-nsevent';
+  tablets: string[];
+  timestampGranularityMs: number | null;
+}
+
+export interface PenSimRequest {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  hz: number;
+  frames: number;
+}
+
+export interface PenSimReport {
+  method: string;
+  frames: number;
+  hz: number;
+  achievedHz: number;
+  injectEpochMs: number[];
+  pressure: number[];
+  tiltX: number[];
+  tiltY: number[];
+  rotation: number[];
+}
+
+export interface SavedLog {
+  path: string;
+  bytes: number;
+}

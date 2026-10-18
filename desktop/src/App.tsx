@@ -1,17 +1,29 @@
 import { DockviewReact, themeDark, type DockviewApi, type DockviewReadyEvent } from 'dockview-react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { handleMenuCommand, type FrontendContext } from './commands';
 import { maybeRunIpcBench } from './diagnostics/ipcBench';
-import { useHost } from './ipc';
+import { useHost, type SpikeMode } from './ipc';
 import { applyDefaultLayout } from './layout/defaultLayout';
 import { panelComponents } from './panels';
 import { StatusBar, type StatusMessage } from './status/StatusBar';
+
+// M0 spike page (C0.2), loaded only when the host was started with --spike tablet.
+const TabletSpike = lazy(() =>
+  import('./spikes/tablet/TabletSpike').then((m) => ({ default: m.TabletSpike })),
+);
 
 export function App() {
   const host = useHost();
   const dockApi = useRef<DockviewApi | null>(null);
   const [message, setMessage] = useState<StatusMessage | null>(null);
+  const [spike, setSpike] = useState<SpikeMode | null>(null);
+
+  useEffect(() => {
+    host.spike.mode().then(setSpike, () => {
+      setSpike(null);
+    });
+  }, [host]);
 
   const ctx = useMemo<FrontendContext>(
     () => ({
@@ -59,6 +71,14 @@ export function App() {
     dockApi.current = event.api;
     applyDefaultLayout(event.api);
   }, []);
+
+  if (spike) {
+    return (
+      <Suspense fallback={<p>Loading spike…</p>}>
+        <TabletSpike mode={spike} />
+      </Suspense>
+    );
+  }
 
   return (
     <div className="app">

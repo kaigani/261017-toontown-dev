@@ -1,5 +1,6 @@
 // Typed host API. UI code depends on this interface only, never on a transport or on the Tauri packages.
 import { certify } from './schema';
+import { createSpikeApi, type SpikeApi } from './spikeApi';
 import type { HostTransport, Unlisten } from './transport';
 import type { BenchPlan, EngineInfo, ErrorInfo, MenuCommandEvent, PingRequest, PingResponse } from './types';
 import {
@@ -35,6 +36,8 @@ export interface HostApi {
   benchPlan(): Promise<BenchPlan | null>;
   /** M0 diagnostics: hands the measurements to the host, which writes them and exits. */
   benchReport(report: unknown): Promise<void>;
+  /** M0 spikes (C0.2): reachable only when the host was started with --spike. */
+  readonly spike: SpikeApi;
 }
 
 /** Normalises anything a transport rejects with into a `HostError`. */
@@ -79,5 +82,6 @@ export function createHostApi(transport: HostTransport): HostApi {
     benchReport: async (report) => {
       await call(transport, 'bench_report', { report }, isNull);
     },
+    spike: createSpikeApi(transport),
   };
 }

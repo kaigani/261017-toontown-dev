@@ -12,4 +12,15 @@ export interface HostTransport {
   invoke(command: string, args?: Record<string, unknown>): Promise<unknown>;
   /** Subscribes to a host event. Resolves to a function that removes the subscription. */
   listen(event: string, handler: (payload: unknown) => void): Promise<Unlisten>;
+  /**
+   * Invokes a host command that streams messages back over a channel passed as argument `channelArg`. Resolves
+   * with the command's result; `onMessage` receives every streamed message (still `unknown`). Optional: a transport
+   * without streaming (e.g. a test double) omits it and streaming commands fail with `ipc.unsupported`.
+   */
+  invokeWithChannel?(
+    command: string,
+    args: Record<string, unknown>,
+    channelArg: string,
+    onMessage: (message: unknown) => void,
+  ): Promise<unknown>;
 }

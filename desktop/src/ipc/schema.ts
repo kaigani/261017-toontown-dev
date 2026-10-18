@@ -19,7 +19,9 @@
 export type Schema =
   | { type: 'string'; enum?: readonly string[]; pattern?: string }
   | { type: 'integer'; minimum?: number; maximum?: number }
+  | { type: 'number'; minimum?: number; maximum?: number }
   | { type: 'null' }
+  | { type: 'boolean' }
   | { type: 'array'; items: Schema }
   | {
       type: 'object';
@@ -37,6 +39,7 @@ type TypedSchema = Extract<Schema, { type: string }>;
 export const MAX_SAFE = Number.MAX_SAFE_INTEGER;
 export const U64: Schema = { type: 'integer', minimum: 0, maximum: MAX_SAFE };
 export const STRING: Schema = { type: 'string' };
+export const NUMBER: Schema = { type: 'number' };
 export const ANY: Schema = {};
 
 /** Nesting deeper than this is rejected rather than risking stack exhaustion. */
@@ -107,6 +110,8 @@ export function violations(schema: Schema, value: unknown, at = ''): string[] {
   switch (schema.type) {
     case 'null':
       return value === null ? [] : [`${here}: expected null`];
+    case 'boolean':
+      return typeof value === 'boolean' ? [] : [`${here}: expected boolean`];
     case 'string': {
       if (typeof value !== 'string') return [`${here}: expected string`];
       if (schema.enum && !schema.enum.includes(value))
@@ -118,6 +123,12 @@ export function violations(schema: Schema, value: unknown, at = ''): string[] {
     }
     case 'integer': {
       if (typeof value !== 'number' || !Number.isInteger(value)) return [`${here}: expected integer`];
+      if (schema.minimum !== undefined && value < schema.minimum) return [`${here}: below ${schema.minimum}`];
+      if (schema.maximum !== undefined && value > schema.maximum) return [`${here}: above ${schema.maximum}`];
+      return [];
+    }
+    case 'number': {
+      if (typeof value !== 'number' || !Number.isFinite(value)) return [`${here}: expected finite number`];
       if (schema.minimum !== undefined && value < schema.minimum) return [`${here}: below ${schema.minimum}`];
       if (schema.maximum !== undefined && value > schema.maximum) return [`${here}: above ${schema.maximum}`];
       return [];

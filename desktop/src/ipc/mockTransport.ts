@@ -55,6 +55,7 @@ export function createMockTransport(): MockTransport {
     },
     app_info: () => ({ ok: true, value: MOCK_ENGINE_INFO }),
     bench_plan: () => ({ ok: true, value: null }),
+    spike_mode: () => ({ ok: true, value: null }),
     bench_report: () => ({
       ok: false,
       error: { code: 'diagnostics.notRequested', message: 'the app was not started with --ipc-bench' },
@@ -71,6 +72,10 @@ export function createMockTransport(): MockTransport {
       // Tauri rejects with the plain serialized error value, not an Error instance; the mock does the same
       // (prefer-promise-reject-errors is switched off for this file in eslint.config.js).
       return outcome.ok ? Promise.resolve(outcome.value) : Promise.reject(outcome.error);
+    },
+    invokeWithChannel(command, args) {
+      // The mock has no streaming commands; behave like invoke (spike commands are refused).
+      return this.invoke(command, args);
     },
     listen(event, handler): Promise<Unlisten> {
       const set = listeners.get(event) ?? new Set();
