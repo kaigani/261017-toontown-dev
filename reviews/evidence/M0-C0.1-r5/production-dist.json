@@ -1,0 +1,40 @@
+[
+  {
+    "file": "assets\\index-BcXvq6Ni.css",
+    "bytes": 135658,
+    "sha256": "9a5e70ec1fe86a976d16636988e84f33d27e9ad3456b34c74f22515e983b4ee5"
+  },
+  {
+    "file": "assets\\index-DZ7APN4N.js",
+    "bytes": 621198,
+    "sha256": "faaeed1f8413d8b8a72afea4ae42e844e020a205c9e5d9effb8227fe4c8b7a32",
+    "literalTauri": false,
+    "transportReferences": [
+      "import{n as e,t}from\"./tauri-transport-D_uHzYs7.js\";var n=Object.create,r=Object.defineProperty,i=Object.getOwnPropert"
+    ]
+  },
+  {
+    "file": "assets\\index-DZ7APN4N.js.map",
+    "bytes": 2429885,
+    "sha256": "ce9d37f9d8a76c80eddbefc8b762d10ff1ed091a0021578f3ae96ae14a45471b"
+  },
+  {
+    "file": "assets\\tauri-transport-D_uHzYs7.js",
+    "bytes": 1366,
+    "sha256": "59704318d98b6ca84c28e54346ae5ea4bcd55650056d1955ebda66cf37519e61",
+    "literalTauri": true,
+    "transportReferences": [
+      "//# sourceMappingURL=tauri-transport-D_uHzYs7.js.map"
+    ]
+  },
+  {
+    "file": "assets\\tauri-transport-D_uHzYs7.js.map",
+    "bytes": 32655,
+    "sha256": "d905e4b310fdad410d450d23eda536e5141e8037452d23805fe8b49108cedb40"
+  },
+  {
+    "file": "index.html",
+    "bytes": 479,
+    "sha256": "ab1415f61cd2c06db6727145ac7d3f9a7a2151096b7cbd19461b5389d4066123"
+  }
+]

@@ -1,0 +1,104 @@
+[
+  {
+    "name": "r4-boundary",
+    "command": "node --test tests/adversarial/c01-r4-boundary.test.mjs",
+    "exit": 0,
+    "seconds": 1.349
+  },
+  {
+    "name": "r3-boundary",
+    "command": "node --test tests/adversarial/c01-r3-boundary.test.mjs",
+    "exit": 0,
+    "seconds": 2.825
+  },
+  {
+    "name": "r2-node",
+    "command": "node --test tests/adversarial/c01-r2-boundary.test.mjs tests/adversarial/c01-r2-licenses.test.mjs",
+    "exit": 0,
+    "seconds": 9.125
+  },
+  {
+    "name": "reviewer-frontend",
+    "command": "pnpm --dir desktop exec vitest run --config vite.config.ts src/test/c01-r3-schema.test.ts src/test/c01-r2-schema.test.ts src/test/adversarial.test.ts",
+    "exit": 0,
+    "seconds": 2.486
+  },
+  {
+    "name": "build",
+    "command": "pnpm --dir desktop build",
+    "exit": 0,
+    "seconds": 1.633
+  },
+  {
+    "name": "fmt",
+    "command": "cargo fmt --all -- --check",
+    "exit": 0,
+    "seconds": 0.35
+  },
+  {
+    "name": "clippy",
+    "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "exit": 0,
+    "seconds": 32.877
+  },
+  {
+    "name": "rust-test",
+    "command": "cargo test --workspace --locked",
+    "exit": 0,
+    "seconds": 46.696
+  },
+  {
+    "name": "deny",
+    "command": "cargo deny --locked check",
+    "exit": 0,
+    "seconds": 0.895
+  },
+  {
+    "name": "lint",
+    "command": "pnpm lint",
+    "exit": 1,
+    "seconds": 5.393
+  },
+  {
+    "name": "typecheck",
+    "command": "pnpm typecheck",
+    "exit": 0,
+    "seconds": 2.307
+  },
+  {
+    "name": "test",
+    "command": "pnpm test",
+    "exit": 0,
+    "seconds": 33.127
+  },
+  {
+    "name": "format",
+    "command": "pnpm format:check",
+    "exit": 0,
+    "seconds": 1.118
+  },
+  {
+    "name": "licenses",
+    "command": "pnpm licenses:check",
+    "exit": 0,
+    "seconds": 0.808
+  },
+  {
+    "name": "release-headless",
+    "command": "cargo build --release --locked -p tt-headless",
+    "exit": 0,
+    "seconds": 4.89
+  },
+  {
+    "name": "release-desktop",
+    "command": "pnpm --dir desktop tauri build --no-bundle -- --locked",
+    "exit": 0,
+    "seconds": 75.733
+  },
+  {
+    "name": "runtime",
+    "command": "python reviews/evidence/M0-C0.1-r5/runtime.py",
+    "exit": 0,
+    "seconds": 13.965
+  }
+]

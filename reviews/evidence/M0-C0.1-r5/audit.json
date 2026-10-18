@@ -1,0 +1,72 @@
+[
+  {
+    "command": "git rev-parse HEAD",
+    "exit": 0,
+    "stdout": "d54f0b7c320553a73c56631d8689de1aeb950c6e\n",
+    "stderr": ""
+  },
+  {
+    "command": "git branch --show-current",
+    "exit": 0,
+    "stdout": "review/m0-c01-r5\n",
+    "stderr": ""
+  },
+  {
+    "command": "git log --oneline 94d4b63..d54f0b7",
+    "exit": 0,
+    "stdout": "d54f0b7 docs(review): M0 C0.1 closure round 4 response\n8fc47ad docs: ADR-0001 three-layer boundary and worker ban, traceability, handoff after closure r4\nfe76e39 fix(desktop): final-output IPC boundary scan after minification; forbid string assembly and workers (C01-R4-01, C01-R4-02)\n9ac72a6 merge: Codex closure check of C0.1 (round 4)\n",
+    "stderr": ""
+  },
+  {
+    "command": "rustc --version",
+    "exit": 0,
+    "stdout": "rustc 1.98.1 (48a229cea 2026-09-01)\n",
+    "stderr": ""
+  },
+  {
+    "command": "cargo deny --version",
+    "exit": 0,
+    "stdout": "cargo-deny 0.20.2\n",
+    "stderr": ""
+  },
+  {
+    "command": "node --version",
+    "exit": 0,
+    "stdout": "v22.23.2\r\n",
+    "stderr": ""
+  },
+  {
+    "command": "pnpm --version",
+    "exit": 0,
+    "stdout": "10.12.1\n",
+    "stderr": ""
+  },
+  {
+    "command": "python --version",
+    "exit": 0,
+    "stdout": "Python 3.13.1\r\n",
+    "stderr": ""
+  },
+  {
+    "command": "pnpm lint",
+    "exit": 0,
+    "stdout": "\n> toontown-workspace@ lint C:\\Users\\kaiga\\work\\review\\m0-c01-r5\n> pnpm -r --workspace-concurrency=1 lint\n\n\n> @toontown/desktop@0.0.1 lint C:\\Users\\kaiga\\work\\review\\m0-c01-r5\\desktop\n> eslint . --max-warnings 0\n\n",
+    "stderr": ""
+  },
+  {
+    "command": "node desktop/boundary/check-dist.mjs desktop/dist",
+    "exit": 0,
+    "stdout": "IPC boundary (dist check): ok (desktop\\dist; Tauri code only in tauri-transport)\n",
+    "stderr": ""
+  },
+  {
+    "reviewerTestsDiffBytes": 0
+  },
+  {
+    "vitestPass": 198,
+    "vitestExpectedFailures": 3,
+    "vitestFiles": 15,
+    "nodePass": 9,
+    "rustPass": 53
+  }
+]

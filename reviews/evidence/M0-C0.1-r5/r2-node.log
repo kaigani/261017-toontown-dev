@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: controls: variable imports, template imports, globals, eval and barrel exports are rejected
+ok 1 - controls: variable imports, template imports, globals, eval and barrel exports are rejected
+  ---
+  duration_ms: 2004.8395
+  type: 'test'
+  ...
+# Subtest: C01-R2-01: the boundary also covers Vite-bundleable .mts modules
+ok 2 - C01-R2-01: the boundary also covers Vite-bundleable .mts modules
+  ---
+  duration_ms: 78.5405
+  type: 'test'
+  ...
+# Subtest: C01-R2-01: the boundary also covers Vite-bundleable .cts modules
+ok 3 - C01-R2-01: the boundary also covers Vite-bundleable .cts modules
+  ---
+  duration_ms: 42.0418
+  type: 'test'
+  ...
+# Subtest: C01-R2-01: source comments cannot disable the host boundary
+ok 4 - C01-R2-01: source comments cannot disable the host boundary
+  ---
+  duration_ms: 27.5908
+  type: 'test'
+  ...
+# Subtest: C01-R2-01: ordinary UI code cannot invoke the raw transport instead of HostApi
+ok 5 - C01-R2-01: ordinary UI code cannot invoke the raw transport instead of HostApi
+  ---
+  duration_ms: 23.3371
+  type: 'test'
+  ...
+# Subtest: C01-R2-01: lint coverage follows frontend imports outside desktop/src
+ok 6 - C01-R2-01: lint coverage follows frontend imports outside desktop/src
+  ---
+  duration_ms: 6546.5467
+  type: 'test'
+  ...
+# Subtest: C01-R2-03: a permitted OR branch must not hide malformed SPDX operands
+ok 7 - C01-R2-03: a permitted OR branch must not hide malformed SPDX operands
+  ---
+  duration_ms: 1.113
+  type: 'test'
+  ...
+# Subtest: SPDX attack controls: precedence, nesting, exceptions, suffixes and malformed syntax
+ok 8 - SPDX attack controls: precedence, nesting, exceptions, suffixes and malformed syntax
+  ---
+  duration_ms: 0.3599
+  type: 'test'
+  ...
+# Subtest: boolean evaluation agrees with independently constructed expressions at depth four
+ok 9 - boolean evaluation agrees with independently constructed expressions at depth four
+  ---
+  duration_ms: 6.2841
+  type: 'test'
+  ...
+# Subtest: Rust config, JS runtime and the exact ADR list agree; imported gate follows an edited copy
+ok 10 - Rust config, JS runtime and the exact ADR list agree; imported gate follows an edited copy
+  ---
+  duration_ms: 6.7201
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9074.1082
