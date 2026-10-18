@@ -1,0 +1,12 @@
+{
+  "command": [
+    "C:\\Users\\kaiga\\work\\review\\m0-c04-r4\\target\\release\\toontown-headless.exe",
+    "--selftest",
+    "--json"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r4",
+  "started": "2026-10-18T16:46:58.182071+00:00",
+  "seconds": 0.004,
+  "exit": 0,
+  "expected": 0
+}

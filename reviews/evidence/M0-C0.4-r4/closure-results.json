@@ -1,0 +1,2854 @@
+[
+  {
+    "case": "overlap-Perf",
+    "boundary": "real CLI",
+    "exit": 2,
+    "decision": null
+  },
+  {
+    "case": "overlap-EpochMs",
+    "boundary": "real CLI",
+    "exit": 2,
+    "decision": null
+  },
+  {
+    "case": "keys-valid",
+    "boundary": "real CLI",
+    "exit": 0,
+    "decision": {
+      "scores": {
+        "W": 4
+      },
+      "shares": {
+        "W": "1/2"
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "disqualified": {},
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "bestEvidence": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching in A2 False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "keys-missing-keydown",
+    "boundary": "real CLI",
+    "exit": 0,
+    "decision": {
+      "scores": {
+        "W": 4
+      },
+      "shares": {
+        "W": "1/2"
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "disqualified": {},
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "bestEvidence": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching in A2 False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "keys-499ms-transitions",
+    "boundary": "real CLI",
+    "exit": 0,
+    "decision": {
+      "scores": {
+        "W": 4
+      },
+      "shares": {
+        "W": "1/2"
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "disqualified": {},
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "bestEvidence": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching in A2 False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "keys-wrong-action-label",
+    "boundary": "real CLI",
+    "exit": 0,
+    "decision": {
+      "scores": {
+        "W": 4
+      },
+      "shares": {
+        "W": "1/2"
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "disqualified": {},
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "bestEvidence": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching in A2 False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "keys-transition-on-keydown",
+    "boundary": "real CLI",
+    "exit": 2,
+    "decision": null
+  },
+  {
+    "case": "split-boundary-baseline",
+    "boundary": "real CLI",
+    "exit": 0,
+    "decision": {
+      "scores": {
+        "W": 4
+      },
+      "shares": {
+        "W": "1/2"
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "disqualified": {},
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "bestEvidence": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching in A2 False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "split-boundary-outside-tail",
+    "boundary": "real CLI",
+    "exit": 0,
+    "decision": {
+      "outcome": "insufficient evidence: repeat the actions named for row 7 (W), row 8 (W)",
+      "selected": null,
+      "conditions": [],
+      "scores": {},
+      "eligible": [],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching in A2 False"
+          },
+          "7": {
+            "result": "insufficient",
+            "note": "A2 has a single sample: repeat A2"
+          },
+          "8": {
+            "result": "insufficient",
+            "note": "A2 has a single sample: repeat A2"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "split-slow-baseline",
+    "boundary": "real CLI",
+    "exit": 0,
+    "decision": {
+      "scores": {
+        "W": 4
+      },
+      "shares": {
+        "W": "1/2"
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "disqualified": {},
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "bestEvidence": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        },
+        {
+          "row": 6,
+          "result": "partial",
+          "mitigation": "accept one sample per dispatch"
+        },
+        {
+          "row": 8,
+          "result": "partial",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching in A2 False"
+          },
+          "7": {
+            "result": "pass",
+            "note": "120.048 Hz"
+          },
+          "8": {
+            "result": "partial",
+            "note": "120.048 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "split-slow-outside-tail",
+    "boundary": "real CLI",
+    "exit": 0,
+    "decision": {
+      "scores": {
+        "W": 3
+      },
+      "shares": {
+        "W": "3/8"
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "R",
+        "H",
+        "D"
+      ],
+      "disqualified": {
+        "W": [
+          7
+        ]
+      },
+      "outcome": "no-go on this platform: escalate (plan \u00a76 decision 7); best available evidence: W (3/8)",
+      "selected": null,
+      "bestEvidence": "W",
+      "conditions": [],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching in A2 False"
+          },
+          "7": {
+            "result": "fail",
+            "note": "40.000 Hz"
+          },
+          "8": {
+            "result": "fail",
+            "note": "40.000 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "boundary-one-inside",
+    "boundary": "real CLI",
+    "exit": 0,
+    "decision": {
+      "outcome": "insufficient evidence: repeat the actions named for row 7 (W), row 8 (W)",
+      "selected": null,
+      "conditions": [],
+      "scores": {},
+      "eligible": [],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "512 levels"
+          },
+          "3": {
+            "result": "partial",
+            "note": "512 levels"
+          },
+          "4": {
+            "result": "fail",
+            "note": "x [0, 0], y [0, 0]"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "pen has no barrel rotation"
+          },
+          "6": {
+            "result": "partial",
+            "note": "API True, batching in A2 False"
+          },
+          "7": {
+            "result": "insufficient",
+            "note": "A2 has a single sample: repeat A2"
+          },
+          "8": {
+            "result": "insufficient",
+            "note": "A2 has a single sample: repeat A2"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "example-1",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "partial",
+        "3": "fail",
+        "4": "fail",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "R": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "fail",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "H": {
+        "1": "pass",
+        "2": "fail",
+        "3": "fail",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "D": {
+        "1": "pass",
+        "2": "fail",
+        "3": "fail",
+        "4": "fail",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 6,
+        "R": 7,
+        "H": 6,
+        "D": 5
+      },
+      "shares": {
+        "W": "2/3",
+        "R": "7/8",
+        "H": "3/4",
+        "D": "5/8"
+      },
+      "eligible": [
+        "W",
+        "R",
+        "H",
+        "D"
+      ],
+      "unmeasured": [],
+      "disqualified": {
+        "H": [
+          2
+        ],
+        "D": [
+          2
+        ]
+      },
+      "outcome": "go-with-conditions: R",
+      "selected": "R",
+      "bestEvidence": "R",
+      "conditions": [
+        {
+          "row": 4,
+          "result": "fail",
+          "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+        }
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "partial",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "R": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "H": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "D": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "example-2",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "fail",
+        "8": "fail",
+        "9": "pass"
+      },
+      "A": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "partial",
+        "8": "fail",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 7,
+        "A": 6
+      },
+      "shares": {
+        "W": "7/9",
+        "A": "3/4"
+      },
+      "eligible": [
+        "W",
+        "A"
+      ],
+      "unmeasured": [],
+      "disqualified": {
+        "W": [
+          7
+        ]
+      },
+      "outcome": "go-with-conditions: A",
+      "selected": "A",
+      "bestEvidence": "A",
+      "conditions": [
+        {
+          "row": 7,
+          "result": "partial",
+          "mitigation": "interpolated sampling off; the >= 200 Hz target is recorded as below target"
+        },
+        {
+          "row": 8,
+          "result": "fail",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "platform": "macos",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "A": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "partial",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "example-3",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "fail",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "A": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "fail",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 8,
+        "A": 7
+      },
+      "shares": {
+        "W": "8/9",
+        "A": "7/8"
+      },
+      "eligible": [
+        "W",
+        "A"
+      ],
+      "unmeasured": [],
+      "disqualified": {
+        "W": [
+          2
+        ],
+        "A": [
+          7
+        ]
+      },
+      "outcome": "no-go on this platform: escalate (plan \u00a76 decision 7); best available evidence: W (8/9)",
+      "selected": null,
+      "bestEvidence": "W",
+      "conditions": [],
+      "platform": "macos",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "A": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "all-disqualified-windows",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "fail",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "fail",
+        "8": "pass",
+        "9": "pass"
+      },
+      "R": {
+        "1": "pass",
+        "2": "fail",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "fail",
+        "8": "pass",
+        "9": "pass"
+      },
+      "H": {
+        "1": "pass",
+        "2": "fail",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "fail",
+        "8": "pass",
+        "9": "pass"
+      },
+      "D": {
+        "1": "pass",
+        "2": "fail",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "fail",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 7,
+        "R": 6,
+        "H": 6,
+        "D": 6
+      },
+      "shares": {
+        "W": "7/9",
+        "R": "3/4",
+        "H": "3/4",
+        "D": "3/4"
+      },
+      "eligible": [
+        "W",
+        "R",
+        "H",
+        "D"
+      ],
+      "unmeasured": [],
+      "disqualified": {
+        "W": [
+          2,
+          7
+        ],
+        "R": [
+          2,
+          7
+        ],
+        "H": [
+          2,
+          7
+        ],
+        "D": [
+          2,
+          7
+        ]
+      },
+      "outcome": "no-go on this platform: escalate (plan \u00a76 decision 7); best available evidence: W (7/9)",
+      "selected": null,
+      "bestEvidence": "W",
+      "conditions": [],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "R": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "H": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "D": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "equal-share-different-counts",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "pass",
+        "3": "partial",
+        "4": "partial",
+        "5": "partial",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "R": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "n/a",
+        "5": "n/a",
+        "6": "n/a",
+        "7": "pass",
+        "8": "partial",
+        "9": "partial"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 6,
+        "R": 4
+      },
+      "shares": {
+        "W": "2/3",
+        "R": "2/3"
+      },
+      "eligible": [
+        "W",
+        "R"
+      ],
+      "unmeasured": [
+        "H",
+        "D"
+      ],
+      "disqualified": {},
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "bestEvidence": "W",
+      "conditions": [
+        {
+          "row": 3,
+          "result": "partial",
+          "mitigation": "accept >= 256 levels"
+        },
+        {
+          "row": 4,
+          "result": "partial",
+          "mitigation": "accept the limited or quantised tilt"
+        },
+        {
+          "row": 5,
+          "result": "partial",
+          "mitigation": "twist limited to the measured range (e.g. modulo 180)"
+        }
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "partial",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "partial",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "partial",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "R": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "partial",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "partial",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "single-applicable-row",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "partial"
+      },
+      "R": {
+        "1": "n/a",
+        "2": "pass",
+        "3": "n/a",
+        "4": "n/a",
+        "5": "n/a",
+        "6": "n/a",
+        "7": "n/a",
+        "8": "n/a",
+        "9": "n/a"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 8,
+        "R": 1
+      },
+      "shares": {
+        "W": "8/9",
+        "R": "1"
+      },
+      "eligible": [
+        "W",
+        "R"
+      ],
+      "unmeasured": [
+        "H",
+        "D"
+      ],
+      "disqualified": {},
+      "outcome": "go: R",
+      "selected": "R",
+      "bestEvidence": "R",
+      "conditions": [],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "partial",
+            "note": "injected row result"
+          }
+        },
+        "R": {
+          "1": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "n/a",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "native-eight-of-eight",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "partial"
+      },
+      "R": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 8,
+        "R": 8
+      },
+      "shares": {
+        "W": "8/9",
+        "R": "1"
+      },
+      "eligible": [
+        "W",
+        "R"
+      ],
+      "unmeasured": [
+        "H",
+        "D"
+      ],
+      "disqualified": {},
+      "outcome": "go: R",
+      "selected": "R",
+      "bestEvidence": "R",
+      "conditions": [],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "partial",
+            "note": "injected row result"
+          }
+        },
+        "R": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "no-applicable-rows",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "partial"
+      },
+      "R": {
+        "1": "n/a",
+        "2": "n/a",
+        "3": "n/a",
+        "4": "n/a",
+        "5": "n/a",
+        "6": "n/a",
+        "7": "n/a",
+        "8": "n/a",
+        "9": "n/a"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 8,
+        "R": 0
+      },
+      "shares": {
+        "W": "8/9"
+      },
+      "eligible": [
+        "W"
+      ],
+      "unmeasured": [
+        "H",
+        "D"
+      ],
+      "disqualified": {},
+      "outcome": "go-with-conditions: W",
+      "selected": "W",
+      "bestEvidence": "W",
+      "conditions": [
+        {
+          "row": 9,
+          "result": "partial",
+          "mitigation": "pressure interpolated between updates"
+        }
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "partial",
+            "note": "injected row result"
+          }
+        },
+        "R": {
+          "1": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "n/a",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "all-na",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "n/a",
+        "2": "n/a",
+        "3": "n/a",
+        "4": "n/a",
+        "5": "n/a",
+        "6": "n/a",
+        "7": "n/a",
+        "8": "n/a",
+        "9": "n/a"
+      },
+      "R": {
+        "1": "n/a",
+        "2": "n/a",
+        "3": "n/a",
+        "4": "n/a",
+        "5": "n/a",
+        "6": "n/a",
+        "7": "n/a",
+        "8": "n/a",
+        "9": "n/a"
+      }
+    },
+    "decision": {
+      "outcome": "not evidence: no candidate has a valid measurement; repeat the procedure",
+      "selected": null,
+      "conditions": [],
+      "scores": {
+        "W": 0,
+        "R": 0
+      },
+      "shares": {},
+      "eligible": [],
+      "unmeasured": [
+        "H",
+        "D"
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "n/a",
+            "note": "injected row result"
+          }
+        },
+        "R": {
+          "1": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "n/a",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "only-qualified-rate-partial",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "fail",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "H": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "partial",
+        "8": "fail",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 8,
+        "H": 6
+      },
+      "shares": {
+        "W": "8/9",
+        "H": "3/4"
+      },
+      "eligible": [
+        "W",
+        "H"
+      ],
+      "unmeasured": [
+        "R",
+        "D"
+      ],
+      "disqualified": {
+        "W": [
+          2
+        ]
+      },
+      "outcome": "go-with-conditions: H",
+      "selected": "H",
+      "bestEvidence": "H",
+      "conditions": [
+        {
+          "row": 7,
+          "result": "partial",
+          "mitigation": "interpolated sampling off; the >= 200 Hz target is recorded as below target"
+        },
+        {
+          "row": 8,
+          "result": "fail",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "platform": "windows",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "H": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "partial",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "fail",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "mac-tie-different-counts",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "A": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 9,
+        "A": 8
+      },
+      "shares": {
+        "W": "1",
+        "A": "1"
+      },
+      "eligible": [
+        "W",
+        "A"
+      ],
+      "unmeasured": [],
+      "disqualified": {},
+      "outcome": "go: W",
+      "selected": "W",
+      "bestEvidence": "W",
+      "conditions": [],
+      "platform": "macos",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "A": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "mac-native-share-wins",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "W": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "pass",
+        "7": "pass",
+        "8": "partial",
+        "9": "pass"
+      },
+      "A": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "scores": {
+        "W": 8,
+        "A": 8
+      },
+      "shares": {
+        "W": "8/9",
+        "A": "1"
+      },
+      "eligible": [
+        "W",
+        "A"
+      ],
+      "unmeasured": [],
+      "disqualified": {},
+      "outcome": "go: A",
+      "selected": "A",
+      "bestEvidence": "A",
+      "conditions": [],
+      "platform": "macos",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "partial",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "A": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "native-priority-tie",
+    "boundary": "real aggregate/print; injected row results",
+    "inputs": {
+      "D": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "H": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      },
+      "R": {
+        "1": "pass",
+        "2": "pass",
+        "3": "pass",
+        "4": "pass",
+        "5": "pass",
+        "6": "n/a",
+        "7": "pass",
+        "8": "pass",
+        "9": "pass"
+      }
+    },
+    "decision": {
+      "scores": {
+        "D": 8,
+        "H": 8,
+        "R": 8
+      },
+      "shares": {
+        "R": "1",
+        "H": "1",
+        "D": "1"
+      },
+      "eligible": [
+        "R",
+        "H",
+        "D"
+      ],
+      "unmeasured": [
+        "W"
+      ],
+      "disqualified": {},
+      "outcome": "go: R",
+      "selected": "R",
+      "bestEvidence": "R",
+      "conditions": [],
+      "platform": "windows",
+      "rows": {
+        "D": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "H": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        },
+        "R": {
+          "1": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "2": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "3": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "4": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "5": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "injected row result"
+          },
+          "7": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "8": {
+            "result": "pass",
+            "note": "injected row result"
+          },
+          "9": {
+            "result": "pass",
+            "note": "injected row result"
+          }
+        }
+      }
+    }
+  },
+  {
+    "case": "raw-macos-example-2",
+    "boundary": "real CLI",
+    "exit": 0,
+    "decision": {
+      "scores": {
+        "W": 7,
+        "A": 6
+      },
+      "shares": {
+        "W": "7/9",
+        "A": "3/4"
+      },
+      "eligible": [
+        "W",
+        "A"
+      ],
+      "unmeasured": [],
+      "disqualified": {
+        "W": [
+          7
+        ]
+      },
+      "outcome": "go-with-conditions: A",
+      "selected": "A",
+      "bestEvidence": "A",
+      "conditions": [
+        {
+          "row": 7,
+          "result": "partial",
+          "mitigation": "interpolated sampling off; the >= 200 Hz target is recorded as below target"
+        },
+        {
+          "row": 8,
+          "result": "fail",
+          "mitigation": "recorded as below the 200 Hz target"
+        }
+      ],
+      "platform": "macos",
+      "rows": {
+        "W": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "1024 levels"
+          },
+          "3": {
+            "result": "pass",
+            "note": "1024 levels"
+          },
+          "4": {
+            "result": "pass",
+            "note": "x [-45, 45], y [-45, 45]"
+          },
+          "5": {
+            "result": "pass",
+            "note": "range [0, 359]"
+          },
+          "6": {
+            "result": "pass",
+            "note": "API True, batching in A2 True"
+          },
+          "7": {
+            "result": "fail",
+            "note": "50.000 Hz"
+          },
+          "8": {
+            "result": "fail",
+            "note": "50.000 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        },
+        "A": {
+          "1": {
+            "result": "pass",
+            "note": "3 of 3 actions report a pen"
+          },
+          "2": {
+            "result": "pass",
+            "note": "1024 levels"
+          },
+          "3": {
+            "result": "pass",
+            "note": "1024 levels"
+          },
+          "4": {
+            "result": "pass",
+            "note": "x [-45, 45], y [-45, 45]"
+          },
+          "5": {
+            "result": "pass",
+            "note": "range [0, 359]"
+          },
+          "6": {
+            "result": "n/a",
+            "note": "native path"
+          },
+          "7": {
+            "result": "partial",
+            "note": "90.000 Hz"
+          },
+          "8": {
+            "result": "fail",
+            "note": "90.000 Hz"
+          },
+          "9": {
+            "result": "pass",
+            "note": "600 samples, 120.0 Hz"
+          }
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python",
+    "-X",
+    "utf8",
+    "tests/adversarial/c02-r3-tooling.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r4",
+  "started": "2026-10-18T16:45:18.956312+00:00",
+  "seconds": 0.354,
+  "exit": 0,
+  "expected": 0
+}

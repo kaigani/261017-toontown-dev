@@ -1,0 +1,26 @@
+{
+  "command": [
+    "cargo",
+    "run",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-render",
+    "--example",
+    "c03_raster",
+    "--",
+    "--repeat",
+    "3",
+    "--out",
+    "target/c04-r4-raster",
+    "--report",
+    "C:\\Users\\kaiga\\work\\review\\m0-c04-r4\\reviews\\evidence\\M0-C0.4-r4\\raster.json",
+    "--check",
+    "crates/render/examples/c03_raster/hashes.json"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r4",
+  "started": "2026-10-18T16:46:58.340021+00:00",
+  "seconds": 32.515,
+  "exit": 0,
+  "expected": 0
+}

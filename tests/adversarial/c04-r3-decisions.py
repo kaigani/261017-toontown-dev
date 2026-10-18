@@ -25,7 +25,9 @@ class Regressions(unittest.TestCase):
         rows={'W':{**ok,2:'fail',3:'fail'},'R':{**ok,4:'fail',5:'fail',6:'n/a'}}
         d=t.aggregate('windows',rows)
         self.assertEqual(d['scores'],{'W':7,'R':6})
-        self.assertEqual(d['selected'],'W','Binding score/priority ruling; eligibility is an unruled builder addition')
+        self.assertEqual(d['selected'],'R','Final Addendum 2 disqualifies W before ranking by share')
+        self.assertEqual(d['disqualified'],{'W':[2]})
+        self.assertEqual(d['shares']['W'],'7/9')
 
     def test_C04_R3_01_outside_contact_must_not_flip_candidate(self):
         baseline=decide(fixture('coalescing-baseline'))

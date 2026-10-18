@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python",
+    "-X",
+    "utf8",
+    "tests/adversarial/c04-r3-page.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r4",
+  "started": "2026-10-18T16:45:21.897755+00:00",
+  "seconds": 1.719,
+  "exit": 0,
+  "expected": 0
+}
