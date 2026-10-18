@@ -16,8 +16,9 @@ Options were compared in plan §2.2: Tauri 2, Qt 6, pure-Rust GUI toolkits and F
 
 - **Tauri 2** (WebView2 on Windows, WKWebView on macOS) is the shell. The Rust engine runs in-process inside the
   Tauri host; the TypeScript + React front end (dockview for docking) talks to the host only through the typed IPC
-  module `desktop/src/ipc/` (transport interface + Tauri and mock implementations). The boundary is enforced twice
-  (amended after C0.1 review rounds 1–2):
+  module `desktop/src/ipc/` (transport interface + Tauri and mock implementations). The boundary has three layers
+  (amended after C0.1 review rounds 1–4): lint on source, the bundler on the resolved module graph, and a final-output
+  scan of the written files:
   - **Bundler** (`desktop/boundary/vite-plugin.ts`, active in dev, build and Vitest).
     - Checks are made on resolved module ids:
       - only `src/ipc/tauriTransport.ts` may load `@tauri-apps` packages;
@@ -39,8 +40,27 @@ Options were compared in plan §2.2: Tauri 2, Qt 6, pure-Rust GUI toolkits and F
       in `eslint.config.js`.
   - Values crossing the boundary are plain-data snapshots validated against JSON-Schema-subset descriptors
     (`src/ipc/schema.ts`) with own-property semantics.
-  Run-time obfuscation (a global name assembled from variables) is out of reach of static checks; Tauri's
-  `withGlobalTauri` stays off, so only the internal IPC global exists.
+  - **Final output** (C01-R4-01). The transport and every `@tauri-apps` module go into one dedicated chunk,
+    `tauri-transport` (`manualChunks`).
+    - After minification, in `generateBundle`, and again on the files as written, in `writeBundle`, the plugin
+      requires that:
+      - no other chunk contains those modules, and the transport chunk contains nothing else;
+      - the transport chunk exports no more bindings than `src/ipc/index.ts` imports from it;
+      - only the chunk containing `src/ipc/index.ts` imports it;
+      - no other emitted `.js`/`.mjs`/`.cjs`/`.html` file mentions Tauri in any form `desktop/boundary/scan.mjs`
+        detects: case-insensitive text, `\x`/`\u`/HTML escapes, `String.fromCharCode`/`fromCodePoint` sequences,
+        `atob` literals, and constant string expressions folded in the AST.
+    - `desktop/boundary/check-dist.mjs` repeats the file scan on `dist/` after `vite build` (part of the `build`
+      script), independent of any Vite plugin.
+  - **Lint on string assembly and workers** (C01-R4-01/02), for shipped `src/` code (the transport and tests
+    exempt):
+    - `String.fromCharCode`, `String.fromCodePoint`, `String.raw`, `atob`, `.concat` on string literals,
+      `[…].join` on array literals, and templates with literal-only pieces are forbidden;
+    - **workers are forbidden** (`Worker`, `SharedWorker`, `Worklet`, `navigator.serviceWorker`,
+      `new URL(…, import.meta.url)`, `?worker` imports), because worker bundles do not run the boundary plugin. Wiring
+      the boundary into worker compilation before lifting the ban is ticketed to M1 C1.2.
+  - **Out of scope by design:** names assembled from run-time data (variables, I/O, user input) cannot be detected
+    statically by any layer. Tauri's `withGlobalTauri` stays off, so only the internal IPC global exists.
 - **Electron is excluded outright by user decision (plan §6.7, 2026-10-17).** It is not a fallback and is not
   evaluated. `deny.toml` bans Electron bindings.
 - Fallbacks if a Tauri spike fails (plan §2.3), in order: native `octotablet` tablet input in the Rust host streamed
