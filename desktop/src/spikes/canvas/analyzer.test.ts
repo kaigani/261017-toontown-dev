@@ -144,8 +144,8 @@ describe('canvas analyzer', () => {
     const a = (r.json as Analysis).runs[0];
     const page = summarizeRun(run);
     expect(a?.fps).toBeCloseTo(page.fps ?? Number.NaN, 9);
-    expect(a?.intervalMs.p95).toBeCloseTo(page.intervalMs?.p95 ?? Number.NaN, 9);
-    expect(a?.intervalMs.max).toBeCloseTo(page.intervalMs?.max ?? Number.NaN, 9);
+    expect(a?.intervalMs?.p95).toBeCloseTo(page.intervalMs?.p95 ?? Number.NaN, 9);
+    expect(a?.intervalMs?.max).toBeCloseTo(page.intervalMs?.max ?? Number.NaN, 9);
     expect(a?.longFrames).toBe(page.longFrames);
     expect(a?.longFrames).toBe(6);
     expect(a?.meetsTarget).toBe(page.meetsTarget);
