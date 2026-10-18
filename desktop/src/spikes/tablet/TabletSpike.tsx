@@ -659,6 +659,8 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
       await sleep(1000);
       await startNative();
       if (mode.penSimulation) {
+        // Let the page render the listener state first, then fix the rectangle for the whole matrix.
+        await sleep(500);
         const canvas = canvasRef.current?.getBoundingClientRect();
         const rect = canvas ? matrixRectFor(canvas) : undefined;
         for (const s of AUTO_SCENARIOS) {

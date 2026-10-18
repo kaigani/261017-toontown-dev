@@ -49,5 +49,8 @@ export default defineConfig(({ mode }) => ({
     // Vitest's persistent transform cache would let a cached module skip the IPC boundary's import-edge and
     // transform checks (boundary/vite-plugin.ts), so every run transforms and checks every module afresh.
     fsModuleCache: false,
+    // Some reviewer regressions compile Rust and run Python (tests/adversarial); on CI runners that exceeds Vitest's
+    // 5 s default. A longer per-test limit changes no assertion.
+    testTimeout: 60_000,
   },
 }));

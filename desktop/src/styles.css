@@ -100,6 +100,14 @@ body,
   gap: 6px;
 }
 
+.spike-header {
+  /* One line (like the status text): header changes never reflow the canvas. */
+  flex: 0 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .spike-toolbar {
   flex: 0 0 auto;
   display: flex;
