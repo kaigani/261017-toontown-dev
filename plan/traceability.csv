@@ -29,3 +29,7 @@ plan §6.3 / ADR-0003,"one licence allow-list for Rust and shipped JS; SPDX bool
 ADR-0001,"front end reaches the host only through src/ipc",M0,C0.1,done (static/dynamic/require/import.meta/globals; review r1),desktop/src/ipc/boundary.lint.test.ts; tests/adversarial/guards.mjs (imports)
 ADR-0001,"host values are validated before UI code sees them",M0,C0.1,done (schema-subset validators; review r1),desktop/src/ipc/schema.test.ts; tests/adversarial/frontend-cases.ts
 11 §3 / ADR-0004,"headless guard rejects real graphics imports (direct imports only)",M0,C0.1,done (review r1),bins/headless/tests/guard_fixtures.rs; tests/adversarial/headless_guard.py
+ADR-0001,"IPC boundary enforced at bundle time (resolved ids: Tauri packages, raw transport, modules outside src)",M0,C0.1,done (review r2),desktop/src/ipc/boundary.build.test.ts; tests/adversarial/c01-r2-boundary.test.mjs
+ADR-0001,"boundary lint on every JS/TS extension; no inline disabling; src stays inside src",M0,C0.1,done (review r2),desktop/src/ipc/boundary.lint.test.ts; tests/adversarial/c01-r2-boundary.test.mjs
+ADR-0001,"host values: plain data only, own-property schema semantics, validated snapshots",M0,C0.1,done (review r2),desktop/src/ipc/schema.test.ts; desktop/src/test/c01-r2-schema.test.ts
+ADR-0003,"every SPDX operand validated (Annex D grammar + SPDX lists)",M0,C0.1,done (review r2),scripts/check-npm-licenses.test.mjs; tests/adversarial/c01-r2-licenses.test.mjs

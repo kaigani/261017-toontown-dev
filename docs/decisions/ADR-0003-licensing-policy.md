@@ -21,7 +21,10 @@ statically linked into our executables; JavaScript dependencies are bundled into
      so the two gates cannot drift; `tests/adversarial/guards.mjs allowlist` checks list = this ADR's set.
    - Everything else is rejected, which rejects GPL, AGPL and LGPL. Licence expressions are evaluated as SPDX
      boolean expressions (AND binds tighter than OR, parentheses nest, `WITH` exceptions must be allowed as a whole,
-     `X+` passes when `X` does); malformed or non-SPDX strings fail closed.
+     `X+` passes when `X` does); malformed or non-SPDX strings fail closed. Every operand is validated against SPDX
+     Annex D before evaluation, even behind an allowed `OR` branch: licence ids must be on the SPDX License List
+     (case-insensitive, at most one trailing `+`) or be `[DocumentRef-x:]LicenseRef-y`; exceptions after `WITH` must
+     be on the SPDX exceptions list (data from the `spdx-license-ids` / `spdx-exceptions` dev dependencies).
    - Dual-licensed packages pass when one alternative is allowed (e.g. `MIT OR Unlicense`).
 2. **Rust dependency graph** (`cargo deny check` in CI on Windows and macOS). The graph covers the shipped targets
    only (Windows x86_64/aarch64, macOS x86_64/aarch64). Linux is not a product platform; it only runs the headless

@@ -16,8 +16,20 @@ Options were compared in plan §2.2: Tauri 2, Qt 6, pure-Rust GUI toolkits and F
 
 - **Tauri 2** (WebView2 on Windows, WKWebView on macOS) is the shell. The Rust engine runs in-process inside the
   Tauri host; the TypeScript + React front end (dockview for docking) talks to the host only through the typed IPC
-  module `desktop/src/ipc/` (transport interface + Tauri and mock implementations). ESLint forbids `@tauri-apps/*`
-  imports anywhere else.
+  module `desktop/src/ipc/` (transport interface + Tauri and mock implementations). The boundary is enforced twice
+  (amended after C0.1 review rounds 1–2):
+  - **Bundler** (`desktop/boundary/vite-plugin.ts`, active in dev, build and Vitest), on resolved module ids: only
+    `src/ipc/tauriTransport.ts` may load `@tauri-apps` packages; only `src/ipc/index.ts` may load the transport, so
+    UI code gets the validated `HostApi`, never raw `invoke`; application modules must live under `desktop/src`
+    (Vitest alone may also load the repository `tests/` folder and `desktop/boundary/`); no other module may mention
+    the `__TAURI*` globals or the package names.
+  - **Linter** (`desktop/boundary/eslint.js`), on every JS/TS extension in the desktop package: the same rules in
+    source form, imports under `src/` may not climb out of `src/`, and disabling a boundary rule inline (including
+    blanket `eslint-disable`) is itself an error.
+  - Values crossing the boundary are plain-data snapshots validated against JSON-Schema-subset descriptors
+    (`src/ipc/schema.ts`) with own-property semantics.
+  Run-time obfuscation (a global name assembled from variables) is out of reach of static checks; Tauri's
+  `withGlobalTauri` stays off, so only the internal IPC global exists.
 - **Electron is excluded outright by user decision (plan §6.7, 2026-10-17).** It is not a fallback and is not
   evaluated. `deny.toml` bans Electron bindings.
 - Fallbacks if a Tauri spike fails (plan §2.3), in order: native `octotablet` tablet input in the Rust host streamed
