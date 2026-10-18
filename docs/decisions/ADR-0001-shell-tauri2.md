@@ -18,14 +18,25 @@ Options were compared in plan §2.2: Tauri 2, Qt 6, pure-Rust GUI toolkits and F
   Tauri host; the TypeScript + React front end (dockview for docking) talks to the host only through the typed IPC
   module `desktop/src/ipc/` (transport interface + Tauri and mock implementations). The boundary is enforced twice
   (amended after C0.1 review rounds 1–2):
-  - **Bundler** (`desktop/boundary/vite-plugin.ts`, active in dev, build and Vitest), on resolved module ids: only
-    `src/ipc/tauriTransport.ts` may load `@tauri-apps` packages; only `src/ipc/index.ts` may load the transport, so
-    UI code gets the validated `HostApi`, never raw `invoke`; application modules must live under `desktop/src`
-    (Vitest alone may also load the repository `tests/` folder and `desktop/boundary/`); no other module may mention
-    the `__TAURI*` globals or the package names.
-  - **Linter** (`desktop/boundary/eslint.js`), on every JS/TS extension in the desktop package: the same rules in
-    source form, imports under `src/` may not climb out of `src/`, and disabling a boundary rule inline (including
-    blanket `eslint-disable`) is itself an error.
+  - **Bundler** (`desktop/boundary/vite-plugin.ts`, active in dev, build and Vitest).
+    - Checks are made on resolved module ids:
+      - only `src/ipc/tauriTransport.ts` may load `@tauri-apps` packages;
+      - only `src/ipc/index.ts` may load the transport, so UI code gets the validated `HostApi`, never raw `invoke`;
+      - application modules must live under `desktop/src` (Vitest alone may also load the repository `tests/` folder
+        and `desktop/boundary/`).
+    - `index.html`, including its inline scripts, may import only `src/main.tsx`. The dev server's placeholder
+      re-resolution is accepted only for modules already approved through a real import edge, and `build` has no
+      exception at all.
+    - After Vite's TS/JSX transform, every application module is parsed. No decoded string literal, template or
+      identifier may mention `__TAURI*` or `@tauri-apps`, and every emitted chunk's mentions must be attributable to
+      the transport or to Tauri package code.
+    - Every Vite/Vitest script pins `--config vite.config.ts`, and Vitest's persistent transform cache is off so no
+      module skips these checks.
+  - **Linter** (`desktop/boundary/eslint.js`), on every JS/TS extension in the desktop package:
+    - the same rules in source form;
+    - imports under `src/` may not climb out of `src/`;
+    - `linterOptions.noInlineConfig` means no inline ESLint configuration of any kind takes effect; exceptions live
+      in `eslint.config.js`.
   - Values crossing the boundary are plain-data snapshots validated against JSON-Schema-subset descriptors
     (`src/ipc/schema.ts`) with own-property semantics.
   Run-time obfuscation (a global name assembled from variables) is out of reach of static checks; Tauri's
