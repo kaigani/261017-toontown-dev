@@ -10,5 +10,5 @@
     "noEmit": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["vite.config.ts", "eslint.config.js"]
+  "include": ["vite.config.ts", "eslint.config.js", "eslint.ipc-boundary.js"]
 }

@@ -4,6 +4,8 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+import { ipcBoundaryExemption, ipcBoundaryRules } from './eslint.ipc-boundary.js';
+
 export default tseslint.config(
   { ignores: ['dist', 'src-tauri', 'node_modules', 'coverage'] },
   js.configs.recommended,
@@ -19,26 +21,20 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['error', { allowConstantExport: true }],
       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
-      // The host is reached only through src/ipc (swappable transport). See src/ipc/README.md.
-      'no-restricted-imports': [
-        'error',
-        {
-          patterns: [
-            {
-              group: ['@tauri-apps/*'],
-              message: 'Talk to the Rust host only through src/ipc (createHostApi / useHost).',
-            },
-          ],
-        },
-      ],
     },
   },
   {
-    files: ['src/ipc/tauriTransport.ts'],
-    rules: { 'no-restricted-imports': 'off' },
+    // The host is reached only through src/ipc (swappable transport). See eslint.ipc-boundary.js.
+    files: ['src/**/*.{ts,tsx}'],
+    rules: ipcBoundaryRules,
   },
   {
-    files: ['*.config.{js,ts}'],
+    // The transport implementation, and the test that exercises the boundary rules with bypass samples.
+    files: ['src/ipc/tauriTransport.ts', 'src/ipc/boundary.lint.test.ts'],
+    rules: ipcBoundaryExemption,
+  },
+  {
+    files: ['*.config.{js,ts}', 'eslint.*.js'],
     languageOptions: { globals: globals.node },
     extends: [tseslint.configs.disableTypeChecked],
   },
