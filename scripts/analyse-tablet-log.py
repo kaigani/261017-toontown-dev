@@ -3,17 +3,33 @@
 Usage: python scripts/analyse-tablet-log.py <log.json | log.json.gz> [--json <out.json>]
 
 Everything is recomputed from the raw samples and packets in the log; summaries stored in the log are ignored
-(review C02-R1-01). Accepted log versions: 1 (or no `version` field) and 2; any other version is rejected.
+(review C02-R1-01), and so are aggregates inside raw host reports such as `achievedHz` (C02-R2-02): they are
+recomputed and the log is rejected if the saved value disagrees.
+
+Log versions (C02-R2-01):
+* 3 (current) and 2 are accepted. Version 3 adds the injector's monotonic contact endpoints and focus snapshots.
+* 1 is rejected (obsolete: no raw injection report).
+* A log without a `version` field is accepted only if it contains no synthetic runs (an unversioned manual/hardware
+  capture, e.g. the round-1 reviewer fixture); with synthetic runs it is rejected.
+
+Every synthetic run is validated before anything is printed. There are three outcomes, stated in the output:
+* (a) an explicitly failed run (it carries an error such as `spike.notForeground`): analysed and labelled FAILED;
+* (b) no synthetic runs (manual hardware log): analysed; there is no injection reference, so loss is "unknown, gap
+  heuristic only";
+* (c) malformed or missing evidence (a successful run without its raw report, a report missing fields or with array
+  lengths that differ from the injected frame count, no time origin, stream bounds outside the streams, a saved rate
+  that disagrees with the recomputed one): exit status 2 with a message on stderr; nothing is printed as a result.
 
 Prints, as Markdown that can be pasted into a report:
 * environment and run metadata;
 * per contact episode (stroke) on each path: samples, duration, rate, interval median/max, intervals longer than twice
-  the stroke median (a heuristic, not a loss count), distinct pressure values and the step-implied level count, tilt,
-  twist, and for the web path coalescing and handler latency under three estimators;
+  the stroke median (a heuristic, not a loss count), distinct pressure values and the step-implied level count, tilt
+  extrema per axis (native: raw OS tilt as well as converted degrees), twist range, and for the web path coalescing
+  and handler latency under three estimators;
 * loss only against a reference: injected frames (synthetic runs) or host sequence numbers (native channel);
   otherwise "unknown, gap heuristic only";
-* every synthetic run (version 2): frames seen per layer and which ones are missing, and the listener matrix of the
-  native-window probe (C02-R1-04).
+* every synthetic run: rate estimators, geometry and varying axes, foreground/focus, frames seen per listener and which
+  ones are missing, repeated-pixel frames, tilt and twist fidelity (exact / modulo 180 / absent / other).
 
 Episodes: web = pointerdown .. pointerup/pointercancel per pointer; native = `down` (or the first pose with pressure)
 .. `up`, proximity-out, or a pose whose pressure returns to zero. Native intervals use one clock: the device clock if
@@ -26,9 +42,16 @@ import json
 import math
 import sys
 
-SUPPORTED_VERSIONS = (1, 2)
+SUPPORTED_VERSIONS = (2, 3)
 TARGET_HZ = 200
 NO_REFERENCE = "unknown, gap heuristic only"
+# Saved `achievedHz` versus the recomputed host estimator (same formula, same inputs): float noise only.
+HOST_RATE_TOLERANCE = 1e-9
+# Version-2 logs lack the host's endpoints; the saved value is checked against the first-to-last estimator instead.
+V2_RATE_TOLERANCE = 0.01
+REPORT_ARRAYS = ("injectEpochMs", "injectReturnEpochMs", "pressure", "tiltX", "tiltY", "rotation", "screenX", "screenY")
+REPORT_FIELDS = ("method", "frames", "hz", "achievedHz", "screenRect", "pattern", "target") + REPORT_ARRAYS
+V3_REPORT_FIELDS = ("contactStartNs", "contactEndNs", "contactStartEpochMs", "contactEndEpochMs", "focus")
 
 
 class LogError(Exception):
@@ -42,14 +65,23 @@ def load(path):
 
 
 def log_version(log):
-    version = log.get("version", 1)
+    """The log's version, or None for an unversioned log without synthetic runs. Raises LogError otherwise."""
+    if "version" not in log:
+        if log.get("runs") or log.get("simulations"):
+            raise LogError("log has no `version` field but contains synthetic runs; this analyzer only accepts "
+                           f"versioned synthetic evidence (versions {SUPPORTED_VERSIONS})")
+        return None
+    version = log["version"]
+    if version == 1:
+        raise LogError("log version 1 is obsolete (no raw injection report); re-run with the current build "
+                       f"(this analyzer reads versions {SUPPORTED_VERSIONS})")
     if version not in SUPPORTED_VERSIONS:
         raise LogError(f"unsupported log version {version!r} (this analyzer reads versions {SUPPORTED_VERSIONS})")
     return version
 
 
 def pct(values, p):
-    """Nearest-rank percentile (p in (0, 100]) — the same definition as `percentile` in desktop/src/lib/latency.ts."""
+    """Nearest-rank percentile (p in (0, 100]) - the same definition as `percentile` in desktop/src/lib/latency.ts."""
     if not values:
         return None
     s = sorted(values)
@@ -71,12 +103,22 @@ def pressure_levels(values):
     return len(distinct), (round(1 / step) if step else None)
 
 
+def extent(values):
+    """[min, max] of the non-null values, or None."""
+    present = [v for v in values if v is not None]
+    return [min(present), max(present)] if present else None
+
+
 def fmt(v, digits=1):
     if v is None:
         return "-"
     if isinstance(v, float):
         return f"{v:.{digits}f}"
     return str(v)
+
+
+def fmt_range(r, digits=0):
+    return "-" if not r else f"{fmt(r[0], digits)}..{fmt(r[1], digits)}"
 
 
 def ranges(indices):
@@ -93,6 +135,10 @@ def ranges(indices):
     if start is not None:
         out.append(f"{start}" if start == prev else f"{start}-{prev}")
     return ", ".join(out) if out else "none"
+
+
+def is_number(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
 
 
 # ---- episodes -----------------------------------------------------------------------------------------------------
@@ -161,20 +207,26 @@ def native_episodes(packets):
     return [e for e in done if e["points"]]
 
 
-def stroke_stats(times, pressures, tilts, twists):
+def stroke_stats(points, times):
     ts = sorted(times)
     iv = [b - a for a, b in zip(ts, ts[1:])]
     med = pct(iv, 50)
     dur = sum(iv)
-    distinct, levels = pressure_levels(pressures)
+    distinct, levels = pressure_levels([p.get("pressure") for p in points])
     rate = (len(iv) * 1000 / dur) if dur > 0 else None
     return {
         "samples": len(ts), "durationMs": dur, "rateHz": rate, "medianIntervalMs": med,
         "maxIntervalMs": max(iv) if iv else None,
         "gapsOver2xMedian": sum(1 for d in iv if med and d > 2 * med),
         "pressureDistinct": distinct, "pressureLevelsImplied": levels,
-        "tiltPresent": any((x or 0) != 0 or (y or 0) != 0 for x, y in tilts),
-        "twistNonzero": sum(1 for t in twists if t),
+        "tiltPresent": any((p.get("tiltX") or 0) != 0 or (p.get("tiltY") or 0) != 0 for p in points),
+        # Extrema per axis (C02-R2-04): converted degrees; for native packets also the raw OS value (macOS -1..1).
+        "tiltRangeX": extent([p.get("tiltX") for p in points]),
+        "tiltRangeY": extent([p.get("tiltY") for p in points]),
+        "rawTiltRangeX": extent([p.get("rawTiltX") for p in points]),
+        "rawTiltRangeY": extent([p.get("rawTiltY") for p in points]),
+        "twistRange": extent([p.get("twist") for p in points]),
+        "twistNonzero": sum(1 for p in points if p.get("twist")),
         "target": None if rate is None else ("meets target" if rate >= TARGET_HZ else "below target"),
         "_intervals": iv,
     }
@@ -183,11 +235,9 @@ def stroke_stats(times, pressures, tilts, twists):
 def web_analysis(log):
     samples = log.get("web", {}).get("samples", [])
     strokes = []
-    episodes = web_episodes(samples)
-    for pointer, points, truncated in episodes:
-        st = stroke_stats([p["t"] for p in points], [p.get("pressure") for p in points],
-                          [(p.get("tiltX"), p.get("tiltY")) for p in points], [p.get("twist") for p in points])
-        st.update(pointer=pointer, truncated=truncated, _points=points)
+    for pointer, points, truncated in web_episodes(samples):
+        st = stroke_stats(points, [p["t"] for p in points])
+        st.update(pointer=pointer, truncated=truncated)
         strokes.append(st)
     # Handler latency per dispatch, three estimators (C02-R1-01).
     by_dispatch = {}
@@ -225,8 +275,7 @@ def native_analysis(log):
     strokes = []
     for e in native_episodes(packets):
         pts = e["points"]
-        st = stroke_stats([native_time(p, clock) for p in pts], [p.get("pressure") for p in pts],
-                          [(p.get("tiltX"), p.get("tiltY")) for p in pts], [p.get("twist") for p in pts])
+        st = stroke_stats(pts, [native_time(p, clock) for p in pts])
         st.update(pointer=e["pointer"], truncated=e["truncated"])
         strokes.append(st)
     seqs = [p.get("seq") for p in packets]
@@ -244,6 +293,88 @@ def native_analysis(log):
         "truncated": native.get("truncated"),
         "info": log.get("nativeInfo", log.get("summary", {}).get("nativeInfo")),
     }
+
+
+# ---- validation of synthetic runs (C02-R2-01) ---------------------------------------------------------------------
+
+def run_error(run):
+    """The explicit failure of a run (outcome a), or None if the run claims success."""
+    if run.get("error"):
+        return str(run["error"])
+    probe = run.get("probe") or {}
+    err = probe.get("error")
+    if err:
+        return f"{err.get('code')}: {err.get('message')}" if isinstance(err, dict) else str(err)
+    return None
+
+
+def run_report(run):
+    return (run.get("probe") or {}).get("report") if run.get("target") == "nativeWindow" else run.get("report")
+
+
+def check_range(name, bounds, length, label):
+    if (not isinstance(bounds, list) or len(bounds) != 2 or not all(isinstance(b, int) for b in bounds)
+            or not 0 <= bounds[0] <= bounds[1] <= length):
+        raise LogError(f"run {label!r}: {name} {bounds!r} is not a range inside the stream (length {length})")
+
+
+def validate_report(report, label, version):
+    if not isinstance(report, dict):
+        raise LogError(f"run {label!r}: successful run has no raw report (missing evidence, not an empty result)")
+    required = REPORT_FIELDS + (V3_REPORT_FIELDS if version == 3 else ())
+    missing = [f for f in required if f not in report]
+    if missing:
+        raise LogError(f"run {label!r}: raw report is missing fields {missing}")
+    frames = report["frames"]
+    if not isinstance(frames, int) or isinstance(frames, bool) or frames < 1:
+        raise LogError(f"run {label!r}: raw report frames {frames!r} is not a positive count")
+    for name in REPORT_ARRAYS:
+        values = report[name]
+        if not isinstance(values, list) or len(values) != frames:
+            got = len(values) if isinstance(values, list) else type(values).__name__
+            raise LogError(f"run {label!r}: raw report {name} has {got} entries, expected {frames} (one per frame)")
+        if not all(is_number(v) for v in values):
+            raise LogError(f"run {label!r}: raw report {name} contains a non-numeric value")
+    if not isinstance(report["screenRect"], list) or len(report["screenRect"]) != 4:
+        raise LogError(f"run {label!r}: raw report screenRect must be [left, top, width, height]")
+    if not is_number(report["achievedHz"]):
+        raise LogError(f"run {label!r}: raw report achievedHz is not a number")
+    expected = [1 + (i % 1024) for i in range(frames)]
+    if report["pressure"] != expected:
+        raise LogError(f"run {label!r}: injected pressures are not the identifying sequence 1 + (i mod 1024)")
+    if version == 3:
+        start, end = report["contactStartNs"], report["contactEndNs"]
+        if not (isinstance(start, int) and isinstance(end, int) and end > start):
+            raise LogError(f"run {label!r}: raw report contact endpoints {start!r}..{end!r} are not an interval")
+
+
+def validate(log, version):
+    """Raises LogError on malformed or missing evidence (outcome c); returns nothing otherwise."""
+    runs = log.get("runs", [])
+    if not isinstance(runs, list):
+        raise LogError("`runs` is not a list")
+    samples = log.get("web", {}).get("samples", [])
+    packets = log.get("native", {}).get("packets", [])
+    for i, run in enumerate(runs):
+        label = run.get("label") or f"#{i}"
+        target = run.get("target")
+        if target not in ("webview", "nativeWindow"):
+            raise LogError(f"run {label!r}: unknown target {target!r}")
+        if run_error(run):
+            continue  # outcome (a): explicitly failed, analysed without a report
+        validate_report(run_report(run), label, version)
+        if target == "webview":
+            if not is_number(log.get("environment", {}).get("timeOrigin")):
+                raise LogError(f"run {label!r}: webview evidence needs environment.timeOrigin")
+            check_range("webRange", run.get("webRange"), len(samples), label)
+            check_range("nativeRange", run.get("nativeRange"), len(packets), label)
+        else:
+            listeners = (run.get("probe") or {}).get("listeners")
+            if not isinstance(listeners, dict) or not isinstance(listeners.get("wmPointer"), dict) \
+                    or not isinstance(listeners.get("rawInput"), dict) or "rts" not in listeners:
+                raise LogError(f"run {label!r}: native-window probe result lacks its listener records")
+            if not isinstance(listeners["wmPointer"].get("entries"), list):
+                raise LogError(f"run {label!r}: WM_POINTER record has no entries")
 
 
 # ---- synthetic runs -----------------------------------------------------------------------------------------------
@@ -272,104 +403,164 @@ def frames_by_pressure(values, frames, scale=1024):
     return seen
 
 
-def match(report, values, times=None, scale=1024):
-    frames = min(report.get("frames", 0), 1024)
-    seen = frames_by_pressure(values, frames, scale)
+def angle_fidelity(observed, injected):
+    """Counts of exact / modulo-180 / absent / other agreement between observed and injected angles (degrees)."""
+    out = {"exact": 0, "mod180": 0, "absent": 0, "other": 0}
+    for o, inj in zip(observed, injected):
+        if o is None:
+            out["absent"] += 1
+        elif abs(o - inj) < 0.5:
+            out["exact"] += 1
+        elif abs(((o - inj) % 180 + 90) % 180 - 90) < 0.5:
+            out["mod180"] += 1
+        else:
+            out["other"] += 1
+    return out
+
+
+def match(report, items, pressure, times=None, scale=1024, tilt=None, twist=None):
+    """Matches items to injected frames by their identifying pressure. `pressure`, `times`, `tilt` and `twist` are
+    accessors on one item."""
+    frames = min(report["frames"], 1024)
+    seen = frames_by_pressure([pressure(x) for x in items], frames, scale)
     missing = [k - 1 for k in range(1, frames + 1) if k not in seen]
+    sx, sy = report["screenX"], report["screenY"]
+    repeated = [i for i in range(1, frames) if sx[i] == sx[i - 1] and sy[i] == sy[i - 1]]
+    missing_set = set(missing)
     out = {"injected": frames, "received": len(seen), "missing": len(missing), "missingFrames": missing,
-           "pressureScale": scale}
-    inject = report.get("injectEpochMs", [])
+           "pressureScale": scale, "repeatedPixelFrames": len(repeated), "repeatedPixelIndices": repeated,
+           "missingAmongRepeatedPixel": sum(1 for i in repeated if i in missing_set)}
+    inject = report["injectEpochMs"]
+    first = {k - 1: items[i] for k, i in seen.items()}
     if times is not None:
-        lat = [times[i] - inject[k - 1] for k, i in seen.items() if k - 1 < len(inject) and times[i] is not None]
-        out["latencyMs"] = stats(lat)
-    sx, sy = report.get("screenX"), report.get("screenY")
-    if sx and sy:
-        repeated = [i for i in range(1, min(frames, len(sx))) if sx[i] == sx[i - 1] and sy[i] == sy[i - 1]]
-        out["repeatedPixelFrames"] = len(repeated)
-        out["missingAmongRepeatedPixel"] = sum(1 for i in repeated if i in set(missing))
+        out["latencyMs"] = stats([times(x) - inject[f] for f, x in first.items() if times(x) is not None])
+    if tilt is not None:
+        out["tiltExact"] = sum(1 for f, x in first.items()
+                               if tilt(x) == (report["tiltX"][f], report["tiltY"][f]))
+    if twist is not None:
+        out["twistFidelity"] = angle_fidelity([twist(x) for x in first.values()],
+                                              [report["rotation"][f] for f in first])
+    return out
+
+
+def rate_estimators(report, label, version):
+    """Recomputes the injector rate (C02-R2-02) and checks the saved aggregate against it."""
+    frames = report["frames"]
+    times = report["injectEpochMs"]
+    first_to_last = (frames - 1) * 1000 / (times[-1] - times[0]) if frames > 1 and times[-1] > times[0] else None
+    saved = report["achievedHz"]
+    host = None
+    if version == 3:
+        host = frames * 1e9 / (report["contactEndNs"] - report["contactStartNs"])
+        if abs(saved - host) > HOST_RATE_TOLERANCE * host:
+            raise LogError(f"run {label!r}: saved achievedHz {saved} disagrees with the host estimator recomputed "
+                           f"from contactStartNs/contactEndNs ({host}); tolerance {HOST_RATE_TOLERANCE} relative")
+        check = f"saved value equals the recomputed host estimator (relative tolerance {HOST_RATE_TOLERANCE})"
+    else:
+        if first_to_last is None or abs(saved - first_to_last) > V2_RATE_TOLERANCE * first_to_last:
+            raise LogError(f"run {label!r}: saved achievedHz {saved} is not within {V2_RATE_TOLERANCE:.0%} of the "
+                           f"first-to-last estimator ({first_to_last}); version-2 logs cannot reproduce the host "
+                           "estimator exactly")
+        check = (f"version 2: host estimator not reproducible (no endpoints); saved value within "
+                 f"{V2_RATE_TOLERANCE:.0%} of first-to-last")
+    return {"achievedHz": host if host is not None else first_to_last, "hostEstimatorHz": host,
+            "firstToLastHz": first_to_last, "savedAchievedHz": saved, "rateCheck": check}
+
+
+def varying_axes(report):
+    return {k: len(set(report[k])) for k in ("pressure", "tiltX", "tiltY", "rotation")} | {
+        "position": len(set(zip(report["screenX"], report["screenY"])))}
+
+
+def focus_summary(report):
+    out = []
+    for f in report.get("focus") or []:
+        own = f.get("ownPid")
+        out.append({"when": f.get("when"),
+                    "foreground": "this process" if f.get("foregroundPid") == own else f"pid {f.get('foregroundPid')}",
+                    "foregroundClass": f.get("foregroundClass"),
+                    "foregroundIsTarget": f.get("foregroundHwnd") == f.get("targetHwnd"),
+                    "focus": ("none" if not f.get("focusHwnd") else
+                              "this process" if f.get("focusPid") == own else f"pid {f.get('focusPid')}"),
+                    "focusClass": f.get("focusClass")})
     return out
 
 
 def run_analysis(log):
+    version = log_version(log)
+    validate(log, version)
     samples = log.get("web", {}).get("samples", [])
     packets = log.get("native", {}).get("packets", [])
     origin = log.get("environment", {}).get("timeOrigin")
     results = []
-    for run in log.get("runs", []):
-        entry = {"label": run.get("label"), "target": run.get("target"), "error": run.get("error"),
-                 "request": run.get("request")}
-        report = run.get("report")
-        probe = run.get("probe")
-        if run.get("target") == "nativeWindow" and probe:
-            report = probe.get("report")
-            entry["error"] = entry["error"] or (probe.get("error") or {}).get("message")
-            listeners = probe.get("listeners") or {}
-            wm = listeners.get("wmPointer") or {}
-            contact = [e for e in wm.get("entries", []) if e.get("inContact")]
-            entry["wmPointer"] = None if report is None else match(report, [e["pressure"] / 1024 for e in contact])
+    for i, run in enumerate(log.get("runs", [])):
+        label = run.get("label") or f"#{i}"
+        entry = {"label": label, "target": run.get("target"), "request": run.get("request")}
+        error = run_error(run)
+        if error:
+            entry.update(outcome="failed", error=error)
+            results.append(entry)
+            continue
+        report = run_report(run)
+        entry.update(outcome="ok", error=None, pattern=report["pattern"], screenRect=report["screenRect"],
+                     varyingAxes=varying_axes(report), focus=focus_summary(report))
+        entry.update(rate_estimators(report, label, version))
+        entry["injectCallMs"] = stats([b - a for a, b in zip(report["injectEpochMs"], report["injectReturnEpochMs"])])
+        if run["target"] == "nativeWindow":
+            listeners = run["probe"]["listeners"]
+            wm = listeners["wmPointer"]
+            contact = [e for e in wm["entries"] if e.get("inContact")]
+            entry["wmPointer"] = match(report, contact, lambda e: e["pressure"] / 1024,
+                                       tilt=lambda e: (e.get("tiltX"), e.get("tiltY")),
+                                       twist=lambda e: e.get("rotation"))
             entry["wmPointerCounts"] = {k: wm.get(k) for k in ("down", "update", "up", "historyEntries",
                                                                 "historyErrors", "truncated")}
-            rts = listeners.get("rts")
+            rts = listeners["rts"]
             if rts is None:
                 entry["rts"] = {"attached": False}
             else:
+                pressures = rts.get("pressures", [])
                 entry["rts"] = {"attached": True, "poses": rts.get("poses"), "error": rts.get("error"),
                                 "tablets": rts.get("tablets"),
-                                "frames": None if report is None else match(
-                                    report, rts.get("pressures", []), scale=pressure_scale(rts.get("pressures", [])))}
-            entry["rawInput"] = listeners.get("rawInput")
-        elif report:
-            w0, w1 = run.get("webRange", [0, 0])
-            n0, n1 = run.get("nativeRange", [0, 0])
+                                "frames": match(report, pressures, lambda p: p, scale=pressure_scale(pressures))}
+            entry["rawInput"] = listeners["rawInput"]
+        else:
+            w0, w1 = run["webRange"]
+            n0, n1 = run["nativeRange"]
             web = [s for s in samples[w0:w1] if s.get("kind") != "up"]
-            times = [(origin + s["t"]) if origin is not None else None for s in web]
-            entry["web"] = match(report, [s.get("pressure") for s in web], times)
-            if origin is not None:
-                handler = [origin + s["handlerT"] for s in web]
-                entry["web"]["handlerLatencyMs"] = match(report, [s.get("pressure") for s in web], handler)["latencyMs"]
+            entry["web"] = match(report, web, lambda s: s.get("pressure"), times=lambda s: origin + s["t"],
+                                 tilt=lambda s: (s.get("tiltX"), s.get("tiltY")), twist=lambda s: s.get("twist"))
+            entry["web"]["handlerLatencyMs"] = match(report, web, lambda s: s.get("pressure"),
+                                                     times=lambda s: origin + s["handlerT"])["latencyMs"]
             poses = [p for p in packets[n0:n1] if p.get("kind") == "pose"]
             pressures = [p.get("pressure") for p in poses]
-            entry["rts"] = {"poses": len(poses), "frames": match(report, pressures, [p.get("hostEpochMs") for p in poses],
-                                                                  scale=pressure_scale(pressures))}
+            entry["rts"] = {"attached": True, "poses": len(poses),
+                            "frames": match(report, poses, lambda p: p.get("pressure"),
+                                            times=lambda p: p.get("hostEpochMs"), scale=pressure_scale(pressures))}
             raw = run.get("rawInput") or {}
-            entry["rawInput"] = (raw.get("listeners") or {}).get("rawInput") if "listeners" in raw else raw or None
-        if report:
-            entry["achievedHz"] = report.get("achievedHz")
-            entry["pattern"] = report.get("pattern")
-            ret = report.get("injectReturnEpochMs")
-            if ret:
-                entry["injectCallMs"] = stats([b - a for a, b in zip(report["injectEpochMs"], ret)])
+            entry["rawInput"] = (raw.get("listeners") or {}).get("rawInput") if "listeners" in raw else (raw or None)
         results.append(entry)
     return results
 
 
-def v1_simulation_strokes(web):
-    """Version-1 logs carry no raw injection report. Strokes whose pressures look like the standard synthetic stroke
-    (k / 1024 for k = 1..1024) are matched by pressure alone, and labelled as such."""
-    out = []
-    for i, st in enumerate(web["strokes"]):
-        seen = frames_by_pressure([p.get("pressure") for p in st["_points"]], 1024)
-        if len(seen) > 512:
-            out.append({"stroke": i, "received": len(seen),
-                        "missingFrames": [k - 1 for k in range(1, 1025) if k not in seen]})
-    return out
-
-
 # ---- output -------------------------------------------------------------------------------------------------------
 
-def print_strokes(title, strokes):
+def print_strokes(title, strokes, native=False):
     print(f"\n### {title}\n")
     if not strokes:
         print("No contact episodes.")
         return
+    raw_head = " | raw tilt x / y (OS units)" if native else ""
     print("| stroke | pointer | samples | ms | Hz | vs 200 Hz | median / max interval ms | >2x median | "
-          "pressure levels (distinct / implied) | tilt | twist |")
-    print("|---|---|---|---|---|---|---|---|---|---|---|")
+          f"pressure levels (distinct / implied) | tilt x / y (deg){raw_head} | twist range (nonzero) |")
+    print("|---|---|---|---|---|---|---|---|---|---|" + ("---|" if native else "") + "---|")
     for i, s in enumerate(strokes):
+        raw_cell = (f" | {fmt_range(s['rawTiltRangeX'], 3)} / {fmt_range(s['rawTiltRangeY'], 3)}" if native else "")
         print(f"| {i + 1}{'*' if s['truncated'] else ''} | {s['pointer']} | {s['samples']} | {fmt(s['durationMs'], 0)} | "
               f"{fmt(s['rateHz'])} | {s['target'] or '-'} | {fmt(s['medianIntervalMs'], 2)} / {fmt(s['maxIntervalMs'], 1)} | "
               f"{s['gapsOver2xMedian']} | {s['pressureDistinct']} / {fmt(s['pressureLevelsImplied'])} | "
-              f"{'yes' if s['tiltPresent'] else 'no'} | {s['twistNonzero']} nonzero |")
+              f"{fmt_range(s['tiltRangeX'])} / {fmt_range(s['tiltRangeY'])}{raw_cell} | "
+              f"{fmt_range(s['twistRange'])} ({s['twistNonzero']}) |")
     print("\n`*` = episode cut off at the start or end of the capture. `>2x median` is a heuristic, not a loss count.")
 
 
@@ -377,44 +568,65 @@ def lat_text(s):
     return "-" if not s else f"p50 {s['p50']:.2f} / p95 {s['p95']:.2f} / max {s['max']:.1f}"
 
 
+def fidelity_text(f):
+    return "-" if not f else f"exact {f['exact']}, mod 180 {f['mod180']}, absent {f['absent']}, other {f['other']}"
+
+
 def print_runs(runs):
-    if not runs:
-        return
     print("\n### Synthetic runs (InjectSyntheticPointerInput; simulation, not tablet hardware)\n")
-    print("| run | pattern | achieved Hz | web events: received / missing | WM_POINTER (history) | "
-          "RTS: poses, frames received | raw HID reports (count only; not decoded) | inject call ms (p50) | error |")
+    if not runs:
+        print("No synthetic runs: outcome (b), a manual/hardware log. There is no injection reference, so loss is "
+              f"\"{NO_REFERENCE}\".")
+        return
+    rects = {tuple(r["screenRect"]) for r in runs if r["outcome"] == "ok"}
+    print(f"Geometry: {'all successful runs share' if len(rects) == 1 else 'runs DIFFER in'} screen rectangle "
+          f"{' / '.join(str(list(r)) for r in sorted(rects)) or '-'} (physical px, [left, top, width, height]).\n")
+    print("| run | outcome | pattern (varying axes) | Hz: host / first-to-last | web events: received / missing | "
+          "WM_POINTER on target (history) | RTS: poses, frames | raw-input sink HID reports (not decoded) | "
+          "inject call ms p50 |")
     print("|---|---|---|---|---|---|---|---|---|")
     for r in runs:
-        web = r.get("web")
-        wm = r.get("wmPointer")
+        if r["outcome"] == "failed":
+            print(f"| {r['label']} | **FAILED**: {r['error']} | - | - | - | - | - | - | - |")
+            continue
+        web, wm = r.get("web"), r.get("wmPointer")
         rts = r.get("rts") or {}
         rf = rts.get("frames") or {}
         raw = r.get("rawInput") or {}
+        axes = r["varyingAxes"]
+        varying = ", ".join(k for k in ("position", "pressure", "tiltX", "tiltY", "rotation") if axes[k] > 1)
         web_cell = f"{web['received']} / {web['missing']}" if web else "n/a (native window)"
-        if r.get("target") == "nativeWindow":
-            wm_cell = f"{wm['received']} / {wm['missing']} missing" if wm else "-"
+        if r["target"] == "nativeWindow":
+            wm_cell = f"{wm['received']} / {wm['missing']} missing"
         else:
-            wm_cell = "not observable (WebView2 input window is in another process)"
-        if rts.get("attached") is False:
-            rts_cell = "not attached"
-        else:
-            rts_cell = f"{fmt(rts.get('poses'))}, {fmt(rf.get('received'))}" + (f" ({rts['error']})" if rts.get("error") else "")
-        raw_cell = fmt(raw.get("hidReports")) if raw.get("registered", True) else f"not registered ({raw.get('error')})"
-
+            wm_cell = "not measured (the webview's input window belongs to msedgewebview2.exe)"
+        rts_cell = "not attached" if rts.get("attached") is False else (
+            f"{fmt(rts.get('poses'))}, {fmt(rf.get('received'))}" + (f" ({rts['error']})" if rts.get("error") else ""))
         if raw.get("error") and not raw.get("hidReports"):
             raw_cell = f"- ({raw.get('error')})"
-        call = (r.get("injectCallMs") or {}).get("p50")
-        print(f"| {r['label']} | {r.get('pattern') or '-'} | {fmt(r.get('achievedHz'))} | {web_cell} | {wm_cell} | "
-              f"{rts_cell} | {raw_cell} | {fmt(call, 3)} | {r.get('error') or ''} |")
+        else:
+            raw_cell = fmt(raw.get("hidReports"))
+        print(f"| {r['label']} | ok | {r['pattern']} ({varying}) | {fmt(r['hostEstimatorHz'], 3)} / "
+              f"{fmt(r['firstToLastHz'], 3)} | {web_cell} | {wm_cell} | {rts_cell} | {raw_cell} | "
+              f"{fmt((r.get('injectCallMs') or {}).get('p50'), 3)} |")
     print()
     for r in runs:
-        parts = []
+        if r["outcome"] != "ok":
+            continue
+        parts = [f"rate: saved {r['savedAchievedHz']}; {r['rateCheck']}"]
+        for f in r["focus"]:
+            parts.append(f"focus {f['when']}: foreground {f['foreground']} ({f['foregroundClass']}"
+                         f"{', the target' if f['foregroundIsTarget'] else ''}), keyboard focus {f['focus']}"
+                         f"{' (' + f['focusClass'] + ')' if f['focusClass'] else ''}")
+        if not r["focus"]:
+            parts.append("focus not recorded (log predates version 3)")
         if r.get("web"):
             w = r["web"]
             parts.append(f"web missing frames: {ranges(w['missingFrames'])}")
-            if "repeatedPixelFrames" in w:
-                parts.append(f"repeated-pixel frames {w['repeatedPixelFrames']}, of them missing "
-                             f"{w['missingAmongRepeatedPixel']}")
+            parts.append(f"repeated-pixel frames {ranges(w['repeatedPixelIndices'])}, of them missing "
+                         f"{w['missingAmongRepeatedPixel']}")
+            parts.append(f"web tilt exact {w['tiltExact']} of {w['received']}; web twist vs injected rotation: "
+                         f"{fidelity_text(w['twistFidelity'])}")
             parts.append(f"event - injection ms {lat_text(w.get('latencyMs'))}; "
                          f"handler - injection ms {lat_text(w.get('handlerLatencyMs'))}")
         raw = r.get("rawInput") or {}
@@ -422,20 +634,21 @@ def print_runs(runs):
             parts.append(f"raw devices: {raw['deviceNames']}")
         if r.get("wmPointer"):
             w = r["wmPointer"]
-            parts.append(f"WM_POINTER missing frames: {ranges(w['missingFrames'])}; counts {r['wmPointerCounts']}")
+            parts.append(f"WM_POINTER missing frames: {ranges(w['missingFrames'])}; counts {r['wmPointerCounts']}; "
+                         f"repeated-pixel frames {ranges(w['repeatedPixelIndices'])}; tilt exact {w['tiltExact']}; "
+                         f"rotation: {fidelity_text(w['twistFidelity'])}")
             rf = (r.get("rts") or {}).get("frames")
             if rf:
                 union = set(range(w["injected"])) - (set(w["missingFrames"]) & set(rf["missingFrames"]))
                 parts.append(f"RTS missing frames (pressure scale {rf['pressureScale']}): {ranges(rf['missingFrames'])}; "
                              f"WM_POINTER or RTS together: {len(union)} / {w['injected']}")
-        if parts:
-            print(f"- **{r['label']}**: " + "; ".join(parts))
+        print(f"- **{r['label']}**: " + "; ".join(parts))
 
 
 def print_report(log, version, web, native, runs):
     env = log.get("environment", {})
     meta = log.get("metadata") or {}
-    print(f"## Tablet spike log (version {version})\n")
+    print(f"## Tablet spike log ({'unversioned, no synthetic runs' if version is None else f'version {version}'})\n")
     print(f"- userAgent: {env.get('userAgent')}")
     host = env.get("host") or {}
     if host:
@@ -456,17 +669,14 @@ def print_report(log, version, web, native, runs):
     hl = web["handlerLatencyMs"]
     print(f"- handler - event ms: oldest coalesced {lat_text(hl['oldestCoalesced'])}; newest {lat_text(hl['newestCoalesced'])}; "
           f"all samples {lat_text(hl['allSamples'])}")
+    failed = sum(1 for r in runs if r["outcome"] == "failed")
+    print(f"- outcome: {len(runs)} synthetic runs, {len(runs) - failed} ok, {failed} explicitly failed"
+          if runs else "- outcome: no synthetic runs (manual/hardware log; loss unknown)")
     print(f"web path: {len(web['strokes'])} pen-down strokes")
     print(f"native path: {len(native['strokes'])} strokes")
     print_strokes("Web path strokes (pointer events)", web["strokes"])
-    print_strokes(f"Native path strokes (host listener, {native['clock']} clock)", native["strokes"])
+    print_strokes(f"Native path strokes (host listener, {native['clock']} clock)", native["strokes"], native=True)
     print_runs(runs)
-    if version == 1:
-        sims = v1_simulation_strokes(web)
-        if sims:
-            print("\n### Version-1 log: synthetic strokes matched by pressure alone (no raw injection report)\n")
-            for s in sims:
-                print(f"- web stroke {s['stroke'] + 1}: {s['received']}/1024 frames, missing {ranges(s['missingFrames'])}")
 
 
 def strip(value):
@@ -492,13 +702,14 @@ def main(argv):
         return 2
     log = load(args[0])
     try:
+        # Everything is validated and computed before anything is printed (outcome c prints no results).
         version = log_version(log)
+        runs = run_analysis(log)
     except LogError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
     web = web_analysis(log)
     native = native_analysis(log)
-    runs = run_analysis(log) if version >= 2 else []
     print_report(log, version, web, native, runs)
     if out_json:
         with open(out_json, "w", encoding="utf-8") as f:

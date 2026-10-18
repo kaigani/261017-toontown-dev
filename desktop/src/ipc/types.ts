@@ -129,7 +129,8 @@ export interface SpikeEnvironment {
   window: WindowGeometry | null;
 }
 
-export type PenPattern = 'sine' | 'zigzag' | 'stationary';
+/** `stationary` keeps the position but varies pressure, tilt and rotation; `pressureOnly` varies pressure only. */
+export type PenPattern = 'sine' | 'zigzag' | 'stationary' | 'pressureOnly';
 
 export interface PenSimRequest {
   left: number;
@@ -145,7 +146,16 @@ export interface PenSimReport {
   method: string;
   frames: number;
   hz: number;
+  /** Host estimator `frames * 1e9 / (contactEndNs - contactStartNs)`. */
   achievedHz: number;
+  /** Monotonic ns (process anchor) before the first contact frame / after the last frame period (log version 3). */
+  contactStartNs?: number;
+  contactEndNs?: number;
+  /** Wall clock read with each monotonic endpoint. */
+  contactStartEpochMs?: number;
+  contactEndEpochMs?: number;
+  /** Foreground and focus windows at the start and end of the stroke. */
+  focus?: FocusSnapshot[];
   /** Host wall clock immediately before each contact frame's inject call, ms since the Unix epoch. */
   injectEpochMs: number[];
   /** Host wall clock when each inject call returned (round 1 and later). */
@@ -162,6 +172,21 @@ export interface PenSimReport {
   tiltX: number[];
   tiltY: number[];
   rotation: number[];
+}
+
+/** Foreground/focus state recorded by the host around each injected stroke (Windows). */
+export interface FocusSnapshot {
+  when: 'start' | 'end';
+  ownPid: number;
+  targetHwnd: number;
+  foregroundHwnd: number;
+  foregroundPid: number;
+  foregroundClass: string;
+  focusHwnd: number;
+  focusPid: number;
+  focusClass: string;
+  activeHwnd: number;
+  captureHwnd: number;
 }
 
 /**

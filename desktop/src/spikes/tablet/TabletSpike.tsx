@@ -2,9 +2,10 @@
 // `--spike tablet`; never reachable from the menu. Compares the web path (pointer events in the webview) with the
 // native path (host listener streaming over a channel) on the same strokes, live and in a JSON log.
 //
-// Log format version 2 (C02-R1-01): raw samples and packets, the raw host report of every synthetic run, run
-// boundaries (sample index ranges), the requested geometry, environment facts and truncation counters. Summaries in
-// the log are for convenience only; `scripts/analyse-tablet-log.py` recomputes everything from the raw data.
+// Log format version 3 (C02-R1-01, C02-R2-02/03): raw samples and packets, the raw host report of every synthetic
+// run (with the injector's monotonic contact endpoints and foreground/focus snapshots), run boundaries (sample index
+// ranges), the requested geometry and canvas rectangle, environment facts and truncation counters. Summaries in the
+// log are for convenience only; `scripts/analyse-tablet-log.py` recomputes everything from the raw data.
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
@@ -34,7 +35,7 @@ import {
 } from './analysis';
 import { MAX_SAMPLES, WebCapture } from './capture';
 
-export const LOG_VERSION = 2;
+export const LOG_VERSION = 3;
 const LIVE_WINDOW = 5000;
 const STROKES_SHOWN = 6;
 
@@ -46,50 +47,65 @@ interface Scenario {
   pattern: PenPattern;
   /** Native-window runs: attach a RealTimeStylus to the probe window (default true). */
   rts?: boolean;
-  /** Shrinks/shifts the canvas rectangle (CSS px) to move the path off the default pixel grid. */
-  inset?: { left: number; top: number; right: number; bottom: number };
 }
 
-// `--spike-auto` (Windows runner): the original two runs, the reviewer's four-missing-frames experiment (a shifted
-// rectangle with a path that never repeats a pixel, and a pressure-only stationary stroke), then the C02-R1-04
-// matrix: the same strokes into a plain same-process native window, with and without a RealTimeStylus attached (the
-// first CI run showed WM_POINTER stopping after ~20 frames while Ink was attached).
+/** Target rectangle in CSS px, relative to the canvas origin. */
+interface MatrixRect {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
+
+/**
+ * Every run of a matrix uses the same rectangle (C02-R2-03): the canvas origin and this size, clamped to the canvas.
+ * 1012 × 275 is the round-1 runner canvas on which the sine path has four repeated pixels (frames 92/421/604/933).
+ */
+const MATRIX_SIZE = { width: 1012, height: 275 };
+
+function matrixRectFor(canvas: DOMRect): MatrixRect {
+  return {
+    left: canvas.left,
+    top: canvas.top,
+    width: Math.min(MATRIX_SIZE.width, canvas.width),
+    height: Math.min(MATRIX_SIZE.height, canvas.height),
+  };
+}
+
+function inside(rect: MatrixRect, canvas: DOMRect): boolean {
+  const eps = 0.5;
+  return (
+    rect.left >= canvas.left - eps &&
+    rect.top >= canvas.top - eps &&
+    rect.left + rect.width <= canvas.left + canvas.width + eps &&
+    rect.top + rect.height <= canvas.top + canvas.height + eps
+  );
+}
+
+const run240 = (label: string, target: Scenario['target'], pattern: PenPattern, rts?: boolean): Scenario => ({
+  label,
+  target,
+  hz: 240,
+  frames: 1024,
+  pattern,
+  ...(rts === undefined ? {} : { rts }),
+});
+
+// `--spike-auto` (Windows runner), all in one rectangle. Webview: sine at 240 and 500 Hz, zigzag (never the same
+// pixel twice in a row), stationary (position fixed; pressure, tilt and rotation vary) and pressure-only (position,
+// tilt and rotation fixed). Then the same trajectories into a plain same-process native window, without and with a
+// RealTimeStylus attached (C02-R1-04; with RTS attached, Ink takes over the stream after a few WM_POINTER frames).
 const AUTO_SCENARIOS: Scenario[] = [
-  { label: 'webview sine 240 Hz', target: 'webview', hz: 240, frames: 1024, pattern: 'sine' },
+  run240('webview sine 240 Hz', 'webview', 'sine'),
   { label: 'webview sine 500 Hz', target: 'webview', hz: 500, frames: 1024, pattern: 'sine' },
-  {
-    label: 'webview zigzag 240 Hz, shifted rectangle',
-    target: 'webview',
-    hz: 240,
-    frames: 1024,
-    pattern: 'zigzag',
-    inset: { left: 37, top: 23, right: 61, bottom: 41 },
-  },
-  { label: 'webview stationary 240 Hz', target: 'webview', hz: 240, frames: 1024, pattern: 'stationary' },
-  { label: 'native window sine 240 Hz', target: 'nativeWindow', hz: 240, frames: 1024, pattern: 'sine' },
-  {
-    label: 'native window stationary 240 Hz',
-    target: 'nativeWindow',
-    hz: 240,
-    frames: 1024,
-    pattern: 'stationary',
-  },
-  {
-    label: 'native window sine 240 Hz, no RTS',
-    target: 'nativeWindow',
-    hz: 240,
-    frames: 1024,
-    pattern: 'sine',
-    rts: false,
-  },
-  {
-    label: 'native window stationary 240 Hz, no RTS',
-    target: 'nativeWindow',
-    hz: 240,
-    frames: 1024,
-    pattern: 'stationary',
-    rts: false,
-  },
+  run240('webview zigzag 240 Hz', 'webview', 'zigzag'),
+  run240('webview stationary 240 Hz', 'webview', 'stationary'),
+  run240('webview pressure-only 240 Hz', 'webview', 'pressureOnly'),
+  run240('native window sine 240 Hz, no RTS', 'nativeWindow', 'sine', false),
+  run240('native window stationary 240 Hz, no RTS', 'nativeWindow', 'stationary', false),
+  run240('native window pressure-only 240 Hz, no RTS', 'nativeWindow', 'pressureOnly', false),
+  run240('native window sine 240 Hz', 'nativeWindow', 'sine', true),
+  run240('native window stationary 240 Hz', 'nativeWindow', 'stationary', true),
 ];
 
 /** One synthetic run: boundaries in the raw streams plus everything the host returned. */
@@ -97,6 +113,8 @@ interface RunRecord {
   label: string;
   target: 'webview' | 'nativeWindow';
   request: PenSimRequest;
+  /** Canvas rectangle (CSS px, viewport) when the run started; the request must lie inside it. */
+  canvasRect: MatrixRect;
   startedAt: string;
   /** performance.now() at the start and end of the run. */
   perfStart: number;
@@ -441,16 +459,16 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
   }, [host, mode.nativeBackend, setStatus]);
 
   const runScenario = useCallback(
-    async (scenario: Scenario) => {
-      const rect = canvasRef.current?.getBoundingClientRect();
+    async (scenario: Scenario, target?: MatrixRect) => {
+      const canvas = canvasRef.current?.getBoundingClientRect();
       const c = capture.current;
-      if (!rect || !c) return;
-      const inset = scenario.inset ?? { left: 0, top: 0, right: 0, bottom: 0 };
+      if (!canvas || !c) return;
+      const rect = target ?? matrixRectFor(canvas);
       const request: PenSimRequest = {
-        left: rect.left + inset.left,
-        top: rect.top + inset.top,
-        width: rect.width - inset.left - inset.right,
-        height: rect.height - inset.top - inset.bottom,
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
         hz: scenario.hz,
         frames: scenario.frames,
         pattern: scenario.pattern,
@@ -459,6 +477,7 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
         label: scenario.label,
         target: scenario.target,
         request,
+        canvasRect: { left: canvas.left, top: canvas.top, width: canvas.width, height: canvas.height },
         startedAt: new Date().toISOString(),
         perfStart: performance.now(),
         perfEnd: null,
@@ -477,6 +496,13 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
         run.nativeRange[1] = native.current.length;
         setRunRows([...runs.current]);
       };
+      if (!inside(rect, canvas)) {
+        // The layout moved since the matrix rectangle was chosen: refuse rather than inject outside the canvas.
+        run.error = 'spike.geometryChanged: the matrix rectangle is no longer inside the canvas';
+        finish();
+        setStatus(`${scenario.label} failed: ${run.error}`);
+        return;
+      }
       if (scenario.target === 'nativeWindow') {
         try {
           run.probe = await host.spike.probeNativeWindow(request, scenario.rts ?? true);
@@ -566,6 +592,7 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
     return {
       spike: 'tablet',
       version: LOG_VERSION,
+      matrixSize: MATRIX_SIZE,
       savedAt: new Date().toISOString(),
       metadata: metadataRef.current,
       environment: {
@@ -632,8 +659,10 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
       await sleep(1000);
       await startNative();
       if (mode.penSimulation) {
+        const canvas = canvasRef.current?.getBoundingClientRect();
+        const rect = canvas ? matrixRectFor(canvas) : undefined;
         for (const s of AUTO_SCENARIOS) {
-          await runScenario(s);
+          await runScenario(s, rect);
           await sleep(300);
         }
       }
@@ -666,13 +695,7 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
             <button
               type="button"
               onClick={() =>
-                void runScenario({
-                  label: 'native window sine 240 Hz',
-                  target: 'nativeWindow',
-                  hz: 240,
-                  frames: 1024,
-                  pattern: 'sine',
-                })
+                void runScenario(run240('native window sine 240 Hz, no RTS', 'nativeWindow', 'sine', false))
               }
             >
               Probe native window (synthetic)
@@ -708,7 +731,7 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
           ))}
         </fieldset>
       </div>
-      {runRows.length > 0 && (
+      <div className="spike-runs-box">
         <table className="spike-runs">
           <thead>
             <tr>
@@ -731,7 +754,7 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
             ))}
           </tbody>
         </table>
-      )}
+      </div>
       <footer className="spike-footer">
         Live view over the last {String(LIVE_WINDOW)} samples; per-stroke rows show the last{' '}
         {String(STROKES_SHOWN)} strokes (* = cut off by the window). Loss is only stated against a reference

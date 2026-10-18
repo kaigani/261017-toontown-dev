@@ -81,7 +81,21 @@ export const spikeEnvironmentSchema = obj({
   window: nullable(windowGeometrySchema),
 });
 
-// The fields added in review round 1 are optional, so a report without them (an older host) is still accepted.
+const focusSnapshotSchema = obj({
+  when: { type: 'string', enum: ['start', 'end'] },
+  ownPid: U64,
+  targetHwnd: SAFE_INT,
+  foregroundHwnd: SAFE_INT,
+  foregroundPid: U64,
+  foregroundClass: STRING,
+  focusHwnd: SAFE_INT,
+  focusPid: U64,
+  focusClass: STRING,
+  activeHwnd: SAFE_INT,
+  captureHwnd: SAFE_INT,
+});
+
+// The fields added in review rounds 1 and 2 are optional, so a report without them (an older host) is still accepted.
 export const penSimReportSchema = obj(
   {
     method: STRING,
@@ -95,11 +109,16 @@ export const penSimReportSchema = obj(
     rotation: { type: 'array', items: U64 },
   },
   {
+    contactStartNs: U64,
+    contactEndNs: U64,
+    contactStartEpochMs: NUMBER,
+    contactEndEpochMs: NUMBER,
+    focus: { type: 'array', items: focusSnapshotSchema },
     injectReturnEpochMs: { type: 'array', items: NUMBER },
     screenX: { type: 'array', items: I32 },
     screenY: { type: 'array', items: I32 },
     screenRect: { type: 'array', items: I32 },
-    pattern: { type: 'string', enum: ['sine', 'zigzag', 'stationary'] },
+    pattern: { type: 'string', enum: ['sine', 'zigzag', 'stationary', 'pressureOnly'] },
     target: { type: 'string', enum: ['webview', 'nativeWindow'] },
   },
 );

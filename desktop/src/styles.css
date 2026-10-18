@@ -101,19 +101,26 @@ body,
 }
 
 .spike-toolbar {
+  flex: 0 0 auto;
   display: flex;
   gap: 8px;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .spike-status {
   color: var(--warn);
+  /* One line, so status changes never reflow the canvas (the synthetic matrix needs a fixed rectangle). */
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .spike-canvas {
   flex: 1;
-  min-height: 240px;
+  min-height: 300px;
   width: 100%;
   background: #fafafa;
   touch-action: none;
@@ -147,7 +154,13 @@ body,
 }
 
 .spike-readout {
-  max-height: 45%;
+  /* Fixed heights below the canvas: growing tables scroll instead of shrinking the canvas. */
+  flex: 0 0 30%;
+  overflow: auto;
+}
+
+.spike-runs-box {
+  flex: 0 0 90px;
   overflow: auto;
 }
 

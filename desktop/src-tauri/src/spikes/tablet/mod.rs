@@ -209,8 +209,11 @@ pub struct PenSimRequest {
     pub hz: u32,
     /// Number of contact frames (1..=10000). Pressure steps through 1..=1024 once per 1024 frames.
     pub frames: u32,
-    /// Path: `sine` (default), `zigzag` (at least 2 px between frames, so no two adjacent frames share a pixel) or
-    /// `stationary` (one fixed point, pressure-only changes).
+    /// Path and pen state:
+    /// * `sine` (default): sine path; pressure, both tilts and rotation vary;
+    /// * `zigzag`: at least 2 px between frames (no two adjacent frames share a pixel); pressure, tilts, rotation vary;
+    /// * `stationary`: one fixed point, pressure, both tilts and rotation vary (non-position-changing updates);
+    /// * `pressureOnly`: one fixed point, fixed tilt and rotation; only pressure varies.
     #[serde(default)]
     pub pattern: Option<String>,
 }
@@ -225,8 +228,18 @@ pub struct PenSimReport {
     pub frames: u32,
     /// Requested rate.
     pub hz: u32,
-    /// Achieved rate over the contact frames.
+    /// Host estimator: `frames * 1e9 / (contact_end_ns - contact_start_ns)` (reproducible from the two fields below).
     pub achieved_hz: f64,
+    /// Monotonic clock (`Instant`, ns since the spike's process anchor) immediately before the first contact frame.
+    pub contact_start_ns: u64,
+    /// Monotonic clock after the wait that follows the last contact frame (the end of the last frame period).
+    pub contact_end_ns: u64,
+    /// Wall clock (ms since the Unix epoch) read together with `contact_start_ns`.
+    pub contact_start_epoch_ms: f64,
+    /// Wall clock read together with `contact_end_ns`.
+    pub contact_end_epoch_ms: f64,
+    /// Foreground/focus state at the start and end of the stroke (`GetForegroundWindow`, `GetGUIThreadInfo`).
+    pub focus: Vec<FocusSnapshot>,
     /// Host wall-clock time taken immediately **before** each contact frame's inject call, ms since the Unix epoch.
     pub inject_epoch_ms: Vec<f64>,
     /// Host wall-clock time when each inject call returned.
@@ -251,6 +264,34 @@ pub struct PenSimReport {
     pub rotation: Vec<u32>,
 }
 
+/// Which window had the foreground and keyboard focus at one moment (Windows; recorded per injected stroke).
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FocusSnapshot {
+    /// `start` or `end` of the stroke.
+    pub when: &'static str,
+    /// This process's id, for comparison with the PIDs below.
+    pub own_pid: u32,
+    /// The injection target window (root), as a number.
+    pub target_hwnd: i64,
+    /// `GetForegroundWindow`.
+    pub foreground_hwnd: i64,
+    /// Owning process of `foreground_hwnd`.
+    pub foreground_pid: u32,
+    /// Window class of `foreground_hwnd`.
+    pub foreground_class: String,
+    /// `GetGUIThreadInfo(foreground thread).hwndFocus` (0 = none).
+    pub focus_hwnd: i64,
+    /// Owning process of `focus_hwnd` (0 if none).
+    pub focus_pid: u32,
+    /// Window class of `focus_hwnd`.
+    pub focus_class: String,
+    /// `hwndActive` of the same thread.
+    pub active_hwnd: i64,
+    /// `hwndCapture` of the same thread.
+    pub capture_hwnd: i64,
+}
+
 /// Saved-log result.
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -262,7 +303,7 @@ pub struct SavedLog {
 }
 
 /// An automated run (`--spike-auto`) that has not saved its log after this long exits with status 2.
-pub const AUTO_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(120);
+pub const AUTO_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(240);
 
 /// Exits the app with status 2 if an automated run never saves its log (for example, the webview failed to load).
 pub fn arm_auto_timeout(app: &AppHandle, settings: &SpikeSettings) {
@@ -297,6 +338,13 @@ impl TabletSpike {
 
 pub(crate) fn error(code: &str, message: String) -> ErrorInfo {
     ErrorInfo { code: code.to_owned(), message, details: serde_json::json!({}) }
+}
+
+/// Monotonic nanoseconds since a process-wide anchor (the first call).
+pub(crate) fn monotonic_ns() -> u64 {
+    static ANCHOR: std::sync::OnceLock<std::time::Instant> = std::sync::OnceLock::new();
+    let anchor = ANCHOR.get_or_init(std::time::Instant::now);
+    u64::try_from(anchor.elapsed().as_nanos()).unwrap_or(u64::MAX)
 }
 
 pub(crate) fn epoch_ms() -> f64 {
@@ -458,8 +506,8 @@ fn validate(r: &PenSimRequest) -> Result<(), ErrorInfo> {
     if !(1..=1000).contains(&r.hz) || !(1..=10_000).contains(&r.frames) {
         return Err(error("arg.invalid", "hz must be 1..=1000 and frames 1..=10000".into()));
     }
-    if !matches!(r.pattern.as_deref(), None | Some("sine" | "zigzag" | "stationary")) {
-        return Err(error("arg.invalid", "pattern must be sine, zigzag or stationary".into()));
+    if !matches!(r.pattern.as_deref(), None | Some("sine" | "zigzag" | "stationary" | "pressureOnly")) {
+        return Err(error("arg.invalid", "pattern must be sine, zigzag, stationary or pressureOnly".into()));
     }
     Ok(())
 }
@@ -582,6 +630,7 @@ mod tests {
         assert!(validate(&PenSimRequest { left: f64::NAN, ..req() }).is_err());
         assert!(validate(&PenSimRequest { top: -1.0, ..req() }).is_err());
         assert!(validate(&PenSimRequest { pattern: Some("zigzag".into()), ..req() }).is_ok());
+        assert!(validate(&PenSimRequest { pattern: Some("pressureOnly".into()), ..req() }).is_ok());
         assert!(validate(&PenSimRequest { pattern: Some("spiral".into()), ..req() }).is_err());
     }
 

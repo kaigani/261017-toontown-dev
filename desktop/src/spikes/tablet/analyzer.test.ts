@@ -111,10 +111,57 @@ interface Analysis {
 }
 
 describe('offline analyzer', () => {
-  it('rejects an unknown log version', () => {
-    const r = analyse({ ...v2, version: 3 });
+  it('rejects unknown and obsolete log versions', () => {
+    const r = analyse({ ...v2, version: 4 });
     expect(r.status).toBe(2);
-    expect(r.stderr).toContain('unsupported log version 3');
+    expect(r.stderr).toContain('unsupported log version 4');
+    const v1 = analyse({ ...v2, version: 1 });
+    expect(v1.status).toBe(2);
+    expect(v1.stderr).toContain('version 1 is obsolete');
+  });
+
+  it('version 3: recomputes the host rate from the monotonic endpoints and rejects a disagreeing aggregate', () => {
+    const start = 5_000_000_000;
+    const end = start + 64 * 4_000_000; // 64 frames, 4 ms each
+    const v3Report = {
+      ...report,
+      contactStartNs: start,
+      contactEndNs: end,
+      contactStartEpochMs: timeOrigin + 998,
+      contactEndEpochMs: timeOrigin + 1254,
+      focus: [],
+    };
+    const log = (achievedHz: number) => ({
+      ...v2,
+      version: 3,
+      runs: [{ ...v2.runs[0], report: { ...v3Report, achievedHz } }],
+    });
+    const ok = analyse(log((64 * 1e9) / (end - start)));
+    expect(ok.status, ok.stderr).toBe(0);
+    const run = (ok.json as { runs: { hostEstimatorHz: number; firstToLastHz: number }[] }).runs[0];
+    expect(run?.hostEstimatorHz).toBe(250);
+    expect(run?.firstToLastHz).toBeCloseTo(250, 9);
+    const bad = analyse(log(251));
+    expect(bad.status).toBe(2);
+    expect(bad.stderr).toContain('disagrees with the host estimator');
+  });
+
+  it('labels an explicitly failed run and refuses a successful run without its report', () => {
+    const failed = analyse({
+      ...v2,
+      runs: [{ ...v2.runs[0], report: null, error: 'spike.notForeground: covered' }],
+    });
+    expect(failed.status, failed.stderr).toBe(0);
+    expect(failed.stdout).toContain('**FAILED**: spike.notForeground: covered');
+    const missing = analyse({ ...v2, runs: [{ ...v2.runs[0], report: null }] });
+    expect(missing.status).toBe(2);
+    expect(missing.stderr).toContain('no raw report');
+  });
+
+  it('reports a manual log without synthetic runs as having no injection reference', () => {
+    const manual = analyse({ ...v2, runs: [], simulations: [] });
+    expect(manual.status, manual.stderr).toBe(0);
+    expect(manual.stdout).toContain('No synthetic runs: outcome (b)');
   });
 
   it('recomputes per-stroke results and run matches from raw data, agreeing with the page', () => {

@@ -27,11 +27,12 @@ use windows::Win32::UI::Input::Pointer::{
     POINTER_FLAG_UPDATE, POINTER_FLAGS, POINTER_INFO, POINTER_PEN_INFO,
 };
 use windows::Win32::UI::WindowsAndMessaging::{
-    GA_ROOT, GetAncestor, PEN_MASK_PRESSURE, PEN_MASK_ROTATION, PEN_MASK_TILT_X, PEN_MASK_TILT_Y, PT_PEN,
+    GA_ROOT, GUITHREADINFO, GetAncestor, GetClassNameW, GetForegroundWindow, GetGUIThreadInfo,
+    GetWindowThreadProcessId, PEN_MASK_PRESSURE, PEN_MASK_ROTATION, PEN_MASK_TILT_X, PEN_MASK_TILT_Y, PT_PEN,
     WindowFromPoint,
 };
 
-use super::{PenSimReport, PenSimRequest, epoch_ms, error};
+use super::{FocusSnapshot, PenSimReport, PenSimRequest, epoch_ms, error, monotonic_ns};
 
 /// Hover frames before contact and after lifting, so the pen enters and leaves range like a real one.
 const HOVER_FRAMES: u32 = 10;
@@ -39,10 +40,17 @@ const HOVER_FRAMES: u32 = 10;
 /// Screen rectangle `(left, top, width, height)` in physical pixels.
 pub(super) type Rect = (i32, i32, i32, i32);
 
-/// Pen state for contact frame `i` of `n`: pressure steps 1..=1024 (each value once per 1024 frames), tilt sweeps
-/// -60..=60 degrees, rotation 0..359.
-fn pen_state(i: u32, n: u32) -> (u32, i32, i32, u32) {
+/// Fixed tilt X / tilt Y / rotation of the `pressureOnly` pattern (non-zero, so fidelity remains checkable).
+const PRESSURE_ONLY_POSE: (i32, i32, u32) = (20, -10, 90);
+
+/// Pen state for contact frame `i` of `n`: pressure steps 1..=1024 (each value once per 1024 frames). Except for
+/// `pressureOnly`, tilt sweeps -60..=60 degrees and rotation 0..359; `pressureOnly` holds tilt and rotation fixed.
+fn pen_state(pattern: &str, i: u32, n: u32) -> (u32, i32, i32, u32) {
     let pressure = 1 + (i % 1024);
+    if pattern == "pressureOnly" {
+        let (tilt_x, tilt_y, rotation) = PRESSURE_ONLY_POSE;
+        return (pressure, tilt_x, tilt_y, rotation);
+    }
     let phase = f64::from(i) / f64::from(n.max(1));
     let tilt_x = (-60.0 + 120.0 * phase).round() as i32;
     let tilt_y = (60.0 - 120.0 * phase).round() as i32;
@@ -52,11 +60,11 @@ fn pen_state(i: u32, n: u32) -> (u32, i32, i32, u32) {
 /// Screen position of contact frame `i` of `n` for a pattern:
 /// * `sine`: left to right across the rectangle on a sine wave (adjacent frames can round to the same pixel);
 /// * `zigzag`: 2 px per frame, bouncing between the edges, on a 3-row ladder (never the same pixel twice in a row);
-/// * `stationary`: the rectangle's centre for every frame (pressure-only changes).
+/// * `stationary` and `pressureOnly`: the rectangle's centre for every frame.
 fn position(rect: Rect, pattern: &str, i: u32, n: u32) -> POINT {
     let (left, top, width, height) = rect;
     match pattern {
-        "stationary" => POINT { x: left + width / 2, y: top + height / 2 },
+        "stationary" | "pressureOnly" => POINT { x: left + width / 2, y: top + height / 2 },
         "zigzag" => {
             let span = (width - 16).max(4);
             let step = (i64::from(i) * 2) % i64::from(2 * span);
@@ -124,6 +132,58 @@ pub(super) fn window_at_is(target: HWND, at: POINT) -> bool {
     #[allow(unsafe_code)]
     let root = unsafe { GetAncestor(WindowFromPoint(at), GA_ROOT) };
     root == target
+}
+
+fn hwnd_number(h: HWND) -> i64 {
+    h.0 as i64
+}
+
+fn window_pid_class(h: HWND) -> (u32, String) {
+    if h.0.is_null() {
+        return (0, String::new());
+    }
+    let mut pid = 0_u32;
+    let mut name = [0_u16; 128];
+    // SAFETY: plain Win32 queries on a window handle; the buffers outlive the calls.
+    #[allow(unsafe_code)]
+    let len = unsafe {
+        GetWindowThreadProcessId(h, Some(&mut pid));
+        GetClassNameW(h, &mut name)
+    };
+    let len = usize::try_from(len).unwrap_or(0).min(name.len());
+    (pid, String::from_utf16_lossy(&name[..len]))
+}
+
+/// Foreground window and the foreground thread's focus/active/capture windows, with owning processes (C02-R2-03).
+pub(super) fn focus_snapshot(when: &'static str, target: HWND) -> FocusSnapshot {
+    // SAFETY: plain Win32 queries with no preconditions; `info.cbSize` is set as GetGUIThreadInfo requires.
+    #[allow(unsafe_code)]
+    let (foreground, info) = unsafe {
+        let foreground = GetForegroundWindow();
+        let thread = GetWindowThreadProcessId(foreground, None);
+        let mut info = GUITHREADINFO {
+            cbSize: u32::try_from(std::mem::size_of::<GUITHREADINFO>()).unwrap_or(0),
+            ..GUITHREADINFO::default()
+        };
+        let ok = GetGUIThreadInfo(thread, &mut info).is_ok();
+        (foreground, ok.then_some(info))
+    };
+    let (foreground_pid, foreground_class) = window_pid_class(foreground);
+    let focus = info.map(|i| i.hwndFocus).unwrap_or_default();
+    let (focus_pid, focus_class) = window_pid_class(focus);
+    FocusSnapshot {
+        when,
+        own_pid: std::process::id(),
+        target_hwnd: hwnd_number(target),
+        foreground_hwnd: hwnd_number(foreground),
+        foreground_pid,
+        foreground_class,
+        focus_hwnd: hwnd_number(focus),
+        focus_pid,
+        focus_class,
+        active_hwnd: info.map(|i| hwnd_number(i.hwndActive)).unwrap_or(0),
+        capture_hwnd: info.map(|i| hwnd_number(i.hwndCapture)).unwrap_or(0),
+    }
 }
 
 /// The canvas rectangle of the request (webview CSS pixels) on screen, physical pixels, clamped to the client area.
@@ -201,6 +261,11 @@ pub(super) fn inject_stroke(
         frames: 0,
         hz: request.hz,
         achieved_hz: 0.0,
+        contact_start_ns: 0,
+        contact_end_ns: 0,
+        contact_start_epoch_ms: 0.0,
+        contact_end_epoch_ms: 0.0,
+        focus: vec![focus_snapshot("start", target)],
         inject_epoch_ms: Vec::with_capacity(cap),
         inject_return_epoch_ms: Vec::with_capacity(cap),
         screen_x: Vec::with_capacity(cap),
@@ -232,10 +297,11 @@ pub(super) fn inject_stroke(
         inject(&device, &frame(hover, start_at, 0, 0, 0, 0))?;
         wait(&mut next);
     }
-    let contact_start = Instant::now();
+    report.contact_start_ns = monotonic_ns();
+    report.contact_start_epoch_ms = epoch_ms();
     let mut last = start_at;
     for i in 0..n {
-        let (pressure, tilt_x, tilt_y, rotation) = pen_state(i, n);
+        let (pressure, tilt_x, tilt_y, rotation) = pen_state(&pattern, i, n);
         let at = position(rect, &pattern, i, n);
         if !window_at_is(target, at) {
             let _ = inject(&device, &frame(POINTER_FLAG_UP, last, 0, 0, 0, 0));
@@ -260,14 +326,18 @@ pub(super) fn inject_stroke(
         report.frames += 1;
         wait(&mut next);
     }
-    let elapsed = contact_start.elapsed().as_secs_f64();
+    report.contact_end_ns = monotonic_ns();
+    report.contact_end_epoch_ms = epoch_ms();
     inject(&device, &frame(POINTER_FLAG_INRANGE | POINTER_FLAG_UP, last, 0, 0, 0, 0))?;
     for _ in 0..HOVER_FRAMES {
         wait(&mut next);
         inject(&device, &frame(hover, last, 0, 0, 0, 0))?;
     }
     inject(&device, &frame(POINTER_FLAG_UPDATE, last, 0, 0, 0, 0))?;
-    report.achieved_hz = if elapsed > 0.0 { f64::from(report.frames) / elapsed } else { 0.0 };
+    let elapsed_ns = report.contact_end_ns.saturating_sub(report.contact_start_ns);
+    // Exactly reproducible from the logged endpoints (C02-R2-02).
+    report.achieved_hz = if elapsed_ns > 0 { f64::from(report.frames) * 1e9 / elapsed_ns as f64 } else { 0.0 };
+    report.focus.push(focus_snapshot("end", target));
     Ok(report)
 }
 
@@ -277,7 +347,7 @@ mod tests {
 
     #[test]
     fn pressure_steps_through_every_level() {
-        let mut seen: Vec<u32> = (0..1024).map(|i| pen_state(i, 1024).0).collect();
+        let mut seen: Vec<u32> = (0..1024).map(|i| pen_state("sine", i, 1024).0).collect();
         seen.sort_unstable();
         seen.dedup();
         assert_eq!(seen.len(), 1024);
@@ -287,15 +357,27 @@ mod tests {
     #[test]
     fn tilt_and_rotation_stay_in_range() {
         for i in 0..2000 {
-            let (_, tx, ty, r) = pen_state(i, 2000);
+            let (_, tx, ty, r) = pen_state("sine", i, 2000);
             assert!((-60..=60).contains(&tx) && (-60..=60).contains(&ty) && r < 360);
         }
     }
 
     #[test]
+    fn pressure_only_holds_tilt_and_rotation_and_position() {
+        let rect = (8, 58, 1012, 361);
+        for i in 0..1024 {
+            let (p, tx, ty, r) = pen_state("pressureOnly", i, 1024);
+            assert_eq!((p, tx, ty, r), (1 + i, 20, -10, 90));
+            assert_eq!(position(rect, "pressureOnly", i, 1024), position(rect, "pressureOnly", 0, 1024));
+        }
+        // `stationary` keeps the position but still varies tilt and rotation.
+        assert_ne!(pen_state("stationary", 0, 1024).1, pen_state("stationary", 1000, 1024).1);
+    }
+
+    #[test]
     fn positions_stay_inside_the_rectangle() {
         let rect = (100, 200, 400, 300);
-        for pattern in ["sine", "zigzag", "stationary"] {
+        for pattern in ["sine", "zigzag", "stationary", "pressureOnly"] {
             for i in 0..1000 {
                 let p = position(rect, pattern, i, 1000);
                 assert!(p.x >= 100 && p.x <= 500 && p.y >= 200 && p.y <= 500, "{pattern} {i}: {p:?}");
