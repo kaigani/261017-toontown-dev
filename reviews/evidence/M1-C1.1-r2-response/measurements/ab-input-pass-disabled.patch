@@ -1,0 +1,13 @@
+diff --git a/crates/model/src/object.rs b/crates/model/src/object.rs
+index 67fe47c..d7090b6 100644
+--- a/crates/model/src/object.rs
++++ b/crates/model/src/object.rs
+@@ -23,7 +23,7 @@ pub const MAX_ERRORS: usize = 100;
+ /// [`crate::input`]).
+ pub fn normalize_input(ty: crate::types::ObjectType, value: &mut Value) {
+     canonical::normalize_numbers(value);
+-    crate::input::prepare(ty, value);
++    let _ = ty; // A/B MEASUREMENT ONLY: input pass disabled
+ }
+ 
+ /// Parses and validates one object of type `T` from JSON.

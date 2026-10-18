@@ -1,6 +1,7 @@
 # ADR-0012 — Lossless IPC wire transport and generated front-end schemas
 
-Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 2, 7). Readiness
+Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 2, 7) and round 2 (2026-10-18:
+decision 2). Readiness
 bullet 1 of `reviews/M0-C0.4-r6-closure.md`; closes C01-R3-04.
 
 ## Context
@@ -25,8 +26,13 @@ so `certify` copied it instead of rejecting it (C01-R3-04, three reviewer cases 
    converts such a `bigint` back to `number` wherever a schema that applies at that position says the value is a
    double; it follows `allOf`/`anyOf`/`oneOf` members and evaluates `if` against the containing object to pick
    `then`/`else`, which is where the generated model schemas keep kind rules such as typed effect `params`
-   (C11-R1-08). The writer `stringifyWireJson` rejects unpaired surrogates and non-finite numbers and writes integral
-   doubles with 2^53 ≤ |x| < 1e21 as exact digits, as the engine does.
+   (C11-R1-08). Only the `anyOf`/`oneOf` alternatives the container matches apply — as parsed, or with its
+   digit-only `bigint`s read as doubles — so an unrelated double branch never converts an integer another branch
+   accepts; a scalar's `allOf` members all apply, and a double declared there is coerced unless a member insists
+   on an integer (C11-R2-05). The writer `stringifyWireJson` rejects unpaired surrogates and non-finite numbers and writes integral
+   doubles with 2^53 ≤ |x| < 1e21 as exact digits, as the engine does. Both writers count depth as both readers do (root value at 1, scalars
+   included, at most 128), so `to_wire_json` never emits text `from_wire_json` or `parseWireJson` rejects
+   (C11-R2-07).
    **What "lossless" covers** (C11-R1-07, R1-17): every integer literal that fits `i64`/`u64` or is exactly a double
    (e.g. ±2^64) travels exactly in both directions; any other integer literal is rejected by **both** sides, by the
    engine as `arg.invalid` — the engine's generic JSON value cannot hold it, and rounding it would change opaque

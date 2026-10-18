@@ -281,6 +281,11 @@ impl Check for Asset {
     }
 }
 
+/// Whether a number is a valid `frame` (10 §1.1: `int ≥ 1`, `int` being signed 32-bit).
+fn is_frame(n: u32) -> bool {
+    n >= 1 && i32::try_from(n).is_ok()
+}
+
 /// A field name and whether the field is present.
 type Presence<'a> = (&'a str, bool);
 
@@ -690,6 +695,16 @@ impl Check for SoundPlacement {
                     );
                 }
             }
+            // 10 §1.1, §4.14: label keys are placement-relative frames, like the manual ranges.
+            for frame in t.labels.keys() {
+                if !is_frame(*frame) || u64::from(*frame) > frames {
+                    out.push(
+                        &format!("{at}/mouthTrack/labels/{frame}"),
+                        "labelFrame",
+                        format!("label keys are placement-relative frames 1–{frames}"),
+                    );
+                }
+            }
         }
         meta_ext(at, &self.ext, out);
     }
@@ -807,11 +822,12 @@ impl Check for Element {
             out.push(&ptr(at, "note"), "range", "notes are at most 10 000 characters");
         }
         for (frame, note) in &self.cell_notes {
-            if *frame == 0 || note.chars().count() > 10_000 {
+            // 10 §1.1, §4.7: the key is a `frame`, a positive signed 32-bit `int`.
+            if !is_frame(*frame) || note.chars().count() > 10_000 {
                 out.push(
                     &ptr(&ptr(at, "cellNotes"), &frame.to_string()),
                     "range",
-                    "cell notes are keyed by frame ≥ 1 and at most 10 000 characters",
+                    "cell notes are keyed by a frame (1–2147483647) and at most 10 000 characters",
                 );
             }
         }

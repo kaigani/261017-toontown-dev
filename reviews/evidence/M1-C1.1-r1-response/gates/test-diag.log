@@ -1,0 +1,88 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\audio)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\io)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\engine)
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop\src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.20s
+     Running unittests src\lib.rs (target\debug\deps\tt_desktop-881443744b4ff0e1.exe)
+
+running 38 tests
+test bindings::tests::command_id_syntax ... ok
+test bindings::tests::embedded_manifest_is_valid ... ok
+test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+test bindings::tests::quit_is_bound_on_every_platform ... ok
+test bindings::tests::per_platform_accelerators ... ok
+test spikes::tablet::simulate_windows::tests::tilt_and_rotation_stay_in_range ... ok
+test diagnostics::tests::spike_flags ... ok
+test diagnostics::tests::errors ... ok
+test menu::tests::event_serializes_camel_case ... ok
+test menu::tests::frontend_command_carries_params ... ok
+test spikes::canvas::renderlist::tests::encoder_refuses_invalid_geometry ... ok
+test diagnostics::tests::requested_diagnostic_names_the_flag ... ok
+test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+test menu::tests::pending_command_carries_milestone ... ok
+test spikes::tablet::simulate_windows::tests::positions_stay_inside_the_rectangle ... ok
+test menu::tests::host_commands ... ok
+test spikes::tablet::tests::disabled_unless_tablet ... ok
+test spikes::tablet::simulate_windows::tests::pressure_steps_through_every_level ... ok
+test diagnostics::tests::bench_with_count ... ok
+test diagnostics::tests::no_arguments_is_interactive ... ok
+test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+test spikes::tablet::tests::request_rejects_unknown_fields ... ok
+test spikes::tablet::simulate_windows::tests::pressure_only_holds_tilt_and_rotation_and_position ... ok
+test spikes::tablet::simulate_windows::tests::zigzag_never_repeats_a_pixel_in_adjacent_frames_and_stationary_always_does ... ok
+test spikes::tablet::tests::sequencer_is_gap_free_and_wire_packets_flatten ... ok
+test spikes::canvas::renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+test tests::diagnostics_overlay_config_enables_both_halves ... ok
+test tests::diagnostics_build_registers_the_m0_commands ... ok
+test spikes::tablet::tests::packet_serializes_camel_case ... ok
+test spikes::tablet::tests::validates_simulation_requests ... ok
+test spikes::tablet::simulate_windows::tests::sine_repeats_pixels_where_the_review_found_missing_frames ... ok
+test tests::tauri_config_matches_workspace_and_plan ... ok
+test spikes::canvas::renderlist::tests::encoding_has_the_documented_layout ... ok
+test spikes::canvas::renderlist::tests::scenes_have_the_specified_sizes ... ok
+test spikes::canvas::renderlist::tests::generation_is_reproducible ... ok
+test spikes::canvas::renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+
+test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+     Running unittests src\main.rs (target\debug\deps\toontown-04a57cdc640b863d.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running ..\..\tests\adversarial\c03-r2-encoder.rs (target\debug\deps\c03_r2_encoder-a811fbf6e520a2e9.exe)
+
+running 11 tests
+test adjacent_out_of_bounds_and_negative_width_are_refused ... ok
+test c03_r2_03_unknown_style_must_be_refused ... ok
+test renderlist::tests::encoder_refuses_invalid_geometry ... ok
+test c03_r2_03_unpaired_coordinate_must_be_refused ... ok
+test nonfinite_points_and_bounds_return_typed_errors ... ok
+test renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+test subnormal_and_empty_path_are_valid ... ok
+test renderlist::tests::encoding_has_the_documented_layout ... ok
+test renderlist::tests::scenes_have_the_specified_sizes ... ok
+test renderlist::tests::generation_is_reproducible ... ok
+test renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+   Doc-tests tt_desktop
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

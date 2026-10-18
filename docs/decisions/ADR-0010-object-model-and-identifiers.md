@@ -81,7 +81,9 @@ written. Everything later (executor, persistence, MCP, every area's commands) bu
     (exposure runs; spline handle offsets clamped as 05 §10.3) and the object-local rules, which include the entity
     invariants of 10 §4: closed brush outlines (§4.9), a width for fixed-width text (§4.9), file links with both paths
     and library links with both IDs (§4.16), texture images under `textures/` (§4.13), manual mouth ranges within the
-    placement (§4.14). Document-level rules add: each drawing of an image element is exactly one bitmap node
+    placement (§4.14) and mouth-label and cell-note keys that are frames 1–2 147 483 647 (§1.1, §4.7, §4.14; labels
+    also within the placement). Declared values of pattern maps (cell notes, labels) are NFC-normalised too
+    (C11-R2-08/10). Document-level rules add: each drawing of an image element is exactly one bitmap node
     (§4.10), at least one visible palette (03 §1.2), the project library has kind `local` (§3, §4.1).
 
 ## Consequences

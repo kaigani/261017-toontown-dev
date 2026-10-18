@@ -359,6 +359,10 @@ fn annotate_since(def: &mut Value) {
     }
 }
 
+/// The decimal form of a `frame` used as a map key: 1–2147483647 (10 §1.1 `frame` = `int ≥ 1`, `int` signed 32-bit;
+/// §4.7 cell notes, §4.14 mouth-track labels).
+pub const FRAME_KEY_PATTERN: &str = "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$";
+
 fn kind_rule(property: &str, value: &str, then: Value) -> Value {
     json!({ "if": { "properties": { property: { "const": value } }, "required": [property] }, "then": then })
 }
@@ -372,7 +376,10 @@ fn add_element_rules(def: &mut Value) {
             count.insert("minimum".into(), json!(1));
         }
         if let Some(notes) = props.get_mut("cellNotes").and_then(Value::as_object_mut) {
-            notes.insert("patternProperties".into(), json!({"^[1-9][0-9]*$": {"type": "string", "maxLength": 10_000}}));
+            notes.insert(
+                "patternProperties".into(),
+                json!({FRAME_KEY_PATTERN: {"type": "string", "maxLength": 10_000}}),
+            );
         }
         if let Some(start) = props.get_mut("start").and_then(Value::as_object_mut) {
             start.insert(
@@ -552,9 +559,16 @@ fn build_definitions() -> Map<String, Value> {
     }
     // Inserted after the struct pass: a stub's `name` and its `id`/`colourId` alternatives are not all required.
     defs.insert("Stub".into(), crate::entities::stub_schema());
-    // MouthTrack carries the derived `stale` flag (10 §4.14).
+    // MouthTrack carries the derived `stale` flag (10 §4.14); its labels are keyed by frame.
     if let Some(props) = defs.get_mut("MouthTrack").and_then(props_mut) {
         props.insert("stale".into(), json!({"type": "boolean", "x-derived": true, "readOnly": true}));
+        if let Some(labels) = props.get_mut("labels").and_then(Value::as_object_mut) {
+            labels.insert("patternProperties".into(), json!({FRAME_KEY_PATTERN: {"type": "string"}}));
+        }
+    }
+    // Every property added above carries `x-since` too (C11-R2-11): annotate after all additions.
+    for def in defs.values_mut() {
+        annotate_since(def);
     }
     // Deterministic order of definitions.
     let sorted: BTreeMap<String, Value> = defs.into_iter().collect();
@@ -599,50 +613,82 @@ pub fn object_schema(ty: ObjectType) -> Value {
 }
 
 /// The schema of one property of a type, addressed by a JSON Pointer into the object (10 §10.2 `doc.schema.get
-/// {property}`). `$ref`s are resolved; alternatives (`anyOf`/`oneOf`/`allOf`, conditional branches) are searched for
-/// the first that declares the next token; tuple positions use `prefixItems`, other array positions `items`, map
-/// keys `additionalProperties`.
+/// {property}`). The lookup keeps **every** schema that may apply on the way down (C11-R2-06): `$ref` targets,
+/// `allOf`/`anyOf`/`oneOf` members and both branches of every conditional (there is no instance to choose one), and
+/// at each token the property, tuple position (`prefixItems`), array item (`items`), map value
+/// (`additionalProperties`) or pattern-map value (`patternProperties`) of each. The result merges the final
+/// candidates in order — a declaration's own annotations (`readOnly`, `x-since`, `description`, …) before the keywords
+/// of the definition it references — so annotations beside a `$ref` survive and a field declared only inside a kind
+/// rule (an effect's typed `params`) is found. `None` when no schema declares the pointer.
 #[must_use]
 pub fn property_schema(ty: ObjectType, pointer: &str) -> Option<Value> {
     let tokens = crate::pointer::parse(pointer).ok()?;
     let defs = definitions();
-    let mut cur = defs.get(&def_name(ty))?.clone();
+    let mut current: Vec<&Value> = vec![defs.get(&def_name(ty))?];
     for t in &tokens {
-        let mut cands = Vec::new();
-        expand(defs, &cur, &mut cands, 0);
         let index = crate::pointer::array_index(t);
-        let next = cands.iter().find_map(|c| {
-            c.get("properties")
-                .and_then(|p| p.get(t))
-                .or_else(|| index.and_then(|i| c.get("prefixItems").and_then(|p| p.get(i))))
-                .or_else(|| index.and(c.get("items")).filter(|v| v.is_object()))
-                .or_else(|| c.get("additionalProperties").filter(|v| v.is_object()))
-                .cloned()
-        })?;
-        cur = next;
+        let mut expanded = Vec::new();
+        for c in &current {
+            expand(defs, c, &mut expanded, 0);
+        }
+        let mut next: Vec<&Value> = Vec::new();
+        let mut push = |v: Option<&'static Value>| {
+            if let Some(v) = v.filter(|v| v.is_object()) {
+                next.push(v);
+            }
+        };
+        for c in expanded {
+            push(c.get("properties").and_then(|p| p.get(t)));
+            if let Some(i) = index {
+                push(c.get("prefixItems").and_then(|p| p.get(i)).or_else(|| c.get("items")));
+            }
+            push(c.get("additionalProperties"));
+            if let Some(Value::Object(pp)) = c.get("patternProperties") {
+                for v in pp.values() {
+                    push(Some(v));
+                }
+            }
+        }
+        if next.is_empty() {
+            return None;
+        }
+        current = next;
     }
-    Some(resolve_ref(defs, &cur))
+    let mut merged = Map::new();
+    for c in current {
+        let mut layer = vec![c];
+        expand(defs, c, &mut layer, 0);
+        for l in layer {
+            if let Value::Object(m) = l {
+                for (k, v) in m {
+                    if k != "$ref" && !merged.contains_key(k) {
+                        merged.insert(k.clone(), v.clone());
+                    }
+                }
+            }
+        }
+    }
+    Some(Value::Object(merged))
 }
 
-fn resolve_ref(defs: &Map<String, Value>, v: &Value) -> Value {
-    let mut cur = v.clone();
+fn deref<'a>(defs: &'a Map<String, Value>, mut v: &'a Value) -> &'a Value {
     for _ in 0..32 {
-        match cur.get("$ref").and_then(Value::as_str).and_then(|r| r.strip_prefix("#/$defs/")).and_then(|n| defs.get(n))
-        {
-            Some(d) => cur = d.clone(),
+        match v.get("$ref").and_then(Value::as_str).and_then(|r| r.strip_prefix("#/$defs/")).and_then(|n| defs.get(n)) {
+            Some(d) => v = d,
             None => break,
         }
     }
-    cur
+    v
 }
 
-/// A schema and every schema it may defer to: `$ref` targets, `anyOf`/`oneOf`/`allOf` members and conditional
-/// branches (all of them: the lookup is by property name, not by instance).
-fn expand(defs: &Map<String, Value>, s: &Value, out: &mut Vec<Value>, depth: usize) {
+/// Every schema a schema may defer to: its `$ref` target, `anyOf`/`oneOf`/`allOf` members and conditional branches
+/// (all of them: the lookup is by property name, not by instance), recursively.
+fn expand<'a>(defs: &'a Map<String, Value>, s: &'a Value, out: &mut Vec<&'a Value>, depth: usize) {
     if depth > 16 {
         return;
     }
-    let s = resolve_ref(defs, s);
+    let s = deref(defs, s);
+    out.push(s);
     for k in ["anyOf", "oneOf", "allOf"] {
         if let Some(Value::Array(alts)) = s.get(k) {
             for a in alts {
@@ -655,7 +701,6 @@ fn expand(defs: &Map<String, Value>, s: &Value, out: &mut Vec<Value>, depth: usi
             expand(defs, b, out, depth + 1);
         }
     }
-    out.insert(0, s);
 }
 
 /// The schema bundle published for other consumers: every definition plus the object-type index.

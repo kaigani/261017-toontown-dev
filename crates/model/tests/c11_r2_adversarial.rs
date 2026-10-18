@@ -49,7 +49,10 @@ fn op(kind: &'static str, path: &str, from: Option<&str>, value: Option<Value>, 
 
 fn roundtrip_patch(before: Value, patch: Vec<change::PatchOp>) {
     let after = change::apply(&before, &patch).unwrap();
-    let inverse = change::invert(&patch);
+    // Amended by the builder in round 2 per the orchestrator's C11-R2-02 ruling ("inverses must be computed against
+    // the pre-state with resolved concrete indices (never `-`)"): the inverse is computed from `before`. The two
+    // assertions are unchanged.
+    let inverse = change::invert_against(&before, &patch).unwrap();
     assert_eq!(change::apply(&after, &inverse).unwrap(), before, "patch={patch:?}; inverse={inverse:?}");
 }
 

@@ -499,40 +499,72 @@ fn diff_into(a: &Value, b: &Value, path: &str, ty: ObjectType, out: &mut Vec<Pat
     }
 }
 
-/// The inverse of a patch: applied after the patch it restores the original exactly (10 §2.6).
+fn new_op(kind: &'static str, path: &str, from: Option<String>, value: Option<Value>, old: Option<Value>) -> PatchOp {
+    PatchOp { op: kind, from, path: path.to_owned(), range: None, value, old_value: old, elided: false }
+}
+
+/// The inverse of a patch computed against the state it applies to (10 §2.6; C11-R2-02): applying the patch to
+/// `before` and then the returned inverse restores `before` exactly. Every operation of the inverse uses concrete
+/// paths (an append `…/-` becomes the index it created; a `move` is resolved after its source was removed, so a
+/// shifted destination is restored where it really is) and carries `oldValue`, so the inverse is itself invertible.
+/// This is how change sets, undo and redo invert patches.
 ///
-/// `oldValue` on an `add`, `move` or `copy` records the object member the operation overwrote (RFC 6902 `add` over
-/// an existing member replaces it); the inverse puts it back. An operation whose inverse needs a value the patch
-/// does not carry (an elided value, a `remove` without `oldValue`) inverts to an operation without that value, which
-/// [`apply`] rejects: the caller must reread instead of writing a guess.
+/// # Errors
+/// As [`apply`]: the patch must apply to `before`.
+pub fn invert_against(before: &Value, patch: &[PatchOp]) -> Result<Vec<PatchOp>, ModelError> {
+    apply_with_inverse(before, patch).map(|(_, inverse)| inverse)
+}
+
+/// Applies a patch and returns the result together with its concrete inverse (see [`invert_against`]).
+///
+/// # Errors
+/// As [`apply`].
+pub fn apply_with_inverse(value: &Value, patch: &[PatchOp]) -> Result<(Value, Vec<PatchOp>), ModelError> {
+    let mut v = value.clone();
+    let mut steps: Vec<Vec<PatchOp>> = Vec::with_capacity(patch.len());
+    for op in patch {
+        steps.push(apply_op(&mut v, op)?);
+    }
+    Ok((v, steps.into_iter().rev().flatten().collect()))
+}
+
+/// The inverse of a patch without its pre-state (10 §2.6). Exact for **resolved** patches — concrete array indices
+/// and `oldValue` on every operation that overwrites — which is what [`diff_json`] and [`invert_against`] produce.
+///
+/// An operation whose inverse needs information the patch does not carry inverts to an operation [`apply`] refuses,
+/// never to a guess: an elided value, a `remove` without `oldValue`, an append (`…/-`: only the pre-state knows the
+/// index it created) and a `move` into an ancestor of its source. Use [`invert_against`] for unresolved patches.
 #[must_use]
 pub fn invert(patch: &[PatchOp]) -> Vec<PatchOp> {
-    let op = |kind: &'static str, path: &str, from: Option<String>, value: Option<Value>, old: Option<Value>| PatchOp {
-        op: kind,
-        from,
-        path: path.to_owned(),
-        range: None,
-        value,
-        old_value: old,
-        elided: false,
-    };
     let mut out = Vec::with_capacity(patch.len());
     for p in patch.iter().rev() {
         let mut inverse: Vec<PatchOp> = match (p.op, &p.old_value) {
-            ("add" | "copy", Some(old)) => vec![op("replace", &p.path, None, Some(old.clone()), p.value.clone())],
-            ("add" | "copy", None) if p.path.is_empty() => vec![op("replace", "", None, None, p.value.clone())],
-            ("add" | "copy", None) => vec![op("remove", &p.path, None, None, p.value.clone())],
-            ("remove", old) => vec![op("add", &p.path, None, old.clone(), None)],
+            ("add" | "copy", Some(old)) => vec![new_op("replace", &p.path, None, Some(old.clone()), p.value.clone())],
+            ("add" | "copy", None) if p.path.is_empty() => vec![new_op("replace", "", None, None, p.value.clone())],
+            // An append's `-` stays `-`; `apply` refuses to remove `-` (RFC 6902 §4.2), so this inverse fails loudly.
+            ("add" | "copy", None) => vec![new_op("remove", &p.path, None, None, p.value.clone())],
+            ("remove", old) => vec![new_op("add", &p.path, None, old.clone(), None)],
             ("replace", _) => vec![PatchOp {
                 // `to = from + max(|old|, |new|) − 1` is symmetric, so the range is unchanged.
                 range: p.range,
-                ..op("replace", &p.path, None, p.old_value.clone(), p.value.clone())
+                ..new_op("replace", &p.path, None, p.old_value.clone(), p.value.clone())
             }],
-            ("move", old) => {
-                let back = op("move", p.from.as_deref().unwrap_or_default(), Some(p.path.clone()), None, None);
-                match old {
-                    Some(o) => vec![back, op("add", &p.path, None, Some(o.clone()), None)],
-                    None => vec![back],
+            ("move", None) => {
+                vec![new_op("move", p.from.as_deref().unwrap_or_default(), Some(p.path.clone()), None, None)]
+            }
+            ("move", Some(old)) => {
+                // The destination was an object member, so its overwrite shifted nothing. Copy the moved value back
+                // to its source first (that insertion may shift the destination's own path), then restore the
+                // destination's old value at its shifted path. A source inside the destination cannot be restored
+                // without the pre-state: moving the destination into its own descendant is refused by `apply`.
+                let from = p.from.clone().unwrap_or_default();
+                if from.starts_with(&format!("{}/", p.path)) {
+                    vec![new_op("move", &from, Some(p.path.clone()), None, None)]
+                } else {
+                    vec![
+                        new_op("copy", &from, Some(p.path.clone()), None, None),
+                        new_op("replace", &shift_after_insert(&p.path, &from), None, Some(old.clone()), None),
+                    ]
                 }
             }
             _ => Vec::new(),
@@ -547,14 +579,23 @@ pub fn invert(patch: &[PatchOp]) -> Vec<PatchOp> {
     out
 }
 
-fn window_len(v: &Value) -> usize {
-    match v {
-        Value::String(s) => s.chars().count(),
-        Value::Array(runs) => {
-            runs.iter().filter_map(|r| r.get(1).and_then(Value::as_u64)).map(|n| usize::try_from(n).unwrap_or(0)).sum()
-        }
-        _ => 0,
+/// `path` after an element was inserted at the array position `inserted`: indices at or after the insertion point
+/// in the same array move up by one.
+fn shift_after_insert(path: &str, inserted: &str) -> String {
+    let (Ok(p), Ok(ins)) = (pointer::parse(path), pointer::parse(inserted)) else { return path.to_owned() };
+    let Some((last, parent)) = ins.split_last() else { return path.to_owned() };
+    let Some(at) = pointer::array_index(last) else { return path.to_owned() };
+    if p.len() <= parent.len() || p.get(..parent.len()) != Some(parent) {
+        return path.to_owned();
     }
+    let mut tokens = p;
+    if let Some(t) = tokens.get_mut(parent.len())
+        && let Some(i) = pointer::array_index(t)
+        && i >= at
+    {
+        *t = (i + 1).to_string();
+    }
+    pointer::join(&tokens)
 }
 
 fn patch_err(op: &PatchOp, msg: impl Into<String>) -> ModelError {
@@ -568,15 +609,15 @@ fn parent_and_last(path: &str) -> Result<(Vec<String>, String), ModelError> {
 }
 
 /// RFC 6902 `add` semantics at `path` (the root is replaced; an object member is added or replaced; an array element
-/// is inserted). `oldValue`, when the operation carries one, must be exactly the value overwritten, so the patch
-/// inverts exactly; an insertion that overwrites nothing must not carry one.
-fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<(), ModelError> {
+/// is inserted, `-` appending). `oldValue`, when the operation carries one, must be exactly the value overwritten;
+/// an insertion that overwrites nothing must not carry one. Returns the concrete inverse of the insertion.
+fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<Vec<PatchOp>, ModelError> {
     if path.is_empty() {
         if op.old_value.as_ref().is_some_and(|o| o != root) {
             return Err(patch_err(op, "oldValue does not match the replaced document"));
         }
-        *root = value;
-        return Ok(());
+        let old = std::mem::replace(root, value.clone());
+        return Ok(vec![new_op("replace", "", None, Some(old), Some(value))]);
     }
     let (parent, last) = parent_and_last(path)?;
     match pointer::get_mut(root, &parent) {
@@ -584,8 +625,10 @@ fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<()
             if op.old_value.is_some() && m.get(&last) != op.old_value.as_ref() {
                 return Err(patch_err(op, "oldValue does not match the overwritten member"));
             }
-            m.insert(last, value);
-            Ok(())
+            Ok(match m.insert(last, value.clone()) {
+                Some(old) => vec![new_op("replace", path, None, Some(old), Some(value))],
+                None => vec![new_op("remove", path, None, None, Some(value))],
+            })
         }
         Some(Value::Array(_)) if op.old_value.is_some() => {
             Err(patch_err(op, "an array insertion overwrites nothing and carries no oldValue"))
@@ -599,8 +642,10 @@ fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<()
             if i > a.len() {
                 return Err(patch_err(op, "array index out of range"));
             }
-            a.insert(i, value);
-            Ok(())
+            a.insert(i, value.clone());
+            let mut at = parent;
+            at.push(i.to_string());
+            Ok(vec![new_op("remove", &pointer::join(&at), None, None, Some(value))])
         }
         _ => Err(patch_err(op, format!("no container at `{path}`"))),
     }
@@ -620,32 +665,58 @@ fn take(root: &mut Value, path: &str, op: &PatchOp) -> Result<Value, ModelError>
     }
 }
 
+/// Validates and applies a range replace (C11-R2-03): `value` and `oldValue` must have the target's form (strings of
+/// mouth letters for a mouth string, exposure runs for exposure), the range must be `from ≥ 1`,
+/// `to = from + max(|old|, |new|) − 1`, and `oldValue` must be exactly the content of the window it replaces.
 fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
     let r = op.range.ok_or_else(|| patch_err(op, "range missing"))?;
-    if op.value.is_none() || op.old_value.is_none() {
+    let (Some(value), Some(old)) = (op.value.as_ref(), op.old_value.as_ref()) else {
         return Err(patch_err(op, "a range replace needs value and oldValue"));
+    };
+    if r.from < 1 {
+        return Err(patch_err(op, "range.from is a frame (≥ 1)"));
     }
-    let start = (r.from as usize).saturating_sub(1);
-    let old_len = op.old_value.as_ref().map_or(0, window_len);
+    let start = (r.from as usize) - 1;
+    let check_to = |old_len: usize, new_len: usize| {
+        let len = old_len.max(new_len).max(1);
+        if u64::from(r.to) + 1 == u64::from(r.from) + len as u64 {
+            Ok(())
+        } else {
+            Err(patch_err(op, format!("range.to must be from + {len} − 1 for these values")))
+        }
+    };
     match target {
         Value::String(s) => {
-            let mut chars: Vec<char> = s.chars().collect();
-            if start > chars.len() {
-                return Err(patch_err(op, "range starts after the end"));
+            let (Value::String(new), Value::String(old)) = (value, old) else {
+                return Err(patch_err(op, "a mouth-string range replace takes string value and oldValue"));
+            };
+            let old: Vec<char> = old.chars().collect();
+            let new: Vec<char> = new.chars().collect();
+            if new.iter().any(|c| !"ABCDEFGX".contains(*c)) {
+                return Err(patch_err(op, "a mouth-string value holds only the mouth letters A–G and X (10 §4.14)"));
             }
-            let end = (start + old_len).min(chars.len());
-            let new: Vec<char> = op.value.as_ref().and_then(Value::as_str).unwrap_or("").chars().collect();
-            chars.splice(start..end, new);
+            check_to(old.len(), new.len())?;
+            let mut chars: Vec<char> = s.chars().collect();
+            if chars.get(start..start + old.len()) != Some(old.as_slice()) {
+                return Err(patch_err(op, "oldValue is not the current content of the range"));
+            }
+            chars.splice(start..start + old.len(), new);
             *s = chars.into_iter().collect();
             Ok(())
         }
         Value::Array(_) => {
             let mut frames = expand_runs(target).ok_or_else(|| patch_err(op, "not exposure runs"))?;
-            let new = op.value.as_ref().and_then(expand_runs).ok_or_else(|| patch_err(op, "value is not runs"))?;
-            if frames.len() < start + old_len {
-                frames.resize(start + old_len, Value::Null);
+            let new = expand_runs(value).ok_or_else(|| patch_err(op, "value is not exposure runs"))?;
+            let old = expand_runs(old).ok_or_else(|| patch_err(op, "oldValue is not exposure runs"))?;
+            check_to(old.len(), new.len())?;
+            // Frames past the end are blank (10 §4.7).
+            if frames.len() < start + old.len() {
+                frames.resize(start + old.len(), Value::Null);
             }
-            frames.splice(start..start + old_len, new);
+            if frames.get(start..start + old.len()) != Some(old.as_slice()) {
+                return Err(patch_err(op, "oldValue is not the current content of the range"));
+            }
+            frames.splice(start..start + old.len(), new);
             let runs: Vec<ExposureRun> =
                 serde_json::from_value(frames_to_runs(&frames)).map_err(|e| patch_err(op, e.to_string()))?;
             *target =
@@ -656,68 +727,84 @@ fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
     }
 }
 
+/// Applies one operation and returns its concrete inverse against the state it was applied to.
+fn apply_op(v: &mut Value, op: &PatchOp) -> Result<Vec<PatchOp>, ModelError> {
+    // 10 §2.6: an elided value is unknown, never `null`; the receiver rereads the object instead.
+    if op.elided {
+        return Err(patch_err(op, "the operation's values were elided; reread the object instead of applying it"));
+    }
+    let value = || op.value.clone().ok_or_else(|| patch_err(op, format!("`{}` needs a value", op.op)));
+    // RFC 6902 §4.4/§4.5: `move` and `copy` name their source; a missing `from` is an error, not the root.
+    let from = || op.from.clone().ok_or_else(|| patch_err(op, format!("`{}` needs `from`", op.op)));
+    match op.op {
+        "add" => insert(v, &op.path, value()?, op),
+        "remove" => {
+            let old = take(v, &op.path, op)?;
+            Ok(vec![new_op("add", &op.path, None, Some(old), None)])
+        }
+        "replace" if op.range.is_some() => {
+            let tokens = pointer::parse(&op.path)?;
+            let target =
+                pointer::get_mut(v, &tokens).ok_or_else(|| patch_err(op, format!("nothing at `{}`", op.path)))?;
+            apply_range(target, op)?;
+            Ok(vec![PatchOp {
+                range: op.range,
+                ..new_op("replace", &op.path, None, op.old_value.clone(), op.value.clone())
+            }])
+        }
+        "replace" => {
+            let new = value()?;
+            let tokens = pointer::parse(&op.path)?;
+            let target =
+                pointer::get_mut(v, &tokens).ok_or_else(|| patch_err(op, format!("nothing at `{}`", op.path)))?;
+            let old = std::mem::replace(target, new.clone());
+            Ok(vec![new_op("replace", &op.path, None, Some(old), Some(new))])
+        }
+        "move" => {
+            let from = from()?;
+            if op.path.starts_with(&format!("{from}/")) {
+                return Err(patch_err(op, "cannot move a value into itself"));
+            }
+            if from.is_empty() || op.path.is_empty() {
+                return Err(patch_err(op, "`move` needs non-root paths"));
+            }
+            let item = take(v, &from, op)?;
+            // The destination is resolved after the source was removed (RFC 6902 §4.4); undo the insertion first,
+            // then put the value back at its source.
+            let mut inverse = insert(v, &op.path, item.clone(), op)?;
+            inverse.push(new_op("add", &from, None, Some(item), None));
+            Ok(inverse)
+        }
+        "copy" => {
+            let from = pointer::parse(&from()?)?;
+            let item = pointer::get(v, &from).cloned().ok_or_else(|| patch_err(op, "nothing to copy"))?;
+            insert(v, &op.path, item, op)
+        }
+        "test" => {
+            let expected = value()?;
+            let tokens = pointer::parse(&op.path)?;
+            if pointer::get(v, &tokens) != Some(&expected) {
+                return Err(ModelError::with_details(
+                    codes::PATCH_TEST_FAILED,
+                    format!("test failed at `{}`", op.path),
+                    json!({ "pointer": op.path }),
+                ));
+            }
+            Ok(Vec::new())
+        }
+        other => Err(patch_err(op, format!("unknown operation `{other}`"))),
+    }
+}
+
 /// Applies a patch to a JSON value (RFC 6902 plus the range form). All-or-nothing: on error the input is returned
 /// unchanged through the error path.
 ///
 /// # Errors
-/// `arg.invalid` (with `details.pointer`) for a path that does not exist; `doc.patchTestFailed` for a failing `test`.
+/// `arg.invalid` (with `details.pointer`) for a path that does not exist, a missing `value` or `from`, an elided
+/// operation, an `oldValue` that is not what the operation overwrites, or a malformed range operation;
+/// `doc.patchTestFailed` for a failing `test`.
 pub fn apply(value: &Value, patch: &[PatchOp]) -> Result<Value, ModelError> {
-    let mut v = value.clone();
-    for op in patch {
-        // 10 §2.6: an elided value is unknown, never `null`; the receiver rereads the object instead.
-        if op.elided {
-            return Err(patch_err(op, "the operation's values were elided; reread the object instead of applying it"));
-        }
-        let value = || op.value.clone().ok_or_else(|| patch_err(op, format!("`{}` needs a value", op.op)));
-        match op.op {
-            "add" => insert(&mut v, &op.path, value()?, op)?,
-            "remove" => {
-                take(&mut v, &op.path, op)?;
-            }
-            "replace" if op.range.is_some() => {
-                let tokens = pointer::parse(&op.path)?;
-                let target = pointer::get_mut(&mut v, &tokens)
-                    .ok_or_else(|| patch_err(op, format!("nothing at `{}`", op.path)))?;
-                apply_range(target, op)?;
-            }
-            "replace" => {
-                let new = value()?;
-                let tokens = pointer::parse(&op.path)?;
-                let target = pointer::get_mut(&mut v, &tokens)
-                    .ok_or_else(|| patch_err(op, format!("nothing at `{}`", op.path)))?;
-                *target = new;
-            }
-            "move" => {
-                let from = op.from.clone().unwrap_or_default();
-                if op.path.starts_with(&format!("{from}/")) {
-                    return Err(patch_err(op, "cannot move a value into itself"));
-                }
-                if from.is_empty() || op.path.is_empty() {
-                    return Err(patch_err(op, "`move` needs non-root paths"));
-                }
-                let item = take(&mut v, &from, op)?;
-                insert(&mut v, &op.path, item, op)?;
-            }
-            "copy" => {
-                let from = pointer::parse(op.from.as_deref().unwrap_or_default())?;
-                let item = pointer::get(&v, &from).cloned().ok_or_else(|| patch_err(op, "nothing to copy"))?;
-                insert(&mut v, &op.path, item, op)?;
-            }
-            "test" => {
-                let expected = value()?;
-                let tokens = pointer::parse(&op.path)?;
-                if pointer::get(&v, &tokens) != Some(&expected) {
-                    return Err(ModelError::with_details(
-                        codes::PATCH_TEST_FAILED,
-                        format!("test failed at `{}`", op.path),
-                        json!({ "pointer": op.path }),
-                    ));
-                }
-            }
-            other => return Err(patch_err(op, format!("unknown operation `{other}`"))),
-        }
-    }
-    Ok(v)
+    apply_with_inverse(value, patch).map(|(v, _)| v)
 }
 
 /// Replaces values and old values larger than [`ELIDE_BYTES`] by `elided: true` (events and `doc.diff`).
@@ -744,4 +831,63 @@ pub fn summary(changes: &[Change]) -> BTreeMap<String, usize> {
         *m.entry(format!("{}.{:?}", c.ty, c.op)).or_insert(0) += 1;
     }
     m
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn op(kind: &'static str, path: &str, from: Option<&str>, value: Option<Value>, old: Option<Value>) -> PatchOp {
+        PatchOp { from: from.map(str::to_owned), ..new_op(kind, path, None, value, old) }
+    }
+
+    fn range(value: Value, old: Value, from: u32, to: u32) -> PatchOp {
+        PatchOp { range: Some(FrameRange { from, to }), ..op("replace", "/m", None, Some(value), Some(old)) }
+    }
+
+    #[test]
+    fn range_replace_checks_types_window_and_bounds() {
+        let doc = json!({"m": "ABC"});
+        assert_eq!(apply(&doc, &[range(json!("X"), json!("B"), 2, 2)]).unwrap(), json!({"m": "AXC"}));
+        for bad in [
+            range(json!(42), json!("B"), 2, 2),     // value of the wrong type
+            range(json!("X"), json!(7), 2, 2),      // oldValue of the wrong type
+            range(json!("X"), json!("C"), 2, 2),    // oldValue is not the window's content
+            range(json!("X"), json!("B"), 2, 3),    // `to` inconsistent with the values
+            range(json!("X"), json!("B"), 0, 0),    // frame 0
+            range(json!("Z"), json!("B"), 2, 2),    // not a mouth letter
+            range(json!("XX"), json!("BCD"), 2, 4), // window past the end
+        ] {
+            assert!(apply(&doc, std::slice::from_ref(&bad)).is_err(), "{bad:?}");
+        }
+        let runs = json!({"m": [["a", 2], ["b", 1]]});
+        let ok = range(json!([["c", 1]]), json!([["a", 1]]), 2, 2);
+        assert_eq!(apply(&runs, std::slice::from_ref(&ok)).unwrap(), json!({"m": [["a", 1], ["c", 1], ["b", 1]]}));
+        assert!(apply(&runs, &[range(json!("X"), json!([["a", 1]]), 2, 2)]).is_err());
+        assert!(apply(&runs, &[range(json!([["c", 1]]), json!([["b", 1]]), 2, 2)]).is_err());
+    }
+
+    #[test]
+    fn move_and_copy_need_from() {
+        for kind in ["move", "copy"] {
+            assert!(apply(&json!({"a": 1}), &[op(kind, "/b", None, None, None)]).is_err(), "{kind}");
+        }
+        assert_eq!(
+            apply(&json!({"a": 1}), &[op("copy", "/b", Some(""), None, None)]).unwrap(),
+            json!({"a": 1, "b": {"a": 1}})
+        );
+    }
+
+    #[test]
+    fn inverse_against_pre_state_is_concrete() {
+        let doc = json!({"a": [1, 2], "o": {"x": 1}});
+        let patch =
+            [op("add", "/a/-", None, Some(json!(3)), None), op("move", "/o/x", Some("/a/0"), None, Some(json!(1)))];
+        let (after, inverse) = apply_with_inverse(&doc, &patch).unwrap();
+        assert_eq!(inverse[0].path, "/o/x");
+        assert!(inverse.iter().all(|o| !o.path.ends_with("/-")), "{inverse:?}");
+        assert_eq!(apply(&after, &inverse).unwrap(), doc);
+        // Stateless inversion refuses what it cannot resolve instead of guessing.
+        assert!(apply(&after, &invert(&patch[..1])).is_err());
+    }
 }

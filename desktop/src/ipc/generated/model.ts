@@ -1907,7 +1907,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
         type: "object",
         additionalProperties: false,
         patternProperties: {
-          "^[1-9][0-9]*$": {
+          "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$": {
             type: "string",
             maxLength: 10000,
           },
@@ -4622,7 +4622,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
         type: "object",
         additionalProperties: false,
         patternProperties: {
-          "^\\d+$": {
+          "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$": {
             type: "string",
           },
         },
@@ -4644,6 +4644,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
         "x-derived": true,
         readOnly: true,
+        "x-since": "1.0",
       },
     },
     required: [
@@ -6737,15 +6738,19 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       id: {
         $ref: "#/$defs/Id",
+        "x-since": "1.0",
       },
       colourId: {
         $ref: "#/$defs/Id",
+        "x-since": "1.0",
       },
       type: {
         $ref: "#/$defs/ObjectType",
+        "x-since": "1.0",
       },
       name: {
         type: "string",
+        "x-since": "1.0",
       },
     },
     required: [

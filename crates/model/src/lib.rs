@@ -51,5 +51,6 @@ pub const MILESTONE: &str = "M1 (C1.1)";
 /// and by `app.info.get` (01); every schema carries it as `x-since` baseline.
 pub const FORMAT_VERSION: &str = "1.0";
 
-/// Maximum nesting depth of JSON accepted or written by the model (objects and arrays).
+/// Maximum depth of JSON written by the model's writers (the root value at 1, scalars counted; equal to
+/// [`json_text::MAX_TEXT_DEPTH`](crate::json_text::MAX_TEXT_DEPTH), so everything written is readable).
 pub const MAX_JSON_DEPTH: usize = 128;

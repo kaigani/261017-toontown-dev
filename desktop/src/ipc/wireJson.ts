@@ -247,6 +247,16 @@ function wantsDouble(schema: Schema, value: unknown, defs: Defs, depth: number):
   const type = ownSchema(s, 'type') as unknown;
   const types: unknown[] = typeof type === 'string' ? [type] : Array.isArray(type) ? type : [];
   if (types.includes('number') && !types.includes('integer')) return true;
+  // Every `allOf` member applies (C11-R2-05): a double if one asks for it and none insists on an integer.
+  const all = ownSchema(s, 'allOf') as unknown;
+  if (Array.isArray(all)) {
+    const members = all as Schema[];
+    const integer = members.some((m) => {
+      const t = ownSchema(deref(m, defs) as SchemaObject, 'type') as unknown;
+      return t === 'integer' || (Array.isArray(t) && t.includes('integer') && !t.includes('number'));
+    });
+    if (!integer && members.some((m) => wantsDouble(m, value, defs, depth + 1))) return true;
+  }
   for (const key of ['anyOf', 'oneOf'] as const) {
     const alts = ownSchema(s, key) as unknown;
     if (Array.isArray(alts)) {
@@ -275,9 +285,23 @@ function applicable(
   const s = deref(schema, defs) as SchemaObject;
   if (typeof s === 'boolean') return;
   out.push(s);
-  for (const k of ['anyOf', 'oneOf', 'allOf'] as const) {
+  const all = ownSchema(s, 'allOf') as unknown;
+  if (Array.isArray(all)) for (const a of all as Schema[]) applicable(a, defs, container, out, depth + 1);
+  // Only the `anyOf`/`oneOf` alternatives the container matches apply (C11-R2-05): as parsed, or with its digit-only
+  // bigints read as doubles (a double branch cannot match before coercion). An unrelated double branch therefore
+  // never converts an integer that another branch accepts.
+  for (const k of ['anyOf', 'oneOf'] as const) {
     const alts = ownSchema(s, k) as unknown;
-    if (Array.isArray(alts)) for (const a of alts as Schema[]) applicable(a, defs, container, out, depth + 1);
+    if (!Array.isArray(alts)) continue;
+    let asDoubles: unknown;
+    for (const a of alts as Schema[]) {
+      if (violations(a, container, '', defs).length === 0) {
+        applicable(a, defs, container, out, depth + 1);
+        continue;
+      }
+      asDoubles ??= bigintsAsNumbers(container, 0);
+      if (violations(a, asDoubles, '', defs).length === 0) applicable(a, defs, container, out, depth + 1);
+    }
   }
   const cond = ownSchema(s, 'if');
   if (cond !== undefined) {
@@ -301,6 +325,18 @@ function memberSchemas(schemas: SchemaObject[], key: string | number): Schema[] 
       const sub = prop ?? (typeof ap === 'boolean' ? undefined : ap);
       if (sub !== undefined) out.push(sub);
     }
+  }
+  return out;
+}
+
+/** A copy of a parsed value with every `bigint` read as a double (only to test which alternative applies). */
+function bigintsAsNumbers(value: unknown, depth: number): unknown {
+  if (typeof value === 'bigint') return Number(value);
+  if (depth > MAX_DEPTH || typeof value !== 'object' || value === null) return value;
+  if (Array.isArray(value)) return value.map((v: unknown) => bigintsAsNumbers(v, depth + 1));
+  const out: object = {};
+  for (const k of Object.keys(value)) {
+    defineKey(out, k, bigintsAsNumbers(Object.getOwnPropertyDescriptor(value, k)?.value, depth + 1));
   }
   return out;
 }

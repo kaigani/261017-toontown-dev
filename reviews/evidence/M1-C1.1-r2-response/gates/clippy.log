@@ -1,0 +1,6 @@
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\mcp)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\engine)
+    Checking tt-model v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\model)
+    Checking tt-desktop v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop\src-tauri)
+    Checking tt-headless v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\bins\headless)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.12s

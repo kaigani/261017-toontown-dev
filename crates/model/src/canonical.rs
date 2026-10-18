@@ -175,10 +175,13 @@ fn write_value(out: &mut String, v: &Value, level: usize, depth: usize) -> Resul
 /// Writes a JSON value in canonical form (JSON-01…JSON-03), keeping the key order of `value`.
 ///
 /// # Errors
-/// `arg.invalid` for a non-finite number; `doc.limitExceeded` for nesting deeper than [`crate::MAX_JSON_DEPTH`].
+/// `arg.invalid` for a non-finite number; `doc.limitExceeded` for a value deeper than [`crate::MAX_JSON_DEPTH`]
+/// (the root at depth 1, scalars counted: exactly what [`crate::json_text`] reads).
 pub fn to_canonical_string(value: &Value) -> Result<String, ModelError> {
     let mut out = String::new();
-    write_value(&mut out, value, 0, 0)?;
+    // Depth is counted as the readers count it (`json_text`, the front end): the root value at 1, scalars included,
+    // so every text a writer emits is readable (C11-R2-07).
+    write_value(&mut out, value, 0, 1)?;
     out.push('\n');
     Ok(out)
 }
@@ -495,7 +498,7 @@ pub fn to_compact_string(value: &Value) -> Result<String, ModelError> {
         Ok(())
     }
     let mut out = String::new();
-    go(&mut out, value, 0)?;
+    go(&mut out, value, 1)?;
     Ok(out)
 }
 

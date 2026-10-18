@@ -148,6 +148,7 @@ fn structural(s: &Value) -> bool {
                 || m.contains_key("items")
                 || m.contains_key("prefixItems")
                 || m.get("additionalProperties").is_some_and(Value::is_object)
+                || m.contains_key("patternProperties")
                 || m.get("type")
                     .is_some_and(|t| t != "object" && t.as_array().is_none_or(|a| !a.contains(&"object".into())))
                 || m.contains_key("const")
@@ -171,6 +172,14 @@ fn child_schemas<'a>(cands: &[&'a Value], key: &str, index: Option<usize>) -> Ve
             && !s.is_boolean()
         {
             out.push(s);
+        }
+        // Pattern maps (cell notes, mouth labels) declare their values too (C11-R2-10). Every pattern's schema is a
+        // candidate: the generated maps have one pattern each, and validation rejects keys that match none.
+        if index.is_none()
+            && c.get("properties").and_then(|p| p.get(key)).is_none()
+            && let Some(Value::Object(pp)) = c.get("patternProperties")
+        {
+            out.extend(pp.values().filter(|s| !s.is_boolean()));
         }
     }
     out

@@ -1,6 +1,7 @@
 # ADR-0011 — Canonical JSON, schemas and change sets
 
-Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 3, 5, 7, 8).
+Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 3, 5, 7, 8) and round 2
+(2026-10-18: decisions 5, 7, 8).
 Spec: 10 §2.6–§2.8, §6.5 (JSON-01…05), §9, §10.4.
 
 ## Context
@@ -50,7 +51,12 @@ definitions the application validates with; 10 §2.6 for change sets that can be
    `x-objectType` and **every property** carries `x-since` (C11-R1-13); the envelope `type` is `readOnly`; `x-unit`,
    `x-command` (checked against `spec/A_command_registry.md` by a test) and `x-ref` annotate fields.
    `schema::property_schema` resolves any JSON Pointer through `$ref`s, alternatives, conditional branches, tuple
-   positions, array items and map values (C11-R1-19). Validation uses the `jsonschema` crate **0.59** (draft
+   positions, array items, map and pattern-map values (C11-R1-19). It keeps every candidate schema down the path,
+   so a field declared only in a kind rule (an effect's typed `params`) is found, and merges the final candidates
+   with a declaration's own annotations before the referenced definition's keywords, so `readOnly`/`x-since`
+   beside a `$ref` survive (C11-R2-06). Every property carries `x-since`, including those added after generation
+   (`MouthTrack.stale`; the pass runs last, C11-R2-11). Frame-keyed maps (`cellNotes`, mouth-track `labels`)
+   accept only keys 1–2 147 483 647 (`schema::FRAME_KEY_PATTERN`, 10 §1.1, §4.7, §4.14; C11-R2-08). Validation uses the `jsonschema` crate **0.59** (draft
    2020-12, default features off); MIT-0, which its dependency tree needs, was accepted on 2026-10-18 (ADR-0003,
    C11-R1-18). The upgrade fixes the reproduced integer `multipleOf` rounding of 0.18.3.
 6. **Publication.** `crates/model/schema/model-1.0.schema.json` (all definitions, kept current by a test),
@@ -61,10 +67,21 @@ definitions the application validates with; 10 §2.6 for change sets that can be
    membership and order of a child collection produce `add`/`remove`/`move` operations on the parent — only at the
    type's declared child-list slots; any other array, in particular inside opaque `meta`/`ext`, is an ordinary value
    (C11-R1-03). Every operation carries `oldValue`; an `add`, `move` or `copy` that overwrites an object member
-   carries the overwritten value as `oldValue` and `apply` checks it, so `invert` restores it (C11-R1-04). `apply`
-   refuses an operation whose value is missing or elided (an elided value is unknown, never `null`: the consumer
-   rereads) and supports RFC 6902 root `add`/`replace`; whether `doc.object.patch` may replace a whole object is a
-   command decision (C1.2). Exposure and mouth-track edits use one range
+   carries the overwritten value as `oldValue` and `apply` checks it (C11-R1-04). **Inversion is computed against
+   the pre-state** (C11-R2-02): `change::apply_with_inverse` / `invert_against` apply each operation and record its
+   inverse against the state that operation saw, with concrete paths only — an append `…/-` inverts to the index it
+   created, a `move`'s destination is resolved after its source was removed and undone before the source is
+   restored — and `oldValue` on every inverse operation, so inverses are themselves invertible. A property test
+   checks `apply(after, invert_against(before, p)) = before` and the double inverse over random RFC 6902 sequences
+   (appends, overwrites, nested-array moves, copies, tests) on random documents. Stateless `invert` remains for
+   resolved patches (what `diff_json` and `invert_against` produce); for an append or a move into the source's
+   ancestor it returns an operation `apply` refuses, never a guess. `apply` refuses an operation whose value is
+   missing or elided (an elided value is unknown, never `null`: the consumer rereads), a `move`/`copy` without
+   `from` (RFC 6902 §4.4/§4.5; C11-R2-04), and a malformed range replace: `value`/`oldValue` of the target's form
+   (mouth letters A–G, X for a mouth string; runs for exposure), `from ≥ 1`, `to` consistent with the values, and
+   `oldValue` equal to the window's current content (C11-R2-03). It supports RFC 6902 root `add`/`replace`;
+   whether `doc.object.patch` may replace a whole object is a command decision (C1.2). Exposure and mouth-track
+   edits use one range
    operation: `{op: "replace", path, range: {from, to}, value, oldValue}` where frames from `from` covered by
    `oldValue` are replaced by `value` and `to = from + max(|old|, |new|) − 1`. Entries shared by two snapshots (same
    `Arc`) are skipped, so a diff costs what changed. Values over 64 KiB are elided in events (`elide`).
@@ -80,5 +97,7 @@ definitions the application validates with; 10 §2.6 for change sets that can be
   object and element type, and by property tests over generated entities; equal documents built in different orders
   are byte-identical too.
 - Front end and engine produce identical number text, so canonical JSON can be produced on either side.
-- Nesting limits nest: objects ≤ 100 levels (model input), text ≤ 128 (both readers), writers ≤ 128 below the
-  root; an accepted object can always be written, wrapped in a reply and read back (C11-R1-09).
+- Nesting limits nest: objects ≤ 100 levels (model input); text ≤ 128 for both readers **and** both writers, all
+  counting the root value as depth 1 and scalars included, so anything written can be read back (C11-R1-09,
+  C11-R2-07). `canonical::to_value` (serialisation to a JSON value) checks nesting separately and is not a text
+  writer.

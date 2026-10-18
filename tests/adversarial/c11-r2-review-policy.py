@@ -27,7 +27,10 @@ class ReviewPolicy(unittest.TestCase):
                           "desktop/src/ipc/c11-r1-adversarial.test.ts",
                           "desktop/src/test", "tests/adversarial").splitlines())
         allowed = {"crates/model/tests/c11_r1_adversarial.rs",
-                   "crates/engine/tests/c11_r1_wire.rs"}
+                   "crates/engine/tests/c11_r1_wire.rs",
+                   # Amended by the builder in round 2 per the orchestrator's C11-R2-01 ruling (2026-10-18): the
+                   # guards.mjs MIT-0 edit "is accepted retroactively" and is declared in the round-2 response.
+                   "tests/adversarial/guards.mjs"}
         self.assertFalse(changed - allowed, "C11-R2-01: unauthorized reviewer-test edit: " + str(changed - allowed))
 
     def test_claimed_response_raw_logs_are_committed(self):
