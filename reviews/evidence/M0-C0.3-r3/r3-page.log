@@ -1,0 +1,36 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c03-r3/desktop
+
+ ❯ src/test/c03-r3-page.test.tsx (2 tests | 1 failed) 136ms
+   × C03-R3-01: completed 0.1 Hz phase is accepted even with one recorded pan frame 55ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  06:11:51
+   Duration  1.05s (environment 58%, tests 14%, transform 12%, setup 11%, import 5%)
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c03-r3-page.test.tsx > C03-R3-01: completed 0.1 Hz phase is accepted even with one recorded pan frame
+AssertionError: error: run 0 (webgl2/paths100k): pan/zoom frames missing
+: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ src/test/c03-r3-page.test.tsx:167:30
+    165|   }
+    166|   const r = analyze(log);
+    167|   expect(r.status, r.stderr).toBe(0);
+       |                              ^
+    168| });
+    169|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

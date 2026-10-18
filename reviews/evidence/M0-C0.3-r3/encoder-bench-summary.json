@@ -1,0 +1,9 @@
+{
+  "beforeMs": 3.17885,
+  "afterMs": 3.29375,
+  "changePercent": 3.614514682982839,
+  "samples": 80,
+  "warmupPairs": 20,
+  "alternatingOrder": true,
+  "sceneBytes": 10085716
+}

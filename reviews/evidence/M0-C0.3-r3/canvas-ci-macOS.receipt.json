@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python",
+    "scripts/analyse-canvas-log.py",
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r3\\target\\review-r3\\desktop-artifacts\\desktop-macOS\\canvas-spike-macOS.json",
+    "--json",
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r3\\reviews\\evidence\\M0-C0.3-r3\\canvas-ci-macOS.analysis.json"
+  ],
+  "exitCode": 0,
+  "seconds": 0.03999829292297363
+}

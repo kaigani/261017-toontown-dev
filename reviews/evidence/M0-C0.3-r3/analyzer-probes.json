@@ -1,0 +1,226 @@
+[
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header groups = 993 differs from the groups1k workload (1000)",
+    "name": "compensating-groups-paths--1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header groups = 1007 differs from the groups1k workload (1000)",
+    "name": "compensating-groups-paths-1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header groups = 999 differs from the groups1k workload (1000)",
+    "name": "compensating-groups-points--1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header groups = 1001 differs from the groups1k workload (1000)",
+    "name": "compensating-groups-points-1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header groups = 999 differs from the groups1k workload (1000)",
+    "name": "compensating-groups-verbs--1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header groups = 1001 differs from the groups1k workload (1000)",
+    "name": "compensating-groups-verbs-1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header paths = 19998 differs from the groups1k workload (20000)",
+    "name": "compensating-paths-points--1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header paths = 20002 differs from the groups1k workload (20000)",
+    "name": "compensating-paths-points-1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header paths = 19999 differs from the groups1k workload (20000)",
+    "name": "compensating-paths-verbs--1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header paths = 20001 differs from the groups1k workload (20000)",
+    "name": "compensating-paths-verbs-1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header points = 169999 differs from the groups1k workload (170000)",
+    "name": "compensating-points-verbs--1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 1 (webgpu/groups1k): transfer 0 header points = 170001 differs from the groups1k workload (170000)",
+    "name": "compensating-points-verbs-1",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): transfer 0 header groups = 2 differs from the paths100k workload (1)",
+    "name": "off-by-one-consistent-length-groups",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): transfer 0 header paths = 100001 differs from the paths100k workload (100000)",
+    "name": "off-by-one-consistent-length-paths",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): transfer 0 header points = 700001 differs from the paths100k workload (700000)",
+    "name": "off-by-one-consistent-length-points",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): transfer 0 header verbs = 300001 differs from the paths100k workload (300000)",
+    "name": "off-by-one-consistent-length-verbs",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): transfer 0 header describes another scene, seed or frame",
+    "name": "seed1-header-from-groups1k-in-paths100k",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: seed 2 not in the supported workload table (supported: 1)",
+    "name": "unsupported-seed",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 0,
+    "stdoutBytes": 3696,
+    "stderr": "",
+    "name": "v1-current-fast-control",
+    "expected": "accept",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): phase spans missing (log version 2)",
+    "name": "missing-phases",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): idle phase span missing or malformed",
+    "name": "missing-idle",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): idle phase lasted -1000.1 ms, shorter than the declared 1000 ms (incomplete run)",
+    "name": "reversed-idle",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): idle phase lasted 900.1 ms, shorter than the declared 1000 ms (incomplete run)",
+    "name": "shorter-than-samples-idle",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): panZoom phase span missing or malformed",
+    "name": "missing-panZoom",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): panZoom phase lasted -10016.5 ms, shorter than the declared 10000 ms (incomplete run)",
+    "name": "reversed-panZoom",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): panZoom phase lasted 9916.5 ms, shorter than the declared 10000 ms (incomplete run)",
+    "name": "shorter-than-samples-panZoom",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): panZoom samples do not cover their phase span (truncated or extended)",
+    "name": "early-frames-intact-10s-claim",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  },
+  {
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgpu/paths100k): panZoom phase lasted 1666.5 ms, shorter than the declared 10000 ms (incomplete run)",
+    "name": "early-frames-and-early-span",
+    "expected": "reject-empty-stdout",
+    "pass": true
+  }
+]
