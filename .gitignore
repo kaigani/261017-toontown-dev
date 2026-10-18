@@ -1,0 +1,17 @@
+# Rust
+target/
+**/*.rs.bk
+# Node
+node_modules/
+dist/
+.pnpm-store/
+# Tauri
+desktop/src-tauri/gen/
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+# Local
+*.log
+.env
