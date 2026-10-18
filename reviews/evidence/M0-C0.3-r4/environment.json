@@ -1,0 +1,59 @@
+{
+  "platform": "Windows-11-10.0.26200-SP0",
+  "commands": [
+    {
+      "command": [
+        "rustc",
+        "--version"
+      ],
+      "output": "rustc 1.98.1 (48a229cea 2026-09-01)"
+    },
+    {
+      "command": [
+        "cargo",
+        "deny",
+        "--version"
+      ],
+      "output": "cargo-deny 0.20.2"
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "output": "v22.23.2"
+    },
+    {
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm --version"
+      ],
+      "output": "10.12.1"
+    },
+    {
+      "command": [
+        "python",
+        "--version"
+      ],
+      "output": "Python 3.13.1"
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "output": "18c57fe7c096d9a3162772681feeaedccc83ad93"
+    },
+    {
+      "command": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "output": "review/m0-c03-r4"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "job": "check (windows-latest)",
+    "frontendFiles": 30,
+    "allFrontendSuitesPresent": true,
+    "missing": []
+  },
+  {
+    "job": "check (macos-latest)",
+    "frontendFiles": 30,
+    "allFrontendSuitesPresent": true,
+    "missing": []
+  },
+  {
+    "job": "raster determinism (windows-latest)",
+    "fixedConfigurationsSuitePassed": true
+  },
+  {
+    "job": "raster determinism (macos-latest)",
+    "fixedConfigurationsSuitePassed": true
+  },
+  {
+    "job": "raster determinism (ubuntu-latest)",
+    "fixedConfigurationsSuitePassed": true
+  }
+]

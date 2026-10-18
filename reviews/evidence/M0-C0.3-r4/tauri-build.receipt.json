@@ -1,0 +1,5 @@
+{
+  "command": "pnpm --dir desktop tauri build --no-bundle -- --locked",
+  "exitCode": 0,
+  "seconds": 79.333
+}

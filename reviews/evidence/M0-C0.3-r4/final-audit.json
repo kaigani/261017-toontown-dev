@@ -1,0 +1,12 @@
+{
+  "receipts": 23,
+  "allReceiptExitCodesZero": true,
+  "rustPassed": 87,
+  "rustIgnored": 1,
+  "frontendPassed": 266,
+  "frontendExpectedFailures": 3,
+  "nodeLicenseTestsPassed": 9,
+  "localRasterEntriesMatched": 234,
+  "headlessChecksMatched": 5,
+  "productAndProtectedPathsUnchanged": true
+}

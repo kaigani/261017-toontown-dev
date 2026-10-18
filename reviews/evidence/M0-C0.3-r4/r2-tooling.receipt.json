@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python",
+    "-I",
+    "tests/adversarial/c03-r2-tooling.py"
+  ],
+  "exitCode": 0,
+  "seconds": 0.7178092002868652
+}

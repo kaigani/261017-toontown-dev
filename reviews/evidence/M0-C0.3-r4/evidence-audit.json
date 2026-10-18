@@ -1,0 +1,371 @@
+{
+  "goldens": 234,
+  "artifactPngsCompared": 1404,
+  "artifacts": [
+    {
+      "os": "Windows",
+      "process": 1,
+      "detected": "Avx512(Avx512 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "entries": 234
+    },
+    {
+      "os": "Windows",
+      "process": 2,
+      "detected": "Avx512(Avx512 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "entries": 234
+    },
+    {
+      "os": "macOS",
+      "process": 1,
+      "detected": "Neon(Neon { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "entries": 234
+    },
+    {
+      "os": "macOS",
+      "process": 2,
+      "detected": "Neon(Neon { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "entries": 234
+    },
+    {
+      "os": "Linux",
+      "process": 1,
+      "detected": "Avx2(Avx2 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "entries": 234
+    },
+    {
+      "os": "Linux",
+      "process": 2,
+      "detected": "Avx2(Avx2 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "entries": 234
+    }
+  ],
+  "priorRunSimd": [
+    {
+      "run": 39126106552,
+      "os": "Windows",
+      "detected": "Avx2(Avx2 { _private: () })"
+    },
+    {
+      "run": 39126106552,
+      "os": "macOS",
+      "detected": "Neon(Neon { _private: () })"
+    },
+    {
+      "run": 39126106552,
+      "os": "Linux",
+      "detected": "Avx512(Avx512 { _private: () })"
+    },
+    {
+      "run": 39126796883,
+      "os": "Windows",
+      "detected": "Avx2(Avx2 { _private: () })"
+    },
+    {
+      "run": 39126796883,
+      "os": "macOS",
+      "detected": "Neon(Neon { _private: () })"
+    },
+    {
+      "run": 39126796883,
+      "os": "Linux",
+      "detected": "Avx2(Avx2 { _private: () })"
+    }
+  ],
+  "f32Costs": [
+    {
+      "os": "Windows",
+      "level": "fallback",
+      "u8Ms": 11.9579,
+      "f32Ms": 11.8686,
+      "percent": -0.7467866431396741
+    },
+    {
+      "os": "Windows",
+      "level": "simd",
+      "u8Ms": 8.559199999999999,
+      "f32Ms": 9.139899999999999,
+      "percent": 6.784512571268353
+    },
+    {
+      "os": "macOS",
+      "level": "fallback",
+      "u8Ms": 6.650542,
+      "f32Ms": 6.981625,
+      "percent": 4.9782859803005675
+    },
+    {
+      "os": "macOS",
+      "level": "simd",
+      "u8Ms": 5.2222919999999995,
+      "f32Ms": 5.063458,
+      "percent": -3.041461488557129
+    },
+    {
+      "os": "Linux",
+      "level": "fallback",
+      "u8Ms": 7.992064999999999,
+      "f32Ms": 8.655795000000001,
+      "percent": 8.30486238537853
+    },
+    {
+      "os": "Linux",
+      "level": "simd",
+      "u8Ms": 4.981151,
+      "f32Ms": 5.711972,
+      "percent": 14.671729485815632
+    }
+  ],
+  "areaExtrapolation": {
+    "1280x720": [
+      24.2578125,
+      16.875,
+      65.0390625
+    ],
+    "1920x1080": [
+      54.580078125,
+      37.96875,
+      146.337890625
+    ],
+    "3840x2160": [
+      218.3203125,
+      151.875,
+      585.3515625
+    ]
+  },
+  "ci": [
+    {
+      "os": "windows-latest",
+      "suites": [
+        "c03-r3-page.test.tsx",
+        "c03-r1-binary.test.ts",
+        "c03-r1-tooling.test.ts",
+        "c03-r2-tooling.test.ts",
+        "c03-r2-page.test.tsx",
+        "c03-r2-binary.test.ts",
+        "c03_r2_encoder",
+        "c03_r1_stress",
+        "c03_fixed_configurations",
+        "c03_r2_quality"
+      ],
+      "rustPassed": 87,
+      "rustIgnored": 1,
+      "frontendSummary": [
+        "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-18T13:27:46.4975179Z  Test Files  30 passed (30)",
+        "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-18T13:27:46.4978736Z       Tests  266 passed | 3 expected fail (269)"
+      ]
+    },
+    {
+      "os": "macos-latest",
+      "suites": [
+        "c03-r3-page.test.tsx",
+        "c03-r1-binary.test.ts",
+        "c03-r1-tooling.test.ts",
+        "c03-r2-tooling.test.ts",
+        "c03-r2-page.test.tsx",
+        "c03-r2-binary.test.ts",
+        "c03_r2_encoder",
+        "c03_r1_stress",
+        "c03_fixed_configurations",
+        "c03_r2_quality"
+      ],
+      "rustPassed": 81,
+      "rustIgnored": 1,
+      "frontendSummary": [
+        "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-18T13:26:43.5418040Z  Test Files  30 passed (30)",
+        "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-18T13:26:43.5420880Z       Tests  266 passed | 3 expected fail (269)"
+      ]
+    }
+  ]
+}

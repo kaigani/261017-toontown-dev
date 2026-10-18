@@ -1,0 +1,225 @@
+{
+  "version": 1,
+  "runs": [
+    {
+      "backend": "webgl2",
+      "scene": "paths100k",
+      "outcome": "ok",
+      "error": null,
+      "complete": true,
+      "cadence": "insufficient samples (n=1)",
+      "gpu": "review clock stub",
+      "canvas": {
+        "cssWidth": 0,
+        "cssHeight": 0,
+        "width": 1,
+        "height": 1,
+        "dpr": 1
+      },
+      "bytesPerTransfer": 8700096.0,
+      "transferMs": {
+        "n": 10,
+        "p50": 0,
+        "p95": 0,
+        "max": 0,
+        "mean": 0.0
+      },
+      "transferMBps": null,
+      "encodeMs": {
+        "n": 10,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "generateMs": 0.0,
+      "ipcPerFrameCeilingFps": null,
+      "decodeMs": 96.5,
+      "decode": {
+        "cubics": 200000,
+        "fillBytes": 0,
+        "fillPaths": 0,
+        "fillVertices": 0,
+        "paths": 100000,
+        "segments": 2832713,
+        "strokeBytes": 90646816,
+        "strokePaths": 100000,
+        "tolerance": 0.5,
+        "triangles": 0
+      },
+      "uploadMs": {
+        "cpuMs": 0,
+        "completeMs": 0
+      },
+      "refreshMs": 10000.0,
+      "frames": 1,
+      "intervalMs": null,
+      "fps": null,
+      "longFrames": 0,
+      "cpuMs": {
+        "n": 1,
+        "p50": 0,
+        "p95": 0,
+        "max": 0,
+        "mean": 0.0
+      },
+      "gpuMs": null,
+      "meetsTarget": null
+    },
+    {
+      "backend": "webgl2",
+      "scene": "groups1k",
+      "outcome": "ok",
+      "error": null,
+      "complete": true,
+      "cadence": "insufficient samples (n=1)",
+      "gpu": "review clock stub",
+      "canvas": {
+        "cssWidth": 0,
+        "cssHeight": 0,
+        "width": 1,
+        "height": 1,
+        "dpr": 1
+      },
+      "bytesPerTransfer": 2024072.0,
+      "transferMs": {
+        "n": 10,
+        "p50": 0,
+        "p95": 0,
+        "max": 0,
+        "mean": 0.0
+      },
+      "transferMBps": null,
+      "encodeMs": {
+        "n": 10,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "generateMs": 0.0,
+      "ipcPerFrameCeilingFps": null,
+      "decodeMs": 32,
+      "decode": {
+        "cubics": 50000,
+        "fillBytes": 4565620,
+        "fillPaths": 10000,
+        "fillVertices": 175915,
+        "paths": 20000,
+        "segments": 101961,
+        "strokeBytes": 3262752,
+        "strokePaths": 10000,
+        "tolerance": 0.5,
+        "triangles": 145915
+      },
+      "uploadMs": {
+        "cpuMs": 0,
+        "completeMs": 0
+      },
+      "refreshMs": 10000.0,
+      "frames": 1,
+      "intervalMs": null,
+      "fps": null,
+      "longFrames": 0,
+      "cpuMs": {
+        "n": 1,
+        "p50": 0,
+        "p95": 0,
+        "max": 0,
+        "mean": 0.0
+      },
+      "gpuMs": null,
+      "meetsTarget": null
+    },
+    {
+      "backend": "webgl2",
+      "scene": "brush10k",
+      "outcome": "ok",
+      "error": null,
+      "complete": true,
+      "cadence": "insufficient samples (n=1)",
+      "gpu": "review clock stub",
+      "canvas": {
+        "cssWidth": 0,
+        "cssHeight": 0,
+        "width": 1,
+        "height": 1,
+        "dpr": 1
+      },
+      "bytesPerTransfer": 10085716.0,
+      "transferMs": {
+        "n": 10,
+        "p50": 0,
+        "p95": 0,
+        "max": 0,
+        "mean": 0.0
+      },
+      "transferMBps": null,
+      "encodeMs": {
+        "n": 10,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "generateMs": 0.0,
+      "ipcPerFrameCeilingFps": null,
+      "decodeMs": 256.10000002384186,
+      "decode": {
+        "cubics": 0,
+        "fillBytes": 30166256,
+        "fillPaths": 10000,
+        "fillVertices": 1088402,
+        "paths": 10000,
+        "segments": 0,
+        "strokeBytes": 0,
+        "strokePaths": 0,
+        "tolerance": 0.5,
+        "triangles": 1062652
+      },
+      "uploadMs": {
+        "cpuMs": 0,
+        "completeMs": 0
+      },
+      "refreshMs": 10000.0,
+      "frames": 1,
+      "intervalMs": null,
+      "fps": null,
+      "longFrames": 0,
+      "cpuMs": {
+        "n": 1,
+        "p50": 0,
+        "p95": 0,
+        "max": 0,
+        "mean": 0.0
+      },
+      "gpuMs": null,
+      "meetsTarget": null
+    }
+  ],
+  "pixelRuns": [
+    {
+      "backend": "webgl2",
+      "outcome": "ok",
+      "width": 1,
+      "height": 1,
+      "bytes": 20,
+      "transferMs": {
+        "n": 20,
+        "p50": 0,
+        "p95": 0,
+        "max": 0,
+        "mean": 0.0
+      },
+      "uploadMs": {
+        "n": 20,
+        "p50": 0,
+        "p95": 0,
+        "max": 0,
+        "mean": 0.0
+      },
+      "transferMBps": null,
+      "frameCostP50Ms": 0
+    }
+  ]
+}

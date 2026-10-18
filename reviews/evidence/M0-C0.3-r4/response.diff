@@ -1,0 +1,368 @@
+diff --git a/desktop/src/spikes/canvas/CanvasSpike.tsx b/desktop/src/spikes/canvas/CanvasSpike.tsx
+index 79db8f2..c4ba9b3 100644
+--- a/desktop/src/spikes/canvas/CanvasSpike.tsx
++++ b/desktop/src/spikes/canvas/CanvasSpike.tsx
+@@ -84,6 +84,11 @@ function errorText(e: unknown): string {
+   return `${err.code}: ${err.message}`;
+ }
+ 
++/** A complete run whose cadence cannot be estimated (fewer than two samples spanning time; C03-R3-01). */
++function cadenceGap(frames: number): string {
++  return `insufficient samples (n=${String(frames)})`;
++}
++
+ function fmt(v: number | null | undefined, digits = 1): string {
+   return v === null || v === undefined || !Number.isFinite(v) ? '–' : v.toFixed(digits);
+ }
+@@ -264,7 +269,9 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
+         const summary = summarizeRun(run);
+         setRows((r) => [...r, { run, summary }]);
+         setStatus(
+-          `${backend} ${scene}: ${fmt(summary.fps)} fps (interval p95 ${fmt(summary.intervalMs?.p95, 2)} ms).`,
++          summary.fps === null
++            ? `${backend} ${scene}: complete; cadence not estimated, ${cadenceGap(run.frames.length)}.`
++            : `${backend} ${scene}: ${fmt(summary.fps)} fps (interval p95 ${fmt(summary.intervalMs?.p95, 2)} ms).`,
+         );
+       } catch (e: unknown) {
+         run.error = errorText(e);
+@@ -446,14 +453,20 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
+                 <td>{fmt(s.encodeMs?.p50, 2)}</td>
+                 <td>{fmt(run.decode?.ms)}</td>
+                 <td>{fmt(run.upload?.completeMs)}</td>
+-                <td>{fmt(s.fps)}</td>
++                <td>{s.fps === null ? cadenceGap(run.frames.length) : fmt(s.fps)}</td>
+                 <td>
+                   {fmt(s.intervalMs?.p50, 2)} / {fmt(s.intervalMs?.p95, 2)} / {fmt(s.intervalMs?.max, 1)}
+                 </td>
+                 <td>{String(s.longFrames)}</td>
+                 <td>{fmt(s.cpuMs?.p95, 2)}</td>
+                 <td>{fmt(s.gpuMs?.p95, 2)}</td>
+-                <td>{s.meetsTarget === null ? '–' : s.meetsTarget ? 'met' : 'missed'}</td>
++                <td>
++                  {s.meetsTarget === null
++                    ? `not estimated: ${cadenceGap(run.frames.length)}`
++                    : s.meetsTarget
++                      ? 'met'
++                      : 'missed'}
++                </td>
+               </tr>
+             ))}
+             {pixelSummary.map((p) => (
+diff --git a/desktop/src/spikes/canvas/analyzer.test.ts b/desktop/src/spikes/canvas/analyzer.test.ts
+index 60d9de0..b750052 100644
+--- a/desktop/src/spikes/canvas/analyzer.test.ts
++++ b/desktop/src/spikes/canvas/analyzer.test.ts
+@@ -119,9 +119,24 @@ const log = {
+ };
+ 
+ interface Analysis {
+-  runs: { fps: number; intervalMs: { p95: number; max: number }; longFrames: number; meetsTarget: boolean }[];
++  runs: {
++    fps: number | null;
++    intervalMs: { p95: number; max: number } | null;
++    longFrames: number;
++    meetsTarget: boolean | null;
++    complete: boolean;
++    cadence: string;
++  }[];
+ }
+ 
++// A complete pan/zoom phase observed by a single sample: a 0.1 Hz display reaches the 10 s span on its first callback.
++const oneFrame = {
++  ...run,
++  idle: [100, 10_100],
++  frames: [{ t: 30_100, cpuMs: 0.2, gpuMs: null }],
++  phases: { idle: { start: 100, end: 10_100 }, panZoom: { start: 20_100, end: 30_100 } },
++};
++
+ describe('canvas analyzer', () => {
+   it('recomputes the run summary the page shows', () => {
+     const r = analyse(log);
+@@ -129,8 +144,8 @@ describe('canvas analyzer', () => {
+     const a = (r.json as Analysis).runs[0];
+     const page = summarizeRun(run);
+     expect(a?.fps).toBeCloseTo(page.fps ?? Number.NaN, 9);
+-    expect(a?.intervalMs.p95).toBeCloseTo(page.intervalMs?.p95 ?? Number.NaN, 9);
+-    expect(a?.intervalMs.max).toBeCloseTo(page.intervalMs?.max ?? Number.NaN, 9);
++    expect(a?.intervalMs?.p95).toBeCloseTo(page.intervalMs?.p95 ?? Number.NaN, 9);
++    expect(a?.intervalMs?.max).toBeCloseTo(page.intervalMs?.max ?? Number.NaN, 9);
+     expect(a?.longFrames).toBe(page.longFrames);
+     expect(a?.longFrames).toBe(6);
+     expect(a?.meetsTarget).toBe(page.meetsTarget);
+@@ -157,6 +172,47 @@ describe('canvas analyzer', () => {
+     expect(r.stdout).toContain('missed');
+   });
+ 
++  it('accepts a complete one-frame run as complete with insufficient cadence samples (C03-R3-01)', () => {
++    const r = analyse({ ...log, runs: [oneFrame] });
++    expect(r.status, r.stderr).toBe(0);
++    const a = (r.json as Analysis).runs[0];
++    expect(a?.complete).toBe(true);
++    expect(a?.cadence).toBe('insufficient samples (n=1)');
++    expect(a?.fps).toBeNull();
++    expect(a?.intervalMs).toBeNull();
++    expect(a?.meetsTarget).toBeNull();
++    expect(r.stdout).toContain('not estimated: insufficient samples (n=1) (run complete)');
++    expect(r.stdout).not.toContain('| met |');
++    // The page's own summary declines to estimate in the same way.
++    const page = summarizeRun(oneFrame);
++    expect(page.fps).toBeNull();
++    expect(page.meetsTarget).toBeNull();
++  });
++
++  it('rejects zero frames under a claimed complete span, and one frame in a version-1 log (C03-R3-01)', () => {
++    const cases: [string, unknown][] = [
++      ['zero frames, complete span', { ...log, runs: [{ ...oneFrame, frames: [] }] }],
++      ['one frame, version 1', { ...log, version: 1, runs: [oneFrame] }],
++      [
++        'one frame, span ends early',
++        {
++          ...log,
++          runs: [{ ...oneFrame, phases: { ...oneFrame.phases, panZoom: { start: 20_101, end: 30_100 } } }],
++        },
++      ],
++      [
++        'one frame before the span end',
++        { ...log, runs: [{ ...oneFrame, frames: [{ t: 30_000, cpuMs: 0.2, gpuMs: null }] }] },
++      ],
++    ];
++    for (const [name, bad] of cases) {
++      const r = analyse(bad);
++      expect(r.status, name).toBe(2);
++      expect(r.stdout, name).toBe('');
++    }
++    expect(analyse(cases[0]?.[1]).stderr).toContain('pan/zoom frames missing');
++  });
++
+   it('labels an explicitly failed run and rejects malformed or contradictory logs', () => {
+     const failed = analyse({ ...log, runs: [{ ...run, frames: [], error: 'webgpu is not available' }] });
+     expect(failed.status, failed.stderr).toBe(0);
+diff --git a/reviews/M0-C0.3-handoff.md b/reviews/M0-C0.3-handoff.md
+index 42639c3..d5cc254 100644
+--- a/reviews/M0-C0.3-handoff.md
++++ b/reviews/M0-C0.3-handoff.md
+@@ -1,8 +1,7 @@
+ # M0 C0.3 handoff — canvas throughput spike and rasteriser determinism
+ 
+ Branch `m0-foundations`, on top of the C0.2 closure merge (`ac78acb`). Builder: Claude Opus 5.5.
+-**Revised after review rounds 1 and 2** (`reviews/M0-C0.3-r1.md`, `reviews/M0-C0.3-r2.md`; responses
+-`reviews/M0-C0.3-r1-response.md`, `reviews/M0-C0.3-r2-response.md`).
++**Revised after review rounds 1–3** (`reviews/M0-C0.3-r{1,2,3}.md`; responses `reviews/M0-C0.3-r{1,2,3}-response.md`).
+ **Everything here is spike code**:
+ - `desktop/src/spikes/canvas/` and `desktop/src-tauri/src/spikes/canvas/` (reachable only with `--spike canvas`);
+ - `crates/render/examples/c03_raster/` (an example with dev-dependencies only).
+@@ -39,7 +38,7 @@ its canvas (`toDataURL`), stored in the log.
+ | Decoder | `desktop/src/spikes/canvas/decode.ts` | Range-checks every index against the certified header, **and every point for finiteness and the header bounds before any geometry is built** (C03-R1-02); throws on malformed content. Flattens cubics (tolerance 0.5 world units). Strokes become instanced segments (32 B each); fills are triangulated with **earcut** 3.2.4 (ISC). |
+ | Renderers | `webgpu.ts`, `webgl2.ts` | Same geometry and shaders: anti-aliased instanced stroke quads; fills with 4× MSAA; group transforms in a storage buffer / RGBA32F texture, updated every frame; premultiplied source-over. WebGPU is feature-detected; WebGL2 is mandatory and can be forced. |
+ | Page | `CanvasSpike.tsx` | Per back end and scene: 10 sequential transfers; decode; upload; 1 s idle (display refresh); 10 s scripted pan/zoom (zoom 0.35×–2.8×, circular pan); one read-back JPEG snapshot. Then 20 pixel-frame transfers + texture uploads. Log **version 2** has raw per-frame samples, **explicit idle and pan/zoom phase spans** (the rAF timestamp each phase started on and the one its duration was reached on; C03-R2-02), `timeOrigin`, environment (OS build, WebView/WebKit version, GPU strings, DPR, canvas size) and `source`. Committed logs from rounds 0–1 are version 1. |
+-| Analyzer | `scripts/analyse-canvas-log.py` | Validates the whole log before printing and exits 2 with empty stdout on malformed, incomplete or contradictory evidence (C03-R1-01). That covers: the environment and launch mode; the declared parameters; the full automatic matrix (expected back ends × scenes, plus a pixel run per back end); transfer numbering; **every header count (groups, paths, points, verbs) and every byte length against the seed-1 workload table** (which the generator's own test pins), and the bytes against the header's counts; decode statistics against the decoded header (paths equal, cubics within its verbs and points) and the workload (C03-R2-01); **any seed outside the table is rejected** ("seed N not in the supported workload table"); **completion from the phase spans** (each lasts its declared duration and its samples end on the span's end, so a complete slow run passes and a truncated one fails; version-1 logs: the stored samples must span the durations; C03-R2-02); non-negative durations; a GPU completion time for every WebGPU frame and none for WebGL2; and canvas geometry. Explicitly failed runs are labelled FAILED. **Recomputes every summary from raw samples**; `--snapshots DIR` extracts the frames. |
++| Analyzer | `scripts/analyse-canvas-log.py` | Validates the whole log before printing and exits 2 with empty stdout on malformed, incomplete or contradictory evidence (C03-R1-01). That covers: the environment and launch mode; the declared parameters; the full automatic matrix (expected back ends × scenes, plus a pixel run per back end); transfer numbering; **every header count (groups, paths, points, verbs) and every byte length against the seed-1 workload table** (which the generator's own test pins), and the bytes against the header's counts; decode statistics against the decoded header (paths equal, cubics within its verbs and points) and the workload (C03-R2-01); **any seed outside the table is rejected** ("seed N not in the supported workload table"); **completion from the phase spans** (each lasts its declared duration and its samples end on the span's end, so a complete slow run passes and a truncated one fails; version-1 logs: the stored samples must span the durations; C03-R2-02). **Completion is judged on the span alone:** a complete run with a single pan/zoom sample (a display at 0.1 Hz or slower) is accepted and reported as complete with fps and target "insufficient samples (n=1)"; zero samples under a claimed span is malformed (C03-R3-01). Legacy limitation: a version-1 log of a complete run below 10 Hz is still rejected, because version 1 has no span to prove completion (the reviewer's `reviews/evidence/M0-C0.3-r2/page-slow.json` is that case and is kept as a counterexample); non-negative durations; a GPU completion time for every WebGPU frame and none for WebGL2; and canvas geometry. Explicitly failed runs are labelled FAILED. **Recomputes every summary from raw samples**; `--snapshots DIR` extracts the frames. |
+ | Tests | `decode.test.ts`, `analyzer.test.ts`, Rust `renderlist` tests | A Rust test writes and checks the committed fixture `testdata/tiny.ttrl`; the TS test certifies and decodes it through the real API (cross-language contract). Malformed-content and envelope rejections; analyzer agreement with the page's summary and its rejections. |
+ 
+ ### Estimators
+@@ -155,9 +154,12 @@ Plan §2.3 names one fallback for canvas throughput, a native `wgpu` child surfa
+     (levels as recorded per configuration in the reports; reviewer audit
+     `reviews/evidence/M0-C0.3-r2/artifact-audit.json`).
+ 
+-  So on the 39-scene corpus with the f32 configurations, AVX-512 has run only on Linux (39126106552). The Windows
+-  AVX-512 runner in round 1's audit (run 39122666863) rendered the **original 23-scene corpus without the f32
+-  configurations**; it is not coverage of the current corpus.
++  - CI run 39129350790 (the round-2 head; reviewer audit `reviews/evidence/M0-C0.3-r3/evidence-audit.json`), two
++    processes each: Windows **AVX-512**, macOS **NEON**, Linux **AVX2**.
++
++  So the 39-scene corpus with the f32 configurations has now run with AVX-512 on both Linux (39126106552) and Windows
++  (39129350790). The Windows AVX-512 runner in round 1's audit (run 39122666863) rendered only the original 23-scene
++  corpus without the f32 configurations.
+ 
+   Reproduce with `python scripts/compare-raster-reports.py crates/render/examples/c03_raster/hashes.json reviews/evidence/M0-C0.3/raster-r1-report-*.json`.
+ - **But the configurations do not agree with each other (C03-R1-04).**
+@@ -360,8 +362,8 @@ unchanged, with two ruled exceptions:
+ 4. **IPC-per-frame streaming was measured as sequential transfers.** `1000 / median transfer` is a typical
+    sequential transfer-only estimate, not an upper bound for every pipelined design.
+ 5. **Determinism coverage:**
+-   - x86-64 AVX2 and AVX-512 (on the current corpus, Linux only) and arm64 NEON (detected), plus the scalar
+-     fallback level; no SSE4.2-only hardware has been tested;
++   - x86-64 AVX2 and AVX-512 and arm64 NEON (detected), plus the scalar fallback level, all on the current corpus;
++     no SSE4.2-only hardware has been tested;
+    - the u8 and f32 pipelines with the adapter's subset (no blur, filters, round joins/caps or images);
+    - this exact toolchain and lockfile;
+    - the SIMD policy is a C0.4 ticket.
+diff --git a/reviews/M0-C0.3-r3-response.md b/reviews/M0-C0.3-r3-response.md
+new file mode 100644
+index 0000000..e58df44
+--- /dev/null
++++ b/reviews/M0-C0.3-r3-response.md
+@@ -0,0 +1,84 @@
++# M0 C0.3 — builder response to review round 3
++
++Review: `reviews/M0-C0.3-r3.md` (0 P0, 1 P1, 0 P2), merged from `origin/review/m0-c03-r3` in `176bc18`.
++Implemented per the orchestrator's ruling. All reviewer tests and evidence are kept unchanged, including the new
++`desktop/src/test/c03-r3-page.test.tsx` and `reviews/evidence/M0-C0.3-r3/`.
++
++| Id | Sev | Status | Commits |
++|---|---|---|---|
++| C03-R3-01 | P1 | fixed as ruled: completion on the phase span alone; cadence "insufficient samples (n=1)" | `4a53d5b` |
++| Handoff | — | one-sample completion, legacy-log limitation, Windows AVX-512 coverage | `bd7ec3b` |
++
++## C03-R3-01 — valid one-sample completion rejected — **fixed as ruled**
++
++**Analyzer** (`scripts/analyse-canvas-log.py`):
++- **Validation:**
++  - a version-2 run needs **at least one** pan/zoom sample. Zero samples is still rejected as malformed ("pan/zoom
++    frames missing"), even when the run claims a complete span;
++  - completion is judged on the span alone: it must last its declared duration, its samples must lie on it, and the
++    last sample must be the span's end;
++  - version-1 logs keep the two-sample minimum, because without a span the samples are the only proof of completion.
++- **Cadence:**
++  - estimating cadence needs two samples spanning time;
++  - otherwise the run's analysis records `complete: true`, `cadence: "insufficient samples (n=1)"`, `fps: null`,
++    `intervalMs: null` and `meetsTarget: null`;
++  - the report prints that text in the fps column and "not estimated: insufficient samples (n=1) (run complete)" in
++    the target column;
++  - two equal timestamps read "insufficient samples (n=2, zero-length span)". This also removes a division by zero
++    the old estimator would have hit;
++  - no frames are made up, and nothing claims 60 fps or "missed";
++  - runs with two or more samples use the unchanged estimator.
++
++**Page** (`CanvasSpike.tsx`): `summarizeRun` already returned `fps = null` and `meetsTarget = null` for one sample. The
++readout and the status line now say "insufficient samples (n=1)" / "complete; cadence not estimated" instead of a
++dash. The logged data is unchanged.
++
++**Tests:**
++- reviewer: `C03-R3-01: completed 0.1 Hz phase …` and the 0.2 Hz control pass;
++- the R2 page tests (manual, 60 Hz, 1 Hz "missed") still pass, as do R1 tooling 12/12 and R2 tooling 9/9;
++- mine (`analyzer.test.ts`):
++  - **one frame** under a complete span is accepted: complete, cadence "insufficient samples (n=1)", fps, intervals
++    and target all null, the report says "not estimated", nothing says "met", and the page's `summarizeRun` agrees;
++  - **zero frames** under a complete span is rejected with "pan/zoom frames missing";
++  - also rejected: one frame in a version-1 log, one frame with a span shorter than declared, and one frame that is
++    not on the span's end.
++
++## Correction to my round-2 response
++
++I wrote that "every committed canvas log … still validates". That needs one exception, which the reviewer found:
++`reviews/evidence/M0-C0.3-r2/page-slow.json`. It is the reviewer's version-1 counterexample: a complete 1 Hz page
++run saved before phase spans existed. The version-1 rule still rejects it ("frame timestamps shorter than 10000 ms"),
++because a version-1 log cannot prove completion below 10 Hz.
++
++Re-checked at this head: 24 of the 25 tracked raw canvas logs pass, and that file is the only rejection. The 25
++include the reviewer's round-3 one-frame, two-frame and CI logs. The handoff now states the version-1 limitation explicitly.
++
++## Handoff
++
++- The analyzer row describes one-sample completion and the version-1 limitation.
++- SIMD provenance gains CI 39129350790 (Windows **AVX-512**, macOS NEON, Linux AVX2, two processes each, full
++  39-scene/f32 corpus; the reviewer's audit). The "AVX-512 on the current corpus Linux-only" limitation is retired,
++  as the reviewer noted. No SSE4.2-only hardware has been tested, and the SIMD-policy ticket is unchanged.
++
++## Gates
++
++Local (Windows 11, foreground), at the head of this round:
++
++| Gate | Result |
++|---|---|
++| `cargo fmt --all --check` | pass |
++| `cargo clippy --workspace --all-targets --locked -- -D warnings` | pass |
++| `cargo test --workspace --locked` | **87 passed, 1 ignored** (the ruled C0.4 SIMD ticket); no Rust changed this round |
++| `cargo deny --locked check` | pass |
++| `pnpm lint`, `typecheck`, `format:check`, `licenses:check` | pass |
++| `pnpm test` | **30 Vitest files, 266 passed + 3 standing expected failures** (the reviewer's 0.1 Hz test included); 9/9 Node licence tests |
++| `pnpm --dir desktop build` (+ IPC dist check) | pass |
++
++Fixed while running the gate: my first draft of the new test read `intervalMs.p95` on a field that is now nullable,
++which failed `typecheck`. It now uses optional access.
++
++Not re-run this round: the Tauri build, headless self-test and raster `--check`. No Rust, host or rasteriser code
++changed since round 2's gate, where they passed. CI runs them.
++
++The two Windows Security `PickerHost` prompts were left untouched. CI: the run for the pushed head is in the
++orchestrator summary.
+diff --git a/scripts/analyse-canvas-log.py b/scripts/analyse-canvas-log.py
+index f412046..94684f2 100644
+--- a/scripts/analyse-canvas-log.py
++++ b/scripts/analyse-canvas-log.py
+@@ -37,7 +37,9 @@ Estimators (also printed):
+ * frame interval = difference of consecutive rAF timestamps during pan/zoom; fps = (n - 1) * 1000 / (last - first);
+ * long frame = interval > 1.5 x display refresh;
+ * 60 fps target met when fps >= 57 (0.95 x 60); the display rate is printed next to it (a display below 60 Hz
+-  cannot meet it);
++  cannot meet it). A complete run with fewer than two pan/zoom samples (or no time between them) has no cadence
++  estimate: fps and the target read "insufficient samples (n=...)" and the run is still reported as complete
++  (C03-R3-01);
+ * CPU frame = JS update + record + submit; GPU frame (WebGPU) = submit to `onSubmittedWorkDone` (includes queueing);
+ * IPC-per-frame ceiling = 1000 / (p50 transfer ms): the frame rate if the full render list had to cross IPC every
+   frame (no decode or draw included).
+@@ -253,8 +255,12 @@ def validate_run(run, label, params, version):
+     if not isinstance(idle, list) or len(idle) < 2 or not monotonic(idle):
+         raise LogError(f"{label}: idle timestamps missing or non-monotonic")
+     frames = run.get("frames")
+-    if not isinstance(frames, list) or len(frames) < 2:
+-        raise LogError(f"{label}: pan/zoom frames missing")
++    # Version 2 judges completion on the phase span alone, so one sample is a complete observation (a 0.1 Hz display
++    # reaches the 10 s span on its first callback; C03-R3-01); zero samples is malformed even with a span. Version 1
++    # has no span and needs the samples themselves to cover the duration.
++    min_frames = 1 if version >= PHASES_SINCE else 2
++    if not isinstance(frames, list) or len(frames) < min_frames:
++        raise LogError(f"{label}: pan/zoom frames missing (need at least {min_frames})")
+     ts = [f.get("t") if isinstance(f, dict) else None for f in frames]
+     if not monotonic(ts):
+         raise LogError(f"{label}: frame timestamps non-monotonic")
+@@ -372,13 +378,22 @@ def analyse_run(run):
+     it = run["idle"]
+     ts = [f["t"] for f in run["frames"]]
+     iv = intervals(ts)
+-    fps = (len(ts) - 1) * 1000 / (ts[-1] - ts[0])
++    # Cadence needs a pair of samples spanning time; otherwise the run is still complete (validated on its phase span)
++    # but its cadence statistics are unavailable and stated as such, never invented (C03-R3-01).
++    if len(ts) < 2:
++        cadence = f"insufficient samples (n={len(ts)})"
++    elif ts[-1] <= ts[0]:
++        cadence = f"insufficient samples (n={len(ts)}, zero-length span)"
++    else:
++        cadence = None
++    fps = None if cadence else (len(ts) - 1) * 1000 / (ts[-1] - ts[0])
+     refresh = (it[-1] - it[0]) / (len(it) - 1) if len(it) > 1 and it[-1] > it[0] else None
+     gpu = [f["gpuMs"] for f in run["frames"] if f.get("gpuMs") is not None]
+     transfer = stats(tms)
+     info = run.get("renderer") or {}
+     return {
+-        "backend": run["backend"], "scene": run["scene"], "outcome": "ok", "error": None,
++        "backend": run["backend"], "scene": run["scene"], "outcome": "ok", "error": None, "complete": True,
++        "cadence": cadence or "ok",
+         "gpu": info.get("unmaskedRenderer") or info.get("renderer") or " ".join(
+             str(info.get(k)) for k in ("vendor", "architecture", "device", "description") if info.get(k)) or "-",
+         "canvas": run["canvas"],
+@@ -398,7 +413,7 @@ def analyse_run(run):
+         "longFrames": sum(1 for d in iv if refresh and d > 1.5 * refresh),
+         "cpuMs": stats([f["cpuMs"] for f in run["frames"]]),
+         "gpuMs": stats(gpu),
+-        "meetsTarget": fps >= 57,
++        "meetsTarget": None if fps is None else fps >= 57,
+     }
+ 
+ 
+@@ -419,6 +434,12 @@ def s3(st, d=2):
+     return "-" if not st else f"{st['p50']:.{d}f} / {st['p95']:.{d}f} / {st['max']:.{d}f}"
+ 
+ 
++def target(r):
++    if r["meetsTarget"] is None:
++        return f"not estimated: {r['cadence']} (run complete)"
++    return "met" if r["meetsTarget"] else "missed"
++
++
+ def report(log, runs, pixels):
+     env = log["environment"]
+     host = env.get("host") or {}
+@@ -441,8 +462,9 @@ def report(log, runs, pixels):
+         print(f"| {r['backend']} | {r['scene']} | {r['gpu']} | {c['width']}x{c['height']} | "
+               f"{r['bytesPerTransfer'] / 1e6:.2f} | {s3(r['transferMs'], 1)} | {fmt(r['transferMBps'], 0)} | "
+               f"{s3(r['encodeMs'])} | {r['decodeMs']:.1f} | {r['uploadMs']['cpuMs']:.1f} / {r['uploadMs']['completeMs']:.1f} | "
+-              f"{fmt(r['refreshMs'], 2)} | {r['fps']:.1f} | {s3(r['intervalMs'])} | {r['longFrames']} of {r['frames'] - 1} | "
+-              f"{s3(r['cpuMs'])} | {s3(r['gpuMs'])} | {'met' if r['meetsTarget'] else 'missed'} | "
++              f"{fmt(r['refreshMs'], 2)} | {fmt(r['fps']) if r['fps'] is not None else r['cadence']} | {s3(r['intervalMs'])} | "
++              f"{r['longFrames']} of {max(r['frames'] - 1, 0)} | {s3(r['cpuMs'])} | {s3(r['gpuMs'])} | "
++              f"{target(r)} | "
+               f"{fmt(r['ipcPerFrameCeilingFps'])} |")
+     print("\nDecode details (segments = stroke instances; triangles = fill triangles):\n")
+     for r in runs:

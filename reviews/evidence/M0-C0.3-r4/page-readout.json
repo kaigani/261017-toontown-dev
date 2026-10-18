@@ -1,0 +1,20 @@
+{
+  "completion": "original harness asserted All runs finished before Save log changed the status",
+  "fps": [
+    "insufficient samples (n=1)",
+    "insufficient samples (n=1)",
+    "insufficient samples (n=1)"
+  ],
+  "targets": [
+    "not estimated: insufficient samples (n=1)",
+    "not estimated: insufficient samples (n=1)",
+    "not estimated: insufficient samples (n=1)"
+  ],
+  "rows": [
+    "back endsceneMB / transfertransfer ms p50 / p95encode ms p50decode msupload msfpsinterval ms p50 / p95 / maxlong framesCPU ms p95GPU ms p9560 fps target",
+    "webgl2paths100k8.700.0 / 0.00.0096.50.0insufficient samples (n=1)– / – / –00.00–not estimated: insufficient samples (n=1)",
+    "webgl2groups1k2.020.0 / 0.00.0032.00.0insufficient samples (n=1)– / – / –00.00–not estimated: insufficient samples (n=1)",
+    "webgl2brush10k10.090.0 / 0.00.00256.10.0insufficient samples (n=1)– / – / –00.00–not estimated: insufficient samples (n=1)",
+    "webgl2pixel frame 1×1transfer p50 0.0 / p95 0.0 ms; upload p50 0.0 ms"
+  ]
+}
