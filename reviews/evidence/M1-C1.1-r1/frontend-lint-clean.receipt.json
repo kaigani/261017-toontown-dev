@@ -1,0 +1,15 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm",
+    "lint"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:52:35.549477+00:00",
+  "seconds": 10.181089699966833,
+  "exit": 0,
+  "logSha256": "5541dce215addce3744eaf3c694863ee6715d2994044344fd59f0009acee7f27",
+  "proptestSeed": "1182711"
+}

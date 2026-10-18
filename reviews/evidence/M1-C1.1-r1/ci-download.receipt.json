@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.1-r1/collect_ci.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:44:49.457864+00:00",
+  "seconds": 17.08313129999442,
+  "exit": 0,
+  "logSha256": "d2ff17b07858d1fd8735bdb326ed271bb9412a3e2fb9b98e3a5c098f77594a91",
+  "proptestSeed": "1182711"
+}

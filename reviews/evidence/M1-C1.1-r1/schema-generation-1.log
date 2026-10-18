@@ -1,0 +1,12 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\engine)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.57s
+     Running tests\frontend_schemas.rs (target\debug\deps\frontend_schemas-b6774bf6b3397407.exe)
+
+running 2 tests
+test wire_module_is_current ... ok
+test model_module_is_current ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+

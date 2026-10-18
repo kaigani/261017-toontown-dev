@@ -1,0 +1,22 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm",
+    "--dir",
+    "desktop",
+    "exec",
+    "vitest",
+    "run",
+    "--config",
+    "vite.config.ts",
+    "src/ipc/c11-r1-adversarial.test.ts"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:39:38.873577+00:00",
+  "seconds": 1.9861807000124827,
+  "exit": 1,
+  "logSha256": "220b40048a0fbf937a337d4e2c644cc75e1b89b194eb83b8c68416773277864a",
+  "proptestSeed": "1182711"
+}

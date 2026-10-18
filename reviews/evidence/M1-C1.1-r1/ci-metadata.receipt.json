@@ -1,0 +1,16 @@
+{
+  "command": [
+    "gh",
+    "run",
+    "view",
+    "39158785241",
+    "--json",
+    "headSha,status,conclusion,jobs,url,createdAt,event"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:35:28.400431+00:00",
+  "seconds": 2.136958999966737,
+  "exit": 0,
+  "logSha256": "6bc06132ab883b77d9e712a6aeaa26083bf06a44a3f9eda7278bcf45db8cdabc",
+  "proptestSeed": "1182711"
+}

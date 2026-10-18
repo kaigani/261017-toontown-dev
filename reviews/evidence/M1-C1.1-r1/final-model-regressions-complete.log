@@ -1,0 +1,189 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.04s
+     Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-8b08020a096734ce.exe)
+
+running 37 tests
+
+thread 'canonical_serialization_rejects_nonfinite_values' (5636) panicked at crates\model\tests\c11_r1_adversarial.rs:443:5:
+assertion failed: canonical::to_canonical(&f64::NAN).is_err()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'cloning_a_system_generator_cannot_duplicate_ids' (27548) panicked at crates\model\tests\c11_r1_adversarial.rs:304:9:
+assertion `left != right` failed: Clone duplicates the monotonic random counter within a millisecond
+  left: Id(el_01M589M97C7CYF0WV8W7PFFDZF)
+ right: Id(el_01M589M97C7CYF0WV8W7PFFDZF)
+
+thread 'add_over_existing_object_property_is_invertible' (29220) panicked at crates\model\tests\c11_r1_adversarial.rs:236:5:
+assertion `left == right` failed: RFC6902 add replaces existing property; oldValue must restore it
+  left: Object {}
+ right: Object {"a": Number(1)}
+
+thread 'move_over_existing_object_property_is_invertible' (27744) panicked at crates\model\tests\c11_r1_adversarial.rs:248:5:
+assertion `left == right` failed: 10 §2.6 every patch invertible
+  left: Object {"a": Number(1)}
+ right: Object {"a": Number(1), "b": Number(2)}
+
+thread 'diff_does_not_treat_opaque_arrays_as_child_collections' (23136) panicked at crates\model\tests\c11_r1_adversarial.rs:335:5:
+assertion `left == right` failed: metadata edits disappeared from generated patch
+  left: Object {"meta": Object {"items": Array [Object {"id": String("a"), "type": String("pen")}]}}
+ right: Object {"meta": Object {"items": Array [Object {"id": String("a"), "type": String("scene")}]}}
+
+thread 'elided_patch_must_not_write_null' (24444) panicked at crates\model\tests\c11_r1_adversarial.rs:262:5:
+10 §2.6: elided value requires reread, never replacement with null
+test canonical_serialization_rejects_nonfinite_values ... FAILED
+test cloning_a_system_generator_cannot_duplicate_ids ... FAILED
+test add_over_existing_object_property_is_invertible ... FAILED
+test move_over_existing_object_property_is_invertible ... FAILED
+
+thread 'root_add_is_rfc6902_replacement' (26932) panicked at crates\model\tests\c11_r1_adversarial.rs:254:51:
+called `Result::unwrap()` on an `Err` value: ModelError { code: "arg.invalid", message: "the operation needs a non-root path", details: Object {"pointer": String("")} }
+test diff_does_not_treat_opaque_arrays_as_child_collections ... FAILED
+test elided_patch_must_not_write_null ... FAILED
+test root_add_is_rfc6902_replacement ... FAILED
+test hostile_path_and_id_controls ... ok
+
+thread 'jsonschema_integer_multiple_of_does_not_round_before_testing' (27528) panicked at crates\model\tests\c11_r1_adversarial.rs:437:5:
+exact integer divisible by 5 rejected
+test jsonschema_integer_multiple_of_does_not_round_before_testing ... FAILED
+
+thread 'property_schema_resolves_nested_child_and_tuple_fields' (28884) panicked at crates\model\tests\c11_r1_adversarial.rs:369:5:
+child stub/full union hides a real field
+test property_schema_resolves_nested_child_and_tuple_fields ... FAILED
+
+thread 'schema_properties_have_format_introduction_annotations' (2204) panicked at crates\model\tests\c11_r1_adversarial.rs:363:5:
+assertion `left == right` failed: 10 section 2.8 annotates properties, not only objects
+  left: Null
+ right: "1.0"
+test schema_properties_have_format_introduction_annotations ... FAILED
+
+thread 'document_assembly_rechecks_schema_ranges_after_public_deserialize' (24868) panicked at crates\model\tests\c11_r1_adversarial.rs:82:5:
+10 §4.2: Document accepted pen sizes > 100 via public Deserialize
+test document_assembly_rechecks_schema_ranges_after_public_deserialize ... FAILED
+
+thread 'linked_file_asset_requires_paths' (17300) panicked at crates\model\tests\c11_r1_adversarial.rs:104:5:
+10 §4.16 linked file with no locator accepted
+test linked_file_asset_requires_paths ... FAILED
+
+thread 'duplicate_entry_ids_must_not_silently_overwrite_content' (9276) panicked at crates\model\tests\c11_r1_adversarial.rs:37:5:
+ID-01: duplicate entry disappeared before validation
+
+thread 'nfc_applies_to_persisted_strings_beyond_names' (9256) panicked at crates\model\tests\c11_r1_adversarial.rs:57:5:
+assertion `left == right` failed: 10 §1.1 string
+  left: String("e\u{301}")
+ right: String("é")
+test duplicate_entry_ids_must_not_silently_overwrite_content ... FAILED
+test nfc_applies_to_persisted_strings_beyond_names ... FAILED
+test schema_integer_boundary_does_not_round_u64_max_up ... ok
+
+thread 'depth_zero_results_validate_against_their_object_schema' (29944) panicked at crates\model\tests\c11_r1_adversarial.rs:72:5:
+10 §2.2 both full objects and stubs validate: {"id":"pr_01K742SG00AGK6CWBR28XFH7HT","type":"project","name":"Sample"}
+test depth_zero_results_validate_against_their_object_schema ... FAILED
+
+thread 'image_element_bank_requires_exactly_one_bitmap_per_drawing' (30652) panicked at crates\model\tests\c11_r1_adversarial.rs:95:5:
+10 §4.10 empty image drawing accepted
+test image_element_bank_requires_exactly_one_bitmap_per_drawing ... FAILED
+
+thread 'canonical_map_order_does_not_depend_on_insertion_order' (27924) panicked at crates\model\tests\c11_r1_adversarial.rs:152:5:
+assertion `left == right` failed: 10 AG-06 identical documents identical JSON
+  left: "{\n  \"id\": \"pen_01K742SG0D52WQP7QB3MVEBHKZ\",\n  \"type\": \"pen\",\n  \"rev\": 1,\n  \"name\": \"Pen 1\",\n  \"kind\": \"brush\",\n  \"minSize\": 0.5,\n  \"maxSize\": 2,\n  \"smoothness\": 3,\n  \"tip\": \"round\",\n  \"tipAngle\": 0,\n  \"colourId\": null,\n  \"meta\": {\n    \"a\": 1,\n    \"b\": 2\n  }\n}\n"
+ right: "{\n  \"id\": \"pen_01K742SG0D52WQP7QB3MVEBHKZ\",\n  \"type\": \"pen\",\n  \"rev\": 1,\n  \"name\": \"Pen 1\",\n  \"kind\": \"brush\",\n  \"minSize\": 0.5,\n  \"maxSize\": 2,\n  \"smoothness\": 3,\n  \"tip\": \"round\",\n  \"tipAngle\": 0,\n  \"colourId\": null,\n  \"meta\": {\n    \"b\": 2,\n    \"a\": 1\n  }\n}\n"
+
+thread 'int_means_signed_32_bit_unless_spec_states_otherwise' (27312) panicked at crates\model\tests\c11_r1_adversarial.rs:278:5:
+10 §1.1 int is signed 32-bit; frame is int
+test canonical_map_order_does_not_depend_on_insertion_order ... FAILED
+test int_means_signed_32_bit_unless_spec_states_otherwise ... FAILED
+
+thread 'canonical_scene_map_order_is_not_document_state' (28048) panicked at crates\model\tests\c11_r1_adversarial.rs:168:5:
+assertion `left == right` failed
+  left: "{\n  \"id\": \"sc_01K742SG0Y22X96H4MEJN62YRS\",\n  \"type\": \"scene\",\n  \"rev\": 1,\n  \"name\": \"Intro\",\n  \"visible\": true,\n  \"backgroundColour\": \"#FFFFFFFF\",\n  \"currentCameraId\": \"el_01K742SG0ZZ76SHQY8W9FW3NX9\",\n  \"paletteStyles\": {\n    \"pal_a\": \"style_a\",\n    \"pal_b\": \"style_b\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01K742SG2K3639YRZP21BR1AB2\",\n    \"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"clockWipe\",\n    \"durationLeft\": 12,\n    \"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 90,\n    \"direction\": \"counterclockwise\",\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01K742SG0ZZ76SHQY8W9FW3NX9\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG102FAA98NAMC9SQKEC\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG11ZAMKY5F3SJENP47V\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG129DJFCFJPJDB3ARK1\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG168D3T6TM8W2S1FWMT\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG182Y3EY63Y5E50NBQW\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG19VNBDMZAM3WEHSFV0\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG1AV6DBDNX7RYKCXNV8\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1BADHCFPV11EKH2TA4\",\n          \"children\": [\n            {\n              \"id\": \"el_01K742SG1DGC2RA1N613S9Q11W\",\n              \"children\": []\n            }\n          ]\n        },\n        {\n          \"id\": \"el_01K742SG1CVGDR2BR7GE2N1WR5\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1EJNBH1M4NRV2KR4VF\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1FBC8RZSZPW7YSBJES\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1G288K9XCJ5HNHGHPV\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1HCWGXJAK9HQCVTXSC\",\n          \"children\": []\n        },\n        {\n          \"id\": \"el_01K742SG1JJCH4Q5F9BXSXK7RW\",\n          \"children\": [\n            {\n              \"id\": \"el_01K742SG1KXM9AH0FSM0DHG33M\",\n              \"children\": []\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1M00MKDHJ2626X5XX7\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1NBH2DP2423B2H4AKQ\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1PPASDFVRAC3M3JBSA\",\n      \"children\": []\n    }\n  ],\n  \"columnOrder\": [\"el_01K742SG11ZAMKY5F3SJENP47V\", \"el_01K742SG129DJFCFJPJDB3ARK1\", \"el_01K742SG168D3T6TM8W2S1FWMT\", \"el_01K742SG182Y3EY63Y5E50NBQW\", \"el_01K742SG19VNBDMZAM3WEHSFV0\"],\n  \"elements\": [\n    {\n      \"id\": \"el_01K742SG0ZZ76SHQY8W9FW3NX9\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG102FAA98NAMC9SQKEC\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG11ZAMKY5F3SJENP47V\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG129DJFCFJPJDB3ARK1\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG168D3T6TM8W2S1FWMT\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG182Y3EY63Y5E50NBQW\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG19VNBDMZAM3WEHSFV0\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1AV6DBDNX7RYKCXNV8\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1BADHCFPV11EKH2TA4\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1CVGDR2BR7GE2N1WR5\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1DGC2RA1N613S9Q11W\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1EJNBH1M4NRV2KR4VF\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1FBC8RZSZPW7YSBJES\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1G288K9XCJ5HNHGHPV\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1HCWGXJAK9HQCVTXSC\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1JJCH4Q5F9BXSXK7RW\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1KXM9AH0FSM0DHG33M\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1M00MKDHJ2626X5XX7\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1NBH2DP2423B2H4AKQ\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1PPASDFVRAC3M3JBSA\",\n      \"type\": \"element\"\n    }\n  ]\n}\n"
+ right: "{\n  \"id\": \"sc_01K742SG0Y22X96H4MEJN62YRS\",\n  \"type\": \"scene\",\n  \"rev\": 1,\n  \"name\": \"Intro\",\n  \"visible\": true,\n  \"backgroundColour\": \"#FFFFFFFF\",\n  \"currentCameraId\": \"el_01K742SG0ZZ76SHQY8W9FW3NX9\",\n  \"paletteStyles\": {\n    \"pal_b\": \"style_b\",\n    \"pal_a\": \"style_a\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01K742SG2K3639YRZP21BR1AB2\",\n    \"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"clockWipe\",\n    \"durationLeft\": 12,\n    \"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 90,\n    \"direction\": \"counterclockwise\",\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01K742SG0ZZ76SHQY8W9FW3NX9\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG102FAA98NAMC9SQKEC\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG11ZAMKY5F3SJENP47V\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG129DJFCFJPJDB3ARK1\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG168D3T6TM8W2S1FWMT\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG182Y3EY63Y5E50NBQW\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG19VNBDMZAM3WEHSFV0\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG1AV6DBDNX7RYKCXNV8\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1BADHCFPV11EKH2TA4\",\n          \"children\": [\n            {\n              \"id\": \"el_01K742SG1DGC2RA1N613S9Q11W\",\n              \"children\": []\n            }\n          ]\n        },\n        {\n          \"id\": \"el_01K742SG1CVGDR2BR7GE2N1WR5\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1EJNBH1M4NRV2KR4VF\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1FBC8RZSZPW7YSBJES\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1G288K9XCJ5HNHGHPV\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1HCWGXJAK9HQCVTXSC\",\n          \"children\": []\n        },\n        {\n          \"id\": \"el_01K742SG1JJCH4Q5F9BXSXK7RW\",\n          \"children\": [\n            {\n              \"id\": \"el_01K742SG1KXM9AH0FSM0DHG33M\",\n              \"children\": []\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1M00MKDHJ2626X5XX7\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1NBH2DP2423B2H4AKQ\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1PPASDFVRAC3M3JBSA\",\n      \"children\": []\n    }\n  ],\n  \"columnOrder\": [\"el_01K742SG11ZAMKY5F3SJENP47V\", \"el_01K742SG129DJFCFJPJDB3ARK1\", \"el_01K742SG168D3T6TM8W2S1FWMT\", \"el_01K742SG182Y3EY63Y5E50NBQW\", \"el_01K742SG19VNBDMZAM3WEHSFV0\"],\n  \"elements\": [\n    {\n      \"id\": \"el_01K742SG0ZZ76SHQY8W9FW3NX9\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG102FAA98NAMC9SQKEC\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG11ZAMKY5F3SJENP47V\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG129DJFCFJPJDB3ARK1\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG168D3T6TM8W2S1FWMT\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG182Y3EY63Y5E50NBQW\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG19VNBDMZAM3WEHSFV0\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1AV6DBDNX7RYKCXNV8\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1BADHCFPV11EKH2TA4\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1CVGDR2BR7GE2N1WR5\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1DGC2RA1N613S9Q11W\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1EJNBH1M4NRV2KR4VF\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1FBC8RZSZPW7YSBJES\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1G288K9XCJ5HNHGHPV\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1HCWGXJAK9HQCVTXSC\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1JJCH4Q5F9BXSXK7RW\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1KXM9AH0FSM0DHG33M\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1M00MKDHJ2626X5XX7\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1NBH2DP2423B2H4AKQ\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1PPASDFVRAC3M3JBSA\",\n      \"type\": \"element\"\n    }\n  ]\n}\n"
+
+thread 'extension_and_metadata_names_are_never_interpreted' (29528) panicked at crates\model\tests\c11_r1_adversarial.rs:47:5:
+assertion `left == right` failed: 10 §2.2: ext verbatim
+  left: Object {"type": String("element"), "name": String("é"), "payload": Array [Number(1), Number(2), Number(3)]}
+ right: Object {"type": String("element"), "name": String("  e\u{301}  "), "payload": Array [Number(1), Number(2), Number(3)]}
+test canonical_scene_map_order_is_not_document_state ... FAILED
+
+thread 'swatch_id_alias_is_accepted_by_the_validated_input_path' (7476) panicked at crates\model\tests\c11_r1_adversarial.rs:65:5:
+10 §2.2 explicitly accepts id as alias
+
+thread 'texture_paths_must_be_under_textures' (22588) panicked at crates\model\tests\c11_r1_adversarial.rs:140:5:
+10 §4.13: texture entry outside textures/
+test extension_and_metadata_names_are_never_interpreted ... FAILED
+test swatch_id_alias_is_accepted_by_the_validated_input_path ... FAILED
+test texture_paths_must_be_under_textures ... FAILED
+
+thread 'brush_outline_must_be_closed' (27328) panicked at crates\model\tests\c11_r1_adversarial.rs:113:5:
+10 §4.9: brush outlines are closed
+
+thread 'spline_handle_offsets_are_clamped_to_adjacent_key_times' (26240) panicked at crates\model\tests\c11_r1_adversarial.rs:461:9:
+10 section 4.12 and 05 section 10.3 require handle time clamping
+test brush_outline_must_be_closed ... FAILED
+test spline_handle_offsets_are_clamped_to_adjacent_key_times ... FAILED
+
+thread 'mouth_track_manual_ranges_stay_within_the_placement' (6740) panicked at crates\model\tests\c11_r1_adversarial.rs:451:5:
+assertion failed: object::from_json::<tt_model::entities::sound::SoundPlacement>(&s).is_err()
+
+thread 'fixed_text_requires_width' (30324) panicked at crates\model\tests\c11_r1_adversarial.rs:130:5:
+10 §4.9: fixed text without width
+test mouth_track_manual_ranges_stay_within_the_placement ... FAILED
+test fixed_text_requires_width ... FAILED
+
+thread 'metadata_depth_is_enforced_at_model_input' (10804) panicked at crates\model\tests\c11_r1_adversarial.rs:216:5:
+accepted object cannot be written by its canonical writer
+test metadata_depth_is_enforced_at_model_input ... FAILED
+test containment_and_scene_limit_controls ... ok
+
+thread 'child_stub_type_must_agree_with_the_containment_slot' (26796) panicked at crates\model\tests\c11_r1_adversarial.rs:357:5:
+palette slot schema accepted scene stub
+test child_stub_type_must_agree_with_the_containment_slot ... FAILED
+
+thread 'every_valid_deep_library_object_has_a_resolvable_canonical_path' (17612) panicked at crates\model\tests\c11_r1_adversarial.rs:350:5:
+unresolvable canonical path: library:local/libraryFolder:"Folder 32"/libraryFolder:"Folder 31"/libraryFolder:"Folder 30"/libraryFolder:"Folder 29"/libraryFolder:"Folder 28"/libraryFolder:"Folder 27"/libraryFolder:"Folder 26"/libraryFolder:"Folder 25"/libraryFolder:"Folder 24"/libraryFolder:"Folder 23"/libraryFolder:"Folder 22"/libraryFolder:"Folder 21"/libraryFolder:"Folder 20"/libraryFolder:"Folder 19"/libraryFolder:"Folder 18"/libraryFolder:"Folder 17"/libraryFolder:"Folder 16"/libraryFolder:"Folder 15"/libraryFolder:"Folder 14"/libraryFolder:"Folder 13"/libraryFolder:"Folder 12"/libraryFolder:"Folder 11"/libraryFolder:"Folder 10"/libraryFolder:"Folder 9"/libraryFolder:"Folder 8"/libraryFolder:"Folder 7"/libraryFolder:"Folder 6"/libraryFolder:"Folder 5"/libraryFolder:"Folder 4"/libraryFolder:"Folder 3"/libraryFolder:"Folder 2"/libraryFolder:"Folder 1"/libraryFolder:"Folder 0"/libraryFolder:"Leaf"
+test every_valid_deep_library_object_has_a_resolvable_canonical_path ... FAILED
+review nested-schema sweep: 305 closed-object mutations
+test nested_closed_value_objects_reject_unknown_fields ... ok
+review derived-input sweep: 22 types, 26 output-only properties
+test derived_properties_are_output_only_on_validated_entity_input ... ok
+review schema sweep: 22 types, 2023 mutations
+test schema_mutations_cover_all_object_types_and_root_properties ... ok
+test million_system_ids_unique_ordered_and_correctly_prefixed ... ok
+review drawing validation: bytes=10534733, ms=1053.473
+test ten_megabyte_drawing_validation_measurement ... ok
+
+failures:
+
+failures:
+    add_over_existing_object_property_is_invertible
+    brush_outline_must_be_closed
+    canonical_map_order_does_not_depend_on_insertion_order
+    canonical_scene_map_order_is_not_document_state
+    canonical_serialization_rejects_nonfinite_values
+    child_stub_type_must_agree_with_the_containment_slot
+    cloning_a_system_generator_cannot_duplicate_ids
+    depth_zero_results_validate_against_their_object_schema
+    diff_does_not_treat_opaque_arrays_as_child_collections
+    document_assembly_rechecks_schema_ranges_after_public_deserialize
+    duplicate_entry_ids_must_not_silently_overwrite_content
+    elided_patch_must_not_write_null
+    every_valid_deep_library_object_has_a_resolvable_canonical_path
+    extension_and_metadata_names_are_never_interpreted
+    fixed_text_requires_width
+    image_element_bank_requires_exactly_one_bitmap_per_drawing
+    int_means_signed_32_bit_unless_spec_states_otherwise
+    jsonschema_integer_multiple_of_does_not_round_before_testing
+    linked_file_asset_requires_paths
+    metadata_depth_is_enforced_at_model_input
+    mouth_track_manual_ranges_stay_within_the_placement
+    move_over_existing_object_property_is_invertible
+    nfc_applies_to_persisted_strings_beyond_names
+    property_schema_resolves_nested_child_and_tuple_fields
+    root_add_is_rfc6902_replacement
+    schema_properties_have_format_introduction_annotations
+    spline_handle_offsets_are_clamped_to_adjacent_key_times
+    swatch_id_alias_is_accepted_by_the_validated_input_path
+    texture_paths_must_be_under_textures
+
+test result: FAILED. 8 passed; 29 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.11s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r1_adversarial`

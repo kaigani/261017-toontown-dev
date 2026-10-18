@@ -1,0 +1,174 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling serde_core v1.0.229
+   Compiling smallvec v1.16.3
+   Compiling hashbrown v0.17.1
+   Compiling serde_json v1.0.154
+   Compiling serde v1.0.229
+   Compiling windows-sys v0.61.2
+   Compiling time-macros v0.2.32
+   Compiling uuid v1.28.0
+   Compiling bitflags v2.13.2
+   Compiling parking_lot_core v0.9.12
+   Compiling parking_lot v0.12.5
+   Compiling tempfile v3.27.0
+   Compiling rusty-fork v0.3.1
+   Compiling time v0.3.55
+   Compiling proptest v1.12.0
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling indexmap v2.14.2
+   Compiling synstructure v0.14.0
+   Compiling serde_derive_internals v0.30.0
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling zerovec-derive v0.11.6
+   Compiling displaydoc v0.2.7
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling schemars_derive v1.2.3
+   Compiling ref-cast v1.0.27
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling thiserror v2.0.21
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling icu_collections v2.3.0
+   Compiling icu_locale_core v2.3.0
+   Compiling icu_provider v2.3.1
+   Compiling ahash v0.8.12
+   Compiling schemars v1.2.3
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling url v2.5.8
+   Compiling jsonschema v0.18.3
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\model)
+warning: unused import: `ModelObject`
+ --> crates\model\tests\c11_r1_adversarial.rs:5:26
+  |
+5 | use tt_model::entities::{ModelObject, asset::Asset, channel::Channel, drawing::{Drawing, DrawingNode, Stroke}, element::Element, pale...
+  |                          ^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `tt-model` (test "c11_r1_adversarial") generated 1 warning (run `cargo fix --test "c11_r1_adversarial" -p tt-model` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.87s
+     Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-8b08020a096734ce.exe)
+
+running 21 tests
+
+thread 'add_over_existing_object_property_is_invertible' (30640) panicked at crates\model\tests\c11_r1_adversarial.rs:153:5:
+assertion `left == right` failed: RFC6902 add replaces existing property; oldValue must restore it
+  left: Object {}
+ right: Object {"a": Number(1)}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'elided_patch_must_not_write_null' (27492) panicked at crates\model\tests\c11_r1_adversarial.rs:173:5:
+10 §2.6: elided value requires reread, never replacement with null
+
+thread 'move_over_existing_object_property_is_invertible' (2104) panicked at crates\model\tests\c11_r1_adversarial.rs:161:5:
+assertion `left == right` failed: 10 §2.6 every patch invertible
+  left: Object {"a": Number(1)}
+ right: Object {"a": Number(1), "b": Number(2)}
+
+thread 'root_add_is_rfc6902_replacement' (30284) panicked at crates\model\tests\c11_r1_adversarial.rs:167:51:
+called `Result::unwrap()` on an `Err` value: ModelError { code: "arg.invalid", message: "the operation needs a non-root path", details: Object {"pointer": String("")} }
+test add_over_existing_object_property_is_invertible ... FAILED
+test elided_patch_must_not_write_null ... FAILED
+test hostile_path_and_id_controls ... ok
+test move_over_existing_object_property_is_invertible ... FAILED
+test root_add_is_rfc6902_replacement ... FAILED
+
+thread 'depth_zero_results_validate_against_their_object_schema' (5272) panicked at crates\model\tests\c11_r1_adversarial.rs:62:5:
+10 §2.2 both full objects and stubs validate: {"id":"pr_01K742SG00AGK6CWBR28XFH7HT","type":"project","name":"Sample"}
+test depth_zero_results_validate_against_their_object_schema ... FAILED
+
+thread 'nfc_applies_to_persisted_strings_beyond_names' (26688) panicked at crates\model\tests\c11_r1_adversarial.rs:47:5:
+assertion `left == right` failed: 10 §1.1 string
+  left: String("e\u{301}")
+ right: String("é")
+test nfc_applies_to_persisted_strings_beyond_names ... FAILED
+
+thread 'duplicate_entry_ids_must_not_silently_overwrite_content' (29252) panicked at crates\model\tests\c11_r1_adversarial.rs:27:5:
+ID-01: duplicate entry disappeared before validation
+test duplicate_entry_ids_must_not_silently_overwrite_content ... FAILED
+test schema_integer_boundary_does_not_round_u64_max_up ... ok
+
+thread 'brush_outline_must_be_closed' (28528) panicked at crates\model\tests\c11_r1_adversarial.rs:100:5:
+10 §4.9: brush outlines are closed
+test brush_outline_must_be_closed ... FAILED
+
+thread 'texture_paths_must_be_under_textures' (25476) panicked at crates\model\tests\c11_r1_adversarial.rs:123:5:
+10 §4.13: texture entry outside textures/
+
+thread 'swatch_id_alias_is_accepted_by_the_validated_input_path' (3096) panicked at crates\model\tests\c11_r1_adversarial.rs:55:5:
+10 §2.2 explicitly accepts id as alias
+test texture_paths_must_be_under_textures ... FAILED
+test swatch_id_alias_is_accepted_by_the_validated_input_path ... FAILED
+
+thread 'extension_and_metadata_names_are_never_interpreted' (7324) panicked at crates\model\tests\c11_r1_adversarial.rs:37:5:
+assertion `left == right` failed: 10 §2.2: ext verbatim
+  left: Object {"type": String("element"), "name": String("é"), "payload": Array [Number(1), Number(2), Number(3)]}
+ right: Object {"type": String("element"), "name": String("  e\u{301}  "), "payload": Array [Number(1), Number(2), Number(3)]}
+test extension_and_metadata_names_are_never_interpreted ... FAILED
+
+thread 'int_means_signed_32_bit_unless_spec_states_otherwise' (30100) panicked at crates\model\tests\c11_r1_adversarial.rs:188:5:
+10 §1.1 int is signed 32-bit; frame is int
+test int_means_signed_32_bit_unless_spec_states_otherwise ... FAILED
+
+thread 'document_assembly_rechecks_schema_ranges_after_public_deserialize' (5848) panicked at crates\model\tests\c11_r1_adversarial.rs:72:5:
+10 §4.2: Document accepted pen sizes > 100 via public Deserialize
+test document_assembly_rechecks_schema_ranges_after_public_deserialize ... FAILED
+
+thread 'linked_file_asset_requires_paths' (2004) panicked at crates\model\tests\c11_r1_adversarial.rs:93:5:
+10 §4.16 linked file with no locator accepted
+
+thread 'image_element_bank_requires_exactly_one_bitmap_per_drawing' (20896) panicked at crates\model\tests\c11_r1_adversarial.rs:85:5:
+10 §4.10 empty image drawing accepted
+test linked_file_asset_requires_paths ... FAILED
+test image_element_bank_requires_exactly_one_bitmap_per_drawing ... FAILED
+
+thread 'canonical_map_order_does_not_depend_on_insertion_order' (27416) panicked at crates\model\tests\c11_r1_adversarial.rs:133:5:
+assertion `left == right` failed: 10 AG-06 identical documents identical JSON
+  left: "{\n  \"id\": \"pen_01K742SG0D52WQP7QB3MVEBHKZ\",\n  \"type\": \"pen\",\n  \"rev\": 1,\n  \"name\": \"Pen 1\",\n  \"kind\": \"brush\",\n  \"minSize\": 0.5,\n  \"maxSize\": 2,\n  \"smoothness\": 3,\n  \"tip\": \"round\",\n  \"tipAngle\": 0,\n  \"colourId\": null,\n  \"meta\": {\n    \"a\": 1,\n    \"b\": 2\n  }\n}\n"
+ right: "{\n  \"id\": \"pen_01K742SG0D52WQP7QB3MVEBHKZ\",\n  \"type\": \"pen\",\n  \"rev\": 1,\n  \"name\": \"Pen 1\",\n  \"kind\": \"brush\",\n  \"minSize\": 0.5,\n  \"maxSize\": 2,\n  \"smoothness\": 3,\n  \"tip\": \"round\",\n  \"tipAngle\": 0,\n  \"colourId\": null,\n  \"meta\": {\n    \"b\": 2,\n    \"a\": 1\n  }\n}\n"
+test canonical_map_order_does_not_depend_on_insertion_order ... FAILED
+
+thread 'fixed_text_requires_width' (17348) panicked at crates\model\tests\c11_r1_adversarial.rs:116:5:
+10 §4.9: fixed text without width
+test fixed_text_requires_width ... FAILED
+
+thread 'metadata_depth_is_enforced_at_model_input' (28744) panicked at crates\model\tests\c11_r1_adversarial.rs:141:5:
+accepted object cannot be written by its canonical writer
+test metadata_depth_is_enforced_at_model_input ... FAILED
+test million_system_ids_unique_ordered_and_correctly_prefixed ... ok
+
+failures:
+
+failures:
+    add_over_existing_object_property_is_invertible
+    brush_outline_must_be_closed
+    canonical_map_order_does_not_depend_on_insertion_order
+    depth_zero_results_validate_against_their_object_schema
+    document_assembly_rechecks_schema_ranges_after_public_deserialize
+    duplicate_entry_ids_must_not_silently_overwrite_content
+    elided_patch_must_not_write_null
+    extension_and_metadata_names_are_never_interpreted
+    fixed_text_requires_width
+    image_element_bank_requires_exactly_one_bitmap_per_drawing
+    int_means_signed_32_bit_unless_spec_states_otherwise
+    linked_file_asset_requires_paths
+    metadata_depth_is_enforced_at_model_input
+    move_over_existing_object_property_is_invertible
+    nfc_applies_to_persisted_strings_beyond_names
+    root_add_is_rfc6902_replacement
+    swatch_id_alias_is_accepted_by_the_validated_input_path
+    texture_paths_must_be_under_textures
+
+test result: FAILED. 3 passed; 18 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.67s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r1_adversarial`
