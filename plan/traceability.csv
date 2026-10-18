@@ -1,0 +1,26 @@
+spec_section,requirement_id_or_quote,milestone,checkpoint,status,test
+00 §4,"reference architecture: engine layers independent of the shell",M0,C0.1,done,crates/engine/src/components.rs::lists_every_plan_crate_once
+11 §2,"GUI binding: menus ... are bound to command ids",M0,C0.1,done (manifest; registry diff in M1),desktop/src-tauri/src/bindings.rs::embedded_manifest_is_valid; desktop/src/ui-bindings/menu.test.ts
+11 §3,"Starting in headless mode MUST NOT require a display server or GPU",M0,C0.1,done (self-test only; MCP in M1),bins/headless/tests/cli.rs; scripts/check-headless-deps.py; ci.yml headless-no-display
+11 §3,"app --headless --mcp-stdio [--project <path>]",M1,C1.4,flags parsed; returns not-available (exit 3),bins/headless/src/cli.rs::future_modes_are_typed_errors
+11 §3,"app --headless --run <batch.json> [--project <path>] [--out <log.jsonl>]",M1,C1.4,flags parsed; returns not-available (exit 3),bins/headless/src/cli.rs::future_modes_are_typed_errors
+11 §3,"offscreen renders always use the deterministic software rasteriser",M0,C0.3,planned,
+11 §4,"initialize result reports ... command-registry version ... document schema version ... run mode",M1,C1.4,engine facade exposes all four (EngineInfo),crates/engine/src/lib.rs::info_reports_versions_and_mode
+11 §10,"Errors use stable dotted codes area.reason",M0,C0.1,done for engine facade and IPC,crates/engine/src/error.rs::limit_exceeded_wire_form; desktop/src/ipc/hostApi.test.ts
+11 P7,"Given the same document and the same command sequence ... rendered pixels MUST be identical",M0,C0.1,partial (IEEE-754 probe across OSes),crates/engine/src/determinism.rs::probe_matches_golden; ci.yml check (selftest twice)
+11 P7,"rasteriser output identical across OSes",M0,C0.3,planned,
+11 §14.1,"Parity test (build gate)",M1,C1.2,planned (manifest exists),
+11 §14.5,"Determinism tests ... byte-for-byte across runs",M3,C3.3,planned,
+01 §1.2,"Quit ... platform-standard location ... Primary+Q",M0,C0.1,done (no unsaved-changes check until M1),desktop/src-tauri/src/bindings.rs::quit_is_bound_on_every_platform; docs/manual-tests/M0-C0.1-shell-macos.md
+01 §1.3,"When no project is open, only these commands are enabled",M0,C0.1,done for menu items,desktop/src-tauri/src/bindings.rs::enablement_without_project_follows_01_1_3
+01 §5.1,"On macOS, About, Preferences (Primary+,) and Quit are in the application menu",M0,C0.1,done (pending macOS manual check),desktop/src-tauri/src/bindings.rs::task_menus_exist_on_both_product_platforms; docs/manual-tests/M0-C0.1-shell-macos.md
+01 §5.1,"Window title ... With no project, only the application name",M0,C0.1,done,desktop/src-tauri/src/lib.rs::tauri_config_matches_workspace_and_plan
+01 §5.2,"Every panel has a stable panel ID",M0,C0.1,done for drawingView/timeline/properties,desktop/src/App.test.tsx (panels)
+01 §5.2,"Properties ... shows an explicit no properties state when empty",M0,C0.1,done (placeholder),manual: reviews/assets/M0-C0.1-windows-shell.png
+01 §5.4,"Docking, floating and tabbing",M4,C4.1,dockview in place; behaviour not yet specified-tested,
+01 §5.5,"Workspaces ... Restore default workspace",M0,C0.1,partial (workspace.reset Default only),desktop/src/App.test.tsx (menu command handling)
+01 §5.6,"full-screen toggle (Ctrl+Primary+F on macOS, F11 elsewhere)",M0,C0.1,done,desktop/src-tauri/src/bindings.rs::per_platform_accelerators; desktop/src-tauri/src/menu.rs::host_commands
+01 §6.1,"Platform-standard shortcuts: Undo Primary+Z, Redo Shift+Primary+Z (Windows/Linux also Ctrl+Y)",M4,C4.1,menu accelerators bound; Ctrl+Y secondary binding pending keymap (M4),
+01 §9.1,"Status bar",M4,C4.1,placeholder with messages and IPC readout,desktop/src/App.test.tsx
+02 §6,"pressure, tilt, tablet input",M0,C0.2,planned,
+10 §6.6,"format version is MAJOR.MINOR",M1,C1.1,constant 0.0 placeholder,crates/engine/src/selftest.rs::dotted_version_parser
