@@ -3,11 +3,13 @@
 // Build-level proof of the IPC boundary (boundary/vite-plugin.ts; C01-R2-01): each bypass class is bundled with the
 // project's REAL Vite config in production mode and must fail with an "IPC boundary" error, whatever the linter
 // says. Positive controls prove that legitimate code still builds.
-import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-import { build } from 'vite';
+import { build, createServer, type Plugin } from 'vite';
 import { afterAll, describe, expect, it } from 'vitest';
+
+import { ipcBoundary } from '../../boundary/vite-plugin';
 
 const desktop = fileURLToPath(new URL('../../', import.meta.url));
 const probes = `${desktop}src/__probes__/build-${String(process.pid)}/`;
@@ -122,4 +124,125 @@ describe('IPC boundary at bundle time', () => {
     },
     T,
   );
+});
+
+const htmlFixture = (html: string): Plugin => ({
+  name: 'test-html-fixture',
+  transformIndexHtml: { order: 'pre', handler: () => html },
+});
+
+async function buildApp(plugins: Plugin[]): Promise<void> {
+  await build({
+    configFile: `${desktop}vite.config.ts`,
+    root: desktop,
+    mode: 'production',
+    logLevel: 'silent',
+    plugins,
+    build: { write: false, minify: false, sourcemap: false },
+  });
+}
+
+describe('index.html imports only src/main.tsx (C01-R3-02)', () => {
+  it(
+    'refuses an inline module importing the raw transport',
+    async () => {
+      const html =
+        '<script type="module">import { createTauriTransport } from "/src/ipc/tauriTransport.ts"; window.b = createTauriTransport;</script>';
+      await expect(buildApp([htmlFixture(html)])).rejects.toThrow(/IPC boundary/);
+    },
+    T,
+  );
+
+  it(
+    'refuses an inline module importing anything but main.tsx, even the host API',
+    async () => {
+      const html =
+        '<script type="module">import { createDefaultHostApi } from "/src/ipc/index.ts"; window.b = createDefaultHostApi;</script>';
+      await expect(buildApp([htmlFixture(html)])).rejects.toThrow(/IPC boundary/);
+    },
+    T,
+  );
+
+  it(
+    'builds the real index.html (positive control)',
+    async () => {
+      await expect(buildApp([])).resolves.toBeUndefined();
+    },
+    T,
+  );
+});
+
+describe('emitted-chunk attribution (C01-R3-01)', () => {
+  const [, scanner] = ipcBoundary({ allowTestSupport: false, desktopDir: desktop.slice(0, -1) });
+  const hook = scanner?.renderChunk;
+  const renderChunk = (typeof hook === 'function' ? hook : hook?.handler) as unknown as (
+    this: unknown,
+    code: string,
+    chunk: unknown,
+  ) => unknown;
+  const ctx = {
+    error(message: string): never {
+      throw new Error(message);
+    },
+  };
+  const app = `${desktop}src/App.tsx`;
+  const transport = `${desktop}src/ipc/tauriTransport.ts`;
+  const mention = "window['__TAURI_INTERNALS__'].invoke('x');";
+  const chunk = (modules: Record<string, string>) => ({
+    fileName: 'probe.js',
+    modules: Object.fromEntries(Object.entries(modules).map(([id, code]) => [id, { code }])),
+  });
+
+  it('accepts mentions attributable to the transport', () => {
+    expect(() => renderChunk.call(ctx, mention, chunk({ [transport]: mention }))).not.toThrow();
+  });
+  it('rejects a mention in any other module', () => {
+    expect(() => renderChunk.call(ctx, mention, chunk({ [app]: mention }))).toThrow(/IPC boundary/);
+  });
+  it('rejects mentions in the chunk that no module accounts for', () => {
+    expect(() => renderChunk.call(ctx, mention + mention, chunk({ [transport]: mention }))).toThrow(
+      /IPC boundary/,
+    );
+  });
+});
+
+describe('dev server: placeholder re-resolution only for approved modules (C01-R3-02)', () => {
+  it(
+    'serves the real graph, and refuses a module never reached through an import edge',
+    async () => {
+      const server = await createServer({
+        configFile: `${desktop}vite.config.ts`,
+        root: desktop,
+        mode: 'development',
+        logLevel: 'silent',
+        server: { port: 0, strictPort: false, ws: false },
+      });
+      try {
+        await expect(server.transformRequest('/src/ipc/tauriTransport.ts')).rejects.toThrow(/IPC boundary/);
+        expect((await server.transformRequest('/src/main.tsx'))?.code).toBeTruthy();
+        expect((await server.transformRequest('/src/ipc/index.ts'))?.code).toBeTruthy();
+        // Now reached through index.ts, the transport is an approved module.
+        expect((await server.transformRequest('/src/ipc/tauriTransport.ts'))?.code).toBeTruthy();
+      } finally {
+        await server.close();
+      }
+    },
+    T,
+  );
+});
+
+describe('config selection is pinned (C01-R3-02)', () => {
+  it('every vite/vitest script passes --config vite.config.ts and Tauri runs those scripts', () => {
+    const pkg = JSON.parse(readFileSync(`${desktop}package.json`, 'utf8')) as {
+      scripts: Record<string, string>;
+    };
+    const viteScripts = Object.entries(pkg.scripts).filter(([, cmd]) => /\b(vite|vitest)\b/.test(cmd));
+    expect(viteScripts.map(([name]) => name).sort()).toEqual(['build', 'dev', 'preview', 'test']);
+    for (const [name, cmd] of viteScripts) expect(cmd, name).toMatch(/--config vite\.config\.ts(\s|$)/);
+    const tauri = JSON.parse(readFileSync(`${desktop}src-tauri/tauri.conf.json`, 'utf8')) as {
+      build: { beforeDevCommand: string; beforeBuildCommand: string };
+    };
+    expect(tauri.build.beforeDevCommand).toBe('pnpm dev');
+    expect(tauri.build.beforeBuildCommand).toBe('pnpm build');
+  });
 });

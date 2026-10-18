@@ -8,7 +8,9 @@
 //   * modules under src/ may import only within src/ (relative specifiers in canonical form, no absolute or scheme
 //     specifiers, no backslashes); test files may additionally reach the repository's tests/ folder and
 //     desktop/boundary/ (the definitions under test);
-//   * inline `eslint-disable` of any boundary rule is itself an error (eslint-comments), including blanket disables.
+//   * no inline ESLint configuration of any kind takes effect (linterOptions.noInlineConfig, C01-R3-01): neither
+//     `eslint-disable` nor `/* eslint rule: off */`; exceptions live in eslint.config.js. eslint-comments still
+//     reports any disable directive as an error, so such comments cannot sit in the tree unnoticed.
 // Applies to every JS/TS extension in the desktop package. Deliberate run-time obfuscation (e.g. a global name built
 // from variables) cannot be detected statically; the bundler plugin scans transformed code for the Tauri globals
 // and refuses to bundle anything it cannot place.
@@ -110,7 +112,7 @@ export function ipcBoundaryConfig(commentsPlugin) {
       // Every JS/TS file of the desktop package.
       files: [`**/*.${EXT}`],
       plugins: { '@eslint-community/eslint-comments': commentsPlugin },
-      linterOptions: { reportUnusedDisableDirectives: 'error' },
+      linterOptions: { noInlineConfig: true },
       rules: {
         ...ipcBoundaryRules,
         '@eslint-community/eslint-comments/no-unlimited-disable': 'error',

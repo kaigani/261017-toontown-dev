@@ -68,8 +68,8 @@ export function createMockTransport(): MockTransport {
       const outcome: Outcome = handler
         ? handler(args)
         : { ok: false, error: { code: 'command.unknown', message: `no such command: ${command}` } };
-      // Tauri rejects with the plain serialized error value, not an Error instance; the mock does the same.
-      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+      // Tauri rejects with the plain serialized error value, not an Error instance; the mock does the same
+      // (prefer-promise-reject-errors is switched off for this file in eslint.config.js).
       return outcome.ok ? Promise.resolve(outcome.value) : Promise.reject(outcome.error);
     },
     listen(event, handler): Promise<Unlisten> {
