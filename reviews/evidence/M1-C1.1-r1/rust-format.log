@@ -1,0 +1,15 @@
+Diff in \\?\C:\Users\kaiga\work\review\m1-c11-r1\crates\model\tests\c11_r1_adversarial.rs:479:
+             && let Some(m) = v.as_object()
+         {
+             for (k, child) in m {
+-                walk(
+-                    &s["additionalProperties"],
+-                    child,
+-                    &format!("{path}/{}", tt_model::pointer::escape(k)),
+-                    defs,
+-                    out,
+-                );
++                walk(&s["additionalProperties"], child, &format!("{path}/{}", tt_model::pointer::escape(k)), defs, out);
+             }
+         }
+         for k in ["anyOf", "oneOf", "allOf"] {

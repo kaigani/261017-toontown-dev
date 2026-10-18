@@ -1,0 +1,53 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c11-r1/desktop
+
+ ❯ src/ipc/c11-r1-adversarial.test.ts (5 tests | 2 failed) 31ms
+   ❯ C11 R1 text boundary (5)
+     × coerces doubles declared inside generated conditional effect schemas 8ms
+     × rejects unpaired surrogate strings that the Rust UTF-8 reader cannot accept 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > coerces doubles declared inside generated conditional effect schemas
+Error: ENOENT: no such file or directory, open 'C:\Users\kaiga\work\review\crates\model\tests\golden\sample\elements\Intro\Quake.json'
+ ❯ golden src/ipc/c11-r1-adversarial.test.ts:14:21
+     12| const ref = (name: string): Schema => ({ $ref: `#/$defs/${name}` });
+     13| function golden(relative: string): Record<string, unknown> {
+     14|   return JSON.parse(readFileSync(fileURLToPath(new URL(`../../../../cr…
+       |                     ^
+     15| }
+     16|
+ ❯ src/ipc/c11-r1-adversarial.test.ts:19:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > rejects unpaired surrogate strings that the Rust UTF-8 reader cannot accept
+AssertionError: expected { code: 'arg.invalid', message: '�' } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "code": "arg.invalid",
+  "message": "�",
+}
+
+ ❯ src/ipc/c11-r1-adversarial.test.ts:33:104
+     31|
+     32|   it('rejects unpaired surrogate strings that the Rust UTF-8 reader ca…
+     33|     expect(certifyWireText('{"code":"arg.invalid","message":"\\ud800"}…
+       |                                                                                                        ^
+     34|   });
+     35|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 3 passed (5)
+   Start at  12:39:39
+   Duration  710ms (setup 54%, transform 34%, tests 6%, import 5%, worker 1%)
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found

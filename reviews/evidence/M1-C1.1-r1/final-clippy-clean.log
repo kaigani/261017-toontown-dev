@@ -1,0 +1,14 @@
+    Checking webview2-com-sys v0.39.1
+    Checking tao v0.37.1
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\model)
+   Compiling tauri v2.12.4
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\desktop\src-tauri)
+   Compiling tauri-macros v2.7.3
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\mcp)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\engine)
+    Checking tt-headless v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\bins\headless)
+    Checking webview2-com v0.39.1
+    Checking wry v0.57.0
+    Checking tauri-runtime v2.12.2
+    Checking tauri-runtime-wry v2.12.2
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.13s

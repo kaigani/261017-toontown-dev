@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cargo",
+    "clippy",
+    "--workspace",
+    "--all-targets",
+    "--locked",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T20:01:26.919791+00:00",
+  "seconds": 1.858380199992098,
+  "exit": 0,
+  "logSha256": "086bdf9570b05240ad71bb62c27865a19eaa4602b34f0ef8d180ebfa67e6023a",
+  "proptestSeed": "1182711"
+}

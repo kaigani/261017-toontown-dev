@@ -1,0 +1,14 @@
+{
+  "command": [
+    "cargo",
+    "fmt",
+    "--all",
+    "--check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:53:31.302243+00:00",
+  "seconds": 0.45931489998474717,
+  "exit": 1,
+  "logSha256": "82e715a9135a38107b39195baf64d30596385969103f740ba5ca2ff8fdfa0db3",
+  "proptestSeed": "1182711"
+}

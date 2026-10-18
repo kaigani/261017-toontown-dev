@@ -1,0 +1,47 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling getrandom v0.4.3
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\audio)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\executor)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\lipsync)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\io)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\engine)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.21s
+     Running tests\c11_r1_wire.rs (target\debug\deps\c11_r1_wire-a91c402265b1714b.exe)
+
+running 4 tests
+
+thread 'typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null' (30120) panicked at crates\engine\tests\c11_r1_wire.rs:19:5:
+10 §1.1 NaN is invalid; serde_json silently writes null
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'nested_duplicate_keys_are_rejected_in_requests' (18688) panicked at crates\engine\tests\c11_r1_wire.rs:14:5:
+duplicate keys must not silently erase a value
+
+thread 'opaque_json_integer_outside_u64_is_not_silently_rounded' (3712) panicked at crates\engine\tests\c11_r1_wire.rs:9:5:
+assertion `left == right` failed: opaque extension integer loses precision in Rust
+  left: "{\"com.example.tool\":{\"n\":-18446744073709552000}}"
+ right: "{\"com.example.tool\":{\"n\":-18446744073709551615}}"
+test supported_integer_boundaries_and_utf8_controls ... ok
+test typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null ... FAILED
+test nested_duplicate_keys_are_rejected_in_requests ... FAILED
+test opaque_json_integer_outside_u64_is_not_silently_rounded ... FAILED
+
+failures:
+
+failures:
+    nested_duplicate_keys_are_rejected_in_requests
+    opaque_json_integer_outside_u64_is_not_silently_rounded
+    typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null
+
+test result: FAILED. 1 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p tt-engine --test c11_r1_wire`

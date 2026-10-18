@@ -1,0 +1,20 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm",
+    "--dir",
+    "desktop",
+    "exec",
+    "vitest",
+    "run",
+    "src/ipc/c11-r1-adversarial.test.ts"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:43:05.419511+00:00",
+  "seconds": 0.9200911999796517,
+  "exit": 1,
+  "logSha256": "611a0744af11478221c911bc668e272fe2969dd0ef1849a7dcbcbaea37dd1cd5",
+  "proptestSeed": "1182711"
+}

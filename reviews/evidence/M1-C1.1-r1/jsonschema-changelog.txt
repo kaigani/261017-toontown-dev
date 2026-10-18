@@ -1,0 +1,2111 @@
+# Changelog
+
+## [Unreleased]
+
+## [0.59.0] - 2026-10-16
+
+### Added
+
+- **CLI**: `-` as a path reads the schema or an instance from stdin.
+- **CLI**: `-V` as the version flag; `-v` stays as an alias.
+
+### Changed
+
+- **CLI**: Exit status `3` for errors that prevent a verdict and `2` for usage errors, so `1` always means an invalid instance or schema.
+- **CLI**: Errors print to stderr instead of stdout.
+- **CLI**: `--version` prints `jsonschema-cli <VERSION>` instead of `Version: <VERSION>`.
+
+### Fixed
+
+- **CLI**: Panic when stdout is closed early, as in `jsonschema-cli validate ... | head`.
+- **CLI**: Missing file path in the error for an unreadable instance in text output.
+- **CLI**: `jsonschema-cli bundle`, `jsonschema-cli dereference` and `jsonschema-cli canonicalize` truncating the `--output` file when the write fails partway.
+- **CLI**: `jsonschema-cli validate --help` describing `--offline` in terms of `--resource`, which `validate` does not accept.
+- **CLI**: Error and warning messages suggesting `jsonschema` commands instead of the installed `jsonschema-cli` binary.
+- Canonicalizing several subschemas of one prepared document, where a `$ref` in a later output could point at another subschema.
+- `canonicalize` leaving `unevaluatedProperties` or `unevaluatedItems` beside `anyOf` or `oneOf` raw.
+- `canonicalize` giving a different form for a `oneOf` depending on the order of its branches.
+- `canonicalize` output changing when canonicalized again, for a `not` over a `$ref` it cannot fully negate.
+- `canonicalize` output changing when canonicalized again, for a `oneOf` whose branches reduce to the same `$ref`.
+- `canonicalize` leaving an `anyOf` over many overlapping objects raw.
+- `canonicalize` leaving `dependencies` or `dependentRequired` raw when their keys form a long chain or cycle.
+- `canonicalize` treating `-0` as a value distinct from `0` under `arbitrary-precision`.
+- Regex matches the engine cannot finish, such as on reaching the backtrack limit, counted as non-matches, letting `not` or `patternProperties` accept invalid instances. [#1715](https://github.com/Stranger6667/jsonschema/issues/1715)
+- `canonicalize` treating regex matches the engine cannot finish as non-matches.
+
+### Performance
+
+- `canonicalize` giving up sooner on an `allOf` over unions too wide to model.
+
+## [0.58.6] - 2026-10-06
+
+### Fixed
+
+- `\s` in `pattern` missing most Unicode space separators and U+2028.
+- ECMA regex character class literals being interpreted as Rust set operators.
+
+## [0.58.5] - 2026-10-02
+
+### Fixed
+
+- `canonicalize` keeping a reference to a cycle of bare references under `not` or `oneOf` instead of treating it as accepting every value.
+
+## [0.58.4] - 2026-10-01
+
+### Fixed
+
+- `Validator::draft` returning the default draft instead of the one `$schema` declares.
+- `unevaluatedProperties` and `unevaluatedItems` beside a `$recursiveRef` ignoring what the reference target evaluates.
+- `unevaluatedProperties` ignoring the configured regex engine and its limits for `patternProperties`.
+- Absolute keyword location and `schemaLocation` of keywords a `$ref` JSON Pointer reaches through a subschema with its own `$id`.
+- `type`, `minItems` and `maxItems` ignored beside `items` when the applicator vocabulary is disabled.
+- Absolute keyword location and `schemaLocation` of keywords inside a nested `$id` resource counting from the document root.
+- `required` beside `properties` ignored when the applicator vocabulary is disabled, and `required`, `minContains` and `maxContains` applied when the validation vocabulary is disabled.
+- Absolute keyword location and evaluation output of `type` errors in a `type`-only `items` subschema pointing at `items` instead of the failing element's `type`.
+- Absolute keyword location of `patternProperties` annotations missing its JSON Pointer fragment.
+- Evaluation output of `type: array` beside schema-form `items` omitting passing `type`, `minItems` and `maxItems` units and nesting failing ones under `items`.
+- Evaluation output `schemaLocation` and absolute keyword location of `$ref`, `$dynamicRef` and `$recursiveRef` nodes not pointing at the reference target.
+- Evaluation output `schemaLocation` URIs not percent-encoding their fragment, such as a space in a property name.
+- Absolute keyword location of errors and annotations from a whole subschema, such as `false`, missing its JSON Pointer fragment.
+- Absolute keyword location of `required`, `minContains` and `maxContains` errors pointing at a sibling keyword.
+- Evaluation annotations from `$ref` siblings in Draft 4, 6 and 7 schemas.
+- Masked `additionalItems` messages counting allowed items instead of extra ones, and "1 items" in masked `unevaluatedItems` messages.
+- `$dynamicRef` and `$recursiveRef` resolving in the dynamic scope of another path to the same schema, depending on property order.
+- `unevaluatedProperties` and `unevaluatedItems` ignoring what `then` or `else` evaluates when `if` is `true` or `false`.
+- Stack overflow when building validators for long `$ref` chains.
+- `format: "regex"` and meta-schema validation rejecting escaped punctuation such as `\-` in patterns.
+- Build errors for an invalid `patternProperties` regex reporting the subschema instead of the pattern and its location.
+
+## [0.58.3] - 2026-09-30
+
+### Fixed
+
+- Keywords of a subschema declaring a Draft 2019-09+ `$schema` under a Draft 4, 6 or 7 root being ignored.
+- Evaluation annotations including those from subschemas of a failing schema (a failing schema produces no annotations).
+- Embedded resources declaring their own `$schema` being checked against the root's meta-schema.
+
+## [0.58.2] - 2026-09-28
+
+### Fixed
+
+- `$dynamicRef` targets in another document resolving relative references and reporting absolute keyword locations against the referencing document.
+- `$ref` to an `$anchor` or fragment `$id` validating against another anchor in the same document. [#1668](https://github.com/Stranger6667/jsonschema/issues/1668)
+- `schema_path` of errors under a `$ref` or `$dynamicRef` to a named schema pointing at the resource root instead of that schema.
+
+## [0.58.1] - 2026-09-26
+
+### Fixed
+
+- Crash in `Pyo3` validators when an `Enum` member's `value` override emptied a list or dict holding the instance being read.
+
+### Performance
+
+- `uri` and `uri-reference` formats check the syntax directly instead of parsing each value into a URI.
+- `Enum` members read their stored value directly instead of calling the `value` property in `Pyo3` validators.
+
+## [0.58.0] - 2026-09-25
+
+### Added
+
+- `backend = Pyo3` on `#[jsonschema::validator]`, generating a validator that reads Python objects in place.
+- `backend = Magnus` on `#[jsonschema::validator]`, generating a validator that reads Ruby objects in place.
+- `jsonschema::meta::pyo3`, the bundled meta-schema validators for a schema held as a Python object.
+- `jsonschema::meta::magnus`, the bundled meta-schema validators for a schema held as a Ruby object.
+- `methods = { ... }` on `#[jsonschema::validator]`, selecting which of `is_valid`, `validate`, and `iter_errors` are generated.
+- `json::Jsonb`, validating a Postgres `jsonb` value in place, behind the `jsonb` feature.
+
+### Performance
+
+- `oneOf` and `anyOf` whose branches each require a property fixed to a distinct string validate only the branch matching the instance's value.
+- Generated `validate` checks `required` in the same pass over an object as `properties`, instead of looking up each required name.
+
+### Fixed
+
+- A `oneOf` over `$ref` branches beside a sibling none of them admits, which canonicalized to an `allOf` instead of `false`.
+- `multipleOf` incorrectly accepted `1e-400` and other magnitudes below the smallest `f64` subnormal with `arbitrary-precision` (they are not zero).
+- Numeric keywords panicked on a custom representation holding a number past `f64` without `arbitrary-precision`.
+
+## [0.57.0] - 2026-09-22
+
+### Added
+
+- `PreparedDocument::unsatisfiable`, naming the keywords that leave each unsatisfiable subschema empty and where they are.
+
+### Changed
+
+- `PreparedDocument::unsatisfiable_pointers` is replaced by `PreparedDocument::unsatisfiable`.
+
+### Fixed
+
+- The instance path of a schema build error, which was empty instead of naming the keyword location that failed to compile.
+- `PreparedDocument::unsatisfiable_pointers` passed over a subschema that admits no value only once its references resolve, such as an `allOf` over two `$ref`s.
+
+### Performance
+
+- Canonicalizing several subschemas of one prepared document parses each definition body once for the document instead of once per call.
+
+## [0.56.0] - 2026-09-10
+
+### Added
+
+- `canonical::RawReason`, what stopped a run from modeling a document, and `canonical::RawView`, carrying it beside the document and a pointer to the subschema the run stopped on.
+- `ValidationOptions::is_known_format`, whether a `format` of that name is checked under a draft.
+
+### Changed
+
+- **BREAKING**: `canonical::CanonicalView::Raw` carries a `canonical::RawView` in place of the document alone.
+- Canonicalization of a `oneOf` whose branches share a region too wide to expand, which spent the document's whole intersection allowance on that choice and kept the document `Raw`.
+
+### Performance
+
+- Preparing or building a schema that names no base URI parses the default one once for the process instead of once per schema.
+- Canonicalizing several subschemas of one prepared document compiles each pattern once for the document instead of once per call.
+- Canonicalization reads the facets no checker covers once per node instead of once per containment query.
+
+## [0.55.1] - 2026-09-08
+
+### Changed
+
+- Canonicalization of an `anyOf` over an `allOf` through a `$ref` to a union, which left that union nested inside the outer one.
+- Canonicalization of an `anyOf` whose branch narrowing runs out of intersections, which left `true` as a branch inside the union.
+
+## [0.55.0] - 2026-09-06
+
+### Changed
+
+- **BREAKING**: `canonical::ObjectViolationView` gained the `PatternValueFails` variant, which negation records for a `patternProperties` entry.
+- Canonicalization of `not` over `patternProperties`, which kept the entry under `not` instead of recording the demand a key breaks.
+- Canonicalization of `unevaluated*` beside a conditional reaching no key or index the node already evaluates, which spent a case on it.
+- Canonicalization of a conditional split outgrowing its per-node case budget, which kept documents like the Open API 3.2 meta-schema `Raw`.
+- Canonicalization of an `anyOf` over objects sharing a `properties` key under `patternProperties`, which settled only on a second pass.
+- Canonicalization of `not` over an `allOf` folded through a reference, which settled only on a second pass.
+- Canonicalization of a `multipleOf` divisor past `f64` precision, which was not taken to divide itself.
+- Canonicalization of an `anyOf` over a value beside a window pinned to it, which settled only on a second pass.
+- Canonicalization of `minProperties: 1` beside a `not` that already demands a key, which settled only on a second pass.
+
+### Fixed
+
+- `absolute_keyword_location` naming the sibling keyword whose validator carries the check: `maxLength` beside `minLength`, `minItems`, `maxItems` or `type` beside `items`, and a two-name `required` beside `properties`. [#1579](https://github.com/Stranger6667/jsonschema/issues/1579)
+- `schemaLocation` in `evaluate` output naming `minLength` for a `maxLength` failure. [#1579](https://github.com/Stranger6667/jsonschema/issues/1579)
+
+## [0.54.0] - 2026-09-06
+
+### Added
+
+- `backend = SerdeJson` on `#[jsonschema::validator]`, generating a validator that reads `serde_json::Value`.
+- `PreparedDocument::unsatisfiable_pointers`, listing every subschema no value satisfies.
+
+### Changed
+
+- Canonicalization of `unevaluated*` beside `dependentSchemas` or `if`/`then`/`else`, which kept the document `Raw`.
+- Canonicalization of `not` over `patternProperties`, which kept the document `Raw`.
+
+### Performance
+
+- `validate` and `iter_errors` check each assertion keyword with the `is_valid` path and build an error only for a failing one.
+- `evaluate` holds its output tree in one allocation instead of one per node.
+- A `pattern` of `^\S*$` scans bytes instead of decoding every character.
+- `validate` on `properties` beside a two-name `required` confirms both names in the pass that checks the properties, instead of looking each up first.
+- A string `enum` compares an option's length and first and last eight bytes before its full text.
+- A JSON Pointer segment is scanned for `~` and `/` eight bytes at a time before it is copied.
+- Canonicalization cloning leaves per intersection and the definition map per settled target.
+
+### Fixed
+
+- `type: array` with `items` and `minItems`/`maxItems` checking the built-in length bound even when a custom keyword overrides `minItems` or `maxItems`, so the bound was evaluated twice.
+- A custom keyword overriding `type`, `required` or `maxLength` not replacing the built-in check for that keyword.
+- A custom keyword overriding `items`, `minLength`, `properties` or `additionalProperties` leaving its sibling keywords unchecked.
+- `#[jsonschema::validator]` generated code that named `serde_json` directly, so it needed the consumer crate to depend on `serde_json` too.
+- Canonicalization of `not` over an object with `properties`, `patternProperties` and `additionalProperties`, which applied `additionalProperties` to the keys listed in `properties`.
+
+## [0.53.0] - 2026-09-02
+
+### Added
+
+- `Location::segments`, iterating the segments without collecting them.
+- `CanonicalizeOptions::prepare`, canonicalizing any number of a document's subschemas by JSON Pointer, with the document indexed once.
+- **CLI**: the `--at POINTER` flag of `jsonschema canonicalize`, canonicalizing only the subschema at that pointer without breaking its references into the rest of the document.
+- **CLI**: `jsonschema canonicalize` reads YAML schemas (`.yaml`/`.yml`) as well as JSON.
+- `canonical::{ArrayView, IntegerView, NumberView, ObjectView, StringView, TypedGroupView}`, the payload types of `CanonicalView`, so consumers can name them in signatures.
+
+### Fixed
+
+- `jsonschema-value` failing to build with `default-features = false`.
+- `jsonschema-value` failing to build for `wasm32-unknown-unknown`, which needs `getrandom`'s `wasm_js` backend.
+- Draft 4 `type: integer` accepting numbers written with an exponent, like `1e2`.
+- Draft 4 `type: integer` answering differently for the same number across representations.
+- `uniqueItems` accepting `0` alongside `-0.0` in arrays of more than 15 items.
+
+### Performance
+
+- Canonicalizing an `allOf` of object schemas walks their property maps once instead of looking every key up.
+- `properties` and `required` compare short names without `memcmp`.
+- Building a schema is up to 5% faster, from cheaper cache sharing and resolving each `$ref` target once.
+- Building a schema with an `$id` is up to 15% faster, from encoding each absolute location once.
+- `required` scans small objects once instead of looking up each key.
+- `enum` listing strings or integers, with or without `null`, matches against a set instead of comparing each candidate.
+- `evaluate` is up to 33% faster, from rendering each node's locations once.
+- **CLI**: 1.4-1.5x faster on large schemas, from reading files before parsing them.
+- Draft 4 `type: integer` with `arbitrary-precision` no longer allocates a string per number.
+- `type: integer`, and `type` sets containing it, are up to 54x faster on float-heavy instances with `arbitrary-precision`.
+- Draft 4 `type: integer` is up to 20x faster for the `Pyo3` and `Magnus` representations.
+
+## [0.52.1] - 2026-08-30
+
+### Fixed
+
+- `multipleOf` rejecting valid values like `1070468.14` for `0.01` without `arbitrary-precision`.
+
+### Performance
+
+- `minLength` and `maxLength` together now scan the string once.
+- `multipleOf` with a fractional divisor is 8-16x faster.
+- `unevaluatedProperties` is up to 2.9x faster.
+- `evaluate` is up to 27% faster on reference-heavy schemas.
+
+## [0.52.0] - 2026-08-26
+
+### Added
+
+- `Evaluation::is_valid`.
+- `Location::is_empty`.
+- `Display` for `ErrorEntry`.
+- `ValidationOptions::offline` and `canonical::CanonicalizeOptions::offline`, refusing to fetch references outside the registry.
+- `idna` Cargo feature, enabled by default, gating the `idn-hostname` and `idn-email` formats. [#1313](https://github.com/Stranger6667/jsonschema/issues/1313)
+- **CLI**: the `--offline` flag of `jsonschema validate`, `jsonschema bundle` and `jsonschema dereference`.
+
+### Changed
+
+- `ValidationErrors`' `Display` gained the instance path of each error.
+- **BREAKING**: With `default-features = false`, the `idn-hostname` and `idn-email` formats now require the new `idna` feature. Without it they are unknown formats, which are accepted by default, or rejected at build time under `should_ignore_unknown_formats(false)`. Add `idna` to the feature list to keep the previous behavior.
+
+### Fixed
+
+- Canonicalization not idempotent where a `patternProperties` `$ref` matches a key `properties` names.
+- `is_valid` disagreeing with `validate`, `iter_errors`, and `evaluate` on a schema that reaches its own `$ref` twice, one of them under `not`.
+- `format: email` and `format: idn-email` rejecting an empty quoted string as the local part (it should be accepted).
+- `format: email` and `format: idn-email` rejecting an address literal whose `IPv6:` tag is not written in that exact case (the tag is case-insensitive).
+- `format: email` accepting a non-ASCII character in the local part (it should be rejected).
+- `ValidationOptions::with_draft` gating keywords on the vocabularies of the `$schema` it overrides, so the validator accepted every instance.
+
+### Performance
+
+- `iter_errors` collects into a single buffer instead of allocating and re-boxing an iterator at every schema node.
+
+## [0.51.0] - 2026-08-23
+
+### Added
+
+- `ValidationOptions::with_vocabulary` and the `vocabularies` attribute on `jsonschema::validator`, declaring support for a vocabulary this crate does not implement.
+- The `--vocabulary` flag of `jsonschema validate`.
+
+### Changed
+
+- `Vocabulary` gained the `FormatAssertion` variant, which its Draft 2020-12 URI parses to instead of `Vocabulary::Custom`, and is marked `non_exhaustive`.
+
+### Fixed
+
+- The `uniqueItems` length ceiling not reading an `items` or `contains` schema written as a `$ref`.
+- The Draft 2020-12 Format-Assertion vocabulary read as an annotation, so a meta-schema requiring it accepted values its `format` rejects.
+- An unrecognized `format` accepted under a meta-schema requiring the Format-Assertion vocabulary (it should be rejected).
+- A meta-schema requiring a vocabulary this crate does not implement accepted (it should be rejected).
+- The Draft 2019-09 Format vocabulary declared `true` read as an annotation, so a meta-schema requiring it accepted values its `format` rejects.
+- The bundled `https://json-schema.org/draft/2020-12/meta/format-assertion` meta-schema not declaring its vocabulary, so a schema written against it annotated `format` instead of asserting it.
+- A meta-schema without `$id` keeping its `$vocabulary` unread, so a schema written against it got every Draft 2020-12 vocabulary.
+- A schema naming a bundled vocabulary meta-schema as its `$schema` rejected as an unknown meta-schema (it should build).
+- The `regex` format reading the Rust regex dialect (it should read the ECMA-262 dialect in Unicode mode).
+- The `uri-template` format rejecting an apostrophe in a literal (it should accept it, per RFC 6570 errata 6937).
+- The `duration` format accepting weeks combined with a time part, such as `P1WT1H` (it should reject it).
+- Stack overflow compiling `unevaluatedProperties` or `unevaluatedItems` beside a `$ref` that cycles back to the node, written as `#`, through its `$id`, or through a chain of definitions.
+
+### Performance
+
+- Building `unevaluatedProperties` or `unevaluatedItems` over a deep `allOf` or `$ref` chain costs its depth instead of its square.
+
+## [0.50.1] - 2026-08-22
+
+### Changed
+
+- `CanonicalSchema::satisfiability` answers `Yes` for a string whose `pattern` or `format` a matching value can be built from.
+- `CanonicalSchema::satisfiability` answers `No` where a `format` takes no string of the length the schema asks for.
+
+### Fixed
+
+- `CanonicalSchema::negate` taking apart a union that reads a definition through its own `if`, so a schema and its negation shared a value.
+- `CanonicalSchema::subtract` dropping a Draft 4 array member an element demand partly takes.
+- `CanonicalSchema::covers` answering `Yes` where a Draft 4 element demand refuses a member.
+- A string schema whose `maxLength` is `0` keeping a `pattern`, `format`, or content facet unread, so the same constraints written in one object and written as an `allOf` reached different canonical forms.
+
+### Performance
+
+- `not` over a wide object schema costs its branch count instead of its square.
+- `not` over an object schema is linear in its property count, not quadratic.
+- `not` over an object schema with `additionalProperties: false` no longer costs cubic time in its property count.
+
+## [0.50.0] - 2026-08-20
+
+### Added
+
+- `CanonicalSchema::union` and `CanonicalSchema::subtract`.
+- `CanonicalizationError::UnsupportedResult`, reported where the canonical form does not support a set operation's result.
+- `OperandMismatch::DocumentRoots`, reported where both operands read `#` and it names a different document on each side.
+- **CLI**: `jsonschema validate -i INSTANCE` without a `SCHEMA` argument validates each instance against the schema named in its own `$schema` property. [#1470](https://github.com/Stranger6667/jsonschema/issues/1470)
+
+### Changed
+
+- `CanonicalSchema::is_satisfiable` is now `CanonicalSchema::satisfiability`, answering `Yes`, `No`, or `Unknown` - `Yes` wherever a value can be exhibited, not only for the forms listing their members.
+- `CanonicalSchema::covers` decides through the difference as well: `No` where the argument keeps values the receiver rejects, `Yes` where nothing is left over.
+- `CanonicalSchema::is_subset_of` is now `CanonicalSchema::covers`, answering `Yes`, `No`, or `Unknown` for whether the receiver admits every value the argument admits.
+- `CanonicalSchema::negate` returns `Result` rather than `Option`.
+- `CanonicalizationError::UnmodeledOperand` is now `CanonicalizationError::UnsupportedOperand`, and means only that an operand is a `Raw` pass-through.
+- A conjunction over a `$ref` folds through the body it names, so canonicalizing a document and combining its parts with the set operations reach one form; a document holding a reference cycle keeps the form it had.
+
+### Fixed
+
+- Combining nodes of two different documents repointing a `$ref` to `#` at the combined result instead of the document it was written in, including one named by a definition the result keeps.
+- Intersecting a `$ref` whose target is `true` or `false`, which panicked.
+- A key constraint left un-narrowed once a run is out of intersections, which panicked on the next read of it.
+- `CanonicalSchema::covers` answering `Unknown` for a schema against itself, where that schema is a `$ref`.
+- `CanonicalSchema::union` keeping a `$ref` beside the schema it names, where the other three operations read through it.
+- `CanonicalSchema::covers` and `CanonicalSchema::subtract` cancelling two nodes written the same way whose `#` names a different document.
+- Two results accepting the same values comparing unequal over the part of their documents neither reads.
+- `additionalProperties` reaching a key the pattern map matches when a finite key constraint closes the map, which dropped values both operands accept.
+- A recursive definition stopping every other pointer in the document from being read through.
+- One `$defs` entry read past a wider schema written out at every use, rather than kept as the pointer it was.
+- Set operations rejecting one document canonicalized twice, and a pruned result rejected against the document it came from, where the maps resolve every shared reference the same way.
+- Set operations comparing a `$ref` as a pointer instead of reading through it, so a schema written with a `$ref` did not cancel against the same schema written out.
+- `CanonicalSchema::subtract` asking for a complement where the difference is one of the operands or empty, declining on schemas it can subtract.
+- Set operations keeping `$defs` entries the result no longer references, which then showed up in the emitted schema.
+- `CanonicalSchema::union` declining over an approximated intersection, where the union itself is exact.
+- Resolving a reference against a base URI that carries a fragment, which happens when a Draft 4-7 `$id` contains one. [#1473](https://github.com/Stranger6667/jsonschema/issues/1473)
+- `unevaluatedProperties` and `unevaluatedItems` ignoring an `$id` on a subschema they walk through, so a relative `$ref` inside it resolved against the enclosing resource.
+
+### Performance
+
+- **CLI**: ~25% less CPU per run from compile-time meta-schema validators.
+
+## [0.49.9] - 2026-08-09
+
+### Added
+
+- Canonicalization of a `oneOf` whose branches name object targets a required constant tells apart, which degrades to a union.
+
+### Changed
+
+- `CanonicalSchema::to_json_schema` on a definition emits only the definitions that one names, not the whole document's.
+
+### Fixed
+
+- Canonicalization running without end on a conjunction over unions; past a ceiling on the meets it takes, the document stays unmodeled.
+
+## [0.49.8] - 2026-08-08
+
+### Performance
+
+- Up to 380x faster canonicalization of a `oneOf` whose overlapping branches carry many properties, which no longer removes shared regions the exactly-one spelling discards.
+
+### Fixed
+
+- Draft detection treating the version-less `http://json-schema.org/schema` meta-schema URI as a custom dialect, where it names the current draft.
+- A `patternProperties` entry matching every key leaving `additionalProperties: false` spelled as a key constraint, where it forbids nothing.
+- `unevaluatedProperties`/`unevaluatedItems` set to `true` forcing the whole document to stay unmodeled beside an unresolved applicator, where the keyword rejects nothing regardless of the evaluated set.
+- `unevaluatedProperties`/`unevaluatedItems` beside a `$ref` forcing the whole document to stay unmodeled, where the reference's own evaluated properties or items are known once it is resolved.
+
+## [0.49.7] - 2026-08-07
+
+### Added
+
+- `CanonicalizeOptions::with_retriever` to fetch external resources absent from the registry.
+- `CanonicalizeOptions::with_base_uri` to resolve relative references in the root schema.
+- Canonicalization of a `oneOf` whose branches name disjoint targets, which degrades to a union.
+- Canonicalization of a vacuous `patternProperties` entry beside schema-valued `additionalProperties`, where matching keys escape its value constraint.
+- Canonicalization of a Draft 4 closed pattern map with a reference nested under a property.
+- Canonicalization of Draft 4 closed pattern maps that meet through an applicator.
+- The complement of a reference back to a target already being negated, which stays symbolic instead of declining.
+- `CanonicalSchema::definition` resolving `#` to the document the handle was read against.
+
+### Performance
+
+- Up to 150x faster canonicalization of `not` over a union of many branches.
+- 2% faster emission of canonical schemas, which no longer formats copied string values.
+- 5% faster emission of canonical schemas, which no longer formats object keys while copying them.
+- Up to 12% faster canonicalization of schemas that repeatedly intersect the same branches.
+- 13% faster canonicalization of a non-dynamic OpenAPI document, which no longer scans every schema object for dynamic references.
+- Faster canonicalization of schemas with local `$defs` references, which avoid decoding unescaped definition names.
+- 23% faster canonicalization of an object whose keys a finite property-name set spells.
+- 3% faster intersection of schemas where one side constrains nothing.
+- Up to 31x faster canonicalization of a `oneOf` whose many branches overlap.
+- Up to 14x faster canonicalization of a union whose object branches share no values.
+- 7% faster canonicalization of schemas that reach the same pair of nodes repeatedly.
+- 5% faster canonicalization of objects, whose property maps no longer reach the allocator.
+- Up to 8% faster canonicalization of schemas that reach `true` and `false` subschemas repeatedly.
+- 2% faster canonicalization of schemas that assert known string formats.
+
+### Fixed
+
+- `CanonicalSchema::definition` and `CanonicalSchema::definitions` handing out a target that names the document root without that document, where `#` points at the target instead.
+- An `items` tail beyond an array's length ceiling surviving canonicalization, where it governs no element.
+- `CanonicalSchema::to_json_schema` leaving the document root out of a node emitted below it, where `#` points at that node instead.
+
+## [0.49.6] - 2026-08-06
+
+### Added
+
+- Canonicalization of a negated `uniqueItems`, where the complement demands a repeated element under the length floor two elements imply.
+- Canonicalization of a negated array tuple, where each position's complement stands under the length that reaches it.
+- Canonicalization of `contains` demands sharing no value, where their counts add up into a length floor.
+- `CanonicalSchema::negate` through references, where the complement of the resolved target takes the reference's place.
+- Canonicalization of negated `propertyNames` and `additionalProperties`, where the complement spells the violating-key demand instead of a `not` residual.
+- Canonicalization of negated `additionalProperties` under Draft 4, where the violating-key demand spells the closed property map.
+- Canonicalization of `not` a reference, where the complement of the resolved target takes the pointer's place.
+- Canonicalization of a negated `oneOf`, where the complement spells the values no branch admits beside the values two branches share.
+- Canonicalization of negated `items` under Draft 4, where the violating-element demand spells the barred element schema.
+
+### Changed
+
+- `ArrayView` reports distinctness in three states, so an array demanding a repeated element reads apart from one demanding distinct elements.
+
+### Fixed
+
+- `CanonicalSchema::negate` keeping a root self-reference in the complement, where it points at the complement instead of the source.
+- An `additionalItems` that tails no tuple keeping the whole document unmodeled under Draft 2020-12.
+
+## [0.49.5] - 2026-08-05
+
+### Added
+
+- Canonicalization of `not` an integer schema under Draft 4, which the number leaf carries as barred integers.
+- Canonicalization of `not` a `multipleOf`, which numeric leaves carry as barred divisors.
+- Canonicalization of `not` an integer schema, where a barred divisor of one spells the non-integer numbers.
+- Canonicalization of `not` a `pattern`, which string leaves carry as barred patterns.
+- Canonicalization of `not` a typed value set under Draft 4, such as `{"type": "integer", "enum": [1, 2]}`.
+- `CanonicalSchema::is_subset_of`, whether the other schema admits every value this one admits.
+- Canonicalization of a reference cycle carrying no assertion, which admits every value.
+
+### Fixed
+
+- `CanonicalSchema::is_subset_of` failing to prove a union of array branches a subset of itself.
+- `CanonicalSchema::intersect` admitting values one side rejects when its `additionalProperties` governs the keys the other side's `patternProperties` match.
+- A satisfiable `multipleOf` schema collapsing to the empty set when `f64` rounds its bounds together.
+- Two spellings of one number canonicalizing to different texts under `arbitrary-precision` when the fraction exceeds the expansion cap.
+- Numeric bounds and `multipleOf` comparing values through a lossy `f64` conversion under `arbitrary-precision`, such as `1e-400` passing `{"maximum": 0}`.
+- A union branch left unabsorbed when a sibling complement shed a conjunct from another branch.
+- A union keeping an integer branch beside a number branch that admits every value of it.
+
+## [0.49.4] - 2026-08-04
+
+### Added
+
+- Canonicalization of `not` a string format, which the string leaf carries as barred formats.
+- Canonicalization of `not` an existential demand, which an array fails exactly when no element matches.
+- Canonicalization of `not` a string value set, which the string leaf carries as excluded values.
+- Canonicalization of `unevaluatedItems` beside `contains`, where the elements it matches are evaluated and the tail admits either.
+- Canonicalization of `unevaluated*` beside `anyOf` or `oneOf`, where every branch evaluating the same keys or indexes pins what is left over.
+- Canonicalization of `not` an array element schema, which an array fails exactly when one element violates it.
+- `CanonicalSchema::intersect`, the values both schemas admit.
+- `CanonicalSchema::negate`, the values a schema rejects.
+- `CanonicalSchema::definition`, one reference target by URI.
+
+### Fixed
+
+- An integer past `i64` admitted by a fractional bound `f64` rounds it onto, such as `-10000000000000000000000000` under `{"maximum": -10000000000000000000000000.1}`.
+- An integer past `2^53` admitted by a bound `f64` rounds onto it, such as `9007199254740992` under `{"minimum": 9007199254740993}`.
+- A `contains` subschema beside both `minContains` and `maxContains` overwriting a sibling keyword of the same name, such as `items`.
+
+### Performance
+
+- `CanonicalSchema` hashing and equality cost the node instead of the whole document.
+
+## [0.49.3] - 2026-08-02
+
+### Added
+
+- Canonicalization of a recursive schema with no finite witness, which now folds to `false`.
+- Canonicalization of `$dynamicRef` and `$recursiveRef`, which resolve through the dynamic scope and stay symbolic like any other reference. A dangling `$dynamicRef` errors rather than staying `Raw`.
+- Canonicalization of `minContains` under `uniqueItems`, where a demand asking for more matches than its own schema has distinct values now folds to `false`.
+- Canonicalization of a Draft 4 `patternProperties` coverage closed by `additionalProperties: false`, spelled as the closed map it was parsed from.
+- Canonicalization of a `oneOf` whose branches repeat, where a repeated branch can never contribute exactly one match.
+- Canonicalization of a `$ref` whose target is an empty schema, which now folds to `false`.
+- Canonicalization of `unevaluatedItems` beside `allOf`, where every branch must pass and so the indexes they evaluate are known without the instance.
+- Canonicalization of `unevaluatedProperties` beside `allOf`, where every branch must pass and so what they evaluate is known without the instance.
+- Canonicalization of a Draft 4 `type` list holding `integer` beside other types with `enum`, which previously modeled only when spelled as an `allOf`.
+- Canonicalization of `patternProperties` patterns matching finitely many keys, such as `^a$` and `^(a|b)$`.
+- Canonicalization of `unevaluatedProperties` and `unevaluatedItems` when no in-place applicator sits beside them.
+
+### Fixed
+
+- `additionalItems` values that are not schemas silently ignored beside an array-form `items` (they should fail the build like `additionalProperties`).
+- `additionalItems` beside a boolean `items` rejecting every instance, such as `{"additionalItems": false, "items": false}`.
+- `additionalItems` beside a non-array `items` value failing schema compilation with an error blaming `additionalItems` (the keyword should be ignored).
+- Draft 4 rejecting a size bound at or past `2^64`, such as `{"maxItems": 18446744073709551616}`.
+- An integer past the `f64` range admitted by a fractional bound it exceeds, such as `1e400` under `{"exclusiveMaximum": 0.1}`.
+- A `$ref` at the root of an `$id`-bearing subresource dropped as a self-reference when its pointer matched the one that reached that subresource.
+- Canonicalization reusing one definition's body for a same-named definition in another resource, when the name spells a canonical URI.
+- `unevaluatedItems` counting `prefixItems` as evaluating elements before Draft 2020-12, where it is not a keyword.
+
+### Performance
+
+- Up to 70% faster `evaluate` by building each location in a single allocation instead of two, reusing the instance location a node already built, and caching evaluation paths across instance nodes.
+
+## [0.49.2] - 2026-07-28
+
+### Performance
+
+- Faster serialization of canonicalized schemas.
+- Faster macro code generation for subschemas with many keywords.
+- Up to 70x faster canonicalization of `multipleOf` beside numeric bounds far from zero.
+
+## [0.49.1] - 2026-07-25
+
+### Fixed
+
+- `jsonschema-value`: Ruby builds on x64-mingw-ucrt.
+
+## [0.49.0] - 2026-07-25
+
+### Added
+
+- Generic JSON input: `options_for` builds a validator over any instance representation implementing `json::Json`, so instances validate without conversion to `serde_json::Value`. [#239](https://github.com/Stranger6667/jsonschema/issues/239)
+- `meta::validate_for` and `meta::is_valid_for` for checking a schema document held in any representation implementing `json::Json` against its meta-schema.
+- **EXPERIMENTAL**: Schema canonicalization via `jsonschema::canonicalize`. It reduces a reasonable subset of JSON Schemas to their normal forms.
+
+### Fixed
+
+- `multipleOf` incorrectly accepted integers past `u64` that are not multiples of the divisor.
+
+## [0.48.5] - 2026-07-22
+
+### Fixed
+
+- Packaging issue again.
+
+## [0.48.4] - 2026-07-22
+
+### Fixed
+
+- Packaging issue.
+
+## [0.48.3] - 2026-07-22
+
+### Changed
+
+- **INTERNAL**. Extract common JSON Schema semantic into a separate `jsonschema-value` crate.
+
+### Performance
+
+- Avoid map lookups in some `properties` validators.
+- Faster validation of `{"type": "array", "items": {...}}` schemas.
+
+## [0.48.2] - 2026-07-21
+
+### Performance
+
+- Faster validator compilation by pre-sizing internal caches.
+
+## [0.48.1] - 2026-07-17
+
+### Fixed
+
+- Missing `required` errors in `evaluate()` output for schemas with `properties` and a two-entry `required` array. [#1220](https://github.com/Stranger6667/jsonschema/issues/1220)
+- `contentEncoding` errors for invalid UTF-8 after decoding incorrectly had empty `instance_path` and `schema_path`.
+
+### Performance
+
+- Faster code generation for `#[jsonschema::validator]` (~5% across benchmarked schemas), via aliasing repeated paths in the emitted code.
+
+## [0.48.0] - 2026-07-16
+
+### Added
+
+- `iter_errors` for `#[jsonschema::validator]`-generated validators.
+
+### Fixed
+
+- Per-branch context on generated `anyOf` and `oneOf` validation errors, matching runtime validators.
+- `$recursiveRef` in generated validators incorrectly resolved to the innermost `$recursiveAnchor` (it should resolve to the outermost one).
+- Integer instances just outside the `i64`/`u64` range incorrectly compared against numeric bounds through lossy `f64` rounding under `arbitrary-precision` (e.g. `{"minimum": -9223372036854775808}` accepted `-9223372036854775809`).
+
+### Changed
+
+- One canonical number spelling from `canonical::json::to_string` under `arbitrary-precision` (`"1e-2"` becomes `"0.01"`, `"1.50"` becomes `"1.5"`) and correctly-rounded float parsing (`serde_json`'s `float_roundtrip`).
+
+### Performance
+
+- Faster `multipleOf` validation for integer instances with integer divisors, via integer arithmetic instead of floating-point modulo.
+
+## [0.47.0] - 2026-07-08
+
+### Added
+
+- `#[jsonschema::validator]` attribute macro (behind the `macros` feature) that compiles a JSON Schema into `is_valid` and `validate` implementations at build time.
+- `Keyword::iter_errors` for reporting multiple validation errors from a single custom keyword. [#1071](https://github.com/Stranger6667/jsonschema/discussions/1071)
+
+### Changed
+
+- Bump MSRV to `1.85.0`.
+
+### Performance
+
+- Faster meta-schema validation and schema compilation with the `macros` feature, via compile-time meta-schema validators.
+
+### Fixed
+
+- `type` under `items` asserted with the Validation vocabulary disabled.
+- Disabled vocabularies ignored for `$ref` targets without their own `$schema` (e.g. `$defs` entries).
+
+## [0.46.10] - 2026-07-05
+
+### Fixed
+
+- Stack overflow with a self-referential `$dynamicRef` combined with `unevaluatedProperties` or `unevaluatedItems`.
+- Incorrect `unevaluatedProperties` and `unevaluatedItems` results when a meta-schema disables the Applicator vocabulary.
+
+## [0.46.9] - 2026-07-02
+
+### Fixed
+
+- `multipleOf` incorrectly rounds integer instances above 2^53 to `f64` before the divisibility check on builds without the `arbitrary-precision` feature.
+- Stack overflow while preparing a registry containing deeply nested schema documents.
+
+## [0.46.8] - 2026-07-01
+
+### Fixed
+
+- `idn-email` format rejected non-ASCII characters in quoted local parts (e.g. `"δοκιμή"@example.com`).
+
+## [0.46.7] - 2026-06-30
+
+### Fixed
+
+- `idn-hostname` format accepted A-labels that decode to a disallowed code point (e.g. `xn--7a`).
+
+## [0.46.6] - 2026-06-24
+
+### Added
+
+- `IntoRegistryResource` for `Arc<Value>`. [#1129](https://github.com/Stranger6667/jsonschema/issues/1129)
+
+### Fixed
+
+- `prefixItems` incorrectly recognised as a known keyword in Draft 2019-09 and earlier (it is 2020-12 only).
+- `pattern` validation errors displayed the internally translated regex instead of the original schema pattern. [#1149](https://github.com/Stranger6667/jsonschema/issues/1149)
+
+## [0.46.5] - 2026-05-13
+
+### Fixed
+
+- Percent-encoded characters in `$ref` URI fragments (e.g. `#/$defs/Request%20class`) are now decoded when stored as `schema_path`.
+
+## [0.46.4] - 2026-05-01
+
+### Fixed
+
+- Panic in the regex engine when matching against patterns with very large `{0,N}` quantifiers.
+
+## [0.46.3] - 2026-04-28
+
+### Fixed
+
+- Memory not reclaimed when a `Validator` for a schema with recursive `$ref` or `$dynamicRef` is dropped. [#1125](https://github.com/Stranger6667/jsonschema/issues/1125)
+- Compilation failure on `wasm32-wasip1` and `wasm32-unknown-emscripten` targets.
+
+## [0.46.2] - 2026-04-20
+
+### Fixed
+
+- `required` not enforced when `additionalProperties` is a schema object and `required` lists exactly 2 keys.
+
+## [0.46.1] - 2026-04-18
+
+### Fixed
+
+- `required` not enforced when `properties` has 15 or more entries and `required` lists exactly 2 keys.
+
+## [0.46.0] - 2026-04-10
+
+### Added
+
+- `ValidatorMap` for validating instances against subschemas identified by URI-fragment JSON pointer. [#1075](https://github.com/Stranger6667/jsonschema/pull/1075)
+- **CLI**: Accept multiple values after `-i`/`--instance` (e.g. `jsonschema validate schema.json -i *.json`). [#1085](https://github.com/Stranger6667/jsonschema/issues/1085)
+- `dereference` function to recursively inline `$ref` references. [#422](https://github.com/Stranger6667/jsonschema/issues/422)
+- **CLI**: `jsonschema dereference` subcommand to dereference a schema from the command line.
+
+### Breaking Changes
+
+- Registry construction now uses an explicit prepare step, and `with_registry` now borrows the prepared registry. `ValidationOptions::with_resource` and `ValidationOptions::with_resources` were removed in favor of building a `Registry` first. See the [Migration Guide](MIGRATION.md) for the details.
+
+### Performance
+
+- Avoid registry clones and document clones during validator construction. This improves real-world schema compilation by roughly 10-20% in internal benchmarks.
+
+## [0.45.1] - 2026-04-06
+
+### Fixed
+
+- Incorrect handling of `multipleOf` validation for negative numeric instances.
+- Incorrect handling of `duration` format when hours and seconds appear without minutes, or years and days without months.
+
+## [0.45.0] - 2026-03-08
+
+### Added
+
+- `bundle(schema)` / `async_bundle(schema)` / `ValidationOptions::bundle`: produce a Compound Schema Document with external `$ref` targets embedded in a draft-appropriate container (`definitions` for Draft 4/6/7, `$defs` for Draft 2019-09/2020-12) while preserving `$ref` values. [#791](https://github.com/Stranger6667/jsonschema/issues/791).
+- **CLI**: `jsonschema validate` and `jsonschema bundle` subcommands. Flat invocation (`jsonschema schema.json -i …`) is deprecated — use `jsonschema validate` instead. [#791](https://github.com/Stranger6667/jsonschema/issues/791).
+- `ValidationError::absolute_keyword_location()` to get the absolute keyword location URI of the schema node that produced the error. [#737](https://github.com/Stranger6667/jsonschema/issues/737).
+
+### Changed
+
+- `ValidationError::into_parts()` now returns `ValidationErrorParts` instead of a tuple.
+
+## [0.44.1] - 2026-03-03
+
+### Fixed
+
+- `hostname` format now applies legacy RFC 1034 semantics in Draft 4/6 and keeps IDNA A-label validation in Draft 7+.
+
+## [0.44.0] - 2026-03-02
+
+### Added
+
+- `canonical::json::to_string(value)` for canonical JSON serialization (stable key ordering and numeric normalization), useful for deduplicating equivalent JSON Schemas.
+
+### Fixed
+
+- Do not produce annotations for non-string instances from `contentMediaType`, `contentEncoding`, and `contentSchema` keywords.
+
+## [0.43.0] - 2026-02-28
+
+### Performance
+
+- Optimize `pattern` and `patternProperties` for `^(a|b|c)$` alternations via linear array scan.
+- Optimize `^\S*$` patterns by replacing regex with a direct ECMA-262 whitespace check.
+
+### Fixed
+
+- `anyOf`, `format`, `unevaluatedProperties`, and `unevaluatedItems` now correctly collect annotations per spec.
+
+## [0.42.2] - 2026-02-26
+
+### Fixed
+
+- SWAR digit parser accepted bytes `:`–`?` (0x3A–0x3F) as valid digits during `date`, `time`, and `date-time` format validation, potentially allowing malformed values to pass.
+
+### Performance
+
+- Extend `pattern` prefix optimization to handle escaped slashes (`^\/`) and exact-match patterns (`^\$ref$`).
+- Specialize `enum` for cases when all variants are strings.
+
+## [0.42.1] - 2026-02-17
+
+### Performance
+
+- Reduce dynamic dispatch overhead for non-recursive `$ref` resolution.
+- Cache ECMA regex transformations during `format: "regex"` validation.
+
+## [0.42.0] - 2026-02-14
+
+### Added
+
+- `JsonType::as_str` method for zero-allocation type name access.
+- `ValidationErrorKind::keyword` is now public.
+- `tls-ring` feature flag to opt into using `ring` as the TLS crypto provider instead of the default `aws-lc-rs`. [#997](https://github.com/Stranger6667/jsonschema/pull/997)
+- **CLI**: Support YAML (`.yaml`/`.yml`) instance files in text output mode. [#988](https://github.com/Stranger6667/jsonschema/pull/988)
+
+### Changed
+
+- **BREAKING**: Default TLS crypto provider switched back to `aws-lc-rs`. Users who need `ring` can opt in via the `tls-ring` feature flag. This resolves potential conflicts with other libraries using `aws-lc-rs`. [#997](https://github.com/Stranger6667/jsonschema/pull/997)
+
+### Fixed
+
+- Panic when validating `$ref` targets that resolve to boolean schemas.
+
+### Performance
+
+- Cache formatted schema locations with `OnceLock` to avoid repeated formatting during `evaluate()`.
+
+## [0.41.0] - 2026-02-04
+
+### Performance
+
+- Replace regex-based `uri-template` format validation with a hand-rolled RFC 6570 parser.
+- Specialize `items` keyword for simple type schemas (`{"type": "string"}`, `{"type": "number"}`, etc.) to eliminate dynamic dispatch overhead.
+- Precompute regex matches on known properties.
+- Faster `unevaluatedProperties` validation via O(1) property lookup and short-circuit `oneOf` evaluation.
+- Use HashMap for large set of properties.
+- Lower HashMap threshold from 40 to 15 properties for faster property lookups.
+
+## [0.40.2] - 2026-01-30
+
+### Changed
+
+- Exclude internal `tracker` field from `ValidationError` Debug output.
+- Switch HTTP client TLS crypto backend from `aws-lc-rs` to `ring` to simplify building from source on some Linux distributions. [#957](https://github.com/Stranger6667/jsonschema/issues/957)
+
+### Fixed
+
+- `type: integer` validation in Draft 4 now correctly accepts large integers outside the i64/u64 range when `arbitrary-precision` feature is enabled.
+
+## [0.40.1] - 2026-01-30
+
+### Changed
+
+- `ValidationErrorKind::Custom` now includes a `keyword` field containing the custom keyword name.
+
+### Performance
+
+- Faster validation via cost-based keyword ordering.
+- Faster `patternProperties` for simple prefix patterns (e.g., `^x-`).
+
+## [0.40.0] - 2026-01-18
+
+### Added
+
+- `HttpOptions` and `ValidationOptions::with_http_options()` for configuring HTTP client behavior (timeouts, TLS verification, custom CA certificates) when fetching external schemas.
+- **CLI**: `--timeout`, `--connect-timeout`, `--insecure`, and `--cacert` flags for HTTP configuration.
+
+## [0.39.0] - 2026-01-16
+
+### Added
+
+- `ValidationError::evaluation_path()` for the dynamic path including `$ref` traversals.
+
+### Changed
+
+- **BREAKING**: Simplified custom keyword API - `Keyword::validate` no longer receives path parameters, and `ValidationError::custom` only takes a message.
+
+### Fixed
+
+- `schemaLocation` in evaluation output now excludes `$ref`/`$dynamicRef`/`$recursiveRef` per JSON Schema spec.
+
+### Performance
+
+- `evaluate()`: 4.5-30x faster on complex schemas, 12-89% faster overall.
+- Recursive schemas with `oneOf`/`anyOf`: ~4000x faster via memoization. [#930](https://github.com/Stranger6667/jsonschema/issues/930)
+
+## [0.38.1] - 2025-12-25
+
+### Fixed
+
+- `multipleOf` validation for integer values between `2^53` and `i64::MAX` with `arbitrary-precision` feature.
+
+## [0.38.0] - 2025-12-24
+
+### Added
+
+- `EmailOptions` for configuring `email` format validation. [#903](https://github.com/Stranger6667/jsonschema/pull/903)
+
+### Fixed
+
+- Use-after-free in async `$ref` resolution when multiple refs target the same external URL with different fragments. [#906](https://github.com/Stranger6667/jsonschema/issues/906)
+- `multipleOf` validation for large u64 values beyond `i64::MAX` with `arbitrary-precision` feature.
+- `Validator` not being `Send + Sync` on WASM targets. [#915](https://github.com/Stranger6667/jsonschema/issues/915)
+
+## [0.37.4] - 2025-11-30
+
+### Fixed
+
+- Stack overflow during validation of schemas with circular `$ref` chains (e.g., `a` -> `b` -> `a`).
+- Local `$ref` resolution within fragment-extracted external resources. [#892](https://github.com/Stranger6667/jsonschema/issues/892)
+
+### Removed
+
+- Deprecated `PrimitiveType` & `PrimitiveTypesBitMap`.
+
+## [0.37.3] - 2025-11-28
+
+### Fixed
+
+- External resources not discovered within subresources of local `$ref` targets. [#892](https://github.com/Stranger6667/jsonschema/issues/892)
+
+## [0.37.2] - 2025-11-27
+
+### Added
+
+- `JsonTypeSet::len()` and `JsonTypeSet::remove()` helpers for managing type sets.
+
+### Fixed
+
+- External resources not discovered through chained local `$ref` references. [#892](https://github.com/Stranger6667/jsonschema/issues/892)
+
+## [0.37.1] - 2025-11-19
+
+### Fixed
+
+- Stack overflow on empty `$ref` value. [#886](https://github.com/Stranger6667/jsonschema/issues/886)
+
+## [0.37.0] - 2025-11-19
+
+### Added
+
+- `evaluate()` top-level function for convenient access to structured validation output.
+- **CLI**: Schema-only validation now also validates all referenced schemas. [#804](https://github.com/Stranger6667/jsonschema/issues/804)
+- Support for additional `contentEncoding` values per RFC 4648: `base64url`, `base32`, `base32hex`, and `base16`. These encodings are now validated alongside the existing `base64` support in Draft 6 and 7. [#26](https://github.com/Stranger6667/jsonschema/issues/26)
+- `validator.iter_errors(instance).into_errors()`. It returns a `ValidationErrors` type that collects validation errors and implements `std::error::Error`. [#451](https://github.com/Stranger6667/jsonschema/issues/451)
+
+### Changed
+
+- **BREAKING**: `ValidationError` fields are private; use `instance()`, `kind()`, `instance_path()`, and `schema_path()` instead of accessing struct fields directly.
+- **BREAKING**: `ErrorIterator` is now a newtype wrapper instead of `Box<dyn ValidationErrorIterator>`.
+
+### Performance
+
+- `validate` and other APIs returning `Result<_, ValidationError>` are 5–10% faster in some workloads due to the smaller error handle.
+- `evaluate`: Avoiding deep clones of unmatched keyword values (e.g., `title`, `description`, `examples`) on every schema node evaluation by using `Arc` internally. Can be multiple times faster for schemas with large annotations.
+
+## [0.36.0] - 2025-11-18
+
+### Added
+
+- **CLI**: Structured `--output flag|list|hierarchical` modes now stream newline-delimited JSON records with schema/instance metadata plus JSON Schema Output v1 payloads (default `text` output remains human-readable).
+- **CLI**: `--errors-only` flag to suppress successful validation output and only show failures.
+- **CLI**: When invoked with only a schema file (no instances), validates the schema against its meta-schema. [#804](https://github.com/Stranger6667/jsonschema/issues/804)
+- New `Validator::evaluate()` API exposes JSON Schema Output v1 (flag/list/hierarchical) reports along with iterator helpers for annotations and errors.
+- `meta::validator_for()` function to build validators for meta-schema validation with full `Validator` API access.
+- `Validator` now implements `Clone`. [#809](https://github.com/Stranger6667/jsonschema/issues/809)
+
+### Removed
+
+- `Validator::apply()`, `Output`, and `BasicOutput` types have been removed in favor of the richer `evaluate()` API.
+
+## [0.35.0] - 2025-11-16
+
+### Added
+
+- Support for custom meta-schemas. Schemas with custom `$schema` URIs can now be used by registering their meta-schemas in the `Registry` via `jsonschema::options().with_registry()`. [#664](https://github.com/Stranger6667/jsonschema/issues/664)
+- `arbitrary-precision` feature for exact numeric validation of large integers and decimals beyond standard floating-point limits. [#103](https://github.com/Stranger6667/jsonschema/issues/103)
+- Support for HTTPS `$schema` URIs for drafts 04, 06, and 07 (e.g., `https://json-schema.org/draft-07/schema`). [#802](https://github.com/Stranger6667/jsonschema/issues/802)
+
+### Changed
+
+- **BREAKING**: `meta::is_valid` now panics for unknown `$schema` values instead of defaulting to Draft 2020-12. `meta::validate` returns an error for unknown `$schema` values. Use `meta::options().with_registry()` to validate schemas against custom meta-schemas.
+- **BREAKING**: `Resource::from_contents` no longer returns `Result` and always succeeds, since draft detection no longer fails for unknown `$schema` values.
+
+### Removed
+
+- **BREAKING**: `meta::try_is_valid` and `meta::try_validate`. Use `meta::is_valid` and `meta::validate` instead.
+- **BREAKING**: `primitive_type` module (deprecated since 0.30.0). Use `jsonschema::types` instead.
+
+### Performance
+
+- `required`: short-circuit when the instance object has fewer properties than required keys.
+
+## [0.34.0] - 2025-11-14
+
+### Changed
+
+- **BREAKING**: `BasicOutput` and `Annotations` no longer have lifetime parameters. Update type annotations from `BasicOutput<'a>` to `BasicOutput` and `Annotations<'a>` to `Annotations`.
+- `referencing`: URI caching now avoids hash collisions and reduces lock contention.
+- Update `fluent-uri` to `0.4.1`.
+- Bump MSRV to `1.83.0`.
+- Drop the `Send + Sync` bounds from `Retrieve`/`AsyncRetrieve` on `wasm32`.
+- Use the new `draftX::meta::validator()` helper so meta-schema validators lazy-init on `wasm32` while native targets keep borrowing the cached `jsonschema::meta::MetaValidator`.
+
+### Fixed
+
+- Hostname and IDN hostname formats now decode `xn--` labels, reject leading combining marks/uppercase prefixes, and enforce the latest JSON Schema punycode context rules.
+- Restore `wasm32-unknown-unknown` support. [#785](https://github.com/Stranger6667/jsonschema/issues/785)
+
+### Performance
+
+- `apply` now reuses cached schema locations, URI fragments, and buffers for up to ~2.5x faster validation.
+- Recursive and regular `$ref` compilation deduplicates validator nodes, which decreases the memory usage and improves performance.
+- Validator compilation restores the regex cache for faster builds on regex-heavy schemas and precomputes absolute schema locations, trading a bit of compile time for faster `apply` on location-heavy workloads.
+- Large schema compilation is significantly faster. [#755](https://github.com/Stranger6667/jsonschema/issues/755)
+- `unevaluatedProperties` validation is 25-35% faster through optimized property marking and early-exit paths.
+- `unevaluatedProperties` memory usage drastically reduced by eliminating redundant registry clones during compilation.
+- `unevaluatedItems` validation is ~10% faster through early-exit optimizations and eliminating redundant validations in combinators.
+
+### Removed
+
+- **BREAKING**: `Validator::config` to reduce the memory footprint.
+- **BREAKING**: Public `DRAFT4_META_VALIDATOR`, `DRAFT6_META_VALIDATOR`, `DRAFT7_META_VALIDATOR`, `DRAFT201909_META_VALIDATOR`, and `DRAFT202012_META_VALIDATOR` statics. Use `draftX::meta::validator()` helper functions instead (e.g., `draft7::meta::validator()`).
+
+## [0.33.0] - 2025-08-24
+
+### Fixed
+
+- **BREAKING**: `instance_path` segments are now unescaped when iterating. `LocationSegment::Property` now holds `Cow<'_, str>` and `LocationSegment` is no longer `Copy`. [#788](https://github.com/Stranger6667/jsonschema/issues/788)
+
+## [0.32.1] - 2025-08-03
+
+### Changed
+
+- Bump `fancy-regex` to `0.16`.
+
+## [0.32.0] - 2025-07-29
+
+### Added
+
+- Added missing `context` field to `ValidationErrorKind::OneOfMultipleValid`.
+
+### Changed
+
+- Improved error message for `enum`.
+
+## [0.31.0] - 2025-07-28
+
+### Added
+
+- **CLI**: flag `-d, --draft <4|6|7|2019|2020>` to enforce a specific JSON Schema draft.
+- **CLI**: flags `--assert-format` and `--no-assert-format` to toggle validation of `format` keywords.
+- Added `context` for `ValidationErrorKind::AnyOf` and `ValidationErrorKind::OneOfNotValid` which contains errors for all subschemas, each inside a separate vector with an index matching subschema ID.
+
+### Fixed
+
+- Improve the precision of `multipleOf` for float values.
+
+### Changed
+
+- Bump `fancy-regex` to `0.15`.
+
+## [0.30.0] - 2025-04-16
+
+### Added
+
+- `JsonType` and `JsonTypeSet`.
+- `ValidationOptions::with_base_uri` that allows for specifying a base URI for all relative references in the schema.
+- Configuration options for the underlying regex engine used by `pattern` and `patternProperties` keywords.
+
+### Changed
+
+- Better error messages for relative `$ref` without base URI.
+
+### Fixed
+
+- **CLI**: Inability to load relative file `$ref`. [#725](https://github.com/Stranger6667/jsonschema/issues/725)
+
+### Removed
+
+- Internal cache for regular expressions.
+
+### Deprecated
+
+- `PrimitiveType` and `PrimitiveTypesBitMap`.
+
+## [0.29.1] - 2025-03-27
+
+### Added
+
+- `Hash`, `PartialOrd`, `Ord` and `serde::Serialize` for `Location`.
+- Make `Location::join` public.
+
+## [0.29.0] - 2025-02-08
+
+### Breaking Changes
+
+- All builder methods on `ValidationOptions` now take ownership of `self` instead of `&mut self`.
+  This change enables better support for non-blocking retrieval of external resources during the process of building a validator.
+  Update your code to chain the builder methods instead of reusing the options instance:
+
+  ```rust
+  // Before (0.28.x)
+  let mut options = jsonschema::options();
+  options.with_draft(Draft::Draft202012);
+  options.with_format("custom", my_format);
+  let validator = options.build(&schema)?;
+
+  // After (0.29.0)
+  let validator = jsonschema::options()
+      .with_draft(Draft::Draft202012)
+      .with_format("custom", my_format)
+      .build(&schema)?;
+
+- The `Retrieve` trait's `retrieve` method now accepts URI references as `&Uri<String>` instead of `&Uri<&str>`.
+  This aligns with the async version and simplifies internal URI handling. The behavior and available methods remain the same, this is purely a type-level change.
+
+  ```rust
+  // Before
+  fn retrieve(&self, uri: &Uri<&str>) -> Result<Value, Box<dyn std::error::Error + Send + Sync>>
+
+  // After
+  fn retrieve(&self, uri: &Uri<String>) -> Result<Value, Box<dyn std::error::Error + Send + Sync>>
+  ```
+
+- Simplified `Registry` creation API:
+  - Removed `RegistryOptions::try_new` and `RegistryOptions::try_from_resources` in favor of `Registry::build`
+  - Removed `Registry::try_with_resource_and_retriever` - use `Registry::options().retriever()` instead
+  - Registry creation is now consistently done through the builder pattern
+
+  ```rust
+  // Before (0.28.x)
+  let registry = Registry::options()
+      .draft(Draft::Draft7)
+      .try_new(
+          "http://example.com/schema",
+          resource
+      )?;
+
+  let registry = Registry::options()
+      .draft(Draft::Draft7)
+      .try_from_resources([
+          ("http://example.com/schema", resource)
+      ].into_iter())?;
+    
+  let registry = Registry.try_with_resource_and_retriever(
+      "http://example.com/schema",
+      resource,
+      retriever
+  )?;
+
+  // After (0.29.0)
+  let registry = Registry::options()
+      .draft(Draft::Draft7)
+      .build([
+          ("http://example.com/schema", resource)
+      ])?;
+
+  let registry = Registry::options()
+      .draft(Draft::Draft7)
+      .build([
+          ("http://example.com/schema", resource)
+      ])?;
+
+  let registry = Registry::options()
+      .retriever(retriever)
+      .build(resources)?;
+
+### Added
+
+- Support non-blocking retrieval for external resources during schema resolution via the new `resolve-async` feature. [#385](https://github.com/Stranger6667/jsonschema/issues/385)
+- Re-export `referencing::Registry` as `jsonschema::Registry`.
+- `ValidationOptions::with_registry` that allows for providing a predefined `referencing::Registry`. [#682](https://github.com/Stranger6667/jsonschema/issues/682)
+
+### Performance
+
+- Significantly improved validator compilation speed by using pointer-based references to schema fragments instead of cloning them during traversal.
+- Faster anchors & sub-resources lookups during validator compilation.
+
+## [0.28.3] - 2025-01-24
+
+### Fixed
+
+- Panic when schema registry base URI contains an unencoded fragment.
+
+### Performance
+
+- Fewer JSON pointer lookups.
+
+## [0.28.2] - 2025-01-22
+
+### Fixed
+
+- Resolving external references that nested inside local references. [#671](https://github.com/Stranger6667/jsonschema/issues/671)
+- Resolving relative references with fragments against base URIs that also contain fragments. [#666](https://github.com/Stranger6667/jsonschema/issues/666)
+
+### Performance
+
+- Faster JSON pointer resolution.
+
+## [0.28.1] - 2024-12-31
+
+### Fixed
+
+- Handle fragment references within `$id`-anchored subschemas. [#640](https://github.com/Stranger6667/jsonschema/issues/640)
+
+## [0.28.0] - 2024-12-29
+
+### Added
+
+- Implement `IntoIterator` for `Location` to iterate over `LocationSegment`.
+- Implement `FromIter` for `Location` to build a `Location` from an iterator of `LocationSegment`.
+- `ValidationError::to_owned` method for converting errors into owned versions.
+- Meta-schema validation support. [#442](https://github.com/Stranger6667/jsonschema/issues/442)
+
+## [0.27.1] - 2024-12-24
+
+### Added
+
+- Implement `ExactSizeIterator` for `PrimitiveTypesBitMapIterator`.
+
+## [0.27.0] - 2024-12-23
+
+### Added
+
+- Added `masked()` and `masked_with()` methods to `ValidationError` to support hiding sensitive data in error messages. [#434](https://github.com/Stranger6667/jsonschema/issues/434)
+
+### Changed
+
+- Improved error message for unknown formats.
+- Bump MSRV to `1.71.1`.
+
+## [0.26.2] - 2024-12-16
+
+### Documentation
+
+- Fix documentation for `validate`
+
+## [0.26.1] - 2024-10-29
+
+### Fixed
+
+- Return "Unknown specification" error on `https`-prefixed `$schema` for Draft 4, 5, 6. [#629](https://github.com/Stranger6667/jsonschema/issues/629)
+
+## [0.26.0] - 2024-10-26
+
+**Important:** This release contains breaking changes. See the [Migration Guide](MIGRATION.md) for details on transitioning to the new API.
+
+### Added
+
+- `Validator::iter_errors` that iterates over all validation errors.
+
+### Changed
+
+- **BREAKING**: Remove unused `ValidationErrorKind::JSONParse`, `ValidationErrorKind::InvalidReference`, `ValidationErrorKind::Schema`, `ValidationErrorKind::FileNotFound` and `ValidationErrorKind::Utf8`.
+- **BREAKING**: `Validator::validate` now returns the first error instead of an iterator in the `Err` variant. 
+
+### Performance
+
+- Optimize error formatting in some cases.
+
+## [0.25.1] - 2024-10-25
+
+### Fixed
+
+- Re-export `referencing::Error` as `ReferencingError`. [#614](https://github.com/Stranger6667/jsonschema/issues/614)
+
+## [0.25.0] - 2024-10-24
+
+**Important:** This release removes deprecated old APIs. See the [Migration Guide](MIGRATION.md) for details on transitioning to the new API.
+
+### Changed
+
+- **BREAKING**: Default to Draft 2020-12.
+
+### Removed
+
+- Deprecated `draft201909`, `draft202012`, and `cli` features.
+- Deprecated `CompilationOptions`, `JSONSchema`, `PathChunkRef`, `JsonPointerNode`, and `SchemaResolverError` aliases.
+- Deprecated `jsonschema::compile`, `Validator::compile`, `ValidationOptions::compile`, `ValidationOptions::with_resolver`, `ValidationOptions::with_meta_schemas`, `ValidationOptions::with_document` functions.
+- Deprecated `SchemaResolver` trait.
+
+## [0.24.3] - 2024-10-24
+
+### Fixed
+
+- Infinite recursion when using mutually recursive `$ref` in `unevaluatedProperties`.
+
+## [0.24.2] - 2024-10-24
+
+### Fixed
+
+- Infinite recursion in some cases. [#146](https://github.com/Stranger6667/jsonschema/issues/146)
+- `$ref` interaction with `$recursiveAnchor` in Draft 2019-09.
+- `unevaluatedProperties` with `$recursiveRef` & `$dynamicRef`.
+
+## [0.24.1] - 2024-10-21
+
+### Fixed
+
+- Incomplete external reference resolution.
+
+## [0.24.0] - 2024-10-20
+
+### Added
+
+- Support `$ref`, `$recursiveRef`, and `$dynamicRef` in `unevaluatedItems`. [#287](https://github.com/Stranger6667/jsonschema/issues/287)
+- Support for `$vocabulary`. [#263](https://github.com/Stranger6667/jsonschema/issues/263)
+
+### Changed
+
+- Ignore `prefixItems` under Draft 2019-09 as it was introduced in Draft 2020-12.
+
+### Fixed
+
+- Numbers with zero fraction incorrectly handled in `uniqueItems`.
+
+### Performance
+
+- Speedup `apply`.
+
+## [0.23.0] - 2024-10-12
+
+### Added
+
+- Partial support for `unevaluatedItems`, excluding references.
+
+### Changed
+
+- Improve error messages on WASM. [#568](https://github.com/Stranger6667/jsonschema/issues/568)
+- Improve error messages on URI resolving and parsing.
+- **BREAKING**: Replace `JsonPointer` in favor of `Location`.
+
+### Deprecated
+
+- `PathChunkRef` in favor of `LocationSegment`.
+- `JsonPointerNode` in favor of `LazyLocation`.
+
+### Fixed
+
+- Resolving file references on Windows. [#441](https://github.com/Stranger6667/jsonschema/issues/441)
+- Missing annotations from by-reference applicators. [#403](https://github.com/Stranger6667/jsonschema/issues/403)
+- Relative keyword locations missing by-reference applicators (such as `$ref` or `$dynamicRef`).
+
+### Performance
+
+- Faster building of a validator.
+- Speedup `hostname` & `idn-hostname` formats validation.
+- Speedup `apply`.
+
+### Removed
+
+- `JsonPointerNode::to_vec` without a replacement.
+
+## [0.22.3] - 2024-10-05
+
+### Performance
+
+- Speedup resolving.
+
+## [0.22.2] - 2024-10-04
+
+### Fixed
+
+- ECMAScript 262 regex support.
+
+### Performance
+
+- Speedup `json-pointer` and `relative-json-pointer` formats validation.
+
+## [0.22.1] - 2024-10-03
+
+### Fixed
+
+- Removed `dbg!` macro.
+
+## [0.22.0] - 2024-10-03
+
+### Changed
+
+- Extend email validation. [#471](https://github.com/Stranger6667/jsonschema/issues/471)
+- **BREAKING**: Custom retrievers now receive `&Uri<&str>` instead of `&UriRef<&str>`
+- Bump `once_cell` to `1.20`.
+- Bump `regex` to `1.11`.
+
+### Fixed
+
+- `time` format validation (leap seconds and second fractions).
+- `duration` format validation.
+- Panic on root `$id` without base. [#547](https://github.com/Stranger6667/jsonschema/issues/547)
+- `hostname` format validation (double dot).
+- `idn-hostname` format validation. [#101](https://github.com/Stranger6667/jsonschema/issues/101)
+
+### Performance
+
+- Faster building of a validator.
+- Speedup `hostname`, `date`, `time`, `date-time`, and `duration` formats validation.
+- Cache regular expressions for `pattern`. [#417](https://github.com/Stranger6667/jsonschema/issues/417)
+
+## [0.21.0] - 2024-09-29
+
+**Important:** This release brings a complete rework of reference resolving which deprecates some older APIs.
+While backward compatibility is maintained for now, users are encouraged to update their code. See the [Migration Guide](MIGRATION.md) for details on transitioning to the new API.
+
+### Added
+
+- `$anchor` support.
+- `$recursiveRef` & `$recursiveAnchor` support in Draft 2019-09.
+- `$dynamicRef` & `$dynamicAnchor` support in Draft 2020-12.
+
+### Changed
+
+- **BREAKING**: Treat `$ref` as URI, not URL, and additionally normalize them. [#454](https://github.com/Stranger6667/jsonschema/issues/454)
+- **BREAKING**: Resolve all non-recursive references eagerly.
+- **BREAKING**: Disallow use of fragments in `$id`. [#264](https://github.com/Stranger6667/jsonschema/issues/264)
+
+### Deprecated
+
+- `SchemaResolver` trait and `SchemaResolverError` in favor of a simpler `Retrieve` that works with `Box<dyn std::error::Error>`. 
+  In turn, it also deprecates `ValidationOptions::with_resolver` in favor of `ValidationOptions::with_retriever`
+- `ValidationOptions::with_document` in favor of `ValidationOptions::with_resource`.
+
+### Fixed
+
+- Infinite recursion in `unevaluatedProperties`. [#420](https://github.com/Stranger6667/jsonschema/issues/420)
+- Cross-draft validation from newer to older ones.
+- Changing base URI in folder.
+- Location-independent identifier in remote resource.
+- Missing some format validation for Draft 2020-12.
+- Incomplete `iri` & `iri-reference` validation.
+
+### Performance
+
+- Faster validation for `uri`, `iri`, `uri-reference`, and `iri-reference` formats.
+
+## [0.20.0] - 2024-09-18
+
+**Important:** This release includes several deprecations and renames. While backward compatibility is maintained for now, users are encouraged to update their code. See the [Migration Guide](MIGRATION.md) for details on transitioning to the new API.
+
+### Added
+
+- New draft-specific modules for easier version-targeted validation:
+  - `jsonschema::draft4`
+  - `jsonschema::draft6`
+  - `jsonschema::draft7`
+  - `jsonschema::draft201909`
+  - `jsonschema::draft202012`
+  Each module provides `new()`, `is_valid()`, and `options()` functions.
+- `jsonschema::options()` function as a shortcut for `jsonschema::Validator::options()`, that allows for customization of the validation process.
+
+### Changed
+
+- Make `Debug` implementation for `SchemaNode` opaque.
+- Make `jsonschema::validator_for` and related functions return `ValidationError<'static>` in their `Err` variant.
+  This change makes possible to use the `?` operator to return errors from functions where the input schema is defined.
+
+### Deprecated
+
+- Rename `CompilationOptions` to `ValidationOptions` for clarity.
+- Rename `JSONSchema` to `Validator` for clarity. [#424](https://github.com/Stranger6667/jsonschema/issues/424)
+- Rename `JSONPointer` to `JsonPointer` for consistency with naming conventions. [#424](https://github.com/Stranger6667/jsonschema/issues/424)
+- Rename `jsonschema::compile` to `jsonschema::validator_for`.
+- Rename `CompilationOptions::compile` to `ValidationOptions::build`.
+
+Old names are retained for backward compatibility but will be removed in a future release.
+
+### Fixed
+
+- Location-independent references in remote schemas on drafts 4, 6, and 7.
+
+## [0.19.1] - 2024-09-15
+
+### Fixed
+
+- `ipv4` format validation. [#512](https://github.com/Stranger6667/jsonschema/issues/512)
+
+## [0.19.0] - 2024-09-14
+
+### Added
+
+- `jsonschema::compile` shortcut.
+
+### Changed
+
+- Bump MSRV to `1.70`.
+
+### Fixed
+
+- `uuid` format validation.
+- Combination of `unevaluatedProperties` with `allOf` and `oneOf`. [#496](https://github.com/Stranger6667/jsonschema/issues/496)
+
+### Deprecated
+
+- `cli` feature in favor of a separate `jsonschema-cli` crate.
+- `draft201909` and `draft202012` features. The relevant functionality is now enabled by default.
+
+### Performance
+
+- `uuid` validation via `uuid-simd`.
+
+## [0.18.3] - 2024-09-12
+
+### Fixed
+
+- Changing base URI when `$ref` is present in drafts 7 and earlier.
+- Removed `dbg!` macro.
+
+## [0.18.2] - 2024-09-11
+
+### Fixed
+
+- Ignoring `$schema` in resolved references.
+- Support integer-valued numbers for `maxItems`, `maxLength`, `maxProperties`, `maxContains`, `minItems`, `minLength`, `minProperties`, `minContains`.
+
+### Deprecated
+
+- `with_meta_schemas()` method. Meta schemas are included by default.
+
+## [0.18.1] - 2024-08-24
+
+### Added
+
+- `ErrorDescription::into_inner` to retrieve the inner `String` value.
+
+## [0.18.0] - 2024-05-07
+
+### Added
+
+- Custom keywords support. [#379](https://github.com/Stranger6667/jsonschema/issues/379)
+- Expose `JsonPointerNode` that can be converted into `JSONPointer`.
+  This is needed for the upcoming custom validators support.
+
+### Changed
+
+- Bump `base64` to `0.22`.
+- Bump `clap` to `4.5`.
+- Bump `fancy-regex` to `0.13`.
+- Bump `fraction` to `0.15`.
+- Bump `memchr` to `2.7`.
+- Bump `once_cell` to `1.19`.
+- Bump `percent-encoding` to `2.3`.
+- Bump `regex` to `1.10`.
+- Bump `url` to `2.5`.
+- Build CLI only if the `cli` feature is enabled.
+- **BREAKING**: Extend `CompilationOptions` to support more ways to define custom format checkers (for example in Python bindings).
+  In turn it changes `ValidationErrorKind::Format` to contain a `String` instead of a `&'static str`.
+
+### Fixed
+
+- Incorrect `schema_path` when multiple errors coming from the `$ref` keyword [#426](https://github.com/Stranger6667/jsonschema/issues/426)
+
+### Performance
+
+- Optimize building `JSONPointer` for validation errors by allocating the exact amount of memory needed.
+- Avoid cloning path segments during validation.
+
+## [0.17.1] - 2023-07-05
+
+### Changed
+
+- Improved error messages for `oneOf` / `anyOf` keywords. [#429](https://github.com/Stranger6667/jsonschema/issues/429)
+
+### Fixed
+
+- Improper handling of subschema validation in `unevaluatedProperties`. [#421](https://github.com/Stranger6667/jsonschema/issues/421)
+
+## [0.17.0] - 2023-03-16
+
+### Changed
+
+- Bump `base64` to `0.21`.
+- Bump `fancy-regex` to `0.11`.
+- Bump `fraction` to `0.13`.
+- Bump `iso8601` to `0.6`.
+- Replace `lazy_static` with `once_cell`.
+- Add support for `unevaluatedProperties`. (gated by the `draft201909`/`draft202012` feature flags). [#288](https://github.com/Stranger6667/jsonschema/issues/288)
+- When using the draft 2019-09 or draft 2020-12 specification, `$ref` is now evaluated alongside
+  other keywords. [#378](https://github.com/Stranger6667/jsonschema/issues/378)
+
+## [0.16.1] - 2022-10-20
+
+### Added
+
+- Add a compilation option (`should_ignore_unknown_formats()`) that allows treating unknown formats as compilation errors.
+
+## [0.16.0] - 2022-04-21
+
+### Fixed
+
+- Library compilation with no default features. [#356](https://github.com/Stranger6667/jsonschema/issues/356)
+- Compilation with `resolve-file` only. [#358](https://github.com/Stranger6667/jsonschema/issues/358)
+
+### Changed
+
+- **BREAKING**: Revert changes from [#353](https://github.com/Stranger6667/jsonschema/issues/353) and [#343](https://github.com/Stranger6667/jsonschema/issues/343), as they caused compilation issues.
+
+## [0.15.2] - 2022-04-10
+
+### Fixed
+
+- Allow HTTP(S) schema resolving with `rustls`. [#353](https://github.com/Stranger6667/jsonschema/issues/353)
+
+## [0.15.1] - 2022-04-02
+
+### Fixed
+
+- Enable `reqwest/native-tls` by default to avoid validation errors caused by `reqwest` missing a TLS backend. [#343](https://github.com/Stranger6667/jsonschema/issues/343)
+
+## [0.15.0] - 2022-01-31
+
+### Added
+
+- The `SchemaResolver` trait to support resolving external schema references. [#246](https://github.com/Stranger6667/jsonschema/issues/246)
+- `resolve-file` feature to resolve external schema files via `std::fs`. [#76](https://github.com/Stranger6667/jsonschema/issues/76)
+
+### Changed
+
+- The `reqwest` feature was changed to `resolve-http`. [#341](https://github.com/Stranger6667/jsonschema/pull/341)
+
+### Performance
+
+- CLI: Use `serde::from_reader` instead of `serde::from_str`.
+
+## [0.14.0] - 2022-01-23
+
+### Changed
+
+- Bump `itoa` to `1.0`. [#337](https://github.com/Stranger6667/jsonschema/issues/337)
+
+### Performance
+
+- Optimize the loop implementation used for uniqueness check on short arrays.
+- Simplify `equal_arrays` helper.
+- Shortcut for `false` schemas.
+- Reduce the number of generated LLVM lines.
+- Do less work when resolving fragments.
+- Avoid cloning the value when resolving empty fragments.
+- Optimize searching by pointer in JSON documents.
+
+## [0.13.3] - 2021-12-08
+
+### Changed
+
+- Make `BasicOutput.is_valid` public.
+
+### Fixed
+
+- False positives in some cases when calling `JSONSchema.apply` on schemas with `additionalProperties`, `patternProperties`, and `properties` combined.
+- False negatives in some cases when calling `JSONSchema.apply` on schemas with `if` and `then` (without `else`) keywords. [#318](https://github.com/Stranger6667/jsonschema/pull/318)
+- Panic in `JSONSchema.apply` on some schemas with `prefixItems` and `items`. It panicked if `items` is an object and the length of `prefixItems` is greater than the length of the input array.
+
+### Performance
+
+- Remove unused private field in `JSONSchema`, that lead to improvement in the compilation performance.
+- Optimize the `multipleOf` implementation, which now can short-circuit in some cases.
+- Add special cases for arrays with 2 and 3 items in the `uniqueItems` keyword implementation.
+- Remove the `schema` argument from all methods of the `Validate` trait.
+
+## [0.13.2] - 2021-11-04
+
+### Added
+
+- Support for `prefixItems` keyword. [#303](https://github.com/Stranger6667/jsonschema/pull/303)
+- Expose methods to examine `OutputUnit`.
+
+## [0.13.1] - 2021-10-28
+
+### Fixed
+
+- Missing `derive` from `serde`.
+
+## [0.13.0] - 2021-10-28
+
+### Added
+
+- `uuid` format validator. [#266](https://github.com/Stranger6667/jsonschema/issues/266)
+- `duration` format validator. [#265](https://github.com/Stranger6667/jsonschema/issues/265)
+- Collect annotations whilst evaluating schemas. [#262](https://github.com/Stranger6667/jsonschema/issues/262)
+- Option to turn off processing of the `format` keyword. [#261](https://github.com/Stranger6667/jsonschema/issues/261)
+- `basic` & `flag` output formatting styles. [#100](https://github.com/Stranger6667/jsonschema/issues/100)
+- Support for `dependentRequired` & `dependentSchemas` keywords. [#286](https://github.com/Stranger6667/jsonschema/issues/286)
+- Forward `reqwest` features.
+
+### Changed
+
+- **INTERNAL**. A new `Draft201909` variant for the `Draft` enum that is available only under the `draft201909` feature. This feature is considered private and should not be used outside of the testing context.
+  It allows us to add features from the 2019-09 Draft without exposing them in the public API. Therefore, support for this draft can be added incrementally.
+- The `Draft` enum is now marked as `non_exhaustive`.
+- `ValidationError::schema` was removed and the calls replaced by proper errors.
+
+### Performance
+
+- Reduce the size of `PrimitiveTypesBitMapIterator` from 3 to 2 bytes. [#282](https://github.com/Stranger6667/jsonschema/issues/282)
+- Use the `bytecount` crate for `maxLength` & `minLength` keywords, and for the `hostname` format.
+
+## [0.12.2] - 2021-10-21
+
+### Fixed
+
+- Display the original value in errors from `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum`. [#215](https://github.com/Stranger6667/jsonschema/issues/215)
+- Switch from `chrono` to `time==0.3.3` due to [RUSTSEC-2020-0159](https://rustsec.org/advisories/RUSTSEC-2020-0159.html) in older `time` versions that `chrono` depends on.
+
+## [0.12.1] - 2021-07-29
+
+### Fixed
+
+- Allow using empty arrays or arrays with non-unique elements for the `enum` keyword in schemas. [#258](https://github.com/Stranger6667/jsonschema/issues/258)
+- Panic on incomplete escape sequences in regex patterns. [#253](https://github.com/Stranger6667/jsonschema/issues/253)
+
+## [0.12.0] - 2021-07-24
+
+### Added
+
+- Support for custom `format` validators. [#158](https://github.com/Stranger6667/jsonschema/issues/158)
+
+### Changed
+
+- Validators now implement `Display` instead of `ToString`.
+- `JSONSchema` now owns its data. [#145](https://github.com/Stranger6667/jsonschema/issues/145)
+
+## [0.11.0] - 2021-06-19
+
+### Added
+
+- Report schema paths in validation errors - `ValidationError.schema_path`. [#199](https://github.com/Stranger6667/jsonschema/issues/199)
+
+### Fixed
+
+- Incorrect encoding of `/` and `~` characters in `fmt::Display` implementation for `JSONPointer`. [#233](https://github.com/Stranger6667/jsonschema/issues/233)
+
+## [0.10.0] - 2021-06-17
+
+### Added
+
+- **BREAKING**: Meta-schema validation for input schemas. By default, all input schemas are validated with their respective meta-schemas
+  and instead of `CompilationError` there will be the usual `ValidationError`. [#198](https://github.com/Stranger6667/jsonschema/issues/198)
+
+### Removed
+
+- `CompilationError`. Use `ValidationError` instead.
+
+## [0.9.1] - 2021-06-17
+
+### Fixed
+
+- The `format` validator incorrectly rejecting supported regex patterns. [#230](https://github.com/Stranger6667/jsonschema/issues/230)
+
+## [0.9.0] - 2021-05-07
+
+### Added
+
+- Support for look-around patterns. [#183](https://github.com/Stranger6667/jsonschema/issues/183)
+
+### Fixed
+
+- Extend the `email` format validation. Relevant test case from the JSONSchema test suite - `email.json`.
+
+## [0.8.3] - 2021-05-05
+
+### Added
+
+- `paths::JSONPointer` implements `IntoIterator` over `paths::PathChunk`.
+
+### Fixed
+
+- Skipped validation on an unsupported regular expression in `patternProperties`. [#213](https://github.com/Stranger6667/jsonschema/issues/213)
+- Missing `array` type in error messages for `type` validators containing multiple values. [#216](https://github.com/Stranger6667/jsonschema/issues/216)
+
+## [0.8.2] - 2021-05-03
+
+### Performance
+
+- Avoid some repetitive `String` allocations during validation.
+- Reduce the number of `RwLock.read()` calls in `$ref` validators.
+- Shortcut in the `uniqueItems` validator for short arrays.
+- `additionalProperties`. Use vectors instead of `AHashMap` if the number of properties is small.
+- Special handling for single-item `required` validators.
+- Special handling for single-item `enum` validators.
+- Special handling for single-item `allOf` validators.
+- Special handling for single-item `patternProperties` validators without defined `additionalProperties`.
+
+### Fixed
+
+- Floating point overflow in the `multipleOf` validator. Relevant test case from the JSONSchema test suite - `float_overflow.json`.
+
+## [0.8.1] - 2021-04-30
+
+### Performance
+
+- Avoid `String` allocation in `JSONPointer.into_vec`.
+- Replace heap-allocated `InstancePath` with stack-only linked list.
+
+## [0.8.0] - 2021-04-27
+
+### Changed
+
+- The `propertyNames` validator now contains the parent object in its `instance` attribute instead of individual properties as strings.
+- Improved error message for the `additionalProperties` validator. After - `Additional properties are not allowed ('faz' was unexpected)`, before - `False schema does not allow '"faz"'`.
+- The `additionalProperties` validator emits a single error for all unexpected properties instead of separate errors for each unexpected property.
+- **Breaking**: `ValidationError.instance_path` is now a separate struct, that can be transformed to `Vec<String>` or JSON Pointer of type `String`.
+
+### Fixed
+
+- All `instance_path` attributes are pointing to the proper location.
+
+## [0.7.0] - 2021-04-27
+
+### Added
+
+- `ValidationError.instance_path` that shows the path to the erroneous part of the input instance.
+  It has the `Vec<String>` type and contains components of the relevant JSON pointer.
+
+### Changed
+
+- Make fields of `ValidationError` public. It allows the end-user to customize errors formatting.
+
+### Fixed
+
+- Reject IPv4 addresses with leading zeroes. As per the new test case in the JSONSchema test suite. [More info](https://sick.codes/universal-netmask-npm-package-used-by-270000-projects-vulnerable-to-octal-input-data-server-side-request-forgery-remote-file-inclusion-local-file-inclusion-and-more-cve-2021-28918/)
+- Do not look for sub-schemas inside `const` and `enum` keywords. Fixes an issue checked by [these tests](https://github.com/json-schema-org/JSON-Schema-Test-Suite/pull/471)
+- Check all properties in the `required` keyword implementation. [#190](https://github.com/Stranger6667/jsonschema/issues/190)
+
+### Removed
+
+- Not used `ValidationErrorKind::Unexpected`.
+
+## [0.6.1] - 2021-03-26
+
+### Fixed
+
+- Incorrect handling of `\w` and `\W` character groups in `pattern` keywords. [#180](https://github.com/Stranger6667/jsonschema/issues/180)
+- Incorrect handling of strings that contain escaped character groups (like `\\w`) in `pattern` keywords.
+
+## [0.6.0] - 2021-02-03
+
+### Fixed
+
+- Missing validation errors after the 1st one in `additionalProperties` validators.
+
+### Performance
+
+- Do not use `rayon` in `items` keyword as it gives significant overhead for a general case.
+- Avoid partially overlapping work in `additionalProperties` / `properties` / `patternProperties` validators. [#173](https://github.com/Stranger6667/jsonschema/issues/173)
+
+## [0.5.0] - 2021-01-29
+
+### Added
+
+- Cache for documents loaded via the `$ref` keyword. [#75](https://github.com/Stranger6667/jsonschema/issues/75)
+- Meta schemas for JSON Schema drafts 4, 6, and 7. [#28](https://github.com/Stranger6667/jsonschema/issues/28)
+
+### Fixed
+
+- Not necessary network requests for schemas with `$id` values with trailing `#` symbol. [#163](https://github.com/Stranger6667/jsonschema/issues/163)
+
+### Performance
+
+- Enum validation for input values that have a type that is not present among the enum variants. [#80](https://github.com/Stranger6667/jsonschema/issues/80)
+
+### Removed
+
+- `-V`/`--validator` options from the CLI. They were no-op and never worked.
+
+## [0.4.3] - 2020-12-11
+
+### Documentation
+
+- Make examples in README.md runnable.
+
+## [0.4.2] - 2020-12-11
+
+### Changed
+
+- Move `paste` to dev dependencies.
+
+### Fixed
+
+- Number comparison for `enum` and `const` keywords. [#149](https://github.com/Stranger6667/jsonschema/issues/149)
+- Do not accept `date` strings with single-digit month and day values. [#151](https://github.com/Stranger6667/jsonschema/issues/151)
+
+### Performance
+
+- Some performance related changes were rolled back, due to increased complexity.
+
+## [0.4.1] - 2020-12-09
+
+### Fixed
+
+- Integers not recognized as numbers when the `type` keyword is a list of multiple values. [#147](https://github.com/Stranger6667/jsonschema/issues/147)
+
+## [0.4.0] - 2020-11-09
+
+### Added
+
+- Command Line Interface. [#102](https://github.com/Stranger6667/jsonschema/issues/102)
+- `ToString` trait implementation for validators.
+- Define `JSONSchema::options` to customise `JSONSchema` compilation [#131](https://github.com/Stranger6667/jsonschema/issues/131)
+- Allow user-defined `contentEncoding` and `contentMediaType` keywords
+
+### Fixed
+
+- ECMAScript regex support
+- Formats should be associated to Draft versions (ie. `idn-hostname` is not defined on draft 4 and draft 6)
+
+## [0.3.1] - 2020-06-21
+
+### Changed
+
+- Enable Link-Time Optimizations and set `codegen-units` to 1. [#104](https://github.com/Stranger6667/jsonschema/issues/104)
+
+### Fixed
+
+- `items` allows the presence of boolean schemas. [#115](https://github.com/Stranger6667/jsonschema/pull/115)
+
+## [0.3.0] - 2020-06-08
+
+### Added
+
+- JSONSchema Draft 4 support (except one optional case). [#34](https://github.com/Stranger6667/jsonschema/pull/34)
+- CI builds. [#35](https://github.com/Stranger6667/jsonschema/pull/35) and [#36](https://github.com/Stranger6667/jsonschema/pull/36)
+- Implement specialized `is_valid` methods for all keywords.
+- Use `rayon` in `items` keyword validation.
+- Various `clippy` lints. [#66](https://github.com/Stranger6667/jsonschema/pull/66)
+- `Debug` implementation for `JSONSchema` and  `Resolver`. [#97](https://github.com/Stranger6667/jsonschema/pull/97)
+- `Default` implementation for `Draft`.
+
+### Changed
+
+- Do not pin dependencies. [#90](https://github.com/Stranger6667/jsonschema/pull/90)
+- Use `to_string` instead of `format!`. [#85](https://github.com/Stranger6667/jsonschema/pull/85)
+- Cache compiled validators in `$ref` keyword. [#83](https://github.com/Stranger6667/jsonschema/pull/83)
+- Use bitmap for validation of multiple types in `type` keyword implementation. [#78](https://github.com/Stranger6667/jsonschema/pull/78)
+- Return errors instead of unwrap in various locations. [#73](https://github.com/Stranger6667/jsonschema/pull/73)
+- Improve debug representation of validators. [#70](https://github.com/Stranger6667/jsonschema/pull/70)
+- Reduce the number of `match` statements during compilation functions resolving.
+- Use `expect` instead of `unwrap` for known cases when it is known that the code won't panic.
+- Add specialized validators for all `format` cases.
+- Reuse `DEFAULT_SCOPE` during reference resolving.
+- Replace some `Value::as_*` calls with `if let`.
+- Inline all `compile` functions.
+- Optimize `format` keyword compilation by using static strings.
+- Optimize compilation of `true`, `false` and `$ref` validators.
+- Reuse parsed `DEFAULT_ROOT_URL` in `JSONSchema::compile`.
+- Avoid string allocation during `scope` parsing in `JSONSchema::compile`.
+- Refactor benchmark suite
+- Use `BTreeSet` in `additionalProperties` keyword during compilation to reduce the amount of copied data. [#91](https://github.com/Stranger6667/jsonschema/pull/91)
+
+### Fixed
+
+- Wrong implementation of `is_valid` for `additionalProperties: false` keyword case. [#61](https://github.com/Stranger6667/jsonschema/pull/61)
+- Possible panic due to type conversion in some numeric validators. [#72](https://github.com/Stranger6667/jsonschema/pull/72)
+- Precision loss in `minimum`, `maximum`, `exclusiveMinimum` and `exclusiveMaximum` validators. [#84](https://github.com/Stranger6667/jsonschema/issues/84)
+
+## [0.2.0] - 2020-03-30
+
+### Added
+
+- Implement `is_valid` for various validators.
+- Implement `Error` and `Display` for `CompilationError`
+
+### Changed
+
+- Debug representation & error messages in various validators.
+- Make `ErrorIterator` `Sync` and `Send`.
+
+### Fixed
+
+- Return `CompilationError` on invalid input schemas instead of panic.
+
+## 0.1.0 - 2020-03-29
+
+- Initial public release
+
+[Unreleased]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.59.0...HEAD
+[0.59.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.58.6...rust-v0.59.0
+[0.58.6]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.58.5...rust-v0.58.6
+[0.58.5]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.58.4...rust-v0.58.5
+[0.58.4]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.58.3...rust-v0.58.4
+[0.58.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.58.2...rust-v0.58.3
+[0.58.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.58.1...rust-v0.58.2
+[0.58.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.58.0...rust-v0.58.1
+[0.58.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.57.0...rust-v0.58.0
+[0.57.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.56.0...rust-v0.57.0
+[0.56.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.55.1...rust-v0.56.0
+[0.55.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.55.0...rust-v0.55.1
+[0.55.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.54.0...rust-v0.55.0
+[0.54.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.53.0...rust-v0.54.0
+[0.53.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.52.1...rust-v0.53.0
+[0.52.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.52.0...rust-v0.52.1
+[0.52.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.51.0...rust-v0.52.0
+[0.51.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.50.1...rust-v0.51.0
+[0.50.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.50.0...rust-v0.50.1
+[0.50.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.49.9...rust-v0.50.0
+[0.49.9]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.49.8...rust-v0.49.9
+[0.49.8]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.49.7...rust-v0.49.8
+[0.49.7]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.49.6...rust-v0.49.7
+[0.49.6]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.49.5...rust-v0.49.6
+[0.49.5]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.49.4...rust-v0.49.5
+[0.49.4]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.49.3...rust-v0.49.4
+[0.49.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.49.2...rust-v0.49.3
+[0.49.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.49.1...rust-v0.49.2
+[0.49.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.49.0...rust-v0.49.1
+[0.49.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.48.5...rust-v0.49.0
+[0.48.5]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.48.4...rust-v0.48.5
+[0.48.4]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.48.3...rust-v0.48.4
+[0.48.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.48.2...rust-v0.48.3
+[0.48.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.48.1...rust-v0.48.2
+[0.48.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.48.0...rust-v0.48.1
+[0.48.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.47.0...rust-v0.48.0
+[0.47.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.10...rust-v0.47.0
+[0.46.10]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.9...rust-v0.46.10
+[0.46.9]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.8...rust-v0.46.9
+[0.46.8]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.7...rust-v0.46.8
+[0.46.7]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.6...rust-v0.46.7
+[0.46.6]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.5...rust-v0.46.6
+[0.46.5]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.4...rust-v0.46.5
+[0.46.4]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.3...rust-v0.46.4
+[0.46.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.2...rust-v0.46.3
+[0.46.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.1...rust-v0.46.2
+[0.46.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.46.0...rust-v0.46.1
+[0.46.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.45.1...rust-v0.46.0
+[0.45.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.45.0...rust-v0.45.1
+[0.45.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.44.1...rust-v0.45.0
+[0.44.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.44.0...rust-v0.44.1
+[0.44.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.43.0...rust-v0.44.0
+[0.43.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.42.2...rust-v0.43.0
+[0.42.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.42.1...rust-v0.42.2
+[0.42.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.42.0...rust-v0.42.1
+[0.42.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.41.0...rust-v0.42.0
+[0.41.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.40.2...rust-v0.41.0
+[0.40.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.40.1...rust-v0.40.2
+[0.40.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.40.0...rust-v0.40.1
+[0.40.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.39.0...rust-v0.40.0
+[0.39.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.38.1...rust-v0.39.0
+[0.38.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.38.0...rust-v0.38.1
+[0.38.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.37.4...rust-v0.38.0
+[0.37.4]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.37.3...rust-v0.37.4
+[0.37.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.37.2...rust-v0.37.3
+[0.37.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.37.1...rust-v0.37.2
+[0.37.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.37.0...rust-v0.37.1
+[0.37.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.36.0...rust-v0.37.0
+[0.36.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.35.0...rust-v0.36.0
+[0.35.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.34.0...rust-v0.35.0
+[0.34.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.33.0...rust-v0.34.0
+[0.33.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.32.1...rust-v0.33.0
+[0.32.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.32.0...rust-v0.32.1
+[0.32.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.31.0...rust-v0.32.0
+[0.31.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.30.0...rust-v0.31.0
+[0.30.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.29.1...rust-v0.30.0
+[0.29.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.29.0...rust-v0.29.1
+[0.29.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.28.3...rust-v0.29.0
+[0.28.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.28.2...rust-v0.28.3
+[0.28.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.28.1...rust-v0.28.2
+[0.28.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.28.0...rust-v0.28.1
+[0.28.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.27.1...rust-v0.28.0
+[0.27.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.27.0...rust-v0.27.1
+[0.27.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.26.2...rust-v0.27.0
+[0.26.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.26.1...rust-v0.26.2
+[0.26.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.26.0...rust-v0.26.1
+[0.26.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.25.1...rust-v0.26.0
+[0.25.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.25.0...rust-v0.25.1
+[0.25.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.24.3...rust-v0.25.0
+[0.24.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.24.2...rust-v0.24.3
+[0.24.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.24.1...rust-v0.24.2
+[0.24.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.24.0...rust-v0.24.1
+[0.24.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.23.0...rust-v0.24.0
+[0.23.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.22.3...rust-v0.23.0
+[0.22.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.22.2...rust-v0.22.3
+[0.22.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.22.1...rust-v0.22.2
+[0.22.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.22.0...rust-v0.22.1
+[0.22.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.21.0...rust-v0.22.0
+[0.21.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.20.0...rust-v0.21.0
+[0.20.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.19.1...rust-v0.20.0
+[0.19.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.19.0...rust-v0.19.1
+[0.19.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.18.3...rust-v0.19.0
+[0.18.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.18.2...rust-v0.18.3
+[0.18.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.18.1...rust-v0.18.2
+[0.18.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.18.0...rust-v0.18.1
+[0.18.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.17.1...rust-v0.18.0
+[0.17.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.17.0...rust-v0.17.1
+[0.17.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.16.1...rust-v0.17.0
+[0.16.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.16.0...rust-v0.16.1
+[0.16.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.15.2...rust-v0.16.0
+[0.15.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.15.1...rust-v0.15.2
+[0.15.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.15.0...rust-v0.15.1
+[0.15.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.14.0...rust-v0.15.0
+[0.14.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.13.3...rust-v0.14.0
+[0.13.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.13.2...rust-v0.13.3
+[0.13.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.13.1...rust-v0.13.2
+[0.13.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.13.0...rust-v0.13.1
+[0.13.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.12.2...rust-v0.13.0
+[0.12.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.12.1...rust-v0.12.2
+[0.12.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.12.0...rust-v0.12.1
+[0.12.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.11.0...rust-v0.12.0
+[0.11.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.10.0...rust-v0.11.0
+[0.10.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.9.1...rust-v0.10.0
+[0.9.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.9.0...rust-v0.9.1
+[0.9.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.8.3...rust-v0.9.0
+[0.8.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.8.2...rust-v0.8.3
+[0.8.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.8.1...rust-v0.8.2
+[0.8.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.8.0...rust-v0.8.1
+[0.8.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.7.0...rust-v0.8.0
+[0.7.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.6.1...rust-v0.7.0
+[0.6.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.6.0...rust-v0.6.1
+[0.6.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.5.0...rust-v0.6.0
+[0.5.0]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.4.3...rust-v0.5.0
+[0.4.3]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.4.2...rust-v0.4.3
+[0.4.2]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.4.1...rust-v0.4.2
+[0.4.1]: https://github.com/Stranger6667/jsonschema/compare/rust-v0.4.0...rust-v0.4.1
+[0.4.0]: https://github.com/Stranger6667/jsonschema/compare/2bf8ccb78070cc10d1006789923a102e07da499d...rust-v0.4.0
+[0.3.1]: https://github.com/Stranger6667/jsonschema/compare/v0.3.0...2bf8ccb78070cc10d1006789923a102e07da499d
+[0.3.0]: https://github.com/Stranger6667/jsonschema/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/Stranger6667/jsonschema/compare/v0.1.0...v0.2.0

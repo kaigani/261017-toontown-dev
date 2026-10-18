@@ -1,0 +1,20 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r1_adversarial",
+    "derived_properties_are_output_only_on_validated_entity_input",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T20:00:06.658465+00:00",
+  "seconds": 6.192453900002874,
+  "exit": 101,
+  "logSha256": "c3807e9bc5d36983c6c2bcedae163b907604fda19bfb624339012dc515e92e0c",
+  "proptestSeed": "1182711"
+}

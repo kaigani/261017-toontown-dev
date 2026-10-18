@@ -1,0 +1,22 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.14s
+     Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-8b08020a096734ce.exe)
+
+running 1 test
+
+thread 'derived_properties_are_output_only_on_validated_entity_input' (29276) panicked at crates\model\tests\c11_r1_adversarial.rs:558:13:
+test needs a valid output value for element.effectiveMarkerColour
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test derived_properties_are_output_only_on_validated_entity_input ... FAILED
+
+failures:
+
+failures:
+    derived_properties_are_output_only_on_validated_entity_input
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 36 filtered out; finished in 0.26s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r1_adversarial`

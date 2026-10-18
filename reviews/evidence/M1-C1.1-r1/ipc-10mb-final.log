@@ -1,0 +1,55 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c11-r1/desktop
+
+stdout | src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > validates a representative ten-megabyte drawing
+{"review":"drawing-validation","bytes":10339142,"ms":1871.2980000000002}
+
+ ❯ src/ipc/c11-r1-adversarial.test.ts (6 tests | 2 failed) 2051ms
+   ❯ C11 R1 text boundary (6)
+     × coerces doubles declared inside generated conditional effect schemas 5ms
+     × rejects unpaired surrogate strings that the Rust UTF-8 reader cannot accept 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > coerces doubles declared inside generated conditional effect schemas
+AssertionError: expected undefined to be defined
+ ❯ src/ipc/c11-r1-adversarial.test.ts:30:84
+     28|     const origin = transform['origin'] as Record<string, unknown>;
+     29|     origin['x'] = 1e20;
+     30|     expect(certifyWireText(stringifyWireJson(shadow), ref('Element'), …
+       |                                                                                    ^
+     31|   });
+     32|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > rejects unpaired surrogate strings that the Rust UTF-8 reader cannot accept
+AssertionError: expected { code: 'arg.invalid', message: '�' } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "code": "arg.invalid",
+  "message": "�",
+}
+
+ ❯ src/ipc/c11-r1-adversarial.test.ts:36:7
+     34|     expect(
+     35|       certifyWireText('{"code":"arg.invalid","message":"\\ud800"}', re…
+     36|     ).toBeUndefined();
+       |       ^
+     37|   });
+     38|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  12:54:22
+   Duration  2.41s (tests 89%, setup 6%, transform 4%, import 1%)
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found

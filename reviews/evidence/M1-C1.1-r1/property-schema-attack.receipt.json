@@ -1,0 +1,20 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r1_adversarial",
+    "property_schema_resolves_nested_child_and_tuple_fields",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:54:22.133800+00:00",
+  "seconds": 5.5031152999727055,
+  "exit": 101,
+  "logSha256": "b6481f25234cb9488707d8fb6b72a68095b2dd3ace4acae23a8b08ca7a7062b7",
+  "proptestSeed": "1182711"
+}

@@ -1,0 +1,487 @@
+{
+  "baseSha": "53c9a289cd74f5bd87125fb618b1f7466a60a99d",
+  "receiptCount": 49,
+  "receipts": [
+    {
+      "receipt": "baseline-frontend.receipt.json",
+      "exit": 0,
+      "seconds": 109.49701589997858
+    },
+    {
+      "receipt": "baseline-rust.receipt.json",
+      "exit": 0,
+      "seconds": 117.63429750001524
+    },
+    {
+      "receipt": "build-default.receipt.json",
+      "exit": 0,
+      "seconds": 1.7024398999637924
+    },
+    {
+      "receipt": "build-diagnostics.receipt.json",
+      "exit": 0,
+      "seconds": 2.9988377999980003
+    },
+    {
+      "receipt": "build-final-default.receipt.json",
+      "exit": 0,
+      "seconds": 2.357339700043667
+    },
+    {
+      "receipt": "ci-artifacts.receipt.json",
+      "exit": 0,
+      "seconds": 1.6341148000210524
+    },
+    {
+      "receipt": "ci-download.receipt.json",
+      "exit": 0,
+      "seconds": 17.08313129999442
+    },
+    {
+      "receipt": "ci-full.receipt.json",
+      "exit": 0,
+      "seconds": 4.390212600002997
+    },
+    {
+      "receipt": "ci-metadata.receipt.json",
+      "exit": 0,
+      "seconds": 2.136958999966737
+    },
+    {
+      "receipt": "clippy-delivery.receipt.json",
+      "exit": 0,
+      "seconds": 1.858380199992098
+    },
+    {
+      "receipt": "deny.receipt.json",
+      "exit": 0,
+      "seconds": 6.672045400016941
+    },
+    {
+      "receipt": "depth-proof-delivery.receipt.json",
+      "exit": 101,
+      "seconds": 1.8022932999883778
+    },
+    {
+      "receipt": "derived-input-control.receipt.json",
+      "exit": 101,
+      "seconds": 6.192453900002874
+    },
+    {
+      "receipt": "final-clippy-clean.receipt.json",
+      "exit": 0,
+      "seconds": 7.279813300003298
+    },
+    {
+      "receipt": "final-clippy-complete.receipt.json",
+      "exit": 0,
+      "seconds": 4.372568699996918
+    },
+    {
+      "receipt": "final-clippy.receipt.json",
+      "exit": 101,
+      "seconds": 31.135969099996146
+    },
+    {
+      "receipt": "final-frontend-tests.receipt.json",
+      "exit": 1,
+      "seconds": 70.37295410002116
+    },
+    {
+      "receipt": "final-ipc-tests-corrected.receipt.json",
+      "exit": 1,
+      "seconds": 2.975181399961002
+    },
+    {
+      "receipt": "final-model-regressions-complete.receipt.json",
+      "exit": 101,
+      "seconds": 4.653658900002483
+    },
+    {
+      "receipt": "final-model-regressions.receipt.json",
+      "exit": 101,
+      "seconds": 14.785517400014214
+    },
+    {
+      "receipt": "final-rust-tests-corrected.receipt.json",
+      "exit": 101,
+      "seconds": 41.43861300003482
+    },
+    {
+      "receipt": "final-rust-tests.receipt.json",
+      "exit": 101,
+      "seconds": 46.503078099980485
+    },
+    {
+      "receipt": "final-typecheck.receipt.json",
+      "exit": 0,
+      "seconds": 3.182952299946919
+    },
+    {
+      "receipt": "fmt-delivery.receipt.json",
+      "exit": 0,
+      "seconds": 0.4241690000053495
+    },
+    {
+      "receipt": "fmt-final.receipt.json",
+      "exit": 0,
+      "seconds": 0.2828538999892771
+    },
+    {
+      "receipt": "frontend-format.receipt.json",
+      "exit": 0,
+      "seconds": 1.6607024000259116
+    },
+    {
+      "receipt": "frontend-lint-clean.receipt.json",
+      "exit": 0,
+      "seconds": 10.181089699966833
+    },
+    {
+      "receipt": "frontend-lint.receipt.json",
+      "exit": 1,
+      "seconds": 17.18581459997222
+    },
+    {
+      "receipt": "frontend-typecheck.receipt.json",
+      "exit": 0,
+      "seconds": 3.225993500032928
+    },
+    {
+      "receipt": "ipc-10mb-final.receipt.json",
+      "exit": 1,
+      "seconds": 3.0311025999835692
+    },
+    {
+      "receipt": "ipc-attacks-final.receipt.json",
+      "exit": 1,
+      "seconds": 0.9200911999796517
+    },
+    {
+      "receipt": "ipc-attacks-final2.receipt.json",
+      "exit": 1,
+      "seconds": 2.808715299994219
+    },
+    {
+      "receipt": "ipc-attacks.receipt.json",
+      "exit": 1,
+      "seconds": 1.9861807000124827
+    },
+    {
+      "receipt": "js-licenses.receipt.json",
+      "exit": 0,
+      "seconds": 1.6332062000292353
+    },
+    {
+      "receipt": "model-10mb-release.receipt.json",
+      "exit": 0,
+      "seconds": 7.0941413000109605
+    },
+    {
+      "receipt": "model-attacks-expanded.receipt.json",
+      "exit": 101,
+      "seconds": 0.6162952000158839
+    },
+    {
+      "receipt": "model-attacks-final.receipt.json",
+      "exit": 101,
+      "seconds": 6.280588700028602
+    },
+    {
+      "receipt": "model-attacks-final2.receipt.json",
+      "exit": 101,
+      "seconds": 3.8332468000007793
+    },
+    {
+      "receipt": "model-attacks-final3.receipt.json",
+      "exit": 101,
+      "seconds": 3.653344099991955
+    },
+    {
+      "receipt": "model-attacks.receipt.json",
+      "exit": 101,
+      "seconds": 22.164866300008725
+    },
+    {
+      "receipt": "model-regressions-delivery.receipt.json",
+      "exit": 101,
+      "seconds": 4.011058099975344
+    },
+    {
+      "receipt": "model-scale.receipt.json",
+      "exit": 0,
+      "seconds": 54.8992322999984
+    },
+    {
+      "receipt": "property-schema-attack.receipt.json",
+      "exit": 101,
+      "seconds": 5.5031152999727055
+    },
+    {
+      "receipt": "rust-format-clean.receipt.json",
+      "exit": 0,
+      "seconds": 0.3314515000092797
+    },
+    {
+      "receipt": "rust-format.receipt.json",
+      "exit": 1,
+      "seconds": 0.45931489998474717
+    },
+    {
+      "receipt": "schema-generation-1.receipt.json",
+      "exit": 0,
+      "seconds": 10.005095999978948
+    },
+    {
+      "receipt": "schema-generation-2.receipt.json",
+      "exit": 0,
+      "seconds": 0.7339202000293881
+    },
+    {
+      "receipt": "wire-attacks.receipt.json",
+      "exit": 101,
+      "seconds": 22.40237700002035
+    },
+    {
+      "receipt": "wire-regressions-delivery.receipt.json",
+      "exit": 101,
+      "seconds": 1.2727103999932297
+    }
+  ],
+  "ciJobs": [
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "skippedSteps": [],
+      "testSummaries": [
+        "check (windows-latest)\tFront end — lint, type-check, test, format, licences\t2026-10-18T19:29:41.7015769Z       Tests  303 passed (303)",
+        "check (windows-latest)\tFront end — lint, type-check, test, format, licences\t2026-10-18T19:29:41.8464976Z # pass 9",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:30.7176547Z test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:31.1924985Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:31.2058039Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:31.2341981Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:31.2642029Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:34.3995936Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.13s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:34.4226935Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:34.7805075Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:35.0820800Z test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:35.6265411Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:36.1067129Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:43.1283361Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.98s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:43.1393340Z test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:53.9953999Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 10.86s",
+        "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:58.7592605Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.75s",
+        "check (windows-latest)\tDesktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests\t2026-10-18T19:31:26.6958425Z test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s",
+        "check (windows-latest)\tDesktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests\t2026-10-18T19:31:27.1183274Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s"
+      ]
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "skippedSteps": [],
+      "testSummaries": []
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "skippedSteps": [],
+      "testSummaries": [
+        "raster determinism (macos-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-18T19:27:43.9609960Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s"
+      ]
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "skippedSteps": [
+        "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)"
+      ],
+      "testSummaries": []
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "skippedSteps": [],
+      "testSummaries": []
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "skippedSteps": [],
+      "testSummaries": [
+        "raster determinism (windows-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-18T19:28:29.4770724Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+      ]
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "skippedSteps": [],
+      "testSummaries": [
+        "raster determinism (ubuntu-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-18T19:27:24.7490866Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s"
+      ]
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "skippedSteps": [],
+      "testSummaries": [
+        "check (macos-latest)\tFront end — lint, type-check, test, format, licences\t2026-10-18T19:29:28.2588540Z       Tests  303 passed (303)",
+        "check (macos-latest)\tFront end — lint, type-check, test, format, licences\t2026-10-18T19:29:28.4305930Z # pass 9",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:18.7584140Z test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:19.4977280Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:19.5129100Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:19.5493730Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:19.5701080Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:23.9500520Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.37s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:23.9708830Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:26.2397590Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.26s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:26.4932520Z test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:26.9893220Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:27.5532570Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:37.5395680Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.96s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:37.5448180Z test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:51.3635350Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 13.82s",
+        "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-18T19:30:58.8254020Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.45s",
+        "check (macos-latest)\tDesktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests\t2026-10-18T19:31:29.2325480Z test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s",
+        "check (macos-latest)\tDesktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests\t2026-10-18T19:31:29.8453820Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s"
+      ]
+    }
+  ],
+  "baselineRust": {
+    "passed": 157,
+    "failed": 0,
+    "ignored": 1
+  },
+  "finalRust": {
+    "passed": 166,
+    "failed": 34,
+    "ignored": 1
+  },
+  "finalRustDerivation": "Corrected --workspace --no-fail-fast log, replacing model regression target totals with model-regressions-delivery.log after the final added tests.",
+  "baselineFrontend": "35 files, 303 tests, node 9 (raw logs)",
+  "finalFrontend": "36 files, 307 pass/2 fail; node suite not reached because pnpm uses &&",
+  "conformance": {
+    "implemented": 198,
+    "divergent": 36,
+    "deferred": 193,
+    "missing": 1
+  },
+  "scaleComparison": {
+    "drawingJsonBytes": {
+      "builder": 28568777,
+      "review": 28568777
+    },
+    "drawing100kParseValidateMs": {
+      "builder": 850.893,
+      "review": 873.926
+    },
+    "palette10kParseValidateMs": {
+      "builder": 38.472,
+      "review": 43.121
+    },
+    "drawings10kParseValidateMs": {
+      "builder": 40.087,
+      "review": 42.401
+    },
+    "elements1kParseValidateMs": {
+      "builder": 12.236,
+      "review": 13.429
+    },
+    "documentAssembleAndCheckMs": {
+      "builder": 140.87,
+      "review": 149.237
+    },
+    "objectCount": {
+      "builder": 121092,
+      "review": 121092
+    },
+    "drawingCanonicalWriteMs": {
+      "builder": 562.014,
+      "review": 567.552
+    },
+    "drawingObjectJsonDepthAllWithPathsMs": {
+      "builder": 515.645,
+      "review": 505.203
+    },
+    "documentCloneMs": {
+      "builder": 0.378,
+      "review": 0.421
+    },
+    "drawingEntryRawJsonMs": {
+      "builder": 256.863,
+      "review": 239.132
+    },
+    "drawingOwnViewsMs": {
+      "builder": 393.496,
+      "review": 436.695
+    },
+    "diffWholeDocumentNoSharedEntriesMs": {
+      "builder": 3147.447,
+      "review": 3455.114
+    },
+    "diffWholeDocumentChanges": {
+      "builder": 1,
+      "review": 1
+    },
+    "diffOneStrokeIn100kStrokeEntryMs": {
+      "builder": 1502.508,
+      "review": 1481.722
+    },
+    "diffOneStrokeChangedObjects": {
+      "builder": 1,
+      "review": 1
+    }
+  },
+  "builderIpcReportedAggregates": [
+    {
+      "payloadBytes": 0,
+      "roundTripMs": {
+        "n": 500,
+        "min": 0.5999999642372131,
+        "p50": 0.7999999523162842,
+        "p95": 0.9000000357627869,
+        "p99": 1.300000011920929,
+        "max": 7.5,
+        "mean": 0.7966000001430511
+      }
+    },
+    {
+      "payloadBytes": 1024,
+      "roundTripMs": {
+        "n": 500,
+        "min": 0.5999999642372131,
+        "p50": 0.800000011920929,
+        "p95": 0.8999999761581421,
+        "p99": 0.9000000357627869,
+        "max": 1.100000023841858,
+        "mean": 0.7717999999523163
+      }
+    },
+    {
+      "payloadBytes": 65536,
+      "roundTripMs": {
+        "n": 500,
+        "min": 1.800000011920929,
+        "p50": 2.199999988079071,
+        "p95": 2.5,
+        "p99": 4.399999976158142,
+        "max": 6.699999988079071,
+        "mean": 2.2249999994039538
+      }
+    },
+    {
+      "payloadBytes": 1048576,
+      "roundTripMs": {
+        "n": 500,
+        "min": 24.19999998807907,
+        "p50": 25.799999952316284,
+        "p95": 31,
+        "p99": 32.30000001192093,
+        "max": 34.89999997615814,
+        "mean": 26.726400000214575
+      }
+    }
+  ],
+  "ipcEvidenceLimit": "Benchmark JSON preserves reported aggregate quantiles, not individual samples; quantiles cannot be independently recomputed from those aggregates.",
+  "artifactCount": 7,
+  "preservedOriginalEvidenceFiles": 18
+}

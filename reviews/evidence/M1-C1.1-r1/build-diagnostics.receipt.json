@@ -1,0 +1,17 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm",
+    "--dir",
+    "desktop",
+    "build:diagnostics"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:55:12.781954+00:00",
+  "seconds": 2.9988377999980003,
+  "exit": 0,
+  "logSha256": "02e99f8026c585e6baeca05f57835c0d137a9dbf04a0cc9c95d342559f111f3e",
+  "proptestSeed": "1182711"
+}

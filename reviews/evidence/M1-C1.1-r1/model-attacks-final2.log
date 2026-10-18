@@ -1,0 +1,155 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.22s
+     Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-8b08020a096734ce.exe)
+
+running 29 tests
+
+thread 'root_add_is_rfc6902_replacement' (10800) panicked at crates\model\tests\c11_r1_adversarial.rs:168:51:
+called `Result::unwrap()` on an `Err` value: ModelError { code: "arg.invalid", message: "the operation needs a non-root path", details: Object {"pointer": String("")} }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'diff_does_not_treat_opaque_arrays_as_child_collections' (24724) panicked at crates\model\tests\c11_r1_adversarial.rs:225:5:
+assertion `left == right` failed: metadata edits disappeared from generated patch
+  left: Object {"meta": Object {"items": Array [Object {"id": String("a"), "type": String("pen")}]}}
+ right: Object {"meta": Object {"items": Array [Object {"id": String("a"), "type": String("scene")}]}}
+
+thread 'add_over_existing_object_property_is_invertible' (29244) panicked at crates\model\tests\c11_r1_adversarial.rs:154:5:
+assertion `left == right` failed: RFC6902 add replaces existing property; oldValue must restore it
+  left: Object {}
+ right: Object {"a": Number(1)}
+
+thread 'canonical_serialization_rejects_nonfinite_values' (20896) panicked at crates\model\tests\c11_r1_adversarial.rs:317:5:
+assertion failed: canonical::to_canonical(&f64::NAN).is_err()
+
+thread 'move_over_existing_object_property_is_invertible' (27788) panicked at crates\model\tests\c11_r1_adversarial.rs:162:5:
+assertion `left == right` failed: 10 §2.6 every patch invertible
+  left: Object {"a": Number(1)}
+ right: Object {"a": Number(1), "b": Number(2)}
+test diff_does_not_treat_opaque_arrays_as_child_collections ... FAILED
+test hostile_path_and_id_controls ... ok
+test canonical_serialization_rejects_nonfinite_values ... FAILED
+
+thread 'jsonschema_integer_multiple_of_does_not_round_before_testing' (27528) panicked at crates\model\tests\c11_r1_adversarial.rs:311:5:
+exact integer divisible by 5 rejected
+test jsonschema_integer_multiple_of_does_not_round_before_testing ... FAILED
+
+thread 'elided_patch_must_not_write_null' (29256) panicked at crates\model\tests\c11_r1_adversarial.rs:174:5:
+10 §2.6: elided value requires reread, never replacement with null
+test move_over_existing_object_property_is_invertible ... FAILED
+test root_add_is_rfc6902_replacement ... FAILED
+test add_over_existing_object_property_is_invertible ... FAILED
+test elided_patch_must_not_write_null ... FAILED
+
+thread 'schema_properties_have_format_introduction_annotations' (30452) panicked at crates\model\tests\c11_r1_adversarial.rs:253:5:
+assertion `left == right` failed: 10 section 2.8 annotates properties, not only objects
+  left: Null
+ right: "1.0"
+test schema_properties_have_format_introduction_annotations ... FAILED
+
+thread 'depth_zero_results_validate_against_their_object_schema' (16340) panicked at crates\model\tests\c11_r1_adversarial.rs:63:5:
+10 §2.2 both full objects and stubs validate: {"id":"pr_01K742SG00AGK6CWBR28XFH7HT","type":"project","name":"Sample"}
+test depth_zero_results_validate_against_their_object_schema ... FAILED
+
+thread 'extension_and_metadata_names_are_never_interpreted' (13968) panicked at crates\model\tests\c11_r1_adversarial.rs:38:5:
+assertion `left == right` failed: 10 §2.2: ext verbatim
+  left: Object {"type": String("element"), "name": String("é"), "payload": Array [Number(1), Number(2), Number(3)]}
+ right: Object {"type": String("element"), "name": String("  e\u{301}  "), "payload": Array [Number(1), Number(2), Number(3)]}
+test extension_and_metadata_names_are_never_interpreted ... FAILED
+
+thread 'texture_paths_must_be_under_textures' (23368) panicked at crates\model\tests\c11_r1_adversarial.rs:124:5:
+10 §4.13: texture entry outside textures/
+test texture_paths_must_be_under_textures ... FAILED
+
+thread 'int_means_signed_32_bit_unless_spec_states_otherwise' (25096) panicked at crates\model\tests\c11_r1_adversarial.rs:189:5:
+10 §1.1 int is signed 32-bit; frame is int
+test int_means_signed_32_bit_unless_spec_states_otherwise ... FAILED
+
+thread 'fixed_text_requires_width' (16852) panicked at crates\model\tests\c11_r1_adversarial.rs:117:5:
+10 §4.9: fixed text without width
+test fixed_text_requires_width ... FAILED
+
+thread 'every_valid_deep_library_object_has_a_resolvable_canonical_path' (25380) panicked at crates\model\tests\c11_r1_adversarial.rs:240:5:
+unresolvable canonical path: library:local/libraryFolder:"Folder 32"/libraryFolder:"Folder 31"/libraryFolder:"Folder 30"/libraryFolder:"Folder 29"/libraryFolder:"Folder 28"/libraryFolder:"Folder 27"/libraryFolder:"Folder 26"/libraryFolder:"Folder 25"/libraryFolder:"Folder 24"/libraryFolder:"Folder 23"/libraryFolder:"Folder 22"/libraryFolder:"Folder 21"/libraryFolder:"Folder 20"/libraryFolder:"Folder 19"/libraryFolder:"Folder 18"/libraryFolder:"Folder 17"/libraryFolder:"Folder 16"/libraryFolder:"Folder 15"/libraryFolder:"Folder 14"/libraryFolder:"Folder 13"/libraryFolder:"Folder 12"/libraryFolder:"Folder 11"/libraryFolder:"Folder 10"/libraryFolder:"Folder 9"/libraryFolder:"Folder 8"/libraryFolder:"Folder 7"/libraryFolder:"Folder 6"/libraryFolder:"Folder 5"/libraryFolder:"Folder 4"/libraryFolder:"Folder 3"/libraryFolder:"Folder 2"/libraryFolder:"Folder 1"/libraryFolder:"Folder 0"/libraryFolder:"Leaf"
+test every_valid_deep_library_object_has_a_resolvable_canonical_path ... FAILED
+
+thread 'image_element_bank_requires_exactly_one_bitmap_per_drawing' (29088) panicked at crates\model\tests\c11_r1_adversarial.rs:86:5:
+10 §4.10 empty image drawing accepted
+test image_element_bank_requires_exactly_one_bitmap_per_drawing ... FAILED
+
+thread 'nfc_applies_to_persisted_strings_beyond_names' (9004) panicked at crates\model\tests\c11_r1_adversarial.rs:48:5:
+assertion `left == right` failed: 10 §1.1 string
+  left: String("e\u{301}")
+ right: String("é")
+test nfc_applies_to_persisted_strings_beyond_names ... FAILED
+test schema_integer_boundary_does_not_round_u64_max_up ... ok
+
+thread 'duplicate_entry_ids_must_not_silently_overwrite_content' (25120) panicked at crates\model\tests\c11_r1_adversarial.rs:28:5:
+ID-01: duplicate entry disappeared before validation
+test duplicate_entry_ids_must_not_silently_overwrite_content ... FAILED
+
+thread 'document_assembly_rechecks_schema_ranges_after_public_deserialize' (9852) panicked at crates\model\tests\c11_r1_adversarial.rs:73:5:
+10 §4.2: Document accepted pen sizes > 100 via public Deserialize
+
+thread 'linked_file_asset_requires_paths' (23120) panicked at crates\model\tests\c11_r1_adversarial.rs:94:5:
+10 §4.16 linked file with no locator accepted
+test document_assembly_rechecks_schema_ranges_after_public_deserialize ... FAILED
+test linked_file_asset_requires_paths ... FAILED
+
+thread 'canonical_map_order_does_not_depend_on_insertion_order' (17952) panicked at crates\model\tests\c11_r1_adversarial.rs:134:5:
+assertion `left == right` failed: 10 AG-06 identical documents identical JSON
+  left: "{\n  \"id\": \"pen_01K742SG0D52WQP7QB3MVEBHKZ\",\n  \"type\": \"pen\",\n  \"rev\": 1,\n  \"name\": \"Pen 1\",\n  \"kind\": \"brush\",\n  \"minSize\": 0.5,\n  \"maxSize\": 2,\n  \"smoothness\": 3,\n  \"tip\": \"round\",\n  \"tipAngle\": 0,\n  \"colourId\": null,\n  \"meta\": {\n    \"a\": 1,\n    \"b\": 2\n  }\n}\n"
+ right: "{\n  \"id\": \"pen_01K742SG0D52WQP7QB3MVEBHKZ\",\n  \"type\": \"pen\",\n  \"rev\": 1,\n  \"name\": \"Pen 1\",\n  \"kind\": \"brush\",\n  \"minSize\": 0.5,\n  \"maxSize\": 2,\n  \"smoothness\": 3,\n  \"tip\": \"round\",\n  \"tipAngle\": 0,\n  \"colourId\": null,\n  \"meta\": {\n    \"b\": 2,\n    \"a\": 1\n  }\n}\n"
+test canonical_map_order_does_not_depend_on_insertion_order ... FAILED
+
+thread 'brush_outline_must_be_closed' (13548) panicked at crates\model\tests\c11_r1_adversarial.rs:101:5:
+10 §4.9: brush outlines are closed
+test brush_outline_must_be_closed ... FAILED
+
+thread 'swatch_id_alias_is_accepted_by_the_validated_input_path' (26932) panicked at crates\model\tests\c11_r1_adversarial.rs:56:5:
+10 §2.2 explicitly accepts id as alias
+test swatch_id_alias_is_accepted_by_the_validated_input_path ... FAILED
+
+thread 'metadata_depth_is_enforced_at_model_input' (24880) panicked at crates\model\tests\c11_r1_adversarial.rs:142:5:
+accepted object cannot be written by its canonical writer
+test metadata_depth_is_enforced_at_model_input ... FAILED
+
+thread 'child_stub_type_must_agree_with_the_containment_slot' (14676) panicked at crates\model\tests\c11_r1_adversarial.rs:247:5:
+palette slot schema accepted scene stub
+test child_stub_type_must_agree_with_the_containment_slot ... FAILED
+review schema sweep: 22 types, 2023 mutations
+test schema_mutations_cover_all_object_types_and_root_properties ... ok
+test million_system_ids_unique_ordered_and_correctly_prefixed ... ok
+review drawing validation: bytes=10534733, ms=1053.119
+test ten_megabyte_drawing_validation_measurement ... ok
+
+failures:
+
+failures:
+    add_over_existing_object_property_is_invertible
+    brush_outline_must_be_closed
+    canonical_map_order_does_not_depend_on_insertion_order
+    canonical_serialization_rejects_nonfinite_values
+    child_stub_type_must_agree_with_the_containment_slot
+    depth_zero_results_validate_against_their_object_schema
+    diff_does_not_treat_opaque_arrays_as_child_collections
+    document_assembly_rechecks_schema_ranges_after_public_deserialize
+    duplicate_entry_ids_must_not_silently_overwrite_content
+    elided_patch_must_not_write_null
+    every_valid_deep_library_object_has_a_resolvable_canonical_path
+    extension_and_metadata_names_are_never_interpreted
+    fixed_text_requires_width
+    image_element_bank_requires_exactly_one_bitmap_per_drawing
+    int_means_signed_32_bit_unless_spec_states_otherwise
+    jsonschema_integer_multiple_of_does_not_round_before_testing
+    linked_file_asset_requires_paths
+    metadata_depth_is_enforced_at_model_input
+    move_over_existing_object_property_is_invertible
+    nfc_applies_to_persisted_strings_beyond_names
+    root_add_is_rfc6902_replacement
+    schema_properties_have_format_introduction_annotations
+    swatch_id_alias_is_accepted_by_the_validated_input_path
+    texture_paths_must_be_under_textures
+
+test result: FAILED. 5 passed; 24 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.13s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r1_adversarial`
