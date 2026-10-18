@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python",
+    "-X",
+    "utf8",
+    "scripts/test_decision_rules.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r4",
+  "started": "2026-10-18T16:45:15.807338+00:00",
+  "seconds": 0.266,
+  "exit": 0,
+  "expected": 0
+}

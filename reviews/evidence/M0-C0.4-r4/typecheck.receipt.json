@@ -1,0 +1,13 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm typecheck"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r4",
+  "started": "2026-10-18T16:42:58.955412+00:00",
+  "seconds": 2.784,
+  "exit": 0,
+  "expected": 0
+}
