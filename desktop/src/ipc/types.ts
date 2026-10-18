@@ -22,7 +22,10 @@ export interface PingResponse {
 
 export type RunMode = 'attached' | 'headless' | 'batchScript';
 
-/** Superset of `app.info.get` (01 §12). */
+/**
+ * Internal engine bootstrap information (crates/engine `EngineInfo`). Not the spec query `app.info.get` (01 §12),
+ * which adds `locale` and `languages[]` and arrives as a registered query in C1.4.
+ */
 export interface EngineInfo {
   name: string;
   version: string;

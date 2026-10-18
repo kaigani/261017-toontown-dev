@@ -16,7 +16,7 @@ pub async fn ping(engine: State<'_, Engine>, request: PingRequest) -> Result<Pin
     engine.ping(request).map_err(|e| e.to_info())
 }
 
-/// Static engine information (superset of `app.info.get`).
+/// Internal engine bootstrap information ([`EngineInfo`]); not the spec query `app.info.get` (01 §12, C1.4).
 #[tauri::command]
 #[must_use]
 pub fn app_info(engine: State<'_, Engine>) -> EngineInfo {

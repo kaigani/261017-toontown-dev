@@ -63,8 +63,12 @@ pub struct EngineConfig {
     pub run_mode: RunMode,
 }
 
-/// Static facts about the running engine, the superset of `app.info.get` (01 §12) and the MCP `initialize`
-/// server info (11 §4).
+/// Internal bootstrap information about the running engine: the engine-level facts the MCP `initialize` server info
+/// needs (11 §4: name, version, registry version, document schema version, run mode) plus platform and architecture.
+///
+/// This is **not** the result of the spec query `app.info.get` (01 §12), which also reports `locale` and
+/// `languages[]`; those depend on settings and localisation, which do not exist yet. `app.info.get` is a registered
+/// query from C1.4 (ticket in `plan/traceability.csv`) and will be built on this type, not replace it.
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EngineInfo {

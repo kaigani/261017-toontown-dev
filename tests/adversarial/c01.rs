@@ -39,12 +39,25 @@ fn c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary() {
     node_case("imports");
 }
 
+// Amended by the builder in round 1 per the orchestrator's C01-R1-04 ruling (2026-10-17): the claim was renamed
+// rather than locale/languages faked. EngineInfo is internal bootstrap info; `app.info.get` (with locale and
+// languages[]) is ticketed to C1.4 in plan/traceability.csv. The test now pins the renamed claim: every 11 §4
+// server-info field is present, and no source still calls EngineInfo a superset of app.info.get.
 #[test]
-fn c01_r1_04_info_is_a_superset_of_app_info_get() {
+fn c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get() {
     let engine = Engine::new(EngineConfig { run_mode: RunMode::Headless }).unwrap();
     let value = serde_json::to_value(engine.info()).unwrap();
-    assert!(value["locale"].is_string(), "01 section 12.1 / A: app.info.get requires locale; got {value}");
-    assert!(value["languages"].is_array(), "app.info.get requires languages[]");
+    for field in ["name", "version", "registryVersion", "formatVersion", "runMode"] {
+        assert!(value[field].is_string(), "11 section 4 server info needs {field}; got {value}");
+    }
+    for (path, text) in [
+        ("crates/engine/src/lib.rs", include_str!("../../crates/engine/src/lib.rs")),
+        ("desktop/src-tauri/src/ipc.rs", include_str!("../../desktop/src-tauri/src/ipc.rs")),
+        ("desktop/src/ipc/types.ts", include_str!("../../desktop/src/ipc/types.ts")),
+    ] {
+        assert!(!text.to_lowercase().contains("superset of `app.info.get`"), "{path} still claims the superset");
+        assert!(text.contains("app.info.get"), "{path} must say how EngineInfo relates to app.info.get");
+    }
 }
 
 #[test]
