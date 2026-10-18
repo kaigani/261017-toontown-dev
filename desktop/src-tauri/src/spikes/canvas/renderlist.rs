@@ -17,7 +17,7 @@
 //! | 24 | 4 | path count P |
 //! | 28 | 4 | verb count V |
 //! | 32 | 4 | point count N (x, y pairs) |
-//! | 36 | 16 | bounds `[min x, min y, max x, max y]` (f32) in world units |
+//! | 36 | 16 | bounds `[min x, min y, max x, max y]` (f32): extent of every point, in path (pre-group) units |
 //! | 52 | 4 | flags (0) |
 //! | 56 | 8 | encode time, ns (u64; time to serialise this buffer) |
 //! | 64 | 8 | generate time, ns (u64; time to build the scene model, 0 when cached) |
@@ -26,6 +26,10 @@
 //! verb start u32, verb count u32, point start u32, group u32, paint u32 = RGBA8 bytes, style u32 (0 fill non-zero,
 //! 1 fill even-odd, 2 stroke), stroke width f32); N points (2 × f32); V verbs (u8: 0 move, 1 line, 2 cubic,
 //! 3 close), zero-padded to a multiple of 4. Total length = 72 + 24G + 28P + 8N + pad4(V).
+//!
+//! Validity (C03-R1-02): [`encode`] refuses a scene with a non-finite point, group transform or width, a point
+//! outside the header bounds, inverted or non-finite bounds, or path ranges outside the arrays; the page's decoder
+//! checks the same properties before it builds any geometry.
 //!
 //! The groups are one flat level (a path belongs to one group). M3's render list is a tree with paints, clips and
 //! effects; this prototype only has to be replaceable, not complete.
@@ -191,7 +195,7 @@ pub fn group_transform(i: usize, frame: u32, base: &[f32; 6]) -> [f32; 6] {
 
 pub fn generate(kind: Kind, seed: u32) -> Scene {
     let mut rng = Rng(u64::from(seed) ^ (u64::from(kind.code()) << 32) ^ 0x0C03_CA9A);
-    let mut b = Builder { scene: Scene { seed, bounds: [0.0, 0.0, WORLD, WORLD], ..Scene::default() } };
+    let mut b = Builder { scene: Scene { seed, ..Scene::default() } };
     match kind {
         Kind::Paths100k => {
             b.scene.groups.push([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]);
@@ -276,7 +280,99 @@ pub fn generate(kind: Kind, seed: u32) -> Scene {
             }
         }
     }
+    b.scene.bounds = bounds_of(&b.scene.points);
     b.scene
+}
+
+/// Why a scene cannot be encoded (C03-R1-02).
+#[derive(Clone, Debug, PartialEq)]
+pub enum EncodeError {
+    /// The header bounds are not finite or not ordered (`min <= max`).
+    BadBounds([f32; 4]),
+    /// A point coordinate is NaN or infinite.
+    NonFinitePoint { index: usize, x: f32, y: f32 },
+    /// A point lies outside the header bounds.
+    PointOutOfBounds { index: usize, x: f32, y: f32 },
+    /// A group transform entry is NaN or infinite.
+    NonFiniteGroup { group: usize },
+    /// A stroke width is NaN, infinite or negative.
+    BadWidth { path: usize, width: f32 },
+    /// A path's verb or point range lies outside the arrays, or names a missing group.
+    BadPath { path: usize },
+}
+
+impl std::fmt::Display for EncodeError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            EncodeError::BadBounds(b) => write!(f, "bounds {b:?} are not finite and ordered"),
+            EncodeError::NonFinitePoint { index, x, y } => write!(f, "point {index} ({x}, {y}) is not finite"),
+            EncodeError::PointOutOfBounds { index, x, y } => {
+                write!(f, "point {index} ({x}, {y}) is outside the bounds")
+            }
+            EncodeError::NonFiniteGroup { group } => write!(f, "group {group} has a non-finite transform"),
+            EncodeError::BadWidth { path, width } => write!(f, "path {path} has an invalid stroke width {width}"),
+            EncodeError::BadPath { path } => write!(f, "path {path} has ranges outside the scene"),
+        }
+    }
+}
+
+impl std::error::Error for EncodeError {}
+
+/// Extent `[min x, min y, max x, max y]` of interleaved `points` (`[0; 4]` when empty).
+pub fn bounds_of(points: &[f32]) -> [f32; 4] {
+    let mut b = [f32::INFINITY, f32::INFINITY, f32::NEG_INFINITY, f32::NEG_INFINITY];
+    for p in points.as_chunks::<2>().0 {
+        b = [b[0].min(p[0]), b[1].min(p[1]), b[2].max(p[0]), b[3].max(p[1])];
+    }
+    if points.is_empty() { [0.0; 4] } else { b }
+}
+
+/// Points consumed by a verb.
+fn verb_points(verb: u8) -> Option<usize> {
+    match verb {
+        VERB_MOVE | VERB_LINE => Some(1),
+        VERB_CUBIC => Some(3),
+        VERB_CLOSE => Some(0),
+        _ => None,
+    }
+}
+
+/// Checks every property the decoder relies on (see [`EncodeError`]).
+pub fn validate(scene: &Scene) -> Result<(), EncodeError> {
+    let b = scene.bounds;
+    if !b.iter().all(|v| v.is_finite()) || b[0] > b[2] || b[1] > b[3] {
+        return Err(EncodeError::BadBounds(b));
+    }
+    for (index, p) in scene.points.as_chunks::<2>().0.iter().enumerate() {
+        let (x, y) = (p[0], p[1]);
+        if !x.is_finite() || !y.is_finite() {
+            return Err(EncodeError::NonFinitePoint { index, x, y });
+        }
+        if x < b[0] || x > b[2] || y < b[1] || y > b[3] {
+            return Err(EncodeError::PointOutOfBounds { index, x, y });
+        }
+    }
+    for (group, g) in scene.groups.iter().enumerate() {
+        if !g.iter().all(|v| v.is_finite()) {
+            return Err(EncodeError::NonFiniteGroup { group });
+        }
+    }
+    let points = scene.points.len() / 2;
+    for (index, p) in scene.paths.iter().enumerate() {
+        if !p.width.is_finite() || p.width < 0.0 {
+            return Err(EncodeError::BadWidth { path: index, width: p.width });
+        }
+        let (start, end) = (p.verb_start as usize, p.verb_start as usize + p.verb_count as usize);
+        let Some(verbs) = scene.verbs.get(start..end) else { return Err(EncodeError::BadPath { path: index }) };
+        let mut needed = 0;
+        for &v in verbs {
+            needed += verb_points(v).ok_or(EncodeError::BadPath { path: index })?;
+        }
+        if p.point_start as usize + needed > points || p.group as usize >= scene.groups.len() {
+            return Err(EncodeError::BadPath { path: index });
+        }
+    }
+    Ok(())
 }
 
 /// Total encoded length for a scene.
@@ -289,8 +385,12 @@ pub fn encoded_len(scene: &Scene) -> usize {
 }
 
 /// Serialises `scene` at `frame`; writes the encode time (and the given generate time) into the header.
-pub fn encode(kind: Kind, scene: &Scene, frame: u32, generate_ns: u64) -> Vec<u8> {
+///
+/// # Errors
+/// [`EncodeError`] if the scene (or a group transform at `frame`) is not valid.
+pub fn encode(kind: Kind, scene: &Scene, frame: u32, generate_ns: u64) -> Result<Vec<u8>, EncodeError> {
     let t0 = Instant::now();
+    validate(scene)?;
     let mut out = Vec::with_capacity(encoded_len(scene));
     out.extend_from_slice(MAGIC);
     out.extend_from_slice(&VERSION.to_le_bytes());
@@ -313,7 +413,11 @@ pub fn encode(kind: Kind, scene: &Scene, frame: u32, generate_ns: u64) -> Vec<u8
     out.extend_from_slice(&0_u64.to_le_bytes()); // encode ns, patched below
     out.extend_from_slice(&generate_ns.to_le_bytes());
     for (i, g) in scene.groups.iter().enumerate() {
-        for v in group_transform(i, frame, g) {
+        let t = group_transform(i, frame, g);
+        if !t.iter().all(|v| v.is_finite()) {
+            return Err(EncodeError::NonFiniteGroup { group: i });
+        }
+        for v in t {
             out.extend_from_slice(&v.to_le_bytes());
         }
     }
@@ -332,7 +436,7 @@ pub fn encode(kind: Kind, scene: &Scene, frame: u32, generate_ns: u64) -> Vec<u8
     }
     let ns = u64::try_from(t0.elapsed().as_nanos()).unwrap_or(u64::MAX);
     out[56..64].copy_from_slice(&ns.to_le_bytes());
-    out
+    Ok(out)
 }
 
 #[cfg(test)]
@@ -355,7 +459,7 @@ mod tests {
     #[test]
     fn encoding_has_the_documented_layout() {
         let s = generate(Kind::Groups1k, 7);
-        let bytes = encode(Kind::Groups1k, &s, 3, 42);
+        let bytes = encode(Kind::Groups1k, &s, 3, 42).unwrap();
         assert_eq!(bytes.len(), encoded_len(&s));
         assert_eq!(&bytes[0..4], MAGIC);
         assert_eq!(u16::from_le_bytes([bytes[4], bytes[5]]), VERSION);
@@ -395,13 +499,48 @@ mod tests {
     /// `TT_WRITE_FIXTURES=1 cargo test -p tt-desktop tiny_fixture`.
     #[test]
     fn tiny_fixture_matches_committed_bytes() {
-        let mut bytes = encode(Kind::Groups1k, &tiny(), 0, 0);
+        let mut bytes = encode(Kind::Groups1k, &tiny(), 0, 0).unwrap();
         bytes[56..64].fill(0);
         let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../src/spikes/canvas/testdata/tiny.ttrl");
         if std::env::var_os("TT_WRITE_FIXTURES").is_some() {
             std::fs::write(path, &bytes).unwrap();
         }
         assert_eq!(std::fs::read(path).unwrap(), bytes);
+    }
+
+    #[test]
+    fn encoder_refuses_invalid_geometry() {
+        let mut nan = tiny();
+        nan.points[0] = f32::NAN;
+        assert!(matches!(encode(Kind::Groups1k, &nan, 0, 0), Err(EncodeError::NonFinitePoint { index: 0, .. })));
+        let mut inf = tiny();
+        inf.points[3] = f32::INFINITY;
+        assert!(matches!(encode(Kind::Groups1k, &inf, 0, 0), Err(EncodeError::NonFinitePoint { index: 1, .. })));
+        let mut out = tiny();
+        out.points[2] = 101.0;
+        assert!(matches!(encode(Kind::Groups1k, &out, 0, 0), Err(EncodeError::PointOutOfBounds { index: 1, .. })));
+        let mut group = tiny();
+        group.groups[1][4] = f32::NAN;
+        assert_eq!(encode(Kind::Groups1k, &group, 0, 0), Err(EncodeError::NonFiniteGroup { group: 1 }));
+        let mut bounds = tiny();
+        bounds.bounds = [0.0, 0.0, f32::NAN, 100.0];
+        assert!(matches!(encode(Kind::Groups1k, &bounds, 0, 0), Err(EncodeError::BadBounds(_))));
+        let mut width = tiny();
+        width.paths[0].width = -1.0;
+        assert!(matches!(encode(Kind::Groups1k, &width, 0, 0), Err(EncodeError::BadWidth { path: 0, .. })));
+        let mut range = tiny();
+        range.paths[2].point_start = 9;
+        assert_eq!(encode(Kind::Groups1k, &range, 0, 0), Err(EncodeError::BadPath { path: 2 }));
+    }
+
+    #[test]
+    fn generated_scenes_are_valid_and_bounded_by_their_points() {
+        for kind in [Kind::Paths100k, Kind::Groups1k, Kind::Brush10k] {
+            let s = generate(kind, 1);
+            assert_eq!(validate(&s), Ok(()));
+            assert_eq!(s.bounds, bounds_of(&s.points));
+            assert!(encode(kind, &s, 5, 0).is_ok());
+        }
     }
 
     #[test]

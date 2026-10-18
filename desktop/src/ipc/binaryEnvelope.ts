@@ -69,6 +69,10 @@ export function certifyRenderList(bytes: ArrayBuffer): RenderListHeader {
   };
   const certified = certify(isRenderListHeader, header);
   if (!certified) throw invalid('render list header does not match its schema');
+  const [minX = Number.NaN, minY = Number.NaN, maxX = Number.NaN, maxY = Number.NaN] = certified.bounds;
+  if (certified.bounds.length !== 4 || !(minX <= maxX && minY <= maxY)) {
+    throw invalid('render list bounds are not ordered [min x, min y, max x, max y]');
+  }
   const expected = renderListLength(certified.groups, certified.paths, certified.points, certified.verbs);
   if (expected !== bytes.byteLength) {
     throw invalid(`render list is ${String(bytes.byteLength)} bytes; its counts imply ${String(expected)}`);

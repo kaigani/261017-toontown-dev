@@ -9,7 +9,8 @@
 // * Draw order within the spike is "all fills, then all strokes" (two draw calls); the scenes are chosen so that
 //   this does not change what is drawn materially. M3's renderer must preserve painter's order.
 //
-// Every index read from the buffer is range-checked against the certified header; malformed content throws.
+// Every index read from the buffer is range-checked against the certified header, and every point must be finite
+// and inside the header bounds; malformed content throws before any geometry is built.
 import earcut from 'earcut';
 
 import type { RenderListHeader } from '../../ipc';
@@ -129,6 +130,18 @@ export function decodeRenderList(header: RenderListHeader, bytes: ArrayBuffer, t
   const points = new Float32Array(bytes, pointsOff, N * 2);
   const verbs = new Uint8Array(bytes, verbsOff, V);
   for (const g of groups) if (!Number.isFinite(g)) throw bad('non-finite group transform');
+  // Every point must be finite and inside the header bounds before any geometry is built (C03-R1-02): a NaN or
+  // infinite coordinate would otherwise flatten to nothing and silently shrink the workload.
+  const [minX, minY, maxX, maxY] = header.bounds;
+  if (minX === undefined || minY === undefined || maxX === undefined || maxY === undefined) {
+    throw bad('bounds missing');
+  }
+  for (let i = 0; i < N; i++) {
+    const x = points[2 * i] ?? Number.NaN;
+    const y = points[2 * i + 1] ?? Number.NaN;
+    if (!Number.isFinite(x) || !Number.isFinite(y)) throw bad(`point ${String(i)} is not finite`);
+    if (x < minX || x > maxX || y < minY || y > maxY) throw bad(`point ${String(i)} is outside the bounds`);
+  }
 
   const strokes = new GrowBuffer(1 << 20);
   const fillV = new GrowBuffer(1 << 18);

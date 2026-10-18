@@ -183,6 +183,15 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
             invokeMs,
             encodeNs: payload.header.encodeNs,
             generateNs: payload.header.generateNs,
+            header: {
+              kind: payload.header.kind,
+              seed: payload.header.seed,
+              frame: payload.header.frame,
+              groups: payload.header.groups,
+              paths: payload.header.paths,
+              points: payload.header.points,
+              verbs: payload.header.verbs,
+            },
           });
           first ??= payload;
         }

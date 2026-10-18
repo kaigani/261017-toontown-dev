@@ -54,7 +54,7 @@ pub struct CanvasSceneRequest {
 /// Encodes the requested scene as a binary render list (see [`renderlist`]).
 ///
 /// # Errors
-/// `spike.notEnabled`, `arg.invalid` (unknown scene), `internal`.
+/// `spike.notEnabled`, `arg.invalid` (unknown scene), `spike.encodeFailed` (invalid geometry), `internal`.
 #[tauri::command]
 pub async fn spike_canvas_scene(
     spike: State<'_, CanvasSpike>,
@@ -74,7 +74,9 @@ pub async fn spike_canvas_scene(
             (&entry.0, ns)
         }
     };
-    Ok(Response::new(renderlist::encode(kind, scene, request.frame, generate_ns)))
+    let bytes = renderlist::encode(kind, scene, request.frame, generate_ns)
+        .map_err(|e| error("spike.encodeFailed", e.to_string()))?;
+    Ok(Response::new(bytes))
 }
 
 /// Magic of a pixel frame (`TTPX`, then width u32, height u32, fill ns u32; then RGBA8).

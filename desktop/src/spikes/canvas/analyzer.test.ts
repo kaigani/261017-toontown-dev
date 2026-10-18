@@ -36,12 +36,21 @@ const frames: FrameSample[] = [];
 let t = 2000;
 for (let i = 0; i < 610; i++) {
   t += i > 0 && i % 100 === 0 ? 50 : 1000 / 60;
-  frames.push({ t, cpuMs: 0.2 + (i % 5) * 0.01, gpuMs: i % 2 === 0 ? 4 : null });
+  frames.push({ t, cpuMs: 0.2 + (i % 5) * 0.01, gpuMs: null });
 }
 const transfers = Array.from({ length: 10 }, (_, i) => ({
   i,
   frame: i,
-  bytes: 8_700_000,
+  bytes: 8_700_096,
+  header: {
+    kind: 'paths100k',
+    seed: 1,
+    frame: i,
+    groups: 1,
+    paths: 100_000,
+    points: 700_000,
+    verbs: 300_000,
+  },
   invokeMs: 50 + i,
   encodeNs: 2_000_000 + i,
   generateNs: i === 0 ? 30_000_000 : 0,
@@ -54,7 +63,17 @@ const run = {
   renderer: { renderer: 'test GPU' },
   canvas: { cssWidth: 800, cssHeight: 600, width: 800, height: 600, dpr: 1 },
   transfers,
-  decode: { ms: 90, paths: 100000, segments: 1, tolerance: 0.5 },
+  decode: {
+    ms: 90,
+    paths: 100_000,
+    cubics: 200_000,
+    strokePaths: 100_000,
+    fillPaths: 0,
+    segments: 2_832_713,
+    fillVertices: 0,
+    triangles: 0,
+    tolerance: 0.5,
+  },
   upload: { cpuMs: 10, completeMs: 20 },
   idle,
   frames,
@@ -65,8 +84,27 @@ const log = {
   spike: 'canvas',
   version: 1,
   source: 'auto',
-  environment: { timeOrigin: 1_700_000_000_000, userAgent: 'fixture', devicePixelRatio: 1 },
-  parameters: { transfers: 10, idleMs: 1000, panZoomMs: 10000, pixelTransfers: 2, scenes: [], seed: 1 },
+  environment: {
+    timeOrigin: 1_700_000_000_000,
+    userAgent: 'fixture',
+    devicePixelRatio: 1,
+    viewport: { width: 800, height: 640 },
+    screen: { width: 1920, height: 1080 },
+    webgpuApi: false,
+    forcedRenderer: 'webgl2',
+    mode: { name: 'canvas', auto: true, renderer: 'webgl2' },
+    host: { os: 'windows', arch: 'x86_64' },
+    hostError: null,
+  },
+  parameters: {
+    transfers: 10,
+    idleMs: 1000,
+    panZoomMs: 10000,
+    pixelTransfers: 2,
+    scenes: ['paths100k'],
+    seed: 1,
+    flattenTolerance: 0.5,
+  },
   runs: [run],
   pixelRuns: [
     {
@@ -114,6 +152,24 @@ describe('canvas analyzer', () => {
       ],
       ['short pan/zoom', { ...log, runs: [{ ...run, frames: frames.slice(0, 100) }] }, 'shorter than'],
       ['no time origin', { ...log, environment: {} }, 'timeOrigin'],
+      [
+        'header counts of another scene',
+        {
+          ...log,
+          runs: [
+            {
+              ...run,
+              transfers: transfers.map((x) => ({ ...x, header: { ...x.header, kind: 'brush10k' } })),
+            },
+          ],
+        },
+        'another scene',
+      ],
+      [
+        'GPU time claimed for WebGL2',
+        { ...log, runs: [{ ...run, frames: frames.map((f) => ({ ...f, gpuMs: 3 })) }] },
+        'cannot measure',
+      ],
     ];
     for (const [name, bad, message] of cases) {
       const r = analyse(bad);

@@ -126,6 +126,22 @@ describe('render-list decoder', () => {
         v.setUint32(pathsOff + 8, 10, true);
       }),
     ).toThrow(/points out of range/);
+    const pointsOff = pathsOff + 3 * 28;
+    expect(
+      bad((v) => {
+        v.setFloat32(pointsOff, Number.NaN, true);
+      }),
+    ).toThrow(/not finite/);
+    expect(
+      bad((v) => {
+        v.setFloat32(pointsOff + 12, Number.NEGATIVE_INFINITY, true);
+      }),
+    ).toThrow(/not finite/);
+    expect(
+      bad((v) => {
+        v.setFloat32(pointsOff + 8, 100.5, true);
+      }),
+    ).toThrow(/outside the bounds/);
     const verbsOff = pathsOff + 3 * 28 + 11 * 8;
     expect(
       bad((v) => {

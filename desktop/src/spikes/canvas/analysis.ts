@@ -41,6 +41,16 @@ export interface TransferSample {
   invokeMs: number;
   encodeNs: number;
   generateNs: number;
+  /** Counts from the certified render-list header (the analyzer checks them against the scene's workload). */
+  header?: {
+    kind: string;
+    seed: number;
+    frame: number;
+    groups: number;
+    paths: number;
+    points: number;
+    verbs: number;
+  };
 }
 
 export interface FrameSample {
