@@ -1,7 +1,7 @@
 # ADR-0003 — Licensing policy for dependencies and shipped components
 
 Status: accepted (C0.1, 2026-10-17; amended after review round 1: one shared allow-list, 0BSD added, SPDX
-evaluation). The FFmpeg sidecar build/encoder/fetch plan gets its own ADR in C0.4.
+evaluation). The FFmpeg sidecar build/encoder/fetch plan is ADR-0008 (C0.4).
 
 ## Context
 
