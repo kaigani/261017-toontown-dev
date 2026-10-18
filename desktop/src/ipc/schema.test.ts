@@ -1,8 +1,19 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { createMockTransport, MOCK_ENGINE_INFO } from './mockTransport';
 import { createHostApi, MENU_COMMAND_EVENT } from './hostApi';
-import { certify, MAX_DEPTH, MAX_SAFE, plainDataViolations, U64, violations, type Schema } from './schema';
+import {
+  ANY,
+  certify,
+  copyPlainData,
+  guard,
+  MAX_DEPTH,
+  MAX_SAFE,
+  plainDataViolations,
+  U64,
+  violations,
+  type Schema,
+} from './schema';
 import {
   ENGINE_INFO_FIELDS,
   isBenchPlanOrNull,
@@ -190,5 +201,69 @@ describe('own-property semantics (C01-R2-02)', () => {
     original.payload = 'tampered';
     expect(r.payload).toBe('abc');
     expect(r).not.toBe(original);
+  });
+});
+
+describe('platform floor: Safari 15.0 / macOS 12.0 (ADR-0005, C01-R3-05)', () => {
+  it('certifies host responses with BOTH Object.hasOwn and structuredClone removed', async () => {
+    const hasOwnDescriptor = Object.getOwnPropertyDescriptor(Object, 'hasOwn');
+    if (!hasOwnDescriptor) throw new Error('test host lacks Object.hasOwn');
+    const response = { seq: 3, payload: 'abc', engineUptimeNs: 1, handlerNs: 1 };
+    const host = createHostApi({ ...createMockTransport(), invoke: () => Promise.resolve(response) });
+    let pinged: unknown;
+    let nested: unknown;
+    let error: unknown;
+    // Only product code runs while the APIs are missing (Vitest's own expect() uses Object.hasOwn).
+    Object.defineProperty(Object, 'hasOwn', { ...hasOwnDescriptor, value: undefined });
+    vi.stubGlobal('structuredClone', undefined);
+    try {
+      pinged = await host.ping({ seq: 3 });
+      nested = certify(guard<unknown>(ANY), JSON.parse('{"__proto__":{"a":[1,{"b":null}]}}'));
+    } catch (caught: unknown) {
+      error = caught;
+    } finally {
+      vi.unstubAllGlobals();
+      Object.defineProperty(Object, 'hasOwn', hasOwnDescriptor);
+    }
+    expect(error).toBeUndefined();
+    expect(pinged).toEqual(response);
+    expect(nested).toBeDefined();
+  });
+});
+
+describe('exact-index arrays and own copies (C01-R3-03)', () => {
+  it('rejects holes compensated by named properties, and out-of-order or extra keys', () => {
+    const holeAndName: unknown[] = new Array<unknown>(2);
+    holeAndName[0] = 1;
+    Object.defineProperty(holeAndName, 'x', { value: 1, enumerable: true });
+    expect(plainDataViolations(holeAndName)).not.toEqual([]);
+    const named = Object.assign([1, 2], { extra: 3 });
+    expect(plainDataViolations(named)).not.toEqual([]);
+    expect(plainDataViolations([1, 2, 3])).toEqual([]);
+    expect(plainDataViolations([])).toEqual([]);
+  });
+
+  it('copyPlainData keeps prototypes, own __proto__ keys and values, and shares nothing', () => {
+    const source = JSON.parse('{"__proto__":{"x":1},"list":[1,{"y":[2]}]}') as Record<string, unknown>;
+    const copy = copyPlainData(source) as Record<string, unknown>;
+    expect(Object.getPrototypeOf(copy)).toBe(Object.prototype);
+    expect(Object.getOwnPropertyDescriptor(copy, '__proto__')?.value).toEqual({ x: 1 });
+    expect(copy['list']).toEqual([1, { y: [2] }]);
+    expect(copy['list']).not.toBe(source['list']);
+    const bare = Object.assign(Object.create(null) as object, { a: 1 });
+    expect(Object.getPrototypeOf(copyPlainData(bare))).toBeNull();
+  });
+
+  it('certify never throws, even for a Proxy whose traps throw', () => {
+    const hostile = new Proxy(
+      {},
+      {
+        ownKeys() {
+          throw new Error('trap');
+        },
+      },
+    );
+    expect(() => certify(guard<unknown>(ANY), hostile)).not.toThrow();
+    expect(certify(guard<unknown>(ANY), hostile)).toBeUndefined();
   });
 });

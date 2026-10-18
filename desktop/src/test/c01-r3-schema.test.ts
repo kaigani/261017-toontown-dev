@@ -43,10 +43,14 @@ describe('C01-R3-03: arrays must have every index and no extra named properties'
 });
 
 describe('C01-R3-04: structured-clone failures must fail through the host boundary', () => {
-  it('certify rejects a transparent object proxy without throwing', () => {
+  // it.fails per the orchestrator's round-3 ruling: ticketed to M1 C1.1 in plan/traceability.csv (C01-R3-04).
+  // Bodies unchanged. Without structuredClone (Safari 15.0 floor, ADR-0005) a transparent Proxy cannot be told
+  // apart from plain data; certify now copies it into validated plain data and never throws. These cases flip to
+  // failing (and must be unmarked) when M1 rejects Proxy values outright.
+  it.fails('certify rejects a transparent object proxy without throwing', () => {
     expect(certify(any, new Proxy({ value: 1 }, {}))).toBeUndefined();
   });
-  it('a ping with an uncloneable transport value yields ipc.invalidResponse', async () => {
+  it.fails('a ping with an uncloneable transport value yields ipc.invalidResponse', async () => {
     const response = new Proxy({ seq: 1, payload: null, engineUptimeNs: 1, handlerNs: 1 }, {});
     const transport: HostTransport = {
       kind: 'mock',
@@ -57,7 +61,7 @@ describe('C01-R3-04: structured-clone failures must fail through the host bounda
       code: 'ipc.invalidResponse',
     });
   });
-  it('an uncloneable menu event is dropped without throwing through the listener', async () => {
+  it.fails('an uncloneable menu event is dropped without throwing through the listener', async () => {
     const event = new Proxy(
       { command: 'workspace.reset', params: {}, handler: 'frontend', milestone: null },
       {},

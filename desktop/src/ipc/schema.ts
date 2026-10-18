@@ -8,10 +8,13 @@
 //      objects whose prototype is Array.prototype / Object.prototype (or null), holding only own, enumerable,
 //      string-keyed data properties (no accessors, functions, symbols, holes or cycles). Inherited fields therefore
 //      never count, and a key such as `__proto__` or `constructor` is just another own key.
-//   2. `violations`: the schema. Property membership and required fields use `Object.hasOwn` and own-property
-//      descriptors only; nothing is looked up with `in` or bare indexing on a schema map.
-// `certify` checks the original, takes a structured-clone snapshot, validates the snapshot again and returns it, so
-// callers receive exactly the data that was validated.
+//   2. `violations`: the schema. Property membership and required fields use own-property checks and descriptors
+//      only; nothing is looked up with `in` or bare indexing on a schema map.
+// `certify` checks the original, takes its own deep copy, validates the copy again and returns it, so callers receive
+// exactly the data that was validated (a lying Proxy cannot change the copy after the fact).
+//
+// Platform floor (ADR-0005: Safari 15.0 / macOS 12.0): no `Object.hasOwn` and no `structuredClone` (both Safari 15.4);
+// `compat/compat` in the lint gate enforces this.
 
 export type Schema =
   | { type: 'string'; enum?: readonly string[]; pattern?: string }
@@ -39,18 +42,23 @@ export const ANY: Schema = {};
 /** Nesting deeper than this is rejected rather than risking stack exhaustion. */
 export const MAX_DEPTH = 64;
 
+/** `Object.hasOwn` for the Safari 15.0 floor. */
+export function hasOwn(obj: object, key: PropertyKey): boolean {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+}
+
 /** The own data value of `key` on `obj`, or undefined; never consults the prototype chain or calls a getter. */
 function ownValue(obj: object, key: string): unknown {
   const d = Object.getOwnPropertyDescriptor(obj, key);
-  return d && Object.hasOwn(d, 'value') ? d.value : undefined;
+  return d && hasOwn(d, 'value') ? d.value : undefined;
 }
 
 function isAnyOf(schema: Schema): schema is AnyOfSchema {
-  return Object.hasOwn(schema, 'anyOf');
+  return hasOwn(schema, 'anyOf');
 }
 
 function isTyped(schema: Schema): schema is TypedSchema {
-  return Object.hasOwn(schema, 'type');
+  return hasOwn(schema, 'type');
 }
 
 /** Returns the locations at which `value` is not plain JSON data (empty = plain). */
@@ -68,12 +76,16 @@ export function plainDataViolations(value: unknown, at = '', seen = new Set<obje
     return [`${here}: not a plain ${isArray ? 'array' : 'object'}`];
   }
   const names = Object.getOwnPropertyNames(value).filter((k) => !(isArray && k === 'length'));
-  if (isArray && names.length !== value.length) return [`${here}: sparse array or extra array property`];
+  // Arrays: the own names must be exactly "0".."length-1" (integer keys come first, ascending), so a hole cannot
+  // be compensated by a named property (C01-R3-03).
+  if (isArray && (names.length !== value.length || names.some((k, i) => k !== String(i)))) {
+    return [`${here}: sparse array or extra array property`];
+  }
   seen.add(value);
   const out: string[] = [];
   for (const k of names) {
     const d = Object.getOwnPropertyDescriptor(value, k);
-    if (!d || !Object.hasOwn(d, 'value') || !d.enumerable) {
+    if (!d || !hasOwn(d, 'value') || !d.enumerable) {
       out.push(`${at}/${k}: accessor or non-enumerable property`);
     } else {
       out.push(...plainDataViolations(d.value, `${at}/${k}`, seen));
@@ -116,7 +128,7 @@ export function violations(schema: Schema, value: unknown, at = ''): string[] {
       }
       const out: string[] = [];
       for (let i = 0; i < value.length; i++) {
-        if (!Object.hasOwn(value, i)) out.push(`${at}/${i}: missing array element`);
+        if (!hasOwn(value, i)) out.push(`${at}/${i}: missing array element`);
         else out.push(...violations(schema.items, ownValue(value, String(i)), `${at}/${i}`));
       }
       return out;
@@ -126,10 +138,10 @@ export function violations(schema: Schema, value: unknown, at = ''): string[] {
         return [`${here}: expected object`];
       const proto: unknown = Object.getPrototypeOf(value);
       if (proto !== Object.prototype && proto !== null) return [`${here}: expected plain object`];
-      const out = schema.required.filter((k) => !Object.hasOwn(value, k)).map((k) => `${at}/${k}: required`);
+      const out = schema.required.filter((k) => !hasOwn(value, k)).map((k) => `${at}/${k}: required`);
       for (const k of Object.keys(value)) {
         const v = ownValue(value, k);
-        const prop = Object.hasOwn(schema.properties, k)
+        const prop = hasOwn(schema.properties, k)
           ? (ownValue(schema.properties, k) as Schema | undefined)
           : undefined;
         if (prop !== undefined) out.push(...violations(prop, v, `${at}/${k}`));
@@ -148,21 +160,50 @@ export function conforms(schema: Schema, value: unknown): boolean {
 }
 
 /** A type guard for `T` backed by `schema`. The schema must describe `T`; the wire tests check both agree. */
-// T is the type the schema certifies; it appears only in the returned predicate by design.
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+// T is the type the schema certifies; it appears only in the returned predicate by design
+// (no-unnecessary-type-parameters is switched off for this file in eslint.config.js).
 export function guard<T>(schema: Schema): (value: unknown) => value is T {
   return (value: unknown): value is T => conforms(schema, value);
 }
 
 /**
- * Validates a value received from a transport and returns a snapshot of it, or undefined. The original must be
- * plain data; the snapshot (a structured clone) is validated again and is what the caller gets, so later changes to
- * the transport's object cannot affect validated data.
+ * Deep copy of a value that has passed `plainDataViolations`: own enumerable data properties only, same prototype
+ * (Object.prototype or null; arrays stay arrays). Keys are defined, never assigned, so an own `__proto__` key stays
+ * an ordinary own key. Never calls getters (it reads data descriptors) and never uses `structuredClone`.
+ */
+export function copyPlainData(value: unknown): unknown {
+  if (typeof value !== 'object' || value === null) return value;
+  if (Array.isArray(value)) {
+    const out: unknown[] = [];
+    for (let i = 0; i < value.length; i++) out.push(copyPlainData(ownValue(value, String(i))));
+    return out;
+  }
+  const out: object = Object.getPrototypeOf(value) === null ? (Object.create(null) as object) : {};
+  for (const k of Object.keys(value)) {
+    Object.defineProperty(out, k, {
+      value: copyPlainData(ownValue(value, k)),
+      enumerable: true,
+      writable: true,
+      configurable: true,
+    });
+  }
+  return out;
+}
+
+/**
+ * Validates a value received from a transport and returns a snapshot of it, or undefined; never throws for any
+ * input. The original must be plain data; the snapshot (`copyPlainData`) is validated again, both layers, and is what
+ * the caller gets, so later changes to the transport's object cannot affect validated data.
  */
 export function certify<T>(check: (value: unknown) => value is T, value: unknown): T | undefined {
-  if (plainDataViolations(value).length > 0) return undefined;
-  const snapshot: unknown = structuredClone(value);
-  return check(snapshot) ? snapshot : undefined;
+  try {
+    if (plainDataViolations(value).length > 0) return undefined;
+    const snapshot = copyPlainData(value);
+    return check(snapshot) ? snapshot : undefined;
+  } catch {
+    // A hostile Proxy can throw from any trap; that is an invalid value, not a crash of the caller.
+    return undefined;
+  }
 }
 
 /** `namespace.object[.verb]`, matching `is_command_id` in desktop/src-tauri/src/bindings.rs. */
