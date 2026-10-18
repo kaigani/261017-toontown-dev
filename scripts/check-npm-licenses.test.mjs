@@ -31,9 +31,9 @@ test('nested groups (C01-R1-01)', () => {
   assert.equal(satisfies('(MIT OR Apache-2.0) AND (GPL-3.0-only OR BSD-3-Clause)', allow), true);
   assert.equal(satisfies('((MIT))', allow), true);
   assert.equal(satisfies('(GPL-2.0-only OR (AGPL-3.0-only AND MIT))', allow), false);
-  assert.deepEqual(parse('(A OR B) AND C'), {
+  assert.deepEqual(parse('(MIT OR isc) AND Zlib'), {
     op: 'AND',
-    terms: [{ op: 'OR', terms: [{ license: 'A' }, { license: 'B' }] }, { license: 'C' }],
+    terms: [{ op: 'OR', terms: [{ license: 'MIT' }, { license: 'ISC' }] }, { license: 'Zlib' }],
   });
 });
 
@@ -52,6 +52,21 @@ test('malformed and non-SPDX strings fail closed', () => {
   for (const bad of ['', '(MIT', 'MIT)', 'MIT OR', 'MIT or Apache-2.0', 'AND MIT', 'MIT*', 'SEE LICENSE IN x', 'UNKNOWN']) {
     assert.equal(satisfies(bad, allow), false, bad);
   }
+});
+
+test('every operand is validated, even behind an allowed OR branch (C01-R2-03)', () => {
+  for (const bad of [
+    'MIT OR +', 'MIT OR :', 'MIT OR and', 'MIT OR Unknown-License', 'MIT OR GPL-3.0-only WITH +',
+    'MIT OR LicenseRef-', 'MIT OR MIT++', 'MIT OR GPL-2.0-only WITH Not-An-Exception', 'MIT OR LicenseRef-x WITH LLVM-exception',
+    'MIT OR DocumentRef-:LicenseRef-x', 'MIT OR DocumentRef-a:', 'MIT OR +MIT', 'MIT OR MIT+ +',
+  ]) {
+    assert.equal(satisfies(bad, allow), false, bad);
+  }
+  assert.equal(satisfies('MIT OR LicenseRef-private', allow), true);
+  assert.equal(satisfies('MIT OR DocumentRef-spdx-tool-1.2:LicenseRef-MIT-Style-2', allow), true);
+  assert.equal(satisfies('mit', allow), true, 'identifiers match case-insensitively (Annex D)');
+  assert.equal(satisfies('Apache-2.0 WITH llvm-exception', allow), true);
+  assert.equal(satisfies('GPL-2.0 OR MIT', allow), true, 'deprecated identifiers are valid syntax');
 });
 
 test('allow-list is read from deny.toml', () => {

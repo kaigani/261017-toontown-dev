@@ -6,7 +6,15 @@
 // Usage: node scripts/check-npm-licenses.mjs        (exit 1 on a violation)
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+
+// SPDX License List data (spdx-license-ids, CC0-1.0; spdx-exceptions, CC-BY-3.0): root dev dependencies, used only
+// by this build-time gate and never shipped.
+const require = createRequire(import.meta.url);
+const canonical = (ids) => new Map(ids.map((id) => [id.toLowerCase(), id]));
+const LICENSE_IDS = canonical([...require('spdx-license-ids/index.json'), ...require('spdx-license-ids/deprecated.json')]);
+const EXCEPTION_IDS = canonical([...require('spdx-exceptions/index.json'), ...require('spdx-exceptions/deprecated.json')]);
 
 const DENY_TOML = fileURLToPath(new URL('../deny.toml', import.meta.url));
 
@@ -39,21 +47,47 @@ export function tokenize(expression) {
   return tokens;
 }
 
+// SPDX 2.3 Annex D operand grammar.
+const IDSTRING = '[A-Za-z0-9.-]+';
+const LICENSE_REF = new RegExp(`^(?:DocumentRef-${IDSTRING}:)?LicenseRef-${IDSTRING}$`);
+const LICENSE_ID = new RegExp(`^(${IDSTRING})([+])?$`);
+const EXCEPTION_ID = new RegExp(`^${IDSTRING}$`);
+
+/**
+ * Validates one licence operand and returns its canonical form, or throws. Accepted: an identifier from the SPDX
+ * License List (matched case-insensitively, as Annex D requires) with at most one trailing `+`, or a
+ * `[DocumentRef-x:]LicenseRef-y` reference. Everything else — stray `+`/`:`, lower-case operators, unknown ids,
+ * `LicenseRef-` with an empty suffix, `MIT++` — is a syntax error, so the whole expression fails closed.
+ */
+export function licenseOperand(token, expression) {
+  if (LICENSE_REF.test(token)) return token;
+  const m = LICENSE_ID.exec(token);
+  const id = m && LICENSE_IDS.get(m[1].toLowerCase());
+  if (!id) throw new SyntaxError(`not an SPDX licence identifier: ${token} in ${expression}`);
+  return m[2] ? `${id}+` : id;
+}
+
+/** Validates an exception after `WITH`: an identifier from the SPDX License Exceptions list. */
+export function exceptionOperand(token, expression) {
+  const id = EXCEPTION_ID.test(token ?? '') && EXCEPTION_IDS.get(token.toLowerCase());
+  if (!id) throw new SyntaxError(`not an SPDX exception identifier: ${token ?? 'end of expression'} in ${expression}`);
+  return id;
+}
+
 /**
  * Parses an SPDX licence expression (SPDX 2.3 Annex D) into a tree:
  *   or   := and ('OR' and)*        (lowest precedence)
  *   and  := with ('AND' with)*
  *   with := atom ('WITH' exception)?
- *   atom := '(' or ')' | licence-id ['+']
- * Operators must be upper case, as the specification requires; anything else is a syntax error.
+ *   atom := '(' or ')' | licence-operand
+ * Operators must be upper case, as the specification requires. Every operand is validated (see `licenseOperand`);
+ * any invalid token anywhere makes the whole expression invalid, even behind an allowed OR branch.
  */
 export function parse(expression) {
   const tokens = tokenize(expression);
   let i = 0;
   const peek = () => tokens[i];
   const take = () => tokens[i++];
-  const isOperator = (t) => t === 'AND' || t === 'OR' || t === 'WITH';
-  const isId = (t) => t !== undefined && t !== '(' && t !== ')' && !isOperator(t);
 
   function parseOr() {
     const terms = [parseAnd()];
@@ -75,11 +109,10 @@ export function parse(expression) {
     const atom = parseAtom();
     if (peek() !== 'WITH') return atom;
     take();
-    const exception = take();
-    if (!isId(exception) || atom.license === undefined) {
-      throw new SyntaxError(`WITH needs a licence on the left and an exception on the right: ${expression}`);
+    if (atom.license === undefined || atom.license.startsWith('LicenseRef-') || atom.license.includes(':')) {
+      throw new SyntaxError(`WITH needs an SPDX licence identifier on its left: ${expression}`);
     }
-    return { license: `${atom.license} WITH ${exception}` };
+    return { license: `${atom.license} WITH ${exceptionOperand(take(), expression)}` };
   }
   function parseAtom() {
     const t = take();
@@ -88,8 +121,10 @@ export function parse(expression) {
       if (take() !== ')') throw new SyntaxError(`unbalanced parentheses: ${expression}`);
       return inner;
     }
-    if (!isId(t)) throw new SyntaxError(`expected a licence id, got ${t ?? 'end of expression'}: ${expression}`);
-    return { license: t };
+    if (t === undefined || t === ')' || t === 'AND' || t === 'OR' || t === 'WITH') {
+      throw new SyntaxError(`expected a licence, got ${t ?? 'end of expression'}: ${expression}`);
+    }
+    return { license: licenseOperand(t, expression) };
   }
 
   if (tokens.length === 0) throw new SyntaxError('empty licence expression');

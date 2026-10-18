@@ -12,5 +12,9 @@
     "build": "pnpm -r build",
     "format:check": "pnpm -r format:check",
     "licenses:check": "node scripts/check-npm-licenses.mjs"
+  },
+  "devDependencies": {
+    "spdx-exceptions": "2.5.0",
+    "spdx-license-ids": "3.0.24"
   }
 }
