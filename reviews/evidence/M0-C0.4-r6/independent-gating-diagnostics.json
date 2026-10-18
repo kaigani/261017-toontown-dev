@@ -1,0 +1,125 @@
+{
+  "mode": "diagnostics",
+  "sha256": "30115ed6b9132bdeeaf5c3f6d69450df63dd0bf9fb34e1b5375b9240bd4cf25c",
+  "bytes": 10233344,
+  "binary_counts": {
+    "bench_plan": 1,
+    "bench_report": 2,
+    "spike_mode": 1,
+    "spike_tablet_native_start": 1,
+    "spike_tablet_native_stop": 1,
+    "spike_pen_simulate": 2,
+    "spike_save_log": 1,
+    "spike_environment": 2,
+    "spike_probe_native_window": 1,
+    "spike_raw_input_sink": 1,
+    "spike_canvas_scene": 2,
+    "spike_canvas_pixels": 1,
+    "--ipc-bench": 7,
+    "--spike": 21,
+    "app_info": 2
+  },
+  "dist": [
+    {
+      "file": "assets\\CanvasSpike-98ows2O_.js",
+      "sha256": "2d1534cdd80b5ff7428f7ad77a1c55764c95ca51dd75f4e8a94c0b11a25a9b7d",
+      "names": [
+        "CanvasSpike"
+      ]
+    },
+    {
+      "file": "assets\\CanvasSpike-98ows2O_.js.map",
+      "sha256": "68d079e0d25563e805bd0204385f25aaa4e6a77b259baad6ce76e44a5d807bc7",
+      "names": [
+        "CanvasSpike"
+      ]
+    },
+    {
+      "file": "assets\\index-B2rIT20y.css",
+      "sha256": "d548e9010c188a0538ab9a3d26bbbe551ae5f72eaad7b168d882f3f33813f3d9",
+      "names": []
+    },
+    {
+      "file": "assets\\index-Dx6ctqmX.js",
+      "sha256": "249049361f5133576c30c7d9c58e581695e53d804c980baff43b70c110a001fe",
+      "names": [
+        "bench_plan",
+        "bench_report",
+        "spike_mode",
+        "spike_tablet_native_start",
+        "spike_tablet_native_stop",
+        "spike_pen_simulate",
+        "spike_save_log",
+        "spike_environment",
+        "spike_probe_native_window",
+        "spike_raw_input_sink",
+        "spike_canvas_scene",
+        "spike_canvas_pixels",
+        "TabletSpike",
+        "CanvasSpike"
+      ]
+    },
+    {
+      "file": "assets\\index-Dx6ctqmX.js.map",
+      "sha256": "0d7bf05e4b0264ee773d9438eb88c041b67aaff43d8a1c17ce4e35b6be8f0f35",
+      "names": [
+        "bench_plan",
+        "bench_report",
+        "spike_mode",
+        "spike_tablet_native_start",
+        "spike_tablet_native_stop",
+        "spike_pen_simulate",
+        "spike_save_log",
+        "spike_environment",
+        "spike_probe_native_window",
+        "spike_raw_input_sink",
+        "spike_canvas_scene",
+        "spike_canvas_pixels",
+        "TabletSpike",
+        "CanvasSpike"
+      ]
+    },
+    {
+      "file": "assets\\TabletSpike-Bg94oDXJ.js",
+      "sha256": "a6655065337762e1cf47d79d930e432e86841f0d0078a49e1418bbddfd357f10",
+      "names": [
+        "TabletSpike"
+      ]
+    },
+    {
+      "file": "assets\\TabletSpike-Bg94oDXJ.js.map",
+      "sha256": "d9df946a860728f97842fb0a663a73ee64de453cf6185281fa430c0b7e7f49fe",
+      "names": [
+        "TabletSpike"
+      ]
+    },
+    {
+      "file": "assets\\tauri-transport-CqPEAjyd.js",
+      "sha256": "2d454f17617b058577c9a7cf94f29bbd7838c1f4c3daa54db8aea1a9023c684a",
+      "names": []
+    },
+    {
+      "file": "assets\\tauri-transport-CqPEAjyd.js.map",
+      "sha256": "74c1e42c5aeab7af451d4c95d5cf90ff4cd2332d3fb5260476090973c3d8d35f",
+      "names": []
+    },
+    {
+      "file": "index.html",
+      "sha256": "9005c80a83c3bb0b8ccf97ae276f680e412d96308ca1de26b9b6d8e4428cd129",
+      "names": []
+    }
+  ],
+  "launches": [
+    {
+      "args": [
+        "--ipc-bench",
+        "ipc-bench.json",
+        "--ipc-bench-count",
+        "50"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "[1018/103855.642:ERROR:ui\\gfx\\win\\window_impl.cc:172] Failed to unregister class Chrome_WidgetWin_0. Error = 1412\r\n"
+    }
+  ]
+}
