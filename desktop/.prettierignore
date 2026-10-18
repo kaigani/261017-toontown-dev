@@ -2,3 +2,5 @@ dist
 src-tauri
 node_modules
 pnpm-lock.yaml
+# Generated from the Rust types (crates/engine/tests/frontend_schemas.rs); the generator owns their layout.
+src/ipc/generated

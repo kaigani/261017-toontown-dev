@@ -61,7 +61,8 @@ export async function pingOnce(host: HostApi, seq: number, payload?: string): Pr
   const start = performance.now();
   const response = await host.ping(payload === undefined ? { seq } : { seq, payload });
   const elapsed = performance.now() - start;
-  if (response.seq !== seq) throw new Error(`ping echo mismatch: sent seq ${seq}, got ${String(response.seq)}`);
+  if (response.seq !== seq)
+    throw new Error(`ping echo mismatch: sent seq ${seq}, got ${String(response.seq)}`);
   const echoed = response.payload ?? undefined;
   if (
     echoed?.length !== payload?.length ||

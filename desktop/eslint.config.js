@@ -49,9 +49,15 @@ export default tseslint.config(
     rules: { '@typescript-eslint/prefer-promise-reject-errors': 'off' },
   },
   {
-    // guard<T>() returns a type predicate for T; T appearing once is the point of the API.
-    files: ['src/ipc/schema.ts'],
+    // guard<T>() returns a type predicate for T, certifyWireText<T>() the certified value; T appearing once is the
+    // point of these APIs.
+    files: ['src/ipc/schema.ts', 'src/ipc/wireJson.ts'],
     rules: { '@typescript-eslint/no-unnecessary-type-parameters': 'off' },
+  },
+  {
+    // The text-transport tests reproduce Tauri, which rejects with the plain error text (a string), like the mock.
+    files: ['src/ipc/wire.test.ts'],
+    rules: { '@typescript-eslint/prefer-promise-reject-errors': 'off' },
   },
   {
     files: ['*.config.{js,ts}', 'boundary/**'],

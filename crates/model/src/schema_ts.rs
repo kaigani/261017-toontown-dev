@@ -117,9 +117,15 @@ fn ts_type(s: &Value, defs: &Map<String, Value>, indent: usize) -> String {
     if let Some(Value::Array(e)) = m.get("enum") {
         return union(e.iter().map(literal_type).collect());
     }
+    let has_base = m.contains_key("type") || m.contains_key("properties");
     for k in ["anyOf", "oneOf"] {
         if let Some(Value::Array(alts)) = m.get(k) {
-            return union(alts.iter().map(|a| ts_type(a, defs, indent)).collect());
+            let branches: Vec<String> = alts.iter().map(|a| ts_type(a, defs, indent)).collect();
+            // Constraint-only branches (e.g. `{required: [id]}` alternatives of a stub) do not change the type.
+            if has_base && branches.iter().all(|b| b == "unknown") {
+                break;
+            }
+            return union(branches);
         }
     }
     let types: Vec<String> = match m.get("type") {
@@ -176,8 +182,11 @@ fn object_type(m: &Map<String, Value>, defs: &Map<String, Value>, indent: usize)
     let additional = m.get("additionalProperties");
     match props {
         Some(p) if !p.is_empty() => {
-            let required: Vec<&str> =
-                m.get("required").and_then(Value::as_array).map(|r| r.iter().filter_map(Value::as_str).collect()).unwrap_or_default();
+            let required: Vec<&str> = m
+                .get("required")
+                .and_then(Value::as_array)
+                .map(|r| r.iter().filter_map(Value::as_str).collect())
+                .unwrap_or_default();
             let pad = "  ".repeat(indent + 1);
             let mut out = String::from("{\n");
             for (k, v) in p {
@@ -192,7 +201,9 @@ fn object_type(m: &Map<String, Value>, defs: &Map<String, Value>, indent: usize)
             out
         }
         _ => match additional {
-            Some(Value::Object(_)) => format!("Record<string, {}>", ts_type(additional.unwrap_or(&Value::Null), defs, indent)),
+            Some(Value::Object(_)) => {
+                format!("Record<string, {}>", ts_type(additional.unwrap_or(&Value::Null), defs, indent))
+            }
             _ => {
                 if let Some(Value::Object(pp)) = m.get("patternProperties") {
                     let inner = union(pp.values().map(|v| ts_type(v, defs, indent)).collect());
@@ -203,6 +214,19 @@ fn object_type(m: &Map<String, Value>, defs: &Map<String, Value>, indent: usize)
             }
         },
     }
+}
+
+/// Whether a definition is a single object type (it can be an `interface`): it has `properties`, and any
+/// `anyOf`/`oneOf` it carries only adds constraints (branches without `type`, `properties`, `$ref`, `enum`, `const`).
+fn is_object_def(def: &Value) -> bool {
+    let constraint_only = |alts: &Value| {
+        alts.as_array().is_none_or(|a| {
+            a.iter().all(|b| ["type", "properties", "$ref", "enum", "const"].iter().all(|k| b.get(k).is_none()))
+        })
+    };
+    def.get("properties").is_some()
+        && def.get("anyOf").is_none_or(constraint_only)
+        && def.get("oneOf").is_none_or(constraint_only)
 }
 
 /// A complete TypeScript module.
@@ -226,9 +250,12 @@ pub fn module(header: &str, consts: &[(&str, Value)], defs_name: &str, defs: &Ma
     out.push_str(";\n");
     for (name, def) in defs {
         let t = ts_type(def, defs, 0);
-        let doc = def.get("description").and_then(Value::as_str).map(|d| format!("/** {} */\n", d.replace("*/", "* /").replace('\n', " "))).unwrap_or_default();
-        let single_object = t.starts_with('{') && !def.get("anyOf").is_some() && !def.get("oneOf").is_some();
-        if single_object {
+        let doc = def
+            .get("description")
+            .and_then(Value::as_str)
+            .map(|d| format!("/** {} */\n", d.replace("*/", "* /").replace('\n', " ")))
+            .unwrap_or_default();
+        if t.starts_with('{') && is_object_def(def) {
             let _ = write!(out, "\n{doc}export interface {} {t}\n", type_name(name));
         } else {
             let _ = write!(out, "\n{doc}export type {} = {t};\n", type_name(name));

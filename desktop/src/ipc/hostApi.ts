@@ -74,7 +74,11 @@ const NO_SPIKES: SpikeApi = {
  * Accepts a value delivered by a transport: JSON text (string or UTF-8 bytes) is parsed losslessly and validated;
  * anything else must pass `certify`. Returns undefined for anything invalid; never throws.
  */
-export function acceptWire<T>(value: unknown, schema: Schema, check: (value: unknown) => value is T): T | undefined {
+export function acceptWire<T>(
+  value: unknown,
+  schema: Schema,
+  check: (value: unknown) => value is T,
+): T | undefined {
   try {
     if (typeof value === 'string') return certifyWireText<T>(value, schema, WIRE);
     if (value instanceof ArrayBuffer) {
@@ -110,7 +114,10 @@ async function call<T>(
 ): Promise<T> {
   let value: unknown;
   try {
-    value = await transport.invoke(command, args === undefined ? undefined : { json: stringifyWireJson(args) });
+    value = await transport.invoke(
+      command,
+      args === undefined ? undefined : { json: stringifyWireJson(args) },
+    );
   } catch (error: unknown) {
     throw toHostError(error);
   }

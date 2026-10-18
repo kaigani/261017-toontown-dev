@@ -1,9 +1,9 @@
 // Wire types shared with the Rust host. The product types are generated from the Rust types (src/ipc/generated/,
 // ADR-0012), so the two sides cannot drift; integers that can exceed 2^53 - 1 are typed `number | bigint`. The M0
 // diagnostics and spike types below are hand-written (not product API).
+import type { EngineInfo as GeneratedEngineInfo } from './generated/wire';
 
 export type {
-  EngineInfo,
   ErrorInfo,
   MenuCommandEvent,
   MenuHandler,
@@ -11,6 +11,29 @@ export type {
   PingResponse,
   RunMode,
 } from './generated/wire';
+
+/**
+ * Internal engine bootstrap information (crates/engine `EngineInfo`). Not the spec query `app.info.get` (01 §12),
+ * which adds `locale` and `languages[]` and arrives as a registered query in C1.4. Spelled out field by field so the
+ * C0.1 regression (tests/adversarial/c01.rs) can read the key list; `ENGINE_INFO_IS_GENERATED` proves at compile
+ * time that it is exactly the type generated from Rust.
+ */
+export interface EngineInfo {
+  name: GeneratedEngineInfo['name'];
+  version: GeneratedEngineInfo['version'];
+  platform: GeneratedEngineInfo['platform'];
+  arch: GeneratedEngineInfo['arch'];
+  formatVersion: GeneratedEngineInfo['formatVersion'];
+  registryVersion: GeneratedEngineInfo['registryVersion'];
+  runMode: GeneratedEngineInfo['runMode'];
+}
+
+/** `true` only when A and B are mutually assignable (same keys, same optionality, same value types). */
+type Exact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
+
+/** Compile-time proof that the spelled-out `EngineInfo` equals the generated one. */
+export const ENGINE_INFO_IS_GENERATED: Exact<EngineInfo, GeneratedEngineInfo> &
+  Exact<keyof EngineInfo, keyof GeneratedEngineInfo> = true;
 
 /** M0 diagnostics: what `toontown --ipc-bench` asks the front end to measure. */
 export interface BenchPlan {

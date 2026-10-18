@@ -77,11 +77,16 @@ pub fn from_wire_json<T: DeserializeOwned>(text: &str) -> Result<T, ErrorInfo> {
 /// The wire text of an error (what a host rejects a call with).
 #[must_use]
 pub fn error_json(e: &ErrorInfo) -> String {
-    to_wire_json(e).unwrap_or_else(|_| "{\"code\":\"internal\",\"message\":\"unserialisable error\",\"details\":{}}".to_owned())
+    to_wire_json(e)
+        .unwrap_or_else(|_| "{\"code\":\"internal\",\"message\":\"unserialisable error\",\"details\":{}}".to_owned())
 }
 
 fn internal(message: &str) -> ErrorInfo {
-    ErrorInfo { code: "internal".to_owned(), message: format!("serialisation failed: {message}"), details: serde_json::json!({}) }
+    ErrorInfo {
+        code: "internal".to_owned(),
+        message: format!("serialisation failed: {message}"),
+        details: serde_json::json!({}),
+    }
 }
 
 #[cfg(test)]
@@ -92,7 +97,10 @@ mod tests {
     fn u64_values_are_exact_on_the_wire() {
         let r = PingResponse { seq: u64::MAX, payload: None, engine_uptime_ns: 9_007_199_254_740_993, handler_ns: 0 };
         let text = to_wire_json(&r).unwrap();
-        assert_eq!(text, "{\"seq\":18446744073709551615,\"payload\":null,\"engineUptimeNs\":9007199254740993,\"handlerNs\":0}");
+        assert_eq!(
+            text,
+            "{\"seq\":18446744073709551615,\"payload\":null,\"engineUptimeNs\":9007199254740993,\"handlerNs\":0}"
+        );
         let back: PingResponse = from_wire_json(&text).unwrap();
         assert_eq!(back, r);
     }
@@ -107,7 +115,9 @@ mod tests {
     #[test]
     fn definitions_cover_every_wire_type() {
         let defs = wire_definitions();
-        for name in ["EngineInfo", "ErrorInfo", "PingRequest", "PingResponse", "MenuCommandEvent", "RunMode", "MenuHandler"] {
+        for name in
+            ["EngineInfo", "ErrorInfo", "PingRequest", "PingResponse", "MenuCommandEvent", "RunMode", "MenuHandler"]
+        {
             assert!(defs.contains_key(name), "{name}");
         }
         assert_eq!(defs["PingResponse"]["properties"]["seq"]["maximum"], serde_json::json!(u64::MAX));

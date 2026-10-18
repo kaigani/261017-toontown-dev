@@ -16,7 +16,11 @@ fn check(name: &str, text: &str) {
         std::fs::write(&path, text).unwrap();
     }
     let committed = std::fs::read_to_string(&path).unwrap_or_default();
-    assert!(committed == text, "{} is stale: run `TT_UPDATE_GOLDEN=1 cargo test -p tt-engine --test frontend_schemas`", path.display());
+    assert!(
+        committed == text,
+        "{} is stale: run `TT_UPDATE_GOLDEN=1 cargo test -p tt-engine --test frontend_schemas`",
+        path.display()
+    );
 }
 
 #[test]
@@ -35,6 +39,9 @@ fn model_module_is_current() {
         .iter()
         .map(|t| (t.as_str().to_owned(), json!(tt_model::schema::def_name(*t))))
         .collect();
-    let consts = [("MODEL_FORMAT_VERSION", json!(tt_model::FORMAT_VERSION)), ("OBJECT_TYPE_DEFS", serde_json::Value::Object(types))];
+    let consts = [
+        ("MODEL_FORMAT_VERSION", json!(tt_model::FORMAT_VERSION)),
+        ("OBJECT_TYPE_DEFS", serde_json::Value::Object(types)),
+    ];
     check("model.ts", &tt_model::schema_ts::module(HEADER, &consts, "MODEL_DEFS", tt_model::schema::definitions()));
 }

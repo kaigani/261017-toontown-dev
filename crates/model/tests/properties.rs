@@ -38,7 +38,8 @@ fn any_double() -> impl Strategy<Value = f64> {
 /// Checks the one-way and two-way properties for an object JSON: it parses, validates against its schema,
 /// and its canonical text survives parse → model → canonical byte for byte.
 fn round_trip<T: ModelObject + Check>(v: &Value) -> T {
-    let obj: T = from_json(v).unwrap_or_else(|e| panic!("{:?}\n{v:#}", e.iter().map(|x| x.to_wire()).collect::<Vec<_>>()));
+    let obj: T =
+        from_json(v).unwrap_or_else(|e| panic!("{:?}\n{v:#}", e.iter().map(|x| x.to_wire()).collect::<Vec<_>>()));
     let text = to_canonical(&obj).unwrap();
     let json: Value = serde_json::from_str(&text).unwrap();
     assert!(schema::validate(T::TYPE, &json, 5).unwrap().is_empty(), "{text}");
@@ -161,6 +162,14 @@ proptest! {
         prop_assert_eq!(back.to_bits(), if x == 0.0 { 0.0f64.to_bits() } else { x.to_bits() });
         // Shortest: no trailing zeros in a fraction, no "+" except in exponents, no ".0".
         prop_assert!(!s.contains(".0e") && !s.ends_with(".0") && !(s.contains('.') && !s.contains('e') && s.ends_with('0')), "{}", s);
+    }
+
+    /// serde_json must parse doubles with correct rounding (`float_roundtrip`), or canonical text drifts by an ulp.
+    #[test]
+    fn json_parsing_of_doubles_is_correctly_rounded(x in any_double()) {
+        let text = canonical::format_f64(x).unwrap();
+        let parsed: f64 = serde_json::from_str(&text).unwrap();
+        prop_assert_eq!(parsed.to_bits(), text.parse::<f64>().unwrap().to_bits());
     }
 
     #[test]

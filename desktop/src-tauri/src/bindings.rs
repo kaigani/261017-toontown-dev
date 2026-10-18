@@ -133,6 +133,10 @@ pub struct CommandItem {
 /// One menu item.
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 #[serde(tag = "kind", rename_all = "camelCase", deny_unknown_fields)]
+#[allow(
+    clippy::large_enum_variant,
+    reason = "the manifest is parsed once at start-up; serde_json's order-preserving map makes params larger"
+)]
 pub enum Item {
     /// A command binding.
     Command(CommandItem),

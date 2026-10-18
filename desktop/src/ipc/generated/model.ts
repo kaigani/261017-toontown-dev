@@ -7946,7 +7946,12 @@ export interface Stroke {
 export type StrokeKind = 'brush' | 'pencil' | 'invisible';
 
 /** A stub standing for an object that is not expanded (10 §2.2). A stub has no `rev`. */
-export type Stub = unknown;
+export interface Stub {
+  id?: Id;
+  colourId?: Id;
+  type: ObjectType;
+  name?: string;
+}
 
 /** A swatch (03 §1.4, §12.3). Its identifier field is `colourId` (10 §2.2); `id` is accepted as an alias on input. */
 export interface Swatch {

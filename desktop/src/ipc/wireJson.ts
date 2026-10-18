@@ -48,61 +48,23 @@ export function parseWireJson(text: string): unknown {
     return fail('invalid literal');
   };
   const string = (): string => {
-    pos++; // opening quote
-    let out = '';
-    let start = pos;
+    // Find the closing quote (skipping escaped characters), then let JSON.parse decode exactly that token: it
+    // rejects control characters and invalid escapes, and decodes \u escapes without string assembly (which the
+    // IPC boundary lint forbids, ADR-0001).
+    const start = pos;
+    pos++;
     for (;;) {
       if (pos >= text.length) fail('unterminated string');
       const c = text.charCodeAt(pos);
-      if (c === 0x22) {
-        out += text.slice(start, pos);
-        pos++;
-        return out;
-      }
-      if (c < 0x20) fail('control character in string');
-      if (c !== 0x5c) {
-        pos++;
-        continue;
-      }
-      out += text.slice(start, pos);
-      const e = text[pos + 1];
-      pos += 2;
-      switch (e) {
-        case '"':
-          out += '"';
-          break;
-        case '\\':
-          out += '\\';
-          break;
-        case '/':
-          out += '/';
-          break;
-        case 'b':
-          out += '\b';
-          break;
-        case 'f':
-          out += '\f';
-          break;
-        case 'n':
-          out += '\n';
-          break;
-        case 'r':
-          out += '\r';
-          break;
-        case 't':
-          out += '\t';
-          break;
-        case 'u': {
-          const hex = text.slice(pos, pos + 4);
-          if (!/^[0-9A-Fa-f]{4}$/u.test(hex)) fail('invalid \\u escape');
-          out += String.fromCharCode(parseInt(hex, 16));
-          pos += 4;
-          break;
-        }
-        default:
-          fail('invalid escape');
-      }
-      start = pos;
+      if (c === 0x22) break;
+      pos += c === 0x5c ? 2 : 1;
+    }
+    pos++;
+    try {
+      return JSON.parse(text.slice(start, pos)) as string;
+    } catch {
+      pos = start;
+      return fail('invalid string');
     }
   };
   const number = (): number | bigint => {
@@ -291,7 +253,8 @@ function childSchemas(schema: Schema, defs: Defs, key: string | number, depth: n
   }
   for (const k of ['anyOf', 'oneOf', 'allOf'] as const) {
     const alts = ownSchema(s, k) as unknown;
-    if (Array.isArray(alts)) for (const a of alts as Schema[]) out.push(...childSchemas(a, defs, key, depth + 1));
+    if (Array.isArray(alts))
+      for (const a of alts as Schema[]) out.push(...childSchemas(a, defs, key, depth + 1));
   }
   return out;
 }
@@ -306,7 +269,7 @@ export function coerceNumbers(value: unknown, schema: Schema, defs: Defs, depth 
   }
   if (depth > MAX_DEPTH || typeof value !== 'object' || value === null) return value;
   if (Array.isArray(value)) {
-    return value.map((item, i) => {
+    return value.map((item: unknown, i): unknown => {
       const schemas = childSchemas(schema, defs, i, 0);
       return schemas.length === 0 ? item : coerceNumbers(item, schemas[0] ?? true, defs, depth + 1);
     });
@@ -316,7 +279,8 @@ export function coerceNumbers(value: unknown, schema: Schema, defs: Defs, depth 
     const item: unknown = Object.getOwnPropertyDescriptor(value, k)?.value;
     const schemas = childSchemas(schema, defs, k, 0);
     // Several candidate schemas (alternatives): coerce only if one of them asks for a double.
-    const target = schemas.find((c) => typeof item === 'bigint' && wantsDouble(c, item, defs, 0)) ?? schemas[0];
+    const target =
+      schemas.find((c) => typeof item === 'bigint' && wantsDouble(c, item, defs, 0)) ?? schemas[0];
     defineKey(out, k, target === undefined ? item : coerceNumbers(item, target, defs, depth + 1));
   }
   return out;

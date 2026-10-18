@@ -459,8 +459,8 @@ fn published_schema_bundle_is_current() {
 #[test]
 fn schemas_are_valid_draft_2020_12() {
     for t in ObjectType::ALL {
-        let s = schema::object_schema(t);
-        assert!(jsonschema::meta::is_valid(&s), "{t}");
+        // Compiling under draft 2020-12 checks each schema; a defect surfaces as `internal` here.
+        assert!(schema::validate(t, &json!({}), 1).is_ok(), "{t}");
     }
     assert_eq!(schema::property_schema(ObjectType::Element, "/transform/skew").unwrap()["maximum"], 89.0);
     assert_eq!(

@@ -162,7 +162,8 @@ function hasType(t: JsonType, value: unknown): boolean {
     case 'integer':
       return (
         (actual === 'number' && Number.isSafeInteger(value)) ||
-        (actual === 'bigint' && ((value as bigint) > BigInt(MAX_SAFE) || (value as bigint) < -BigInt(MAX_SAFE)))
+        (actual === 'bigint' &&
+          ((value as bigint) > BigInt(MAX_SAFE) || (value as bigint) < -BigInt(MAX_SAFE)))
       );
     case 'number':
       return actual === 'number' && Number.isFinite(value);
@@ -194,9 +195,7 @@ function sameLiteral(a: unknown, b: Literal): boolean {
 }
 
 function codePoints(s: string): number {
-  let n = 0;
-  for (const _ of s) n++;
-  return n;
+  return Array.from(s).length;
 }
 
 function compareBound(value: number | bigint, bound: Bound): number {
@@ -233,15 +232,20 @@ function check(schema: Schema, value: unknown, at: string, defs: Defs, depth: nu
     return [`${here}: no anyOf branch`];
   }
   const oneOf = kw(schema, 'oneOf');
-  if (oneOf !== undefined && oneOf.filter((s) => check(s, value, at, defs, depth + 1).length === 0).length !== 1) {
+  if (
+    oneOf !== undefined &&
+    oneOf.filter((s) => check(s, value, at, defs, depth + 1).length === 0).length !== 1
+  ) {
     return [`${here}: not exactly one oneOf branch`];
   }
   for (const s of kw(schema, 'allOf') ?? []) out.push(...check(s, value, at, defs, depth + 1));
   const not = kw(schema, 'not');
-  if (not !== undefined && check(not, value, at, defs, depth + 1).length === 0) out.push(`${here}: matches not`);
+  if (not !== undefined && check(not, value, at, defs, depth + 1).length === 0)
+    out.push(`${here}: matches not`);
   const cond = kw(schema, 'if');
   if (cond !== undefined) {
-    const branch = check(cond, value, at, defs, depth + 1).length === 0 ? kw(schema, 'then') : kw(schema, 'else');
+    const branch =
+      check(cond, value, at, defs, depth + 1).length === 0 ? kw(schema, 'then') : kw(schema, 'else');
     if (branch !== undefined) out.push(...check(branch, value, at, defs, depth + 1));
   }
   const declared = kw(schema, 'type');
@@ -257,7 +261,8 @@ function check(schema: Schema, value: unknown, at: string, defs: Defs, depth: nu
     return [...out, `${here}: not ${String(kw(schema, 'const'))}`];
   }
   if (typeof value === 'string') out.push(...stringViolations(schema, value, here));
-  if (typeof value === 'number' || typeof value === 'bigint') out.push(...numberViolations(schema, value, here));
+  if (typeof value === 'number' || typeof value === 'bigint')
+    out.push(...numberViolations(schema, value, here));
   if (hasType('array', value)) out.push(...arrayViolations(schema, value as unknown[], at, defs, depth));
   else if (hasType('object', value)) out.push(...objectViolations(schema, value as object, at, defs, depth));
   return out;
@@ -298,13 +303,23 @@ function numberViolations(schema: SchemaObject, value: number | bigint, here: st
   if (xmin !== undefined && compareBound(value, xmin) <= 0) return [`${here}: not above ${String(xmin)}`];
   if (xmax !== undefined && compareBound(value, xmax) >= 0) return [`${here}: not below ${String(xmax)}`];
   const step = kw(schema, 'multipleOf');
-  if (step !== undefined && typeof value === 'number' && Math.abs(value / step - Math.round(value / step)) > 1e-9) {
+  if (
+    step !== undefined &&
+    typeof value === 'number' &&
+    Math.abs(value / step - Math.round(value / step)) > 1e-9
+  ) {
     return [`${here}: not a multiple of ${step}`];
   }
   return [];
 }
 
-function arrayViolations(schema: SchemaObject, value: unknown[], at: string, defs: Defs, depth: number): string[] {
+function arrayViolations(
+  schema: SchemaObject,
+  value: unknown[],
+  at: string,
+  defs: Defs,
+  depth: number,
+): string[] {
   const here = at || '/';
   const out: string[] = [];
   const minItems = kw(schema, 'minItems');
@@ -325,15 +340,24 @@ function arrayViolations(schema: SchemaObject, value: unknown[], at: string, def
   return out;
 }
 
-function objectViolations(schema: SchemaObject, value: object, at: string, defs: Defs, depth: number): string[] {
+function objectViolations(
+  schema: SchemaObject,
+  value: object,
+  at: string,
+  defs: Defs,
+  depth: number,
+): string[] {
   const properties = kw(schema, 'properties');
   const patterns = kw(schema, 'patternProperties');
   const additional = kw(schema, 'additionalProperties');
   const names = kw(schema, 'propertyNames');
-  const out = (kw(schema, 'required') ?? []).filter((k) => !hasOwn(value, k)).map((k) => `${at}/${k}: required`);
+  const out = (kw(schema, 'required') ?? [])
+    .filter((k) => !hasOwn(value, k))
+    .map((k) => `${at}/${k}: required`);
   for (const k of Object.keys(value)) {
     const v = ownValue(value, k);
-    if (names !== undefined) out.push(...check(names, k, `${at}/${k}`, defs, depth + 1).map(() => `${at}/${k}: invalid name`));
+    if (names !== undefined)
+      out.push(...check(names, k, `${at}/${k}`, defs, depth + 1).map(() => `${at}/${k}: invalid name`));
     let matched = false;
     if (properties !== undefined && hasOwn(properties, k)) {
       matched = true;

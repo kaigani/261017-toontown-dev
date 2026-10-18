@@ -656,15 +656,18 @@ impl Violation {
     }
 }
 
-fn validator(ty: ObjectType) -> Result<&'static jsonschema::Validator, ModelError> {
-    static VALIDATORS: OnceLock<BTreeMap<ObjectType, Result<jsonschema::Validator, String>>> = OnceLock::new();
+fn validator(ty: ObjectType) -> Result<&'static jsonschema::JSONSchema, ModelError> {
+    static VALIDATORS: OnceLock<BTreeMap<ObjectType, Result<jsonschema::JSONSchema, String>>> = OnceLock::new();
     let all = VALIDATORS.get_or_init(|| {
         ObjectType::ALL
             .iter()
             .map(|t| {
-                let v = jsonschema::options()
+                let schema = object_schema(*t);
+                // Draft 2020-12; compiling also checks the schema itself (a defect is reported, not hidden).
+                let v = jsonschema::JSONSchema::options()
+                    .with_draft(jsonschema::Draft::Draft202012)
                     .should_validate_formats(false)
-                    .build(&object_schema(*t))
+                    .compile(&schema)
                     .map_err(|e| e.to_string());
                 (*t, v)
             })
@@ -683,14 +686,17 @@ fn validator(ty: ObjectType) -> Result<&'static jsonschema::Validator, ModelErro
 /// `internal` if the schema itself fails to compile (a build defect covered by tests).
 pub fn validate(ty: ObjectType, value: &Value, limit: usize) -> Result<Vec<Violation>, ModelError> {
     let v = validator(ty)?;
-    Ok(v.iter_errors(value)
-        .take(limit)
-        .map(|e| Violation {
-            pointer: e.instance_path().to_string(),
-            schema_path: e.schema_path().to_string(),
-            message: e.to_string(),
-        })
-        .collect())
+    Ok(match v.validate(value) {
+        Ok(()) => Vec::new(),
+        Err(errors) => errors
+            .take(limit)
+            .map(|e| Violation {
+                pointer: e.instance_path.to_string(),
+                schema_path: e.schema_path.to_string(),
+                message: e.to_string(),
+            })
+            .collect(),
+    })
 }
 
 /// Whether a value is valid for an object type.
