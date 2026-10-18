@@ -1,0 +1,9 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c01-r4/desktop
+
+
+ Test Files  1 passed (1)
+      Tests  11 passed | 3 expected fail (14)
+   Start at  23:26:33
+   Duration  299ms (setup 62%, transform 21%, import 8%, tests 7%, worker 1%)
+

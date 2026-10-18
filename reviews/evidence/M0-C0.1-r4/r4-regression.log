@@ -1,0 +1,31 @@
+TAP version 13
+# lint diagnostics: []
+# final emitted code: //\#region desktop/src/__probes__/r4-fold-KvJ5T3/probe.js
+# var e = () => window.__TAURI_INTERNALS__.invoke("app_info");
+# //\#endregion
+# export { e as bypass };
+# Subtest: C01-R4-01: late constant folding cannot emit an unattributed raw-host invoke
+not ok 1 - C01-R4-01: late constant folding cannot emit an unattributed raw-host invoke
+  ---
+  duration_ms: 1030.8738
+  type: 'test'
+  location: 'C:\\Users\\kaiga\\work\\review\\m0-c01-r4\\tests\\adversarial\\c01-r4-boundary.test.mjs:14:1'
+  failureType: 'testCodeFailure'
+  error: 'production build emitted and executed an unattributed direct raw-host invoke after the chunk scan'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'fail'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/kaiga/work/review/m0-c01-r4/tests/adversarial/c01-r4-boundary.test.mjs:54:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1265.2558

@@ -1,0 +1,99 @@
+{
+  "sha": "aae694d833640954c907691fb44f95bd22f3ca74",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "headless without a display (ubuntu)",
+      "id": 117604261569,
+      "conclusion": "success",
+      "start": "2026-10-18T06:16:26Z",
+      "end": "2026-10-18T06:16:51Z",
+      "files": {},
+      "vitestTotal": 0,
+      "rustTotal": 0,
+      "nonSuccessSteps": []
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "id": 117604261696,
+      "conclusion": "success",
+      "start": "2026-10-18T06:16:26Z",
+      "end": "2026-10-18T06:21:29Z",
+      "files": {},
+      "vitestTotal": 0,
+      "rustTotal": 0,
+      "nonSuccessSteps": []
+    },
+    {
+      "name": "check (macos-latest)",
+      "id": 117604261700,
+      "conclusion": "success",
+      "start": "2026-10-18T06:16:32Z",
+      "end": "2026-10-18T06:19:04Z",
+      "files": {
+        "src/ipc/schema.test.ts": 18,
+        "src/ipc/boundary.lint.test.ts": 53,
+        "src/ipc/boundary.build.test.ts": 27,
+        "src/test/c01-r3-schema.test.ts": 14,
+        "src/test/c01-r2-schema.test.ts": 12,
+        "src/ipc/hostApi.test.ts": 6,
+        "src/lib/latency.test.ts": 7,
+        "src/test/platformFloor.test.ts": 5,
+        "src/App.test.tsx": 5,
+        "src/ui-bindings/menu.test.ts": 4,
+        "src/diagnostics/ipcBench.test.ts": 3,
+        "src/test/c01-r2-node.test.ts": 2,
+        "src/test/c01-r3-node.test.ts": 1,
+        "src/test/adversarial.test.ts": 8
+      },
+      "vitestTotal": 165,
+      "rustTotal": 53,
+      "nonSuccessSteps": [],
+      "vitestPassed": 162,
+      "expectedFailures": 3,
+      "nodePassed": 9,
+      "missingFiles": []
+    },
+    {
+      "name": "check (windows-latest)",
+      "id": 117604261715,
+      "conclusion": "success",
+      "start": "2026-10-18T06:16:26Z",
+      "end": "2026-10-18T06:23:42Z",
+      "files": {
+        "src/ipc/schema.test.ts": 18,
+        "src/ipc/boundary.lint.test.ts": 53,
+        "src/ipc/boundary.build.test.ts": 27,
+        "src/test/c01-r3-schema.test.ts": 14,
+        "src/test/c01-r2-schema.test.ts": 12,
+        "src/ipc/hostApi.test.ts": 6,
+        "src/lib/latency.test.ts": 7,
+        "src/test/platformFloor.test.ts": 5,
+        "src/App.test.tsx": 5,
+        "src/ui-bindings/menu.test.ts": 4,
+        "src/diagnostics/ipcBench.test.ts": 3,
+        "src/test/c01-r2-node.test.ts": 2,
+        "src/test/c01-r3-node.test.ts": 1,
+        "src/test/adversarial.test.ts": 8
+      },
+      "vitestTotal": 165,
+      "rustTotal": 53,
+      "nonSuccessSteps": [],
+      "vitestPassed": 162,
+      "expectedFailures": 3,
+      "nodePassed": 9,
+      "missingFiles": []
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "id": 117604261742,
+      "conclusion": "success",
+      "start": "2026-10-18T06:16:33Z",
+      "end": "2026-10-18T06:18:51Z",
+      "files": {},
+      "vitestTotal": 0,
+      "rustTotal": 0,
+      "nonSuccessSteps": []
+    }
+  ]
+}

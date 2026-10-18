@@ -1,0 +1,14 @@
+[
+  {
+    "name": "ci-run",
+    "command": "gh run view 39103453165 --json headSha,conclusion,jobs,url",
+    "exit": 0,
+    "seconds": 1.0
+  },
+  {
+    "name": "ci-logs",
+    "command": "gh run view 39103453165 --log",
+    "exit": 0,
+    "seconds": 1.0
+  }
+]

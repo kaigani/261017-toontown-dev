@@ -1,0 +1,62 @@
+[
+  {
+    "name": "r3-boundary",
+    "command": "node --test tests/adversarial/c01-r3-boundary.test.mjs",
+    "exit": 0,
+    "seconds": 2.75
+  },
+  {
+    "name": "r3-schema",
+    "command": "pnpm --dir desktop exec vitest run src/test/c01-r3-schema.test.ts",
+    "exit": 0,
+    "seconds": 0.82
+  },
+  {
+    "name": "r2-node",
+    "command": "node --test tests/adversarial/c01-r2-boundary.test.mjs tests/adversarial/c01-r2-licenses.test.mjs",
+    "exit": 0,
+    "seconds": 10.17
+  },
+  {
+    "name": "lint",
+    "command": "pnpm lint",
+    "exit": 0,
+    "seconds": 9.22
+  },
+  {
+    "name": "typecheck",
+    "command": "pnpm typecheck",
+    "exit": 0,
+    "seconds": 2.46
+  },
+  {
+    "name": "test",
+    "command": "pnpm test",
+    "exit": 0,
+    "seconds": 34.2
+  },
+  {
+    "name": "format",
+    "command": "pnpm format:check",
+    "exit": 0,
+    "seconds": 1.21
+  },
+  {
+    "name": "licenses",
+    "command": "pnpm licenses:check",
+    "exit": 0,
+    "seconds": 1.01
+  },
+  {
+    "name": "build",
+    "command": "pnpm --dir desktop build",
+    "exit": 0,
+    "seconds": 0.94
+  },
+  {
+    "name": "order-forward",
+    "command": "pnpm --dir desktop exec vitest run --config vite.config.ts src/test/c01-r3-schema.test.ts src/ipc/hostApi.test.ts --sequence.sequencer=tests",
+    "exit": 1,
+    "seconds": 0.63
+  }
+]

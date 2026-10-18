@@ -1,0 +1,1359 @@
+diff --git a/desktop/boundary/eslint.js b/desktop/boundary/eslint.js
+index a4a4d3f..297f291 100644
+--- a/desktop/boundary/eslint.js
++++ b/desktop/boundary/eslint.js
+@@ -8,7 +8,9 @@
+ //   * modules under src/ may import only within src/ (relative specifiers in canonical form, no absolute or scheme
+ //     specifiers, no backslashes); test files may additionally reach the repository's tests/ folder and
+ //     desktop/boundary/ (the definitions under test);
+-//   * inline `eslint-disable` of any boundary rule is itself an error (eslint-comments), including blanket disables.
++//   * no inline ESLint configuration of any kind takes effect (linterOptions.noInlineConfig, C01-R3-01): neither
++//     `eslint-disable` nor `/* eslint rule: off */`; exceptions live in eslint.config.js. eslint-comments still
++//     reports any disable directive as an error, so such comments cannot sit in the tree unnoticed.
+ // Applies to every JS/TS extension in the desktop package. Deliberate run-time obfuscation (e.g. a global name built
+ // from variables) cannot be detected statically; the bundler plugin scans transformed code for the Tauri globals
+ // and refuses to bundle anything it cannot place.
+@@ -110,7 +112,7 @@ export function ipcBoundaryConfig(commentsPlugin) {
+       // Every JS/TS file of the desktop package.
+       files: [`**/*.${EXT}`],
+       plugins: { '@eslint-community/eslint-comments': commentsPlugin },
+-      linterOptions: { reportUnusedDisableDirectives: 'error' },
++      linterOptions: { noInlineConfig: true },
+       rules: {
+         ...ipcBoundaryRules,
+         '@eslint-community/eslint-comments/no-unlimited-disable': 'error',
+diff --git a/desktop/boundary/vite-plugin.ts b/desktop/boundary/vite-plugin.ts
+index 6c0bc28..a9c025a 100644
+--- a/desktop/boundary/vite-plugin.ts
++++ b/desktop/boundary/vite-plugin.ts
+@@ -1,34 +1,89 @@
+-// The front-end IPC boundary, bundler half (C01-R2-01). Used by vite.config.ts for dev, build and Vitest, so a
+-// bypass that slips past the linter (another file extension, a suppressed rule, a module outside src/) still cannot
+-// be bundled. Checks are made on RESOLVED module ids, not on how a specifier is spelled:
++// The front-end IPC boundary, bundler half (C01-R2-01, C01-R3-01/02). Used by vite.config.ts for dev, build and
++// Vitest, so a bypass that slips past the linter still cannot be bundled. Two plugins:
++//
++// `toontown-ipc-boundary` (enforce: pre) checks every import edge on RESOLVED module ids, not on spelling:
+ //   1. A module inside an @tauri-apps package may be imported only by src/ipc/tauriTransport.ts (or by the package
+ //      itself).
+ //   2. src/ipc/tauriTransport.ts may be imported only by src/ipc/index.ts.
+ //   3. Every application module (anything outside node_modules) must be desktop/index.html or live under
+ //      desktop/src/. Under Vitest only, test code may also load <repo>/tests/ and desktop/boundary/.
+-//   4. Application modules other than the transport may not mention the Tauri globals (__TAURI*) or the
+-//      @tauri-apps package names in their source at all.
++//   4. desktop/index.html (including its inline module scripts) may import only src/main.tsx. The dev server and
++//      Vitest re-resolve already-resolved modules by URL with exactly `index.html` as a placeholder importer; in
++//      `serve` only, such a re-resolution is accepted for module ids this plugin has already approved through a
++//      real edge (and, under Vitest, for its own entry files: test files and setup files). `build` has no exception
++//      at all.
++//
++// `toontown-ipc-boundary-scan` (normal order, so it sees code after Vite's TypeScript/JSX transform):
++//   5. The transformed code of every application module except the transport is parsed, and any string literal,
++//      template element or identifier mentioning `__TAURI` or `@tauri-apps` is an error. Literals are compared
++//      decoded, so escapes such as '__TAURI' are caught; a textual match anywhere (comments included) is
++//      an error too.
++//   6. Every emitted chunk is parsed and each mention is attributed to a module through the chunk's module map: all
++//      mentions must come from the transport or from @tauri-apps package code, and the chunk's total must equal
++//      the sum attributed to those modules.
+ // The rule and file lists are shared with the lint half (./eslint.js).
+ import { existsSync } from 'node:fs';
+ import path from 'node:path';
+ import { fileURLToPath } from 'node:url';
+ 
+-import type { Plugin } from 'vite';
++import { parseAst, type Plugin } from 'vite';
+ 
+ import { IPC_INDEX_FILE, SAMPLE_FILES, TRANSPORT_FILE } from './eslint.js';
+ 
+ export interface IpcBoundaryOptions {
+   /** Vitest only: allow test code to load the repository's tests/ folder and desktop/boundary/. */
+   allowTestSupport: boolean;
++  /**
++   * Vitest only: entry files Vitest loads itself (test files, setup files), relative to the desktop package. Vitest
++   * resolves them with the index.html placeholder importer, before any import edge could approve them.
++   */
++  testEntries?: (relativePath: string) => boolean;
+   /** The desktop package directory (default: the parent of this file). */
+   desktopDir?: string;
+ }
+ 
+ const slash = (p: string) => p.replaceAll('\\', '/');
+-const TAURI_PACKAGE = /\/node_modules\/@tauri-apps\//;
++const TAURI_PACKAGE = /\/node_modules\/(@tauri-apps\/|\.vite\/deps\/@tauri-apps_)/;
+ const TAURI_TEXT = /__TAURI|@tauri-apps/;
+ 
+-export function ipcBoundary(options: IpcBoundaryOptions): Plugin {
++/** Mentions of the Tauri globals or package names in parsed code: decoded string literals, template elements and
++ * identifiers. Returns null when the code does not parse as JavaScript. */
++export function tauriMentions(code: string): string[] | null {
++  let program: unknown;
++  try {
++    program = parseAst(code);
++  } catch {
++    return null;
++  }
++  const hits: string[] = [];
++  const stack: unknown[] = [program];
++  while (stack.length > 0) {
++    const node = stack.pop();
++    if (typeof node !== 'object' || node === null) continue;
++    if (Array.isArray(node)) {
++      stack.push(...(node as unknown[]));
++      continue;
++    }
++    const n = node as Record<string, unknown>;
++    const type = n['type'];
++    if (type === 'Literal' && typeof n['value'] === 'string' && TAURI_TEXT.test(n['value']))
++      hits.push(n['value']);
++    if ((type === 'Identifier' || type === 'PrivateIdentifier') && typeof n['name'] === 'string') {
++      if (TAURI_TEXT.test(n['name'])) hits.push(n['name']);
++    }
++    if (type === 'TemplateElement') {
++      const value = n['value'] as { cooked?: string | null; raw?: string } | undefined;
++      const text = value?.cooked ?? value?.raw ?? '';
++      if (TAURI_TEXT.test(text)) hits.push(text);
++    }
++    for (const [k, v] of Object.entries(n)) {
++      if (k !== 'type' && typeof v === 'object' && v !== null) stack.push(v);
++    }
++  }
++  return hits;
++}
++
++export function ipcBoundary(options: IpcBoundaryOptions): Plugin[] {
+   const desktop = slash(
+     options.desktopDir ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'),
+   );
+@@ -37,8 +92,14 @@ export function ipcBoundary(options: IpcBoundaryOptions): Plugin {
+   const transport = `${desktop}/${TRANSPORT_FILE}`;
+   const index = `${desktop}/${IPC_INDEX_FILE}`;
+   const indexHtml = `${desktop}/index.html`;
++  const main = `${desktop}/src/main.tsx`;
+   const samples = new Set(SAMPLE_FILES.map((f) => `${desktop}/${f}`));
+   const testSupport = [`${repo}/tests/`, `${desktop}/boundary/`];
++  let command: 'build' | 'serve' = 'serve';
++  /** Resolved module ids accepted through a real import edge (serve-mode re-resolution allow-list). */
++  const approved = new Set<string>();
++  /** Edge resolutions in flight (see resolveId). */
++  const pendingEdges = new Set<Promise<unknown>>();
+ 
+   /** The on-disk path of a module id, or null for virtual/internal modules. */
+   function filePath(id: string | undefined): string | null {
+@@ -52,28 +113,27 @@ export function ipcBoundary(options: IpcBoundaryOptions): Plugin {
+     p === indexHtml ||
+     p.startsWith(src) ||
+     (options.allowTestSupport && testSupport.some((d) => p.startsWith(d)));
++  /** Modules whose code may legitimately mention the Tauri globals/packages. */
++  const mayMentionTauri = (p: string) => p === transport || TAURI_PACKAGE.test(p);
+ 
+-  /** `edge` is false for the dev server's URL re-resolution of an already-resolved module (see resolveId). */
+-  function violation(
+-    resolved: string,
+-    importer: string | null,
+-    source: string,
+-    edge: boolean,
+-  ): string | null {
++  function edgeViolation(resolved: string, importer: string | null, source: string): string | null {
+     const from = importer ?? '(entry)';
+     if (
+-      edge &&
+       TAURI_PACKAGE.test(resolved) &&
+       importer !== transport &&
+       !(importer && TAURI_PACKAGE.test(importer))
+     ) {
+       return `${from} imports ${source}; only ${TRANSPORT_FILE} may load @tauri-apps packages`;
+     }
+-    if (edge && resolved === transport && importer !== index) {
++    if (resolved === transport && importer !== index) {
+       return `${from} imports the raw transport; only ${IPC_INDEX_FILE} may (use the validated HostApi)`;
+     }
++    return locationViolation(resolved, importer);
++  }
++
++  function locationViolation(resolved: string, importer: string | null): string | null {
+     if (!inNodeModules(resolved) && !isApplicationModuleAllowed(resolved)) {
+-      return `${from} loads ${resolved}, which is outside desktop/src`;
++      return `${importer ?? '(entry)'} loads ${resolved}, which is outside desktop/src`;
+     }
+     if (importer && !inNodeModules(importer) && !isApplicationModuleAllowed(importer)) {
+       return `${importer} is outside desktop/src and may not import application code`;
+@@ -81,30 +141,62 @@ export function ipcBoundary(options: IpcBoundaryOptions): Plugin {
+     return null;
+   }
+ 
+-  return {
++  const resolver: Plugin = {
+     name: 'toontown-ipc-boundary',
+     enforce: 'pre',
++    configResolved(config) {
++      command = config.command;
++    },
+     async resolveId(source, importer, resolveOptions) {
+       if (source.startsWith('\0')) return null;
+-      const resolved = await this.resolve(source, importer, { ...resolveOptions, skipSelf: true });
++      const placeholder = command === 'serve' && importer !== undefined && slash(importer) === indexHtml;
++      const resolving = this.resolve(source, importer, { ...resolveOptions, skipSelf: true });
++      if (!placeholder) {
++        pendingEdges.add(resolving);
++        const done = () => pendingEdges.delete(resolving);
++        resolving.then(done, done);
++      }
++      const resolved = await resolving;
+       if (!resolved || resolved.external) return resolved;
+       const p = filePath(resolved.id);
+-      if (p) {
+-        // The dev server and Vitest re-resolve already-resolved modules by absolute URL with index.html as a
+-        // placeholder importer. That is not an import edge (the real edge was checked when the importing module
+-        // resolved its own specifier), so only the location rule applies to it. index.html's one real import,
+-        // /src/main.tsx, needs no importer rule.
+-        const from = filePath(importer);
+-        const reResolution =
+-          from === indexHtml && /^(\/|[A-Za-z]:)/.test(source) && source !== '/src/main.tsx';
+-        const problem = reResolution ? violation(p, null, source, false) : violation(p, from, source, true);
+-        if (problem) this.error(`IPC boundary: ${problem}`);
++      if (!p) return resolved;
++      const from = filePath(importer);
++      if (placeholder && !approved.has(p)) {
++        // The edge that approves this module may still be resolving (Vitest's module runner races them): let every
++        // edge in flight finish and record its approval before this fetch is judged.
++        while (pendingEdges.size > 0) await Promise.allSettled([...pendingEdges]);
++        await new Promise((r) => setTimeout(r, 0));
++      }
++      let problem: string | null;
++      if (from === indexHtml) {
++        // Vitest only: its own entry files, and the test-support folders (which only Vitest may load at all).
++        const testEntry =
++          placeholder &&
++          options.allowTestSupport &&
++          ((p.startsWith(src) && options.testEntries?.(p.slice(desktop.length + 1)) === true) ||
++            testSupport.some((d) => p.startsWith(d)));
++        // Third-party packages other than Tauri carry no boundary risk; application modules and Tauri packages must
++        // have been approved through a real edge first.
++        const harmlessPackage = inNodeModules(p) && !TAURI_PACKAGE.test(p);
++        if (p === main) problem = null;
++        else if (placeholder && (approved.has(p) || testEntry === true || harmlessPackage)) {
++          problem = locationViolation(p, null);
++        } else problem = `index.html may import only src/main.tsx, not ${source}`;
++      } else {
++        problem = edgeViolation(p, from, source);
+       }
++      if (problem) this.error(`IPC boundary: ${problem}`);
++      approved.add(p);
+       return resolved;
+     },
++  };
++
++  const scanner: Plugin = {
++    name: 'toontown-ipc-boundary-scan',
+     transform(code, id) {
+       const p = filePath(id);
+-      // The boundary definitions themselves contain the patterns they forbid.
++      // node_modules are checked in the emitted chunks; the boundary definitions and the two sample-holding
++      // boundary tests contain the patterns they forbid.
+       if (
+         !p ||
+         inNodeModules(p) ||
+@@ -114,10 +206,43 @@ export function ipcBoundary(options: IpcBoundaryOptions): Plugin {
+       ) {
+         return null;
+       }
+-      if (TAURI_TEXT.test(code)) {
+-        this.error(`IPC boundary: ${p} mentions __TAURI* or @tauri-apps; only ${TRANSPORT_FILE} may`);
++      // JS-like modules (by extension, or an inline <script> proxy such as index.html?html-proxy&index=0.js) are
++      // parsed; anything else (HTML, CSS) is scanned as text only.
++      const jsLike = /\.(?:[cm]?[jt]sx?)$/.test(p) || /[?&]html-proxy\b.*\.js$/.test(id);
++      const hits = jsLike ? tauriMentions(code) : [];
++      if (TAURI_TEXT.test(code) || hits === null || hits.length > 0) {
++        const what =
++          hits === null ? 'cannot be parsed for the Tauri scan' : 'mentions __TAURI* or @tauri-apps';
++        this.error(`IPC boundary: ${p} ${what}; only ${TRANSPORT_FILE} may reach Tauri`);
++      }
++      return null;
++    },
++    renderChunk(code, chunk) {
++      const total = tauriMentions(code);
++      if (total === null)
++        this.error(`IPC boundary: emitted chunk ${chunk.fileName} cannot be parsed for the scan`);
++      let attributed = 0;
++      for (const [id, rendered] of Object.entries(chunk.modules)) {
++        if (!rendered.code) continue;
++        const hits = tauriMentions(rendered.code);
++        const p = filePath(id) ?? slash(id);
++        if (mayMentionTauri(p)) {
++          attributed += hits?.length ?? 0;
++        } else if (hits === null || hits.length > 0) {
++          this.error(
++            `IPC boundary: emitted code of ${p} in ${chunk.fileName} mentions __TAURI* or @tauri-apps`,
++          );
++        }
++      }
++      if ((total?.length ?? 0) !== attributed) {
++        this.error(
++          `IPC boundary: chunk ${chunk.fileName} has ${String(total?.length)} Tauri mentions but only ` +
++            `${String(attributed)} come from ${TRANSPORT_FILE} or @tauri-apps package code`,
++        );
+       }
+       return null;
+     },
+   };
++
++  return [resolver, scanner];
+ }
+diff --git a/desktop/eslint.config.js b/desktop/eslint.config.js
+index 98b9e72..7150354 100644
+--- a/desktop/eslint.config.js
++++ b/desktop/eslint.config.js
+@@ -5,6 +5,7 @@ import globals from 'globals';
+ import tseslint from 'typescript-eslint';
+ 
+ import comments from '@eslint-community/eslint-plugin-eslint-comments';
++import compat from 'eslint-plugin-compat';
+ 
+ import { ipcBoundaryConfig } from './boundary/eslint.js';
+ 
+@@ -25,6 +26,15 @@ export default tseslint.config(
+       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
+     },
+   },
++  {
++    // Platform floor (ADR-0005): application code may use only APIs available in the browserslist targets of
++    // package.json (Safari 15.0 = macOS 12.0 WKWebView, Chrome 110 = WebView2 floor).
++    // Tests run in Node, not in the webview, and are never bundled into the app.
++    files: ['src/**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}'],
++    ignores: ['src/**/*.test.*', 'src/test/**'],
++    plugins: { compat },
++    rules: { 'compat/compat': 'error' },
++  },
+   // The IPC boundary: every JS/TS file of the package (boundary/eslint.js).
+   ...ipcBoundaryConfig(comments),
+   {
+@@ -32,6 +42,17 @@ export default tseslint.config(
+     files: ['**/*.{js,jsx,mjs,cjs}'],
+     extends: [tseslint.configs.disableTypeChecked],
+   },
++  {
++    // Inline ESLint configuration is disabled (noInlineConfig); file-specific exceptions are made here, reviewed.
++    // Tauri rejects invokes with the plain serialized error value; the mock transport reproduces that.
++    files: ['src/ipc/mockTransport.ts'],
++    rules: { '@typescript-eslint/prefer-promise-reject-errors': 'off' },
++  },
++  {
++    // guard<T>() returns a type predicate for T; T appearing once is the point of the API.
++    files: ['src/ipc/schema.ts'],
++    rules: { '@typescript-eslint/no-unnecessary-type-parameters': 'off' },
++  },
+   {
+     files: ['*.config.{js,ts}', 'boundary/**'],
+     languageOptions: { globals: globals.node },
+diff --git a/desktop/package.json b/desktop/package.json
+index b48cdc4..e01c918 100644
+--- a/desktop/package.json
++++ b/desktop/package.json
+@@ -4,14 +4,14 @@
+   "version": "0.0.1",
+   "type": "module",
+   "scripts": {
+-    "dev": "vite",
+-    "build": "vite build",
+-    "preview": "vite preview",
++    "dev": "vite --config vite.config.ts",
++    "build": "vite build --config vite.config.ts",
++    "preview": "vite preview --config vite.config.ts",
+     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
+     "lint": "eslint . --max-warnings 0",
+     "format": "prettier --write .",
+     "format:check": "prettier --check .",
+-    "test": "vitest run",
++    "test": "vitest run --config vite.config.ts",
+     "tauri": "tauri"
+   },
+   "dependencies": {
+@@ -29,7 +29,9 @@
+     "@types/react": "19.3.0",
+     "@types/react-dom": "19.3.0",
+     "@vitejs/plugin-react": "6.1.2",
++    "browserslist": "4.29.3",
+     "eslint": "10.13.0",
++    "eslint-plugin-compat": "7.0.2",
+     "eslint-plugin-react-hooks": "7.1.1",
+     "eslint-plugin-react-refresh": "0.5.7",
+     "globals": "17.13.0",
+@@ -39,5 +41,9 @@
+     "typescript-eslint": "8.71.2",
+     "vite": "8.3.4",
+     "vitest": "5.0.5"
+-  }
++  },
++  "browserslist": [
++    "safari 15",
++    "chrome 110"
++  ]
+ }
+diff --git a/desktop/src/ipc/README.md b/desktop/src/ipc/README.md
+index 350d81a..5275a6a 100644
+--- a/desktop/src/ipc/README.md
++++ b/desktop/src/ipc/README.md
+@@ -4,13 +4,14 @@
+   Transports deal in `unknown`; nothing is trusted until `hostApi.ts` validates it.
+ - `tauriTransport.ts` — the Tauri implementation. **The only file allowed to load the Tauri packages, and only
+   `index.ts` may import it.** Enforced by the bundler (`../../boundary/vite-plugin.ts`, dev/build/Vitest) and by
+-  the linter (`../../boundary/eslint.js`, every JS/TS extension, inline disables forbidden).
++  the linter (`../../boundary/eslint.js`, every JS/TS extension, no inline ESLint configuration). See ADR-0001.
+ - `mockTransport.ts` — in-memory host for tests and for `pnpm dev` in a plain browser.
+ - `hostApi.ts` — the typed API UI code uses (`ping`, `appInfo`, `onMenuCommand`, M0 diagnostics). Every response
+   and event is checked to be plain data, snapshotted, validated against its schema and only then returned; errors
+   map to `HostError` (stable dotted `code`, 11 §10).
+-- `schema.ts`, `wireSchemas.ts` — the JSON-Schema-subset validator (own-property semantics only) and the wire
+-  schemas; replaced by registry-generated schemas in M1.
++- `schema.ts`, `wireSchemas.ts` — the JSON-Schema-subset validator (own-property semantics only, exact-index
++  arrays, own plain-data copy; Safari 15.0 floor, ADR-0005) and the wire schemas; replaced by registry-generated
++  schemas in M1.
+ - `types.ts` — wire types mirroring the Rust side. Hand-written in M0; generated from the registry's JSON Schemas
+   from M1.
+ - `context.ts` / `react.tsx` — `HostProvider` and `useHost()`.
+diff --git a/desktop/src/ipc/boundary.build.test.ts b/desktop/src/ipc/boundary.build.test.ts
+index 5d2e3e1..7731ad3 100644
+--- a/desktop/src/ipc/boundary.build.test.ts
++++ b/desktop/src/ipc/boundary.build.test.ts
+@@ -3,12 +3,14 @@
+ // Build-level proof of the IPC boundary (boundary/vite-plugin.ts; C01-R2-01): each bypass class is bundled with the
+ // project's REAL Vite config in production mode and must fail with an "IPC boundary" error, whatever the linter
+ // says. Positive controls prove that legitimate code still builds.
+-import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
++import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+ import { fileURLToPath } from 'node:url';
+ 
+-import { build } from 'vite';
++import { build, createServer, type Plugin } from 'vite';
+ import { afterAll, describe, expect, it } from 'vitest';
+ 
++import { ipcBoundary } from '../../boundary/vite-plugin';
++
+ const desktop = fileURLToPath(new URL('../../', import.meta.url));
+ const probes = `${desktop}src/__probes__/build-${String(process.pid)}/`;
+ const T = 120_000;
+@@ -123,3 +125,124 @@ describe('IPC boundary at bundle time', () => {
+     T,
+   );
+ });
++
++const htmlFixture = (html: string): Plugin => ({
++  name: 'test-html-fixture',
++  transformIndexHtml: { order: 'pre', handler: () => html },
++});
++
++async function buildApp(plugins: Plugin[]): Promise<void> {
++  await build({
++    configFile: `${desktop}vite.config.ts`,
++    root: desktop,
++    mode: 'production',
++    logLevel: 'silent',
++    plugins,
++    build: { write: false, minify: false, sourcemap: false },
++  });
++}
++
++describe('index.html imports only src/main.tsx (C01-R3-02)', () => {
++  it(
++    'refuses an inline module importing the raw transport',
++    async () => {
++      const html =
++        '<script type="module">import { createTauriTransport } from "/src/ipc/tauriTransport.ts"; window.b = createTauriTransport;</script>';
++      await expect(buildApp([htmlFixture(html)])).rejects.toThrow(/IPC boundary/);
++    },
++    T,
++  );
++
++  it(
++    'refuses an inline module importing anything but main.tsx, even the host API',
++    async () => {
++      const html =
++        '<script type="module">import { createDefaultHostApi } from "/src/ipc/index.ts"; window.b = createDefaultHostApi;</script>';
++      await expect(buildApp([htmlFixture(html)])).rejects.toThrow(/IPC boundary/);
++    },
++    T,
++  );
++
++  it(
++    'builds the real index.html (positive control)',
++    async () => {
++      await expect(buildApp([])).resolves.toBeUndefined();
++    },
++    T,
++  );
++});
++
++describe('emitted-chunk attribution (C01-R3-01)', () => {
++  const [, scanner] = ipcBoundary({ allowTestSupport: false, desktopDir: desktop.slice(0, -1) });
++  const hook = scanner?.renderChunk;
++  const renderChunk = (typeof hook === 'function' ? hook : hook?.handler) as unknown as (
++    this: unknown,
++    code: string,
++    chunk: unknown,
++  ) => unknown;
++  const ctx = {
++    error(message: string): never {
++      throw new Error(message);
++    },
++  };
++  const app = `${desktop}src/App.tsx`;
++  const transport = `${desktop}src/ipc/tauriTransport.ts`;
++  const mention = "window['__TAURI_INTERNALS__'].invoke('x');";
++  const chunk = (modules: Record<string, string>) => ({
++    fileName: 'probe.js',
++    modules: Object.fromEntries(Object.entries(modules).map(([id, code]) => [id, { code }])),
++  });
++
++  it('accepts mentions attributable to the transport', () => {
++    expect(() => renderChunk.call(ctx, mention, chunk({ [transport]: mention }))).not.toThrow();
++  });
++  it('rejects a mention in any other module', () => {
++    expect(() => renderChunk.call(ctx, mention, chunk({ [app]: mention }))).toThrow(/IPC boundary/);
++  });
++  it('rejects mentions in the chunk that no module accounts for', () => {
++    expect(() => renderChunk.call(ctx, mention + mention, chunk({ [transport]: mention }))).toThrow(
++      /IPC boundary/,
++    );
++  });
++});
++
++describe('dev server: placeholder re-resolution only for approved modules (C01-R3-02)', () => {
++  it(
++    'serves the real graph, and refuses a module never reached through an import edge',
++    async () => {
++      const server = await createServer({
++        configFile: `${desktop}vite.config.ts`,
++        root: desktop,
++        mode: 'development',
++        logLevel: 'silent',
++        server: { port: 0, strictPort: false, ws: false },
++      });
++      try {
++        await expect(server.transformRequest('/src/ipc/tauriTransport.ts')).rejects.toThrow(/IPC boundary/);
++        expect((await server.transformRequest('/src/main.tsx'))?.code).toBeTruthy();
++        expect((await server.transformRequest('/src/ipc/index.ts'))?.code).toBeTruthy();
++        // Now reached through index.ts, the transport is an approved module.
++        expect((await server.transformRequest('/src/ipc/tauriTransport.ts'))?.code).toBeTruthy();
++      } finally {
++        await server.close();
++      }
++    },
++    T,
++  );
++});
++
++describe('config selection is pinned (C01-R3-02)', () => {
++  it('every vite/vitest script passes --config vite.config.ts and Tauri runs those scripts', () => {
++    const pkg = JSON.parse(readFileSync(`${desktop}package.json`, 'utf8')) as {
++      scripts: Record<string, string>;
++    };
++    const viteScripts = Object.entries(pkg.scripts).filter(([, cmd]) => /\b(vite|vitest)\b/.test(cmd));
++    expect(viteScripts.map(([name]) => name).sort()).toEqual(['build', 'dev', 'preview', 'test']);
++    for (const [name, cmd] of viteScripts) expect(cmd, name).toMatch(/--config vite\.config\.ts(\s|$)/);
++    const tauri = JSON.parse(readFileSync(`${desktop}src-tauri/tauri.conf.json`, 'utf8')) as {
++      build: { beforeDevCommand: string; beforeBuildCommand: string };
++    };
++    expect(tauri.build.beforeDevCommand).toBe('pnpm dev');
++    expect(tauri.build.beforeBuildCommand).toBe('pnpm build');
++  });
++});
+diff --git a/desktop/src/ipc/mockTransport.ts b/desktop/src/ipc/mockTransport.ts
+index 4459a48..ee49ee1 100644
+--- a/desktop/src/ipc/mockTransport.ts
++++ b/desktop/src/ipc/mockTransport.ts
+@@ -68,8 +68,8 @@ export function createMockTransport(): MockTransport {
+       const outcome: Outcome = handler
+         ? handler(args)
+         : { ok: false, error: { code: 'command.unknown', message: `no such command: ${command}` } };
+-      // Tauri rejects with the plain serialized error value, not an Error instance; the mock does the same.
+-      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
++      // Tauri rejects with the plain serialized error value, not an Error instance; the mock does the same
++      // (prefer-promise-reject-errors is switched off for this file in eslint.config.js).
+       return outcome.ok ? Promise.resolve(outcome.value) : Promise.reject(outcome.error);
+     },
+     listen(event, handler): Promise<Unlisten> {
+diff --git a/desktop/src/ipc/schema.test.ts b/desktop/src/ipc/schema.test.ts
+index d6cba61..4342d7a 100644
+--- a/desktop/src/ipc/schema.test.ts
++++ b/desktop/src/ipc/schema.test.ts
+@@ -1,8 +1,19 @@
+-import { describe, expect, it } from 'vitest';
++import { describe, expect, it, vi } from 'vitest';
+ 
+ import { createMockTransport, MOCK_ENGINE_INFO } from './mockTransport';
+ import { createHostApi, MENU_COMMAND_EVENT } from './hostApi';
+-import { certify, MAX_DEPTH, MAX_SAFE, plainDataViolations, U64, violations, type Schema } from './schema';
++import {
++  ANY,
++  certify,
++  copyPlainData,
++  guard,
++  MAX_DEPTH,
++  MAX_SAFE,
++  plainDataViolations,
++  U64,
++  violations,
++  type Schema,
++} from './schema';
+ import {
+   ENGINE_INFO_FIELDS,
+   isBenchPlanOrNull,
+@@ -192,3 +203,67 @@ describe('own-property semantics (C01-R2-02)', () => {
+     expect(r).not.toBe(original);
+   });
+ });
++
++describe('platform floor: Safari 15.0 / macOS 12.0 (ADR-0005, C01-R3-05)', () => {
++  it('certifies host responses with BOTH Object.hasOwn and structuredClone removed', async () => {
++    const hasOwnDescriptor = Object.getOwnPropertyDescriptor(Object, 'hasOwn');
++    if (!hasOwnDescriptor) throw new Error('test host lacks Object.hasOwn');
++    const response = { seq: 3, payload: 'abc', engineUptimeNs: 1, handlerNs: 1 };
++    const host = createHostApi({ ...createMockTransport(), invoke: () => Promise.resolve(response) });
++    let pinged: unknown;
++    let nested: unknown;
++    let error: unknown;
++    // Only product code runs while the APIs are missing (Vitest's own expect() uses Object.hasOwn).
++    Object.defineProperty(Object, 'hasOwn', { ...hasOwnDescriptor, value: undefined });
++    vi.stubGlobal('structuredClone', undefined);
++    try {
++      pinged = await host.ping({ seq: 3 });
++      nested = certify(guard<unknown>(ANY), JSON.parse('{"__proto__":{"a":[1,{"b":null}]}}'));
++    } catch (caught: unknown) {
++      error = caught;
++    } finally {
++      vi.unstubAllGlobals();
++      Object.defineProperty(Object, 'hasOwn', hasOwnDescriptor);
++    }
++    expect(error).toBeUndefined();
++    expect(pinged).toEqual(response);
++    expect(nested).toBeDefined();
++  });
++});
++
++describe('exact-index arrays and own copies (C01-R3-03)', () => {
++  it('rejects holes compensated by named properties, and out-of-order or extra keys', () => {
++    const holeAndName: unknown[] = new Array<unknown>(2);
++    holeAndName[0] = 1;
++    Object.defineProperty(holeAndName, 'x', { value: 1, enumerable: true });
++    expect(plainDataViolations(holeAndName)).not.toEqual([]);
++    const named = Object.assign([1, 2], { extra: 3 });
++    expect(plainDataViolations(named)).not.toEqual([]);
++    expect(plainDataViolations([1, 2, 3])).toEqual([]);
++    expect(plainDataViolations([])).toEqual([]);
++  });
++
++  it('copyPlainData keeps prototypes, own __proto__ keys and values, and shares nothing', () => {
++    const source = JSON.parse('{"__proto__":{"x":1},"list":[1,{"y":[2]}]}') as Record<string, unknown>;
++    const copy = copyPlainData(source) as Record<string, unknown>;
++    expect(Object.getPrototypeOf(copy)).toBe(Object.prototype);
++    expect(Object.getOwnPropertyDescriptor(copy, '__proto__')?.value).toEqual({ x: 1 });
++    expect(copy['list']).toEqual([1, { y: [2] }]);
++    expect(copy['list']).not.toBe(source['list']);
++    const bare = Object.assign(Object.create(null) as object, { a: 1 });
++    expect(Object.getPrototypeOf(copyPlainData(bare))).toBeNull();
++  });
++
++  it('certify never throws, even for a Proxy whose traps throw', () => {
++    const hostile = new Proxy(
++      {},
++      {
++        ownKeys() {
++          throw new Error('trap');
++        },
++      },
++    );
++    expect(() => certify(guard<unknown>(ANY), hostile)).not.toThrow();
++    expect(certify(guard<unknown>(ANY), hostile)).toBeUndefined();
++  });
++});
+diff --git a/desktop/src/ipc/schema.ts b/desktop/src/ipc/schema.ts
+index d6571f2..cc219bf 100644
+--- a/desktop/src/ipc/schema.ts
++++ b/desktop/src/ipc/schema.ts
+@@ -8,10 +8,13 @@
+ //      objects whose prototype is Array.prototype / Object.prototype (or null), holding only own, enumerable,
+ //      string-keyed data properties (no accessors, functions, symbols, holes or cycles). Inherited fields therefore
+ //      never count, and a key such as `__proto__` or `constructor` is just another own key.
+-//   2. `violations`: the schema. Property membership and required fields use `Object.hasOwn` and own-property
+-//      descriptors only; nothing is looked up with `in` or bare indexing on a schema map.
+-// `certify` checks the original, takes a structured-clone snapshot, validates the snapshot again and returns it, so
+-// callers receive exactly the data that was validated.
++//   2. `violations`: the schema. Property membership and required fields use own-property checks and descriptors
++//      only; nothing is looked up with `in` or bare indexing on a schema map.
++// `certify` checks the original, takes its own deep copy, validates the copy again and returns it, so callers receive
++// exactly the data that was validated (a lying Proxy cannot change the copy after the fact).
++//
++// Platform floor (ADR-0005: Safari 15.0 / macOS 12.0): no `Object.hasOwn` and no `structuredClone` (both Safari 15.4);
++// `compat/compat` in the lint gate enforces this.
+ 
+ export type Schema =
+   | { type: 'string'; enum?: readonly string[]; pattern?: string }
+@@ -39,18 +42,23 @@ export const ANY: Schema = {};
+ /** Nesting deeper than this is rejected rather than risking stack exhaustion. */
+ export const MAX_DEPTH = 64;
+ 
++/** `Object.hasOwn` for the Safari 15.0 floor. */
++export function hasOwn(obj: object, key: PropertyKey): boolean {
++  return Object.prototype.hasOwnProperty.call(obj, key);
++}
++
+ /** The own data value of `key` on `obj`, or undefined; never consults the prototype chain or calls a getter. */
+ function ownValue(obj: object, key: string): unknown {
+   const d = Object.getOwnPropertyDescriptor(obj, key);
+-  return d && Object.hasOwn(d, 'value') ? d.value : undefined;
++  return d && hasOwn(d, 'value') ? d.value : undefined;
+ }
+ 
+ function isAnyOf(schema: Schema): schema is AnyOfSchema {
+-  return Object.hasOwn(schema, 'anyOf');
++  return hasOwn(schema, 'anyOf');
+ }
+ 
+ function isTyped(schema: Schema): schema is TypedSchema {
+-  return Object.hasOwn(schema, 'type');
++  return hasOwn(schema, 'type');
+ }
+ 
+ /** Returns the locations at which `value` is not plain JSON data (empty = plain). */
+@@ -68,12 +76,16 @@ export function plainDataViolations(value: unknown, at = '', seen = new Set<obje
+     return [`${here}: not a plain ${isArray ? 'array' : 'object'}`];
+   }
+   const names = Object.getOwnPropertyNames(value).filter((k) => !(isArray && k === 'length'));
+-  if (isArray && names.length !== value.length) return [`${here}: sparse array or extra array property`];
++  // Arrays: the own names must be exactly "0".."length-1" (integer keys come first, ascending), so a hole cannot
++  // be compensated by a named property (C01-R3-03).
++  if (isArray && (names.length !== value.length || names.some((k, i) => k !== String(i)))) {
++    return [`${here}: sparse array or extra array property`];
++  }
+   seen.add(value);
+   const out: string[] = [];
+   for (const k of names) {
+     const d = Object.getOwnPropertyDescriptor(value, k);
+-    if (!d || !Object.hasOwn(d, 'value') || !d.enumerable) {
++    if (!d || !hasOwn(d, 'value') || !d.enumerable) {
+       out.push(`${at}/${k}: accessor or non-enumerable property`);
+     } else {
+       out.push(...plainDataViolations(d.value, `${at}/${k}`, seen));
+@@ -116,7 +128,7 @@ export function violations(schema: Schema, value: unknown, at = ''): string[] {
+       }
+       const out: string[] = [];
+       for (let i = 0; i < value.length; i++) {
+-        if (!Object.hasOwn(value, i)) out.push(`${at}/${i}: missing array element`);
++        if (!hasOwn(value, i)) out.push(`${at}/${i}: missing array element`);
+         else out.push(...violations(schema.items, ownValue(value, String(i)), `${at}/${i}`));
+       }
+       return out;
+@@ -126,10 +138,10 @@ export function violations(schema: Schema, value: unknown, at = ''): string[] {
+         return [`${here}: expected object`];
+       const proto: unknown = Object.getPrototypeOf(value);
+       if (proto !== Object.prototype && proto !== null) return [`${here}: expected plain object`];
+-      const out = schema.required.filter((k) => !Object.hasOwn(value, k)).map((k) => `${at}/${k}: required`);
++      const out = schema.required.filter((k) => !hasOwn(value, k)).map((k) => `${at}/${k}: required`);
+       for (const k of Object.keys(value)) {
+         const v = ownValue(value, k);
+-        const prop = Object.hasOwn(schema.properties, k)
++        const prop = hasOwn(schema.properties, k)
+           ? (ownValue(schema.properties, k) as Schema | undefined)
+           : undefined;
+         if (prop !== undefined) out.push(...violations(prop, v, `${at}/${k}`));
+@@ -148,21 +160,50 @@ export function conforms(schema: Schema, value: unknown): boolean {
+ }
+ 
+ /** A type guard for `T` backed by `schema`. The schema must describe `T`; the wire tests check both agree. */
+-// T is the type the schema certifies; it appears only in the returned predicate by design.
+-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
++// T is the type the schema certifies; it appears only in the returned predicate by design
++// (no-unnecessary-type-parameters is switched off for this file in eslint.config.js).
+ export function guard<T>(schema: Schema): (value: unknown) => value is T {
+   return (value: unknown): value is T => conforms(schema, value);
+ }
+ 
+ /**
+- * Validates a value received from a transport and returns a snapshot of it, or undefined. The original must be
+- * plain data; the snapshot (a structured clone) is validated again and is what the caller gets, so later changes to
+- * the transport's object cannot affect validated data.
++ * Deep copy of a value that has passed `plainDataViolations`: own enumerable data properties only, same prototype
++ * (Object.prototype or null; arrays stay arrays). Keys are defined, never assigned, so an own `__proto__` key stays
++ * an ordinary own key. Never calls getters (it reads data descriptors) and never uses `structuredClone`.
++ */
++export function copyPlainData(value: unknown): unknown {
++  if (typeof value !== 'object' || value === null) return value;
++  if (Array.isArray(value)) {
++    const out: unknown[] = [];
++    for (let i = 0; i < value.length; i++) out.push(copyPlainData(ownValue(value, String(i))));
++    return out;
++  }
++  const out: object = Object.getPrototypeOf(value) === null ? (Object.create(null) as object) : {};
++  for (const k of Object.keys(value)) {
++    Object.defineProperty(out, k, {
++      value: copyPlainData(ownValue(value, k)),
++      enumerable: true,
++      writable: true,
++      configurable: true,
++    });
++  }
++  return out;
++}
++
++/**
++ * Validates a value received from a transport and returns a snapshot of it, or undefined; never throws for any
++ * input. The original must be plain data; the snapshot (`copyPlainData`) is validated again, both layers, and is what
++ * the caller gets, so later changes to the transport's object cannot affect validated data.
+  */
+ export function certify<T>(check: (value: unknown) => value is T, value: unknown): T | undefined {
+-  if (plainDataViolations(value).length > 0) return undefined;
+-  const snapshot: unknown = structuredClone(value);
+-  return check(snapshot) ? snapshot : undefined;
++  try {
++    if (plainDataViolations(value).length > 0) return undefined;
++    const snapshot = copyPlainData(value);
++    return check(snapshot) ? snapshot : undefined;
++  } catch {
++    // A hostile Proxy can throw from any trap; that is an invalid value, not a crash of the caller.
++    return undefined;
++  }
+ }
+ 
+ /** `namespace.object[.verb]`, matching `is_command_id` in desktop/src-tauri/src/bindings.rs. */
+diff --git a/desktop/src/test/c01-r3-schema.test.ts b/desktop/src/test/c01-r3-schema.test.ts
+index dcb3827..f2afeff 100644
+--- a/desktop/src/test/c01-r3-schema.test.ts
++++ b/desktop/src/test/c01-r3-schema.test.ts
+@@ -43,10 +43,14 @@ describe('C01-R3-03: arrays must have every index and no extra named properties'
+ });
+ 
+ describe('C01-R3-04: structured-clone failures must fail through the host boundary', () => {
+-  it('certify rejects a transparent object proxy without throwing', () => {
++  // it.fails per the orchestrator's round-3 ruling: ticketed to M1 C1.1 in plan/traceability.csv (C01-R3-04).
++  // Bodies unchanged. Without structuredClone (Safari 15.0 floor, ADR-0005) a transparent Proxy cannot be told
++  // apart from plain data; certify now copies it into validated plain data and never throws. These cases flip to
++  // failing (and must be unmarked) when M1 rejects Proxy values outright.
++  it.fails('certify rejects a transparent object proxy without throwing', () => {
+     expect(certify(any, new Proxy({ value: 1 }, {}))).toBeUndefined();
+   });
+-  it('a ping with an uncloneable transport value yields ipc.invalidResponse', async () => {
++  it.fails('a ping with an uncloneable transport value yields ipc.invalidResponse', async () => {
+     const response = new Proxy({ seq: 1, payload: null, engineUptimeNs: 1, handlerNs: 1 }, {});
+     const transport: HostTransport = {
+       kind: 'mock',
+@@ -57,7 +61,7 @@ describe('C01-R3-04: structured-clone failures must fail through the host bounda
+       code: 'ipc.invalidResponse',
+     });
+   });
+-  it('an uncloneable menu event is dropped without throwing through the listener', async () => {
++  it.fails('an uncloneable menu event is dropped without throwing through the listener', async () => {
+     const event = new Proxy(
+       { command: 'workspace.reset', params: {}, handler: 'frontend', milestone: null },
+       {},
+diff --git a/desktop/src/test/platformFloor.test.ts b/desktop/src/test/platformFloor.test.ts
+new file mode 100644
+index 0000000..dd0ca13
+--- /dev/null
++++ b/desktop/src/test/platformFloor.test.ts
+@@ -0,0 +1,47 @@
++// @vitest-environment node
++/// <reference types="node" />
++// Platform floor (ADR-0005, C01-R3-05): Safari 15.0 / macOS 12.0 WKWebView and Chrome 110 / WebView2. The floor is
++// declared in three places that must agree, and the lint gate must reject newer APIs in shipped code.
++import { readFileSync } from 'node:fs';
++import { fileURLToPath } from 'node:url';
++
++import { ESLint } from 'eslint';
++import { describe, expect, it } from 'vitest';
++
++const desktop = fileURLToPath(new URL('../../', import.meta.url));
++const read = (f: string): unknown => JSON.parse(readFileSync(`${desktop}${f}`, 'utf8'));
++
++describe('declared platform floor', () => {
++  it('browserslist, the Vite build target and the Tauri macOS minimum agree', () => {
++    const pkg = read('package.json') as { browserslist: string[] };
++    expect(pkg.browserslist).toEqual(['safari 15', 'chrome 110']);
++    const vite = readFileSync(`${desktop}vite.config.ts`, 'utf8');
++    expect(vite).toContain("target: ['es2022', 'chrome110', 'safari15']");
++    const tauri = read('src-tauri/tauri.conf.json') as {
++      bundle: { macOS: { minimumSystemVersion: string } };
++    };
++    expect(tauri.bundle.macOS.minimumSystemVersion).toBe('12.0');
++  });
++});
++
++describe('lint rejects APIs newer than the floor in shipped code', () => {
++  const eslint = new ESLint({ cwd: desktop });
++  const compatHits = async (code: string, file = 'src/lib/latency.ts') => {
++    const [r] = await eslint.lintText(code, { filePath: `${desktop}${file}` });
++    return (r?.messages ?? []).filter((m) => m.ruleId === 'compat/compat').map((m) => m.message);
++  };
++
++  for (const [api, code] of [
++    ['Object.hasOwn (Safari 15.4)', "export const a = Object.hasOwn({}, 'x');\n"],
++    ['structuredClone (Safari 15.4)', 'export const b = structuredClone({});\n'],
++    ['Array.prototype.at (Safari 15.4)', 'export const c = [1].at(-1);\n'],
++  ] as const) {
++    it(`flags ${api}`, async () => {
++      expect(await compatHits(code)).not.toEqual([]);
++    }, 60_000);
++  }
++
++  it('accepts the floor-safe replacement', async () => {
++    expect(await compatHits("export const d = Object.prototype.hasOwnProperty.call({}, 'x');\n")).toEqual([]);
++  }, 60_000);
++});
+diff --git a/desktop/vite.config.ts b/desktop/vite.config.ts
+index 79e4ba3..77414e2 100644
+--- a/desktop/vite.config.ts
++++ b/desktop/vite.config.ts
+@@ -5,9 +5,18 @@ import { defineConfig } from 'vite';
+ import { ipcBoundary } from './boundary/vite-plugin.ts';
+ 
+ // Tauri expects a fixed dev port and must not clear its terminal output.
++const TEST_SETUP = 'src/test/setup.ts';
++const isTestEntry = (file: string) => file === TEST_SETUP || /^src\/.+\.test\.[cm]?[jt]sx?$/.test(file);
++
+ export default defineConfig(({ mode }) => ({
+   // The IPC boundary is enforced at bundling time for dev, build and Vitest (boundary/vite-plugin.ts).
+-  plugins: [ipcBoundary({ allowTestSupport: mode === 'test' }), react()],
++  plugins: [
++    ...ipcBoundary({
++      allowTestSupport: mode === 'test',
++      ...(mode === 'test' ? { testEntries: isTestEntry } : {}),
++    }),
++    react(),
++  ],
+   clearScreen: false,
+   server: {
+     port: 1420,
+@@ -22,10 +31,13 @@ export default defineConfig(({ mode }) => ({
+   },
+   test: {
+     environment: 'jsdom',
+-    setupFiles: ['src/test/setup.ts'],
++    setupFiles: [TEST_SETUP],
+     include: ['src/**/*.test.{ts,tsx}'],
+     // Boundary tests write probe files under src/__probes__ and lint/bundle the tree; run files one at a time so
+     // no test ever observes another test's probes.
+     fileParallelism: false,
++    // Vitest's persistent transform cache would let a cached module skip the IPC boundary's import-edge and
++    // transform checks (boundary/vite-plugin.ts), so every run transforms and checks every module afresh.
++    fsModuleCache: false,
+   },
+ }));
+diff --git a/docs/decisions/ADR-0001-shell-tauri2.md b/docs/decisions/ADR-0001-shell-tauri2.md
+index 096ba44..2091fcb 100644
+--- a/docs/decisions/ADR-0001-shell-tauri2.md
++++ b/docs/decisions/ADR-0001-shell-tauri2.md
+@@ -18,14 +18,25 @@ Options were compared in plan §2.2: Tauri 2, Qt 6, pure-Rust GUI toolkits and F
+   Tauri host; the TypeScript + React front end (dockview for docking) talks to the host only through the typed IPC
+   module `desktop/src/ipc/` (transport interface + Tauri and mock implementations). The boundary is enforced twice
+   (amended after C0.1 review rounds 1–2):
+-  - **Bundler** (`desktop/boundary/vite-plugin.ts`, active in dev, build and Vitest), on resolved module ids: only
+-    `src/ipc/tauriTransport.ts` may load `@tauri-apps` packages; only `src/ipc/index.ts` may load the transport, so
+-    UI code gets the validated `HostApi`, never raw `invoke`; application modules must live under `desktop/src`
+-    (Vitest alone may also load the repository `tests/` folder and `desktop/boundary/`); no other module may mention
+-    the `__TAURI*` globals or the package names.
+-  - **Linter** (`desktop/boundary/eslint.js`), on every JS/TS extension in the desktop package: the same rules in
+-    source form, imports under `src/` may not climb out of `src/`, and disabling a boundary rule inline (including
+-    blanket `eslint-disable`) is itself an error.
++  - **Bundler** (`desktop/boundary/vite-plugin.ts`, active in dev, build and Vitest).
++    - Checks are made on resolved module ids:
++      - only `src/ipc/tauriTransport.ts` may load `@tauri-apps` packages;
++      - only `src/ipc/index.ts` may load the transport, so UI code gets the validated `HostApi`, never raw `invoke`;
++      - application modules must live under `desktop/src` (Vitest alone may also load the repository `tests/` folder
++        and `desktop/boundary/`).
++    - `index.html`, including its inline scripts, may import only `src/main.tsx`. The dev server's placeholder
++      re-resolution is accepted only for modules already approved through a real import edge, and `build` has no
++      exception at all.
++    - After Vite's TS/JSX transform, every application module is parsed. No decoded string literal, template or
++      identifier may mention `__TAURI*` or `@tauri-apps`, and every emitted chunk's mentions must be attributable to
++      the transport or to Tauri package code.
++    - Every Vite/Vitest script pins `--config vite.config.ts`, and Vitest's persistent transform cache is off so no
++      module skips these checks.
++  - **Linter** (`desktop/boundary/eslint.js`), on every JS/TS extension in the desktop package:
++    - the same rules in source form;
++    - imports under `src/` may not climb out of `src/`;
++    - `linterOptions.noInlineConfig` means no inline ESLint configuration of any kind takes effect; exceptions live
++      in `eslint.config.js`.
+   - Values crossing the boundary are plain-data snapshots validated against JSON-Schema-subset descriptors
+     (`src/ipc/schema.ts`) with own-property semantics.
+   Run-time obfuscation (a global name assembled from variables) is out of reach of static checks; Tauri's
+diff --git a/docs/decisions/ADR-0005-platform-floor.md b/docs/decisions/ADR-0005-platform-floor.md
+new file mode 100644
+index 0000000..47066a1
+--- /dev/null
++++ b/docs/decisions/ADR-0005-platform-floor.md
+@@ -0,0 +1,47 @@
++# ADR-0005 — Platform floor
++
++Status: accepted (C0.1 review round 3, orchestrator ruling 2026-10-17). Open question for the user below.
++
++## Context
++
++The spec sets no minimum OS or webview version. Earlier C0.1 work declared one implicitly in three places: Vite
++`build.target` `safari15`/`chrome110`, Tauri `bundle.macOS.minimumSystemVersion` `12.0`, and the WebView2 evergreen
++runtime on Windows. Review round 3 (C01-R3-05) found the IPC validator using `Object.hasOwn` and `structuredClone`,
++both new in Safari 15.4 (macOS 12.3), so the declared floor and the code disagreed. A syntax target does not polyfill
++missing runtime functions.
++
++## Decision
++
++1. **Floor:**
++   - **macOS 12.0 (Monterey) with its WKWebView, Safari 15.0.**
++   - **Windows 10 version 1809 or later with the evergreen WebView2 runtime.** WebView2 updates itself;
++     **Chrome 110** is used as a conservative API floor.
++   - The CI builds for macOS are Apple Silicon only (see the C0.1 handoff); the floor is about OS and webview
++     versions, not CPU.
++2. **Single declaration, checked for agreement.** The floor is declared as:
++   - `browserslist` in `desktop/package.json` (`safari 15`, `chrome 110`);
++   - the Vite `build.target` (`es2022`, `chrome110`, `safari15`);
++   - Tauri's `minimumSystemVersion` (`12.0`).
++
++   `desktop/src/test/platformFloor.test.ts` fails if they disagree.
++3. **Enforced in the lint gate.** `eslint-plugin-compat` (`compat/compat`) checks application source (`src/**`,
++   excluding tests, which run in Node) against the browserslist targets. Examples it rejects: `Object.hasOwn`,
++   `structuredClone`, `Array.prototype.at`. Syntax newer than the target is down-levelled by Vite. Runtime APIs are
++   not, so code must use floor-safe equivalents: `Object.prototype.hasOwnProperty.call`, the own plain-data copy in
++   `src/ipc/schema.ts`, and so on.
++4. **Regression tests.** A unit test removes `Object.hasOwn` and `structuredClone` together and certifies a real host
++   response through `createHostApi(...).ping()`. The reviewer's tests cover each API on its own.
++
++## Consequences
++
++- Newer web APIs need either a floor-safe implementation or an ADR amendment raising the floor.
++- No macOS 12.0 machine runs in CI (`macos-latest` is newer). The floor is enforced statically and by simulation,
++  not by execution on the oldest supported system.
++- A transparent `Proxy` cannot be told apart from plain data without `structuredClone`. The validator copies such a
++  value into validated plain data and never throws. Rejecting proxies outright is ticketed to M1 C1.1 (C01-R3-04).
++
++## Open question for the user
++
++**Raise the floor to macOS 13 (Ventura, Safari 16)?** That would allow `structuredClone`, `Object.hasOwn`, `Array.at`
++and other Safari 15.4–16 APIs. It would drop Monterey 12.0–12.x users. The recommended default is to keep macOS 12.0
++until there is a concrete need.
+diff --git a/plan/traceability.csv b/plan/traceability.csv
+index d97cb0a..412caa2 100644
+--- a/plan/traceability.csv
++++ b/plan/traceability.csv
+@@ -33,3 +33,8 @@ ADR-0001,"IPC boundary enforced at bundle time (resolved ids: Tauri packages, ra
+ ADR-0001,"boundary lint on every JS/TS extension; no inline disabling; src stays inside src",M0,C0.1,done (review r2),desktop/src/ipc/boundary.lint.test.ts; tests/adversarial/c01-r2-boundary.test.mjs
+ ADR-0001,"host values: plain data only, own-property schema semantics, validated snapshots",M0,C0.1,done (review r2),desktop/src/ipc/schema.test.ts; desktop/src/test/c01-r2-schema.test.ts
+ ADR-0003,"every SPDX operand validated (Annex D grammar + SPDX lists)",M0,C0.1,done (review r2),scripts/check-npm-licenses.test.mjs; tests/adversarial/c01-r2-licenses.test.mjs
++ADR-0001,"no inline ESLint configuration; post-transform AST scan; emitted-chunk attribution (C01-R3-01)",M0,C0.1,done (review r3),tests/adversarial/c01-r3-boundary.test.mjs; desktop/src/ipc/boundary.build.test.ts
++ADR-0001,"index.html imports only src/main.tsx; serve re-resolution only for approved ids; pinned --config (C01-R3-02)",M0,C0.1,done (review r3),tests/adversarial/c01-r3-boundary.test.mjs; desktop/src/ipc/boundary.build.test.ts
++ADR-0005,"platform floor Safari 15.0 / macOS 12.0, Chrome 110 / WebView2; no post-floor APIs (C01-R3-05)",M0,C0.1,done (review r3),desktop/src/test/platformFloor.test.ts; desktop/src/test/c01-r3-schema.test.ts; desktop/src/ipc/schema.test.ts
++ADR-0001,"arrays crossing the boundary have exactly indices 0..length-1 (C01-R3-03)",M0,C0.1,done (review r3; fixed with the R3-05 rewrite rather than ticketed),desktop/src/test/c01-r3-schema.test.ts; desktop/src/ipc/schema.test.ts
++ADR-0001,"Proxy values crossing the boundary are rejected with ipc.invalidResponse / dropped (C01-R3-04)",M1,C1.1,ticketed: certify copies transparent proxies into validated plain data and never throws; outright rejection needs a floor-safe proxy test,desktop/src/test/c01-r3-schema.test.ts (3 cases it.fails until fixed)
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+index e209c5f..60088dc 100644
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -54,9 +54,15 @@ importers:
+       '@vitejs/plugin-react':
+         specifier: 6.1.2
+         version: 6.1.2(vite@8.3.4(@types/node@22.20.5))
++      browserslist:
++        specifier: 4.29.3
++        version: 4.29.3
+       eslint:
+         specifier: 10.13.0
+         version: 10.13.0
++      eslint-plugin-compat:
++        specifier: 7.0.2
++        version: 7.0.2(eslint@10.13.0)
+       eslint-plugin-react-hooks:
+         specifier: 7.1.1
+         version: 7.1.1(eslint@10.13.0)
+@@ -311,6 +317,12 @@ packages:
+   '@keyv/serialize@1.1.1':
+     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
+ 
++  '@mdn/browser-compat-data@5.7.6':
++    resolution: {integrity: sha512-7xdrMX0Wk7grrTZQwAoy1GkvPMFoizStUoL+VmtUkAxegbCCec+3FKwOM6yc/uGU5+BEczQHXAlWiqvM8JeENg==}
++
++  '@mdn/browser-compat-data@6.1.5':
++    resolution: {integrity: sha512-PzdZZzRhcXvKB0begee28n5lvwAcinGKYuLZOVxHAZm+n7y01ddEGfdS1ZXRuVcV+ndG6mSEAE8vgudom5UjYg==}
++
+   '@oxc-project/types@0.154.0':
+     resolution: {integrity: sha512-KYOUGQFlLWR+s4QMV2Q9ko38TZm7EdO87Qm7rvZLqk/webse/cDjtyxKhg/47l0byCbs/k46LT8qc4PKjAikzA==}
+ 
+@@ -646,6 +658,9 @@ packages:
+     resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
+     engines: {node: '>=12'}
+ 
++  ast-metadata-inferer@0.8.1:
++    resolution: {integrity: sha512-ht3Dm6Zr7SXv6t1Ra6gFo0+kLDglHGrEbYihTkcycrbHw7WCcuhBzPlJYHEsIpycaUwzsJHje+vUcxXUX4ztTA==}
++
+   balanced-match@4.0.4:
+     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
+     engines: {node: 18 || 20 || >=22}
+@@ -751,6 +766,12 @@ packages:
+     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
+     engines: {node: '>=10'}
+ 
++  eslint-plugin-compat@7.0.2:
++    resolution: {integrity: sha512-gN8hF+4NzMsHUbr4m/TYZK0FtW3DcV4g8rXpTsY2EV5xiRD8jsilUlB9lNSkGGX0veDCxMhKSWbSd+faJByQDA==}
++    engines: {node: '>=22.x'}
++    peerDependencies:
++      eslint: ^9.0.0 || ^10.0.0
++
+   eslint-plugin-react-hooks@7.1.1:
+     resolution: {integrity: sha512-f2I7Gw6JbvCexzIInuSbZpfdQ44D7iqdWX01FKLvrPgqxoE7oMj8clOfto8U6vYiz4yd5oKu39rRSVOe1zRu0g==}
+     engines: {node: '>=18'}
+@@ -855,6 +876,10 @@ packages:
+     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
+     engines: {node: '>=10.13.0'}
+ 
++  globals@15.15.0:
++    resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
++    engines: {node: '>=18'}
++
+   globals@17.13.0:
+     resolution: {integrity: sha512-RwMTC61u7hrG3ZJMkZQOK4JLJrKS8QtoTii63EmWvFXHqycY9FObBJQCbsLxSO8kjKhWE5kV1GC+Vb1g3RI0Zg==}
+     engines: {node: '>=18'}
+@@ -1014,6 +1039,9 @@ packages:
+     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
+     engines: {node: '>=10'}
+ 
++  lodash.memoize@4.1.2:
++    resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
++
+   lru-cache@11.5.3:
+     resolution: {integrity: sha512-U4N8FgzmWxc8k1VH8Kr6lQg18U7Fjvby6wXHVRX/ZZ7IwWbRMgrRbP0Wrb5q5NVinryp4SQampHKdvtecItxUg==}
+     engines: {node: 20 || >=22}
+@@ -1613,6 +1641,10 @@ snapshots:
+ 
+   '@keyv/serialize@1.1.1': {}
+ 
++  '@mdn/browser-compat-data@5.7.6': {}
++
++  '@mdn/browser-compat-data@6.1.5': {}
++
+   '@oxc-project/types@0.154.0': {}
+ 
+   '@rolldown/binding-android-arm-eabi@1.2.14':
+@@ -1889,6 +1921,10 @@ snapshots:
+ 
+   assertion-error@2.0.1: {}
+ 
++  ast-metadata-inferer@0.8.1:
++    dependencies:
++      '@mdn/browser-compat-data': 5.7.6
++
+   balanced-match@4.0.4: {}
+ 
+   baseline-browser-mapping@2.11.29: {}
+@@ -1979,6 +2015,17 @@ snapshots:
+ 
+   escape-string-regexp@4.0.0: {}
+ 
++  eslint-plugin-compat@7.0.2(eslint@10.13.0):
++    dependencies:
++      '@mdn/browser-compat-data': 6.1.5
++      ast-metadata-inferer: 0.8.1
++      browserslist: 4.29.3
++      eslint: 10.13.0
++      find-up: 5.0.0
++      globals: 15.15.0
++      lodash.memoize: 4.1.2
++      semver: 7.8.5
++
+   eslint-plugin-react-hooks@7.1.1(eslint@10.13.0):
+     dependencies:
+       '@babel/core': 7.29.7
+@@ -2100,6 +2147,8 @@ snapshots:
+     dependencies:
+       is-glob: 4.0.3
+ 
++  globals@15.15.0: {}
++
+   globals@17.13.0: {}
+ 
+   hashery@1.5.1:
+@@ -2235,6 +2284,8 @@ snapshots:
+     dependencies:
+       p-locate: 5.0.0
+ 
++  lodash.memoize@4.1.2: {}
++
+   lru-cache@11.5.3: {}
+ 
+   lru-cache@5.1.1:
+diff --git a/reviews/M0-C0.1-handoff.md b/reviews/M0-C0.1-handoff.md
+index ce14150..8eacafe 100644
+--- a/reviews/M0-C0.1-handoff.md
++++ b/reviews/M0-C0.1-handoff.md
+@@ -45,12 +45,13 @@ menu bar, layout, IPC readout, `--ipc-bench`, headless self-test).
+ | IPC `ping` round trip, empty payload, n = 500 (after 20 warm-up) | p50 **0.70 ms**, p95 0.80 ms, p99 1.10 ms, max 1.90 ms |
+ | IPC `ping`, 1 KiB payload | p50 0.70 ms, p95 0.80 ms |
+ | IPC `ping`, 64 KiB payload (JSON both ways) | p50 1.80 ms, p95 2.00 ms |
+-| IPC `ping`, 1 MiB payload (JSON both ways; echo verified by length + FNV-1a checksum since review r1; since review r2 every response is also snapshotted and validated, p50 ≈ 26 ms) | p50 20.4 ms, p95 23.9 ms (≈ 100 MB/s JSON round trip → C0.3 must use binary `tauri::ipc::Response`) |
++| IPC `ping`, 1 MiB payload (JSON both ways; echo verified by length + FNV-1a checksum since review r1; every response is also copied and validated: p50 ≈ 26 ms with structuredClone in r2, 20.2 ms with the own plain-data copy in r3) | p50 20.4 ms, p95 23.9 ms (≈ 100 MB/s JSON round trip → C0.3 must use binary `tauri::ipc::Response`) |
+ | Timer resolution in WebView2 `performance.now()` | 0.1 ms (values are quantised) |
+ | `--ipc-bench` wall time (4 × 520 pings incl. start-up and exit) | 13.8 s |
+ | Headless `--selftest --json` wall time | 18 ms |
+ | Sizes | `toontown-headless.exe` 0.63 MB, `toontown.exe` 9.4 MB, NSIS installer 2.47 MiB |
+ | Tauri release build (warm Cargo cache) | 1 min 17 s |
++| Tests (after review r3) | Rust 53; front end 14 Vitest files — 162 tests passing plus 3 `it.fails` (C01-R3-04, ticketed), including 53 boundary-lint, 27 boundary-build, the platform-floor tests and every reviewer regression from rounds 1–3 — and 9 `node --test` licence tests. |
+ | Tests (after review r2) | Rust 53 on Windows (desktop 17, engine 16, headless CLI 7 unit + 5 end-to-end, adversarial 7, guard fixture 1); front end 133 Vitest (incl. 53 boundary-lint, 19 boundary-build, schema and the reviewers' round-1/round-2 regressions) and 9 `node --test` licence-evaluator tests. After review r1: Rust 53, front end 62 + 8. At C0.1 hand-off: Rust 45 (desktop **17**, not 14 as first written) and front end 22. |
+ | Headless linked DLLs | kernel32, ntdll, vcruntime140, api-ms-win-core-synch, api-ms-win-crt-{runtime,math,stdio,locale,heap} only |
+ | Determinism probe | `d22c8ec2…5a16` on Windows x86_64, reproduced bit-for-bit by an independent Python implementation |
+@@ -134,6 +135,17 @@ the C0.3 binary-IPC measurements will revisit.
+    `--ipc-bench <path>` (it writes that file and exits; `bench_report` refuses to write unless start-up requested a
+    benchmark). They will be removed or gated behind a dev build after M0 and must never become MCP operations. They are not
+    under `src/spikes/` because they instrument the product shell rather than prototype a feature; C0.2/C0.3 reuse them.
++9. **Proxy values at the IPC boundary (C01-R3-04, ticketed to M1 C1.1).** Without `structuredClone` (Safari 15.0
++   floor) a transparent `Proxy` cannot be told apart from plain data. `certify` copies it into validated plain data
++   and never throws, but does not reject it. The reviewer's three cases are marked `it.fails` until M1 fixes this.
++   Real host values are JSON-parsed and are never proxies.
++10. **Platform floor not executed on its oldest system.** ADR-0005 fixes macOS 12.0 / Safari 15.0 and Windows 10
++    1809+ / WebView2 (Chrome 110 API floor). It is enforced by `compat/compat`, by config-agreement tests and by
++    tests that remove post-floor APIs, but no macOS 12.0 machine runs the app (CI's `macos-latest` is newer).
++11. **Remaining IPC-boundary limit.** A Tauri global name assembled at run time from variables cannot be detected
++    statically (lint or bundle). Tauri's `withGlobalTauri` stays off, so only the internal IPC global exists.
++12. **Vitest's persistent transform cache is disabled** (`fsModuleCache: false`) so cached modules cannot skip the
++    boundary checks. This costs some test start-up time.
+ 
+ ## Open questions for the orchestrator / user
+ 
+@@ -146,6 +158,12 @@ Answered by the orchestrator (2026-10-17):
+ 
+ Known gap 1 (interactive menu driving): orchestrator decision, **no `tauri-driver` now; M4**.
+ 
++Open, for the user:
++
++4. **Raise the platform floor to macOS 13 (Ventura, Safari 16)?** That would allow `structuredClone`,
++   `Object.hasOwn`, `Array.at` and other Safari 15.4–16 APIs in the front end. It would drop macOS 12 users. The
++   recommended default is to keep macOS 12.0 (ADR-0005).
++
+ ## macOS results
+ 
+ **Pending user** — run `docs/manual-tests/M0-C0.1-shell-macos.md`. Automated macOS results from CI (build, tests,
+diff --git a/reviews/M0-C0.1-r3-response.md b/reviews/M0-C0.1-r3-response.md
+new file mode 100644
+index 0000000..9b2d328
+--- /dev/null
++++ b/reviews/M0-C0.1-r3-response.md
+@@ -0,0 +1,125 @@
++# M0 C0.1 — builder response to review round 3
++
++Review: `reviews/M0-C0.1-r3.md` (verdict block; 0 P0, 3 P1, 2 P2), merged into `m0-foundations` as the round-3
++merge commit. This follows the orchestrator's round-3 ruling: fix the three P1s as specified and ticket the two P2s;
++a narrow closure check of R3-01/02/05 and the gates follows.
++
++All reviewer tests are kept:
++- `tests/adversarial/c01-r3-boundary.test.mjs` passes 13/13 unchanged, through `desktop/src/test/c01-r3-node.test.ts`.
++- `desktop/src/test/c01-r3-schema.test.ts` passes 11 tests. Its 3 C01-R3-04 cases are marked `it.fails` with their
++  bodies unchanged, as the ruling allows (see R3-04).
++- All round-1 and round-2 regressions still pass.
++
++| Id | Sev | Status | Commit |
++|---|---|---|---|
++| C01-R3-01 | P1 | fixed, as ruled | `f4d551f` |
++| C01-R3-02 | P1 | fixed, as ruled | `f4d551f` |
++| C01-R3-05 | P1 | fixed, as ruled (ADR-0005) | `30958cc` (code), docs in the final commit |
++| C01-R3-03 | P2 | **fixed now**: the R3-05 rewrite made it free | `30958cc` |
++| C01-R3-04 | P2 | **ticketed to M1 C1.1**; 3 reviewer cases marked `it.fails` | `30958cc` |
++
++## C01-R3-01 — inline ESLint configuration and the escaped static global — **fixed** (`f4d551f`)
++
++**(a) Lint.** `linterOptions.noInlineConfig: true` now applies to every JS/TS file in the desktop package, so no
++inline ESLint configuration of any kind takes effect: `eslint-disable*` and `/* eslint rule: off */` alike. The two
++inline exceptions that existed (`mockTransport.ts`, `schema.ts`) moved into `eslint.config.js`. `eslint-comments`
++still reports any disable directive, so such comments cannot sit in the tree unnoticed. With inline config inert, the
++escaped literal `'__TAURI_INTERNALS__'` is caught by the `Literal` selector, because esquery compares the
++decoded value.
++
++**(b) Bundler.** The plugin is now a pair (`desktop/boundary/vite-plugin.ts`):
++- `toontown-ipc-boundary-scan` runs in normal order, after Vite's TS/JSX transform. It parses each application
++  module except the transport (`parseAst` from Vite) and rejects any decoded string literal, template element or
++  identifier that mentions `__TAURI` or `@tauri-apps`, plus any textual match. Plain `.js`, which Vite does not
++  transpile, is parsed too, so escapes are decoded there as well. HTML and CSS get the textual scan.
++- In `renderChunk`, every emitted chunk is parsed and its mentions are attributed through `chunk.modules`. Any mention
++  in a module other than the transport or `@tauri-apps` package code fails the build, and the chunk's total must
++  equal the attributed sum.
++
++**Tests** (`src/ipc/boundary.build.test.ts`):
++- escaped global in `.js` and `.ts`, and an escaped package name in a template, built with the real config, must fail;
++- three unit tests of the chunk attribution: allowed via the transport, rejected from another module, rejected when
++  unaccounted for.
++
++The reviewer's first two cases pass.
++
++## C01-R3-02 — `index.html` importer exception — **fixed** (`f4d551f`)
++
++- **`build`:** no exception. `index.html`, including inline module scripts (`?html-proxy` importers), may import only
++  `src/main.tsx`.
++- **`serve`:**
++  - A re-resolution with exactly `index.html` as the placeholder importer is accepted only for module ids this plugin
++    has already approved through a real import edge (a `Set`).
++  - Two narrow allowances: third-party non-Tauri packages, and, under Vitest only, its own entry files (test files,
++    setup file) and test-support folders.
++  - A placeholder fetch that races an in-flight edge waits for pending edges before being judged.
++- **Config selection:** `dev`, `build`, `preview` and `test` in `desktop/package.json` all pass
++  `--config vite.config.ts`, and Tauri's before-commands run those scripts. `boundary.build.test.ts` asserts both.
++- **Vitest's transform cache:** isolating each test file revealed that its persistent `fsModuleCache` (default on in
++  Vitest 5) lets a cached module skip `resolveId`/`transform` entirely. That is a boundary gap and the source of
++  order-dependent results, so `test.fsModuleCache: false` is set. Every test file now passes when run alone,
++  verified twice, and the full suite passes.
++
++**Tests:**
++- two HTML inline-module builds must fail (raw transport; even the host API, because only `main.tsx` is allowed),
++  and the real `index.html` must build;
++- a dev-server test: an unapproved transport fetch is refused, and becomes servable after `main.tsx` → `ipc/index.ts`
++  approves it.
++
++The reviewer's third case and the config-selection audit pass.
++
++## C01-R3-05 — validation primitives above the declared floor — **fixed** (`30958cc`; ADR-0005)
++
++The floor is kept as ruled: macOS 12.0 / Safari 15.0, and Windows 10 1809+ with evergreen WebView2 (Chrome 110 API
++floor). `src/ipc/schema.ts` uses no `Object.hasOwn` and no `structuredClone`:
++- `hasOwn()` wraps `Object.prototype.hasOwnProperty.call`;
++- `copyPlainData()` is an own deep copy of already-preflighted plain data. It keeps the prototype (`Object.prototype`
++  or `null`), defines keys (never assigns them) so an own `__proto__` stays an own key, never calls getters, and is
++  validated again after copying;
++- `certify` never throws.
++
++**Automated floor check:**
++- `browserslist` (`safari 15`, `chrome 110`) in `desktop/package.json` and `eslint-plugin-compat` (`compat/compat`) on
++  shipped `src/**` code (tests excluded; they run in Node);
++- `src/test/platformFloor.test.ts` asserts that browserslist, Vite `build.target` and Tauri `minimumSystemVersion`
++  agree, and that `compat/compat` rejects `Object.hasOwn`, `structuredClone` and `Array.prototype.at` while
++  accepting the floor-safe replacement;
++- a unit test removes **both** APIs at once and certifies a real `createHostApi(...).ping()` response.
++
++ADR-0005 records the floor. The handoff lists "raise to macOS 13?" as an open question for the user. Both reviewer
++R3-05 tests pass. Side effect: the 1 MiB WebView2 round trip is back to p50 20.2 ms (it was ~26 ms with
++`structuredClone`).
++
++## C01-R3-03 — holes compensated by named array properties — **fixed** (`30958cc`)
++
++This was fixed by the same rewrite. The array preflight now requires the own names to be exactly
++`"0".."length-1"` (integer keys come first in ascending order), so a hole can no longer be offset by a named
++property. The reviewer's three cases pass, and there are new controls (hole + name, extra name, dense arrays,
++empty arrays). The traceability row records it as done.
++
++## C01-R3-04 — uncloneable Proxy values — **ticketed to M1 C1.1** (`30958cc`)
++
++Not fixed by the rewrite. Without `structuredClone` (the floor), a transparent `Proxy` cannot be told apart from
++plain data. The new behaviour:
++- `certify` copies a proxy into validated plain data through its traps, then validates the copy, so no invalid data
++  is certified;
++- it never throws, even for traps that throw (own test);
++- it does not *reject* the proxy, which is what the reviewer's three cases expect.
++
++Per the ruling, those three cases are marked `it.fails` with their bodies unchanged and a comment citing the ticket.
++They will flip to failing when M1 rejects proxies. The ticket is in `plan/traceability.csv`, with known gap 9 in the
++handoff. Real host values are JSON-parsed and are never proxies.
++
++## Gates (local, Windows 11)
++
++- `cargo fmt --check` and `clippy -D warnings` are clean;
++- `cargo test --workspace --locked`: 53 pass;
++- `cargo deny --locked check`: ok;
++- `pnpm lint`, `typecheck` and `format:check` are clean;
++- `pnpm test`: 14 Vitest files, 162 passing + 3 expected failures (R3-04), and 9 node tests;
++- `pnpm licenses:check`: ok;
++- `pnpm --dir desktop build` passes, including chunk attribution over the real app;
++- `tauri build --no-bundle -- --locked` passes; real WebView2 `--ipc-bench` `ok: true`, p50 0.70 / 0.70 / 1.80 /
++  20.2 ms.
++
++CI: the run on the pushed head is recorded in the final summary to the orchestrator.

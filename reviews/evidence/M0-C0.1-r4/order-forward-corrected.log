@@ -1,0 +1,40 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c01-r4/desktop
+
+REVIEW FILE ORDER [
+  'C:/Users/kaiga/work/review/m0-c01-r4/desktop/src/ipc/hostApi.test.ts',
+  'C:/Users/kaiga/work/review/m0-c01-r4/desktop/src/test/c01-r3-schema.test.ts'
+]
+ ✓ src/ipc/hostApi.test.ts > host API over the mock transport > pings and echoes seq and payload 2ms
+ ✓ src/ipc/hostApi.test.ts > host API over the mock transport > maps host error envelopes to HostError with the stable code 1ms
+ ✓ src/ipc/hostApi.test.ts > host API over the mock transport > reports engine info 0ms
+ ✓ src/ipc/hostApi.test.ts > host API over the mock transport > rejects malformed responses as ipc.invalidResponse 0ms
+ ✓ src/ipc/hostApi.test.ts > host API over the mock transport > delivers valid menu commands, drops malformed ones, and unsubscribes 1ms
+ ✓ src/ipc/hostApi.test.ts > toHostError > wraps unknown errors as internal 0ms
+stdout | src/test/c01-r3-schema.test.ts > round-3 schema closure controls > certifies 1 MiB ping strings promptly and snapshots the value
+schema 1MiB milliseconds (Node, not WebView2): { p50: 0.01269999999999527, max: 0.09100000000000819 }
+
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-03: arrays must have every index and no extra named properties > plain-data preflight rejects a hole compensated by an extra property 1ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-03: arrays must have every index and no extra named properties > certify rejects the same shape nested under an unconstrained JSON property 0ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-03: arrays must have every index and no extra named properties > the real menu-event path drops the malformed array 0ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-04: structured-clone failures must fail through the host boundary > certify rejects a transparent object proxy without throwing 4ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-04: structured-clone failures must fail through the host boundary > a ping with an uncloneable transport value yields ipc.invalidResponse 3ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-04: structured-clone failures must fail through the host boundary > an uncloneable menu event is dropped without throwing through the listener 1ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-05: declared Safari 15/macOS 12 runtime floor > valid transport values still work when structuredClone is unavailable 0ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-05: declared Safari 15/macOS 12 runtime floor > valid transport values still work when Object.hasOwn is unavailable 0ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > rejects foreign-realm objects and arrays before cloning 1ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > accepts null-prototype own __proto__ data without altering any prototype 0ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > does not invoke array accessors or clone non-JSON types 1ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > enforces 64 object/array levels and accepts frozen plain data 0ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > own toJSON functions reject without invocation; plain toJSON data is just data 0ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > certifies 1 MiB ping strings promptly and snapshots the value 1ms
+
+ Test Files  2 passed (2)
+      Tests  17 passed | 3 expected fail (20)
+   Start at  23:31:33
+   Duration  1.10s (environment 61%, setup 23%, transform 10%, import 4%, tests 2%, worker 1%)
+
+    Isolate  2 workers spawned · ~360ms startup each (spawn + environment, per file)
+             at least ~360ms faster with isolate: false — reuses workers across files instead of one per file
+
+RESOLVED fsModuleCache false

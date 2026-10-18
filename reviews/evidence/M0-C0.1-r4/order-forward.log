@@ -1,0 +1,25 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c01-r4/desktop
+
+No test files found, exiting with code 1
+
+filter: src/test/c01-r3-schema.test.ts, src/ipc/hostApi.test.ts
+include: src/**/*.test.{ts,tsx}
+exclude:  **/node_modules/**, **/.git/**
+
+
+⎯⎯⎯⎯⎯⎯ Unhandled Error ⎯⎯⎯⎯⎯⎯⎯
+TypeError: Sequencer is not a constructor
+ ❯ createPool ../node_modules/.pnpm/vitest@5.0.5_@types+node@22_cb5509f4a43fc37d5722d05dd0678f31/node_modules/vitest/dist/chunks/index.1TqnEahn.js:6073:20
+ ❯ ../node_modules/.pnpm/vitest@5.0.5_@types+node@22_cb5509f4a43fc37d5722d05dd0678f31/node_modules/vitest/dist/chunks/cli-api.De07GUeT.js:12863:34
+ ❯ ../node_modules/.pnpm/vitest@5.0.5_@types+node@22_cb5509f4a43fc37d5722d05dd0678f31/node_modules/vitest/dist/chunks/cli-api.De07GUeT.js:12887:6
+ ❯ ../node_modules/.pnpm/vitest@5.0.5_@types+node@22_cb5509f4a43fc37d5722d05dd0678f31/node_modules/vitest/dist/chunks/cli-api.De07GUeT.js:12760:45
+ ❯ startVitest ../node_modules/.pnpm/vitest@5.0.5_@types+node@22_cb5509f4a43fc37d5722d05dd0678f31/node_modules/vitest/dist/chunks/cli-api.De07GUeT.js:13734:8
+ ❯ start ../node_modules/.pnpm/vitest@5.0.5_@types+node@22_cb5509f4a43fc37d5722d05dd0678f31/node_modules/vitest/dist/chunks/cac.CLrZKo1g.js:2368:15
+ ❯ CAC.run ../node_modules/.pnpm/vitest@5.0.5_@types+node@22_cb5509f4a43fc37d5722d05dd0678f31/node_modules/vitest/dist/chunks/cac.CLrZKo1g.js:2344:2
+
+
+
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found
