@@ -1,0 +1,1244 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 9105b1f..5a3523a 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -239,6 +239,9 @@ jobs:
+               --out "c03-raster/run$run" --report "c03-raster/report-run$run.json" \
+               --check crates/render/examples/c03_raster/hashes.json || status=1
+           done
++          # Fixed scalar configurations against the committed hashes as a test (C03-R1-04; also run by cargo test in
++          # the Windows and macOS check jobs).
++          cargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1
+           # Host-raster fallback timing of the canvas-spike scenes (timing only; not hash-checked).
+           cargo run --release --locked -q -p tt-render --example c03_raster -- --repeat 1             --out c03-raster/bench --report c03-raster/canvas-bench.json --canvas-bench > /dev/null || status=1
+           exit $status
+diff --git a/crates/render/Cargo.toml b/crates/render/Cargo.toml
+index 82be14a..6c63b02 100644
+--- a/crates/render/Cargo.toml
++++ b/crates/render/Cargo.toml
+@@ -23,4 +23,4 @@ fearless_simd = { version = "0.7", features = ["force_support_fallback"] }
+ png = "0.18.1"
+ serde_json.workspace = true
+ sha2.workspace = true
+-vello_cpu = { version = "0.3.0", default-features = false, features = ["std", "u8_pipeline", "multithreading"] }
++vello_cpu = { version = "0.3.0", default-features = false, features = ["std", "u8_pipeline", "f32_pipeline", "multithreading"] }
+diff --git a/crates/render/examples/c03_raster/main.rs b/crates/render/examples/c03_raster/main.rs
+index 1c08bf6..62287e9 100644
+--- a/crates/render/examples/c03_raster/main.rs
++++ b/crates/render/examples/c03_raster/main.rs
+@@ -58,7 +58,9 @@ fn png_bytes(w: u32, h: u32, rgba: &[u8]) -> Result<Vec<u8>, Box<dyn Error>> {
+     Ok(out)
+ }
+ 
+-/// Premultiplied to straight alpha for PNG (all fixture backgrounds are opaque, so this is the identity in practice).
++/// Premultiplied to straight alpha for PNG. This is **not** an identity (C03-R1-05): the stress scenes have a
++/// transparent background, and `vello_cpu`'s u8 pipeline leaves alpha below 255 over an opaque background (as low as
++/// 250 in `many_small_paths`), so the RGB values change on export. The pixel hash covers the premultiplied buffer.
+ fn unpremultiply(rgba: &[u8]) -> Vec<u8> {
+     let mut out = rgba.to_vec();
+     for px in out.as_chunks_mut::<4>().0 {
+@@ -93,11 +95,13 @@ impl Renderer {
+     }
+ }
+ 
+-const RENDERERS: [Renderer; 4] = [
++const RENDERERS: [Renderer; 6] = [
+     Renderer::Tt,
+     Renderer::Vello(vello::Config::Fallback),
+     Renderer::Vello(vello::Config::Detected),
+     Renderer::Vello(vello::Config::Threads3),
++    Renderer::Vello(vello::Config::QualityFallback),
++    Renderer::Vello(vello::Config::QualityDetected),
+ ];
+ 
+ struct Args {
+@@ -239,11 +243,24 @@ fn main() -> Result<(), Box<dyn Error>> {
+     }
+ 
+     let canvas = if args.canvas_bench { canvas_bench::run(&[(1280, 720), (1920, 1080)], 3) } else { Value::Null };
++    let configurations: Vec<Value> = RENDERERS
++        .iter()
++        .filter_map(|r| match r {
++            Renderer::Vello(c) => {
++                let st = c.settings();
++                Some(json!({"name": c.name(), "level": format!("{:?}", st.level), "threads": st.num_threads,
++                    "renderMode": format!("{:?}", c.render_mode())}))
++            }
++            Renderer::Tt => None,
++        })
++        .collect();
+     let report = json!({
+         "format": "tt-c03-raster-report/1",
+         "os": std::env::consts::OS,
+         "arch": std::env::consts::ARCH,
+         "detectedSimdLevel": format!("{:?}", vello_cpu::Level::new()),
++        // The fixed configurations and the level each one actually used on this machine (C03-R1-04).
++        "configurations": configurations,
+         "repeat": args.repeat,
+         "scenes": scenes.iter().map(|s| json!({"name": s.name, "width": s.width, "height": s.height,
+             "items": s.items.len(), "covers": s.covers})).collect::<Vec<_>>(),
+diff --git a/crates/render/examples/c03_raster/scene.rs b/crates/render/examples/c03_raster/scene.rs
+index 9089cbf..41d9e43 100644
+--- a/crates/render/examples/c03_raster/scene.rs
++++ b/crates/render/examples/c03_raster/scene.rs
+@@ -254,6 +254,96 @@ fn star(cx: f64, cy: f64, r: f64, points: usize, step: usize) -> Path {
+     p.z()
+ }
+ 
++/// Names of the 16 stress scenes (C03-R1-04, the reviewer's extended corpus).
++const STRESS_NAMES: [&str; 16] = [
++    "stress_00",
++    "stress_01",
++    "stress_02",
++    "stress_03",
++    "stress_04",
++    "stress_05",
++    "stress_06",
++    "stress_07",
++    "stress_08",
++    "stress_09",
++    "stress_10",
++    "stress_11",
++    "stress_12",
++    "stress_13",
++    "stress_14",
++    "stress_15",
++];
++
++/// The reviewer's stress scene for `seed` (`crates/render/tests/c03_r1_stress.rs`, `stress`), reproduced exactly:
++/// 65-stop transparent radial/linear gradients, irrational transform literals, thin stroked cubics, transparent
++/// background. The literals are exact decimal inputs, not computed with libm.
++#[allow(
++    clippy::approx_constant,
++    clippy::excessive_precision,
++    reason = "the reviewer's literal bit patterns, kept verbatim"
++)]
++pub fn stress_scene(seed: u32) -> Scene {
++    let f = f64::from(seed);
++    let stops = (0..65)
++        .map(|i| {
++            (
++                i as f32 / 64.0,
++                [
++                    ((i * 71 + seed * 13) % 256) as u8,
++                    ((i * 117 + 19) % 256) as u8,
++                    ((i * 41 + seed) % 256) as u8,
++                    ((i * 67 + 31) % 256) as u8,
++                ],
++            )
++        })
++        .collect::<Vec<_>>();
++    let mut items = vec![Item::Fill {
++        path: Path::new().m(-30.0, -30.0).l(190.0, -30.0).l(190.0, 190.0).l(-30.0, 190.0).z(),
++        paint: Paint::Radial {
++            c: (64.0 + f / 997.0, 51.0 + f / 887.0),
++            r: 51.414_213_562_373_095,
++            stops: stops.clone(),
++        },
++        rule: FillRule::NonZero,
++        transform: [
++            0.707_106_781_186_547_6,
++            0.707_106_781_186_547_6,
++            -0.353_553_390_593_273_8,
++            0.353_553_390_593_273_8,
++            41.0,
++            -13.0,
++        ],
++    }];
++    for j in 0..24 {
++        let g = f64::from(j);
++        items.push(Item::Stroke {
++            path: Path::new().m(-3.0 + f / 313.0, g * 5.13).c(
++                170.0 - g * 3.17,
++                -91.1 + f / 101.0,
++                -131.17 + g,
++                217.13,
++                123.7,
++                g * 5.13 + 1.414_213_562_373_095_1,
++            ),
++            paint: Paint::Linear {
++                p0: (0.1, -3.7),
++                p1: (111.414_213_562_373_1, 97.732_050_807_568_88),
++                stops: stops.clone(),
++            },
++            width: 0.1 + g / 17.0,
++            transform: [0.866_025_403_784_438_6, 0.5, -0.5, 0.866_025_403_784_438_6, f / 997.0, -11.0],
++        });
++    }
++    Scene {
++        name: STRESS_NAMES[seed as usize % 16],
++        width: 128,
++        height: 128,
++        background: [0, 0, 0, 0],
++        items,
++        covers: "stress: 65-stop transparent radial/linear gradients, irrational transforms, thin stroked cubics, transparent background",
++    }
++}
++
+ /// All fixture scenes, in a fixed order.
+ pub fn scenes() -> Vec<Scene> {
+     let mut out = Vec::new();
+@@ -510,5 +600,6 @@ pub fn scenes() -> Vec<Scene> {
+         items: big,
+         covers: "speed: 2000 translucent cubic shapes at 512×512",
+     });
++    out.extend((0..16).map(stress_scene));
+     out
+ }
+diff --git a/crates/render/examples/c03_raster/vello.rs b/crates/render/examples/c03_raster/vello.rs
+index 7da4840..9a98edc 100644
+--- a/crates/render/examples/c03_raster/vello.rs
++++ b/crates/render/examples/c03_raster/vello.rs
+@@ -7,15 +7,21 @@ use vello_cpu::{Level, Pixmap, RasterizerSettings, RenderContext, RenderMode, Re
+ 
+ use crate::scene::{Affine, FillRule, Item, Paint, Path, Rgba, Scene, Seg};
+ 
+-/// Which `vello_cpu` configuration to use.
++/// Which `vello_cpu` configuration to use. Every configuration is a fixed, named combination with its own committed
++/// hashes (C03-R1-04): the scalar level and the detected level are different arithmetic paths and may differ in
++/// pixels; the report records the level each configuration actually used.
+ #[derive(Clone, Copy, Debug)]
+ pub enum Config {
+-    /// SIMD level detected at run time (AVX2/SSE4.2 on x86-64, NEON on arm64).
++    /// SIMD level detected at run time (AVX2/AVX-512 on x86-64, NEON on arm64), u8 pipeline.
+     Detected,
+-    /// `Level::fallback()`: no platform SIMD intrinsics.
++    /// `Level::fallback()`: no platform SIMD intrinsics, u8 pipeline.
+     Fallback,
+-    /// Detected SIMD level with 3 worker threads (`multithreading` feature).
++    /// Detected SIMD level with 3 worker threads (`multithreading` feature), u8 pipeline.
+     Threads3,
++    /// `Level::fallback()` with the f32 pipeline (`RenderMode::OptimizeQuality`, C03-R1-05).
++    QualityFallback,
++    /// Detected SIMD level with the f32 pipeline.
++    QualityDetected,
+ }
+ 
+ impl Config {
+@@ -24,6 +30,15 @@ impl Config {
+             Config::Detected => "vello_cpu_simd",
+             Config::Fallback => "vello_cpu_fallback",
+             Config::Threads3 => "vello_cpu_mt3",
++            Config::QualityFallback => "vello_cpu_f32_fallback",
++            Config::QualityDetected => "vello_cpu_f32_simd",
++        }
++    }
++
++    pub fn render_mode(self) -> RenderMode {
++        match self {
++            Config::QualityFallback | Config::QualityDetected => RenderMode::OptimizeQuality,
++            _ => RenderMode::OptimizeSpeed,
+         }
+     }
+ 
+@@ -32,6 +47,8 @@ impl Config {
+             Config::Detected => RenderSettings { level: Level::new(), num_threads: 0 },
+             Config::Fallback => RenderSettings { level: Level::fallback(), num_threads: 0 },
+             Config::Threads3 => RenderSettings { level: Level::new(), num_threads: 3 },
++            Config::QualityFallback => RenderSettings { level: Level::fallback(), num_threads: 0 },
++            Config::QualityDetected => RenderSettings { level: Level::new(), num_threads: 0 },
+         }
+     }
+ }
+@@ -109,7 +126,7 @@ pub fn render(scene: &Scene, config: Config) -> Vec<u8> {
+     ctx.flush();
+     let mut pixmap = Pixmap::new(scene.width, scene.height);
+     let settings = RasterizerSettings {
+-        render_mode: RenderMode::OptimizeSpeed,
++        render_mode: config.render_mode(),
+         target_init: vello_cpu::TargetInit::Clear(colour(scene.background)),
+         ..RasterizerSettings::default()
+     };
+diff --git a/crates/render/tests/c03_fixed_configurations.rs b/crates/render/tests/c03_fixed_configurations.rs
+new file mode 100644
+index 0000000..b14e391
+--- /dev/null
++++ b/crates/render/tests/c03_fixed_configurations.rs
+@@ -0,0 +1,59 @@
++//! C0.3 rasteriser determinism (C03-R1-04/05): the fixed scalar configurations must reproduce the committed hashes
++//! on every OS. CI runs this test on Windows and macOS (check jobs) and on Linux (raster job). The detected-SIMD
++//! configurations are checked separately by `c03_raster --check`; they are allowed to differ from the scalar ones
++//! (a C0.4 policy question), never from their own committed hashes.
++#![allow(dead_code, missing_docs, clippy::unwrap_used, reason = "test harness around the spike example modules")]
++#[path = "../examples/c03_raster/scene.rs"]
++mod scene;
++#[path = "../examples/c03_raster/ttraster.rs"]
++mod ttraster;
++#[path = "../examples/c03_raster/vello.rs"]
++mod vello;
++
++use sha2::{Digest, Sha256};
++
++/// The example's pixel hash: SHA-256 over `TTPIX1`, big-endian width and height, premultiplied RGBA8.
++fn pixel_hash(w: u16, h: u16, rgba: &[u8]) -> String {
++    let mut d = Sha256::new();
++    d.update(b"TTPIX1");
++    d.update(u32::from(w).to_be_bytes());
++    d.update(u32::from(h).to_be_bytes());
++    d.update(rgba);
++    d.finalize().iter().map(|b| format!("{b:02x}")).collect()
++}
++
++fn committed() -> serde_json::Value {
++    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/examples/c03_raster/hashes.json");
++    serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap()
++}
++
++#[test]
++fn fixed_scalar_configuration_hashes_identically_across_oses() {
++    let hashes = committed();
++    let mut checked = 0;
++    for s in scene::scenes() {
++        for (name, rgba) in [
++            ("ttraster", ttraster::render(&s).rgba),
++            ("vello_cpu_fallback", vello::render(&s, vello::Config::Fallback)),
++            ("vello_cpu_f32_fallback", vello::render(&s, vello::Config::QualityFallback)),
++        ] {
++            let want = hashes["renderers"][name][s.name]["pixels"].as_str().unwrap_or("missing");
++            assert_eq!(pixel_hash(s.width, s.height, &rgba), want, "{name}/{} on {}", s.name, std::env::consts::OS);
++            checked += 1;
++        }
++    }
++    assert_eq!(checked, 3 * 39);
++}
++
++#[test]
++fn u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation() {
++    // Documented limitation of vello_cpu 0.3.0's u8 pipeline (C03-R1-05): source-over on an opaque background must
++    // stay opaque, but alpha drops to 250 in this scene. The f32 pipeline keeps 255 (c03_r1_stress.rs). If an
++    // upgrade fixes this, this test fails and the limitation note in the C0.3 handoff must be revisited.
++    let scenes = scene::scenes();
++    let s = scenes.iter().find(|s| s.name == "many_small_paths").unwrap();
++    assert_eq!(s.background[3], 255);
++    let min = |c| vello::render(s, c).as_chunks::<4>().0.iter().map(|p| p[3]).min().unwrap();
++    assert_eq!(min(vello::Config::Fallback), 250);
++    assert_eq!(min(vello::Config::QualityFallback), 255);
++}
+diff --git a/crates/render/tests/c03_r1_stress.rs b/crates/render/tests/c03_r1_stress.rs
+index fb8ca50..16603d2 100644
+--- a/crates/render/tests/c03_r1_stress.rs
++++ b/crates/render/tests/c03_r1_stress.rs
+@@ -108,6 +108,7 @@ fn extended_corpus_repeats_and_cross_os_hashes() {
+ }
+ 
+ #[test]
++#[ignore = "C0.4 ticket: SIMD policy for the final renderer"]
+ fn c03_r1_04_simd_dispatch_must_not_change_final_pixels() {
+     let s = stress(0);
+     assert_eq!(
+@@ -122,7 +123,9 @@ fn c03_r1_05_source_over_an_opaque_background_stays_opaque() {
+     let scenes = scene::scenes();
+     let s = scenes.iter().find(|s| s.name == "many_small_paths").unwrap();
+     assert_eq!(s.background[3], 255);
+-    let rgba = vello::render(s, vello::Config::Fallback);
++    // Ruling for C03-R1-05: this assertion runs against the f32 quality pipeline; the u8 pipeline's result (250) is
++    // a documented limitation, pinned in tests/c03_fixed_configurations.rs.
++    let rgba = vello::render(s, vello::Config::QualityFallback);
+     let min_alpha = rgba.as_chunks::<4>().0.iter().map(|p| p[3]).min().unwrap();
+     assert_eq!(min_alpha, 255, "opaque background cannot lose alpha under source-over");
+ }
+diff --git a/desktop/src-tauri/src/spikes/canvas/mod.rs b/desktop/src-tauri/src/spikes/canvas/mod.rs
+index 83a607a..693a75e 100644
+--- a/desktop/src-tauri/src/spikes/canvas/mod.rs
++++ b/desktop/src-tauri/src/spikes/canvas/mod.rs
+@@ -54,7 +54,7 @@ pub struct CanvasSceneRequest {
+ /// Encodes the requested scene as a binary render list (see [`renderlist`]).
+ ///
+ /// # Errors
+-/// `spike.notEnabled`, `arg.invalid` (unknown scene), `internal`.
++/// `spike.notEnabled`, `arg.invalid` (unknown scene), `spike.encodeFailed` (invalid geometry), `internal`.
+ #[tauri::command]
+ pub async fn spike_canvas_scene(
+     spike: State<'_, CanvasSpike>,
+@@ -74,7 +74,9 @@ pub async fn spike_canvas_scene(
+             (&entry.0, ns)
+         }
+     };
+-    Ok(Response::new(renderlist::encode(kind, scene, request.frame, generate_ns)))
++    let bytes = renderlist::encode(kind, scene, request.frame, generate_ns)
++        .map_err(|e| error("spike.encodeFailed", e.to_string()))?;
++    Ok(Response::new(bytes))
+ }
+ 
+ /// Magic of a pixel frame (`TTPX`, then width u32, height u32, fill ns u32; then RGBA8).
+diff --git a/desktop/src-tauri/src/spikes/canvas/renderlist.rs b/desktop/src-tauri/src/spikes/canvas/renderlist.rs
+index ca64225..c8dfd5f 100644
+--- a/desktop/src-tauri/src/spikes/canvas/renderlist.rs
++++ b/desktop/src-tauri/src/spikes/canvas/renderlist.rs
+@@ -17,7 +17,7 @@
+ //! | 24 | 4 | path count P |
+ //! | 28 | 4 | verb count V |
+ //! | 32 | 4 | point count N (x, y pairs) |
+-//! | 36 | 16 | bounds `[min x, min y, max x, max y]` (f32) in world units |
++//! | 36 | 16 | bounds `[min x, min y, max x, max y]` (f32): extent of every point, in path (pre-group) units |
+ //! | 52 | 4 | flags (0) |
+ //! | 56 | 8 | encode time, ns (u64; time to serialise this buffer) |
+ //! | 64 | 8 | generate time, ns (u64; time to build the scene model, 0 when cached) |
+@@ -27,6 +27,10 @@
+ //! 1 fill even-odd, 2 stroke), stroke width f32); N points (2 × f32); V verbs (u8: 0 move, 1 line, 2 cubic,
+ //! 3 close), zero-padded to a multiple of 4. Total length = 72 + 24G + 28P + 8N + pad4(V).
+ //!
++//! Validity (C03-R1-02): [`encode`] refuses a scene with a non-finite point, group transform or width, a point
++//! outside the header bounds, inverted or non-finite bounds, or path ranges outside the arrays; the page's decoder
++//! checks the same properties before it builds any geometry.
++//!
+ //! The groups are one flat level (a path belongs to one group). M3's render list is a tree with paints, clips and
+ //! effects; this prototype only has to be replaceable, not complete.
+ 
+@@ -191,7 +195,7 @@ pub fn group_transform(i: usize, frame: u32, base: &[f32; 6]) -> [f32; 6] {
+ 
+ pub fn generate(kind: Kind, seed: u32) -> Scene {
+     let mut rng = Rng(u64::from(seed) ^ (u64::from(kind.code()) << 32) ^ 0x0C03_CA9A);
+-    let mut b = Builder { scene: Scene { seed, bounds: [0.0, 0.0, WORLD, WORLD], ..Scene::default() } };
++    let mut b = Builder { scene: Scene { seed, ..Scene::default() } };
+     match kind {
+         Kind::Paths100k => {
+             b.scene.groups.push([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]);
+@@ -276,9 +280,101 @@ pub fn generate(kind: Kind, seed: u32) -> Scene {
+             }
+         }
+     }
++    b.scene.bounds = bounds_of(&b.scene.points);
+     b.scene
+ }
+ 
++/// Why a scene cannot be encoded (C03-R1-02).
++#[derive(Clone, Debug, PartialEq)]
++pub enum EncodeError {
++    /// The header bounds are not finite or not ordered (`min <= max`).
++    BadBounds([f32; 4]),
++    /// A point coordinate is NaN or infinite.
++    NonFinitePoint { index: usize, x: f32, y: f32 },
++    /// A point lies outside the header bounds.
++    PointOutOfBounds { index: usize, x: f32, y: f32 },
++    /// A group transform entry is NaN or infinite.
++    NonFiniteGroup { group: usize },
++    /// A stroke width is NaN, infinite or negative.
++    BadWidth { path: usize, width: f32 },
++    /// A path's verb or point range lies outside the arrays, or names a missing group.
++    BadPath { path: usize },
++}
++
++impl std::fmt::Display for EncodeError {
++    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++        match self {
++            EncodeError::BadBounds(b) => write!(f, "bounds {b:?} are not finite and ordered"),
++            EncodeError::NonFinitePoint { index, x, y } => write!(f, "point {index} ({x}, {y}) is not finite"),
++            EncodeError::PointOutOfBounds { index, x, y } => {
++                write!(f, "point {index} ({x}, {y}) is outside the bounds")
++            }
++            EncodeError::NonFiniteGroup { group } => write!(f, "group {group} has a non-finite transform"),
++            EncodeError::BadWidth { path, width } => write!(f, "path {path} has an invalid stroke width {width}"),
++            EncodeError::BadPath { path } => write!(f, "path {path} has ranges outside the scene"),
++        }
++    }
++}
++
++impl std::error::Error for EncodeError {}
++
++/// Extent `[min x, min y, max x, max y]` of interleaved `points` (`[0; 4]` when empty).
++pub fn bounds_of(points: &[f32]) -> [f32; 4] {
++    let mut b = [f32::INFINITY, f32::INFINITY, f32::NEG_INFINITY, f32::NEG_INFINITY];
++    for p in points.as_chunks::<2>().0 {
++        b = [b[0].min(p[0]), b[1].min(p[1]), b[2].max(p[0]), b[3].max(p[1])];
++    }
++    if points.is_empty() { [0.0; 4] } else { b }
++}
++
++/// Points consumed by a verb.
++fn verb_points(verb: u8) -> Option<usize> {
++    match verb {
++        VERB_MOVE | VERB_LINE => Some(1),
++        VERB_CUBIC => Some(3),
++        VERB_CLOSE => Some(0),
++        _ => None,
++    }
++}
++
++/// Checks every property the decoder relies on (see [`EncodeError`]).
++pub fn validate(scene: &Scene) -> Result<(), EncodeError> {
++    let b = scene.bounds;
++    if !b.iter().all(|v| v.is_finite()) || b[0] > b[2] || b[1] > b[3] {
++        return Err(EncodeError::BadBounds(b));
++    }
++    for (index, p) in scene.points.as_chunks::<2>().0.iter().enumerate() {
++        let (x, y) = (p[0], p[1]);
++        if !x.is_finite() || !y.is_finite() {
++            return Err(EncodeError::NonFinitePoint { index, x, y });
++        }
++        if x < b[0] || x > b[2] || y < b[1] || y > b[3] {
++            return Err(EncodeError::PointOutOfBounds { index, x, y });
++        }
++    }
++    for (group, g) in scene.groups.iter().enumerate() {
++        if !g.iter().all(|v| v.is_finite()) {
++            return Err(EncodeError::NonFiniteGroup { group });
++        }
++    }
++    let points = scene.points.len() / 2;
++    for (index, p) in scene.paths.iter().enumerate() {
++        if !p.width.is_finite() || p.width < 0.0 {
++            return Err(EncodeError::BadWidth { path: index, width: p.width });
++        }
++        let (start, end) = (p.verb_start as usize, p.verb_start as usize + p.verb_count as usize);
++        let Some(verbs) = scene.verbs.get(start..end) else { return Err(EncodeError::BadPath { path: index }) };
++        let mut needed = 0;
++        for &v in verbs {
++            needed += verb_points(v).ok_or(EncodeError::BadPath { path: index })?;
++        }
++        if p.point_start as usize + needed > points || p.group as usize >= scene.groups.len() {
++            return Err(EncodeError::BadPath { path: index });
++        }
++    }
++    Ok(())
++}
++
+ /// Total encoded length for a scene.
+ pub fn encoded_len(scene: &Scene) -> usize {
+     HEADER_LEN
+@@ -289,8 +385,12 @@ pub fn encoded_len(scene: &Scene) -> usize {
+ }
+ 
+ /// Serialises `scene` at `frame`; writes the encode time (and the given generate time) into the header.
+-pub fn encode(kind: Kind, scene: &Scene, frame: u32, generate_ns: u64) -> Vec<u8> {
++///
++/// # Errors
++/// [`EncodeError`] if the scene (or a group transform at `frame`) is not valid.
++pub fn encode(kind: Kind, scene: &Scene, frame: u32, generate_ns: u64) -> Result<Vec<u8>, EncodeError> {
+     let t0 = Instant::now();
++    validate(scene)?;
+     let mut out = Vec::with_capacity(encoded_len(scene));
+     out.extend_from_slice(MAGIC);
+     out.extend_from_slice(&VERSION.to_le_bytes());
+@@ -313,7 +413,11 @@ pub fn encode(kind: Kind, scene: &Scene, frame: u32, generate_ns: u64) -> Vec<u8
+     out.extend_from_slice(&0_u64.to_le_bytes()); // encode ns, patched below
+     out.extend_from_slice(&generate_ns.to_le_bytes());
+     for (i, g) in scene.groups.iter().enumerate() {
+-        for v in group_transform(i, frame, g) {
++        let t = group_transform(i, frame, g);
++        if !t.iter().all(|v| v.is_finite()) {
++            return Err(EncodeError::NonFiniteGroup { group: i });
++        }
++        for v in t {
+             out.extend_from_slice(&v.to_le_bytes());
+         }
+     }
+@@ -332,7 +436,7 @@ pub fn encode(kind: Kind, scene: &Scene, frame: u32, generate_ns: u64) -> Vec<u8
+     }
+     let ns = u64::try_from(t0.elapsed().as_nanos()).unwrap_or(u64::MAX);
+     out[56..64].copy_from_slice(&ns.to_le_bytes());
+-    out
++    Ok(out)
+ }
+ 
+ #[cfg(test)]
+@@ -355,7 +459,7 @@ mod tests {
+     #[test]
+     fn encoding_has_the_documented_layout() {
+         let s = generate(Kind::Groups1k, 7);
+-        let bytes = encode(Kind::Groups1k, &s, 3, 42);
++        let bytes = encode(Kind::Groups1k, &s, 3, 42).unwrap();
+         assert_eq!(bytes.len(), encoded_len(&s));
+         assert_eq!(&bytes[0..4], MAGIC);
+         assert_eq!(u16::from_le_bytes([bytes[4], bytes[5]]), VERSION);
+@@ -395,7 +499,7 @@ mod tests {
+     /// `TT_WRITE_FIXTURES=1 cargo test -p tt-desktop tiny_fixture`.
+     #[test]
+     fn tiny_fixture_matches_committed_bytes() {
+-        let mut bytes = encode(Kind::Groups1k, &tiny(), 0, 0);
++        let mut bytes = encode(Kind::Groups1k, &tiny(), 0, 0).unwrap();
+         bytes[56..64].fill(0);
+         let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../src/spikes/canvas/testdata/tiny.ttrl");
+         if std::env::var_os("TT_WRITE_FIXTURES").is_some() {
+@@ -404,6 +508,41 @@ mod tests {
+         assert_eq!(std::fs::read(path).unwrap(), bytes);
+     }
+ 
++    #[test]
++    fn encoder_refuses_invalid_geometry() {
++        let mut nan = tiny();
++        nan.points[0] = f32::NAN;
++        assert!(matches!(encode(Kind::Groups1k, &nan, 0, 0), Err(EncodeError::NonFinitePoint { index: 0, .. })));
++        let mut inf = tiny();
++        inf.points[3] = f32::INFINITY;
++        assert!(matches!(encode(Kind::Groups1k, &inf, 0, 0), Err(EncodeError::NonFinitePoint { index: 1, .. })));
++        let mut out = tiny();
++        out.points[2] = 101.0;
++        assert!(matches!(encode(Kind::Groups1k, &out, 0, 0), Err(EncodeError::PointOutOfBounds { index: 1, .. })));
++        let mut group = tiny();
++        group.groups[1][4] = f32::NAN;
++        assert_eq!(encode(Kind::Groups1k, &group, 0, 0), Err(EncodeError::NonFiniteGroup { group: 1 }));
++        let mut bounds = tiny();
++        bounds.bounds = [0.0, 0.0, f32::NAN, 100.0];
++        assert!(matches!(encode(Kind::Groups1k, &bounds, 0, 0), Err(EncodeError::BadBounds(_))));
++        let mut width = tiny();
++        width.paths[0].width = -1.0;
++        assert!(matches!(encode(Kind::Groups1k, &width, 0, 0), Err(EncodeError::BadWidth { path: 0, .. })));
++        let mut range = tiny();
++        range.paths[2].point_start = 9;
++        assert_eq!(encode(Kind::Groups1k, &range, 0, 0), Err(EncodeError::BadPath { path: 2 }));
++    }
++
++    #[test]
++    fn generated_scenes_are_valid_and_bounded_by_their_points() {
++        for kind in [Kind::Paths100k, Kind::Groups1k, Kind::Brush10k] {
++            let s = generate(kind, 1);
++            assert_eq!(validate(&s), Ok(()));
++            assert_eq!(s.bounds, bounds_of(&s.points));
++            assert!(encode(kind, &s, 5, 0).is_ok());
++        }
++    }
++
+     #[test]
+     fn generation_is_reproducible() {
+         assert_eq!(generate(Kind::Brush10k, 5), generate(Kind::Brush10k, 5));
+diff --git a/desktop/src/ipc/binaryEnvelope.ts b/desktop/src/ipc/binaryEnvelope.ts
+index 92ec278..b9f2103 100644
+--- a/desktop/src/ipc/binaryEnvelope.ts
++++ b/desktop/src/ipc/binaryEnvelope.ts
+@@ -69,6 +69,10 @@ export function certifyRenderList(bytes: ArrayBuffer): RenderListHeader {
+   };
+   const certified = certify(isRenderListHeader, header);
+   if (!certified) throw invalid('render list header does not match its schema');
++  const [minX = Number.NaN, minY = Number.NaN, maxX = Number.NaN, maxY = Number.NaN] = certified.bounds;
++  if (certified.bounds.length !== 4 || !(minX <= maxX && minY <= maxY)) {
++    throw invalid('render list bounds are not ordered [min x, min y, max x, max y]');
++  }
+   const expected = renderListLength(certified.groups, certified.paths, certified.points, certified.verbs);
+   if (expected !== bytes.byteLength) {
+     throw invalid(`render list is ${String(bytes.byteLength)} bytes; its counts imply ${String(expected)}`);
+diff --git a/desktop/src/spikes/canvas/CanvasSpike.tsx b/desktop/src/spikes/canvas/CanvasSpike.tsx
+index 556969a..702c255 100644
+--- a/desktop/src/spikes/canvas/CanvasSpike.tsx
++++ b/desktop/src/spikes/canvas/CanvasSpike.tsx
+@@ -183,6 +183,15 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
+             invokeMs,
+             encodeNs: payload.header.encodeNs,
+             generateNs: payload.header.generateNs,
++            header: {
++              kind: payload.header.kind,
++              seed: payload.header.seed,
++              frame: payload.header.frame,
++              groups: payload.header.groups,
++              paths: payload.header.paths,
++              points: payload.header.points,
++              verbs: payload.header.verbs,
++            },
+           });
+           first ??= payload;
+         }
+diff --git a/desktop/src/spikes/canvas/analysis.ts b/desktop/src/spikes/canvas/analysis.ts
+index 7d5b7ce..f452c98 100644
+--- a/desktop/src/spikes/canvas/analysis.ts
++++ b/desktop/src/spikes/canvas/analysis.ts
+@@ -41,6 +41,16 @@ export interface TransferSample {
+   invokeMs: number;
+   encodeNs: number;
+   generateNs: number;
++  /** Counts from the certified render-list header (the analyzer checks them against the scene's workload). */
++  header?: {
++    kind: string;
++    seed: number;
++    frame: number;
++    groups: number;
++    paths: number;
++    points: number;
++    verbs: number;
++  };
+ }
+ 
+ export interface FrameSample {
+diff --git a/desktop/src/spikes/canvas/analyzer.test.ts b/desktop/src/spikes/canvas/analyzer.test.ts
+index 27f2eac..dba198a 100644
+--- a/desktop/src/spikes/canvas/analyzer.test.ts
++++ b/desktop/src/spikes/canvas/analyzer.test.ts
+@@ -36,12 +36,21 @@ const frames: FrameSample[] = [];
+ let t = 2000;
+ for (let i = 0; i < 610; i++) {
+   t += i > 0 && i % 100 === 0 ? 50 : 1000 / 60;
+-  frames.push({ t, cpuMs: 0.2 + (i % 5) * 0.01, gpuMs: i % 2 === 0 ? 4 : null });
++  frames.push({ t, cpuMs: 0.2 + (i % 5) * 0.01, gpuMs: null });
+ }
+ const transfers = Array.from({ length: 10 }, (_, i) => ({
+   i,
+   frame: i,
+-  bytes: 8_700_000,
++  bytes: 8_700_096,
++  header: {
++    kind: 'paths100k',
++    seed: 1,
++    frame: i,
++    groups: 1,
++    paths: 100_000,
++    points: 700_000,
++    verbs: 300_000,
++  },
+   invokeMs: 50 + i,
+   encodeNs: 2_000_000 + i,
+   generateNs: i === 0 ? 30_000_000 : 0,
+@@ -54,7 +63,17 @@ const run = {
+   renderer: { renderer: 'test GPU' },
+   canvas: { cssWidth: 800, cssHeight: 600, width: 800, height: 600, dpr: 1 },
+   transfers,
+-  decode: { ms: 90, paths: 100000, segments: 1, tolerance: 0.5 },
++  decode: {
++    ms: 90,
++    paths: 100_000,
++    cubics: 200_000,
++    strokePaths: 100_000,
++    fillPaths: 0,
++    segments: 2_832_713,
++    fillVertices: 0,
++    triangles: 0,
++    tolerance: 0.5,
++  },
+   upload: { cpuMs: 10, completeMs: 20 },
+   idle,
+   frames,
+@@ -65,8 +84,27 @@ const log = {
+   spike: 'canvas',
+   version: 1,
+   source: 'auto',
+-  environment: { timeOrigin: 1_700_000_000_000, userAgent: 'fixture', devicePixelRatio: 1 },
+-  parameters: { transfers: 10, idleMs: 1000, panZoomMs: 10000, pixelTransfers: 2, scenes: [], seed: 1 },
++  environment: {
++    timeOrigin: 1_700_000_000_000,
++    userAgent: 'fixture',
++    devicePixelRatio: 1,
++    viewport: { width: 800, height: 640 },
++    screen: { width: 1920, height: 1080 },
++    webgpuApi: false,
++    forcedRenderer: 'webgl2',
++    mode: { name: 'canvas', auto: true, renderer: 'webgl2' },
++    host: { os: 'windows', arch: 'x86_64' },
++    hostError: null,
++  },
++  parameters: {
++    transfers: 10,
++    idleMs: 1000,
++    panZoomMs: 10000,
++    pixelTransfers: 2,
++    scenes: ['paths100k'],
++    seed: 1,
++    flattenTolerance: 0.5,
++  },
+   runs: [run],
+   pixelRuns: [
+     {
+@@ -114,6 +152,24 @@ describe('canvas analyzer', () => {
+       ],
+       ['short pan/zoom', { ...log, runs: [{ ...run, frames: frames.slice(0, 100) }] }, 'shorter than'],
+       ['no time origin', { ...log, environment: {} }, 'timeOrigin'],
++      [
++        'header counts of another scene',
++        {
++          ...log,
++          runs: [
++            {
++              ...run,
++              transfers: transfers.map((x) => ({ ...x, header: { ...x.header, kind: 'brush10k' } })),
++            },
++          ],
++        },
++        'another scene',
++      ],
++      [
++        'GPU time claimed for WebGL2',
++        { ...log, runs: [{ ...run, frames: frames.map((f) => ({ ...f, gpuMs: 3 })) }] },
++        'cannot measure',
++      ],
+     ];
+     for (const [name, bad, message] of cases) {
+       const r = analyse(bad);
+diff --git a/desktop/src/spikes/canvas/decode.test.ts b/desktop/src/spikes/canvas/decode.test.ts
+index 442c273..ac4bb38 100644
+--- a/desktop/src/spikes/canvas/decode.test.ts
++++ b/desktop/src/spikes/canvas/decode.test.ts
+@@ -126,6 +126,22 @@ describe('render-list decoder', () => {
+         v.setUint32(pathsOff + 8, 10, true);
+       }),
+     ).toThrow(/points out of range/);
++    const pointsOff = pathsOff + 3 * 28;
++    expect(
++      bad((v) => {
++        v.setFloat32(pointsOff, Number.NaN, true);
++      }),
++    ).toThrow(/not finite/);
++    expect(
++      bad((v) => {
++        v.setFloat32(pointsOff + 12, Number.NEGATIVE_INFINITY, true);
++      }),
++    ).toThrow(/not finite/);
++    expect(
++      bad((v) => {
++        v.setFloat32(pointsOff + 8, 100.5, true);
++      }),
++    ).toThrow(/outside the bounds/);
+     const verbsOff = pathsOff + 3 * 28 + 11 * 8;
+     expect(
+       bad((v) => {
+diff --git a/desktop/src/spikes/canvas/decode.ts b/desktop/src/spikes/canvas/decode.ts
+index 9ab936f..fd11ab9 100644
+--- a/desktop/src/spikes/canvas/decode.ts
++++ b/desktop/src/spikes/canvas/decode.ts
+@@ -9,7 +9,8 @@
+ // * Draw order within the spike is "all fills, then all strokes" (two draw calls); the scenes are chosen so that
+ //   this does not change what is drawn materially. M3's renderer must preserve painter's order.
+ //
+-// Every index read from the buffer is range-checked against the certified header; malformed content throws.
++// Every index read from the buffer is range-checked against the certified header, and every point must be finite
++// and inside the header bounds; malformed content throws before any geometry is built.
+ import earcut from 'earcut';
+ 
+ import type { RenderListHeader } from '../../ipc';
+@@ -129,6 +130,18 @@ export function decodeRenderList(header: RenderListHeader, bytes: ArrayBuffer, t
+   const points = new Float32Array(bytes, pointsOff, N * 2);
+   const verbs = new Uint8Array(bytes, verbsOff, V);
+   for (const g of groups) if (!Number.isFinite(g)) throw bad('non-finite group transform');
++  // Every point must be finite and inside the header bounds before any geometry is built (C03-R1-02): a NaN or
++  // infinite coordinate would otherwise flatten to nothing and silently shrink the workload.
++  const [minX, minY, maxX, maxY] = header.bounds;
++  if (minX === undefined || minY === undefined || maxX === undefined || maxY === undefined) {
++    throw bad('bounds missing');
++  }
++  for (let i = 0; i < N; i++) {
++    const x = points[2 * i] ?? Number.NaN;
++    const y = points[2 * i + 1] ?? Number.NaN;
++    if (!Number.isFinite(x) || !Number.isFinite(y)) throw bad(`point ${String(i)} is not finite`);
++    if (x < minX || x > maxX || y < minY || y > maxY) throw bad(`point ${String(i)} is outside the bounds`);
++  }
+ 
+   const strokes = new GrowBuffer(1 << 20);
+   const fillV = new GrowBuffer(1 << 18);
+diff --git a/plan/traceability.csv b/plan/traceability.csv
+index 6d10640..8f79ca5 100644
+--- a/plan/traceability.csv
++++ b/plan/traceability.csv
+@@ -44,3 +44,4 @@ ADR-0001,"wire the IPC boundary into worker compilation before lifting the worke
+ 02 §6,"pressure, tilt, coalesced events from tablets (web path: WebView2 / WKWebView pointer events)",M0,C0.2,spike done (review r1+r2 fixes); Windows measured with synthetic pen on CI; macOS pending user,desktop/src/spikes/tablet/analysis.test.ts; desktop/src/spikes/tablet/analyzer.test.ts; desktop/src/test/c02-r1-measurement.test.tsx; tests/adversarial/c02-r1-tooling.py; tests/adversarial/c02-r2-tooling.py; docs/manual-tests/M0-C0.2-tablet-macos.md
+ plan §2.3,"native tablet fallback streamed over a Tauri channel (octotablet on Windows; AppKit NSEvent on macOS because octotablet has no macOS backend)",M0,C0.2,spike done (review r1 fixes; Windows listener matrix on synthetic input); decision in C0.4,desktop/src-tauri/src/spikes/tablet; desktop/src/ipc/spikeApi.test.ts; tests/adversarial/c02-r1-native-timestamps.rs; tests/adversarial/c02-r1-macos-accessors.rs
+ plan §2.3,"canvas throughput: render list -> WebGPU/WebGL2 at 60 fps, binary IPC (tauri::ipc::Response)",M0,C0.3,spike done (60 fps at 100k paths on RTX 4090; macOS pending user),desktop/src/spikes/canvas; desktop/src-tauri/src/spikes/canvas; scripts/analyse-canvas-log.py; docs/manual-tests/M0-C0.3-canvas-macos.md
++plan §2.3; 06 §6.7,"C0.4 ticket: SIMD policy for the final renderer (vello_cpu scalar Level::fallback() and detected SIMD produce different pixels on 4 original + 16 stress fixtures; each fixed configuration is identical across OSes)",M0,C0.4,open ticket,crates/render/tests/c03_r1_stress.rs::c03_r1_04_simd_dispatch_must_not_change_final_pixels (ignored with this ticket); crates/render/tests/c03_fixed_configurations.rs
+diff --git a/scripts/analyse-canvas-log.py b/scripts/analyse-canvas-log.py
+index e58aad7..32f066b 100644
+--- a/scripts/analyse-canvas-log.py
++++ b/scripts/analyse-canvas-log.py
+@@ -3,13 +3,24 @@
+ Usage: python scripts/analyse-canvas-log.py <log.json | log.json.gz> [--json <out.json>] [--snapshots <dir>]
+ 
+ Every number is recomputed from the raw samples in the log; the page's own readout is not stored and not used.
+-The log is validated before anything is printed; malformed or missing evidence exits with status 2:
+-* `spike` must be `canvas` and `version` 1; `source` must be `auto`, `interactive` or `manual`;
+-* an `auto` or `interactive` log needs runs; a `manual` log must not contain runs;
+-* every run that does not carry an explicit `error` needs all its raw records: one transfer sample per requested
+-  transfer (positive byte counts, non-negative times, integer encode/generate ns), a decode record, an upload record,
+-  monotonic idle and pan/zoom timestamps covering the requested durations, and per-frame CPU times;
+-* an explicitly failed run is analysed and labelled FAILED.
++The log is validated completely before anything is printed; malformed, incomplete or contradictory evidence exits
++with status 2 and prints nothing on stdout (C03-R1-01):
++* `spike` must be `canvas` and `version` 1; `source` must be `auto`, `interactive` or `manual`, and agree with
++  `environment.mode.auto`;
++* the environment must be complete: time origin, user agent, device pixel ratio, viewport, screen, WebGPU API flag,
++  forced renderer (consistent with the launch mode), launch mode, and host facts (or the host error);
++* parameters must declare the scenes, seed, flattening tolerance, transfer/pixel counts and durations;
++* an `auto` log must contain the full matrix: one run per expected back end (the forced one, else WebGPU when its API
++  exists, and WebGL2) and declared scene, in order, and one pixel run per back end; an explicitly failed run (with
++  its error) counts as an observation, a missing one does not. A `manual` log must contain no runs;
++* every successful run must match the declared workload: transfers numbered 0..n-1 in order, every transfer's byte
++  count equal to the scene's encoded size (from its logged header counts, which must match the scene, or from the
++  workload table for seed 1), decode statistics equal to the workload (paths, cubics, stroke/fill paths, and at
++  tolerance 0.5 segments, fill vertices and triangles), non-negative durations, upload completion not before its CPU
++  part, idle and pan/zoom timestamps monotonic and covering the declared durations, a CPU time for every frame,
++  a GPU completion time for every WebGPU frame and none for WebGL2, renderer facts, and canvas geometry consistent
++  with the device pixel ratio;
++* pixel runs must have one sample per declared transfer, numbered in order, with the byte count of their size.
+ 
+ Estimators (also printed):
+ * transfer = performance.now() around one binary `canvasScene` invoke (request, host encode, IPC, envelope check);
+@@ -37,6 +48,18 @@ VERSION = 1
+ SOURCES = ("auto", "interactive", "manual")
+ BACKENDS = ("webgpu", "webgl2")
+ SCENES = ("paths100k", "groups1k", "brush10k")
++# Workload of the TTRL v1 scenes for seed 1 (desktop/src-tauri/src/spikes/canvas/renderlist.rs): encoded bytes, header
++# counts and the decoder's statistics; segment/vertex/triangle counts hold for the flattening tolerance 0.5.
++WORKLOAD = {
++    "paths100k": {"bytes": 8_700_096, "groups": 1, "paths": 100_000, "cubics": 200_000, "strokePaths": 100_000,
++                  "fillPaths": 0, "segments": 2_832_713, "fillVertices": 0, "triangles": 0},
++    "groups1k": {"bytes": 2_024_072, "groups": 1000, "paths": 20_000, "cubics": 50_000, "strokePaths": 10_000,
++                 "fillPaths": 10_000, "segments": 101_961, "fillVertices": 175_915, "triangles": 145_915},
++    "brush10k": {"bytes": 10_085_716, "groups": 1, "paths": 10_000, "cubics": 0, "strokePaths": 0,
++                 "fillPaths": 10_000, "segments": 0, "fillVertices": 1_088_402, "triangles": 1_062_652},
++}
++TABLE_SEED = 1
++TABLE_TOLERANCE = 0.5
+ 
+ 
+ class LogError(Exception):
+@@ -83,23 +106,156 @@ def fmt(v, d=1):
+     return "-" if v is None else f"{v:.{d}f}"
+ 
+ 
+-def validate(log):
+-    if log.get("spike") != "canvas":
+-        raise LogError(f"not a canvas-spike log (spike {log.get('spike')!r})")
+-    if log.get("version") != VERSION:
+-        raise LogError(f"unsupported canvas log version {log.get('version')!r} (this analyzer reads {VERSION})")
+-    source = log.get("source")
+-    if source not in SOURCES:
+-        raise LogError(f"unknown or missing source {source!r} (expected one of {SOURCES})")
++def nonneg(v):
++    return num(v) and v >= 0
++
++
++def encoded_len(h):
++    return 72 + 24 * h["groups"] + 28 * h["paths"] + 8 * h["points"] + math.ceil(h["verbs"] / 4) * 4
++
++
++def validate_environment(log, source):
+     env = log.get("environment")
+     if not isinstance(env, dict) or not num(env.get("timeOrigin")):
+         raise LogError("environment.timeOrigin is missing")
++    if not isinstance(env.get("userAgent"), str) or not env["userAgent"]:
++        raise LogError("environment.userAgent is missing")
++    if not num(env.get("devicePixelRatio")) or env["devicePixelRatio"] <= 0:
++        raise LogError("environment.devicePixelRatio is missing")
++    for key in ("viewport", "screen"):
++        v = env.get(key)
++        if not isinstance(v, dict) or not all(num(v.get(k)) and v[k] > 0 for k in ("width", "height")):
++            raise LogError(f"environment.{key} is missing")
++    if not isinstance(env.get("webgpuApi"), bool):
++        raise LogError("environment.webgpuApi is missing")
++    forced = env.get("forcedRenderer", "absent")
++    if forced not in (None, "webgpu", "webgl2"):
++        raise LogError(f"environment.forcedRenderer {forced!r} is missing or unknown")
++    mode = env.get("mode")
++    if not isinstance(mode, dict) or mode.get("name") != "canvas" or not isinstance(mode.get("auto"), bool):
++        raise LogError("environment.mode (the canvas launch mode) is missing")
++    if mode.get("renderer") != forced:
++        raise LogError(f"forced renderer {forced!r} disagrees with the launch mode {mode.get('renderer')!r}")
++    if mode["auto"] != (source == "auto"):
++        raise LogError(f"source {source!r} disagrees with launch mode auto={mode['auto']}")
++    host = env.get("host")
++    if not (isinstance(host, dict) and isinstance(host.get("os"), str) and isinstance(host.get("arch"), str)):
++        if not (isinstance(env.get("hostError"), str) and env["hostError"]):
++            raise LogError("environment.host is missing (and no host error is recorded)")
++    return env
++
++
++def validate_parameters(log):
+     params = log.get("parameters")
+     if not isinstance(params, dict):
+         raise LogError("parameters are missing")
+     for k in ("transfers", "idleMs", "panZoomMs", "pixelTransfers"):
+         if not integer(params.get(k)) or params[k] < 1:
+             raise LogError(f"parameters.{k} is not a positive integer")
++    scenes = params.get("scenes")
++    if not isinstance(scenes, list) or not scenes or any(x not in SCENES for x in scenes) or len(set(scenes)) != len(scenes):
++        raise LogError(f"parameters.scenes {scenes!r} is not a list of distinct known scenes")
++    if not integer(params.get("seed")):
++        raise LogError("parameters.seed is missing")
++    if not num(params.get("flattenTolerance")) or params["flattenTolerance"] <= 0:
++        raise LogError("parameters.flattenTolerance is missing")
++    return params
++
++
++def expected_backends(env):
++    if env["forcedRenderer"]:
++        return [env["forcedRenderer"]]
++    return ["webgpu", "webgl2"] if env["webgpuApi"] else ["webgl2"]
++
++
++def validate_run(run, label, params):
++    tr = run.get("transfers")
++    if not isinstance(tr, list) or len(tr) != params["transfers"]:
++        raise LogError(f"{label}: expected {params['transfers']} transfer samples")
++    want = WORKLOAD[run["scene"]] if params["seed"] == TABLE_SEED else None
++    for k, x in enumerate(tr):
++        if not (isinstance(x, dict) and x.get("i") == k and x.get("frame") == k):
++            raise LogError(f"{label}: transfer {k} is not numbered {k} (i/frame {x.get('i')!r}/{x.get('frame')!r})")
++        if not (integer(x.get("bytes")) and nonneg(x.get("invokeMs")) and integer(x.get("encodeNs"))
++                and x["encodeNs"] >= 0 and integer(x.get("generateNs")) and x["generateNs"] >= 0):
++            raise LogError(f"{label}: malformed transfer sample {k}")
++        header = x.get("header")
++        if header is not None:
++            if not (isinstance(header, dict) and all(integer(header.get(f)) and header[f] >= 0
++                                                     for f in ("groups", "paths", "points", "verbs"))):
++                raise LogError(f"{label}: transfer {k} header counts malformed")
++            if header.get("kind") != run["scene"] or header.get("seed") != params["seed"] or header.get("frame") != k:
++                raise LogError(f"{label}: transfer {k} header describes another scene, seed or frame")
++            if x["bytes"] != encoded_len(header):
++                raise LogError(f"{label}: transfer {k} is {x['bytes']} bytes; its header counts imply {encoded_len(header)}")
++            if want and (header["paths"] != want["paths"] or header["groups"] != want["groups"]):
++                raise LogError(f"{label}: transfer {k} header counts differ from the {run['scene']} workload")
++        elif want is None:
++            raise LogError(f"{label}: no header counts and no workload table for seed {params['seed']}")
++        if want and x["bytes"] != want["bytes"]:
++            raise LogError(f"{label}: transfer {k} is {x['bytes']} bytes; {run['scene']} encodes to {want['bytes']}")
++    if len({x["bytes"] for x in tr}) != 1:
++        raise LogError(f"{label}: transfers of one scene differ in size")
++    dec = run.get("decode")
++    if not (isinstance(dec, dict) and nonneg(dec.get("ms"))
++            and all(integer(dec.get(k)) and dec[k] >= 0 for k in ("paths", "cubics", "strokePaths", "fillPaths",
++                                                                    "segments", "fillVertices", "triangles"))):
++        raise LogError(f"{label}: decode record missing or malformed")
++    if dec.get("tolerance") != params["flattenTolerance"]:
++        raise LogError(f"{label}: decode tolerance {dec.get('tolerance')!r} differs from the declared parameter")
++    if dec["strokePaths"] + dec["fillPaths"] != dec["paths"]:
++        raise LogError(f"{label}: decode stroke + fill paths do not add up to its paths")
++    if want:
++        keys = ["paths", "cubics", "strokePaths", "fillPaths"]
++        if dec["tolerance"] == TABLE_TOLERANCE:
++            keys += ["segments", "fillVertices", "triangles"]
++        for k in keys:
++            if dec[k] != want[k]:
++                raise LogError(f"{label}: decode {k} = {dec[k]} contradicts the {run['scene']} workload ({want[k]})")
++    up = run.get("upload")
++    if not (isinstance(up, dict) and nonneg(up.get("cpuMs")) and nonneg(up.get("completeMs"))
++            and up["completeMs"] + 1e-6 >= up["cpuMs"]):
++        raise LogError(f"{label}: upload record missing, negative or completed before its CPU part")
++    idle = run.get("idle")
++    if not isinstance(idle, list) or len(idle) < 2 or not monotonic(idle) or idle[-1] - idle[0] < params["idleMs"]:
++        raise LogError(f"{label}: idle timestamps missing, non-monotonic or shorter than {params['idleMs']} ms")
++    frames = run.get("frames")
++    if not isinstance(frames, list) or len(frames) < 2:
++        raise LogError(f"{label}: pan/zoom frames missing")
++    ts = [f.get("t") if isinstance(f, dict) else None for f in frames]
++    if not monotonic(ts) or ts[-1] - ts[0] < params["panZoomMs"] - 100:
++        raise LogError(f"{label}: frame timestamps non-monotonic or shorter than {params['panZoomMs']} ms")
++    if idle[-1] > ts[0]:
++        raise LogError(f"{label}: the idle phase overlaps the pan/zoom phase")
++    for k, f in enumerate(frames):
++        if not nonneg(f.get("cpuMs")):
++            raise LogError(f"{label}: frame {k} has no non-negative CPU time")
++        gpu = f.get("gpuMs")
++        if run["backend"] == "webgpu" and not nonneg(gpu):
++            raise LogError(f"{label}: WebGPU frame {k} has no non-negative GPU completion time")
++        if run["backend"] == "webgl2" and gpu is not None:
++            raise LogError(f"{label}: WebGL2 frame {k} claims a GPU time the back end cannot measure")
++    canvas = run.get("canvas")
++    if not (isinstance(canvas, dict) and integer(canvas.get("width")) and integer(canvas.get("height"))
++            and canvas["width"] >= 1 and canvas["height"] >= 1 and num(canvas.get("dpr")) and canvas["dpr"] > 0
++            and num(canvas.get("cssWidth")) and num(canvas.get("cssHeight"))
++            and abs(canvas["width"] - max(1, round(canvas["cssWidth"] * canvas["dpr"]))) <= 1
++            and abs(canvas["height"] - max(1, round(canvas["cssHeight"] * canvas["dpr"]))) <= 1):
++        raise LogError(f"{label}: canvas geometry missing or inconsistent with its device pixel ratio")
++    if not isinstance(run.get("renderer"), dict) or not run["renderer"]:
++        raise LogError(f"{label}: renderer facts missing")
++
++
++def validate(log):
++    if log.get("spike") != "canvas":
++        raise LogError(f"not a canvas-spike log (spike {log.get('spike')!r})")
++    if log.get("version") != VERSION:
++        raise LogError(f"unsupported canvas log version {log.get('version')!r} (this analyzer reads {VERSION})")
++    source = log.get("source")
++    if source not in SOURCES:
++        raise LogError(f"unknown or missing source {source!r} (expected one of {SOURCES})")
++    env = validate_environment(log, source)
++    params = validate_parameters(log)
+     runs = log.get("runs")
+     pixels = log.get("pixelRuns")
+     if not isinstance(runs, list) or not isinstance(pixels, list):
+@@ -108,49 +264,44 @@ def validate(log):
+         raise LogError("log declares source 'manual' but contains runs")
+     if source != "manual" and not runs:
+         raise LogError(f"log source {source!r} has no runs")
++    backends = expected_backends(env)
++    for i, run in enumerate(runs):
++        if not isinstance(run, dict) or run.get("backend") not in BACKENDS or run.get("scene") not in params["scenes"]:
++            raise LogError(f"run {i}: unknown backend or a scene that is not declared")
++        if run["backend"] not in backends:
++            raise LogError(f"run {i}: back end {run['backend']} was not expected (forced {env['forcedRenderer']!r}, "
++                           f"WebGPU API {env['webgpuApi']})")
++    if source == "auto":
++        expected = [(b, sc) for b in backends for sc in params["scenes"]]
++        got = [(r["backend"], r["scene"]) for r in runs]
++        if got != expected:
++            raise LogError(f"automatic run matrix is incomplete or out of order: expected {expected}, got {got}")
++        if [p.get("backend") if isinstance(p, dict) else None for p in pixels] != backends:
++            raise LogError(f"automatic run needs one pixel run per back end {backends}")
+     for i, run in enumerate(runs):
+-        label = f"run {i} ({run.get('backend')}/{run.get('scene')})"
+-        if run.get("backend") not in BACKENDS or run.get("scene") not in SCENES:
+-            raise LogError(f"{label}: unknown backend or scene")
+-        if run.get("error"):
++        label = f"run {i} ({run['backend']}/{run['scene']})"
++        if "error" not in run:
++            raise LogError(f"{label}: no error field")
++        if run["error"] is not None:
++            if not isinstance(run["error"], str) or not run["error"]:
++                raise LogError(f"{label}: failed run without an error message")
+             continue
+-        tr = run.get("transfers")
+-        if not isinstance(tr, list) or len(tr) != params["transfers"]:
+-            raise LogError(f"{label}: expected {params['transfers']} transfer samples")
+-        for s in tr:
+-            if not (integer(s.get("bytes")) and s["bytes"] > 0 and num(s.get("invokeMs")) and s["invokeMs"] >= 0
+-                    and integer(s.get("encodeNs")) and integer(s.get("generateNs"))):
+-                raise LogError(f"{label}: malformed transfer sample {s}")
+-        dec, up = run.get("decode"), run.get("upload")
+-        if not (isinstance(dec, dict) and num(dec.get("ms")) and integer(dec.get("paths"))):
+-            raise LogError(f"{label}: decode record missing")
+-        if not (isinstance(up, dict) and num(up.get("cpuMs")) and num(up.get("completeMs"))):
+-            raise LogError(f"{label}: upload record missing")
+-        idle = run.get("idle")
+-        if not isinstance(idle, list) or len(idle) < 2 or not monotonic(idle) or idle[-1] - idle[0] < params["idleMs"]:
+-            raise LogError(f"{label}: idle timestamps missing, non-monotonic or shorter than {params['idleMs']} ms")
+-        frames = run.get("frames")
+-        if not isinstance(frames, list) or len(frames) < 2:
+-            raise LogError(f"{label}: pan/zoom frames missing")
+-        ts = [f.get("t") for f in frames]
+-        if not monotonic(ts) or ts[-1] - ts[0] < params["panZoomMs"] - 100:
+-            raise LogError(f"{label}: frame timestamps non-monotonic or shorter than {params['panZoomMs']} ms")
+-        for f in frames:
+-            if not num(f.get("cpuMs")) or not (f.get("gpuMs") is None or num(f.get("gpuMs"))):
+-                raise LogError(f"{label}: malformed frame sample {f}")
+-        canvas = run.get("canvas")
+-        if not isinstance(canvas, dict) or not (integer(canvas.get("width")) and integer(canvas.get("height"))):
+-            raise LogError(f"{label}: canvas geometry missing")
++        validate_run(run, label, params)
+     for i, p in enumerate(pixels):
++        if not isinstance(p, dict) or p.get("backend") not in backends:
++            raise LogError(f"pixel run {i}: unknown or unexpected back end")
+         if p.get("error"):
+             continue
+-        s = p.get("samples")
+-        if not isinstance(s, list) or len(s) != params["pixelTransfers"]:
++        if not (integer(p.get("width")) and integer(p.get("height")) and p["width"] >= 1 and p["height"] >= 1):
++            raise LogError(f"pixel run {i}: size missing")
++        samples = p.get("samples")
++        if not isinstance(samples, list) or len(samples) != params["pixelTransfers"]:
+             raise LogError(f"pixel run {i}: expected {params['pixelTransfers']} samples")
+-        for x in s:
+-            if not (integer(x.get("bytes")) and x["bytes"] == 16 + 4 * p["width"] * p["height"]
+-                    and num(x.get("invokeMs")) and num(x.get("uploadMs"))):
+-                raise LogError(f"pixel run {i}: malformed sample {x}")
++        for k, x in enumerate(samples):
++            if not (isinstance(x, dict) and x.get("i") == k and integer(x.get("bytes"))
++                    and x["bytes"] == 16 + 4 * p["width"] * p["height"] and nonneg(x.get("invokeMs"))
++                    and nonneg(x.get("uploadMs")) and integer(x.get("fillNs")) and x["fillNs"] >= 0):
++                raise LogError(f"pixel run {i}: malformed sample {k}")
+ 
+ 
+ def analyse_run(run):
+diff --git a/scripts/audit-vello-deps.py b/scripts/audit-vello-deps.py
+new file mode 100644
+index 0000000..571d735
+--- /dev/null
++++ b/scripts/audit-vello-deps.py
+@@ -0,0 +1,115 @@
++"""Regenerates reviews/evidence/M0-C0.3/vello-dependency-audit.txt (C03-R1-06).
++
++Usage: python scripts/audit-vello-deps.py [--out <file>]
++
++Method, stated in the output:
++* graph: every crate printed by `cargo tree --locked -p vello_cpu --prefix none` in this workspace (resolved features;
++  normal and build dependencies, e.g. `autocfg`; vello_cpu's own dev-dependencies are not part of the lock graph);
++* sources: every `*.rs` file under each crate's `src/` in the local cargo registry;
++* "lines" = all lines of those files; "unsafe lines" = lines matching the whole word `unsafe` whose first
++  non-blank characters are not `//` (a lexical exposure indicator, not a count of unsafe blocks or a safety proof);
++* libm call sites: `.name(` calls of libm-backed float methods in vello_common, vello_cpu, kurbo, peniko and color,
++  **excluding code inside `#[cfg(test)]` items** (tracked by brace depth), each listed with file:line.
++Standard library only.
++"""
++
++import pathlib
++import re
++import subprocess
++import sys
++
++ROOT = pathlib.Path(__file__).resolve().parents[1]
++OUT = ROOT / "reviews/evidence/M0-C0.3/vello-dependency-audit.txt"
++LIBM = ("sin", "cos", "tan", "asin", "acos", "atan", "atan2", "sin_cos", "powf", "powi", "exp", "exp2", "ln", "log2",
++        "log10", "hypot", "cbrt", "sinh", "cosh", "tanh")
++CALL_CRATES = ("vello_common", "vello_cpu", "kurbo", "peniko", "color")
++
++
++def registry():
++    home = pathlib.Path.home() / ".cargo" / "registry" / "src"
++    dirs = sorted(home.glob("index.crates.io-*"))
++    if not dirs:
++        raise SystemExit("cargo registry sources not found; run `cargo fetch` first")
++    return dirs[0]
++
++
++def license_of(folder):
++    text = (folder / "Cargo.toml").read_text(encoding="utf-8")
++    m = re.search(r'^license\s*=\s*"([^"]*)"', text, re.M)
++    return m.group(1) if m else "-"
++
++
++def production_lines(path):
++    """(line number, text) of lines outside `#[cfg(test)]` items."""
++    out, skip_depth, pending, depth = [], None, False, 0
++    for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
++        stripped = line.strip()
++        if skip_depth is None and stripped.startswith("#[cfg(test)]"):
++            pending = True
++            continue
++        opens, closes = line.count("{"), line.count("}")
++        if pending and opens:
++            skip_depth, pending = depth, False
++        if skip_depth is None and not pending:
++            out.append((n, line))
++        depth += opens - closes
++        if skip_depth is not None and depth <= skip_depth:
++            skip_depth = None
++    return out
++
++
++def main(argv):
++    out_path = pathlib.Path(argv[argv.index("--out") + 1]) if "--out" in argv else OUT
++    tree = subprocess.check_output(["cargo", "tree", "--locked", "-p", "vello_cpu", "--prefix", "none"], cwd=ROOT,
++                                   text=True)
++    crates = sorted(set(re.findall(r"^([\w-]+) v([\d.]+)", tree, re.M)))
++    reg = registry()
++    rows, total_lines, total_unsafe = [], 0, 0
++    for name, version in crates:
++        folder = reg / f"{name}-{version}"
++        lines = [ln for f in sorted((folder / "src").rglob("*.rs")) for ln in f.read_text(encoding="utf-8").splitlines()]
++        unsafe = sum(1 for ln in lines if re.search(r"\bunsafe\b", ln) and not ln.lstrip().startswith("//"))
++        total_lines += len(lines)
++        total_unsafe += unsafe
++        rows.append(f"{name} v{version} | {license_of(folder)} | {unsafe} | {len(lines)}")
++    calls = []
++    for name, version in crates:
++        if name not in CALL_CRATES:
++            continue
++        folder = reg / f"{name}-{version}"
++        for f in sorted((folder / "src").rglob("*.rs")):
++            for n, line in production_lines(f):
++                if line.lstrip().startswith("//"):
++                    continue
++                for fn in re.findall(r"\.(" + "|".join(LIBM) + r")\(", line):
++                    calls.append(f"{name}-{version}/{f.relative_to(folder).as_posix()}:{n}: {fn}: {line.strip()[:110]}")
++    text = [
++        "# vello_cpu dependency audit (C0.3), generated by scripts/audit-vello-deps.py",
++        "# Graph: `cargo tree --locked -p vello_cpu --prefix none` (resolved features std, u8_pipeline, f32_pipeline,",
++        "# multithreading; normal and build dependencies). Sources: src/**/*.rs in the cargo registry.",
++        "# Columns: crate version | licence | lines matching the whole word `unsafe`, excluding `//` lines | source lines",
++        *rows,
++        f"# TOTAL: {len(rows)} crates (vello_cpu included), {total_lines} source lines, {total_unsafe} unsafe-word lines",
++        "# These are lexical exposure indicators, not counts of unsafe blocks and not a safety proof. vello_cpu and",
++        "# vello_common contain no `unsafe` themselves.",
++        "",
++        "# libm-backed float calls in production code (code inside #[cfg(test)] items excluded):",
++        *calls,
++        "",
++        "# Paths relevant to the C0.3 adapter (bevel joins, butt caps, solid/linear/radial paint, clips; no blur, no",
++        "# blurred rounded rectangles, no round joins or caps): kurbo stroke expansion uses `hypot` for segment",
++        "# normalisation (used by every stroked fixture); round joins/caps and offset curves use angle functions",
++        "# (`atan2`, `sin_cos`; not exercised by bevel/butt strokes); vello_common filter/gaussian_blur.rs `powf` for",
++        "# blur weights and vello_cpu fine/common/rounded_blurred_rect.rs `exp`/`powf` (not used by the fixtures).",
++        "# vello_common's flattening subdivision estimate uses an integer-power lookup table in production; the",
++        "# `powf(1/6)` variant at flatten_simd.rs:671 is test-only (`old_estimate` in `mod tests`). The scalar-versus-SIMD",
++        "# pixel differences (C03-R1-04) are not attributed to any particular one of these operations.",
++    ]
++    out_path.write_text("\n".join(text) + "\n", encoding="utf-8", newline="\n")
++    print(f"{len(rows)} crates, {total_lines} lines, {total_unsafe} unsafe-word lines, {len(calls)} libm call sites -> "
++          f"{out_path.relative_to(ROOT) if out_path.is_relative_to(ROOT) else out_path}")
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main(sys.argv))

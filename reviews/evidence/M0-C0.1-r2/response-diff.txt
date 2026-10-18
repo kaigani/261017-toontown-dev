@@ -1,0 +1,460 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index af08a11..50e02aa 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -68,7 +68,7 @@ jobs:
+ 
+       - uses: taiki-e/install-action@v2
+         with:
+-          tool: cargo-deny
++          tool: cargo-deny@0.20.2
+       - run: cargo deny --locked check
+ 
+       - name: Headless binary — build, self-test (twice, compared), linked-library proof
+@@ -127,7 +127,7 @@ jobs:
+       - run: pnpm install --frozen-lockfile
+ 
+       - name: Tauri build (unsigned)
+-        run: pnpm --dir desktop tauri build --bundles ${{ matrix.bundles }}
++        run: pnpm --dir desktop tauri build --bundles ${{ matrix.bundles }} -- --locked
+ 
+       - name: IPC benchmark in the real webview (toontown --ipc-bench)
+         run: |
+@@ -178,5 +178,7 @@ jobs:
+         run: |
+           test -z "${DISPLAY:-}" && test -z "${WAYLAND_DISPLAY:-}"
+           ! ls /tmp/.X11-unix/X* 2>/dev/null
+-          env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest
++          env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-1.json
++          env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-2.json
++          python3 -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
+           python3 scripts/check-headless-deps.py target/release/toontown-headless
+diff --git a/.gitignore b/.gitignore
+index d499aaa..007b5e5 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -15,3 +15,6 @@ Thumbs.db
+ # Local
+ *.log
+ .env
++# Python
++__pycache__/
++*.pyc
+diff --git a/bins/headless/tests/guard_fixtures.rs b/bins/headless/tests/guard_fixtures.rs
+new file mode 100644
+index 0000000..f1bb3ab
+--- /dev/null
++++ b/bins/headless/tests/guard_fixtures.rs
+@@ -0,0 +1,54 @@
++//! The headless dependency guard (scripts/check-headless-deps.py) must reject real executables that import a
++//! graphics/GUI library (C01-R1-06). Each fixture is compiled with rustc and inspected, never executed.
++
++use std::path::{Path, PathBuf};
++use std::process::Command;
++
++fn root() -> PathBuf {
++    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..")
++}
++
++fn python() -> &'static str {
++    if cfg!(windows) { "python" } else { "python3" }
++}
++
++/// Compiles `fixture` into the test's temporary directory and returns the guard's (exit code, stdout).
++fn guard_on_fixture(fixture: &Path, name: &str) -> Result<(Option<i32>, String), String> {
++    let exe = Path::new(env!("CARGO_TARGET_TMPDIR")).join(format!("{name}{}", std::env::consts::EXE_SUFFIX));
++    let built = Command::new("rustc")
++        .args(["--edition", "2024", "-O"])
++        .arg(fixture)
++        .arg("-o")
++        .arg(&exe)
++        .current_dir(root())
++        .output()
++        .map_err(|e| format!("rustc is not on PATH: {e}"))?;
++    if !built.status.success() {
++        return Err(format!("fixture build failed: {}", String::from_utf8_lossy(&built.stderr)));
++    }
++    let out = Command::new(python())
++        .args(["-I", "scripts/check-headless-deps.py"])
++        .arg(&exe)
++        .current_dir(root())
++        .output()
++        .map_err(|e| format!("python is not on PATH: {e}"))?;
++    Ok((out.status.code(), String::from_utf8_lossy(&out.stdout).into_owned()))
++}
++
++#[cfg(windows)]
++#[test]
++fn rejects_a_real_direct_composition_import() {
++    let (code, stdout) =
++        guard_on_fixture(&root().join("tests/adversarial/fixtures/graphics_import.rs"), "graphics-import").unwrap();
++    assert_eq!(code, Some(1), "{stdout}");
++    assert!(stdout.contains("forbidden libraries: ['dcomp.dll']"), "{stdout}");
++}
++
++#[cfg(target_os = "macos")]
++#[test]
++fn rejects_a_real_appkit_import() {
++    let (code, stdout) =
++        guard_on_fixture(&root().join("tests/fixtures/headless-guard/appkit_import.rs"), "appkit-import").unwrap();
++    assert_eq!(code, Some(1), "{stdout}");
++    assert!(stdout.contains("AppKit.framework"), "{stdout}");
++}
+diff --git a/crates/engine/src/lib.rs b/crates/engine/src/lib.rs
+index a984c75..f1f1d9e 100644
+--- a/crates/engine/src/lib.rs
++++ b/crates/engine/src/lib.rs
+@@ -63,8 +63,12 @@ pub struct EngineConfig {
+     pub run_mode: RunMode,
+ }
+ 
+-/// Static facts about the running engine, the superset of `app.info.get` (01 §12) and the MCP `initialize`
+-/// server info (11 §4).
++/// Internal bootstrap information about the running engine: the engine-level facts the MCP `initialize` server info
++/// needs (11 §4: name, version, registry version, document schema version, run mode) plus platform and architecture.
++///
++/// This is **not** the result of the spec query `app.info.get` (01 §12), which also reports `locale` and
++/// `languages[]`; those depend on settings and localisation, which do not exist yet. `app.info.get` is a registered
++/// query from C1.4 (ticket in `plan/traceability.csv`) and will be built on this type, not replace it.
+ #[derive(Debug, Clone, Serialize)]
+ #[serde(rename_all = "camelCase")]
+ pub struct EngineInfo {
+diff --git a/deny.toml b/deny.toml
+index eb760a4..4b14197 100644
+--- a/deny.toml
++++ b/deny.toml
+@@ -30,9 +30,10 @@ version = 2
+ confidence-threshold = 0.93
+ # Keep the user's full allow-list even when a licence is not currently used.
+ unused-allowed-license = "allow"
+-# The user's allow-list (MIT, Apache-2.0, BSD, ISC, Zlib, MPL-2.0) plus Unicode-3.0, an OSI-approved permissive
+-# licence required by the ICU4X crates (icu_*, litemap, potential_utf, tinystr, writeable, yoke, zerofrom, zerovec,
+-# zerotrie) that Tauri pulls in through url -> idna. Recorded in ADR-0003. Add nothing here without an ADR update.
++# THE single allow-list for both ecosystems: scripts/check-npm-licenses.mjs reads this array for the shipped
++# JavaScript. Approved set (ADR-0003): the user's list (MIT, Apache-2.0, BSD-2/3-Clause, ISC, Zlib, MPL-2.0) plus
++# Unicode-3.0 (ICU4X crates pulled in by Tauri through url -> idna) and 0BSD, both accepted by the orchestrator on
++# 2026-10-17. Add nothing here without an ADR-0003 update.
+ allow = [
+     "MIT",
+     "Apache-2.0",
+@@ -42,6 +43,7 @@ allow = [
+     "Zlib",
+     "MPL-2.0",
+     "Unicode-3.0",
++    "0BSD",
+ ]
+ 
+ [licenses.private]
+diff --git a/desktop/src-tauri/src/ipc.rs b/desktop/src-tauri/src/ipc.rs
+index 2f634d4..a2c9cad 100644
+--- a/desktop/src-tauri/src/ipc.rs
++++ b/desktop/src-tauri/src/ipc.rs
+@@ -16,7 +16,7 @@ pub async fn ping(engine: State<'_, Engine>, request: PingRequest) -> Result<Pin
+     engine.ping(request).map_err(|e| e.to_info())
+ }
+ 
+-/// Static engine information (superset of `app.info.get`).
++/// Internal engine bootstrap information ([`EngineInfo`]); not the spec query `app.info.get` (01 §12, C1.4).
+ #[tauri::command]
+ #[must_use]
+ pub fn app_info(engine: State<'_, Engine>) -> EngineInfo {
+diff --git a/desktop/src/lib/latency.test.ts b/desktop/src/lib/latency.test.ts
+index 857877e..861c1ca 100644
+--- a/desktop/src/lib/latency.test.ts
++++ b/desktop/src/lib/latency.test.ts
+@@ -1,7 +1,8 @@
+ import { describe, expect, it } from 'vitest';
+ 
+ import { createHostApi, createMockTransport } from '../ipc';
+-import { formatMs, measureBurst, percentile, summarize } from './latency';
++import type { HostTransport } from '../ipc';
++import { checksum, formatMs, measureBurst, pingOnce, percentile, summarize } from './latency';
+ 
+ describe('latency statistics', () => {
+   it('nearest-rank percentiles', () => {
+@@ -29,3 +30,33 @@ describe('latency statistics', () => {
+     expect(formatMs(12.34)).toBe('12.3');
+   });
+ });
++
++describe('ping echo verification', () => {
++  function tampering(edit: (payload: string | null) => string | null): HostTransport {
++    const mock = createMockTransport();
++    return {
++      ...mock,
++      invoke: async (command, args) => {
++        const value = (await mock.invoke(command, args)) as { payload: string | null };
++        return command === 'ping' ? { ...value, payload: edit(value.payload) } : value;
++      },
++    };
++  }
++
++  it('accepts a faithful echo, with and without payload', async () => {
++    const host = createHostApi(createMockTransport());
++    await expect(pingOnce(host, 1, 'abc')).resolves.toBeGreaterThanOrEqual(0);
++    await expect(pingOnce(host, 2)).resolves.toBeGreaterThanOrEqual(0);
++  });
++
++  it('rejects dropped, truncated and same-length corrupted payloads', async () => {
++    await expect(pingOnce(createHostApi(tampering(() => null)), 1, 'abc')).rejects.toThrow(/echo mismatch/);
++    await expect(pingOnce(createHostApi(tampering((p) => p?.slice(1) ?? null)), 1, 'abc')).rejects.toThrow();
++    await expect(pingOnce(createHostApi(tampering(() => 'abd')), 1, 'abc')).rejects.toThrow();
++    await expect(pingOnce(createHostApi(tampering(() => 'x')), 1)).rejects.toThrow();
++  });
++
++  it('checksum differs for permutations', () => {
++    expect(checksum('ab')).not.toBe(checksum('ba'));
++  });
++});
+diff --git a/desktop/src/lib/latency.ts b/desktop/src/lib/latency.ts
+index 94109a8..bd5f313 100644
+--- a/desktop/src/lib/latency.ts
++++ b/desktop/src/lib/latency.ts
+@@ -31,12 +31,46 @@ export function summarize(samples: readonly number[]): LatencySummary | null {
+   };
+ }
+ 
+-/** One ping round trip in milliseconds, measured with the monotonic `performance.now()` clock. */
++/** FNV-1a over UTF-16 code units: a cheap checksum to detect a corrupted or truncated echo. */
++export function checksum(text: string): number {
++  let h = 0x811c9dc5;
++  for (let i = 0; i < text.length; i++) {
++    h ^= text.charCodeAt(i);
++    h = Math.imul(h, 0x01000193) >>> 0;
++  }
++  return h;
++}
++
++// Bursts send the same payload many times; its checksum is computed once.
++let cachedPayload: string | undefined;
++let cachedSum = 0;
++function sentChecksum(payload: string): number {
++  if (payload !== cachedPayload) {
++    cachedPayload = payload;
++    cachedSum = checksum(payload);
++  }
++  return cachedSum;
++}
++
++/**
++ * One ping round trip in milliseconds, measured with the monotonic `performance.now()` clock. The echo (sequence
++ * number, payload length and checksum) is verified after the clock stops, so verification is not timed; a mismatch
++ * throws, which marks a benchmark report `ok: false`.
++ */
+ export async function pingOnce(host: HostApi, seq: number, payload?: string): Promise<number> {
+   const start = performance.now();
+   const response = await host.ping(payload === undefined ? { seq } : { seq, payload });
+   const elapsed = performance.now() - start;
+-  if (response.seq !== seq) throw new Error(`ping echo mismatch: sent ${seq}, got ${response.seq}`);
++  if (response.seq !== seq) throw new Error(`ping echo mismatch: sent seq ${seq}, got ${response.seq}`);
++  const echoed = response.payload ?? undefined;
++  if (
++    echoed?.length !== payload?.length ||
++    (payload !== undefined && checksum(echoed ?? '') !== sentChecksum(payload))
++  ) {
++    throw new Error(
++      `ping payload echo mismatch for seq ${seq}: sent ${payload?.length ?? 'none'} units, got ${echoed?.length ?? 'none'}`,
++    );
++  }
+   return elapsed;
+ }
+ 
+diff --git a/docs/decisions/ADR-0003-licensing-policy.md b/docs/decisions/ADR-0003-licensing-policy.md
+index 51aa9aa..11c6e2d 100644
+--- a/docs/decisions/ADR-0003-licensing-policy.md
++++ b/docs/decisions/ADR-0003-licensing-policy.md
+@@ -1,6 +1,7 @@
+ # ADR-0003 — Licensing policy for dependencies and shipped components
+ 
+-Status: accepted (C0.1, 2026-10-17). The FFmpeg sidecar build/encoder/fetch plan gets its own ADR in C0.4.
++Status: accepted (C0.1, 2026-10-17; amended after review round 1: one shared allow-list, 0BSD added, SPDX
++evaluation). The FFmpeg sidecar build/encoder/fetch plan gets its own ADR in C0.4.
+ 
+ ## Context
+ 
+@@ -10,27 +11,32 @@ statically linked into our executables; JavaScript dependencies are bundled into
+ 
+ ## Decision
+ 
+-1. **Rust dependency graph** (`deny.toml`, `cargo deny check` in CI on Windows and macOS). Allowed licences:
+-   MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, Zlib, MPL-2.0 (the user's list) **plus Unicode-3.0**. Everything
+-   else is rejected, which rejects GPL, AGPL and LGPL. Notes:
+-   - **Unicode-3.0** (OSI-approved, permissive) is required by the ICU4X crates (`icu_*`, `litemap`, `potential_utf`,
+-     `tinystr`, `writeable`, `yoke`, `zerofrom`, `zerovec`, `zerotrie`) that Tauri pulls in through `url` → `idna`.
+-     It is the only addition to the user's list; flagged in the C0.1 handoff for confirmation.
+-   - Dual-licensed crates pass when one alternative is allowed (e.g. `MIT OR Unlicense`, `CC0-1.0 OR MIT-0 OR
+-     Apache-2.0`).
+-   - The deny graph covers the shipped targets only (Windows x86_64/aarch64, macOS x86_64/aarch64). Linux is not a
+-     product platform; it only runs the headless CI proof, whose crates are a subset of the Windows/macOS graph.
+-   - Sources: crates.io only; git and other registries are rejected.
+-2. **LGPL is allowed only as a dynamically linked or separately executed sidecar** — concretely the FFmpeg build
++1. **One allow-list for both ecosystems.** The approved set is exactly:
++   **MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, Zlib, MPL-2.0, Unicode-3.0, 0BSD.**
++   - The first seven are the user's list. **Unicode-3.0** (OSI-approved, permissive) is required by the ICU4X crates
++     (`icu_*`, `litemap`, `potential_utf`, `tinystr`, `writeable`, `yoke`, `zerofrom`, `zerovec`, `zerotrie`) that
++     Tauri pulls in through `url` → `idna`. **0BSD** (public-domain-equivalent, permissive) appears today only as one
++     alternative of multi-licensed crates (e.g. `adler2`: `0BSD OR MIT OR Apache-2.0`) and is common in npm packages. Both additions were accepted by the orchestrator on 2026-10-17 (C0.1 review round 1, C01-R1-01).
++   - The list lives in one place, `deny.toml` `[licenses] allow`. `scripts/check-npm-licenses.mjs` reads that array,
++     so the two gates cannot drift; `tests/adversarial/guards.mjs allowlist` checks list = this ADR's set.
++   - Everything else is rejected, which rejects GPL, AGPL and LGPL. Licence expressions are evaluated as SPDX
++     boolean expressions (AND binds tighter than OR, parentheses nest, `WITH` exceptions must be allowed as a whole,
++     `X+` passes when `X` does); malformed or non-SPDX strings fail closed.
++   - Dual-licensed packages pass when one alternative is allowed (e.g. `MIT OR Unlicense`).
++2. **Rust dependency graph** (`cargo deny check` in CI on Windows and macOS). The graph covers the shipped targets
++   only (Windows x86_64/aarch64, macOS x86_64/aarch64). Linux is not a product platform; it only runs the headless
++   CI proof, whose crates are a subset of the Windows/macOS graph. Sources: crates.io only; git and other registries
++   are rejected.
++3. **LGPL is allowed only as a dynamically linked or separately executed sidecar** — concretely the FFmpeg build
+    (plan §6.3), invoked as a separate process by `tt-io`, never linked into our binaries, shipped with its licence
+    text and corresponding-source offer. Because a sidecar is not a Cargo dependency, LGPL never appears in the Rust
+    allow-list.
+-3. **JavaScript shipped in the app** (`scripts/check-npm-licenses.mjs`, `pnpm licenses:check` in CI): production
+-   dependencies must satisfy the same allow-list (plus 0BSD). Development dependencies (build tools, not
+-   distributed) are reported, not gated.
+-4. **Data files** (the lip-sync ONNX model, plan §6.4) are downloaded on first use under their own licence
++4. **JavaScript shipped in the app** (`scripts/check-npm-licenses.mjs`, `pnpm licenses:check` in CI): production
++   dependencies must satisfy the same allow-list (rule 1). Development dependencies (build tools, not distributed)
++   are reported, not gated.
++5. **Data files** (the lip-sync ONNX model, plan §6.4) are downloaded on first use under their own licence
+    (Apache-2.0 for the recommended model) and are not part of the installer.
+-5. **Never**: GPL or AGPL in anything we ship; FFmpeg builds configured with `--enable-gpl` or `--enable-nonfree`
++6. **Never**: GPL or AGPL in anything we ship; FFmpeg builds configured with `--enable-gpl` or `--enable-nonfree`
+    (no x264/x265, no fdk-aac).
+ 
+ ## Consequences
+diff --git a/docs/decisions/ADR-0004-line-endings-determinism.md b/docs/decisions/ADR-0004-line-endings-determinism.md
+index e502a93..deca590 100644
+--- a/docs/decisions/ADR-0004-line-endings-determinism.md
++++ b/docs/decisions/ADR-0004-line-endings-determinism.md
+@@ -29,7 +29,18 @@ relies on platform maths libraries or compiler contraction.
+ 5. **Evidence from M0.** `tt-engine`'s self-test includes `determinism.ieee754`: a Bézier/arc-length workload using
+    only the operations of rule 3, hashed with SHA-256 and compared with a golden value recorded on Windows x86_64
+    and reproduced bit-for-bit by an independent Python implementation. CI runs it on Windows x86_64, macOS aarch64
+-   and Linux x86_64, twice per job. C0.3 extends this to rasteriser output hashes compared across OSes.
++   and Linux x86_64; the Windows and macOS check jobs and the Linux job each run the self-test twice. CI run
++   39096183925 reproduced the golden on all three. Scope: the probe covers `+ − × ÷ sqrt` on f64 only, not
++   transcendental functions, `mul_add`, f32 rounding or decimal formatting; C0.3 extends the evidence to rasteriser
++   output hashes compared across OSes and M1 to canonical JSON.
++6. **Headless "no display or GPU" evidence** (11 §3) has two parts with different strength. (a) Runtime: the
++   self-test runs on a Linux runner with no X/Wayland server and on the Windows/macOS runners. (b) Static guard
++   (`scripts/check-headless-deps.py`): a deny-list of GUI/webview/windowing/GPU crates in `cargo tree` and of GUI/GPU
++   system libraries among the binary's **direct** imports (PE import/delay-import tables, Mach-O load commands, ELF
++   DT_NEEDED). The static guard does not see libraries loaded transitively by a direct import or at run time with
++   LoadLibrary/dlopen; it guards against accidentally linking UI/graphics code, it is not a proof that none can ever
++   load. Real executables with a DirectComposition import (Windows) and an AppKit import (macOS) are kept as
++   permanent negative controls (`bins/headless/tests/guard_fixtures.rs`).
+ 
+ ## Consequences
+ 
+diff --git a/package.json b/package.json
+index 41e0050..a59df34 100644
+--- a/package.json
++++ b/package.json
+@@ -8,7 +8,7 @@
+   "scripts": {
+     "lint": "pnpm -r --workspace-concurrency=1 lint",
+     "typecheck": "pnpm -r typecheck",
+-    "test": "pnpm -r test",
++    "test": "pnpm -r test && node --test scripts/check-npm-licenses.test.mjs",
+     "build": "pnpm -r build",
+     "format:check": "pnpm -r format:check",
+     "licenses:check": "node scripts/check-npm-licenses.mjs"
+diff --git a/plan/traceability.csv b/plan/traceability.csv
+index 3f509c5..da7bb3d 100644
+--- a/plan/traceability.csv
++++ b/plan/traceability.csv
+@@ -24,3 +24,8 @@ spec_section,requirement_id_or_quote,milestone,checkpoint,status,test
+ 01 §9.1,"Status bar",M4,C4.1,placeholder with messages and IPC readout,desktop/src/App.test.tsx
+ 02 §6,"pressure, tilt, tablet input",M0,C0.2,planned,
+ 10 §6.6,"format version is MAJOR.MINOR",M1,C1.1,constant 0.0 placeholder,crates/engine/src/selftest.rs::dotted_version_parser
++01 §12.1,"app.info.get: {name, version, platform, locale, languages[], formatVersion}",M1,C1.4,ticketed (C01-R1-04): EngineInfo is internal bootstrap info without locale/languages; app.info.get becomes a registered query in C1.4,tests/adversarial/c01.rs::c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get
++plan §6.3 / ADR-0003,"one licence allow-list for Rust and shipped JS; SPDX boolean evaluation",M0,C0.1,done (review r1),scripts/check-npm-licenses.test.mjs; tests/adversarial/guards.mjs (licensing; allowlist)
++ADR-0001,"front end reaches the host only through src/ipc",M0,C0.1,done (static/dynamic/require/import.meta/globals; review r1),desktop/src/ipc/boundary.lint.test.ts; tests/adversarial/guards.mjs (imports)
++ADR-0001,"host values are validated before UI code sees them",M0,C0.1,done (schema-subset validators; review r1),desktop/src/ipc/schema.test.ts; tests/adversarial/frontend-cases.ts
++11 §3 / ADR-0004,"headless guard rejects real graphics imports (direct imports only)",M0,C0.1,done (review r1),bins/headless/tests/guard_fixtures.rs; tests/adversarial/headless_guard.py
+diff --git a/tests/adversarial/c01.rs b/tests/adversarial/c01.rs
+index 51f6038..0878a35 100644
+--- a/tests/adversarial/c01.rs
++++ b/tests/adversarial/c01.rs
+@@ -39,12 +39,25 @@ fn c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary() {
+     node_case("imports");
+ }
+ 
++// Amended by the builder in round 1 per the orchestrator's C01-R1-04 ruling (2026-10-17): the claim was renamed
++// rather than locale/languages faked. EngineInfo is internal bootstrap info; `app.info.get` (with locale and
++// languages[]) is ticketed to C1.4 in plan/traceability.csv. The test now pins the renamed claim: every 11 §4
++// server-info field is present, and no source still calls EngineInfo a superset of app.info.get.
+ #[test]
+-fn c01_r1_04_info_is_a_superset_of_app_info_get() {
++fn c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get() {
+     let engine = Engine::new(EngineConfig { run_mode: RunMode::Headless }).unwrap();
+     let value = serde_json::to_value(engine.info()).unwrap();
+-    assert!(value["locale"].is_string(), "01 section 12.1 / A: app.info.get requires locale; got {value}");
+-    assert!(value["languages"].is_array(), "app.info.get requires languages[]");
++    for field in ["name", "version", "registryVersion", "formatVersion", "runMode"] {
++        assert!(value[field].is_string(), "11 section 4 server info needs {field}; got {value}");
++    }
++    for (path, text) in [
++        ("crates/engine/src/lib.rs", include_str!("../../crates/engine/src/lib.rs")),
++        ("desktop/src-tauri/src/ipc.rs", include_str!("../../desktop/src-tauri/src/ipc.rs")),
++        ("desktop/src/ipc/types.ts", include_str!("../../desktop/src/ipc/types.ts")),
++    ] {
++        assert!(!text.to_lowercase().contains("superset of `app.info.get`"), "{path} still claims the superset");
++        assert!(text.contains("app.info.get"), "{path} must say how EngineInfo relates to app.info.get");
++    }
+ }
+ 
+ #[test]
+diff --git a/tests/adversarial/guards.mjs b/tests/adversarial/guards.mjs
+index d117f56..3aea32b 100644
+--- a/tests/adversarial/guards.mjs
++++ b/tests/adversarial/guards.mjs
+@@ -25,12 +25,24 @@ if (process.argv[2] === "licensing") {
+     `C01-R1-01: ${expression} requires a forbidden licence`,
+   );
+ } else if (process.argv[2] === "allowlist") {
+-  const { satisfies } = await import("../../scripts/check-npm-licenses.mjs");
+-  assert.equal(
+-    satisfies("0BSD"),
+-    false,
+-    "C01-R1-01: 0BSD is outside the approved allow-list",
+-  );
++  // Amended by the builder in round 1 per the orchestrator's C01-R1-01 ruling (2026-10-17): 0BSD is approved, and
++  // there must be ONE allow-list for both ecosystems. The original assertion (0BSD rejected) is replaced by a
++  // drift check: the JS gate's list must equal deny.toml's [licenses] allow list, must equal the approved set
++  // recorded in ADR-0003, and must reject licences outside it.
++  const { readFileSync } = await import("node:fs");
++  const { ALLOWED, satisfies } = await import("../../scripts/check-npm-licenses.mjs");
++  const deny = readFileSync(new URL("../../deny.toml", import.meta.url), "utf8");
++  const table = /^\[licenses\][\s\S]*?^allow\s*=\s*\[([\s\S]*?)\]/m.exec(deny);
++  assert(table, "deny.toml must have a [licenses] allow list");
++  const rust = [...table[1].replace(/#.*$/gm, "").matchAll(/"([^"]+)"/g)].map((m) => m[1]);
++  const approved = ["MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "MPL-2.0", "Unicode-3.0", "0BSD"];
++  assert.deepEqual([...ALLOWED].sort(), [...rust].sort(), "C01-R1-01: JS and Rust allow-lists drifted");
++  assert.deepEqual([...rust].sort(), [...approved].sort(), "C01-R1-01: allow-list differs from the approved set");
++  const adr = readFileSync(new URL("../../docs/decisions/ADR-0003-licensing-policy.md", import.meta.url), "utf8");
++  for (const id of approved) assert(adr.includes(id), `ADR-0003 must list ${id}`);
++  for (const outside of ["Unlicense", "CC0-1.0", "MIT-0", "BlueOak-1.0.0", "LGPL-2.1-only", "GPL-3.0-only", "AGPL-3.0-only"]) {
++    assert.equal(satisfies(outside), false, `C01-R1-01: ${outside} is outside the approved allow-list`);
++  }
+ } else if (process.argv[2] === "imports") {
+   const desktop = fileURLToPath(new URL("../../desktop/", import.meta.url));
+   const probe = fileURLToPath(
+diff --git a/tests/fixtures/headless-guard/appkit_import.rs b/tests/fixtures/headless-guard/appkit_import.rs
+new file mode 100644
+index 0000000..1e5e8aa
+--- /dev/null
++++ b/tests/fixtures/headless-guard/appkit_import.rs
+@@ -0,0 +1,12 @@
++//! Negative control for scripts/check-headless-deps.py on macOS: an executable with a real AppKit import.
++//! Compiled and inspected by bins/headless/tests/guard_fixtures.rs; never executed.
++
++#[link(name = "AppKit", kind = "framework")]
++unsafe extern "C" {
++    fn NSApplicationLoad() -> bool;
++}
++
++fn main() {
++    // Retain the import without calling it.
++    std::hint::black_box(NSApplicationLoad as *const ());
++}

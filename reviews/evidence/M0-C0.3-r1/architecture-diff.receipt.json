@@ -1,0 +1,15 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "ac78acb..11247ff",
+    "--",
+    "desktop/src/ipc",
+    "desktop/src-tauri/src/lib.rs",
+    "desktop/src-tauri/src/diagnostics.rs",
+    "desktop/src-tauri/src/spikes/tablet/mod.rs"
+  ],
+  "startedUtc": "2026-10-18T11:42:54.903806+00:00",
+  "elapsedSeconds": 0.03355110000120476,
+  "exitCode": 0
+}

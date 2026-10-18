@@ -1,0 +1,12 @@
+{
+  "command": [
+    "cargo",
+    "tree",
+    "--locked",
+    "-p",
+    "tt-headless"
+  ],
+  "startedUtc": "2026-10-18T11:29:56.153682+00:00",
+  "elapsedSeconds": 0.12080670002615079,
+  "exitCode": 0
+}

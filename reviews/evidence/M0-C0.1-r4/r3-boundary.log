@@ -1,0 +1,113 @@
+TAP version 13
+# Subtest: C01-R3-01: inline eslint configuration cannot disable boundary rules
+ok 1 - C01-R3-01: inline eslint configuration cannot disable boundary rules
+  ---
+  duration_ms: 1904.0669
+  type: 'test'
+  ...
+# Subtest: C01-R3-01: escaped static Tauri global cannot pass both lint and production build
+ok 2 - C01-R3-01: escaped static Tauri global cannot pass both lint and production build
+  ---
+  duration_ms: 23.5446
+  type: 'test'
+  ...
+# Subtest: C01-R3-02: index.html is not a privileged importer of the raw transport in production
+ok 3 - C01-R3-02: index.html is not a privileged importer of the raw transport in production
+  ---
+  duration_ms: 60.613
+  type: 'test'
+  ...
+# Subtest: controls: eslint-disable next-line, block-line, and eslint-env cannot hide the import
+ok 4 - controls: eslint-disable next-line, block-line, and eslint-env cannot hide the import
+  ---
+  duration_ms: 42.88
+  type: 'test'
+  ...
+# Subtest: controls: pnpm nested paths, package symlinks, relative core.js and query suffixes are rejected
+ok 5 - controls: pnpm nested paths, package symlinks, relative core.js and query suffixes are rejected
+  ---
+  duration_ms: 115.1762
+  type: 'test'
+  ...
+# Subtest: controls: aliases to resolved core and raw transport are rejected
+ok 6 - controls: aliases to resolved core and raw transport are rejected
+  ---
+  duration_ms: 35.6465
+  type: 'test'
+  ...
+# Subtest: control: a directory symlink to ipc cannot bypass resolved transport identity
+ok 7 - control: a directory symlink to ipc cannot bypass resolved transport identity
+  ---
+  duration_ms: 20.558
+  type: 'test'
+  ...
+# plugin order serve development [
+#   'vite:optimized-deps',
+#   'vite:watch-package-data',
+#   'vite:pre-alias',
+#   'alias',
+#   'toontown-ipc-boundary',
+#   'vite:react-babel'
+# ]
+# plugin order build production [
+#   'vite:optimized-deps',
+#   'vite:watch-package-data',
+#   'vite:pre-alias',
+#   'alias',
+#   'toontown-ipc-boundary',
+#   'vite:react-babel'
+# ]
+# plugin order serve test [
+#   'vite:optimized-deps',
+#   'vite:watch-package-data',
+#   'vite:pre-alias',
+#   'alias',
+#   'toontown-ipc-boundary',
+#   'vite:react-babel'
+# ]
+# Subtest: controls: boundary is the first user plugin in serve/build/test modes; internal virtual ids stay usable
+ok 8 - controls: boundary is the first user plugin in serve/build/test modes; internal virtual ids stay usable
+  ---
+  duration_ms: 36.2225
+  type: 'test'
+  ...
+# Subtest: control: product imports of tests support are refused by the production build
+ok 9 - control: product imports of tests support are refused by the production build
+  ---
+  duration_ms: 20.4172
+  type: 'test'
+  ...
+# Subtest: positive control: validated host API still builds
+ok 10 - positive control: validated host API still builds
+  ---
+  duration_ms: 58.7081
+  type: 'test'
+  ...
+# Subtest: test-support allowance is mode-wide, but product imports fail lint and production build
+ok 11 - test-support allowance is mode-wide, but product imports fail lint and production build
+  ---
+  duration_ms: 41.4139
+  type: 'test'
+  ...
+# Subtest: dev server serves the legitimate graph and rejects raw transport edges
+ok 12 - dev server serves the legitimate graph and rejects raw transport edges
+  ---
+  duration_ms: 71.5359
+  type: 'test'
+  ...
+# alternate config has no boundary; checked-in build/test scripts use auto-discovery, not --config
+# Subtest: audit: alternate Vite config omits the boundary; CI needs fixed config selection
+ok 13 - audit: alternate Vite config omits the boundary; CI needs fixed config selection
+  ---
+  duration_ms: 6.3102
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2702.2042

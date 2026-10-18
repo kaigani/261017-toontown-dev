@@ -1,0 +1,5 @@
+{
+  "command": "cargo deny --locked check",
+  "exitCode": 0,
+  "seconds": 1.47
+}

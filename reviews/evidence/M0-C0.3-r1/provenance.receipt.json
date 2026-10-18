@@ -1,0 +1,11 @@
+{
+  "command": [
+    "powershell",
+    "-NoProfile",
+    "-Command",
+    "Get-Date -Format o; git rev-parse HEAD; rustc -vV; node --version; pnpm --version; python --version; Get-CimInstance Win32_VideoController | Format-List Name,DriverVersion; Get-Process PickerHost | Format-List Id,StartTime,MainWindowTitle"
+  ],
+  "startedUtc": "2026-10-18T11:47:07.612720+00:00",
+  "elapsedSeconds": 0.6151911999913864,
+  "exitCode": 0
+}

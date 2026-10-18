@@ -1,0 +1,12 @@
+{
+  "command": [
+    "rustc",
+    "--edition=2024",
+    "--test",
+    "tests/adversarial/c03-r2-encoder.rs",
+    "-o",
+    "target/review-r2/encoder-tests.exe"
+  ],
+  "exitCode": 0,
+  "seconds": 0.2960805892944336
+}

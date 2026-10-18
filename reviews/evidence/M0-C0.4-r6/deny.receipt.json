@@ -1,0 +1,13 @@
+{
+  "command": [
+    "cargo",
+    "deny",
+    "--locked",
+    "check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+  "started": "2026-10-18T17:36:18.040009+00:00",
+  "seconds": 1.955,
+  "exit": 0,
+  "expected": 0
+}

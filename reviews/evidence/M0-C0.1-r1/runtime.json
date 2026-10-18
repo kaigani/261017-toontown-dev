@@ -1,0 +1,221 @@
+{
+  "cli": [
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe"
+      ],
+      "exit": 2,
+      "milliseconds": 50.29789998661727,
+      "stdout": "",
+      "stderr": "error: the following required arguments were not provided:\n  <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nUsage: toontown-headless.exe <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nFor more information, try '--help'.\n"
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--help"
+      ],
+      "exit": 0,
+      "milliseconds": 5.149599979631603,
+      "stdout": "Toontown engine without a window: self-test, MCP over stdio, batch scripts\n\nUsage: toontown-headless.exe [OPTIONS] <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nOptions:\n      --version           Print version information and exit\n      --selftest          Run the engine self-test (no display, window system or GPU needed). Exit status 1 if any check fails\n      --json              Print the self-test report as JSON (only with `--selftest`)\n      --headless          Accepted for compatibility with the spec's `app --headless \u00e2\u20ac\u00a6` form (11 \u00c2\u00a73); this binary is always headless\n      --mcp-stdio         Serve MCP over stdio (available from M1, C1.4)\n      --run <BATCH_JSON>  Execute a batch script and exit (available from M1, C1.4)\n      --project <PATH>    Project to open first (with `--mcp-stdio` or `--run`)\n      --out <LOG_JSONL>   Write the batch log (JSON lines) here (only with `--run`)\n  -h, --help              Print help\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--version"
+      ],
+      "exit": 0,
+      "milliseconds": 4.311299999244511,
+      "stdout": "toontown-headless 0.0.1 (Toontown 0.0.1; format 0.0; registry 0.0.0; windows-x86_64)\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--selftest"
+      ],
+      "exit": 0,
+      "milliseconds": 4.913999990094453,
+      "stdout": "Toontown 0.0.1 self-test (windows-x86_64, run mode headless)\n  [ok] engine.components      13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine\n  [ok] engine.versions        formatVersion 0.0 (MAJOR.MINOR), registryVersion 0.0.0 (semver)\n  [ok] engine.ping            echoed seq and 1024 payload bytes in 100 ns\n  [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden\n  [ok] headless.mcpLinked     tt-mcp linked (M1 (C1.4))\nself-test passed\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "exit": 0,
+      "milliseconds": 4.7348999651148915,
+      "stdout": "{\n  \"ok\": true,\n  \"engine\": {\n    \"name\": \"Toontown\",\n    \"version\": \"0.0.1\",\n    \"platform\": \"windows\",\n    \"arch\": \"x86_64\",\n    \"formatVersion\": \"0.0\",\n    \"registryVersion\": \"0.0.0\",\n    \"runMode\": \"headless\"\n  },\n  \"checks\": [\n    {\n      \"id\": \"engine.components\",\n      \"ok\": true,\n      \"detail\": \"13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine\"\n    },\n    {\n      \"id\": \"engine.versions\",\n      \"ok\": true,\n      \"detail\": \"formatVersion 0.0 (MAJOR.MINOR), registryVersion 0.0.0 (semver)\"\n    },\n    {\n      \"id\": \"engine.ping\",\n      \"ok\": true,\n      \"detail\": \"echoed seq and 1024 payload bytes in 100 ns\"\n    },\n    {\n      \"id\": \"determinism.ieee754\",\n      \"ok\": true,\n      \"detail\": \"sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden\"\n    },\n    {\n      \"id\": \"headless.mcpLinked\",\n      \"ok\": true,\n      \"detail\": \"tt-mcp linked (M1 (C1.4))\"\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "exit": 0,
+      "milliseconds": 3.57960001565516,
+      "stdout": "{\n  \"ok\": true,\n  \"engine\": {\n    \"name\": \"Toontown\",\n    \"version\": \"0.0.1\",\n    \"platform\": \"windows\",\n    \"arch\": \"x86_64\",\n    \"formatVersion\": \"0.0\",\n    \"registryVersion\": \"0.0.0\",\n    \"runMode\": \"headless\"\n  },\n  \"checks\": [\n    {\n      \"id\": \"engine.components\",\n      \"ok\": true,\n      \"detail\": \"13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine\"\n    },\n    {\n      \"id\": \"engine.versions\",\n      \"ok\": true,\n      \"detail\": \"formatVersion 0.0 (MAJOR.MINOR), registryVersion 0.0.0 (semver)\"\n    },\n    {\n      \"id\": \"engine.ping\",\n      \"ok\": true,\n      \"detail\": \"echoed seq and 1024 payload bytes in 100 ns\"\n    },\n    {\n      \"id\": \"determinism.ieee754\",\n      \"ok\": true,\n      \"detail\": \"sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden\"\n    },\n    {\n      \"id\": \"headless.mcpLinked\",\n      \"ok\": true,\n      \"detail\": \"tt-mcp linked (M1 (C1.4))\"\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--headless"
+      ],
+      "exit": 2,
+      "milliseconds": 4.381799953989685,
+      "stdout": "",
+      "stderr": "error: the following required arguments were not provided:\n  <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nUsage: toontown-headless.exe --headless <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nFor more information, try '--help'.\n"
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--headless",
+        "--mcp-stdio"
+      ],
+      "exit": 3,
+      "milliseconds": 4.374900017865002,
+      "stdout": "",
+      "stderr": "toontown-headless: --mcp-stdio is not available in this build (planned for M1 (C1.4))\n"
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--headless",
+        "--mcp-stdio",
+        "--project",
+        "absent.animpkg"
+      ],
+      "exit": 3,
+      "milliseconds": 4.369099973700941,
+      "stdout": "",
+      "stderr": "toontown-headless: --mcp-stdio is not available in this build (planned for M1 (C1.4))\n"
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--headless",
+        "--run",
+        "absent.json",
+        "--project",
+        "absent.animpkg",
+        "--out",
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\reviews\\evidence\\M0-C0.1-r1\\unused.jsonl"
+      ],
+      "exit": 3,
+      "milliseconds": 4.90559998434037,
+      "stdout": "",
+      "stderr": "toontown-headless: --run is not available in this build (planned for M1 (C1.4))\n"
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--run"
+      ],
+      "exit": 2,
+      "milliseconds": 4.348699992988259,
+      "stdout": "",
+      "stderr": "error: a value is required for '--run <BATCH_JSON>' but none was supplied\n\nFor more information, try '--help'.\n"
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--mcp-stdio",
+        "--run",
+        "absent.json"
+      ],
+      "exit": 2,
+      "milliseconds": 4.490000021178275,
+      "stdout": "",
+      "stderr": "error: the argument '--mcp-stdio' cannot be used with '--run <BATCH_JSON>'\n\nUsage: toontown-headless.exe <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nFor more information, try '--help'.\n"
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--project",
+        "x"
+      ],
+      "exit": 2,
+      "milliseconds": 4.33970004087314,
+      "stdout": "",
+      "stderr": "error: the argument '--selftest' cannot be used with '--project <PATH>'\n\nUsage: toontown-headless.exe <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nFor more information, try '--help'.\n"
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--json"
+      ],
+      "exit": 2,
+      "milliseconds": 4.365100001450628,
+      "stdout": "",
+      "stderr": "error: the following required arguments were not provided:\n  <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nUsage: toontown-headless.exe --json <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nFor more information, try '--help'.\n"
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--mcp-stdio",
+        "--out",
+        "x"
+      ],
+      "exit": 2,
+      "milliseconds": 4.3673000182025135,
+      "stdout": "",
+      "stderr": "error: the argument '--mcp-stdio' cannot be used with '--out <LOG_JSONL>'\n\nUsage: toontown-headless.exe <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nFor more information, try '--help'.\n"
+    },
+    {
+      "args": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe",
+        "--unknown"
+      ],
+      "exit": 2,
+      "milliseconds": 4.479900002479553,
+      "stdout": "",
+      "stderr": "error: unexpected argument '--unknown' found\n\nUsage: toontown-headless.exe [OPTIONS] <--version|--selftest|--mcp-stdio|--run <BATCH_JSON>>\n\nFor more information, try '--help'.\n"
+    }
+  ],
+  "selftest_stable": true,
+  "independent_python_sha256": "d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16",
+  "headless_proof": {
+    "args": [
+      "python",
+      "scripts/check-headless-deps.py",
+      "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown-headless.exe"
+    ],
+    "exit": 0,
+    "milliseconds": 149.50119995046407,
+    "stdout": "crate graph: 43 crates, forbidden: none\nlinked libraries (win32): api-ms-win-core-synch-l1-2-0.dll, kernel32.dll, ntdll.dll, vcruntime140.dll, api-ms-win-crt-runtime-l1-1-0.dll, api-ms-win-crt-math-l1-1-0.dll, api-ms-win-crt-stdio-l1-1-0.dll, api-ms-win-crt-locale-l1-1-0.dll, api-ms-win-crt-heap-l1-1-0.dll\nforbidden libraries: none\nheadless dependency check passed\n",
+    "stderr": ""
+  },
+  "desktop_negative_control": {
+    "args": [
+      "python",
+      "scripts/check-headless-deps.py",
+      "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown.exe"
+    ],
+    "exit": 1,
+    "milliseconds": 305.2988999988884,
+    "stdout": "crate graph: 43 crates, forbidden: none\nlinked libraries (win32): bcryptprimitives.dll, advapi32.dll, ntdll.dll, kernel32.dll, user32.dll, api-ms-win-core-synch-l1-2-0.dll, ole32.dll, gdi32.dll, dwmapi.dll, shlwapi.dll, comctl32.dll, shell32.dll, combase.dll, imm32.dll, oleaut32.dll, api-ms-win-core-winrt-error-l1-1-0.dll, advapi32.dll, kernel32.dll, api-ms-win-crt-math-l1-1-0.dll, api-ms-win-crt-string-l1-1-0.dll, api-ms-win-crt-convert-l1-1-0.dll, api-ms-win-crt-runtime-l1-1-0.dll, api-ms-win-crt-stdio-l1-1-0.dll, api-ms-win-crt-locale-l1-1-0.dll, api-ms-win-crt-heap-l1-1-0.dll\nforbidden libraries: ['comctl32.dll', 'dwmapi.dll', 'gdi32.dll', 'imm32.dll', 'shell32.dll', 'user32.dll']\nheadless dependency check FAILED\n",
+    "stderr": ""
+  },
+  "sizes_bytes": {
+    "toontown-headless.exe": 629760,
+    "toontown.exe": 9444352,
+    "Toontown_0.0.1_x64-setup.exe": 2584895
+  },
+  "ipc_bench": {
+    "args": [
+      "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\target\\release\\toontown.exe",
+      "--ipc-bench",
+      "C:\\Users\\kaiga\\work\\review\\m0-c01-r1\\reviews\\evidence\\M0-C0.1-r1\\ipc-bench.json"
+    ],
+    "exit": 0,
+    "milliseconds": 13008.884000009857,
+    "stdout": "",
+    "stderr": "[1017/213314.492:ERROR:ui\\gfx\\win\\window_impl.cc:172] Failed to unregister class Chrome_WidgetWin_0. Error = 1412\n"
+  }
+}

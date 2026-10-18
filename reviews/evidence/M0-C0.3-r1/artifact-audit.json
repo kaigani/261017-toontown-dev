@@ -1,0 +1,286 @@
+{
+  "raster": [
+    {
+      "artifact": "review-ci-current",
+      "os": "Windows",
+      "run": 1,
+      "entries": 92,
+      "simd": "Avx512(Avx512 { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "68ca3cacee1348658dee366d8f522ed6bffd33042cf43dc3e36aa548392508c7"
+    },
+    {
+      "artifact": "review-ci-current",
+      "os": "Windows",
+      "run": 2,
+      "entries": 92,
+      "simd": "Avx512(Avx512 { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "07126a635c14ed19d3ef1e8cb25233855f81c1052bd6754a2b1882ea43c66b5a"
+    },
+    {
+      "artifact": "review-ci-current",
+      "os": "macOS",
+      "run": 1,
+      "entries": 92,
+      "simd": "Neon(Neon { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "624b1c862aa39f141cb6d12434bc41d9175572151a1daa022e6a68befdef75da"
+    },
+    {
+      "artifact": "review-ci-current",
+      "os": "macOS",
+      "run": 2,
+      "entries": 92,
+      "simd": "Neon(Neon { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "529dbbe4c5533cfd221bc51bf401d3aead59b0b6134521fc4265e0afbe9dbf7b"
+    },
+    {
+      "artifact": "review-ci-current",
+      "os": "Linux",
+      "run": 1,
+      "entries": 92,
+      "simd": "Avx2(Avx2 { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "591e481b136316ea1b98df12fafe51606a8783b50072a1eb826f3e556fddf83a"
+    },
+    {
+      "artifact": "review-ci-current",
+      "os": "Linux",
+      "run": 2,
+      "entries": 92,
+      "simd": "Avx2(Avx2 { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "cb10e8e05a1cf8d8d0c4dc905b6b76b3cbd142662b800d9643e22a812f30736b"
+    },
+    {
+      "artifact": "review-ci-historical",
+      "os": "Windows",
+      "run": 1,
+      "entries": 92,
+      "simd": "Avx2(Avx2 { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "7275e0e5f35f2e233c8c44feeabef9d34adac3a19a586dbfec5722f9a7d8416e"
+    },
+    {
+      "artifact": "review-ci-historical",
+      "os": "Windows",
+      "run": 2,
+      "entries": 92,
+      "simd": "Avx2(Avx2 { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "b27eabc2bf3b4abaac38efd324840baf3ac5bf6309dbee0835aec78ce071e31a"
+    },
+    {
+      "artifact": "review-ci-historical",
+      "os": "macOS",
+      "run": 1,
+      "entries": 92,
+      "simd": "Neon(Neon { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "e46d9bfb4fd18592530c38c83eb881bd587f40e57d5fb006d679216f8337a586"
+    },
+    {
+      "artifact": "review-ci-historical",
+      "os": "macOS",
+      "run": 2,
+      "entries": 92,
+      "simd": "Neon(Neon { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "32dc016cb968a6c9d5f96b08fdc283a48d5f2fd6eaf80c65686186bb1975e889"
+    },
+    {
+      "artifact": "review-ci-historical",
+      "os": "Linux",
+      "run": 1,
+      "entries": 92,
+      "simd": "Avx2(Avx2 { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "2e6d637af1a01f9e060d37e50a46d448c75f3497697b553224f1fc786962b30c"
+    },
+    {
+      "artifact": "review-ci-historical",
+      "os": "Linux",
+      "run": 2,
+      "entries": 92,
+      "simd": "Avx2(Avx2 { _private: () })",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR"
+      ],
+      "reportSha256": "8fae6a7bba82100de87111402577fe14eaf62fdf799a9ee7494e54ce975d92dc"
+    }
+  ],
+  "provenance": [
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\raster-report-ci-Windows-39121780905.json",
+      "byteIdentical": true
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\raster-report-ci-macOS-39121780905.json",
+      "byteIdentical": true
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\raster-report-ci-Linux-39121780905.json",
+      "byteIdentical": true
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\canvas-ci-windows-runner-39121780905.json.gz",
+      "byteIdentical": true,
+      "sha256": "49012eb8c399b854600d6b9f6e553ce3f6404fb3eb843a8347114c1f112e09b4"
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\canvas-ci-macos-runner-39121780905.json.gz",
+      "byteIdentical": true,
+      "sha256": "e83f56b359c60e0a49d77b102d6a07858a03e17057a32d6649b67c21e563dd6f"
+    }
+  ],
+  "analyses": [
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\canvas-ci-macos-runner-39121780905.json.gz",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\canvas-ci-windows-runner-39121780905.json.gz",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\canvas-local-windows-rtx4090-auto.json.gz",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3\\canvas-local-windows-rtx4090-webgl2.json.gz",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3-r1\\review-ci-current-canvas-macOS.json.gz",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3-r1\\review-ci-current-canvas-Windows.json.gz",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3-r1\\review-ci-historical-canvas-macOS.json.gz",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3-r1\\review-ci-historical-canvas-Windows.json.gz",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3-r1\\canvas-auto.json",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "file": "reviews\\evidence\\M0-C0.3-r1\\canvas-webgl2.json",
+      "exitCode": 0,
+      "stderr": ""
+    }
+  ],
+  "jobs": [
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:17:56Z",
+      "end": "2026-10-18T11:18:13Z"
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:18:01Z",
+      "end": "2026-10-18T11:20:26Z"
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:17:57Z",
+      "end": "2026-10-18T11:18:34Z"
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:18:02Z",
+      "end": "2026-10-18T11:21:30Z"
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:18:03Z",
+      "end": "2026-10-18T11:18:57Z"
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:17:57Z",
+      "end": "2026-10-18T11:24:07Z"
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:17:57Z",
+      "end": "2026-10-18T11:18:56Z"
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "start": "2026-10-18T11:17:56Z",
+      "end": "2026-10-18T11:22:29Z"
+    }
+  ]
+}

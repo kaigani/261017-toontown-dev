@@ -1,0 +1,154 @@
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	﻿2026-10-18T07:38:57.5108056Z ##[group]Run target/release/toontown.exe --spike tablet --spike-log "$PWD/tablet-spike-windows.json" --spike-auto
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:38:57.5108787Z ^[[36;1mtarget/release/toontown.exe --spike tablet --spike-log "$PWD/tablet-spike-windows.json" --spike-auto^[[0m
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:38:57.5109723Z ^[[36;1mpython -c "import json; r=json.load(open('tablet-spike-windows.json')); [print(m['message']) for m in r['statusLog']]; print(json.dumps(r['simulations'], indent=1)); print(json.dumps(r['summary']['web'], indent=1)); print(json.dumps(r['summary']['native'], indent=1))"^[[0m
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:38:57.5121018Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:38:57.5121325Z env:
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:38:57.5121495Z   CARGO_TERM_COLOR: always
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:38:57.5121674Z   CARGO_INCREMENTAL: 0
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:38:57.5121851Z   RUST_BACKTRACE: 1
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:38:57.5122010Z   CACHE_ON_FAILURE: false
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:38:57.5122242Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:38:57.5122536Z ##[endgroup]
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1964913Z Native listener running (octotablet-ink).
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1965878Z Simulating 1024 synthetic pen frames at 240 Hz…
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1966428Z Simulated 1024 frames at 240 Hz: web received 967/1024, native 0/1024.
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1967034Z Simulating 1024 synthetic pen frames at 500 Hz…
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1967537Z Simulated 1024 frames at 500 Hz: web received 1012/1024, native 0/1024.
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1967933Z [
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1968113Z  {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1968353Z   "achievedHz": 239.99998125000147,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1968695Z   "method": "InjectSyntheticPointerInput",
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1969008Z   "native": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1969263Z    "injected": 1024,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1969540Z    "latencyMs": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1969821Z    "missing": 1024,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1970070Z    "received": 0,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1970341Z    "tiltMatches": 0
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1970597Z   },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1970844Z   "request": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1971092Z    "frames": 1024,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1971330Z    "hz": 240
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1971553Z   },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1971761Z   "web": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1972330Z    "injected": 1024,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1974561Z    "latencyMs": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1974922Z     "max": 710.018798828125,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1975248Z     "mean": 1.592740868585186,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1975536Z     "min": -0.175048828125,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1975810Z     "n": 967,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1976036Z     "p50": 0.236572265625,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1976299Z     "p95": 0.4755859375,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1976545Z     "p99": 0.602783203125
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1976804Z    },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1977007Z    "missing": 57,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1977780Z    "received": 967,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1978539Z    "tiltMatches": 967
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1979763Z   }
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1980398Z  },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1980825Z  {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1981246Z   "achievedHz": 500.04004226900975,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1981665Z   "method": "InjectSyntheticPointerInput",
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1982030Z   "native": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1982264Z    "injected": 1024,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1982571Z    "latencyMs": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1982823Z    "missing": 1024,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1983084Z    "received": 0,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1983335Z    "tiltMatches": 0
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1983576Z   },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1983793Z   "request": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1984028Z    "frames": 1024,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1984268Z    "hz": 500
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1984477Z   },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1984699Z   "web": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1984923Z    "injected": 1024,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1985179Z    "latencyMs": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1985420Z     "max": 3.44091796875,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1985874Z     "mean": 0.5095308929563982,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1986493Z     "min": -0.3330078125,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1986793Z     "n": 1012,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1987049Z     "p50": 0.32080078125,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1991056Z     "p95": 1.77001953125,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1991453Z     "p99": 2.668212890625
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1991887Z    },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1992097Z    "missing": 12,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1992323Z    "received": 1012,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1992590Z    "tiltMatches": 1012
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1992890Z   }
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1993078Z  }
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1993276Z ]
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1993469Z {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1993694Z  "coalescedPerDispatch": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1993971Z   "max": 10,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1994131Z   "mean": 4.9874371859296485,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1994320Z   "min": 1,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1994459Z   "n": 398,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1994602Z   "p50": 4,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1994739Z   "p95": 8,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1994883Z   "p99": 9
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1995024Z  },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1995188Z  "coalescedSupported": true,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1995388Z  "gaps": 7,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1995548Z  "handlerLatencyMs": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1995735Z   "max": 33.20000000001164,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1995928Z   "mean": 14.032914572864264,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1996122Z   "min": 0.7000000000116415,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1996296Z   "n": 398,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1996445Z   "p50": 14.200000000011642,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1996623Z   "p95": 16.399999999965075,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1996794Z   "p99": 17.099999999976717
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1996968Z  },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1997142Z  "maxIntervalMs": 1181.4000000000233,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1997376Z  "medianIntervalMs": 3.099999999976717,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1997604Z  "medianRateHz": 322.58064516371314,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1997817Z  "pointerTypes": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1997982Z   "pen": 1989
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1998133Z  },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1998278Z  "pressure": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1998439Z   "distinct": 1016,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1998618Z   "levelsImplied": 1024,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1998789Z   "max": 1,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1998948Z   "min": 0.0009765625,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1999117Z   "minStep": 0.0009765625
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1999289Z  },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1999427Z  "rateHz": 246.8519512286431,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1999600Z  "samples": 1989,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1999761Z  "samplesPerFrame": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.1999921Z   "max": 10,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2000072Z   "mean": 5.025316455696203,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2000441Z   "min": 1,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2000577Z   "n": 395,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2000705Z   "p50": 4,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2000833Z   "p95": 8,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2000968Z   "p99": 9
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2001102Z  },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2001245Z  "tiltPresent": true,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2001401Z  "tiltRangeX": [
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2001550Z   -60,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2001691Z   60
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2001819Z  ],
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2001957Z  "tiltRangeY": [
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2002103Z   -60,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2002238Z   60
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2002363Z  ],
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2002505Z  "twistPresent": true
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2002659Z }
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2002793Z {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2002927Z  "gaps": 0,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2003079Z  "maxIntervalMs": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2003261Z  "medianIntervalMs": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2003439Z  "medianRateHz": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2003634Z  "pointerTypes": {},
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2003834Z  "pressure": {
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2004002Z   "distinct": 0,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2004164Z   "levelsImplied": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2004342Z   "max": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2004489Z   "min": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2004645Z   "minStep": null
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2004793Z  },
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2004999Z  "rateHz": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2005219Z  "samples": 0,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2005792Z  "tiltPresent": false,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2006093Z  "tiltRangeX": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2006336Z  "tiltRangeY": null,
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2006581Z  "twistPresent": false
+bundle (windows-latest)	C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)	2026-10-18T07:39:10.2006833Z }

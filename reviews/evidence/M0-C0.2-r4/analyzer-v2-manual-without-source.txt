@@ -1,0 +1,1 @@
+error: log has no run records and does not declare `source: "manual"`; it cannot be treated as a manual/hardware capture (source None)

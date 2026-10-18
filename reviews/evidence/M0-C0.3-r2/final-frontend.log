@@ -1,0 +1,99 @@
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m0-c03-r2
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m0-c03-r2\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c03-r2/desktop
+
+ ❯ src/test/c03-r2-tooling.test.ts (1 test | 1 failed) 622ms
+   × C03-R2-01: analyzer validates point/verb counts and workload for every seed 621ms
+ ❯ src/test/c03-r2-page.test.tsx (3 tests | 1 failed) 190ms
+   × C03-R2-02: current page slow 1 Hz completed run is accepted as a missed target 54ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c03-r2-page.test.tsx > C03-R2-02: current page slow 1 Hz completed run is accepted as a missed target
+AssertionError: error: run 0 (webgl2/paths100k): frame timestamps non-monotonic or shorter than 10000 ms
+: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ src/test/c03-r2-page.test.tsx:154:30
+    152| it('C03-R2-02: current page slow 1 Hz completed run is accepted as a m…
+    153|   const r = analyze(await pageLog(1000, true));
+    154|   expect(r.status, r.stderr).toBe(0);
+       |                              ^
+    155|   expect(r.stdout).toContain('missed');
+    156| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/c03-r2-tooling.test.ts > C03-R2-01: analyzer validates point/verb counts and workload for every seed
+AssertionError: .FF......
+======================================================================
+FAIL: test_c03_r2_01_compensating_point_verb_counts (__main__.AnalyzerRound2.test_c03_r2_01_compensating_point_verb_counts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r2\tests\adversarial\c03-r2-tooling.py", line 57, in test_c03_r2_01_compensating_point_verb_counts
+    self.reject(mutate)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r2\tests\adversarial\c03-r2-tooling.py", line 25, in reject
+    self.assertNotEqual(result.returncode,0,'contradictory evidence printed a success table')
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : contradictory evidence printed a success table
+
+======================================================================
+FAIL: test_c03_r2_01_nondefault_seed_does_not_bypass_workload (__main__.AnalyzerRound2.test_c03_r2_01_nondefault_seed_does_not_bypass_workload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r2\tests\adversarial\c03-r2-tooling.py", line 67, in test_c03_r2_01_nondefault_seed_does_not_bypass_workload
+    self.reject(mutate)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r2\tests\adversarial\c03-r2-tooling.py", line 25, in reject
+    self.assertNotEqual(result.returncode,0,'contradictory evidence printed a success table')
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : contradictory evidence printed a success table
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.517s
+
+FAILED (failures=2)
+: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ src/test/c03-r2-tooling.test.ts:13:56
+     11|     { cwd: root, encoding: 'utf8' },
+     12|   );
+     13|   expect(result.status, result.stdout + result.stderr).toBe(0);
+       |                                                        ^
+     14| });
+     15|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 27 passed (29)
+      Tests  2 failed | 259 passed | 3 expected fail (264)
+   Start at  05:38:22
+   Duration  51.76s (tests 78%, environment 13%, setup 6%, import 2%, transform 1%)
+
+    Isolate  29 workers spawned · ~306ms startup each (spawn + environment, per file)
+             at least ~8.56s faster with isolate: false — reuses workers across files instead of one per file
+
+C:\Users\kaiga\work\review\m0-c03-r2\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 test: `vitest run --config vite.config.ts`
+Exit status 1
+ ELIFECYCLE  Test failed. See above for more details.

@@ -1,0 +1,38 @@
+check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T12:59:30.3488574Z  ✓ src/test/c03-r2-page.test.tsx (3 tests) 320ms
+check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T12:59:47.1782049Z  ✓ src/test/c03-r2-binary.test.ts (9 tests) 15ms
+check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T13:00:15.4255063Z  ✓ src/test/c03-r1-tooling.test.ts (1 test) 21517ms
+check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T13:00:34.6970363Z  ✓ src/test/c03-r2-tooling.test.ts (1 test) 964ms
+check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T13:00:46.0330821Z  Test Files  29 passed (29)
+check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T13:00:46.0334960Z       Tests  262 passed | 3 expected fail (265)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T13:01:26.6276090Z      Running ..\..\tests\adversarial\c03-r2-encoder.rs (target\debug\deps\c03_r2_encoder-2596aa3bd9c396af.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T13:01:32.4051768Z      Running tests\c03_fixed_configurations.rs (target\debug\deps\c03_fixed_configurations-93b9e455177ef9ac.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T13:01:32.5966801Z test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T13:01:43.4115101Z test fixed_scalar_configuration_hashes_identically_across_oses ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T13:01:43.4117113Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.99s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T13:01:43.4147737Z      Running tests\c03_r1_stress.rs (target\debug\deps\c03_r1_stress-06ab70834cc284d3.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T13:01:43.4269603Z test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T13:01:43.5214691Z test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T13:01:59.0018448Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 15.58s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T13:01:59.0049768Z      Running tests\c03_r2_quality.rs (target\debug\deps\c03_r2_quality-6e79dd6ccc92f31b.exe)
+raster determinism (windows-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:56:41.9522322Z cargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1
+raster determinism (windows-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:56:46.9153637Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T12:57:46.9048800Z  ✓ src/test/c03-r2-page.test.tsx (3 tests) 380ms
+check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T12:58:00.4425690Z  ✓ src/test/c03-r2-binary.test.ts (9 tests) 16ms
+check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T12:58:16.5580560Z  ✓ src/test/c03-r1-tooling.test.ts (1 test) 5707ms
+check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T12:58:37.0802710Z  ✓ src/test/c03-r2-tooling.test.ts (1 test) 1247ms
+check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T12:58:51.7649110Z  Test Files  29 passed (29)
+check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T12:58:51.7654730Z       Tests  262 passed | 3 expected fail (265)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:59:26.1831460Z      Running ../../tests/adversarial/c03-r2-encoder.rs (target/debug/deps/c03_r2_encoder-22187e70a52c9cbc)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:59:36.9057560Z      Running tests/c03_fixed_configurations.rs (target/debug/deps/c03_fixed_configurations-60d4983c0cdfd287)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:59:37.1834960Z test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:59:55.1923250Z test fixed_scalar_configuration_hashes_identically_across_oses ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:59:55.1939900Z      Running tests/c03_r1_stress.rs (target/debug/deps/c03_r1_stress-8309ebab9264b768)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:59:55.1942390Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.26s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:59:55.2108780Z test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:59:55.3495690Z test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T13:00:16.1199070Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 20.90s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T13:00:16.1214180Z      Running tests/c03_r2_quality.rs (target/debug/deps/c03_r2_quality-10fc42dbb20f4183)
+raster determinism (ubuntu-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:56:14.4680045Z cargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1
+raster determinism (ubuntu-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:56:18.5730383Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+raster determinism (macos-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:56:29.9151880Z cargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1
+raster determinism (macos-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:56:35.9530370Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s

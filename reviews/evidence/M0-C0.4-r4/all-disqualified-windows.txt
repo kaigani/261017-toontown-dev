@@ -1,0 +1,17 @@
+
+### Decision (ADR-0009 tablet rule set)
+
+| row | capability | action | W | R | H | D |
+|---|---|---|---|---|---|---|
+| 1 | pen identity | A1-A3 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+| 2 | pressure >= 256 levels | A1 | fail (injected row result) | fail (injected row result) | fail (injected row result) | fail (injected row result) |
+| 3 | pressure >= 1024 levels | A1 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+| 4 | tilt | A3 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+| 5 | twist (barrel rotation) | A4 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+| 6 | coalesced events | A2 | pass (injected row result) | n/a (injected row result) | n/a (injected row result) | n/a (injected row result) |
+| 7 | sustained rate >= 120 Hz | A2 | fail (injected row result) | fail (injected row result) | fail (injected row result) | fail (injected row result) |
+| 8 | rate >= 200 Hz | A2 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+| 9 | stationary pressure-only updates | A6 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+
+- platform: windows; share of applicable rows at pass: {'W': '7/9', 'R': '3/4', 'H': '3/4', 'D': '3/4'}; rows at pass: {'W': 7, 'R': 6, 'H': 6, 'D': 6}; candidates with a valid measurement: ['W', 'R', 'H', 'D']; disqualified (row 2 or 7 at fail): {'W': [2, 7], 'R': [2, 7], 'H': [2, 7], 'D': [2, 7]}
+- outcome: **no-go on this platform: escalate (plan §6 decision 7); best available evidence: W (7/9)**

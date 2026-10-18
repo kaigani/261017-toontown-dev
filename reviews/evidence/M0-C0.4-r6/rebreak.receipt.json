@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python",
+    "-X",
+    "utf8",
+    "C:\\Users\\kaiga\\work\\review\\m0-c04-r6\\reviews\\evidence\\M0-C0.4-r6\\rebreak.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+  "started": "2026-10-18T17:32:31.865052+00:00",
+  "seconds": 2.196,
+  "exit": 1,
+  "expected": 0
+}

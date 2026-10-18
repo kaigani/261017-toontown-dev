@@ -1,0 +1,778 @@
+{
+ "version": 3,
+ "web": {
+  "samples": 2645,
+  "strokes": [
+   {
+    "samples": 600,
+    "durationMs": 4989.67,
+    "rateHz": 120.04801920768307,
+    "medianIntervalMs": 8.329999999999927,
+    "maxIntervalMs": 8.330000000000837,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 511,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "below target",
+    "pointer": "pen#1",
+    "truncated": false,
+    "startT": 0.0
+   },
+   {
+    "samples": 240,
+    "durationMs": 4780,
+    "rateHz": 50.0,
+    "medianIntervalMs": 20,
+    "maxIntervalMs": 20,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 240,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "below target",
+    "pointer": "pen#1",
+    "truncated": false,
+    "startT": 6000
+   },
+   {
+    "samples": 600,
+    "durationMs": 4989.669999999998,
+    "rateHz": 120.04801920768311,
+    "medianIntervalMs": 8.329999999999927,
+    "maxIntervalMs": 8.330000000001746,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 511,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "below target",
+    "pointer": "pen#1",
+    "truncated": false,
+    "startT": 12000.0
+   },
+   {
+    "samples": 600,
+    "durationMs": 4989.669999999998,
+    "rateHz": 120.04801920768311,
+    "medianIntervalMs": 8.330000000001746,
+    "maxIntervalMs": 8.330000000001746,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 511,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "below target",
+    "pointer": "pen#1",
+    "truncated": false,
+    "startT": 24000.0
+   }
+  ],
+  "coalescedApi": true,
+  "coalescedObserved": false,
+  "coalescedPerDispatch": {
+   "n": 2637,
+   "min": 1,
+   "p50": 1,
+   "p95": 1,
+   "p99": 1,
+   "max": 1,
+   "mean": 1.0
+  },
+  "samplesPerFrame": null,
+  "handlerLatencyMs": {
+   "oldestCoalesced": {
+    "n": 2645,
+    "min": -19,
+    "p50": 1.0,
+    "p95": 1.0,
+    "p99": 1.0,
+    "max": 1.0,
+    "mean": 0.9924385633270322
+   },
+   "newestCoalesced": {
+    "n": 2645,
+    "min": -19,
+    "p50": 1.0,
+    "p95": 1.0,
+    "p99": 1.0,
+    "max": 1.0,
+    "mean": 0.9924385633270322
+   },
+   "allSamples": {
+    "n": 2645,
+    "min": -19,
+    "p50": 1.0,
+    "p95": 1.0,
+    "p99": 1.0,
+    "max": 1.0,
+    "mean": 0.9924385633270322
+   }
+  },
+  "loss": "unknown, gap heuristic only",
+  "truncated": null
+ },
+ "native": {
+  "packets": 2646,
+  "clock": "device",
+  "strokes": [
+   {
+    "samples": 600,
+    "durationMs": 1247.4175,
+    "rateHz": 480.1920768307323,
+    "medianIntervalMs": 2.082499999999982,
+    "maxIntervalMs": 2.082500000000209,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 511,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "meets target",
+    "pointer": "pen",
+    "truncated": false,
+    "startEpochMs": 1000000000000.0
+   },
+   {
+    "samples": 240,
+    "durationMs": 1195.0,
+    "rateHz": 200.0,
+    "medianIntervalMs": 5.0,
+    "maxIntervalMs": 5.0,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 240,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "meets target",
+    "pointer": "pen",
+    "truncated": false,
+    "startEpochMs": 1000000006000.0
+   },
+   {
+    "samples": 600,
+    "durationMs": 1247.4174999999996,
+    "rateHz": 480.19207683073245,
+    "medianIntervalMs": 2.082499999999982,
+    "maxIntervalMs": 2.0825000000004366,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 511,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "meets target",
+    "pointer": "pen",
+    "truncated": false,
+    "startEpochMs": 1000000012000.0
+   },
+   {
+    "samples": 600,
+    "durationMs": 1247.4174999999996,
+    "rateHz": 480.19207683073245,
+    "medianIntervalMs": 2.0825000000004366,
+    "maxIntervalMs": 2.0825000000004366,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 511,
+    "pressureLevelsImplied": 512,
+    "tiltPresent": false,
+    "tiltRangeX": [
+     0,
+     0
+    ],
+    "tiltRangeY": [
+     0,
+     0
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "meets target",
+    "pointer": "pen",
+    "truncated": false,
+    "startEpochMs": 1000000024000.0
+   }
+  ],
+  "loss": "unknown, gap heuristic only",
+  "hostDropped": null,
+  "sendFailures": null,
+  "invalidBatches": null,
+  "truncated": null,
+  "info": {
+   "backend": "test-native"
+  }
+ },
+ "runs": [],
+ "actions": {
+  "actions": [
+   {
+    "id": "A1",
+    "state": "done",
+    "durationMs": 5000,
+    "web": {
+     "outcome": "episode 1",
+     "episodes": [
+      1
+     ],
+     "measured": 1,
+     "stats": {
+      "samples": 600,
+      "durationMs": 4989.67,
+      "rateHz": 120.04801920768307,
+      "medianIntervalMs": 8.329999999999927,
+      "maxIntervalMs": 8.330000000000837,
+      "gapsOver2xMedian": 0,
+      "pressureDistinct": 511,
+      "pressureLevelsImplied": 512,
+      "tiltPresent": false,
+      "tiltRangeX": [
+       0,
+       0
+      ],
+      "tiltRangeY": [
+       0,
+       0
+      ],
+      "rawTiltRangeX": null,
+      "rawTiltRangeY": null,
+      "twistRange": [
+       0,
+       0
+      ],
+      "twistNonzero": 0,
+      "target": "below target",
+      "coalescedObserved": false,
+      "pointer": "pen#1",
+      "truncated": false
+     }
+    },
+    "native": {
+     "outcome": "episode 1",
+     "episodes": [
+      1
+     ],
+     "measured": 1,
+     "stats": {
+      "samples": 600,
+      "durationMs": 1247.4175,
+      "rateHz": 480.1920768307323,
+      "medianIntervalMs": 2.082499999999982,
+      "maxIntervalMs": 2.082500000000209,
+      "gapsOver2xMedian": 0,
+      "pressureDistinct": 511,
+      "pressureLevelsImplied": 512,
+      "tiltPresent": false,
+      "tiltRangeX": [
+       0,
+       0
+      ],
+      "tiltRangeY": [
+       0,
+       0
+      ],
+      "rawTiltRangeX": null,
+      "rawTiltRangeY": null,
+      "twistRange": [
+       0,
+       0
+      ],
+      "twistNonzero": 0,
+      "target": "meets target",
+      "pointer": "pen",
+      "truncated": false
+     }
+    }
+   },
+   {
+    "id": "A2",
+    "state": "done",
+    "durationMs": 5000,
+    "web": {
+     "outcome": "episode 2",
+     "episodes": [
+      2
+     ],
+     "measured": 2,
+     "stats": {
+      "samples": 240,
+      "durationMs": 4780,
+      "rateHz": 50.0,
+      "medianIntervalMs": 20,
+      "maxIntervalMs": 20,
+      "gapsOver2xMedian": 0,
+      "pressureDistinct": 240,
+      "pressureLevelsImplied": 512,
+      "tiltPresent": false,
+      "tiltRangeX": [
+       0,
+       0
+      ],
+      "tiltRangeY": [
+       0,
+       0
+      ],
+      "rawTiltRangeX": null,
+      "rawTiltRangeY": null,
+      "twistRange": [
+       0,
+       0
+      ],
+      "twistNonzero": 0,
+      "target": "below target",
+      "coalescedObserved": false,
+      "pointer": "pen#1",
+      "truncated": false
+     }
+    },
+    "native": {
+     "outcome": "episode 2",
+     "episodes": [
+      2
+     ],
+     "measured": 2,
+     "stats": {
+      "samples": 240,
+      "durationMs": 1195.0,
+      "rateHz": 200.0,
+      "medianIntervalMs": 5.0,
+      "maxIntervalMs": 5.0,
+      "gapsOver2xMedian": 0,
+      "pressureDistinct": 240,
+      "pressureLevelsImplied": 512,
+      "tiltPresent": false,
+      "tiltRangeX": [
+       0,
+       0
+      ],
+      "tiltRangeY": [
+       0,
+       0
+      ],
+      "rawTiltRangeX": null,
+      "rawTiltRangeY": null,
+      "twistRange": [
+       0,
+       0
+      ],
+      "twistNonzero": 0,
+      "target": "meets target",
+      "pointer": "pen",
+      "truncated": false
+     }
+    }
+   },
+   {
+    "id": "A3",
+    "state": "done",
+    "durationMs": 5000,
+    "web": {
+     "outcome": "episode 3",
+     "episodes": [
+      3
+     ],
+     "measured": 3,
+     "stats": {
+      "samples": 600,
+      "durationMs": 4989.669999999998,
+      "rateHz": 120.04801920768311,
+      "medianIntervalMs": 8.329999999999927,
+      "maxIntervalMs": 8.330000000001746,
+      "gapsOver2xMedian": 0,
+      "pressureDistinct": 511,
+      "pressureLevelsImplied": 512,
+      "tiltPresent": false,
+      "tiltRangeX": [
+       0,
+       0
+      ],
+      "tiltRangeY": [
+       0,
+       0
+      ],
+      "rawTiltRangeX": null,
+      "rawTiltRangeY": null,
+      "twistRange": [
+       0,
+       0
+      ],
+      "twistNonzero": 0,
+      "target": "below target",
+      "coalescedObserved": false,
+      "pointer": "pen#1",
+      "truncated": false
+     }
+    },
+    "native": {
+     "outcome": "episode 3",
+     "episodes": [
+      3
+     ],
+     "measured": 3,
+     "stats": {
+      "samples": 600,
+      "durationMs": 1247.4174999999996,
+      "rateHz": 480.19207683073245,
+      "medianIntervalMs": 2.082499999999982,
+      "maxIntervalMs": 2.0825000000004366,
+      "gapsOver2xMedian": 0,
+      "pressureDistinct": 511,
+      "pressureLevelsImplied": 512,
+      "tiltPresent": false,
+      "tiltRangeX": [
+       0,
+       0
+      ],
+      "tiltRangeY": [
+       0,
+       0
+      ],
+      "rawTiltRangeX": null,
+      "rawTiltRangeY": null,
+      "twistRange": [
+       0,
+       0
+      ],
+      "twistNonzero": 0,
+      "target": "meets target",
+      "pointer": "pen",
+      "truncated": false
+     }
+    }
+   },
+   {
+    "id": "A4",
+    "state": "skipped",
+    "durationMs": 0,
+    "web": {
+     "outcome": "omitted",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    },
+    "native": {
+     "outcome": "omitted",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    }
+   },
+   {
+    "id": "A5",
+    "state": "done",
+    "durationMs": 5000,
+    "web": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    }
+   },
+   {
+    "id": "A6",
+    "state": "done",
+    "durationMs": 5000,
+    "web": {
+     "outcome": "episode 4",
+     "episodes": [
+      4
+     ],
+     "measured": 4,
+     "stats": {
+      "samples": 600,
+      "durationMs": 4989.669999999998,
+      "rateHz": 120.04801920768311,
+      "medianIntervalMs": 8.330000000001746,
+      "maxIntervalMs": 8.330000000001746,
+      "gapsOver2xMedian": 0,
+      "pressureDistinct": 511,
+      "pressureLevelsImplied": 512,
+      "tiltPresent": false,
+      "tiltRangeX": [
+       0,
+       0
+      ],
+      "tiltRangeY": [
+       0,
+       0
+      ],
+      "rawTiltRangeX": null,
+      "rawTiltRangeY": null,
+      "twistRange": [
+       0,
+       0
+      ],
+      "twistNonzero": 0,
+      "target": "below target",
+      "coalescedObserved": false,
+      "pointer": "pen#1",
+      "truncated": false
+     }
+    },
+    "native": {
+     "outcome": "episode 4",
+     "episodes": [
+      4
+     ],
+     "measured": 4,
+     "stats": {
+      "samples": 600,
+      "durationMs": 1247.4174999999996,
+      "rateHz": 480.19207683073245,
+      "medianIntervalMs": 2.0825000000004366,
+      "maxIntervalMs": 2.0825000000004366,
+      "gapsOver2xMedian": 0,
+      "pressureDistinct": 511,
+      "pressureLevelsImplied": 512,
+      "tiltPresent": false,
+      "tiltRangeX": [
+       0,
+       0
+      ],
+      "tiltRangeY": [
+       0,
+       0
+      ],
+      "rawTiltRangeX": null,
+      "rawTiltRangeY": null,
+      "twistRange": [
+       0,
+       0
+      ],
+      "twistNonzero": 0,
+      "target": "meets target",
+      "pointer": "pen",
+      "truncated": false
+     }
+    }
+   }
+  ],
+  "keyEvents": null,
+  "excludedSamples": {
+   "web": 0,
+   "native": 1
+  },
+  "notRecorded": [],
+  "webOutside": [],
+  "nativeOutside": []
+ },
+ "decision": {
+  "scores": {
+   "W": 3,
+   "A": 5
+  },
+  "shares": {
+   "W": "3/8",
+   "A": "5/7"
+  },
+  "eligible": [
+   "W",
+   "A"
+  ],
+  "unmeasured": [],
+  "disqualified": {
+   "W": [
+    7
+   ]
+  },
+  "outcome": "go-with-conditions: A",
+  "selected": "A",
+  "bestEvidence": "A",
+  "conditions": [
+   {
+    "row": 3,
+    "result": "partial",
+    "mitigation": "accept >= 256 levels"
+   },
+   {
+    "row": 4,
+    "result": "fail",
+    "mitigation": "tilt unsupported on this platform: tilt-driven brush options off"
+   }
+  ],
+  "platform": "macos",
+  "rows": {
+   "W": {
+    "1": {
+     "result": "pass",
+     "note": "3 of 3 actions report a pen"
+    },
+    "2": {
+     "result": "pass",
+     "note": "512 levels"
+    },
+    "3": {
+     "result": "partial",
+     "note": "512 levels"
+    },
+    "4": {
+     "result": "fail",
+     "note": "x [0, 0], y [0, 0]"
+    },
+    "5": {
+     "result": "n/a",
+     "note": "pen has no barrel rotation"
+    },
+    "6": {
+     "result": "partial",
+     "note": "API True, batching in A2 False"
+    },
+    "7": {
+     "result": "fail",
+     "note": "50.000 Hz"
+    },
+    "8": {
+     "result": "fail",
+     "note": "50.000 Hz"
+    },
+    "9": {
+     "result": "pass",
+     "note": "600 samples, 120.0 Hz"
+    }
+   },
+   "A": {
+    "1": {
+     "result": "pass",
+     "note": "3 of 3 actions report a pen"
+    },
+    "2": {
+     "result": "pass",
+     "note": "512 levels"
+    },
+    "3": {
+     "result": "partial",
+     "note": "512 levels"
+    },
+    "4": {
+     "result": "fail",
+     "note": "x [0, 0], y [0, 0]"
+    },
+    "5": {
+     "result": "n/a",
+     "note": "pen has no barrel rotation"
+    },
+    "6": {
+     "result": "n/a",
+     "note": "native path"
+    },
+    "7": {
+     "result": "pass",
+     "note": "200.000 Hz"
+    },
+    "8": {
+     "result": "pass",
+     "note": "200.000 Hz"
+    },
+    "9": {
+     "result": "pass",
+     "note": "600 samples, 480.2 Hz"
+    }
+   }
+  }
+ }
+}

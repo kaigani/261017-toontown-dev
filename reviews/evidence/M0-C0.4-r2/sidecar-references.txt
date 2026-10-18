@@ -1,0 +1,74 @@
+﻿.\deny.toml:5:# LGPL is permitted for this product only as a separately shipped, dynamically linked sidecar process (the FFmpeg
+.\deny.toml:6:# build, ADR-0003); a sidecar is not a Cargo dependency, so no LGPL licence appears in the allow-list below.
+.\plan\traceability.csv:50:plan §6.3 / ADR-0003,"LGPL FFmpeg sidecar with platform encoders (h264_mf, h264_videotoolbox), AAC via the platform encoder or FFmpeg native aac",M0,C0.4,"planned (ADR-0008, revised C0.4 r1): sidecar build, fetch/verify, sidecar gate and decoders at M8 C8.3; encoders/export at M10 C10.1; no code yet",docs/decisions/ADR-0008-ffmpeg-sidecar.md
+.\plan\traceability.csv:53:plan §2.1 / ADR-0008,"decode movie imports with the same sidecar: LGPL sidecar build, manifest fetch/verify, sidecar gate, decoder whitelist (moved forward from M10 by ruling C04-R1-07)",M8,C8.3,planned (experiment E-FF0); decoder posture pending user,docs/decisions/ADR-0008-ffmpeg-sidecar.md
+.\plan\traceability.csv:54:09 §4.3 / §4.4 / ADR-0008,"MP4/MOV/GIF encoders per OS; lossless = PNG sequence and FFV1 verified by decoded-pixel comparison; ProRes labelled visually lossless",M10,C10.1,planned (experiment E-FF1),docs/decisions/ADR-0008-ffmpeg-sidecar.md
+.\plan\traceability.csv:55:09 §11.1(6),"deterministic: true strips creation timestamps and encoder-version metadata so repeated exports produce identical checksums",M10,C10.1,planned: repeat-encode SHA-256 checks per format/muxer/AAC path in E-FF1; software path or SI-002 if a platform encoder varies,docs/decisions/ADR-0008-ffmpeg-sidecar.md
+.\plan\traceability.csv:56:ADR-0003 rule 3 / ADR-0008,"native-linkage check: cargo metadata links keys and build-script rustc-link-lib against an allow-list (never libav*/x264)",M10,C10.1,planned (ruled C04-R1-06); run from the first sidecar build at M8 C8.3,docs/decisions/ADR-0008-ffmpeg-sidecar.md; reviews/evidence/M0-C0.4-r1/license-link-probe.json
+.\plan\spec-issues.md:12:  FFmpeg sidecar. CRF is a rate-control mode of x264, which is GPL and excluded. Neither platform encoder implements
+.\plan\spec-issues.md:14:- **Decision taken (ADR-0008):** M10 C10.1 maps low / medium / high / 0–100 to each encoder's quality-based mode
+.\plan\IMPLEMENTATION_PLAN.md:52:| Desktop shell | Tauri 2 (WebView2 on Windows, WKWebView on macOS) | Native menus, dialogs, single-instance, open-document events, sidecars, small installers; the Rust engine runs in-process so IPC is a function call plus serialization. |
+.\plan\IMPLEMENTATION_PLAN.md:65:Video encode/decode: ship an **LGPL FFmpeg build as a Tauri sidecar** using platform hardware encoders
+.\plan\IMPLEMENTATION_PLAN.md:67:decode movie imports with the same sidecar. This is a licensing decision for the user (§6).
+.\plan\IMPLEMENTATION_PLAN.md:122:    io/           image/PSD/PDF/SVG import, PNG/JPEG/TGA/BMP/TIFF/GIF sequence export, PDF export, FFmpeg sidecar, print, capture
+.\plan\IMPLEMENTATION_PLAN.md:177:| M10 | Output and input complete | 09 | L | C10.1 FFmpeg sidecar: MP4/MOV/GIF export, audio mux, rendered preview + player, snapshot, export reports; E1 full · C10.2 PDF export, print layout/preview/PDF/OS print, vector import (PDF/AI/SVG), PSD layers, keyed image import, publishing framework (descriptors, OAuth in system browser, OS credential store; no service shipped) · C10.3 capture: webcams via nokhwa, keying, light table, auto-capture; scanners and tethered cameras as stretch |
+.\plan\IMPLEMENTATION_PLAN.md:242:3. **Video codec licensing.** LGPL FFmpeg sidecar with platform encoders (`h264_mf`, `h264_videotoolbox`), AAC via
+.\crates\io\src\lib.rs:7://! (PNG/JPEG/TGA/BMP/TIFF/GIF), PDF, print layout; the LGPL FFmpeg sidecar driver (process boundary only, never
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:1:# ADR-0008 — FFmpeg sidecar: LGPL build, encoders, supply chain and licence gates
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:4:- The sidecar build, the fetch/verify mechanism and decoder readiness are delivered at **M8 C8.3** (movie import
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:6:- Encoders and export stay at **M10 C10.1**; printing is M10 C10.2.
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:19:User decision 3: "LGPL FFmpeg sidecar with platform encoders (`h264_mf`, `h264_videotoolbox`), AAC via the platform
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:21:sidecar, never linked into our binaries, and forbids `--enable-gpl` / `--enable-nonfree` builds.
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:27:- We build FFmpeg ourselves from a **pinned upstream release tarball**. The version is chosen at M8 C8.3. Its SHA-256
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:44:- **Encoders per OS** (whitelist for M10 C10.1). Spec 09 §4.4 sets the defaults: H.264, stereo 48 kHz, 192 kbit/s.
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:66:- **Decoders and demuxers** (whitelist for M8 C8.3): only those for the spec 09 §8 import list, after the user's
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:69:### 2. Supply chain: fetched, verified and shipped as a build input (from M8 C8.3)
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:71:- **Build (CI).** A committed build script produces one sidecar per shipped target:
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:81:- **Ship.** The sidecar is a Tauri `bundle.externalBin` (`binaries/ffmpeg-<target-triple>[.exe]`), placed next to the
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:88:  pipes. A missing, non-matching or failing sidecar is a typed `import.*` / `export.*` error. There are no Rust FFmpeg
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:93:- The application executable(s) and the `ffmpeg` sidecar.
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:138:- **Native-linkage check.** This is an **M10 C10.1 obligation** (ruling C04-R1-06); I also run it from the first
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:139:  sidecar build at M8 C8.3. A committed check, run in CI on every shipped target, fails when:
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:146:- **Sidecar gate** (from M8 C8.3). `scripts/check-ffmpeg-sidecar.py <ffmpeg>`, in CI for every shipped target, before
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:167:  before M8 C8.3. The decoder whitelist follows it.
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:171:- **E-FF0 (M8 C8.3 entry)** proves the sidecar for import:
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:172:  - build the LGPL sidecar in CI for Windows x86-64 and macOS arm64;
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:173:  - pass the sidecar gate and the native-linkage check;
+.\docs\decisions\ADR-0008-ffmpeg-sidecar.md:176:- **E-FF1 (M10 C10.1 entry)** proves the encoders:
+.\docs\decisions\ADR-0003-licensing-policy.md:4:evaluation). The FFmpeg sidecar build/encoder/fetch plan is ADR-0008 (C0.4).
+.\docs\decisions\ADR-0003-licensing-policy.md:9:LGPL FFmpeg build as a separate sidecar with platform encoders and that no GPL component ships. Rust crates are
+.\docs\decisions\ADR-0003-licensing-policy.md:33:3. **LGPL is allowed only as a dynamically linked or separately executed sidecar** — concretely the FFmpeg build
+.\docs\decisions\ADR-0003-licensing-policy.md:35:   text and corresponding-source offer. Because a sidecar is not a Cargo dependency, LGPL never appears in the Rust
+.\reviews\M0-C0.4-r1.md:67:is claimed for the unbuilt sidecar.
+.\reviews\M0-C0.4-r1.md:114:and assign explicit native-linkage/dependency checks before sidecar adoption. Keep LGPL out of the Cargo/npm
+.\reviews\M0-C0.4-r1.md:117:describes the separate encoder enable/disable switches. The proposed sidecar presence checks alone are not an
+.\reviews\M0-C0.4-r1.md:122:**Location:** ADR-0008 throughout (“M9 (export)”, E-FF1); SI-001; traceability FFmpeg/print rows; go/no-go P-1.
+.\reviews\M0-C0.4-r1.md:125:The plan assigns FFmpeg/export to **M10 C10.1**, printing to **M10 C10.2**, and movie import to **M8 C8.3**. The new
+.\reviews\M0-C0.4-r1.md:126:documents repeatedly call M9 the export/print milestone (M9 is library/storyline), while promising the sidecar only
+.\reviews\M0-C0.4-r1.md:127:at M9 entry. Import already depends on the same sidecar under plan §2.1. It is legitimate to bring experiments
+.\reviews\M0-C0.4-r1.md:128:forward, but no dependency/ownership change is recorded, and a sidecar first built in M9 cannot serve M8 imports.
+.\reviews\M0-C0.4-r1.md:130:**Required:** correct the milestone references and assign an explicit sidecar/decoder readiness checkpoint before
+.\reviews\M0-C0.4-r1.md:131:M8 C8.3, or record an approved dependency change. Keep encoder implementation and print delivery at their actual
+.\reviews\M0-C0.4-r1.md:194:| LGPL separate-process sidecar; no GPL/nonfree/version3; notices/source; hash-verified build asset | plan§6.3; ADR-0003; ADR-0008 | **Yes as a concrete future plan**, no built sidecar or license certificate claimed. |
+.\reviews\M0-C0.4-r1.md:285:| `cargo deny --locked check` | Pass; `deny.log`. Current pass does not certify unbuilt sidecar/native dependencies. |
+.\reviews\M0-C0.4-r1.md:341:  Place sidecar readiness before M8 imports, export at M10 C10.1, print at C10.2 and scanner stretch at end-M10.
+.\reviews\M0-C0.4-r1-response.md:14:| C04-R1-06 | P2 | fixed: gate claim corrected; native-linkage check (M10 C10.1 obligation); explicit component whitelist | ADR-0008 §1, §5; traceability |
+.\reviews\M0-C0.4-r1-response.md:15:| C04-R1-07 | P2 | fixed as ruled: sidecar build, fetch/verify and decoders at M8 C8.3; encoders/export at M10 C10.1; print at C10.2 | ADR-0008; report; traceability |
+.\reviews\M0-C0.4-r1-response.md:148:- **Native-linkage check.** It is added as an **M10 C10.1 obligation** (ruled), and I run it from the first sidecar
+.\reviews\M0-C0.4-r1-response.md:149:  build at M8 C8.3. It fails on any `links` key in `cargo metadata`, or any build-script `cargo:rustc-link-lib` from
+.\reviews\M0-C0.4-r1-response.md:152:  muxer, demuxer, parser, bsf, protocol and filter is enabled by name. The sidecar gate compares the `-encoders`,
+.\reviews\M0-C0.4-r1-response.md:159:- the sidecar build, fetch/verify mechanism, sidecar gate and decoder whitelist are at **M8 C8.3** (experiment
+.\reviews\M0-C0.4-r1-response.md:161:- encoders, export, lossless verification and repeat-encode determinism are at **M10 C10.1** (E-FF1);
+.\reviews\M0-C0.4-r1-response.md:165:`plan/traceability.csv` gains M8 C8.3 and M10 C10.1 rows. The user's decoder-posture decision is marked as needed
+.\reviews\M0-C0.4-r1-response.md:166:before M8 C8.3. The master plan is left to the orchestrator, as ruled.
+.\reviews\M0-C0.4-handoff.md:14:| ADR-0008: FFmpeg sidecar plan (LGPL build flags, encoders per OS, build/fetch/verify/ship, installer contents, licence gates; no code) | `docs/decisions/ADR-0008-ffmpeg-sidecar.md` |
+.\reviews\M0-C0.4-go-no-go.md:31:| FFmpeg / encoder licensing | **go** as a plan (ADR-0008); no code yet | E-FF0 at M8 C8.3 (sidecar, import); E-FF1 at M10 C10.1 (encoders, lossless, repeat-encode determinism) | two policy questions (escalation) |
+.\reviews\M0-C0.4-go-no-go.md:344:- **The build.** An LGPL-2.1-or-later FFmpeg sidecar that we build ourselves, never with `--enable-gpl`,
+.\reviews\M0-C0.4-go-no-go.md:356:- **Supply chain.** The sidecar is built in CI from a verified source tarball, fetched by SHA-256 at app build time,
+.\reviews\M0-C0.4-go-no-go.md:360:  - sidecar build, fetch/verify and decoders at **M8 C8.3**, since movie import needs them first;
+.\reviews\M0-C0.4-go-no-go.md:361:  - encoders and export at **M10 C10.1**;
+.\reviews\M0-C0.4-go-no-go.md:365:  M10 C10.1 obligation, run from M8 C8.3. A sidecar gate compares `-buildconf`, `-L` and the exact component lists
+.\reviews\M0-C0.4-go-no-go.md:370:**Hypothesis.** All of it, until **E-FF0** (M8 C8.3: build, gates, fetch, import decode) and **E-FF1** (M10 C10.1:
+.\reviews\M0-C0.4-go-no-go.md:376:**Escalation.** Two policy questions: the decoder posture for imports (needed before M8 C8.3), and Windows N/KN
+.\reviews\M0-C0.4-go-no-go.md:421:   This involves codec patent considerations that are yours to judge. It is needed before M8 C8.3, when the sidecar
+.\reviews\M0-C0.4-go-no-go.md:432:   of the app and the FFmpeg sidecar) and a Windows code-signing certificate. Read: ADR-0008 §2.

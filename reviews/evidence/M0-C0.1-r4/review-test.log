@@ -1,0 +1,41 @@
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m0-c01-r4
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m0-c01-r4\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c01-r4/desktop
+
+ ❯ src/test/c01-r4-node.test.ts (1 test | 1 failed) 1285ms
+   × round-4 closure: final emitted code cannot bypass the IPC boundary 1284ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c01-r4-node.test.ts > round-4 closure: final emitted code cannot bypass the IPC boundary
+Error: Command failed: C:\Program Files\nodejs\node.exe --test tests/adversarial/c01-r4-boundary.test.mjs
+ ❯ src/test/c01-r4-node.test.ts:9:3
+      7| it('round-4 closure: final emitted code cannot bypass the IPC boundary…
+      8|   const root = fileURLToPath(new URL('../../../', import.meta.url));
+      9|   execFileSync(process.execPath, ['--test', 'tests/adversarial/c01-r4-…
+       |   ^
+     10|     cwd: root,
+     11|     encoding: 'utf8',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 14 passed (15)
+      Tests  1 failed | 162 passed | 3 expected fail (166)
+   Start at  23:33:41
+   Duration  28.61s (tests 75%, environment 16%, setup 5%, import 2%, transform 1%)
+
+    Isolate  15 workers spawned · ~376ms startup each (spawn + environment, per file)
+             at least ~5.26s faster with isolate: false — reuses workers across files instead of one per file
+
+C:\Users\kaiga\work\review\m0-c01-r4\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 test: `vitest run --config vite.config.ts`
+Exit status 1
+ ELIFECYCLE  Test failed. See above for more details.

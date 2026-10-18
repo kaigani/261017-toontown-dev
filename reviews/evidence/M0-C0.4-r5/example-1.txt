@@ -1,0 +1,18 @@
+
+### Decision (ADR-0009 tablet rule set)
+
+| row | capability | action | W | R | H | D |
+|---|---|---|---|---|---|---|
+| 1 | pen identity | A1-A3 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+| 2 | pressure >= 256 levels | A1 | partial (injected row result) | pass (injected row result) | fail (injected row result) | fail (injected row result) |
+| 3 | pressure >= 1024 levels | A1 | fail (injected row result) | pass (injected row result) | fail (injected row result) | fail (injected row result) |
+| 4 | tilt | A3 | fail (injected row result) | fail (injected row result) | pass (injected row result) | fail (injected row result) |
+| 5 | twist (barrel rotation) | A4 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+| 6 | coalesced events | A2 | pass (injected row result) | n/a (injected row result) | n/a (injected row result) | n/a (injected row result) |
+| 7 | sustained rate >= 120 Hz | A2 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+| 8 | rate >= 200 Hz | A2 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+| 9 | stationary pressure-only updates | A6 | pass (injected row result) | pass (injected row result) | pass (injected row result) | pass (injected row result) |
+
+- platform: windows; share of applicable rows at pass: {'W': '2/3', 'R': '7/8', 'H': '3/4', 'D': '5/8'}; rows at pass: {'W': 6, 'R': 7, 'H': 6, 'D': 5}; candidates with a valid measurement: ['W', 'R', 'H', 'D']; disqualified (row 2 or 7 at fail): {'H': [2], 'D': [2]}
+- outcome: **go-with-conditions: R**
+- condition: row 4 tilt at fail: tilt unsupported on this platform: tilt-driven brush options off

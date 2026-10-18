@@ -1,0 +1,37 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c03-r4/desktop
+
+ ✓ src/test/c03-r2-tooling.test.ts > C03-R2-01: analyzer validates point/verb counts and workload for every seed 645ms
+ ✓ src/test/c03-r1-binary.test.ts > valid binary control travels through real invokeBinary 186ms
+ ✓ src/test/c03-r1-binary.test.ts > C03-R1-02: rejects NaN move coordinate 181ms
+ ✓ src/test/c03-r1-binary.test.ts > C03-R1-02: rejects infinite cubic control 184ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: wrong counts 184ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: 2^31 counts 183ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: out of range group 180ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: negative width 201ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: out of range points 183ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: truncation 183ms
+ ✓ src/test/c03-r1-tooling.test.ts > C03-R1: incomplete canvas evidence and missing committed PNGs fail closed 1017ms
+ ✓ src/test/c03-r2-page.test.tsx > current page manual save is accepted 78ms
+ ✓ src/test/c03-r2-page.test.tsx > current page interactive 60 Hz run is accepted 71ms
+ ✓ src/test/c03-r2-page.test.tsx > C03-R2-02: current page slow 1 Hz completed run is accepted as a missed target 56ms
+ ✓ src/test/c03-r3-page.test.tsx > control: completed 0.2 Hz phase with two recorded pan frames is accepted 87ms
+ ✓ src/test/c03-r3-page.test.tsx > C03-R3-01: completed 0.1 Hz phase is accepted even with one recorded pan frame 53ms
+ ✓ src/test/c03-r2-binary.test.ts > refuses nonfinite or adjacent out of bounds coordinate NaN 3ms
+ ✓ src/test/c03-r2-binary.test.ts > refuses nonfinite or adjacent out of bounds coordinate Infinity 0ms
+ ✓ src/test/c03-r2-binary.test.ts > refuses nonfinite or adjacent out of bounds coordinate -Infinity 0ms
+ ✓ src/test/c03-r2-binary.test.ts > refuses nonfinite or adjacent out of bounds coordinate -1.401298464324817e-45 0ms
+ ✓ src/test/c03-r2-binary.test.ts > refuses nonfinite or adjacent out of bounds coordinate 100.00000762939453 0ms
+ ✓ src/test/c03-r2-binary.test.ts > accepts subnormal coordinates inside bounds 1ms
+ ✓ src/test/c03-r2-binary.test.ts > rejects NaN header bounds 0ms
+ ✓ src/test/c03-r2-binary.test.ts > does not wrap 2^31 points times 8 to match a header-only packet 0ms
+ ✓ src/test/c03-r2-binary.test.ts > accepts an empty verb range with no geometry from that path 1ms
+
+ Test Files  6 passed (6)
+      Tests  25 passed (25)
+   Start at  06:36:21
+   Duration  6.46s (tests 62%, environment 20%, setup 11%, transform 5%, import 3%)
+
+    Isolate  6 workers spawned · ~275ms startup each (spawn + environment, per file)
+             at least ~1.37s faster with isolate: false — reuses workers across files instead of one per file
+

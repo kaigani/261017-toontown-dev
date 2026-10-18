@@ -1,0 +1,28 @@
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.11s
+     Running `target\release\examples\c03_raster.exe --repeat 3 --check crates/render/examples/c03_raster/hashes.json --report C:\Users\kaiga\work\review\m0-c03-r1\reviews\evidence\M0-C0.3-r1\raster-release-2.json --out C:\Users\kaiga\work\review\m0-c03-r1\target\raster-release-2`
+"windows" "x86_64" (vello_cpu detected SIMD level "Avx2(Avx2 { _private: () })")
+| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | ttraster vs vello max diff |
+|---|---|---|---|---|---|
+| cubic_blobs | 0.118 | 0.060 | 0.048 | 0.250 | 62 |
+| thin_strokes | 0.078 | 0.062 | 0.045 | 0.177 | 1 |
+| aa_edge_angles | 0.271 | 0.155 | 0.105 | 0.370 | 3 |
+| translucent_overlap | 0.116 | 0.042 | 0.034 | 0.277 | 30 |
+| alpha_stack | 0.325 | 0.077 | 0.056 | 0.513 | 1 |
+| linear_gradient | 0.273 | 0.053 | 0.039 | 0.495 | 1 |
+| radial_gradient | 0.275 | 0.053 | 0.039 | 0.130 | 48 |
+| gradient_transformed | 0.163 | 0.043 | 0.033 | 0.119 | 2 |
+| clip_circle | 0.129 | 0.101 | 0.109 | 0.141 | 43 |
+| clip_nested | 0.162 | 0.059 | 0.047 | 0.635 | 68 |
+| glyph_nonzero | 0.061 | 0.039 | 0.030 | 0.312 | 58 |
+| glyph_evenodd | 0.076 | 0.038 | 0.031 | 0.100 | 58 |
+| degenerate | 0.042 | 0.029 | 0.035 | 0.116 | 0 |
+| star_nonzero | 0.062 | 0.035 | 0.031 | 0.104 | 1 |
+| star_evenodd | 0.086 | 0.037 | 0.041 | 0.102 | 1 |
+| coincident_edges | 0.059 | 0.034 | 0.031 | 0.105 | 2 |
+| extreme_coordinates | 0.098 | 0.031 | 0.042 | 0.099 | 3 |
+| subpixel_translation | 0.081 | 0.045 | 0.023 | 0.107 | 51 |
+| non_integer_scales | 0.205 | 0.059 | 0.037 | 0.124 | 61 |
+| stroked_curves | 0.182 | 0.059 | 0.025 | 0.131 | 132 |
+| many_small_paths | 0.381 | 0.266 | 0.192 | 0.261 | 15 |
+| hairline_grid | 0.106 | 0.115 | 0.053 | 0.141 | 1 |
+| perf_2000_cubics_512 | 18.177 | 6.500 | 4.807 | 2.599 | 89 |

@@ -1,0 +1,8 @@
+cargo :     Checking tt-headless v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r1\bins\headless)
+At line:2 char:1
++ cargo clippy --workspace --all-targets --locked -- -D warnings *> rev ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Checking tt...\bins\headless):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.29s

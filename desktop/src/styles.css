@@ -1,0 +1,231 @@
+:root {
+  color-scheme: dark;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+  font-size: 13px;
+  --bg: #1e1f22;
+  --fg: #d6d7da;
+  --muted: #8c8f96;
+  --accent: #6aa2ff;
+  --warn: #e0b050;
+  --err: #ff6b6b;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.dock-host {
+  flex: 1;
+  min-height: 0;
+}
+
+.panel-placeholder {
+  padding: 12px 16px;
+  color: var(--muted);
+}
+
+.panel-placeholder h2 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: var(--fg);
+}
+
+.no-properties {
+  color: var(--fg);
+  font-style: italic;
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 3px 10px;
+  border-top: 1px solid #000;
+  background: #16171a;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.status-warning {
+  color: var(--warn);
+}
+
+.status-error {
+  color: var(--err);
+}
+
+.status-engine {
+  color: var(--muted);
+}
+
+.status-bar button {
+  font: inherit;
+  padding: 1px 8px;
+  color: var(--fg);
+  background: #2b2d31;
+  border: 1px solid #3a3c42;
+  border-radius: 3px;
+}
+
+/* C0.2 tablet spike page (spike code). */
+.spike {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  gap: 6px;
+}
+
+.spike-header {
+  /* One line (like the status text): header changes never reflow the canvas. */
+  flex: 0 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spike-toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.spike-status {
+  color: var(--warn);
+  /* One line, so status changes never reflow the canvas (the synthetic matrix needs a fixed rectangle). */
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spike-canvas {
+  flex: 1;
+  min-height: 300px;
+  width: 100%;
+  background: #fafafa;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.spike-readout {
+  display: flex;
+  gap: 16px;
+}
+
+.spike-col {
+  flex: 1;
+}
+
+.spike-col h3 {
+  margin: 0 0 4px;
+  font-size: 13px;
+}
+
+.spike-col th {
+  text-align: left;
+  font-weight: normal;
+  color: var(--muted);
+  padding-right: 12px;
+}
+
+.spike-footer {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.spike-readout {
+  /* Fixed heights below the canvas: growing tables scroll instead of shrinking the canvas. */
+  flex: 0 0 30%;
+  overflow: auto;
+}
+
+.spike-runs-box {
+  flex: 0 0 90px;
+  overflow: auto;
+}
+
+.spike-strokes,
+.spike-runs {
+  margin-top: 6px;
+  font-size: 11px;
+  border-collapse: collapse;
+}
+
+.spike-strokes th,
+.spike-strokes td,
+.spike-runs th,
+.spike-runs td {
+  padding: 1px 6px;
+  text-align: right;
+}
+
+.spike-meta {
+  flex: 0 0 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+}
+
+.spike-meta label {
+  display: flex;
+  flex-direction: column;
+}
+
+/* C0.3 canvas spike page (spike code). */
+.canvas-spike {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  gap: 6px;
+}
+
+.canvas-spike-host {
+  flex: 1;
+  min-height: 200px;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+
+.canvas-spike-surface {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas-spike-readout {
+  flex: 0 0 160px;
+  overflow: auto;
+}

@@ -1,0 +1,1 @@
+error: log declares source 'manual' but contains synthetic runs

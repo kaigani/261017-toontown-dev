@@ -1,0 +1,25 @@
+cargo :    Compiling proc-macro2 v1.0.107
+At line:6 char:1
++ cargo build --release --locked -p tt-headless *> reviews/evidence/M0- ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling proc-macro2 v1.0.107:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.154
+   Compiling memchr v2.8.3
+   Compiling clap_lex v1.1.1
+   Compiling anstyle v1.0.14
+   Compiling clap_builder v4.6.7
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling thiserror-impl v2.0.21
+   Compiling serde_derive v1.0.229
+   Compiling clap_derive v4.6.7
+   Compiling thiserror v2.0.21
+   Compiling clap v4.6.7
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r1\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r1\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r1\bins\headless)
+    Finished `release` profile [optimized + debuginfo] target(s) in 4.42s

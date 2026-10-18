@@ -1,0 +1,37 @@
+[
+  {
+    "command": "rustc --version",
+    "exitCode": 0,
+    "output": "rustc 1.98.1 (48a229cea 2026-09-01)\n"
+  },
+  {
+    "command": "cargo deny --version",
+    "exitCode": 0,
+    "output": "cargo-deny 0.20.2\n"
+  },
+  {
+    "command": "node --version",
+    "exitCode": 0,
+    "output": "v22.23.2\n"
+  },
+  {
+    "command": "pnpm --version",
+    "exitCode": 0,
+    "output": "10.12.1\n"
+  },
+  {
+    "command": "python --version",
+    "exitCode": 0,
+    "output": "Python 3.13.1\n"
+  },
+  {
+    "command": "git rev-parse HEAD",
+    "exitCode": 0,
+    "output": "38c0fcc76551597220024453d8857badc77e149a\n"
+  },
+  {
+    "command": "git diff 5cb0e24..38c0fcc -- tests/adversarial desktop/src/test",
+    "exitCode": 0,
+    "output": ""
+  }
+]

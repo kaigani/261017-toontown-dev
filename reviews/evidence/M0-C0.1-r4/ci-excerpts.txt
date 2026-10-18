@@ -1,0 +1,83 @@
+259: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T06:16:47.3998757Z headless dependency check passed
+609: bundle (windows-latest)	Tauri build (unsigned)	2026-10-18T06:17:53.9012601Z > vite build --config vite.config.ts
+683: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:21:11.8373146Z           "p50": 2.599999999976717,
+684: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:21:11.8373730Z           "p95": 3,
+695: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:21:11.8378380Z           "p50": 2.599999999976717,
+696: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:21:11.8378752Z           "p95": 3.1000000000349246,
+707: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:21:11.8382373Z           "p50": 5.399999999965075,
+708: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:21:11.8382697Z           "p95": 6.099999999976717,
+719: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:21:11.8386427Z           "p50": 39.70000000001164,
+720: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:21:11.8386750Z           "p95": 49.20000000001164,
+726: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:21:11.8391123Z     "ok": true,
+727: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:21:11.8391405Z     "transport": "tauri",
+1171: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:21.6052390Z > vitest run --config vite.config.ts
+1176: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:22.8408510Z  ✓ src/ipc/schema.test.ts (18 tests) 9ms
+1177: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:30.3229380Z  ✓ src/ipc/boundary.lint.test.ts (53 tests) 7218ms
+1182: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:32.0557690Z  ✓ src/ipc/boundary.build.test.ts (27 tests) 1370ms
+1185: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:32.3376970Z stdout | src/test/c01-r3-schema.test.ts > round-3 schema closure controls > certifies 1 MiB ping strings promptly and snapshots the value
+1188: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:32.3394450Z  ✓ src/test/c01-r3-schema.test.ts (14 tests) 20ms
+1189: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:33.4395480Z  ✓ src/test/c01-r2-schema.test.ts (12 tests) 8ms
+1190: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:34.1064080Z  ✓ src/ipc/hostApi.test.ts (6 tests) 5ms
+1191: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:34.8227340Z  ✓ src/lib/latency.test.ts (7 tests) 7ms
+1192: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:41.6013000Z  ✓ src/test/platformFloor.test.ts (5 tests) 6409ms
+1195: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:44.4044680Z  ✓ src/App.test.tsx (5 tests) 356ms
+1198: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:46.2738690Z  ✓ src/ui-bindings/menu.test.ts (4 tests) 6ms
+1199: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:17:47.9366130Z  ✓ src/diagnostics/ipcBench.test.ts (3 tests) 12ms
+1200: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:07.1431090Z  ✓ src/test/c01-r2-node.test.ts (2 tests) 18723ms
+1202: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:12.8978350Z  ✓ src/test/c01-r3-node.test.ts (1 test) 5328ms
+1204: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:14.3215570Z  ✓ src/test/adversarial.test.ts (8 tests) 11ms
+1206: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:14.3320150Z  Test Files  14 passed (14)
+1207: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:14.3323350Z       Tests  162 passed | 3 expected fail (165)
+1270: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:14.5524830Z # tests 9
+1272: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:14.5525830Z # pass 9
+1273: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:14.5526510Z # fail 0
+1275: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:14.5527090Z # skipped 0
+1308: check (macos-latest)	Front end — build (frontendDist is embedded by the Tauri host)	2026-10-18T06:18:18.2407810Z > vite build --config vite.config.ts
+1429: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T06:18:41.9583870Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+1458: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T06:18:41.9728780Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+1482: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T06:18:41.9872260Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+1495: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T06:18:47.1754800Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.18s
+1506: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T06:18:47.2097150Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+1513: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T06:18:48.9761200Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.76s
+2447: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T06:18:55.5599790Z headless dependency check passed
+2852: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:51.0677833Z > vitest run --config vite.config.ts
+2857: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:18:57.3958878Z  ✓ src/ipc/schema.test.ts (18 tests) 22ms
+2858: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:19:46.6131612Z  ✓ src/ipc/boundary.lint.test.ts (53 tests) 48932ms
+2872: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:19:50.8589494Z  ✓ src/ipc/boundary.build.test.ts (27 tests) 3143ms
+2875: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:19:51.3645133Z stdout | src/test/c01-r3-schema.test.ts > round-3 schema closure controls > certifies 1 MiB ping strings promptly and snapshots the value
+2878: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:19:51.3658386Z  ✓ src/test/c01-r3-schema.test.ts (14 tests) 35ms
+2879: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:19:53.5385450Z  ✓ src/test/c01-r2-schema.test.ts (12 tests) 17ms
+2880: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:19:55.0081205Z  ✓ src/ipc/hostApi.test.ts (6 tests) 11ms
+2881: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:19:56.8525748Z  ✓ src/lib/latency.test.ts (7 tests) 15ms
+2882: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:03.4284851Z  ✓ src/test/platformFloor.test.ts (5 tests) 5906ms
+2885: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:05.5992121Z  ✓ src/App.test.tsx (5 tests) 225ms
+2886: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:07.7895687Z  ✓ src/ui-bindings/menu.test.ts (4 tests) 9ms
+2887: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:09.1924111Z  ✓ src/diagnostics/ipcBench.test.ts (3 tests) 11ms
+2888: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:32.2476043Z  ✓ src/test/c01-r2-node.test.ts (2 tests) 22299ms
+2890: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:40.0798854Z  ✓ src/test/c01-r3-node.test.ts (1 test) 7716ms
+2892: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:41.8837353Z  ✓ src/test/adversarial.test.ts (8 tests) 14ms
+2894: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:41.8997827Z  Test Files  14 passed (14)
+2895: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:41.8999263Z       Tests  162 passed | 3 expected fail (165)
+2958: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:42.1476044Z # tests 9
+2960: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:42.1477505Z # pass 9
+2961: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:42.1478031Z # fail 0
+2963: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T06:20:42.1479117Z # skipped 0
+2996: check (windows-latest)	Front end — build (frontendDist is embedded by the Tauri host)	2026-10-18T06:20:48.7693215Z > vite build --config vite.config.ts
+3118: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T06:22:13.8788144Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+3146: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T06:22:13.9202487Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+3170: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T06:22:14.0018224Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+3183: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T06:22:22.3306445Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.31s
+3194: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T06:22:22.3825342Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+3201: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T06:22:26.3770863Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.98s
+4132: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T06:23:19.6019150Z headless dependency check passed
+4525: bundle (macos-latest)	Tauri build (unsigned)	2026-10-18T06:17:14.9063630Z > vite build --config vite.config.ts
+4590: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:18:39.0023010Z           "p50": 2,
+4591: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:18:39.0190770Z           "p95": 4,
+4602: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:18:39.0306360Z           "p50": 1.0000000000002274,
+4603: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:18:39.0308510Z           "p95": 3,
+4614: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:18:39.0329710Z           "p50": 2,
+4615: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:18:39.0331110Z           "p95": 3,
+4626: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:18:39.1448680Z           "p50": 7,
+4627: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:18:39.1465070Z           "p95": 12.00000000000091,
+4633: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:18:39.1495190Z     "ok": true,
+4634: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T06:18:39.1499380Z     "transport": "tauri",

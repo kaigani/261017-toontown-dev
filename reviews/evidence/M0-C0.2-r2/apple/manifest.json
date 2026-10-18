@@ -1,0 +1,86 @@
+[
+  {
+    "file": "buttonMask.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/buttonMask-swift.property",
+    "sha256": "2f97c657180cd36ca70775321420967af6bcba66c9a49005bc5a1cdd963b8f31",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "capabilitymask.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/capabilityMask",
+    "sha256": "d5224f02919272821f0e19cdb4f1b03ede29f73e5620f236fcfa5b519eadfef1",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "deviceid.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/deviceID",
+    "sha256": "94e255cdf13754858ec1c36f733c0c6c7e55e702965fff57a94eb2b6b8624fb5",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "isenteringproximity.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/isEnteringProximity",
+    "sha256": "7bdd870dd58be8c6b78d054cc8efc92acd06f82f0b05e9c5f38d9bc15e48af94",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "locationinwindow.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/locationInWindow",
+    "sha256": "df639bcd1960fbef95ddde04b25bc92654bc197b7fc35e579f47c7b808e8fe6e",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "pointingDeviceType.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/pointingDeviceType-swift.property",
+    "sha256": "3abdd471af68cdc21386b8f7ba218d4c8b15d6978e81452e81d59c6ca1f9eab4",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "pressure.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/pressure",
+    "sha256": "21c0b3481473a6cb0c11b4ae6478ac058aa2aa7aaf91b394ebb000b2c3cedec0",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "rotation.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/rotation",
+    "sha256": "8cc4b210334ce5e7a989d7bee2a1eb1dfd6bf648930902443d58a5cf5042598c",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "subtype.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/subtype",
+    "sha256": "eeb724b87ba84601e622e33bb3db6173b175f273b9dd1b766432c96ccb6e220d",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "tabletid.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/tabletID",
+    "sha256": "8ca9d054ed1a3bf85a42bc9ef8bc54ba97f1ecf9b70369fc60c5e2852c642e39",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "tangentialpressure.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/tangentialPressure",
+    "sha256": "bfa04045947d41265c1e03744c5659cb1f2681fbba0af53ceec96abda1d29cde",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "tilt.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/tilt",
+    "sha256": "055b8253742c92bbadf58001dced1140bc3314b247e98c761c57032d4618f1f4",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "uniqueid.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/uniqueID",
+    "sha256": "09bdd276f3679634a20837eca57f1dca008229fd9902312ac9ef91274956226f",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  },
+  {
+    "file": "windownumber.md",
+    "url": "https://developer.apple.com/documentation/AppKit/NSEvent/windowNumber",
+    "sha256": "438e1461eb84a8403f4111495fd685dd9aa2fb7acaa6699145fe873322487ae9",
+    "normalization": "UTF-8 LF; trailing line whitespace removed"
+  }
+]

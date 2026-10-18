@@ -1,0 +1,10 @@
+import { createRequire } from 'node:module';
+import { pathToFileURL } from 'node:url';
+import { copyFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+const root = process.cwd();
+const require = createRequire(path.join(root, 'desktop/package.json'));
+const {build} = await import(pathToFileURL(require.resolve('vite')).href);
+await build({ configFile:false, build:{ outDir:path.join(root,'target/review-browser'), emptyOutDir:false, lib:{entry:path.join(root,'reviews/evidence/M0-C0.3-r1/browser_probe.ts'),formats:['iife'],name:'ReviewProbe',fileName:()=> 'probe.js'} } });
+copyFileSync('target/review-scenes/paths100k.ttrl','target/review-browser/paths100k.ttrl');
+writeFileSync('target/review-browser/index.html','<!doctype html><html><head><title>C0.3 Review Probe</title></head><body><script src="/probe.js"></script></body></html>');

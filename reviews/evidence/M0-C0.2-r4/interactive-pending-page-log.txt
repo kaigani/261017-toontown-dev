@@ -1,0 +1,1 @@
+error: run 'webview sine 240 Hz': successful run has no raw report (missing evidence, not an empty result)

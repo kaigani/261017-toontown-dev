@@ -1,0 +1,84 @@
+{
+  "ffmpeg-configure-n8.0": {
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.0/configure",
+    "retrievedUtc": "2026-10-18T14:25:15.999515+00:00",
+    "sha256": "8946342ef754811e13a08fac1c972bffdbb078d7dfef5d5468eaeb0fb6ce049c",
+    "bytes": 294702,
+    "matching_lines": [
+      {
+        "line": 98,
+        "text": "  --enable-gpl             allow use of GPL code, the resulting libs"
+      },
+      {
+        "line": 112,
+        "text": "  --disable-autodetect     disable automatically detected external libraries [no]"
+      },
+      {
+        "line": 148,
+        "text": "  --enable-encoder=NAME    enable encoder NAME"
+      },
+      {
+        "line": 149,
+        "text": "  --disable-encoders       disable all encoders"
+      },
+      {
+        "line": 322,
+        "text": "  --enable-mediafoundation enable encoding via MediaFoundation [auto]"
+      },
+      {
+        "line": 7024,
+        "text": "                               die \"ERROR: libaribb24 requires version higher than 1.0.3 or --enable-gpl.\"; }"
+      },
+      {
+        "line": 7215,
+        "text": "                               enabled gpl || die \"ERROR: libzvbi requires version 0.2.28 or --enable-gpl.\"; }"
+      }
+    ]
+  },
+  "ffmpeg-mf-n8.0": {
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.0/libavcodec/mfenc.c",
+    "retrievedUtc": "2026-10-18T14:25:16.188980+00:00",
+    "sha256": "78977f7c2d7c20e7c0e44ade2523e90004f1c1aa0d4cd4b16a5e2cda4deb121a",
+    "bytes": 48686,
+    "matching_lines": [
+      {
+        "line": 1319,
+        "text": "// Windows N editions does not provide MediaFoundation by default."
+      },
+      {
+        "line": 1420,
+        "text": "MF_ENCODER(AUDIO, aac,         AAC, NULL, AFMTS, ACAPS, NULL);"
+      },
+      {
+        "line": 1462,
+        "text": "MF_ENCODER(VIDEO, h264,        H264, venc_opts, VFMTS, VCAPS, defaults);"
+      }
+    ]
+  },
+  "ffmpeg-at-n8.0": {
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.0/libavcodec/audiotoolboxenc.c",
+    "retrievedUtc": "2026-10-18T14:25:16.369748+00:00",
+    "sha256": "ff2c20bde63ce053e7a40faac59ed71983cbc1cb8042758cb8934c52a61cb85b",
+    "bytes": 25205,
+    "matching_lines": [
+      {
+        "line": 675,
+        "text": "FFAT_ENC(aac,          AV_CODEC_ID_AAC,          aac_profiles, , aac_at_channel_layouts, aac_at_ch_layouts)"
+      }
+    ]
+  },
+  "ffmpeg-lgpl": {
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.0/COPYING.LGPLv2.1",
+    "retrievedUtc": "2026-10-18T14:25:16.578859+00:00",
+    "sha256": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30",
+    "bytes": 26517,
+    "matching_lines": []
+  },
+  "apple-prores": {
+    "url": "https://www.apple.com/final-cut-pro/docs/Apple_ProRes.pdf",
+    "retrievedUtc": "2026-10-18T14:25:16.846524+00:00",
+    "sha256": "67c847c3cdd63992e672bae1224246e80fd0fa5f887be7e7fdddc30cce880f23",
+    "bytes": 604807,
+    "matching_lines": []
+  }
+}

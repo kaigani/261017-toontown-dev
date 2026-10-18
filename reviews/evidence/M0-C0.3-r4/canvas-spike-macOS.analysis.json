@@ -1,0 +1,266 @@
+{
+  "version": 1,
+  "runs": [
+    {
+      "backend": "webgpu",
+      "scene": "paths100k",
+      "outcome": "failed",
+      "error": "webgpu unavailable: navigator.gpu.requestAdapter() returned null"
+    },
+    {
+      "backend": "webgpu",
+      "scene": "groups1k",
+      "outcome": "failed",
+      "error": "webgpu unavailable: navigator.gpu.requestAdapter() returned null"
+    },
+    {
+      "backend": "webgpu",
+      "scene": "brush10k",
+      "outcome": "failed",
+      "error": "webgpu unavailable: navigator.gpu.requestAdapter() returned null"
+    },
+    {
+      "backend": "webgl2",
+      "scene": "paths100k",
+      "outcome": "ok",
+      "error": null,
+      "complete": true,
+      "cadence": "ok",
+      "gpu": "Apple GPU",
+      "canvas": {
+        "cssHeight": 417,
+        "cssWidth": 1008,
+        "dpr": 1,
+        "height": 417,
+        "width": 1008
+      },
+      "bytesPerTransfer": 8700096.0,
+      "transferMs": {
+        "n": 10,
+        "p50": 8,
+        "p95": 20,
+        "max": 20,
+        "mean": 8.900000000000045
+      },
+      "transferMBps": 977.5388764044894,
+      "encodeMs": {
+        "n": 10,
+        "p50": 2.69525,
+        "p95": 4.308458,
+        "max": 4.308458,
+        "mean": 3.0267125
+      },
+      "generateMs": 3.459625,
+      "ipcPerFrameCeilingFps": 125.0,
+      "decodeMs": 351,
+      "decode": {
+        "cubics": 200000,
+        "fillBytes": 0,
+        "fillPaths": 0,
+        "fillVertices": 0,
+        "paths": 100000,
+        "segments": 2832713,
+        "strokeBytes": 90646816,
+        "strokePaths": 100000,
+        "tolerance": 0.5,
+        "triangles": 0
+      },
+      "uploadMs": {
+        "completeMs": 9.999999999999543,
+        "cpuMs": 9.999999999999543
+      },
+      "refreshMs": 16.666666666666668,
+      "frames": 213,
+      "intervalMs": {
+        "n": 212,
+        "p50": 46,
+        "p95": 71,
+        "max": 106,
+        "mean": 47.136792452830186
+      },
+      "fps": 21.214850395276695,
+      "longFrames": 204,
+      "cpuMs": {
+        "n": 213,
+        "p50": 0,
+        "p95": 1,
+        "max": 1,
+        "mean": 0.06572769953051216
+      },
+      "gpuMs": null,
+      "meetsTarget": false
+    },
+    {
+      "backend": "webgl2",
+      "scene": "groups1k",
+      "outcome": "ok",
+      "error": null,
+      "complete": true,
+      "cadence": "ok",
+      "gpu": "Apple GPU",
+      "canvas": {
+        "cssHeight": 417,
+        "cssWidth": 1008,
+        "dpr": 1,
+        "height": 417,
+        "width": 1008
+      },
+      "bytesPerTransfer": 2024072.0,
+      "transferMs": {
+        "n": 10,
+        "p50": 2,
+        "p95": 10,
+        "max": 10,
+        "mean": 2.9
+      },
+      "transferMBps": 697.9558620689654,
+      "encodeMs": {
+        "n": 10,
+        "p50": 0.639458,
+        "p95": 1.356084,
+        "max": 1.356084,
+        "mean": 0.7261
+      },
+      "generateMs": 1.062542,
+      "ipcPerFrameCeilingFps": 500.0,
+      "decodeMs": 59.00000000000182,
+      "decode": {
+        "cubics": 50000,
+        "fillBytes": 4565620,
+        "fillPaths": 10000,
+        "fillVertices": 175915,
+        "paths": 20000,
+        "segments": 101961,
+        "strokeBytes": 3262752,
+        "strokePaths": 10000,
+        "tolerance": 0.5,
+        "triangles": 145915
+      },
+      "uploadMs": {
+        "completeMs": 0,
+        "cpuMs": 0
+      },
+      "refreshMs": 16.62295081967213,
+      "frames": 595,
+      "intervalMs": {
+        "n": 594,
+        "p50": 17,
+        "p95": 20,
+        "max": 42,
+        "mean": 16.80976430976431
+      },
+      "fps": 59.489233850776166,
+      "longFrames": 6,
+      "cpuMs": {
+        "n": 595,
+        "p50": 0,
+        "p95": 1,
+        "max": 1.000000000003638,
+        "mean": 0.06218487394959206
+      },
+      "gpuMs": null,
+      "meetsTarget": true
+    },
+    {
+      "backend": "webgl2",
+      "scene": "brush10k",
+      "outcome": "ok",
+      "error": null,
+      "complete": true,
+      "cadence": "ok",
+      "gpu": "Apple GPU",
+      "canvas": {
+        "cssHeight": 417,
+        "cssWidth": 1008,
+        "dpr": 1,
+        "height": 417,
+        "width": 1008
+      },
+      "bytesPerTransfer": 10085716.0,
+      "transferMs": {
+        "n": 10,
+        "p50": 7,
+        "p95": 20,
+        "max": 20,
+        "mean": 8.5
+      },
+      "transferMBps": 1186.5548235294116,
+      "encodeMs": {
+        "n": 10,
+        "p50": 3.378792,
+        "p95": 4.270375,
+        "max": 4.270375,
+        "mean": 3.4666209
+      },
+      "generateMs": 10.505458,
+      "ipcPerFrameCeilingFps": 142.85714285714286,
+      "decodeMs": 451,
+      "decode": {
+        "cubics": 0,
+        "fillBytes": 30166256,
+        "fillPaths": 10000,
+        "fillVertices": 1088402,
+        "paths": 10000,
+        "segments": 0,
+        "strokeBytes": 0,
+        "strokePaths": 0,
+        "tolerance": 0.5,
+        "triangles": 1062652
+      },
+      "uploadMs": {
+        "completeMs": 4,
+        "cpuMs": 4
+      },
+      "refreshMs": 16.62295081967213,
+      "frames": 597,
+      "intervalMs": {
+        "n": 596,
+        "p50": 17,
+        "p95": 20,
+        "max": 36,
+        "mean": 16.753355704697988
+      },
+      "fps": 59.68953430145218,
+      "longFrames": 6,
+      "cpuMs": {
+        "n": 597,
+        "p50": 0,
+        "p95": 1,
+        "max": 1.000000000007276,
+        "mean": 0.07705192629813917
+      },
+      "gpuMs": null,
+      "meetsTarget": true
+    }
+  ],
+  "pixelRuns": [
+    {
+      "backend": "webgpu",
+      "outcome": "failed",
+      "error": "webgpu unavailable: navigator.gpu.requestAdapter() returned null"
+    },
+    {
+      "backend": "webgl2",
+      "outcome": "ok",
+      "width": 1008,
+      "height": 417,
+      "bytes": 1681360,
+      "transferMs": {
+        "n": 20,
+        "p50": 2,
+        "p95": 3,
+        "max": 11,
+        "mean": 2.55
+      },
+      "uploadMs": {
+        "n": 20,
+        "p50": 0.999999999992724,
+        "p95": 1,
+        "max": 1.000000000007276,
+        "mean": 0.55
+      },
+      "transferMBps": 659.3568627450982,
+      "frameCostP50Ms": 2.999999999992724
+    }
+  ]
+}

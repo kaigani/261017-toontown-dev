@@ -1,0 +1,23 @@
+[
+  {
+    "name": "paintWorklet",
+    "priorRevision": "aae694d",
+    "lintErrors": 0,
+    "messages": []
+  },
+  {
+    "name": "audioWorklet",
+    "priorRevision": "aae694d",
+    "lintErrors": 0,
+    "messages": []
+  },
+  {
+    "name": "renamed-index-reexport",
+    "priorRevision": "aae694d",
+    "accepted": true,
+    "result": "raw-host",
+    "calls": [
+      "app_info"
+    ]
+  }
+]

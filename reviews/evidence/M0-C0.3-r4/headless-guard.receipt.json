@@ -1,0 +1,5 @@
+{
+  "command": "python scripts/check-headless-deps.py target/release/toontown-headless.exe",
+  "exitCode": 0,
+  "seconds": 0.179
+}

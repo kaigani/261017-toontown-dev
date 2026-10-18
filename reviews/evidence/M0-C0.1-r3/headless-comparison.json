@@ -1,0 +1,27 @@
+[
+  [
+    "engine.components",
+    true,
+    null
+  ],
+  [
+    "engine.versions",
+    true,
+    null
+  ],
+  [
+    "engine.ping",
+    true,
+    null
+  ],
+  [
+    "determinism.ieee754",
+    true,
+    null
+  ],
+  [
+    "headless.mcpLinked",
+    true,
+    null
+  ]
+]

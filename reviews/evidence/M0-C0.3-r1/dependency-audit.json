@@ -1,0 +1,252 @@
+{
+  "crates": [
+    {
+      "name": "arrayvec",
+      "version": "0.7.8",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 2413,
+      "unsafeWordLines": 52
+    },
+    {
+      "name": "autocfg",
+      "version": "1.5.1",
+      "license": "Apache-2.0 OR MIT",
+      "srcLines": 925,
+      "unsafeWordLines": 0
+    },
+    {
+      "name": "bytemuck",
+      "version": "1.25.2",
+      "license": "Zlib OR Apache-2.0 OR MIT",
+      "srcLines": 4162,
+      "unsafeWordLines": 323
+    },
+    {
+      "name": "bytemuck_derive",
+      "version": "1.12.1",
+      "license": "Zlib OR Apache-2.0 OR MIT",
+      "srcLines": 2369,
+      "unsafeWordLines": 7
+    },
+    {
+      "name": "cfg-if",
+      "version": "1.0.5",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 218,
+      "unsafeWordLines": 0
+    },
+    {
+      "name": "color",
+      "version": "0.3.3",
+      "license": "Apache-2.0 OR MIT",
+      "srcLines": 7861,
+      "unsafeWordLines": 25
+    },
+    {
+      "name": "crossbeam-channel",
+      "version": "0.5.17",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 7844,
+      "unsafeWordLines": 65
+    },
+    {
+      "name": "crossbeam-deque",
+      "version": "0.8.8",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 2367,
+      "unsafeWordLines": 41
+    },
+    {
+      "name": "crossbeam-epoch",
+      "version": "0.9.21",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 4945,
+      "unsafeWordLines": 128
+    },
+    {
+      "name": "crossbeam-utils",
+      "version": "0.8.23",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 4168,
+      "unsafeWordLines": 76
+    },
+    {
+      "name": "either",
+      "version": "1.19.0",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 2477,
+      "unsafeWordLines": 2
+    },
+    {
+      "name": "euclid",
+      "version": "0.22.14",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 18480,
+      "unsafeWordLines": 44
+    },
+    {
+      "name": "fearless_simd",
+      "version": "0.7.0",
+      "license": "Apache-2.0 OR MIT",
+      "srcLines": 84164,
+      "unsafeWordLines": 111
+    },
+    {
+      "name": "foldhash",
+      "version": "0.2.0",
+      "license": "Zlib",
+      "srcLines": 1128,
+      "unsafeWordLines": 10
+    },
+    {
+      "name": "guillotiere",
+      "version": "0.7.0",
+      "license": "MIT/Apache-2.0",
+      "srcLines": 2340,
+      "unsafeWordLines": 0
+    },
+    {
+      "name": "hashbrown",
+      "version": "0.17.1",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 23720,
+      "unsafeWordLines": 450
+    },
+    {
+      "name": "kurbo",
+      "version": "0.13.1",
+      "license": "Apache-2.0 OR MIT",
+      "srcLines": 18310,
+      "unsafeWordLines": 0
+    },
+    {
+      "name": "linebender_resource_handle",
+      "version": "0.1.1",
+      "license": "Apache-2.0 OR MIT",
+      "srcLines": 252,
+      "unsafeWordLines": 0
+    },
+    {
+      "name": "log",
+      "version": "0.4.34",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 5754,
+      "unsafeWordLines": 6
+    },
+    {
+      "name": "num-traits",
+      "version": "0.2.19",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 7815,
+      "unsafeWordLines": 1
+    },
+    {
+      "name": "ordered-channel",
+      "version": "1.2.0",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 293,
+      "unsafeWordLines": 0
+    },
+    {
+      "name": "peniko",
+      "version": "0.6.1",
+      "license": "Apache-2.0 OR MIT",
+      "srcLines": 1977,
+      "unsafeWordLines": 36
+    },
+    {
+      "name": "polycool",
+      "version": "0.4.0",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 1353,
+      "unsafeWordLines": 0
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.107",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 6029,
+      "unsafeWordLines": 6
+    },
+    {
+      "name": "quote",
+      "version": "1.0.47",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 2702,
+      "unsafeWordLines": 0
+    },
+    {
+      "name": "rayon",
+      "version": "1.12.0",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 27141,
+      "unsafeWordLines": 67
+    },
+    {
+      "name": "rayon-core",
+      "version": "1.13.0",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 7069,
+      "unsafeWordLines": 86
+    },
+    {
+      "name": "smallvec",
+      "version": "1.16.3",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 4149,
+      "unsafeWordLines": 80
+    },
+    {
+      "name": "syn",
+      "version": "3.0.9",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 51787,
+      "unsafeWordLines": 81
+    },
+    {
+      "name": "thiserror",
+      "version": "2.0.21",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 466,
+      "unsafeWordLines": 0
+    },
+    {
+      "name": "thiserror-impl",
+      "version": "2.0.21",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 2468,
+      "unsafeWordLines": 1
+    },
+    {
+      "name": "thread_local",
+      "version": "1.1.10",
+      "license": "MIT OR Apache-2.0",
+      "srcLines": 1191,
+      "unsafeWordLines": 27
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.27",
+      "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "srcLines": 976,
+      "unsafeWordLines": 2
+    },
+    {
+      "name": "vello_common",
+      "version": "0.3.0",
+      "license": "Apache-2.0 OR MIT",
+      "srcLines": 15763,
+      "unsafeWordLines": 0
+    },
+    {
+      "name": "vello_cpu",
+      "version": "0.3.0",
+      "license": "Apache-2.0 OR MIT",
+      "srcLines": 13954,
+      "unsafeWordLines": 0
+    }
+  ],
+  "count": 35,
+  "lines": 339030,
+  "unsafeWordLines": 1727
+}

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm lint"
+  ],
+  "startedUtc": "2026-10-18T11:40:54.269724+00:00",
+  "elapsedSeconds": 7.743489500018768,
+  "exitCode": 1
+}

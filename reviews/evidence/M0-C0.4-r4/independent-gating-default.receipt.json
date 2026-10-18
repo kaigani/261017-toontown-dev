@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python",
+    "C:\\Users\\kaiga\\work\\review\\m0-c04-r4\\reviews\\evidence\\M0-C0.4-r4\\probe_gating.py",
+    "default"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r4",
+  "started": "2026-10-18T16:48:46.019122+00:00",
+  "seconds": 0.322,
+  "exit": 0,
+  "expected": 0
+}

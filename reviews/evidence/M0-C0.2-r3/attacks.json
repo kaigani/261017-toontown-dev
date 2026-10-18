@@ -1,0 +1,111 @@
+[
+  {
+    "case": "v1",
+    "exit": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log version 1 is obsolete (no raw injection report); re-run with the current build (this analyzer reads versions (2, 3))",
+    "outcome": []
+  },
+  {
+    "case": "versionless-synthetic",
+    "exit": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has no `version` field but contains synthetic runs; this analyzer only accepts versioned synthetic evidence (versions (2, 3))",
+    "outcome": []
+  },
+  {
+    "case": "truncated-report-array",
+    "exit": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': raw report injectEpochMs has 1023 entries, expected 1024 (one per frame)",
+    "outcome": []
+  },
+  {
+    "case": "tampered-achieved",
+    "exit": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': saved achievedHz 123456789 disagrees with the host estimator recomputed from contactStartNs/contactEndNs (239.0965940666826); tolerance 1e-09 relative",
+    "outcome": []
+  },
+  {
+    "case": "tampered-endpoint",
+    "exit": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': saved achievedHz 239.0965940666826 disagrees with the host estimator recomputed from contactStartNs/contactEndNs (193.83704577653023); tolerance 1e-09 relative",
+    "outcome": []
+  },
+  {
+    "case": "reversed-endpoints",
+    "exit": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': raw report contact endpoints 100..0 are not an interval",
+    "outcome": []
+  },
+  {
+    "case": "failed-run",
+    "exit": 0,
+    "stdoutBytes": 2681,
+    "stderr": "",
+    "outcome": [
+      "- outcome: 1 synthetic runs, 0 ok, 1 explicitly failed"
+    ]
+  },
+  {
+    "case": "orphaned-simulations",
+    "exit": 0,
+    "stdoutBytes": 2390,
+    "stderr": "",
+    "outcome": [
+      "- outcome: no synthetic runs (manual/hardware log; loss unknown)",
+      "No synthetic runs: outcome (b), a manual/hardware log. There is no injection reference, so loss is \"unknown, gap heuristic only\"."
+    ]
+  },
+  {
+    "case": "missing-run-list",
+    "exit": 0,
+    "stdoutBytes": 2390,
+    "stderr": "",
+    "outcome": [
+      "- outcome: no synthetic runs (manual/hardware log; loss unknown)",
+      "No synthetic runs: outcome (b), a manual/hardware log. There is no injection reference, so loss is \"unknown, gap heuristic only\"."
+    ]
+  },
+  {
+    "case": "empty-focus",
+    "exit": 0,
+    "stdoutBytes": 12037,
+    "stderr": "",
+    "outcome": [
+      "- outcome: 10 synthetic runs, 10 ok, 0 explicitly failed"
+    ]
+  },
+  {
+    "case": "manual-page-log",
+    "exit": 0,
+    "stdoutBytes": 2892,
+    "stderr": "",
+    "outcome": [
+      "- outcome: no synthetic runs (manual/hardware log; loss unknown)",
+      "No synthetic runs: outcome (b), a manual/hardware log. There is no injection reference, so loss is \"unknown, gap heuristic only\"."
+    ]
+  },
+  {
+    "case": "auto-refusal-page-log",
+    "exit": 0,
+    "stdoutBytes": 2917,
+    "stderr": "",
+    "outcome": [
+      "- outcome: 11 synthetic runs, 0 ok, 11 explicitly failed"
+    ]
+  },
+  {
+    "case": "versionless-manual",
+    "exit": 0,
+    "stdoutBytes": 2913,
+    "stderr": "",
+    "outcome": [
+      "- outcome: no synthetic runs (manual/hardware log; loss unknown)",
+      "No synthetic runs: outcome (b), a manual/hardware log. There is no injection reference, so loss is \"unknown, gap heuristic only\"."
+    ]
+  }
+]

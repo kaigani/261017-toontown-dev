@@ -1,0 +1,296 @@
+[
+  {
+    "name": "constant-slice",
+    "lintErrors": 1,
+    "accepted": false,
+    "generatedChunks": 0,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "constant-substring",
+    "lintErrors": 0,
+    "accepted": false,
+    "generatedChunks": 0,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "constant-uppercase",
+    "lintErrors": 0,
+    "accepted": false,
+    "generatedChunks": 0,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "constant-reduce",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 1,
+    "writtenChunks": 1,
+    "runtime": {
+      "result": "raw-host",
+      "calls": [
+        {
+          "command": "app_info"
+        }
+      ]
+    },
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "constant-uri",
+    "lintErrors": 0,
+    "accepted": false,
+    "generatedChunks": 1,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [
+      "probe.js"
+    ],
+    "writtenTauri": []
+  },
+  {
+    "name": "constant-json",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 1,
+    "writtenChunks": 1,
+    "runtime": {
+      "result": "raw-host",
+      "calls": [
+        {
+          "command": "app_info"
+        }
+      ]
+    },
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "constant-jsonSingleEscape",
+    "lintErrors": 0,
+    "accepted": false,
+    "generatedChunks": 0,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "constant-decoder",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 1,
+    "writtenChunks": 1,
+    "runtime": {
+      "result": "raw-host",
+      "calls": [
+        {
+          "command": "app_info"
+        }
+      ]
+    },
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "constant-numeric",
+    "lintErrors": 0,
+    "accepted": false,
+    "generatedChunks": 1,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [
+      "probe.js"
+    ],
+    "writtenTauri": []
+  },
+  {
+    "name": "constant-object",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 1,
+    "writtenChunks": 1,
+    "runtime": {
+      "result": "raw-host",
+      "calls": [
+        {
+          "command": "app_info"
+        }
+      ]
+    },
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "constant-charcodes",
+    "lintErrors": 1,
+    "accepted": false,
+    "generatedChunks": 0,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "const-object",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 1,
+    "writtenChunks": 1,
+    "runtime": {
+      "result": "raw-host",
+      "calls": [
+        {
+          "command": "app_info"
+        }
+      ]
+    },
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "app-reduce",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 2,
+    "writtenChunks": 2,
+    "runtime": null,
+    "generatedTauri": [
+      "assets/tauri-transport-D_uHzYs7.js"
+    ],
+    "writtenTauri": [
+      "assets/tauri-transport-D_uHzYs7.js"
+    ]
+  },
+  {
+    "name": "app-decoder",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 2,
+    "writtenChunks": 2,
+    "runtime": null,
+    "generatedTauri": [
+      "assets/tauri-transport-D_uHzYs7.js"
+    ],
+    "writtenTauri": [
+      "assets/tauri-transport-D_uHzYs7.js"
+    ]
+  },
+  {
+    "name": "app-numeric",
+    "lintErrors": 0,
+    "accepted": false,
+    "generatedChunks": 2,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [
+      "assets/index-C4CU_4gS.js",
+      "assets/tauri-transport-D_uHzYs7.js"
+    ],
+    "writtenTauri": []
+  },
+  {
+    "name": "app-json",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 2,
+    "writtenChunks": 2,
+    "runtime": null,
+    "generatedTauri": [
+      "assets/tauri-transport-D_uHzYs7.js"
+    ],
+    "writtenTauri": [
+      "assets/tauri-transport-D_uHzYs7.js"
+    ]
+  },
+  {
+    "name": "app-object",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 2,
+    "writtenChunks": 2,
+    "runtime": null,
+    "generatedTauri": [
+      "assets/tauri-transport-D_uHzYs7.js"
+    ],
+    "writtenTauri": [
+      "assets/tauri-transport-D_uHzYs7.js"
+    ]
+  },
+  {
+    "name": "dynamic-raw",
+    "lintErrors": 1,
+    "accepted": false,
+    "generatedChunks": 0,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "renamed-ui-reexport",
+    "lintErrors": 1,
+    "accepted": false,
+    "generatedChunks": 0,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "chunk-name-comment",
+    "lintErrors": 1,
+    "accepted": false,
+    "generatedChunks": 0,
+    "writtenChunks": 0,
+    "runtime": null,
+    "generatedTauri": [],
+    "writtenTauri": []
+  },
+  {
+    "name": "two-index-importers",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 4,
+    "writtenChunks": 4,
+    "runtime": null,
+    "generatedTauri": [
+      "tauri-transport-YhJk5s8e.js"
+    ],
+    "writtenTauri": [
+      "tauri-transport-YhJk5s8e.js"
+    ]
+  },
+  {
+    "name": "renamed-index-reexport",
+    "lintErrors": 0,
+    "accepted": true,
+    "generatedChunks": 2,
+    "writtenChunks": 2,
+    "runtime": {
+      "result": "raw-host",
+      "calls": [
+        {
+          "command": "app_info",
+          "args": {}
+        }
+      ]
+    },
+    "generatedTauri": [
+      "tauri-transport-CmcXU-Ol.js"
+    ],
+    "writtenTauri": [
+      "tauri-transport-CmcXU-Ol.js"
+    ]
+  }
+]

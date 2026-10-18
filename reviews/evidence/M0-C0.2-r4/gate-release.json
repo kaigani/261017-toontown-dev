@@ -1,0 +1,7 @@
+[
+  {
+    "command": "cmd /d /c \"pnpm --dir desktop tauri build --no-bundle -- --locked\"",
+    "exit": 0,
+    "seconds": 77.32
+  }
+]

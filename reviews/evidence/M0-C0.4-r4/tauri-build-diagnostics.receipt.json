@@ -1,0 +1,13 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm --dir desktop tauri build --no-bundle --config src-tauri/tauri.diagnostics.conf.json -- --locked"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r4",
+  "started": "2026-10-18T16:48:46.341804+00:00",
+  "seconds": 35.188,
+  "exit": 0,
+  "expected": 0
+}

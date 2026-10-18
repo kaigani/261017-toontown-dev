@@ -1,0 +1,81 @@
+python : test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) ...
+At line:2 char:100
++ ... rmat:check; python tests/adversarial/c02-r3-tooling.py > reviews/evid ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_C02_R3_01_...ware_logs) ... :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+  test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=2,
+run_list_absent=False) ... FAIL
+  test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=2,
+run_list_absent=True) ... FAIL
+  test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=3,
+run_list_absent=False) ... FAIL
+  test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=3,
+run_list_absent=True) ... FAIL
+
+======================================================================
+FAIL: test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=2,
+run_list_absent=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r3\tests\adversarial\c02-r3-tooling.py", line 32, in
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+    self.assertNotEqual(result.returncode, 0,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+                        "Synthetic evidence without its run records must fail, not print manual/hardware")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Synthetic evidence without its run records must fail, not print manual/hardware
+
+======================================================================
+FAIL: test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=2,
+run_list_absent=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r3\tests\adversarial\c02-r3-tooling.py", line 32, in
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+    self.assertNotEqual(result.returncode, 0,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+                        "Synthetic evidence without its run records must fail, not print manual/hardware")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Synthetic evidence without its run records must fail, not print manual/hardware
+
+======================================================================
+FAIL: test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=3,
+run_list_absent=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r3\tests\adversarial\c02-r3-tooling.py", line 32, in
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+    self.assertNotEqual(result.returncode, 0,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+                        "Synthetic evidence without its run records must fail, not print manual/hardware")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Synthetic evidence without its run records must fail, not print manual/hardware
+
+======================================================================
+FAIL: test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=3,
+run_list_absent=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r3\tests\adversarial\c02-r3-tooling.py", line 32, in
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+    self.assertNotEqual(result.returncode, 0,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+                        "Synthetic evidence without its run records must fail, not print manual/hardware")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Synthetic evidence without its run records must fail, not print manual/hardware
+
+----------------------------------------------------------------------
+Ran 1 test in 0.216s
+
+FAILED (failures=4)

@@ -1,0 +1,44 @@
+[
+  {
+    "args": [
+      "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\target\\release\\toontown-headless.exe",
+      "--selftest",
+      "--json"
+    ],
+    "exit": 0,
+    "seconds": 0.05652869999175891,
+    "stderr": ""
+  },
+  {
+    "args": [
+      "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\target\\release\\toontown-headless.exe",
+      "--selftest",
+      "--json"
+    ],
+    "exit": 0,
+    "seconds": 0.00421069998992607,
+    "stderr": ""
+  },
+  {
+    "args": [
+      "python",
+      "scripts/check-headless-deps.py",
+      "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\target\\release\\toontown-headless.exe"
+    ],
+    "exit": 0,
+    "seconds": 0.1520314000081271,
+    "stderr": ""
+  },
+  {
+    "args": [
+      "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\target\\release\\toontown.exe",
+      "--ipc-bench",
+      "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\reviews\\evidence\\M0-C0.1-r3\\ipc-bench.json",
+      "--ipc-bench-count",
+      "500"
+    ],
+    "exit": 0,
+    "seconds": 14.462653300026432,
+    "stderr": "[1017/224502.994:ERROR:ui\\gfx\\win\\window_impl.cc:172] Failed to unregister class Chrome_WidgetWin_0. Error = 1412\n"
+  }
+]

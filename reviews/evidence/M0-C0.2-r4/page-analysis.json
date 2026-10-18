@@ -1,0 +1,186 @@
+[
+  {
+    "file": "auto-after-drawing-page-log.json.gz",
+    "source": "auto",
+    "auto": true,
+    "runs": 10,
+    "simulations": 1,
+    "samples": 2,
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 4093,
+    "stderr": "",
+    "outcome": [
+      "- outcome: 10 synthetic runs, 1 ok, 9 explicitly failed"
+    ],
+    "pass": true
+  },
+  {
+    "file": "auto-before-page-log.json.gz",
+    "source": "auto",
+    "auto": true,
+    "runs": 0,
+    "simulations": 0,
+    "samples": 0,
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log was saved by a --spike-auto run but has no run records",
+    "outcome": [],
+    "pass": true
+  },
+  {
+    "file": "auto-cleared-page-log.json.gz",
+    "source": "auto",
+    "auto": true,
+    "runs": 0,
+    "simulations": 0,
+    "samples": 0,
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log was saved by a --spike-auto run but has no run records",
+    "outcome": [],
+    "pass": true
+  },
+  {
+    "file": "auto-complete-page-log.json.gz",
+    "source": "auto",
+    "auto": true,
+    "runs": 10,
+    "simulations": 1,
+    "samples": 0,
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 3511,
+    "stderr": "",
+    "outcome": [
+      "- outcome: 10 synthetic runs, 1 ok, 9 explicitly failed"
+    ],
+    "pass": true
+  },
+  {
+    "file": "auto-pending-page-log.json.gz",
+    "source": "auto",
+    "auto": true,
+    "runs": 1,
+    "simulations": 0,
+    "samples": 0,
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': successful run has no raw report (missing evidence, not an empty result)",
+    "outcome": [],
+    "pass": true
+  },
+  {
+    "file": "auto-refusal-page-log.json.gz",
+    "source": "auto",
+    "auto": true,
+    "runs": 11,
+    "simulations": 0,
+    "samples": 0,
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 2917,
+    "stderr": "",
+    "outcome": [
+      "- outcome: 11 synthetic runs, 0 ok, 11 explicitly failed"
+    ],
+    "pass": true
+  },
+  {
+    "file": "interactive-after-drawing-page-log.json.gz",
+    "source": "interactive",
+    "auto": false,
+    "runs": 1,
+    "simulations": 1,
+    "samples": 2,
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 2919,
+    "stderr": "",
+    "outcome": [
+      "- outcome: 1 synthetic runs, 1 ok, 0 explicitly failed"
+    ],
+    "pass": true
+  },
+  {
+    "file": "interactive-before-page-log.json.gz",
+    "source": "manual",
+    "auto": false,
+    "runs": 0,
+    "simulations": 0,
+    "samples": 0,
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 1008,
+    "stderr": "",
+    "outcome": [
+      "- outcome: no synthetic runs (manual/hardware log; loss unknown)"
+    ],
+    "pass": true
+  },
+  {
+    "file": "interactive-cleared-page-log.json.gz",
+    "source": "manual",
+    "auto": false,
+    "runs": 0,
+    "simulations": 0,
+    "samples": 0,
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 1116,
+    "stderr": "",
+    "outcome": [
+      "- outcome: no synthetic runs (manual/hardware log; loss unknown)"
+    ],
+    "pass": true
+  },
+  {
+    "file": "interactive-complete-page-log.json.gz",
+    "source": "interactive",
+    "auto": false,
+    "runs": 1,
+    "simulations": 1,
+    "samples": 0,
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 2337,
+    "stderr": "",
+    "outcome": [
+      "- outcome: 1 synthetic runs, 1 ok, 0 explicitly failed"
+    ],
+    "pass": true
+  },
+  {
+    "file": "interactive-pending-page-log.json.gz",
+    "source": "interactive",
+    "auto": false,
+    "runs": 1,
+    "simulations": 0,
+    "samples": 0,
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': successful run has no raw report (missing evidence, not an empty result)",
+    "outcome": [],
+    "pass": true
+  },
+  {
+    "file": "manual-page-log.json.gz",
+    "source": "manual",
+    "auto": false,
+    "runs": 0,
+    "simulations": 0,
+    "samples": 12,
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 2892,
+    "stderr": "",
+    "outcome": [
+      "- outcome: no synthetic runs (manual/hardware log; loss unknown)"
+    ],
+    "pass": true
+  }
+]

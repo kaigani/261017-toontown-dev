@@ -1,0 +1,44 @@
+[
+  {
+    "name": "headless-selftest-1",
+    "command": [
+      "C:\\Users\\kaiga\\work\\review\\m0-c02-r4\\target\\release\\toontown-headless.exe",
+      "--selftest",
+      "--json"
+    ],
+    "exit": 0,
+    "seconds": 0.08
+  },
+  {
+    "name": "headless-selftest-2",
+    "command": [
+      "C:\\Users\\kaiga\\work\\review\\m0-c02-r4\\target\\release\\toontown-headless.exe",
+      "--selftest",
+      "--json"
+    ],
+    "exit": 0,
+    "seconds": 0.0
+  },
+  {
+    "name": "headless-guard",
+    "command": [
+      "C:\\Python313\\python.exe",
+      "scripts/check-headless-deps.py",
+      "C:\\Users\\kaiga\\work\\review\\m0-c02-r4\\target\\release\\toontown-headless.exe"
+    ],
+    "exit": 0,
+    "seconds": 0.15
+  },
+  {
+    "name": "ipc-bench",
+    "command": [
+      "C:\\Users\\kaiga\\work\\review\\m0-c02-r4\\target\\release\\toontown.exe",
+      "--ipc-bench",
+      "C:\\Users\\kaiga\\work\\review\\m0-c02-r4\\reviews\\evidence\\M0-C0.2-r4\\ipc-bench.json",
+      "--ipc-bench-count",
+      "300"
+    ],
+    "exit": 0,
+    "seconds": 8.47
+  }
+]

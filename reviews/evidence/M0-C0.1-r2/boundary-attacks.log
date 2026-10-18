@@ -1,0 +1,109 @@
+TAP version 13
+# Subtest: controls: variable imports, template imports, globals, eval and barrel exports are rejected
+ok 1 - controls: variable imports, template imports, globals, eval and barrel exports are rejected
+  ---
+  duration_ms: 1691.6607
+  type: 'test'
+  ...
+# Subtest: C01-R2-01: the boundary also covers Vite-bundleable .mts modules
+not ok 2 - C01-R2-01: the boundary also covers Vite-bundleable .mts modules
+  ---
+  duration_ms: 70.4994
+  type: 'test'
+  location: 'C:\\Users\\kaiga\\work\\review\\m0-c01-r2\\tests\\adversarial\\c01-r2-boundary.test.mjs:36:3'
+  failureType: 'testCodeFailure'
+  error: '[]'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    assertBoundary (file:///C:/Users/kaiga/work/review/m0-c01-r2/tests/adversarial/c01-r2-boundary.test.mjs:17:10)
+    TestContext.<anonymous> (file:///C:/Users/kaiga/work/review/m0-c01-r2/tests/adversarial/c01-r2-boundary.test.mjs:47:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: C01-R2-01: the boundary also covers Vite-bundleable .cts modules
+not ok 3 - C01-R2-01: the boundary also covers Vite-bundleable .cts modules
+  ---
+  duration_ms: 40.864
+  type: 'test'
+  location: 'C:\\Users\\kaiga\\work\\review\\m0-c01-r2\\tests\\adversarial\\c01-r2-boundary.test.mjs:36:3'
+  failureType: 'testCodeFailure'
+  error: '[]'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    assertBoundary (file:///C:/Users/kaiga/work/review/m0-c01-r2/tests/adversarial/c01-r2-boundary.test.mjs:17:10)
+    TestContext.<anonymous> (file:///C:/Users/kaiga/work/review/m0-c01-r2/tests/adversarial/c01-r2-boundary.test.mjs:47:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: C01-R2-01: source comments cannot disable the host boundary
+not ok 4 - C01-R2-01: source comments cannot disable the host boundary
+  ---
+  duration_ms: 25.2286
+  type: 'test'
+  location: 'C:\\Users\\kaiga\\work\\review\\m0-c01-r2\\tests\\adversarial\\c01-r2-boundary.test.mjs:52:1'
+  failureType: 'testCodeFailure'
+  error: `{"filePath":"C:\\\\Users\\\\kaiga\\\\work\\\\review\\\\m0-c01-r2\\\\desktop\\\\src\\\\lib\\\\latency.ts","messages":[],"suppressedMessages":[{"ruleId":"no-restricted-imports","severity":2,"message":"'@tauri-apps/api/core' import is restricted from being used by a pattern. Talk to the Rust host only through src/ipc (createHostApi / useHost).","line":2,"column":1,"messageId":"patternWithCustomMessage","endLine":2,"endColumn":47,"suppressions":[{"kind":"directive","justification":""}]},{"ruleId":"no-restricted-syntax","severity":2,"message":"Talk to the Rust host only through src/ipc (createHostApi / useHost).","line":2,"column":24,"messageId":"restrictedSyntax","endLine":2,"endColumn":46,"suppressions":[{"kind":"directive","justification":""}]}],"errorCount":0,"fatalErrorCount":0,"warningCount":0,"fixableErrorCount":0,"fixableWarningCount":0,"usedDeprecatedRules":[]}`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/kaiga/work/review/m0-c01-r2/tests/adversarial/c01-r2-boundary.test.mjs:54:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: C01-R2-01: ordinary UI code cannot invoke the raw transport instead of HostApi
+not ok 5 - C01-R2-01: ordinary UI code cannot invoke the raw transport instead of HostApi
+  ---
+  duration_ms: 20.0977
+  type: 'test'
+  location: 'C:\\Users\\kaiga\\work\\review\\m0-c01-r2\\tests\\adversarial\\c01-r2-boundary.test.mjs:57:1'
+  failureType: 'testCodeFailure'
+  error: '[]'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    assertBoundary (file:///C:/Users/kaiga/work/review/m0-c01-r2/tests/adversarial/c01-r2-boundary.test.mjs:17:10)
+    TestContext.<anonymous> (file:///C:/Users/kaiga/work/review/m0-c01-r2/tests/adversarial/c01-r2-boundary.test.mjs:62:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: C01-R2-01: lint coverage follows frontend imports outside desktop/src
+not ok 6 - C01-R2-01: lint coverage follows frontend imports outside desktop/src
+  ---
+  duration_ms: 2811.7809
+  type: 'test'
+  location: 'C:\\Users\\kaiga\\work\\review\\m0-c01-r2\\tests\\adversarial\\c01-r2-boundary.test.mjs:65:1'
+  failureType: 'testCodeFailure'
+  error: 'eslint . accepts the entire tree with the outside import'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/kaiga/work/review/m0-c01-r2/tests/adversarial/c01-r2-boundary.test.mjs:82:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 1
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4919.4955

@@ -1,0 +1,44 @@
+## Tablet spike log (version 3)
+
+- userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26200.9711], webview 155.0.4283.60, CPUs 32
+- GPU (navigator.gpu): {'architecture': 'lovelace', 'available': True, 'description': '', 'device': '', 'vendor': 'nvidia'}
+devicePixelRatio 1, getCoalescedEvents available: True
+native: {'backend': 'octotablet-ink', 'deviceClock': 'octotablet FrameTimestamp, ms since an arbitrary epoch', 'tablets': [], 'timestampGranularityMs': 1, 'window': {'innerHeight': 780, 'innerWidth': 1280, 'innerX': 242, 'innerY': 285, 'scaleFactor': 1}}, packets 0, invalid batches 0
+- native clock used: host; channel loss: unknown, gap heuristic only; host dropped 0, send failures 0, truncated 0
+- web samples 0, truncated 0; web loss: unknown, gap heuristic only
+- coalescing: API available True, batching observed False, per dispatch -
+- handler - event ms: oldest coalesced -; newest -; all samples -
+- outcome: 15 synthetic runs, 0 ok, 15 explicitly failed
+web path: 0 pen-down strokes
+native path: 0 strokes
+
+### Web path strokes (pointer events)
+
+No contact episodes.
+
+### Native path strokes (host listener, host clock)
+
+No contact episodes.
+
+### Synthetic runs (InjectSyntheticPointerInput; simulation, not tablet hardware)
+
+Geometry: runs DIFFER in screen rectangle - (physical px, [left, top, width, height]).
+
+| run | outcome | pattern (varying axes) | Hz: host / first-to-last | web events: received / missing | WM_POINTER on target (history) | RTS: poses, frames | raw-input sink HID reports (not decoded) | inject call ms p50 |
+|---|---|---|---|---|---|---|---|---|
+| webview sine 240 Hz | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1780624, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| webview sine 240 Hz (retry) | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1780624, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| webview sine 500 Hz | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1780624, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| webview sine 500 Hz (retry) | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1780624, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| webview zigzag 240 Hz | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1780624, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| webview zigzag 240 Hz (retry) | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1780624, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| webview stationary 240 Hz | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1780624, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| webview stationary 240 Hz (retry) | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1780624, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| webview pressure-only 240 Hz | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1780624, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| webview pressure-only 240 Hz (retry) | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1780624, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| native window sine 240 Hz, no RTS | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1ec073e, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| native window stationary 240 Hz, no RTS | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1ed073e, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| native window pressure-only 240 Hz, no RTS | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1ee073e, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| native window sine 240 Hz | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x1ef073e, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |
+| native window stationary 240 Hz | **FAILED**: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x30076e, rect (250, 343, 1012, 275), (251,344) -> 0x149070e root 0x149070e; (1260,344) -> 0x149070e root 0x149070e; (251,616) -> 0x149070e root 0x149070e; (1260,616) -> 0x149070e root 0x149070e) | - | - | - | - | - | - | - |

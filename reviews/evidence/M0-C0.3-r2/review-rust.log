@@ -1,0 +1,26 @@
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\crates\render)
+    Finished `release` profile [optimized + debuginfo] target(s) in 1.01s
+     Running tests\c03_fixed_configurations.rs (target\release\deps\c03_fixed_configurations-de6c2108f8058a8e.exe)
+
+running 2 tests
+test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
+test fixed_scalar_configuration_hashes_identically_across_oses ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests\c03_r1_stress.rs (target\release\deps\c03_r1_stress-aaf6f48848453930.exe)
+
+running 3 tests
+test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
+test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
+test extended_corpus_repeats_and_cross_os_hashes ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests\c03_r2_quality.rs (target\release\deps\c03_r2_quality-e2cb607adc19dbb0.exe)
+
+running 1 test
+test quality_pipeline_opacity_full_corpus ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+

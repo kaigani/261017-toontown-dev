@@ -1,0 +1,57 @@
+[package]
+name = "tt-desktop"
+description = "Toontown desktop host (Tauri 2): embeds the engine, native menu, typed IPC to the web front end"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lib]
+name = "tt_desktop"
+
+[[bin]]
+name = "toontown"
+path = "src/main.rs"
+
+# Reviewer's C0.3 round-2 encoder regressions (they include the spike's renderlist.rs by path), run by `cargo test`.
+[[test]]
+name = "c03_r2_encoder"
+path = "../../tests/adversarial/c03-r2-encoder.rs"
+
+[features]
+# M0 diagnostics (--ipc-bench, --spike tablet|canvas and their commands). Off in the default build; enabled by
+# tauri.diagnostics.conf.json for CI's measurement steps and the manual spike tests (C0.4).
+m0-diagnostics = []
+
+[build-dependencies]
+tauri-build.workspace = true
+
+[dependencies]
+tt-engine.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tauri.workspace = true
+thiserror.workspace = true
+
+# C0.2 tablet spike (desktop host only; never in engine crates, so the headless guard is unaffected).
+[target.'cfg(windows)'.dependencies]
+octotablet = { version = "0.1.0", default-features = false, features = ["windows-ink"] }
+raw-window-handle = "0.6"
+windows = { version = "0.62", features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Gdi",
+    "Win32_System_Com",
+    "Win32_System_LibraryLoader",
+    "Win32_UI_Controls",
+    "Win32_UI_Input",
+    "Win32_UI_Input_Pointer",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+block2 = "0.6"
+objc2 = "0.6"
+objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "block2", "NSEvent"] }
+
+[lints]
+workspace = true

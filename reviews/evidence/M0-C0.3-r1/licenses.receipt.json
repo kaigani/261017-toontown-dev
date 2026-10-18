@@ -1,0 +1,11 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm licenses:check"
+  ],
+  "startedUtc": "2026-10-18T11:28:57.762284+00:00",
+  "elapsedSeconds": 0.9202805000240915,
+  "exitCode": 0
+}

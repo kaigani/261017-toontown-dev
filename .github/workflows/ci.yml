@@ -1,0 +1,288 @@
+name: ci
+
+on:
+  push:
+    branches: [main, "m*"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: "0"
+  RUST_BACKTRACE: "1"
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # Lint, type-check, unit tests, licence gates and the headless proof, on both product platforms.
+  check:
+    name: check (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal --component rustfmt,clippy
+          rustup override set "$tc"
+          rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: check
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Front end — lint, type-check, test, format, licences
+        run: |
+          pnpm lint
+          pnpm typecheck
+          pnpm test
+          pnpm format:check
+          pnpm licenses:check
+
+      - name: Front end — build, diagnostics variant then default (frontendDist is embedded by the Tauri host)
+        run: |
+          # Both variants must pass the IPC boundary dist check; the default one stays in dist for the Rust steps.
+          pnpm --dir desktop build:diagnostics
+          pnpm --dir desktop build
+
+      - run: cargo fmt --all --check
+      - run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - run: cargo test --workspace --locked
+
+      - name: Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests
+        run: |
+          cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
+          cargo test -p tt-desktop --locked --features m0-diagnostics
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deny@0.20.2
+      - run: cargo deny --locked check
+
+      - name: Headless binary — build, self-test (twice, compared), linked-library proof
+        run: |
+          cargo build --release --locked -p tt-headless
+          exe=target/release/toontown-headless
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then exe="$exe.exe"; PY=python; fi
+          "$exe" --version
+          env -u DISPLAY -u WAYLAND_DISPLAY "$exe" --selftest
+          "$exe" --selftest --json > selftest-1.json
+          "$exe" --selftest --json > selftest-2.json
+          # Everything except timing must be identical between runs (determinism, ADR-0004).
+          $PY -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
+          $PY scripts/check-headless-deps.py "$exe"
+          mkdir -p out && cp "$exe" selftest-1.json out/
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: headless-${{ runner.os }}
+          path: out/
+          if-no-files-found: error
+
+  # Unsigned desktop bundles + automated IPC round-trip benchmark in the real webview.
+  bundle:
+    name: bundle (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            bundles: nsis
+          - os: macos-latest
+            bundles: app
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal
+          rustup override set "$tc"
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: bundle
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # C0.4: the default build carries no M0 diagnostics. It is built and checked first and kept in default-build/;
+      # the diagnostics build (tauri.diagnostics.conf.json) then runs the measurements and is the manual-test artifact.
+      - name: Tauri build, default (unsigned; no M0 diagnostics)
+        run: pnpm --dir desktop tauri build --bundles ${{ matrix.bundles }} -- --locked
+
+      - name: Default build registers no M0 diagnostic command and refuses the flags
+        run: |
+          mkdir -p out/default-build
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=target/release/toontown.exe; PY=python
+            cp target/release/bundle/nsis/*.exe target/release/toontown.exe out/default-build/
+          else
+            app=target/release/bundle/macos/Toontown.app/Contents/MacOS/toontown; PY=python3
+            tar -czf out/default-build/Toontown-macos-arm64.app.tar.gz -C target/release/bundle/macos Toontown.app
+          fi
+          $PY scripts/check-diagnostics-gating.py "$app" --expect default
+          for flag in "--ipc-bench $PWD/refused.json" "--spike canvas"; do
+            if "$app" $flag 2> refusal.txt; then echo "default build accepted $flag"; exit 1; fi
+            cat refusal.txt
+            grep -q "is an M0 diagnostic and this build has none" refusal.txt
+          done
+          test ! -e refused.json
+
+      - name: Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)
+        run: |
+          pnpm --dir desktop tauri build --bundles ${{ matrix.bundles }} --config src-tauri/tauri.diagnostics.conf.json -- --locked
+          if [ "$RUNNER_OS" = "Windows" ]; then app=target/release/toontown.exe; PY=python; else
+            app=target/release/bundle/macos/Toontown.app/Contents/MacOS/toontown; PY=python3; fi
+          $PY scripts/check-diagnostics-gating.py "$app" --expect diagnostics
+
+      - name: IPC benchmark in the real webview (toontown --ipc-bench)
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=target/release/toontown.exe; PY=python
+          else
+            app=target/release/bundle/macos/Toontown.app/Contents/MacOS/toontown; PY=python3
+          fi
+          "$app" --ipc-bench "$PWD/ipc-bench.json" --ipc-bench-count 300
+          cat ipc-bench.json
+          $PY -c "import json,sys; r=json.load(open('ipc-bench.json')); sys.exit(0 if r.get('frontend',{}).get('ok') else 1)"
+
+      - name: C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)
+        if: runner.os == 'Windows'
+        continue-on-error: true
+        timeout-minutes: 4
+        run: |
+          target/release/toontown.exe --spike tablet --spike-log "$PWD/tablet-spike-windows.json" --spike-auto
+          python -c "import json; r=json.load(open('tablet-spike-windows.json')); [print(m['message']) for m in r['statusLog']]"
+          # Everything below is recomputed from the raw samples (the log's own summaries are not used).
+          PYTHONIOENCODING=utf-8 python scripts/analyse-tablet-log.py tablet-spike-windows.json --json tablet-spike-windows.analysis.json
+
+      - name: C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)
+        continue-on-error: true
+        timeout-minutes: 6
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then app=target/release/toontown.exe; PY=python; else
+            app=target/release/bundle/macos/Toontown.app/Contents/MacOS/toontown; PY=python3; fi
+          "$app" --spike canvas --spike-log "$PWD/canvas-spike-$RUNNER_OS.json" --spike-auto
+          # Every number below is recomputed from the raw samples in the log.
+          PYTHONIOENCODING=utf-8 $PY scripts/analyse-canvas-log.py "canvas-spike-$RUNNER_OS.json"             --json "canvas-spike-$RUNNER_OS.analysis.json"
+
+      - name: Collect artifacts
+        run: |
+          # out/default-build/ already holds the default build; the rest is the M0 diagnostics build.
+          mkdir -p out
+          cp ipc-bench.json out/
+          # The manual tablet test (docs/manual-tests/M0-C0.2-tablet-macos.md) runs the analyzer from the artifact.
+          cp scripts/analyse-tablet-log.py out/
+          if [ -f tablet-spike-windows.json ]; then cp tablet-spike-windows.json out/; fi
+          if [ -f tablet-spike-windows.analysis.json ]; then cp tablet-spike-windows.analysis.json out/; fi
+          cp canvas-spike-*.json out/ 2>/dev/null || true
+          cp scripts/analyse-canvas-log.py out/
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            cp target/release/bundle/nsis/*.exe out/
+            cp target/release/toontown.exe out/
+          else
+            # tar keeps the executable bit and symlinks that a plain artifact zip would lose.
+            tar -czf out/Toontown-macos-arm64.app.tar.gz -C target/release/bundle/macos Toontown.app
+          fi
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: desktop-${{ runner.os }}
+          path: out/
+          if-no-files-found: error
+
+  # The strongest "no window system" evidence: Linux runners have no X/Wayland server at all.
+  headless-no-display:
+    name: headless without a display (ubuntu)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal
+          rustup override set "$tc"
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: headless
+      - run: cargo build --release --locked -p tt-headless
+      - name: Self-test with no display server
+        run: |
+          test -z "${DISPLAY:-}" && test -z "${WAYLAND_DISPLAY:-}"
+          ! ls /tmp/.X11-unix/X* 2>/dev/null
+          env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-1.json
+          env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-2.json
+          python3 -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
+          python3 scripts/check-headless-deps.py target/release/toontown-headless
+
+  # C0.3 rasteriser determinism (spike): every fixture scene, every rasteriser configuration, must reproduce the
+  # committed SHA-256 hashes on all three OSes. The job FAILS on any difference. Run twice to compare processes.
+  raster:
+    name: raster determinism (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal
+          rustup override set "$tc"
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: raster
+      - run: cargo build --release --locked -p tt-render --example c03_raster
+      - name: Render fixtures and check committed hashes (two processes)
+        run: |
+          set +e
+          status=0
+          for run in 1 2; do
+            cargo run --release --locked -q -p tt-render --example c03_raster -- \
+              --out "c03-raster/run$run" --report "c03-raster/report-run$run.json" \
+              --check crates/render/examples/c03_raster/hashes.json || status=1
+          done
+          # Fixed scalar configurations against the committed hashes as a test (C03-R1-04; also run by cargo test in
+          # the Windows and macOS check jobs).
+          cargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1
+          # Host-raster fallback timing of the canvas-spike scenes (timing only; not hash-checked).
+          cargo run --release --locked -q -p tt-render --example c03_raster -- --repeat 1             --out c03-raster/bench --report c03-raster/canvas-bench.json --canvas-bench > /dev/null || status=1
+          exit $status
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: c03-raster-${{ runner.os }}
+          path: c03-raster/

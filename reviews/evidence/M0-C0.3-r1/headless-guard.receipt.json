@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python",
+    "scripts/check-headless-deps.py",
+    "target/release/toontown-headless.exe"
+  ],
+  "startedUtc": "2026-10-18T11:29:55.998283+00:00",
+  "elapsedSeconds": 0.1550550000392832,
+  "exitCode": 0
+}

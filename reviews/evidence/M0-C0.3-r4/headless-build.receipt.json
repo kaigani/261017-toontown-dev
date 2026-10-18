@@ -1,0 +1,5 @@
+{
+  "command": "cargo build --release --locked -p tt-headless",
+  "exitCode": 0,
+  "seconds": 4.92
+}

@@ -1,0 +1,23 @@
+reject MIT+ +
+reject MIT WITH
+reject WITH Classpath-exception-2.0
+reject ()
+reject (MIT
+reject MIT)
+reject MIT OR (AND)
+reject LicenseRef-
+reject DocumentRef-:LicenseRef-x
+reject MΙT
+reject MIT OR ＭＩＴ
+reject MIT++
+reject MIT OR +
+valid operand/policy result mit true
+valid operand/policy result GPL-3.0 false
+valid operand/policy result MIT OR GPL-3.0 true
+valid operand/policy result MIT OR LicenseRef-private true
+valid operand/policy result MIT OR DocumentRef-local:LicenseRef-x true
+10001 flat tokens { result: true, ms: 3.5127999999999986 }
+10001 flat tokens, bad last operand { result: false, ms: 2.6351000000000013 }
+10001 nested tokens { result: false, ms: 1.4600000000000009 }
+pinned list spdx-license-ids 3.0.24 C:\Users\kaiga\work\review\m0-c01-r3\node_modules\.pnpm\spdx-license-ids@3.0.24\node_modules\spdx-license-ids\index.json
+pinned list spdx-exceptions 2.5.0 C:\Users\kaiga\work\review\m0-c01-r3\node_modules\.pnpm\spdx-exceptions@2.5.0\node_modules\spdx-exceptions\index.json

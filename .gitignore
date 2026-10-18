@@ -15,3 +15,8 @@ Thumbs.db
 # Local
 *.log
 .env
+# Python
+__pycache__/
+*.pyc
+# Boundary-test probes (created and removed by desktop/src/ipc/boundary.*.test.ts)
+desktop/src/__probes__/

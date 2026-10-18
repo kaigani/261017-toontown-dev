@@ -1,0 +1,452 @@
+   Compiling windows-link v0.2.1
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\model)
+   Compiling cfg-if v1.0.5
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling smallvec v1.16.3
+   Compiling siphasher v1.0.4
+   Compiling writeable v0.6.4
+   Compiling litemap v0.8.3
+   Compiling utf8_iter v1.0.4
+   Compiling time-core v0.1.9
+   Compiling num-conv v0.2.2
+   Compiling stable_deref_trait v1.2.1
+   Compiling winnow v1.0.4
+   Compiling scopeguard v1.2.0
+   Compiling deranged v0.5.9
+   Compiling powerfmt v0.2.1
+   Compiling log v0.4.34
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling icu_normalizer_data v2.3.0
+   Compiling icu_properties_data v2.3.0
+   Compiling fnv v1.0.7
+   Compiling web-time v1.1.0
+   Compiling typenum v1.20.1
+   Compiling typeid v1.0.3
+   Compiling regex-syntax v0.8.11
+   Compiling zerofrom v0.1.8
+   Compiling thiserror v2.0.21
+   Compiling hashbrown v0.17.1
+   Compiling alloc-no-stdlib v3.0.0
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\vector)
+   Compiling phf_shared v0.13.1
+   Compiling parking_lot_core v0.9.12
+   Compiling lock_api v0.4.14
+   Compiling windows-sys v0.61.2
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\audio)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\registry)
+   Compiling equivalent v1.0.3
+   Compiling bytes v1.12.1
+   Compiling heck v0.5.0
+   Compiling base64 v0.23.1
+   Compiling dunce v1.0.5
+   Compiling getrandom v0.4.3
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling phf_generator v0.13.1
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\fx)
+   Compiling aho-corasick v1.1.5
+   Compiling yoke v0.8.3
+   Compiling alloc-stdlib v0.3.0
+   Compiling quick-xml v0.42.0
+   Compiling serde_json v1.0.154
+   Compiling serde_spanned v1.1.2
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling const-oid v0.10.2
+   Compiling form_urlencoded v1.2.2
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\executor)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\lipsync)
+   Compiling anyhow v1.0.104
+   Compiling libc v0.2.191
+   Compiling phf_codegen v0.13.1
+   Compiling parking_lot v0.12.5
+   Compiling string_cache_codegen v0.6.1
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\render)
+   Compiling brotli-decompressor v6.0.1
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling phf_macros v0.13.1
+   Compiling indexmap v2.14.2
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\io)
+   Compiling uuid v1.28.0
+   Compiling windows-result v0.4.1
+   Compiling selectors v0.38.0
+   Compiling string_cache v0.9.0
+   Compiling windows-strings v0.5.1
+   Compiling hybrid-array v0.4.15
+   Compiling http v1.5.0
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling cpufeatures v0.3.1
+   Compiling ctor v1.0.13
+   Compiling glob v0.3.4
+   Compiling time v0.3.55
+   Compiling windows-core v0.62.2
+   Compiling erased-serde v0.4.10
+   Compiling option-ext v0.2.0
+   Compiling vswhom-sys v0.1.3
+   Compiling serde_with v3.24.0
+   Compiling cfb v0.14.0
+   Compiling web_atoms v0.2.6
+   Compiling windows-threading v0.2.1
+   Compiling vswhom v0.1.0
+   Compiling time-macros v0.2.32
+   Compiling percent-encoding v2.3.2
+   Compiling crc32fast v1.5.2
+   Compiling webview2-com-sys v0.39.1
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling icu_collections v2.3.0
+   Compiling jsonptr v0.7.1
+   Compiling icu_locale_core v2.3.0
+   Compiling cargo_metadata v0.19.2
+   Compiling serde-untagged v0.1.9
+   Compiling windows-future v0.3.2
+   Compiling brotli v9.0.0
+   Compiling windows-collections v0.3.2
+   Compiling windows-numerics v0.3.1
+   Compiling raw-window-handle v0.6.2
+   Compiling phf v0.13.1
+   Compiling flate2 v1.1.10
+   Compiling regex-automata v0.4.18
+   Compiling json-patch v4.2.0
+   Compiling infer v0.22.0
+   Compiling cargo_toml v1.0.1
+   Compiling crossbeam-utils v0.8.23
+   Compiling serde v1.0.229
+   Compiling cssparser v0.37.0
+   Compiling windows v0.62.2
+   Compiling digest v0.11.3
+   Compiling bitflags v2.13.2
+   Compiling sha2 v0.11.1
+   Compiling icu_provider v2.3.1
+   Compiling windows-version v0.1.7
+   Compiling pin-project-lite v0.2.17
+   Compiling png v0.17.16
+   Compiling dpi v0.1.2
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling markup5ever v0.39.0
+   Compiling crossbeam-channel v0.5.17
+   Compiling plist v1.10.1
+   Compiling once_cell v1.21.4
+   Compiling tracing-core v0.1.36
+   Compiling html5ever v0.39.0
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\engine)
+   Compiling semver v1.0.28
+   Compiling sha2 v0.10.9
+   Compiling png v0.18.1
+   Compiling clap_lex v1.1.1
+   Compiling tracing v0.1.44
+   Compiling ico v0.5.0
+   Compiling anstyle v1.0.14
+   Compiling unicode-segmentation v1.13.3
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\crates\mcp)
+   Compiling keyboard-types v0.8.3
+   Compiling clap_derive v4.6.7
+   Compiling serialize-to-javascript v0.1.2
+   Compiling idna_adapter v1.2.2
+   Compiling getrandom v0.3.4
+   Compiling tokio v1.53.3
+   Compiling regex v1.13.1
+   Compiling dom_query v0.28.0
+   Compiling idna v1.1.0
+   Compiling clap_builder v4.6.7
+   Compiling mime v0.3.17
+   Compiling url v2.5.8
+   Compiling winapi-util v0.1.11
+   Compiling dirs-sys v0.5.0
+   Compiling softbuffer v0.4.8
+   Compiling muda v0.20.0
+   Compiling window-vibrancy v0.8.1
+   Compiling dirs v7.0.0
+   Compiling same-file v1.0.6
+   Compiling walkdir v2.5.0
+   Compiling cookie v0.18.2
+   Compiling urlpattern v0.6.0
+   Compiling schemars v0.8.22
+   Compiling winreg v0.56.0
+   Compiling embed-resource v3.0.12
+   Compiling tauri-utils v2.10.2
+   Compiling tauri-winres v0.3.6
+   Compiling clap v4.6.7
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\bins\headless)
+   Compiling tauri-build v2.7.3
+   Compiling tauri-codegen v2.7.3
+   Compiling tauri v2.12.4
+   Compiling tauri-macros v2.7.3
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r4\desktop\src-tauri)
+   Compiling tao v0.37.1
+   Compiling webview2-com v0.39.1
+   Compiling tauri-runtime v2.12.2
+   Compiling wry v0.57.0
+   Compiling tauri-runtime-wry v2.12.2
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 41.86s
+     Running unittests src\lib.rs (target\debug\deps\tt_anim-7b4783037aaaad85.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_audio-1e04a85dd172a15e.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_colour-ab96adef9b22ea43.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_desktop-92558166a09e96fa.exe)
+
+running 17 tests
+test bindings::tests::command_id_syntax ... ok
+test diagnostics::tests::bench_with_count ... ok
+test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+test bindings::tests::embedded_manifest_is_valid ... ok
+test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+test diagnostics::tests::errors ... ok
+test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+test diagnostics::tests::no_arguments_is_interactive ... ok
+test bindings::tests::per_platform_accelerators ... ok
+test tests::tauri_config_matches_workspace_and_plan ... ok
+test menu::tests::pending_command_carries_milestone ... ok
+test menu::tests::frontend_command_carries_params ... ok
+test menu::tests::event_serializes_camel_case ... ok
+test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+test menu::tests::host_commands ... ok
+test bindings::tests::quit_is_bound_on_every_platform ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\main.rs (target\debug\deps\toontown-4d32fb17f1af7655.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_engine-cee1a80754fb0b35.exe)
+
+running 16 tests
+test determinism::tests::hex_encodes_lowercase ... ok
+test components::tests::every_component_cites_spec_sections ... ok
+test components::tests::lists_every_plan_crate_once ... ok
+test error::tests::limit_exceeded_wire_form ... ok
+test ping::tests::request_rejects_unknown_fields ... ok
+test ping::tests::echoes_seq_and_payload ... ok
+test tests::info_serializes_camel_case ... ok
+test tests::engine_is_send_and_sync ... ok
+test tests::info_reports_versions_and_mode ... ok
+test selftest::tests::dotted_version_parser ... ok
+test determinism::tests::workload_has_expected_shape ... ok
+test ping::tests::payload_limit_is_inclusive ... ok
+test selftest::tests::push_keeps_ok_consistent ... ok
+test selftest::tests::selftest_passes ... ok
+test determinism::tests::probe_matches_golden ... ok
+test determinism::tests::probe_is_stable_within_a_run ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_executor-6b0587da201515ca.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_fx-d68f6f5c004c8383.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\main.rs (target\debug\deps\toontown_headless-16025d1d543af814.exe)
+
+running 7 tests
+test cli::tests::version_line ... ok
+test cli::tests::actions_are_exclusive ... ok
+test cli::tests::future_modes_are_typed_errors ... ok
+test cli::tests::an_action_is_required ... ok
+test cli::tests::option_combinations ... ok
+test cli::tests::selftest_human_passes ... ok
+test cli::tests::selftest_json_passes ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running ..\..\tests\adversarial\c01.rs (target\debug\deps\adversarial_c01-70c655663d6f222c.exe)
+
+running 7 tests
+test wire_engine_info_field_names_match_typescript ... ok
+test c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get ... ok
+test c01_r1_05_rust_control_rejects_multibyte_over_limit ... ok
+test c01_r1_01_license_allowlist_stays_within_user_policy ... ok
+test c01_r1_01_license_grouping_preserves_mandatory_copyleft ... ok
+test c01_r1_06_dependency_proof_rejects_graphics_dependencies ... ok
+test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.09s
+
+     Running tests\cli.rs (target\debug\deps\cli-1773b48765510e7d.exe)
+
+running 5 tests
+test mcp_stdio_not_yet_available_exits_three ... ok
+test selftest_exits_zero_with_json_report ... ok
+test usage_error_exits_two ... ok
+test version_exits_zero ... ok
+test selftest_runs_with_display_environment_removed ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running tests\guard_fixtures.rs (target\debug\deps\guard_fixtures-8b51c09128df6a1a.exe)
+
+running 1 test
+test rejects_a_real_direct_composition_import ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_io-e7129a4dbd3b8d12.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_lipsync-3cade18845beaafa.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_mcp-df34e5fed74d627b.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_model-2c167e61e4250453.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_persist-ed85b1246dfbac9f.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_registry-df95bd379af7c457.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_render-d08054878c8081d1.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_vector-3dbfe76117f8aabf.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_anim
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_audio
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_colour
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_desktop
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_engine
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_executor
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_fx
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_io
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_lipsync
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_mcp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_model
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_persist
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_registry
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_render
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_vector
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

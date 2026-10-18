@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python",
+    "scripts/analyse-canvas-log.py",
+    "reviews/evidence/M0-C0.3/canvas-local-windows-rtx4090-webgl2.json.gz"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r1",
+  "started": "2026-10-18T14:25:56.674181+00:00",
+  "seconds": 0.052,
+  "exit": 0
+}

@@ -1,0 +1,34 @@
+
+running 11 tests
+test adjacent_out_of_bounds_and_negative_width_are_refused ... ok
+test nonfinite_points_and_bounds_return_typed_errors ... ok
+test renderlist::tests::encoder_refuses_invalid_geometry ... ok
+test subnormal_and_empty_path_are_valid ... ok
+test c03_r2_03_unknown_style_must_be_refused ... FAILED
+test renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+test c03_r2_03_unpaired_coordinate_must_be_refused ... FAILED
+test renderlist::tests::encoding_has_the_documented_layout ... ok
+test renderlist::tests::scenes_have_the_specified_sizes ... ok
+test renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+test renderlist::tests::generation_is_reproducible ... ok
+
+failures:
+
+---- c03_r2_03_unknown_style_must_be_refused stdout ----
+
+thread 'c03_r2_03_unknown_style_must_be_refused' (18048) panicked at tests/adversarial/c03-r2-encoder.rs:73:5:
+decoder rejects style 3 but encoder reports success
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- c03_r2_03_unpaired_coordinate_must_be_refused stdout ----
+
+thread 'c03_r2_03_unpaired_coordinate_must_be_refused' (22384) panicked at tests/adversarial/c03-r2-encoder.rs:63:5:
+odd point vector emits an uncertifiable packet, with an unchecked NaN tail
+
+
+failures:
+    c03_r2_03_unknown_style_must_be_refused
+    c03_r2_03_unpaired_coordinate_must_be_refused
+
+test result: FAILED. 9 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+

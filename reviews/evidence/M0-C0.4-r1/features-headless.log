@@ -1,0 +1,191 @@
+tt-headless v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\bins\headless)
+├── clap feature "derive"
+│   └── clap v4.6.7
+│       ├── clap_builder v4.6.7
+│       │   ├── anstyle feature "default"
+│       │   │   ├── anstyle v1.0.14
+│       │   │   └── anstyle feature "std"
+│       │   │       └── anstyle v1.0.14
+│       │   └── clap_lex feature "default"
+│       │       └── clap_lex v1.1.1
+│       └── clap_derive feature "default"
+│           └── clap_derive v4.6.7 (proc-macro)
+│               ├── heck feature "default"
+│               │   └── heck v0.5.0
+│               ├── proc-macro2 feature "default"
+│               │   ├── proc-macro2 v1.0.107
+│               │   │   └── unicode-ident feature "default"
+│               │   │       └── unicode-ident v1.0.27
+│               │   └── proc-macro2 feature "proc-macro"
+│               │       └── proc-macro2 v1.0.107 (*)
+│               ├── quote feature "default"
+│               │   ├── quote v1.0.47
+│               │   │   └── proc-macro2 v1.0.107 (*)
+│               │   └── quote feature "proc-macro"
+│               │       ├── quote v1.0.47 (*)
+│               │       └── proc-macro2 feature "proc-macro" (*)
+│               ├── syn feature "default"
+│               │   ├── syn v3.0.9
+│               │   │   ├── proc-macro2 v1.0.107 (*)
+│               │   │   ├── quote v1.0.47 (*)
+│               │   │   └── unicode-ident feature "default" (*)
+│               │   ├── syn feature "clone-impls"
+│               │   │   └── syn v3.0.9 (*)
+│               │   ├── syn feature "derive"
+│               │   │   └── syn v3.0.9 (*)
+│               │   ├── syn feature "parsing"
+│               │   │   └── syn v3.0.9 (*)
+│               │   ├── syn feature "printing"
+│               │   │   └── syn v3.0.9 (*)
+│               │   └── syn feature "proc-macro"
+│               │       ├── syn v3.0.9 (*)
+│               │       ├── proc-macro2 feature "proc-macro" (*)
+│               │       └── quote feature "proc-macro" (*)
+│               └── syn feature "full"
+│                   └── syn v3.0.9 (*)
+├── clap feature "error-context"
+│   ├── clap v4.6.7 (*)
+│   └── clap_builder feature "error-context"
+│       └── clap_builder v4.6.7 (*)
+├── clap feature "help"
+│   ├── clap v4.6.7 (*)
+│   └── clap_builder feature "help"
+│       └── clap_builder v4.6.7 (*)
+├── clap feature "std"
+│   ├── clap v4.6.7 (*)
+│   └── clap_builder feature "std"
+│       ├── clap_builder v4.6.7 (*)
+│       └── anstyle feature "std" (*)
+├── clap feature "usage"
+│   ├── clap v4.6.7 (*)
+│   └── clap_builder feature "usage"
+│       └── clap_builder v4.6.7 (*)
+├── serde feature "default"
+│   ├── serde v1.0.229
+│   │   ├── serde_core feature "result"
+│   │   │   └── serde_core v1.0.229
+│   │   └── serde_derive feature "default"
+│   │       └── serde_derive v1.0.229 (proc-macro)
+│   │           ├── proc-macro2 feature "proc-macro" (*)
+│   │           ├── quote feature "proc-macro" (*)
+│   │           ├── syn feature "clone-impls" (*)
+│   │           ├── syn feature "derive" (*)
+│   │           ├── syn feature "parsing" (*)
+│   │           ├── syn feature "printing" (*)
+│   │           └── syn feature "proc-macro" (*)
+│   └── serde feature "std"
+│       ├── serde v1.0.229 (*)
+│       └── serde_core feature "std"
+│           └── serde_core v1.0.229
+├── serde feature "derive"
+│   ├── serde v1.0.229 (*)
+│   └── serde feature "serde_derive"
+│       └── serde v1.0.229 (*)
+├── serde_json feature "default"
+│   ├── serde_json v1.0.154
+│   │   ├── memchr v2.8.3
+│   │   ├── serde_core v1.0.229
+│   │   ├── itoa feature "default"
+│   │   │   └── itoa v1.0.18
+│   │   └── zmij feature "default"
+│   │       └── zmij v1.0.23
+│   └── serde_json feature "std"
+│       ├── serde_json v1.0.154 (*)
+│       ├── serde_core feature "std" (*)
+│       └── memchr feature "std"
+│           ├── memchr v2.8.3
+│           └── memchr feature "alloc"
+│               └── memchr v2.8.3
+├── thiserror feature "default"
+│   ├── thiserror v2.0.21
+│   │   └── thiserror-impl feature "default"
+│   │       └── thiserror-impl v2.0.21 (proc-macro)
+│   │           ├── proc-macro2 feature "default" (*)
+│   │           ├── quote feature "default" (*)
+│   │           └── syn feature "default" (*)
+│   └── thiserror feature "std"
+│       └── thiserror v2.0.21 (*)
+├── tt-engine feature "default"
+│   └── tt-engine v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\engine)
+│       ├── serde feature "default" (*)
+│       ├── serde feature "derive" (*)
+│       ├── serde_json feature "default" (*)
+│       ├── thiserror feature "default" (*)
+│       ├── sha2 feature "default"
+│       │   ├── sha2 v0.11.1
+│       │   │   ├── cfg-if feature "default"
+│       │   │   │   └── cfg-if v1.0.5
+│       │   │   ├── cpufeatures feature "default"
+│       │   │   │   └── cpufeatures v0.3.1
+│       │   │   └── digest feature "default"
+│       │   │       ├── digest v0.11.3
+│       │   │       │   ├── block-buffer feature "default"
+│       │   │       │   │   └── block-buffer v0.12.1
+│       │   │       │   │       └── hybrid-array feature "default"
+│       │   │       │   │           └── hybrid-array v0.4.15
+│       │   │       │   │               ├── typenum feature "const-generics"
+│       │   │       │   │               │   └── typenum v1.20.1
+│       │   │       │   │               └── typenum feature "default"
+│       │   │       │   │                   └── typenum v1.20.1
+│       │   │       │   ├── const-oid feature "default"
+│       │   │       │   │   └── const-oid v0.10.2
+│       │   │       │   └── crypto-common feature "default"
+│       │   │       │       └── crypto-common v0.2.2
+│       │   │       │           └── hybrid-array feature "default" (*)
+│       │   │       └── digest feature "block-api"
+│       │   │           └── digest v0.11.3 (*)
+│       │   ├── sha2 feature "alloc"
+│       │   │   ├── sha2 v0.11.1 (*)
+│       │   │   └── digest feature "alloc"
+│       │   │       └── digest v0.11.3 (*)
+│       │   └── sha2 feature "oid"
+│       │       ├── sha2 v0.11.1 (*)
+│       │       └── digest feature "oid"
+│       │           └── digest v0.11.3 (*)
+│       ├── tt-anim feature "default"
+│       │   └── tt-anim v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\anim)
+│       │       └── tt-model feature "default"
+│       │           └── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\model)
+│       ├── tt-model feature "default" (*)
+│       ├── tt-audio feature "default"
+│       │   └── tt-audio v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\audio)
+│       │       └── tt-model feature "default" (*)
+│       ├── tt-colour feature "default"
+│       │   └── tt-colour v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\colour)
+│       │       └── tt-model feature "default" (*)
+│       ├── tt-executor feature "default"
+│       │   └── tt-executor v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\executor)
+│       │       ├── tt-model feature "default" (*)
+│       │       └── tt-registry feature "default"
+│       │           └── tt-registry v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\registry)
+│       │               └── tt-model feature "default" (*)
+│       ├── tt-registry feature "default" (*)
+│       ├── tt-fx feature "default"
+│       │   └── tt-fx v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\fx)
+│       │       ├── tt-anim feature "default" (*)
+│       │       └── tt-model feature "default" (*)
+│       ├── tt-io feature "default"
+│       │   └── tt-io v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\io)
+│       │       ├── tt-model feature "default" (*)
+│       │       ├── tt-persist feature "default"
+│       │       │   └── tt-persist v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\persist)
+│       │       │       └── tt-model feature "default" (*)
+│       │       └── tt-render feature "default"
+│       │           └── tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\render)
+│       │               ├── tt-anim feature "default" (*)
+│       │               ├── tt-model feature "default" (*)
+│       │               ├── tt-colour feature "default" (*)
+│       │               ├── tt-fx feature "default" (*)
+│       │               └── tt-vector feature "default"
+│       │                   └── tt-vector v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\vector)
+│       │                       └── tt-model feature "default" (*)
+│       ├── tt-persist feature "default" (*)
+│       ├── tt-render feature "default" (*)
+│       ├── tt-vector feature "default" (*)
+│       └── tt-lipsync feature "default"
+│           └── tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\lipsync)
+│               ├── tt-model feature "default" (*)
+│               └── tt-audio feature "default" (*)
+└── tt-mcp feature "default"
+    └── tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\mcp)
+        └── tt-engine feature "default" (*)

@@ -1,0 +1,203 @@
+{
+ "version": 3,
+ "web": {
+  "samples": 12,
+  "strokes": [
+   {
+    "samples": 5,
+    "durationMs": 16,
+    "rateHz": 250.0,
+    "medianIntervalMs": 4,
+    "maxIntervalMs": 4,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 5,
+    "pressureLevelsImplied": 10,
+    "tiltPresent": true,
+    "tiltRangeX": [
+     -30,
+     30
+    ],
+    "tiltRangeY": [
+     -45,
+     45
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     120
+    ],
+    "twistNonzero": 4,
+    "target": "meets target",
+    "pointer": "pen#7",
+    "truncated": false
+   },
+   {
+    "samples": 5,
+    "durationMs": 16,
+    "rateHz": 250.0,
+    "medianIntervalMs": 4,
+    "maxIntervalMs": 4,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 5,
+    "pressureLevelsImplied": 10,
+    "tiltPresent": true,
+    "tiltRangeX": [
+     -30,
+     30
+    ],
+    "tiltRangeY": [
+     -45,
+     45
+    ],
+    "rawTiltRangeX": null,
+    "rawTiltRangeY": null,
+    "twistRange": [
+     0,
+     120
+    ],
+    "twistNonzero": 4,
+    "target": "meets target",
+    "pointer": "pen#7",
+    "truncated": false
+   }
+  ],
+  "coalescedApi": false,
+  "coalescedObserved": false,
+  "coalescedPerDispatch": {
+   "n": 8,
+   "min": 1,
+   "p50": 1,
+   "p95": 1,
+   "p99": 1,
+   "max": 1,
+   "mean": 1.0
+  },
+  "samplesPerFrame": null,
+  "handlerLatencyMs": {
+   "oldestCoalesced": {
+    "n": 12,
+    "min": -100120,
+    "p50": -100100,
+    "p95": -100,
+    "p99": -100,
+    "max": -100,
+    "mean": -50110.0
+   },
+   "newestCoalesced": {
+    "n": 12,
+    "min": -100120,
+    "p50": -100100,
+    "p95": -100,
+    "p99": -100,
+    "max": -100,
+    "mean": -50110.0
+   },
+   "allSamples": {
+    "n": 12,
+    "min": -100120,
+    "p50": -100100,
+    "p95": -100,
+    "p99": -100,
+    "max": -100,
+    "mean": -50110.0
+   }
+  },
+  "loss": "unknown, gap heuristic only",
+  "truncated": 0
+ },
+ "native": {
+  "packets": 10,
+  "clock": "device",
+  "strokes": [
+   {
+    "samples": 3,
+    "durationMs": 8,
+    "rateHz": 250.0,
+    "medianIntervalMs": 4,
+    "maxIntervalMs": 4,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 3,
+    "pressureLevelsImplied": 2,
+    "tiltPresent": true,
+    "tiltRangeX": [
+     -30,
+     30
+    ],
+    "tiltRangeY": [
+     -45,
+     45
+    ],
+    "rawTiltRangeX": [
+     -0.5,
+     0.5
+    ],
+    "rawTiltRangeY": [
+     -0.707,
+     0.707
+    ],
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "meets target",
+    "pointer": "pen",
+    "truncated": false
+   },
+   {
+    "samples": 3,
+    "durationMs": 8,
+    "rateHz": 250.0,
+    "medianIntervalMs": 4,
+    "maxIntervalMs": 4,
+    "gapsOver2xMedian": 0,
+    "pressureDistinct": 3,
+    "pressureLevelsImplied": 2,
+    "tiltPresent": true,
+    "tiltRangeX": [
+     -30,
+     30
+    ],
+    "tiltRangeY": [
+     -45,
+     45
+    ],
+    "rawTiltRangeX": [
+     -0.5,
+     0.5
+    ],
+    "rawTiltRangeY": [
+     -0.707,
+     0.707
+    ],
+    "twistRange": [
+     0,
+     0
+    ],
+    "twistNonzero": 0,
+    "target": "meets target",
+    "pointer": "pen",
+    "truncated": false
+   }
+  ],
+  "loss": {
+   "reference": "host sequence numbers (host-to-page channel loss only)",
+   "expected": 10,
+   "received": 10,
+   "missing": 0
+  },
+  "hostDropped": 0,
+  "sendFailures": 0,
+  "invalidBatches": 0,
+  "truncated": 0,
+  "info": {
+   "backend": "appkit-nsevent",
+   "tablets": [],
+   "timestampGranularityMs": null,
+   "deviceClock": "test double",
+   "window": null
+  }
+ },
+ "runs": []
+}

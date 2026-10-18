@@ -1,0 +1,274 @@
+{
+  "ffv1enc": {
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.0/libavcodec/ffv1enc.c",
+    "retrievedUtc": "2026-10-18T15:01:33.404027+00:00",
+    "sha256": "c33aeadc506a9fce55fc91866d47ec2748cd3787ad6554636411a0dc5f232e90",
+    "bytes": 75382,
+    "excerpts": [
+      {
+        "line": 9,
+        "text": " * modify it under the terms of the GNU Lesser General Public"
+      },
+      {
+        "line": 11,
+        "text": " * version 2.1 of the License, or (at your option) any later version."
+      },
+      {
+        "line": 16,
+        "text": " * Lesser General Public License for more details."
+      },
+      {
+        "line": 18,
+        "text": " * You should have received a copy of the GNU Lesser General Public"
+      },
+      {
+        "line": 25,
+        "text": " * FF Video Codec 1 (a lossless codec) encoder"
+      },
+      {
+        "line": 1914,
+        "text": "    .p.id           = AV_CODEC_ID_FFV1,"
+      }
+    ]
+  },
+  "configure": {
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.0/configure",
+    "retrievedUtc": "2026-10-18T15:01:33.655075+00:00",
+    "sha256": "8946342ef754811e13a08fac1c972bffdbb078d7dfef5d5468eaeb0fb6ce049c",
+    "bytes": 294702,
+    "excerpts": [
+      {
+        "line": 112,
+        "text": "  --disable-autodetect     disable automatically detected external libraries [no]"
+      },
+      {
+        "line": 146,
+        "text": "  --disable-everything     disable all components listed below"
+      },
+      {
+        "line": 148,
+        "text": "  --enable-encoder=NAME    enable encoder NAME"
+      },
+      {
+        "line": 2988,
+        "text": "ffv1_encoder_select=\"rangecoder\""
+      },
+      {
+        "line": 4473,
+        "text": "        --disable-everything)"
+      }
+    ]
+  },
+  "movenc": {
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.0/libavformat/movenc.c",
+    "retrievedUtc": "2026-10-18T15:01:33.955753+00:00",
+    "sha256": "a0a4548b5c2bbecb66f0a0bfa2160db61eb8f58d228a0d69edcca871fd482507",
+    "bytes": 340648,
+    "excerpts": [
+      {
+        "line": 97,
+        "text": "      { \"faststart\", \"Run a second pass to put the index (moov atom) at the beginning of the file\", 0, AV_OPT_TYPE_CONST, {.i64 = FF_MOV_FLAG_FASTSTART}, INT_MIN, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM, .unit = \"movflags\" },"
+      },
+      {
+        "line": 123,
+        "text": "    { \"video_track_timescale\", \"set timescale of all video tracks\", offsetof(MOVMuxContext, video_track_timescale), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM},"
+      },
+      {
+        "line": 125,
+        "text": "    { \"write_prft\", \"Write producer reference time box with specified time source\", offsetof(MOVMuxContext, write_prft), AV_OPT_TYPE_INT, {.i64 = MOV_PRFT_NONE}, 0, MOV_PRFT_NB-1, AV_OPT_FLAG_ENCODING_PARAM, .unit = \"prft\"},"
+      },
+      {
+        "line": 2227,
+        "text": "    const char* metadata_source = s->flags & AVFMT_FLAG_BITEXACT ? \"Lavf\" : LIBAVFORMAT_IDENT;"
+      },
+      {
+        "line": 3832,
+        "text": "               \"-video_track_timescale or a different container format\\n\");"
+      },
+      {
+        "line": 4689,
+        "text": "        if (!(s->flags & AVFMT_FLAG_BITEXACT))"
+      },
+      {
+        "line": 4996,
+        "text": "        if (!(s->flags & AVFMT_FLAG_BITEXACT))"
+      },
+      {
+        "line": 5235,
+        "text": "    if (!(mov->fc->flags & AVFMT_FLAG_BITEXACT))"
+      },
+      {
+        "line": 5779,
+        "text": "static int mov_write_prft_tag(AVIOContext *pb, MOVMuxContext *mov, int tracks)"
+      },
+      {
+        "line": 5801,
+        "text": "    if (mov->write_prft == MOV_PRFT_SRC_WALLCLOCK) {"
+      },
+      {
+        "line": 5809,
+        "text": "    } else if (mov->write_prft == MOV_PRFT_SRC_PTS) {"
+      },
+      {
+        "line": 5815,
+        "text": "               mov->write_prft);"
+      },
+      {
+        "line": 5844,
+        "text": "    if (mov->write_prft > MOV_PRFT_NONE && mov->write_prft < MOV_PRFT_NB)"
+      },
+      {
+        "line": 5845,
+        "text": "        mov_write_prft_tag(pb, mov, tracks);"
+      },
+      {
+        "line": 7847,
+        "text": "        av_log(s, AV_LOG_ERROR, \"Setting both hybrid_fragmented and faststart is not supported.\\n\");"
+      },
+      {
+        "line": 8128,
+        "text": "            if (mov->video_track_timescale) {"
+      },
+      {
+        "line": 8129,
+        "text": "                track->timescale = mov->video_track_timescale;"
+      },
+      {
+        "line": 8130,
+        "text": "                if (mov->mode == MODE_ISM && mov->video_track_timescale != 10000000)"
+      },
+      {
+        "line": 8276,
+        "text": "            (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO && !mov->video_track_timescale))) {"
+      },
+      {
+        "line": 8286,
+        "text": "                 track->par->codec_id, s->flags & AVFMT_FLAG_BITEXACT);"
+      },
+      {
+        "line": 8403,
+        "text": "    ff_parse_creation_time_metadata(s, &mov->time, 1);"
+      }
+    ]
+  },
+  "mux": {
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.0/libavformat/mux.c",
+    "retrievedUtc": "2026-10-18T15:01:34.160375+00:00",
+    "sha256": "57b64d7a1d6d81d7ac05d79085e5f9b282bf1bba773b4200a64aeede6599b55a",
+    "bytes": 48534,
+    "excerpts": [
+      {
+        "line": 263,
+        "text": "                           \"(%d/%d) and encoder layer (%d/%d)\\n\","
+      },
+      {
+        "line": 352,
+        "text": "    if (!(s->flags & AVFMT_FLAG_BITEXACT)) {"
+      },
+      {
+        "line": 353,
+        "text": "        av_dict_set(&s->metadata, \"encoder\", LIBAVFORMAT_IDENT, 0);"
+      },
+      {
+        "line": 355,
+        "text": "        av_dict_set(&s->metadata, \"encoder\", NULL, 0);"
+      },
+      {
+        "line": 358,
+        "text": "    for (e = NULL; e = av_dict_get(s->metadata, \"encoder-\", e, AV_DICT_IGNORE_SUFFIX); ) {"
+      },
+      {
+        "line": 534,
+        "text": "    //XXX/FIXME this is a temporary hack until all encoders output pts"
+      },
+      {
+        "line": 590,
+        "text": "         * likely equal to the encoder delay, but it would be better if we"
+      },
+      {
+        "line": 591,
+        "text": "         * had the real timestamps from the encoder */"
+      }
+    ]
+  },
+  "formats-doc": {
+    "url": "https://ffmpeg.org/ffmpeg-formats.html",
+    "retrievedUtc": "2026-10-18T15:01:36.036854+00:00",
+    "sha256": "dd62a03285dc5647e1d756857a99b33e0281ba84353534508d1d4a38fa4f974d",
+    "bytes": 350157,
+    "excerpts": [
+      {
+        "line": 495,
+        "text": "<dt>&lsquo;<samp class=\"samp\">bitexact</samp>&rsquo;</dt>"
+      },
+      {
+        "line": 496,
+        "text": "<dd><p>Only write platform-, build- and time-independent data."
+      },
+      {
+        "line": 2643,
+        "text": "moved to the start for better playback by adding <code class=\"code\">+faststart</code> to"
+      },
+      {
+        "line": 2644,
+        "text": "the <code class=\"code\">-movflags</code>, or using the <code class=\"command\">qt-faststart</code> tool)."
+      },
+      {
+        "line": 2775,
+        "text": "<dt>&lsquo;<samp class=\"samp\">faststart</samp>&rsquo;</dt>"
+      },
+      {
+        "line": 6044,
+        "text": "<dd><p>Serial number of the first stream in bitexact mode, the others following"
+      },
+      {
+        "line": 6428,
+        "text": "<pre class=\"example-preformatted\">ffmpeg -i in.mkv -f segment -segment_time 10 -segment_format_options movflags=+faststart out%03d.mp4"
+      },
+      {
+        "line": 6669,
+        "text": "       -f tee &quot;[bsfs/v=dump_extra=freq=keyframe]out.ts|[movflags=+faststart]out.mp4|[select=a]out.aac&quot;"
+      },
+      {
+        "line": 6677,
+        "text": "       -f tee &quot;[bsfs/v=dump_extra=freq=keyframe]out.ts|[movflags=+faststart]out.mp4|[select=\\'a:1\\']out.aac&quot;"
+      }
+    ]
+  },
+  "ffmpeg-doc": {
+    "url": "https://ffmpeg.org/ffmpeg.html",
+    "retrievedUtc": "2026-10-18T15:01:37.696775+00:00",
+    "sha256": "e04c69cd08537b9b9d8d16ecaab9f56d938455e54ef42c37a2019053df8495cb",
+    "bytes": 225502,
+    "excerpts": [
+      {
+        "line": 1511,
+        "text": "on streams, chapters or programs. See <code class=\"code\">-map_metadata</code>"
+      },
+      {
+        "line": 1514,
+        "text": "<p>This option overrides metadata set with <code class=\"code\">-map_metadata</code>. It is"
+      },
+      {
+        "line": 1515,
+        "text": "also possible to delete metadata by using an empty value."
+      },
+      {
+        "line": 3210,
+        "text": "<dt><samp class=\"option\">-map_metadata[:<var class=\"var\">metadata_spec_out</var>] <var class=\"var\">infile</var>[:<var class=\"var\">metadata_spec_in</var>] (<em class=\"emph\">output,per-metadata</em>)</samp></dt>"
+      },
+      {
+        "line": 3245,
+        "text": "<pre class=\"example-preformatted\">ffmpeg -i in.ogg -map_metadata 0:s:0 out.mp3"
+      },
+      {
+        "line": 3250,
+        "text": "<pre class=\"example-preformatted\">ffmpeg -i in.mkv -map_metadata:s:a 0:g out.mkv"
+      },
+      {
+        "line": 3259,
+        "text": "the first input file with at least one chapter. Use a negative file index to"
+      }
+    ]
+  }
+}

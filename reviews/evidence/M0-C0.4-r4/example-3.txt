@@ -1,0 +1,17 @@
+
+### Decision (ADR-0009 tablet rule set)
+
+| row | capability | action | W | A |
+|---|---|---|---|---|
+| 1 | pen identity | A1-A3 | pass (injected row result) | pass (injected row result) |
+| 2 | pressure >= 256 levels | A1 | fail (injected row result) | pass (injected row result) |
+| 3 | pressure >= 1024 levels | A1 | pass (injected row result) | pass (injected row result) |
+| 4 | tilt | A3 | pass (injected row result) | pass (injected row result) |
+| 5 | twist (barrel rotation) | A4 | pass (injected row result) | pass (injected row result) |
+| 6 | coalesced events | A2 | pass (injected row result) | n/a (injected row result) |
+| 7 | sustained rate >= 120 Hz | A2 | pass (injected row result) | fail (injected row result) |
+| 8 | rate >= 200 Hz | A2 | pass (injected row result) | pass (injected row result) |
+| 9 | stationary pressure-only updates | A6 | pass (injected row result) | pass (injected row result) |
+
+- platform: macos; share of applicable rows at pass: {'W': '8/9', 'A': '7/8'}; rows at pass: {'W': 8, 'A': 7}; candidates with a valid measurement: ['W', 'A']; disqualified (row 2 or 7 at fail): {'W': [2], 'A': [7]}
+- outcome: **no-go on this platform: escalate (plan §6 decision 7); best available evidence: W (8/9)**

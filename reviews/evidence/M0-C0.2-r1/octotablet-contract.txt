@@ -1,0 +1,205 @@
+src/events/mod.rs (octotablet 0.1.0, Cargo.lock checksum)
+40: /// -Added
+41: /// /In
+42: /// |Pose
+43: /// \Frame
+44: /// /Pose
+45: /// |Button
+46: /// \Frame
+47: /// /Pose
+48: /// |Out
+49: /// \Frame
+50: /// -Removed
+51: /// </pre>
+52: #[derive(Clone, Copy, Debug)]
+53: pub enum ToolEvent<'a> {
+54:     /// The tool is new. May be enumerated at the start of the program,
+55:     /// or sent immediately before its first use. This is not part of a `Frame`.
+56:     Added,
+57:     /// The tool will no longer send events. It is undefined under what situation this occurs -
+58:     /// it could be on `Out`, when the tablet that discovered it is disconnected, or never.
+59:     /// The tool may immediately be added again before next use, use its [hardware id](crate::tool::Tool::hardware_id)
+60:     /// to re-associate it with its past self.
+61:     ///
+62:     /// This is not part of a `Frame`.
+63:     Removed,
+64:     /// The tool has entered sensing range or entered the window region over the given `tablet`.
+65:     /// Note that this is subject to filtering by the OS -
+66:     /// you may or may not recieve this event when the pen enters sensing range
+67:     /// above a different window.
+68:     In { tablet: &'a Tablet },
+69:     /// The tool is considered "pressed." It is implementation defined what the exact semantics are,
+70:     /// but you should treat this as a click or command to start drawing.
+71:     ///
+72:     /// For a pen, this could be contact with the surface with some threshold of force.
+73:     /// For an Airbrush, lens, or mouse, this could be a button.
+74:     Down,
+75:     /// A button on the tool was pressed or released. *This is not an index!*
+76:     Button {
+77:         button_id: crate::tool::ButtonID,
+78:         pressed: bool,
+79:     },
+80:     /// A snapshot of all axes at this point in time. See [`Pose`] for quirks.
+81:     // This single variant is so much larger than all the others and inflates the whole
+82:     // event enum by over 2x D:
+83:     Pose(Pose),
+84:     /// The preceding events are submitted as a group, at the given time.
+85:     Frame(Option<FrameTimestamp>),
+86:     /// The tool is no longer pressed.
+87:     Up,
+88:     /// The tool has left sensing range or left the window region of the tablet.
+89:     Out,
+90: }
+
+src/platform/ink/mod.rs (octotablet 0.1.0, Cargo.lock checksum)
+88:     /// Used when tablet initialization fails (for any multitude of reasons) but our array order
+89:     /// *must* remain in sync with the server's.
+90:     Dummy { tcid: u32 },
+91:     /// There is a concrete tablet made from this one with the given `tcid`.
+92:     Concrete(RawTablet),
+93: }
+94: impl RawTabletSlot {
+95:     pub fn tcid(&self) -> u32 {
+96:         match self {
+97:             Self::Concrete(raw) => raw.tcid,
+98:             Self::Dummy { tcid } => *tcid,
+99:         }
+100:     }
+101: }
+102:
+103: /// The full inner state. Each frame this is cloned out of the plugin for unbounded access by the user.
+104: struct DataFrame {
+105:     /// Cached value from [`fetch_himetric_to_logical_pixel`], updated when needed.
+106:     hwnd: HWND,
+107:     himetric_to_logical_pixel: f32,
+108:     /// Keep track of the current state of styluses. Whether included at all indicates In/Out state.
+109:     stylus_states: std::collections::BTreeMap<ID, StylusPhase>,
+110:     tools: Vec<crate::tool::Tool>,
+111:     /// Indicies of `raw_tablets` which have been queued for destruction after events are consumed.
+112:     /// This is the *actual* subscript into the list, *not* apparent index (index where deleted ones aren't counted)
+113:     /// Must always be sorted and deduplicated.
+114:     raw_tablet_deletions: Vec<usize>,
+115:     /// Tablets *in initialization order*.
+116:     /// This is important, since notifications may refer to a tablet by it's index.
+117:     raw_tablets: Vec<RawTabletSlot>,
+118:     /// User-visible tablets created from [`RawTabletSlot::Concrete`] tablets.
+119:     tablets: Vec<crate::tablet::Tablet>,
+120:     events: Vec<crate::events::raw::Event<ID>>,
+121: }
+122: impl Clone for DataFrame {
+123:     fn clone(&self) -> Self {
+124:         // I hope the compiler makes this implementation less stupid :D
+125:         let mut clone = Self {
+126:             himetric_to_logical_pixel: 0.0,
+127:             // uh oh. Replaced before anything icky occurs :P
+128:             hwnd: HWND(0),
+129:             // Empty vecs don't alloc, this is ok.
+130:             raw_tablet_deletions: vec![],
+131:             raw_tablets: vec![],
+132:             stylus_states: std::collections::BTreeMap::new(),
+133:             tools: vec![],
+134:             tablets: vec![],
+135:             events: vec![],
+136:         };
+137:
+138:         clone.clone_from(self);
+139:         clone
+140:     }
+141:     fn clone_from(&mut self, source: &Self) {
+142:         // Destructure, that way any changes to layout of self will cause a compile err.
+143:         let Self {
+144:             hwnd,
+145:             himetric_to_logical_pixel,
+146:             stylus_states,
+147:             tools,
+148:             raw_tablet_deletions,
+149:             raw_tablets,
+150:             tablets,
+151:             events,
+152:         } = self;
+153:         *himetric_to_logical_pixel = source.himetric_to_logical_pixel;
+154:         *hwnd = source.hwnd;
+155:         stylus_states.clone_from(&source.stylus_states);
+156:
+157:         tools.clear();
+158:         tools.extend(
+159:             source
+160:                 .tools
+
+src/platform/ink/mod.rs (octotablet 0.1.0, Cargo.lock checksum)
+480:
+481:         if let Ok(num_packets @ 1..) = usize::try_from(num_packets) {
+482:             let props_per_packet = props.len() / num_packets;
+483:
+484:             let mut packets = packet::Iter::new(
+485:                 &tablet.interpreter,
+486:                 self.himetric_to_logical_pixel,
+487:                 props,
+488:                 props_per_packet,
+489:             );
+490:
+491:             // Bail on any error.
+492:             while let Some(Ok(packet)) = packets.next() {
+493:                 // The status bits *seemed* useful but are actually redundant with all the other events
+494:                 // we have.
+495:                 // packet.status;
+496:
+497:                 self.events.push(crate::events::raw::Event::Tool {
+498:                     tool: stylus_id,
+499:                     event: crate::events::raw::ToolEvent::Pose(packet.pose),
+500:                 });
+501:
+502:                 self.events.push(crate::events::raw::Event::Tool {
+503:                     tool: stylus_id,
+504:                     event: crate::events::raw::ToolEvent::Frame(packet.timestamp),
+505:                 });
+506:                 // We took care of the framing now.
+507:                 needs_frame = false;
+508:             }
+509:         }
+510:
+511:         // Edge case - Frame is missed if we bailed before any packets could process.
+512:         if needs_frame {
+513:             self.events.push(crate::events::raw::Event::Tool {
+514:                 tool: stylus_id,
+515:                 event: crate::events::raw::ToolEvent::Frame(None),
+516:             });
+517:         }
+
+README.md (octotablet 0.1.0, Cargo.lock checksum)
+1: # Device-agnostic Cross-platform Tablet Library 🐙✨
+2:
+3: Cross-platform high-level tablet/pad/stylus library, reporting connected hardware features and providing easy-to-use
+4: event-based access to user input.
+5:
+6: ## Platform Support
+7: | Platform                             |      Support |
+8: |--------------------------------------|-------------:|
+9: | Linux/Wayland (`tablet_unstable_v2`) | Complete[^1] |
+10: | Windows (Ink `RealTimeStylus`)       | Complete[^2] |
+11: | Linux/X11 (`xinput`)                 |     I'll try |
+12: | MacOS                                |  Help needed |
+13: | IOS                                  |  Help needed |
+14: | Android                              |  Help needed |
+15: | Windows (`Winuser.h` Pointer API)    |  Not planned |
+16: | Windows (`wintab`, proprietary)      |  Not planned |
+17:
+18: [^1]: Compositor conformance to this protocol is hit or miss and some features may not work (to be expected from an unstable protocol I guess!)
+19: [^2]: Only Tablets and Tools - Pads and associated hardware are not exposed by the Ink API. The status of pad hardware on windows is dire, often reported as emulated mouse/keyboard events!
+20:
+21: ## Device Support
+22: So far, tested on:
+23: * *Wacom Cintiq 16* \[DTK-1660\]
+24: * *Wacom Intuos (S)* \[CTL-4100\]
+25: * *Wacom Intuos Pro small* \[PTH-451\]
+26: * *Wacom Pro Pen 2*
+27: * *Wacom Pro Pen 2k*
+28: * *XP-Pen Deco-01*
+29:
+30: ## Documenting
+31: By default, documentation contains the current platform's capabilities only (ie, building docs on windows will omit everything wayland-related).
+32: Run `rustdoc` with the `docsrs` cfg set in order to generate documentation for all platforms regardless of host platform:
+33: ```bash
+34: RUSTFLAGS="--cfg docsrs" cargo doc
+35: ```
+36: This is still restricted by enabled features.

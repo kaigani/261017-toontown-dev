@@ -1,0 +1,91 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling crossbeam-utils v0.8.23
+   Compiling autocfg v1.5.1
+   Compiling crossbeam-epoch v0.9.21
+   Compiling cfg-if v1.0.5
+   Compiling simd-adler32 v0.3.10
+   Compiling arrayvec v0.7.8
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+   Compiling crossbeam-deque v0.8.8
+   Compiling typenum v1.20.1
+   Compiling thiserror v2.0.21
+   Compiling adler2 v2.0.1
+   Compiling crc32fast v1.5.2
+   Compiling rayon-core v1.13.0
+   Compiling smallvec v1.16.3
+   Compiling linebender_resource_handle v0.1.1
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.154
+   Compiling log v0.4.34
+   Compiling foldhash v0.2.0
+   Compiling either v1.19.0
+   Compiling fearless_simd v0.7.0
+   Compiling const-oid v0.10.2
+   Compiling cpufeatures v0.3.1
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling bitflags v2.13.2
+   Compiling thread_local v1.1.10
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\colour)
+   Compiling miniz_oxide v0.9.1
+   Compiling polycool v0.4.0
+   Compiling hashbrown v0.17.1
+   Compiling fdeflate v0.3.7
+   Compiling miniz_oxide v0.8.9
+   Compiling num-traits v0.2.19
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\fx)
+   Compiling kurbo v0.13.1
+   Compiling hybrid-array v0.4.15
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\render)
+   Compiling flate2 v1.1.10
+   Compiling crossbeam-channel v0.5.17
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling png v0.18.1
+   Compiling syn v3.0.9
+   Compiling ordered-channel v1.2.0
+   Compiling euclid v0.22.14
+   Compiling digest v0.11.3
+   Compiling rayon v1.12.0
+   Compiling sha2 v0.11.1
+   Compiling guillotiere v0.7.0
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling bytemuck v1.25.2
+   Compiling color v0.3.3
+   Compiling peniko v0.6.1
+   Compiling vello_common v0.3.0
+   Compiling vello_cpu v0.3.0
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.21s
+     Running `target\debug\examples\c03_raster.exe --repeat 3 --check crates/render/examples/c03_raster/hashes.json --report C:\Users\kaiga\work\review\m0-c03-r1\reviews\evidence\M0-C0.3-r1\raster-debug.json --out C:\Users\kaiga\work\review\m0-c03-r1\target\raster-debug`
+"windows" "x86_64" (vello_cpu detected SIMD level "Avx2(Avx2 { _private: () })")
+| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | ttraster vs vello max diff |
+|---|---|---|---|---|---|
+| cubic_blobs | 1.542 | 4.544 | 2.528 | 2.112 | 62 |
+| thin_strokes | 1.242 | 8.737 | 5.352 | 4.405 | 1 |
+| aa_edge_angles | 3.380 | 30.121 | 16.003 | 13.711 | 3 |
+| translucent_overlap | 1.550 | 7.222 | 3.532 | 2.616 | 30 |
+| alpha_stack | 5.319 | 30.861 | 10.367 | 5.989 | 1 |
+| linear_gradient | 2.180 | 4.461 | 3.582 | 1.829 | 1 |
+| radial_gradient | 2.221 | 9.969 | 4.907 | 2.976 | 48 |
+| gradient_transformed | 1.592 | 4.411 | 3.006 | 2.111 | 2 |
+| clip_circle | 1.944 | 19.645 | 9.275 | 7.168 | 43 |
+| clip_nested | 2.483 | 12.168 | 5.170 | 3.598 | 68 |
+| glyph_nonzero | 0.971 | 5.761 | 2.054 | 1.769 | 58 |
+| glyph_evenodd | 1.001 | 5.051 | 2.340 | 1.838 | 58 |
+| degenerate | 0.820 | 1.849 | 1.143 | 1.085 | 0 |
+| star_nonzero | 1.101 | 5.001 | 2.076 | 1.667 | 1 |
+| star_evenodd | 1.107 | 4.578 | 2.082 | 1.746 | 1 |
+| coincident_edges | 1.072 | 2.925 | 1.956 | 1.641 | 2 |
+| extreme_coordinates | 1.808 | 6.709 | 2.384 | 1.515 | 3 |
+| subpixel_translation | 1.132 | 8.880 | 2.959 | 2.495 | 51 |
+| non_integer_scales | 1.568 | 8.802 | 3.498 | 3.040 | 61 |
+| stroked_curves | 1.629 | 6.915 | 3.805 | 3.008 | 132 |
+| many_small_paths | 2.966 | 74.368 | 26.601 | 9.397 | 15 |
+| hairline_grid | 1.738 | 44.660 | 12.044 | 8.052 | 1 |
+| perf_2000_cubics_512 | 190.691 | 2950.938 | 704.364 | 267.953 | 89 |

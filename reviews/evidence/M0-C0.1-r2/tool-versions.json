@@ -1,0 +1,45 @@
+[
+  {
+    "command": [
+      "rustc",
+      "--version"
+    ],
+    "exit": 0,
+    "output": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  {
+    "command": [
+      "cargo",
+      "deny",
+      "--version"
+    ],
+    "exit": 0,
+    "output": "cargo-deny 0.20.2"
+  },
+  {
+    "command": [
+      "node",
+      "--version"
+    ],
+    "exit": 0,
+    "output": "v22.23.2"
+  },
+  {
+    "command": [
+      "cmd",
+      "/c",
+      "pnpm",
+      "--version"
+    ],
+    "exit": 0,
+    "output": "10.12.1"
+  },
+  {
+    "command": [
+      "python",
+      "--version"
+    ],
+    "exit": 0,
+    "output": "Python 3.13.1"
+  }
+]

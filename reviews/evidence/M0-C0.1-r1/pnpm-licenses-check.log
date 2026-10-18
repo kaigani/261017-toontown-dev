@@ -1,0 +1,7 @@
+
+> toontown-workspace@ licenses:check C:\Users\kaiga\work\review\m0-c01-r1
+> node scripts/check-npm-licenses.mjs
+
+production packages checked: 7
+development packages (not shipped, informational): MIT (172), MIT-0 (2), Apache-2.0 (17), Apache-2.0 OR MIT (1), CC-BY-4.0 (1), ISC (10), BSD-2-Clause (8), BSD-3-Clause (3), MPL-2.0 (1), BlueOak-1.0.0 (2), CC0-1.0 (1)
+licences ok

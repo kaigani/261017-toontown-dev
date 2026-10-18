@@ -1,0 +1,32 @@
+[
+  {
+    "file": "closure_probes.py",
+    "assertionsUnchanged": true,
+    "originalSha256": "8bf9b07a872cead9cbab8b7f854d90e6bfe37efad53f28aee18a4969aefafd65",
+    "copySha256": "815a08e64f5e20d31e830ca99f91009e57692922c8dd87963be582dd6f6740f4"
+  },
+  {
+    "file": "page_probe.py",
+    "assertionsUnchanged": true,
+    "originalSha256": "25b95d11f544aba6b3ec9b9f6d8f5c7be157ab8e516ed696ca8f33924eac0c33",
+    "copySha256": "802a5f9218e0729d4614cc0727292e21b7ff28dea751b4ccdbed5bd26a9063b2"
+  },
+  {
+    "file": "page_cases.tsx",
+    "assertionsUnchanged": true,
+    "originalSha256": "e0e714cd3485942f4bee716cbdf1350c05f9d284999a7b134fb98910c616f247",
+    "copySha256": "99021e4cd2febfa104bcffd2761177d5131ed71791b1292e6702a120254afd5c"
+  },
+  {
+    "file": "probe_gating.py",
+    "assertionsUnchanged": true,
+    "originalSha256": "f9c2a342fcc61f763662823ebb5115e051f75ec7b67d4d75169cc1a651bf2a94",
+    "copySha256": "ad6f59f719a334d600627890731020af1b5ab43f1b5741cef76145cdb9fe6a76"
+  },
+  {
+    "file": "copy_probe.py",
+    "assertionsUnchanged": true,
+    "originalSha256": "f5f9331c4fb86fae43522b9e1c656ba04765ff25d23df8252d21dac81c790150",
+    "copySha256": "51e9d8d4d1802b98a83f003fd3b00cdfb52fc2cc11a106d3250add129532c156"
+  }
+]

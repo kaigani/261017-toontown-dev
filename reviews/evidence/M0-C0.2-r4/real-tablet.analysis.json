@@ -1,0 +1,268 @@
+{
+ "version": 3,
+ "web": {
+  "samples": 0,
+  "strokes": [],
+  "coalescedApi": true,
+  "coalescedObserved": false,
+  "coalescedPerDispatch": null,
+  "samplesPerFrame": null,
+  "handlerLatencyMs": {
+   "oldestCoalesced": null,
+   "newestCoalesced": null,
+   "allSamples": null
+  },
+  "loss": "unknown, gap heuristic only",
+  "truncated": 0
+ },
+ "native": {
+  "packets": 0,
+  "clock": "host",
+  "strokes": [],
+  "loss": "unknown, gap heuristic only",
+  "hostDropped": 0,
+  "sendFailures": 0,
+  "invalidBatches": 0,
+  "truncated": 0,
+  "info": {
+   "backend": "octotablet-ink",
+   "deviceClock": "octotablet FrameTimestamp, ms since an arbitrary epoch",
+   "tablets": [],
+   "timestampGranularityMs": 1,
+   "window": {
+    "innerHeight": 780,
+    "innerWidth": 1280,
+    "innerX": 60,
+    "innerY": 103,
+    "scaleFactor": 1
+   }
+  }
+ },
+ "runs": [
+  {
+   "label": "webview sine 240 Hz",
+   "target": "webview",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "sine",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "webview sine 240 Hz (retry)",
+   "target": "webview",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "sine",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "webview sine 500 Hz",
+   "target": "webview",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 500,
+    "left": 8,
+    "pattern": "sine",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "webview sine 500 Hz (retry)",
+   "target": "webview",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 500,
+    "left": 8,
+    "pattern": "sine",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "webview zigzag 240 Hz",
+   "target": "webview",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "zigzag",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "webview zigzag 240 Hz (retry)",
+   "target": "webview",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "zigzag",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "webview stationary 240 Hz",
+   "target": "webview",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "stationary",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "webview stationary 240 Hz (retry)",
+   "target": "webview",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "stationary",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "webview pressure-only 240 Hz",
+   "target": "webview",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "pressureOnly",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "webview pressure-only 240 Hz (retry)",
+   "target": "webview",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "pressureOnly",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "native window sine 240 Hz, no RTS",
+   "target": "nativeWindow",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "sine",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x8107ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "native window stationary 240 Hz, no RTS",
+   "target": "nativeWindow",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "stationary",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x8207ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "native window pressure-only 240 Hz, no RTS",
+   "target": "nativeWindow",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "pressureOnly",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x8307ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "native window sine 240 Hz",
+   "target": "nativeWindow",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "sine",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x8407ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  },
+  {
+   "label": "native window stationary 240 Hz",
+   "target": "nativeWindow",
+   "request": {
+    "frames": 1024,
+    "height": 275,
+    "hz": 240,
+    "left": 8,
+    "pattern": "stationary",
+    "top": 58,
+    "width": 1012
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0xc70114, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+  }
+ ]
+}

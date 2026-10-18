@@ -1,0 +1,1 @@
+error: log has 5 simulation entries but no run records; synthetic evidence without its runs is missing evidence, not a manual capture

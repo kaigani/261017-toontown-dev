@@ -1,0 +1,144 @@
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\render)
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.87s
+     Running tests\c03_r1_stress.rs (target\release\deps\c03_r1_stress-fae6318100239edf.exe)
+
+running 3 tests
+detected SIMD: Avx2(Avx2 { _private: () })
+
+thread 'c03_r1_05_source_over_an_opaque_background_stays_opaque' (28904) panicked at crates\render\tests\c03_r1_stress.rs:127:5:
+assertion `left == right` failed: opaque background cannot lose alpha under source-over
+  left: 250
+ right: 255
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test c03_r1_05_source_over_an_opaque_background_stays_opaque ... FAILED
+
+thread 'c03_r1_04_simd_dispatch_must_not_change_final_pixels' (18292) panicked at crates\render\tests\c03_r1_stress.rs:113:5:
+assertion `left == right` failed: same scene, scalar versus detected SIMD
+  left: "02110d56ea4ec4ff16e001523a4c4e949e85aea7f8cfad16d47940a1d3dcf9b4"
+ right: "6fdf5f00aff5722d39c686de6a3ddc78450c68b234d40b28927779c5dee6499e"
+test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... FAILED
+STRESS_DIFF seed=0 config=Fallback channels=0 max=0
+STRESS_DIFF seed=0 config=Detected channels=10 max=1
+STRESS_DIFF seed=0 config=Threads3 channels=10 max=1
+STRESS_DIFF seed=1 config=Fallback channels=0 max=0
+STRESS_DIFF seed=1 config=Detected channels=5 max=1
+STRESS_DIFF seed=1 config=Threads3 channels=5 max=1
+STRESS_DIFF seed=2 config=Fallback channels=0 max=0
+STRESS_DIFF seed=2 config=Detected channels=16 max=1
+STRESS_DIFF seed=2 config=Threads3 channels=16 max=1
+STRESS_DIFF seed=3 config=Fallback channels=0 max=0
+STRESS_DIFF seed=3 config=Detected channels=13 max=1
+STRESS_DIFF seed=3 config=Threads3 channels=13 max=1
+STRESS_DIFF seed=4 config=Fallback channels=0 max=0
+STRESS_DIFF seed=4 config=Detected channels=19 max=1
+STRESS_DIFF seed=4 config=Threads3 channels=19 max=1
+STRESS_DIFF seed=5 config=Fallback channels=0 max=0
+STRESS_DIFF seed=5 config=Detected channels=27 max=1
+STRESS_DIFF seed=5 config=Threads3 channels=27 max=1
+STRESS_DIFF seed=6 config=Fallback channels=0 max=0
+STRESS_DIFF seed=6 config=Detected channels=11 max=1
+STRESS_DIFF seed=6 config=Threads3 channels=11 max=1
+STRESS_DIFF seed=7 config=Fallback channels=0 max=0
+STRESS_DIFF seed=7 config=Detected channels=8 max=1
+STRESS_DIFF seed=7 config=Threads3 channels=8 max=1
+STRESS_DIFF seed=8 config=Fallback channels=0 max=0
+STRESS_DIFF seed=8 config=Detected channels=7 max=1
+STRESS_DIFF seed=8 config=Threads3 channels=7 max=1
+STRESS_DIFF seed=9 config=Fallback channels=0 max=0
+STRESS_DIFF seed=9 config=Detected channels=7 max=1
+STRESS_DIFF seed=9 config=Threads3 channels=7 max=1
+STRESS_DIFF seed=10 config=Fallback channels=0 max=0
+STRESS_DIFF seed=10 config=Detected channels=13 max=1
+STRESS_DIFF seed=10 config=Threads3 channels=13 max=1
+STRESS_DIFF seed=11 config=Fallback channels=0 max=0
+STRESS_DIFF seed=11 config=Detected channels=12 max=1
+STRESS_DIFF seed=11 config=Threads3 channels=12 max=1
+STRESS_DIFF seed=12 config=Fallback channels=0 max=0
+STRESS_DIFF seed=12 config=Detected channels=12 max=1
+STRESS_DIFF seed=12 config=Threads3 channels=12 max=1
+STRESS_DIFF seed=13 config=Fallback channels=0 max=0
+STRESS_DIFF seed=13 config=Detected channels=9 max=1
+STRESS_DIFF seed=13 config=Threads3 channels=9 max=1
+STRESS_DIFF seed=14 config=Fallback channels=0 max=0
+STRESS_DIFF seed=14 config=Detected channels=12 max=1
+STRESS_DIFF seed=14 config=Threads3 channels=12 max=1
+STRESS_DIFF seed=15 config=Fallback channels=0 max=0
+STRESS_DIFF seed=15 config=Detected channels=12 max=1
+STRESS_DIFF seed=15 config=Threads3 channels=12 max=1
+{
+  "ttraster/0": "647114e5afa2515982f48841f2b1717c89c564773064ea58ffc7f815edd545fe",
+  "ttraster/1": "cd31537791e7044951c84d9e2c1add1021663a1df2fc9bc4e8ccc5f111a3a58f",
+  "ttraster/10": "6256711fe6fc6ab651dfdea473fc4239f407f85c1befa3fcb8d0678ab7c93b30",
+  "ttraster/11": "619dfee2979a58c74e396f5dbc6a8eea9ac7aecdbf1d6016bd3ebf16e999d230",
+  "ttraster/12": "0bf752b4ce7db823a40cc0906bc9aaa4ea024b76f7c48e1d12c489965680131c",
+  "ttraster/13": "18bb3b4f7671f397ef79b36998bfb89684ad1e018e0f9462c3dff0c9d2b83e9a",
+  "ttraster/14": "0edaab3aedadcb08e2299f214a8d7fa67100e411a0c25c6c0d32f12ca9e46a5c",
+  "ttraster/15": "937f99cac195554abcdc745a8c10bcd0988fcbeb29f0370f1308f3368a14a035",
+  "ttraster/2": "48f8ee93801b316edd230480e0c98ba56b4671314c21259a41811e36ede045e8",
+  "ttraster/3": "46f8143182368dc86cf82a7cfe4ffb3566a1ae5b3404ae7dbc62e4bf38718db1",
+  "ttraster/4": "8fbdb90dc2672461a882689a747439962d92674af53d4197a78b11a216f6710b",
+  "ttraster/5": "f5be947541103dc1658ae68d5ebd537dade33e8038686749efead3c6a0f77a6b",
+  "ttraster/6": "029707eca1a8baecd0e1c7e1fe26e7041431be728f857750a7ba91cc5089e613",
+  "ttraster/7": "839a3a1f59456c0f80420c69c045e3109aa741ef1bb1d6d0d320436b98835de1",
+  "ttraster/8": "42a15831f925a2538a772fc7880bd0d62fcee60273b2e04e4f45ca4991660ea1",
+  "ttraster/9": "9bb9ad658de62fcf3f12985226fba4dfc89ce1b2044902f76dc48e57c3825ac1",
+  "vello_cpu_fallback/0": "02110d56ea4ec4ff16e001523a4c4e949e85aea7f8cfad16d47940a1d3dcf9b4",
+  "vello_cpu_fallback/1": "946d8635a9b96170a763641b749e043687e69507fc16ef88a2311f052bd58d96",
+  "vello_cpu_fallback/10": "429baff279fd87a4d7284284f5a72446edcbf97ab33424568f341cd9de05e791",
+  "vello_cpu_fallback/11": "4782eaba389e05d124eb5c708a6bedae37f08a739698de679f1302f59671cb5e",
+  "vello_cpu_fallback/12": "215c8e1847981836788d3030f4375d73bf9be291bbc7173340bf05aff52faee8",
+  "vello_cpu_fallback/13": "def69f56b55c4aad872ef4b64c54125ffd090085486c0327da7a147fe13f8f37",
+  "vello_cpu_fallback/14": "780e12e624a3149ffd12ae465ba60707c24d67ec5da7c541fda2cbd3dc1f4963",
+  "vello_cpu_fallback/15": "fde308e91e52dce402fbd92bebf8b41d3952790e7347bdf2ace34f14a0c67439",
+  "vello_cpu_fallback/2": "a5890c940e22881fad576ef7b99ebf3da861e56e567590b7aced4ab368a2f8bc",
+  "vello_cpu_fallback/3": "a148d7e9bfa549733cb8e9c1dcc29582d6437a5462bf80a21e43d8e7dc49d19a",
+  "vello_cpu_fallback/4": "1681992aff0f74749435850bf66a6d7cbd03b5d67398c8dec0c75f90e07eab1b",
+  "vello_cpu_fallback/5": "35d941cfe969bdc640ae52d59f6fb86da0d128e749d14d7fe50b3704a889df18",
+  "vello_cpu_fallback/6": "474262df6498d629bd4d1ffbb77f528177e75e3b0a16214eafdef1e81dd27ec4",
+  "vello_cpu_fallback/7": "cf57e132c7d9114a7f28f7b2009659216229937e584b5475c806c8a9f7185338",
+  "vello_cpu_fallback/8": "b4bf91389979073eccbc3b03b187157fff12735c50559997a9b3dd7af6fb0196",
+  "vello_cpu_fallback/9": "6d02cd4fc814f5323392456c6505345afb5903673940d03ad219d03f48bfbbe6",
+  "vello_cpu_mt3/0": "6fdf5f00aff5722d39c686de6a3ddc78450c68b234d40b28927779c5dee6499e",
+  "vello_cpu_mt3/1": "a527605fab6f8e4b5c21f356553f80b8ccba4820b7bf47b8ff0a442348c1dbaf",
+  "vello_cpu_mt3/10": "76276f9ac79f8bf9acfad38c505559994de9598b79917add63c132aac131eaae",
+  "vello_cpu_mt3/11": "ea2db1409082c496bee1524361bdfda0c8dec18e565375d9dc8e2b42831fbf37",
+  "vello_cpu_mt3/12": "02ff820bd90521dd8aee032adc47ff548f15e654c4703f8150e2565813706ce4",
+  "vello_cpu_mt3/13": "df06df0d97392a0070e59d9ab824614405cbd48963fa0d7c89504de1bb14fd27",
+  "vello_cpu_mt3/14": "4417c881626248e3dddff622630812c78228194145bdb85d9e156a8770348692",
+  "vello_cpu_mt3/15": "4e6206f4df0938907333c70f80280eb36b83a59ed67e20bfe1dd83562d005f07",
+  "vello_cpu_mt3/2": "40585a14bfca0e0888e81e8a55d34c3afe3e5ce2d25db6ebb9d37e79b396cd80",
+  "vello_cpu_mt3/3": "8932e082100b1dd4b7dc30435d712acc43124537e057a5c9fb023dba4cb70890",
+  "vello_cpu_mt3/4": "99919e7b0990320e5be71078bc4e4dd1f4fcdaa316ab815468ad42df78949ff9",
+  "vello_cpu_mt3/5": "8a0fbf229343df94d7404c719ef84c8f753c219763395427daa75a4c92162eeb",
+  "vello_cpu_mt3/6": "5795e4db7e65832da1d1980950b9ea0c16b3a9e75592c37032296bb62675414b",
+  "vello_cpu_mt3/7": "b8ed91e8de72482096dad34356e6b8d178e53cc3067685fc87cf35bc6aa3bd97",
+  "vello_cpu_mt3/8": "c740139042b13d8db73277999ee967c5438335f4818d71cbd84c680f20a32578",
+  "vello_cpu_mt3/9": "92e005a513a14b9f3c8b260e2ade1f4b833f85a83d9db8006819f3a0cb3f7e91",
+  "vello_cpu_simd/0": "6fdf5f00aff5722d39c686de6a3ddc78450c68b234d40b28927779c5dee6499e",
+  "vello_cpu_simd/1": "a527605fab6f8e4b5c21f356553f80b8ccba4820b7bf47b8ff0a442348c1dbaf",
+  "vello_cpu_simd/10": "76276f9ac79f8bf9acfad38c505559994de9598b79917add63c132aac131eaae",
+  "vello_cpu_simd/11": "ea2db1409082c496bee1524361bdfda0c8dec18e565375d9dc8e2b42831fbf37",
+  "vello_cpu_simd/12": "02ff820bd90521dd8aee032adc47ff548f15e654c4703f8150e2565813706ce4",
+  "vello_cpu_simd/13": "df06df0d97392a0070e59d9ab824614405cbd48963fa0d7c89504de1bb14fd27",
+  "vello_cpu_simd/14": "4417c881626248e3dddff622630812c78228194145bdb85d9e156a8770348692",
+  "vello_cpu_simd/15": "4e6206f4df0938907333c70f80280eb36b83a59ed67e20bfe1dd83562d005f07",
+  "vello_cpu_simd/2": "40585a14bfca0e0888e81e8a55d34c3afe3e5ce2d25db6ebb9d37e79b396cd80",
+  "vello_cpu_simd/3": "8932e082100b1dd4b7dc30435d712acc43124537e057a5c9fb023dba4cb70890",
+  "vello_cpu_simd/4": "99919e7b0990320e5be71078bc4e4dd1f4fcdaa316ab815468ad42df78949ff9",
+  "vello_cpu_simd/5": "8a0fbf229343df94d7404c719ef84c8f753c219763395427daa75a4c92162eeb",
+  "vello_cpu_simd/6": "5795e4db7e65832da1d1980950b9ea0c16b3a9e75592c37032296bb62675414b",
+  "vello_cpu_simd/7": "b8ed91e8de72482096dad34356e6b8d178e53cc3067685fc87cf35bc6aa3bd97",
+  "vello_cpu_simd/8": "c740139042b13d8db73277999ee967c5438335f4818d71cbd84c680f20a32578",
+  "vello_cpu_simd/9": "92e005a513a14b9f3c8b260e2ade1f4b833f85a83d9db8006819f3a0cb3f7e91"
+}
+test extended_corpus_repeats_and_cross_os_hashes ... ok
+
+failures:
+
+failures:
+    c03_r1_04_simd_dispatch_must_not_change_final_pixels
+    c03_r1_05_source_over_an_opaque_background_stays_opaque
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+error: test failed, to rerun pass `-p tt-render --test c03_r1_stress`

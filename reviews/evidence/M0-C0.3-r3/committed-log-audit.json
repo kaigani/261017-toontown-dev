@@ -1,0 +1,121 @@
+[
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/canvas-auto.json",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 3697,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/canvas-webgl2.json",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 2523,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/review-ci-current-canvas-Windows.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 3066,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/review-ci-current-canvas-macOS.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 2732,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/review-ci-historical-canvas-Windows.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 2949,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/review-ci-historical-canvas-macOS.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 2620,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r2/canvas-auto.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 3697,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r2/page-fast.json",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 2176,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r2/page-manual.json",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 1098,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r2/page-slow.json",
+    "version": 1,
+    "exitCode": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 0 (webgl2/paths100k): frame timestamps shorter than 10000 ms"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-ci-macos-runner-39121780905.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 2620,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-ci-windows-runner-39121780905.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 2949,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-local-windows-rtx4090-auto.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 3696,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-local-windows-rtx4090-webgl2.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 2523,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-r1-local-windows-rtx4090-auto.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 3695,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-r1-local-windows-rtx4090-webgl2.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stdoutBytes": 2523,
+    "stderr": ""
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-r2-local-windows-rtx4090-auto.json.gz",
+    "version": 2,
+    "exitCode": 0,
+    "stdoutBytes": 3696,
+    "stderr": ""
+  }
+]

@@ -1,0 +1,1 @@
+error: run 0 (webgl2/paths100k): pan/zoom frames missing

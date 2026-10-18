@@ -1,0 +1,393 @@
+{
+  "sha": "506342a02cb55dc855bdedacf499a168a2854ed2",
+  "jobs": [
+    {
+      "name": "headless without a display (ubuntu)",
+      "result": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "result": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "result": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-headless",
+          "result": "success"
+        },
+        {
+          "name": "Self-test with no display server",
+          "result": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Complete job",
+          "result": "success"
+        }
+      ],
+      "rustTests": 0,
+      "vitest": []
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "result": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "result": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "result": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "result": "success"
+        },
+        {
+          "name": "Tauri build (unsigned)",
+          "result": "success"
+        },
+        {
+          "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+          "result": "success"
+        },
+        {
+          "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+          "result": "success"
+        },
+        {
+          "name": "Collect artifacts",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "result": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Complete job",
+          "result": "success"
+        }
+      ],
+      "rustTests": 0,
+      "vitest": []
+    },
+    {
+      "name": "check (windows-latest)",
+      "result": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "result": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "result": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "result": "success"
+        },
+        {
+          "name": "Front end \u2014 lint, type-check, test, format, licences",
+          "result": "success"
+        },
+        {
+          "name": "Front end \u2014 build (frontendDist is embedded by the Tauri host)",
+          "result": "success"
+        },
+        {
+          "name": "Run cargo fmt --all --check",
+          "result": "success"
+        },
+        {
+          "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "result": "success"
+        },
+        {
+          "name": "Run cargo test --workspace --locked",
+          "result": "success"
+        },
+        {
+          "name": "Run taiki-e/install-action@v2",
+          "result": "success"
+        },
+        {
+          "name": "Run cargo deny --locked check",
+          "result": "success"
+        },
+        {
+          "name": "Headless binary \u2014 build, self-test (twice, compared), linked-library proof",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "result": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Complete job",
+          "result": "success"
+        }
+      ],
+      "rustTests": 64,
+      "vitest": [
+        " Test Files  20 passed (20)",
+        "      Tests  223 passed | 3 expected fail (226)",
+        "# tests 9"
+      ]
+    },
+    {
+      "name": "check (macos-latest)",
+      "result": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "result": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "result": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "result": "success"
+        },
+        {
+          "name": "Front end \u2014 lint, type-check, test, format, licences",
+          "result": "success"
+        },
+        {
+          "name": "Front end \u2014 build (frontendDist is embedded by the Tauri host)",
+          "result": "success"
+        },
+        {
+          "name": "Run cargo fmt --all --check",
+          "result": "success"
+        },
+        {
+          "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "result": "success"
+        },
+        {
+          "name": "Run cargo test --workspace --locked",
+          "result": "success"
+        },
+        {
+          "name": "Run taiki-e/install-action@v2",
+          "result": "success"
+        },
+        {
+          "name": "Run cargo deny --locked check",
+          "result": "success"
+        },
+        {
+          "name": "Headless binary \u2014 build, self-test (twice, compared), linked-library proof",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "result": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Complete job",
+          "result": "success"
+        }
+      ],
+      "rustTests": 59,
+      "vitest": [
+        " Test Files  20 passed (20)",
+        "      Tests  223 passed | 3 expected fail (226)",
+        "# tests 9"
+      ]
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "result": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "result": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "result": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "result": "success"
+        },
+        {
+          "name": "Tauri build (unsigned)",
+          "result": "success"
+        },
+        {
+          "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+          "result": "success"
+        },
+        {
+          "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+          "result": "skipped"
+        },
+        {
+          "name": "Collect artifacts",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "result": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Complete job",
+          "result": "success"
+        }
+      ],
+      "rustTests": 0,
+      "vitest": []
+    }
+  ]
+}

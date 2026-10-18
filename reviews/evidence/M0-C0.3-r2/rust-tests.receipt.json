@@ -1,0 +1,5 @@
+{
+  "command": "cargo test --workspace --locked",
+  "exitCode": 0,
+  "seconds": 76.035
+}

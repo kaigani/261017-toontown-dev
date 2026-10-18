@@ -1,0 +1,30 @@
+
+> toontown-workspace@ lint C:\Users\kaiga\work\review\m0-c01-r5
+> pnpm -r --workspace-concurrency=1 lint
+
+
+> @toontown/desktop@0.0.1 lint C:\Users\kaiga\work\review\m0-c01-r5\desktop
+> eslint . --max-warnings 0
+
+
+C:\Users\kaiga\work\review\m0-c01-r5\desktop\src\__probes__\r5-AOkE31\chunk-name-comment.js
+  1:74  error  Only src/ipc/index.ts may import the raw Tauri transport; use the validated HostApi  no-restricted-syntax
+
+C:\Users\kaiga\work\review\m0-c01-r5\desktop\src\__probes__\r5-AOkE31\constant-charcodes.js
+  1:32  error  'String.fromCharCode' is restricted from being used. String assembly from fragments is not allowed in application code (IPC boundary, ADR-0001)  no-restricted-properties
+
+C:\Users\kaiga\work\review\m0-c01-r5\desktop\src\__probes__\r5-AOkE31\constant-slice.js
+  1:32  error  Talk to the Rust host only through src/ipc (createHostApi / useHost)  no-restricted-syntax
+
+C:\Users\kaiga\work\review\m0-c01-r5\desktop\src\__probes__\r5-AOkE31\dynamic-raw.js
+  1:32  error  Only src/ipc/index.ts may import the raw Tauri transport; use the validated HostApi  no-restricted-syntax
+
+C:\Users\kaiga\work\review\m0-c01-r5\desktop\src\__probes__\r5-AOkE31\renamed-ui-reexport.js
+  1:1  error  '../../ipc/tauriTransport' import is restricted from being used by a pattern. Only src/ipc/index.ts may import the raw Tauri transport; use the validated HostApi  no-restricted-imports
+
+✖ 5 problems (5 errors, 0 warnings)
+
+C:\Users\kaiga\work\review\m0-c01-r5\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 lint: `eslint . --max-warnings 0`
+Exit status 1
+ ELIFECYCLE  Command failed with exit code 1.

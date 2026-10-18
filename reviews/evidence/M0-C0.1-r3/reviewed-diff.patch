@@ -1,0 +1,1681 @@
+diff --git a/.gitignore b/.gitignore
+index 007b5e5..b2cfa18 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -18,3 +18,5 @@ Thumbs.db
+ # Python
+ __pycache__/
+ *.pyc
++# Boundary-test probes (created and removed by desktop/src/ipc/boundary.*.test.ts)
++desktop/src/__probes__/
+diff --git a/desktop/boundary/eslint.d.ts b/desktop/boundary/eslint.d.ts
+new file mode 100644
+index 0000000..454d7ff
+--- /dev/null
++++ b/desktop/boundary/eslint.d.ts
+@@ -0,0 +1,13 @@
++// Types for boundary/eslint.js (imported by eslint.config.js and the boundary tests).
++import type { ESLint, Linter } from 'eslint';
++
++export declare const EXTENSIONS: string[];
++export declare const TRANSPORT_FILE: string;
++export declare const IPC_INDEX_FILE: string;
++export declare const SAMPLE_FILES: string[];
++export declare const TAURI_GLOBALS: string[];
++export declare const MAX_SRC_DEPTH: number;
++export declare const BOUNDARY_RULE_NAMES: string[];
++export declare const ipcBoundaryRules: Linter.RulesRecord;
++export declare const ipcBoundaryExemption: Linter.RulesRecord;
++export declare function ipcBoundaryConfig(commentsPlugin: ESLint.Plugin): Linter.Config[];
+diff --git a/desktop/boundary/eslint.js b/desktop/boundary/eslint.js
+new file mode 100644
+index 0000000..a4a4d3f
+--- /dev/null
++++ b/desktop/boundary/eslint.js
+@@ -0,0 +1,161 @@
++// The front-end IPC boundary, lint half (ADR-0001, src/ipc/README.md). The bundler half is ./vite-plugin.ts; both
++// read the paths below. Rules:
++//   * only src/ipc/tauriTransport.ts may reach Tauri: no @tauri-apps import in any form (static, type-only,
++//     re-export, dynamic, require, import.meta.glob), no string/template literal naming the packages, no __TAURI*
++//     globals, no eval / new Function, no non-literal import() specifiers;
++//   * only src/ipc/index.ts may import src/ipc/tauriTransport.ts (UI code gets the validated HostApi, never the raw
++//     transport);
++//   * modules under src/ may import only within src/ (relative specifiers in canonical form, no absolute or scheme
++//     specifiers, no backslashes); test files may additionally reach the repository's tests/ folder and
++//     desktop/boundary/ (the definitions under test);
++//   * inline `eslint-disable` of any boundary rule is itself an error (eslint-comments), including blanket disables.
++// Applies to every JS/TS extension in the desktop package. Deliberate run-time obfuscation (e.g. a global name built
++// from variables) cannot be detected statically; the bundler plugin scans transformed code for the Tauri globals
++// and refuses to bundle anything it cannot place.
++// Permanent cases: src/ipc/boundary.lint.test.ts, src/ipc/boundary.build.test.ts, tests/adversarial/c01-r2-*.
++
++export const EXTENSIONS = ['ts', 'tsx', 'mts', 'cts', 'js', 'jsx', 'mjs', 'cjs'];
++const EXT = `{${EXTENSIONS.join(',')}}`;
++
++export const TRANSPORT_FILE = 'src/ipc/tauriTransport.ts';
++export const IPC_INDEX_FILE = 'src/ipc/index.ts';
++/** Files that legitimately contain bypass samples or the boundary's own patterns. Test-only; never bundled. */
++export const SAMPLE_FILES = ['src/ipc/boundary.lint.test.ts', 'src/ipc/boundary.build.test.ts'];
++export const TAURI_GLOBALS = ['__TAURI__', '__TAURI_INTERNALS__', '__TAURI_IPC__', '__TAURI_METADATA__'];
++/** Deepest src/ subdirectory nesting covered by the per-depth import rules (a lint test enforces it). */
++export const MAX_SRC_DEPTH = 12;
++
++const HOST = 'Talk to the Rust host only through src/ipc (createHostApi / useHost).';
++const RAW = 'Only src/ipc/index.ts may import the raw Tauri transport; use the validated HostApi.';
++const OUTSIDE =
++  'Modules under src/ may import only modules under src/ (tests: also <repo>/tests/ and desktop/boundary/).';
++
++/** Import-like source literals: static import, export-from, export-star, dynamic import(). */
++const SOURCE =
++  ':matches(ImportDeclaration, ExportNamedDeclaration, ExportAllDeclaration, ImportExpression) > Literal';
++// esquery regexes cannot contain '/', so path separators are written \x2F.
++const up = (n) => `(\\.\\.\\x2F){${n}}`;
++const SEGMENT = '[^.\\x2F\\\\][^\\x2F\\\\]*';
++// `.` alone (the folder's index) is allowed; `..` alone is not (it could leave src/ without a trailing slash).
++const CANONICAL_RELATIVE = `^(\\.|(\\.\\x2F|(\\.\\.\\x2F)+)(${SEGMENT}\\x2F)*${SEGMENT})$`;
++
++const baseSyntax = [
++  { selector: 'ImportExpression[source.value=/^@tauri-apps/]', message: HOST },
++  {
++    selector: "ImportExpression:not([source.type='Literal'])",
++    message: 'import() needs a literal module specifier so the IPC boundary can be checked.',
++  },
++  { selector: "CallExpression[callee.name='require']", message: `ES modules only; no require(). ${HOST}` },
++  {
++    selector: 'MemberExpression[property.name=/^glob/]:has(MetaProperty)',
++    message: `import.meta.glob is not used in this code base. ${HOST}`,
++  },
++  {
++    // import.meta only as import.meta.env / .url / .hot / .dirname / .filename, so it cannot be aliased to .glob.
++    selector:
++      'MetaProperty:not(MemberExpression[property.name=/^(env|url|hot|dirname|filename)$/] > MetaProperty)',
++    message: 'Use import.meta only as import.meta.env, .url, .hot, .dirname or .filename.',
++  },
++  { selector: 'Literal[value=/^@tauri-apps/]', message: HOST },
++  { selector: 'TemplateElement[value.raw=/@tauri-apps|__TAURI/]', message: HOST },
++  { selector: 'Identifier[name=/^__TAURI/]', message: HOST },
++  { selector: 'Literal[value=/^__TAURI/]', message: HOST },
++  // Static imports of the transport are covered by no-restricted-imports (which src/ipc/index.ts is exempt from).
++  { selector: 'ImportExpression > Literal[value=/tauriTransport/]', message: RAW },
++  {
++    selector: `${SOURCE}[value=/^(\\x2F|[A-Za-z]:|file:|data:|https?:|virtual:)/]`,
++    message: 'No absolute, drive, file:, data:, http(s): or virtual: module specifiers.',
++  },
++  { selector: `${SOURCE}[value=/\\\\/]`, message: 'Module specifiers use forward slashes.' },
++  {
++    selector: `${SOURCE}[value=/^\\./]:not([value=/${CANONICAL_RELATIVE}/])`,
++    message: 'Relative specifiers must be canonical: ./x or ../x with no ./ or ../ segments after a name.',
++  },
++];
++
++function restrictedImports({ allowTransport }) {
++  const patterns = [{ group: ['@tauri-apps/*', '@tauri-apps'], message: HOST }];
++  if (!allowTransport) patterns.push({ group: ['**/tauriTransport', '**/tauriTransport.*'], message: RAW });
++  return ['error', { patterns }];
++}
++
++/** Rule names whose inline disabling is forbidden. */
++export const BOUNDARY_RULE_NAMES = [
++  'no-restricted-imports',
++  'no-restricted-syntax',
++  'no-restricted-globals',
++  'no-eval',
++  'no-new-func',
++];
++
++export const ipcBoundaryRules = {
++  'no-restricted-imports': restrictedImports({ allowTransport: false }),
++  'no-restricted-syntax': ['error', ...baseSyntax],
++  'no-restricted-globals': ['error', ...TAURI_GLOBALS.map((name) => ({ name, message: HOST }))],
++  'no-eval': 'error',
++  'no-new-func': 'error',
++};
++
++/** Rules switched off for the transport implementation and the sample-holding boundary tests. */
++export const ipcBoundaryExemption = Object.fromEntries(
++  Object.keys(ipcBoundaryRules).map((rule) => [rule, 'off']),
++);
++
++/**
++ * Builds the boundary part of the flat config. `commentsPlugin` is @eslint-community/eslint-plugin-eslint-comments.
++ */
++export function ipcBoundaryConfig(commentsPlugin) {
++  const blocks = [
++    {
++      // Every JS/TS file of the desktop package.
++      files: [`**/*.${EXT}`],
++      plugins: { '@eslint-community/eslint-comments': commentsPlugin },
++      linterOptions: { reportUnusedDisableDirectives: 'error' },
++      rules: {
++        ...ipcBoundaryRules,
++        '@eslint-community/eslint-comments/no-unlimited-disable': 'error',
++        '@eslint-community/eslint-comments/no-restricted-disable': [
++          'error',
++          ...BOUNDARY_RULE_NAMES,
++          '@eslint-community/eslint-comments/*',
++        ],
++      },
++    },
++  ];
++  // Per-depth "stay inside src/" rules. A file at src/<d dirs>/f may climb at most d levels.
++  for (let d = 0; d <= MAX_SRC_DEPTH; d++) {
++    const dirs = '*/'.repeat(d);
++    blocks.push({
++      files: [`src/${dirs}*.${EXT}`],
++      rules: {
++        'no-restricted-syntax': [
++          'error',
++          ...baseSyntax,
++          { selector: `${SOURCE}[value=/^${up(d + 1)}/]`, message: OUTSIDE },
++        ],
++      },
++    });
++    blocks.push({
++      // Test files: d + 1 levels reach desktop/; from there only boundary/ or ../tests/ (the repository tests).
++      files: [`src/${dirs}*.test.${EXT}`],
++      rules: {
++        'no-restricted-syntax': [
++          'error',
++          ...baseSyntax,
++          {
++            selector: `${SOURCE}[value=/^${up(d + 1)}(?!boundary\\x2F|\\.\\.\\x2Ftests\\x2F)/]`,
++            message: OUTSIDE,
++          },
++        ],
++      },
++    });
++  }
++  blocks.push(
++    {
++      files: [IPC_INDEX_FILE],
++      rules: { 'no-restricted-imports': restrictedImports({ allowTransport: true }) },
++    },
++    { files: [TRANSPORT_FILE, ...SAMPLE_FILES, 'boundary/**'], rules: ipcBoundaryExemption },
++  );
++  return blocks;
++}
+diff --git a/desktop/boundary/vite-plugin.ts b/desktop/boundary/vite-plugin.ts
+new file mode 100644
+index 0000000..6c0bc28
+--- /dev/null
++++ b/desktop/boundary/vite-plugin.ts
+@@ -0,0 +1,123 @@
++// The front-end IPC boundary, bundler half (C01-R2-01). Used by vite.config.ts for dev, build and Vitest, so a
++// bypass that slips past the linter (another file extension, a suppressed rule, a module outside src/) still cannot
++// be bundled. Checks are made on RESOLVED module ids, not on how a specifier is spelled:
++//   1. A module inside an @tauri-apps package may be imported only by src/ipc/tauriTransport.ts (or by the package
++//      itself).
++//   2. src/ipc/tauriTransport.ts may be imported only by src/ipc/index.ts.
++//   3. Every application module (anything outside node_modules) must be desktop/index.html or live under
++//      desktop/src/. Under Vitest only, test code may also load <repo>/tests/ and desktop/boundary/.
++//   4. Application modules other than the transport may not mention the Tauri globals (__TAURI*) or the
++//      @tauri-apps package names in their source at all.
++// The rule and file lists are shared with the lint half (./eslint.js).
++import { existsSync } from 'node:fs';
++import path from 'node:path';
++import { fileURLToPath } from 'node:url';
++
++import type { Plugin } from 'vite';
++
++import { IPC_INDEX_FILE, SAMPLE_FILES, TRANSPORT_FILE } from './eslint.js';
++
++export interface IpcBoundaryOptions {
++  /** Vitest only: allow test code to load the repository's tests/ folder and desktop/boundary/. */
++  allowTestSupport: boolean;
++  /** The desktop package directory (default: the parent of this file). */
++  desktopDir?: string;
++}
++
++const slash = (p: string) => p.replaceAll('\\', '/');
++const TAURI_PACKAGE = /\/node_modules\/@tauri-apps\//;
++const TAURI_TEXT = /__TAURI|@tauri-apps/;
++
++export function ipcBoundary(options: IpcBoundaryOptions): Plugin {
++  const desktop = slash(
++    options.desktopDir ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'),
++  );
++  const repo = slash(path.dirname(desktop));
++  const src = `${desktop}/src/`;
++  const transport = `${desktop}/${TRANSPORT_FILE}`;
++  const index = `${desktop}/${IPC_INDEX_FILE}`;
++  const indexHtml = `${desktop}/index.html`;
++  const samples = new Set(SAMPLE_FILES.map((f) => `${desktop}/${f}`));
++  const testSupport = [`${repo}/tests/`, `${desktop}/boundary/`];
++
++  /** The on-disk path of a module id, or null for virtual/internal modules. */
++  function filePath(id: string | undefined): string | null {
++    if (!id || id.startsWith('\0') || id.startsWith('/@') || id.startsWith('virtual:')) return null;
++    const p = slash(id.split('?')[0] ?? id);
++    return path.isAbsolute(p) && existsSync(p) ? p : null;
++  }
++
++  const inNodeModules = (p: string) => p.includes('/node_modules/');
++  const isApplicationModuleAllowed = (p: string) =>
++    p === indexHtml ||
++    p.startsWith(src) ||
++    (options.allowTestSupport && testSupport.some((d) => p.startsWith(d)));
++
++  /** `edge` is false for the dev server's URL re-resolution of an already-resolved module (see resolveId). */
++  function violation(
++    resolved: string,
++    importer: string | null,
++    source: string,
++    edge: boolean,
++  ): string | null {
++    const from = importer ?? '(entry)';
++    if (
++      edge &&
++      TAURI_PACKAGE.test(resolved) &&
++      importer !== transport &&
++      !(importer && TAURI_PACKAGE.test(importer))
++    ) {
++      return `${from} imports ${source}; only ${TRANSPORT_FILE} may load @tauri-apps packages`;
++    }
++    if (edge && resolved === transport && importer !== index) {
++      return `${from} imports the raw transport; only ${IPC_INDEX_FILE} may (use the validated HostApi)`;
++    }
++    if (!inNodeModules(resolved) && !isApplicationModuleAllowed(resolved)) {
++      return `${from} loads ${resolved}, which is outside desktop/src`;
++    }
++    if (importer && !inNodeModules(importer) && !isApplicationModuleAllowed(importer)) {
++      return `${importer} is outside desktop/src and may not import application code`;
++    }
++    return null;
++  }
++
++  return {
++    name: 'toontown-ipc-boundary',
++    enforce: 'pre',
++    async resolveId(source, importer, resolveOptions) {
++      if (source.startsWith('\0')) return null;
++      const resolved = await this.resolve(source, importer, { ...resolveOptions, skipSelf: true });
++      if (!resolved || resolved.external) return resolved;
++      const p = filePath(resolved.id);
++      if (p) {
++        // The dev server and Vitest re-resolve already-resolved modules by absolute URL with index.html as a
++        // placeholder importer. That is not an import edge (the real edge was checked when the importing module
++        // resolved its own specifier), so only the location rule applies to it. index.html's one real import,
++        // /src/main.tsx, needs no importer rule.
++        const from = filePath(importer);
++        const reResolution =
++          from === indexHtml && /^(\/|[A-Za-z]:)/.test(source) && source !== '/src/main.tsx';
++        const problem = reResolution ? violation(p, null, source, false) : violation(p, from, source, true);
++        if (problem) this.error(`IPC boundary: ${problem}`);
++      }
++      return resolved;
++    },
++    transform(code, id) {
++      const p = filePath(id);
++      // The boundary definitions themselves contain the patterns they forbid.
++      if (
++        !p ||
++        inNodeModules(p) ||
++        p === transport ||
++        samples.has(p) ||
++        p.startsWith(`${desktop}/boundary/`)
++      ) {
++        return null;
++      }
++      if (TAURI_TEXT.test(code)) {
++        this.error(`IPC boundary: ${p} mentions __TAURI* or @tauri-apps; only ${TRANSPORT_FILE} may`);
++      }
++      return null;
++    },
++  };
++}
+diff --git a/desktop/eslint.config.js b/desktop/eslint.config.js
+index 1d065ad..98b9e72 100644
+--- a/desktop/eslint.config.js
++++ b/desktop/eslint.config.js
+@@ -4,7 +4,9 @@ import reactRefresh from 'eslint-plugin-react-refresh';
+ import globals from 'globals';
+ import tseslint from 'typescript-eslint';
+ 
+-import { ipcBoundaryExemption, ipcBoundaryRules } from './eslint.ipc-boundary.js';
++import comments from '@eslint-community/eslint-plugin-eslint-comments';
++
++import { ipcBoundaryConfig } from './boundary/eslint.js';
+ 
+ export default tseslint.config(
+   { ignores: ['dist', 'src-tauri', 'node_modules', 'coverage'] },
+@@ -23,18 +25,15 @@ export default tseslint.config(
+       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
+     },
+   },
++  // The IPC boundary: every JS/TS file of the package (boundary/eslint.js).
++  ...ipcBoundaryConfig(comments),
+   {
+-    // The host is reached only through src/ipc (swappable transport). See eslint.ipc-boundary.js.
+-    files: ['src/**/*.{ts,tsx}'],
+-    rules: ipcBoundaryRules,
+-  },
+-  {
+-    // The transport implementation, and the test that exercises the boundary rules with bypass samples.
+-    files: ['src/ipc/tauriTransport.ts', 'src/ipc/boundary.lint.test.ts'],
+-    rules: ipcBoundaryExemption,
++    // JavaScript files are not in a TypeScript project: lint them without type information.
++    files: ['**/*.{js,jsx,mjs,cjs}'],
++    extends: [tseslint.configs.disableTypeChecked],
+   },
+   {
+-    files: ['*.config.{js,ts}', 'eslint.*.js'],
++    files: ['*.config.{js,ts}', 'boundary/**'],
+     languageOptions: { globals: globals.node },
+     extends: [tseslint.configs.disableTypeChecked],
+   },
+diff --git a/desktop/eslint.ipc-boundary.d.ts b/desktop/eslint.ipc-boundary.d.ts
+deleted file mode 100644
+index ee53692..0000000
+--- a/desktop/eslint.ipc-boundary.d.ts
++++ /dev/null
+@@ -1,6 +0,0 @@
+-// Types for eslint.ipc-boundary.js (imported by src/ipc/boundary.lint.test.ts).
+-import type { Linter } from 'eslint';
+-
+-export declare const TAURI_GLOBALS: string[];
+-export declare const ipcBoundaryRules: Linter.RulesRecord;
+-export declare const ipcBoundaryExemption: Linter.RulesRecord;
+diff --git a/desktop/eslint.ipc-boundary.js b/desktop/eslint.ipc-boundary.js
+deleted file mode 100644
+index 2cb4551..0000000
+--- a/desktop/eslint.ipc-boundary.js
++++ /dev/null
+@@ -1,44 +0,0 @@
+-// The front-end IPC boundary (ADR-0001, src/ipc/README.md): only src/ipc/tauriTransport.ts may reach Tauri.
+-// Covered forms: static import / export-from / import type; dynamic import(); require(); import.meta.glob; any
+-// string or template literal naming an @tauri-apps package; the injected globals window.__TAURI__* (identifier,
+-// property and computed-literal access). Deliberate obfuscation (e.g. a computed property built at run time) cannot
+-// be detected statically; non-literal import() specifiers, eval and new Function are therefore banned outright.
+-// The permanent positive/negative cases are in src/ipc/boundary.lint.test.ts.
+-
+-const HOST = 'Talk to the Rust host only through src/ipc (createHostApi / useHost).';
+-
+-export const TAURI_GLOBALS = ['__TAURI__', '__TAURI_INTERNALS__', '__TAURI_IPC__', '__TAURI_METADATA__'];
+-
+-export const ipcBoundaryRules = {
+-  'no-restricted-imports': ['error', { patterns: [{ group: ['@tauri-apps/*'], message: HOST }] }],
+-  'no-restricted-syntax': [
+-    'error',
+-    { selector: 'ImportExpression[source.value=/^@tauri-apps/]', message: HOST },
+-    {
+-      selector: "ImportExpression:not([source.type='Literal'])",
+-      message: 'import() needs a literal module specifier so the IPC boundary can be checked.',
+-    },
+-    { selector: "CallExpression[callee.name='require']", message: `ES modules only; no require(). ${HOST}` },
+-    {
+-      selector: 'MemberExpression[property.name=/^glob/]:has(MetaProperty)',
+-      message: `import.meta.glob is not used in this code base. ${HOST}`,
+-    },
+-    {
+-      // import.meta only as import.meta.env / .url / .hot, so it cannot be aliased to reach .glob.
+-      selector: 'MetaProperty:not(MemberExpression[property.name=/^(env|url|hot)$/] > MetaProperty)',
+-      message: 'Use import.meta only as import.meta.env, import.meta.url or import.meta.hot.',
+-    },
+-    { selector: 'Literal[value=/^@tauri-apps/]', message: HOST },
+-    { selector: 'TemplateElement[value.raw=/@tauri-apps|__TAURI/]', message: HOST },
+-    { selector: 'Identifier[name=/^__TAURI/]', message: HOST },
+-    { selector: 'Literal[value=/^__TAURI/]', message: HOST },
+-  ],
+-  'no-restricted-globals': ['error', ...TAURI_GLOBALS.map((name) => ({ name, message: HOST }))],
+-  'no-eval': 'error',
+-  'no-new-func': 'error',
+-};
+-
+-/** Rules switched off for the one file that implements the Tauri transport. */
+-export const ipcBoundaryExemption = Object.fromEntries(
+-  Object.keys(ipcBoundaryRules).map((rule) => [rule, 'off']),
+-);
+diff --git a/desktop/package.json b/desktop/package.json
+index 7ab14ab..b48cdc4 100644
+--- a/desktop/package.json
++++ b/desktop/package.json
+@@ -21,6 +21,7 @@
+     "react-dom": "19.3.1"
+   },
+   "devDependencies": {
++    "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
+     "@eslint/js": "10.0.1",
+     "@tauri-apps/cli": "2.12.3",
+     "@testing-library/react": "16.3.3",
+diff --git a/desktop/src/ipc/README.md b/desktop/src/ipc/README.md
+index 7edf00e..350d81a 100644
+--- a/desktop/src/ipc/README.md
++++ b/desktop/src/ipc/README.md
+@@ -2,11 +2,15 @@
+ 
+ - `transport.ts` — `HostTransport`: `invoke(command, args) → Promise<unknown>` and `listen(event, handler)`.
+   Transports deal in `unknown`; nothing is trusted until `hostApi.ts` validates it.
+-- `tauriTransport.ts` — the Tauri implementation. **The only file allowed to import `@tauri-apps/*`** (ESLint
+-  `no-restricted-imports`).
++- `tauriTransport.ts` — the Tauri implementation. **The only file allowed to load the Tauri packages, and only
++  `index.ts` may import it.** Enforced by the bundler (`../../boundary/vite-plugin.ts`, dev/build/Vitest) and by
++  the linter (`../../boundary/eslint.js`, every JS/TS extension, inline disables forbidden).
+ - `mockTransport.ts` — in-memory host for tests and for `pnpm dev` in a plain browser.
+-- `hostApi.ts` — the typed API UI code uses (`ping`, `appInfo`, `onMenuCommand`, M0 diagnostics), with response and
+-  event validation and error mapping to `HostError` (stable dotted `code`, 11 §10).
++- `hostApi.ts` — the typed API UI code uses (`ping`, `appInfo`, `onMenuCommand`, M0 diagnostics). Every response
++  and event is checked to be plain data, snapshotted, validated against its schema and only then returned; errors
++  map to `HostError` (stable dotted `code`, 11 §10).
++- `schema.ts`, `wireSchemas.ts` — the JSON-Schema-subset validator (own-property semantics only) and the wire
++  schemas; replaced by registry-generated schemas in M1.
+ - `types.ts` — wire types mirroring the Rust side. Hand-written in M0; generated from the registry's JSON Schemas
+   from M1.
+ - `context.ts` / `react.tsx` — `HostProvider` and `useHost()`.
+diff --git a/desktop/src/ipc/boundary.build.test.ts b/desktop/src/ipc/boundary.build.test.ts
+new file mode 100644
+index 0000000..5d2e3e1
+--- /dev/null
++++ b/desktop/src/ipc/boundary.build.test.ts
+@@ -0,0 +1,125 @@
++// @vitest-environment node
++/// <reference types="node" />
++// Build-level proof of the IPC boundary (boundary/vite-plugin.ts; C01-R2-01): each bypass class is bundled with the
++// project's REAL Vite config in production mode and must fail with an "IPC boundary" error, whatever the linter
++// says. Positive controls prove that legitimate code still builds.
++import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
++import { fileURLToPath } from 'node:url';
++
++import { build } from 'vite';
++import { afterAll, describe, expect, it } from 'vitest';
++
++const desktop = fileURLToPath(new URL('../../', import.meta.url));
++const probes = `${desktop}src/__probes__/build-${String(process.pid)}/`;
++const T = 120_000;
++
++afterAll(() => {
++  rmSync(probes, { recursive: true, force: true });
++});
++
++/** Bundles `code` as a library entry with the real config; resolves to the emitted code or rejects. */
++async function bundle(name: string, code: string): Promise<string> {
++  mkdirSync(probes, { recursive: true });
++  const entry = `${probes}${name}`;
++  writeFileSync(entry, code);
++  const result = await build({
++    configFile: `${desktop}vite.config.ts`,
++    root: desktop,
++    mode: 'production',
++    logLevel: 'silent',
++    build: {
++      write: false,
++      minify: false,
++      sourcemap: false,
++      lib: { entry, formats: ['es'], fileName: 'probe' },
++    },
++  });
++  const outputs = (Array.isArray(result) ? result : [result]).flatMap((r) => ('output' in r ? r.output : []));
++  return outputs.map((o) => (o.type === 'chunk' ? o.code : '')).join('\n');
++}
++
++const TAURI = ['@tauri-apps', 'api', 'core'].join('/');
++const DIRECT = `import { invoke } from '${TAURI}';\nexport const b = () => invoke('app_info');\n`;
++const INTERNALS = ['__TAURI', '_INTERNALS__'].join('');
++
++// Probe entries live in src/__probes__/build-<pid>/, so `../../` is src/ and `../../../` is desktop/.
++const BYPASSES: Record<string, [file: string, code: string]> = {
++  'static import (.ts)': ['static.ts', DIRECT],
++  'static import (.tsx)': ['static-tsx.tsx', DIRECT],
++  'static import (.mts)': ['static-mts.mts', DIRECT],
++  'static import (.cts)': ['static-cts.cts', DIRECT],
++  'static import (.js)': ['static-js.js', DIRECT],
++  'static import (.jsx)': ['static-jsx.jsx', DIRECT],
++  'static import (.mjs)': ['static-mjs.mjs', DIRECT],
++  'require (.cjs)': [
++    'require.cjs',
++    `const { invoke } = require('${TAURI}');\nmodule.exports = () => invoke('app_info');\n`,
++  ],
++  'lint suppressed with eslint-disable': ['suppressed.ts', `/* eslint-disable */\n${DIRECT}`],
++  'dynamic import': [
++    'dynamic.ts',
++    `export const b = async () => (await import('${TAURI}')).invoke('app_info');\n`,
++  ],
++  're-export': ['reexport.ts', `export { invoke } from '${TAURI}';\n`],
++  'import.meta.glob of the package': [
++    'glob.ts',
++    `export const m = import.meta.glob('/node_modules/@tauri-apps/api/*.js', { eager: true });\n`,
++  ],
++  'Tauri global': [
++    'global.ts',
++    `export const t = () => (window as unknown as Record<string, unknown>)['${INTERNALS}'];\n`,
++  ],
++  'raw transport import': [
++    'raw.ts',
++    `import { createTauriTransport } from '../../ipc/tauriTransport';\nexport const b = () => createTauriTransport().invoke('app_info');\n`,
++  ],
++  'raw transport dynamic import': [
++    'raw-dynamic.ts',
++    `export const b = async () => (await import('../../ipc/tauriTransport')).createTauriTransport();\n`,
++  ],
++  'module outside desktop (repo tests fixture)': [
++    'outside-repo.ts',
++    `export { outsideBypass } from '../../../../tests/adversarial/fixtures/c01-r2-outside.mts';\n`,
++  ],
++  'module outside src (desktop tooling)': [
++    'outside-desktop.ts',
++    `export * from '../../../boundary/eslint.js';\n`,
++  ],
++};
++
++describe('IPC boundary at bundle time', () => {
++  for (const [name, [file, code]] of Object.entries(BYPASSES)) {
++    it(
++      `refuses to bundle: ${name}`,
++      async () => {
++        await expect(bundle(file, code)).rejects.toThrow(/IPC boundary/);
++      },
++      T,
++    );
++  }
++
++  it(
++    'builds code that uses the validated host API (positive control)',
++    async () => {
++      const out = await bundle(
++        'host-api.ts',
++        `import { createDefaultHostApi } from '../../ipc';\nexport const b = () => createDefaultHostApi().appInfo();\n`,
++      );
++      // The legitimate path still reaches the transport through src/ipc/index.ts.
++      expect(out).toContain('app_info');
++    },
++    T,
++  );
++
++  it(
++    'builds plain code inside src (positive control)',
++    async () => {
++      const out = await bundle(
++        'plain.ts',
++        `import { summarize } from '../../lib/latency';\nexport const s = summarize([1]);\n`,
++      );
++      expect(out).toContain('summarize');
++    },
++    T,
++  );
++});
+diff --git a/desktop/src/ipc/boundary.lint.test.ts b/desktop/src/ipc/boundary.lint.test.ts
+index d27ce98..3f9ca3b 100644
+--- a/desktop/src/ipc/boundary.lint.test.ts
++++ b/desktop/src/ipc/boundary.lint.test.ts
+@@ -1,35 +1,59 @@
+ // @vitest-environment node
+ /// <reference types="node" />
+-// Permanent positive and negative cases for the IPC boundary lint (eslint.ipc-boundary.js, C01-R1-02). Each case is
+-// linted with the project's real ESLint configuration as if it were a file inside src/.
++// Permanent positive and negative cases for the IPC boundary lint (boundary/eslint.js; C01-R1-02, C01-R2-01). Each
++// case is linted with the project's real ESLint configuration as a file inside the desktop package.
++import { execFileSync } from 'node:child_process';
++import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
++import { dirname } from 'node:path';
+ import { fileURLToPath } from 'node:url';
+ 
+ import { ESLint } from 'eslint';
+-import { describe, expect, it } from 'vitest';
++import { afterAll, describe, expect, it } from 'vitest';
+ 
+-import { ipcBoundaryRules } from '../../eslint.ipc-boundary.js';
++import { EXTENSIONS, ipcBoundaryRules, MAX_SRC_DEPTH } from '../../boundary/eslint.js';
+ 
+ const desktop = fileURLToPath(new URL('../../', import.meta.url));
++const probes = `${desktop}src/__probes__/lint-${String(process.pid)}/`;
+ const eslint = new ESLint({ cwd: desktop });
+ const BOUNDARY_RULES = new Set(Object.keys(ipcBoundaryRules));
++const COMMENTS = '@eslint-community/eslint-comments/';
+ 
+-/** Lints `code` as the given src file and returns the boundary-rule violations. */
+-async function boundaryViolations(code: string, file = 'src/lib/latency.ts'): Promise<string[]> {
+-  const [result] = await eslint.lintText(code, { filePath: `${desktop}${file}` });
++afterAll(() => {
++  rmSync(probes, { recursive: true, force: true });
++});
++
++function boundaryHits(result: ESLint.LintResult | undefined): string[] {
+   const fatal = result?.messages.filter((m) => m.fatal) ?? [];
+   if (fatal.length > 0)
+     throw new Error(`lint failed to parse the case: ${fatal.map((m) => m.message).join('; ')}`);
+   return (result?.messages ?? [])
+-    .filter((m) => m.ruleId && BOUNDARY_RULES.has(m.ruleId))
+-    .map((m) => m.ruleId ?? '');
++    .map((m) => m.ruleId ?? '')
++    .filter((id) => BOUNDARY_RULES.has(id) || id.startsWith(COMMENTS));
++}
++
++/** Lints `code` as if it were the given (existing) file and returns the boundary-rule violations. */
++async function lintAs(code: string, file = 'src/lib/latency.ts'): Promise<string[]> {
++  const [result] = await eslint.lintText(code, { filePath: `${desktop}${file}` });
++  return boundaryHits(result);
++}
++
++/** Writes `code` to a new probe file under src/__probes__/ and lints it from disk. */
++async function lintFile(relative: string, code: string): Promise<string[]> {
++  const file = `${probes}${relative}`;
++  mkdirSync(dirname(file), { recursive: true });
++  writeFileSync(file, code);
++  const [result] = await eslint.lintFiles([file]);
++  return boundaryHits(result);
+ }
+ 
+ const TAURI = ['@tauri-apps', 'api', 'core'].join('/');
+ const GLOBAL = ['__TAURI', '__'].join('');
+ const INTERNALS = ['__TAURI', '_INTERNALS__'].join('');
++const DIRECT = `import { invoke } from '${TAURI}';\nexport const f = () => invoke('app_info');\n`;
++const T = 120_000;
+ 
+ const BYPASSES: Record<string, string> = {
+-  'static import': `import { invoke } from '${TAURI}';\nexport const f = () => invoke('app_info');\n`,
++  'static import': DIRECT,
+   'type-only import': `import type { InvokeArgs } from '${TAURI}';\nexport type A = InvokeArgs;\n`,
+   're-export': `export { invoke } from '${TAURI}';\n`,
+   'export star': `export * from '${TAURI}';\n`,
+@@ -38,49 +62,172 @@ const BYPASSES: Record<string, string> = {
+   'dynamic import via variable': `const spec = '${TAURI}';\nexport const f = () => import(spec);\n`,
+   'dynamic import via concatenation': `export const f = () => import('@tauri' + '-apps/api/core');\n`,
+   require: `declare const require: (id: string) => unknown;\nexport const m = require('${TAURI}');\n`,
+-  'import.meta.glob': `export const m = import.meta.glob('/node_modules/@tauri*');
+-`,
+-  'import.meta.glob through a cast': `export const m = (import.meta as unknown as { glob(p: string): unknown }).glob('/node_modules/@tauri*');
+-`,
+-  'aliased import.meta': `const meta: unknown = import.meta;
+-export const m = meta;
+-`,
++  'import.meta.glob': `export const m = import.meta.glob('/node_modules/@tauri*');\n`,
++  'import.meta.glob through a cast': `export const m = (import.meta as unknown as { glob(p: string): unknown }).glob('/node_modules/@tauri*');\n`,
++  'aliased import.meta': `const meta: unknown = import.meta;\nexport const m = meta;\n`,
+   'window global': `export const t = (window as unknown as Record<string, unknown>).${GLOBAL};\n`,
+   'computed window global': `export const t = (window as unknown as Record<string, unknown>)['${INTERNALS}'];\n`,
+   'bare global': `declare const ${INTERNALS}: unknown;\nexport const t = ${INTERNALS};\n`,
+   'in operator': `export const has = '${INTERNALS}' in window;\n`,
+   eval: `export const f = () => eval('1');\n`,
+   'new Function': `export const f = new Function('return 1');\n`,
++  'raw transport (static)': `import { createTauriTransport } from '../ipc/tauriTransport';\nexport const f = () => createTauriTransport().invoke('app_info');\n`,
++  'raw transport (dynamic)': `export const f = async () => (await import('../ipc/tauriTransport')).createTauriTransport();\n`,
++  'raw transport (re-export)': `export * from '../ipc/tauriTransport';\n`,
++  'raw transport (with extension)': `export { createTauriTransport } from '../ipc/tauriTransport.ts';\n`,
++  'absolute specifier': `export * from '/src/ipc';\n`,
++  'drive specifier': `export * from 'C:/src/ipc';\n`,
++  'file: specifier': `export * from 'file:///src/ipc';\n`,
++  'backslash specifier': `export * from '..\\\\ipc';\n`,
++  'non-canonical relative': `export * from '../ipc/../ipc';\n`,
++  'bare parent': `export * from '..';\n`,
++  'outside src (desktop root)': `export * from '../../vite.config';\n`,
++  'outside desktop (repo tests)': `export * from '../../../tests/adversarial/fixtures/c01-r2-outside.mts';\n`,
++};
++
++const DISABLES: Record<string, string> = {
++  'blanket block disable': `/* eslint-disable */\n${DIRECT}`,
++  'blanket line disable': `import { invoke } from '${TAURI}'; // eslint-disable-line\nexport const f = () => invoke('x');\n`,
++  'next-line disable of the rule': `// eslint-disable-next-line no-restricted-imports\n${DIRECT}`,
++  'block disable of several boundary rules': `/* eslint-disable no-restricted-imports, no-restricted-syntax */\n${DIRECT}`,
++  'disable of the comments rule itself': `/* eslint-disable ${COMMENTS}no-restricted-disable */\n${DIRECT}`,
++  'disable of no-eval': `// eslint-disable-next-line no-eval\nexport const f = () => eval('1');\n`,
+ };
+ 
+-describe('IPC boundary lint', () => {
++describe('IPC boundary lint: rejected forms', () => {
+   for (const [name, code] of Object.entries(BYPASSES)) {
+-    it(`rejects ${name} outside src/ipc/tauriTransport.ts`, async () => {
+-      expect(await boundaryViolations(code)).not.toEqual([]);
+-    }, 60_000);
++    it(
++      `rejects ${name} in ordinary src code`,
++      async () => {
++        expect(await lintAs(code)).not.toEqual([]);
++      },
++      T,
++    );
++  }
++
++  for (const [name, code] of Object.entries(DISABLES)) {
++    it(
++      `rejects ${name}`,
++      async () => {
++        // The disable either is reported itself (eslint-comments) or fails to silence the boundary; lint fails.
++        const hits = await lintAs(code);
++        expect(hits).not.toEqual([]);
++        if (!name.includes('comments rule'))
++          expect(
++            hits.some((id) => id.startsWith(COMMENTS)),
++            hits.join(','),
++          ).toBe(true);
++      },
++      T,
++    );
+   }
+ 
+-  it('accepts the transport file itself', async () => {
+-    const code = `import { invoke } from '${TAURI}';\nexport const f = () => invoke('app_info');\n`;
+-    expect(await boundaryViolations(code, 'src/ipc/tauriTransport.ts')).toEqual([]);
+-  }, 60_000);
+-
+-  it('accepts ordinary code that goes through the host API', async () => {
+-    const code = `import { useHost } from '../ipc';
+-export const f = () => useHost().appInfo();
+-export const lazy = () => import('../ipc');
+-export const dev = import.meta.env.DEV;
+-`;
+-    expect(await boundaryViolations(code)).toEqual([]);
+-  }, 60_000);
+-
+-  it('accepts the real source tree', async () => {
+-    const results = await eslint.lintFiles(['src/**/*.{ts,tsx}']);
+-    const hits = results.flatMap((r) =>
+-      r.messages
+-        .filter((m) => m.ruleId && BOUNDARY_RULES.has(m.ruleId))
+-        .map((m) => `${r.filePath}: ${m.message}`),
++  for (const ext of EXTENSIONS) {
++    it(
++      `covers .${ext} files`,
++      async () => {
++        const code =
++          ext === 'cjs'
++            ? `const { invoke } = require('${TAURI}');\nmodule.exports = () => invoke('app_info');\n`
++            : DIRECT;
++        // Distinct base names: TypeScript keeps only one of probe.ts / probe.tsx in a folder.
++        expect(await lintFile(`ext/probe-${ext}.${ext}`, code)).not.toEqual([]);
++      },
++      T,
+     );
+-    expect(hits).toEqual([]);
+-  }, 120_000);
++  }
++
++  it(
++    'rejects the raw transport inside src/ipc too (only index.ts may import it)',
++    async () => {
++      expect(await lintAs(`export * from './tauriTransport';\n`, 'src/ipc/hostApi.ts')).not.toEqual([]);
++    },
++    T,
++  );
++
++  it(
++    'rejects climbing out of src/ at any depth',
++    async () => {
++      expect(await lintAs(`export * from '../vite.config';\n`, 'src/App.tsx')).not.toEqual([]);
++      expect(await lintFile('a/b/deep.ts', `export * from '../../../../../vite.config';\n`)).not.toEqual([]);
++    },
++    T,
++  );
++
++  it(
++    'test files may reach only tests/ and boundary/ outside src/',
++    async () => {
++      expect(await lintAs(`export * from '../../vite.config';\n`, 'src/ipc/hostApi.test.ts')).not.toEqual([]);
++      expect(await lintAs(`export * from '../../../crates/x';\n`, 'src/ipc/hostApi.test.ts')).not.toEqual([]);
++      expect(await lintAs(`export * from '../../../../x';\n`, 'src/ipc/hostApi.test.ts')).not.toEqual([]);
++    },
++    T,
++  );
++});
++
++describe('IPC boundary lint: accepted forms', () => {
++  it(
++    'the transport file may import Tauri',
++    async () => {
++      expect(await lintAs(DIRECT, 'src/ipc/tauriTransport.ts')).toEqual([]);
++    },
++    T,
++  );
++
++  it(
++    'src/ipc/index.ts may import the transport',
++    async () => {
++      const code = `import { createTauriTransport } from './tauriTransport';\nexport const t = createTauriTransport;\n`;
++      expect(await lintAs(code, 'src/ipc/index.ts')).toEqual([]);
++    },
++    T,
++  );
++
++  it(
++    'ordinary code using the host API, relative imports inside src/, and import.meta.env',
++    async () => {
++      const code = `import { useHost } from '../ipc';\nexport { HostError } from '../ipc/hostApi';\nexport const f = () => useHost().appInfo();\nexport const lazy = () => import('../ipc');\nexport const dev = import.meta.env.DEV;\n`;
++      expect(await lintAs(code)).toEqual([]);
++      expect(await lintAs(`export * from './ipc';\nexport * from '.';\n`, 'src/App.tsx')).toEqual([]);
++      expect(await lintFile('a/b/deep-ok.ts', `export * from '../../../../ipc';\n`)).toEqual([]);
++    },
++    T,
++  );
++
++  it(
++    'test files may import repository test helpers and the boundary definitions',
++    async () => {
++      const code = `export * from '../../../tests/adversarial/frontend-cases';\nexport * from '../../boundary/eslint.js';\n`;
++      expect(await lintAs(code, 'src/ipc/hostApi.test.ts')).toEqual([]);
++    },
++    T,
++  );
++
++  it(
++    'the committed source tree is clean and no deeper than the per-depth rules cover',
++    async () => {
++      const tracked = execFileSync('git', ['ls-files', '--', 'src', 'boundary', '*.ts', '*.js'], {
++        cwd: desktop,
++        encoding: 'utf8',
++      })
++        .split('\n')
++        .filter((f) => new RegExp(`\\.(${EXTENSIONS.join('|')})$`).test(f));
++      for (const f of tracked.filter((x) => x.startsWith('src/'))) {
++        expect(f.split('/').length - 2, f).toBeLessThanOrEqual(MAX_SRC_DEPTH);
++      }
++      const results = await eslint.lintFiles(tracked.map((f) => `${desktop}${f}`));
++      const hits = results.flatMap((r) => boundaryHits(r).map((id) => `${r.filePath}: ${id}`));
++      expect(hits).toEqual([]);
++    },
++    T,
++  );
++});
++
++describe('public surface of src/ipc', () => {
++  it('does not export the raw transport', async () => {
++    const names = Object.keys(await import('./index'));
++    expect(names).not.toContain('createTauriTransport');
++    expect(names).not.toContain('isTauriRuntime');
++    for (const n of names) expect(n.toLowerCase()).not.toContain('tauri');
++  });
+ });
+diff --git a/desktop/src/ipc/hostApi.ts b/desktop/src/ipc/hostApi.ts
+index 0e65551..09eea75 100644
+--- a/desktop/src/ipc/hostApi.ts
++++ b/desktop/src/ipc/hostApi.ts
+@@ -1,4 +1,5 @@
+-// Typed host API. UI code depends on this interface only, never on a transport or on @tauri-apps/*.
++// Typed host API. UI code depends on this interface only, never on a transport or on the Tauri packages.
++import { certify } from './schema';
+ import type { HostTransport, Unlisten } from './transport';
+ import type { BenchPlan, EngineInfo, ErrorInfo, MenuCommandEvent, PingRequest, PingResponse } from './types';
+ import {
+@@ -56,10 +57,11 @@ async function call<T>(
+   } catch (error: unknown) {
+     throw toHostError(error);
+   }
+-  if (!check(value)) {
++  const data = certify(check, value);
++  if (data === undefined) {
+     throw new HostError({ code: 'ipc.invalidResponse', message: `unexpected response from ${command}` });
+   }
+-  return value;
++  return data;
+ }
+ 
+ export function createHostApi(transport: HostTransport): HostApi {
+@@ -70,7 +72,8 @@ export function createHostApi(transport: HostTransport): HostApi {
+     onMenuCommand: (handler) =>
+       transport.listen(MENU_COMMAND_EVENT, (payload) => {
+         // Malformed events are dropped: they can only come from a host/front-end version mismatch.
+-        if (isMenuCommandEvent(payload)) handler(payload);
++        const event = certify(isMenuCommandEvent, payload);
++        if (event !== undefined) handler(event);
+       }),
+     benchPlan: () => call(transport, 'bench_plan', undefined, isBenchPlanOrNull),
+     benchReport: async (report) => {
+diff --git a/desktop/src/ipc/schema.test.ts b/desktop/src/ipc/schema.test.ts
+index 43d444b..d6cba61 100644
+--- a/desktop/src/ipc/schema.test.ts
++++ b/desktop/src/ipc/schema.test.ts
+@@ -1,7 +1,8 @@
+ import { describe, expect, it } from 'vitest';
+ 
+-import { MOCK_ENGINE_INFO } from './mockTransport';
+-import { MAX_SAFE, U64, violations, type Schema } from './schema';
++import { createMockTransport, MOCK_ENGINE_INFO } from './mockTransport';
++import { createHostApi, MENU_COMMAND_EVENT } from './hostApi';
++import { certify, MAX_DEPTH, MAX_SAFE, plainDataViolations, U64, violations, type Schema } from './schema';
+ import {
+   ENGINE_INFO_FIELDS,
+   isBenchPlanOrNull,
+@@ -86,3 +87,108 @@ describe('wire schemas', () => {
+     expect(isBenchPlanOrNull({ count: 5, payloadBytes: [-1] })).toBe(false);
+   });
+ });
++
++describe('own-property semantics (C01-R2-02)', () => {
++  const inner: Schema = {
++    type: 'object',
++    properties: { seq: U64 },
++    required: ['seq'],
++    additionalProperties: false,
++  };
++  const outer: Schema = {
++    type: 'object',
++    properties: { child: inner, list: { type: 'array', items: inner } },
++    required: ['child'],
++    additionalProperties: false,
++  };
++
++  it('rejects prototype-named keys at every nesting level', () => {
++    for (const key of ['__proto__', 'constructor', 'prototype', 'toString', 'hasOwnProperty', 'valueOf']) {
++      const top = JSON.parse(`{"child":{"seq":1},"${key}":{}}`) as unknown;
++      const nested = JSON.parse(`{"child":{"seq":1,"${key}":1}}`) as unknown;
++      const inArray = JSON.parse(`{"child":{"seq":1},"list":[{"seq":2,"${key}":null}]}`) as unknown;
++      expect(violations(outer, top), key).not.toEqual([]);
++      expect(violations(outer, nested), key).not.toEqual([]);
++      expect(violations(outer, inArray), key).not.toEqual([]);
++    }
++  });
++
++  it('a schema that declares a prototype-named property still validates it as an own key', () => {
++    const s: Schema = {
++      type: 'object',
++      properties: { constructor: U64 },
++      required: ['constructor'],
++      additionalProperties: false,
++    };
++    expect(violations(s, JSON.parse('{"constructor":3}'))).toEqual([]);
++    expect(violations(s, JSON.parse('{"constructor":"x"}'))).not.toEqual([]);
++    expect(violations(s, {})).toEqual(['/constructor: required']);
++  });
++
++  it('rejects Object.create(...) values with inherited fields, at the top and nested', () => {
++    const inherited: unknown = Object.create({ seq: 1 });
++    expect(violations(inner, inherited)).not.toEqual([]);
++    expect(plainDataViolations(inherited)).not.toEqual([]);
++    const withOwn: unknown = Object.assign(Object.create({ extra: 1 }), { seq: 1 });
++    expect(plainDataViolations({ child: withOwn })).not.toEqual([]);
++    expect(
++      certify((v): v is unknown => violations(outer, v).length === 0, { child: withOwn }),
++    ).toBeUndefined();
++    // A null-prototype object holding only own data is plain.
++    const bare = Object.assign(Object.create(null) as object, { seq: 1 });
++    expect(plainDataViolations(bare)).toEqual([]);
++    expect(violations(inner, bare)).toEqual([]);
++  });
++
++  it('rejects Object.create(...) transports through the real host API', async () => {
++    const proto = { seq: 1, payload: null, engineUptimeNs: 0, handlerNs: 0 };
++    const host = createHostApi({
++      ...createMockTransport(),
++      invoke: () => Promise.resolve(Object.create(proto)),
++    });
++    await expect(host.ping({ seq: 1 })).rejects.toMatchObject({ code: 'ipc.invalidResponse' });
++    const transport = createMockTransport();
++    const seen: unknown[] = [];
++    await createHostApi(transport).onMenuCommand((e) => seen.push(e));
++    transport.emit(
++      MENU_COMMAND_EVENT,
++      Object.create({ command: 'workspace.reset', params: {}, handler: 'frontend', milestone: null }),
++    );
++    expect(seen).toEqual([]);
++  });
++
++  it('rejects class instances, accessors, functions, symbols, holes, cycles and excessive depth', () => {
++    class Ping {
++      seq = 1;
++    }
++    expect(plainDataViolations(new Ping())).not.toEqual([]);
++    expect(
++      plainDataViolations(Object.defineProperty({}, 'seq', { get: () => 1, enumerable: true })),
++    ).not.toEqual([]);
++    expect(
++      plainDataViolations(Object.defineProperty({}, 'seq', { value: 1, enumerable: false })),
++    ).not.toEqual([]);
++    expect(plainDataViolations({ f: () => 1 })).not.toEqual([]);
++    expect(plainDataViolations({ [Symbol('s')]: 1 })).not.toEqual([]);
++    const sparse: unknown[] = [1];
++    sparse[2] = 3;
++    expect(plainDataViolations(sparse)).not.toEqual([]);
++    expect(plainDataViolations({ toJSON: () => ({ seq: 1 }) })).not.toEqual([]);
++    const cyclic: Record<string, unknown> = {};
++    cyclic['self'] = cyclic;
++    expect(plainDataViolations(cyclic)).not.toEqual([]);
++    let deep: unknown = 1;
++    for (let i = 0; i <= MAX_DEPTH; i++) deep = [deep];
++    expect(plainDataViolations(deep)).not.toEqual([]);
++    expect(plainDataViolations({ a: [1, 'x', null, true, { b: {} }] })).toEqual([]);
++  });
++
++  it('returns a snapshot: changing the transport object afterwards does not change validated data', async () => {
++    const original = { seq: 1, payload: 'abc', engineUptimeNs: 0, handlerNs: 0 };
++    const host = createHostApi({ ...createMockTransport(), invoke: () => Promise.resolve(original) });
++    const r = await host.ping({ seq: 1 });
++    original.payload = 'tampered';
++    expect(r.payload).toBe('abc');
++    expect(r).not.toBe(original);
++  });
++});
+diff --git a/desktop/src/ipc/schema.ts b/desktop/src/ipc/schema.ts
+index d66c0df..d6571f2 100644
+--- a/desktop/src/ipc/schema.ts
++++ b/desktop/src/ipc/schema.ts
+@@ -2,6 +2,16 @@
+ // Schema (draft 2020-12 keywords: type, properties, required, additionalProperties, enum, items, minimum, maximum,
+ // pattern, anyOf) so that M1 can replace these hand-written schemas with the ones generated from the registry
+ // (11 §7.2, 10 §2.8) without changing the validator or its callers.
++//
++// Two layers, both own-property based (C01-R2-02):
++//   1. `plainDataViolations`: the value must be plain JSON data — null, booleans, strings, finite numbers, arrays and
++//      objects whose prototype is Array.prototype / Object.prototype (or null), holding only own, enumerable,
++//      string-keyed data properties (no accessors, functions, symbols, holes or cycles). Inherited fields therefore
++//      never count, and a key such as `__proto__` or `constructor` is just another own key.
++//   2. `violations`: the schema. Property membership and required fields use `Object.hasOwn` and own-property
++//      descriptors only; nothing is looked up with `in` or bare indexing on a schema map.
++// `certify` checks the original, takes a structured-clone snapshot, validates the snapshot again and returns it, so
++// callers receive exactly the data that was validated.
+ 
+ export type Schema =
+   | { type: 'string'; enum?: readonly string[]; pattern?: string }
+@@ -17,24 +27,70 @@ export type Schema =
+   | { anyOf: readonly Schema[] }
+   | Record<string, never>; // `{}`: any JSON value
+ 
++type AnyOfSchema = Extract<Schema, { anyOf: readonly Schema[] }>;
++type TypedSchema = Extract<Schema, { type: string }>;
++
+ /** Largest integer a JS number holds exactly; Rust u64 values above it cannot cross this boundary losslessly. */
+ export const MAX_SAFE = Number.MAX_SAFE_INTEGER;
+ export const U64: Schema = { type: 'integer', minimum: 0, maximum: MAX_SAFE };
+ export const STRING: Schema = { type: 'string' };
+ export const ANY: Schema = {};
+ 
+-function isPlainObject(v: unknown): v is Record<string, unknown> {
+-  return typeof v === 'object' && v !== null && !Array.isArray(v);
++/** Nesting deeper than this is rejected rather than risking stack exhaustion. */
++export const MAX_DEPTH = 64;
++
++/** The own data value of `key` on `obj`, or undefined; never consults the prototype chain or calls a getter. */
++function ownValue(obj: object, key: string): unknown {
++  const d = Object.getOwnPropertyDescriptor(obj, key);
++  return d && Object.hasOwn(d, 'value') ? d.value : undefined;
++}
++
++function isAnyOf(schema: Schema): schema is AnyOfSchema {
++  return Object.hasOwn(schema, 'anyOf');
++}
++
++function isTyped(schema: Schema): schema is TypedSchema {
++  return Object.hasOwn(schema, 'type');
++}
++
++/** Returns the locations at which `value` is not plain JSON data (empty = plain). */
++export function plainDataViolations(value: unknown, at = '', seen = new Set<object>()): string[] {
++  const here = at || '/';
++  if (value === null || typeof value === 'string' || typeof value === 'boolean') return [];
++  if (typeof value === 'number') return Number.isFinite(value) ? [] : [`${here}: non-finite number`];
++  if (typeof value !== 'object') return [`${here}: ${typeof value} is not JSON data`];
++  if (seen.has(value)) return [`${here}: cycle`];
++  if (seen.size >= MAX_DEPTH) return [`${here}: nested deeper than ${MAX_DEPTH}`];
++  if (Object.getOwnPropertySymbols(value).length > 0) return [`${here}: symbol-keyed property`];
++  const isArray = Array.isArray(value);
++  const proto: unknown = Object.getPrototypeOf(value);
++  if (isArray ? proto !== Array.prototype : proto !== Object.prototype && proto !== null) {
++    return [`${here}: not a plain ${isArray ? 'array' : 'object'}`];
++  }
++  const names = Object.getOwnPropertyNames(value).filter((k) => !(isArray && k === 'length'));
++  if (isArray && names.length !== value.length) return [`${here}: sparse array or extra array property`];
++  seen.add(value);
++  const out: string[] = [];
++  for (const k of names) {
++    const d = Object.getOwnPropertyDescriptor(value, k);
++    if (!d || !Object.hasOwn(d, 'value') || !d.enumerable) {
++      out.push(`${at}/${k}: accessor or non-enumerable property`);
++    } else {
++      out.push(...plainDataViolations(d.value, `${at}/${k}`, seen));
++    }
++  }
++  seen.delete(value);
++  return out;
+ }
+ 
+ /** Returns the JSON-pointer locations at which `value` violates `schema` (empty = valid). */
+ export function violations(schema: Schema, value: unknown, at = ''): string[] {
+-  if ('anyOf' in schema) {
++  if (isAnyOf(schema)) {
+     return schema.anyOf.some((s) => violations(s, value, at).length === 0)
+       ? []
+       : [`${at || '/'}: no anyOf branch`];
+   }
+-  if (!('type' in schema)) return [];
++  if (!isTyped(schema)) return [];
+   const here = at || '/';
+   switch (schema.type) {
+     case 'null':
+@@ -54,15 +110,29 @@ export function violations(schema: Schema, value: unknown, at = ''): string[] {
+       if (schema.maximum !== undefined && value > schema.maximum) return [`${here}: above ${schema.maximum}`];
+       return [];
+     }
+-    case 'array':
+-      if (!Array.isArray(value)) return [`${here}: expected array`];
+-      return value.flatMap((item, i) => violations(schema.items, item, `${at}/${i}`));
++    case 'array': {
++      if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype) {
++        return [`${here}: expected array`];
++      }
++      const out: string[] = [];
++      for (let i = 0; i < value.length; i++) {
++        if (!Object.hasOwn(value, i)) out.push(`${at}/${i}: missing array element`);
++        else out.push(...violations(schema.items, ownValue(value, String(i)), `${at}/${i}`));
++      }
++      return out;
++    }
+     case 'object': {
+-      if (!isPlainObject(value)) return [`${here}: expected object`];
+-      const out = schema.required.filter((k) => !(k in value)).map((k) => `${at}/${k}: required`);
+-      for (const [k, v] of Object.entries(value)) {
+-        const prop = schema.properties[k];
+-        if (prop) out.push(...violations(prop, v, `${at}/${k}`));
++      if (typeof value !== 'object' || value === null || Array.isArray(value))
++        return [`${here}: expected object`];
++      const proto: unknown = Object.getPrototypeOf(value);
++      if (proto !== Object.prototype && proto !== null) return [`${here}: expected plain object`];
++      const out = schema.required.filter((k) => !Object.hasOwn(value, k)).map((k) => `${at}/${k}: required`);
++      for (const k of Object.keys(value)) {
++        const v = ownValue(value, k);
++        const prop = Object.hasOwn(schema.properties, k)
++          ? (ownValue(schema.properties, k) as Schema | undefined)
++          : undefined;
++        if (prop !== undefined) out.push(...violations(prop, v, `${at}/${k}`));
+         else if (schema.additionalProperties === false) out.push(`${at}/${k}: not allowed`);
+         else if (schema.additionalProperties !== true)
+           out.push(...violations(schema.additionalProperties, v, `${at}/${k}`));
+@@ -72,11 +142,27 @@ export function violations(schema: Schema, value: unknown, at = ''): string[] {
+   }
+ }
+ 
++/** Plain data that satisfies `schema` (both layers). */
++export function conforms(schema: Schema, value: unknown): boolean {
++  return plainDataViolations(value).length === 0 && violations(schema, value).length === 0;
++}
++
+ /** A type guard for `T` backed by `schema`. The schema must describe `T`; the wire tests check both agree. */
+ // T is the type the schema certifies; it appears only in the returned predicate by design.
+ // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+ export function guard<T>(schema: Schema): (value: unknown) => value is T {
+-  return (value: unknown): value is T => violations(schema, value).length === 0;
++  return (value: unknown): value is T => conforms(schema, value);
++}
++
++/**
++ * Validates a value received from a transport and returns a snapshot of it, or undefined. The original must be
++ * plain data; the snapshot (a structured clone) is validated again and is what the caller gets, so later changes to
++ * the transport's object cannot affect validated data.
++ */
++export function certify<T>(check: (value: unknown) => value is T, value: unknown): T | undefined {
++  if (plainDataViolations(value).length > 0) return undefined;
++  const snapshot: unknown = structuredClone(value);
++  return check(snapshot) ? snapshot : undefined;
+ }
+ 
+ /** `namespace.object[.verb]`, matching `is_command_id` in desktop/src-tauri/src/bindings.rs. */
+diff --git a/desktop/tsconfig.node.json b/desktop/tsconfig.node.json
+index 2ec2de9..8b6ca80 100644
+--- a/desktop/tsconfig.node.json
++++ b/desktop/tsconfig.node.json
+@@ -8,7 +8,8 @@
+     "strict": true,
+     "skipLibCheck": true,
+     "noEmit": true,
++    "allowImportingTsExtensions": true,
+     "verbatimModuleSyntax": true
+   },
+-  "include": ["vite.config.ts", "eslint.config.js", "eslint.ipc-boundary.js"]
++  "include": ["vite.config.ts", "eslint.config.js", "boundary"]
+ }
+diff --git a/desktop/vite.config.ts b/desktop/vite.config.ts
+index 0e2a9da..79e4ba3 100644
+--- a/desktop/vite.config.ts
++++ b/desktop/vite.config.ts
+@@ -2,9 +2,12 @@
+ import react from '@vitejs/plugin-react';
+ import { defineConfig } from 'vite';
+ 
++import { ipcBoundary } from './boundary/vite-plugin.ts';
++
+ // Tauri expects a fixed dev port and must not clear its terminal output.
+-export default defineConfig({
+-  plugins: [react()],
++export default defineConfig(({ mode }) => ({
++  // The IPC boundary is enforced at bundling time for dev, build and Vitest (boundary/vite-plugin.ts).
++  plugins: [ipcBoundary({ allowTestSupport: mode === 'test' }), react()],
+   clearScreen: false,
+   server: {
+     port: 1420,
+@@ -21,5 +24,8 @@ export default defineConfig({
+     environment: 'jsdom',
+     setupFiles: ['src/test/setup.ts'],
+     include: ['src/**/*.test.{ts,tsx}'],
++    // Boundary tests write probe files under src/__probes__ and lint/bundle the tree; run files one at a time so
++    // no test ever observes another test's probes.
++    fileParallelism: false,
+   },
+-});
++}));
+diff --git a/docs/decisions/ADR-0001-shell-tauri2.md b/docs/decisions/ADR-0001-shell-tauri2.md
+index 873b164..096ba44 100644
+--- a/docs/decisions/ADR-0001-shell-tauri2.md
++++ b/docs/decisions/ADR-0001-shell-tauri2.md
+@@ -16,8 +16,20 @@ Options were compared in plan §2.2: Tauri 2, Qt 6, pure-Rust GUI toolkits and F
+ 
+ - **Tauri 2** (WebView2 on Windows, WKWebView on macOS) is the shell. The Rust engine runs in-process inside the
+   Tauri host; the TypeScript + React front end (dockview for docking) talks to the host only through the typed IPC
+-  module `desktop/src/ipc/` (transport interface + Tauri and mock implementations). ESLint forbids `@tauri-apps/*`
+-  imports anywhere else.
++  module `desktop/src/ipc/` (transport interface + Tauri and mock implementations). The boundary is enforced twice
++  (amended after C0.1 review rounds 1–2):
++  - **Bundler** (`desktop/boundary/vite-plugin.ts`, active in dev, build and Vitest), on resolved module ids: only
++    `src/ipc/tauriTransport.ts` may load `@tauri-apps` packages; only `src/ipc/index.ts` may load the transport, so
++    UI code gets the validated `HostApi`, never raw `invoke`; application modules must live under `desktop/src`
++    (Vitest alone may also load the repository `tests/` folder and `desktop/boundary/`); no other module may mention
++    the `__TAURI*` globals or the package names.
++  - **Linter** (`desktop/boundary/eslint.js`), on every JS/TS extension in the desktop package: the same rules in
++    source form, imports under `src/` may not climb out of `src/`, and disabling a boundary rule inline (including
++    blanket `eslint-disable`) is itself an error.
++  - Values crossing the boundary are plain-data snapshots validated against JSON-Schema-subset descriptors
++    (`src/ipc/schema.ts`) with own-property semantics.
++  Run-time obfuscation (a global name assembled from variables) is out of reach of static checks; Tauri's
++  `withGlobalTauri` stays off, so only the internal IPC global exists.
+ - **Electron is excluded outright by user decision (plan §6.7, 2026-10-17).** It is not a fallback and is not
+   evaluated. `deny.toml` bans Electron bindings.
+ - Fallbacks if a Tauri spike fails (plan §2.3), in order: native `octotablet` tablet input in the Rust host streamed
+diff --git a/docs/decisions/ADR-0003-licensing-policy.md b/docs/decisions/ADR-0003-licensing-policy.md
+index 11c6e2d..8f2329c 100644
+--- a/docs/decisions/ADR-0003-licensing-policy.md
++++ b/docs/decisions/ADR-0003-licensing-policy.md
+@@ -21,7 +21,10 @@ statically linked into our executables; JavaScript dependencies are bundled into
+      so the two gates cannot drift; `tests/adversarial/guards.mjs allowlist` checks list = this ADR's set.
+    - Everything else is rejected, which rejects GPL, AGPL and LGPL. Licence expressions are evaluated as SPDX
+      boolean expressions (AND binds tighter than OR, parentheses nest, `WITH` exceptions must be allowed as a whole,
+-     `X+` passes when `X` does); malformed or non-SPDX strings fail closed.
++     `X+` passes when `X` does); malformed or non-SPDX strings fail closed. Every operand is validated against SPDX
++     Annex D before evaluation, even behind an allowed `OR` branch: licence ids must be on the SPDX License List
++     (case-insensitive, at most one trailing `+`) or be `[DocumentRef-x:]LicenseRef-y`; exceptions after `WITH` must
++     be on the SPDX exceptions list (data from the `spdx-license-ids` / `spdx-exceptions` dev dependencies).
+    - Dual-licensed packages pass when one alternative is allowed (e.g. `MIT OR Unlicense`).
+ 2. **Rust dependency graph** (`cargo deny check` in CI on Windows and macOS). The graph covers the shipped targets
+    only (Windows x86_64/aarch64, macOS x86_64/aarch64). Linux is not a product platform; it only runs the headless
+diff --git a/package.json b/package.json
+index a59df34..a6f9d43 100644
+--- a/package.json
++++ b/package.json
+@@ -12,5 +12,9 @@
+     "build": "pnpm -r build",
+     "format:check": "pnpm -r format:check",
+     "licenses:check": "node scripts/check-npm-licenses.mjs"
++  },
++  "devDependencies": {
++    "spdx-exceptions": "2.5.0",
++    "spdx-license-ids": "3.0.24"
+   }
+ }
+diff --git a/plan/traceability.csv b/plan/traceability.csv
+index da7bb3d..d97cb0a 100644
+--- a/plan/traceability.csv
++++ b/plan/traceability.csv
+@@ -29,3 +29,7 @@ plan §6.3 / ADR-0003,"one licence allow-list for Rust and shipped JS; SPDX bool
+ ADR-0001,"front end reaches the host only through src/ipc",M0,C0.1,done (static/dynamic/require/import.meta/globals; review r1),desktop/src/ipc/boundary.lint.test.ts; tests/adversarial/guards.mjs (imports)
+ ADR-0001,"host values are validated before UI code sees them",M0,C0.1,done (schema-subset validators; review r1),desktop/src/ipc/schema.test.ts; tests/adversarial/frontend-cases.ts
+ 11 §3 / ADR-0004,"headless guard rejects real graphics imports (direct imports only)",M0,C0.1,done (review r1),bins/headless/tests/guard_fixtures.rs; tests/adversarial/headless_guard.py
++ADR-0001,"IPC boundary enforced at bundle time (resolved ids: Tauri packages, raw transport, modules outside src)",M0,C0.1,done (review r2),desktop/src/ipc/boundary.build.test.ts; tests/adversarial/c01-r2-boundary.test.mjs
++ADR-0001,"boundary lint on every JS/TS extension; no inline disabling; src stays inside src",M0,C0.1,done (review r2),desktop/src/ipc/boundary.lint.test.ts; tests/adversarial/c01-r2-boundary.test.mjs
++ADR-0001,"host values: plain data only, own-property schema semantics, validated snapshots",M0,C0.1,done (review r2),desktop/src/ipc/schema.test.ts; desktop/src/test/c01-r2-schema.test.ts
++ADR-0003,"every SPDX operand validated (Annex D grammar + SPDX lists)",M0,C0.1,done (review r2),scripts/check-npm-licenses.test.mjs; tests/adversarial/c01-r2-licenses.test.mjs
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+index 62b1b44..e209c5f 100644
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -6,7 +6,14 @@ settings:
+ 
+ importers:
+ 
+-  .: {}
++  .:
++    devDependencies:
++      spdx-exceptions:
++        specifier: 2.5.0
++        version: 2.5.0
++      spdx-license-ids:
++        specifier: 3.0.24
++        version: 3.0.24
+ 
+   desktop:
+     dependencies:
+@@ -23,6 +30,9 @@ importers:
+         specifier: 19.3.1
+         version: 19.3.1(react@19.3.1)
+     devDependencies:
++      '@eslint-community/eslint-plugin-eslint-comments':
++        specifier: 4.8.1
++        version: 4.8.1(eslint@10.13.0)
+       '@eslint/js':
+         specifier: 10.0.1
+         version: 10.0.1(eslint@10.13.0)
+@@ -202,6 +212,12 @@ packages:
+     resolution: {integrity: sha512-OoKoR0f76dCY666JlcbhmVTs2drYj1GUXZTYTcbUgJjh9Nv41aFfZ21bPQTERm5+L5cBDo466NltB2lplS5GBw==}
+     engines: {node: '>=20.19.0'}
+ 
++  '@eslint-community/eslint-plugin-eslint-comments@4.8.1':
++    resolution: {integrity: sha512-vafrdi15JHBFh1qWOAucyJwlEEuhdoMof28jOdKdgnwZ7bXwd6v4wzHYSmAVLwnx0yc7bqAtfJ0EZQV1WAzV/Q==}
++    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
++    peerDependencies:
++      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
++
+   '@eslint-community/eslint-utils@4.10.1':
+     resolution: {integrity: sha512-cuadcxVFE8sDK6iWJbs8Sn0av2Nrh2QSGQhVlBW9AaAHqHwjWsZHT8LJ4hFGPh7ASBV2deFdM7H/DPjulmh8rg==}
+     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+@@ -1142,6 +1158,12 @@ packages:
+     resolution: {integrity: sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==}
+     engines: {node: '>=0.10.0'}
+ 
++  spdx-exceptions@2.5.0:
++    resolution: {integrity: sha512-PiU42r+xO4UbUS1buo3LPJkjlO7430Xn5SVAhdpzzsPHsjbYVflnnFdATgabnLude+Cqu25p6N+g2lw/PFsa4w==}
++
++  spdx-license-ids@3.0.24:
++    resolution: {integrity: sha512-cLS9TtWkIQFyLkJ3/5aFQAOHOSKTlOs/7WDut/XPSdjom1fJhUdkepeJAKXa9Y05+FabHd0sti+Et559vDtkpQ==}
++
+   std-env@4.3.0:
+     resolution: {integrity: sha512-OtU/EgQ1kIm5KwqQpBC6ZEMXrZRui11w8zgfTWp8cdO9B8OaPsbA8bTHO2P+HNo1VlUTGMVBwPhydu6poeXiag==}
+ 
+@@ -1506,6 +1528,12 @@ snapshots:
+ 
+   '@csstools/css-tokenizer@4.0.2': {}
+ 
++  '@eslint-community/eslint-plugin-eslint-comments@4.8.1(eslint@10.13.0)':
++    dependencies:
++      escape-string-regexp: 4.0.0
++      eslint: 10.13.0
++      ignore: 7.0.12
++
+   '@eslint-community/eslint-utils@4.10.1(eslint@10.13.0)':
+     dependencies:
+       eslint: 10.13.0
+@@ -2336,6 +2364,10 @@ snapshots:
+ 
+   source-map-js@1.2.2: {}
+ 
++  spdx-exceptions@2.5.0: {}
++
++  spdx-license-ids@3.0.24: {}
++
+   std-env@4.3.0: {}
+ 
+   tinybench@6.2.2: {}
+diff --git a/reviews/M0-C0.1-handoff.md b/reviews/M0-C0.1-handoff.md
+index 544631e..ce14150 100644
+--- a/reviews/M0-C0.1-handoff.md
++++ b/reviews/M0-C0.1-handoff.md
+@@ -13,7 +13,7 @@ Branch `m0-foundations`. Commits `fa9d038..HEAD` (on top of `b17be99`). Builder:
+ | Tauri 2 host `toontown` | `desktop/src-tauri` (`tt-desktop`) | Engine in-process (attached mode); native menu built from the bindings manifest; commands `ping` (async), `app_info`; M0 diagnostics `bench_plan`/`bench_report`. Bundle id `dev.toontown.app`, product Toontown, version pinned to the workspace by a test. Capabilities: only `core:event:allow-listen/unlisten`. Strict CSP. |
+ | UI-bindings manifest | `desktop/src/ui-bindings/menu.json` | Every **command** item is a spec command id (`project.create`, `edit.undo`, `workspace.reset`, `window.fullScreen.set`, `app.quit`, …) with handler `host` / `frontend` / `pending` (+ milestone), `enabledWithoutProject` per 01 §1.3, per-platform items and accelerators (macOS app menu with About/Settings/Services/Hide/Quit; Windows Exit/Preferences in File, About in Help). Validated in Rust (`bindings.rs`) and TS (`menu.test.ts`). OS-provided predefined items (About, Services, Hide, Hide Others, Show All) and separators carry no command id; the parity policy for them is decided with the parity test in M1. This is the input M1's parity test (11 §14.1) diffs against the registry. |
+ | Front end | `desktop/src` | React 19 + dockview-react 8 + Vite 8 + TypeScript 6 (strict + `noUncheckedIndexedAccess` + `exactOptionalPropertyTypes`), ESLint 10 `strictTypeChecked`, Prettier, Vitest/jsdom. Default layout: Drawing (central), Properties (right, full height — "side panels extended", 01 §5.5), Timeline (below Drawing); panel ids `drawingView`/`timeline`/`properties` (01 §5.2); Properties shows the explicit "No properties" state. Status bar: messages, live 1 Hz ping, *Measure 500* burst (p50/p95/max), engine version/platform. |
+-| Typed IPC module | `desktop/src/ipc/` | `HostTransport` (deals in `unknown`) with Tauri and mock implementations; `createHostApi` validates every response and event against JSON-Schema-subset descriptors (`schema.ts`, `wireSchemas.ts`: every field, enums, u64 ranges, objects vs arrays, no extra keys) and maps errors to `HostError{code}`. ESLint (`eslint.ipc-boundary.js`) forbids reaching Tauri outside `tauriTransport.ts` by static/type/re-export imports, dynamic `import()` (non-literal specifiers banned outright), `require`, `import.meta.glob`, Tauri package strings and `__TAURI*` globals; 21 permanent lint cases. (Validators and boundary hardened after review r1, C01-R1-02/03.) `pnpm --dir desktop dev` runs the UI in a browser on the mock host. |
++| Typed IPC module | `desktop/src/ipc/` | `HostTransport` (deals in `unknown`) with Tauri and mock implementations; `createHostApi` validates every response and event against JSON-Schema-subset descriptors (`schema.ts`, `wireSchemas.ts`: every field, enums, u64 ranges, objects vs arrays, no extra keys) and maps errors to `HostError{code}`. ESLint (`eslint.ipc-boundary.js`) forbids reaching Tauri outside `tauriTransport.ts` by static/type/re-export imports, dynamic `import()` (non-literal specifiers banned outright), `require`, `import.meta.glob`, Tauri package strings and `__TAURI*` globals; 21 permanent lint cases. (Validators and boundary hardened after review r1, C01-R1-02/03. After review r2, C01-R2-01/02: the boundary is also enforced by a Vite plugin on resolved module ids in dev, build and Vitest — Tauri packages only from `tauriTransport.ts`, the transport only from `src/ipc/index.ts`, application modules only under `desktop/src`. Lint covers every JS/TS extension and forbids inline disabling of boundary rules. Validation accepts only plain data, uses own-property semantics, and returns a validated snapshot. Tests: 53 lint cases, 19 real-config build cases.) `pnpm --dir desktop dev` runs the UI in a browser on the mock host. |
+ | CI | `.github/workflows/ci.yml` | `check` (windows-latest, macos-latest): pnpm lint/typecheck/test/format/licences, front-end build, `cargo fmt --check`, `clippy -D warnings`, `cargo test`, `cargo deny check`, headless release build + `--selftest` twice compared + linked-library proof, artifact. `bundle` (both OSes): unsigned Tauri build (NSIS / .app), **automated IPC benchmark inside the real webview** (`toontown --ipc-bench`), artifacts (`Toontown_0.0.1_x64-setup.exe` + `toontown.exe`; `Toontown-macos-arm64.app.tar.gz`). `headless-no-display` (ubuntu, no X/Wayland): self-test + linked-library proof. Caching: rust-cache per job, pnpm store. |
+ | Licence policy | `deny.toml`, `scripts/check-npm-licenses.mjs` | See ADR-0003. One allow-list for both ecosystems, kept in `deny.toml` and read by the JS gate: the user's list plus **Unicode-3.0** (ICU4X crates via Tauri → url → idna) and **0BSD**, both accepted by the orchestrator. The JS gate evaluates SPDX boolean expressions with a recursive-descent parser (8 tests); malformed expressions fail closed. (Corrected after review r1, C01-R1-01: the first version mis-parsed nested groups and the two lists differed by 0BSD.) |
+ | No-window-system proof | `scripts/check-headless-deps.py` | (1) `cargo tree -p tt-headless` contains no GUI/webview/windowing/GPU crate; (2) the binary's **direct** imports include no GUI/GPU system library (Windows: PE import + delay-import tables parsed directly; macOS `otool -L`; Linux `readelf -d`). Scope: a deny-list guard against accidental linking; it does not see transitive or run-time (`LoadLibrary`/`dlopen`) loads; the runtime half is the no-display Linux self-test (ADR-0004 rule 6). Real DirectComposition (Windows) and AppKit (macOS) executables are permanent negative controls (`bins/headless/tests/guard_fixtures.rs`; deny lists extended after review r1, C01-R1-06). Negative control: the same check on `toontown.exe` flags user32/gdi32/comctl32/dwmapi/imm32/shell32. |
+@@ -45,13 +45,13 @@ menu bar, layout, IPC readout, `--ipc-bench`, headless self-test).
+ | IPC `ping` round trip, empty payload, n = 500 (after 20 warm-up) | p50 **0.70 ms**, p95 0.80 ms, p99 1.10 ms, max 1.90 ms |
+ | IPC `ping`, 1 KiB payload | p50 0.70 ms, p95 0.80 ms |
+ | IPC `ping`, 64 KiB payload (JSON both ways) | p50 1.80 ms, p95 2.00 ms |
+-| IPC `ping`, 1 MiB payload (JSON both ways; echo verified by length + FNV-1a checksum since review r1) | p50 20.4 ms, p95 23.9 ms (≈ 100 MB/s JSON round trip → C0.3 must use binary `tauri::ipc::Response`) |
++| IPC `ping`, 1 MiB payload (JSON both ways; echo verified by length + FNV-1a checksum since review r1; since review r2 every response is also snapshotted and validated, p50 ≈ 26 ms) | p50 20.4 ms, p95 23.9 ms (≈ 100 MB/s JSON round trip → C0.3 must use binary `tauri::ipc::Response`) |
+ | Timer resolution in WebView2 `performance.now()` | 0.1 ms (values are quantised) |
+ | `--ipc-bench` wall time (4 × 520 pings incl. start-up and exit) | 13.8 s |
+ | Headless `--selftest --json` wall time | 18 ms |
+ | Sizes | `toontown-headless.exe` 0.63 MB, `toontown.exe` 9.4 MB, NSIS installer 2.47 MiB |
+ | Tauri release build (warm Cargo cache) | 1 min 17 s |
+-| Tests (after review r1) | Rust 53 on Windows (desktop 17, engine 16, headless CLI 7 unit + 5 end-to-end, adversarial 7, guard fixture 1); front end 62 Vitest (22 original + 8 adversarial + 21 boundary-lint + 8 schema + 3 echo) and 8 `node --test` licence-evaluator tests. At C0.1 hand-off it was Rust 45 (desktop **17**, not 14 as first written) and front end 22. |
++| Tests (after review r2) | Rust 53 on Windows (desktop 17, engine 16, headless CLI 7 unit + 5 end-to-end, adversarial 7, guard fixture 1); front end 133 Vitest (incl. 53 boundary-lint, 19 boundary-build, schema and the reviewers' round-1/round-2 regressions) and 9 `node --test` licence-evaluator tests. After review r1: Rust 53, front end 62 + 8. At C0.1 hand-off: Rust 45 (desktop **17**, not 14 as first written) and front end 22. |
+ | Headless linked DLLs | kernel32, ntdll, vcruntime140, api-ms-win-core-synch, api-ms-win-crt-{runtime,math,stdio,locale,heap} only |
+ | Determinism probe | `d22c8ec2…5a16` on Windows x86_64, reproduced bit-for-bit by an independent Python implementation |
+ 
+diff --git a/reviews/M0-C0.1-r2-response.md b/reviews/M0-C0.1-r2-response.md
+new file mode 100644
+index 0000000..bc5c042
+--- /dev/null
++++ b/reviews/M0-C0.1-r2-response.md
+@@ -0,0 +1,119 @@
++# M0 C0.1 — builder response to review round 2
++
++Review: `reviews/M0-C0.1-r2.md` (verdict block; 0 P0, 2 P1, 1 P2), merged into `m0-foundations` as `5402a45`. All
++round-2 regressions are kept **unchanged** and pass: `tests/adversarial/c01-r2-boundary.test.mjs` (6/6),
++`tests/adversarial/c01-r2-licenses.test.mjs` (4/4) and `desktop/src/test/c01-r2-schema.test.ts` (12/12), registered
++through `desktop/src/test/c01-r2-node.test.ts`. The round-1 regressions still pass as well. No reviewer test was
++amended in this round.
++
++| Id | Sev | Status | Commit |
++|---|---|---|---|
++| C01-R2-01 | P1 | fixed (bundler + linter, per ruling) | `5c0938f` |
++| C01-R2-02 | P1 | fixed (per ruling) | `65fec88` |
++| C01-R2-03 | P2 | fixed | `43575b6` |
++| Docs / traceability / handoff | — | updated | `b0f63a0` |
++
++## C01-R2-01 — IPC boundary: bundleable extensions, outside modules, inline disables, raw transport — **fixed** (`5c0938f`)
++
++**Bundler** (new; `desktop/boundary/vite-plugin.ts`, registered first in `desktop/vite.config.ts` and therefore
++active in dev, build and Vitest). Checks are made on **resolved module ids**, not on how a specifier is spelled:
++- a module inside an `@tauri-apps` package may be imported only by `src/ipc/tauriTransport.ts` (or by the package
++  itself);
++- `src/ipc/tauriTransport.ts` may be imported only by `src/ipc/index.ts`;
++- every application module (anything outside `node_modules`) must be `desktop/index.html` or live under
++  `desktop/src/`. In Vitest mode only, test code may also load `<repo>/tests/`, which the round-1 bridge
++  `src/test/adversarial.test.ts` needs, and `desktop/boundary/`;
++- application modules other than the transport may not mention `__TAURI*` or `@tauri-apps` in their source at all.
++  The boundary's own definition files and the two sample-holding boundary tests are exempt; they are test or tooling
++  code that is never bundled into the app.
++
++The dev server re-resolves already-resolved modules by URL with `index.html` as a placeholder importer. That is not
++an import edge, so only the location rule applies to it; this is documented in the plugin. Verified against a running
++`vite` dev server: the app's modules are served (200). Probes that import Tauri directly or import the raw transport
++are refused with HTTP 500 and the boundary message.
++
++**Linter** (`desktop/boundary/eslint.js`, built into `eslint.config.js`):
++- the boundary rules now apply to every `ts,tsx,mts,cts,js,jsx,mjs,cjs` file in the desktop package (JS files are
++  linted without type information);
++- `@eslint-community/eslint-plugin-eslint-comments` `no-restricted-disable` (all boundary rules and the plugin's own
++  rules) plus `no-unlimited-disable`. I verified that the plugin's reports survive a blanket `/* eslint-disable */`.
++  `reportUnusedDisableDirectives: error` is also on;
++- `no-restricted-imports` forbids `**/tauriTransport` everywhere except `src/ipc/index.ts`, and a selector forbids
++  dynamic `import()` of it;
++- modules under `src/` may not import outside `src/`. These are per-directory-depth `no-restricted-syntax` selectors
++  (depth ≤ 12, enforced by a test), plus rules that make relative specifiers canonical and ban absolute, drive,
++  `file:`/`data:`/`http(s):`/`virtual:` and backslash specifiers. Test files may additionally reach `<repo>/tests/` and
++  `desktop/boundary/`. I chose `no-restricted-syntax` over a custom rule so violations carry the rule ids that the
++  reviewer's tests and the eslint-comments restriction already cover.
++
++**Tests:**
++- `src/ipc/boundary.lint.test.ts`: 53 cases through the real ESLint config, covering 30 bypass forms, 6 inline-disable
++  forms, all 8 extensions, depth and test-file allowances, accepted forms, the whole committed tree, and an
++  `ipc/index` public-surface check (no raw transport export).
++- `src/ipc/boundary.build.test.ts` (the requested build-level test): runs `vite build` with the **real**
++  `vite.config.ts` in production mode for 17 bypass classes. They are direct imports in each of the 7 import-capable
++  extensions, `require` in `.cjs`, a direct import hidden behind `/* eslint-disable */`, dynamic import, re-export,
++  `import.meta.glob` of the package, the Tauri global, raw transport (static and dynamic), the reviewer's
++  outside-desktop fixture, and a module in `desktop/` outside `src/`. Every one must fail with "IPC boundary". Two
++  positive controls (host API through `src/ipc`, plain `src` code) must build.
++
++The suite runs one test file at a time (`fileParallelism: false`) so no test observes another's probe files, which
++live under the git-ignored `src/__probes__/`.
++
++The real app still builds (`pnpm --dir desktop build`, `tauri build -- --locked`), and its WebView2 `--ipc-bench`
++reports `ok: true`. Residual limit, as before: a global name assembled at run time from variables cannot be detected
++statically. Tauri's `withGlobalTauri` stays off.
++
++## C01-R2-02 — schema validation used inherited properties — **fixed** (`65fec88`)
++
++Implemented as ruled (`desktop/src/ipc/schema.ts`):
++- `plainDataViolations` accepts only plain JSON data. Prototypes must be `Object.prototype` or `null` for objects and
++  `Array.prototype` for arrays. Properties must be own, enumerable, string-keyed data properties: no accessors,
++  functions, symbols, sparse arrays, cycles, non-finite numbers or nesting beyond 64 levels.
++- `violations` uses own-property semantics only. Required fields use `Object.hasOwn(value, k)`, iteration uses
++  `Object.keys`, and values and schema properties are read through own-property descriptors after
++  `Object.hasOwn(schema.properties, k)`. There is no `in` and no bare indexing on schema maps; the schema kind is
++  tested with `Object.hasOwn` too.
++- `certify` checks that the original is plain, takes a `structuredClone` snapshot, validates the snapshot, and returns
++  it. `createHostApi` uses `certify` for every response and event, so callers receive exactly what was validated, and
++  later mutation of the transport's object cannot change it.
++
++**Own tests**, as requested:
++- prototype-named keys (`__proto__`, `constructor`, `prototype`, `toString`, `hasOwnProperty`, `valueOf`) at the top
++  level, nested, and inside array items;
++- a schema that legitimately declares `constructor` still validates it as an own key;
++- `Object.create(...)` values at the top level and nested, and `Object.create(...)` transports through the real
++  `ping()` and menu-event paths;
++- class instances, accessors, non-enumerable properties, functions, symbols, holes, cycles, excessive depth and an
++  own `toJSON`;
++- snapshot isolation.
++
++Cost: the 1 MiB ping round trip on WebView2 rose from p50 ≈ 21 ms to ≈ 26 ms (the clone of a 1 MiB string).
++Bulk data moves to binary IPC in C0.3 anyway.
++
++## C01-R2-03 — malformed SPDX operands behind an allowed OR — **fixed** (`43575b6`)
++
++Every operand is validated against SPDX 2.3 Annex D before evaluation:
++- licence operands must be an SPDX License List identifier (current or deprecated, matched case-insensitively as
++  Annex D requires) with at most one trailing `+`, or `[DocumentRef-idstring:]LicenseRef-idstring`;
++- `WITH` needs an SPDX licence identifier on its left and an SPDX exception identifier on its right.
++
++Anything else (`+`, `:`, `and`, `Unknown-License`, `LicenseRef-`, `MIT++`, unknown exceptions) makes the whole
++expression invalid, so it fails closed. The list data comes from `spdx-license-ids` (CC0-1.0) and `spdx-exceptions`
++(CC-BY-3.0), added as root **dev** dependencies used only by this build-time gate and never shipped. ADR-0003 rule 1
++documents this. There are 9 evaluator tests, including 13 malformed-operand cases and positive `LicenseRef`,
++`DocumentRef`, case-insensitive and deprecated-id cases. The reviewer's 4 tests and the round-1 `licensing` and
++`allowlist` cases pass.
++
++## Gates
++
++Local, Windows 11:
++- `cargo fmt --check` and `clippy -D warnings` are clean;
++- `cargo test --workspace --locked`: 53 pass;
++- `cargo deny`: ok;
++- `pnpm lint`, `typecheck` and `format:check` are clean;
++- `pnpm test`: 133 Vitest and 9 node tests pass;
++- `pnpm licenses:check`: ok;
++- the front-end build and the release Tauri build pass, and the real `--ipc-bench` reports `ok`.
++
++CI: see the final run linked in the commit history for this response.
+diff --git a/scripts/check-npm-licenses.mjs b/scripts/check-npm-licenses.mjs
+index 60c202a..a22e96e 100644
+--- a/scripts/check-npm-licenses.mjs
++++ b/scripts/check-npm-licenses.mjs
+@@ -6,8 +6,16 @@
+ // Usage: node scripts/check-npm-licenses.mjs        (exit 1 on a violation)
+ import { execFileSync } from 'node:child_process';
+ import { readFileSync } from 'node:fs';
++import { createRequire } from 'node:module';
+ import { fileURLToPath, pathToFileURL } from 'node:url';
+ 
++// SPDX License List data (spdx-license-ids, CC0-1.0; spdx-exceptions, CC-BY-3.0): root dev dependencies, used only
++// by this build-time gate and never shipped.
++const require = createRequire(import.meta.url);
++const canonical = (ids) => new Map(ids.map((id) => [id.toLowerCase(), id]));
++const LICENSE_IDS = canonical([...require('spdx-license-ids/index.json'), ...require('spdx-license-ids/deprecated.json')]);
++const EXCEPTION_IDS = canonical([...require('spdx-exceptions/index.json'), ...require('spdx-exceptions/deprecated.json')]);
++
+ const DENY_TOML = fileURLToPath(new URL('../deny.toml', import.meta.url));
+ 
+ /** The `allow = [...]` array of the `[licenses]` table of deny.toml. */
+@@ -39,21 +47,47 @@ export function tokenize(expression) {
+   return tokens;
+ }
+ 
++// SPDX 2.3 Annex D operand grammar.
++const IDSTRING = '[A-Za-z0-9.-]+';
++const LICENSE_REF = new RegExp(`^(?:DocumentRef-${IDSTRING}:)?LicenseRef-${IDSTRING}$`);
++const LICENSE_ID = new RegExp(`^(${IDSTRING})([+])?$`);
++const EXCEPTION_ID = new RegExp(`^${IDSTRING}$`);
++
++/**
++ * Validates one licence operand and returns its canonical form, or throws. Accepted: an identifier from the SPDX
++ * License List (matched case-insensitively, as Annex D requires) with at most one trailing `+`, or a
++ * `[DocumentRef-x:]LicenseRef-y` reference. Everything else — stray `+`/`:`, lower-case operators, unknown ids,
++ * `LicenseRef-` with an empty suffix, `MIT++` — is a syntax error, so the whole expression fails closed.
++ */
++export function licenseOperand(token, expression) {
++  if (LICENSE_REF.test(token)) return token;
++  const m = LICENSE_ID.exec(token);
++  const id = m && LICENSE_IDS.get(m[1].toLowerCase());
++  if (!id) throw new SyntaxError(`not an SPDX licence identifier: ${token} in ${expression}`);
++  return m[2] ? `${id}+` : id;
++}
++
++/** Validates an exception after `WITH`: an identifier from the SPDX License Exceptions list. */
++export function exceptionOperand(token, expression) {
++  const id = EXCEPTION_ID.test(token ?? '') && EXCEPTION_IDS.get(token.toLowerCase());
++  if (!id) throw new SyntaxError(`not an SPDX exception identifier: ${token ?? 'end of expression'} in ${expression}`);
++  return id;
++}
++
+ /**
+  * Parses an SPDX licence expression (SPDX 2.3 Annex D) into a tree:
+  *   or   := and ('OR' and)*        (lowest precedence)
+  *   and  := with ('AND' with)*
+  *   with := atom ('WITH' exception)?
+- *   atom := '(' or ')' | licence-id ['+']
+- * Operators must be upper case, as the specification requires; anything else is a syntax error.
++ *   atom := '(' or ')' | licence-operand
++ * Operators must be upper case, as the specification requires. Every operand is validated (see `licenseOperand`);
++ * any invalid token anywhere makes the whole expression invalid, even behind an allowed OR branch.
+  */
+ export function parse(expression) {
+   const tokens = tokenize(expression);
+   let i = 0;
+   const peek = () => tokens[i];
+   const take = () => tokens[i++];
+-  const isOperator = (t) => t === 'AND' || t === 'OR' || t === 'WITH';
+-  const isId = (t) => t !== undefined && t !== '(' && t !== ')' && !isOperator(t);
+ 
+   function parseOr() {
+     const terms = [parseAnd()];
+@@ -75,11 +109,10 @@ export function parse(expression) {
+     const atom = parseAtom();
+     if (peek() !== 'WITH') return atom;
+     take();
+-    const exception = take();
+-    if (!isId(exception) || atom.license === undefined) {
+-      throw new SyntaxError(`WITH needs a licence on the left and an exception on the right: ${expression}`);
++    if (atom.license === undefined || atom.license.startsWith('LicenseRef-') || atom.license.includes(':')) {
++      throw new SyntaxError(`WITH needs an SPDX licence identifier on its left: ${expression}`);
+     }
+-    return { license: `${atom.license} WITH ${exception}` };
++    return { license: `${atom.license} WITH ${exceptionOperand(take(), expression)}` };
+   }
+   function parseAtom() {
+     const t = take();
+@@ -88,8 +121,10 @@ export function parse(expression) {
+       if (take() !== ')') throw new SyntaxError(`unbalanced parentheses: ${expression}`);
+       return inner;
+     }
+-    if (!isId(t)) throw new SyntaxError(`expected a licence id, got ${t ?? 'end of expression'}: ${expression}`);
+-    return { license: t };
++    if (t === undefined || t === ')' || t === 'AND' || t === 'OR' || t === 'WITH') {
++      throw new SyntaxError(`expected a licence, got ${t ?? 'end of expression'}: ${expression}`);
++    }
++    return { license: licenseOperand(t, expression) };
+   }
+ 
+   if (tokens.length === 0) throw new SyntaxError('empty licence expression');
+diff --git a/scripts/check-npm-licenses.test.mjs b/scripts/check-npm-licenses.test.mjs
+index 5f2507b..4722703 100644
+--- a/scripts/check-npm-licenses.test.mjs
++++ b/scripts/check-npm-licenses.test.mjs
+@@ -31,9 +31,9 @@ test('nested groups (C01-R1-01)', () => {
+   assert.equal(satisfies('(MIT OR Apache-2.0) AND (GPL-3.0-only OR BSD-3-Clause)', allow), true);
+   assert.equal(satisfies('((MIT))', allow), true);
+   assert.equal(satisfies('(GPL-2.0-only OR (AGPL-3.0-only AND MIT))', allow), false);
+-  assert.deepEqual(parse('(A OR B) AND C'), {
++  assert.deepEqual(parse('(MIT OR isc) AND Zlib'), {
+     op: 'AND',
+-    terms: [{ op: 'OR', terms: [{ license: 'A' }, { license: 'B' }] }, { license: 'C' }],
++    terms: [{ op: 'OR', terms: [{ license: 'MIT' }, { license: 'ISC' }] }, { license: 'Zlib' }],
+   });
+ });
+ 
+@@ -54,6 +54,21 @@ test('malformed and non-SPDX strings fail closed', () => {
+   }
+ });
+ 
++test('every operand is validated, even behind an allowed OR branch (C01-R2-03)', () => {
++  for (const bad of [
++    'MIT OR +', 'MIT OR :', 'MIT OR and', 'MIT OR Unknown-License', 'MIT OR GPL-3.0-only WITH +',
++    'MIT OR LicenseRef-', 'MIT OR MIT++', 'MIT OR GPL-2.0-only WITH Not-An-Exception', 'MIT OR LicenseRef-x WITH LLVM-exception',
++    'MIT OR DocumentRef-:LicenseRef-x', 'MIT OR DocumentRef-a:', 'MIT OR +MIT', 'MIT OR MIT+ +',
++  ]) {
++    assert.equal(satisfies(bad, allow), false, bad);
++  }
++  assert.equal(satisfies('MIT OR LicenseRef-private', allow), true);
++  assert.equal(satisfies('MIT OR DocumentRef-spdx-tool-1.2:LicenseRef-MIT-Style-2', allow), true);
++  assert.equal(satisfies('mit', allow), true, 'identifiers match case-insensitively (Annex D)');
++  assert.equal(satisfies('Apache-2.0 WITH llvm-exception', allow), true);
++  assert.equal(satisfies('GPL-2.0 OR MIT', allow), true, 'deprecated identifiers are valid syntax');
++});
++
+ test('allow-list is read from deny.toml', () => {
+   assert.deepEqual(
+     [...readAllowList('[licenses]\nversion = 2\nallow = [\n  "MIT", # c\n  "Zlib",\n]\n\n[bans]\nallow = ["x"]\n')],

@@ -1,0 +1,9 @@
+> toontown-workspace@ format:check C:\Users\kaiga\work\review\m0-c02-r1
+> pnpm -r format:check
+
+
+> @toontown/desktop@0.0.1 format:check C:\Users\kaiga\work\review\m0-c02-r1\desktop
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!

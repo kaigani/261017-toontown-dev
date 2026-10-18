@@ -1,0 +1,31 @@
+name: C03 reviewer extended raster corpus
+on:
+  workflow_dispatch:
+  push:
+    branches: [review/m0-c03-r1]
+    paths:
+      - .github/workflows/c03-review-stress.yml
+      - crates/render/tests/c03_r1_stress.rs
+      - reviews/evidence/M0-C0.3-r1/stress-windows-baseline.json
+jobs:
+  stress:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: raster
+      - name: Compare extended corpus to Windows baseline
+        shell: bash
+        run: |
+          set -o pipefail
+          cargo test --release --locked -p tt-render --test c03_r1_stress extended_corpus_repeats_and_cross_os_hashes -- --nocapture 2>&1 | tee stress.txt
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: reviewer-stress-${{ runner.os }}
+          path: stress.txt

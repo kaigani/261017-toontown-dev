@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-18T17:32:05.259664+00:00",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "status",
+        "--short",
+        "--branch"
+      ],
+      "exit": 0,
+      "stdout": "## review/m0-c04-r6...origin/m0-foundations\n?? reviews/evidence/M0-C0.4-r6/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "929f91a99ab06402bc024108fbc82f9aae3f91d9\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "log",
+        "--oneline",
+        "3a24980..929f91a"
+      ],
+      "exit": 0,
+      "stdout": "929f91a fix(c0.4): choose the native rate clock per action from its clipped packets; name the keydown missing its keyup\n580daa4 merge: final closure check of C0.4 (r5 closure, evidence, permanent test)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "3a24980..929f91a",
+        "--",
+        "tests/adversarial",
+        "desktop/src/test"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "rustc",
+        "-Vv"
+      ],
+      "exit": 0,
+      "stdout": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-pc-windows-msvc\nrelease: 1.98.1\nLLVM version: 22.1.8\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "cargo",
+        "deny",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "cargo-deny 0.20.2\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v22.23.2\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Python 3.13.1\n",
+      "stderr": ""
+    }
+  ]
+}

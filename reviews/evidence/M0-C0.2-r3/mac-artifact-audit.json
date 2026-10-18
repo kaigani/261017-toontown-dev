@@ -1,0 +1,9 @@
+{
+  "analyzerIdentical": true,
+  "sha256": "8131547494275ef6a0a3225a2bf31674666e8400ef643267c4d98691f3391b63",
+  "files": [
+    "analyse-tablet-log.py",
+    "ipc-bench.json",
+    "Toontown-macos-arm64.app.tar.gz"
+  ]
+}

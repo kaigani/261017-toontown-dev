@@ -1,0 +1,221 @@
+// Runtime validation of values that cross the host boundary. Wire shapes are written as a small subset of JSON
+// Schema (draft 2020-12 keywords: type, properties, required, additionalProperties, enum, items, minimum, maximum,
+// pattern, anyOf) so that M1 can replace these hand-written schemas with the ones generated from the registry
+// (11 §7.2, 10 §2.8) without changing the validator or its callers.
+//
+// Two layers, both own-property based (C01-R2-02):
+//   1. `plainDataViolations`: the value must be plain JSON data — null, booleans, strings, finite numbers, arrays and
+//      objects whose prototype is Array.prototype / Object.prototype (or null), holding only own, enumerable,
+//      string-keyed data properties (no accessors, functions, symbols, holes or cycles). Inherited fields therefore
+//      never count, and a key such as `__proto__` or `constructor` is just another own key.
+//   2. `violations`: the schema. Property membership and required fields use own-property checks and descriptors
+//      only; nothing is looked up with `in` or bare indexing on a schema map.
+// `certify` checks the original, takes its own deep copy, validates the copy again and returns it, so callers receive
+// exactly the data that was validated (a lying Proxy cannot change the copy after the fact).
+//
+// Platform floor (ADR-0005: Safari 15.0 / macOS 12.0): no `Object.hasOwn` and no `structuredClone` (both Safari 15.4);
+// `compat/compat` in the lint gate enforces this.
+
+export type Schema =
+  | { type: 'string'; enum?: readonly string[]; pattern?: string }
+  | { type: 'integer'; minimum?: number; maximum?: number }
+  | { type: 'number'; minimum?: number; maximum?: number }
+  | { type: 'null' }
+  | { type: 'boolean' }
+  | { type: 'array'; items: Schema }
+  | {
+      type: 'object';
+      properties: Readonly<Record<string, Schema>>;
+      required: readonly string[];
+      additionalProperties: boolean | Schema;
+    }
+  | { anyOf: readonly Schema[] }
+  | Record<string, never>; // `{}`: any JSON value
+
+type AnyOfSchema = Extract<Schema, { anyOf: readonly Schema[] }>;
+type TypedSchema = Extract<Schema, { type: string }>;
+
+/** Largest integer a JS number holds exactly; Rust u64 values above it cannot cross this boundary losslessly. */
+export const MAX_SAFE = Number.MAX_SAFE_INTEGER;
+export const U64: Schema = { type: 'integer', minimum: 0, maximum: MAX_SAFE };
+export const STRING: Schema = { type: 'string' };
+export const NUMBER: Schema = { type: 'number' };
+export const ANY: Schema = {};
+
+/** Nesting deeper than this is rejected rather than risking stack exhaustion. */
+export const MAX_DEPTH = 64;
+
+/** `Object.hasOwn` for the Safari 15.0 floor. */
+export function hasOwn(obj: object, key: PropertyKey): boolean {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+}
+
+/** The own data value of `key` on `obj`, or undefined; never consults the prototype chain or calls a getter. */
+function ownValue(obj: object, key: string): unknown {
+  const d = Object.getOwnPropertyDescriptor(obj, key);
+  return d && hasOwn(d, 'value') ? d.value : undefined;
+}
+
+function isAnyOf(schema: Schema): schema is AnyOfSchema {
+  return hasOwn(schema, 'anyOf');
+}
+
+function isTyped(schema: Schema): schema is TypedSchema {
+  return hasOwn(schema, 'type');
+}
+
+/** Returns the locations at which `value` is not plain JSON data (empty = plain). */
+export function plainDataViolations(value: unknown, at = '', seen = new Set<object>()): string[] {
+  const here = at || '/';
+  if (value === null || typeof value === 'string' || typeof value === 'boolean') return [];
+  if (typeof value === 'number') return Number.isFinite(value) ? [] : [`${here}: non-finite number`];
+  if (typeof value !== 'object') return [`${here}: ${typeof value} is not JSON data`];
+  if (seen.has(value)) return [`${here}: cycle`];
+  if (seen.size >= MAX_DEPTH) return [`${here}: nested deeper than ${MAX_DEPTH}`];
+  if (Object.getOwnPropertySymbols(value).length > 0) return [`${here}: symbol-keyed property`];
+  const isArray = Array.isArray(value);
+  const proto: unknown = Object.getPrototypeOf(value);
+  if (isArray ? proto !== Array.prototype : proto !== Object.prototype && proto !== null) {
+    return [`${here}: not a plain ${isArray ? 'array' : 'object'}`];
+  }
+  const names = Object.getOwnPropertyNames(value).filter((k) => !(isArray && k === 'length'));
+  // Arrays: the own names must be exactly "0".."length-1" (integer keys come first, ascending), so a hole cannot
+  // be compensated by a named property (C01-R3-03).
+  if (isArray && (names.length !== value.length || names.some((k, i) => k !== String(i)))) {
+    return [`${here}: sparse array or extra array property`];
+  }
+  seen.add(value);
+  const out: string[] = [];
+  for (const k of names) {
+    const d = Object.getOwnPropertyDescriptor(value, k);
+    if (!d || !hasOwn(d, 'value') || !d.enumerable) {
+      out.push(`${at}/${k}: accessor or non-enumerable property`);
+    } else {
+      out.push(...plainDataViolations(d.value, `${at}/${k}`, seen));
+    }
+  }
+  seen.delete(value);
+  return out;
+}
+
+/** Returns the JSON-pointer locations at which `value` violates `schema` (empty = valid). */
+export function violations(schema: Schema, value: unknown, at = ''): string[] {
+  if (isAnyOf(schema)) {
+    return schema.anyOf.some((s) => violations(s, value, at).length === 0)
+      ? []
+      : [`${at || '/'}: no anyOf branch`];
+  }
+  if (!isTyped(schema)) return [];
+  const here = at || '/';
+  switch (schema.type) {
+    case 'null':
+      return value === null ? [] : [`${here}: expected null`];
+    case 'boolean':
+      return typeof value === 'boolean' ? [] : [`${here}: expected boolean`];
+    case 'string': {
+      if (typeof value !== 'string') return [`${here}: expected string`];
+      if (schema.enum && !schema.enum.includes(value))
+        return [`${here}: not one of ${schema.enum.join('|')}`];
+      if (schema.pattern !== undefined && !new RegExp(schema.pattern, 'u').test(value)) {
+        return [`${here}: does not match ${schema.pattern}`];
+      }
+      return [];
+    }
+    case 'integer': {
+      if (typeof value !== 'number' || !Number.isInteger(value)) return [`${here}: expected integer`];
+      if (schema.minimum !== undefined && value < schema.minimum) return [`${here}: below ${schema.minimum}`];
+      if (schema.maximum !== undefined && value > schema.maximum) return [`${here}: above ${schema.maximum}`];
+      return [];
+    }
+    case 'number': {
+      if (typeof value !== 'number' || !Number.isFinite(value)) return [`${here}: expected finite number`];
+      if (schema.minimum !== undefined && value < schema.minimum) return [`${here}: below ${schema.minimum}`];
+      if (schema.maximum !== undefined && value > schema.maximum) return [`${here}: above ${schema.maximum}`];
+      return [];
+    }
+    case 'array': {
+      if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype) {
+        return [`${here}: expected array`];
+      }
+      const out: string[] = [];
+      for (let i = 0; i < value.length; i++) {
+        if (!hasOwn(value, i)) out.push(`${at}/${i}: missing array element`);
+        else out.push(...violations(schema.items, ownValue(value, String(i)), `${at}/${i}`));
+      }
+      return out;
+    }
+    case 'object': {
+      if (typeof value !== 'object' || value === null || Array.isArray(value))
+        return [`${here}: expected object`];
+      const proto: unknown = Object.getPrototypeOf(value);
+      if (proto !== Object.prototype && proto !== null) return [`${here}: expected plain object`];
+      const out = schema.required.filter((k) => !hasOwn(value, k)).map((k) => `${at}/${k}: required`);
+      for (const k of Object.keys(value)) {
+        const v = ownValue(value, k);
+        const prop = hasOwn(schema.properties, k)
+          ? (ownValue(schema.properties, k) as Schema | undefined)
+          : undefined;
+        if (prop !== undefined) out.push(...violations(prop, v, `${at}/${k}`));
+        else if (schema.additionalProperties === false) out.push(`${at}/${k}: not allowed`);
+        else if (schema.additionalProperties !== true)
+          out.push(...violations(schema.additionalProperties, v, `${at}/${k}`));
+      }
+      return out;
+    }
+  }
+}
+
+/** Plain data that satisfies `schema` (both layers). */
+export function conforms(schema: Schema, value: unknown): boolean {
+  return plainDataViolations(value).length === 0 && violations(schema, value).length === 0;
+}
+
+/** A type guard for `T` backed by `schema`. The schema must describe `T`; the wire tests check both agree. */
+// T is the type the schema certifies; it appears only in the returned predicate by design
+// (no-unnecessary-type-parameters is switched off for this file in eslint.config.js).
+export function guard<T>(schema: Schema): (value: unknown) => value is T {
+  return (value: unknown): value is T => conforms(schema, value);
+}
+
+/**
+ * Deep copy of a value that has passed `plainDataViolations`: own enumerable data properties only, same prototype
+ * (Object.prototype or null; arrays stay arrays). Keys are defined, never assigned, so an own `__proto__` key stays
+ * an ordinary own key. Never calls getters (it reads data descriptors) and never uses `structuredClone`.
+ */
+export function copyPlainData(value: unknown): unknown {
+  if (typeof value !== 'object' || value === null) return value;
+  if (Array.isArray(value)) {
+    const out: unknown[] = [];
+    for (let i = 0; i < value.length; i++) out.push(copyPlainData(ownValue(value, String(i))));
+    return out;
+  }
+  const out: object = Object.getPrototypeOf(value) === null ? (Object.create(null) as object) : {};
+  for (const k of Object.keys(value)) {
+    Object.defineProperty(out, k, {
+      value: copyPlainData(ownValue(value, k)),
+      enumerable: true,
+      writable: true,
+      configurable: true,
+    });
+  }
+  return out;
+}
+
+/**
+ * Validates a value received from a transport and returns a snapshot of it, or undefined; never throws for any
+ * input. The original must be plain data; the snapshot (`copyPlainData`) is validated again, both layers, and is what
+ * the caller gets, so later changes to the transport's object cannot affect validated data.
+ */
+export function certify<T>(check: (value: unknown) => value is T, value: unknown): T | undefined {
+  try {
+    if (plainDataViolations(value).length > 0) return undefined;
+    const snapshot = copyPlainData(value);
+    return check(snapshot) ? snapshot : undefined;
+  } catch {
+    // A hostile Proxy can throw from any trap; that is an invalid value, not a crash of the caller.
+    return undefined;
+  }
+}
+
+/** `namespace.object[.verb]`, matching `is_command_id` in desktop/src-tauri/src/bindings.rs. */
+export const COMMAND_ID_PATTERN = '^[a-z][A-Za-z0-9]*(\\.[a-z][A-Za-z0-9]*)+$';

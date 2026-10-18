@@ -1,0 +1,79 @@
+[
+  {
+    "name": "complete-one-frame",
+    "exitCode": 0,
+    "stderr": "",
+    "stdoutBytes": 2344,
+    "passed": true
+  },
+  {
+    "name": "zero-frames-complete-span",
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): pan/zoom frames missing (need at least 1)",
+    "stdoutBytes": 0,
+    "passed": true
+  },
+  {
+    "name": "one-frame-before-span",
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): panZoom samples do not cover their phase span (truncated or extended)",
+    "stdoutBytes": 0,
+    "passed": true
+  },
+  {
+    "name": "one-frame-on-span-start",
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): panZoom samples do not cover their phase span (truncated or extended)",
+    "stdoutBytes": 0,
+    "passed": true
+  },
+  {
+    "name": "one-frame-after-span",
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): panZoom samples do not cover their phase span (truncated or extended)",
+    "stdoutBytes": 0,
+    "passed": true
+  },
+  {
+    "name": "span-shorter-than-declared",
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): panZoom phase lasted 9999.0 ms, shorter than the declared 10000 ms (incomplete run)",
+    "stdoutBytes": 0,
+    "passed": true
+  },
+  {
+    "name": "span-end-before-last-frame-full-duration",
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): panZoom samples do not cover their phase span (truncated or extended)",
+    "stdoutBytes": 0,
+    "passed": true
+  },
+  {
+    "name": "span-end-after-last-frame",
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): panZoom samples do not cover their phase span (truncated or extended)",
+    "stdoutBytes": 0,
+    "passed": true
+  },
+  {
+    "name": "missing-pan-span",
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): panZoom phase span missing or malformed",
+    "stdoutBytes": 0,
+    "passed": true
+  },
+  {
+    "name": "reversed-pan-span",
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): panZoom phase lasted -1.0 ms, shorter than the declared 10000 ms (incomplete run)",
+    "stdoutBytes": 0,
+    "passed": true
+  },
+  {
+    "name": "version-1-one-frame",
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): pan/zoom frames missing (need at least 2)",
+    "stdoutBytes": 0,
+    "passed": true
+  }
+]

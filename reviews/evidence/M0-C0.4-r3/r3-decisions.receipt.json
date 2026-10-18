@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python",
+    "-X",
+    "utf8",
+    "tests/adversarial/c04-r3-decisions.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+  "started": "2026-10-18T15:46:47.658397+00:00",
+  "seconds": 0.127,
+  "exit": 1
+}

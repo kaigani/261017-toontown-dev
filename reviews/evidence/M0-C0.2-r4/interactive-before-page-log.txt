@@ -1,0 +1,24 @@
+## Tablet spike log (version 3)
+
+- userAgent: Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/30.1.3
+devicePixelRatio 1, getCoalescedEvents available: False
+native: None, packets 0, invalid batches 0
+- native clock used: host; channel loss: unknown, gap heuristic only; host dropped 0, send failures 0, truncated 0
+- web samples 0, truncated 0; web loss: unknown, gap heuristic only
+- coalescing: API available False, batching observed False, per dispatch -
+- handler - event ms: oldest coalesced -; newest -; all samples -
+- outcome: no synthetic runs (manual/hardware log; loss unknown)
+web path: 0 pen-down strokes
+native path: 0 strokes
+
+### Web path strokes (pointer events)
+
+No contact episodes.
+
+### Native path strokes (host listener, host clock)
+
+No contact episodes.
+
+### Synthetic runs (InjectSyntheticPointerInput; simulation, not tablet hardware)
+
+No synthetic runs: outcome (b), a manual/hardware log. There is no injection reference, so loss is "unknown, gap heuristic only".

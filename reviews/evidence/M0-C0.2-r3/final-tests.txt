@@ -1,0 +1,130 @@
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m0-c02-r3
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m0-c02-r3\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c02-r3/desktop
+
+ ❯ src/test/c02-r3-tooling.test.ts (1 test | 1 failed) 297ms
+   × C02-R3-01: missing synthetic run records cannot be classified as manual hardware 297ms
+node.exe :
+At C:\Users\kaiga\AppData\Roaming\npm\pnpm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/pnpm/bin/pnpm.cjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c02-r3-tooling.test.ts > C02-R3-01: missing synthetic run records cannot be classified as manual
+hardware
+AssertionError: test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) ...
+  test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=2,
+run_list_absent=False) ... FAIL
+  test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=2,
+run_list_absent=True) ... FAIL
+  test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=3,
+run_list_absent=False) ... FAIL
+  test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=3,
+run_list_absent=True) ... FAIL
+
+======================================================================
+FAIL: test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=2,
+run_list_absent=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r3\tests\adversarial\c02-r3-tooling.py", line 32, in
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+    self.assertNotEqual(result.returncode, 0,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+                        "Synthetic evidence without its run records must fail, not print manual/hardware")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Synthetic evidence without its run records must fail, not print manual/hardware
+
+======================================================================
+FAIL: test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=2,
+run_list_absent=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r3\tests\adversarial\c02-r3-tooling.py", line 32, in
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+    self.assertNotEqual(result.returncode, 0,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+                        "Synthetic evidence without its run records must fail, not print manual/hardware")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Synthetic evidence without its run records must fail, not print manual/hardware
+
+======================================================================
+FAIL: test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=3,
+run_list_absent=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r3\tests\adversarial\c02-r3-tooling.py", line 32, in
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+    self.assertNotEqual(result.returncode, 0,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+                        "Synthetic evidence without its run records must fail, not print manual/hardware")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Synthetic evidence without its run records must fail, not print manual/hardware
+
+======================================================================
+FAIL: test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) (version=3,
+run_list_absent=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r3\tests\adversarial\c02-r3-tooling.py", line 32, in
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs
+    self.assertNotEqual(result.returncode, 0,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+                        "Synthetic evidence without its run records must fail, not print manual/hardware")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Synthetic evidence without its run records must fail, not print manual/hardware
+
+----------------------------------------------------------------------
+Ran 1 test in 0.207s
+
+FAILED (failures=4)
+: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ src/test/c02-r3-tooling.test.ts:15:56
+     13|     timeout: 60_000,
+     14|   });
+     15|   expect(result.status, result.stdout + result.stderr).toBe(0);
+       |                                                        ^
+     16| });
+     17|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 21 passed (22)
+      Tests  1 failed | 228 passed | 3 expected fail (232)
+   Start at  03:04:17
+   Duration  43.12s (tests 77%, environment 15%, setup 5%, import 2%, transform 1%)
+
+    Isolate  22 workers spawned · ~357ms startup each (spawn + environment, per file)
+             at least ~7.51s faster with isolate: false — reuses workers across files instead of one per file
+
+C:\Users\kaiga\work\review\m0-c02-r3\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 test: `vitest run --config vite.config.ts`
+Exit status 1
+ ELIFECYCLE  Test failed. See above for more details.

@@ -1,0 +1,612 @@
+{
+  "spike": "tablet",
+  "version": 3,
+  "matrixSize": {
+    "width": 1012,
+    "height": 275
+  },
+  "savedAt": "2026-10-18T10:01:58.227Z",
+  "metadata": {
+    "tester": "",
+    "computer": "",
+    "osVersion": "",
+    "webkit": "",
+    "tablet": "",
+    "driver": "",
+    "notes": ""
+  },
+  "environment": {
+    "timeOrigin": 1792317707227,
+    "perfNowAtSave": 11000,
+    "userAgent": "Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/30.1.3",
+    "hardwareConcurrency": 32,
+    "devicePixelRatio": 1,
+    "screen": {
+      "width": 0,
+      "height": 0
+    },
+    "viewport": {
+      "width": 1024,
+      "height": 768
+    },
+    "coalescedApi": false,
+    "gpu": {
+      "available": false
+    },
+    "host": {
+      "os": "macos",
+      "arch": "aarch64",
+      "osVersion": "test double",
+      "webviewVersion": "test double",
+      "cpuCount": 8,
+      "window": null
+    },
+    "hostError": null,
+    "mode": {
+      "name": "tablet",
+      "logPath": "test.json",
+      "auto": true,
+      "penSimulation": true,
+      "nativeBackend": "octotablet-ink"
+    }
+  },
+  "nativeInfo": null,
+  "runs": [
+    {
+      "label": "webview sine 240 Hz",
+      "target": "webview",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 240,
+        "frames": 1024,
+        "pattern": "sine"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:48.727Z",
+      "perfStart": 1500,
+      "perfEnd": 1500,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": {
+        "error": "command.unknown: no such command: spike_raw_input_sink"
+      },
+      "error": "spike.notForeground: fixture covering window"
+    },
+    {
+      "label": "webview sine 240 Hz (retry)",
+      "target": "webview",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 240,
+        "frames": 1024,
+        "pattern": "sine"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:50.227Z",
+      "perfStart": 3000,
+      "perfEnd": 3000,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": {
+        "error": "command.unknown: no such command: spike_raw_input_sink"
+      },
+      "error": "spike.notForeground: fixture covering window"
+    },
+    {
+      "label": "webview sine 500 Hz",
+      "target": "webview",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 500,
+        "frames": 1024,
+        "pattern": "sine"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 500,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:51.027Z",
+      "perfStart": 3800,
+      "perfEnd": 3800,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": null,
+      "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "label": "webview zigzag 240 Hz",
+      "target": "webview",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 240,
+        "frames": 1024,
+        "pattern": "zigzag"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 500,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:51.827Z",
+      "perfStart": 4600,
+      "perfEnd": 4600,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": null,
+      "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "label": "webview stationary 240 Hz",
+      "target": "webview",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 240,
+        "frames": 1024,
+        "pattern": "stationary"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 500,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:52.627Z",
+      "perfStart": 5400,
+      "perfEnd": 5400,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": null,
+      "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "label": "webview pressure-only 240 Hz",
+      "target": "webview",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 240,
+        "frames": 1024,
+        "pattern": "pressureOnly"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 500,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:53.427Z",
+      "perfStart": 6200,
+      "perfEnd": 6200,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": null,
+      "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "label": "native window sine 240 Hz, no RTS",
+      "target": "nativeWindow",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 240,
+        "frames": 1024,
+        "pattern": "sine"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 500,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:54.227Z",
+      "perfStart": 7000,
+      "perfEnd": 7000,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": null,
+      "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "label": "native window stationary 240 Hz, no RTS",
+      "target": "nativeWindow",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 240,
+        "frames": 1024,
+        "pattern": "stationary"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 500,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:55.027Z",
+      "perfStart": 7800,
+      "perfEnd": 7800,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": null,
+      "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "label": "native window pressure-only 240 Hz, no RTS",
+      "target": "nativeWindow",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 240,
+        "frames": 1024,
+        "pattern": "pressureOnly"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 500,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:55.827Z",
+      "perfStart": 8600,
+      "perfEnd": 8600,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": null,
+      "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "label": "native window sine 240 Hz",
+      "target": "nativeWindow",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 240,
+        "frames": 1024,
+        "pattern": "sine"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 500,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:56.627Z",
+      "perfStart": 9400,
+      "perfEnd": 9400,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": null,
+      "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "label": "native window stationary 240 Hz",
+      "target": "nativeWindow",
+      "request": {
+        "left": 8,
+        "top": 58,
+        "width": 1012,
+        "height": 275,
+        "hz": 240,
+        "frames": 1024,
+        "pattern": "stationary"
+      },
+      "canvasRect": {
+        "left": 8,
+        "top": 500,
+        "width": 1012,
+        "height": 311
+      },
+      "startedAt": "2026-10-18T10:01:57.427Z",
+      "perfStart": 10200,
+      "perfEnd": 10200,
+      "webRange": [
+        0,
+        0
+      ],
+      "nativeRange": [
+        0,
+        0
+      ],
+      "report": null,
+      "probe": null,
+      "rawInput": null,
+      "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    }
+  ],
+  "simulations": [],
+  "web": {
+    "samples": [],
+    "frames": [],
+    "contextMenus": [],
+    "truncated": 0,
+    "maxSamples": 200000
+  },
+  "native": {
+    "packets": [],
+    "invalidBatches": 0,
+    "hostDropped": 0,
+    "sendFailures": 0,
+    "truncated": 0,
+    "maxSamples": 200000
+  },
+  "statusLog": [
+    {
+      "at": "2026-10-18T10:01:48.227Z",
+      "message": "Native listener failed: command.unknown: no such command: spike_tablet_native_start"
+    },
+    {
+      "at": "2026-10-18T10:01:48.727Z",
+      "message": "webview sine 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:48.727Z",
+      "message": "webview sine 240 Hz failed: spike.notForeground: fixture covering window"
+    },
+    {
+      "at": "2026-10-18T10:01:50.227Z",
+      "message": "webview sine 240 Hz (retry): injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:50.227Z",
+      "message": "webview sine 240 Hz (retry) failed: spike.notForeground: fixture covering window"
+    },
+    {
+      "at": "2026-10-18T10:01:51.027Z",
+      "message": "webview sine 500 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:51.027Z",
+      "message": "webview sine 500 Hz failed: spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "at": "2026-10-18T10:01:51.827Z",
+      "message": "webview zigzag 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:51.827Z",
+      "message": "webview zigzag 240 Hz failed: spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "at": "2026-10-18T10:01:52.627Z",
+      "message": "webview stationary 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:52.627Z",
+      "message": "webview stationary 240 Hz failed: spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "at": "2026-10-18T10:01:53.427Z",
+      "message": "webview pressure-only 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:53.427Z",
+      "message": "webview pressure-only 240 Hz failed: spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "at": "2026-10-18T10:01:54.227Z",
+      "message": "native window sine 240 Hz, no RTS: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:54.227Z",
+      "message": "native window sine 240 Hz, no RTS failed: spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "at": "2026-10-18T10:01:55.027Z",
+      "message": "native window stationary 240 Hz, no RTS: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:55.027Z",
+      "message": "native window stationary 240 Hz, no RTS failed: spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "at": "2026-10-18T10:01:55.827Z",
+      "message": "native window pressure-only 240 Hz, no RTS: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:55.827Z",
+      "message": "native window pressure-only 240 Hz, no RTS failed: spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "at": "2026-10-18T10:01:56.627Z",
+      "message": "native window sine 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:56.627Z",
+      "message": "native window sine 240 Hz failed: spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "at": "2026-10-18T10:01:57.427Z",
+      "message": "native window stationary 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:01:57.427Z",
+      "message": "native window stationary 240 Hz failed: spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+    },
+    {
+      "at": "2026-10-18T10:01:58.227Z",
+      "message": "Log saved: test.json (1 bytes)."
+    }
+  ],
+  "summary": {
+    "web": {
+      "samples": 0,
+      "pointerTypes": {},
+      "contactSamples": 0,
+      "strokes": [],
+      "rateHz": null,
+      "medianRateHz": null,
+      "medianIntervalMs": null,
+      "maxIntervalMs": null,
+      "gaps": 0,
+      "loss": {
+        "basis": "unknown",
+        "note": "unknown, gap heuristic only"
+      },
+      "pressure": {
+        "distinct": 0,
+        "min": null,
+        "max": null,
+        "minStep": null,
+        "levelsImplied": null
+      },
+      "tiltPresent": false,
+      "tiltRangeX": null,
+      "tiltRangeY": null,
+      "twistPresent": false,
+      "coalescedSupported": false,
+      "coalescedObserved": false,
+      "coalescedPerDispatch": null,
+      "samplesPerFrame": null,
+      "handlerLatencyMs": {
+        "oldestCoalesced": null,
+        "newestCoalesced": null,
+        "allSamples": null
+      }
+    },
+    "native": {
+      "samples": 0,
+      "pointerTypes": {},
+      "contactSamples": 0,
+      "strokes": [],
+      "rateHz": null,
+      "medianRateHz": null,
+      "medianIntervalMs": null,
+      "maxIntervalMs": null,
+      "gaps": 0,
+      "loss": {
+        "basis": "unknown",
+        "note": "unknown, gap heuristic only"
+      },
+      "pressure": {
+        "distinct": 0,
+        "min": null,
+        "max": null,
+        "minStep": null,
+        "levelsImplied": null
+      },
+      "tiltPresent": false,
+      "tiltRangeX": null,
+      "tiltRangeY": null,
+      "twistPresent": false,
+      "clock": "host"
+    }
+  }
+}

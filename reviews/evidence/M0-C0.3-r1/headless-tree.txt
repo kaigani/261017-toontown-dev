@@ -1,0 +1,79 @@
+tt-headless v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\bins\headless)
+├── clap v4.6.7
+│   ├── clap_builder v4.6.7
+│   │   ├── anstyle v1.0.14
+│   │   └── clap_lex v1.1.1
+│   └── clap_derive v4.6.7 (proc-macro)
+│       ├── heck v0.5.0
+│       ├── proc-macro2 v1.0.107
+│       │   └── unicode-ident v1.0.27
+│       ├── quote v1.0.47
+│       │   └── proc-macro2 v1.0.107 (*)
+│       └── syn v3.0.9
+│           ├── proc-macro2 v1.0.107 (*)
+│           ├── quote v1.0.47 (*)
+│           └── unicode-ident v1.0.27
+├── serde v1.0.229
+│   ├── serde_core v1.0.229
+│   └── serde_derive v1.0.229 (proc-macro)
+│       ├── proc-macro2 v1.0.107 (*)
+│       ├── quote v1.0.47 (*)
+│       └── syn v3.0.9 (*)
+├── serde_json v1.0.154
+│   ├── itoa v1.0.18
+│   ├── memchr v2.8.3
+│   ├── serde_core v1.0.229
+│   └── zmij v1.0.23
+├── thiserror v2.0.21
+│   └── thiserror-impl v2.0.21 (proc-macro)
+│       ├── proc-macro2 v1.0.107 (*)
+│       ├── quote v1.0.47 (*)
+│       └── syn v3.0.9 (*)
+├── tt-engine v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\engine)
+│   ├── serde v1.0.229 (*)
+│   ├── serde_json v1.0.154 (*)
+│   ├── sha2 v0.11.1
+│   │   ├── cfg-if v1.0.5
+│   │   ├── cpufeatures v0.3.1
+│   │   └── digest v0.11.3
+│   │       ├── block-buffer v0.12.1
+│   │       │   └── hybrid-array v0.4.15
+│   │       │       └── typenum v1.20.1
+│   │       ├── const-oid v0.10.2
+│   │       └── crypto-common v0.2.2
+│   │           └── hybrid-array v0.4.15 (*)
+│   ├── thiserror v2.0.21 (*)
+│   ├── tt-anim v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\anim)
+│   │   └── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   ├── tt-audio v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\audio)
+│   │   └── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   ├── tt-colour v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\colour)
+│   │   └── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   ├── tt-executor v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\executor)
+│   │   ├── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   │   └── tt-registry v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\registry)
+│   │       └── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   ├── tt-fx v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\fx)
+│   │   ├── tt-anim v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\anim) (*)
+│   │   └── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   ├── tt-io v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\io)
+│   │   ├── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   │   ├── tt-persist v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\persist)
+│   │   │   └── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   │   └── tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\render)
+│   │       ├── tt-anim v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\anim) (*)
+│   │       ├── tt-colour v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\colour) (*)
+│   │       ├── tt-fx v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\fx) (*)
+│   │       ├── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   │       └── tt-vector v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\vector)
+│   │           └── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   ├── tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\lipsync)
+│   │   ├── tt-audio v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\audio) (*)
+│   │   └── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   ├── tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\model)
+│   ├── tt-persist v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\persist) (*)
+│   ├── tt-registry v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\registry) (*)
+│   ├── tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\render) (*)
+│   └── tt-vector v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\vector) (*)
+└── tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\mcp)
+    └── tt-engine v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r1\crates\engine) (*)

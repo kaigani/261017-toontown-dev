@@ -1,0 +1,100 @@
+{
+ "version": 3,
+ "web": {
+  "samples": 0,
+  "strokes": [],
+  "coalescedApi": true,
+  "coalescedObserved": false,
+  "coalescedPerDispatch": null,
+  "samplesPerFrame": null,
+  "handlerLatencyMs": {
+   "oldestCoalesced": null,
+   "newestCoalesced": null,
+   "allSamples": null
+  },
+  "loss": "unknown, gap heuristic only",
+  "truncated": 0
+ },
+ "native": {
+  "packets": 0,
+  "clock": "host",
+  "strokes": [],
+  "loss": "unknown, gap heuristic only",
+  "hostDropped": 0,
+  "sendFailures": 0,
+  "invalidBatches": 0,
+  "truncated": 0,
+  "info": null
+ },
+ "runs": [],
+ "actions": {
+  "actions": [],
+  "keyEvents": {
+   "events": 4,
+   "transitions": 0,
+   "ignored": 2
+  },
+  "excludedSamples": {
+   "web": 0,
+   "native": 0
+  },
+  "notRecorded": [
+   "A1",
+   "A2",
+   "A3",
+   "A4",
+   "A5",
+   "A6"
+  ],
+  "webOutside": [],
+  "nativeOutside": []
+ },
+ "decision": {
+  "outcome": "insufficient evidence: repeat the actions named for row 1 (W), row 2 (W), row 3 (W), row 4 (W), row 5 (W), row 6 (W), row 7 (W), row 8 (W), row 9 (W)",
+  "selected": null,
+  "conditions": [],
+  "scores": {},
+  "eligible": [],
+  "platform": "windows",
+  "rows": {
+   "W": {
+    "1": {
+     "result": "insufficient",
+     "note": "A1 not recorded; A2 not recorded; A3 not recorded"
+    },
+    "2": {
+     "result": "insufficient",
+     "note": "A1 not recorded"
+    },
+    "3": {
+     "result": "insufficient",
+     "note": "A1 not recorded"
+    },
+    "4": {
+     "result": "insufficient",
+     "note": "A3 not recorded"
+    },
+    "5": {
+     "result": "insufficient",
+     "note": "A4 not recorded; state whether the pen has barrel rotation"
+    },
+    "6": {
+     "result": "insufficient",
+     "note": "A2 not recorded"
+    },
+    "7": {
+     "result": "insufficient",
+     "note": "A2 not recorded"
+    },
+    "8": {
+     "result": "insufficient",
+     "note": "A2 not recorded"
+    },
+    "9": {
+     "result": "insufficient",
+     "note": "A6 not recorded"
+    }
+   }
+  }
+ }
+}

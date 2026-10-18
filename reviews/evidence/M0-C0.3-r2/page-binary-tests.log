@@ -1,0 +1,39 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c03-r2/desktop
+
+ ❯ src/test/c03-r2-page.test.tsx (3 tests | 1 failed) 192ms
+   × C03-R2-02: current page slow 1 Hz completed run is accepted as a missed target 53ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c03-r2-page.test.tsx > C03-R2-02: current page slow 1 Hz completed run is accepted as a missed target
+AssertionError: error: run 0 (webgl2/paths100k): frame timestamps non-monotonic or shorter than 10000 ms
+: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ src/test/c03-r2-page.test.tsx:90:30
+     88| it('C03-R2-02: current page slow 1 Hz completed run is accepted as a m…
+     89|   const r = analyze(await pageLog(1000, true));
+     90|   expect(r.status, r.stderr).toBe(0);
+       |                              ^
+     91|   expect(r.stdout).toContain('missed');
+     92| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 11 passed (12)
+   Start at  05:32:19
+   Duration  1.40s (environment 46%, setup 18%, tests 16%, transform 13%, import 6%, worker 1%)
+
+    Isolate  2 workers spawned · ~361ms startup each (spawn + environment, per file)
+             at least ~361ms faster with isolate: false — reuses workers across files instead of one per file
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found

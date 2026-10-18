@@ -1,0 +1,30 @@
+## Canvas spike log (version 2)
+
+- source: auto; userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26100.33438], webview 154.0.4258.62, CPUs 4; DPR 1, viewport {'height': 677, 'width': 1024}
+- WebGPU API present: True; forced renderer: None
+- parameters: {'flattenTolerance': 0.5, 'idleMs': 1000, 'panZoomMs': 10000, 'pixelTransfers': 20, 'scenes': ['paths100k', 'groups1k', 'brush10k'], 'seed': 1, 'transfers': 10}
+
+### Runs (p50 / p95 / max)
+
+| back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps target | IPC-per-frame ceiling fps |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| webgpu | paths100k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+| webgpu | groups1k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+| webgpu | brush10k | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | | | | | | | | | | | |
+| webgl2 | paths100k | ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11) | 1008x445 | 8.70 | 99.2 / 3135.9 / 3135.9 | 22 | 5.55 / 8.75 / 8.75 | 159.7 | 52.2 / 52.3 | 15.62 | 0.6 | 1812.50 / 1859.30 / 1859.30 | 7 of 7 | 0.00 / 0.40 / 0.40 | - | missed | 10.1 |
+| webgl2 | groups1k | ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11) | 1008x445 | 2.02 | 26.0 / 406.8 / 406.8 | 32 | 1.32 / 25.57 / 25.57 | 62.8 | 3.3 / 3.4 | 15.63 | 13.5 | 78.10 / 93.80 / 109.50 | 135 of 135 | 0.10 / 0.50 / 5.80 | - | missed | 38.5 |
+| webgl2 | brush10k | ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11) | 1008x445 | 10.09 | 114.9 / 133.1 / 133.1 | 87 | 6.26 / 7.49 / 7.49 | 489.9 | 17.2 / 17.3 | 15.87 | 7.3 | 140.60 / 171.90 / 187.50 | 73 of 73 | 0.10 / 4.60 / 10.70 | - | missed | 8.7 |
+
+Decode details (segments = stroke instances; triangles = fill triangles):
+
+- webgl2 paths100k: paths 100000, cubics 200000, segments 2832713, fill vertices 0, triangles 0, GPU bytes 90.6 MB, tolerance 0.5
+- webgl2 groups1k: paths 20000, cubics 50000, segments 101961, fill vertices 175915, triangles 145915, GPU bytes 7.8 MB, tolerance 0.5
+- webgl2 brush10k: paths 10000, cubics 0, segments 0, fill vertices 1088402, triangles 1062652, GPU bytes 30.2 MB, tolerance 0.5
+
+### Pixel-frame transfer (host-raster fallback, transfer + texture upload only)
+
+| back end | size | MB / frame | transfer ms | upload ms | MB/s | transfer + upload p50 ms |
+|---|---|---|---|---|---|---|
+| webgpu | **FAILED**: webgpu unavailable: navigator.gpu.requestAdapter() returned null | | | | | |
+| webgl2 | 1008x445 | 1.79 | 23.8 / 26.5 / 29.3 | 0.2 / 0.4 / 1.2 | 74 | 24.0 |
