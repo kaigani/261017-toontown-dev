@@ -23,5 +23,20 @@ serde_json.workspace = true
 tauri.workspace = true
 thiserror.workspace = true
 
+# C0.2 tablet spike (desktop host only; never in engine crates, so the headless guard is unaffected).
+[target.'cfg(windows)'.dependencies]
+octotablet = { version = "0.1.0", default-features = false, features = ["windows-ink"] }
+windows = { version = "0.62", features = [
+    "Win32_Foundation",
+    "Win32_UI_Controls",
+    "Win32_UI_Input_Pointer",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+block2 = "0.6"
+objc2 = "0.6"
+objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "block2", "NSEvent"] }
+
 [lints]
 workspace = true

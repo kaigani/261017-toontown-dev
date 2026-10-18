@@ -37,17 +37,31 @@ pub enum ArgsError {
     #[error("--ipc-bench-count must be a positive integer, got `{0}`")]
     BadCount(String),
     /// An argument this binary does not know.
-    #[error("unknown argument `{0}` (usage: toontown [--ipc-bench <out.json> [--ipc-bench-count <n>]])")]
+    #[error(
+        "unknown argument `{0}` (usage: toontown [--ipc-bench <out.json> [--ipc-bench-count <n>]] [--spike tablet [--spike-log <file>]])"
+    )]
     Unknown(String),
+    /// `--spike` names a spike that does not exist.
+    #[error("unknown spike `{0}` (available: tablet)")]
+    UnknownSpike(String),
+    /// `--spike-log` without `--spike`.
+    #[error("--spike-log needs --spike")]
+    LogWithoutSpike,
+    /// `--spike-auto` without `--spike` and `--spike-log`.
+    #[error("--spike-auto needs --spike tablet and --spike-log <file>")]
+    AutoWithoutLog,
 }
 
 /// Parses `toontown` arguments (without the program name). `Ok(None)` = normal interactive start.
 ///
 /// # Errors
 /// [`ArgsError`] for malformed or unknown arguments.
-pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<Option<BenchSettings>, ArgsError> {
+pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptions, ArgsError> {
     let mut out = None;
     let mut count = DEFAULT_COUNT;
+    let mut spike = None;
+    let mut spike_log = None;
+    let mut spike_auto = false;
     let mut it = args.into_iter();
     while let Some(arg) = it.next() {
         match arg.as_str() {
@@ -56,12 +70,39 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<Option<Benc
                 let v = it.next().ok_or(ArgsError::MissingValue("--ipc-bench-count"))?;
                 count = v.parse().ok().filter(|n| *n > 0).ok_or(ArgsError::BadCount(v))?;
             }
+            "--spike" => {
+                let name = it.next().ok_or(ArgsError::MissingValue("--spike"))?;
+                if name != "tablet" {
+                    return Err(ArgsError::UnknownSpike(name));
+                }
+                spike = Some(name);
+            }
+            "--spike-log" => spike_log = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--spike-log"))?)),
+            "--spike-auto" => spike_auto = true,
             // macOS adds `-psn_…` when launched from Finder on older systems.
             other if other.starts_with("-psn_") => {}
             other => return Err(ArgsError::Unknown(other.to_owned())),
         }
     }
-    Ok(out.map(|out| BenchSettings { out, count }))
+    if spike_log.is_some() && spike.is_none() {
+        return Err(ArgsError::LogWithoutSpike);
+    }
+    if spike_auto && (spike.is_none() || spike_log.is_none()) {
+        return Err(ArgsError::AutoWithoutLog);
+    }
+    Ok(LaunchOptions {
+        bench: out.map(|out| BenchSettings { out, count }),
+        spike: spike.map(|name| crate::spikes::tablet::SpikeSettings { name, log_path: spike_log, auto: spike_auto }),
+    })
+}
+
+/// Parsed command line of the desktop binary.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct LaunchOptions {
+    /// `--ipc-bench`.
+    pub bench: Option<BenchSettings>,
+    /// `--spike tablet [--spike-log <file>]` (M0 spike, C0.2).
+    pub spike: Option<crate::spikes::tablet::SpikeSettings>,
 }
 
 /// Managed state: the benchmark settings, if any.
@@ -146,15 +187,28 @@ mod tests {
 
     #[test]
     fn no_arguments_is_interactive() {
-        assert_eq!(parse_args(args(&[])), Ok(None));
+        assert_eq!(parse_args(args(&[])), Ok(LaunchOptions::default()));
     }
 
     #[test]
     fn bench_with_count() {
-        let s = parse_args(args(&["--ipc-bench", "o.json", "--ipc-bench-count", "50"])).unwrap().unwrap();
+        let s = parse_args(args(&["--ipc-bench", "o.json", "--ipc-bench-count", "50"])).unwrap().bench.unwrap();
         assert_eq!(s, BenchSettings { out: "o.json".into(), count: 50 });
-        let s = parse_args(args(&["--ipc-bench", "o.json"])).unwrap().unwrap();
+        let s = parse_args(args(&["--ipc-bench", "o.json"])).unwrap().bench.unwrap();
         assert_eq!(s.count, DEFAULT_COUNT);
+    }
+
+    #[test]
+    fn spike_flags() {
+        let o = parse_args(args(&["--spike", "tablet", "--spike-log", "t.json"])).unwrap();
+        let s = o.spike.unwrap();
+        assert_eq!((s.name.as_str(), s.log_path), ("tablet", Some(PathBuf::from("t.json"))));
+        assert_eq!(parse_args(args(&["--spike", "canvas"])), Err(ArgsError::UnknownSpike("canvas".into())));
+        assert_eq!(parse_args(args(&["--spike-log", "t.json"])), Err(ArgsError::LogWithoutSpike));
+        assert_eq!(parse_args(args(&["--spike"])), Err(ArgsError::MissingValue("--spike")));
+        assert_eq!(parse_args(args(&["--spike", "tablet", "--spike-auto"])), Err(ArgsError::AutoWithoutLog));
+        let auto = parse_args(args(&["--spike", "tablet", "--spike-log", "t.json", "--spike-auto"])).unwrap();
+        assert!(auto.spike.unwrap().auto);
     }
 
     #[test]
@@ -165,6 +219,6 @@ mod tests {
             Err(ArgsError::BadCount("0".into()))
         );
         assert_eq!(parse_args(args(&["--nope"])), Err(ArgsError::Unknown("--nope".into())));
-        assert_eq!(parse_args(args(&["-psn_0_12345"])), Ok(None));
+        assert_eq!(parse_args(args(&["-psn_0_12345"])), Ok(LaunchOptions::default()));
     }
 }

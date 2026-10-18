@@ -10,6 +10,7 @@ pub mod bindings;
 pub mod diagnostics;
 pub mod ipc;
 pub mod menu;
+pub mod spikes;
 
 use std::sync::Arc;
 
@@ -37,18 +38,23 @@ pub enum DesktopError {
 /// # Errors
 /// [`DesktopError`] when the engine, the menu manifest or the window system fails.
 pub fn run() -> Result<(), DesktopError> {
-    let bench = diagnostics::parse_args(std::env::args().skip(1))?;
+    let launch = diagnostics::parse_args(std::env::args().skip(1))?;
+    let bench = launch.bench;
     let engine = Engine::new(EngineConfig { run_mode: RunMode::Attached })?;
     let manifest = Arc::new(bindings::Manifest::embedded()?);
     let menu_manifest = Arc::clone(&manifest);
     tauri::Builder::default()
         .manage(engine)
         .manage(diagnostics::Diagnostics { bench: bench.clone() })
+        .manage(spikes::tablet::TabletSpike::new(launch.spike.clone()))
         .menu(move |app| menu::build(app, &menu_manifest))
         .on_menu_event(move |app, event| menu::on_event(app, &manifest, event.id().as_ref()))
         .setup(move |app| {
             if let Some(settings) = &bench {
                 diagnostics::arm_timeout(app.handle(), settings);
+            }
+            if let Some(settings) = &launch.spike {
+                spikes::tablet::arm_auto_timeout(app.handle(), settings);
             }
             Ok(())
         })
@@ -56,7 +62,12 @@ pub fn run() -> Result<(), DesktopError> {
             ipc::ping,
             ipc::app_info,
             diagnostics::bench_plan,
-            diagnostics::bench_report
+            diagnostics::bench_report,
+            spikes::tablet::spike_mode,
+            spikes::tablet::spike_tablet_native_start,
+            spikes::tablet::spike_tablet_native_stop,
+            spikes::tablet::spike_pen_simulate,
+            spikes::tablet::spike_save_log
         ])
         .run(tauri::generate_context!())?;
     Ok(())
