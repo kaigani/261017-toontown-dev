@@ -1,0 +1,25 @@
+tablet-spike-windows-runner-r1-matrix1.json.gz {'oldest': {'50': 13.899999999963256, '95': 16.100000000036744, '99': 16.899999999963256, 'max': 74.29999999998836}, 'newest': {'50': 2.099999999974898, '95': 4.2999999999883585, '99': 9.299999999988358, 'max': 15.599999999976717}, 'all': {'50': 8.200000000011642, '95': 15.0, '99': 16.600000000034925, 'max': 74.29999999998836}}
+webview sine 240 Hz rect [16, 134, 1012, 275] web 966 WM None RTS None raw 1046
+webview sine 500 Hz rect [16, 151, 1012, 240] web 926 WM None RTS None raw 1046
+webview zigzag 240 Hz, shifted rectangle rect [53, 174, 914, 176] web 1022 WM None RTS None raw 1046
+webview stationary 240 Hz rect [16, 151, 1012, 240] web 1 WM None RTS None raw 1046
+native window sine 240 Hz rect [16, 151, 1012, 240] web None WM 23 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1001}, 'missingAt1025': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], 'unionWithWM': 1024} raw 1046
+native window stationary 240 Hz rect [16, 151, 1012, 240] web None WM 17 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1007}, 'missingAt1025': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 'unionWithWM': 1024} raw 1046
+tablet-spike-windows-runner-r1-matrix2.json.gz {'oldest': {'50': 13.900000000025102, '95': 16.0, '99': 17.100000000036744, 'max': 102.89999999996326}, 'newest': {'50': 2.099999999976717, '95': 4.2999999999883585, '99': 9.299999999988358, 'max': 16.79999999998836}, 'all': {'50': 8.0, '95': 15.099999999974898, '99': 17.099999999974898, 'max': 102.89999999996326}}
+webview sine 240 Hz rect [16, 134, 1012, 275] web 970 WM None RTS None raw 1046
+webview sine 500 Hz rect [16, 151, 1012, 240] web 1000 WM None RTS None raw 1046
+webview zigzag 240 Hz, shifted rectangle rect [53, 174, 914, 176] web 1023 WM None RTS None raw 1046
+webview stationary 240 Hz rect [16, 151, 1012, 240] web 1 WM None RTS None raw 1046
+native window sine 240 Hz rect [16, 151, 1012, 240] web None WM 1 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1023}, 'missingAt1025': [0], 'unionWithWM': 1024} raw 1046
+native window stationary 240 Hz rect [16, 151, 1012, 240] web None WM 0 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1024}, 'missingAt1025': [], 'unionWithWM': 1024} raw 1046
+native window sine 240 Hz, no RTS rect [16, 151, 1012, 240] web None WM 1024 RTS None raw 1046
+native window stationary 240 Hz, no RTS rect [16, 151, 1012, 240] web None WM 1024 RTS None raw 1046
+tablet-spike-final-ci.json.gz {'oldest': {'50': 13.900000000023283, '95': 16.100000000034925, '99': 16.899999999965075, 'max': 34.20000000001164}, 'newest': {'50': 2.0, '95': 4.400000000023283, '99': 8.700000000011642, 'max': 14.800000000046566}, 'all': {'50': 8.0, '95': 15.099999999976717, '99': 16.399999999965075, 'max': 34.20000000001164}}
+webview sine 240 Hz rect [16, 134, 1012, 275] web 948 WM None RTS None raw 1046
+webview sine 500 Hz rect [16, 151, 1012, 240] web 963 WM None RTS None raw 1046
+webview zigzag 240 Hz, shifted rectangle rect [53, 174, 914, 176] web 1023 WM None RTS None raw 1046
+webview stationary 240 Hz rect [16, 151, 1012, 240] web 1 WM None RTS None raw 1046
+native window sine 240 Hz rect [16, 151, 1012, 240] web None WM 15 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1009}, 'missingAt1025': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 'unionWithWM': 1024} raw 1046
+native window stationary 240 Hz rect [16, 151, 1012, 240] web None WM 11 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1013}, 'missingAt1025': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'unionWithWM': 1024} raw 1046
+native window sine 240 Hz, no RTS rect [16, 151, 1012, 240] web None WM 1024 RTS None raw 1046
+native window stationary 240 Hz, no RTS rect [16, 151, 1012, 240] web None WM 1024 RTS None raw 1046

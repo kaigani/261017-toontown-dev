@@ -1,0 +1,121 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c02-r2/desktop
+
+ ❯ src/test/c02-r2-tooling.test.ts (2 tests | 1 failed) 631ms
+   × C02-R2: permanent analyzer evidence-integrity attacks 583ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  02:06:23
+   Duration  889ms (tests 79%, setup 16%, transform 3%, import 1%)
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c02-r2-tooling.test.ts > C02-R2: permanent analyzer evidence-integrity attacks
+AssertionError: test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success (__main__.AnalyzerAttacks.test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success) ... FAIL
+test_C02_R2_01_explicit_v1_is_rejected (__main__.AnalyzerAttacks.test_C02_R2_01_explicit_v1_is_rejected) ... FAIL
+test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) ...
+  test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) (target='webview') ... FAIL
+  test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) (target='nativeWindow') ... FAIL
+test_C02_R2_02_achieved_rate_is_recomputed_or_rejected (__main__.AnalyzerAttacks.test_C02_R2_02_achieved_rate_is_recomputed_or_rejected) ... FAIL
+test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) ...
+  test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) (path='web') ... FAIL
+  test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) (path='native') ... FAIL
+test_explicit_failure_without_report_remains_analyzable (__main__.AnalyzerAttacks.test_explicit_failure_without_report_remains_analyzable) ... ok
+test_lossless_stationary_including_down_has_zero_missing (__main__.AnalyzerAttacks.test_lossless_stationary_including_down_has_zero_missing) ... ok
+test_macos_extended_accessor_contracts (__main__.AnalyzerAttacks.test_macos_extended_accessor_contracts) ... ok
+test_pause_segmentation_and_pose_only_native_reference_unknown (__main__.AnalyzerAttacks.test_pause_segmentation_and_pose_only_native_reference_unknown) ... ok
+
+======================================================================
+FAIL: test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success (__main__.AnalyzerAttacks.test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r2\tests\adversarial\c02-r2-tooling.py", line 82, in test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success
+    self.assertNotEqual(result.returncode, 0, "Incomplete raw report currently prints received 0 / missing 0")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Incomplete raw report currently prints received 0 / missing 0
+
+======================================================================
+FAIL: test_C02_R2_01_explicit_v1_is_rejected (__main__.AnalyzerAttacks.test_C02_R2_01_explicit_v1_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r2\tests\adversarial\c02-r2-tooling.py", line 63, in test_C02_R2_01_explicit_v1_is_rejected
+    self.assertNotEqual(result.returncode, 0, "Binding ruling requires explicit v1 rejection")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Binding ruling requires explicit v1 rejection
+
+======================================================================
+FAIL: test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) (target='webview')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r2\tests\adversarial\c02-r2-tooling.py", line 75, in test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly
+    self.assertNotEqual(result.returncode, 0, "Missing successful-run evidence must not look like n/a")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Missing successful-run evidence must not look like n/a
+
+======================================================================
+FAIL: test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) (target='nativeWindow')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r2\tests\adversarial\c02-r2-tooling.py", line 75, in test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly
+    self.assertNotEqual(result.returncode, 0, "Missing successful-run evidence must not look like n/a")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : Missing successful-run evidence must not look like n/a
+
+======================================================================
+FAIL: test_C02_R2_02_achieved_rate_is_recomputed_or_rejected (__main__.AnalyzerAttacks.test_C02_R2_02_achieved_rate_is_recomputed_or_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r2\tests\adversarial\c02-r2-tooling.py", line 91, in test_C02_R2_02_achieved_rate_is_recomputed_or_rejected
+    self.assertAlmostEqual(result[0]["achievedHz"], 250, places=6,
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                           msg="4 ms raw injection intervals cannot establish 123456789 Hz")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 123456789 != 250 within 6 places (123456539 difference) : 4 ms raw injection intervals cannot establish 123456789 Hz
+
+======================================================================
+FAIL: test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) (path='web')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r2\tests\adversarial\c02-r2-tooling.py", line 120, in test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold
+    self.assertEqual(stroke.get("tiltRangeX"), [-30, 30],
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     "tiltPresent alone cannot assess the manual's +/-30 degree target")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != [-30, 30] : tiltPresent alone cannot assess the manual's +/-30 degree target
+
+======================================================================
+FAIL: test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) (path='native')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r2\tests\adversarial\c02-r2-tooling.py", line 120, in test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold
+    self.assertEqual(stroke.get("tiltRangeX"), [-30, 30],
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     "tiltPresent alone cannot assess the manual's +/-30 degree target")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != [-30, 30] : tiltPresent alone cannot assess the manual's +/-30 degree target
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.494s
+
+FAILED (failures=7)
+: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ src/test/c02-r2-tooling.test.ts:17:41
+     15|     timeout: 60_000,
+     16|   });
+     17|   expect(r.status, r.stdout + r.stderr).toBe(0);
+       |                                         ^
+     18| });
+     19|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯

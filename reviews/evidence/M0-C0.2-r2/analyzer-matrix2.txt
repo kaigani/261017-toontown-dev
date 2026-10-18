@@ -1,0 +1,50 @@
+## Tablet spike log (version 2)
+
+- userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26100.33438], webview 154.0.4258.62, CPUs 4
+- GPU (navigator.gpu): {'available': False}
+devicePixelRatio 1, getCoalescedEvents available: True
+native: {'backend': 'octotablet-ink', 'deviceClock': 'octotablet FrameTimestamp, ms since an arbitrary epoch', 'tablets': [], 'timestampGranularityMs': 1, 'window': {'innerHeight': 729, 'innerWidth': 1028, 'innerX': 8, 'innerY': 51, 'scaleFactor': 1}}, packets 0, invalid batches 0
+- native clock used: host; channel loss: unknown, gap heuristic only; host dropped 0, send failures 0, truncated 0
+- web samples 3014, truncated 0; web loss: unknown, gap heuristic only
+- coalescing: API available True, batching observed True, per dispatch p50 4.00 / p95 8.00 / max 27.0
+- handler - event ms: oldest coalesced p50 13.90 / p95 16.00 / max 102.9; newest p50 2.10 / p95 4.30 / max 16.8; all samples p50 8.00 / p95 15.10 / max 102.9
+web path: 4 pen-down strokes
+native path: 0 strokes
+
+### Web path strokes (pointer events)
+
+| stroke | pointer | samples | ms | Hz | vs 200 Hz | median / max interval ms | >2x median | pressure levels (distinct / implied) | tilt | twist |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | pen#2 | 970 | 4251 | 227.9 | meets target | 4.20 / 212.9 | 2 | 970 / 1024 | yes | 965 nonzero |
+| 2 | pen#3 | 1000 | 2070 | 482.5 | meets target | 2.00 / 17.8 | 20 | 1000 / 1024 | yes | 994 nonzero |
+| 3 | pen#4 | 1023 | 4257 | 240.1 | meets target | 4.20 / 8.3 | 0 | 1023 / 1024 | yes | 1017 nonzero |
+| 4 | pen#5 | 1 | 0 | - | - | - / - | 0 | 1 / - | yes | 0 nonzero |
+
+`*` = episode cut off at the start or end of the capture. `>2x median` is a heuristic, not a loss count.
+
+### Native path strokes (host listener, host clock)
+
+No contact episodes.
+
+### Synthetic runs (InjectSyntheticPointerInput; simulation, not tablet hardware)
+
+| run | pattern | achieved Hz | web events: received / missing | WM_POINTER (history) | RTS: poses, frames received | raw HID reports (count only; not decoded) | inject call ms (p50) | error |
+|---|---|---|---|---|---|---|---|---|
+| webview sine 240 Hz | sine | 240.0 | 970 / 54 | not observable (WebView2 input window is in another process) | 0, 0 | 1046 | 0.047 |  |
+| webview sine 500 Hz | sine | 492.0 | 1000 / 24 | not observable (WebView2 input window is in another process) | 0, 0 | 1046 | 0.045 |  |
+| webview zigzag 240 Hz, shifted rectangle | zigzag | 240.0 | 1023 / 1 | not observable (WebView2 input window is in another process) | 0, 0 | 1046 | 0.049 |  |
+| webview stationary 240 Hz | stationary | 240.0 | 1 / 1023 | not observable (WebView2 input window is in another process) | 0, 0 | 1046 | 0.032 |  |
+| native window sine 240 Hz | sine | 240.0 | n/a (native window) | 1 / 1023 missing | 1033, 1023 | 1046 | 0.043 |  |
+| native window stationary 240 Hz | stationary | 240.0 | n/a (native window) | 0 / 1024 missing | 1034, 1024 | 1046 | 0.032 |  |
+| native window sine 240 Hz, no RTS | sine | 240.0 | n/a (native window) | 1024 / 0 missing | not attached | 1046 | 0.041 |  |
+| native window stationary 240 Hz, no RTS | stationary | 240.0 | n/a (native window) | 1024 / 0 missing | not attached | 1046 | 0.031 |  |
+
+- **webview sine 240 Hz**: web missing frames: 1, 92, 421, 604, 852-881, 883-900, 926, 933; repeated-pixel frames 4, of them missing 4; event - injection ms p50 0.13 / p95 0.41 / max 208.8; handler - injection ms p50 8.41 / p95 15.57 / max 311.7; raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\0']
+- **webview sine 500 Hz**: web missing frames: 1-4, 266, 517, 556, 564, 568, 577-578, 581-582, 594-595, 597, 600, 602-603, 606, 608-609, 612, 999; repeated-pixel frames 0, of them missing 0; event - injection ms p50 0.14 / p95 1.92 / max 10.7; handler - injection ms p50 8.43 / p95 15.57 / max 26.3; raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\1']
+- **webview zigzag 240 Hz, shifted rectangle**: web missing frames: 1; repeated-pixel frames 0, of them missing 0; event - injection ms p50 0.12 / p95 0.52 / max 5.2; handler - injection ms p50 7.99 / p95 15.06 / max 21.8; raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\2']
+- **webview stationary 240 Hz**: web missing frames: 1-1023; repeated-pixel frames 1023, of them missing 1023; event - injection ms p50 3.95 / p95 3.95 / max 4.0; handler - injection ms p50 5.35 / p95 5.35 / max 5.4; raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\3']
+- **native window sine 240 Hz**: raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\4']; WM_POINTER missing frames: 1-1023; counts {'down': 1, 'update': 10, 'up': 0, 'historyEntries': 11, 'historyErrors': 0, 'truncated': 0}; RTS missing frames (pressure scale 1025): 0; WM_POINTER or RTS together: 1024 / 1024
+- **native window stationary 240 Hz**: raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\5']; WM_POINTER missing frames: 0-1023; counts {'down': 0, 'update': 10, 'up': 0, 'historyEntries': 10, 'historyErrors': 0, 'truncated': 0}; RTS missing frames (pressure scale 1025): none; WM_POINTER or RTS together: 1024 / 1024
+- **native window sine 240 Hz, no RTS**: raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\6']; WM_POINTER missing frames: none; counts {'down': 1, 'update': 1044, 'up': 1, 'historyEntries': 1046, 'historyErrors': 0, 'truncated': 0}
+- **native window stationary 240 Hz, no RTS**: raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\7']; WM_POINTER missing frames: none; counts {'down': 1, 'update': 1044, 'up': 1, 'historyEntries': 1046, 'historyErrors': 0, 'truncated': 0}

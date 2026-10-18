@@ -1,0 +1,29 @@
+
+> @toontown/desktop@0.0.1 build C:\Users\kaiga\work\review\m0-c02-r2\desktop
+> vite build --config vite.config.ts && node boundary/check-dist.mjs dist
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 48 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                            0.47 kB │ gzip:   0.29 kB
+dist/assets/index-Cv7KYBrz.css           136.55 kB │ gzip:  11.31 kB
+dist/assets/tauri-transport-tUwyfpn4.js    3.07 kB │ gzip:   1.33 kB │ map:    35.65 kB
+dist/assets/TabletSpike-Dv1EsFd4.js       21.14 kB │ gzip:   7.26 kB │ map:    79.89 kB
+dist/assets/index-BALioHQp.js            626.43 kB │ gzip: 164.02 kB │ map: 2,442.52 kB
+
+✓ built in 1.01s
+node.exe : [plugin builtin:vite-reporter]
+At C:\Users\kaiga\AppData\Roaming\npm\pnpm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/pnpm/bin/pnpm.cjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([plugin builtin:vite-reporter] :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking:
+https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)
