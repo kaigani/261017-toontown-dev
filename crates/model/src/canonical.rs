@@ -237,21 +237,28 @@ pub fn to_compact_string(value: &Value) -> Result<String, ModelError> {
 /// an `i64` becomes an integer (JSON has one number type; `1.0` and `1` are the same value, and integer-typed
 /// properties accept both, as JSON Schema's `integer` does). `-0.0` becomes `0`.
 pub fn normalize_numbers(value: &mut Value) {
+    normalize_numbers_at(value, 0);
+}
+
+fn normalize_numbers_at(value: &mut Value, depth: usize) {
+    if depth > crate::MAX_JSON_DEPTH {
+        return; // deeper values are rejected by every later stage (schema, typed parse, writer)
+    }
     match value {
         Value::Number(n) => {
             if n.is_f64()
                 && let Some(f) = n.as_f64()
-            {
                 // i64 range check without precision loss: |f| < 2^63.
-                if f.fract() == 0.0 && f.abs() < 9_223_372_036_854_775_808.0 {
-                    #[allow(clippy::cast_possible_truncation)]
-                    let i = f as i64;
-                    *n = Number::from(i);
-                }
+                && f.fract() == 0.0
+                && f.abs() < 9_223_372_036_854_775_808.0
+            {
+                #[allow(clippy::cast_possible_truncation)]
+                let i = f as i64;
+                *n = Number::from(i);
             }
         }
-        Value::Array(items) => items.iter_mut().for_each(normalize_numbers),
-        Value::Object(map) => map.values_mut().for_each(normalize_numbers),
+        Value::Array(items) => items.iter_mut().for_each(|v| normalize_numbers_at(v, depth + 1)),
+        Value::Object(map) => map.values_mut().for_each(|v| normalize_numbers_at(v, depth + 1)),
         _ => {}
     }
 }

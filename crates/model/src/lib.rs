@@ -21,6 +21,7 @@ pub mod fixture;
 pub mod id;
 pub mod name;
 pub mod object;
+pub mod overlay;
 pub mod path;
 pub mod pointer;
 pub mod schema;

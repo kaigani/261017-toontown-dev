@@ -32,8 +32,10 @@ export interface EngineInfo {
 type Exact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
 
 /** Compile-time proof that the spelled-out `EngineInfo` equals the generated one. */
-export const ENGINE_INFO_IS_GENERATED: Exact<EngineInfo, GeneratedEngineInfo> &
-  Exact<keyof EngineInfo, keyof GeneratedEngineInfo> = true;
+export const ENGINE_INFO_IS_GENERATED: [
+  Exact<EngineInfo, GeneratedEngineInfo>,
+  Exact<keyof EngineInfo, keyof GeneratedEngineInfo>,
+] = [true, true];
 
 /** M0 diagnostics: what `toontown --ipc-bench` asks the front end to measure. */
 export interface BenchPlan {

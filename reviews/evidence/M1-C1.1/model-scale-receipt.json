@@ -1,0 +1,31 @@
+{
+  "what": "Model operations at the sizes of 10 \u00a75 (100 000 strokes in one drawing, 10 000 swatches, 1 000 elements, 10 000 drawings in a bank), release build, single run.",
+  "command": "cargo run --release -p tt-model --example scale > reviews/evidence/M1-C1.1/model-scale-windows.json",
+  "recordedAt": "2026-10-18T19:09:06+00:00",
+  "baseCommit": "8e74456d7feffb1434d02a61179c256a3f854add",
+  "dirtyFiles": [
+    "crates/model/src/canonical.rs",
+    "crates/model/src/change.rs",
+    "crates/model/src/lib.rs",
+    "desktop/src/ipc/README.md",
+    "plan/spec-issues.md",
+    "plan/traceability.csv",
+    "crates/model/examples/",
+    "crates/model/src/overlay.rs",
+    "docs/decisions/ADR-0010-object-model-and-identifiers.md",
+    "docs/decisions/ADR-0011-canonical-json-and-schemas.md",
+    "docs/decisions/ADR-0012-ipc-wire-transport.md",
+    "reviews/evidence/M1-C1.1/"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "timeOrigin": "each value is std::time::Instant elapsed around one operation (wall clock, ms); no absolute timestamps",
+  "caveats": [
+    "single run, no warm-up repetitions, background load not controlled",
+    "diffWholeDocumentNoSharedEntriesMs compares every object because the second document was assembled from cloned parts; the executor shares unchanged entries (C1.2)",
+    "diffOneStrokeIn100kStrokeEntryMs is a whole-entry diff; C1.2 limits diffs to the objects a transaction touched"
+  ]
+}

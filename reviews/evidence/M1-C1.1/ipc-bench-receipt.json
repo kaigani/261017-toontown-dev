@@ -1,0 +1,26 @@
+{
+  "what": "Real WebView2 IPC round trips through the C1.1 JSON text transport (diagnostics build, --ipc-bench).",
+  "command": [
+    "pnpm --dir desktop tauri build --no-bundle --config src-tauri/tauri.diagnostics.conf.json -- --locked",
+    "target/release/toontown.exe --ipc-bench target/scratch/bench/ipc-bench.json"
+  ],
+  "recordedAt": "2026-10-18T19:02:29+00:00",
+  "baseCommit": "8e74456d7feffb1434d02a61179c256a3f854add",
+  "workingTreeDirty": true,
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "gpu": "NVIDIA RTX 4090 (not used by this benchmark)",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "file": "ipc-bench-windows-webview2.json",
+  "timeOrigin": "round-trip times are performance.now() differences in the webview (ms); no absolute timestamps",
+  "note": "Uncontrolled comparison only: M0 recorded 1 MiB p50 20.4 ms (C0.1 handoff) and 21.6 ms (C0.1 r3 closure) on this machine with JS-object transport.",
+  "dirtyFilesAtBuild": [
+    "plan/traceability.csv",
+    "docs/decisions/ADR-0010-object-model-and-identifiers.md",
+    "docs/decisions/ADR-0011-canonical-json-and-schemas.md",
+    "docs/decisions/ADR-0012-ipc-wire-transport.md"
+  ],
+  "dirtyFilesNote": "documentation and plan files only; the binary was built from the code of baseCommit"
+}

@@ -151,8 +151,9 @@ fn type_of(v: &Value) -> Option<ObjectType> {
     v.get("type").and_then(Value::as_str).and_then(ObjectType::parse)
 }
 
-/// Splits an entry's JSON into the own views of every addressable object it holds.
-fn collect(v: &Value, ty: ObjectType, parent: Option<&str>, index: usize, ctx: (&str, &str), out: &mut Vec<OwnObject>) {
+/// Splits an entry's JSON into the own views of every addressable object it holds. Takes the value by ownership and
+/// moves each child out before replacing it with its stub, so nothing is copied (an entry may hold 100 000 strokes).
+fn collect(v: Value, ty: ObjectType, parent: Option<&str>, index: usize, ctx: (&str, &str), out: &mut Vec<OwnObject>) {
     let id = v.get(ty.id_field()).and_then(Value::as_str).unwrap_or_default().to_owned();
     let key = match ty.local_id_container() {
         Some(ObjectType::Drawing) if !ctx.0.is_empty() => format!("{}/{id}", ctx.0),
@@ -164,40 +165,28 @@ fn collect(v: &Value, ty: ObjectType, parent: Option<&str>, index: usize, ctx: (
         ObjectType::Channel => (ctx.0, id.as_str()),
         _ => ctx,
     };
-    let mut own = v.clone();
+    let mut own = v;
     if let Value::Object(m) = &mut own {
         m.shift_remove("rev");
     }
     for (field, slot) in crate::document::slots_of(ty) {
         let Some(child) = own.get_mut(*field) else { continue };
         let inline = !matches!(slot, crate::document::SlotKind::Split(_) | crate::document::SlotKind::SplitOne(_));
+        let mut visit = |item: &mut Value, i: usize| {
+            if let Some(cty) = type_of(item) {
+                let stub = child_stub(item, cty);
+                let full = std::mem::replace(item, stub);
+                if inline {
+                    collect(full, cty, Some(&key), i, (drawing, channel), out);
+                }
+            }
+        };
         match child {
-            Value::Array(items) => {
-                for (i, item) in items.iter_mut().enumerate() {
-                    if let Some(cty) = type_of(item) {
-                        if inline {
-                            collect(item, cty, Some(&key), i, (drawing, channel), out);
-                        }
-                        *item = child_stub(item, cty);
-                    }
-                }
-            }
+            Value::Array(items) => items.iter_mut().enumerate().for_each(|(i, item)| visit(item, i)),
             Value::Object(m) if matches!(slot, crate::document::SlotKind::InlineMap) => {
-                for (i, item) in m.values_mut().enumerate() {
-                    if let Some(cty) = type_of(item) {
-                        collect(item, cty, Some(&key), i, (drawing, channel), out);
-                        *item = child_stub(item, cty);
-                    }
-                }
+                m.values_mut().enumerate().for_each(|(i, item)| visit(item, i));
             }
-            item @ Value::Object(_) => {
-                if let Some(cty) = type_of(item) {
-                    if inline {
-                        collect(item, cty, Some(&key), 0, (drawing, channel), out);
-                    }
-                    *item = child_stub(item, cty);
-                }
-            }
+            item @ Value::Object(_) => visit(item, 0),
             _ => {}
         }
     }
@@ -233,7 +222,7 @@ pub fn own_objects(doc: &Document, entry: &EntryKey) -> Result<Vec<OwnObject>, M
     }
     .unwrap_or(0);
     let mut out = Vec::new();
-    collect(&v, ty, parent.as_deref(), index, ("", ""), &mut out);
+    collect(v, ty, parent.as_deref(), index, ("", ""), &mut out);
     Ok(out)
 }
 
