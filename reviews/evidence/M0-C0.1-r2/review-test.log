@@ -1,0 +1,160 @@
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m0-c01-r2
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m0-c01-r2\desktop
+> vitest run
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c01-r2/desktop
+
+ ❯ src/test/c01-r2-schema.test.ts (12 tests | 7 failed) 16ms
+   ❯ C01-R2-02: schema validation must use own properties (7)
+     × rejects an undeclared JSON key named __proto__ 6ms
+     × rejects an undeclared JSON key named constructor 1ms
+     × rejects an undeclared JSON key named toString 0ms
+     × rejects an undeclared JSON key named hasOwnProperty 0ms
+     × rejects the extra key through the real appInfo API 3ms
+     × does not certify inherited, incorrectly typed required ping fields 1ms
+     × checks prototype-named extra properties at nested levels too 1ms
+ ❯ src/test/c01-r2-node.test.ts (2 tests | 2 failed) 5264ms
+   × round-2 permanent node regressions: c01-r2-boundary.test.mjs 5165ms
+   × round-2 permanent node regressions: c01-r2-licenses.test.mjs 99ms
+cmd : 
+At line:2 char:1
++ cmd /c "pnpm test" *> reviews/evidence/M0-C0.1-r2/review-test.log; Wr ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c01-r2-node.test.ts > round-2 permanent node regressions: c01-r2-boundary.test.mjs
+Error: Command failed: C:\Program Files\nodejs\node.exe --test tests/adversarial/c01-r2-boundary.test.mjs
+ ❯ src/test/c01-r2-node.test.ts:11:5
+      9| for (const file of ['c01-r2-boundary.test.mjs', 'c01-r2-licenses.test.…
+     10|   it(`round-2 permanent node regressions: ${file}`, () => {
+     11|     execFileSync(process.execPath, ['--test', `tests/adversarial/${fil…
+       |     ^
+     12|       cwd: root,
+     13|       encoding: 'utf8',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  src/test/c01-r2-node.test.ts > round-2 permanent node regressions: c01-r2-licenses.test.mjs
+Error: Command failed: C:\Program Files\nodejs\node.exe --test tests/adversarial/c01-r2-licenses.test.mjs
+ ❯ src/test/c01-r2-node.test.ts:11:5
+      9| for (const file of ['c01-r2-boundary.test.mjs', 'c01-r2-licenses.test.…
+     10|   it(`round-2 permanent node regressions: ${file}`, () => {
+     11|     execFileSync(process.execPath, ['--test', `tests/adversarial/${fil…
+       |     ^
+     12|       cwd: root,
+     13|       encoding: 'utf8',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared 
+JSON key named __proto__
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared 
+JSON key named constructor
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared 
+JSON key named toString
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared 
+JSON key named hasOwnProperty
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/c01-r2-schema.test.ts:12:35
+     10|       // JSON round-trip proves this is a wire-representable own key, …
+     11|       const value: unknown = JSON.parse(JSON.stringify({ ...MOCK_ENGIN…
+     12|       expect(isEngineInfo(value)).toBe(false);
+       |                                   ^
+     13|     });
+     14|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects the extra key 
+through the real appInfo API
+AssertionError: promise resolved "{ name: 'Toontown', …(7) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "__proto__": {},
++   "arch": "mock",
++   "formatVersion": "0.0",
++   "name": "Toontown",
++   "platform": "browser",
++   "registryVersion": "0.0.0",
++   "runMode": "attached",
++   "version": "0.0.1",
+  }
+
+ ❯ src/test/c01-r2-schema.test.ts:19:33
+     17|     const value: unknown = JSON.parse(JSON.stringify({ ...MOCK_ENGINE_…
+     18|     const host = createHostApi({ ...createMockTransport(), invoke: () …
+     19|     await expect(host.appInfo()).rejects.toMatchObject({ code: 'ipc.in…
+       |                                 ^
+     20|   });
+     21|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > does not certify 
+inherited, incorrectly typed required ping fields
+AssertionError: promise resolved "{}" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
+- }
++ {}
+
+ ❯ src/test/c01-r2-schema.test.ts:30:40
+     28|     });
+     29|     const host = createHostApi({ ...createMockTransport(), invoke: () …
+     30|     await expect(host.ping({ seq: 1 })).rejects.toMatchObject({ code: …
+       |                                        ^
+     31|   });
+     32|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > checks prototype-named 
+extra properties at nested levels too
+AssertionError: expected [] to not deeply equal []
+
+Compared values have no visual difference.
+
+ ❯ src/test/c01-r2-schema.test.ts:43:43
+     41|     };
+     42|     const value: unknown = JSON.parse('{"child":{"seq":1,"constructor"…
+     43|     expect(violations(nested, value)).not.toEqual([]);
+       |                                           ^
+     44|   });
+     45| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+
+ Test Files  2 failed | 8 passed (10)
+      Tests  9 failed | 67 passed (76)
+   Start at  22:10:00
+   Duration  5.54s (tests 53%, environment 36%, setup 8%, import 1%, transform 1%)
+
+C:\Users\kaiga\work\review\m0-c01-r2\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 test: `vitest run`
+Exit status 1
+ ELIFECYCLE  Test failed. See above for more details.

@@ -1,0 +1,72 @@
+304: bundle (macos-latest)	Tauri build (unsigned)	﻿2026-10-18T04:54:00.7913480Z ##[group]Run pnpm --dir desktop tauri build --bundles app -- --locked
+305: bundle (macos-latest)	Tauri build (unsigned)	2026-10-18T04:54:00.7913960Z ^[[36;1mpnpm --dir desktop tauri build --bundles app -- --locked^[[0m
+316: bundle (macos-latest)	Tauri build (unsigned)	2026-10-18T04:54:01.0843830Z > tauri build --bundles app -- --locked
+390: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:54:57.1379420Z           "p50": 1,
+391: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:54:57.1379930Z           "p95": 2,
+402: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:54:57.1384980Z           "p50": 1,
+403: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:54:57.1385260Z           "p95": 2,
+414: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:54:57.1388350Z           "p50": 1,
+415: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:54:57.1388540Z           "p95": 2,
+426: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:54:57.1393000Z           "p50": 5,
+427: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:54:57.1393370Z           "p95": 10,
+433: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:54:57.1395520Z     "ok": true,
+434: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:54:57.1395750Z     "transport": "tauri",
+937: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T04:55:38.0122751Z ^[[2m Test Files ^[[22m ^[[1m^[[32m8 passed^[[39m^[[22m^[[90m (8)^[[39m
+938: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T04:55:38.0126584Z ^[[2m      Tests ^[[22m ^[[1m^[[32m62 passed^[[39m^[[22m^[[90m (62)^[[39m
+996: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T04:55:38.2329463Z # tests 8
+1155: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:56:39.1167677Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+1183: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:56:39.1578174Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+1208: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:56:39.2039284Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+1221: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:56:44.6920740Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.47s
+1232: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:56:44.7396839Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+1237: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:56:45.3524990Z test rejects_a_real_direct_composition_import ... ok
+1239: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:56:45.3526709Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+1381: check (windows-latest)	Run taiki-e/install-action@v2	2026-10-18T04:56:46.4529345Z   tool: cargo-deny@0.20.2
+1424: check (windows-latest)	Run taiki-e/install-action@v2	2026-10-18T04:56:46.5563002Z   INPUT_TOOL: cargo-deny@0.20.2
+1434: check (windows-latest)	Run taiki-e/install-action@v2	2026-10-18T04:56:48.7812806Z info: installing cargo-deny@0.20.2
+2129: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:57:08.5040398Z ^[[36;1m"$exe" --selftest --json > selftest-2.json^[[0m
+2131: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:57:08.5041811Z ^[[36;1m$PY -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"^[[0m
+2163: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:57:13.1980569Z   [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+2168: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:57:13.5860984Z linked libraries (win32): api-ms-win-core-synch-l1-2-0.dll, kernel32.dll, ntdll.dll, vcruntime140.dll, api-ms-win-crt-runtime-l1-1-0.dll, api-ms-win-crt-math-l1-1-0.dll, api-ms-win-crt-stdio-l1-1-0.dll, api-ms-win-crt-locale-l1-1-0.dll, api-ms-win-crt-heap-l1-1-0.dll
+2169: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:57:13.5863018Z forbidden libraries: none
+2170: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:57:13.5863616Z headless dependency check passed
+2658: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T04:54:37.4211820Z ^[[2m Test Files ^[[22m ^[[1m^[[32m8 passed^[[39m^[[22m^[[90m (8)^[[39m
+2659: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T04:54:37.4315340Z ^[[2m      Tests ^[[22m ^[[1m^[[32m62 passed^[[39m^[[22m^[[90m (62)^[[39m
+2717: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T04:54:37.5941890Z # tests 8
+2877: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:55:11.9566060Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2904: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:55:11.9705160Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2929: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:55:11.9872030Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2942: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:55:16.5760280Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.58s
+2953: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:55:16.7042480Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+2958: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:55:18.6646710Z test rejects_a_real_appkit_import ... ok
+2960: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:55:18.6649100Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.95s
+3102: check (macos-latest)	Run taiki-e/install-action@v2	2026-10-18T04:55:19.6211690Z   tool: cargo-deny@0.20.2
+3147: check (macos-latest)	Run taiki-e/install-action@v2	2026-10-18T04:55:19.6418930Z   INPUT_TOOL: cargo-deny@0.20.2
+3156: check (macos-latest)	Run taiki-e/install-action@v2	2026-10-18T04:55:19.7560000Z info: installing cargo-deny@0.20.2
+3853: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:55:25.7174880Z ^[[36;1m"$exe" --selftest --json > selftest-2.json^[[0m
+3855: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:55:25.7176230Z ^[[36;1m$PY -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"^[[0m
+3887: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:55:28.1682070Z   [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+3892: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:55:28.4574560Z linked libraries (darwin): /usr/lib/libSystem.B.dylib, /usr/lib/libiconv.2.dylib
+3893: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:55:28.4575370Z forbidden libraries: none
+3894: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:55:28.4575790Z headless dependency check passed
+4315: bundle (windows-latest)	Tauri build (unsigned)	﻿2026-10-18T04:54:59.8975693Z ##[group]Run pnpm --dir desktop tauri build --bundles nsis -- --locked
+4316: bundle (windows-latest)	Tauri build (unsigned)	2026-10-18T04:54:59.8976397Z ^[[36;1mpnpm --dir desktop tauri build --bundles nsis -- --locked^[[0m
+4327: bundle (windows-latest)	Tauri build (unsigned)	2026-10-18T04:55:00.5897200Z > tauri "build" "--bundles" "nsis" "--" "--locked"
+4410: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:58:03.0566385Z           "p50": 2.300000000046566,
+4411: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:58:03.0566999Z           "p95": 2.699999999953434,
+4422: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:58:03.0573044Z           "p50": 2.2999999999883585,
+4423: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:58:03.0574604Z           "p95": 2.599999999976717,
+4434: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:58:03.0580557Z           "p50": 4.400000000023283,
+4435: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:58:03.0581102Z           "p95": 4.800000000046566,
+4446: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:58:03.0587479Z           "p50": 39.20000000001164,
+4447: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:58:03.0588072Z           "p95": 45.79999999998836,
+4453: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:58:03.0594227Z     "ok": true,
+4454: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:58:03.0594655Z     "transport": "tauri",
+4846: headless without a display (ubuntu)	Self-test with no display server	﻿2026-10-18T04:53:42.0122992Z ##[group]Run test -z "${DISPLAY:-}" && test -z "${WAYLAND_DISPLAY:-}"
+4847: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:53:42.0123529Z ^[[36;1mtest -z "${DISPLAY:-}" && test -z "${WAYLAND_DISPLAY:-}"^[[0m
+4848: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:53:42.0123924Z ^[[36;1m! ls /tmp/.X11-unix/X* 2>/dev/null^[[0m
+4850: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:53:42.0125207Z ^[[36;1menv -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-2.json^[[0m
+4851: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:53:42.0126272Z ^[[36;1mpython3 -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"^[[0m
+4862: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:53:42.2281061Z linked libraries (linux): libgcc_s.so.1, libc.so.6, ld-linux-x86-64.so.2
+4863: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:53:42.2281488Z forbidden libraries: none
+4864: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:53:42.2281753Z headless dependency check passed

@@ -1,0 +1,1 @@
+Self-tests match, including detail strings and golden hash, after normalizing the ping nanosecond duration.
