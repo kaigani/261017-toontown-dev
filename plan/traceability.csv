@@ -24,3 +24,8 @@ spec_section,requirement_id_or_quote,milestone,checkpoint,status,test
 01 §9.1,"Status bar",M4,C4.1,placeholder with messages and IPC readout,desktop/src/App.test.tsx
 02 §6,"pressure, tilt, tablet input",M0,C0.2,planned,
 10 §6.6,"format version is MAJOR.MINOR",M1,C1.1,constant 0.0 placeholder,crates/engine/src/selftest.rs::dotted_version_parser
+01 §12.1,"app.info.get: {name, version, platform, locale, languages[], formatVersion}",M1,C1.4,ticketed (C01-R1-04): EngineInfo is internal bootstrap info without locale/languages; app.info.get becomes a registered query in C1.4,tests/adversarial/c01.rs::c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get
+plan §6.3 / ADR-0003,"one licence allow-list for Rust and shipped JS; SPDX boolean evaluation",M0,C0.1,done (review r1),scripts/check-npm-licenses.test.mjs; tests/adversarial/guards.mjs (licensing; allowlist)
+ADR-0001,"front end reaches the host only through src/ipc",M0,C0.1,done (static/dynamic/require/import.meta/globals; review r1),desktop/src/ipc/boundary.lint.test.ts; tests/adversarial/guards.mjs (imports)
+ADR-0001,"host values are validated before UI code sees them",M0,C0.1,done (schema-subset validators; review r1),desktop/src/ipc/schema.test.ts; tests/adversarial/frontend-cases.ts
+11 §3 / ADR-0004,"headless guard rejects real graphics imports (direct imports only)",M0,C0.1,done (review r1),bins/headless/tests/guard_fixtures.rs; tests/adversarial/headless_guard.py

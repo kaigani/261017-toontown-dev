@@ -68,7 +68,7 @@ jobs:
 
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-deny
+          tool: cargo-deny@0.20.2
       - run: cargo deny --locked check
 
       - name: Headless binary — build, self-test (twice, compared), linked-library proof
@@ -127,7 +127,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Tauri build (unsigned)
-        run: pnpm --dir desktop tauri build --bundles ${{ matrix.bundles }}
+        run: pnpm --dir desktop tauri build --bundles ${{ matrix.bundles }} -- --locked
 
       - name: IPC benchmark in the real webview (toontown --ipc-bench)
         run: |
@@ -178,5 +178,7 @@ jobs:
         run: |
           test -z "${DISPLAY:-}" && test -z "${WAYLAND_DISPLAY:-}"
           ! ls /tmp/.X11-unix/X* 2>/dev/null
-          env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest
+          env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-1.json
+          env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-2.json
+          python3 -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
           python3 scripts/check-headless-deps.py target/release/toontown-headless
