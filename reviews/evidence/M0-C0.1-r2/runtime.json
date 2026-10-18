@@ -1,0 +1,6 @@
+{
+  "exit": 0,
+  "elapsedSeconds": 13.929135199985467,
+  "stdout": "",
+  "stderr": "[1017/220708.123:ERROR:ui\\gfx\\win\\window_impl.cc:172] Failed to unregister class Chrome_WidgetWin_0. Error = 1412\n"
+}

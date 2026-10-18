@@ -1,0 +1,7 @@
+{
+  "requestedPath": "reviews\\evidence\\M0-C0.1-r2\\selected-output.json",
+  "preexistingFileReplaced": true,
+  "exit": 0,
+  "frontendOk": true,
+  "scope": "CLI explicitly selected this output; report payload does not select a path. This confirms documented behavior, not an unauthorized-write finding."
+}

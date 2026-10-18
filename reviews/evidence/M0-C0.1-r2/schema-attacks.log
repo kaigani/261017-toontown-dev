@@ -1,0 +1,123 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c01-r2/desktop
+
+ ❯ src/test/c01-r2-schema.test.ts (12 tests | 7 failed) 13ms
+   ❯ C01-R2-02: schema validation must use own properties (7)
+     × rejects an undeclared JSON key named __proto__ 5ms
+     × rejects an undeclared JSON key named constructor 1ms
+     × rejects an undeclared JSON key named toString 0ms
+     × rejects an undeclared JSON key named hasOwnProperty 0ms
+     × rejects the extra key through the real appInfo API 3ms
+     × does not certify inherited, incorrectly typed required ping fields 0ms
+     × checks prototype-named extra properties at nested levels too 1ms
+cmd : 
+At line:2 char:1
++ cmd /c "pnpm --dir desktop exec vitest run src/test/c01-r2-schema.tes ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared 
+JSON key named __proto__
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared 
+JSON key named constructor
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared 
+JSON key named toString
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared 
+JSON key named hasOwnProperty
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/c01-r2-schema.test.ts:12:35
+     10|       // JSON round-trip proves this is a wire-representable own key, …
+     11|       const value: unknown = JSON.parse(JSON.stringify({ ...MOCK_ENGIN…
+     12|       expect(isEngineInfo(value)).toBe(false);
+       |                                   ^
+     13|     });
+     14|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects the extra key 
+through the real appInfo API
+AssertionError: promise resolved "{ name: 'Toontown', …(7) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "__proto__": {},
++   "arch": "mock",
++   "formatVersion": "0.0",
++   "name": "Toontown",
++   "platform": "browser",
++   "registryVersion": "0.0.0",
++   "runMode": "attached",
++   "version": "0.0.1",
+  }
+
+ ❯ src/test/c01-r2-schema.test.ts:19:33
+     17|     const value: unknown = JSON.parse(JSON.stringify({ ...MOCK_ENGINE_…
+     18|     const host = createHostApi({ ...createMockTransport(), invoke: () …
+     19|     await expect(host.appInfo()).rejects.toMatchObject({ code: 'ipc.in…
+       |                                 ^
+     20|   });
+     21|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > does not certify 
+inherited, incorrectly typed required ping fields
+AssertionError: promise resolved "{}" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
+- }
++ {}
+
+ ❯ src/test/c01-r2-schema.test.ts:30:40
+     28|     });
+     29|     const host = createHostApi({ ...createMockTransport(), invoke: () …
+     30|     await expect(host.ping({ seq: 1 })).rejects.toMatchObject({ code: …
+       |                                        ^
+     31|   });
+     32|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > checks prototype-named 
+extra properties at nested levels too
+AssertionError: expected [] to not deeply equal []
+
+Compared values have no visual difference.
+
+ ❯ src/test/c01-r2-schema.test.ts:43:43
+     41|     };
+     42|     const value: unknown = JSON.parse('{"child":{"seq":1,"constructor"…
+     43|     expect(violations(nested, value)).not.toEqual([]);
+       |                                           ^
+     44|   });
+     45| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 5 passed (12)
+   Start at  22:06:18
+   Duration  826ms (environment 77%, setup 14%, transform 5%, tests 2%, import 2%)
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found
