@@ -1,0 +1,226 @@
+[
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/canvas-auto.json",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/canvas-webgl2.json",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/review-ci-current-canvas-Windows.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/review-ci-current-canvas-macOS.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/review-ci-historical-canvas-Windows.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r1/review-ci-historical-canvas-macOS.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r2/canvas-auto.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r2/page-fast.json",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r2/page-manual.json",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r2/page-slow.json",
+    "version": 1,
+    "exitCode": 2,
+    "stderr": "error: run 0 (webgl2/paths100k): frame timestamps shorter than 10000 ms",
+    "oldEstimatorComparison": "not accepted by old analyzer"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r3/canvas-auto.json.gz",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r3/canvas-ci-Windows-39129350790.json.gz",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r3/canvas-ci-macOS-39129350790.json.gz",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r3/page-fast.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r3/page-manual.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r3/page-r3-one-frame.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "not accepted by old analyzer"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r3/page-r3-two-frames.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r3/page-slow.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-ci-macos-runner-39121780905.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-ci-windows-runner-39121780905.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-local-windows-rtx4090-auto.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-local-windows-rtx4090-webgl2.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-r1-local-windows-rtx4090-auto.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-r1-local-windows-rtx4090-webgl2.json.gz",
+    "version": 1,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3/canvas-r2-local-windows-rtx4090-auto.json.gz",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "target/review-r4/artifacts/39131376596/desktop-macOS/canvas-spike-macOS.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "target/review-r4/artifacts/39131376596/desktop-Windows/canvas-spike-Windows.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r4/page-fast.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r4/page-manual.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r4/page-r3-one-frame.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "not accepted by old analyzer"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r4/page-r3-two-frames.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  },
+  {
+    "path": "reviews/evidence/M0-C0.3-r4/page-slow.json",
+    "version": 2,
+    "exitCode": 0,
+    "stderr": "",
+    "oldEstimatorComparison": "all pre-existing JSON statistics equal"
+  }
+]

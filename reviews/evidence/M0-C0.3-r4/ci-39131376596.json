@@ -1,0 +1,1032 @@
+{
+  "conclusion": "success",
+  "headSha": "18c57fe7c096d9a3162772681feeaedccc83ad93",
+  "jobs": [
+    {
+      "completedAt": "2026-10-18T13:29:29Z",
+      "conclusion": "success",
+      "databaseId": 117687089162,
+      "name": "bundle (windows-latest)",
+      "startedAt": "2026-10-18T13:24:07Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-18T13:24:10Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-18T13:24:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:17Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-18T13:24:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:27Z",
+          "conclusion": "success",
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "number": 3,
+          "startedAt": "2026-10-18T13:24:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:46Z",
+          "conclusion": "success",
+          "name": "Run Swatinem/rust-cache@v2",
+          "number": 4,
+          "startedAt": "2026-10-18T13:24:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:05Z",
+          "conclusion": "success",
+          "name": "Run pnpm/action-setup@v6",
+          "number": 5,
+          "startedAt": "2026-10-18T13:24:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:15Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v7",
+          "number": 6,
+          "startedAt": "2026-10-18T13:25:05Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:18Z",
+          "conclusion": "success",
+          "name": "Run pnpm install --frozen-lockfile",
+          "number": 7,
+          "startedAt": "2026-10-18T13:25:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:27:09Z",
+          "conclusion": "success",
+          "name": "Tauri build (unsigned)",
+          "number": 8,
+          "startedAt": "2026-10-18T13:25:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:27:28Z",
+          "conclusion": "success",
+          "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+          "number": 9,
+          "startedAt": "2026-10-18T13:27:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:34Z",
+          "conclusion": "success",
+          "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+          "number": 10,
+          "startedAt": "2026-10-18T13:27:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:22Z",
+          "conclusion": "success",
+          "name": "C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)",
+          "number": 11,
+          "startedAt": "2026-10-18T13:28:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:23Z",
+          "conclusion": "success",
+          "name": "Collect artifacts",
+          "number": 12,
+          "startedAt": "2026-10-18T13:29:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:25Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 13,
+          "startedAt": "2026-10-18T13:29:23Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:25Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v7",
+          "number": 23,
+          "startedAt": "2026-10-18T13:29:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:25Z",
+          "conclusion": "success",
+          "name": "Post Run pnpm/action-setup@v6",
+          "number": 24,
+          "startedAt": "2026-10-18T13:29:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:25Z",
+          "conclusion": "success",
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "number": 25,
+          "startedAt": "2026-10-18T13:29:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:28Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 26,
+          "startedAt": "2026-10-18T13:29:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:28Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 27,
+          "startedAt": "2026-10-18T13:29:28Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39131376596/job/117687089162"
+    },
+    {
+      "completedAt": "2026-10-18T13:24:28Z",
+      "conclusion": "success",
+      "databaseId": 117687089274,
+      "name": "headless without a display (ubuntu)",
+      "startedAt": "2026-10-18T13:24:07Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-18T13:24:09Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-18T13:24:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:12Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-18T13:24:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:20Z",
+          "conclusion": "success",
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "number": 3,
+          "startedAt": "2026-10-18T13:24:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:23Z",
+          "conclusion": "success",
+          "name": "Run Swatinem/rust-cache@v2",
+          "number": 4,
+          "startedAt": "2026-10-18T13:24:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:24Z",
+          "conclusion": "success",
+          "name": "Run cargo build --release --locked -p tt-headless",
+          "number": 5,
+          "startedAt": "2026-10-18T13:24:23Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:25Z",
+          "conclusion": "success",
+          "name": "Self-test with no display server",
+          "number": 6,
+          "startedAt": "2026-10-18T13:24:24Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:25Z",
+          "conclusion": "success",
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "number": 11,
+          "startedAt": "2026-10-18T13:24:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:25Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 12,
+          "startedAt": "2026-10-18T13:24:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:25Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 13,
+          "startedAt": "2026-10-18T13:24:25Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39131376596/job/117687089274"
+    },
+    {
+      "completedAt": "2026-10-18T13:26:12Z",
+      "conclusion": "success",
+      "databaseId": 117687089287,
+      "name": "bundle (macos-latest)",
+      "startedAt": "2026-10-18T13:24:10Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-18T13:24:12Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-18T13:24:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:15Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-18T13:24:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:20Z",
+          "conclusion": "success",
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "number": 3,
+          "startedAt": "2026-10-18T13:24:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:28Z",
+          "conclusion": "success",
+          "name": "Run Swatinem/rust-cache@v2",
+          "number": 4,
+          "startedAt": "2026-10-18T13:24:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:31Z",
+          "conclusion": "success",
+          "name": "Run pnpm/action-setup@v6",
+          "number": 5,
+          "startedAt": "2026-10-18T13:24:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:35Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v7",
+          "number": 6,
+          "startedAt": "2026-10-18T13:24:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:37Z",
+          "conclusion": "success",
+          "name": "Run pnpm install --frozen-lockfile",
+          "number": 7,
+          "startedAt": "2026-10-18T13:24:35Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:21Z",
+          "conclusion": "success",
+          "name": "Tauri build (unsigned)",
+          "number": 8,
+          "startedAt": "2026-10-18T13:24:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:26Z",
+          "conclusion": "success",
+          "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+          "number": 9,
+          "startedAt": "2026-10-18T13:25:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:26Z",
+          "conclusion": "skipped",
+          "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+          "number": 10,
+          "startedAt": "2026-10-18T13:25:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:06Z",
+          "conclusion": "success",
+          "name": "C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)",
+          "number": 11,
+          "startedAt": "2026-10-18T13:25:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:07Z",
+          "conclusion": "success",
+          "name": "Collect artifacts",
+          "number": 12,
+          "startedAt": "2026-10-18T13:26:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:08Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 13,
+          "startedAt": "2026-10-18T13:26:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:09Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v7",
+          "number": 23,
+          "startedAt": "2026-10-18T13:26:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:09Z",
+          "conclusion": "success",
+          "name": "Post Run pnpm/action-setup@v6",
+          "number": 24,
+          "startedAt": "2026-10-18T13:26:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:09Z",
+          "conclusion": "success",
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "number": 25,
+          "startedAt": "2026-10-18T13:26:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:09Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 26,
+          "startedAt": "2026-10-18T13:26:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:10Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 27,
+          "startedAt": "2026-10-18T13:26:09Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39131376596/job/117687089287"
+    },
+    {
+      "completedAt": "2026-10-18T13:24:45Z",
+      "conclusion": "success",
+      "databaseId": 117687089294,
+      "name": "raster determinism (ubuntu-latest)",
+      "startedAt": "2026-10-18T13:24:07Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-18T13:24:09Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-18T13:24:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:10Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-18T13:24:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:19Z",
+          "conclusion": "success",
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "number": 3,
+          "startedAt": "2026-10-18T13:24:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:22Z",
+          "conclusion": "success",
+          "name": "Run Swatinem/rust-cache@v2",
+          "number": 4,
+          "startedAt": "2026-10-18T13:24:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:25Z",
+          "conclusion": "success",
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "number": 5,
+          "startedAt": "2026-10-18T13:24:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:41Z",
+          "conclusion": "success",
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "number": 6,
+          "startedAt": "2026-10-18T13:24:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:43Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 7,
+          "startedAt": "2026-10-18T13:24:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:43Z",
+          "conclusion": "success",
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "number": 13,
+          "startedAt": "2026-10-18T13:24:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:43Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 14,
+          "startedAt": "2026-10-18T13:24:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:44Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "startedAt": "2026-10-18T13:24:43Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39131376596/job/117687089294"
+    },
+    {
+      "completedAt": "2026-10-18T13:25:32Z",
+      "conclusion": "success",
+      "databaseId": 117687089326,
+      "name": "raster determinism (windows-latest)",
+      "startedAt": "2026-10-18T13:24:08Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-18T13:24:11Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-18T13:24:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:23Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-18T13:24:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:36Z",
+          "conclusion": "success",
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "number": 3,
+          "startedAt": "2026-10-18T13:24:23Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:55Z",
+          "conclusion": "success",
+          "name": "Run Swatinem/rust-cache@v2",
+          "number": 4,
+          "startedAt": "2026-10-18T13:24:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:04Z",
+          "conclusion": "success",
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "number": 5,
+          "startedAt": "2026-10-18T13:24:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:24Z",
+          "conclusion": "success",
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "number": 6,
+          "startedAt": "2026-10-18T13:25:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:27Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 7,
+          "startedAt": "2026-10-18T13:25:24Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:27Z",
+          "conclusion": "success",
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "number": 13,
+          "startedAt": "2026-10-18T13:25:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:30Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 14,
+          "startedAt": "2026-10-18T13:25:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:30Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "startedAt": "2026-10-18T13:25:30Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39131376596/job/117687089326"
+    },
+    {
+      "completedAt": "2026-10-18T13:24:59Z",
+      "conclusion": "success",
+      "databaseId": 117687089328,
+      "name": "raster determinism (macos-latest)",
+      "startedAt": "2026-10-18T13:24:13Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-18T13:24:17Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-18T13:24:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:20Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-18T13:24:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:28Z",
+          "conclusion": "success",
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "number": 3,
+          "startedAt": "2026-10-18T13:24:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:34Z",
+          "conclusion": "success",
+          "name": "Run Swatinem/rust-cache@v2",
+          "number": 4,
+          "startedAt": "2026-10-18T13:24:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:40Z",
+          "conclusion": "success",
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "number": 5,
+          "startedAt": "2026-10-18T13:24:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:54Z",
+          "conclusion": "success",
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "number": 6,
+          "startedAt": "2026-10-18T13:24:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:56Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 7,
+          "startedAt": "2026-10-18T13:24:54Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:57Z",
+          "conclusion": "success",
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "number": 13,
+          "startedAt": "2026-10-18T13:24:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:57Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 14,
+          "startedAt": "2026-10-18T13:24:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:58Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "startedAt": "2026-10-18T13:24:57Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39131376596/job/117687089328"
+    },
+    {
+      "completedAt": "2026-10-18T13:28:20Z",
+      "conclusion": "success",
+      "databaseId": 117687089377,
+      "name": "check (macos-latest)",
+      "startedAt": "2026-10-18T13:24:12Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-18T13:24:15Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-18T13:24:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:20Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-18T13:24:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:26Z",
+          "conclusion": "success",
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "number": 3,
+          "startedAt": "2026-10-18T13:24:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:41Z",
+          "conclusion": "success",
+          "name": "Run Swatinem/rust-cache@v2",
+          "number": 4,
+          "startedAt": "2026-10-18T13:24:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:48Z",
+          "conclusion": "success",
+          "name": "Run pnpm/action-setup@v6",
+          "number": 5,
+          "startedAt": "2026-10-18T13:24:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:54Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v7",
+          "number": 6,
+          "startedAt": "2026-10-18T13:24:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:58Z",
+          "conclusion": "success",
+          "name": "Run pnpm install --frozen-lockfile",
+          "number": 7,
+          "startedAt": "2026-10-18T13:24:54Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:48Z",
+          "conclusion": "success",
+          "name": "Front end \u2014 lint, type-check, test, format, licences",
+          "number": 8,
+          "startedAt": "2026-10-18T13:24:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:51Z",
+          "conclusion": "success",
+          "name": "Front end \u2014 build (frontendDist is embedded by the Tauri host)",
+          "number": 9,
+          "startedAt": "2026-10-18T13:26:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:52Z",
+          "conclusion": "success",
+          "name": "Run cargo fmt --all --check",
+          "number": 10,
+          "startedAt": "2026-10-18T13:26:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:26:56Z",
+          "conclusion": "success",
+          "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "number": 11,
+          "startedAt": "2026-10-18T13:26:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:03Z",
+          "conclusion": "success",
+          "name": "Run cargo test --workspace --locked",
+          "number": 12,
+          "startedAt": "2026-10-18T13:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:04Z",
+          "conclusion": "success",
+          "name": "Run taiki-e/install-action@v2",
+          "number": 13,
+          "startedAt": "2026-10-18T13:28:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:10Z",
+          "conclusion": "success",
+          "name": "Run cargo deny --locked check",
+          "number": 14,
+          "startedAt": "2026-10-18T13:28:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:14Z",
+          "conclusion": "success",
+          "name": "Headless binary \u2014 build, self-test (twice, compared), linked-library proof",
+          "number": 15,
+          "startedAt": "2026-10-18T13:28:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:15Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 16,
+          "startedAt": "2026-10-18T13:28:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:15Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v7",
+          "number": 29,
+          "startedAt": "2026-10-18T13:28:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:16Z",
+          "conclusion": "success",
+          "name": "Post Run pnpm/action-setup@v6",
+          "number": 30,
+          "startedAt": "2026-10-18T13:28:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:16Z",
+          "conclusion": "success",
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "number": 31,
+          "startedAt": "2026-10-18T13:28:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:16Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 32,
+          "startedAt": "2026-10-18T13:28:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:17Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 33,
+          "startedAt": "2026-10-18T13:28:16Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39131376596/job/117687089377"
+    },
+    {
+      "completedAt": "2026-10-18T13:29:36Z",
+      "conclusion": "success",
+      "databaseId": 117687089446,
+      "name": "check (windows-latest)",
+      "startedAt": "2026-10-18T13:24:07Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-18T13:24:09Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-18T13:24:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:16Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-18T13:24:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:28Z",
+          "conclusion": "success",
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "number": 3,
+          "startedAt": "2026-10-18T13:24:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:24:56Z",
+          "conclusion": "success",
+          "name": "Run Swatinem/rust-cache@v2",
+          "number": 4,
+          "startedAt": "2026-10-18T13:24:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:21Z",
+          "conclusion": "success",
+          "name": "Run pnpm/action-setup@v6",
+          "number": 5,
+          "startedAt": "2026-10-18T13:24:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:31Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v7",
+          "number": 6,
+          "startedAt": "2026-10-18T13:25:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:25:33Z",
+          "conclusion": "success",
+          "name": "Run pnpm install --frozen-lockfile",
+          "number": 7,
+          "startedAt": "2026-10-18T13:25:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:27:51Z",
+          "conclusion": "success",
+          "name": "Front end \u2014 lint, type-check, test, format, licences",
+          "number": 8,
+          "startedAt": "2026-10-18T13:25:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:27:55Z",
+          "conclusion": "success",
+          "name": "Front end \u2014 build (frontendDist is embedded by the Tauri host)",
+          "number": 9,
+          "startedAt": "2026-10-18T13:27:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:27:56Z",
+          "conclusion": "success",
+          "name": "Run cargo fmt --all --check",
+          "number": 10,
+          "startedAt": "2026-10-18T13:27:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:28:01Z",
+          "conclusion": "success",
+          "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "number": 11,
+          "startedAt": "2026-10-18T13:27:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:13Z",
+          "conclusion": "success",
+          "name": "Run cargo test --workspace --locked",
+          "number": 12,
+          "startedAt": "2026-10-18T13:28:01Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:15Z",
+          "conclusion": "success",
+          "name": "Run taiki-e/install-action@v2",
+          "number": 13,
+          "startedAt": "2026-10-18T13:29:13Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:28Z",
+          "conclusion": "success",
+          "name": "Run cargo deny --locked check",
+          "number": 14,
+          "startedAt": "2026-10-18T13:29:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:31Z",
+          "conclusion": "success",
+          "name": "Headless binary \u2014 build, self-test (twice, compared), linked-library proof",
+          "number": 15,
+          "startedAt": "2026-10-18T13:29:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:32Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 16,
+          "startedAt": "2026-10-18T13:29:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:32Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v7",
+          "number": 29,
+          "startedAt": "2026-10-18T13:29:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:33Z",
+          "conclusion": "success",
+          "name": "Post Run pnpm/action-setup@v6",
+          "number": 30,
+          "startedAt": "2026-10-18T13:29:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:33Z",
+          "conclusion": "success",
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "number": 31,
+          "startedAt": "2026-10-18T13:29:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:35Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 32,
+          "startedAt": "2026-10-18T13:29:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-18T13:29:35Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 33,
+          "startedAt": "2026-10-18T13:29:35Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39131376596/job/117687089446"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39131376596"
+}

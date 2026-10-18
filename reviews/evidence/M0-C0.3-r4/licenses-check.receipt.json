@@ -1,0 +1,5 @@
+{
+  "command": "pnpm licenses:check",
+  "exitCode": 0,
+  "seconds": 0.905
+}

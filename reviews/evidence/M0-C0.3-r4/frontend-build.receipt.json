@@ -1,0 +1,5 @@
+{
+  "command": "pnpm --dir desktop build",
+  "exitCode": 0,
+  "seconds": 1.882
+}

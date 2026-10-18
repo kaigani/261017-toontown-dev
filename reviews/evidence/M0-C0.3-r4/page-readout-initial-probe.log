@@ -1,0 +1,293 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c03-r4/desktop
+
+ ❯ src/test/c03-r4-closure-probe.test.tsx (3 tests | 1 failed) 330ms
+   × C03-R3-01: completed 0.1 Hz phase is accepted even with one recorded pan frame 153ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c03-r4-closure-probe.test.tsx > C03-R3-01: completed 0.1 Hz phase is accepted even with one recorded pan frame
+TestingLibraryElementError: Unable to find an element with the text: All runs finished.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"canvas-spike"[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"spike-header"[39m
+      [36m>[39m
+        [36m<strong>[39m
+          [0mC0.3 canvas throughput spike[0m
+        [36m</strong>[39m
+        [0m — not product UI. Back ends: [0m
+        [0mwebgl2[0m
+        [0m (forced with --spike-renderer webgl2)[0m
+        [0m. Log:[0m
+        [0m [0m
+        [0mreview.json[0m
+        [0m.[0m
+      [36m</header>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"spike-toolbar"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mRun all scenes[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mSave log[0m
+        [36m</button>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"spike-status"[39m
+        [36m>[39m
+          [0mLog saved: review.json (1 bytes).[0m
+        [36m</span>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"canvas-spike-host"[39m
+        [33mdata-testid[39m=[32m"canvas-host"[39m
+      [36m>[39m
+        [36m<canvas[39m
+          [33mclass[39m=[32m"canvas-spike-surface"[39m
+          [33mheight[39m=[32m"1"[39m
+          [33mwidth[39m=[32m"1"[39m
+        [36m/>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"canvas-spike-readout"[39m
+      [36m>[39m
+        [36m<table[39m
+          [33mclass[39m=[32m"spike-runs"[39m
+        [36m>[39m
+          [36m<thead>[39m
+            [36m<tr>[39m
+              [36m<th>[39m
+                [0mback end[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mscene[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mMB / transfer[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mtransfer ms p50 / p95[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mencode ms p50[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mdecode ms[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mupload ms[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mfps[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0minterval ms p50 / p95 / max[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mlong frames[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mCPU ms p95[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mGPU ms p95[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0m60 fps target[0m
+              [36m</th>[39m
+            [36m</tr>[39m
+          [36m</thead>[39m
+          [36m<tbody>[39m
+            [36m<tr>[39m
+              [36m<td>[39m
+                [0mwebgl2[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0mpaths100k[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m8.70[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.0[0m
+                [0m / [0m
+                [0m0.0[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.00[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m96.5[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.0[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0minsufficient samples (n=1)[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m–[0m
+                [0m / [0m
+                [0m–[0m
+                [0m / [0m
+                [0m–[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.00[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m–[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0mnot estimated: insufficient samples (n=1)[0m
+              [36m</td>[39m
+            [36m</tr>[39m
+            [36m<tr>[39m
+              [36m<td>[39m
+                [0mwebgl2[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0mgroups1k[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m2.02[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.0[0m
+                [0m / [0m
+                [0m0.0[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.00[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m32.0[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.0[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0minsufficient samples (n=1)[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m–[0m
+                [0m / [0m
+                [0m–[0m
+                [0m / [0m
+                [0m–[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.00[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m–[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0mnot estimated: insufficient samples (n=1)[0m
+              [36m</td>[39m
+            [36m</tr>[39m
+            [36m<tr>[39m
+              [36m<td>[39m
+                [0mwebgl2[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0mbrush10k[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m10.09[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.0[0m
+                [0m / [0m
+                [0m0.0[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.00[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m256.1[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.0[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0minsufficient samples (n=1)[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m–[0m
+                [0m / [0m
+                [0m–[0m
+                [0m / [0m
+                [0m–[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0.00[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m–[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0mnot estimated: insufficient samples (n=1)[0m
+              [36m</td>[39m
+            [36m</tr>[39m
+            [36m<tr>[39m
+              [36m<td>[39m
+                [0mwebgl2[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0mpixel frame [0m
+                [0m1×1[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mcolspan[39m=[32m"11"[39m
+              [36m>[39m
+                [0mtransfer p50 0.0 / p95 0.0 ms; upload p50 0.0 ms[0m
+              [36m</td>[39m
+            [36m</tr>[39m
+          [36m</tbody>[39m
+        [36m</table>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../node_modules/.pnpm/@testing-library+dom@10.4.2/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/test/c03-r4-closure-probe.test.tsx:155:20
+    153|   expect(targets).toHaveLength(3);
+    154|   writeFileSync(join(process.env['C03_REVIEW_EVIDENCE']!, 'page-readou…
+    155|     status: screen.getByText('All runs finished.').textContent,
+       |                    ^
+    156|     fps: fps.map((cell) => cell.textContent),
+    157|     targets: targets.map((cell) => cell.textContent),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  06:34:36
+   Duration  2.16s (environment 51%, tests 17%, transform 16%, setup 11%, import 4%)
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found

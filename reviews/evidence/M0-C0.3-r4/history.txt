@@ -1,0 +1,4 @@
+18c57fe docs(review): M0 C0.3 round-3 response; test narrows the nullable interval stats
+bd7ec3b docs(c0.3): handoff for round 3 (one-sample completion, legacy-log limitation, Windows AVX-512 coverage)
+4a53d5b fix(c0.3): judge completion on the phase span alone; one-sample runs report insufficient cadence samples (C03-R3-01)
+176bc18 merge: Codex review round 3 of C0.3 (report, evidence, permanent test)

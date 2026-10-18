@@ -1,0 +1,7 @@
+﻿
+   Id ProcessName MainWindowTitle 
+   -- ----------- --------------- 
+14372 PickerHost  Windows Security
+18068 PickerHost  Windows Security
+
+

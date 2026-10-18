@@ -1,0 +1,5 @@
+{
+  "command": "gh run download 39131376596 --pattern c03-raster-* --dir target/review-r4/artifacts/39131376596",
+  "exitCode": 0,
+  "seconds": 6.944
+}
