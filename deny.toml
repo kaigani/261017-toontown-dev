@@ -1,0 +1,64 @@
+# cargo-deny policy (ADR-0003 licensing policy). Run: `cargo deny check`.
+#
+# The Rust dependency graph is statically linked into our binaries, so it may contain ONLY permissive licences
+# (plus MPL-2.0, file-level copyleft that is compatible with static linking when sources stay available).
+# LGPL is permitted for this product only as a separately shipped, dynamically linked sidecar process (the FFmpeg
+# build, ADR-0003); a sidecar is not a Cargo dependency, so no LGPL licence appears in the allow-list below.
+# GPL and AGPL are never allowed. Anything not in `allow` is rejected, so GPL/AGPL/LGPL crates fail the check.
+
+[graph]
+# Only the platforms we ship contribute dependencies. Linux is not a product platform (it runs only the headless
+# no-window-system proof in CI, whose dependency set is a subset of the Windows/macOS one), so Tauri's Linux-only
+# GTK/WebKitGTK stack is not evaluated here.
+targets = [
+    "x86_64-pc-windows-msvc",
+    "aarch64-pc-windows-msvc",
+    "x86_64-apple-darwin",
+    "aarch64-apple-darwin",
+]
+all-features = false
+
+[advisories]
+version = 2
+yanked = "deny"
+# Unmaintained-crate advisories fail the check only for our direct dependencies; transitive ones are reported.
+unmaintained = "workspace"
+ignore = []
+
+[licenses]
+version = 2
+confidence-threshold = 0.93
+# Keep the user's full allow-list even when a licence is not currently used.
+unused-allowed-license = "allow"
+# The user's allow-list (MIT, Apache-2.0, BSD, ISC, Zlib, MPL-2.0) plus Unicode-3.0, an OSI-approved permissive
+# licence required by the ICU4X crates (icu_*, litemap, potential_utf, tinystr, writeable, yoke, zerofrom, zerovec,
+# zerotrie) that Tauri pulls in through url -> idna. Recorded in ADR-0003. Add nothing here without an ADR update.
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "MPL-2.0",
+    "Unicode-3.0",
+]
+
+[licenses.private]
+# Our own crates are `publish = false` and carry no licence field.
+ignore = true
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+allow-wildcard-paths = true
+highlight = "all"
+deny = [
+    # Electron is excluded by user decision (plan §6.7); no Chromium-embedding crates either.
+    { crate = "electron-sys", reason = "Electron is excluded (plan §6.7)" },
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
