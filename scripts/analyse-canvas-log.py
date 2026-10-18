@@ -43,7 +43,19 @@ Estimators (also printed):
 * CPU frame = JS update + record + submit; GPU frame (WebGPU) = submit to `onSubmittedWorkDone` (includes queueing);
 * IPC-per-frame ceiling = 1000 / (p50 transfer ms): the frame rate if the full render list had to cross IPC every
   frame (no decode or draw included).
-Percentiles are nearest-rank (as desktop/src/lib/latency.ts). Standard library only.
+Percentiles are nearest-rank (as desktop/src/lib/latency.ts).
+
+Decision (C04-R2-03): after the tables, the analyzer applies the canvas rule set of
+docs/decisions/ADR-0007-interactive-canvas.md to this log and prints the outcome. Its parts:
+* Step 0 classifies every back end x scene cell as met, missed, insufficient evidence (complete run without a cadence
+  estimate), failed, unavailable (an error starting "<backend> unavailable", or no WebGPU API), or not measured (no
+  run: an interactive partial capture or a forced renderer);
+* a back end is scorable only with a numeric fps for all three scenes; its score is the worst scene's fps;
+* the scorable back end with the higher score is selected (a tie goes to WebGPU), so a back end without a valid
+  measurement is never selected over one with a valid measurement;
+* the outcome matrix is applied to the selected back end. Cells that are not measured are listed with the run that
+  measures them, and a decision with such cells is marked provisional.
+The decision is also written to `--json` as `decision`. Standard library only.
 """
 
 import base64
@@ -430,6 +442,80 @@ def analyse_pixels(p):
             "frameCostP50Ms": (pct(inv, 50) or 0) + (pct(up, 50) or 0)}
 
 
+TARGET_FPS = 57
+DECISION_BACKENDS = ("webgpu", "webgl2")
+REPEAT_WITH = {"webgpu": "--spike canvas --spike-auto (WebGPU needs an adapter)",
+               "webgl2": "--spike canvas --spike-auto --spike-renderer webgl2"}
+
+
+def cell_status(run, analysis):
+    """Step 0 status of one back end x scene cell."""
+    if run is None:
+        return "not measured"
+    if analysis["outcome"] == "failed":
+        return "unavailable" if str(analysis["error"]).startswith(f"{run['backend']} unavailable") else "failed"
+    if analysis["fps"] is None:
+        return "insufficient evidence"
+    return "met" if analysis["fps"] >= TARGET_FPS else "missed"
+
+
+def canvas_decision(log, analyses):
+    """The ADR-0007 canvas rule set applied to one accepted log."""
+    env, scenes = log["environment"], SCENES
+    cells = {b: {sc: "not measured" for sc in scenes} for b in DECISION_BACKENDS}
+    fps = {b: {} for b in DECISION_BACKENDS}
+    if env.get("webgpuApi") is False:
+        cells["webgpu"] = {sc: "unavailable" for sc in scenes}
+    for run, a in zip(log["runs"], analyses):
+        if run.get("backend") in cells and run.get("scene") in scenes:
+            cells[run["backend"]][run["scene"]] = cell_status(run, a)
+            if a.get("fps") is not None:
+                fps[run["backend"]][run["scene"]] = a["fps"]
+    missing = [f"{b} {sc}: not measured: repeat with {REPEAT_WITH[b]}" for b in DECISION_BACKENDS for sc in scenes
+               if cells[b][sc] == "not measured"]
+    insufficient = [f"{b} {sc}: insufficient evidence (no cadence estimate): repeat with {REPEAT_WITH[b]}"
+                    for b in DECISION_BACKENDS for sc in scenes if cells[b][sc] == "insufficient evidence"]
+    broken = {b: any(cells[b][sc] in ("failed", "unavailable") for sc in scenes) for b in DECISION_BACKENDS}
+    scores = {b: min(fps[b][sc] for sc in scenes) for b in DECISION_BACKENDS
+              if not broken[b] and all(cells[b][sc] in ("met", "missed") for sc in scenes)}
+    selected = max(scores, key=lambda b: (scores[b], b == "webgpu")) if scores else None
+    if broken["webgl2"] and broken["webgpu"]:
+        outcome = "no-go for the webview canvas on this platform until investigated (both back ends unavailable or failed)"
+    elif selected is None:
+        outcome = "insufficient evidence: no back end has a valid measurement of all three scenes; repeat the listed runs"
+    else:
+        c = cells[selected]
+        if c["groups1k"] == "missed":
+            outcome = "no-go for the webview canvas as designed: native-wgpu integration prototype required in M4"
+        elif c["brush10k"] == "missed":
+            outcome = ("go-with-condition: M4 pre-tessellates fills in Rust and adds fill level-of-detail; E-C2 "
+                       "re-measures brush10k; native-wgpu prototype if it still misses")
+        elif c["paths100k"] == "missed":
+            outcome = "go; M4 adds culling and level-of-detail for drawings of the paths100k size"
+        else:
+            outcome = "go as written"
+        if broken["webgl2"]:
+            outcome = ("investigate WebGL2 (mandatory path) before any conclusion for this platform or floor; "
+                       f"interim, with WebGPU: {outcome}")
+    provisional = bool(missing or insufficient) and selected is not None
+    return {"cells": cells, "scores": scores, "selected": selected, "outcome": outcome,
+            "provisional": provisional, "notMeasured": missing, "insufficient": insufficient}
+
+
+def print_decision(d):
+    print("\n### Decision (ADR-0007 canvas rule set)\n")
+    print("| back end | " + " | ".join(SCENES) + " | score (worst fps) |")
+    print("|---|" + "---|" * (len(SCENES) + 1))
+    for b in DECISION_BACKENDS:
+        score = d["scores"].get(b)
+        print(f"| {b} | " + " | ".join(d["cells"][b][sc] for sc in SCENES) + f" | {fmt(score)} |")
+    print(f"\n- selected back end: {d['selected'] or 'none'}")
+    print(f"- outcome: **{d['outcome']}**" + (" (provisional: some cells are not measured or insufficient)"
+                                             if d["provisional"] else ""))
+    for line in d["notMeasured"] + d["insufficient"]:
+        print(f"- {line}")
+
+
 def s3(st, d=2):
     return "-" if not st else f"{st['p50']:.{d}f} / {st['p95']:.{d}f} / {st['max']:.{d}f}"
 
@@ -509,7 +595,9 @@ def main(argv):
         return 2
     runs = [analyse_run(r) for r in log["runs"]]
     pixels = [analyse_pixels(p) for p in log["pixelRuns"]]
+    decision = canvas_decision(log, runs)
     report(log, runs, pixels)
+    print_decision(decision)
     if snap_dir:
         os.makedirs(snap_dir, exist_ok=True)
         for r in log["runs"]:
@@ -520,7 +608,7 @@ def main(argv):
                         f.write(base64.b64decode(s.split(",", 1)[1]))
     if out_json:
         with open(out_json, "w", encoding="utf-8") as f:
-            json.dump({"version": ANALYSIS_VERSION, "runs": runs, "pixelRuns": pixels}, f, indent=1)
+            json.dump({"version": ANALYSIS_VERSION, "runs": runs, "pixelRuns": pixels, "decision": decision}, f, indent=1)
     return 0
 
 

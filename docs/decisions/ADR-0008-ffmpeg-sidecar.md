@@ -1,9 +1,12 @@
 # ADR-0008 — FFmpeg sidecar: LGPL build, encoders, supply chain and licence gates
 
 Status: accepted as the plan (C0.4, 2026-10-18; revised after C0.4 review round 1). **No code yet.**
-- The sidecar build, the fetch/verify mechanism and decoder readiness are delivered at **M8 C8.3** (movie import
-  needs them first; ruled in C04-R1-07).
-- Encoders and export stay at **M10 C10.1**; printing is M10 C10.2.
+- **M8 C8.3**, plan §4: "FFmpeg sidecar build, fetch/verify mechanism and decoder readiness (moved here from M10 on
+  2026-10-18 because import needs the sidecar first; see ADR-0008), media elements, movie import as sequence". This
+  was ruled in C04-R1-07.
+- **M10 C10.1**, plan §4: "FFmpeg encoders (sidecar itself built in M8 C8.3): MP4/MOV/GIF export, audio mux, …,
+  repeat-encode determinism checks (09 §11.1(6))".
+- Printing is M10 C10.2.
 
 It implements user decision 3 (plan §6) and ADR-0003 rule 3, which deferred this plan to C0.4. It is not legal
 advice. Items that need the user's judgement are in the C0.4 go/no-go escalation list.

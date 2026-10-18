@@ -38,7 +38,33 @@ Prints, as Markdown that can be pasted into a report:
 Episodes: web = pointerdown .. pointerup/pointercancel per pointer; native = `down` (or the first pose with pressure)
 .. `up`, proximity-out, or a pose whose pressure returns to zero. Native intervals use one clock: the device clock if
 every contact packet has one, else host wall time. Percentiles are nearest-rank, as in desktop/src/lib/latency.ts.
-A stroke below 200 Hz is reported as "below target", not as a failure. Standard library only.
+A stroke below 200 Hz is reported as "below target", not as a failure.
+
+Action markers (C04-R2-02): a manual log from the current page carries `actions`, one record per action of the
+manual procedure (A1 pressure ramp, A2 speed, A3 tilt, A4 barrel rotation, A5 hover, A6 stationary pressure). The
+person presses Space to start and to finish each action, and K to skip it. Each record holds its state (`done`,
+`skipped`, `unfinished`), and its start and end on the page's performance clock and as wall-clock epoch ms. An
+episode belongs to the action whose span contains the episode's first sample: web samples by performance time,
+native packets by host wall time. Episodes outside every span (clicks on Save, the metadata form or the listener
+button) belong to no action. Per action and path the result is one of:
+* omitted (skipped);
+* unfinished (saved mid-action);
+* performed, no events (done, but no episode on that path);
+* episode n;
+* split (several episodes; the one with most samples is the measurement and the count is reported).
+
+Malformed action records are outcome (c).
+
+Decision (C04-R2-01): for a manual log with action markers, the analyzer applies the tablet rule set of
+docs/decisions/ADR-0009-tablet-input.md and prints the outcome:
+* every capability row is classified per measured candidate. W = web path; the native path is H (RealTimeStylus) on
+  Windows and A (AppKit monitor) on macOS. Raw HID (R) and a dedicated window (D) need experiments E-R1 / E-D1 and
+  are not measured by this log;
+* numeric bands are half-open, on the unrounded value;
+* the candidate with the most rows at pass among the eligible ones is selected, ties by priority. A candidate is
+  eligible when rows 1, 2 and 7 are not at fail. Priority is W > R > H > D on Windows and W > A on macOS;
+* each non-pass row of the selected candidate gets its fixed mitigation. Sources are never combined;
+* the decision is also written to `--json` as `decision`. Standard library only.
 """
 
 import gzip
@@ -315,7 +341,7 @@ def web_analysis(log):
     strokes = []
     for pointer, points, truncated in web_episodes(samples):
         st = stroke_stats(points, [p["t"] for p in points])
-        st.update(pointer=pointer, truncated=truncated)
+        st.update(pointer=pointer, truncated=truncated, startT=points[0].get("t"))
         strokes.append(st)
     # Handler latency per dispatch, three estimators (C02-R1-01).
     by_dispatch = {}
@@ -354,7 +380,7 @@ def native_analysis(log):
     for e in native_episodes(packets):
         pts = e["points"]
         st = stroke_stats(pts, [native_time(p, clock) for p in pts])
-        st.update(pointer=e["pointer"], truncated=e["truncated"])
+        st.update(pointer=e["pointer"], truncated=e["truncated"], startEpochMs=pts[0].get("hostEpochMs"))
         strokes.append(st)
     seqs = [p.get("seq") for p in packets]
     if packets and all(s is not None for s in seqs):
@@ -371,6 +397,282 @@ def native_analysis(log):
         "truncated": native.get("truncated"),
         "info": log.get("nativeInfo", log.get("summary", {}).get("nativeInfo")),
     }
+
+
+# ---- action markers (C04-R2-02) -----------------------------------------------------------------------------------
+
+ACTION_IDS = ("A1", "A2", "A3", "A4", "A5", "A6")
+ACTION_STATES = ("done", "skipped", "unfinished")
+ACTION_TIMES = ("startPerf", "endPerf", "startEpochMs", "endEpochMs")
+
+
+def path_outcome(state, indices, strokes):
+    if state == "skipped":
+        return {"outcome": "omitted", "episodes": [], "measured": None}
+    if state == "unfinished":
+        return {"outcome": "unfinished", "episodes": indices, "measured": None}
+    if not indices:
+        return {"outcome": "performed, no events", "episodes": [], "measured": None}
+    measured = max(indices, key=lambda i: strokes[i - 1]["samples"])
+    return {"outcome": f"episode {indices[0]}" if len(indices) == 1 else f"split: {len(indices)} episodes",
+            "episodes": indices, "measured": measured}
+
+
+def action_analysis(log, web, native):
+    """Maps action markers to contact episodes on each path; None when the log has no markers."""
+    acts = log.get("actions")
+    if acts is None:
+        return None
+    if not isinstance(acts, list):
+        raise LogError("`actions` is not a list")
+    seen, prev_end, out = set(), None, []
+    for k, a in enumerate(acts):
+        if not isinstance(a, dict) or a.get("id") not in ACTION_IDS or a.get("state") not in ACTION_STATES:
+            raise LogError(f"action record {k} has no known id/state")
+        if a["id"] in seen:
+            raise LogError(f"action {a['id']} is recorded twice")
+        if ACTION_IDS.index(a["id"]) != len(seen):
+            raise LogError(f"action {a['id']} is out of order (expected {ACTION_IDS[len(seen)]})")
+        if not all(is_number(a.get(t)) for t in ACTION_TIMES) or a["endPerf"] < a["startPerf"] \
+                or a["endEpochMs"] < a["startEpochMs"]:
+            raise LogError(f"action {a['id']} has missing or reversed start/end times")
+        if prev_end is not None and a["startPerf"] < prev_end:
+            raise LogError(f"action {a['id']} starts before the previous action ended")
+        seen.add(a["id"])
+        prev_end = a["endPerf"]
+        web_idx = [i + 1 for i, st in enumerate(web["strokes"])
+                   if is_number(st.get("startT")) and a["startPerf"] <= st["startT"] < a["endPerf"]]
+        nat_idx = [i + 1 for i, st in enumerate(native["strokes"])
+                   if is_number(st.get("startEpochMs")) and a["startEpochMs"] <= st["startEpochMs"] < a["endEpochMs"]]
+        out.append({"id": a["id"], "state": a["state"], "durationMs": a["endPerf"] - a["startPerf"],
+                    "web": path_outcome(a["state"], web_idx, web["strokes"]),
+                    "native": path_outcome(a["state"], nat_idx, native["strokes"])})
+    in_web = {i for r in out for i in r["web"]["episodes"]}
+    in_nat = {i for r in out for i in r["native"]["episodes"]}
+    return {"actions": out,
+            "notRecorded": [i for i in ACTION_IDS if i not in seen],
+            "webOutside": [i for i in range(1, len(web["strokes"]) + 1) if i not in in_web],
+            "nativeOutside": [i for i in range(1, len(native["strokes"]) + 1) if i not in in_nat]}
+
+
+# ---- ADR-0009 tablet rule set (C04-R2-01) ------------------------------------------------------------------------
+
+INF = math.inf
+ROWS = {1: "pen identity", 2: "pressure >= 256 levels", 3: "pressure >= 1024 levels", 4: "tilt",
+        5: "twist (barrel rotation)", 6: "coalesced events", 7: "sustained rate >= 120 Hz", 8: "rate >= 200 Hz",
+        9: "stationary pressure-only updates"}
+ROW_ACTION = {1: "A1-A3", 2: "A1", 3: "A1", 4: "A3", 5: "A4", 6: "A2", 7: "A2", 8: "A2", 9: "A6"}
+# Half-open bands [low, high) on the unrounded value, in the order pass, partial, fail.
+BANDS = {
+    2: ((256, INF, "pass"), (16, 256, "partial"), (0, 16, "fail")),
+    3: ((1024, INF, "pass"), (256, 1024, "partial"), (0, 256, "fail")),
+    7: ((120, INF, "pass"), (60, 120, "partial"), (0, 60, "fail")),
+    8: ((200, INF, "pass"), (120, 200, "partial"), (0, 120, "fail")),
+}
+STATIONARY_PASS_HZ = 60
+TILT_SPAN_DEG = 30
+TWIST_PASS_RANGE_DEG = 180
+CORE_ROWS = (1, 2, 7)
+PRIORITY = {"windows": ("W", "R", "H", "D"), "macos": ("W", "A")}
+NATIVE_CANDIDATE = {"windows": "H", "macos": "A"}
+UNMEASURED_NOTE = {"R": "raw HID, needs experiment E-R1", "D": "dedicated input window, needs experiment E-D1"}
+# Mitigation for the selected candidate's non-pass rows: (partial, fail). A fail of a core row makes a candidate
+# ineligible, so it never needs a mitigation.
+MITIGATIONS = {
+    1: ("pen recognised by pressure > 0; eraser not distinguished", "candidate ineligible (core row)"),
+    2: ("accept the measured resolution of 16 to 255 levels; brush response quantised", "candidate ineligible (core row)"),
+    3: ("accept >= 256 levels", "as row 2"),
+    4: ("accept the limited or quantised tilt", "tilt unsupported on this platform: tilt-driven brush options off"),
+    5: ("twist limited to the measured range (e.g. modulo 180)", "barrel rotation unsupported on this platform"),
+    6: ("accept one sample per dispatch", "accept one sample per dispatch; a floor change is a user decision (ADR-0005)"),
+    7: ("interpolated sampling off; the >= 200 Hz target is recorded as below target", "candidate ineligible (core row)"),
+    8: ("recorded as below the 200 Hz target", "recorded as below the 200 Hz target (row 7 decides eligibility)"),
+    9: ("pressure interpolated between updates", "pressure changes without movement are ignored"),
+}
+
+
+def band(row, value):
+    for low, high, result in BANDS[row]:
+        if low <= value < high:
+            return result
+    return "fail"
+
+
+def platform_of(log):
+    host = ((log.get("environment") or {}).get("host") or {}).get("os")
+    if host in ("windows", "macos"):
+        return host
+    ua = (log.get("environment") or {}).get("userAgent") or ""
+    return "macos" if "Mac OS X" in ua or "Macintosh" in ua else "windows"
+
+
+def capability(meta, key):
+    v = str((meta or {}).get(key) or "").strip().lower()
+    return True if v in ("yes", "y", "true") else False if v in ("no", "n", "false") else None
+
+
+def measured(actions, aid, path, strokes):
+    """('stats', st) | ('none', None) for performed without events | ('missing', reason)."""
+    rec = next((r for r in actions["actions"] if r["id"] == aid), None)
+    if rec is None:
+        return "missing", f"{aid} not recorded"
+    out = rec[path]
+    if out["outcome"] in ("omitted", "unfinished"):
+        return "missing", f"{aid} {out['outcome']}"
+    if out["measured"] is None:
+        return "none", None
+    return "stats", strokes[out["measured"] - 1]
+
+
+def classify(path, strokes, actions, meta, web=None):
+    """Row -> (result, note) for one candidate. Results: pass, partial, fail, n/a, insufficient."""
+    res = {}
+    # Row 1: pen identity over A1-A3.
+    pens, missing = 0, []
+    for aid in ("A1", "A2", "A3"):
+        kind, st = measured(actions, aid, path, strokes)
+        if kind == "missing":
+            missing.append(st)
+        elif kind == "stats" and str(st.get("pointer") or "").split("#")[0] in ("pen", "eraser"):
+            pens += 1
+    res[1] = (("insufficient", "; ".join(missing)) if missing else
+              ("pass" if pens == 3 else "partial" if pens else "fail", f"{pens} of 3 actions report a pen"))
+    # Rows 2 and 3: pressure resolution on A1.
+    kind, st = measured(actions, "A1", path, strokes)
+    if kind == "missing":
+        res[2] = res[3] = ("insufficient", st)
+    else:
+        distinct = st["pressureDistinct"] if kind == "stats" else 0
+        implied = st.get("pressureLevelsImplied") if kind == "stats" else None
+        levels = implied if implied is not None and distinct >= 64 else distinct
+        res[2] = (band(2, levels), f"{levels} levels")
+        res[3] = (band(3, levels), f"{levels} levels")
+    # Row 4: tilt on A3.
+    has_tilt = capability(meta, "penTilt")
+    kind, st = measured(actions, "A3", path, strokes)
+    if has_tilt is False:
+        res[4] = ("n/a", "pen has no tilt")
+    elif kind == "missing":
+        res[4] = ("insufficient", st)
+    else:
+        rx, ry = (st["tiltRangeX"], st["tiltRangeY"]) if kind == "stats" else (None, None)
+        full = all(r and r[0] <= -TILT_SPAN_DEG and r[1] >= TILT_SPAN_DEG for r in (rx, ry))
+        some = any(r and r[1] > r[0] for r in (rx, ry))
+        result = "pass" if full else "partial" if some else "fail"
+        res[4] = ("insufficient", "tilt absent and the pen's tilt support is not stated") \
+            if result == "fail" and has_tilt is None else (result, f"x {rx}, y {ry}")
+    # Row 5: twist on A4.
+    has_rot = capability(meta, "penRotation")
+    kind, st = measured(actions, "A4", path, strokes)
+    if has_rot is False:
+        res[5] = ("n/a", "pen has no barrel rotation")
+    elif kind == "missing":
+        res[5] = ("insufficient", st + ("; state whether the pen has barrel rotation" if has_rot is None else ""))
+    else:
+        r = st["twistRange"] if kind == "stats" else None
+        width = (r[1] - r[0]) if r else 0
+        nonzero = st["twistNonzero"] if kind == "stats" else 0
+        result = "pass" if width > TWIST_PASS_RANGE_DEG else "partial" if nonzero and width > 0 else "fail"
+        res[5] = ("insufficient", "twist absent and the pen's rotation support is not stated") \
+            if result == "fail" and has_rot is None else (result, f"range {r}")
+    # Row 6: coalesced events (web only).
+    if web is None:
+        res[6] = ("n/a", "native path")
+    else:
+        res[6] = ("pass" if web["coalescedApi"] and web["coalescedObserved"] else
+                  "partial" if web["coalescedApi"] else "fail", f"API {web['coalescedApi']}, batching {web['coalescedObserved']}")
+    # Rows 7 and 8: rate on A2.
+    kind, st = measured(actions, "A2", path, strokes)
+    if kind == "missing":
+        res[7] = res[8] = ("insufficient", st)
+    elif kind == "none":
+        res[7] = res[8] = ("fail", "performed, no events")
+    elif st["rateHz"] is None:
+        res[7] = res[8] = ("insufficient", "A2 has a single sample: repeat A2")
+    else:
+        res[7] = (band(7, st["rateHz"]), f"{st['rateHz']:.3f} Hz")
+        res[8] = (band(8, st["rateHz"]), f"{st['rateHz']:.3f} Hz")
+    # Row 9: stationary pressure on A6. One sample is the failure this row tests, not missing evidence.
+    kind, st = measured(actions, "A6", path, strokes)
+    if kind == "missing":
+        res[9] = ("insufficient", st)
+    elif kind == "none" or st["samples"] <= 1 or st["pressureDistinct"] <= 1:
+        res[9] = ("fail", "only the down sample or one pressure value")
+    else:
+        hz = st["rateHz"]
+        res[9] = ("pass" if hz is not None and hz >= STATIONARY_PASS_HZ else "partial",
+                  f"{st['samples']} samples, {fmt(hz)} Hz")
+    return res
+
+
+def aggregate(platform, results):
+    """The ADR-0009 Step 3 decision from per-candidate row results ({candidate: {row: result}})."""
+    order = PRIORITY[platform]
+    insufficient = sorted({f"row {row} ({c})" for c, rows in results.items() for row, r in rows.items()
+                           if r == "insufficient"})
+    if insufficient:
+        return {"outcome": "insufficient evidence: repeat the actions named for " + ", ".join(insufficient),
+                "selected": None, "conditions": [], "scores": {}, "eligible": []}
+    eligible = [c for c in order if c in results and all(results[c].get(r) != "fail" for r in CORE_ROWS)]
+    scores = {c: sum(1 for r in results[c].values() if r == "pass") for c in results}
+    unmeasured = [c for c in order if c not in results]
+    if not eligible:
+        return {"outcome": "platform no-go: no measured candidate has rows 1, 2 and 7 at least partial; escalate "
+                           "(decision 7 applies only if both platforms are no-go)",
+                "selected": None, "conditions": [], "scores": scores, "eligible": [], "unmeasured": unmeasured}
+    best = max(eligible, key=lambda c: (scores[c], -order.index(c)))
+    conditions = [{"row": row, "result": r, "mitigation": MITIGATIONS[row][0 if r == "partial" else 1]}
+                  for row, r in sorted(results[best].items()) if r in ("partial", "fail")]
+    outcome = f"go: {best}" if not conditions else f"go-with-conditions: {best}"
+    return {"outcome": outcome, "selected": best, "conditions": conditions, "scores": scores, "eligible": eligible,
+            "unmeasured": unmeasured}
+
+
+def tablet_decision(log, web, native, actions):
+    if actions is None:
+        return {"outcome": "not evidence: the log has no action markers (Step 0); repeat the procedure with the "
+                           "current build", "selected": None, "conditions": []}
+    platform = platform_of(log)
+    meta = log.get("metadata") or {}
+    rows = {"W": classify("web", web["strokes"], actions, meta, web=web)}
+    if log.get("nativeInfo"):
+        rows[NATIVE_CANDIDATE[platform]] = classify("native", native["strokes"], actions, meta)
+    decision = aggregate(platform, {c: {k: v[0] for k, v in r.items()} for c, r in rows.items()})
+    decision.update(platform=platform, rows={c: {str(k): {"result": v[0], "note": v[1]} for k, v in r.items()}
+                                             for c, r in rows.items()})
+    return decision
+
+
+def print_decision(d):
+    print("\n### Decision (ADR-0009 tablet rule set)\n")
+    if d.get("rows"):
+        cands = list(d["rows"])
+        print("| row | capability | action | " + " | ".join(cands) + " |")
+        print("|---|---|---|" + "---|" * len(cands))
+        for row, name in ROWS.items():
+            cells = [f"{d['rows'][c][str(row)]['result']} ({d['rows'][c][str(row)]['note']})" for c in cands]
+            print(f"| {row} | {name} | {ROW_ACTION[row]} | " + " | ".join(cells) + " |")
+        print(f"\n- platform: {d['platform']}; scores (rows at pass): {d.get('scores')}; eligible: {d.get('eligible')}")
+        if d.get("unmeasured"):
+            print("- not scored: " + ", ".join(f"{c} ({UNMEASURED_NOTE.get(c, 'not measured')})" for c in d["unmeasured"]))
+    print(f"- outcome: **{d['outcome']}**")
+    for c in d.get("conditions", []):
+        print(f"- condition: row {c['row']} {ROWS[c['row']]} at {c['result']}: {c['mitigation']}")
+
+
+def print_actions(actions):
+    print("\n### Actions (markers recorded by the page; C04-R2-02)\n")
+    if actions is None:
+        print("No action markers in this log: it predates them, so the ADR-0009 rule set cannot use it (Step 0).")
+        return
+    print("| action | state | ms | web | web measured episode | native | native measured episode |")
+    print("|---|---|---|---|---|---|---|")
+    for r in actions["actions"]:
+        w, n = r["web"], r["native"]
+        print(f"| {r['id']} | {r['state']} | {fmt(r['durationMs'], 0)} | {w['outcome']} | {fmt(w['measured'], 0)} | "
+              f"{n['outcome']} | {fmt(n['measured'], 0)} |")
+    print(f"\nNot recorded: {', '.join(actions['notRecorded']) or 'none'}. Episodes outside every action (UI clicks, "
+          f"ignored): web {actions['webOutside'] or 'none'}, native {actions['nativeOutside'] or 'none'}.")
 
 
 # ---- validation of synthetic runs (C02-R2-01) ---------------------------------------------------------------------
@@ -753,7 +1055,7 @@ def print_runs(runs):
         print(f"- **{r['label']}**: " + "; ".join(parts))
 
 
-def print_report(log, version, web, native, runs):
+def print_report(log, version, web, native, runs, actions=None):
     env = log.get("environment", {})
     meta = log.get("metadata") or {}
     print(f"## Tablet spike log ({'unversioned, no synthetic runs' if version is None else f'version {version}'})\n")
@@ -765,7 +1067,7 @@ def print_report(log, version, web, native, runs):
     if env.get("gpu"):
         print(f"- GPU (navigator.gpu): {env['gpu']}")
     print(f"devicePixelRatio {env.get('devicePixelRatio')}, getCoalescedEvents available: {env.get('coalescedApi')}")
-    for key in ("computer", "osVersion", "webkit", "tablet", "driver", "tester", "notes"):
+    for key in ("computer", "osVersion", "webkit", "tablet", "driver", "penTilt", "penRotation", "tester", "notes"):
         if meta.get(key):
             print(f"- {key}: {meta[key]}")
     print(f"native: {native['info']}, packets {native['packets']}, invalid batches {native['invalidBatches']}")
@@ -784,6 +1086,9 @@ def print_report(log, version, web, native, runs):
     print(f"native path: {len(native['strokes'])} strokes")
     print_strokes("Web path strokes (pointer events)", web["strokes"])
     print_strokes(f"Native path strokes (host listener, {native['clock']} clock)", native["strokes"], native=True)
+    if not runs:
+        print_actions(actions)
+        print_decision(tablet_decision(log, web, native, actions))
     print_runs(runs)
 
 
@@ -813,15 +1118,18 @@ def main(argv):
         # Everything is validated and computed before anything is printed (outcome c prints no results).
         version = log_version(log)
         runs = run_analysis(log)
+        web = web_analysis(log)
+        native = native_analysis(log)
+        actions = action_analysis(log, web, native)
     except LogError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
-    web = web_analysis(log)
-    native = native_analysis(log)
-    print_report(log, version, web, native, runs)
+    print_report(log, version, web, native, runs, actions)
     if out_json:
         with open(out_json, "w", encoding="utf-8") as f:
-            json.dump(strip({"version": version, "web": web, "native": native, "runs": runs}), f, indent=1)
+            decision = None if runs else tablet_decision(log, web, native, actions)
+            json.dump(strip({"version": version, "web": web, "native": native, "runs": runs, "actions": actions,
+                             "decision": decision}), f, indent=1)
     return 0
 
 

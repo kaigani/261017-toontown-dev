@@ -1,6 +1,6 @@
 # ADR-0007 — Interactive canvas architecture (for M4)
 
-Status: accepted as the M4 direction (C0.4, 2026-10-18; rule set added after review round 1). The delta protocol is open (below). The macOS hardware
+Status: accepted as the M4 direction (C0.4, 2026-10-18; rule set added after review round 1, completed after round 2). The delta protocol is open (below). The macOS hardware
 result is pending the user.
 
 ## Context
@@ -79,40 +79,56 @@ The reviewers' closure (r4) separates what is established from what is not:
 `desktop/src/test/decisionTables.test.ts` fails if the two copies differ.
 
 <!-- canvas-rules:begin -->
-**Per-scene target.** The C0.3 scenes and the same threshold for each:
+**Scenes.** The rule set uses the three C0.3 scenes, with the same threshold for each:
 - **paths100k**: one drawing of 100,000 stroked paths;
 - **groups1k**: 1,000 transformed groups, the plan's "1 000-element scenes";
 - **brush10k**: 10,000 filled brush outlines.
 
-For one back end, a scene is:
-- **met** when its run completes and the analyzer reports `meetsTarget: true` (fps ≥ 57 over the 10 s pan/zoom);
-- **missed** when the run completes below 57 fps, including a complete run with "insufficient samples" (one sample
-  in 10 s is far below target);
-- **failed** when the run carries an error after the back end started;
-- **unavailable** when there is no WebGPU adapter or no WebGL2 context.
+**Step 0: what each cell is.** Every back end × scene cell of an accepted log (analyzer exit 0) is exactly one of:
 
-**Back-end selection (product rule, M4).**
-- At first launch, and again after a GPU, driver or webview version change, the app measures both back ends that
-  start on a short built-in pan/zoom of the three scene shapes.
-- It uses the back end whose **worst** scene has the higher fps. A tie goes to WebGPU.
-- A back end that failed is excluded until the next version change.
-- The user can override the choice in preferences.
-
-So "WebGPU available but slower" selects WebGL2 on that machine; it is not a fault.
-
-**Outcome matrix.** It is applied per machine to the selected back end. For a spike log, that is the back end whose
-worst scene is better.
-
-| Outcome | Decision |
+| Cell status | When |
 |---|---|
-| The log does not analyze (analyzer exit 2) | not evidence: rerun; no decision |
-| WebGL2 unavailable or failed, WebGPU met or missed | WebGL2 is the mandatory path, so investigate (driver, OS, WebKit version) before any conclusion for that platform or floor; WebGPU is used on that machine meanwhile |
-| Both back ends unavailable or failed | no-go for the webview canvas on that platform until investigated |
-| WebGPU unavailable, failed or slower; WebGL2 works | the selection rule picks WebGL2; continue with the rows below |
-| All three scenes met | **go** as written |
-| groups1k and brush10k met, paths100k missed | **go**; M4 adds culling and level-of-detail for drawings of that size before they are supported at 60 fps |
-| groups1k met, brush10k missed (paths100k met or missed) | **go-with-condition**: M4 pre-tessellates fills in Rust and adds fill level-of-detail, and E-C2 re-measures brush10k. If it still misses, a native-wgpu integration prototype becomes required M4 work |
-| groups1k missed | **no-go** for the webview canvas as designed on that platform: a native-wgpu integration prototype (plan §2.3 fallback) becomes required M4 work |
+| **met** | the run completed and fps ≥ 57 over the 10 s pan/zoom (`meetsTarget: true`) |
+| **missed** | the run completed and fps < 57 |
+| **insufficient evidence** | the run completed but has no cadence estimate (fewer than two samples: `fps` null) |
+| **failed** | the run carries an error after the back end started |
+| **unavailable** | the error starts "webgpu unavailable" or "webgl2 unavailable", or the page reports no WebGPU API |
+| **not measured** (missing run) | the log has no run for the cell: an incomplete interactive capture, or a forced renderer |
+
+A log the analyzer rejects (exit 2) is **not evidence: repeat the run**. Cells that are not measured are listed as
+"not measured: repeat with `--spike canvas --spike-auto`", plus `--spike-renderer webgl2` for WebGL2 cells. Cells with
+insufficient evidence are listed as "insufficient evidence: repeat with …". Only measured cells are decided.
+
+**Step 1: back-end selection** (the product rule, M4, and its application to a log).
+- A back end is **scorable** when all three of its cells are met or missed. Its score is its worst scene's fps.
+- The scorable back end with the higher score is selected; a tie goes to WebGPU.
+- A back end without a valid measurement (any cell insufficient, not measured, failed or unavailable) is **never
+  selected over** one with a valid measurement.
+- In the product, both back ends are measured at first launch and after a GPU, driver or webview version change. A
+  failed back end is excluded until the next version change, and the user can override the choice in preferences.
+
+So "WebGPU available but slower" selects WebGL2; it is not a fault.
+
+**Step 2: the outcome.** Apply the first row that matches.
+
+| # | Condition | Outcome |
+|---|---|---|
+| 1 | Both back ends have a failed or unavailable cell | **no-go** for the webview canvas on that platform until investigated |
+| 2 | No back end is scorable | **insufficient evidence: repeat the listed runs**; no decision |
+| 3 | Selected back end: groups1k missed | **no-go** for the webview canvas as designed: a native-wgpu integration prototype (plan §2.3 fallback) becomes required M4 work |
+| 4 | Selected back end: groups1k met, brush10k missed (paths100k met or missed) | **go-with-condition**: M4 pre-tessellates fills in Rust and adds fill level-of-detail, and E-C2 re-measures brush10k. If it still misses, a native-wgpu integration prototype becomes required M4 work |
+| 5 | Selected back end: groups1k and brush10k met, paths100k missed | **go**; M4 adds culling and level-of-detail for drawings of that size before they are supported at 60 fps |
+| 6 | Selected back end: all three met | **go** as written |
+
+**Overrides on that outcome:**
+- **WebGL2 has a failed or unavailable cell** while WebGPU is scorable: WebGL2 is the mandatory path, so investigate
+  (driver, OS, WebKit version) before any conclusion for that platform or floor. The row 3–6 outcome for WebGPU is
+  the interim decision for that machine.
+- **Any cell is not measured or has insufficient evidence** and a back end was selected: the outcome is
+  **provisional**, and the listed runs complete it.
+
+`scripts/analyse-canvas-log.py` implements these steps and prints the decision for every accepted log, so every
+canvas log maps to an outcome by the analyzer itself.
 <!-- canvas-rules:end -->
 
 ## Open protocol questions (M4 design, to be measured)

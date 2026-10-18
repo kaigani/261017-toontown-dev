@@ -36,6 +36,30 @@ import {
 import { MAX_SAMPLES, WebCapture } from './capture';
 
 export const LOG_VERSION = 3;
+
+/**
+ * The actions of the manual procedures (docs/manual-tests/M0-C0.2-tablet-macos.md, M0-C0.4-tablet-windows.md). The
+ * person presses Space to start and to finish each action and K to skip it, so the analyzer can attribute contact
+ * episodes to actions by time and ignore UI clicks (C04-R2-02). Keys produce no pointer events.
+ */
+const ACTIONS = [
+  { id: 'A1', name: 'pressure ramp' },
+  { id: 'A2', name: 'speed' },
+  { id: 'A3', name: 'tilt' },
+  { id: 'A4', name: 'barrel rotation (skip with K if the pen has none)' },
+  { id: 'A5', name: 'hover (no contact)' },
+  { id: 'A6', name: 'stationary pressure' },
+] as const;
+
+export interface ActionRecord {
+  id: string;
+  state: 'done' | 'skipped' | 'unfinished';
+  /** performance.now() (the web samples' clock) and wall-clock epoch ms (the native packets' host clock). */
+  startPerf: number;
+  endPerf: number;
+  startEpochMs: number;
+  endEpochMs: number;
+}
 const LIVE_WINDOW = 5000;
 const STROKES_SHOWN = 6;
 
@@ -147,6 +171,9 @@ interface RunMetadata {
   webkit: string;
   tablet: string;
   driver: string;
+  /** `yes` / `no` from the pen's specification (ADR-0009 Step 0: a capability the pen lacks is n/a). */
+  penTilt: string;
+  penRotation: string;
   notes: string;
 }
 
@@ -157,6 +184,8 @@ const EMPTY_METADATA: RunMetadata = {
   webkit: '',
   tablet: '',
   driver: '',
+  penTilt: '',
+  penRotation: '',
   notes: '',
 };
 
@@ -166,6 +195,8 @@ const METADATA_FIELDS: { key: keyof RunMetadata; label: string; hint: string }[]
   { key: 'webkit', label: 'Safari / WebKit version', hint: 'Safari → About Safari' },
   { key: 'tablet', label: 'Tablet model', hint: 'e.g. Wacom Intuos Pro M (PTH-660)' },
   { key: 'driver', label: 'Tablet driver version', hint: 'Wacom Center → About' },
+  { key: 'penTilt', label: 'Pen has tilt (yes / no)', hint: "from the pen's specification" },
+  { key: 'penRotation', label: 'Pen has barrel rotation (yes / no)', hint: 'e.g. yes for the Wacom Art Pen' },
   { key: 'tester', label: 'Your name (optional)', hint: '' },
   { key: 'notes', label: 'Notes', hint: 'anything unusual' },
 ];
@@ -378,6 +409,12 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
   const [nativeSummary, setNativeSummary] = useState<NativeSummary | null>(null);
   const [runRows, setRunRows] = useState<RunRecord[]>([]);
   const autoStarted = useRef(false);
+  const actions = useRef<ActionRecord[]>([]);
+  const [actionStep, setActionStep] = useState<{ index: number; startPerf: number | null }>({
+    index: 0,
+    startPerf: null,
+  });
+  const actionStepRef = useRef(actionStep);
 
   // Drawing: web samples as a pressure-width line, native packets as red dots.
   const draw = useCallback((s: WebSample) => {
@@ -586,6 +623,52 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
     [runScenario],
   );
 
+  // Action markers (C04-R2-02): Space starts / finishes the current action, K skips it. Ignored while typing in the
+  // metadata form and in --spike-auto runs.
+  useEffect(() => {
+    if (mode.auto) return;
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
+      const key = e.key.toLowerCase();
+      if (key !== ' ' && key !== 'k') return;
+      e.preventDefault();
+      const step = actionStepRef.current;
+      const action = ACTIONS[step.index];
+      if (!action) return;
+      const now = performance.now();
+      const record = (state: ActionRecord['state'], start: number) => ({
+        id: action.id,
+        state,
+        startPerf: start,
+        endPerf: now,
+        startEpochMs: performance.timeOrigin + start,
+        endEpochMs: performance.timeOrigin + now,
+      });
+      let next: typeof step;
+      if (key === ' ' && step.startPerf === null) {
+        next = { index: step.index, startPerf: now };
+        setStatus(`${action.id} ${action.name}: started. Press Space when it is done.`);
+      } else if (key === ' ' && step.startPerf !== null) {
+        actions.current.push(record('done', step.startPerf));
+        next = { index: step.index + 1, startPerf: null };
+        setStatus(`${action.id} ${action.name}: done.`);
+      } else if (key === 'k' && step.startPerf === null) {
+        actions.current.push(record('skipped', now));
+        next = { index: step.index + 1, startPerf: null };
+        setStatus(`${action.id} ${action.name}: skipped.`);
+      } else {
+        return;
+      }
+      actionStepRef.current = next;
+      setActionStep(next);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [mode.auto, setStatus]);
+
   const buildLog = useCallback(() => {
     const c = capture.current;
     const samples = c?.samples ?? [];
@@ -615,6 +698,26 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
         mode,
       },
       nativeInfo: nativeInfoRef.current,
+      // Action markers; an action still running at Save is recorded as `unfinished`.
+      actions: [
+        ...actions.current,
+        ...(() => {
+          const step = actionStepRef.current;
+          const action = ACTIONS[step.index];
+          if (step.startPerf === null || !action) return [];
+          const now = performance.now();
+          return [
+            {
+              id: action.id,
+              state: 'unfinished' as const,
+              startPerf: step.startPerf,
+              endPerf: now,
+              startEpochMs: performance.timeOrigin + step.startPerf,
+              endEpochMs: performance.timeOrigin + now,
+            },
+          ];
+        })(),
+      ],
       runs: runs.current,
       simulations: simulations.current,
       web: {
@@ -652,6 +755,9 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
     runs.current.length = 0;
     simulations.current.length = 0;
     nativeCounters.current.truncated = 0;
+    actions.current.length = 0;
+    actionStepRef.current = { index: 0, startPerf: null };
+    setActionStep(actionStepRef.current);
     setRunRows([]);
     const canvas = canvasRef.current;
     canvas?.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height);
@@ -729,6 +835,17 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
         </button>
         <span className="spike-status">{status}</span>
       </div>
+      {!mode.auto && (
+        <div className="spike-actions" data-testid="spike-actions">
+          {(() => {
+            const action = ACTIONS[actionStep.index];
+            if (!action) return 'All actions recorded. Click Save log.';
+            return actionStep.startPerf === null
+              ? `Next: ${action.id} ${action.name}. Press Space to start (K = skip).`
+              : `${action.id} ${action.name} running. Draw it, lift the pen, then press Space.`;
+          })()}
+        </div>
+      )}
       <canvas ref={canvasRef} className="spike-canvas" data-testid="spike-canvas" />
       <div className="spike-readout">
         <SummaryTable title="Web path (pointer events)" summary={webSummary} web={webSummary} />

@@ -24,6 +24,10 @@ def capability_row(number):
 
 def numeric_match(cell, hz):
     """Read the published closed ranges and inequalities without rounding the measurement."""
+    # Builder, C0.4 round 2: the parser extension this function asks for, for the ruled half-open notation
+    # `[low, high)` / `[low, ∞)`. The existing branches and every assertion are unchanged.
+    if match := re.match(r'\[(\d+), (\d+|∞)\)', cell):
+        return int(match[1]) <= hz and (match[2] == '∞' or hz < int(match[2]))
     if match := re.match(r'≥ (\d+)', cell):
         return hz >= int(match[1])
     if match := re.match(r'< (\d+)', cell):

@@ -27,12 +27,33 @@ const CASES: [name: string, adr: string, mustContain: string[]][] = [
   [
     'tablet-rules',
     'docs/decisions/ADR-0009-tablet-input.md',
-    ['Step 0', 'Step 1', 'Step 2', 'Step 3', 'platform no-go', 'E-H1', 'E-D1', '| 9 |'],
+    [
+      'Step 0',
+      'Step 1',
+      'Step 2',
+      'Step 3',
+      'platform no-go',
+      'E-R1',
+      'E-D1',
+      '| 9 |',
+      '[120, ∞)',
+      'never combined',
+    ],
   ],
   [
     'canvas-rules',
     'docs/decisions/ADR-0007-interactive-canvas.md',
-    ['paths100k', 'groups1k', 'brush10k', 'fps ≥ 57', 'worst', 'native-wgpu'],
+    [
+      'paths100k',
+      'groups1k',
+      'brush10k',
+      'fps ≥ 57',
+      'worst',
+      'native-wgpu',
+      'not measured',
+      'insufficient evidence',
+      'valid measurement',
+    ],
   ],
 ];
 
