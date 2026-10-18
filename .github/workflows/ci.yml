@@ -154,6 +154,8 @@ jobs:
         run: |
           mkdir -p out
           cp ipc-bench.json out/
+          # The manual tablet test (docs/manual-tests/M0-C0.2-tablet-macos.md) runs the analyzer from the artifact.
+          cp scripts/analyse-tablet-log.py out/
           if [ -f tablet-spike-windows.json ]; then cp tablet-spike-windows.json out/; fi
           if [ -f tablet-spike-windows.analysis.json ]; then cp tablet-spike-windows.analysis.json out/; fi
           if [ "$RUNNER_OS" = "Windows" ]; then
