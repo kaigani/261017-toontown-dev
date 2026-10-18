@@ -1,0 +1,31 @@
+## Tablet spike log (version 2)
+
+- userAgent: None
+devicePixelRatio None, getCoalescedEvents available: True
+native: None, packets 0, invalid batches None
+- native clock used: host; channel loss: unknown, gap heuristic only; host dropped -, send failures -, truncated -
+- web samples 1025, truncated 0; web loss: unknown, gap heuristic only
+- coalescing: API available True, batching observed False, per dispatch p50 1.00 / p95 1.00 / max 1.0
+- handler - event ms: oldest coalesced p50 2.00 / p95 2.00 / max 2.0; newest p50 2.00 / p95 2.00 / max 2.0; all samples p50 2.00 / p95 2.00 / max 2.0
+web path: 1 pen-down strokes
+native path: 0 strokes
+
+### Web path strokes (pointer events)
+
+| stroke | pointer | samples | ms | Hz | vs 200 Hz | median / max interval ms | >2x median | pressure levels (distinct / implied) | tilt | twist |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | pen#7 | 1024 | 4092 | 250.0 | meets target | 4 / 4 | 0 | 1024 / 1024 | no | 0 nonzero |
+
+`*` = episode cut off at the start or end of the capture. `>2x median` is a heuristic, not a loss count.
+
+### Native path strokes (host listener, host clock)
+
+No contact episodes.
+
+### Synthetic runs (InjectSyntheticPointerInput; simulation, not tablet hardware)
+
+| run | pattern | achieved Hz | web events: received / missing | WM_POINTER (history) | RTS: poses, frames received | raw HID reports (count only; not decoded) | inject call ms (p50) | error |
+|---|---|---|---|---|---|---|---|---|
+| stationary fixture | stationary | 250 | 1024 / 0 | not observable (WebView2 input window is in another process) | 0, 0 | - | 0.500 |  |
+
+- **stationary fixture**: web missing frames: none; repeated-pixel frames 1023, of them missing 0; event - injection ms p50 1.00 / p95 1.00 / max 1.0; handler - injection ms p50 3.00 / p95 3.00 / max 3.0

@@ -1,0 +1,85 @@
+[
+  {
+    "command": [
+      "git",
+      "branch",
+      "--show-current"
+    ],
+    "exit": 0,
+    "stdout": "review/m0-c02-r2\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit": 0,
+    "stdout": "506342a02cb55dc855bdedacf499a168a2854ed2\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "734dd00..506342a",
+      "--",
+      "tests/adversarial",
+      "desktop/src/test"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "734dd00..506342a",
+      "--",
+      "spec",
+      "docs/decisions/ADR-0005-platform-floor.md"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "rustc",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "rustc 1.98.1 (48a229cea 2026-09-01)\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "cargo",
+      "deny",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "cargo-deny 0.20.2\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "v22.23.2\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "Python 3.13.1\n",
+    "stderr": ""
+  }
+]

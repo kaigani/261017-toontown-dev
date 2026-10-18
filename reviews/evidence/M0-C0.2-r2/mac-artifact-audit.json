@@ -1,0 +1,22 @@
+{
+  "files": [
+    "analyse-tablet-log.py",
+    "ipc-bench.json",
+    "Toontown-macos-arm64.app.tar.gz"
+  ],
+  "analyzerMatchesSource": true,
+  "analyzerSha256": "f981d45a694d451dee5d1c3301e944e502ef7c61b865c3770c8e391c868bed83",
+  "python39Syntax": true,
+  "imports": [
+    "import gzip",
+    "import json",
+    "import math",
+    "import sys"
+  ],
+  "binaryMode": "0o755",
+  "machoHeaderHex": "cffaedfe0c00000100000000020000001f000000180d00008500a00000000000",
+  "sandboxEntitlementStringPresent": false,
+  "plist": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n\t<key>CFBundleDevelopmentRegion</key>\n\t<string>English</string>\n\t<key>CFBundleDisplayName</key>\n\t<string>Toontown</string>\n\t<key>CFBundleExecutable</key>\n\t<string>toontown</string>\n\t<key>CFBundleIdentifier</key>\n\t<string>dev.toontown.app</string>\n\t<key>CFBundleInfoDictionaryVersion</key>\n\t<string>6.0</string>\n\t<key>CFBundleName</key>\n\t<string>Toontown</string>\n\t<key>CFBundlePackageType</key>\n\t<string>APPL</string>\n\t<key>CFBundleShortVersionString</key>\n\t<string>0.0.1</string>\n\t<key>CFBundleVersion</key>\n\t<string>0.0.1</string>\n\t<key>CSResourcesFileMapped</key>\n\t<true/>\n\t<key>LSApplicationCategoryType</key>\n\t<string>public.app-category.graphics-design</string>\n\t<key>LSMinimumSystemVersion</key>\n\t<string>12.0</string>\n\t<key>CFBundleIconFile</key>\n\t<string>icon.icns</string>\n\t<key>LSRequiresCarbon</key>\n\t<true/>\n\t<key>NSHighResolutionCapable</key>\n\t<true/>\n</dict>\n</plist>",
+  "codeSignaturePresent": true,
+  "entitlementBlobs": []
+}
