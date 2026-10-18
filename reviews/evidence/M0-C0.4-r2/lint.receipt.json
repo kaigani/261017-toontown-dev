@@ -1,0 +1,12 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm lint"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r2",
+  "started": "2026-10-18T14:57:26.489703+00:00",
+  "seconds": 11.161,
+  "exit": 0
+}

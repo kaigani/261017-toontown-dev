@@ -1,0 +1,12 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm --dir desktop tauri build --no-bundle -- --locked"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r2",
+  "started": "2026-10-18T15:00:11.203263+00:00",
+  "seconds": 90.256,
+  "exit": 0
+}

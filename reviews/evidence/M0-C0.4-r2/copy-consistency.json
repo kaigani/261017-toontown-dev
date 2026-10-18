@@ -1,0 +1,21 @@
+{
+  "results": [
+    {
+      "variant": "baseline",
+      "exit": 0
+    },
+    {
+      "variant": "tablet-divergence",
+      "exit": 1
+    },
+    {
+      "variant": "canvas-divergence",
+      "exit": 1
+    }
+  ],
+  "originals": {
+    "reviews/M0-C0.4-go-no-go.md": "bf60a608cabf7c019226e1965394501bac10f71cef527116fb6d39c588eeb007",
+    "docs/decisions/ADR-0007-interactive-canvas.md": "ee949d6fdc5486217fe3d91e5a1d029f39a508f8c1707e4b96373dc702537125",
+    "docs/decisions/ADR-0009-tablet-input.md": "773c2e16fe7eedc565f83fc1f4a868676c1dd3f10f57af0cf882025ca4ffd4b4"
+  }
+}

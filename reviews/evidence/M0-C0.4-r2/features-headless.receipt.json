@@ -1,0 +1,15 @@
+{
+  "command": [
+    "cargo",
+    "tree",
+    "--locked",
+    "-e",
+    "features",
+    "-p",
+    "tt-headless"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r2",
+  "started": "2026-10-18T15:00:29.761482+00:00",
+  "seconds": 0.225,
+  "exit": 0
+}

@@ -1,0 +1,67 @@
+[
+  {
+    "backend": "webgl2",
+    "scene": "paths100k",
+    "outcome": "ok",
+    "error": null,
+    "complete": true,
+    "cadence": "insufficient samples (n=1)",
+    "gpu": "review clock stub",
+    "canvas": {
+      "cssWidth": 0,
+      "cssHeight": 0,
+      "width": 1,
+      "height": 1,
+      "dpr": 1
+    },
+    "bytesPerTransfer": 8700096.0,
+    "transferMs": {
+      "n": 10,
+      "p50": 0,
+      "p95": 0,
+      "max": 0,
+      "mean": 0.0
+    },
+    "transferMBps": null,
+    "encodeMs": {
+      "n": 10,
+      "p50": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "mean": 0.0
+    },
+    "generateMs": 0.0,
+    "ipcPerFrameCeilingFps": null,
+    "decodeMs": 96.5,
+    "decode": {
+      "cubics": 200000,
+      "fillBytes": 0,
+      "fillPaths": 0,
+      "fillVertices": 0,
+      "paths": 100000,
+      "segments": 2832713,
+      "strokeBytes": 90646816,
+      "strokePaths": 100000,
+      "tolerance": 0.5,
+      "triangles": 0
+    },
+    "uploadMs": {
+      "cpuMs": 0,
+      "completeMs": 0
+    },
+    "refreshMs": 10000.0,
+    "frames": 1,
+    "intervalMs": null,
+    "fps": null,
+    "longFrames": 0,
+    "cpuMs": {
+      "n": 1,
+      "p50": 0,
+      "p95": 0,
+      "max": 0,
+      "mean": 0.0
+    },
+    "gpuMs": null,
+    "meetsTarget": null
+  }
+]
