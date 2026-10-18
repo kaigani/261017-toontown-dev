@@ -1,10 +1,17 @@
-"""Proves that `toontown-headless` needs no display, window system or GPU (11 §3).
+"""Guards the claim that `toontown-headless` needs no display, window system or GPU (11 §3).
 
-Two independent checks:
+Two static checks:
   1. Crate graph: `cargo tree` of tt-headless (normal deps, host target) contains no GUI, webview, windowing or GPU
-     crate.
-  2. Binary: the libraries the built executable links against contain no GUI/GPU system library
-     (Windows: PE import and delay-import tables, parsed here; macOS: `otool -L`; Linux: `readelf -d`).
+     crate (deny list below).
+  2. Binary: the libraries the built executable imports DIRECTLY contain no GUI/GPU system library
+     (Windows: PE import and delay-import tables, parsed here; macOS: `otool -L` load commands; Linux: `readelf -d`
+     DT_NEEDED entries).
+
+Scope, stated honestly: this is a deny-list guard against accidentally linking UI or graphics code. It does not see
+libraries that a direct import loads transitively, nor anything loaded at run time with LoadLibrary/dlopen. The
+runtime half of the proof is the CI job that runs `--selftest` on a Linux runner with no X/Wayland server at all,
+plus `--selftest` on the Windows and macOS runners. Permanent negative controls: tests/adversarial/headless_guard.py
+and bins/headless/tests/guard_fixtures.rs (real executables with a graphics import must fail this check).
 
 Usage: python scripts/check-headless-deps.py <path-to-toontown-headless[.exe]>
 Exit status 0 when both checks pass, 1 otherwise. Standard library only.
@@ -18,18 +25,22 @@ import sys
 FORBIDDEN_CRATES = re.compile(
     r"^(tauri|tauri-.*|wry|tao|muda|webview2-com.*|objc2-app-kit|objc2-web-kit|objc2-quartz-core|objc2-metal"
     r"|cocoa|core-graphics|winit|wgpu.*|glow|glutin|gtk.*|gdk.*|webkit2gtk.*|softbuffer|x11.*|wayland-.*"
-    r"|raw-window-handle|egui.*|iced.*|slint.*)$"
+    r"|raw-window-handle|egui.*|iced.*|slint.*|sdl2.*|sdl3.*|ash|vulkano.*|metal|glium|minifb|pixels|fltk.*"
+    r"|femtovg|skia.*|d3d12|gpu-allocator|naga|glfw.*|piston.*|druid.*|xilem.*|vello|vello_hybrid)$"
 )
 
 FORBIDDEN_WINDOWS_DLLS = {
     "user32.dll", "gdi32.dll", "gdiplus.dll", "comctl32.dll", "comdlg32.dll", "uxtheme.dll", "dwmapi.dll",
     "imm32.dll", "d2d1.dll", "dwrite.dll", "d3d9.dll", "d3d10.dll", "d3d11.dll", "d3d12.dll", "dxgi.dll",
     "opengl32.dll", "vulkan-1.dll", "webview2loader.dll", "shell32.dll",
+    "dcomp.dll", "d3d10_1.dll", "win32u.dll", "d3dcompiler_47.dll", "dxcore.dll", "ddraw.dll", "glu32.dll",
+    "d3d11on12.dll", "dinput8.dll", "xinput1_4.dll", "uiautomationcore.dll",
 }
 FORBIDDEN_MACOS = re.compile(
-    r"/(AppKit|Cocoa|Metal|MetalKit|QuartzCore|CoreGraphics|WebKit|OpenGL|IOSurface|CoreVideo|Carbon)\.framework/"
+    r"/(AppKit|Cocoa|Metal|MetalKit|MetalPerformanceShaders|QuartzCore|CoreGraphics|WebKit|OpenGL|IOSurface"
+    r"|CoreVideo|Carbon|SwiftUI|UIKit|GameController|SpriteKit|SceneKit|CoreImage)\.framework/"
 )
-FORBIDDEN_LINUX = re.compile(r"^lib(X11|xcb|wayland-|GL|EGL|vulkan|gtk|gdk|webkit2gtk|SDL)")
+FORBIDDEN_LINUX = re.compile(r"^lib(X11|Xext|Xrandr|Xi|xcb|xkbcommon|wayland-|GL|EGL|GLX|vulkan|drm|gbm|gtk|gdk|webkit2gtk|SDL)")
 
 
 def crate_graph_violations():

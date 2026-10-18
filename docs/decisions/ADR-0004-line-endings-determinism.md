@@ -29,7 +29,18 @@ relies on platform maths libraries or compiler contraction.
 5. **Evidence from M0.** `tt-engine`'s self-test includes `determinism.ieee754`: a Bézier/arc-length workload using
    only the operations of rule 3, hashed with SHA-256 and compared with a golden value recorded on Windows x86_64
    and reproduced bit-for-bit by an independent Python implementation. CI runs it on Windows x86_64, macOS aarch64
-   and Linux x86_64, twice per job. C0.3 extends this to rasteriser output hashes compared across OSes.
+   and Linux x86_64; the Windows and macOS check jobs and the Linux job each run the self-test twice. CI run
+   39096183925 reproduced the golden on all three. Scope: the probe covers `+ − × ÷ sqrt` on f64 only, not
+   transcendental functions, `mul_add`, f32 rounding or decimal formatting; C0.3 extends the evidence to rasteriser
+   output hashes compared across OSes and M1 to canonical JSON.
+6. **Headless "no display or GPU" evidence** (11 §3) has two parts with different strength. (a) Runtime: the
+   self-test runs on a Linux runner with no X/Wayland server and on the Windows/macOS runners. (b) Static guard
+   (`scripts/check-headless-deps.py`): a deny-list of GUI/webview/windowing/GPU crates in `cargo tree` and of GUI/GPU
+   system libraries among the binary's **direct** imports (PE import/delay-import tables, Mach-O load commands, ELF
+   DT_NEEDED). The static guard does not see libraries loaded transitively by a direct import or at run time with
+   LoadLibrary/dlopen; it guards against accidentally linking UI/graphics code, it is not a proof that none can ever
+   load. Real executables with a DirectComposition import (Windows) and an AppKit import (macOS) are kept as
+   permanent negative controls (`bins/headless/tests/guard_fixtures.rs`).
 
 ## Consequences
 
