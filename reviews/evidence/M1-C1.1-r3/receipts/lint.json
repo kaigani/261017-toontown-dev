@@ -1,0 +1,15 @@
+{
+  "command": [
+    "pnpm",
+    "lint"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:54:13.416001+00:00",
+  "elapsed_seconds": 16.20187489996897,
+  "exit_code": 0,
+  "log": "logs/lint.log",
+  "sha256": "53c9c8d5ffd15e6f081894693b613d095d95a4f1a8a89e605b202fb55f6adab0",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

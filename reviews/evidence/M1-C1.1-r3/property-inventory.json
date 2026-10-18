@@ -1,0 +1,6959 @@
+[
+  {
+    "definition": "Asset",
+    "property": "id",
+    "pointer": "/$defs/Asset/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "type",
+    "pointer": "/$defs/Asset/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "asset",
+      "readOnly": true,
+      "description": "Always `asset`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "rev",
+    "pointer": "/$defs/Asset/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "name",
+    "pointer": "/$defs/Asset/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\s]|[^\\u0000-\\u001F\\u007F\\s][^\\u0000-\\u001F\\u007F]*[^\\u0000-\\u001F\\u007F\\s])$",
+      "description": "Informational name (file name by default).",
+      "minLength": 1,
+      "maxLength": 255,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "kind",
+    "pointer": "/$defs/Asset/properties/kind",
+    "schema": {
+      "$ref": "#/$defs/AssetKind",
+      "description": "Media kind.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "mediaType",
+    "pointer": "/$defs/Asset/properties/mediaType",
+    "schema": {
+      "type": "string",
+      "description": "IANA media type, e.g. `audio/wav`.",
+      "minLength": 1,
+      "maxLength": 255,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "storage",
+    "pointer": "/$defs/Asset/properties/storage",
+    "schema": {
+      "$ref": "#/$defs/AssetStorage",
+      "description": "Embedded or linked.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "entry",
+    "pointer": "/$defs/Asset/properties/entry",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Package entry path when embedded (`media/<assetId>.<ext>`); `null` when linked.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "link",
+    "pointer": "/$defs/Asset/properties/link",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AssetLink"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The link when linked; `null` when embedded.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "size",
+    "pointer": "/$defs/Asset/properties/size",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Size of the file bytes (64-bit).",
+      "x-unit": "byte",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "sha256",
+    "pointer": "/$defs/Asset/properties/sha256",
+    "schema": {
+      "type": "string",
+      "description": "Lower-case hex SHA-256 of the file bytes.",
+      "pattern": "^[0-9a-f]{64}$",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "importedAt",
+    "pointer": "/$defs/Asset/properties/importedAt",
+    "schema": {
+      "$ref": "#/$defs/Timestamp",
+      "description": "Import time.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "sourcePath",
+    "pointer": "/$defs/Asset/properties/sourcePath",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Where the file was imported from (informational).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "meta",
+    "pointer": "/$defs/Asset/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "ext",
+    "pointer": "/$defs/Asset/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "path",
+    "pointer": "/$defs/Asset/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "info",
+    "pointer": "/$defs/Asset/properties/info",
+    "schema": {
+      "type": "object",
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "refs",
+    "pointer": "/$defs/Asset/properties/refs",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Id"
+      },
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Asset",
+    "property": "status",
+    "pointer": "/$defs/Asset/properties/status",
+    "schema": {
+      "enum": [
+        "ok",
+        "missing",
+        "changed",
+        "unsupported"
+      ],
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "AssetLink",
+    "property": "kind",
+    "pointer": "/$defs/AssetLink/properties/kind",
+    "schema": {
+      "$ref": "#/$defs/LinkKind",
+      "description": "File or library item.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "AssetLink",
+    "property": "path",
+    "pointer": "/$defs/AssetLink/properties/path",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Files: path relative to the folder containing the project.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "AssetLink",
+    "property": "absolutePath",
+    "pointer": "/$defs/AssetLink/properties/absolutePath",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Files: absolute path at link time.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "AssetLink",
+    "property": "libraryId",
+    "pointer": "/$defs/AssetLink/properties/libraryId",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Library items: library ID.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "AssetLink",
+    "property": "itemId",
+    "pointer": "/$defs/AssetLink/properties/itemId",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Library items: item ID.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "AssetLink",
+    "property": "versionId",
+    "pointer": "/$defs/AssetLink/properties/versionId",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Library items: template version seen at link time (08 LIB-007).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "AxesTransform",
+    "property": "xAxis",
+    "pointer": "/$defs/AxesTransform/properties/xAxis",
+    "schema": {
+      "$ref": "#/$defs/Point2",
+      "description": "Image of the x axis.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "AxesTransform",
+    "property": "yAxis",
+    "pointer": "/$defs/AxesTransform/properties/yAxis",
+    "schema": {
+      "$ref": "#/$defs/Point2",
+      "description": "Image of the y axis.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "AxesTransform",
+    "property": "origin",
+    "pointer": "/$defs/AxesTransform/properties/origin",
+    "schema": {
+      "$ref": "#/$defs/Point2",
+      "description": "Origin (fields).",
+      "x-unit": "field",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Blob",
+    "property": "entry",
+    "pointer": "/$defs/Blob/properties/entry",
+    "schema": {
+      "type": "string",
+      "description": "Package entry path.",
+      "minLength": 1,
+      "maxLength": 1024,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Blob",
+    "property": "mediaType",
+    "pointer": "/$defs/Blob/properties/mediaType",
+    "schema": {
+      "type": "string",
+      "description": "IANA media type.",
+      "minLength": 1,
+      "maxLength": 255,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Blob",
+    "property": "size",
+    "pointer": "/$defs/Blob/properties/size",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Size in bytes (64-bit: entries larger than 4 GiB are supported, 10 §5).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Blob",
+    "property": "sha256",
+    "pointer": "/$defs/Blob/properties/sha256",
+    "schema": {
+      "type": "string",
+      "description": "Lower-case hex SHA-256 of the bytes.",
+      "pattern": "^[0-9a-f]{64}$",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "background",
+    "pointer": "/$defs/BlockStatic/properties/background",
+    "schema": {
+      "$ref": "#/$defs/ParticleBackground",
+      "description": "Background drawn behind the particles.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "simulationStart",
+    "pointer": "/$defs/BlockStatic/properties/simulationStart",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "description": "First simulated frame (≤ firstFrame, ≥ firstFrame − 999; may be < 1 for pre-roll).",
+      "x-unit": "frame",
+      "minimum": -2147483648,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "firstFrame",
+    "pointer": "/$defs/BlockStatic/properties/firstFrame",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "First displayed frame.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "duration",
+    "pointer": "/$defs/BlockStatic/properties/duration",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Frames the block lasts, ≥ 1.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "maxParticles",
+    "pointer": "/$defs/BlockStatic/properties/maxParticles",
+    "schema": {
+      "type": "integer",
+      "maximum": 3000,
+      "minimum": 0,
+      "description": "Particle cap (≤ 3000; 50 for fog and cloud).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "lifetimeFrames",
+    "pointer": "/$defs/BlockStatic/properties/lifetimeFrames",
+    "schema": {
+      "type": "integer",
+      "x-unit": "frame",
+      "description": "Lifetime in frames: −1 (unlimited) or 0–512.",
+      "minimum": -1,
+      "maximum": 512,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "fade",
+    "pointer": "/$defs/BlockStatic/properties/fade",
+    "schema": {
+      "type": "boolean",
+      "description": "Fade particles out.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "areaWidth",
+    "pointer": "/$defs/BlockStatic/properties/areaWidth",
+    "schema": {
+      "type": "number",
+      "maximum": 1999,
+      "description": "Region width 0–1999 particle units.",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "areaHeight",
+    "pointer": "/$defs/BlockStatic/properties/areaHeight",
+    "schema": {
+      "type": "number",
+      "maximum": 1999,
+      "description": "Region height 0–1999.",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "areaDepth",
+    "pointer": "/$defs/BlockStatic/properties/areaDepth",
+    "schema": {
+      "type": "number",
+      "maximum": 1999,
+      "description": "Region depth 0–1999.",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlockStatic",
+    "property": "floorLevel",
+    "pointer": "/$defs/BlockStatic/properties/floorLevel",
+    "schema": {
+      "type": "number",
+      "maximum": 1999,
+      "description": "Floor height 0–1999.",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlurParams",
+    "property": "radial",
+    "pointer": "/$defs/BlurParams/properties/radial",
+    "schema": {
+      "type": "boolean",
+      "description": "Uniform (true) or directional (false) blur (static).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlurParams",
+    "property": "radius",
+    "pointer": "/$defs/BlurParams/properties/radius",
+    "schema": {
+      "type": "number",
+      "x-unit": "pixel",
+      "description": "Radius 0–100 output pixels (animatable).",
+      "minimum": 0,
+      "maximum": 100,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BlurParams",
+    "property": "angle",
+    "pointer": "/$defs/BlurParams/properties/angle",
+    "schema": {
+      "type": "number",
+      "x-unit": "degree",
+      "description": "Motion-blur direction 0–360 degrees (animatable).",
+      "minimum": 0,
+      "maximum": 360,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BoneBlock",
+    "property": "rest",
+    "pointer": "/$defs/BoneBlock/properties/rest",
+    "schema": {
+      "$ref": "#/$defs/BoneRest",
+      "description": "Rest pose.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BoneBlock",
+    "property": "influence",
+    "pointer": "/$defs/BoneBlock/properties/influence",
+    "schema": {
+      "$ref": "#/$defs/BoneInfluence",
+      "description": "Zone of influence.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BoneInfluence",
+    "property": "type",
+    "pointer": "/$defs/BoneInfluence/properties/type",
+    "schema": {
+      "$ref": "#/$defs/InfluenceType",
+      "description": "Infinite or elliptical.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BoneInfluence",
+    "property": "lengthRadius",
+    "pointer": "/$defs/BoneInfluence/properties/lengthRadius",
+    "schema": {
+      "type": "number",
+      "x-unit": "field",
+      "description": "Length radius (fields).",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BoneInfluence",
+    "property": "widthRadius",
+    "pointer": "/$defs/BoneInfluence/properties/widthRadius",
+    "schema": {
+      "type": "number",
+      "x-unit": "field",
+      "description": "Width radius (fields).",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BoneInfluence",
+    "property": "region",
+    "pointer": "/$defs/BoneInfluence/properties/region",
+    "schema": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/$defs/Point2"
+      },
+      "description": "Explicit region polygon, or `null`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BoneRest",
+    "property": "x",
+    "pointer": "/$defs/BoneRest/properties/x",
+    "schema": {
+      "type": "number",
+      "x-unit": "field",
+      "description": "X (fields).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BoneRest",
+    "property": "y",
+    "pointer": "/$defs/BoneRest/properties/y",
+    "schema": {
+      "type": "number",
+      "x-unit": "field",
+      "description": "Y (fields).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BoneRest",
+    "property": "rotation",
+    "pointer": "/$defs/BoneRest/properties/rotation",
+    "schema": {
+      "type": "number",
+      "x-unit": "degree",
+      "description": "Rotation (degrees).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "BoneRest",
+    "property": "length",
+    "pointer": "/$defs/BoneRest/properties/length",
+    "schema": {
+      "type": "number",
+      "x-unit": "field",
+      "description": "Length (fields), > 0.01.",
+      "minimum": 0.01,
+      "exclusiveMinimum": 0.01,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "CameraBlock",
+    "property": "fovMode",
+    "pointer": "/$defs/CameraBlock/properties/fovMode",
+    "schema": {
+      "$ref": "#/$defs/FovMode",
+      "description": "Static or dynamic FOV.",
+      "x-command": "anim.camera.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "CameraBlock",
+    "property": "fov",
+    "pointer": "/$defs/CameraBlock/properties/fov",
+    "schema": {
+      "type": "number",
+      "x-command": "anim.camera.set",
+      "description": "FOV 1–179 degrees (default 41.1121).",
+      "minimum": 1,
+      "maximum": 179,
+      "x-unit": "degree",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Channel",
+    "property": "id",
+    "pointer": "/$defs/Channel/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Channel",
+    "property": "type",
+    "pointer": "/$defs/Channel/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "channel",
+      "readOnly": true,
+      "description": "Always `channel`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Channel",
+    "property": "rev",
+    "pointer": "/$defs/Channel/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Channel",
+    "property": "name",
+    "pointer": "/$defs/Channel/properties/name",
+    "schema": {
+      "pattern": "^[a-z][A-Za-z]*(\\.[a-z][A-Za-z]*)?$",
+      "description": "The channel id.",
+      "readOnly": true,
+      "minLength": 1,
+      "maxLength": 64,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Channel",
+    "property": "curveType",
+    "pointer": "/$defs/Channel/properties/curveType",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "1-D channels: curve type.",
+      "$ref": "#/$defs/CurveType",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Channel",
+    "property": "keys",
+    "pointer": "/$defs/Channel/properties/keys",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Key"
+      },
+      "description": "1-D channels: keys sorted by frame, at least one.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Channel",
+    "property": "points",
+    "pointer": "/$defs/Channel/properties/points",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/MotionPoint"
+      },
+      "description": "Motion path: points in path order; first and last are keyframes.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Channel",
+    "property": "meta",
+    "pointer": "/$defs/Channel/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Channel",
+    "property": "ext",
+    "pointer": "/$defs/Channel/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Channel",
+    "property": "path",
+    "pointer": "/$defs/Channel/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ClippingParams",
+    "property": "inverted",
+    "pointer": "/$defs/ClippingParams/properties/inverted",
+    "schema": {
+      "type": "boolean",
+      "description": "Draw children outside the mask instead of inside.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourRecoveryEntry",
+    "property": "colourId",
+    "pointer": "/$defs/ColourRecoveryEntry/properties/colourId",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "The colour ID.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourRecoveryEntry",
+    "property": "paletteId",
+    "pointer": "/$defs/ColourRecoveryEntry/properties/paletteId",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Owning palette ID.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourRecoveryEntry",
+    "property": "paletteName",
+    "pointer": "/$defs/ColourRecoveryEntry/properties/paletteName",
+    "schema": {
+      "type": "string",
+      "description": "Owning palette name.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourRecoveryEntry",
+    "property": "styles",
+    "pointer": "/$defs/ColourRecoveryEntry/properties/styles",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/RecoveryStyle"
+      },
+      "description": "The palette's styles.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourRecoveryEntry",
+    "property": "swatch",
+    "pointer": "/$defs/ColourRecoveryEntry/properties/swatch",
+    "schema": {
+      "$ref": "#/$defs/Swatch",
+      "description": "The full swatch (all style values).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourTransformParams",
+    "property": "multRed",
+    "pointer": "/$defs/ColourTransformParams/properties/multRed",
+    "schema": {
+      "type": "number",
+      "maximum": 1,
+      "description": "Red multiplier 0–1 (animatable).",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourTransformParams",
+    "property": "multGreen",
+    "pointer": "/$defs/ColourTransformParams/properties/multGreen",
+    "schema": {
+      "type": "number",
+      "maximum": 1,
+      "description": "Green multiplier 0–1 (animatable).",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourTransformParams",
+    "property": "multBlue",
+    "pointer": "/$defs/ColourTransformParams/properties/multBlue",
+    "schema": {
+      "type": "number",
+      "maximum": 1,
+      "description": "Blue multiplier 0–1 (animatable).",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourTransformParams",
+    "property": "multAlpha",
+    "pointer": "/$defs/ColourTransformParams/properties/multAlpha",
+    "schema": {
+      "type": "number",
+      "maximum": 1,
+      "description": "Alpha multiplier 0–1 (animatable).",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourTransformParams",
+    "property": "addRed",
+    "pointer": "/$defs/ColourTransformParams/properties/addRed",
+    "schema": {
+      "type": "integer",
+      "maximum": 255,
+      "description": "Red offset −255…255 (animatable).",
+      "minimum": -255,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourTransformParams",
+    "property": "addGreen",
+    "pointer": "/$defs/ColourTransformParams/properties/addGreen",
+    "schema": {
+      "type": "integer",
+      "maximum": 255,
+      "description": "Green offset −255…255 (animatable).",
+      "minimum": -255,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourTransformParams",
+    "property": "addBlue",
+    "pointer": "/$defs/ColourTransformParams/properties/addBlue",
+    "schema": {
+      "type": "integer",
+      "maximum": 255,
+      "description": "Blue offset −255…255 (animatable).",
+      "minimum": -255,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourTransformParams",
+    "property": "addAlpha",
+    "pointer": "/$defs/ColourTransformParams/properties/addAlpha",
+    "schema": {
+      "type": "integer",
+      "maximum": 255,
+      "description": "Alpha offset −255…255 (animatable).",
+      "minimum": -255,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ColourTransformParams",
+    "property": "flatten",
+    "pointer": "/$defs/ColourTransformParams/properties/flatten",
+    "schema": {
+      "type": "boolean",
+      "description": "Composite the sub-tree first (static).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "id",
+    "pointer": "/$defs/Drawing/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "type",
+    "pointer": "/$defs/Drawing/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "drawing",
+      "readOnly": true,
+      "description": "Always `drawing`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "rev",
+    "pointer": "/$defs/Drawing/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change (the drawing revision of 02 §3.12).",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "name",
+    "pointer": "/$defs/Drawing/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s])$",
+      "description": "Unique in the bank; default next unused integer.",
+      "x-command": "element.drawing.rename",
+      "minLength": 1,
+      "maxLength": 64,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "locked",
+    "pointer": "/$defs/Drawing/properties/locked",
+    "schema": {
+      "type": "boolean",
+      "description": "Locked drawings reject content edits with `drawing.locked`.",
+      "x-command": "element.drawingLock.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "pivot",
+    "pointer": "/$defs/Drawing/properties/pivot",
+    "schema": {
+      "$ref": "#/$defs/Point2",
+      "description": "Drawing pivot (du).",
+      "x-unit": "du",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "mouthShape",
+    "pointer": "/$defs/Drawing/properties/mouthShape",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MouthShape"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Mouth shape for automatic lip-sync mapping.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "nodes",
+    "pointer": "/$defs/Drawing/properties/nodes",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DrawingNode"
+      },
+      "description": "Nodes, back to front.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "colourRecovery",
+    "pointer": "/$defs/Drawing/properties/colourRecovery",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ColourRecoveryEntry"
+      },
+      "description": "One entry per colour ID the drawing uses (written on save).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "createdAt",
+    "pointer": "/$defs/Drawing/properties/createdAt",
+    "schema": {
+      "$ref": "#/$defs/Timestamp",
+      "description": "Creation time.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "meta",
+    "pointer": "/$defs/Drawing/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "ext",
+    "pointer": "/$defs/Drawing/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "path",
+    "pointer": "/$defs/Drawing/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "thumbnail",
+    "pointer": "/$defs/Drawing/properties/thumbnail",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Blob"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "usage",
+    "pointer": "/$defs/Drawing/properties/usage",
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "elementId": {
+            "$ref": "#/$defs/Id"
+          },
+          "ranges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/FrameRange"
+            }
+          }
+        },
+        "required": [
+          "elementId",
+          "ranges"
+        ],
+        "additionalProperties": false
+      },
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "isEmpty",
+    "pointer": "/$defs/Drawing/properties/isEmpty",
+    "schema": {
+      "type": "boolean",
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Drawing",
+    "property": "zones",
+    "pointer": "/$defs/Drawing/properties/zones",
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingBank",
+    "property": "id",
+    "pointer": "/$defs/DrawingBank/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingBank",
+    "property": "type",
+    "pointer": "/$defs/DrawingBank/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "drawingBank",
+      "readOnly": true,
+      "description": "Always `drawingBank`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingBank",
+    "property": "rev",
+    "pointer": "/$defs/DrawingBank/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingBank",
+    "property": "drawings",
+    "pointer": "/$defs/DrawingBank/properties/drawings",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Drawing"
+      },
+      "x-childList": "drawing",
+      "description": "Drawings (unordered; written in natural name order).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingBank",
+    "property": "meta",
+    "pointer": "/$defs/DrawingBank/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingBank",
+    "property": "ext",
+    "pointer": "/$defs/DrawingBank/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingBank",
+    "property": "path",
+    "pointer": "/$defs/DrawingBank/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingBank",
+    "property": "elementIds",
+    "pointer": "/$defs/DrawingBank/properties/elementIds",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Id"
+      },
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "id",
+    "pointer": "/$defs/DrawingNode/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "ID, unique within the drawing (ID-03).",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "type",
+    "pointer": "/$defs/DrawingNode/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "drawingNode",
+      "readOnly": true,
+      "description": "Always `drawingNode`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "rev",
+    "pointer": "/$defs/DrawingNode/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "name",
+    "pointer": "/$defs/DrawingNode/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\s]|[^\\u0000-\\u001F\\u007F\\s][^\\u0000-\\u001F\\u007F]*[^\\u0000-\\u001F\\u007F\\s])$",
+      "description": "Optional name.",
+      "x-omitDefault": true,
+      "minLength": 1,
+      "maxLength": 255,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "kind",
+    "pointer": "/$defs/DrawingNode/properties/kind",
+    "schema": {
+      "$ref": "#/$defs/NodeKind",
+      "description": "Layer, group, text or bitmap; read-only.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "hint",
+    "pointer": "/$defs/DrawingNode/properties/hint",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Layer: type hint.",
+      "$ref": "#/$defs/LayerHint",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "strokes",
+    "pointer": "/$defs/DrawingNode/properties/strokes",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Stroke"
+      },
+      "description": "Layer: strokes.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "children",
+    "pointer": "/$defs/DrawingNode/properties/children",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DrawingNode"
+      },
+      "description": "Group: child nodes, back to front.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "transform",
+    "pointer": "/$defs/DrawingNode/properties/transform",
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 6,
+      "maxItems": 6,
+      "description": "Text and bitmap: placement in drawing space.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "widthMode",
+    "pointer": "/$defs/DrawingNode/properties/widthMode",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Text: auto or fixed width.",
+      "$ref": "#/$defs/WidthMode",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "width",
+    "pointer": "/$defs/DrawingNode/properties/width",
+    "schema": {
+      "type": "number",
+      "x-kindSpecific": true,
+      "description": "Text: wrap width in du (fixed mode); bitmap: pixel width 1–16384.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "height",
+    "pointer": "/$defs/DrawingNode/properties/height",
+    "schema": {
+      "type": "number",
+      "x-kindSpecific": true,
+      "description": "Bitmap: pixel height 1–16384.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "text",
+    "pointer": "/$defs/DrawingNode/properties/text",
+    "schema": {
+      "type": "string",
+      "description": "Text: the characters (≤ 100 000).",
+      "maxLength": 100000,
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "runs",
+    "pointer": "/$defs/DrawingNode/properties/runs",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/TextRun"
+      },
+      "description": "Text: character runs covering the text.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "paragraphs",
+    "pointer": "/$defs/DrawingNode/properties/paragraphs",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Paragraph"
+      },
+      "description": "Text: paragraphs.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "image",
+    "pointer": "/$defs/DrawingNode/properties/image",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Bitmap: PNG pixels (8-bit RGBA, straight alpha).",
+      "$ref": "#/$defs/Blob",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "meta",
+    "pointer": "/$defs/DrawingNode/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "ext",
+    "pointer": "/$defs/DrawingNode/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DrawingNode",
+    "property": "path",
+    "pointer": "/$defs/DrawingNode/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DropShadowParams",
+    "property": "parentColourTransformMode",
+    "pointer": "/$defs/DropShadowParams/properties/parentColourTransformMode",
+    "schema": {
+      "$ref": "#/$defs/ParentColourTransformMode",
+      "description": "How a parent Colour Transform applies.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DropShadowParams",
+    "property": "colour",
+    "pointer": "/$defs/DropShadowParams/properties/colour",
+    "schema": {
+      "$ref": "#/$defs/Colour",
+      "description": "Shadow colour (alpha ignored).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DropShadowParams",
+    "property": "opacity",
+    "pointer": "/$defs/DropShadowParams/properties/opacity",
+    "schema": {
+      "type": "integer",
+      "x-unit": "percent",
+      "minimum": 0,
+      "description": "Opacity percent 0–100.",
+      "maximum": 100,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DropShadowParams",
+    "property": "hideElements",
+    "pointer": "/$defs/DropShadowParams/properties/hideElements",
+    "schema": {
+      "type": "boolean",
+      "description": "Draw only the shadow.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DropShadowParams",
+    "property": "transform",
+    "pointer": "/$defs/DropShadowParams/properties/transform",
+    "schema": {
+      "$ref": "#/$defs/AxesTransform",
+      "description": "Shadow transform in effect-local space.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "DynamicParam",
+    "property": "value",
+    "pointer": "/$defs/DynamicParam/anyOf/0/properties/value",
+    "schema": {
+      "type": "number",
+      "description": "The value."
+    },
+    "kind": "anonymous variant declaration"
+  },
+  {
+    "definition": "DynamicParam",
+    "property": "keyframes",
+    "pointer": "/$defs/DynamicParam/anyOf/1/properties/keyframes",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FrameValue"
+      },
+      "description": "Keyframes sorted by frame, at least one.",
+      "minItems": 1
+    },
+    "kind": "anonymous variant declaration"
+  },
+  {
+    "definition": "Element",
+    "property": "id",
+    "pointer": "/$defs/Element/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "type",
+    "pointer": "/$defs/Element/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "element",
+      "readOnly": true,
+      "description": "Always `element`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "rev",
+    "pointer": "/$defs/Element/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "name",
+    "pointer": "/$defs/Element/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s])$",
+      "description": "Unique in the scene.",
+      "x-command": "element.rename",
+      "minLength": 1,
+      "maxLength": 64,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "elementType",
+    "pointer": "/$defs/Element/properties/elementType",
+    "schema": {
+      "$ref": "#/$defs/ElementType",
+      "description": "Element type; read-only except through conversion commands.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "start",
+    "pointer": "/$defs/Element/properties/start",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Non-cell elements: first frame of the bar (persisted). Cell-based elements: derived from the exposure (query results only).",
+      "x-unit": "frame",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "duration",
+    "pointer": "/$defs/Element/properties/duration",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 0,
+      "description": "Non-cell elements: length of the bar (absent for cell-based elements: derived).",
+      "x-unit": "frame",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "loops",
+    "pointer": "/$defs/Element/properties/loops",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Loop count ≥ 1; 1 = not looped.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "loopType",
+    "pointer": "/$defs/Element/properties/loopType",
+    "schema": {
+      "$ref": "#/$defs/LoopType",
+      "description": "Count or fill.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "positionLoop",
+    "pointer": "/$defs/Element/properties/positionLoop",
+    "schema": {
+      "$ref": "#/$defs/PositionLoop",
+      "description": "Cycle or offset.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "role",
+    "pointer": "/$defs/Element/properties/role",
+    "schema": {
+      "$ref": "#/$defs/Role",
+      "description": "Composite role.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "deformable",
+    "pointer": "/$defs/Element/properties/deformable",
+    "schema": {
+      "type": "boolean",
+      "description": "Deformable by a skeleton.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "visibleInScene",
+    "pointer": "/$defs/Element/properties/visibleInScene",
+    "schema": {
+      "type": "boolean",
+      "description": "Shown in scene views, playback and export.",
+      "x-command": "element.visibility.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "visibleInXsheet",
+    "pointer": "/$defs/Element/properties/visibleInXsheet",
+    "schema": {
+      "type": "boolean",
+      "description": "Cell-based elements: shown in the Exposure Sheet and Drawing View.",
+      "x-command": "element.visibility.set",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "locked",
+    "pointer": "/$defs/Element/properties/locked",
+    "schema": {
+      "type": "boolean",
+      "description": "Locked in scene views.",
+      "x-command": "element.lock.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "collapsed",
+    "pointer": "/$defs/Element/properties/collapsed",
+    "schema": {
+      "type": "boolean",
+      "description": "Timeline display state of parents.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "markerColour",
+    "pointer": "/$defs/Element/properties/markerColour",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Colour"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Marker colour; `null` = category default.",
+      "x-command": "element.colour.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "backgroundColour",
+    "pointer": "/$defs/Element/properties/backgroundColour",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Colour"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Background colour; `null` = category default.",
+      "x-command": "element.colour.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "note",
+    "pointer": "/$defs/Element/properties/note",
+    "schema": {
+      "type": "string",
+      "description": "Element note (≤ 10 000 characters).",
+      "maxLength": 10000,
+      "x-omitDefault": true,
+      "x-command": "element.note.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "columnWidth",
+    "pointer": "/$defs/Element/properties/columnWidth",
+    "schema": {
+      "type": "integer",
+      "x-unit": "pixel",
+      "minimum": 20,
+      "description": "Exposure Sheet column width, 20–1000 view pixels.",
+      "maximum": 1000,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "drawingBankId",
+    "pointer": "/$defs/Element/properties/drawingBankId",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Cell-based: the drawing bank (shared by clones).",
+      "x-ref": "drawingBank",
+      "readOnly": true,
+      "$ref": "#/$defs/Id",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "exposure",
+    "pointer": "/$defs/Element/properties/exposure",
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 1
+          }
+        ],
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "description": "Cell-based: canonical exposure runs from frame 1.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "cellNotes",
+    "pointer": "/$defs/Element/properties/cellNotes",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$": {
+          "type": "string",
+          "maxLength": 10000
+        }
+      },
+      "description": "Cell-based: notes by frame.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "importOptions",
+    "pointer": "/$defs/Element/properties/importOptions",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Image elements: import options (section 09; SI-008).",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "streamed",
+    "pointer": "/$defs/Element/properties/streamed",
+    "schema": {
+      "type": "boolean",
+      "description": "Sound: streamed playback.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "showMouthShapes",
+    "pointer": "/$defs/Element/properties/showMouthShapes",
+    "schema": {
+      "type": "boolean",
+      "description": "Sound: the Exposure Sheet shows mouths.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "placements",
+    "pointer": "/$defs/Element/properties/placements",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SoundPlacement"
+      },
+      "description": "Sound: placements sorted by `startFrame`, non-overlapping.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "lipSyncMappings",
+    "pointer": "/$defs/Element/properties/lipSyncMappings",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/LipSyncMapping"
+      },
+      "description": "Sound: one mapping per mapped drawing element.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "sequences",
+    "pointer": "/$defs/Element/properties/sequences",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/MediaSequence"
+      },
+      "description": "Media: sequences, non-overlapping.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "transform",
+    "pointer": "/$defs/Element/properties/transform",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Transformable elements: the static transform.",
+      "$ref": "#/$defs/Transform",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "exportGroup",
+    "pointer": "/$defs/Element/properties/exportGroup",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Pegs: export grouping.",
+      "$ref": "#/$defs/ExportGroup",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "camera",
+    "pointer": "/$defs/Element/properties/camera",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Cameras: FOV settings.",
+      "$ref": "#/$defs/CameraBlock",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "skeleton",
+    "pointer": "/$defs/Element/properties/skeleton",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Skeletons: display and deformation settings.",
+      "$ref": "#/$defs/SkeletonBlock",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "bone",
+    "pointer": "/$defs/Element/properties/bone",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Bones: rest pose and influence.",
+      "$ref": "#/$defs/BoneBlock",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "slot",
+    "pointer": "/$defs/Element/properties/slot",
+    "schema": {
+      "readOnly": true,
+      "description": "Effect parameter elements: the slot.",
+      "x-kindSpecific": true,
+      "$ref": "#/$defs/ParamSlot",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "params",
+    "pointer": "/$defs/Element/properties/params",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Effects: static parameter values (exact shape per `elementType`).",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "blocks",
+    "pointer": "/$defs/Element/properties/blocks",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ParticleBlock"
+      },
+      "description": "Particle effects: blocks, consecutive.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "channels",
+    "pointer": "/$defs/Element/properties/channels",
+    "schema": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/Channel"
+      },
+      "description": "Animated channels by channel id.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "createdAt",
+    "pointer": "/$defs/Element/properties/createdAt",
+    "schema": {
+      "$ref": "#/$defs/Timestamp",
+      "description": "Creation time.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "meta",
+    "pointer": "/$defs/Element/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "ext",
+    "pointer": "/$defs/Element/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "path",
+    "pointer": "/$defs/Element/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "parentId",
+    "pointer": "/$defs/Element/properties/parentId",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "childIds",
+    "pointer": "/$defs/Element/properties/childIds",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Id"
+      },
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "depth",
+    "pointer": "/$defs/Element/properties/depth",
+    "schema": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "timelineIndex",
+    "pointer": "/$defs/Element/properties/timelineIndex",
+    "schema": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "xsheetIndex",
+    "pointer": "/$defs/Element/properties/xsheetIndex",
+    "schema": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "cloneGroupId",
+    "pointer": "/$defs/Element/properties/cloneGroupId",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "cloneIds",
+    "pointer": "/$defs/Element/properties/cloneIds",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Id"
+      },
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "drawingCount",
+    "pointer": "/$defs/Element/properties/drawingCount",
+    "schema": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "hiddenByParent",
+    "pointer": "/$defs/Element/properties/hiddenByParent",
+    "schema": {
+      "type": "boolean",
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Element",
+    "property": "effectiveMarkerColour",
+    "pointer": "/$defs/Element/properties/effectiveMarkerColour",
+    "schema": {
+      "$ref": "#/$defs/Colour",
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "EnvelopePoint",
+    "property": "time",
+    "pointer": "/$defs/EnvelopePoint/properties/time",
+    "schema": {
+      "type": "number",
+      "x-unit": "second",
+      "description": "Time within the source (seconds).",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "EnvelopePoint",
+    "property": "left",
+    "pointer": "/$defs/EnvelopePoint/properties/left",
+    "schema": {
+      "type": "number",
+      "maximum": 1,
+      "description": "Left gain 0–1.",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "EnvelopePoint",
+    "property": "right",
+    "pointer": "/$defs/EnvelopePoint/properties/right",
+    "schema": {
+      "type": "number",
+      "maximum": 1,
+      "description": "Right gain 0–1.",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ExportGroup",
+    "property": "groupOnVectorExport",
+    "pointer": "/$defs/ExportGroup/properties/groupOnVectorExport",
+    "schema": {
+      "type": "boolean",
+      "description": "Group the subtree on vector export.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ExportGroup",
+    "property": "addComposite",
+    "pointer": "/$defs/ExportGroup/properties/addComposite",
+    "schema": {
+      "type": "boolean",
+      "description": "Add a composite for the export group.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "FrameRange",
+    "property": "from",
+    "pointer": "/$defs/FrameRange/properties/from",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "First frame (1-based).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "FrameRange",
+    "property": "to",
+    "pointer": "/$defs/FrameRange/properties/to",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Last frame (inclusive).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "FrameValue",
+    "property": "frame",
+    "pointer": "/$defs/FrameValue/properties/frame",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Absolute scene frame.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "FrameValue",
+    "property": "value",
+    "pointer": "/$defs/FrameValue/properties/value",
+    "schema": {
+      "type": "number",
+      "description": "Value.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "GradientStop",
+    "property": "position",
+    "pointer": "/$defs/GradientStop/properties/position",
+    "schema": {
+      "type": "number",
+      "maximum": 1,
+      "description": "Position along the gradient, 0–1.",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "GradientStop",
+    "property": "rgba",
+    "pointer": "/$defs/GradientStop/properties/rgba",
+    "schema": {
+      "$ref": "#/$defs/Colour",
+      "description": "Colour at the stop.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "GradientValue",
+    "property": "stops",
+    "pointer": "/$defs/GradientValue/properties/stops",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/GradientStop"
+      },
+      "description": "The stops.",
+      "minItems": 2,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "HandleOffset",
+    "property": "dt",
+    "pointer": "/$defs/HandleOffset/properties/dt",
+    "schema": {
+      "type": "number",
+      "x-unit": "frame",
+      "description": "Frame offset.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "HandleOffset",
+    "property": "dv",
+    "pointer": "/$defs/HandleOffset/properties/dv",
+    "schema": {
+      "type": "number",
+      "description": "Value offset.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Handles",
+    "property": "left",
+    "pointer": "/$defs/Handles/properties/left",
+    "schema": {
+      "$ref": "#/$defs/HandleOffset",
+      "description": "Left handle.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Handles",
+    "property": "right",
+    "pointer": "/$defs/Handles/properties/right",
+    "schema": {
+      "$ref": "#/$defs/HandleOffset",
+      "description": "Right handle.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Handles",
+    "property": "mode",
+    "pointer": "/$defs/Handles/properties/mode",
+    "schema": {
+      "$ref": "#/$defs/HandleMode",
+      "description": "Smooth or broken.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "id",
+    "pointer": "/$defs/Key/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "ID, unique within the channel (ID-03).",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "type",
+    "pointer": "/$defs/Key/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "key",
+      "readOnly": true,
+      "description": "Always `key`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "rev",
+    "pointer": "/$defs/Key/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "frame",
+    "pointer": "/$defs/Key/properties/frame",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Integer frame, unique in the channel.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "value",
+    "pointer": "/$defs/Key/properties/value",
+    "schema": {
+      "type": "number",
+      "description": "Value.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "constantSegment",
+    "pointer": "/$defs/Key/properties/constantSegment",
+    "schema": {
+      "type": "boolean",
+      "description": "The segment starting here holds the value.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "handles",
+    "pointer": "/$defs/Key/properties/handles",
+    "schema": {
+      "$ref": "#/$defs/Handles",
+      "description": "Spline handles.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "easing",
+    "pointer": "/$defs/Key/properties/easing",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Easing"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Easing preset of the segment starting here (interpolation curves).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "meta",
+    "pointer": "/$defs/Key/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "ext",
+    "pointer": "/$defs/Key/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Key",
+    "property": "path",
+    "pointer": "/$defs/Key/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "id",
+    "pointer": "/$defs/Library/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable, globally unique ID (08 LIB-002).",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "type",
+    "pointer": "/$defs/Library/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "library",
+      "readOnly": true,
+      "description": "Always `library`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "rev",
+    "pointer": "/$defs/Library/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "name",
+    "pointer": "/$defs/Library/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
+      "description": "Library name.",
+      "minLength": 1,
+      "maxLength": 128,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "kind",
+    "pointer": "/$defs/Library/properties/kind",
+    "schema": {
+      "$ref": "#/$defs/LibraryKind",
+      "description": "Local, global, opened or starter.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "formatVersion",
+    "pointer": "/$defs/Library/properties/formatVersion",
+    "schema": {
+      "type": "string",
+      "description": "Library format version (`MAJOR.MINOR`).",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "children",
+    "pointer": "/$defs/Library/properties/children",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/LibraryNode"
+      },
+      "description": "Top-level folders and items.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "meta",
+    "pointer": "/$defs/Library/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "ext",
+    "pointer": "/$defs/Library/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "path",
+    "pointer": "/$defs/Library/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "readOnly",
+    "pointer": "/$defs/Library/properties/readOnly",
+    "schema": {
+      "type": "boolean",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "writeAccessHeldBy",
+    "pointer": "/$defs/Library/properties/writeAccessHeldBy",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Library",
+    "property": "location",
+    "pointer": "/$defs/Library/properties/location",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryFolder",
+    "property": "id",
+    "pointer": "/$defs/LibraryFolder/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable, globally unique ID (08 LIB-002).",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryFolder",
+    "property": "type",
+    "pointer": "/$defs/LibraryFolder/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "libraryFolder",
+      "readOnly": true,
+      "description": "Always `libraryFolder`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryFolder",
+    "property": "rev",
+    "pointer": "/$defs/LibraryFolder/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryFolder",
+    "property": "name",
+    "pointer": "/$defs/LibraryFolder/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
+      "description": "Unique among siblings (case-insensitive).",
+      "x-command": "library.folder.rename",
+      "minLength": 1,
+      "maxLength": 128,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryFolder",
+    "property": "children",
+    "pointer": "/$defs/LibraryFolder/properties/children",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/LibraryNode"
+      },
+      "description": "Sub-folders and items.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryFolder",
+    "property": "meta",
+    "pointer": "/$defs/LibraryFolder/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryFolder",
+    "property": "ext",
+    "pointer": "/$defs/LibraryFolder/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryFolder",
+    "property": "path",
+    "pointer": "/$defs/LibraryFolder/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "id",
+    "pointer": "/$defs/LibraryItem/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable, globally unique ID (08 LIB-002).",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "type",
+    "pointer": "/$defs/LibraryItem/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "libraryItem",
+      "readOnly": true,
+      "description": "Always `libraryItem`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "rev",
+    "pointer": "/$defs/LibraryItem/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "name",
+    "pointer": "/$defs/LibraryItem/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
+      "description": "Display name, unique among siblings (case-insensitive).",
+      "x-command": "library.item.rename",
+      "minLength": 1,
+      "maxLength": 128,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "itemKind",
+    "pointer": "/$defs/LibraryItem/properties/itemKind",
+    "schema": {
+      "$ref": "#/$defs/ItemKind",
+      "description": "Template, image, movie or sound.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "file",
+    "pointer": "/$defs/LibraryItem/properties/file",
+    "schema": {
+      "type": "string",
+      "description": "Stored file name relative to the library's `files/` folder.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "thumbnail",
+    "pointer": "/$defs/LibraryItem/properties/thumbnail",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Blob"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Thumbnail, if any.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "versionId",
+    "pointer": "/$defs/LibraryItem/properties/versionId",
+    "schema": {
+      "type": "string",
+      "description": "Templates: version ID, changed whenever the content changes (08 LIB-007).",
+      "x-kindSpecific": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "artist",
+    "pointer": "/$defs/LibraryItem/properties/artist",
+    "schema": {
+      "type": "string",
+      "description": "Templates: artist (08 LIB-010).",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "copyright",
+    "pointer": "/$defs/LibraryItem/properties/copyright",
+    "schema": {
+      "type": "string",
+      "description": "Templates: copyright.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "createdAt",
+    "pointer": "/$defs/LibraryItem/properties/createdAt",
+    "schema": {
+      "readOnly": true,
+      "description": "Templates: creation time.",
+      "x-kindSpecific": true,
+      "$ref": "#/$defs/Timestamp",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "modifiedAt",
+    "pointer": "/$defs/LibraryItem/properties/modifiedAt",
+    "schema": {
+      "readOnly": true,
+      "description": "Templates: modification time.",
+      "x-kindSpecific": true,
+      "$ref": "#/$defs/Timestamp",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "sizeBytes",
+    "pointer": "/$defs/LibraryItem/properties/sizeBytes",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Templates: size in bytes.",
+      "x-kindSpecific": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "formatVersion",
+    "pointer": "/$defs/LibraryItem/properties/formatVersion",
+    "schema": {
+      "type": "string",
+      "description": "Templates: template format version.",
+      "x-kindSpecific": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "source",
+    "pointer": "/$defs/LibraryItem/properties/source",
+    "schema": {
+      "type": "string",
+      "description": "Templates: source path or link (optional).",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "summary",
+    "pointer": "/$defs/LibraryItem/properties/summary",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/TemplateSummaryNode"
+      },
+      "description": "Templates: element-tree summary.",
+      "x-kindSpecific": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "meta",
+    "pointer": "/$defs/LibraryItem/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "ext",
+    "pointer": "/$defs/LibraryItem/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "path",
+    "pointer": "/$defs/LibraryItem/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LibraryItem",
+    "property": "broken",
+    "pointer": "/$defs/LibraryItem/properties/broken",
+    "schema": {
+      "type": "boolean",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LineStyle",
+    "property": "thickness",
+    "pointer": "/$defs/LineStyle/properties/thickness",
+    "schema": {
+      "type": "number",
+      "x-unit": "du",
+      "description": "Thickness in drawing units.",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LineStyle",
+    "property": "lineType",
+    "pointer": "/$defs/LineStyle/properties/lineType",
+    "schema": {
+      "$ref": "#/$defs/LineType",
+      "description": "Line type.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LipSyncMapping",
+    "property": "drawingElementId",
+    "pointer": "/$defs/LipSyncMapping/properties/drawingElementId",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "The mapped drawing element.",
+      "x-ref": "element",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LipSyncMapping",
+    "property": "mapping",
+    "pointer": "/$defs/LipSyncMapping/properties/mapping",
+    "schema": {
+      "$ref": "#/$defs/MouthMapping",
+      "description": "Shape → drawing.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "LipSyncMapping",
+    "property": "autoReapply",
+    "pointer": "/$defs/LipSyncMapping/properties/autoReapply",
+    "schema": {
+      "type": "boolean",
+      "description": "Re-apply automatically when the track changes.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "id",
+    "pointer": "/$defs/MediaSequence/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "type",
+    "pointer": "/$defs/MediaSequence/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "mediaSequence",
+      "readOnly": true,
+      "description": "Always `mediaSequence`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "rev",
+    "pointer": "/$defs/MediaSequence/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "assetId",
+    "pointer": "/$defs/MediaSequence/properties/assetId",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "A `linked` asset.",
+      "x-ref": "asset",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "startFrame",
+    "pointer": "/$defs/MediaSequence/properties/startFrame",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "First frame.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "stopFrame",
+    "pointer": "/$defs/MediaSequence/properties/stopFrame",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Last frame.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "linkOffset",
+    "pointer": "/$defs/MediaSequence/properties/linkOffset",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Frame of the source shown at `startFrame`, ≥ 1.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "meta",
+    "pointer": "/$defs/MediaSequence/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "ext",
+    "pointer": "/$defs/MediaSequence/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "path",
+    "pointer": "/$defs/MediaSequence/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "sourceLength",
+    "pointer": "/$defs/MediaSequence/properties/sourceLength",
+    "schema": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MediaSequence",
+    "property": "missing",
+    "pointer": "/$defs/MediaSequence/properties/missing",
+    "schema": {
+      "type": "boolean",
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "id",
+    "pointer": "/$defs/MotionPoint/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "ID, unique within the channel (ID-03).",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "type",
+    "pointer": "/$defs/MotionPoint/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "motionPoint",
+      "readOnly": true,
+      "description": "Always `motionPoint`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "rev",
+    "pointer": "/$defs/MotionPoint/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "frame",
+    "pointer": "/$defs/MotionPoint/properties/frame",
+    "schema": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Keyframe frame (integer, unique); `null` = control point.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "position",
+    "pointer": "/$defs/MotionPoint/properties/position",
+    "schema": {
+      "$ref": "#/$defs/Point3",
+      "description": "Position in parent space (fields).",
+      "x-unit": "field",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "tension",
+    "pointer": "/$defs/MotionPoint/properties/tension",
+    "schema": {
+      "type": "number",
+      "maximum": 1,
+      "description": "TCB tension, −1…1.",
+      "minimum": -1,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "continuity",
+    "pointer": "/$defs/MotionPoint/properties/continuity",
+    "schema": {
+      "type": "number",
+      "maximum": 1,
+      "description": "TCB continuity, −1…1.",
+      "minimum": -1,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "bias",
+    "pointer": "/$defs/MotionPoint/properties/bias",
+    "schema": {
+      "type": "number",
+      "maximum": 1,
+      "description": "TCB bias, −1…1.",
+      "minimum": -1,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "constantSegment",
+    "pointer": "/$defs/MotionPoint/properties/constantSegment",
+    "schema": {
+      "type": "boolean",
+      "description": "The segment starting at this keyframe holds the position.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "lockDepth",
+    "pointer": "/$defs/MotionPoint/properties/lockDepth",
+    "schema": {
+      "type": "boolean",
+      "description": "Constant Z for the segment starting here (05 §9.3).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "meta",
+    "pointer": "/$defs/MotionPoint/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "ext",
+    "pointer": "/$defs/MotionPoint/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MotionPoint",
+    "property": "path",
+    "pointer": "/$defs/MotionPoint/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthMapping",
+    "property": "A",
+    "pointer": "/$defs/MouthMapping/properties/A",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Drawing for A.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthMapping",
+    "property": "B",
+    "pointer": "/$defs/MouthMapping/properties/B",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Drawing for B.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthMapping",
+    "property": "C",
+    "pointer": "/$defs/MouthMapping/properties/C",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Drawing for C.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthMapping",
+    "property": "D",
+    "pointer": "/$defs/MouthMapping/properties/D",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Drawing for D.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthMapping",
+    "property": "E",
+    "pointer": "/$defs/MouthMapping/properties/E",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Drawing for E.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthMapping",
+    "property": "F",
+    "pointer": "/$defs/MouthMapping/properties/F",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Drawing for F.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthMapping",
+    "property": "G",
+    "pointer": "/$defs/MouthMapping/properties/G",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Drawing for G.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthMapping",
+    "property": "X",
+    "pointer": "/$defs/MouthMapping/properties/X",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Drawing for X.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthTrack",
+    "property": "mouths",
+    "pointer": "/$defs/MouthTrack/properties/mouths",
+    "schema": {
+      "type": "string",
+      "description": "One letter (`A`–`G`, `X`) per frame of the placement.",
+      "pattern": "^[A-GX]*$",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthTrack",
+    "property": "manual",
+    "pointer": "/$defs/MouthTrack/properties/manual",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FrameRange"
+      },
+      "description": "Placement-relative frame ranges set by hand or explicitly.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthTrack",
+    "property": "labels",
+    "pointer": "/$defs/MouthTrack/properties/labels",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$": {
+          "type": "string"
+        }
+      },
+      "description": "Optional display labels, keyed by placement-relative frame.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthTrack",
+    "property": "source",
+    "pointer": "/$defs/MouthTrack/properties/source",
+    "schema": {
+      "$ref": "#/$defs/MouthTrackSource",
+      "description": "How the track was produced.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthTrack",
+    "property": "producedFor",
+    "pointer": "/$defs/MouthTrack/properties/producedFor",
+    "schema": {
+      "$ref": "#/$defs/ProducedFor",
+      "description": "Timing snapshot.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "MouthTrack",
+    "property": "stale",
+    "pointer": "/$defs/MouthTrack/properties/stale",
+    "schema": {
+      "type": "boolean",
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Palette",
+    "property": "id",
+    "pointer": "/$defs/Palette/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Palette",
+    "property": "type",
+    "pointer": "/$defs/Palette/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "palette",
+      "readOnly": true,
+      "description": "Always `palette`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Palette",
+    "property": "rev",
+    "pointer": "/$defs/Palette/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Palette",
+    "property": "name",
+    "pointer": "/$defs/Palette/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
+      "description": "Unique in the project.",
+      "x-command": "colour.palette.rename",
+      "minLength": 1,
+      "maxLength": 128,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Palette",
+    "property": "styles",
+    "pointer": "/$defs/Palette/properties/styles",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PaletteStyle"
+      },
+      "description": "Styles in order; at least one.",
+      "minItems": 1,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Palette",
+    "property": "swatches",
+    "pointer": "/$defs/Palette/properties/swatches",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Swatch"
+      },
+      "description": "Swatches in user order; may be empty.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Palette",
+    "property": "hidden",
+    "pointer": "/$defs/Palette/properties/hidden",
+    "schema": {
+      "type": "boolean",
+      "description": "Internal palette never shown to the user (03 §1.2; SI-005).",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Palette",
+    "property": "meta",
+    "pointer": "/$defs/Palette/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Palette",
+    "property": "ext",
+    "pointer": "/$defs/Palette/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Palette",
+    "property": "path",
+    "pointer": "/$defs/Palette/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "PaletteStyle",
+    "property": "id",
+    "pointer": "/$defs/PaletteStyle/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "PaletteStyle",
+    "property": "type",
+    "pointer": "/$defs/PaletteStyle/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "paletteStyle",
+      "readOnly": true,
+      "description": "Always `paletteStyle`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "PaletteStyle",
+    "property": "rev",
+    "pointer": "/$defs/PaletteStyle/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "PaletteStyle",
+    "property": "name",
+    "pointer": "/$defs/PaletteStyle/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
+      "description": "Unique in the palette.",
+      "x-command": "colour.style.rename",
+      "minLength": 1,
+      "maxLength": 128,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "PaletteStyle",
+    "property": "meta",
+    "pointer": "/$defs/PaletteStyle/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "PaletteStyle",
+    "property": "ext",
+    "pointer": "/$defs/PaletteStyle/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "PaletteStyle",
+    "property": "path",
+    "pointer": "/$defs/PaletteStyle/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Paragraph",
+    "property": "start",
+    "pointer": "/$defs/Paragraph/properties/start",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 0,
+      "description": "First code point.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Paragraph",
+    "property": "length",
+    "pointer": "/$defs/Paragraph/properties/length",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 0,
+      "description": "Number of code points.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Paragraph",
+    "property": "alignment",
+    "pointer": "/$defs/Paragraph/properties/alignment",
+    "schema": {
+      "$ref": "#/$defs/Alignment",
+      "description": "Alignment.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Paragraph",
+    "property": "marginLeft",
+    "pointer": "/$defs/Paragraph/properties/marginLeft",
+    "schema": {
+      "type": "number",
+      "x-unit": "du",
+      "description": "Left margin (du).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Paragraph",
+    "property": "marginRight",
+    "pointer": "/$defs/Paragraph/properties/marginRight",
+    "schema": {
+      "type": "number",
+      "x-unit": "du",
+      "description": "Right margin (du).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Paragraph",
+    "property": "indent",
+    "pointer": "/$defs/Paragraph/properties/indent",
+    "schema": {
+      "type": "number",
+      "x-unit": "du",
+      "description": "First-line indent (du).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Paragraph",
+    "property": "lineSpacing",
+    "pointer": "/$defs/Paragraph/properties/lineSpacing",
+    "schema": {
+      "type": "number",
+      "description": "Line spacing factor.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "id",
+    "pointer": "/$defs/ParticleBlock/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "type",
+    "pointer": "/$defs/ParticleBlock/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "particleBlock",
+      "readOnly": true,
+      "description": "Always `particleBlock`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "rev",
+    "pointer": "/$defs/ParticleBlock/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "particleType",
+    "pointer": "/$defs/ParticleBlock/properties/particleType",
+    "schema": {
+      "$ref": "#/$defs/ParticleType",
+      "description": "Particle type (06 Block `type`; SI-004).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "variant",
+    "pointer": "/$defs/ParticleBlock/properties/variant",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Sub-behaviour; `null` = type default.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "presetId",
+    "pointer": "/$defs/ParticleBlock/properties/presetId",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Last applied preset (informational).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "seed",
+    "pointer": "/$defs/ParticleBlock/properties/seed",
+    "schema": {
+      "type": "integer",
+      "maximum": 4294967295,
+      "minimum": 0,
+      "description": "Seed of all random choices, 0–2³²−1 (06 §3.8.3, §4.6: a full unsigned 32-bit range, stated explicitly).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "spriteSetId",
+    "pointer": "/$defs/ParticleBlock/properties/spriteSetId",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Built-in sprite set.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "static",
+    "pointer": "/$defs/ParticleBlock/properties/static",
+    "schema": {
+      "$ref": "#/$defs/BlockStatic",
+      "description": "Static parameters.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "dynamic",
+    "pointer": "/$defs/ParticleBlock/properties/dynamic",
+    "schema": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/DynamicParam"
+      },
+      "description": "Dynamic parameters by id (exactly the ids of 06 §3.8.4).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "meta",
+    "pointer": "/$defs/ParticleBlock/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "ext",
+    "pointer": "/$defs/ParticleBlock/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "path",
+    "pointer": "/$defs/ParticleBlock/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ParticleBlock",
+    "property": "index",
+    "pointer": "/$defs/ParticleBlock/properties/index",
+    "schema": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "id",
+    "pointer": "/$defs/Pen/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "type",
+    "pointer": "/$defs/Pen/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "pen",
+      "readOnly": true,
+      "description": "Always `pen`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "rev",
+    "pointer": "/$defs/Pen/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change (10 REV-02).",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "name",
+    "pointer": "/$defs/Pen/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
+      "description": "Unique in the project; default `Pen <n>`.",
+      "x-command": "tool.pen.rename",
+      "minLength": 1,
+      "maxLength": 64,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "kind",
+    "pointer": "/$defs/Pen/properties/kind",
+    "schema": {
+      "$ref": "#/$defs/PenKind",
+      "description": "Brush or eraser pen (02 §6.1; SI-004).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "minSize",
+    "pointer": "/$defs/Pen/properties/minSize",
+    "schema": {
+      "type": "number",
+      "x-unit": "du",
+      "description": "Width at lowest pressure, 0–100 du; `minSize ≤ maxSize`.",
+      "minimum": 0,
+      "maximum": 100,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "maxSize",
+    "pointer": "/$defs/Pen/properties/maxSize",
+    "schema": {
+      "type": "number",
+      "x-unit": "du",
+      "description": "Width at full pressure, 0–100 du.",
+      "minimum": 0,
+      "maximum": 100,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "smoothness",
+    "pointer": "/$defs/Pen/properties/smoothness",
+    "schema": {
+      "type": "integer",
+      "description": "Curve-fitting tolerance and pressure smoothing, 0–10 (10 §4.2: int).",
+      "minimum": 0,
+      "maximum": 10,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "tip",
+    "pointer": "/$defs/Pen/properties/tip",
+    "schema": {
+      "$ref": "#/$defs/Tip",
+      "description": "Tip shape.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "tipAngle",
+    "pointer": "/$defs/Pen/properties/tipAngle",
+    "schema": {
+      "type": "number",
+      "x-unit": "degree",
+      "description": "Orientation of non-round tips, 0–360 degrees (02 §6.1; SI-004).",
+      "minimum": 0,
+      "maximum": 360,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "colourId",
+    "pointer": "/$defs/Pen/properties/colourId",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Colour bound to the pen; `null` = use the current colour.",
+      "x-ref": "swatch",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "meta",
+    "pointer": "/$defs/Pen/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "ext",
+    "pointer": "/$defs/Pen/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Pen",
+    "property": "path",
+    "pointer": "/$defs/Pen/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Point2",
+    "property": "x",
+    "pointer": "/$defs/Point2/properties/x",
+    "schema": {
+      "type": "number",
+      "description": "X coordinate.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Point2",
+    "property": "y",
+    "pointer": "/$defs/Point2/properties/y",
+    "schema": {
+      "type": "number",
+      "description": "Y coordinate.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Point3",
+    "property": "x",
+    "pointer": "/$defs/Point3/properties/x",
+    "schema": {
+      "type": "number",
+      "description": "X coordinate.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Point3",
+    "property": "y",
+    "pointer": "/$defs/Point3/properties/y",
+    "schema": {
+      "type": "number",
+      "description": "Y coordinate.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Point3",
+    "property": "z",
+    "pointer": "/$defs/Point3/properties/z",
+    "schema": {
+      "type": "number",
+      "description": "Z coordinate.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ProducedFor",
+    "property": "assetId",
+    "pointer": "/$defs/ProducedFor/properties/assetId",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Asset.",
+      "x-ref": "asset",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ProducedFor",
+    "property": "inPoint",
+    "pointer": "/$defs/ProducedFor/properties/inPoint",
+    "schema": {
+      "type": "number",
+      "x-unit": "second",
+      "description": "In-point (seconds).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ProducedFor",
+    "property": "outPoint",
+    "pointer": "/$defs/ProducedFor/properties/outPoint",
+    "schema": {
+      "type": "number",
+      "x-unit": "second",
+      "description": "Out-point (seconds).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ProducedFor",
+    "property": "loops",
+    "pointer": "/$defs/ProducedFor/properties/loops",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 0,
+      "description": "Loop count.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ProducedFor",
+    "property": "stopFrame",
+    "pointer": "/$defs/ProducedFor/properties/stopFrame",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 0,
+      "description": "Stop frame.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ProducedFor",
+    "property": "frameRate",
+    "pointer": "/$defs/ProducedFor/properties/frameRate",
+    "schema": {
+      "type": "number",
+      "description": "Project frame rate.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "id",
+    "pointer": "/$defs/Project/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "type",
+    "pointer": "/$defs/Project/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "project",
+      "readOnly": true,
+      "description": "Always `project`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "rev",
+    "pointer": "/$defs/Project/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "name",
+    "pointer": "/$defs/Project/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s.])$",
+      "description": "Project name; default `Untitled`; also the default package file stem.",
+      "minLength": 1,
+      "maxLength": 100,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "createdAt",
+    "pointer": "/$defs/Project/properties/createdAt",
+    "schema": {
+      "$ref": "#/$defs/Timestamp",
+      "description": "Creation time.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "modifiedAt",
+    "pointer": "/$defs/Project/properties/modifiedAt",
+    "schema": {
+      "$ref": "#/$defs/Timestamp",
+      "description": "Set by each save.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "frameRate",
+    "pointer": "/$defs/Project/properties/frameRate",
+    "schema": {
+      "type": "number",
+      "x-command": "project.properties.set",
+      "description": "Frames per second, 1–120; NTSC rates are exact as written.",
+      "minimum": 1,
+      "maximum": 120,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "cameraWidth",
+    "pointer": "/$defs/Project/properties/cameraWidth",
+    "schema": {
+      "type": "integer",
+      "x-command": "project.properties.set",
+      "minimum": 16,
+      "description": "Camera (output) width, 16–8192 pixels.",
+      "maximum": 8192,
+      "x-unit": "pixel",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "cameraHeight",
+    "pointer": "/$defs/Project/properties/cameraHeight",
+    "schema": {
+      "type": "integer",
+      "x-command": "project.properties.set",
+      "minimum": 16,
+      "description": "Camera (output) height, 16–8192 pixels.",
+      "maximum": 8192,
+      "x-unit": "pixel",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "autoColourUpdate",
+    "pointer": "/$defs/Project/properties/autoColourUpdate",
+    "schema": {
+      "type": "boolean",
+      "description": "Whether template swatch values overwrite project values with the same colour IDs (03 §1.2; SI-005).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "startTransition",
+    "pointer": "/$defs/Project/properties/startTransition",
+    "schema": {
+      "$ref": "#/$defs/Transition",
+      "description": "Edit point before the first scene.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "palettes",
+    "pointer": "/$defs/Project/properties/palettes",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Palette"
+      },
+      "x-childList": "palette",
+      "description": "Palettes in display order; at least one.",
+      "minItems": 1,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "pens",
+    "pointer": "/$defs/Project/properties/pens",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Pen"
+      },
+      "description": "Pens; at least one.",
+      "minItems": 1,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "assets",
+    "pointer": "/$defs/Project/properties/assets",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Asset"
+      },
+      "description": "Media assets.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "drawingBanks",
+    "pointer": "/$defs/Project/properties/drawingBanks",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DrawingBank"
+      },
+      "x-childList": "drawingBank",
+      "description": "Drawing banks (unordered; written in ID order).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "scenes",
+    "pointer": "/$defs/Project/properties/scenes",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Scene"
+      },
+      "x-childList": "scene",
+      "description": "Scenes in storyline order; at least one.",
+      "minItems": 1,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "library",
+    "pointer": "/$defs/Project/properties/library",
+    "schema": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Library"
+        }
+      ],
+      "x-childRef": "library",
+      "description": "The project-local library.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "meta",
+    "pointer": "/$defs/Project/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "ext",
+    "pointer": "/$defs/Project/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "path",
+    "pointer": "/$defs/Project/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "sceneStartFrames",
+    "pointer": "/$defs/Project/properties/sceneStartFrames",
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 2147483647
+      },
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "globalLength",
+    "pointer": "/$defs/Project/properties/globalLength",
+    "schema": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Project",
+    "property": "thumbnail",
+    "pointer": "/$defs/Project/properties/thumbnail",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Blob"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "RecoveryStyle",
+    "property": "styleId",
+    "pointer": "/$defs/RecoveryStyle/properties/styleId",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Style ID.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "RecoveryStyle",
+    "property": "styleName",
+    "pointer": "/$defs/RecoveryStyle/properties/styleName",
+    "schema": {
+      "type": "string",
+      "description": "Style name.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scale2",
+    "property": "x",
+    "pointer": "/$defs/Scale2/properties/x",
+    "schema": {
+      "type": "number",
+      "not": {
+        "exclusiveMinimum": -0.001,
+        "exclusiveMaximum": 0.001
+      },
+      "description": "Horizontal factor.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scale2",
+    "property": "y",
+    "pointer": "/$defs/Scale2/properties/y",
+    "schema": {
+      "type": "number",
+      "not": {
+        "exclusiveMinimum": -0.001,
+        "exclusiveMaximum": 0.001
+      },
+      "description": "Vertical factor.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "id",
+    "pointer": "/$defs/Scene/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "type",
+    "pointer": "/$defs/Scene/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "scene",
+      "readOnly": true,
+      "description": "Always `scene`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "rev",
+    "pointer": "/$defs/Scene/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "name",
+    "pointer": "/$defs/Scene/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
+      "description": "Unique in the project; default `Scene-<n>`.",
+      "x-command": "storyline.scene.rename",
+      "minLength": 1,
+      "maxLength": 128,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "visible",
+    "pointer": "/$defs/Scene/properties/visible",
+    "schema": {
+      "type": "boolean",
+      "description": "Hidden scenes are skipped by storyline playback and export.",
+      "x-command": "storyline.scene.visible.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "backgroundColour",
+    "pointer": "/$defs/Scene/properties/backgroundColour",
+    "schema": {
+      "$ref": "#/$defs/Colour",
+      "description": "Background colour (default `#FFFFFFFF`).",
+      "x-command": "storyline.scene.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "currentCameraId",
+    "pointer": "/$defs/Scene/properties/currentCameraId",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The current camera; must be a camera of this scene when it has one.",
+      "x-ref": "element",
+      "x-command": "anim.camera.current.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "paletteStyles",
+    "pointer": "/$defs/Scene/properties/paletteStyles",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[A-Za-z0-9_-]{1,64}$": {
+          "$ref": "#/$defs/Id"
+        }
+      },
+      "description": "Active style per palette: exactly one entry per palette, in palette order.",
+      "x-command": "colour.style.select",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "outTransition",
+    "pointer": "/$defs/Scene/properties/outTransition",
+    "schema": {
+      "$ref": "#/$defs/Transition",
+      "description": "Edit point after this scene.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "tree",
+    "pointer": "/$defs/Scene/properties/tree",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/TreeNode"
+      },
+      "description": "Timeline order and hierarchy; every element exactly once.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "columnOrder",
+    "pointer": "/$defs/Scene/properties/columnOrder",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Id"
+      },
+      "description": "Exposure Sheet order of the cell-based elements, back to front.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "elements",
+    "pointer": "/$defs/Scene/properties/elements",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Element"
+      },
+      "x-childList": "element",
+      "description": "The elements (unordered; written in ID order).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "meta",
+    "pointer": "/$defs/Scene/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "ext",
+    "pointer": "/$defs/Scene/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "path",
+    "pointer": "/$defs/Scene/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "length",
+    "pointer": "/$defs/Scene/properties/length",
+    "schema": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000,
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Scene",
+    "property": "paddedLength",
+    "pointer": "/$defs/Scene/properties/paddedLength",
+    "schema": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ShakeParams",
+    "property": "axis",
+    "pointer": "/$defs/ShakeParams/properties/axis",
+    "schema": {
+      "$ref": "#/$defs/ShakeAxis",
+      "description": "Displacement axes (static).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ShakeParams",
+    "property": "waveTime",
+    "pointer": "/$defs/ShakeParams/properties/waveTime",
+    "schema": {
+      "type": "integer",
+      "x-unit": "frame",
+      "minimum": 1,
+      "description": "Oscillation period 1–999 frames (static).",
+      "maximum": 999,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ShakeParams",
+    "property": "decayHalfLifeFrames",
+    "pointer": "/$defs/ShakeParams/properties/decayHalfLifeFrames",
+    "schema": {
+      "type": "number",
+      "x-unit": "frame",
+      "description": "Half-life 0.1–999 frames (static).",
+      "minimum": 0.1,
+      "maximum": 999,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ShakeParams",
+    "property": "amplitude",
+    "pointer": "/$defs/ShakeParams/properties/amplitude",
+    "schema": {
+      "type": "number",
+      "x-unit": "field",
+      "description": "Peak displacement 0–100 fields (animatable).",
+      "minimum": 0,
+      "maximum": 100,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Sides",
+    "property": "left",
+    "pointer": "/$defs/Sides/properties/left",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ZoneFill"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Left side.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Sides",
+    "property": "right",
+    "pointer": "/$defs/Sides/properties/right",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ZoneFill"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Right side.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SkeletonBlock",
+    "property": "boneColour",
+    "pointer": "/$defs/SkeletonBlock/properties/boneColour",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Colour"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Bone colour; `null` = preference.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SkeletonBlock",
+    "property": "showTrack",
+    "pointer": "/$defs/SkeletonBlock/properties/showTrack",
+    "schema": {
+      "type": "boolean",
+      "description": "Show the track.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SkeletonBlock",
+    "property": "showRoot",
+    "pointer": "/$defs/SkeletonBlock/properties/showRoot",
+    "schema": {
+      "type": "boolean",
+      "description": "Show the root.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SkeletonBlock",
+    "property": "showBones",
+    "pointer": "/$defs/SkeletonBlock/properties/showBones",
+    "schema": {
+      "type": "boolean",
+      "description": "Show bones.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SkeletonBlock",
+    "property": "showInfluence",
+    "pointer": "/$defs/SkeletonBlock/properties/showInfluence",
+    "schema": {
+      "type": "boolean",
+      "description": "Show influence.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SkeletonBlock",
+    "property": "vectorQuality",
+    "pointer": "/$defs/SkeletonBlock/properties/vectorQuality",
+    "schema": {
+      "$ref": "#/$defs/VectorQuality",
+      "description": "Deformation quality.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SkeletonBlock",
+    "property": "deformationEnabled",
+    "pointer": "/$defs/SkeletonBlock/properties/deformationEnabled",
+    "schema": {
+      "type": "boolean",
+      "description": "Deformation on.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SolidValue",
+    "property": "rgba",
+    "pointer": "/$defs/SolidValue/properties/rgba",
+    "schema": {
+      "$ref": "#/$defs/Colour",
+      "description": "The colour.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "id",
+    "pointer": "/$defs/SoundPlacement/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "type",
+    "pointer": "/$defs/SoundPlacement/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "soundPlacement",
+      "readOnly": true,
+      "description": "Always `soundPlacement`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "rev",
+    "pointer": "/$defs/SoundPlacement/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "assetId",
+    "pointer": "/$defs/SoundPlacement/properties/assetId",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "A `sound` asset, or a `movie` asset with audio.",
+      "x-ref": "asset",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "startFrame",
+    "pointer": "/$defs/SoundPlacement/properties/startFrame",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "First frame.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "stopFrame",
+    "pointer": "/$defs/SoundPlacement/properties/stopFrame",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Last frame; `startFrame ≤ stopFrame ≤` natural end.",
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "inPoint",
+    "pointer": "/$defs/SoundPlacement/properties/inPoint",
+    "schema": {
+      "type": "number",
+      "x-unit": "second",
+      "description": "In-point in the source (seconds).",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "outPoint",
+    "pointer": "/$defs/SoundPlacement/properties/outPoint",
+    "schema": {
+      "type": "number",
+      "x-unit": "second",
+      "description": "Out-point in the source (seconds); `inPoint < outPoint`.",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "loops",
+    "pointer": "/$defs/SoundPlacement/properties/loops",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Repetitions of the trimmed segment.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "volume",
+    "pointer": "/$defs/SoundPlacement/properties/volume",
+    "schema": {
+      "type": "integer",
+      "maximum": 50,
+      "description": "Global gain −50…+50.",
+      "minimum": -50,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "envelope",
+    "pointer": "/$defs/SoundPlacement/properties/envelope",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/EnvelopePoint"
+      },
+      "description": "Gain points, times ascending.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "mouthTrack",
+    "pointer": "/$defs/SoundPlacement/properties/mouthTrack",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MouthTrack"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The placement's lip-sync track.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "meta",
+    "pointer": "/$defs/SoundPlacement/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "ext",
+    "pointer": "/$defs/SoundPlacement/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "path",
+    "pointer": "/$defs/SoundPlacement/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SoundPlacement",
+    "property": "naturalEndFrame",
+    "pointer": "/$defs/SoundPlacement/properties/naturalEndFrame",
+    "schema": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "x-derived": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Spine",
+    "property": "points",
+    "pointer": "/$defs/Spine/properties/points",
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 6,
+        "maxItems": 6
+      },
+      "description": "The fitted centre path.",
+      "x-unit": "du",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Spine",
+    "property": "pressure",
+    "pointer": "/$defs/Spine/properties/pressure",
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "description": "Pressure map: `(t, p)` samples ordered by `t`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Spine",
+    "property": "pen",
+    "pointer": "/$defs/Spine/properties/pen",
+    "schema": {
+      "$ref": "#/$defs/SpinePen",
+      "description": "Pen used.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SpinePen",
+    "property": "penId",
+    "pointer": "/$defs/SpinePen/properties/penId",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The pen used, if it still exists.",
+      "x-ref": "pen",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SpinePen",
+    "property": "tip",
+    "pointer": "/$defs/SpinePen/properties/tip",
+    "schema": {
+      "$ref": "#/$defs/Tip",
+      "description": "Tip shape.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SpinePen",
+    "property": "minSize",
+    "pointer": "/$defs/SpinePen/properties/minSize",
+    "schema": {
+      "type": "number",
+      "x-unit": "du",
+      "description": "Minimum size (du).",
+      "minimum": 0,
+      "maximum": 100,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "SpinePen",
+    "property": "maxSize",
+    "pointer": "/$defs/SpinePen/properties/maxSize",
+    "schema": {
+      "type": "number",
+      "x-unit": "du",
+      "description": "Maximum size (du).",
+      "minimum": 0,
+      "maximum": 100,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "id",
+    "pointer": "/$defs/Stroke/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "ID, unique within the drawing (ID-03).",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "type",
+    "pointer": "/$defs/Stroke/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "stroke",
+      "readOnly": true,
+      "description": "Always `stroke`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "rev",
+    "pointer": "/$defs/Stroke/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "kind",
+    "pointer": "/$defs/Stroke/properties/kind",
+    "schema": {
+      "$ref": "#/$defs/StrokeKind",
+      "description": "Brush, pencil or invisible.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "closed",
+    "pointer": "/$defs/Stroke/properties/closed",
+    "schema": {
+      "type": "boolean",
+      "description": "Whether the path is closed (brush outlines are).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "points",
+    "pointer": "/$defs/Stroke/properties/points",
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 6,
+        "maxItems": 6
+      },
+      "description": "Anchors with handle offsets; at least 2 (1 for a closed dab).",
+      "minItems": 1,
+      "x-unit": "du",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "colourId",
+    "pointer": "/$defs/Stroke/properties/colourId",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Brush: fill colour; pencil: line colour; `null` for invisible strokes.",
+      "x-ref": "swatch",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "fillMatrix",
+    "pointer": "/$defs/Stroke/properties/fillMatrix",
+    "schema": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "number"
+      },
+      "minItems": 6,
+      "maxItems": 6,
+      "description": "Placement of a gradient/texture colour space for brush strokes.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "lineStyle",
+    "pointer": "/$defs/Stroke/properties/lineStyle",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/LineStyle"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Pencil strokes only.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "spine",
+    "pointer": "/$defs/Stroke/properties/spine",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Spine"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Brush strokes while unedited.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "sides",
+    "pointer": "/$defs/Stroke/properties/sides",
+    "schema": {
+      "$ref": "#/$defs/Sides",
+      "description": "Zone fills on each side.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "meta",
+    "pointer": "/$defs/Stroke/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "ext",
+    "pointer": "/$defs/Stroke/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stroke",
+    "property": "path",
+    "pointer": "/$defs/Stroke/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stub",
+    "property": "id",
+    "pointer": "/$defs/Stub/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stub",
+    "property": "colourId",
+    "pointer": "/$defs/Stub/properties/colourId",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stub",
+    "property": "type",
+    "pointer": "/$defs/Stub/properties/type",
+    "schema": {
+      "$ref": "#/$defs/ObjectType",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Stub",
+    "property": "name",
+    "pointer": "/$defs/Stub/properties/name",
+    "schema": {
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Swatch",
+    "property": "colourId",
+    "pointer": "/$defs/Swatch/properties/colourId",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable colour ID, unique across the project.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Swatch",
+    "property": "type",
+    "pointer": "/$defs/Swatch/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "swatch",
+      "readOnly": true,
+      "description": "Always `swatch`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Swatch",
+    "property": "rev",
+    "pointer": "/$defs/Swatch/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Swatch",
+    "property": "name",
+    "pointer": "/$defs/Swatch/properties/name",
+    "schema": {
+      "pattern": "^(?:[^\\u0000-\\u001F\\u007F\\s]|[^\\u0000-\\u001F\\u007F\\s][^\\u0000-\\u001F\\u007F]*[^\\u0000-\\u001F\\u007F\\s])$",
+      "description": "Label; names may repeat.",
+      "x-command": "colour.swatch.set",
+      "minLength": 1,
+      "maxLength": 128,
+      "type": "string",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Swatch",
+    "property": "kind",
+    "pointer": "/$defs/Swatch/properties/kind",
+    "schema": {
+      "$ref": "#/$defs/SwatchKind",
+      "description": "Solid, gradient or texture; shared by all styles.",
+      "x-command": "colour.swatch.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Swatch",
+    "property": "deformable",
+    "pointer": "/$defs/Swatch/properties/deformable",
+    "schema": {
+      "type": "boolean",
+      "description": "Whether a gradient/texture fill follows bone deformation (03 §7.5).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Swatch",
+    "property": "values",
+    "pointer": "/$defs/Swatch/properties/values",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[A-Za-z0-9_-]{1,64}$": {
+          "$ref": "#/$defs/SwatchValue"
+        }
+      },
+      "description": "Exactly one value per style of the palette, keyed by style ID (keys in canonical order, ADR-0011 §3).",
+      "x-command": "colour.swatch.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Swatch",
+    "property": "meta",
+    "pointer": "/$defs/Swatch/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Swatch",
+    "property": "ext",
+    "pointer": "/$defs/Swatch/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Swatch",
+    "property": "path",
+    "pointer": "/$defs/Swatch/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TemplateSummaryNode",
+    "property": "elementType",
+    "pointer": "/$defs/TemplateSummaryNode/properties/elementType",
+    "schema": {
+      "type": "string",
+      "description": "Element type.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TemplateSummaryNode",
+    "property": "name",
+    "pointer": "/$defs/TemplateSummaryNode/properties/name",
+    "schema": {
+      "type": "string",
+      "description": "Element name.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TemplateSummaryNode",
+    "property": "frameCount",
+    "pointer": "/$defs/TemplateSummaryNode/properties/frameCount",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 0,
+      "description": "Frame count.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TemplateSummaryNode",
+    "property": "children",
+    "pointer": "/$defs/TemplateSummaryNode/properties/children",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/TemplateSummaryNode"
+      },
+      "description": "Children.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextRun",
+    "property": "start",
+    "pointer": "/$defs/TextRun/properties/start",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 0,
+      "description": "First code point.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextRun",
+    "property": "length",
+    "pointer": "/$defs/TextRun/properties/length",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 0,
+      "description": "Number of code points.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextRun",
+    "property": "font",
+    "pointer": "/$defs/TextRun/properties/font",
+    "schema": {
+      "type": "string",
+      "description": "Font family name (kept even when the font is missing).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextRun",
+    "property": "size",
+    "pointer": "/$defs/TextRun/properties/size",
+    "schema": {
+      "type": "number",
+      "x-unit": "du",
+      "description": "Size in drawing units.",
+      "minimum": 0,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextRun",
+    "property": "bold",
+    "pointer": "/$defs/TextRun/properties/bold",
+    "schema": {
+      "type": "boolean",
+      "description": "Bold.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextRun",
+    "property": "italic",
+    "pointer": "/$defs/TextRun/properties/italic",
+    "schema": {
+      "type": "boolean",
+      "description": "Italic.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextRun",
+    "property": "script",
+    "pointer": "/$defs/TextRun/properties/script",
+    "schema": {
+      "$ref": "#/$defs/Script",
+      "description": "Script position.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextRun",
+    "property": "kerning",
+    "pointer": "/$defs/TextRun/properties/kerning",
+    "schema": {
+      "type": "number",
+      "description": "Manual kerning.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextRun",
+    "property": "autoKerning",
+    "pointer": "/$defs/TextRun/properties/autoKerning",
+    "schema": {
+      "type": "boolean",
+      "description": "Automatic kerning.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextRun",
+    "property": "colourId",
+    "pointer": "/$defs/TextRun/properties/colourId",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Fill colour.",
+      "x-ref": "swatch",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextureValue",
+    "property": "image",
+    "pointer": "/$defs/TextureValue/properties/image",
+    "schema": {
+      "type": "string",
+      "description": "Package entry path of the image, e.g. `textures/fabric-day.png`.",
+      "minLength": 1,
+      "maxLength": 1024,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextureValue",
+    "property": "tile",
+    "pointer": "/$defs/TextureValue/properties/tile",
+    "schema": {
+      "type": "boolean",
+      "description": "Repeat the image (true) or stretch it over the zone (false).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextureValue",
+    "property": "width",
+    "pointer": "/$defs/TextureValue/properties/width",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Informative pixel width.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TextureValue",
+    "property": "height",
+    "pointer": "/$defs/TextureValue/properties/height",
+    "schema": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": 1,
+      "description": "Informative pixel height.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "offset",
+    "pointer": "/$defs/Transform/properties/offset",
+    "schema": {
+      "$ref": "#/$defs/Point3",
+      "description": "Static position (fields). Camera default (0, 0, 16).",
+      "x-unit": "field",
+      "x-command": "anim.transform.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "rotation",
+    "pointer": "/$defs/Transform/properties/rotation",
+    "schema": {
+      "type": "number",
+      "x-command": "anim.transform.set",
+      "description": "Static rotation (degrees; camera: roll).",
+      "x-unit": "degree",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "skew",
+    "pointer": "/$defs/Transform/properties/skew",
+    "schema": {
+      "type": "number",
+      "x-command": "anim.transform.set",
+      "description": "Static skew, −89…89 degrees.",
+      "minimum": -89,
+      "maximum": 89,
+      "x-unit": "degree",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "scale",
+    "pointer": "/$defs/Transform/properties/scale",
+    "schema": {
+      "$ref": "#/$defs/Scale2",
+      "description": "Static scale.",
+      "x-command": "anim.transform.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "keepProportions",
+    "pointer": "/$defs/Transform/properties/keepProportions",
+    "schema": {
+      "type": "boolean",
+      "description": "Keep the scale ratio when editing one value.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "rotationPivot",
+    "pointer": "/$defs/Transform/properties/rotationPivot",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Elements: rotation pivot (fields).",
+      "x-unit": "field",
+      "$ref": "#/$defs/Point2",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "scalePivot",
+    "pointer": "/$defs/Transform/properties/scalePivot",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Elements: scale pivot (fields).",
+      "x-unit": "field",
+      "$ref": "#/$defs/Point2",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "rotateAboutPivot",
+    "pointer": "/$defs/Transform/properties/rotateAboutPivot",
+    "schema": {
+      "type": "boolean",
+      "description": "Elements: rotate about the rotation pivot.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "pivot",
+    "pointer": "/$defs/Transform/properties/pivot",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Pegs and skeletons: pivot (fields).",
+      "x-unit": "field",
+      "$ref": "#/$defs/Point2",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "applyPivotTo",
+    "pointer": "/$defs/Transform/properties/applyPivotTo",
+    "schema": {
+      "x-kindSpecific": true,
+      "description": "Pegs and skeletons: what the pivot applies to.",
+      "$ref": "#/$defs/ApplyPivotTo",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "useChildDrawingPivot",
+    "pointer": "/$defs/Transform/properties/useChildDrawingPivot",
+    "schema": {
+      "type": "boolean",
+      "description": "Pegs: use the child drawing's pivot.",
+      "x-kindSpecific": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "lockDepth",
+    "pointer": "/$defs/Transform/properties/lockDepth",
+    "schema": {
+      "type": "boolean",
+      "description": "Constant Z for nodes with a motion path (05 §9.3).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transform",
+    "property": "orientToPath",
+    "pointer": "/$defs/Transform/properties/orientToPath",
+    "schema": {
+      "type": "boolean",
+      "description": "Rotation follows the motion-path tangent (05 §8.3).",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "id",
+    "pointer": "/$defs/Transition/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "Immutable ID.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "type",
+    "pointer": "/$defs/Transition/properties/type",
+    "schema": {
+      "type": "string",
+      "const": "transition",
+      "readOnly": true,
+      "description": "Always `transition`.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "rev",
+    "pointer": "/$defs/Transition/properties/rev",
+    "schema": {
+      "type": "integer",
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "description": "Revision of the last change.",
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "transitionType",
+    "pointer": "/$defs/Transition/properties/transitionType",
+    "schema": {
+      "$ref": "#/$defs/TransitionType",
+      "description": "The transition type (08 `type`; SI-004).",
+      "x-command": "storyline.transition.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "durationLeft",
+    "pointer": "/$defs/Transition/properties/durationLeft",
+    "schema": {
+      "type": "integer",
+      "x-command": "storyline.transition.set",
+      "minimum": 0,
+      "description": "Duration / left duration, 0–1000 frames (default 12).",
+      "maximum": 1000,
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "blankDuration",
+    "pointer": "/$defs/Transition/properties/blankDuration",
+    "schema": {
+      "type": "integer",
+      "x-command": "storyline.transition.set",
+      "minimum": 0,
+      "description": "Blank duration (fade only), 0–1000 frames (default 0).",
+      "maximum": 1000,
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "durationRight",
+    "pointer": "/$defs/Transition/properties/durationRight",
+    "schema": {
+      "type": "integer",
+      "x-command": "storyline.transition.set",
+      "minimum": 0,
+      "description": "Right duration (fade only), 0–1000 frames (default 12).",
+      "maximum": 1000,
+      "x-unit": "frame",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "colour",
+    "pointer": "/$defs/Transition/properties/colour",
+    "schema": {
+      "$ref": "#/$defs/Colour",
+      "description": "Fade colour (default opaque black).",
+      "x-command": "storyline.transition.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "angle",
+    "pointer": "/$defs/Transition/properties/angle",
+    "schema": {
+      "type": "number",
+      "x-command": "storyline.transition.set",
+      "description": "Angle for wipe, slide and clock wipe, 0–360 degrees (default 0).",
+      "minimum": 0,
+      "maximum": 360,
+      "x-unit": "degree",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "direction",
+    "pointer": "/$defs/Transition/properties/direction",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TransitionDirection"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Direction for slide and clock wipe; `null` until a type that uses it is chosen.",
+      "x-command": "storyline.transition.set",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "size",
+    "pointer": "/$defs/Transition/properties/size",
+    "schema": {
+      "type": "integer",
+      "x-command": "storyline.transition.set",
+      "minimum": 5,
+      "description": "Checker size, 5–100 in steps of 5 (default 25).",
+      "maximum": 100,
+      "multipleOf": 5,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "meta",
+    "pointer": "/$defs/Transition/properties/meta",
+    "schema": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "ext",
+    "pointer": "/$defs/Transition/properties/ext",
+    "schema": {
+      "$ref": "#/$defs/Ext",
+      "description": "Extension data.",
+      "x-omitDefault": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "Transition",
+    "property": "path",
+    "pointer": "/$defs/Transition/properties/path",
+    "schema": {
+      "type": "string",
+      "description": "Canonical path (10 §2.4).",
+      "x-transient": true,
+      "readOnly": true,
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TreeNode",
+    "property": "id",
+    "pointer": "/$defs/TreeNode/properties/id",
+    "schema": {
+      "$ref": "#/$defs/Id",
+      "description": "The element.",
+      "x-ref": "element",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "TreeNode",
+    "property": "children",
+    "pointer": "/$defs/TreeNode/properties/children",
+    "schema": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/TreeNode"
+      },
+      "description": "Children, top to bottom as displayed in the Timeline.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ZoneFill",
+    "property": "colourId",
+    "pointer": "/$defs/ZoneFill/properties/colourId",
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Id"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Colour ID; `null` = unpainted.",
+      "x-ref": "swatch",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  },
+  {
+    "definition": "ZoneFill",
+    "property": "matrix",
+    "pointer": "/$defs/ZoneFill/properties/matrix",
+    "schema": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "number"
+      },
+      "minItems": 6,
+      "maxItems": 6,
+      "description": "Gradient/texture placement; `null` for none.",
+      "x-since": "1.0"
+    },
+    "kind": "named-definition property"
+  }
+]

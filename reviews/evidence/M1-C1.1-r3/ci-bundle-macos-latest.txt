@@ -1,0 +1,31 @@
+bundle (macos-latest)	Tauri build, default (unsigned; no M0 diagnostics)	2026-10-18T22:34:36.0362990Z IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	﻿2026-10-18T22:35:42.2099280Z ##[group]Run mkdir -p out/default-build
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2101360Z mkdir -p out/default-build
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2102390Z if [ "$RUNNER_OS" = "Windows" ]; then
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2102740Z   app=target/release/toontown.exe; PY=python
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2103370Z   cp target/release/bundle/nsis/*.exe target/release/toontown.exe out/default-build/
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2103940Z else
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2104700Z   app=target/release/bundle/macos/Toontown.app/Contents/MacOS/toontown; PY=python3
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2108150Z   tar -czf out/default-build/Toontown-macos-arm64.app.tar.gz -C target/release/bundle/macos Toontown.app
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2109940Z fi
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2110660Z $PY scripts/check-diagnostics-gating.py "$app" --expect default
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2111180Z for flag in "--ipc-bench $PWD/refused.json" "--spike canvas"; do
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2111780Z   if "$app" $flag 2> refusal.txt; then echo "default build accepted $flag"; exit 1; fi
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2112270Z   cat refusal.txt
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2114320Z   grep -q "is an M0 diagnostic and this build has none" refusal.txt
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2114990Z done
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2115260Z test ! -e refused.json
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2196780Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2197220Z env:
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2197440Z   CARGO_TERM_COLOR: always
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2197760Z   CARGO_INCREMENTAL: 0
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2198120Z   RUST_BACKTRACE: 1
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2198330Z   CACHE_ON_FAILURE: false
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2198750Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.2199240Z ##[endgroup]
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.9466570Z toontown (12393048 bytes), expected default: product 2/2 names, diagnostic 0/12 names present
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.9468410Z diagnostics gating: ok
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.9784210Z toontown: `--ipc-bench` is an M0 diagnostic and this build has none; build with `--config src-tauri/tauri.diagnostics.conf.json` (docs/dev-setup.md)
+bundle (macos-latest)	Default build registers no M0 diagnostic command and refuses the flags	2026-10-18T22:35:42.9955740Z toontown: `--spike` is an M0 diagnostic and this build has none; build with `--config src-tauri/tauri.diagnostics.conf.json` (docs/dev-setup.md)
+bundle (macos-latest)	Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)	2026-10-18T22:35:43.0246810Z $PY scripts/check-diagnostics-gating.py "$app" --expect diagnostics
+bundle (macos-latest)	Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)	2026-10-18T22:35:45.9292520Z IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)

@@ -1,0 +1,20 @@
+{
+  "command": [
+    "gh",
+    "issue",
+    "create",
+    "--title",
+    "C11-R3-05: composite numeric replies reject mixed double and wide integer fields (P2)",
+    "--body-file",
+    "reviews/evidence/M1-C1.1-r3/tickets/C11-R3-05.md"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T23:00:07.264481+00:00",
+  "elapsed_seconds": 0.8329177999985404,
+  "exit_code": 0,
+  "log": "logs/ticket-05-created.log",
+  "sha256": "686b088bb334373608233e44022e21c46eb3112db6a0a1f75158cb7a8442f1ba",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

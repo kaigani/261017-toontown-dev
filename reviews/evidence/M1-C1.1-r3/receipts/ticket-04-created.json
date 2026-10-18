@@ -1,0 +1,20 @@
+{
+  "command": [
+    "gh",
+    "issue",
+    "create",
+    "--title",
+    "C11-R3-04: property_schema narrows nullable and enum alternatives (P2)",
+    "--body-file",
+    "reviews/evidence/M1-C1.1-r3/tickets/C11-R3-04.md"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T23:00:06.072358+00:00",
+  "elapsed_seconds": 1.1385591000434943,
+  "exit_code": 0,
+  "log": "logs/ticket-04-created.log",
+  "sha256": "48485a12c885f5a74d58d91107c46fce5e9849e4917063098ba2f721d92b799a",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

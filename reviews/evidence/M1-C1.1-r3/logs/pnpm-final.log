@@ -1,0 +1,114 @@
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m1-c11-r3
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m1-c11-r3\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c11-r3/desktop
+
+ ❯ src/ipc/c11-r3-adversarial.test.ts (4 tests | 2 failed) 22ms
+   ❯ C11 R3 independent wire closure (4)
+     × coerces mixed doubles and wide integers inside one applicable alternative 5ms
+     × coerces a generated Element inside a nullable reply without rounding its revision 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/ipc/c11-r3-adversarial.test.ts > C11 R3 independent wire closure > coerces mixed doubles and wide integers inside one applicable alternative
+AssertionError: expected undefined to deeply equal { kind: 'mixed', …(2) }
+
+- Expected:
+{
+  "kind": "mixed",
+  "revision": 9007199254740997n,
+  "x": 10000000000000000000,
+}
+
++ Received:
+undefined
+
+ ❯ src/ipc/c11-r3-adversarial.test.ts:43:70
+     41|     const expected = { kind: 'mixed', x: 1e19, revision: 9007199254740…
+     42|     expect(violations(schema, expected, '', {})).toEqual([]);
+     43|     expect(certifyWireText(stringifyWireJson(expected), schema, {})).t…
+       |                                                                      ^
+     44|   });
+     45|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/ipc/c11-r3-adversarial.test.ts > C11 R3 independent wire closure > coerces a generated Element inside a nullable reply without rounding its revision
+AssertionError: expected undefined to deeply equal { …(21) }
+
+- Expected:
+{
+  "backgroundColour": null,
+  "channels": {},
+  "collapsed": false,
+  "columnWidth": 80,
+  "createdAt": "2026-10-17T09:30:12.345Z",
+  "deformable": false,
+  "duration": 48,
+  "elementType": "dropShadow",
+  "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+  "locked": false,
+  "loopType": "count",
+  "loops": 1,
+  "markerColour": null,
+  "name": "Shadow",
+  "params": {
+    "colour": "#000000FF",
+    "hideElements": false,
+    "opacity": 50,
+    "parentColourTransformMode": "drawingsOnly",
+    "transform": {
+      "origin": {
+        "x": 10000000000000000000,
+        "y": -0.2,
+      },
+      "xAxis": {
+        "x": 1,
+        "y": 0,
+      },
+      "yAxis": {
+        "x": 0,
+        "y": 1,
+      },
+    },
+  },
+  "positionLoop": "cycle",
+  "rev": 9007199254740997n,
+  "role": "normal",
+  "start": 1,
+  "type": "element",
+  "visibleInScene": true,
+}
+
++ Received:
+undefined
+
+ ❯ src/ipc/c11-r3-adversarial.test.ts:59:81
+     57|     const generated: Schema = { anyOf: [{ $ref: '#/$defs/Element' }, {…
+     58|     expect(violations(generated, expected, '', MODEL_DEFS)).toEqual([]…
+     59|     expect(certifyWireText(stringifyWireJson(expected), generated, MOD…
+       |                                                                                 ^
+     60|   });
+     61|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 38 passed (39)
+      Tests  2 failed | 324 passed (326)
+   Start at  15:54:39
+   Duration  81.37s (tests 78%, environment 12%, setup 6%, import 2%, transform 2%)
+
+    Isolate  39 workers spawned · ~362ms startup each (spawn + environment, per file)
+             at least ~13.75s faster with isolate: false — reuses workers across files instead of one per file
+
+C:\Users\kaiga\work\review\m1-c11-r3\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 test: `vitest run --config vite.config.ts`
+Exit status 1
+ ELIFECYCLE  Test failed. See above for more details.

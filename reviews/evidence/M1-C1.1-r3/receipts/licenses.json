@@ -1,0 +1,15 @@
+{
+  "command": [
+    "pnpm",
+    "licenses:check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:54:34.980538+00:00",
+  "elapsed_seconds": 1.435420299996622,
+  "exit_code": 0,
+  "log": "logs/licenses.log",
+  "sha256": "d892e495530455c52fce3513654b0de2d6fc40ec205d4e70e00b6fcd40d1eee7",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

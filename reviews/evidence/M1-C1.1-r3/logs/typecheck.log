@@ -1,0 +1,8 @@
+
+> toontown-workspace@ typecheck C:\Users\kaiga\work\review\m1-c11-r3
+> pnpm -r typecheck
+
+
+> @toontown/desktop@0.0.1 typecheck C:\Users\kaiga\work\review\m1-c11-r3\desktop
+> tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json
+

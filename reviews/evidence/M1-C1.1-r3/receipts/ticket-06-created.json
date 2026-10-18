@@ -1,0 +1,20 @@
+{
+  "command": [
+    "gh",
+    "issue",
+    "create",
+    "--title",
+    "C11-R3-06: anonymous DynamicParam properties lack x-since (P2)",
+    "--body-file",
+    "reviews/evidence/M1-C1.1-r3/tickets/C11-R3-06.md"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T23:00:08.152674+00:00",
+  "elapsed_seconds": 0.8443962000310421,
+  "exit_code": 0,
+  "log": "logs/ticket-06-created.log",
+  "sha256": "44fb7bfff8bc9304c3f91d3febe6fa0913d39dca87bdc1b9c2afae90cf4c0d8d",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

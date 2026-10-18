@@ -1,0 +1,16 @@
+{
+  "command": [
+    "pnpm",
+    "install",
+    "--frozen-lockfile"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:49:23.357377+00:00",
+  "elapsed_seconds": 0.5496488999924622,
+  "exit_code": 0,
+  "log": "logs/install.log",
+  "sha256": "9510efdf03c3d670e47501f487ba7856e4e4d8b7bb4bb54cb2e8466b92ac6f8a",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

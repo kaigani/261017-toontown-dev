@@ -1,0 +1,22 @@
+{
+  "command": [
+    "pnpm",
+    "--dir",
+    "desktop",
+    "exec",
+    "vitest",
+    "run",
+    "--config",
+    "vite.config.ts",
+    "src/ipc/c11-r3-adversarial.test.ts"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:48:35.571976+00:00",
+  "elapsed_seconds": 1.2182907999958843,
+  "exit_code": 1,
+  "log": "logs/r3-ts-first.log",
+  "sha256": "176510fad60791a45bd2a703a20c8fbe0a1cb3714cda33748d7bd8ee7ea3fae4",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

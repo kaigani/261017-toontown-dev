@@ -1,0 +1,17 @@
+{
+  "command": [
+    "cargo",
+    "deny",
+    "--locked",
+    "check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:49:13.040750+00:00",
+  "elapsed_seconds": 9.06890219997149,
+  "exit_code": 0,
+  "log": "logs/deny.log",
+  "sha256": "1a8196cd8c27cbc5f4f4fb1816dd633bef3aeed813fa5d5aa0f4825644af964c",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}
