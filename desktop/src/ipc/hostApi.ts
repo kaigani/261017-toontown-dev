@@ -1,6 +1,14 @@
 // Typed host API. UI code depends on this interface only, never on a transport or on @tauri-apps/*.
 import type { HostTransport, Unlisten } from './transport';
 import type { BenchPlan, EngineInfo, ErrorInfo, MenuCommandEvent, PingRequest, PingResponse } from './types';
+import {
+  isBenchPlanOrNull,
+  isEngineInfo,
+  isErrorInfo,
+  isMenuCommandEvent,
+  isNull,
+  isPingResponse,
+} from './wireSchemas';
 
 export const MENU_COMMAND_EVENT = 'menu-command';
 
@@ -28,10 +36,6 @@ export interface HostApi {
   benchReport(report: unknown): Promise<void>;
 }
 
-function isErrorInfo(value: unknown): value is ErrorInfo {
-  return isRecord(value) && typeof value['code'] === 'string' && typeof value['message'] === 'string';
-}
-
 /** Normalises anything a transport rejects with into a `HostError`. */
 export function toHostError(error: unknown): HostError {
   if (error instanceof HostError) return error;
@@ -56,54 +60,6 @@ async function call<T>(
     throw new HostError({ code: 'ipc.invalidResponse', message: `unexpected response from ${command}` });
   }
   return value;
-}
-
-function isRecord(v: unknown): v is Record<string, unknown> {
-  return typeof v === 'object' && v !== null;
-}
-
-function isPingResponse(v: unknown): v is PingResponse {
-  return (
-    isRecord(v) &&
-    typeof v['seq'] === 'number' &&
-    typeof v['handlerNs'] === 'number' &&
-    typeof v['engineUptimeNs'] === 'number' &&
-    (v['payload'] === null || typeof v['payload'] === 'string')
-  );
-}
-
-function isEngineInfo(v: unknown): v is EngineInfo {
-  return (
-    isRecord(v) &&
-    typeof v['name'] === 'string' &&
-    typeof v['version'] === 'string' &&
-    typeof v['formatVersion'] === 'string' &&
-    typeof v['registryVersion'] === 'string'
-  );
-}
-
-function isMenuCommandEvent(v: unknown): v is MenuCommandEvent {
-  return (
-    isRecord(v) &&
-    typeof v['command'] === 'string' &&
-    isRecord(v['params']) &&
-    (v['handler'] === 'frontend' || v['handler'] === 'pending') &&
-    (v['milestone'] === null || typeof v['milestone'] === 'string')
-  );
-}
-
-function isBenchPlanOrNull(v: unknown): v is BenchPlan | null {
-  return (
-    v === null ||
-    (isRecord(v) &&
-      typeof v['count'] === 'number' &&
-      Array.isArray(v['payloadBytes']) &&
-      v['payloadBytes'].every((n) => typeof n === 'number'))
-  );
-}
-
-function isNull(v: unknown): v is null {
-  return v === null;
 }
 
 export function createHostApi(transport: HostTransport): HostApi {
