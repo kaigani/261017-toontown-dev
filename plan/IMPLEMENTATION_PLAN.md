@@ -138,8 +138,8 @@ run the tablet spike and any macOS-only manual checks. The builder writes those 
 ```
 
 Repository location (decided 2026-10-17): `~/Documents/PROJECTS/261017-toontown-dev/`
-(`C:\Users\kaiga\Documents\PROJECTS\261017-toontown-dev` on Windows), outside the Syncthing folder, with a private
-GitHub remote that the user also pulls onto a Mac. The authoritative spec stays in the Syncthing folder; the repo
+(`C:\Users\kaiga\Documents\PROJECTS\261017-toontown-dev` on Windows), outside the Syncthing folder, with a public GitHub
+remote (made public 2026-10-18 so GitHub Actions is unmetered) that the user also pulls onto a Mac. The authoritative spec stays in the Syncthing folder; the repo
 carries a read-only copy of `spec/` that only the orchestrator refreshes.
 
 ### 3.2 Non-negotiable engineering rules (enforced by CI from M1)
@@ -172,9 +172,9 @@ M0 → M1 → M2 → M3 → M4.
 | M5 | Timeline and Exposure Sheet | 04 (views), 01 §6.2–6.4 | L | C5.1 Timeline (rows, bars, keyframes, ruler, zoom, selection, drag/drop, paste special) · C5.2 Exposure Sheet (thumbnails, display modes, all cell commands, cycles, columnate, drawing management, static light table), Properties/Cells panels |
 | M6 | Staging and animation complete | 05 | XL | C6.1 Top/Side views, display options, all animation tools, peg-only mode, flips, hierarchy commands · C6.2 motion path UI, keyframes, function editor, velocity, easing, cameras UI, motion recording · C6.3 bones: tools, kinematics, IK, skinning, zones of influence, skeleton properties; E4 interactive |
 | M7 | Colour and effects complete | 03 (UI), 06 | L+L | C7.1 palette panel, colour editor, styles, tint offset/blend, gradients, textures, edit-texture tool, `.animpal` · C7.2 effect elements and parameter rows, colour transform, clipping, drop shadow, blur, shake, presets, AA clipping/flatten/blur in final renderer · C7.3 particle engine, all particle types and presets, effect preview panel, determinism goldens across restarts |
-| M8 | Sound, lip-sync, media | 07 | L | C8.1 import/decode/storage, waveform cache, mixer, playback sync, scrubbing, Timeline/X-sheet sound display, sound editor · C8.2 lip-sync detector (model + fallback + transcript alignment), track model, mapping, apply, panel, mouth templates; accuracy corpus; E3 · C8.3 media elements, movie import as sequence |
+| M8 | Sound, lip-sync, media | 07 | L | C8.1 import/decode/storage, waveform cache, mixer, playback sync, scrubbing, Timeline/X-sheet sound display, sound editor · C8.2 lip-sync detector (model + fallback + transcript alignment), track model, mapping, apply, panel, mouth templates; accuracy corpus; E3 · C8.3 FFmpeg sidecar build, fetch/verify mechanism and decoder readiness (moved here from M10 on 2026-10-18 because import needs the sidecar first; see ADR-0008), media elements, movie import as sequence |
 | M9 | Library and storyline | 08 | L | C9.1 libraries, folders, items, templates (.animtpl), create/insert copy-link, edit mode, locking · C9.2 scene manager, storyline panel, transitions, timing model, storyline playback, transition rendering; E5 · C9.3 starter-content pipeline (loader, thumbnails, validation; content authored separately) |
-| M10 | Output and input complete | 09 | L | C10.1 FFmpeg sidecar: MP4/MOV/GIF export, audio mux, rendered preview + player, snapshot, export reports; E1 full · C10.2 PDF export, print layout/preview/PDF/OS print, vector import (PDF/AI/SVG), PSD layers, keyed image import, publishing framework (descriptors, OAuth in system browser, OS credential store; no service shipped) · C10.3 capture: webcams via nokhwa, keying, light table, auto-capture; scanners and tethered cameras as stretch |
+| M10 | Output and input complete | 09 | L | C10.1 FFmpeg encoders (sidecar itself built in M8 C8.3): MP4/MOV/GIF export, audio mux, rendered preview + player, snapshot, export reports, repeat-encode determinism checks (09 §11.1(6)); E1 full · C10.2 PDF export, print layout/preview/PDF/OS print, vector import (PDF/AI/SVG), PSD layers, keyed image import, publishing framework (descriptors, OAuth in system browser, OS credential store; no service shipped) · C10.3 capture: webcams via nokhwa, keying, light table, auto-capture; scanners and tethered cameras as stretch |
 | M11 | Hardening, conformance, packaging | 11 §14, 10 §5 | L | C11.1 full conformance suite green on both OSes, performance targets (1 000 elements, 100 k strokes, 10 k drawings, 10 k swatches), fuzzing of the command surface and package reader · C11.2 installers (MSI/NSIS, DMG, signing, notarisation), auto-update channel, crash reporting opt-in, migrations fixtures, docs, prompts, typed-tools option, localisation scaffolding |
 
 Each milestone ends with: CI green on Windows and macOS, its conformance subset passing, traceability matrix
@@ -236,8 +236,8 @@ Codex is asked to break the checkpoint, not to approve it. Required activities a
 
 ## 6. Decisions (resolved by the user on 2026-10-17)
 
-1. **Repository.** `~/Documents/PROJECTS/261017-toontown-dev/` with a private GitHub remote; the user also pulls it
-   onto a Mac.
+1. **Repository.** `~/Documents/PROJECTS/261017-toontown-dev/` with a public GitHub remote (`kaigani/261017-toontown-dev`,
+   made public 2026-10-18 so Actions is free); the user also pulls it onto a Mac.
 2. **macOS access.** The user runs macOS checks on their own Mac. CI builds macOS artifacts on GitHub Actions.
 3. **Video codec licensing.** LGPL FFmpeg sidecar with platform encoders (`h264_mf`, `h264_videotoolbox`), AAC via
    the platform encoder or FFmpeg's native `aac`. No GPL component ships.
