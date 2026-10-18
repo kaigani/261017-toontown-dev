@@ -1,0 +1,13 @@
+[package]
+name = "tt-persist"
+description = "Toontown persistence (see crate docs)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+tt-model.workspace = true
+
+[lints]
+workspace = true

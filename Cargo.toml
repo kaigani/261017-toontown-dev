@@ -1,0 +1,58 @@
+[workspace]
+resolver = "3"
+members = ["crates/*", "bins/headless", "desktop/src-tauri"]
+# `cargo build` / `cargo test` at the root without `-p` cover the whole workspace.
+
+[workspace.package]
+version = "0.0.1"
+edition = "2024"
+rust-version = "1.98"
+publish = false
+repository = "https://github.com/kaigani/261017-toontown-dev"
+
+[workspace.dependencies]
+# Internal crates (plan §3.1). Path dependencies only; never published.
+tt-model = { path = "crates/model" }
+tt-registry = { path = "crates/registry" }
+tt-executor = { path = "crates/executor" }
+tt-vector = { path = "crates/vector" }
+tt-colour = { path = "crates/colour" }
+tt-anim = { path = "crates/anim" }
+tt-fx = { path = "crates/fx" }
+tt-render = { path = "crates/render" }
+tt-audio = { path = "crates/audio" }
+tt-lipsync = { path = "crates/lipsync" }
+tt-persist = { path = "crates/persist" }
+tt-io = { path = "crates/io" }
+tt-mcp = { path = "crates/mcp" }
+tt-engine = { path = "crates/engine" }
+
+# Third-party crates. Versions are pinned here so every member uses the same one.
+clap = { version = "4.6", default-features = false, features = ["std", "help", "usage", "error-context", "derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.11"
+thiserror = "2.0"
+tauri = { version = "2.12", features = [] }
+tauri-build = { version = "2.7", features = [] }
+
+[workspace.lints.rust]
+missing_docs = "warn"
+unsafe_code = "deny"
+unused_must_use = "deny"
+
+[workspace.lints.clippy]
+# Plan §3.2: no unwrap() in non-test code paths; errors are typed.
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+dbg_macro = "deny"
+print_stdout = "warn"
+print_stderr = "warn"
+
+[profile.release]
+# Deterministic, reproducible-ish release builds; no LTO yet (CI time).
+codegen-units = 16
+debug = "line-tables-only"

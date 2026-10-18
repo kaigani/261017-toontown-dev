@@ -1,0 +1,5 @@
+# Pinned so Windows and macOS CI use the identical compiler (determinism policy, ADR-0004).
+[toolchain]
+channel = "1.98.1"
+components = ["rustfmt", "clippy"]
+profile = "minimal"

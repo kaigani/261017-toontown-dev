@@ -1,0 +1,17 @@
+[package]
+name = "tt-render"
+description = "Toontown renderer (see crate docs)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+tt-model.workspace = true
+tt-vector.workspace = true
+tt-colour.workspace = true
+tt-anim.workspace = true
+tt-fx.workspace = true
+
+[lints]
+workspace = true
