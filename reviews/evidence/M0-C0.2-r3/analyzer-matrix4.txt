@@ -1,0 +1,57 @@
+## Tablet spike log (version 3)
+
+- userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26100.33438], webview 154.0.4258.62, CPUs 4
+- GPU (navigator.gpu): {'available': False}
+devicePixelRatio 1, getCoalescedEvents available: True
+native: {'backend': 'octotablet-ink', 'deviceClock': 'octotablet FrameTimestamp, ms since an arbitrary epoch', 'tablets': [], 'timestampGranularityMs': 1, 'window': {'innerHeight': 729, 'innerWidth': 1028, 'innerX': 8, 'innerY': 51, 'scaleFactor': 1}}, packets 0, invalid batches 0
+- native clock used: host; channel loss: unknown, gap heuristic only; host dropped 0, send failures 0, truncated 0
+- web samples 2932, truncated 0; web loss: unknown, gap heuristic only
+- coalescing: API available True, batching observed True, per dispatch p50 4.00 / p95 8.00 / max 10.0
+- handler - event ms: oldest coalesced p50 14.10 / p95 16.60 / max 35.8; newest p50 2.20 / p95 4.60 / max 16.5; all samples p50 8.20 / p95 15.50 / max 35.8
+- outcome: 11 synthetic runs, 9 ok, 2 explicitly failed
+web path: 4 pen-down strokes
+native path: 0 strokes
+
+### Web path strokes (pointer events)
+
+| stroke | pointer | samples | ms | Hz | vs 200 Hz | median / max interval ms | >2x median | pressure levels (distinct / implied) | tilt x / y (deg) | twist range (nonzero) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | pen#2 | 970 | 4246 | 228.2 | meets target | 4.20 / 206.4 | 4 | 970 / 1024 | -60..60 / -60..60 | 0..179 (965) |
+| 2 | pen#3 | 919 | 2037 | 450.6 | meets target | 2.00 / 10.0 | 45 | 919 / 1024 | -60..60 / -60..60 | 0..179 (914) |
+| 3 | pen#4 | 1022 | 4249 | 240.3 | meets target | 4.20 / 5.8 | 0 | 1022 / 1024 | -60..60 / -60..60 | 0..179 (1016) |
+| 4 | pen#5 | 1 | 0 | - | - | - / - | 0 | 1 / - | -60..-60 / 60..60 | 0..0 (0) |
+
+`*` = episode cut off at the start or end of the capture. `>2x median` is a heuristic, not a loss count.
+
+### Native path strokes (host listener, host clock)
+
+No contact episodes.
+
+### Synthetic runs (InjectSyntheticPointerInput; simulation, not tablet hardware)
+
+Geometry: all successful runs share screen rectangle [16, 109, 1012, 275] (physical px, [left, top, width, height]).
+
+| run | outcome | pattern (varying axes) | Hz: host / first-to-last | web events: received / missing | WM_POINTER on target (history) | RTS: poses, frames | raw-input sink HID reports (not decoded) | inject call ms p50 |
+|---|---|---|---|---|---|---|---|---|
+| webview sine 240 Hz | ok | sine (position, pressure, tiltX, tiltY, rotation) | 240.000 / 240.003 | 970 / 54 | not measured (the webview's input window belongs to msedgewebview2.exe) | 0, 0 | 1046 | 0.087 |
+| webview sine 500 Hz | ok | sine (position, pressure, tiltX, tiltY, rotation) | 495.304 / 495.454 | 919 / 105 | not measured (the webview's input window belongs to msedgewebview2.exe) | 0, 0 | 1046 | 0.114 |
+| webview zigzag 240 Hz | ok | zigzag (position, pressure, tiltX, tiltY, rotation) | 240.000 / 240.015 | 1022 / 2 | not measured (the webview's input window belongs to msedgewebview2.exe) | 0, 0 | 1046 | 0.090 |
+| webview stationary 240 Hz | ok | stationary (pressure, tiltX, tiltY, rotation) | 240.000 / 240.014 | 1 / 1023 | not measured (the webview's input window belongs to msedgewebview2.exe) | 0, 0 | 1046 | 0.075 |
+| webview pressure-only 240 Hz | **FAILED**: spike.notForeground: another window covered the target after 0 frames: (522,246) root 459316 class "Chrome_WidgetWin_2" pid 7700 (own pid 7604) | - | - | - | - | - | - | - |
+| webview pressure-only 240 Hz (retry) | **FAILED**: spike.notForeground: another window covered the target after 0 frames: (522,246) root 459316 class "Chrome_WidgetWin_2" pid 7700 (own pid 7604) | - | - | - | - | - | - | - |
+| native window sine 240 Hz, no RTS | ok | sine (position, pressure, tiltX, tiltY, rotation) | 240.000 / 240.011 | n/a (native window) | 1024 / 0 missing | not attached | 1046 | 0.079 |
+| native window stationary 240 Hz, no RTS | ok | stationary (pressure, tiltX, tiltY, rotation) | 240.000 / 240.014 | n/a (native window) | 1024 / 0 missing | not attached | 1046 | 0.078 |
+| native window pressure-only 240 Hz, no RTS | ok | pressureOnly (pressure) | 240.000 / 240.011 | n/a (native window) | 1024 / 0 missing | not attached | 1046 | 0.072 |
+| native window sine 240 Hz | ok | sine (position, pressure, tiltX, tiltY, rotation) | 240.000 / 240.010 | n/a (native window) | 17 / 1007 missing | 1017, 1007 | 1046 | 0.074 |
+| native window stationary 240 Hz | ok | stationary (pressure, tiltX, tiltY, rotation) | 240.000 / 240.014 | n/a (native window) | 16 / 1008 missing | 1018, 1008 | 1046 | 0.071 |
+
+- **webview sine 240 Hz**: rate: saved 240.0000487500099; saved value equals the recomputed host estimator (relative tolerance 1e-09); focus start: foreground this process (Tauri Window, the target), keyboard focus pid 7700 (Chrome_WidgetWin_1); focus end: foreground this process (Tauri Window, the target), keyboard focus pid 7700 (Chrome_WidgetWin_1); web missing frames: 1-3, 92, 421, 604, 863-893, 895-910, 933; repeated-pixel frames 92, 421, 604, 933, of them missing 4; web tilt exact 970 of 970; web twist vs injected rotation: exact 485, mod 180 485, absent 0, other 0; event - injection ms p50 0.48 / p95 1.14 / max 203.2; handler - injection ms p50 8.75 / p95 16.31 / max 206.9; raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\0']
+- **webview sine 500 Hz**: rate: saved 495.3042113482418; saved value equals the recomputed host estimator (relative tolerance 1e-09); focus start: foreground this process (Tauri Window, the target), keyboard focus pid 7700 (Chrome_WidgetWin_1); focus end: foreground this process (Tauri Window, the target), keyboard focus pid 7700 (Chrome_WidgetWin_1); web missing frames: 1-14, 16-19, 22, 24, 31, 33, 39, 48, 87, 92, 325, 327, 340, 353, 365, 383, 398, 415, 421, 424-426, 432-433, 437, 439, 448, 459, 461, 463, 466, 468, 474-475, 477-478, 484-485, 496, 499, 504, 523, 527, 533-534, 541-542, 558, 563, 572, 574, 582, 588, 604, 639, 641, 647, 649-650, 653, 655, 658-659, 661-663, 666, 671, 676-677, 684, 692-693, 698, 700, 703, 706, 711, 714-715, 718, 720-721, 723, 728, 743, 752, 761, 933; repeated-pixel frames 92, 421, 604, 933, of them missing 4; web tilt exact 919 of 919; web twist vs injected rotation: exact 451, mod 180 468, absent 0, other 0; event - injection ms p50 0.97 / p95 4.79 / max 28.0; handler - injection ms p50 9.90 / p95 17.83 / max 32.0; raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\1']
+- **webview zigzag 240 Hz**: rate: saved 239.9999587500071; saved value equals the recomputed host estimator (relative tolerance 1e-09); focus start: foreground this process (Tauri Window, the target), keyboard focus pid 7700 (Chrome_WidgetWin_1); focus end: foreground this process (Tauri Window, the target), keyboard focus pid 7700 (Chrome_WidgetWin_1); web missing frames: 1-2; repeated-pixel frames none, of them missing 0; web tilt exact 1022 of 1022; web twist vs injected rotation: exact 512, mod 180 510, absent 0, other 0; event - injection ms p50 0.57 / p95 1.35 / max 13.8; handler - injection ms p50 8.92 / p95 16.20 / max 22.5; raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\2']
+- **webview stationary 240 Hz**: rate: saved 239.99996437500528; saved value equals the recomputed host estimator (relative tolerance 1e-09); focus start: foreground this process (Tauri Window, the target), keyboard focus pid 7700 (Chrome_WidgetWin_1); focus end: foreground this process (Tauri Window, the target), keyboard focus pid 7700 (Chrome_WidgetWin_1); web missing frames: 1-1023; repeated-pixel frames 1-1023, of them missing 1023; web tilt exact 1 of 1; web twist vs injected rotation: exact 1, mod 180 0, absent 0, other 0; event - injection ms p50 15.81 / p95 15.81 / max 15.8; handler - injection ms p50 18.51 / p95 18.51 / max 18.5; raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\3']
+- **native window sine 240 Hz, no RTS**: rate: saved 239.9999587500071; saved value equals the recomputed host estimator (relative tolerance 1e-09); focus start: foreground this process (Tauri Window), keyboard focus pid 7700 (Chrome_WidgetWin_1); focus end: foreground this process (Tauri Window), keyboard focus pid 7700 (Chrome_WidgetWin_1); raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\6']; WM_POINTER missing frames: none; counts {'down': 1, 'update': 1044, 'up': 1, 'historyEntries': 1046, 'historyErrors': 0, 'truncated': 0}; repeated-pixel frames 92, 421, 604, 933; tilt exact 1024; rotation: exact 1024, mod 180 0, absent 0, other 0
+- **native window stationary 240 Hz, no RTS**: rate: saved 239.9999587500071; saved value equals the recomputed host estimator (relative tolerance 1e-09); focus start: foreground this process (Tauri Window), keyboard focus pid 7700 (Chrome_WidgetWin_1); focus end: foreground this process (Tauri Window), keyboard focus pid 7700 (Chrome_WidgetWin_1); raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\7']; WM_POINTER missing frames: none; counts {'down': 1, 'update': 1044, 'up': 1, 'historyEntries': 1046, 'historyErrors': 0, 'truncated': 0}; repeated-pixel frames 1-1023; tilt exact 1024; rotation: exact 1024, mod 180 0, absent 0, other 0
+- **native window pressure-only 240 Hz, no RTS**: rate: saved 239.9999587500071; saved value equals the recomputed host estimator (relative tolerance 1e-09); focus start: foreground this process (Tauri Window), keyboard focus pid 7700 (Chrome_WidgetWin_1); focus end: foreground this process (Tauri Window), keyboard focus pid 7700 (Chrome_WidgetWin_1); raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\8']; WM_POINTER missing frames: none; counts {'down': 1, 'update': 1044, 'up': 1, 'historyEntries': 1046, 'historyErrors': 0, 'truncated': 0}; repeated-pixel frames 1-1023; tilt exact 1024; rotation: exact 1024, mod 180 0, absent 0, other 0
+- **native window sine 240 Hz**: rate: saved 239.9999531250091; saved value equals the recomputed host estimator (relative tolerance 1e-09); focus start: foreground this process (Tauri Window), keyboard focus pid 7700 (Chrome_WidgetWin_1); focus end: foreground this process (Tauri Window), keyboard focus pid 7700 (Chrome_WidgetWin_1); raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\9']; WM_POINTER missing frames: 17-1023; counts {'down': 1, 'update': 26, 'up': 0, 'historyEntries': 27, 'historyErrors': 0, 'truncated': 0}; repeated-pixel frames 92, 421, 604, 933; tilt exact 17; rotation: exact 17, mod 180 0, absent 0, other 0; RTS missing frames (pressure scale 1025): 0-16; WM_POINTER or RTS together: 1024 / 1024
+- **native window stationary 240 Hz**: rate: saved 239.99997000000377; saved value equals the recomputed host estimator (relative tolerance 1e-09); focus start: foreground this process (Tauri Window), keyboard focus pid 7700 (Chrome_WidgetWin_1); focus end: foreground this process (Tauri Window), keyboard focus pid 7700 (Chrome_WidgetWin_1); raw devices: ['\\\\?\\Microsoft HID RID\\000D_0002\\10']; WM_POINTER missing frames: 16-1023; counts {'down': 1, 'update': 25, 'up': 0, 'historyEntries': 26, 'historyErrors': 0, 'truncated': 0}; repeated-pixel frames 1-1023; tilt exact 16; rotation: exact 16, mod 180 0, absent 0, other 0; RTS missing frames (pressure scale 1025): 0-15; WM_POINTER or RTS together: 1024 / 1024

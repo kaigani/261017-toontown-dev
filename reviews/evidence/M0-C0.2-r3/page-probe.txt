@@ -1,0 +1,8 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c02-r3/desktop
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  03:01:46
+   Duration  953ms (environment 64%, setup 12%, transform 12%, tests 9%, import 2%)

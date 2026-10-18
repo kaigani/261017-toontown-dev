@@ -1,0 +1,651 @@
+{
+  "spike": "tablet",
+  "version": 3,
+  "matrixSize": {
+    "width": 1012,
+    "height": 275
+  },
+  "savedAt": "2026-10-18T10:01:47.173Z",
+  "metadata": {
+    "tester": "",
+    "computer": "R3 Computer fixture (not hardware)",
+    "osVersion": "R3 macOS / Windows version fixture (not hardware)",
+    "webkit": "R3 Safari / WebKit version fixture (not hardware)",
+    "tablet": "R3 Tablet model fixture (not hardware)",
+    "driver": "R3 Tablet driver version fixture (not hardware)",
+    "notes": "R3 Notes fixture (not hardware)"
+  },
+  "environment": {
+    "timeOrigin": 1792317707173,
+    "perfNowAtSave": 0,
+    "userAgent": "Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/30.1.3",
+    "hardwareConcurrency": 32,
+    "devicePixelRatio": 1,
+    "screen": {
+      "width": 0,
+      "height": 0
+    },
+    "viewport": {
+      "width": 1024,
+      "height": 768
+    },
+    "coalescedApi": false,
+    "gpu": {
+      "available": false
+    },
+    "host": {
+      "os": "macos",
+      "arch": "aarch64",
+      "osVersion": "test double",
+      "webviewVersion": "test double",
+      "cpuCount": 8,
+      "window": null
+    },
+    "hostError": null,
+    "mode": {
+      "name": "tablet",
+      "logPath": "test.json",
+      "auto": false,
+      "penSimulation": false,
+      "nativeBackend": "appkit-nsevent"
+    }
+  },
+  "nativeInfo": {
+    "backend": "appkit-nsevent",
+    "tablets": [],
+    "timestampGranularityMs": null,
+    "deviceClock": "test double",
+    "window": null
+  },
+  "runs": [],
+  "simulations": [],
+  "web": {
+    "samples": [
+      {
+        "t": 100,
+        "handlerT": 0,
+        "kind": "down",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 0,
+        "y": 1,
+        "pressure": 0.1,
+        "tiltX": 30,
+        "tiltY": 45,
+        "twist": 0,
+        "dispatch": 0,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 104,
+        "handlerT": 0,
+        "kind": "move",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 1,
+        "y": 1,
+        "pressure": 0.2,
+        "tiltX": -30,
+        "tiltY": -45,
+        "twist": 30,
+        "dispatch": 1,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 108,
+        "handlerT": 0,
+        "kind": "move",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 2,
+        "y": 1,
+        "pressure": 0.3,
+        "tiltX": 30,
+        "tiltY": 45,
+        "twist": 60,
+        "dispatch": 2,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 112,
+        "handlerT": 0,
+        "kind": "move",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 3,
+        "y": 1,
+        "pressure": 0.4,
+        "tiltX": -30,
+        "tiltY": -45,
+        "twist": 90,
+        "dispatch": 3,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 116,
+        "handlerT": 0,
+        "kind": "move",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 4,
+        "y": 1,
+        "pressure": 0.5,
+        "tiltX": 30,
+        "tiltY": 45,
+        "twist": 120,
+        "dispatch": 4,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 120,
+        "handlerT": 0,
+        "kind": "up",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 5,
+        "y": 1,
+        "pressure": 0,
+        "tiltX": -30,
+        "tiltY": -45,
+        "twist": 150,
+        "dispatch": 4,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 100100,
+        "handlerT": 0,
+        "kind": "down",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 0,
+        "y": 1,
+        "pressure": 0.1,
+        "tiltX": 30,
+        "tiltY": 45,
+        "twist": 0,
+        "dispatch": 4,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 100104,
+        "handlerT": 0,
+        "kind": "move",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 1,
+        "y": 1,
+        "pressure": 0.2,
+        "tiltX": -30,
+        "tiltY": -45,
+        "twist": 30,
+        "dispatch": 5,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 100108,
+        "handlerT": 0,
+        "kind": "move",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 2,
+        "y": 1,
+        "pressure": 0.3,
+        "tiltX": 30,
+        "tiltY": 45,
+        "twist": 60,
+        "dispatch": 6,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 100112,
+        "handlerT": 0,
+        "kind": "move",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 3,
+        "y": 1,
+        "pressure": 0.4,
+        "tiltX": -30,
+        "tiltY": -45,
+        "twist": 90,
+        "dispatch": 7,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 100116,
+        "handlerT": 0,
+        "kind": "move",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 4,
+        "y": 1,
+        "pressure": 0.5,
+        "tiltX": 30,
+        "tiltY": 45,
+        "twist": 120,
+        "dispatch": 8,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      },
+      {
+        "t": 100120,
+        "handlerT": 0,
+        "kind": "up",
+        "pointerType": "pen",
+        "pointerId": 7,
+        "x": 5,
+        "y": 1,
+        "pressure": 0,
+        "tiltX": -30,
+        "tiltY": -45,
+        "twist": 150,
+        "dispatch": 8,
+        "coalescedCount": 1,
+        "coalescedIndex": 0
+      }
+    ],
+    "frames": [],
+    "contextMenus": [
+      {
+        "t": 1792317707173,
+        "x": 4,
+        "y": 1
+      },
+      {
+        "t": 1792317707173,
+        "x": 4,
+        "y": 1
+      }
+    ],
+    "truncated": 0,
+    "maxSamples": 200000
+  },
+  "native": {
+    "packets": [
+      {
+        "kind": "pose",
+        "pressure": 0,
+        "deviceMs": 100,
+        "hostEpochMs": 1700000000100,
+        "x": 0,
+        "y": 1,
+        "tiltX": 30,
+        "tiltY": 45,
+        "rawTiltX": 0.5,
+        "rawTiltY": 0.707,
+        "twist": 0,
+        "tool": "pen",
+        "seq": 0,
+        "deviceId": "fixture",
+        "windowNumber": 1
+      },
+      {
+        "kind": "pose",
+        "pressure": 0.1,
+        "deviceMs": 104,
+        "hostEpochMs": 1700000000104,
+        "x": 1,
+        "y": 1,
+        "tiltX": -30,
+        "tiltY": -45,
+        "rawTiltX": -0.5,
+        "rawTiltY": -0.707,
+        "twist": 0,
+        "tool": "pen",
+        "seq": 1,
+        "deviceId": "fixture",
+        "windowNumber": 1
+      },
+      {
+        "kind": "pose",
+        "pressure": 0.5,
+        "deviceMs": 108,
+        "hostEpochMs": 1700000000108,
+        "x": 2,
+        "y": 1,
+        "tiltX": 30,
+        "tiltY": 45,
+        "rawTiltX": 0.5,
+        "rawTiltY": 0.707,
+        "twist": 0,
+        "tool": "pen",
+        "seq": 2,
+        "deviceId": "fixture",
+        "windowNumber": 1
+      },
+      {
+        "kind": "pose",
+        "pressure": 1,
+        "deviceMs": 112,
+        "hostEpochMs": 1700000000112,
+        "x": 3,
+        "y": 1,
+        "tiltX": -30,
+        "tiltY": -45,
+        "rawTiltX": -0.5,
+        "rawTiltY": -0.707,
+        "twist": 0,
+        "tool": "pen",
+        "seq": 3,
+        "deviceId": "fixture",
+        "windowNumber": 1
+      },
+      {
+        "kind": "pose",
+        "pressure": 0,
+        "deviceMs": 116,
+        "hostEpochMs": 1700000000116,
+        "x": 4,
+        "y": 1,
+        "tiltX": 30,
+        "tiltY": 45,
+        "rawTiltX": 0.5,
+        "rawTiltY": 0.707,
+        "twist": 0,
+        "tool": "pen",
+        "seq": 4,
+        "deviceId": "fixture",
+        "windowNumber": 1
+      },
+      {
+        "kind": "pose",
+        "pressure": 0,
+        "deviceMs": 100100,
+        "hostEpochMs": 1700000100100,
+        "x": 0,
+        "y": 1,
+        "tiltX": 30,
+        "tiltY": 45,
+        "rawTiltX": 0.5,
+        "rawTiltY": 0.707,
+        "twist": 0,
+        "tool": "pen",
+        "seq": 5,
+        "deviceId": "fixture",
+        "windowNumber": 1
+      },
+      {
+        "kind": "pose",
+        "pressure": 0.1,
+        "deviceMs": 100104,
+        "hostEpochMs": 1700000100104,
+        "x": 1,
+        "y": 1,
+        "tiltX": -30,
+        "tiltY": -45,
+        "rawTiltX": -0.5,
+        "rawTiltY": -0.707,
+        "twist": 0,
+        "tool": "pen",
+        "seq": 6,
+        "deviceId": "fixture",
+        "windowNumber": 1
+      },
+      {
+        "kind": "pose",
+        "pressure": 0.5,
+        "deviceMs": 100108,
+        "hostEpochMs": 1700000100108,
+        "x": 2,
+        "y": 1,
+        "tiltX": 30,
+        "tiltY": 45,
+        "rawTiltX": 0.5,
+        "rawTiltY": 0.707,
+        "twist": 0,
+        "tool": "pen",
+        "seq": 7,
+        "deviceId": "fixture",
+        "windowNumber": 1
+      },
+      {
+        "kind": "pose",
+        "pressure": 1,
+        "deviceMs": 100112,
+        "hostEpochMs": 1700000100112,
+        "x": 3,
+        "y": 1,
+        "tiltX": -30,
+        "tiltY": -45,
+        "rawTiltX": -0.5,
+        "rawTiltY": -0.707,
+        "twist": 0,
+        "tool": "pen",
+        "seq": 8,
+        "deviceId": "fixture",
+        "windowNumber": 1
+      },
+      {
+        "kind": "pose",
+        "pressure": 0,
+        "deviceMs": 100116,
+        "hostEpochMs": 1700000100116,
+        "x": 4,
+        "y": 1,
+        "tiltX": 30,
+        "tiltY": 45,
+        "rawTiltX": 0.5,
+        "rawTiltY": 0.707,
+        "twist": 0,
+        "tool": "pen",
+        "seq": 9,
+        "deviceId": "fixture",
+        "windowNumber": 1
+      }
+    ],
+    "invalidBatches": 0,
+    "hostDropped": 0,
+    "sendFailures": 0,
+    "truncated": 0,
+    "maxSamples": 200000
+  },
+  "statusLog": [
+    {
+      "at": "2026-10-18T10:01:47.173Z",
+      "message": "Native listener running (appkit-nsevent)."
+    }
+  ],
+  "summary": {
+    "web": {
+      "samples": 12,
+      "pointerTypes": {
+        "pen": 12
+      },
+      "contactSamples": 10,
+      "strokes": [
+        {
+          "index": 0,
+          "pointer": "pen#7",
+          "samples": 5,
+          "durationMs": 16,
+          "rateHz": 250,
+          "medianIntervalMs": 4,
+          "maxIntervalMs": 4,
+          "gapsOver2xMedian": 0,
+          "pressure": {
+            "distinct": 5,
+            "min": 0.1,
+            "max": 0.5,
+            "minStep": 0.09999999999999998,
+            "levelsImplied": 10
+          },
+          "tiltPresent": true,
+          "truncated": false
+        },
+        {
+          "index": 1,
+          "pointer": "pen#7",
+          "samples": 5,
+          "durationMs": 16,
+          "rateHz": 250,
+          "medianIntervalMs": 4,
+          "maxIntervalMs": 4,
+          "gapsOver2xMedian": 0,
+          "pressure": {
+            "distinct": 5,
+            "min": 0.1,
+            "max": 0.5,
+            "minStep": 0.09999999999999998,
+            "levelsImplied": 10
+          },
+          "tiltPresent": true,
+          "truncated": false
+        }
+      ],
+      "rateHz": 250,
+      "medianRateHz": 250,
+      "medianIntervalMs": 4,
+      "maxIntervalMs": 4,
+      "gaps": 0,
+      "loss": {
+        "basis": "unknown",
+        "note": "unknown, gap heuristic only"
+      },
+      "pressure": {
+        "distinct": 5,
+        "min": 0.1,
+        "max": 0.5,
+        "minStep": 0.09999999999999998,
+        "levelsImplied": 10
+      },
+      "tiltPresent": true,
+      "tiltRangeX": [
+        -30,
+        30
+      ],
+      "tiltRangeY": [
+        -45,
+        45
+      ],
+      "twistPresent": true,
+      "coalescedSupported": false,
+      "coalescedObserved": false,
+      "coalescedPerDispatch": {
+        "n": 8,
+        "min": 1,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1,
+        "max": 1,
+        "mean": 1
+      },
+      "samplesPerFrame": null,
+      "handlerLatencyMs": {
+        "oldestCoalesced": {
+          "n": 12,
+          "min": -100120,
+          "p50": -100100,
+          "p95": -100,
+          "p99": -100,
+          "max": -100,
+          "mean": -50110
+        },
+        "newestCoalesced": {
+          "n": 12,
+          "min": -100120,
+          "p50": -100100,
+          "p95": -100,
+          "p99": -100,
+          "max": -100,
+          "mean": -50110
+        },
+        "allSamples": {
+          "n": 12,
+          "min": -100120,
+          "p50": -100100,
+          "p95": -100,
+          "p99": -100,
+          "max": -100,
+          "mean": -50110
+        }
+      }
+    },
+    "native": {
+      "samples": 10,
+      "pointerTypes": {
+        "pen": 10
+      },
+      "contactSamples": 6,
+      "strokes": [
+        {
+          "index": 0,
+          "pointer": "pen",
+          "samples": 3,
+          "durationMs": 8,
+          "rateHz": 250,
+          "medianIntervalMs": 4,
+          "maxIntervalMs": 4,
+          "gapsOver2xMedian": 0,
+          "pressure": {
+            "distinct": 3,
+            "min": 0.1,
+            "max": 1,
+            "minStep": 0.4,
+            "levelsImplied": 3
+          },
+          "tiltPresent": true,
+          "truncated": false
+        },
+        {
+          "index": 1,
+          "pointer": "pen",
+          "samples": 3,
+          "durationMs": 8,
+          "rateHz": 250,
+          "medianIntervalMs": 4,
+          "maxIntervalMs": 4,
+          "gapsOver2xMedian": 0,
+          "pressure": {
+            "distinct": 3,
+            "min": 0.1,
+            "max": 1,
+            "minStep": 0.4,
+            "levelsImplied": 3
+          },
+          "tiltPresent": true,
+          "truncated": false
+        }
+      ],
+      "rateHz": 250,
+      "medianRateHz": 250,
+      "medianIntervalMs": 4,
+      "maxIntervalMs": 4,
+      "gaps": 0,
+      "loss": {
+        "basis": "reference",
+        "reference": "host sequence numbers (host-to-page channel loss only)",
+        "expected": 10,
+        "received": 10,
+        "missing": 0
+      },
+      "pressure": {
+        "distinct": 3,
+        "min": 0.1,
+        "max": 1,
+        "minStep": 0.4,
+        "levelsImplied": 3
+      },
+      "tiltPresent": true,
+      "tiltRangeX": [
+        -30,
+        30
+      ],
+      "tiltRangeY": [
+        -45,
+        45
+      ],
+      "twistPresent": false,
+      "clock": "device"
+    }
+  }
+}

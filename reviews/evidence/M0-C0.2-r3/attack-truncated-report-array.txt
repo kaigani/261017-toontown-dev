@@ -1,0 +1,1 @@
+error: run 'webview sine 240 Hz': raw report injectEpochMs has 1023 entries, expected 1024 (one per frame)

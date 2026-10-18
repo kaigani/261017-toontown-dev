@@ -1,0 +1,368 @@
+{
+  "domain": "Tracing",
+  "dependencies": [
+    "IO"
+  ],
+  "types": [
+    {
+      "id": "MemoryDumpConfig",
+      "description": "Configuration for memory dump. Used only when \"memory-infra\" category is enabled.",
+      "experimental": true,
+      "type": "object"
+    },
+    {
+      "id": "TraceConfig",
+      "type": "object",
+      "properties": [
+        {
+          "name": "recordMode",
+          "description": "Controls how the trace buffer stores data. The default is `recordUntilFull`.",
+          "experimental": true,
+          "optional": true,
+          "type": "string",
+          "enum": [
+            "recordUntilFull",
+            "recordContinuously",
+            "recordAsMuchAsPossible",
+            "echoToConsole"
+          ]
+        },
+        {
+          "name": "traceBufferSizeInKb",
+          "description": "Size of the trace buffer in kilobytes. If not specified or zero is passed, a default value\nof 200 MB would be used.",
+          "experimental": true,
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "name": "enableSampling",
+          "description": "Turns on JavaScript stack sampling.",
+          "experimental": true,
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "name": "enableSystrace",
+          "description": "Turns on system tracing.",
+          "experimental": true,
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "name": "enableArgumentFilter",
+          "description": "Turns on argument filter.",
+          "experimental": true,
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "name": "includedCategories",
+          "description": "Included category filters.",
+          "optional": true,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "excludedCategories",
+          "description": "Excluded category filters.",
+          "optional": true,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "syntheticDelays",
+          "description": "Configuration to synthesize the delays in tracing.",
+          "experimental": true,
+          "optional": true,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "memoryDumpConfig",
+          "description": "Configuration for memory dump triggers. Used only when \"memory-infra\" category is enabled.",
+          "experimental": true,
+          "optional": true,
+          "$ref": "MemoryDumpConfig"
+        }
+      ]
+    },
+    {
+      "id": "StreamFormat",
+      "description": "Data format of a trace. Can be either the legacy JSON format or the\nprotocol buffer format. Note that the JSON format will be deprecated soon.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "json",
+        "proto"
+      ]
+    },
+    {
+      "id": "StreamCompression",
+      "description": "Compression type to use for traces returned via streams.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "none",
+        "gzip"
+      ]
+    },
+    {
+      "id": "MemoryDumpLevelOfDetail",
+      "description": "Details exposed when memory request explicitly declared.\nKeep consistent with memory_dump_request_args.h and\nmemory_instrumentation.mojom",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "background",
+        "light",
+        "detailed"
+      ]
+    },
+    {
+      "id": "TracingBackend",
+      "description": "Backend type to use for tracing. `chrome` uses the Chrome-integrated\ntracing service and is supported on all platforms. `system` is only\nsupported on Chrome OS and uses the Perfetto system tracing service.\n`auto` chooses `system` when the perfettoConfig provided to Tracing.start\nspecifies at least one non-Chrome data source; otherwise uses `chrome`.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "auto",
+        "chrome",
+        "system"
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "name": "end",
+      "description": "Stop trace events collection."
+    },
+    {
+      "name": "getCategories",
+      "description": "Gets supported tracing categories.",
+      "experimental": true,
+      "returns": [
+        {
+          "name": "categories",
+          "description": "A list of supported tracing categories.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    {
+      "name": "getTrackEventDescriptor",
+      "description": "Return a descriptor for all available tracing categories.",
+      "experimental": true,
+      "returns": [
+        {
+          "name": "descriptor",
+          "description": "Base64-encoded serialized perfetto.protos.TrackEventDescriptor protobuf message. (Encoded as a base64 string when passed over JSON)",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "recordClockSyncMarker",
+      "description": "Record a clock sync marker in the trace.",
+      "experimental": true,
+      "parameters": [
+        {
+          "name": "syncId",
+          "description": "The ID of this clock sync marker",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "requestMemoryDump",
+      "description": "Request a global memory dump.",
+      "experimental": true,
+      "parameters": [
+        {
+          "name": "deterministic",
+          "description": "Enables more deterministic results by forcing garbage collection",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "name": "levelOfDetail",
+          "description": "Specifies level of details in memory dump. Defaults to \"detailed\".",
+          "optional": true,
+          "$ref": "MemoryDumpLevelOfDetail"
+        }
+      ],
+      "returns": [
+        {
+          "name": "dumpGuid",
+          "description": "GUID of the resulting global memory dump.",
+          "type": "string"
+        },
+        {
+          "name": "success",
+          "description": "True iff the global memory dump succeeded.",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "description": "Start trace events collection.",
+      "parameters": [
+        {
+          "name": "categories",
+          "description": "Category/tag filter",
+          "experimental": true,
+          "deprecated": true,
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "name": "options",
+          "description": "Tracing options",
+          "experimental": true,
+          "deprecated": true,
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "name": "bufferUsageReportingInterval",
+          "description": "If set, the agent will issue bufferUsage events at this interval, specified in milliseconds",
+          "experimental": true,
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "name": "transferMode",
+          "description": "Whether to report trace events as series of dataCollected events or to save trace to a\nstream (defaults to `ReportEvents`).",
+          "optional": true,
+          "type": "string",
+          "enum": [
+            "ReportEvents",
+            "ReturnAsStream"
+          ]
+        },
+        {
+          "name": "streamFormat",
+          "description": "Trace data format to use. This only applies when using `ReturnAsStream`\ntransfer mode (defaults to `json`).",
+          "optional": true,
+          "$ref": "StreamFormat"
+        },
+        {
+          "name": "streamCompression",
+          "description": "Compression format to use. This only applies when using `ReturnAsStream`\ntransfer mode (defaults to `none`)",
+          "experimental": true,
+          "optional": true,
+          "$ref": "StreamCompression"
+        },
+        {
+          "name": "traceConfig",
+          "optional": true,
+          "$ref": "TraceConfig"
+        },
+        {
+          "name": "perfettoConfig",
+          "description": "Base64-encoded serialized perfetto.protos.TraceConfig protobuf message\nWhen specified, the parameters `categories`, `options`, `traceConfig`\nare ignored. (Encoded as a base64 string when passed over JSON)",
+          "experimental": true,
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "name": "tracingBackend",
+          "description": "Backend type (defaults to `auto`)",
+          "experimental": true,
+          "optional": true,
+          "$ref": "TracingBackend"
+        },
+        {
+          "name": "screenshotMaxSize",
+          "description": "Maximum width and height (in pixels) of each captured screenshot.\nOnly used when the `disabled-by-default-devtools.screenshot` category is\nenabled. Defaults to 500. The combined memory footprint of screenshots\n(`screenshotMaxSize` * `screenshotMaxSize` * 4 * `screenshotMaxCount`)\nis clamped to the existing per-session budget.",
+          "experimental": true,
+          "optional": true,
+          "type": "integer"
+        },
+        {
+          "name": "screenshotMaxCount",
+          "description": "Maximum number of screenshots captured during a single tracing session.\nOnly used when the `disabled-by-default-devtools.screenshot` category is\nenabled. Defaults to 450. Clamped together with `screenshotMaxSize` to\nstay within the per-session screenshot memory budget.",
+          "experimental": true,
+          "optional": true,
+          "type": "integer"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "bufferUsage",
+      "experimental": true,
+      "parameters": [
+        {
+          "name": "percentFull",
+          "description": "A number in range [0..1] that indicates the used size of event buffer as a fraction of its\ntotal size.",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "name": "eventCount",
+          "description": "An approximate number of events in the trace log.",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "name": "value",
+          "description": "A number in range [0..1] that indicates the used size of event buffer as a fraction of its\ntotal size.",
+          "optional": true,
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "name": "dataCollected",
+      "description": "Contains a bucket of collected trace events. When tracing is stopped collected events will be\nsent as a sequence of dataCollected events followed by tracingComplete event.",
+      "experimental": true,
+      "parameters": [
+        {
+          "name": "value",
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "name": "tracingComplete",
+      "description": "Signals that tracing is stopped and there is no trace buffers pending flush, all data were\ndelivered via dataCollected events.",
+      "parameters": [
+        {
+          "name": "dataLossOccurred",
+          "description": "Indicates whether some trace data is known to have been lost, e.g. because the trace ring\nbuffer wrapped around.",
+          "type": "boolean"
+        },
+        {
+          "name": "stream",
+          "description": "A handle of the stream that holds resulting trace data.",
+          "optional": true,
+          "$ref": "IO.StreamHandle"
+        },
+        {
+          "name": "traceFormat",
+          "description": "Trace data format of returned stream.",
+          "optional": true,
+          "$ref": "StreamFormat"
+        },
+        {
+          "name": "streamCompression",
+          "description": "Compression format of returned stream.",
+          "optional": true,
+          "$ref": "StreamCompression"
+        }
+      ]
+    }
+  ]
+}

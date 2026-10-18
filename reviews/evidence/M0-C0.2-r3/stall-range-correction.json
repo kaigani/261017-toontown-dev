@@ -1,0 +1,44 @@
+{
+  "claimedLostRange": [
+    867,
+    1022
+  ],
+  "receivedWithinClaimedRange": [
+    {
+      "frame": 905,
+      "coalescedCount": 2,
+      "coalescedIndex": 1,
+      "dispatch": 234,
+      "handlerT": 11490.5,
+      "kind": "move",
+      "pointerId": 2,
+      "pointerType": "pen",
+      "pressure": 0.884765625,
+      "t": 11489.599999999977,
+      "tiltX": 46,
+      "tiltY": -46,
+      "twist": 35,
+      "x": 896,
+      "y": 121
+    },
+    {
+      "frame": 1005,
+      "coalescedCount": 2,
+      "coalescedIndex": 0,
+      "dispatch": 235,
+      "handlerT": 11832.700000000012,
+      "kind": "move",
+      "pointerId": 2,
+      "pointerType": "pen",
+      "pressure": 0.982421875,
+      "t": 11497.099999999977,
+      "tiltX": 58,
+      "tiltY": -58,
+      "twist": 15,
+      "x": 994,
+      "y": 164
+    }
+  ],
+  "actualMissingInRange": 154,
+  "totalMissing": 160
+}
