@@ -41,9 +41,17 @@ pnpm --dir desktop tauri build --bundles nsis   # Windows installer (macOS: --bu
 
 cargo run -p tt-headless -- --selftest    # headless engine self-test
 python scripts/check-headless-deps.py target/release/toontown-headless.exe   # after cargo build --release -p tt-headless
-target/release/toontown.exe --ipc-bench out.json   # automated IPC latency benchmark (M0 diagnostics)
+
+# M0 diagnostics (--ipc-bench, --spike) exist only in the diagnostics build (C0.4; Cargo feature m0-diagnostics plus
+# the matching front-end mode, both switched on by one overlay config). The default build above refuses the flags.
+pnpm --dir desktop tauri build --no-bundle --config src-tauri/tauri.diagnostics.conf.json -- --locked
+target/release/toontown.exe --ipc-bench out.json   # automated IPC latency benchmark
 target/release/toontown.exe --spike tablet --spike-log t.json   # C0.2 tablet spike page (add --spike-auto on Windows
                                                                  # for the synthetic-pen run; needs an uncovered desktop)
+target/release/toontown.exe --spike canvas --spike-log c.json --spike-auto   # C0.3 canvas spike
+python scripts/check-diagnostics-gating.py target/release/toontown.exe --expect default   # or --expect diagnostics
+cargo clippy -p tt-desktop --all-targets --features m0-diagnostics -- -D warnings   # the feature build is linted too
+cargo test -p tt-desktop --features m0-diagnostics
 ```
 
 ## Repository rules

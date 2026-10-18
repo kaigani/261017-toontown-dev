@@ -18,6 +18,11 @@ path = "src/main.rs"
 name = "c03_r2_encoder"
 path = "../../tests/adversarial/c03-r2-encoder.rs"
 
+[features]
+# M0 diagnostics (--ipc-bench, --spike tablet|canvas and their commands). Off in the default build; enabled by
+# tauri.diagnostics.conf.json for CI's measurement steps and the manual spike tests (C0.4).
+m0-diagnostics = []
+
 [build-dependencies]
 tauri-build.workspace = true
 

@@ -4,18 +4,28 @@
 //! with `bench_report`, and the host writes them to the given file and exits. CI uses this to measure real
 //! WebView2/WKWebView round trips on both runners. Not a spec command: it is a development diagnostic and is not
 //! reachable from the menu or by agents.
+//!
+//! **Gating (C0.4):** the benchmark commands, the spikes and their commands are compiled only with the Cargo feature
+//! `m0-diagnostics` (`tauri.diagnostics.conf.json` enables it together with the matching front-end build). The
+//! default build still parses the flags, so it can refuse them with a clear [`crate::DesktopError`] instead of
+//! "unknown argument", but it registers no diagnostic command.
 
-use std::path::{Path, PathBuf};
-use std::time::Duration;
+use std::path::PathBuf;
+#[cfg(feature = "m0-diagnostics")]
+use std::{path::Path, time::Duration};
 
+#[cfg(feature = "m0-diagnostics")]
 use serde::Serialize;
+#[cfg(feature = "m0-diagnostics")]
 use tauri::{AppHandle, State};
 
 /// Payload sizes measured by default (bytes).
+#[cfg(feature = "m0-diagnostics")]
 pub const DEFAULT_PAYLOADS: &[usize] = &[0, 1024, 65_536, 1_048_576];
 /// Samples per payload size by default.
 pub const DEFAULT_COUNT: u32 = 500;
 /// The host gives up and exits with status 2 if no report arrives within this time.
+#[cfg(feature = "m0-diagnostics")]
 pub const TIMEOUT: Duration = Duration::from_secs(120);
 
 /// Benchmark settings parsed from the command line.
@@ -109,7 +119,7 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     }
     Ok(LaunchOptions {
         bench: out.map(|out| BenchSettings { out, count }),
-        spike: spike.map(|name| crate::spikes::tablet::SpikeSettings {
+        spike: spike.map(|name| SpikeSettings {
             name,
             log_path: spike_log,
             auto: spike_auto,
@@ -118,16 +128,44 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     })
 }
 
+/// Spike launch settings (`--spike tablet|canvas [--spike-log <file>] [--spike-auto] [--spike-renderer ...]`).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SpikeSettings {
+    /// Spike name: `tablet` (C0.2) or `canvas` (C0.3).
+    pub name: String,
+    /// Where `spike_save_log` writes the JSON log.
+    pub log_path: Option<PathBuf>,
+    /// `--spike-auto`: the page runs its automated scenarios, saves the log and the app exits.
+    pub auto: bool,
+    /// `--spike-renderer auto|webgpu|webgl2` (canvas spike only; `None` = auto).
+    pub renderer: Option<String>,
+}
+
 /// Parsed command line of the desktop binary.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct LaunchOptions {
     /// `--ipc-bench`.
     pub bench: Option<BenchSettings>,
     /// `--spike tablet [--spike-log <file>]` (M0 spike, C0.2).
-    pub spike: Option<crate::spikes::tablet::SpikeSettings>,
+    pub spike: Option<SpikeSettings>,
+}
+
+impl LaunchOptions {
+    /// The first M0 diagnostic flag this launch requests, if any (refused by a build without `m0-diagnostics`).
+    #[must_use]
+    pub fn requested_diagnostic(&self) -> Option<&'static str> {
+        if self.bench.is_some() {
+            Some("--ipc-bench")
+        } else if self.spike.is_some() {
+            Some("--spike")
+        } else {
+            None
+        }
+    }
 }
 
 /// Managed state: the benchmark settings, if any.
+#[cfg(feature = "m0-diagnostics")]
 #[derive(Debug, Default)]
 pub struct Diagnostics {
     /// Settings of a requested benchmark run.
@@ -135,6 +173,7 @@ pub struct Diagnostics {
 }
 
 /// What the front end should measure.
+#[cfg(feature = "m0-diagnostics")]
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BenchPlan {
@@ -145,6 +184,7 @@ pub struct BenchPlan {
 }
 
 /// Returns the benchmark plan when the app was started with `--ipc-bench`, otherwise `null`.
+#[cfg(feature = "m0-diagnostics")]
 #[tauri::command]
 #[must_use]
 pub fn bench_plan(diagnostics: State<'_, Diagnostics>) -> Option<BenchPlan> {
@@ -156,6 +196,7 @@ pub fn bench_plan(diagnostics: State<'_, Diagnostics>) -> Option<BenchPlan> {
 /// # Errors
 /// `{code: "diagnostics.notRequested"}` when no benchmark was requested; `fs.unwritable` when the file cannot be
 /// written (the app then exits with status 3).
+#[cfg(feature = "m0-diagnostics")]
 #[tauri::command]
 pub fn bench_report(
     app: AppHandle,
@@ -180,6 +221,7 @@ pub fn bench_report(
 }
 
 /// Exits with status 2 if the front end never reports (e.g. the webview failed to load).
+#[cfg(feature = "m0-diagnostics")]
 pub fn arm_timeout(app: &AppHandle, settings: &BenchSettings) {
     let app = app.clone();
     let out = settings.out.clone();
@@ -190,11 +232,13 @@ pub fn arm_timeout(app: &AppHandle, settings: &BenchSettings) {
     });
 }
 
+#[cfg(feature = "m0-diagnostics")]
 fn write_json(path: &Path, value: &serde_json::Value) -> std::io::Result<()> {
     let text = serde_json::to_string_pretty(value).map_err(std::io::Error::other)?;
     std::fs::write(path, text + "\n")
 }
 
+#[cfg(feature = "m0-diagnostics")]
 fn error(code: &str, message: String) -> tt_engine::ErrorInfo {
     tt_engine::ErrorInfo { code: code.to_owned(), message, details: serde_json::json!({}) }
 }
@@ -243,6 +287,13 @@ mod tests {
         assert_eq!(parse_args(args(&["--spike", "tablet", "--spike-auto"])), Err(ArgsError::AutoWithoutLog));
         let auto = parse_args(args(&["--spike", "tablet", "--spike-log", "t.json", "--spike-auto"])).unwrap();
         assert!(auto.spike.unwrap().auto);
+    }
+
+    #[test]
+    fn requested_diagnostic_names_the_flag() {
+        assert_eq!(parse_args(args(&[])).unwrap().requested_diagnostic(), None);
+        assert_eq!(parse_args(args(&["--ipc-bench", "o"])).unwrap().requested_diagnostic(), Some("--ipc-bench"));
+        assert_eq!(parse_args(args(&["--spike", "canvas"])).unwrap().requested_diagnostic(), Some("--spike"));
     }
 
     #[test]

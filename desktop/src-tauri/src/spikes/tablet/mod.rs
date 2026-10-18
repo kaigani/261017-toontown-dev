@@ -18,7 +18,6 @@ mod probe_windows;
 #[cfg(windows)]
 mod simulate_windows;
 
-use std::path::PathBuf;
 use std::sync::Arc;
 use std::sync::Mutex;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -29,18 +28,8 @@ use tauri::ipc::Channel;
 use tauri::{AppHandle, State};
 use tt_engine::ErrorInfo;
 
-/// Spike launch settings (`--spike tablet [--spike-log <file>]`).
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct SpikeSettings {
-    /// Spike name: `tablet` (C0.2) or `canvas` (C0.3).
-    pub name: String,
-    /// Where `spike_save_log` writes the JSON log.
-    pub log_path: Option<PathBuf>,
-    /// `--spike-auto`: the page runs its automated scenarios, saves the log and the app exits.
-    pub auto: bool,
-    /// `--spike-renderer auto|webgpu|webgl2` (canvas spike only; `None` = auto).
-    pub renderer: Option<String>,
-}
+/// Spike launch settings, parsed with the other launch flags in [`crate::diagnostics`].
+pub use crate::diagnostics::SpikeSettings;
 
 /// One input packet as produced by a platform converter. The field set is pinned by the reviewers' replay tests
 /// (`tests/adversarial/c02-r1-*.rs` compile the converters against it); per-packet extras travel in [`WirePacket`].

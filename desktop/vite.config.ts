@@ -10,6 +10,8 @@ import { ipcBoundary, transportChunk } from './boundary/vite-plugin.ts';
 // Tauri expects a fixed dev port and must not clear its terminal output.
 const TEST_SETUP = 'src/test/setup.ts';
 const isTestEntry = (file: string) => file === TEST_SETUP || /^src\/.+\.test\.[cm]?[jt]sx?$/.test(file);
+/** Build modes that include the M0 diagnostics (src/m0Diagnostics.d.ts); the default production build does not. */
+const DIAGNOSTICS_MODES = ['diagnostics', 'test'];
 
 export default defineConfig(({ mode }) => ({
   // The IPC boundary is enforced at bundling time for dev, build and Vitest (boundary/vite-plugin.ts).
@@ -20,6 +22,7 @@ export default defineConfig(({ mode }) => ({
     }),
     react(),
   ],
+  define: { __TT_M0_DIAGNOSTICS__: JSON.stringify(DIAGNOSTICS_MODES.includes(mode)) },
   clearScreen: false,
   server: {
     port: 1420,

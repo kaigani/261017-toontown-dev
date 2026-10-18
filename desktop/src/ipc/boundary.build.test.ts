@@ -239,13 +239,25 @@ describe('config selection is pinned (C01-R3-02)', () => {
       scripts: Record<string, string>;
     };
     const viteScripts = Object.entries(pkg.scripts).filter(([, cmd]) => /\b(vite|vitest)\b/.test(cmd));
-    expect(viteScripts.map(([name]) => name).sort()).toEqual(['build', 'dev', 'preview', 'test']);
+    expect(viteScripts.map(([name]) => name).sort()).toEqual([
+      'build',
+      'build:diagnostics',
+      'dev',
+      'preview',
+      'test',
+    ]);
     for (const [name, cmd] of viteScripts) expect(cmd, name).toMatch(/--config vite\.config\.ts(\s|$)/);
     const tauri = JSON.parse(readFileSync(`${desktop}src-tauri/tauri.conf.json`, 'utf8')) as {
       build: { beforeDevCommand: string; beforeBuildCommand: string };
     };
     expect(tauri.build.beforeDevCommand).toBe('pnpm dev');
     expect(tauri.build.beforeBuildCommand).toBe('pnpm build');
+    // The M0 diagnostics overlay (C0.4) swaps only the build script, to the pinned diagnostics one.
+    const overlay = JSON.parse(readFileSync(`${desktop}src-tauri/tauri.diagnostics.conf.json`, 'utf8')) as {
+      build: Record<string, unknown>;
+    };
+    expect(Object.keys(overlay.build).sort()).toEqual(['beforeBuildCommand', 'features']);
+    expect(overlay.build['beforeBuildCommand']).toBe('pnpm build:diagnostics');
   });
 });
 

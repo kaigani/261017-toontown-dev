@@ -1,5 +1,6 @@
 // In-memory host used by tests and by `pnpm dev` outside Tauri. Mirrors the Rust host's behaviour for the
 // commands that exist; unknown commands reject with `command.unknown` like the real registry will (11 §10).
+import { MOCK_DIAGNOSTIC_HANDLERS } from './mockDiagnostics';
 import type { HostTransport, Unlisten } from './transport';
 import type { EngineInfo, ErrorInfo, PingRequest, PingResponse } from './types';
 
@@ -54,12 +55,8 @@ export function createMockTransport(): MockTransport {
       return { ok: true, value };
     },
     app_info: () => ({ ok: true, value: MOCK_ENGINE_INFO }),
-    bench_plan: () => ({ ok: true, value: null }),
-    spike_mode: () => ({ ok: true, value: null }),
-    bench_report: () => ({
-      ok: false,
-      error: { code: 'diagnostics.notRequested', message: 'the app was not started with --ipc-bench' },
-    }),
+    // The host registers these only in the diagnostics build (C0.4); the mock mirrors that.
+    ...(__TT_M0_DIAGNOSTICS__ ? MOCK_DIAGNOSTIC_HANDLERS : {}),
   };
 
   return {

@@ -25,8 +25,17 @@ import type {
   SavedLog,
   SpikeEnvironment,
   SpikeMode,
+  BenchPlan,
 } from './types';
-import { isNull } from './wireSchemas';
+import { isBenchPlanOrNull, isNull } from './wireSchemas';
+
+/** M0 diagnostics: the IPC benchmark (`--ipc-bench`). Only the diagnostics build calls the host (C0.4). */
+export interface BenchApi {
+  /** The benchmark requested on the command line, or null. */
+  benchPlan(): Promise<BenchPlan | null>;
+  /** Hands the measurements to the host, which writes them and exits. */
+  benchReport(report: unknown): Promise<void>;
+}
 
 export interface SpikeApi {
   /** The spike launch (`--spike tablet`), or null in a normal launch. */
@@ -84,6 +93,15 @@ async function checked<T>(
     throw new HostError({ code: 'ipc.invalidResponse', message: `unexpected response from ${command}` });
   }
   return data;
+}
+
+export function createBenchApi(transport: HostTransport): BenchApi {
+  return {
+    benchPlan: () => checked(transport.invoke('bench_plan'), 'bench_plan', isBenchPlanOrNull),
+    benchReport: async (report) => {
+      await checked(transport.invoke('bench_report', { report }), 'bench_report', isNull);
+    },
+  };
 }
 
 export function createSpikeApi(transport: HostTransport): SpikeApi {

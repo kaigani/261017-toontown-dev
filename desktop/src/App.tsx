@@ -8,14 +8,14 @@ import { applyDefaultLayout } from './layout/defaultLayout';
 import { panelComponents } from './panels';
 import { StatusBar, type StatusMessage } from './status/StatusBar';
 
-// M0 spike page (C0.2), loaded only when the host was started with --spike tablet.
-const TabletSpike = lazy(() =>
-  import('./spikes/tablet/TabletSpike').then((m) => ({ default: m.TabletSpike })),
-);
-// M0 spike page (C0.3), loaded only when the host was started with --spike canvas.
-const CanvasSpike = lazy(() =>
-  import('./spikes/canvas/CanvasSpike').then((m) => ({ default: m.CanvasSpike })),
-);
+// M0 spike pages (C0.2 tablet, C0.3 canvas), loaded only when the host was started with --spike. They exist only in
+// the diagnostics build (src/m0Diagnostics.d.ts): the default bundle contains neither page nor its chunk (C0.4).
+const TabletSpike = __TT_M0_DIAGNOSTICS__
+  ? lazy(() => import('./spikes/tablet/TabletSpike').then((m) => ({ default: m.TabletSpike })))
+  : null;
+const CanvasSpike = __TT_M0_DIAGNOSTICS__
+  ? lazy(() => import('./spikes/canvas/CanvasSpike').then((m) => ({ default: m.CanvasSpike })))
+  : null;
 
 export function App() {
   const host = useHost();
@@ -61,6 +61,7 @@ export function App() {
   }, [host, ctx]);
 
   useEffect(() => {
+    if (!__TT_M0_DIAGNOSTICS__) return;
     maybeRunIpcBench(host).then(
       (ran) => {
         if (ran) setMessage({ kind: 'info', text: 'IPC benchmark reported' });
@@ -76,7 +77,7 @@ export function App() {
     applyDefaultLayout(event.api);
   }, []);
 
-  if (spike) {
+  if (spike && TabletSpike && CanvasSpike) {
     return (
       <Suspense fallback={<p>Loading spike…</p>}>
         {spike.name === 'canvas' ? <CanvasSpike mode={spike} /> : <TabletSpike mode={spike} />}
