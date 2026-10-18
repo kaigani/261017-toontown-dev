@@ -63,6 +63,7 @@ export interface SpikeMode {
 export interface NativePacket {
   kind: 'pose' | 'down' | 'up' | 'in' | 'out' | 'frame' | 'proximity';
   hostEpochMs: number;
+  /** Device clock (see `NativeStartInfo.deviceClock`); never compared with `hostEpochMs`. */
   deviceMs: number | null;
   x: number;
   y: number;
@@ -71,17 +72,64 @@ export interface NativePacket {
   tiltY: number | null;
   twist: number | null;
   tool: string;
+  /** Host sequence number (contiguous per listener); present on every packet received over the channel. */
+  seq?: number;
+  /** Raw OS tilt (macOS `NSEvent.tilt`, -1..1) next to the converted degrees. */
+  rawTiltX?: number | null;
+  rawTiltY?: number | null;
+  /** OS device identity (macOS `deviceID`), if any. */
+  deviceId?: string | null;
+  /** macOS `windowNumber` of the event (conversion input for `locationInWindow`). */
+  windowNumber?: number | null;
+}
+
+/** A packet as received over the channel: every extra is present. */
+export interface WirePacket extends NativePacket {
+  seq: number;
+  rawTiltX: number | null;
+  rawTiltY: number | null;
+  deviceId: string | null;
+  windowNumber: number | null;
 }
 
 export interface NativeBatch {
-  packets: NativePacket[];
+  packets: WirePacket[];
+  /** Packets the host discarded because its buffer was full, cumulative. */
+  hostDropped: number;
+  /** Channel sends that failed, cumulative. */
+  sendFailures: number;
+}
+
+/** Main-window geometry in physical pixels plus the backing scale factor. */
+export interface WindowGeometry {
+  scaleFactor: number;
+  innerX: number;
+  innerY: number;
+  innerWidth: number;
+  innerHeight: number;
 }
 
 export interface NativeStartInfo {
   backend: 'octotablet-ink' | 'appkit-nsevent';
   tablets: string[];
   timestampGranularityMs: number | null;
+  /** Clock domain of `deviceMs`. */
+  deviceClock: string;
+  /** Main-window geometry when the listener started (conversion inputs). */
+  window: WindowGeometry | null;
 }
+
+/** Host facts recorded in the log (`spike_environment`). */
+export interface SpikeEnvironment {
+  os: string;
+  arch: string;
+  osVersion: string | null;
+  webviewVersion: string | null;
+  cpuCount: number | null;
+  window: WindowGeometry | null;
+}
+
+export type PenPattern = 'sine' | 'zigzag' | 'stationary';
 
 export interface PenSimRequest {
   left: number;
@@ -90,6 +138,7 @@ export interface PenSimRequest {
   height: number;
   hz: number;
   frames: number;
+  pattern?: PenPattern;
 }
 
 export interface PenSimReport {
@@ -97,12 +146,29 @@ export interface PenSimReport {
   frames: number;
   hz: number;
   achievedHz: number;
+  /** Host wall clock immediately before each contact frame's inject call, ms since the Unix epoch. */
   injectEpochMs: number[];
+  /** Host wall clock when each inject call returned (round 1 and later). */
+  injectReturnEpochMs?: number[];
+  /** Screen position of each contact frame, physical pixels. */
+  screenX?: number[];
+  screenY?: number[];
+  /** Target rectangle on screen `[left, top, width, height]`, physical pixels. */
+  screenRect?: number[];
+  pattern?: PenPattern;
+  /** What was targeted: this app's canvas or the probe window. */
+  target?: 'webview' | 'nativeWindow';
   pressure: number[];
   tiltX: number[];
   tiltY: number[];
   rotation: number[];
 }
+
+/**
+ * Result of the native-window probe or of the raw-input sink (C02-R1-04). Plain JSON that is logged and read by the
+ * analyzer; the page reads only a few counters from it.
+ */
+export type ProbeResult = Record<string, unknown>;
 
 export interface SavedLog {
   path: string;

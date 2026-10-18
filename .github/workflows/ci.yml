@@ -146,13 +146,16 @@ jobs:
         timeout-minutes: 4
         run: |
           target/release/toontown.exe --spike tablet --spike-log "$PWD/tablet-spike-windows.json" --spike-auto
-          python -c "import json; r=json.load(open('tablet-spike-windows.json')); [print(m['message']) for m in r['statusLog']]; print(json.dumps(r['simulations'], indent=1)); print(json.dumps(r['summary']['web'], indent=1)); print(json.dumps(r['summary']['native'], indent=1))"
+          python -c "import json; r=json.load(open('tablet-spike-windows.json')); [print(m['message']) for m in r['statusLog']]"
+          # Everything below is recomputed from the raw samples (the log's own summaries are not used).
+          PYTHONIOENCODING=utf-8 python scripts/analyse-tablet-log.py tablet-spike-windows.json --json tablet-spike-windows.analysis.json
 
       - name: Collect artifacts
         run: |
           mkdir -p out
           cp ipc-bench.json out/
           if [ -f tablet-spike-windows.json ]; then cp tablet-spike-windows.json out/; fi
+          if [ -f tablet-spike-windows.analysis.json ]; then cp tablet-spike-windows.analysis.json out/; fi
           if [ "$RUNNER_OS" = "Windows" ]; then
             cp target/release/bundle/nsis/*.exe out/
             cp target/release/toontown.exe out/

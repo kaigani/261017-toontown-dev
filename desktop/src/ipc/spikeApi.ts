@@ -6,21 +6,38 @@ import {
   isNativeBatch,
   isNativeStartInfo,
   isPenSimReport,
+  isProbeResult,
   isSavedLog,
+  isSpikeEnvironment,
   isSpikeModeOrNull,
 } from './spikeSchemas';
 import type { HostTransport } from './transport';
-import type { NativeBatch, NativeStartInfo, PenSimReport, PenSimRequest, SavedLog, SpikeMode } from './types';
+import type {
+  NativeBatch,
+  NativeStartInfo,
+  PenSimReport,
+  PenSimRequest,
+  ProbeResult,
+  SavedLog,
+  SpikeEnvironment,
+  SpikeMode,
+} from './types';
 import { isNull } from './wireSchemas';
 
 export interface SpikeApi {
   /** The spike launch (`--spike tablet`), or null in a normal launch. */
   mode(): Promise<SpikeMode | null>;
+  /** Host facts for the log: OS build, webview runtime version, CPU count, window geometry. */
+  environment(): Promise<SpikeEnvironment>;
   /** Starts the native listener; `onBatch` receives validated batches, `onInvalid` counts rejected messages. */
   nativeStart(onBatch: (batch: NativeBatch) => void, onInvalid?: () => void): Promise<NativeStartInfo>;
   nativeStop(): Promise<void>;
   /** Windows only: injects a synthetic pen stroke into the app's own window. */
   simulatePen(request: PenSimRequest): Promise<PenSimReport>;
+  /** Windows only: the same stroke into a plain same-process native window with three listeners (C02-R1-04). */
+  probeNativeWindow(request: PenSimRequest): Promise<ProbeResult>;
+  /** Windows only: starts (`true`) or stops (`false`, returns its counts) the raw-input HID listener. */
+  rawInputSink(start: boolean): Promise<ProbeResult>;
   /** Writes the log to the `--spike-log` path. */
   saveLog(log: unknown): Promise<SavedLog>;
 }
@@ -46,6 +63,8 @@ async function checked<T>(
 export function createSpikeApi(transport: HostTransport): SpikeApi {
   return {
     mode: () => checked(transport.invoke('spike_mode'), 'spike_mode', isSpikeModeOrNull),
+    environment: () =>
+      checked(transport.invoke('spike_environment'), 'spike_environment', isSpikeEnvironment),
     nativeStart: (onBatch, onInvalid) => {
       if (!transport.invokeWithChannel) {
         return Promise.reject(
@@ -67,6 +86,14 @@ export function createSpikeApi(transport: HostTransport): SpikeApi {
     },
     simulatePen: (request) =>
       checked(transport.invoke('spike_pen_simulate', { request }), 'spike_pen_simulate', isPenSimReport),
+    probeNativeWindow: (request) =>
+      checked(
+        transport.invoke('spike_probe_native_window', { request }),
+        'spike_probe_native_window',
+        isProbeResult,
+      ),
+    rawInputSink: (start) =>
+      checked(transport.invoke('spike_raw_input_sink', { start }), 'spike_raw_input_sink', isProbeResult),
     saveLog: (log) => checked(transport.invoke('spike_save_log', { log }), 'spike_save_log', isSavedLog),
   };
 }

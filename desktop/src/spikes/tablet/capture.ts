@@ -15,12 +15,14 @@ function sample(
   dispatch: number,
   count: number,
   handlerT: number,
+  index = 0,
 ): WebSample {
   return {
     t: e.timeStamp,
     handlerT,
     kind,
     pointerType: e.pointerType,
+    pointerId: e.pointerId,
     x: e.clientX,
     y: e.clientY,
     pressure: e.pressure,
@@ -29,6 +31,7 @@ function sample(
     twist: e.twist,
     dispatch,
     coalescedCount: count,
+    coalescedIndex: index,
   };
 }
 
@@ -38,6 +41,8 @@ export class WebCapture {
   readonly frames: FrameRecord[] = [];
   /** Whether `getCoalescedEvents` exists in this webview at all. */
   readonly coalescedApi: boolean;
+  /** Samples not kept because MAX_SAMPLES was reached (they still reached `onSample`). */
+  truncated = 0;
   private dispatch = 0;
   private pendingDispatched = 0;
   private pendingSamples = 0;
@@ -53,7 +58,7 @@ export class WebCapture {
     element.addEventListener('pointerdown', this.down);
     element.addEventListener('pointermove', this.move);
     element.addEventListener('pointerup', this.up);
-    element.addEventListener('pointercancel', this.up);
+    element.addEventListener('pointercancel', this.cancel);
     this.raf = requestAnimationFrame(this.frame);
   }
 
@@ -61,17 +66,19 @@ export class WebCapture {
     this.element.removeEventListener('pointerdown', this.down);
     this.element.removeEventListener('pointermove', this.move);
     this.element.removeEventListener('pointerup', this.up);
-    this.element.removeEventListener('pointercancel', this.up);
+    this.element.removeEventListener('pointercancel', this.cancel);
     cancelAnimationFrame(this.raf);
   }
 
   clear(): void {
     this.samples.length = 0;
     this.frames.length = 0;
+    this.truncated = 0;
   }
 
   private push(s: WebSample): void {
     if (this.samples.length < MAX_SAMPLES) this.samples.push(s);
+    else this.truncated++;
     this.onSample(s);
   }
 
@@ -89,11 +96,17 @@ export class WebCapture {
     this.dispatch++;
     this.pendingDispatched++;
     this.pendingSamples += events.length;
-    for (const c of events) this.push(sample(c, 'move', this.dispatch, events.length, handlerT));
+    events.forEach((c, i) => {
+      this.push(sample(c, 'move', this.dispatch, events.length, handlerT, i));
+    });
   };
 
   private readonly up = (e: PointerEvent): void => {
     this.push(sample(e, 'up', this.dispatch, 1, performance.now()));
+  };
+
+  private readonly cancel = (e: PointerEvent): void => {
+    this.push({ ...sample(e, 'up', this.dispatch, 1, performance.now()), cancelled: true });
   };
 
   private readonly frame = (t: number): void => {

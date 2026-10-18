@@ -16,10 +16,23 @@ const goodBatch = {
       tiltY: null,
       twist: null,
       tool: 'pen',
+      seq: 0,
+      rawTiltX: null,
+      rawTiltY: null,
+      deviceId: null,
+      windowNumber: null,
     },
   ],
+  hostDropped: 0,
+  sendFailures: 0,
 };
-const startInfo = { backend: 'octotablet-ink', tablets: [], timestampGranularityMs: 1 };
+const startInfo = {
+  backend: 'octotablet-ink',
+  tablets: [],
+  timestampGranularityMs: 1,
+  deviceClock: 'test clock',
+  window: null,
+};
 
 function streaming(messages: unknown[], result: unknown = startInfo): HostTransport {
   return {
@@ -57,9 +70,7 @@ describe('spike API (C0.2)', () => {
   });
 
   it('rejects an invalid start result and transports without channels', async () => {
-    const host = createHostApi(
-      streaming([], { backend: 'magic', tablets: [], timestampGranularityMs: null }),
-    );
+    const host = createHostApi(streaming([], { ...startInfo, backend: 'magic' }));
     await expect(host.spike.nativeStart(vi.fn())).rejects.toMatchObject({ code: 'ipc.invalidResponse' });
     const noChannels: HostTransport = {
       kind: 'mock',

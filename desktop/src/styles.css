@@ -145,3 +145,36 @@ body,
   color: var(--muted);
   font-size: 11px;
 }
+
+.spike-readout {
+  max-height: 45%;
+  overflow: auto;
+}
+
+.spike-strokes,
+.spike-runs {
+  margin-top: 6px;
+  font-size: 11px;
+  border-collapse: collapse;
+}
+
+.spike-strokes th,
+.spike-strokes td,
+.spike-runs th,
+.spike-runs td {
+  padding: 1px 6px;
+  text-align: right;
+}
+
+.spike-meta {
+  flex: 0 0 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+}
+
+.spike-meta label {
+  display: flex;
+  flex-direction: column;
+}
