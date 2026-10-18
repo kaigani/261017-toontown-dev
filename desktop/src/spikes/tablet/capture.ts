@@ -39,6 +39,11 @@ function sample(
 export class WebCapture {
   readonly samples: WebSample[] = [];
   readonly frames: FrameRecord[] = [];
+  /**
+   * `contextmenu` events on the element (performance clock), e.g. from pen press-and-hold. They are suppressed: a
+   * drawing surface has no context menu, and a menu window left open would cover the canvas.
+   */
+  readonly contextMenus: { t: number; x: number; y: number }[] = [];
   /** Whether `getCoalescedEvents` exists in this webview at all. */
   readonly coalescedApi: boolean;
   /** Samples not kept because MAX_SAMPLES was reached (they still reached `onSample`). */
@@ -59,6 +64,7 @@ export class WebCapture {
     element.addEventListener('pointermove', this.move);
     element.addEventListener('pointerup', this.up);
     element.addEventListener('pointercancel', this.cancel);
+    element.addEventListener('contextmenu', this.contextMenu);
     this.raf = requestAnimationFrame(this.frame);
   }
 
@@ -67,6 +73,7 @@ export class WebCapture {
     this.element.removeEventListener('pointermove', this.move);
     this.element.removeEventListener('pointerup', this.up);
     this.element.removeEventListener('pointercancel', this.cancel);
+    this.element.removeEventListener('contextmenu', this.contextMenu);
     cancelAnimationFrame(this.raf);
   }
 
@@ -74,6 +81,7 @@ export class WebCapture {
     this.samples.length = 0;
     this.frames.length = 0;
     this.truncated = 0;
+    this.contextMenus.length = 0;
   }
 
   private push(s: WebSample): void {
@@ -103,6 +111,13 @@ export class WebCapture {
 
   private readonly up = (e: PointerEvent): void => {
     this.push(sample(e, 'up', this.dispatch, 1, performance.now()));
+  };
+
+  private readonly contextMenu = (e: MouseEvent): void => {
+    e.preventDefault();
+    if (this.contextMenus.length < MAX_SAMPLES) {
+      this.contextMenus.push({ t: e.timeStamp, x: e.clientX, y: e.clientY });
+    }
   };
 
   private readonly cancel = (e: PointerEvent): void => {

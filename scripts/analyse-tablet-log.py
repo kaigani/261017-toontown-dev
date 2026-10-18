@@ -539,6 +539,11 @@ def run_analysis(log):
                                             times=lambda p: p.get("hostEpochMs"), scale=pressure_scale(pressures))}
             raw = run.get("rawInput") or {}
             entry["rawInput"] = (raw.get("listeners") or {}).get("rawInput") if "listeners" in raw else (raw or None)
+            menus = log.get("web", {}).get("contextMenus")
+            p0, p1 = run.get("perfStart"), run.get("perfEnd")
+            if isinstance(menus, list) and is_number(p0) and is_number(p1):
+                # Pen press-and-hold surfaces as `contextmenu` (suppressed by the page); counted per run.
+                entry["contextMenus"] = sum(1 for m in menus if p0 <= m.get("t", -1) <= p1)
         results.append(entry)
     return results
 
@@ -629,6 +634,8 @@ def print_runs(runs):
                          f"{fidelity_text(w['twistFidelity'])}")
             parts.append(f"event - injection ms {lat_text(w.get('latencyMs'))}; "
                          f"handler - injection ms {lat_text(w.get('handlerLatencyMs'))}")
+            if "contextMenus" in r:
+                parts.append(f"contextmenu events (press-and-hold) during the run: {r['contextMenus']}")
         raw = r.get("rawInput") or {}
         if raw.get("deviceNames"):
             parts.append(f"raw devices: {raw['deviceNames']}")

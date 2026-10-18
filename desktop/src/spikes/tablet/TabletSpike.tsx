@@ -613,7 +613,13 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
       nativeInfo: nativeInfoRef.current,
       runs: runs.current,
       simulations: simulations.current,
-      web: { samples, frames, truncated: c?.truncated ?? 0, maxSamples: MAX_SAMPLES },
+      web: {
+        samples,
+        frames,
+        contextMenus: c?.contextMenus ?? [],
+        truncated: c?.truncated ?? 0,
+        maxSamples: MAX_SAMPLES,
+      },
       native: { packets: native.current, ...nativeCounters.current, maxSamples: MAX_SAMPLES },
       statusLog: statusLog.current,
       // Convenience only: the analyzer recomputes all of this from the raw data above.
