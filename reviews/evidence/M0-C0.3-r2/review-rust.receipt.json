@@ -1,0 +1,5 @@
+{
+  "command": "cargo test --release --locked -p tt-render --test c03_fixed_configurations --test c03_r1_stress --test c03_r2_quality",
+  "exitCode": 0,
+  "seconds": 1.7978966236114502
+}

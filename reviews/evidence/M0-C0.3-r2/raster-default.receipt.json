@@ -1,0 +1,5 @@
+{
+  "command": "cargo run --release --locked -p tt-render --example c03_raster -- --repeat 3 --out target/review-r2/default --report reviews/evidence/M0-C0.3-r2/raster-default.json --check crates/render/examples/c03_raster/hashes.json",
+  "exitCode": 0,
+  "seconds": 47.403
+}

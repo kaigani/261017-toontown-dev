@@ -1,0 +1,18 @@
+raster determinism (macos-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:20:12.0322680Z ^[[36;1mcargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1^[[0m
+raster determinism (macos-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:20:17.5419140Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:33.7102986Z test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:40.4432264Z test fixed_scalar_configuration_hashes_identically_across_oses ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:40.4433038Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.83s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:40.4534205Z test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:40.5051894Z test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:50.4399934Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 9.99s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:43.9005030Z test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:59.7883780Z test fixed_scalar_configuration_hashes_identically_across_oses ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:59.8164480Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.24s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:59.8321790Z test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:22:59.9613710Z test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T12:23:20.0806750Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 20.27s
+raster determinism (ubuntu-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:19:41.9187850Z ^[[36;1mcargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1^[[0m
+raster determinism (ubuntu-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:19:46.0521205Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+raster determinism (windows-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:20:09.5455634Z ^[[36;1mcargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1^[[0m
+raster determinism (windows-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:20:15.6800333Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s

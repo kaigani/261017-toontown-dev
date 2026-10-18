@@ -1,0 +1,24 @@
+{
+  "command": [
+    "cargo",
+    "run",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-render",
+    "--example",
+    "c03_raster",
+    "--",
+    "--repeat",
+    "3",
+    "--out",
+    "target/review-r2/native-png",
+    "--report",
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r2\\reviews\\evidence\\M0-C0.3-r2\\raster-native.json",
+    "--check",
+    "crates/render/examples/c03_raster/hashes.json"
+  ],
+  "flags": "-C target-cpu=native",
+  "exitCode": 0,
+  "seconds": 36.89536428451538
+}

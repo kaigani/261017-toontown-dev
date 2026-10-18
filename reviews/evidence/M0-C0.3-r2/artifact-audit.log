@@ -1,0 +1,128 @@
+{
+  "goldens": 234,
+  "goldenBytes": 6088664,
+  "artifactPngsCompared": 2808,
+  "simdDifferentScenes": {
+    "vello_cpu": [
+      "aa_edge_angles",
+      "glyph_evenodd",
+      "glyph_nonzero",
+      "perf_2000_cubics_512",
+      "stress_00",
+      "stress_01",
+      "stress_02",
+      "stress_03",
+      "stress_04",
+      "stress_05",
+      "stress_06",
+      "stress_07",
+      "stress_08",
+      "stress_09",
+      "stress_10",
+      "stress_11",
+      "stress_12",
+      "stress_13",
+      "stress_14",
+      "stress_15"
+    ],
+    "vello_cpu_f32": [
+      "aa_edge_angles",
+      "glyph_evenodd",
+      "glyph_nonzero",
+      "perf_2000_cubics_512",
+      "stress_00",
+      "stress_01",
+      "stress_02",
+      "stress_03",
+      "stress_04",
+      "stress_05",
+      "stress_06",
+      "stress_07",
+      "stress_08",
+      "stress_09",
+      "stress_10",
+      "stress_11",
+      "stress_12",
+      "stress_13",
+      "stress_14",
+      "stress_15"
+    ]
+  },
+  "speed": [
+    {
+      "os": "Windows",
+      "kind": "fallback",
+      "u8Ms": 11.9579,
+      "f32Ms": 11.8686,
+      "statisticalMedianPercent": -0.7467866431396741,
+      "reportU8Ms": 11.9579,
+      "reportF32Ms": 11.8686,
+      "reportUpperMedianPercent": -0.7467866431396741
+    },
+    {
+      "os": "Windows",
+      "kind": "simd",
+      "u8Ms": 8.559199999999999,
+      "f32Ms": 9.139899999999999,
+      "statisticalMedianPercent": 6.784512571268353,
+      "reportU8Ms": 8.559199999999999,
+      "reportF32Ms": 9.139899999999999,
+      "reportUpperMedianPercent": 6.784512571268353
+    },
+    {
+      "os": "macOS",
+      "kind": "fallback",
+      "u8Ms": 6.650542,
+      "f32Ms": 6.981625,
+      "statisticalMedianPercent": 4.9782859803005675,
+      "reportU8Ms": 6.650542,
+      "reportF32Ms": 6.981625,
+      "reportUpperMedianPercent": 4.9782859803005675
+    },
+    {
+      "os": "macOS",
+      "kind": "simd",
+      "u8Ms": 5.2222919999999995,
+      "f32Ms": 5.063458,
+      "statisticalMedianPercent": -3.041461488557129,
+      "reportU8Ms": 5.2222919999999995,
+      "reportF32Ms": 5.063458,
+      "reportUpperMedianPercent": -3.041461488557129
+    },
+    {
+      "os": "Linux",
+      "kind": "fallback",
+      "u8Ms": 7.992064999999999,
+      "f32Ms": 8.655795000000001,
+      "statisticalMedianPercent": 8.30486238537853,
+      "reportU8Ms": 7.992064999999999,
+      "reportF32Ms": 8.655795000000001,
+      "reportUpperMedianPercent": 8.30486238537853
+    },
+    {
+      "os": "Linux",
+      "kind": "simd",
+      "u8Ms": 4.981151,
+      "f32Ms": 5.711972,
+      "statisticalMedianPercent": 14.671729485815632,
+      "reportU8Ms": 4.981151,
+      "reportF32Ms": 5.711972,
+      "reportUpperMedianPercent": 14.671729485815632
+    }
+  ],
+  "provenance": [
+    {
+      "os": "Windows",
+      "committedReportIdentical": true
+    },
+    {
+      "os": "macOS",
+      "committedReportIdentical": true
+    },
+    {
+      "os": "Linux",
+      "committedReportIdentical": true
+    }
+  ],
+  "nativeEqualsDefault": true
+}

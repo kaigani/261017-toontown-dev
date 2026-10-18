@@ -1,0 +1,29 @@
+.FF......
+======================================================================
+FAIL: test_c03_r2_01_compensating_point_verb_counts (__main__.AnalyzerRound2.test_c03_r2_01_compensating_point_verb_counts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r2\tests\adversarial\c03-r2-tooling.py", line 57, in test_c03_r2_01_compensating_point_verb_counts
+    self.reject(mutate)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r2\tests\adversarial\c03-r2-tooling.py", line 25, in reject
+    self.assertNotEqual(result.returncode,0,'contradictory evidence printed a success table')
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : contradictory evidence printed a success table
+
+======================================================================
+FAIL: test_c03_r2_01_nondefault_seed_does_not_bypass_workload (__main__.AnalyzerRound2.test_c03_r2_01_nondefault_seed_does_not_bypass_workload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r2\tests\adversarial\c03-r2-tooling.py", line 67, in test_c03_r2_01_nondefault_seed_does_not_bypass_workload
+    self.reject(mutate)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r2\tests\adversarial\c03-r2-tooling.py", line 25, in reject
+    self.assertNotEqual(result.returncode,0,'contradictory evidence printed a success table')
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : contradictory evidence printed a success table
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.531s
+
+FAILED (failures=2)
