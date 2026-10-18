@@ -22,6 +22,8 @@ export const MOCK_ENGINE_INFO: EngineInfo = {
   runMode: 'attached',
 };
 
+const utf8 = new TextEncoder();
+
 type Outcome = { ok: true; value: unknown } | { ok: false; error: ErrorInfo };
 
 export function createMockTransport(): MockTransport {
@@ -31,7 +33,8 @@ export function createMockTransport(): MockTransport {
   const handlers: Record<string, (args: Record<string, unknown>) => Outcome> = {
     ping: (args) => {
       const request = args['request'] as PingRequest;
-      const length = request.payload?.length ?? 0;
+      // UTF-8 bytes, exactly like Rust's `String::len` in crates/engine/src/ping.rs (not UTF-16 code units).
+      const length = request.payload === undefined ? 0 : utf8.encode(request.payload).length;
       if (length > MOCK_MAX_PING_PAYLOAD_BYTES) {
         return {
           ok: false,
