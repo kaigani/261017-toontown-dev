@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python",
+    "scripts/check-diagnostics-gating.py",
+    "target/release/toontown.exe",
+    "--expect",
+    "default"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r1",
+  "started": "2026-10-18T14:25:51.013726+00:00",
+  "seconds": 0.055,
+  "exit": 0
+}

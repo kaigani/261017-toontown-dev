@@ -1,0 +1,80 @@
+{
+  "reviewed": "47cee1e392bda2aa4356bf60a6293317ecd6da1b",
+  "branch": "review/m0-c04-r1",
+  "tools": {
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "cargo-deny": "cargo-deny 0.20.2",
+    "node": "v22.23.2",
+    "pnpm": "10.12.1",
+    "python": "Python 3.13.1"
+  },
+  "gate_receipts": {
+    "binary-gating-default.receipt": 0,
+    "binary-gating-diagnostics.receipt": 0,
+    "canvas-forced-gl.receipt": 0,
+    "canvas-local-original.receipt": 0,
+    "canvas-reviewer-r3.receipt": 0,
+    "cargo-release-default-scan.receipt": 0,
+    "cargo-release-default.receipt": 0,
+    "clippy-diagnostics.receipt": 0,
+    "clippy.receipt": 0,
+    "deny.receipt": 0,
+    "features-desktop.receipt": 0,
+    "features-headless.receipt": 0,
+    "fmt.receipt": 0,
+    "format-check.receipt": 0,
+    "frontend-build-default.receipt": 0,
+    "frontend-build-diagnostics.receipt": 0,
+    "frontend-final-default.receipt": 0,
+    "headless-build.receipt": 0,
+    "headless-guard.receipt": 0,
+    "headless-selftest-1.receipt": 0,
+    "headless-selftest-2.receipt": 0,
+    "licenses-check.receipt": 0,
+    "lint.receipt": 0,
+    "raster.receipt": 0,
+    "rust-tests-diagnostics.receipt": 0,
+    "rust-tests.receipt": 0,
+    "tablet-matrix5.receipt": 0,
+    "tauri-build-default.receipt": 0,
+    "tauri-build-diagnostics.receipt": 0,
+    "test.receipt": 0,
+    "typecheck.receipt": 0
+  },
+  "selftest_pairs": [
+    [
+      "engine.components",
+      true
+    ],
+    [
+      "engine.versions",
+      true
+    ],
+    [
+      "engine.ping",
+      true
+    ],
+    [
+      "determinism.ieee754",
+      true
+    ],
+    [
+      "headless.mcpLinked",
+      true
+    ]
+  ],
+  "raster_entries": 234,
+  "raster_equal_committed": true,
+  "ci_jobs_per_run": {
+    "39134580275": 8,
+    "39133650053": 8
+  },
+  "ci_frontend_files_same_31": true,
+  "protected_paths_changed": false,
+  "finding_counts": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 3
+  },
+  "reviewed_diff_sha256": "d0479ad03c444e116dd56cee36f41b8e8329ea151f4291c15259e831e9fda1ee"
+}

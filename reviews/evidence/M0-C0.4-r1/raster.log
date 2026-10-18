@@ -1,0 +1,85 @@
+   Compiling crossbeam-utils v0.8.23
+   Compiling crossbeam-epoch v0.9.21
+   Compiling arrayvec v0.7.8
+   Compiling crossbeam-deque v0.8.8
+   Compiling simd-adler32 v0.3.10
+   Compiling adler2 v2.0.1
+   Compiling smallvec v1.16.3
+   Compiling thiserror v2.0.21
+   Compiling rayon-core v1.13.0
+   Compiling serde_core v1.0.229
+   Compiling linebender_resource_handle v0.1.1
+   Compiling foldhash v0.2.0
+   Compiling fearless_simd v0.7.0
+   Compiling either v1.19.0
+   Compiling bitflags v2.13.2
+   Compiling num-traits v0.2.19
+   Compiling crc32fast v1.5.2
+   Compiling thread_local v1.1.10
+   Compiling syn v3.0.9
+   Compiling miniz_oxide v0.9.1
+   Compiling miniz_oxide v0.8.9
+   Compiling fdeflate v0.3.7
+   Compiling hashbrown v0.17.1
+   Compiling polycool v0.4.0
+   Compiling kurbo v0.13.1
+   Compiling flate2 v1.1.10
+   Compiling png v0.18.1
+   Compiling crossbeam-channel v0.5.17
+   Compiling euclid v0.22.14
+   Compiling ordered-channel v1.2.0
+   Compiling guillotiere v0.7.0
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling rayon v1.12.0
+   Compiling bytemuck v1.25.2
+   Compiling serde_json v1.0.154
+   Compiling color v0.3.3
+   Compiling peniko v0.6.1
+   Compiling vello_common v0.3.0
+   Compiling vello_cpu v0.3.0
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c04-r1\crates\render)
+    Finished `release` profile [optimized + debuginfo] target(s) in 31.27s
+     Running `target\release\examples\c03_raster.exe --repeat 3 --out target/c04-review-raster --report C:\Users\kaiga\work\review\m0-c04-r1\reviews\evidence\M0-C0.4-r1\raster.json --check crates/render/examples/c03_raster/hashes.json`
+"windows" "x86_64" (vello_cpu detected SIMD level "Avx2(Avx2 { _private: () })")
+| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |
+|---|---|---|---|---|---|---|---|
+| cubic_blobs | 0.123 | 0.059 | 0.019 | 0.612 | 0.056 | 0.050 | 62 |
+| thin_strokes | 0.088 | 0.059 | 0.069 | 0.185 | 0.076 | 0.060 | 1 |
+| aa_edge_angles | 0.263 | 0.149 | 0.102 | 0.180 | 0.161 | 0.114 | 3 |
+| translucent_overlap | 0.100 | 0.043 | 0.027 | 0.120 | 0.057 | 0.052 | 30 |
+| alpha_stack | 0.310 | 0.076 | 0.066 | 0.165 | 0.090 | 0.079 | 1 |
+| linear_gradient | 0.253 | 0.050 | 0.018 | 0.394 | 0.067 | 0.046 | 1 |
+| radial_gradient | 0.259 | 0.055 | 0.024 | 0.115 | 0.070 | 0.053 | 48 |
+| gradient_transformed | 0.158 | 0.054 | 0.018 | 0.120 | 0.058 | 0.047 | 2 |
+| clip_circle | 0.115 | 0.101 | 0.052 | 0.244 | 0.108 | 0.099 | 43 |
+| clip_nested | 0.165 | 0.072 | 0.030 | 0.175 | 0.077 | 0.062 | 68 |
+| glyph_nonzero | 0.061 | 0.040 | 0.016 | 0.236 | 0.051 | 0.052 | 58 |
+| glyph_evenodd | 0.076 | 0.050 | 0.016 | 0.129 | 0.056 | 0.047 | 58 |
+| degenerate | 0.033 | 0.034 | 0.010 | 0.124 | 0.042 | 0.040 | 0 |
+| star_nonzero | 0.051 | 0.042 | 0.014 | 0.140 | 0.049 | 0.046 | 1 |
+| star_evenodd | 0.077 | 0.047 | 0.015 | 0.137 | 0.051 | 0.045 | 1 |
+| coincident_edges | 0.043 | 0.043 | 0.020 | 0.130 | 0.049 | 0.056 | 2 |
+| extreme_coordinates | 0.094 | 0.018 | 0.014 | 0.132 | 0.045 | 0.045 | 3 |
+| subpixel_translation | 0.068 | 0.051 | 0.022 | 0.146 | 0.060 | 0.061 | 51 |
+| non_integer_scales | 0.206 | 0.064 | 0.041 | 0.151 | 0.070 | 0.061 | 61 |
+| stroked_curves | 0.198 | 0.052 | 0.026 | 0.133 | 0.065 | 0.055 | 132 |
+| many_small_paths | 0.374 | 0.265 | 0.213 | 0.231 | 0.309 | 0.209 | 15 |
+| hairline_grid | 0.102 | 0.101 | 0.056 | 0.148 | 0.121 | 0.083 | 1 |
+| perf_2000_cubics_512 | 18.360 | 6.373 | 4.616 | 2.698 | 6.889 | 5.152 | 89 |
+| stress_00 | 3.076 | 0.456 | 0.318 | 0.466 | 0.484 | 0.359 | 72 |
+| stress_01 | 3.002 | 0.426 | 0.249 | 0.388 | 0.385 | 0.274 | 72 |
+| stress_02 | 2.953 | 0.469 | 0.354 | 0.347 | 0.363 | 0.293 | 70 |
+| stress_03 | 3.015 | 0.429 | 0.234 | 0.408 | 0.366 | 0.297 | 70 |
+| stress_04 | 2.896 | 0.433 | 0.331 | 0.305 | 0.396 | 0.295 | 98 |
+| stress_05 | 3.002 | 0.433 | 0.255 | 0.344 | 0.363 | 0.275 | 64 |
+| stress_06 | 3.005 | 0.436 | 0.244 | 0.308 | 0.359 | 0.269 | 63 |
+| stress_07 | 3.016 | 0.424 | 0.233 | 0.303 | 0.364 | 0.274 | 63 |
+| stress_08 | 3.118 | 0.433 | 0.235 | 0.421 | 0.359 | 0.280 | 65 |
+| stress_09 | 5.233 | 0.429 | 0.236 | 0.316 | 0.359 | 0.287 | 57 |
+| stress_10 | 2.971 | 0.439 | 0.234 | 0.321 | 0.341 | 0.292 | 60 |
+| stress_11 | 3.015 | 0.430 | 0.238 | 0.328 | 0.367 | 0.272 | 61 |
+| stress_12 | 2.830 | 0.440 | 0.232 | 0.285 | 0.397 | 0.283 | 62 |
+| stress_13 | 2.955 | 0.410 | 0.227 | 0.303 | 0.387 | 0.302 | 79 |
+| stress_14 | 2.851 | 0.482 | 0.229 | 0.260 | 0.391 | 0.292 | 80 |
+| stress_15 | 3.009 | 0.417 | 0.233 | 0.278 | 0.379 | 0.291 | 78 |

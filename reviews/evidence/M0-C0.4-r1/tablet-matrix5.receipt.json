@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python",
+    "scripts/analyse-tablet-log.py",
+    "reviews/evidence/M0-C0.2/tablet-spike-windows-runner-r2-matrix5.json.gz"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r1",
+  "started": "2026-10-18T14:25:56.514880+00:00",
+  "seconds": 0.101,
+  "exit": 0
+}

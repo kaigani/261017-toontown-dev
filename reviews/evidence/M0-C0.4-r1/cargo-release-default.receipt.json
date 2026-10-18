@@ -1,0 +1,14 @@
+{
+  "command": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-desktop"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r1",
+  "started": "2026-10-18T14:25:18.962144+00:00",
+  "seconds": 32.051,
+  "exit": 0
+}

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm --dir desktop build"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r1",
+  "started": "2026-10-18T14:20:08.001796+00:00",
+  "seconds": 1.605,
+  "exit": 0
+}

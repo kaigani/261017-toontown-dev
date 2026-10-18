@@ -1,0 +1,34 @@
+{
+  "fixture": {
+    "manifest": "[workspace]\n[package]\nname = \"review-native-avcodec-link\"\nversion = \"0.1.0\"\nedition = \"2024\"\nlicense = \"MIT\"\nlinks = \"avcodec\"\nbuild = \"build.rs\"\n[lib]\npath = \"lib.rs\"\n",
+    "build_script": "fn main() { println!(\"cargo:rustc-link-lib=dylib=avcodec\"); }\n",
+    "note": "No FFmpeg binary is fetched or linked; cargo deny inspects metadata, not native dependencies."
+  },
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "generate-lockfile",
+        "--manifest-path",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r1\\target\\c04-license-probe\\Cargo.toml"
+      ],
+      "exit": 0
+    },
+    {
+      "command": [
+        "cargo",
+        "deny",
+        "--manifest-path",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r1\\target\\c04-license-probe\\Cargo.toml",
+        "--locked",
+        "--config",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r1\\deny.toml",
+        "check",
+        "licenses",
+        "bans",
+        "sources"
+      ],
+      "exit": 0
+    }
+  ]
+}
