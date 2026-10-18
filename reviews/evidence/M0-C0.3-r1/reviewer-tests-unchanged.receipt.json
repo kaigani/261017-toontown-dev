@@ -1,0 +1,13 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "ac78acb..11247ff",
+    "--",
+    "tests/adversarial",
+    "desktop/src/test"
+  ],
+  "startedUtc": "2026-10-18T11:42:54.867084+00:00",
+  "elapsedSeconds": 0.02058549999492243,
+  "exitCode": 0
+}

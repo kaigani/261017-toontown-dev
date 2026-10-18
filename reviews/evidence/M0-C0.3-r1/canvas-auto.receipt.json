@@ -1,0 +1,15 @@
+{
+  "command": [
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r1\\target\\release\\toontown.exe",
+    "--spike",
+    "canvas",
+    "--spike-log",
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r1\\reviews\\evidence\\M0-C0.3-r1\\canvas-auto.json",
+    "--spike-auto",
+    "--spike-renderer",
+    "auto"
+  ],
+  "startedUtc": "2026-10-18T11:30:30.387613+00:00",
+  "elapsedSeconds": 75.53851409995696,
+  "exitCode": 0
+}

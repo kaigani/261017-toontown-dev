@@ -1,0 +1,27 @@
+"windows" "x86_64" (vello_cpu detected SIMD level "Avx2(Avx2 { _private: () })")
+| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | ttraster vs vello max diff |
+|---|---|---|---|---|---|
+| cubic_blobs | 0.127 | 0.139 | 0.107 | 0.529 | 62 |
+| thin_strokes | 0.069 | 0.082 | 0.104 | 0.290 | 1 |
+| aa_edge_angles | 0.290 | 0.187 | 0.182 | 0.314 | 3 |
+| translucent_overlap | 0.124 | 0.055 | 0.058 | 0.141 | 30 |
+| alpha_stack | 0.315 | 0.083 | 0.100 | 0.128 | 1 |
+| linear_gradient | 0.253 | 0.054 | 0.085 | 0.238 | 1 |
+| radial_gradient | 0.275 | 0.063 | 0.090 | 0.159 | 48 |
+| gradient_transformed | 0.159 | 0.042 | 0.059 | 0.191 | 2 |
+| clip_circle | 0.119 | 0.142 | 0.108 | 0.192 | 43 |
+| clip_nested | 0.170 | 0.093 | 0.080 | 0.207 | 68 |
+| glyph_nonzero | 0.064 | 0.048 | 0.058 | 0.327 | 58 |
+| glyph_evenodd | 0.078 | 0.049 | 0.058 | 0.163 | 58 |
+| degenerate | 0.054 | 0.038 | 0.050 | 0.141 | 0 |
+| star_nonzero | 0.062 | 0.044 | 0.054 | 0.118 | 1 |
+| star_evenodd | 0.087 | 0.043 | 0.052 | 0.169 | 1 |
+| coincident_edges | 0.052 | 0.053 | 0.054 | 0.149 | 2 |
+| extreme_coordinates | 0.113 | 0.041 | 0.052 | 0.123 | 3 |
+| subpixel_translation | 0.093 | 0.058 | 0.067 | 0.124 | 51 |
+| non_integer_scales | 0.232 | 0.087 | 0.099 | 0.134 | 61 |
+| stroked_curves | 0.192 | 0.068 | 0.067 | 0.129 | 132 |
+| many_small_paths | 0.417 | 0.310 | 0.232 | 0.280 | 15 |
+| hairline_grid | 0.117 | 0.121 | 0.112 | 0.304 | 1 |
+| perf_2000_cubics_512 | 18.026 | 6.568 | 4.762 | 2.740 | 89 |
+FAIL ttraster/aa_edge_angles pixels: expected "0000000000000000000000000000000000000000000000000000000000000000" got "a48f7652e86697bec854bb760673a6d06f3ea9632450c04fd6ea86e75c98f29b"

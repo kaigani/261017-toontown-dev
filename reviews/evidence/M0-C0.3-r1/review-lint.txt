@@ -1,0 +1,25 @@
+
+> toontown-workspace@ lint C:\Users\kaiga\work\review\m0-c03-r1
+> pnpm -r --workspace-concurrency=1 lint
+
+
+> @toontown/desktop@0.0.1 lint C:\Users\kaiga\work\review\m0-c03-r1\desktop
+> eslint . --max-warnings 0
+
+
+C:\Users\kaiga\work\review\m0-c03-r1\desktop\src\test\c03-r1-binary.test.ts
+  38:44  error  Returning a void expression from an arrow function shorthand is forbidden. Please add braces to the arrow function  @typescript-eslint/no-confusing-void-expression
+  39:47  error  Returning a void expression from an arrow function shorthand is forbidden. Please add braces to the arrow function  @typescript-eslint/no-confusing-void-expression
+  49:37  error  Returning a void expression from an arrow function shorthand is forbidden. Please add braces to the arrow function  @typescript-eslint/no-confusing-void-expression
+  50:36  error  Returning a void expression from an arrow function shorthand is forbidden. Please add braces to the arrow function  @typescript-eslint/no-confusing-void-expression
+  51:43  error  Returning a void expression from an arrow function shorthand is forbidden. Please add braces to the arrow function  @typescript-eslint/no-confusing-void-expression
+  52:39  error  Returning a void expression from an arrow function shorthand is forbidden. Please add braces to the arrow function  @typescript-eslint/no-confusing-void-expression
+  53:44  error  Returning a void expression from an arrow function shorthand is forbidden. Please add braces to the arrow function  @typescript-eslint/no-confusing-void-expression
+
+✖ 7 problems (7 errors, 0 warnings)
+  7 errors and 0 warnings potentially fixable with the `--fix` option.
+
+C:\Users\kaiga\work\review\m0-c03-r1\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 lint: `eslint . --max-warnings 0`
+Exit status 1
+ ELIFECYCLE  Command failed with exit code 1.

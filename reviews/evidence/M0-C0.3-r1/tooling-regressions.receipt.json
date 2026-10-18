@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python",
+    "tests/adversarial/c03-r1-tooling.py"
+  ],
+  "startedUtc": "2026-10-18T11:38:39.066175+00:00",
+  "elapsedSeconds": 0.7137190999928862,
+  "exitCode": 1
+}

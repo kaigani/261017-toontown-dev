@@ -1,0 +1,800 @@
+{
+  "sceneCounts": {
+    "brush10k": {
+      "groups": 1,
+      "paths": 10000,
+      "points": 1088402,
+      "verbs": 1098402,
+      "bytes": 10085716,
+      "strokePaths": 0,
+      "fillPaths": 10000,
+      "cubics": 0,
+      "segments": 0
+    },
+    "groups1k": {
+      "groups": 1000,
+      "paths": 20000,
+      "points": 170000,
+      "verbs": 80000,
+      "bytes": 2024072,
+      "strokePaths": 10000,
+      "fillPaths": 10000,
+      "cubics": 50000,
+      "segments": 101961
+    },
+    "paths100k": {
+      "groups": 1,
+      "paths": 100000,
+      "points": 700000,
+      "verbs": 300000,
+      "bytes": 8700096,
+      "strokePaths": 100000,
+      "fillPaths": 0,
+      "cubics": 200000,
+      "segments": 2832713
+    }
+  },
+  "independentTables": {
+    "canvas-ci-macos-runner-39121780905.json.gz": [
+      {
+        "backend": "webgpu",
+        "scene": "paths100k",
+        "error": "webgpu is not available in this webview"
+      },
+      {
+        "backend": "webgpu",
+        "scene": "groups1k",
+        "error": "webgpu is not available in this webview"
+      },
+      {
+        "backend": "webgpu",
+        "scene": "brush10k",
+        "error": "webgpu is not available in this webview"
+      },
+      {
+        "backend": "webgl2",
+        "scene": "paths100k",
+        "fps": 22.055888223552895,
+        "intervalMs": {
+          "p50": 44,
+          "p95": 64,
+          "max": 166
+        },
+        "transferMs": {
+          "p50": 18,
+          "p95": 165.99999999999957,
+          "max": 165.99999999999957
+        },
+        "encodeMs": {
+          "p50": 2.525208,
+          "p95": 24.253417,
+          "max": 24.253417
+        },
+        "decodeMs": 416.0000000000009,
+        "upload": {
+          "completeMs": 63.99999999999909,
+          "cpuMs": 63.99999999999909
+        },
+        "gpuMs": null,
+        "refreshMs": 16.639344262295083,
+        "durationMs": 10020
+      },
+      {
+        "backend": "webgl2",
+        "scene": "groups1k",
+        "fps": 60.0,
+        "intervalMs": {
+          "p50": 17,
+          "p95": 19,
+          "max": 30
+        },
+        "transferMs": {
+          "p50": 3,
+          "p95": 13.00000000000182,
+          "max": 13.00000000000182
+        },
+        "encodeMs": {
+          "p50": 0.394458,
+          "p95": 0.611542,
+          "max": 0.611542
+        },
+        "decodeMs": 60.00000000000182,
+        "upload": {
+          "completeMs": 0.999999999998181,
+          "cpuMs": 0.999999999998181
+        },
+        "gpuMs": null,
+        "refreshMs": 16.508196721311474,
+        "durationMs": 10000
+      },
+      {
+        "backend": "webgl2",
+        "scene": "brush10k",
+        "fps": 60.0,
+        "intervalMs": {
+          "p50": 17,
+          "p95": 18,
+          "max": 20
+        },
+        "transferMs": {
+          "p50": 10,
+          "p95": 35,
+          "max": 35
+        },
+        "encodeMs": {
+          "p50": 1.451917,
+          "p95": 6.916542,
+          "max": 6.916542
+        },
+        "decodeMs": 493,
+        "upload": {
+          "completeMs": 7,
+          "cpuMs": 7
+        },
+        "gpuMs": null,
+        "refreshMs": 16.8,
+        "durationMs": 10000
+      }
+    ],
+    "canvas-ci-windows-runner-39121780905.json.gz": [
+      {
+        "backend": "webgpu",
+        "scene": "paths100k",
+        "error": "webgpu is not available in this webview"
+      },
+      {
+        "backend": "webgpu",
+        "scene": "groups1k",
+        "error": "webgpu is not available in this webview"
+      },
+      {
+        "backend": "webgpu",
+        "scene": "brush10k",
+        "error": "webgpu is not available in this webview"
+      },
+      {
+        "backend": "webgl2",
+        "scene": "paths100k",
+        "fps": 0.8055998138169318,
+        "intervalMs": {
+          "p50": 1437.5,
+          "p95": 1468.7000000000007,
+          "max": 1468.7000000000007
+        },
+        "transferMs": {
+          "p50": 60,
+          "p95": 3047.7000000000116,
+          "max": 3047.7000000000116
+        },
+        "encodeMs": {
+          "p50": 2.8429,
+          "p95": 5.384,
+          "max": 5.384
+        },
+        "decodeMs": 129.40000000002328,
+        "upload": {
+          "completeMs": 42.899999999965075,
+          "cpuMs": 42.899999999965075
+        },
+        "gpuMs": null,
+        "refreshMs": 15.625000000000014,
+        "durationMs": 11171.800000000001
+      },
+      {
+        "backend": "webgl2",
+        "scene": "groups1k",
+        "fps": 16.926405192099672,
+        "intervalMs": {
+          "p50": 62.5,
+          "p95": 78.20000000000073,
+          "max": 93.79999999999927
+        },
+        "transferMs": {
+          "p50": 16.5,
+          "p95": 230.59999999997672,
+          "max": 230.59999999997672
+        },
+        "encodeMs": {
+          "p50": 0.7225,
+          "p95": 12.7456,
+          "max": 12.7456
+        },
+        "decodeMs": 54.20000000001164,
+        "upload": {
+          "completeMs": 3.2000000000116415,
+          "cpuMs": 3.2000000000116415
+        },
+        "gpuMs": null,
+        "refreshMs": 15.625,
+        "durationMs": 9984.400000000001
+      },
+      {
+        "backend": "webgl2",
+        "scene": "brush10k",
+        "fps": 8.9,
+        "intervalMs": {
+          "p50": 109.40000000000146,
+          "p95": 140.6999999999971,
+          "max": 156.1999999999971
+        },
+        "transferMs": {
+          "p50": 68.30000000004657,
+          "p95": 89.19999999995343,
+          "max": 89.19999999995343
+        },
+        "encodeMs": {
+          "p50": 2.9875,
+          "p95": 3.9989,
+          "max": 3.9989
+        },
+        "decodeMs": 390.9000000000233,
+        "upload": {
+          "completeMs": 16,
+          "cpuMs": 16
+        },
+        "gpuMs": null,
+        "refreshMs": 15.625,
+        "durationMs": 10000.0
+      }
+    ],
+    "canvas-local-windows-rtx4090-auto.json.gz": [
+      {
+        "backend": "webgpu",
+        "scene": "paths100k",
+        "fps": 59.998998347273,
+        "intervalMs": {
+          "p50": 16.69999999999891,
+          "p95": 16.90000000000009,
+          "max": 17.400000000000546
+        },
+        "transferMs": {
+          "p50": 50.29999995231629,
+          "p95": 52.60000002384186,
+          "max": 52.60000002384186
+        },
+        "encodeMs": {
+          "p50": 1.959,
+          "p95": 2.0941,
+          "max": 2.0941
+        },
+        "decodeMs": 85.30000001192093,
+        "upload": {
+          "completeMs": 68.40000003576279,
+          "cpuMs": 23.30000001192093
+        },
+        "gpuMs": {
+          "p50": 8.5,
+          "p95": 11.5,
+          "max": 15.900000035762789
+        },
+        "refreshMs": 16.666666666666668,
+        "durationMs": 9983.5
+      },
+      {
+        "backend": "webgpu",
+        "scene": "groups1k",
+        "fps": 60.00060000600005,
+        "intervalMs": {
+          "p50": 16.700000000000728,
+          "p95": 16.900000000001455,
+          "max": 17.099999999998545
+        },
+        "transferMs": {
+          "p50": 13.899999976158142,
+          "p95": 18.899999976158146,
+          "max": 18.899999976158146
+        },
+        "encodeMs": {
+          "p50": 0.4366,
+          "p95": 0.5689,
+          "max": 0.5689
+        },
+        "decodeMs": 30.400000035762787,
+        "upload": {
+          "completeMs": 13.599999964237211,
+          "cpuMs": 3.799999952316284
+        },
+        "gpuMs": {
+          "p50": 4.399999976158142,
+          "p95": 5.400000035762787,
+          "max": 6.800000011920929
+        },
+        "refreshMs": 16.66721311475411,
+        "durationMs": 9999.900000000001
+      },
+      {
+        "backend": "webgpu",
+        "scene": "brush10k",
+        "fps": 60.002400096003846,
+        "intervalMs": {
+          "p50": 16.69999999999709,
+          "p95": 16.900000000001455,
+          "max": 17.19999999999709
+        },
+        "transferMs": {
+          "p50": 64.89999997615814,
+          "p95": 85.69999998807907,
+          "max": 85.69999998807907
+        },
+        "encodeMs": {
+          "p50": 2.3058,
+          "p95": 2.9086,
+          "max": 2.9086
+        },
+        "decodeMs": 242.89999997615817,
+        "upload": {
+          "completeMs": 18.399999976158146,
+          "cpuMs": 1.5999999642372131
+        },
+        "gpuMs": {
+          "p50": 5.199999988079071,
+          "p95": 7.399999976158142,
+          "max": 8.899999976158142
+        },
+        "refreshMs": 16.673333333333357,
+        "durationMs": 9999.599999999999
+      },
+      {
+        "backend": "webgl2",
+        "scene": "paths100k",
+        "fps": 60.001200024000504,
+        "intervalMs": {
+          "p50": 16.69999999999709,
+          "p95": 16.900000000001455,
+          "max": 17.0
+        },
+        "transferMs": {
+          "p50": 57,
+          "p95": 61.90000003576279,
+          "max": 61.90000003576279
+        },
+        "encodeMs": {
+          "p50": 2.1327,
+          "p95": 2.6335,
+          "max": 2.6335
+        },
+        "decodeMs": 100.30000001192091,
+        "upload": {
+          "completeMs": 42.10000002384186,
+          "cpuMs": 42.10000002384186
+        },
+        "gpuMs": null,
+        "refreshMs": 16.668333333333308,
+        "durationMs": 9999.799999999996
+      },
+      {
+        "backend": "webgl2",
+        "scene": "groups1k",
+        "fps": 60.00020033455874,
+        "intervalMs": {
+          "p50": 16.69999999999709,
+          "p95": 16.80000000000291,
+          "max": 17.0
+        },
+        "transferMs": {
+          "p50": 16,
+          "p95": 17,
+          "max": 17
+        },
+        "encodeMs": {
+          "p50": 0.6097,
+          "p95": 0.6539,
+          "max": 0.6539
+        },
+        "decodeMs": 35.5,
+        "upload": {
+          "completeMs": 2.100000023841858,
+          "cpuMs": 2
+        },
+        "gpuMs": null,
+        "refreshMs": 16.671666666666717,
+        "durationMs": 9983.299999999996
+      },
+      {
+        "backend": "webgl2",
+        "scene": "brush10k",
+        "fps": 60.00060000600009,
+        "intervalMs": {
+          "p50": 16.69999999999709,
+          "p95": 16.80000000000291,
+          "max": 17.0
+        },
+        "transferMs": {
+          "p50": 63.60000002384186,
+          "p95": 71.69999998807907,
+          "max": 71.69999998807907
+        },
+        "encodeMs": {
+          "p50": 2.382,
+          "p95": 3.39,
+          "max": 3.39
+        },
+        "decodeMs": 225.39999997615817,
+        "upload": {
+          "completeMs": 15.800000011920927,
+          "cpuMs": 15.800000011920927
+        },
+        "gpuMs": null,
+        "refreshMs": 16.671666666666717,
+        "durationMs": 9999.899999999994
+      }
+    ],
+    "canvas-local-windows-rtx4090-webgl2.json.gz": [
+      {
+        "backend": "webgl2",
+        "scene": "paths100k",
+        "fps": 59.998200053998374,
+        "intervalMs": {
+          "p50": 16.699999999999818,
+          "p95": 16.900000000001455,
+          "max": 17.199999999999818
+        },
+        "transferMs": {
+          "p50": 50.60000002384186,
+          "p95": 56.10000002384186,
+          "max": 56.10000002384186
+        },
+        "encodeMs": {
+          "p50": 1.976,
+          "p95": 2.3977,
+          "max": 2.3977
+        },
+        "decodeMs": 93.4000000357628,
+        "upload": {
+          "completeMs": 44.10000002384186,
+          "cpuMs": 44.10000002384186
+        },
+        "gpuMs": null,
+        "refreshMs": 16.67166666666667,
+        "durationMs": 10000.300000000001
+      },
+      {
+        "backend": "webgl2",
+        "scene": "groups1k",
+        "fps": 59.999599334895926,
+        "intervalMs": {
+          "p50": 16.69999999999891,
+          "p95": 16.899999999997817,
+          "max": 17.0
+        },
+        "transferMs": {
+          "p50": 12.399999976158142,
+          "p95": 18.30000001192093,
+          "max": 18.30000001192093
+        },
+        "encodeMs": {
+          "p50": 0.4621,
+          "p95": 0.586,
+          "max": 0.586
+        },
+        "decodeMs": 29,
+        "upload": {
+          "completeMs": 2.199999988079071,
+          "cpuMs": 2.199999988079071
+        },
+        "gpuMs": null,
+        "refreshMs": 16.671666666666656,
+        "durationMs": 9983.4
+      },
+      {
+        "backend": "webgl2",
+        "scene": "brush10k",
+        "fps": 59.998998347273,
+        "intervalMs": {
+          "p50": 16.69999999999709,
+          "p95": 16.900000000001455,
+          "max": 17.099999999998545
+        },
+        "transferMs": {
+          "p50": 70.40000003576279,
+          "p95": 85.10000002384186,
+          "max": 85.10000002384186
+        },
+        "encodeMs": {
+          "p50": 2.7475,
+          "p95": 3.0328,
+          "max": 3.0328
+        },
+        "decodeMs": 235.60000002384183,
+        "upload": {
+          "completeMs": 14.900000035762789,
+          "cpuMs": 14.900000035762789
+        },
+        "gpuMs": null,
+        "refreshMs": 16.950847457627095,
+        "durationMs": 9983.5
+      }
+    ],
+    "canvas-auto.json": [
+      {
+        "backend": "webgpu",
+        "scene": "paths100k",
+        "fps": 59.99779640814527,
+        "intervalMs": {
+          "p50": 16.699999999999818,
+          "p95": 16.899999999999636,
+          "max": 17.0
+        },
+        "transferMs": {
+          "p50": 54.30000001192093,
+          "p95": 56.60000002384186,
+          "max": 56.60000002384186
+        },
+        "encodeMs": {
+          "p50": 1.9244,
+          "p95": 2.4058,
+          "max": 2.4058
+        },
+        "decodeMs": 87.20000004768372,
+        "upload": {
+          "completeMs": 67.09999996423721,
+          "cpuMs": 22.399999976158146
+        },
+        "gpuMs": {
+          "p50": 8.400000035762787,
+          "p95": 11.199999988079073,
+          "max": 13.399999976158142
+        },
+        "refreshMs": 16.949152542372882,
+        "durationMs": 9983.7
+      },
+      {
+        "backend": "webgpu",
+        "scene": "groups1k",
+        "fps": 60.00060000600005,
+        "intervalMs": {
+          "p50": 16.700000000000728,
+          "p95": 16.900000000001455,
+          "max": 17.0
+        },
+        "transferMs": {
+          "p50": 12.899999976158142,
+          "p95": 16.30000001192093,
+          "max": 16.30000001192093
+        },
+        "encodeMs": {
+          "p50": 0.5208,
+          "p95": 0.6159,
+          "max": 0.6159
+        },
+        "decodeMs": 29.900000035762787,
+        "upload": {
+          "completeMs": 13.5,
+          "cpuMs": 3.5
+        },
+        "gpuMs": {
+          "p50": 4.5,
+          "p95": 5.400000035762787,
+          "max": 6.600000023841858
+        },
+        "refreshMs": 16.666666666666668,
+        "durationMs": 9999.900000000001
+      },
+      {
+        "backend": "webgpu",
+        "scene": "brush10k",
+        "fps": 60.00080134626172,
+        "intervalMs": {
+          "p50": 16.69999999999709,
+          "p95": 16.900000000001455,
+          "max": 17.200000000000728
+        },
+        "transferMs": {
+          "p50": 72.19999998807907,
+          "p95": 88.80000001192093,
+          "max": 88.80000001192093
+        },
+        "encodeMs": {
+          "p50": 2.5175,
+          "p95": 3.1259,
+          "max": 3.1259
+        },
+        "decodeMs": 239,
+        "upload": {
+          "completeMs": 21,
+          "cpuMs": 1.699999988079071
+        },
+        "gpuMs": {
+          "p50": 5.100000023841858,
+          "p95": 7.399999976158142,
+          "max": 10
+        },
+        "refreshMs": 16.670000000000012,
+        "durationMs": 9983.2
+      },
+      {
+        "backend": "webgl2",
+        "scene": "paths100k",
+        "fps": 60.00060000600005,
+        "intervalMs": {
+          "p50": 16.69999999999709,
+          "p95": 16.900000000001455,
+          "max": 17.099999999998545
+        },
+        "transferMs": {
+          "p50": 59.60000002384186,
+          "p95": 64.40000003576279,
+          "max": 64.40000003576279
+        },
+        "encodeMs": {
+          "p50": 2.1925,
+          "p95": 3.2341,
+          "max": 3.2341
+        },
+        "decodeMs": 88,
+        "upload": {
+          "completeMs": 43.29999995231629,
+          "cpuMs": 43.29999995231629
+        },
+        "gpuMs": null,
+        "refreshMs": 16.671666666666717,
+        "durationMs": 9999.900000000001
+      },
+      {
+        "backend": "webgl2",
+        "scene": "groups1k",
+        "fps": 59.99940000599995,
+        "intervalMs": {
+          "p50": 16.69999999999709,
+          "p95": 16.900000000001455,
+          "max": 17.10000000000582
+        },
+        "transferMs": {
+          "p50": 12.5,
+          "p95": 17.099999964237213,
+          "max": 17.099999964237213
+        },
+        "encodeMs": {
+          "p50": 0.4414,
+          "p95": 0.6162,
+          "max": 0.6162
+        },
+        "decodeMs": 37,
+        "upload": {
+          "completeMs": 2.599999964237213,
+          "cpuMs": 2.599999964237213
+        },
+        "gpuMs": null,
+        "refreshMs": 16.669999999999952,
+        "durationMs": 10000.099999999999
+      },
+      {
+        "backend": "webgl2",
+        "scene": "brush10k",
+        "fps": 60.001200024000504,
+        "intervalMs": {
+          "p50": 16.69999999999709,
+          "p95": 16.90000000000873,
+          "max": 17.10000000000582
+        },
+        "transferMs": {
+          "p50": 60.5,
+          "p95": 71.19999998807907,
+          "max": 71.19999998807907
+        },
+        "encodeMs": {
+          "p50": 2.0835,
+          "p95": 3.0987,
+          "max": 3.0987
+        },
+        "decodeMs": 250.80000001192093,
+        "upload": {
+          "completeMs": 14.700000047683716,
+          "cpuMs": 14.700000047683716
+        },
+        "gpuMs": null,
+        "refreshMs": 16.673333333333357,
+        "durationMs": 9999.799999999996
+      }
+    ],
+    "canvas-webgl2.json": [
+      {
+        "backend": "webgl2",
+        "scene": "paths100k",
+        "fps": 59.99839737168957,
+        "intervalMs": {
+          "p50": 16.699999999999818,
+          "p95": 16.899999999999636,
+          "max": 17.100000000000364
+        },
+        "transferMs": {
+          "p50": 50.5,
+          "p95": 56.60000002384186,
+          "max": 56.60000002384186
+        },
+        "encodeMs": {
+          "p50": 1.9377,
+          "p95": 2.6462,
+          "max": 2.6462
+        },
+        "decodeMs": 93.69999998807909,
+        "upload": {
+          "completeMs": 44.5,
+          "cpuMs": 44.5
+        },
+        "gpuMs": null,
+        "refreshMs": 16.66833333333334,
+        "durationMs": 9983.6
+      },
+      {
+        "backend": "webgl2",
+        "scene": "groups1k",
+        "fps": 60.001402370005295,
+        "intervalMs": {
+          "p50": 16.69999999999891,
+          "p95": 16.899999999999636,
+          "max": 17
+        },
+        "transferMs": {
+          "p50": 12.5,
+          "p95": 21.30000001192093,
+          "max": 21.30000001192093
+        },
+        "encodeMs": {
+          "p50": 0.5111,
+          "p95": 0.6173,
+          "max": 0.6173
+        },
+        "decodeMs": 29.19999998807907,
+        "upload": {
+          "completeMs": 2.299999952316284,
+          "cpuMs": 2.299999952316284
+        },
+        "gpuMs": null,
+        "refreshMs": 16.666666666666668,
+        "durationMs": 9983.100000000002
+      },
+      {
+        "backend": "webgl2",
+        "scene": "brush10k",
+        "fps": 60.001402370005295,
+        "intervalMs": {
+          "p50": 16.69999999999709,
+          "p95": 16.900000000001455,
+          "max": 17.0
+        },
+        "transferMs": {
+          "p50": 69.39999997615814,
+          "p95": 83.69999998807907,
+          "max": 83.69999998807907
+        },
+        "encodeMs": {
+          "p50": 2.8913,
+          "p95": 2.9657,
+          "max": 2.9657
+        },
+        "decodeMs": 237.19999998807907,
+        "upload": {
+          "completeMs": 14.5,
+          "cpuMs": 14.5
+        },
+        "gpuMs": null,
+        "refreshMs": 16.66833333333337,
+        "durationMs": 9983.100000000002
+      }
+    ]
+  },
+  "committedAnalysisText": [
+    {
+      "file": "canvas-ci-macos-runner-39121780905.analysis.md",
+      "exactTableTextMatches": true
+    },
+    {
+      "file": "canvas-ci-windows-runner-39121780905.analysis.md",
+      "exactTableTextMatches": true
+    },
+    {
+      "file": "canvas-local-windows-rtx4090-auto.analysis.md",
+      "exactTableTextMatches": true
+    },
+    {
+      "file": "canvas-local-windows-rtx4090-webgl2.analysis.md",
+      "exactTableTextMatches": true
+    }
+  ],
+  "macArtifact": {
+    "executableMode": "0o755",
+    "executableBytes": 12645432,
+    "analyzerMatchesSource": true
+  }
+}

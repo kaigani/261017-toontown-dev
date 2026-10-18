@@ -1,0 +1,467 @@
+vello_common-0.3.0/src/flatten_simd.rs:626: #[inline(always)]
+vello_common-0.3.0/src/flatten_simd.rs:627: fn estimate_num_quads(c: CubicBez, accuracy: f32) -> usize {
+vello_common-0.3.0/src/flatten_simd.rs:628:     let q_accuracy = (accuracy * TO_QUAD_TOL) as f64;
+vello_common-0.3.0/src/flatten_simd.rs:629:     let max_hypot2 = 432.0 * q_accuracy * q_accuracy;
+vello_common-0.3.0/src/flatten_simd.rs:630:     let p1x2 = c.p1.to_vec2() * 3.0 - c.p0.to_vec2();
+vello_common-0.3.0/src/flatten_simd.rs:631:     let p2x2 = c.p2.to_vec2() * 3.0 - c.p3.to_vec2();
+vello_common-0.3.0/src/flatten_simd.rs:632:     let err = (p2x2 - p1x2).hypot2();
+vello_common-0.3.0/src/flatten_simd.rs:633:     let err_div = err / max_hypot2;
+vello_common-0.3.0/src/flatten_simd.rs:634: 
+vello_common-0.3.0/src/flatten_simd.rs:635:     estimate(err_div)
+vello_common-0.3.0/src/flatten_simd.rs:636: }
+vello_common-0.3.0/src/flatten_simd.rs:637: 
+vello_common-0.3.0/src/flatten_simd.rs:638: const TO_QUAD_TOL: f32 = 0.1;
+vello_common-0.3.0/src/flatten_simd.rs:639: 
+vello_common-0.3.0/src/flatten_simd.rs:640: #[inline(always)]
+vello_common-0.3.0/src/flatten_simd.rs:641: fn estimate(err_div: f64) -> usize {
+vello_common-0.3.0/src/flatten_simd.rs:642:     // The original version of this method was:
+vello_common-0.3.0/src/flatten_simd.rs:643:     // let n_quads = (err_div.powf(1. / 6.0).ceil() as usize).max(1);
+vello_common-0.3.0/src/flatten_simd.rs:644:     // n_quads.min(MAX_QUADS)
+vello_common-0.3.0/src/flatten_simd.rs:645:     //
+vello_common-0.3.0/src/flatten_simd.rs:646:     // Note how we always round up and clamp to the range [1, max_quads]. Since we don't
+vello_common-0.3.0/src/flatten_simd.rs:647:     // care about the actual fractional value resulting from the powf call we can simply
+vello_common-0.3.0/src/flatten_simd.rs:648:     // compute this using a precomputed lookup table evaluating 1^6, 2^6, 3^6, etc. and simply
+vello_common-0.3.0/src/flatten_simd.rs:649:     // comparing if the value is less than or equal to each threshold.
+vello_common-0.3.0/src/flatten_simd.rs:650: 
+vello_common-0.3.0/src/flatten_simd.rs:651:     const LUT: [f64; MAX_QUADS] = [
+vello_common-0.3.0/src/flatten_simd.rs:652:         1.0, 64.0, 729.0, 4096.0, 15625.0, 46656.0, 117649.0, 262144.0, 531441.0, 1000000.0,
+vello_common-0.3.0/src/flatten_simd.rs:653:         1771561.0, 2985984.0, 4826809.0, 7529536.0, 11390625.0, 16777216.0,
+vello_common-0.3.0/src/flatten_simd.rs:654:     ];
+vello_common-0.3.0/src/flatten_simd.rs:655: 
+vello_common-0.3.0/src/flatten_simd.rs:656:     #[expect(clippy::needless_range_loop, reason = "better clarity")]
+vello_common-0.3.0/src/flatten_simd.rs:657:     for i in 0..MAX_QUADS {
+vello_common-0.3.0/src/flatten_simd.rs:658:         if err_div <= LUT[i] {
+vello_common-0.3.0/src/flatten_simd.rs:659:             return i + 1;
+vello_common-0.3.0/src/flatten_simd.rs:660:         }
+vello_common-0.3.0/src/flatten_simd.rs:661:     }
+vello_common-0.3.0/src/flatten_simd.rs:662: 
+vello_common-0.3.0/src/flatten_simd.rs:663:     MAX_QUADS
+vello_common-0.3.0/src/flatten_simd.rs:664: }
+vello_common-0.3.0/src/flatten_simd.rs:665: 
+vello_common-0.3.0/src/flatten_simd.rs:666: #[cfg(test)]
+vello_common-0.3.0/src/flatten_simd.rs:667: mod tests {
+vello_common-0.3.0/src/flatten_simd.rs:668:     use crate::flatten_simd::{MAX_QUADS, estimate};
+vello_common-0.3.0/src/flatten_simd.rs:669: 
+vello_common-0.3.0/src/flatten_simd.rs:670:     fn old_estimate(err_div: f64) -> usize {
+vello_common-0.3.0/src/flatten_simd.rs:671:         let n_quads = (err_div.powf(1. / 6.0).ceil() as usize).max(1);
+vello_common-0.3.0/src/flatten_simd.rs:672:         n_quads.min(MAX_QUADS)
+vello_common-0.3.0/src/flatten_simd.rs:673:     }
+vello_common-0.3.0/src/flatten_simd.rs:674: 
+vello_common-0.3.0/src/flatten_simd.rs:675:     // Test is disabled by default since it takes 10-20 seconds to run, even in release mode.
+vello_common-0.3.0/src/flatten_simd.rs:676:     #[test]
+vello_common-0.3.0/src/flatten_simd.rs:677:     #[ignore]
+vello_common-0.3.0/src/flatten_simd.rs:678:     fn accuracy() {
+vello_common-0.3.0/src/flatten_simd.rs:679:         for i in 0..u32::MAX {
+vello_common-0.3.0/src/flatten_simd.rs:680:             let num = f32::from_bits(i);
+vello_common-0.3.0/src/flatten_simd.rs:681: 
+vello_common-0.3.0/src/flatten_simd.rs:682:             if num.is_finite() {
+vello_common-0.3.0/src/flatten_simd.rs:683:                 assert_eq!(old_estimate(num as f64), estimate(num as f64), "{num}");
+vello_common-0.3.0/src/flatten_simd.rs:684:             }
+
+vello_common-0.3.0/src/flatten_simd.rs:246: /// An approximation to $\int (1 + 4x^2) ^ -0.25 dx$
+vello_common-0.3.0/src/flatten_simd.rs:247: ///
+vello_common-0.3.0/src/flatten_simd.rs:248: /// This is used for flattening curves.
+vello_common-0.3.0/src/flatten_simd.rs:249: fn approx_parabola_integral(x: f64) -> f64 {
+vello_common-0.3.0/src/flatten_simd.rs:250:     const D: f64 = 0.67;
+vello_common-0.3.0/src/flatten_simd.rs:251:     x / (1.0 - D + (D.powi(4) + 0.25 * x * x).sqrt().sqrt())
+vello_common-0.3.0/src/flatten_simd.rs:252: }
+vello_common-0.3.0/src/flatten_simd.rs:253: 
+vello_common-0.3.0/src/flatten_simd.rs:254: /// An approximation to the inverse parabola integral.
+vello_common-0.3.0/src/flatten_simd.rs:255: fn approx_parabola_inv_integral(x: f64) -> f64 {
+vello_common-0.3.0/src/flatten_simd.rs:256:     const B: f64 = 0.39;
+vello_common-0.3.0/src/flatten_simd.rs:257:     x * (1.0 - B + (B * B + 0.25 * x * x).sqrt())
+vello_common-0.3.0/src/flatten_simd.rs:258: }
+vello_common-0.3.0/src/flatten_simd.rs:259: 
+vello_common-0.3.0/src/flatten_simd.rs:260: impl FlattenParamsExt for QuadBez {
+vello_common-0.3.0/src/flatten_simd.rs:261:     #[inline(always)]
+vello_common-0.3.0/src/flatten_simd.rs:262:     fn estimate_subdiv(&self, sqrt_tol: f64) -> FlattenParams {
+vello_common-0.3.0/src/flatten_simd.rs:263:         // Determine transformation to $y = x^2$ parabola.
+vello_common-0.3.0/src/flatten_simd.rs:264:         let d01 = self.p1 - self.p0;
+vello_common-0.3.0/src/flatten_simd.rs:265:         let d12 = self.p2 - self.p1;
+vello_common-0.3.0/src/flatten_simd.rs:266:         let dd = d01 - d12;
+vello_common-0.3.0/src/flatten_simd.rs:267:         let cross = (self.p2 - self.p0).cross(dd);
+vello_common-0.3.0/src/flatten_simd.rs:268:         let x0 = d01.dot(dd) * cross.recip();
+vello_common-0.3.0/src/flatten_simd.rs:269:         let x2 = d12.dot(dd) * cross.recip();
+vello_common-0.3.0/src/flatten_simd.rs:270:         let scale = (cross / (dd.hypot() * (x2 - x0))).abs();
+vello_common-0.3.0/src/flatten_simd.rs:271: 
+vello_common-0.3.0/src/flatten_simd.rs:272:         // Compute number of subdivisions needed.
+vello_common-0.3.0/src/flatten_simd.rs:273:         let a0 = approx_parabola_integral(x0);
+vello_common-0.3.0/src/flatten_simd.rs:274:         let a2 = approx_parabola_integral(x2);
+vello_common-0.3.0/src/flatten_simd.rs:275:         let val = if scale.is_finite() {
+vello_common-0.3.0/src/flatten_simd.rs:276:             let da = (a2 - a0).abs();
+vello_common-0.3.0/src/flatten_simd.rs:277:             let sqrt_scale = scale.sqrt();
+vello_common-0.3.0/src/flatten_simd.rs:278:             if x0.signum() == x2.signum() {
+vello_common-0.3.0/src/flatten_simd.rs:279:                 da * sqrt_scale
+vello_common-0.3.0/src/flatten_simd.rs:280:             } else {
+vello_common-0.3.0/src/flatten_simd.rs:281:                 // Handle cusp case (segment contains curvature maximum)
+vello_common-0.3.0/src/flatten_simd.rs:282:                 let xmin = sqrt_tol / sqrt_scale;
+vello_common-0.3.0/src/flatten_simd.rs:283:                 sqrt_tol * da / approx_parabola_integral(xmin)
+vello_common-0.3.0/src/flatten_simd.rs:284:             }
+vello_common-0.3.0/src/flatten_simd.rs:285:         } else {
+vello_common-0.3.0/src/flatten_simd.rs:286:             0.0
+
+vello_common-0.3.0/src/flatten_simd.rs:501: 
+vello_common-0.3.0/src/flatten_simd.rs:502:             simd.combine_f32x4(d12x_low, d01x_low) * ddx
+vello_common-0.3.0/src/flatten_simd.rs:503:         };
+vello_common-0.3.0/src/flatten_simd.rs:504:         let temp1 = {
+vello_common-0.3.0/src/flatten_simd.rs:505:             let (d12y_low, _) = simd.split_f32x8(d12y);
+vello_common-0.3.0/src/flatten_simd.rs:506:             let (d01y_low, _) = simd.split_f32x8(d01y);
+vello_common-0.3.0/src/flatten_simd.rs:507: 
+vello_common-0.3.0/src/flatten_simd.rs:508:             simd.combine_f32x4(d12y_low, d01y_low)
+vello_common-0.3.0/src/flatten_simd.rs:509:         };
+vello_common-0.3.0/src/flatten_simd.rs:510:         let x0_x2_num = temp1.mul_add(ddy, x0_x2_a);
+vello_common-0.3.0/src/flatten_simd.rs:511:         let x0_x2 = x0_x2_num / cross;
+vello_common-0.3.0/src/flatten_simd.rs:512:         let (ddx_low, _) = simd.split_f32x8(ddx);
+vello_common-0.3.0/src/flatten_simd.rs:513:         let (ddy_low, _) = simd.split_f32x8(ddy);
+vello_common-0.3.0/src/flatten_simd.rs:514:         let dd_hypot = ddy_low.mul_add(ddy_low, ddx_low * ddx_low).sqrt();
+vello_common-0.3.0/src/flatten_simd.rs:515:         let (x0, x2) = simd.split_f32x8(x0_x2);
+vello_common-0.3.0/src/flatten_simd.rs:516:         let scale_denom = dd_hypot * (x2 - x0);
+vello_common-0.3.0/src/flatten_simd.rs:517:         let (temp2, _) = simd.split_f32x8(cross);
+vello_common-0.3.0/src/flatten_simd.rs:518:         let scale = (temp2 / scale_denom).abs();
+vello_common-0.3.0/src/flatten_simd.rs:519:         let a0_a2 = approx_parabola_integral_simd(x0_x2);
+vello_common-0.3.0/src/flatten_simd.rs:520:         let (a0, a2) = simd.split_f32x8(a0_a2);
+vello_common-0.3.0/src/flatten_simd.rs:521:         let da = a2 - a0;
+vello_common-0.3.0/src/flatten_simd.rs:522:         let da_abs = da.abs();
+vello_common-0.3.0/src/flatten_simd.rs:523:         let sqrt_scale = scale.sqrt();
+vello_common-0.3.0/src/flatten_simd.rs:524:         let temp3 = simd.or_i32x4(x0.bitcast(), x2.bitcast());
+vello_common-0.3.0/src/flatten_simd.rs:525:         let mask = simd.simd_ge_i32x4(temp3, i32x4::splat(simd, 0));
+vello_common-0.3.0/src/flatten_simd.rs:526:         let noncusp = da_abs * sqrt_scale;
+vello_common-0.3.0/src/flatten_simd.rs:527:         // TODO: should we skip this if neither is a cusp? Maybe not worth branch prediction cost
+vello_common-0.3.0/src/flatten_simd.rs:528:         let xmin = sqrt_tol / sqrt_scale;
+vello_common-0.3.0/src/flatten_simd.rs:529:         let approxint = approx_parabola_integral_simd(xmin);
+vello_common-0.3.0/src/flatten_simd.rs:530:         let cusp = (sqrt_tol * da_abs) / approxint;
+
+vello_common-0.3.0/src/filter/gaussian_blur.rs:137:     // Use radius = 3σ to capture 99.7% of the Gaussian distribution.
+vello_common-0.3.0/src/filter/gaussian_blur.rs:138:     // Beyond ±3σ, the Gaussian values are negligible (<0.3%).
+vello_common-0.3.0/src/filter/gaussian_blur.rs:139:     let radius = (3.0 * std_deviation).ceil() as usize;
+vello_common-0.3.0/src/filter/gaussian_blur.rs:140:     let kernel_size = (1 + radius * 2).min(MAX_KERNEL_SIZE) as u8;
+vello_common-0.3.0/src/filter/gaussian_blur.rs:141: 
+vello_common-0.3.0/src/filter/gaussian_blur.rs:142:     let mut kernel = [0.0; MAX_KERNEL_SIZE];
+vello_common-0.3.0/src/filter/gaussian_blur.rs:143:     // Compute Gaussian weights using the formula: G(x) = exp(-x² / (2σ²))
+vello_common-0.3.0/src/filter/gaussian_blur.rs:144:     // This creates a symmetric bell curve centered at the middle of the kernel.
+vello_common-0.3.0/src/filter/gaussian_blur.rs:145:     let gaussian_denominator = 2.0 * std_deviation * std_deviation;
+vello_common-0.3.0/src/filter/gaussian_blur.rs:146:     let mut sum = 0.0;
+vello_common-0.3.0/src/filter/gaussian_blur.rs:147:     let kernel_center = (kernel_size / 2) as f32;
+vello_common-0.3.0/src/filter/gaussian_blur.rs:148:     for (i, weight) in kernel.iter_mut().enumerate().take(usize::from(kernel_size)) {
+vello_common-0.3.0/src/filter/gaussian_blur.rs:149:         // Compute distance from center (0 at center, increases outward)
+vello_common-0.3.0/src/filter/gaussian_blur.rs:150:         let x = (i as f32) - kernel_center;
+vello_common-0.3.0/src/filter/gaussian_blur.rs:151:         // Apply Gaussian formula: weight decreases exponentially with squared distance
+vello_common-0.3.0/src/filter/gaussian_blur.rs:152:         *weight = E.powf(-x * x / gaussian_denominator);
+vello_common-0.3.0/src/filter/gaussian_blur.rs:153:         sum += *weight;
+vello_common-0.3.0/src/filter/gaussian_blur.rs:154:     }
+vello_common-0.3.0/src/filter/gaussian_blur.rs:155: 
+vello_common-0.3.0/src/filter/gaussian_blur.rs:156:     // Normalize weights to sum to 1.0, ensuring the blur doesn't change overall brightness.
+vello_common-0.3.0/src/filter/gaussian_blur.rs:157:     // Without normalization, blurring a uniform gray area could make it brighter/darker.
+vello_common-0.3.0/src/filter/gaussian_blur.rs:158:     let scale = 1.0 / sum;
+
+vello_common-0.3.0/src/encode.rs:25: use peniko::{
+vello_common-0.3.0/src/encode.rs:26:     ImageSampler, InterpolationAlphaSpace, LinearGradientPosition, RadialGradientPosition,
+vello_common-0.3.0/src/encode.rs:27:     SweepGradientPosition,
+vello_common-0.3.0/src/encode.rs:28: };
+vello_common-0.3.0/src/encode.rs:29: use smallvec::ToSmallVec;
+vello_common-0.3.0/src/encode.rs:30: // So we can just use `OnceCell` regardless of which feature is activated.
+vello_common-0.3.0/src/encode.rs:31: #[cfg(feature = "multithreading")]
+vello_common-0.3.0/src/encode.rs:32: use std::sync::OnceLock as OnceCell;
+vello_common-0.3.0/src/encode.rs:33: 
+vello_common-0.3.0/src/encode.rs:34: use crate::simd::{Splat4thExt, element_wise_splat};
+vello_common-0.3.0/src/encode.rs:35: #[cfg(not(feature = "std"))]
+vello_common-0.3.0/src/encode.rs:36: use peniko::kurbo::common::FloatFuncs as _;
+vello_common-0.3.0/src/encode.rs:37: 
+vello_common-0.3.0/src/encode.rs:38: const DEGENERATE_THRESHOLD: f32 = 1.0e-6;
+vello_common-0.3.0/src/encode.rs:39: const NUDGE_VAL: f32 = 1.0e-7;
+vello_common-0.3.0/src/encode.rs:40: #[cfg(feature = "std")]
+vello_common-0.3.0/src/encode.rs:41: fn exp(val: f32) -> f32 {
+vello_common-0.3.0/src/encode.rs:42:     val.exp()
+vello_common-0.3.0/src/encode.rs:43: }
+vello_common-0.3.0/src/encode.rs:44: 
+
+vello_common-0.3.0/src/encode.rs:911:         let (x_advance, y_advance) = x_y_advances(&transform);
+vello_common-0.3.0/src/encode.rs:912: 
+vello_common-0.3.0/src/encode.rs:913:         let width = rect.width() as f32;
+vello_common-0.3.0/src/encode.rs:914:         let height = rect.height() as f32;
+vello_common-0.3.0/src/encode.rs:915:         let radius = self.radius.min(0.5 * width.min(height));
+vello_common-0.3.0/src/encode.rs:916: 
+vello_common-0.3.0/src/encode.rs:917:         // To avoid divide by 0; potentially should be a bigger number for antialiasing.
+vello_common-0.3.0/src/encode.rs:918:         let std_dev = self.std_dev.max(1e-6);
+vello_common-0.3.0/src/encode.rs:919: 
+vello_common-0.3.0/src/encode.rs:920:         let min_edge = width.min(height);
+vello_common-0.3.0/src/encode.rs:921:         let rmax = 0.5 * min_edge;
+vello_common-0.3.0/src/encode.rs:922:         let r0 = radius.hypot(std_dev * 1.15).min(rmax);
+vello_common-0.3.0/src/encode.rs:923:         let r1 = radius.hypot(std_dev * 2.0).min(rmax);
+vello_common-0.3.0/src/encode.rs:924: 
+vello_common-0.3.0/src/encode.rs:925:         let exponent = 2.0 * r1 / r0;
+vello_common-0.3.0/src/encode.rs:926: 
+vello_common-0.3.0/src/encode.rs:927:         let std_dev_inv = std_dev.recip();
+vello_common-0.3.0/src/encode.rs:928: 
+vello_common-0.3.0/src/encode.rs:929:         // Pull in long end (make less eccentric).
+vello_common-0.3.0/src/encode.rs:930:         let delta = 1.25
+vello_common-0.3.0/src/encode.rs:931:             * std_dev
+vello_common-0.3.0/src/encode.rs:932:             * (exp(-(0.5 * std_dev_inv * width).powi(2))
+
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:165:             self.x_advance.y as f32,
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:166:             self.y_advance.y as f32,
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:167:         );
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:168:         let r = &self.r;
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:169: 
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:170:         let y = j - r.v1 * r.height;
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:171:         // Equivalent to r.r1 + y.abs() - (r.h * r.v1)
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:172:         let y0 = r.r1 - r.h.mul_sub(r.v1, y.abs());
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:173:         let y1 = y0.max(r.v0);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:174: 
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:175:         let x = i - r.v1 * r.width;
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:176:         // Equivalent to r.r1 + x.abs() - (r.w * r.v1)
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:177:         let x0 = r.r1 - r.w.mul_sub(r.v1, x.abs());
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:178:         let x1 = x0.max(r.v0);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:179:         let d_pos = (x1.powf(r.exponent) + y1.powf(r.exponent)).powf(r.recip_exponent);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:180:         let d_neg = x0.max(y0).min(r.v0);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:181:         let d = d_pos + d_neg - r.r1;
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:182:         let z = r.scale
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:183:             * (f32x8::compute_erf7(self.simd, r.std_dev_inv * (r.min_edge + d))
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:184:                 - f32x8::compute_erf7(self.simd, r.std_dev_inv * d));
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:185: 
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:186:         self.cur_pos += 2.0 * self.x_advance;
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:187: 
+
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:265:         let x = p2.mul_add(p3, x);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:266:         let denom = x.mul_add(x, Self::splat(simd, 1.0)).sqrt();
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:267:         x / denom
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:268:     }
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:269: 
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:270:     #[inline]
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:271:     fn powf(mut self, x: f32) -> Self {
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:272:         // TODO: SIMD
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:273:         self[0] = self[0].powf(x);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:274:         self[1] = self[1].powf(x);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:275:         self[2] = self[2].powf(x);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:276:         self[3] = self[3].powf(x);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:277:         self[4] = self[4].powf(x);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:278:         self[5] = self[5].powf(x);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:279:         self[6] = self[6].powf(x);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:280:         self[7] = self[7].powf(x);
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:281: 
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:282:         self
+vello_cpu-0.3.0/src/fine/common/rounded_blurred_rect.rs:283:     }
+
+kurbo-0.13.1/src/stroke.rs:435:         let last_pt = back_els[back_els.len() - 1].end_point().unwrap();
+kurbo-0.13.1/src/stroke.rs:436:         self.output.move_to(last_pt);
+kurbo-0.13.1/src/stroke.rs:437:         extend_reversed(&mut self.output, back_els);
+kurbo-0.13.1/src/stroke.rs:438:         self.output.close_path();
+kurbo-0.13.1/src/stroke.rs:439:         self.forward_path.truncate(0);
+kurbo-0.13.1/src/stroke.rs:440:         self.backward_path.truncate(0);
+kurbo-0.13.1/src/stroke.rs:441:     }
+kurbo-0.13.1/src/stroke.rs:442: 
+kurbo-0.13.1/src/stroke.rs:443:     fn do_join(&mut self, style: &Stroke, tan0: Vec2) {
+kurbo-0.13.1/src/stroke.rs:444:         // TODO: scale
+kurbo-0.13.1/src/stroke.rs:445:         let tolerance = 1e-3;
+kurbo-0.13.1/src/stroke.rs:446:         let scale = 0.5 * style.width / tan0.hypot();
+kurbo-0.13.1/src/stroke.rs:447:         let norm = scale * Vec2::new(-tan0.y, tan0.x);
+kurbo-0.13.1/src/stroke.rs:448:         let p0 = self.last_pt;
+kurbo-0.13.1/src/stroke.rs:449:         if self.forward_path.elements().is_empty() {
+kurbo-0.13.1/src/stroke.rs:450:             self.forward_path.move_to(p0 - norm);
+kurbo-0.13.1/src/stroke.rs:451:             self.backward_path.move_to(p0 + norm);
+kurbo-0.13.1/src/stroke.rs:452:             self.start_tan = tan0;
+kurbo-0.13.1/src/stroke.rs:453:             self.start_norm = norm;
+kurbo-0.13.1/src/stroke.rs:454:         } else {
+kurbo-0.13.1/src/stroke.rs:455:             let ab = self.last_tan;
+kurbo-0.13.1/src/stroke.rs:456:             let cd = tan0;
+kurbo-0.13.1/src/stroke.rs:457:             let cross = ab.cross(cd);
+kurbo-0.13.1/src/stroke.rs:458:             let dot = ab.dot(cd);
+kurbo-0.13.1/src/stroke.rs:459:             let hypot = cross.hypot(dot);
+kurbo-0.13.1/src/stroke.rs:460:             // possible TODO: a minor speedup could be squaring both sides
+kurbo-0.13.1/src/stroke.rs:461:             if dot <= 0.0 || cross.abs() >= hypot * self.join_thresh {
+kurbo-0.13.1/src/stroke.rs:462:                 match style.join {
+kurbo-0.13.1/src/stroke.rs:463:                     Join::Bevel => {
+kurbo-0.13.1/src/stroke.rs:464:                         self.forward_path.line_to(p0 - norm);
+kurbo-0.13.1/src/stroke.rs:465:                         self.backward_path.line_to(p0 + norm);
+kurbo-0.13.1/src/stroke.rs:466:                     }
+kurbo-0.13.1/src/stroke.rs:467:                     Join::Miter => {
+kurbo-0.13.1/src/stroke.rs:468:                         if 2.0 * hypot < (hypot + dot) * style.miter_limit.powi(2) {
+kurbo-0.13.1/src/stroke.rs:469:                             // TODO: maybe better to store last_norm or derive from path?
+kurbo-0.13.1/src/stroke.rs:470:                             let last_scale = 0.5 * style.width / ab.hypot();
+kurbo-0.13.1/src/stroke.rs:471:                             let last_norm = last_scale * Vec2::new(-ab.y, ab.x);
+kurbo-0.13.1/src/stroke.rs:472:                             if cross > 0.0 {
+kurbo-0.13.1/src/stroke.rs:473:                                 let fp_last = p0 - last_norm;
+kurbo-0.13.1/src/stroke.rs:474:                                 let fp_this = p0 - norm;
+kurbo-0.13.1/src/stroke.rs:475:                                 let h = ab.cross(fp_this - fp_last) / cross;
+kurbo-0.13.1/src/stroke.rs:476:                                 let miter_pt = fp_this - cd * h;
+kurbo-0.13.1/src/stroke.rs:477:                                 self.forward_path.line_to(miter_pt);
+kurbo-0.13.1/src/stroke.rs:478:                                 self.backward_path.line_to(p0);
+kurbo-0.13.1/src/stroke.rs:479:                             } else if cross < 0.0 {
+kurbo-0.13.1/src/stroke.rs:480:                                 let fp_last = p0 + last_norm;
+kurbo-0.13.1/src/stroke.rs:481:                                 let fp_this = p0 + norm;
+kurbo-0.13.1/src/stroke.rs:482:                                 let h = ab.cross(fp_this - fp_last) / cross;
+kurbo-0.13.1/src/stroke.rs:483:                                 let miter_pt = fp_this - cd * h;
+kurbo-0.13.1/src/stroke.rs:484:                                 self.backward_path.line_to(miter_pt);
+kurbo-0.13.1/src/stroke.rs:485:                                 self.forward_path.line_to(p0);
+kurbo-0.13.1/src/stroke.rs:486:                             }
+kurbo-0.13.1/src/stroke.rs:487:                         }
+kurbo-0.13.1/src/stroke.rs:488:                         self.forward_path.line_to(p0 - norm);
+kurbo-0.13.1/src/stroke.rs:489:                         self.backward_path.line_to(p0 + norm);
+kurbo-0.13.1/src/stroke.rs:490:                     }
+kurbo-0.13.1/src/stroke.rs:491:                     Join::Round => {
+kurbo-0.13.1/src/stroke.rs:492:                         let angle = cross.atan2(dot);
+kurbo-0.13.1/src/stroke.rs:493:                         if angle > 0.0 {
+kurbo-0.13.1/src/stroke.rs:494:                             self.backward_path.line_to(p0 + norm);
+kurbo-0.13.1/src/stroke.rs:495:                             round_join(&mut self.forward_path, tolerance, p0, norm, angle);
+kurbo-0.13.1/src/stroke.rs:496:                         } else {
+kurbo-0.13.1/src/stroke.rs:497:                             self.forward_path.line_to(p0 - norm);
+kurbo-0.13.1/src/stroke.rs:498:                             round_join_rev(&mut self.backward_path, tolerance, p0, -norm, -angle);
+kurbo-0.13.1/src/stroke.rs:499:                         }
+kurbo-0.13.1/src/stroke.rs:500:                     }
+kurbo-0.13.1/src/stroke.rs:501:                 }
+kurbo-0.13.1/src/stroke.rs:502:             }
+kurbo-0.13.1/src/stroke.rs:503:         }
+kurbo-0.13.1/src/stroke.rs:504:     }
+kurbo-0.13.1/src/stroke.rs:505: 
+kurbo-0.13.1/src/stroke.rs:506:     fn do_line(&mut self, style: &Stroke, tangent: Vec2, p1: Point) {
+kurbo-0.13.1/src/stroke.rs:507:         let scale = 0.5 * style.width / tangent.hypot();
+kurbo-0.13.1/src/stroke.rs:508:         let norm = scale * Vec2::new(-tangent.y, tangent.x);
+kurbo-0.13.1/src/stroke.rs:509:         self.forward_path.line_to(p1 - norm);
+
+kurbo-0.13.1/src/offset.rs:342:     /// distance is large (with respect to the source curve arc length).
+kurbo-0.13.1/src/offset.rs:343:     ///
+kurbo-0.13.1/src/offset.rs:344:     /// It is a pretty good approximation overall and has very clean O(n^4) scaling.
+kurbo-0.13.1/src/offset.rs:345:     /// Its worst performance is on curves with a large cubic component, where it
+kurbo-0.13.1/src/offset.rs:346:     /// undershoots. The theory is that the least squares refinement improves those
+kurbo-0.13.1/src/offset.rs:347:     /// cases.
+kurbo-0.13.1/src/offset.rs:348:     fn draw_arc(&self, rec: &OffsetRec) -> (f64, f64) {
+kurbo-0.13.1/src/offset.rs:349:         // possible optimization: this can probably be done with vectors
+kurbo-0.13.1/src/offset.rs:350:         // rather than arctangent
+kurbo-0.13.1/src/offset.rs:351:         let th = rec.utan1.cross(rec.utan0).atan2(rec.utan1.dot(rec.utan0));
+kurbo-0.13.1/src/offset.rs:352:         let a = (2. / 3.) / (1.0 + (0.5 * th).cos()) * 2.0 * (0.5 * th).sin();
+kurbo-0.13.1/src/offset.rs:353:         let b = -a;
+kurbo-0.13.1/src/offset.rs:354:         (a, b)
+kurbo-0.13.1/src/offset.rs:355:     }
+kurbo-0.13.1/src/offset.rs:356: 
+kurbo-0.13.1/src/offset.rs:357:     /// Evaluate error and also refine t values.
+kurbo-0.13.1/src/offset.rs:358:     ///
+
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:40: mod cost;
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:41: mod worker;
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:42: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:43: type RenderTaskSender = crossbeam_channel::Sender<RenderTask>;
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:44: type RecordedCommandSender = ordered_channel::Sender<RecordedCommandTask>;
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:45: type RecordedCommandReceiver = ordered_channel::Receiver<RecordedCommandTask>;
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:46: 
+
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:106:     /// The strip generator for the main thread, used for clip path rasterization.
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:107:     strip_generator: StripGenerator,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:108:     level: Level,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:109:     flushed: bool,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:110:     // So that we can reuse memory allocations across different runs.
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:111:     allocations: Allocations,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:112:     layer_depth: usize,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:113: }
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:114: 
+
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:202:             let render_task_receiver = render_task_receiver.clone();
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:203:             let mut recorded_command_sender = recorded_command_sender.clone();
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:204:             let worker = workers.get().unwrap();
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:205:             let mut worker = worker.borrow_mut();
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:206:             let thread_id = worker.thread_id();
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:207: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:208:             // Take out the allocation for alphas and store it in the worker.
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:209:             alpha_storage
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:210:                 .with_inner(|alphas| worker.init(std::mem::take(&mut alphas[thread_id as usize])));
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:211: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:212:             while let Ok(task) = render_task_receiver.recv() {
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:213:                 worker.run_render_task(task, &mut recorded_command_sender);
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:214:             }
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:215: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:216:             // If we reach this point, it means the `task_sender` has been dropped by the main thread
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:217:             // and no more tasks are available (since we flushed).
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:218:             // So we are done, and just need to place the alphas of the worker thread back into the
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:219:             // vector.
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:220: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:221:             alpha_storage.with_inner(|alphas| {
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:222:                 alphas[thread_id as usize] = worker.finalize();
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:223:             });
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:224: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:225:             // Then, we drop the `recorded_command_sender`. Once all worker threads have
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:226:             // dropped their `recorded_command_sender`, the main thread knows that all workers are done
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:227:             // and all alphas have been placed, so it's safe to proceed.
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:228:             drop(recorded_command_sender);
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:229:         });
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:230:     }
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:231: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:232:     fn register_task(&mut self, task: RenderTaskType) {
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:233:         self.flushed = false;
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:234:         if self.task_sender.is_none() {
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:235:             self.init();
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:236:         }
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:237: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:238:         let cost = estimate_render_task_cost(&task, &self.allocation_group.path);
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:239:         self.allocation_group.render_tasks.push(task);
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:240:         self.batch_cost += cost;
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:241: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:242:         if self.batch_cost > COST_THRESHOLD {
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:243:             self.flush_tasks();
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:244:         }
+
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:421:             let params = FineRenderParams {
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:422:                 scene_size: (scene_width, scene_height),
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:423:                 target_offset: settings.offset,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:424:             };
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:425: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:426:             let mut regions = Regions::new(
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:427:                 &mut target,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:428:                 params.scene_size,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:429:                 params.target_offset,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:430:                 bucketer.rows().len(),
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:431:             );
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:432:             let fines = ThreadLocal::new();
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:433:             self.thread_pool.install(|| {
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:434:                 regions.update_par(|region| {
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:435:                     let mut fine = fines
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:436:                         .get_or(|| {
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:437:                             RefCell::new((
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:438:                                 Fine::<S, F>::new(simd, bucketer.width()),
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:439:                                 DepthBuffer::new(bucketer.width()),
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:440:                             ))
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:441:                         })
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:442:                         .borrow_mut();
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:443:                     let (fine, depth) = &mut *fine;
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:444: 
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:445:                     rasterize_region::<S, F>(
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:446:                         fine,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:447:                         depth,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:448:                         region,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:449:                         &bucketer,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:450:                         resources,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:451:                         target_init,
+vello_cpu-0.3.0/src/dispatch/multi_threaded.rs:452:                         self.recorder.root_is_blend_target,
+
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:648:     }
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:649: 
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:650:     /// Performs alpha compositing with mask modulation.
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:651:     ///
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:652:     /// Formula: `result = src * mask + bg * (1 - src_alpha * mask)`
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:653:     /// The mask value modulates both the source contribution and the inverse alpha.
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:654:     #[inline(always)]
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:655:     fn alpha_composite_inner<S: Simd>(
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:656:         s: S,
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:657:         dest: &mut [u8],
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:658:         masks: &[u8; 8],
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:659:         src_c: u8x32<S>,
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:660:         src_a: u8x32<S>,
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:661:         one: u8x32<S>,
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:662:     ) {
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:663:         s.vectorize(
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:664:             #[inline(always)]
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:665:             || {
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:666:                 let bg_v = u8x32::from_slice(s, dest);
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:667: 
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:668:                 let mask_v = extract_masks(s, masks);
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:669:                 let inv_src_a_mask_a = one - narrow(normalized_mul_u8(src_a, mask_v));
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:670: 
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:671:                 let bg = widen(bg_v);
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:672:                 let inv = widen(inv_src_a_mask_a);
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:673:                 let src = widen(src_c);
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:674:                 let mask = widen(mask_v);
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:675:                 let result = (bg * inv + src * mask).div_255();
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:676:                 let res = narrow(result);
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:677: 
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:678:                 res.store_slice(dest);
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:679:             },
+vello_cpu-0.3.0/src/fine/lowp/mod.rs:680:         );
+

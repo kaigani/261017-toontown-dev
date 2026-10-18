@@ -1,0 +1,42 @@
+[
+  {
+    "backend": "webgpu",
+    "multiple": 1,
+    "fps": 59.99839737168958,
+    "drawCalls": 601,
+    "segmentsPerDraw": 2832713,
+    "gpuP50Ms": 6.399999976158142,
+    "gpuP95Ms": 11.5,
+    "gpuMaxMs": 14.699999988079071
+  },
+  {
+    "backend": "webgpu",
+    "multiple": 2,
+    "fps": 60.000200334558706,
+    "drawCalls": 601,
+    "segmentsPerDraw": 5665426,
+    "gpuP50Ms": 9.899999976158142,
+    "gpuP95Ms": 13.400000035762787,
+    "gpuMaxMs": 18.700000047683716
+  },
+  {
+    "backend": "webgl2",
+    "multiple": 1,
+    "fps": 60.0062109934584,
+    "drawCalls": 601,
+    "segmentsPerDraw": 2832713,
+    "gpuP50Ms": null,
+    "gpuP95Ms": null,
+    "gpuMaxMs": null
+  },
+  {
+    "backend": "webgl2",
+    "multiple": 2,
+    "fps": 59.99959933489592,
+    "drawCalls": 601,
+    "segmentsPerDraw": 5665426,
+    "gpuP50Ms": null,
+    "gpuP95Ms": null,
+    "gpuMaxMs": null
+  }
+]

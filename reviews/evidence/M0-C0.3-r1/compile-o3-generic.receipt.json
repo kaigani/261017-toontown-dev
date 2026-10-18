@@ -1,0 +1,17 @@
+{
+  "command": [
+    "rustc",
+    "--edition",
+    "2024",
+    "reviews/evidence/M0-C0.3-r1/raster_profiles.rs",
+    "-o",
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r1\\target\\profile-o3-generic.exe",
+    "-C",
+    "opt-level=3",
+    "-C",
+    "codegen-units=16"
+  ],
+  "startedUtc": "2026-10-18T11:38:34.535743+00:00",
+  "elapsedSeconds": 0.4709014999680221,
+  "exitCode": 0
+}

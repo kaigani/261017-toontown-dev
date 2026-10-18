@@ -1,0 +1,179 @@
+FFF.FF.F.FFF
+======================================================================
+FAIL: test_c03_r1_01_contradictory_paths (__main__.CanvasEvidence.test_c03_r1_01_contradictory_paths)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 35, in test_c03_r1_01_contradictory_paths
+    self.rejected(lambda d: d['runs'][0]['decode'].update(paths=1))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 25, in rejected
+    self.assertEqual(p.returncode, 2, p.stdout[:800]+p.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : ## Canvas spike log (version 1)
+
+- source: auto; userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26200.9711], webview 155.0.4283.62, CPUs 32; DPR 1, viewport {'height': 989, 'width': 1920}
+- WebGPU API present: True; forced renderer: None
+- parameters: {'flattenTolerance': 0.5, 'idleMs': 1000, 'panZoomMs': 10000, 'pixelTransfers': 20, 'scenes': ['paths100k', 'groups1k', 'brush10k'], 'seed': 1, 'transfers': 10}
+
+### Runs (p50 / p95 / max)
+
+| back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps
+
+======================================================================
+FAIL: test_c03_r1_01_duplicate_transfer_ids (__main__.CanvasEvidence.test_c03_r1_01_duplicate_transfer_ids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 47, in test_c03_r1_01_duplicate_transfer_ids
+    self.rejected(lambda d: [s.update(i=0, frame=0) for s in d['runs'][0]['transfers']])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 25, in rejected
+    self.assertEqual(p.returncode, 2, p.stdout[:800]+p.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : ## Canvas spike log (version 1)
+
+- source: auto; userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26200.9711], webview 155.0.4283.62, CPUs 32; DPR 1, viewport {'height': 989, 'width': 1920}
+- WebGPU API present: True; forced renderer: None
+- parameters: {'flattenTolerance': 0.5, 'idleMs': 1000, 'panZoomMs': 10000, 'pixelTransfers': 20, 'scenes': ['paths100k', 'groups1k', 'brush10k'], 'seed': 1, 'transfers': 10}
+
+### Runs (p50 / p95 / max)
+
+| back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps
+
+======================================================================
+FAIL: test_c03_r1_01_missing_environment (__main__.CanvasEvidence.test_c03_r1_01_missing_environment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 38, in test_c03_r1_01_missing_environment
+    self.rejected(lambda d: d.update(environment={'timeOrigin': d['environment']['timeOrigin']}))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 25, in rejected
+    self.assertEqual(p.returncode, 2, p.stdout[:800]+p.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : ## Canvas spike log (version 1)
+
+- source: auto; userAgent: None
+- host: None None, None, webview None, CPUs None; DPR None, viewport None
+- WebGPU API present: None; forced renderer: None
+- parameters: {'flattenTolerance': 0.5, 'idleMs': 1000, 'panZoomMs': 10000, 'pixelTransfers': 20, 'scenes': ['paths100k', 'groups1k', 'brush10k'], 'seed': 1, 'transfers': 10}
+
+### Runs (p50 / p95 / max)
+
+| back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps target | IPC-per-frame ceiling fps |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| webgpu | paths100k | nvidia lovelace | 1904x757 | 8.70 | 50.3 / 52.6 / 52.6 | 172
+
+======================================================================
+FAIL: test_c03_r1_01_negative_timings (__main__.CanvasEvidence.test_c03_r1_01_negative_timings)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 41, in test_c03_r1_01_negative_timings
+    self.rejected(lambda d: d['runs'][0]['frames'][0].update(cpuMs=-100, gpuMs=-100))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 25, in rejected
+    self.assertEqual(p.returncode, 2, p.stdout[:800]+p.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : ## Canvas spike log (version 1)
+
+- source: auto; userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26200.9711], webview 155.0.4283.62, CPUs 32; DPR 1, viewport {'height': 989, 'width': 1920}
+- WebGPU API present: True; forced renderer: None
+- parameters: {'flattenTolerance': 0.5, 'idleMs': 1000, 'panZoomMs': 10000, 'pixelTransfers': 20, 'scenes': ['paths100k', 'groups1k', 'brush10k'], 'seed': 1, 'transfers': 10}
+
+### Runs (p50 / p95 / max)
+
+| back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps
+
+======================================================================
+FAIL: test_c03_r1_01_partial_auto_matrix (__main__.CanvasEvidence.test_c03_r1_01_partial_auto_matrix)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 32, in test_c03_r1_01_partial_auto_matrix
+    self.rejected(mutate)
+    ~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 25, in rejected
+    self.assertEqual(p.returncode, 2, p.stdout[:800]+p.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : ## Canvas spike log (version 1)
+
+- source: auto; userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26200.9711], webview 155.0.4283.62, CPUs 32; DPR 1, viewport {'height': 989, 'width': 1920}
+- WebGPU API present: True; forced renderer: None
+- parameters: {'flattenTolerance': 0.5, 'idleMs': 1000, 'panZoomMs': 10000, 'pixelTransfers': 20, 'scenes': ['paths100k', 'groups1k', 'brush10k'], 'seed': 1, 'transfers': 10}
+
+### Runs (p50 / p95 / max)
+
+| back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps
+
+======================================================================
+FAIL: test_c03_r1_01_unmeasured_gpu_completion (__main__.CanvasEvidence.test_c03_r1_01_unmeasured_gpu_completion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 44, in test_c03_r1_01_unmeasured_gpu_completion
+    self.rejected(lambda d: [f.update(gpuMs=None) for f in d['runs'][0]['frames']])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 25, in rejected
+    self.assertEqual(p.returncode, 2, p.stdout[:800]+p.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : ## Canvas spike log (version 1)
+
+- source: auto; userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26200.9711], webview 155.0.4283.62, CPUs 32; DPR 1, viewport {'height': 989, 'width': 1920}
+- WebGPU API present: True; forced renderer: None
+- parameters: {'flattenTolerance': 0.5, 'idleMs': 1000, 'panZoomMs': 10000, 'pixelTransfers': 20, 'scenes': ['paths100k', 'groups1k', 'brush10k'], 'seed': 1, 'transfers': 10}
+
+### Runs (p50 / p95 / max)
+
+| back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps
+
+======================================================================
+FAIL: test_c03_r1_01_zero_scene_bytes (__main__.CanvasEvidence.test_c03_r1_01_zero_scene_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 50, in test_c03_r1_01_zero_scene_bytes
+    self.rejected(lambda d: [s.update(bytes=1) for s in d['runs'][0]['transfers']])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 25, in rejected
+    self.assertEqual(p.returncode, 2, p.stdout[:800]+p.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : ## Canvas spike log (version 1)
+
+- source: auto; userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26200.9711], webview 155.0.4283.62, CPUs 32; DPR 1, viewport {'height': 989, 'width': 1920}
+- WebGPU API present: True; forced renderer: None
+- parameters: {'flattenTolerance': 0.5, 'idleMs': 1000, 'panZoomMs': 10000, 'pixelTransfers': 20, 'scenes': ['paths100k', 'groups1k', 'brush10k'], 'seed': 1, 'transfers': 10}
+
+### Runs (p50 / p95 / max)
+
+| back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | 60 fps
+
+======================================================================
+FAIL: test_c03_r1_03_committed_fixture_pngs (__main__.CanvasEvidence.test_c03_r1_03_committed_fixture_pngs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 67, in test_c03_r1_03_committed_fixture_pngs
+    self.assertEqual(missing, [], 'checkpoint requires committed fixture PNGs, not only expiring CI artifacts')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['ttraster/aa_edge_angles', 'ttraster/alph[2972 chars]lap'] != []
+
+First list contains 92 additional elements.
+First extra element 0:
+'ttraster/aa_edge_angles'
+
+Diff is 3300 characters long. Set self.maxDiff to None to see it. : checkpoint requires committed fixture PNGs, not only expiring CI artifacts
+
+======================================================================
+FAIL: test_c03_r1_06_dependency_audit_covers_locked_graph (__main__.CanvasEvidence.test_c03_r1_06_dependency_audit_covers_locked_graph)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c03-r1\tests\adversarial\c03-r1-tooling.py", line 74, in test_c03_r1_06_dependency_audit_covers_locked_graph
+    self.assertEqual(recorded, graph, 'the dependency audit must account for build dependencies, or declare its narrower edge set')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+('autocfg', '1.5.1') : the dependency audit must account for build dependencies, or declare its narrower edge set
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.842s
+
+FAILED (failures=9)

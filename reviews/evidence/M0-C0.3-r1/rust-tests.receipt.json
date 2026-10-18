@@ -1,0 +1,11 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--workspace",
+    "--locked"
+  ],
+  "startedUtc": "2026-10-18T11:28:58.682924+00:00",
+  "elapsedSeconds": 52.498544200032484,
+  "exitCode": 0
+}

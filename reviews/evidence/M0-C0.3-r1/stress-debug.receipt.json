@@ -1,0 +1,17 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "-p",
+    "tt-render",
+    "--test",
+    "c03_r1_stress",
+    "extended_corpus_repeats_and_cross_os_hashes",
+    "--",
+    "--nocapture"
+  ],
+  "startedUtc": "2026-10-18T11:48:07.159348+00:00",
+  "elapsedSeconds": 13.458003700012341,
+  "exitCode": 0
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "scripts/compare-raster-reports.py",
+    "crates/render/examples/c03_raster/hashes.json",
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r1\\reviews\\evidence\\M0-C0.3\\raster-report-ci-Linux-39121780905.json",
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r1\\reviews\\evidence\\M0-C0.3\\raster-report-ci-macOS-39121780905.json",
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r1\\reviews\\evidence\\M0-C0.3\\raster-report-ci-Windows-39121780905.json",
+    "C:\\Users\\kaiga\\work\\review\\m0-c03-r1\\reviews\\evidence\\M0-C0.3\\raster-report-local-windows.json"
+  ],
+  "startedUtc": "2026-10-18T11:42:54.825728+00:00",
+  "elapsedSeconds": 0.04095729999244213,
+  "exitCode": 0
+}

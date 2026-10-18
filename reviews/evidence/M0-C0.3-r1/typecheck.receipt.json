@@ -1,0 +1,11 @@
+{
+  "command": [
+    "cmd",
+    "/d",
+    "/c",
+    "pnpm typecheck"
+  ],
+  "startedUtc": "2026-10-18T11:28:54.912485+00:00",
+  "elapsedSeconds": 2.8491307999938726,
+  "exitCode": 0
+}

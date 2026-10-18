@@ -4,6 +4,7 @@
     clippy::unwrap_used,
     clippy::print_stdout,
     clippy::approx_constant,
+    clippy::excessive_precision,
     reason = "review test assertions and fixed bit-pattern fixture constants"
 )]
 #[path = "../examples/c03_raster/scene.rs"]
@@ -70,14 +71,22 @@ fn stress(seed: u32) -> Scene {
 
 #[test]
 fn extended_corpus_repeats_and_cross_os_hashes() {
+    println!("detected SIMD: {:?}", vello_cpu::Level::new());
     let mut results = BTreeMap::new();
     for seed in 0..16 {
         let s = stress(seed);
         let tt = ttraster::render(&s).rgba;
         assert_eq!(tt, ttraster::render(&s).rgba, "ttraster repeat seed {seed}");
         results.insert(format!("ttraster/{seed}"), hash(&tt));
+        let scalar = vello::render(&s, vello::Config::Fallback);
         for config in [vello::Config::Fallback, vello::Config::Detected, vello::Config::Threads3] {
             let first = vello::render(&s, config);
+            let differences: Vec<u8> = scalar.iter().zip(&first).map(|(a, b)| a.abs_diff(*b)).collect();
+            println!(
+                "STRESS_DIFF seed={seed} config={config:?} channels={} max={}",
+                differences.iter().filter(|&&d| d != 0).count(),
+                differences.iter().max().unwrap()
+            );
             for _ in 0..3 {
                 assert_eq!(first, vello::render(&s, config), "repeat seed {seed} {config:?}");
             }
@@ -114,6 +123,6 @@ fn c03_r1_05_source_over_an_opaque_background_stays_opaque() {
     let s = scenes.iter().find(|s| s.name == "many_small_paths").unwrap();
     assert_eq!(s.background[3], 255);
     let rgba = vello::render(s, vello::Config::Fallback);
-    let min_alpha = rgba.chunks_exact(4).map(|p| p[3]).min().unwrap();
+    let min_alpha = rgba.as_chunks::<4>().0.iter().map(|p| p[3]).min().unwrap();
     assert_eq!(min_alpha, 255, "opaque background cannot lose alpha under source-over");
 }

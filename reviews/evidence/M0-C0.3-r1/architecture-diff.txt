@@ -1,0 +1,582 @@
+diff --git a/desktop/src-tauri/src/diagnostics.rs b/desktop/src-tauri/src/diagnostics.rs
+index 79d9955..f076f4b 100644
+--- a/desktop/src-tauri/src/diagnostics.rs
++++ b/desktop/src-tauri/src/diagnostics.rs
+@@ -38,17 +38,23 @@ pub enum ArgsError {
+     BadCount(String),
+     /// An argument this binary does not know.
+     #[error(
+-        "unknown argument `{0}` (usage: toontown [--ipc-bench <out.json> [--ipc-bench-count <n>]] [--spike tablet [--spike-log <file>]])"
++        "unknown argument `{0}` (usage: toontown [--ipc-bench <out.json> [--ipc-bench-count <n>]] [--spike tablet|canvas [--spike-log <file>] [--spike-auto] [--spike-renderer auto|webgpu|webgl2]])"
+     )]
+     Unknown(String),
+     /// `--spike` names a spike that does not exist.
+-    #[error("unknown spike `{0}` (available: tablet)")]
++    #[error("unknown spike `{0}` (available: tablet, canvas)")]
+     UnknownSpike(String),
++    /// `--spike-renderer` with a value other than `auto`, `webgpu`, `webgl2`.
++    #[error("unknown renderer `{0}` (auto, webgpu, webgl2)")]
++    BadRenderer(String),
++    /// `--spike-renderer` without `--spike canvas`.
++    #[error("--spike-renderer needs --spike canvas")]
++    RendererWithoutCanvas,
+     /// `--spike-log` without `--spike`.
+     #[error("--spike-log needs --spike")]
+     LogWithoutSpike,
+     /// `--spike-auto` without `--spike` and `--spike-log`.
+-    #[error("--spike-auto needs --spike tablet and --spike-log <file>")]
++    #[error("--spike-auto needs --spike <name> and --spike-log <file>")]
+     AutoWithoutLog,
+ }
+ 
+@@ -62,6 +68,7 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
+     let mut spike = None;
+     let mut spike_log = None;
+     let mut spike_auto = false;
++    let mut renderer = None;
+     let mut it = args.into_iter();
+     while let Some(arg) = it.next() {
+         match arg.as_str() {
+@@ -72,13 +79,20 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
+             }
+             "--spike" => {
+                 let name = it.next().ok_or(ArgsError::MissingValue("--spike"))?;
+-                if name != "tablet" {
++                if name != "tablet" && name != "canvas" {
+                     return Err(ArgsError::UnknownSpike(name));
+                 }
+                 spike = Some(name);
+             }
+             "--spike-log" => spike_log = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--spike-log"))?)),
+             "--spike-auto" => spike_auto = true,
++            "--spike-renderer" => {
++                let r = it.next().ok_or(ArgsError::MissingValue("--spike-renderer"))?;
++                if !matches!(r.as_str(), "auto" | "webgpu" | "webgl2") {
++                    return Err(ArgsError::BadRenderer(r));
++                }
++                renderer = Some(r);
++            }
+             // macOS adds `-psn_…` when launched from Finder on older systems.
+             other if other.starts_with("-psn_") => {}
+             other => return Err(ArgsError::Unknown(other.to_owned())),
+@@ -90,9 +104,17 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
+     if spike_auto && (spike.is_none() || spike_log.is_none()) {
+         return Err(ArgsError::AutoWithoutLog);
+     }
++    if renderer.is_some() && spike.as_deref() != Some("canvas") {
++        return Err(ArgsError::RendererWithoutCanvas);
++    }
+     Ok(LaunchOptions {
+         bench: out.map(|out| BenchSettings { out, count }),
+-        spike: spike.map(|name| crate::spikes::tablet::SpikeSettings { name, log_path: spike_log, auto: spike_auto }),
++        spike: spike.map(|name| crate::spikes::tablet::SpikeSettings {
++            name,
++            log_path: spike_log,
++            auto: spike_auto,
++            renderer: renderer.filter(|r| r != "auto"),
++        }),
+     })
+ }
+ 
+@@ -203,7 +225,19 @@ mod tests {
+         let o = parse_args(args(&["--spike", "tablet", "--spike-log", "t.json"])).unwrap();
+         let s = o.spike.unwrap();
+         assert_eq!((s.name.as_str(), s.log_path), ("tablet", Some(PathBuf::from("t.json"))));
+-        assert_eq!(parse_args(args(&["--spike", "canvas"])), Err(ArgsError::UnknownSpike("canvas".into())));
++        assert_eq!(parse_args(args(&["--spike", "paint"])), Err(ArgsError::UnknownSpike("paint".into())));
++        let canvas = parse_args(args(&["--spike", "canvas", "--spike-renderer", "webgl2"])).unwrap().spike.unwrap();
++        assert_eq!((canvas.name.as_str(), canvas.renderer.as_deref()), ("canvas", Some("webgl2")));
++        let auto = parse_args(args(&["--spike", "canvas", "--spike-renderer", "auto"])).unwrap().spike.unwrap();
++        assert_eq!(auto.renderer, None);
++        assert_eq!(
++            parse_args(args(&["--spike", "canvas", "--spike-renderer", "gl"])),
++            Err(ArgsError::BadRenderer("gl".into()))
++        );
++        assert_eq!(
++            parse_args(args(&["--spike", "tablet", "--spike-renderer", "webgl2"])),
++            Err(ArgsError::RendererWithoutCanvas)
++        );
+         assert_eq!(parse_args(args(&["--spike-log", "t.json"])), Err(ArgsError::LogWithoutSpike));
+         assert_eq!(parse_args(args(&["--spike"])), Err(ArgsError::MissingValue("--spike")));
+         assert_eq!(parse_args(args(&["--spike", "tablet", "--spike-auto"])), Err(ArgsError::AutoWithoutLog));
+diff --git a/desktop/src-tauri/src/lib.rs b/desktop/src-tauri/src/lib.rs
+index 2aaf3ed..4928eeb 100644
+--- a/desktop/src-tauri/src/lib.rs
++++ b/desktop/src-tauri/src/lib.rs
+@@ -47,6 +47,7 @@ pub fn run() -> Result<(), DesktopError> {
+         .manage(engine)
+         .manage(diagnostics::Diagnostics { bench: bench.clone() })
+         .manage(spikes::tablet::TabletSpike::new(launch.spike.clone()))
++        .manage(spikes::canvas::CanvasSpike::new(launch.spike.clone()))
+         .menu(move |app| menu::build(app, &menu_manifest))
+         .on_menu_event(move |app, event| menu::on_event(app, &manifest, event.id().as_ref()))
+         .setup(move |app| {
+@@ -55,6 +56,12 @@ pub fn run() -> Result<(), DesktopError> {
+             }
+             if let Some(settings) = &launch.spike {
+                 spikes::tablet::arm_auto_timeout(app.handle(), settings);
++                if settings.name == "canvas" {
++                    // Measure on the largest canvas the display allows (the page records the actual size).
++                    if let Some(window) = tauri::Manager::get_webview_window(app, "main") {
++                        let _ = window.maximize();
++                    }
++                }
+             }
+             Ok(())
+         })
+@@ -70,7 +77,9 @@ pub fn run() -> Result<(), DesktopError> {
+             spikes::tablet::spike_save_log,
+             spikes::tablet::spike_environment,
+             spikes::tablet::spike_probe_native_window,
+-            spikes::tablet::spike_raw_input_sink
++            spikes::tablet::spike_raw_input_sink,
++            spikes::canvas::spike_canvas_scene,
++            spikes::canvas::spike_canvas_pixels
+         ])
+         .run(tauri::generate_context!())?;
+     Ok(())
+diff --git a/desktop/src-tauri/src/spikes/tablet/mod.rs b/desktop/src-tauri/src/spikes/tablet/mod.rs
+index b027774..8bc4bff 100644
+--- a/desktop/src-tauri/src/spikes/tablet/mod.rs
++++ b/desktop/src-tauri/src/spikes/tablet/mod.rs
+@@ -32,12 +32,14 @@ use tt_engine::ErrorInfo;
+ /// Spike launch settings (`--spike tablet [--spike-log <file>]`).
+ #[derive(Debug, Clone, PartialEq, Eq)]
+ pub struct SpikeSettings {
+-    /// Spike name; only `tablet` exists.
++    /// Spike name: `tablet` (C0.2) or `canvas` (C0.3).
+     pub name: String,
+     /// Where `spike_save_log` writes the JSON log.
+     pub log_path: Option<PathBuf>,
+-    /// `--spike-auto`: the page runs the synthetic-pen scenarios, saves the log and the app exits.
++    /// `--spike-auto`: the page runs its automated scenarios, saves the log and the app exits.
+     pub auto: bool,
++    /// `--spike-renderer auto|webgpu|webgl2` (canvas spike only; `None` = auto).
++    pub renderer: Option<String>,
+ }
+ 
+ /// One input packet as produced by a platform converter. The field set is pinned by the reviewers' replay tests
+@@ -191,6 +193,8 @@ pub struct SpikeMode {
+     pub pen_simulation: bool,
+     /// Automated run (`--spike-auto`).
+     pub auto: bool,
++    /// Canvas spike: forced renderer (`webgpu`, `webgl2`) or `null` for automatic choice.
++    pub renderer: Option<String>,
+ }
+ 
+ /// Parameters of a synthetic pen stroke (Windows).
+@@ -320,20 +324,28 @@ pub fn arm_auto_timeout(app: &AppHandle, settings: &SpikeSettings) {
+ /// Managed state of the tablet spike.
+ #[derive(Debug, Default)]
+ pub struct TabletSpike {
++    /// The spike launch, whichever spike it is (mode, environment and log saving are shared by all spikes).
++    launch: Option<SpikeSettings>,
++    /// `launch` if it is the tablet spike.
+     settings: Option<SpikeSettings>,
+     native: Mutex<Option<Arc<AtomicBool>>>,
+ }
+ 
+ impl TabletSpike {
+-    /// State for the given launch settings (`None` = spike disabled).
++    /// State for the given launch settings (`None` = no spike).
+     #[must_use]
+-    pub fn new(settings: Option<SpikeSettings>) -> Self {
+-        Self { settings: settings.filter(|s| s.name == "tablet"), native: Mutex::new(None) }
++    pub fn new(launch: Option<SpikeSettings>) -> Self {
++        let settings = launch.clone().filter(|s| s.name == "tablet");
++        Self { launch, settings, native: Mutex::new(None) }
+     }
+ 
+     fn require(&self) -> Result<&SpikeSettings, ErrorInfo> {
+         self.settings.as_ref().ok_or_else(|| error("spike.notEnabled", "start the app with --spike tablet".into()))
+     }
++
++    fn require_any(&self) -> Result<&SpikeSettings, ErrorInfo> {
++        self.launch.as_ref().ok_or_else(|| error("spike.notEnabled", "start the app with --spike <name>".into()))
++    }
+ }
+ 
+ pub(crate) fn error(code: &str, message: String) -> ErrorInfo {
+@@ -399,7 +411,7 @@ fn os_version() -> Option<String> {
+ /// `spike.notEnabled`.
+ #[tauri::command]
+ pub fn spike_environment(app: AppHandle, spike: State<'_, TabletSpike>) -> Result<SpikeEnvironment, ErrorInfo> {
+-    spike.require()?;
++    spike.require_any()?;
+     Ok(SpikeEnvironment {
+         os: std::env::consts::OS,
+         arch: std::env::consts::ARCH,
+@@ -414,12 +426,13 @@ pub fn spike_environment(app: AppHandle, spike: State<'_, TabletSpike>) -> Resul
+ #[tauri::command]
+ #[must_use]
+ pub fn spike_mode(spike: State<'_, TabletSpike>) -> Option<SpikeMode> {
+-    spike.settings.as_ref().map(|s| SpikeMode {
++    spike.launch.as_ref().map(|s| SpikeMode {
+         name: s.name.clone(),
+         log_path: s.log_path.as_ref().map(|p| p.display().to_string()),
+         native_backend: NATIVE_BACKEND,
+         pen_simulation: cfg!(windows),
+         auto: s.auto,
++        renderer: s.renderer.clone(),
+     })
+ }
+ 
+@@ -588,7 +601,7 @@ pub fn spike_save_log(
+     spike: State<'_, TabletSpike>,
+     log: serde_json::Value,
+ ) -> Result<SavedLog, ErrorInfo> {
+-    let settings = spike.require()?;
++    let settings = spike.require_any()?;
+     let Some(path) = settings.log_path.as_ref() else {
+         return Err(error("spike.noLogPath", "start the app with --spike-log <file> to save the log".into()));
+     };
+@@ -616,9 +629,9 @@ mod tests {
+     #[test]
+     fn disabled_unless_tablet() {
+         assert!(TabletSpike::new(None).require().is_err());
+-        let other = SpikeSettings { name: "canvas".into(), log_path: None, auto: false };
++        let other = SpikeSettings { name: "canvas".into(), log_path: None, auto: false, renderer: None };
+         assert!(TabletSpike::new(Some(other)).require().is_err());
+-        let tablet = SpikeSettings { name: "tablet".into(), log_path: None, auto: false };
++        let tablet = SpikeSettings { name: "tablet".into(), log_path: None, auto: false, renderer: None };
+         assert!(TabletSpike::new(Some(tablet)).require().is_ok());
+     }
+ 
+diff --git a/desktop/src/ipc/binaryEnvelope.ts b/desktop/src/ipc/binaryEnvelope.ts
+new file mode 100644
+index 0000000..92ec278
+--- /dev/null
++++ b/desktop/src/ipc/binaryEnvelope.ts
+@@ -0,0 +1,96 @@
++// Envelopes of the binary host responses of the C0.3 canvas spike (M0 spike; not product API).
++//
++// A binary body cannot be certified by the JSON-schema validator directly, so the boundary does the next best
++// thing: it decodes the fixed-size header into a plain object, certifies that object against its schema, and checks
++// that the byte length the header implies is exactly the length received. Section contents (paths, points, verbs)
++// are decoded and range-checked by the page's decoder, which never reads outside the certified length.
++import { HostError } from './hostApi';
++import { certify } from './schema';
++import { isPixelFrameHeader, isRenderListHeader } from './spikeSchemas';
++import type { CanvasSceneKind, PixelFrameHeader, RenderListHeader } from './types';
++
++/** `TTRL` read as a little-endian u32. */
++export const RENDER_LIST_MAGIC = 0x4c525454;
++export const RENDER_LIST_HEADER_BYTES = 72;
++const GROUP_BYTES = 24;
++const PATH_BYTES = 28;
++const KINDS: readonly CanvasSceneKind[] = ['paths100k', 'groups1k', 'brush10k'];
++
++/** `TTPX` read as a little-endian u32. */
++export const PIXEL_FRAME_MAGIC = 0x58505454;
++export const PIXEL_FRAME_HEADER_BYTES = 16;
++
++function invalid(message: string): HostError {
++  return new HostError({ code: 'ipc.invalidResponse', message });
++}
++
++function magic(view: DataView): number {
++  return view.getUint32(0, true);
++}
++
++function u64(view: DataView, offset: number): number {
++  const v = view.getBigUint64(offset, true);
++  if (v > BigInt(Number.MAX_SAFE_INTEGER)) throw invalid('64-bit field exceeds the safe integer range');
++  return Number(v);
++}
++
++/** Expected byte length of a render list with these counts (renderlist.rs `encoded_len`). */
++export function renderListLength(groups: number, paths: number, points: number, verbs: number): number {
++  return (
++    RENDER_LIST_HEADER_BYTES +
++    GROUP_BYTES * groups +
++    PATH_BYTES * paths +
++    8 * points +
++    Math.ceil(verbs / 4) * 4
++  );
++}
++
++/** Decodes and certifies the header of a `TTRL` v1 render list; throws `ipc.invalidResponse` otherwise. */
++export function certifyRenderList(bytes: ArrayBuffer): RenderListHeader {
++  if (bytes.byteLength < RENDER_LIST_HEADER_BYTES) throw invalid('render list shorter than its header');
++  const v = new DataView(bytes);
++  if (magic(v) !== RENDER_LIST_MAGIC) throw invalid('render list magic is not TTRL');
++  const kindCode = v.getUint32(8, true);
++  const header = {
++    version: v.getUint16(4, true),
++    headerLength: v.getUint16(6, true),
++    kind: KINDS[kindCode] ?? `unknown(${String(kindCode)})`,
++    seed: v.getUint32(12, true),
++    frame: v.getUint32(16, true),
++    groups: v.getUint32(20, true),
++    paths: v.getUint32(24, true),
++    verbs: v.getUint32(28, true),
++    points: v.getUint32(32, true),
++    bounds: [v.getFloat32(36, true), v.getFloat32(40, true), v.getFloat32(44, true), v.getFloat32(48, true)],
++    flags: v.getUint32(52, true),
++    encodeNs: u64(v, 56),
++    generateNs: u64(v, 64),
++    byteLength: bytes.byteLength,
++  };
++  const certified = certify(isRenderListHeader, header);
++  if (!certified) throw invalid('render list header does not match its schema');
++  const expected = renderListLength(certified.groups, certified.paths, certified.points, certified.verbs);
++  if (expected !== bytes.byteLength) {
++    throw invalid(`render list is ${String(bytes.byteLength)} bytes; its counts imply ${String(expected)}`);
++  }
++  return certified;
++}
++
++/** Decodes and certifies the header of a `TTPX` pixel frame. */
++export function certifyPixelFrame(bytes: ArrayBuffer): PixelFrameHeader {
++  if (bytes.byteLength < PIXEL_FRAME_HEADER_BYTES) throw invalid('pixel frame shorter than its header');
++  const v = new DataView(bytes);
++  if (magic(v) !== PIXEL_FRAME_MAGIC) throw invalid('pixel frame magic is not TTPX');
++  const header = {
++    width: v.getUint32(4, true),
++    height: v.getUint32(8, true),
++    fillNs: v.getUint32(12, true),
++    byteLength: bytes.byteLength,
++  };
++  const certified = certify(isPixelFrameHeader, header);
++  if (!certified) throw invalid('pixel frame header does not match its schema');
++  if (PIXEL_FRAME_HEADER_BYTES + 4 * certified.width * certified.height !== bytes.byteLength) {
++    throw invalid('pixel frame length does not match width × height × 4');
++  }
++  return certified;
++}
+diff --git a/desktop/src/ipc/spikeApi.ts b/desktop/src/ipc/spikeApi.ts
+index 3c079fa..526c5a0 100644
+--- a/desktop/src/ipc/spikeApi.ts
++++ b/desktop/src/ipc/spikeApi.ts
+@@ -1,5 +1,6 @@
+-// M0 spike API (C0.2 tablet input). Same boundary as the product API: every value from the host, including each
++// M0 spike API (C0.2 tablet input, C0.3 canvas throughput). Same boundary as the product API: every value from the host, including each
+ // streamed channel message, is certified against its schema before UI code sees it. Not product API.
++import { certifyPixelFrame, certifyRenderList } from './binaryEnvelope';
+ import { HostError, toHostError } from './hostApi';
+ import { certify } from './schema';
+ import {
+@@ -13,11 +14,14 @@ import {
+ } from './spikeSchemas';
+ import type { HostTransport } from './transport';
+ import type {
++  CanvasSceneRequest,
+   NativeBatch,
+   NativeStartInfo,
+   PenSimReport,
+   PenSimRequest,
++  PixelFramePayload,
+   ProbeResult,
++  RenderListPayload,
+   SavedLog,
+   SpikeEnvironment,
+   SpikeMode,
+@@ -43,6 +47,25 @@ export interface SpikeApi {
+   rawInputSink(start: boolean): Promise<ProbeResult>;
+   /** Writes the log to the `--spike-log` path. */
+   saveLog(log: unknown): Promise<SavedLog>;
++  /** C0.3: one binary render list (`tauri::ipc::Response`), its envelope certified. */
++  canvasScene(request: CanvasSceneRequest): Promise<RenderListPayload>;
++  /** C0.3: a synthetic RGBA8 frame of `width × height` (host-raster fallback estimate), its envelope certified. */
++  canvasPixels(width: number, height: number, frame: number): Promise<PixelFramePayload>;
++}
++
++async function binary(
++  transport: HostTransport,
++  command: string,
++  args: Record<string, unknown>,
++): Promise<ArrayBuffer> {
++  if (!transport.invokeBinary) {
++    throw new HostError({ code: 'ipc.unsupported', message: 'transport has no binary responses' });
++  }
++  try {
++    return await transport.invokeBinary(command, args);
++  } catch (error: unknown) {
++    throw toHostError(error);
++  }
+ }
+ 
+ async function checked<T>(
+@@ -98,5 +121,13 @@ export function createSpikeApi(transport: HostTransport): SpikeApi {
+     rawInputSink: (start) =>
+       checked(transport.invoke('spike_raw_input_sink', { start }), 'spike_raw_input_sink', isProbeResult),
+     saveLog: (log) => checked(transport.invoke('spike_save_log', { log }), 'spike_save_log', isSavedLog),
++    canvasScene: async (request) => {
++      const bytes = await binary(transport, 'spike_canvas_scene', { request });
++      return { header: certifyRenderList(bytes), bytes };
++    },
++    canvasPixels: async (width, height, frame) => {
++      const bytes = await binary(transport, 'spike_canvas_pixels', { width, height, frame });
++      return { header: certifyPixelFrame(bytes), bytes };
++    },
+   };
+ }
+diff --git a/desktop/src/ipc/spikeSchemas.ts b/desktop/src/ipc/spikeSchemas.ts
+index d5208a0..4bf090b 100644
+--- a/desktop/src/ipc/spikeSchemas.ts
++++ b/desktop/src/ipc/spikeSchemas.ts
+@@ -4,6 +4,8 @@ import type {
+   NativeBatch,
+   NativeStartInfo,
+   PenSimReport,
++  PixelFrameHeader,
++  RenderListHeader,
+   ProbeResult,
+   SavedLog,
+   SpikeEnvironment,
+@@ -24,12 +26,42 @@ const SAFE_INT: Schema = {
+   maximum: Number.MAX_SAFE_INTEGER,
+ };
+ 
+-export const spikeModeSchema = obj({
+-  name: { type: 'string', enum: ['tablet'] },
+-  logPath: nullable(STRING),
+-  nativeBackend: nullable({ type: 'string', enum: ['octotablet-ink', 'appkit-nsevent'] }),
+-  penSimulation: { type: 'boolean' },
+-  auto: { type: 'boolean' },
++export const spikeModeSchema = obj(
++  {
++    name: { type: 'string', enum: ['tablet', 'canvas'] },
++    logPath: nullable(STRING),
++    nativeBackend: nullable({ type: 'string', enum: ['octotablet-ink', 'appkit-nsevent'] }),
++    penSimulation: { type: 'boolean' },
++    auto: { type: 'boolean' },
++  },
++  { renderer: nullable({ type: 'string', enum: ['webgpu', 'webgl2'] }) },
++);
++
++const U32: Schema = { type: 'integer', minimum: 0, maximum: 4294967295 };
++
++/** Envelope of a binary render list, decoded from its 72-byte header by spikeApi.ts. */
++export const renderListHeaderSchema = obj({
++  version: { type: 'integer', minimum: 1, maximum: 1 },
++  headerLength: { type: 'integer', minimum: 72, maximum: 72 },
++  kind: { type: 'string', enum: ['paths100k', 'groups1k', 'brush10k'] },
++  seed: U32,
++  frame: U32,
++  groups: U32,
++  paths: U32,
++  verbs: U32,
++  points: U32,
++  bounds: { type: 'array', items: NUMBER },
++  flags: U32,
++  encodeNs: U64,
++  generateNs: U64,
++  byteLength: U64,
++});
++
++export const pixelFrameHeaderSchema = obj({
++  width: { type: 'integer', minimum: 1, maximum: 8192 },
++  height: { type: 'integer', minimum: 1, maximum: 8192 },
++  fillNs: U32,
++  byteLength: U64,
+ });
+ 
+ export const nativePacketSchema = obj({
+@@ -140,3 +172,5 @@ export const isSpikeEnvironment = guard<SpikeEnvironment>(spikeEnvironmentSchema
+ export const isPenSimReport = guard<PenSimReport>(penSimReportSchema);
+ export const isProbeResult = guard<ProbeResult>(probeResultSchema);
+ export const isSavedLog = guard<SavedLog>(savedLogSchema);
++export const isRenderListHeader = guard<RenderListHeader>(renderListHeaderSchema);
++export const isPixelFrameHeader = guard<PixelFrameHeader>(pixelFrameHeaderSchema);
+diff --git a/desktop/src/ipc/tauriTransport.ts b/desktop/src/ipc/tauriTransport.ts
+index 3f5441e..b501bfb 100644
+--- a/desktop/src/ipc/tauriTransport.ts
++++ b/desktop/src/ipc/tauriTransport.ts
+@@ -16,6 +16,16 @@ export function createTauriTransport(): HostTransport {
+       listen<unknown>(event, (e) => {
+         handler(e.payload);
+       }),
++    invokeBinary: async (command, args) => {
++      const value = await invoke<unknown>(command, args);
++      if (value instanceof ArrayBuffer) return value;
++      if (ArrayBuffer.isView(value)) {
++        return value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength) as ArrayBuffer;
++      }
++      // IPC fallback paths (postMessage) deliver a binary body as an array of byte values.
++      if (Array.isArray(value)) return Uint8Array.from(value as number[]).buffer;
++      throw new TypeError(`binary command ${command} returned ${typeof value}`);
++    },
+     invokeWithChannel: (command, args, channelArg, onMessage) => {
+       const channel = new Channel<unknown>();
+       channel.onmessage = onMessage;
+diff --git a/desktop/src/ipc/transport.ts b/desktop/src/ipc/transport.ts
+index bd99c1b..b92a8fe 100644
+--- a/desktop/src/ipc/transport.ts
++++ b/desktop/src/ipc/transport.ts
+@@ -23,4 +23,9 @@ export interface HostTransport {
+     channelArg: string,
+     onMessage: (message: unknown) => void,
+   ): Promise<unknown>;
++  /**
++   * Invokes a host command whose result is a binary body (`tauri::ipc::Response`), resolving with the raw bytes.
++   * The bytes are still unvalidated; the typed API checks their envelope. Optional, like `invokeWithChannel`.
++   */
++  invokeBinary?(command: string, args?: Record<string, unknown>): Promise<ArrayBuffer>;
+ }
+diff --git a/desktop/src/ipc/types.ts b/desktop/src/ipc/types.ts
+index 84dce38..3fde00c 100644
+--- a/desktop/src/ipc/types.ts
++++ b/desktop/src/ipc/types.ts
+@@ -53,11 +53,60 @@ export interface BenchPlan {
+ // ---- M0 spike: C0.2 tablet input (desktop/src-tauri/src/spikes/tablet). Not product API. ----
+ 
+ export interface SpikeMode {
+-  name: 'tablet';
++  name: 'tablet' | 'canvas';
+   logPath: string | null;
+   nativeBackend: 'octotablet-ink' | 'appkit-nsevent' | null;
+   penSimulation: boolean;
+   auto: boolean;
++  /** Canvas spike: renderer forced with `--spike-renderer` (`null` or absent = automatic). */
++  renderer?: 'webgpu' | 'webgl2' | null;
++}
++
++// ---- M0 spike: C0.3 canvas throughput (desktop/src-tauri/src/spikes/canvas). Not product API. ----
++
++export type CanvasSceneKind = 'paths100k' | 'groups1k' | 'brush10k';
++
++export interface CanvasSceneRequest {
++  scene: CanvasSceneKind;
++  seed: number;
++  frame: number;
++}
++
++/** Header of a `TTRL` v1 render list (format: desktop/src-tauri/src/spikes/canvas/renderlist.rs). */
++export interface RenderListHeader {
++  version: 1;
++  headerLength: 72;
++  kind: CanvasSceneKind;
++  seed: number;
++  frame: number;
++  groups: number;
++  paths: number;
++  verbs: number;
++  points: number;
++  bounds: number[];
++  flags: number;
++  encodeNs: number;
++  generateNs: number;
++  /** Total bytes, equal to the length computed from the counts. */
++  byteLength: number;
++}
++
++/** A certified render-list envelope and its bytes (the sections are decoded by the page). */
++export interface RenderListPayload {
++  header: RenderListHeader;
++  bytes: ArrayBuffer;
++}
++
++export interface PixelFrameHeader {
++  width: number;
++  height: number;
++  fillNs: number;
++  byteLength: number;
++}
++
++export interface PixelFramePayload {
++  header: PixelFrameHeader;
++  bytes: ArrayBuffer;
+ }
+ 
+ export interface NativePacket {
