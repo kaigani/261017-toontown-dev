@@ -593,6 +593,10 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
     return {
       spike: 'tablet',
       version: LOG_VERSION,
+      // How the log came about (C02-R3-01): `auto` = --spike-auto; `interactive` = synthetic strokes injected from
+      // the toolbar; `manual` = no synthetic stroke at all (a hardware capture). The analyzer treats a log as a
+      // manual capture only when it says so here.
+      source: mode.auto ? 'auto' : runs.current.length > 0 ? 'interactive' : 'manual',
       matrixSize: MATRIX_SIZE,
       savedAt: new Date().toISOString(),
       metadata: metadataRef.current,

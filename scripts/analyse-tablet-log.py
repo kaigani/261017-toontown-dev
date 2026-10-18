@@ -9,16 +9,20 @@ recomputed and the log is rejected if the saved value disagrees.
 Log versions (C02-R2-01):
 * 3 (current) and 2 are accepted. Version 3 adds the injector's monotonic contact endpoints and focus snapshots.
 * 1 is rejected (obsolete: no raw injection report).
-* A log without a `version` field is accepted only if it contains no synthetic runs (an unversioned manual/hardware
-  capture, e.g. the round-1 reviewer fixture); with synthetic runs it is rejected.
+* A log without a `version` field is accepted only if it carries no synthetic artefact at all: no `runs` or
+  `simulations` field (even empty), no `source`, and no `--spike-auto` request (the round-1 reviewer fixture). Any
+  of these makes it malformed.
 
 Every synthetic run is validated before anything is printed. There are three outcomes, stated in the output:
 * (a) an explicitly failed run (it carries an error such as `spike.notForeground`): analysed and labelled FAILED;
-* (b) no synthetic runs (manual hardware log): analysed; there is no injection reference, so loss is "unknown, gap
-  heuristic only";
+* (b) a manual hardware log: analysed; there is no injection reference, so loss is "unknown, gap heuristic only".
+  Allowed only when the log **declares** it (`source: "manual"`, written by the page when no `--spike-auto` run was
+  requested and no synthetic stroke was injected) and contains no run or simulation entries (C02-R3-01);
 * (c) malformed or missing evidence (a successful run without its raw report, a report missing fields or with array
   lengths that differ from the injected frame count, no time origin, stream bounds outside the streams, a saved rate
-  that disagrees with the recomputed one): exit status 2 with a message on stderr; nothing is printed as a result.
+  that disagrees with the recomputed one, version-3 focus snapshots missing or incomplete, simulation entries
+  without their run records, a `--spike-auto` or synthetic log without runs, a `manual` log with runs): exit status 2
+  with a message on stderr; nothing is printed as a result.
 
 Prints, as Markdown that can be pasted into a report:
 * environment and run metadata;
@@ -52,6 +56,10 @@ V2_RATE_TOLERANCE = 0.01
 REPORT_ARRAYS = ("injectEpochMs", "injectReturnEpochMs", "pressure", "tiltX", "tiltY", "rotation", "screenX", "screenY")
 REPORT_FIELDS = ("method", "frames", "hz", "achievedHz", "screenRect", "pattern", "target") + REPORT_ARRAYS
 V3_REPORT_FIELDS = ("contactStartNs", "contactEndNs", "contactStartEpochMs", "contactEndEpochMs", "focus")
+FOCUS_NUMBERS = ("ownPid", "targetHwnd", "foregroundHwnd", "foregroundPid", "focusHwnd", "focusPid", "activeHwnd",
+                 "captureHwnd")
+FOCUS_STRINGS = ("foregroundClass", "focusClass")
+SOURCES = ("manual", "interactive", "auto")
 
 
 class LogError(Exception):
@@ -67,9 +75,12 @@ def load(path):
 def log_version(log):
     """The log's version, or None for an unversioned log without synthetic runs. Raises LogError otherwise."""
     if "version" not in log:
-        if log.get("runs") or log.get("simulations"):
-            raise LogError("log has no `version` field but contains synthetic runs; this analyzer only accepts "
-                           f"versioned synthetic evidence (versions {SUPPORTED_VERSIONS})")
+        artefacts = [k for k in ("runs", "simulations", "source") if k in log]
+        if auto_requested(log):
+            artefacts.append("environment.mode.auto")
+        if artefacts:
+            raise LogError(f"log has no `version` field but carries synthetic artefacts {artefacts}; this analyzer "
+                           f"only accepts versioned synthetic evidence (versions {SUPPORTED_VERSIONS})")
         return None
     version = log["version"]
     if version == 1:
@@ -78,6 +89,50 @@ def log_version(log):
     if version not in SUPPORTED_VERSIONS:
         raise LogError(f"unsupported log version {version!r} (this analyzer reads versions {SUPPORTED_VERSIONS})")
     return version
+
+
+def auto_requested(log):
+    mode = (log.get("environment") or {}).get("mode") or {}
+    return isinstance(mode, dict) and mode.get("auto") is True
+
+
+def is_manual(log, version):
+    """Outcome (b) is chosen only for a log that declares itself manual (C02-R3-01). Raises LogError when the
+    log's synthetic artefacts and its run records disagree."""
+    if version is None:
+        return True  # unversioned: log_version already rejected every synthetic artefact
+    runs = log.get("runs")
+    sims = log.get("simulations")
+    source = log.get("source")
+    if source is not None and source not in SOURCES:
+        raise LogError(f"unknown log source {source!r} (expected one of {SOURCES})")
+    for name, value in (("runs", runs), ("simulations", sims)):
+        if value is not None and not isinstance(value, list):
+            raise LogError(f"`{name}` is not a list")
+    if runs:
+        if source == "manual":
+            raise LogError("log declares source 'manual' but contains synthetic runs")
+        return False
+    # No run records from here on.
+    if sims:
+        raise LogError(f"log has {len(sims)} simulation entries but no run records; synthetic evidence without its "
+                       "runs is missing evidence, not a manual capture")
+    if auto_requested(log):
+        raise LogError("log was saved by a --spike-auto run but has no run records")
+    if source != "manual":
+        raise LogError("log has no run records and does not declare `source: \"manual\"`; it cannot be treated as a "
+                       f"manual/hardware capture (source {source!r})")
+    return True
+
+
+def check_simulations(log):
+    """Every simulation entry must be the summary of an existing successful run with the identical raw report."""
+    runs = log.get("runs") or []
+    for i, sim in enumerate(log.get("simulations") or []):
+        label = (sim or {}).get("label") if isinstance(sim, dict) else None
+        report = (sim or {}).get("report") if isinstance(sim, dict) else None
+        if not any(r.get("label") == label and r.get("report") == report and report is not None for r in runs):
+            raise LogError(f"simulation entry {i} ({label!r}) has no run record with the same raw report")
 
 
 def pct(values, p):
@@ -135,6 +190,29 @@ def ranges(indices):
     if start is not None:
         out.append(f"{start}" if start == prev else f"{start}-{prev}")
     return ", ".join(out) if out else "none"
+
+
+def missing_runs(indices):
+    """Runs of consecutive missing frame ids as [first, last, length], longest first (ties by first id)."""
+    out, start, prev = [], None, None
+    for i in sorted(indices):
+        if start is None:
+            start = prev = i
+        elif i == prev + 1:
+            prev = i
+        else:
+            out.append([start, prev, prev - start + 1])
+            start = prev = i
+    if start is not None:
+        out.append([start, prev, prev - start + 1])
+    return sorted(out, key=lambda r: (-r[2], r[0]))
+
+
+def runs_text(runs, limit=5):
+    if not runs:
+        return "none"
+    shown = [f"{a}-{b} ({n})" if n > 1 else f"{a} (1)" for a, b, n in runs[:limit]]
+    return ", ".join(shown) + (f", ... {len(runs) - limit} more" if len(runs) > limit else "")
 
 
 def is_number(v):
@@ -346,13 +424,29 @@ def validate_report(report, label, version):
         start, end = report["contactStartNs"], report["contactEndNs"]
         if not (isinstance(start, int) and isinstance(end, int) and end > start):
             raise LogError(f"run {label!r}: raw report contact endpoints {start!r}..{end!r} are not an interval")
+        validate_focus(report["focus"], label)
+
+
+def validate_focus(focus, label):
+    """Version 3 needs exactly one complete snapshot for the start and one for the end of the stroke."""
+    if not isinstance(focus, list):
+        raise LogError(f"run {label!r}: focus snapshots must be a list")
+    roles = [f.get("when") if isinstance(f, dict) else None for f in focus]
+    if sorted(roles, key=str) != ["end", "start"]:
+        raise LogError(f"run {label!r}: version 3 needs one start and one end focus snapshot, found {roles}")
+    for f in focus:
+        bad = [k for k in FOCUS_NUMBERS if not (isinstance(f.get(k), int) and not isinstance(f.get(k), bool))]
+        bad += [k for k in FOCUS_STRINGS if not isinstance(f.get(k), str)]
+        if bad:
+            raise LogError(f"run {label!r}: focus snapshot {f.get('when')!r} lacks valid fields {bad}")
 
 
 def validate(log, version):
-    """Raises LogError on malformed or missing evidence (outcome c); returns nothing otherwise."""
-    runs = log.get("runs", [])
-    if not isinstance(runs, list):
-        raise LogError("`runs` is not a list")
+    """Raises LogError on malformed or missing evidence (outcome c); returns True for a manual log (outcome b)."""
+    if is_manual(log, version):
+        return True
+    check_simulations(log)
+    runs = log["runs"]
     samples = log.get("web", {}).get("samples", [])
     packets = log.get("native", {}).get("packets", [])
     for i, run in enumerate(runs):
@@ -375,6 +469,7 @@ def validate(log, version):
                 raise LogError(f"run {label!r}: native-window probe result lacks its listener records")
             if not isinstance(listeners["wmPointer"].get("entries"), list):
                 raise LogError(f"run {label!r}: WM_POINTER record has no entries")
+    return False
 
 
 # ---- synthetic runs -----------------------------------------------------------------------------------------------
@@ -428,6 +523,7 @@ def match(report, items, pressure, times=None, scale=1024, tilt=None, twist=None
     repeated = [i for i in range(1, frames) if sx[i] == sx[i - 1] and sy[i] == sy[i - 1]]
     missing_set = set(missing)
     out = {"injected": frames, "received": len(seen), "missing": len(missing), "missingFrames": missing,
+           "missingRuns": missing_runs(missing),
            "pressureScale": scale, "repeatedPixelFrames": len(repeated), "repeatedPixelIndices": repeated,
            "missingAmongRepeatedPixel": sum(1 for i in repeated if i in missing_set)}
     inject = report["injectEpochMs"]
@@ -488,7 +584,8 @@ def focus_summary(report):
 
 def run_analysis(log):
     version = log_version(log)
-    validate(log, version)
+    if validate(log, version):
+        return []
     samples = log.get("web", {}).get("samples", [])
     packets = log.get("native", {}).get("packets", [])
     origin = log.get("environment", {}).get("timeOrigin")
@@ -624,10 +721,13 @@ def print_runs(runs):
                          f"{', the target' if f['foregroundIsTarget'] else ''}), keyboard focus {f['focus']}"
                          f"{' (' + f['focusClass'] + ')' if f['focusClass'] else ''}")
         if not r["focus"]:
-            parts.append("focus not recorded (log predates version 3)")
+            # Validation guarantees complete snapshots in version 3, so an empty list only occurs in version 2.
+            parts.append("focus not recorded (version 2 log; focus snapshots were added in version 3)")
         if r.get("web"):
             w = r["web"]
             parts.append(f"web missing frames: {ranges(w['missingFrames'])}")
+            parts.append(f"longest runs of consecutive missing frames (first-last (count)): "
+                         f"{runs_text(w['missingRuns'])}")
             parts.append(f"repeated-pixel frames {ranges(w['repeatedPixelIndices'])}, of them missing "
                          f"{w['missingAmongRepeatedPixel']}")
             parts.append(f"web tilt exact {w['tiltExact']} of {w['received']}; web twist vs injected rotation: "
@@ -641,7 +741,8 @@ def print_runs(runs):
             parts.append(f"raw devices: {raw['deviceNames']}")
         if r.get("wmPointer"):
             w = r["wmPointer"]
-            parts.append(f"WM_POINTER missing frames: {ranges(w['missingFrames'])}; counts {r['wmPointerCounts']}; "
+            parts.append(f"WM_POINTER missing frames: {ranges(w['missingFrames'])} (longest runs "
+                         f"{runs_text(w['missingRuns'], 3)}); counts {r['wmPointerCounts']}; "
                          f"repeated-pixel frames {ranges(w['repeatedPixelIndices'])}; tilt exact {w['tiltExact']}; "
                          f"rotation: {fidelity_text(w['twistFidelity'])}")
             rf = (r.get("rts") or {}).get("frames")

@@ -101,7 +101,7 @@ const v2 = {
   native: { packets: [], hostDropped: 0, sendFailures: 0, invalidBatches: 0, truncated: 0 },
   // Deliberately wrong stored summaries: the analyzer must not read them.
   summary: { web: { rateHz: 1, strokes: [] } },
-  simulations: [{ web: { received: 1, missing: 63 } }],
+  simulations: [{ label: 'fixture run', report, web: { received: 1, missing: 63 } }],
 };
 
 interface Analysis {
@@ -129,12 +129,25 @@ describe('offline analyzer', () => {
       contactEndNs: end,
       contactStartEpochMs: timeOrigin + 998,
       contactEndEpochMs: timeOrigin + 1254,
-      focus: [],
+      focus: (['start', 'end'] as const).map((when) => ({
+        when,
+        ownPid: 10,
+        targetHwnd: 1,
+        foregroundHwnd: 1,
+        foregroundPid: 10,
+        foregroundClass: 'Tauri Window',
+        focusHwnd: 2,
+        focusPid: 11,
+        focusClass: 'Chrome_WidgetWin_1',
+        activeHwnd: 1,
+        captureHwnd: 0,
+      })),
     };
     const log = (achievedHz: number) => ({
       ...v2,
       version: 3,
       runs: [{ ...v2.runs[0], report: { ...v3Report, achievedHz } }],
+      simulations: [],
     });
     const ok = analyse(log((64 * 1e9) / (end - start)));
     expect(ok.status, ok.stderr).toBe(0);
@@ -144,24 +157,110 @@ describe('offline analyzer', () => {
     const bad = analyse(log(251));
     expect(bad.status).toBe(2);
     expect(bad.stderr).toContain('disagrees with the host estimator');
+    // C02-R3-02: version 3 needs complete start and end focus snapshots.
+    const hz = (64 * 1e9) / (end - start);
+    for (const focus of [
+      [],
+      v3Report.focus.slice(0, 1),
+      [{ ...v3Report.focus[0], ownPid: 'x' }, v3Report.focus[1]],
+    ]) {
+      const noFocus = analyse({
+        ...v2,
+        version: 3,
+        runs: [{ ...v2.runs[0], report: { ...v3Report, achievedHz: hz, focus } }],
+        simulations: [],
+      });
+      expect(noFocus.status).toBe(2);
+      expect(noFocus.stdout).toBe('');
+      expect(noFocus.stderr).toContain('focus snapshot');
+    }
   });
 
   it('labels an explicitly failed run and refuses a successful run without its report', () => {
     const failed = analyse({
       ...v2,
       runs: [{ ...v2.runs[0], report: null, error: 'spike.notForeground: covered' }],
+      simulations: [],
     });
     expect(failed.status, failed.stderr).toBe(0);
     expect(failed.stdout).toContain('**FAILED**: spike.notForeground: covered');
-    const missing = analyse({ ...v2, runs: [{ ...v2.runs[0], report: null }] });
+    const missing = analyse({ ...v2, runs: [{ ...v2.runs[0], report: null }], simulations: [] });
     expect(missing.status).toBe(2);
     expect(missing.stderr).toContain('no raw report');
   });
 
-  it('reports a manual log without synthetic runs as having no injection reference', () => {
-    const manual = analyse({ ...v2, runs: [], simulations: [] });
+  it('reports a declared manual log as having no injection reference', () => {
+    const manual = analyse({ ...v2, version: 3, source: 'manual', runs: [], simulations: [] });
     expect(manual.status, manual.stderr).toBe(0);
     expect(manual.stdout).toContain('No synthetic runs: outcome (b)');
+  });
+
+  it('C02-R3-01: refuses logs without run records unless they declare a manual capture', () => {
+    const cases: [string, Record<string, unknown>, string][] = [
+      ['undeclared', { ...v2, version: 3, runs: [], simulations: [] }, 'does not declare'],
+      ['orphaned simulations', { ...v2, version: 3, source: 'manual', runs: [] }, 'simulation entries'],
+      [
+        'auto requested',
+        {
+          ...v2,
+          version: 3,
+          source: 'manual',
+          runs: [],
+          simulations: [],
+          environment: { ...v2.environment, mode: { auto: true } },
+        },
+        '--spike-auto',
+      ],
+      ['manual with runs', { ...v2, source: 'manual' }, "source 'manual'"],
+      [
+        'simulation without its run',
+        { ...v2, simulations: [{ label: 'other run', report }] },
+        'no run record with the same raw report',
+      ],
+    ];
+    for (const [name, log, message] of cases) {
+      const r = analyse(log);
+      expect(r.status, name).toBe(2);
+      expect(r.stdout, name).toBe('');
+      expect(r.stderr, name).toContain(message);
+    }
+  });
+
+  it('C02-R3-01: a versionless log with any synthetic field is rejected', () => {
+    const manual = {
+      spike: 'tablet',
+      environment: { userAgent: 'fixture', coalescedApi: true },
+      web: { samples, frames: [] },
+      native: { packets: [] },
+    };
+    const ok = analyse(manual);
+    expect(ok.status, ok.stderr).toBe(0);
+    const synthetic: Record<string, unknown>[] = [
+      { ...manual, runs: [] },
+      { ...manual, simulations: [] },
+      { ...manual, source: 'manual' },
+      { ...manual, environment: { ...manual.environment, mode: { auto: true } } },
+      { ...manual, runs: v2.runs },
+    ];
+    for (const log of synthetic) {
+      const r = analyse(log);
+      expect(r.status).toBe(2);
+      expect(r.stdout).toBe('');
+      expect(r.stderr).toContain('no `version` field');
+    }
+  });
+
+  it('C02-R3-03: prints lost ranges from the data', () => {
+    const r = analyse(v2);
+    expect(r.status, r.stderr).toBe(0);
+    expect(r.stdout).toContain(
+      'longest runs of consecutive missing frames (first-last (count)): 10 (1), 20 (1)',
+    );
+    const a = r.json as { runs: { web: { missingRuns: number[][] } }[] };
+    expect(a.runs[0]?.web.missingRuns).toEqual([
+      [10, 10, 1],
+      [20, 20, 1],
+    ]);
   });
 
   it('recomputes per-stroke results and run matches from raw data, agreeing with the page', () => {
