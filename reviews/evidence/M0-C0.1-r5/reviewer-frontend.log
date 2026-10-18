@@ -1,0 +1,11 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c01-r5/desktop
+
+
+ Test Files  3 passed (3)
+      Tests  31 passed | 3 expected fail (34)
+   Start at  23:50:26
+   Duration  1.91s (environment 68%, setup 19%, transform 7%, import 4%, tests 2%, worker 1%)
+
+    Isolate  3 workers spawned · ~457ms startup each (spawn + environment, per file)
+             at least ~913ms faster with isolate: false — reuses workers across files instead of one per file

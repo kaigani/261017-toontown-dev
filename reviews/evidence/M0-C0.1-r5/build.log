@@ -1,0 +1,21 @@
+
+> @toontown/desktop@0.0.1 build C:\Users\kaiga\work\review\m0-c01-r5\desktop
+> vite build --config vite.config.ts && node boundary/check-dist.mjs dist
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 42 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                            0.47 kB │ gzip:   0.30 kB
+dist/assets/index-BcXvq6Ni.css           135.65 kB │ gzip:  11.06 kB
+dist/assets/tauri-transport-D_uHzYs7.js    1.36 kB │ gzip:   0.68 kB │ map:    32.65 kB
+dist/assets/index-DZ7APN4N.js            621.19 kB │ gzip: 162.20 kB │ map: 2,429.88 kB
+
+✓ built in 874ms
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)

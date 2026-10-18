@@ -1,0 +1,28 @@
+TAP version 13
+# lint diagnostics: [
+#   {
+#     ruleId: 'no-restricted-properties',
+#     severity: 2,
+#     message: "'String.fromCharCode' is restricted from being used. String assembly from fragments is not allowed in application code (IPC boundary, ADR-0001).",
+#     line: 1,
+#     column: 36,
+#     messageId: 'restrictedObjectProperty',
+#     endLine: 1,
+#     endColumn: 55
+#   }
+# ]
+# Subtest: C01-R4-01: late constant folding cannot emit an unattributed raw-host invoke
+ok 1 - C01-R4-01: late constant folding cannot emit an unattributed raw-host invoke
+  ---
+  duration_ms: 1049.8472
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1293.8697
