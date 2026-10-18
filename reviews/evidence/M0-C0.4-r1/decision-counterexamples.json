@@ -1,0 +1,31 @@
+[
+  {
+    "id": "mac-rate-only-miss",
+    "input": "DOM pen/pressure/tilt; 120 Hz; coalescing present; native has all attributes",
+    "matched_rows": []
+  },
+  {
+    "id": "mac-no-coalescing",
+    "input": "DOM pen/pressure/tilt; 240 Hz; no coalescing API; native has all attributes",
+    "matched_rows": []
+  },
+  {
+    "id": "mac-partial-native",
+    "input": "DOM and native pressure/pen but neither has tilt",
+    "matched_rows": []
+  },
+  {
+    "id": "canvas-brush-only-adr",
+    "input": "WebGL2 paths/groups/brush = 60/60/40 fps; no WebGPU adapter",
+    "report_rows": [
+      "native-wgpu prototype"
+    ],
+    "adr_rows": []
+  },
+  {
+    "id": "canvas-slow-webgpu",
+    "input": "WebGL2 60/60/60; WebGPU 60/40/60 with adapter",
+    "report_rows": [],
+    "adr_rows": []
+  }
+]

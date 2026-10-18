@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python",
+    "scripts/analyse-canvas-log.py",
+    "reviews/evidence/M0-C0.3-r3/canvas-auto.json.gz"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r1",
+  "started": "2026-10-18T14:25:56.726093+00:00",
+  "seconds": 0.062,
+  "exit": 0
+}
