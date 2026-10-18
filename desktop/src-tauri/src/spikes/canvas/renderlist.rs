@@ -299,6 +299,13 @@ pub enum EncodeError {
     BadWidth { path: usize, width: f32 },
     /// A path's verb or point range lies outside the arrays, or names a missing group.
     BadPath { path: usize },
+    /// The interleaved point array has an odd length, so its last coordinate has no partner (C03-R2-03).
+    UnpairedCoordinate { len: usize },
+    /// A path style other than fill non-zero, fill even-odd or stroke (C03-R2-03).
+    UnknownStyle { path: usize, style: u32 },
+    /// A line or cubic verb with no open contour (no move since the path start or the last close), which the
+    /// decoder refuses (C03-R2-03).
+    MissingMove { path: usize },
 }
 
 impl std::fmt::Display for EncodeError {
@@ -312,6 +319,9 @@ impl std::fmt::Display for EncodeError {
             EncodeError::NonFiniteGroup { group } => write!(f, "group {group} has a non-finite transform"),
             EncodeError::BadWidth { path, width } => write!(f, "path {path} has an invalid stroke width {width}"),
             EncodeError::BadPath { path } => write!(f, "path {path} has ranges outside the scene"),
+            EncodeError::UnpairedCoordinate { len } => write!(f, "{len} point coordinates cannot form x, y pairs"),
+            EncodeError::UnknownStyle { path, style } => write!(f, "path {path} has unknown style {style}"),
+            EncodeError::MissingMove { path } => write!(f, "path {path} draws before a move"),
         }
     }
 }
@@ -337,8 +347,12 @@ fn verb_points(verb: u8) -> Option<usize> {
     }
 }
 
-/// Checks every property the decoder relies on (see [`EncodeError`]).
+/// Checks every property the decoder relies on (see [`EncodeError`]); the contract equals the certified decoder's
+/// (`desktop/src/spikes/canvas/decode.ts`), so anything this accepts decodes and anything it refuses the decoder throws on.
 pub fn validate(scene: &Scene) -> Result<(), EncodeError> {
+    if !scene.points.len().is_multiple_of(2) {
+        return Err(EncodeError::UnpairedCoordinate { len: scene.points.len() });
+    }
     let b = scene.bounds;
     if !b.iter().all(|v| v.is_finite()) || b[0] > b[2] || b[1] > b[3] {
         return Err(EncodeError::BadBounds(b));
@@ -359,14 +373,23 @@ pub fn validate(scene: &Scene) -> Result<(), EncodeError> {
     }
     let points = scene.points.len() / 2;
     for (index, p) in scene.paths.iter().enumerate() {
+        if p.style > STYLE_STROKE {
+            return Err(EncodeError::UnknownStyle { path: index, style: p.style });
+        }
         if !p.width.is_finite() || p.width < 0.0 {
             return Err(EncodeError::BadWidth { path: index, width: p.width });
         }
         let (start, end) = (p.verb_start as usize, p.verb_start as usize + p.verb_count as usize);
         let Some(verbs) = scene.verbs.get(start..end) else { return Err(EncodeError::BadPath { path: index }) };
-        let mut needed = 0;
+        let (mut needed, mut open) = (0, false);
         for &v in verbs {
             needed += verb_points(v).ok_or(EncodeError::BadPath { path: index })?;
+            match v {
+                VERB_MOVE => open = true,
+                VERB_CLOSE => open = false,
+                _ if !open => return Err(EncodeError::MissingMove { path: index }),
+                _ => {}
+            }
         }
         if p.point_start as usize + needed > points || p.group as usize >= scene.groups.len() {
             return Err(EncodeError::BadPath { path: index });
@@ -531,6 +554,16 @@ mod tests {
         let mut range = tiny();
         range.paths[2].point_start = 9;
         assert_eq!(encode(Kind::Groups1k, &range, 0, 0), Err(EncodeError::BadPath { path: 2 }));
+        let mut odd = tiny();
+        odd.points.push(0.0);
+        assert_eq!(encode(Kind::Groups1k, &odd, 0, 0), Err(EncodeError::UnpairedCoordinate { len: odd.points.len() }));
+        let mut style = tiny();
+        style.paths[1].style = STYLE_STROKE + 1;
+        assert_eq!(encode(Kind::Groups1k, &style, 0, 0), Err(EncodeError::UnknownStyle { path: 1, style: 3 }));
+        let mut unmoved = tiny();
+        let first = unmoved.paths[0].verb_start as usize;
+        unmoved.verbs[first] = VERB_LINE;
+        assert_eq!(encode(Kind::Groups1k, &unmoved, 0, 0), Err(EncodeError::MissingMove { path: 0 }));
     }
 
     #[test]

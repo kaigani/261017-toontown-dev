@@ -13,6 +13,11 @@ name = "tt_desktop"
 name = "toontown"
 path = "src/main.rs"
 
+# Reviewer's C0.3 round-2 encoder regressions (they include the spike's renderlist.rs by path), run by `cargo test`.
+[[test]]
+name = "c03_r2_encoder"
+path = "../../tests/adversarial/c03-r2-encoder.rs"
+
 [build-dependencies]
 tauri-build.workspace = true
 
