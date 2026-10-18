@@ -425,7 +425,9 @@ MIN_TRANSITION_MS = 500  # the page's minimum time between two marker transition
 def path_outcome(state, stream, strokes, span, clock=None):
     """Outcome of one action on one path (C04-R4-01). The path's raw stream (web samples or native packets) is clipped
     to the action's span **before** it is split into episodes: episode detection, the largest episode, split handling
-    and every statistic use only samples inside the span, so nothing outside it reaches a decision input. Episodes
+    and every statistic use only samples inside the span, so nothing outside it reaches a decision input. The native
+    rate clock is chosen from the clipped stream too: device time if every in-span contact packet has it, else host
+    time (C04-R5-01); `stats["clock"]` records it. Episodes
     keep the number of the capture-wide episode their first in-span sample belongs to (the action -> episode
     mapping of the manual tests)."""
     if state == "skipped":
@@ -434,9 +436,10 @@ def path_outcome(state, stream, strokes, span, clock=None):
     if clock is None:  # web: page performance clock
         clipped = [q for q in stream if is_number(q.get("t")) and lo <= q["t"] < hi]
         episodes = [points for _, points, _ in web_episodes(clipped)]
-    else:  # native: assigned by host wall time; intervals on the path's own clock
+    else:  # native: assigned by host wall time; intervals on a clock chosen from the clipped stream (C04-R5-01)
         clipped = [q for q in stream if is_number(q.get("hostEpochMs")) and lo <= q["hostEpochMs"] < hi]
         episodes = [e["points"] for e in native_episodes(clipped)]
+        clock = native_clock(clipped)
     number = {id(q): i + 1 for i, st in enumerate(strokes) for q in st["_points"]}
     indices = sorted({number[id(points[0])] for points in episodes if id(points[0]) in number})
     if state == "unfinished":
@@ -452,7 +455,7 @@ def path_outcome(state, stream, strokes, span, clock=None):
         stats = stroke_stats(pts, [native_time(q, clock) for q in pts])
         key = pts[0].get("tool")
     measured = number.get(id(pts[0]))
-    stats.update(pointer=key, truncated=measured is None or strokes[measured - 1]["truncated"])
+    stats.update(pointer=key, truncated=measured is None or strokes[measured - 1]["truncated"], clock=clock or "page")
     return {"outcome": f"episode {indices[0]}" if len(episodes) == 1 else f"split: {len(episodes)} episodes",
             "episodes": indices, "measured": measured, "stats": stats}
 
@@ -480,7 +483,7 @@ def validate_key_events(log, acts):
     if not isinstance(events, list):
         raise LogError("`keyEvents` is not a list")
     expected = expected_transitions(acts)
-    prev, pressed, last, done = None, set(), None, 0
+    prev, pressed, last, done = None, {}, None, 0
     for k, e in enumerate(events):
         if not (isinstance(e, dict) and e.get("type") in KEY_TYPES and e.get("key") in KEY_NAMES
                 and is_number(e.get("t")) and isinstance(e.get("repeat"), bool) and isinstance(e.get("outcome"), str)):
@@ -494,7 +497,7 @@ def validate_key_events(log, acts):
             if transition:
                 raise LogError(f"key event {k}: a transition on a keydown")
             if not e["repeat"] and e["outcome"] == "pressed":
-                pressed.add(e["key"])
+                pressed[e["key"]] = k
             continue
         if transition:
             if e["repeat"]:
@@ -513,7 +516,11 @@ def validate_key_events(log, acts):
             done += 1
             last = e["t"]
         if not typing:
-            pressed.discard(e["key"])
+            pressed.pop(e["key"], None)
+    if done != len(expected) and pressed:
+        k = max(pressed.values())
+        raise LogError(f"key event {k}: keydown of {events[k]['key']!r} never received its keyup; the raw key events "
+                       f"show {done} marker transitions but the action records need {len(expected)}")
     if done != len(expected):
         raise LogError(f"the raw key events show {done} marker transitions but the action records need {len(expected)}")
     return {"events": len(events), "transitions": done,
@@ -528,7 +535,6 @@ def action_analysis(log, web, native):
     if not isinstance(acts, list):
         raise LogError("`actions` is not a list")
     seen, prev_end, prev_epoch_end, out = set(), None, None, []
-    clock = native["clock"]
     web_samples = log.get("web", {}).get("samples", [])
     packets = log.get("native", {}).get("packets", [])
     for k, a in enumerate(acts):
@@ -550,7 +556,7 @@ def action_analysis(log, web, native):
         out.append({"id": a["id"], "state": a["state"], "durationMs": a["endPerf"] - a["startPerf"],
                     "web": path_outcome(a["state"], web_samples, web["strokes"], (a["startPerf"], a["endPerf"])),
                     "native": path_outcome(a["state"], packets, native["strokes"],
-                                           (a["startEpochMs"], a["endEpochMs"]), clock)})
+                                           (a["startEpochMs"], a["endEpochMs"]), "native")})
     keys = validate_key_events(log, acts)
     in_web = {i for r in out for i in r["web"]["episodes"]}
     in_nat = {i for r in out for i in r["native"]["episodes"]}
@@ -806,12 +812,12 @@ def print_actions(actions):
     if actions is None:
         print("No action markers in this log: it predates them, so the ADR-0009 rule set cannot use it (Step 0).")
         return
-    print("| action | state | ms | web | web measured episode | native | native measured episode |")
-    print("|---|---|---|---|---|---|---|")
+    print("| action | state | ms | web | web measured episode | native | native measured episode | native clock |")
+    print("|---|---|---|---|---|---|---|---|")
     for r in actions["actions"]:
         w, n = r["web"], r["native"]
         print(f"| {r['id']} | {r['state']} | {fmt(r['durationMs'], 0)} | {w['outcome']} | {fmt(w['measured'], 0)} | "
-              f"{n['outcome']} | {fmt(n['measured'], 0)} |")
+              f"{n['outcome']} | {fmt(n['measured'], 0)} | {(n['stats'] or {}).get('clock', '-')} |")
     print(f"\nNot recorded: {', '.join(actions['notRecorded']) or 'none'}. Episodes outside every action (UI clicks, "
           f"ignored): web {actions['webOutside'] or 'none'}, native {actions['nativeOutside'] or 'none'}.")
     ex = actions["excludedSamples"]

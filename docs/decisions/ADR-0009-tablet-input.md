@@ -99,6 +99,8 @@ Every row below names an action, never an episode number.
   page's performance clock, native packets by host wall time.
 - Episode detection, the choice of the largest episode, split handling and every statistic use the clipped stream
   only. Row 6's coalescing comes from A2's own clipped samples.
+- The native rate clock is chosen **per action from its clipped packets** (C04-R5-01). It is device time if every
+  in-span contact packet has a device timestamp, otherwise host time, and the analyzer prints it per action.
 - An episode keeps the capture-wide number of the episode its first in-span sample belongs to; that numbering is
   what the manual tests' mapping tables use.
 - Samples outside every span never enter any per-action computation, and the analyzer prints how many there were

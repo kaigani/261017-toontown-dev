@@ -290,6 +290,53 @@ class OutsideSpanAndKeys(unittest.TestCase):
         self.assertIn("key event 0: transition without a non-repeat keydown", r.stderr)
 
 
+class NativeClockPerAction(unittest.TestCase):
+    """C04-R5-01: the native rate clock is chosen per action from its clipped packets only."""
+
+    @staticmethod
+    def native_log(device_in_span=True, device_outside=True):
+        log = manual_log(False)
+        log["nativeInfo"] = {"backend": "test-native"}
+        packets = [dict(kind={"move": "pose"}.get(q["kind"], q["kind"]), tool="pen", pressure=q["pressure"],
+                        hostEpochMs=1e12 + q["t"], deviceMs=q["t"] / 4, tiltX=0, tiltY=0, twist=0)
+                   for q in log["web"]["samples"]]
+        if not device_in_span:
+            for q in packets:
+                del q["deviceMs"]
+        end = log["actions"][-1]["endEpochMs"]
+        outside = [dict(kind="down", tool="pen", pressure=0.5, hostEpochMs=end + 100),
+                   dict(kind="up", tool="pen", pressure=0, hostEpochMs=end + 101)]
+        if device_outside:
+            for q in outside:
+                q["deviceMs"] = 99999
+        log["native"]["packets"] = packets + outside
+        return log
+
+    def a2_native(self, log):
+        web, native = tablet.web_analysis(log), tablet.native_analysis(log)
+        return tablet.action_analysis(log, web, native)["actions"][1]["native"]["stats"]
+
+    def test_outside_packets_without_device_time_do_not_change_the_clock(self):
+        clean, mixed = self.native_log(), self.native_log(device_outside=False)
+        self.assertEqual(tablet.native_analysis(mixed)["clock"], "host")  # the capture-wide table falls back
+        self.assertEqual(self.a2_native(mixed)["clock"], "device")  # the action does not
+        self.assertEqual(self.a2_native(mixed)["rateHz"], self.a2_native(clean)["rateHz"])
+
+    def test_in_span_packets_without_device_time_use_host_time_even_if_outside_ones_have_it(self):
+        log = self.native_log(device_in_span=False, device_outside=True)
+        stats = self.a2_native(log)
+        self.assertEqual(stats["clock"], "host")
+        self.assertAlmostEqual(stats["rateHz"], 1000 / 8.33, places=3)  # host time, not deviceMs / 4
+
+    def test_missing_final_keyup_names_the_pending_keydown(self):
+        log = OutsideSpanAndKeys.keyed(manual_log(False))
+        keys = log["keyEvents"]
+        log["keyEvents"] = keys[:-1]  # the last keyup (A6 done) is lost
+        web, native = tablet.web_analysis(log), tablet.native_analysis(log)
+        with self.assertRaisesRegex(tablet.LogError, rf"key event {len(keys) - 2}: keydown of ' ' never received"):
+            tablet.action_analysis(log, web, native)
+
+
 class CanvasRules(unittest.TestCase):
     def decide(self, path):
         log = json.loads((ROOT / path).read_bytes())
