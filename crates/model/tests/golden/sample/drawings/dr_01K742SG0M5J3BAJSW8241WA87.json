@@ -1,0 +1,31 @@
+{
+  "id": "dr_01K742SG0M5J3BAJSW8241WA87",
+  "type": "drawing",
+  "rev": 1,
+  "name": "2",
+  "locked": true,
+  "pivot": {
+    "x": 0,
+    "y": 0
+  },
+  "mouthShape": "A",
+  "nodes": [
+    {
+      "id": "nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+      "type": "drawingNode",
+      "rev": 1,
+      "kind": "bitmap",
+      "transform": [2, 0, 0, 2, -32, 16],
+      "width": 32,
+      "height": 16,
+      "image": {
+        "entry": "banks/db_01K742SG0JW3TVZ32SQC03AMY1/dr_01K742SG0M5J3BAJSW8241WA87/nd_01K742SG0XC99E0A2JJ9D4VJ2J.png",
+        "mediaType": "image/png",
+        "size": 2048,
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+      }
+    }
+  ],
+  "colourRecovery": [],
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

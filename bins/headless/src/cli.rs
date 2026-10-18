@@ -195,7 +195,7 @@ mod tests {
         let (r, out) = run_to_string(&["--version"]);
         assert_eq!(r.unwrap(), Outcome::Success);
         assert!(out.starts_with(&format!("toontown-headless {}", env!("CARGO_PKG_VERSION"))), "{out}");
-        assert!(out.contains("format 0.0"));
+        assert!(out.contains("format 1.0"), "{out}");
     }
 
     #[test]

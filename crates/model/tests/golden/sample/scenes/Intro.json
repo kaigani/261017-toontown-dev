@@ -1,0 +1,218 @@
+{
+  "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+  "type": "scene",
+  "rev": 1,
+  "name": "Intro",
+  "visible": true,
+  "backgroundColour": "#FFFFFFFF",
+  "currentCameraId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+  "paletteStyles": {
+    "pal_01K742SG02PPWW6K8BZY81A0M0": "sty_01K742SG047PMCPGTWHST62SWP",
+    "pal_01K742SG0AGX319NWQ7HE2MH4W": "sty_01K742SG0BHZ6HZ10GCCZF61NC"
+  },
+  "outTransition": {
+    "id": "tr_01K742SG2KA0JQ0743D7J833ZK",
+    "type": "transition",
+    "rev": 1,
+    "transitionType": "clockWipe",
+    "durationLeft": 12,
+    "blankDuration": 0,
+    "durationRight": 12,
+    "colour": "#000000FF",
+    "angle": 90,
+    "direction": "counterclockwise",
+    "size": 25
+  },
+  "tree": [
+    {
+      "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+      "children": []
+    },
+    {
+      "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+      "children": [
+        {
+          "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+      "children": []
+    },
+    {
+      "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+      "children": []
+    },
+    {
+      "id": "el_01K742SG18FWWKH14N0RFB0V71",
+      "children": []
+    },
+    {
+      "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+      "children": []
+    },
+    {
+      "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+      "children": [
+        {
+          "id": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+          "children": [
+            {
+              "id": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "el_01K742SG1E231F7W54P5SD2AAB",
+      "children": [
+        {
+          "id": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+      "children": [
+        {
+          "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+          "children": []
+        },
+        {
+          "id": "el_01K742SG1J3M0SDFTX818N3V2K",
+          "children": [
+            {
+              "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "el_01K742SG1M9CJZV12YYC0CWB8B",
+      "children": [
+        {
+          "id": "el_01K742SG1N7SQGF0AQF87N7SEP",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+      "children": []
+    }
+  ],
+  "columnOrder": ["el_01K742SG11W3SGB8Q1H50W74VB", "el_01K742SG12CTMHXEB7TY99G4XV", "el_01K742SG16N99XRCS0QEBWMRXY", "el_01K742SG18FWWKH14N0RFB0V71", "el_01K742SG1997BY67AWW1M4Q0ZJ"],
+  "elements": [
+    {
+      "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+      "type": "element",
+      "name": "Camera"
+    },
+    {
+      "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+      "type": "element",
+      "name": "Bob-P"
+    },
+    {
+      "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+      "type": "element",
+      "name": "Bob"
+    },
+    {
+      "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+      "type": "element",
+      "name": "Background"
+    },
+    {
+      "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+      "type": "element",
+      "name": "Notes"
+    },
+    {
+      "id": "el_01K742SG18FWWKH14N0RFB0V71",
+      "type": "element",
+      "name": "Dialogue"
+    },
+    {
+      "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+      "type": "element",
+      "name": "Reference"
+    },
+    {
+      "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+      "type": "element",
+      "name": "Rig"
+    },
+    {
+      "id": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+      "type": "element",
+      "name": "Rig-bones"
+    },
+    {
+      "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+      "type": "element",
+      "name": "Rig-skin"
+    },
+    {
+      "id": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+      "type": "element",
+      "name": "Arm"
+    },
+    {
+      "id": "el_01K742SG1E231F7W54P5SD2AAB",
+      "type": "element",
+      "name": "Clip"
+    },
+    {
+      "id": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+      "type": "element",
+      "name": "Clip-mask"
+    },
+    {
+      "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+      "type": "element",
+      "name": "Fade"
+    },
+    {
+      "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+      "type": "element",
+      "name": "Shadow"
+    },
+    {
+      "id": "el_01K742SG1J3M0SDFTX818N3V2K",
+      "type": "element",
+      "name": "Soft"
+    },
+    {
+      "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+      "type": "element",
+      "name": "Quake"
+    },
+    {
+      "id": "el_01K742SG1M9CJZV12YYC0CWB8B",
+      "type": "element",
+      "name": "Snow"
+    },
+    {
+      "id": "el_01K742SG1N7SQGF0AQF87N7SEP",
+      "type": "element",
+      "name": "Snow-sprites"
+    },
+    {
+      "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+      "type": "element",
+      "name": "Boom"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+  "type": "element",
+  "rev": 1,
+  "name": "Rig",
+  "elementType": "skeleton",
+  "start": 1,
+  "duration": 48,
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "transform": {
+    "offset": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": 0,
+    "skew": 0,
+    "scale": {
+      "x": 1,
+      "y": 1
+    },
+    "keepProportions": false,
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "applyPivotTo": "rotation",
+    "lockDepth": false,
+    "orientToPath": false
+  },
+  "skeleton": {
+    "boneColour": null,
+    "showTrack": false,
+    "showRoot": true,
+    "showBones": true,
+    "showInfluence": false,
+    "vectorQuality": "medium",
+    "deformationEnabled": true
+  },
+  "channels": {},
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}
