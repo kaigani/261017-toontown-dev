@@ -1,0 +1,252 @@
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m0-c01-r1
+> pnpm -r test
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m0-c01-r1\desktop
+> vitest run
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c01-r1/desktop
+
+ ❯ src/test/adversarial.test.ts (8 tests | 8 failed) 12ms
+   ❯ C0.1 adversarial regressions (intentionally red until the builder fixes them) (8)
+     × C01-R1-03: rejects missing EngineInfo.platform 6ms
+     × C01-R1-03: rejects missing EngineInfo.arch 1ms
+     × C01-R1-03: rejects missing EngineInfo.runMode 1ms
+     × C01-R1-03: rejects an unknown run mode 1ms
+     × C01-R1-03: rejects a negative Rust u64 ping field 1ms
+     × C01-R1-03: rejects array-shaped menu parameters 1ms
+     × C01-R1-05: mock enforces the same UTF-8 byte limit as Rust 1ms
+     × C01-R1-07: IPC benchmark fails if the return payload is dropped 1ms
+node.exe :
+At C:\Users\kaiga\AppData\Roaming\npm\pnpm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/pnpm/bin/pnpm.cjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) >
+C01-R1-03: rejects missing EngineInfo.platform
+AssertionError: promise resolved "{ name: 'Toontown', …(5) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "arch": "mock",
++   "formatVersion": "0.0",
++   "name": "Toontown",
++   "registryVersion": "0.0.0",
++   "runMode": "attached",
++   "version": "0.0.1",
+  }
+
+ ❯ ../tests/adversarial/frontend-cases.ts:26:8
+     24|       await expect(
+     25|         createHostApi(responding(value)).appInfo(),
+     26|       ).rejects.toMatchObject({ code: "ipc.invalidResponse" });
+       |        ^
+     27|     });
+     28|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) >
+C01-R1-03: rejects missing EngineInfo.arch
+AssertionError: promise resolved "{ name: 'Toontown', …(5) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "formatVersion": "0.0",
++   "name": "Toontown",
++   "platform": "browser",
++   "registryVersion": "0.0.0",
++   "runMode": "attached",
++   "version": "0.0.1",
+  }
+
+ ❯ ../tests/adversarial/frontend-cases.ts:26:8
+     24|       await expect(
+     25|         createHostApi(responding(value)).appInfo(),
+     26|       ).rejects.toMatchObject({ code: "ipc.invalidResponse" });
+       |        ^
+     27|     });
+     28|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) >
+C01-R1-03: rejects missing EngineInfo.runMode
+AssertionError: promise resolved "{ name: 'Toontown', …(5) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "arch": "mock",
++   "formatVersion": "0.0",
++   "name": "Toontown",
++   "platform": "browser",
++   "registryVersion": "0.0.0",
++   "version": "0.0.1",
+  }
+
+ ❯ ../tests/adversarial/frontend-cases.ts:26:8
+     24|       await expect(
+     25|         createHostApi(responding(value)).appInfo(),
+     26|       ).rejects.toMatchObject({ code: "ipc.invalidResponse" });
+       |        ^
+     27|     });
+     28|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) >
+C01-R1-03: rejects an unknown run mode
+AssertionError: promise resolved "{ name: 'Toontown', …(6) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "arch": "mock",
++   "formatVersion": "0.0",
++   "name": "Toontown",
++   "platform": "browser",
++   "registryVersion": "0.0.0",
++   "runMode": "telepathy",
++   "version": "0.0.1",
+  }
+
+ ❯ ../tests/adversarial/frontend-cases.ts:34:6
+     32|         responding({ ...MOCK_ENGINE_INFO, runMode: "telepathy" }),
+     33|       ).appInfo(),
+     34|     ).rejects.toMatchObject({ code: "ipc.invalidResponse" });
+       |      ^
+     35|   });
+     36|   it("C01-R1-03: rejects a negative Rust u64 ping field", async () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) >
+C01-R1-03: rejects a negative Rust u64 ping field
+AssertionError: promise resolved "{ seq: -1, payload: null, …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "engineUptimeNs": 0,
++   "handlerNs": 0,
++   "payload": null,
++   "seq": -1,
+  }
+
+ ❯ ../tests/adversarial/frontend-cases.ts:41:6
+     39|         responding({ seq: -1, payload: null, handlerNs: 0, engineUptim…
+     40|       ).ping({ seq: 1 }),
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  8 failed | 22 passed (30)
+   Start at  21:35:50
+   Duration  1.02s (environment 77%, setup 15%, transform 3%, tests 3%, import 2%)
+
+C:\Users\kaiga\work\review\m0-c01-r1\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 test: `vitest run`
+Exit status 1
+     41|     ).rejects.toMatchObject({ code: "ipc.invalidResponse" });
+       |      ^
+     42|   });
+     43|   it("C01-R1-03: rejects array-shaped menu parameters", async () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) >
+C01-R1-03: rejects array-shaped menu parameters
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "command": "workspace.reset",
++     "handler": "frontend",
++     "milestone": null,
++     "params": [],
++   },
++ ]
+
+ ❯ ../tests/adversarial/frontend-cases.ts:53:18
+     51|       milestone: null,
+     52|     });
+     53|     expect(seen).toEqual([]);
+       |                  ^
+     54|   });
+     55|   it("C01-R1-05: mock enforces the same UTF-8 byte limit as Rust", asy…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) >
+C01-R1-05: mock enforces the same UTF-8 byte limit as Rust
+AssertionError: expected 'accepted' to match object { code: 'limit.exceeded', …(1) }
+
+- Expected:
+{
+  "code": "limit.exceeded",
+  "details": {
+    "limit": 1048576,
+    "value": 1048578,
+  },
+}
+
++ Received:
+"accepted"
+
+ ❯ ../tests/adversarial/frontend-cases.ts:63:21
+     61|         (error: unknown) => error,
+     62|       );
+     63|     expect(outcome).toMatchObject({
+       |                     ^
+     64|       code: "limit.exceeded",
+     65|       details: { value: 1_048_578, limit: 1_048_576 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) >
+C01-R1-07: IPC benchmark fails if the return payload is dropped
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ ../tests/adversarial/frontend-cases.ts:80:23
+     78|     });
+     79|     const report = await runIpcBench(host, { count: 2, payloadBytes: […
+     80|     expect(report.ok).toBe(false);
+       |                       ^
+     81|   });
+     82| }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+ ELIFECYCLE  Test failed. See above for more details.

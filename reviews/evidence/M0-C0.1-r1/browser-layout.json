@@ -1,0 +1,243 @@
+{
+  "url": "http://localhost:1420/",
+  "title": "Toontown",
+  "loading": false,
+  "visibleText": "Drawing\nDrawing view\n\nPlaceholder. The interactive drawing view arrives in M4.\n\nTimeline\nTimeline\n\nPlaceholder. The Timeline arrives in M5.\n\nProperties\n\nNo properties\n\nNothing is selected.\n\nTimeline opened\nReady\nIPC ping (mock): 0.00 ms\nMeasure 500\nToontown 0.0.1 · browser-mock",
+  "interactiveElements": [],
+  "consoleEntries": [
+    {
+      "level": "debug",
+      "text": "[vite] connecting...",
+      "timestamp": "2026-10-18T04:30:44.240Z"
+    },
+    {
+      "level": "debug",
+      "text": "[vite] connected.",
+      "timestamp": "2026-10-18T04:30:44.246Z"
+    },
+    {
+      "level": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+      "timestamp": "2026-10-18T04:30:44.273Z"
+    }
+  ],
+  "networkEntries": [
+    {
+      "url": "http://localhost:1420/",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.027Z"
+    },
+    {
+      "url": "http://localhost:1420/@react-refresh",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.075Z"
+    },
+    {
+      "url": "http://localhost:1420/src/main.tsx",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.080Z"
+    },
+    {
+      "url": "http://localhost:1420/node_modules/.vite/deps/react.js?v=dd02ee1f",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.107Z"
+    },
+    {
+      "url": "http://localhost:1420/src/styles.css",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.124Z"
+    },
+    {
+      "url": "http://localhost:1420/@fs/C:/Users/kaiga/work/review/m0-c01-r1/node_modules/.pnpm/dockview-react@8.6.0_react-_271372c53ae020e7e0dcdac6949cb9f0/node_modules/dockview-react/dist/styles/dockview.css",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.127Z"
+    },
+    {
+      "url": "http://localhost:1420/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=dd02ee1f",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.139Z"
+    },
+    {
+      "url": "http://localhost:1420/src/App.tsx",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.160Z"
+    },
+    {
+      "url": "http://localhost:1420/src/ipc/index.ts",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.172Z"
+    },
+    {
+      "url": "http://localhost:1420/node_modules/.vite/deps/react-B3R1TGE8.js?v=31739fbd",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.187Z"
+    },
+    {
+      "url": "http://localhost:1420/@vite/client",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.193Z"
+    },
+    {
+      "url": "http://localhost:1420/node_modules/.vite/deps/react-dom_client.js?v=e70c73fa",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.194Z"
+    },
+    {
+      "url": "http://localhost:1420/src/layout/defaultLayout.ts",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.218Z"
+    },
+    {
+      "url": "http://localhost:1420/src/commands.ts",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.218Z"
+    },
+    {
+      "url": "http://localhost:1420/src/ipc/hostApi.ts",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.229Z"
+    },
+    {
+      "url": "http://localhost:1420/src/ipc/mockTransport.ts",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.229Z"
+    },
+    {
+      "url": "http://localhost:1420/src/ipc/tauriTransport.ts",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.233Z"
+    },
+    {
+      "url": "http://localhost:1420/src/ipc/context.ts",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.233Z"
+    },
+    {
+      "url": "http://localhost:1420/src/diagnostics/ipcBench.ts",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.233Z"
+    },
+    {
+      "url": "http://localhost:1420/src/panels/index.ts",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.233Z"
+    },
+    {
+      "url": "http://localhost:1420/src/status/StatusBar.tsx",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.235Z"
+    },
+    {
+      "url": "http://localhost:1420/src/ipc/react.tsx",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.238Z"
+    },
+    {
+      "url": "http://localhost:1420/@fs/C:/Users/kaiga/work/review/m0-c01-r1/node_modules/.pnpm/vite@8.3.4_@types+node@22.20.5/node_modules/vite/dist/client/env.mjs",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.238Z"
+    },
+    {
+      "url": "http://localhost:1420/node_modules/.vite/deps/react-dom-CkG_lFt_.js?v=31739fbd",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.241Z"
+    },
+    {
+      "url": "http://localhost:1420/node_modules/.vite/deps/dockview-react.js?v=e74991e1",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.242Z"
+    },
+    {
+      "url": "http://localhost:1420/node_modules/.vite/deps/@tauri-apps_api_core.js?v=ef44db68",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.242Z"
+    },
+    {
+      "url": "http://localhost:1420/node_modules/.vite/deps/@tauri-apps_api_event.js?v=572c8609",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.242Z"
+    },
+    {
+      "url": "http://localhost:1420/src/lib/latency.ts",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.242Z"
+    },
+    {
+      "url": "http://localhost:1420/src/panels/PanelViews.tsx",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.247Z"
+    },
+    {
+      "url": "http://localhost:1420/node_modules/.vite/deps/core-D1L6rbFL.js?v=31739fbd",
+      "method": "GET",
+      "status": 200,
+      "failed": false,
+      "timestamp": "2026-10-18T04:30:44.249Z"
+    }
+  ],
+  "actionTimeline": [],
+  "screenshot": {
+    "mimeType": "image/png",
+    "width": 1280,
+    "height": 800
+  },
+  "accessibilityTree": "- generic [ref=t3-e652f2a9-3-e3] [box=0,0,1280,800]:\n  - main [ref=t3-e652f2a9-3-e4] [box=0,0,1280,773]:\n    - generic [ref=t3-e652f2a9-3-e16] [box=0,0,1280,773]:\n      - generic [ref=t3-e652f2a9-3-e22] [box=0,0,1280,773]:\n        - generic [ref=t3-e652f2a9-3-e28] [box=0,0,980,773]:\n          - region \"Drawing\" [ref=t3-e652f2a9-3-e30] [box=0,0,980,553]:\n            - tablist [ref=t3-e652f2a9-3-e33] [box=0,0,84,35]:\n              - tab \"Drawing\" [selected] [ref=t3-e652f2a9-3-e34] [cursor=pointer] [box=0,0,84,35]:\n                - generic [ref=t3-e652f2a9-3-e35] [box=7,3,71,29]:\n                  - generic [ref=t3-e652f2a9-3-e36] [box=7,9,48,18]: Drawing\n                  - button \"Close Drawing\" [ref=t3-e652f2a9-3-e37] [box=58,8,19,19]:\n                    - img [ref=t3-e652f2a9-3-e38] [box=62,12,11,11]\n            - tabpanel \"Drawing\" [ref=t3-e652f2a9-3-e41] [box=0,35,980,518]:\n              - generic [ref=t3-e652f2a9-3-e43] [box=0,35,980,86]:\n                - heading \"Drawing view\" [level=2] [ref=t3-e652f2a9-3-e44] [box=16,47,948,19]\n                - paragraph [ref=t3-e652f2a9-3-e45] [box=16,79,948,18]: Placeholder. The interactive drawing view arrives in M4.\n          - region \"Timeline\" [ref=t3-e652f2a9-3-e47] [box=0,553,980,220]:\n            - tablist [ref=t3-e652f2a9-3-e50] [box=0,553,84,35]:\n              - tab \"Timeline\" [selected] [ref=t3-e652f2a9-3-e51] [cursor=pointer] [box=0,553,84,35]:\n                - generic [ref=t3-e652f2a9-3-e52] [box=7,556,71,29]:\n                  - generic [ref=t3-e652f2a9-3-e53] [box=7,562,48,18]: Timeline\n                  - button \"Close Timeline\" [ref=t3-e652f2a9-3-e54] [box=59,561,19,19]:\n                    - img [ref=t3-e652f2a9-3-e55] [box=63,565,11,11]\n            - tabpanel \"Timeline\" [ref=t3-e652f2a9-3-e58] [box=0,588,980,185]:\n              - generic [ref=t3-e652f2a9-3-e60] [box=0,588,980,86]:\n                - heading \"Timeline\" [level=2] [ref=t3-e652f2a9-3-e61] [box=16,600,948,19]\n                - paragraph [ref=t3-e652f2a9-3-e62] [box=16,632,948,18]: Placeholder. The Timeline arrives in M5.\n        - region \"Properties\" [ref=t3-e652f2a9-3-e64] [box=980,0,300,773]:\n          - tablist [ref=t3-e652f2a9-3-e67] [box=980,0,94,35]:\n            - tab \"Properties\" [selected] [ref=t3-e652f2a9-3-e68] [cursor=pointer] [box=980,0,94,35]:\n              - generic [ref=t3-e652f2a9-3-e69] [box=987,3,81,29]:\n                - generic [ref=t3-e652f2a9-3-e70] [box=987,9,58,18]: Properties\n                - button \"Close Properties\" [ref=t3-e652f2a9-3-e71] [box=1049,8,19,19]:\n                  - img [ref=t3-e652f2a9-3-e72] [box=1053,12,11,11]\n          - tabpanel \"Properties\" [ref=t3-e652f2a9-3-e75] [box=980,35,300,738]:\n            - generic [ref=t3-e652f2a9-3-e77] [box=980,35,300,98]:\n              - paragraph [ref=t3-e652f2a9-3-e78] [box=996,60,268,18]: No properties\n              - paragraph [ref=t3-e652f2a9-3-e79] [box=996,91,268,18]: Nothing is selected.\n      - status [ref=t3-e652f2a9-3-e80] [box=-1,772,1,1]: Timeline opened\n      - alert [ref=t3-e652f2a9-3-e81] [box=-1,772,1,1]\n  - status [ref=t3-e652f2a9-3-e82] [box=0,773,1280,27]:\n    - generic [ref=t3-e652f2a9-3-e83] [box=10,779,32,16]: Ready\n    - generic [ref=t3-e652f2a9-3-e84] [box=864,777,406,20]:\n      - generic [ref=t3-e652f2a9-3-e85] [box=864,779,130,16]: \"IPC ping (mock): 0.00 ms\"\n      - button \"Measure 500\" [ref=t3-e652f2a9-3-e86] [box=1006,777,86,20]\n      - generic [ref=t3-e652f2a9-3-e87] [box=1104,779,166,16]: Toontown 0.0.1 · browser-mock"
+}

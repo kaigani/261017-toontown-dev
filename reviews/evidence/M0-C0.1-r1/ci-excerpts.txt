@@ -1,0 +1,318 @@
+ci-run.log:823: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	﻿2026-10-18T04:14:26.9970010Z ##[group]Run if [ "$RUNNER_OS" = "Windows" ]; then
+ci-run.log:824: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:26.9972120Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then^[[0m
+ci-run.log:825: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:26.9973180Z ^[[36;1m  app=target/release/toontown.exe; PY=python^[[0m
+ci-run.log:826: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:26.9973970Z ^[[36;1melse^[[0m
+ci-run.log:827: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0007530Z ^[[36;1m  app=target/release/bundle/macos/Toontown.app/Contents/MacOS/toontown; PY=python3^[[0m
+ci-run.log:828: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0008720Z ^[[36;1mfi^[[0m
+ci-run.log:829: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0009520Z ^[[36;1m"$app" --ipc-bench "$PWD/ipc-bench.json" --ipc-bench-count 300^[[0m
+ci-run.log:830: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0010370Z ^[[36;1mcat ipc-bench.json^[[0m
+ci-run.log:831: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0011640Z ^[[36;1m$PY -c "import json,sys; r=json.load(open('ipc-bench.json')); sys.exit(0 if r.get('frontend',{}).get('ok') else 1)"^[[0m
+ci-run.log:832: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0381950Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+ci-run.log:833: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0382310Z env:
+ci-run.log:834: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0382560Z   CARGO_TERM_COLOR: always
+ci-run.log:835: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0382790Z   CARGO_INCREMENTAL: 0
+ci-run.log:836: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0383070Z   RUST_BACKTRACE: 1
+ci-run.log:837: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0383760Z   CACHE_ON_FAILURE: false
+ci-run.log:838: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0384050Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+ci-run.log:839: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0384380Z ##[endgroup]
+ci-run.log:840: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.1821130Z {
+ci-run.log:841: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.1931890Z   "frontend": {
+ci-run.log:842: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2033890Z     "bursts": [
+ci-run.log:843: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2140220Z       {
+ci-run.log:844: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2241960Z         "payloadBytes": 0,
+ci-run.log:845: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2693030Z         "roundTripMs": {
+ci-run.log:846: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2794740Z           "max": 12.000000000000114,
+ci-run.log:847: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2917080Z           "mean": 1.263333333333334,
+ci-run.log:848: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3226920Z           "min": 0,
+ci-run.log:849: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3332550Z           "n": 300,
+ci-run.log:850: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3436440Z           "p50": 1,
+ci-run.log:851: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3539730Z           "p95": 3,
+ci-run.log:852: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3596710Z           "p99": 6.999999999999886
+ci-run.log:853: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3630810Z         }
+ci-run.log:854: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3670740Z       },
+ci-run.log:855: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3777270Z       {
+ci-run.log:856: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3836360Z         "payloadBytes": 1024,
+ci-run.log:857: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3938040Z         "roundTripMs": {
+ci-run.log:858: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3970660Z           "max": 3,
+ci-run.log:859: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3971930Z           "mean": 1.0233333333333334,
+ci-run.log:860: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3973220Z           "min": 0,
+ci-run.log:861: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3974650Z           "n": 300,
+ci-run.log:862: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3978310Z           "p50": 1,
+ci-run.log:863: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3979030Z           "p95": 2,
+ci-run.log:864: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3980010Z           "p99": 2.9999999999997726
+ci-run.log:865: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3980760Z         }
+ci-run.log:866: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3981620Z       },
+ci-run.log:867: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3982510Z       {
+ci-run.log:868: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3988570Z         "payloadBytes": 65536,
+ci-run.log:869: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3993030Z         "roundTripMs": {
+ci-run.log:870: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3993910Z           "max": 6,
+ci-run.log:871: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3995150Z           "mean": 1.5033333333333334,
+ci-run.log:872: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3999170Z           "min": 0,
+ci-run.log:873: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3999910Z           "n": 300,
+ci-run.log:874: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4000690Z           "p50": 1,
+ci-run.log:875: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4001420Z           "p95": 3.0000000000002274,
+ci-run.log:876: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4002360Z           "p99": 4
+ci-run.log:877: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4012490Z         }
+ci-run.log:878: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4013510Z       },
+ci-run.log:879: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4014910Z       {
+ci-run.log:880: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4027530Z         "payloadBytes": 1048576,
+ci-run.log:881: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4040010Z         "roundTripMs": {
+ci-run.log:882: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4040320Z           "max": 26,
+ci-run.log:883: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4040790Z           "mean": 6.026666666666666,
+ci-run.log:884: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4042120Z           "min": 3.0000000000004547,
+ci-run.log:885: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4043660Z           "n": 300,
+ci-run.log:886: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4044510Z           "p50": 5,
+ci-run.log:887: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4045240Z           "p95": 11.000000000000457,
+ci-run.log:888: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4046250Z           "p99": 20
+ci-run.log:889: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4046880Z         }
+ci-run.log:890: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4047520Z       }
+ci-run.log:891: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4048260Z     ],
+ci-run.log:892: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4049400Z     "count": 300,
+ci-run.log:893: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4050180Z     "ok": true,
+ci-run.log:894: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4050860Z     "transport": "tauri",
+ci-run.log:895: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4054030Z     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+ci-run.log:896: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4067320Z   },
+ci-run.log:897: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4067640Z   "host": {
+ci-run.log:898: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4068000Z     "arch": "aarch64",
+ci-run.log:899: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4068280Z     "formatVersion": "0.0",
+ci-run.log:900: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4068630Z     "name": "Toontown",
+ci-run.log:901: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4068870Z     "platform": "macos",
+ci-run.log:902: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4069260Z     "registryVersion": "0.0.0",
+ci-run.log:903: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4069600Z     "runMode": "attached",
+ci-run.log:904: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4069890Z     "version": "0.0.1"
+ci-run.log:905: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4071310Z   }
+ci-run.log:906: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4071970Z }
+ci-run.log:950: bundle (macos-latest)	Run actions/upload-artifact@v7	2026-10-18T04:14:38.7710260Z Artifact desktop-macOS successfully finalized. Artifact ID 12124323278
+ci-run.log:951: bundle (macos-latest)	Run actions/upload-artifact@v7	2026-10-18T04:14:38.7766900Z Artifact desktop-macOS has been successfully uploaded! Final size is 3642230 bytes. Artifact ID is 12124323278
+ci-run.log:1882: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	﻿2026-10-18T04:22:49.9455895Z ##[group]Run if [ "$RUNNER_OS" = "Windows" ]; then
+ci-run.log:1883: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9456896Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then^[[0m
+ci-run.log:1884: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9457358Z ^[[36;1m  app=target/release/toontown.exe; PY=python^[[0m
+ci-run.log:1885: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9457723Z ^[[36;1melse^[[0m
+ci-run.log:1886: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9458166Z ^[[36;1m  app=target/release/bundle/macos/Toontown.app/Contents/MacOS/toontown; PY=python3^[[0m
+ci-run.log:1887: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9459678Z ^[[36;1mfi^[[0m
+ci-run.log:1888: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9460843Z ^[[36;1m"$app" --ipc-bench "$PWD/ipc-bench.json" --ipc-bench-count 300^[[0m
+ci-run.log:1889: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9461341Z ^[[36;1mcat ipc-bench.json^[[0m
+ci-run.log:1890: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9461937Z ^[[36;1m$PY -c "import json,sys; r=json.load(open('ipc-bench.json')); sys.exit(0 if r.get('frontend',{}).get('ok') else 1)"^[[0m
+ci-run.log:1891: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9491695Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+ci-run.log:1892: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9492466Z env:
+ci-run.log:1893: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9492868Z   CARGO_TERM_COLOR: always
+ci-run.log:1894: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9493317Z   CARGO_INCREMENTAL: 0
+ci-run.log:1895: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9493865Z   RUST_BACKTRACE: 1
+ci-run.log:1896: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9494275Z   CACHE_ON_FAILURE: false
+ci-run.log:1897: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9494869Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+ci-run.log:1898: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:22:49.9495523Z ##[endgroup]
+ci-run.log:1899: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.3318754Z [1018/042310.330:ERROR:ui\gfx\win\window_impl.cc:172] Failed to unregister class Chrome_WidgetWin_0. Error = 1412
+ci-run.log:1900: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5746912Z {
+ci-run.log:1901: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5747731Z   "frontend": {
+ci-run.log:1902: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5751171Z     "bursts": [
+ci-run.log:1903: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5755280Z       {
+ci-run.log:1904: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5760032Z         "payloadBytes": 0,
+ci-run.log:1905: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5780926Z         "roundTripMs": {
+ci-run.log:1906: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5817373Z           "max": 4.599999999860302,
+ci-run.log:1907: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5818370Z           "mean": 2.4470000000010868,
+ci-run.log:1908: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5831718Z           "min": 2.0999999998603016,
+ci-run.log:1909: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5835143Z           "n": 300,
+ci-run.log:1910: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5838979Z           "p50": 2.3999999999068677,
+ci-run.log:1911: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5839797Z           "p95": 2.7000000001862645,
+ci-run.log:1912: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5840478Z           "p99": 4
+ci-run.log:1913: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5841026Z         }
+ci-run.log:1914: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5841618Z       },
+ci-run.log:1915: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5843296Z       {
+ci-run.log:1916: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5843913Z         "payloadBytes": 1024,
+ci-run.log:1917: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5844617Z         "roundTripMs": {
+ci-run.log:1918: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5845851Z           "max": 3.899999999906868,
+ci-run.log:1919: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5846702Z           "mean": 2.3879999999996895,
+ci-run.log:1920: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5847349Z           "min": 2.0999999998603016,
+ci-run.log:1921: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5847962Z           "n": 300,
+ci-run.log:1922: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5848499Z           "p50": 2.300000000046566,
+ci-run.log:1923: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5849306Z           "p95": 2.699999999953434,
+ci-run.log:1924: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5850070Z           "p99": 3.4000000001396984
+ci-run.log:1925: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5850704Z         }
+ci-run.log:1926: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5851266Z       },
+ci-run.log:1927: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5851850Z       {
+ci-run.log:1928: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5852533Z         "payloadBytes": 65536,
+ci-run.log:1929: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5853327Z         "roundTripMs": {
+ci-run.log:1930: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5854045Z           "max": 28.399999999906868,
+ci-run.log:1931: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5854800Z           "mean": 4.824333333334264,
+ci-run.log:1932: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5855532Z           "min": 4.2999999998137355,
+ci-run.log:1933: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5856158Z           "n": 300,
+ci-run.log:1934: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5856823Z           "p50": 4.600000000093132,
+ci-run.log:1935: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5857463Z           "p95": 5.199999999953434,
+ci-run.log:1936: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5858089Z           "p99": 7.600000000093132
+ci-run.log:1937: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5859076Z         }
+ci-run.log:1938: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5859564Z       },
+ci-run.log:1939: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5860082Z       {
+ci-run.log:1940: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5860650Z         "payloadBytes": 1048576,
+ci-run.log:1941: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5861295Z         "roundTripMs": {
+ci-run.log:1942: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5861909Z           "max": 86.70000000018626,
+ci-run.log:1943: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5862553Z           "mean": 42.1213333333338,
+ci-run.log:1944: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5863208Z           "min": 39.60000000009313,
+ci-run.log:1945: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5863788Z           "n": 300,
+ci-run.log:1946: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5864309Z           "p50": 41,
+ci-run.log:1947: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5864879Z           "p95": 46.300000000046566,
+ci-run.log:1948: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5865467Z           "p99": 59
+ci-run.log:1949: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5869420Z         }
+ci-run.log:1950: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5869901Z       }
+ci-run.log:1951: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5870394Z     ],
+ci-run.log:1952: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5870900Z     "count": 300,
+ci-run.log:1953: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5871459Z     "ok": true,
+ci-run.log:1954: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5871985Z     "transport": "tauri",
+ci-run.log:1955: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5873229Z     "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0"
+ci-run.log:1956: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5875464Z   },
+ci-run.log:1957: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5876167Z   "host": {
+ci-run.log:1958: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5876808Z     "arch": "x86_64",
+ci-run.log:1959: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5877522Z     "formatVersion": "0.0",
+ci-run.log:1960: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5878230Z     "name": "Toontown",
+ci-run.log:1961: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5878930Z     "platform": "windows",
+ci-run.log:1962: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5879731Z     "registryVersion": "0.0.0",
+ci-run.log:1963: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5880427Z     "runMode": "attached",
+ci-run.log:1964: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5881088Z     "version": "0.0.1"
+ci-run.log:1965: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5881624Z   }
+ci-run.log:1966: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:23:10.5882249Z }
+ci-run.log:2010: bundle (windows-latest)	Run actions/upload-artifact@v7	2026-10-18T04:23:13.6678309Z Artifact desktop-Windows successfully finalized. Artifact ID 12124069419
+ci-run.log:2011: bundle (windows-latest)	Run actions/upload-artifact@v7	2026-10-18T04:23:13.6681298Z Artifact desktop-Windows has been successfully uploaded! Final size is 5962369 bytes. Artifact ID is 12124069419
+ci-run.log:2346: headless without a display (ubuntu)	Self-test with no display server	﻿2026-10-18T04:10:58.2848647Z ##[group]Run test -z "${DISPLAY:-}" && test -z "${WAYLAND_DISPLAY:-}"
+ci-run.log:2347: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2849178Z ^[[36;1mtest -z "${DISPLAY:-}" && test -z "${WAYLAND_DISPLAY:-}"^[[0m
+ci-run.log:2348: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2849589Z ^[[36;1m! ls /tmp/.X11-unix/X* 2>/dev/null^[[0m
+ci-run.log:2349: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2850033Z ^[[36;1menv -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest^[[0m
+ci-run.log:2350: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2850627Z ^[[36;1mpython3 scripts/check-headless-deps.py target/release/toontown-headless^[[0m
+ci-run.log:2351: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2914173Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+ci-run.log:2352: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2914524Z env:
+ci-run.log:2353: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2914724Z   CARGO_TERM_COLOR: always
+ci-run.log:2354: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2914973Z   CARGO_INCREMENTAL: 0
+ci-run.log:2355: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2915190Z   RUST_BACKTRACE: 1
+ci-run.log:2356: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2915397Z   CACHE_ON_FAILURE: false
+ci-run.log:2357: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.2915618Z ##[endgroup]
+ci-run.log:2358: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.3033950Z Toontown 0.0.1 self-test (linux-x86_64, run mode headless)
+ci-run.log:2359: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.3036020Z   [ok] engine.components      13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine
+ci-run.log:2360: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.3038416Z   [ok] engine.versions        formatVersion 0.0 (MAJOR.MINOR), registryVersion 0.0.0 (semver)
+ci-run.log:2361: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.3039651Z   [ok] engine.ping            echoed seq and 1024 payload bytes in 220 ns
+ci-run.log:2362: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.3041160Z   [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+ci-run.log:2363: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.3043381Z   [ok] headless.mcpLinked     tt-mcp linked (M1 (C1.4))
+ci-run.log:2364: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.3044219Z self-test passed
+ci-run.log:2365: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.4725142Z crate graph: 43 crates, forbidden: none
+ci-run.log:2366: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.4742813Z linked libraries (linux): libgcc_s.so.1, libc.so.6, ld-linux-x86-64.so.2
+ci-run.log:2367: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.4752298Z forbidden libraries: none
+ci-run.log:2368: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T04:10:58.4762667Z headless dependency check passed
+ci-run.log:2747: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T04:11:31.7091260Z ^[[2m      Tests ^[[22m ^[[1m^[[32m22 passed^[[39m^[[22m^[[90m (22)^[[39m
+ci-run.log:3562: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:14:25.1298420Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+ci-run.log:3591: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:14:25.1667710Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+ci-run.log:3615: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:14:25.2210610Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+ci-run.log:3626: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:14:25.2577420Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+ci-run.log:4582: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:14:56.3123200Z   [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+ci-run.log:4585: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:14:56.4795980Z [('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('headless.mcpLinked', True)]
+ci-run.log:4586: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:14:59.5066280Z crate graph: 44 crates, forbidden: none
+ci-run.log:4587: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:14:59.5169960Z linked libraries (darwin): /usr/lib/libSystem.B.dylib, /usr/lib/libiconv.2.dylib
+ci-run.log:4589: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:14:59.5317300Z headless dependency check passed
+ci-run.log:4615: check (macos-latest)	Run actions/upload-artifact@v7	2026-10-18T04:15:04.5391860Z Artifact headless-macOS successfully finalized. Artifact ID 12124464545
+ci-run.log:4616: check (macos-latest)	Run actions/upload-artifact@v7	2026-10-18T04:15:04.5392820Z Artifact headless-macOS has been successfully uploaded! Final size is 397825 bytes. Artifact ID is 12124464545
+ci-run.log:5059: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T04:12:18.4009113Z ^[[2m      Tests ^[[22m ^[[1m^[[32m22 passed^[[39m^[[22m^[[90m (22)^[[39m
+ci-run.log:5881: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:20:33.7948129Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+ci-run.log:5912: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:20:33.8716575Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+ci-run.log:5934: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:20:33.8725606Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+ci-run.log:5945: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T04:20:33.9166425Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+ci-run.log:6896: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:21:44.9413514Z   [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+ci-run.log:6899: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:21:44.9575457Z [('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('headless.mcpLinked', True)]
+ci-run.log:6900: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:21:45.2505681Z crate graph: 43 crates, forbidden: none
+ci-run.log:6901: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:21:45.2507692Z linked libraries (win32): api-ms-win-core-synch-l1-2-0.dll, kernel32.dll, ntdll.dll, vcruntime140.dll, api-ms-win-crt-runtime-l1-1-0.dll, api-ms-win-crt-math-l1-1-0.dll, api-ms-win-crt-stdio-l1-1-0.dll, api-ms-win-crt-locale-l1-1-0.dll, api-ms-win-crt-heap-l1-1-0.dll
+ci-run.log:6903: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:21:45.2509559Z headless dependency check passed
+ci-run.log:6929: check (windows-latest)	Run actions/upload-artifact@v7	2026-10-18T04:21:47.3698766Z Artifact headless-Windows successfully finalized. Artifact ID 12125385700
+ci-run.log:6930: check (windows-latest)	Run actions/upload-artifact@v7	2026-10-18T04:21:47.3700596Z Artifact headless-Windows has been successfully uploaded! Final size is 268293 bytes. Artifact ID is 12125385700
+ci-macos-check.log:344: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T04:11:31.7091260Z ^[[2m      Tests ^[[22m ^[[1m^[[32m22 passed^[[39m^[[22m^[[90m (22)^[[39m
+ci-macos-check.log:1159: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:14:25.1298420Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+ci-macos-check.log:1188: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:14:25.1667710Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+ci-macos-check.log:1212: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:14:25.2210610Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+ci-macos-check.log:1223: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T04:14:25.2577420Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+ci-macos-check.log:2179: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:14:56.3123200Z   [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+ci-macos-check.log:2182: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:14:56.4795980Z [('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('headless.mcpLinked', True)]
+ci-macos-check.log:2183: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:14:59.5066280Z crate graph: 44 crates, forbidden: none
+ci-macos-check.log:2184: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:14:59.5169960Z linked libraries (darwin): /usr/lib/libSystem.B.dylib, /usr/lib/libiconv.2.dylib
+ci-macos-check.log:2186: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T04:14:59.5317300Z headless dependency check passed
+ci-macos-check.log:2212: check (macos-latest)	Run actions/upload-artifact@v7	2026-10-18T04:15:04.5391860Z Artifact headless-macOS successfully finalized. Artifact ID 12124464545
+ci-macos-check.log:2213: check (macos-latest)	Run actions/upload-artifact@v7	2026-10-18T04:15:04.5392820Z Artifact headless-macOS has been successfully uploaded! Final size is 397825 bytes. Artifact ID is 12124464545
+ci-macos-bundle.log:823: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	﻿2026-10-18T04:14:26.9970010Z ##[group]Run if [ "$RUNNER_OS" = "Windows" ]; then
+ci-macos-bundle.log:824: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:26.9972120Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then^[[0m
+ci-macos-bundle.log:825: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:26.9973180Z ^[[36;1m  app=target/release/toontown.exe; PY=python^[[0m
+ci-macos-bundle.log:826: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:26.9973970Z ^[[36;1melse^[[0m
+ci-macos-bundle.log:827: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0007530Z ^[[36;1m  app=target/release/bundle/macos/Toontown.app/Contents/MacOS/toontown; PY=python3^[[0m
+ci-macos-bundle.log:828: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0008720Z ^[[36;1mfi^[[0m
+ci-macos-bundle.log:829: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0009520Z ^[[36;1m"$app" --ipc-bench "$PWD/ipc-bench.json" --ipc-bench-count 300^[[0m
+ci-macos-bundle.log:830: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0010370Z ^[[36;1mcat ipc-bench.json^[[0m
+ci-macos-bundle.log:831: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0011640Z ^[[36;1m$PY -c "import json,sys; r=json.load(open('ipc-bench.json')); sys.exit(0 if r.get('frontend',{}).get('ok') else 1)"^[[0m
+ci-macos-bundle.log:832: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0381950Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+ci-macos-bundle.log:833: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0382310Z env:
+ci-macos-bundle.log:834: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0382560Z   CARGO_TERM_COLOR: always
+ci-macos-bundle.log:835: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0382790Z   CARGO_INCREMENTAL: 0
+ci-macos-bundle.log:836: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0383070Z   RUST_BACKTRACE: 1
+ci-macos-bundle.log:837: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0383760Z   CACHE_ON_FAILURE: false
+ci-macos-bundle.log:838: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0384050Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin
+ci-macos-bundle.log:839: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:27.0384380Z ##[endgroup]
+ci-macos-bundle.log:840: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.1821130Z {
+ci-macos-bundle.log:841: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.1931890Z   "frontend": {
+ci-macos-bundle.log:842: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2033890Z     "bursts": [
+ci-macos-bundle.log:843: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2140220Z       {
+ci-macos-bundle.log:844: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2241960Z         "payloadBytes": 0,
+ci-macos-bundle.log:845: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2693030Z         "roundTripMs": {
+ci-macos-bundle.log:846: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2794740Z           "max": 12.000000000000114,
+ci-macos-bundle.log:847: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.2917080Z           "mean": 1.263333333333334,
+ci-macos-bundle.log:848: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3226920Z           "min": 0,
+ci-macos-bundle.log:849: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3332550Z           "n": 300,
+ci-macos-bundle.log:850: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3436440Z           "p50": 1,
+ci-macos-bundle.log:851: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3539730Z           "p95": 3,
+ci-macos-bundle.log:852: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3596710Z           "p99": 6.999999999999886
+ci-macos-bundle.log:853: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3630810Z         }
+ci-macos-bundle.log:854: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3670740Z       },
+ci-macos-bundle.log:855: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3777270Z       {
+ci-macos-bundle.log:856: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3836360Z         "payloadBytes": 1024,
+ci-macos-bundle.log:857: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3938040Z         "roundTripMs": {
+ci-macos-bundle.log:858: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3970660Z           "max": 3,
+ci-macos-bundle.log:859: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3971930Z           "mean": 1.0233333333333334,
+ci-macos-bundle.log:860: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3973220Z           "min": 0,
+ci-macos-bundle.log:861: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3974650Z           "n": 300,
+ci-macos-bundle.log:862: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3978310Z           "p50": 1,
+ci-macos-bundle.log:863: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3979030Z           "p95": 2,
+ci-macos-bundle.log:864: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3980010Z           "p99": 2.9999999999997726
+ci-macos-bundle.log:865: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3980760Z         }
+ci-macos-bundle.log:866: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3981620Z       },
+ci-macos-bundle.log:867: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3982510Z       {
+ci-macos-bundle.log:868: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3988570Z         "payloadBytes": 65536,
+ci-macos-bundle.log:869: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3993030Z         "roundTripMs": {
+ci-macos-bundle.log:870: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3993910Z           "max": 6,
+ci-macos-bundle.log:871: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3995150Z           "mean": 1.5033333333333334,
+ci-macos-bundle.log:872: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3999170Z           "min": 0,
+ci-macos-bundle.log:873: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.3999910Z           "n": 300,
+ci-macos-bundle.log:874: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4000690Z           "p50": 1,
+ci-macos-bundle.log:875: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4001420Z           "p95": 3.0000000000002274,
+ci-macos-bundle.log:876: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4002360Z           "p99": 4
+ci-macos-bundle.log:877: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4012490Z         }
+ci-macos-bundle.log:878: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4013510Z       },
+ci-macos-bundle.log:879: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4014910Z       {
+ci-macos-bundle.log:880: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4027530Z         "payloadBytes": 1048576,
+ci-macos-bundle.log:881: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4040010Z         "roundTripMs": {
+ci-macos-bundle.log:882: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4040320Z           "max": 26,
+ci-macos-bundle.log:883: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4040790Z           "mean": 6.026666666666666,
+ci-macos-bundle.log:884: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4042120Z           "min": 3.0000000000004547,
+ci-macos-bundle.log:885: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4043660Z           "n": 300,
+ci-macos-bundle.log:886: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4044510Z           "p50": 5,
+ci-macos-bundle.log:887: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4045240Z           "p95": 11.000000000000457,
+ci-macos-bundle.log:888: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4046250Z           "p99": 20
+ci-macos-bundle.log:889: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4046880Z         }
+ci-macos-bundle.log:890: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4047520Z       }
+ci-macos-bundle.log:891: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4048260Z     ],
+ci-macos-bundle.log:892: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4049400Z     "count": 300,
+ci-macos-bundle.log:893: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4050180Z     "ok": true,
+ci-macos-bundle.log:894: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4050860Z     "transport": "tauri",
+ci-macos-bundle.log:895: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4054030Z     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+ci-macos-bundle.log:896: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4067320Z   },
+ci-macos-bundle.log:897: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4067640Z   "host": {
+ci-macos-bundle.log:898: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4068000Z     "arch": "aarch64",
+ci-macos-bundle.log:899: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4068280Z     "formatVersion": "0.0",
+ci-macos-bundle.log:900: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4068630Z     "name": "Toontown",
+ci-macos-bundle.log:901: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4068870Z     "platform": "macos",
+ci-macos-bundle.log:902: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4069260Z     "registryVersion": "0.0.0",
+ci-macos-bundle.log:903: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4069600Z     "runMode": "attached",
+ci-macos-bundle.log:904: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4069890Z     "version": "0.0.1"
+ci-macos-bundle.log:905: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4071310Z   }
+ci-macos-bundle.log:906: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T04:14:35.4071970Z }
+ci-macos-bundle.log:950: bundle (macos-latest)	Run actions/upload-artifact@v7	2026-10-18T04:14:38.7710260Z Artifact desktop-macOS successfully finalized. Artifact ID 12124323278
+ci-macos-bundle.log:951: bundle (macos-latest)	Run actions/upload-artifact@v7	2026-10-18T04:14:38.7766900Z Artifact desktop-macOS has been successfully uploaded! Final size is 3642230 bytes. Artifact ID is 12124323278

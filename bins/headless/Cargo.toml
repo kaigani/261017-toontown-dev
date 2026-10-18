@@ -20,3 +20,7 @@ thiserror.workspace = true
 
 [lints]
 workspace = true
+
+[[test]]
+name = "adversarial_c01"
+path = "../../tests/adversarial/c01.rs"

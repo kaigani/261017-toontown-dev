@@ -1,0 +1,30 @@
+cargo :    Compiling proc-macro2 v1.0.107
+At line:13 char:1
++ cargo run -p tt-headless -- --selftest *> reviews/evidence/M0-C0.1-r1 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling proc-macro2 v1.0.107:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+   Compiling serde_core v1.0.229
+   Compiling serde_json v1.0.154
+   Compiling serde v1.0.229
+   Compiling memchr v2.8.3
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling clap_derive v4.6.7
+   Compiling thiserror v2.0.21
+   Compiling clap v4.6.7
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r1\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r1\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r1\bins\headless)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.37s
+     Running `target\debug\toontown-headless.exe --selftest`
+Toontown 0.0.1 self-test (windows-x86_64, run mode headless)
+  [ok] engine.components      13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine
+  [ok] engine.versions        formatVersion 0.0 (MAJOR.MINOR), registryVersion 0.0.0 (semver)
+  [ok] engine.ping            echoed seq and 1024 payload bytes in 200 ns
+  [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+  [ok] headless.mcpLinked     tt-mcp linked (M1 (C1.4))
+self-test passed

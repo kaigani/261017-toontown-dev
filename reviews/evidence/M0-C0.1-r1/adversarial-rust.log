@@ -1,0 +1,292 @@
+cargo :    Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m0-c01-r1\bins\headless)
+At line:5 char:1
++ cargo test --workspace --locked *> reviews/evidence/M0-C0.1-r1/advers ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...\bins\headless):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.83s
+     Running unittests src\lib.rs (target\debug\deps\tt_anim-7b4783037aaaad85.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_audio-1e04a85dd172a15e.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_colour-ab96adef9b22ea43.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_desktop-92558166a09e96fa.exe)
+
+running 17 tests
+test bindings::tests::command_id_syntax ... ok
+test diagnostics::tests::errors ... ok
+test diagnostics::tests::bench_with_count ... ok
+test tests::tauri_config_matches_workspace_and_plan ... ok
+test diagnostics::tests::no_arguments_is_interactive ... ok
+test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+test bindings::tests::quit_is_bound_on_every_platform ... ok
+test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+test menu::tests::event_serializes_camel_case ... ok
+test menu::tests::frontend_command_carries_params ... ok
+test bindings::tests::per_platform_accelerators ... ok
+test menu::tests::pending_command_carries_milestone ... ok
+test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+test bindings::tests::embedded_manifest_is_valid ... ok
+test menu::tests::host_commands ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\main.rs (target\debug\deps\toontown-4d32fb17f1af7655.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_engine-cee1a80754fb0b35.exe)
+
+running 16 tests
+test components::tests::every_component_cites_spec_sections ... ok
+test ping::tests::payload_limit_is_inclusive ... ok
+test components::tests::lists_every_plan_crate_once ... ok
+test determinism::tests::workload_has_expected_shape ... ok
+test error::tests::limit_exceeded_wire_form ... ok
+test ping::tests::echoes_seq_and_payload ... ok
+test determinism::tests::hex_encodes_lowercase ... ok
+test ping::tests::request_rejects_unknown_fields ... ok
+test selftest::tests::dotted_version_parser ... ok
+test tests::engine_is_send_and_sync ... ok
+test determinism::tests::probe_is_stable_within_a_run ... ok
+test tests::info_serializes_camel_case ... ok
+test determinism::tests::probe_matches_golden ... ok
+test tests::info_reports_versions_and_mode ... ok
+test selftest::tests::selftest_passes ... ok
+test selftest::tests::push_keeps_ok_consistent ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_executor-6b0587da201515ca.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_fx-d68f6f5c004c8383.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\main.rs (target\debug\deps\toontown_headless-16025d1d543af814.exe)
+
+running 7 tests
+test cli::tests::actions_are_exclusive ... ok
+test cli::tests::an_action_is_required ... ok
+test cli::tests::version_line ... ok
+test cli::tests::future_modes_are_typed_errors ... ok
+test cli::tests::option_combinations ... ok
+test cli::tests::selftest_human_passes ... ok
+test cli::tests::selftest_json_passes ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running ..\..\tests\adversarial\c01.rs (target\debug\deps\adversarial_c01-70c655663d6f222c.exe)
+
+running 7 tests
+test c01_r1_04_info_is_a_superset_of_app_info_get ... FAILED
+test c01_r1_05_rust_control_rejects_multibyte_over_limit ... ok
+test wire_engine_info_field_names_match_typescript ... ok
+test c01_r1_06_dependency_proof_rejects_graphics_dependencies ... FAILED
+test c01_r1_01_license_allowlist_stays_within_user_policy ... FAILED
+test c01_r1_01_license_grouping_preserves_mandatory_copyleft ... FAILED
+test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... FAILED
+
+failures:
+
+---- c01_r1_04_info_is_a_superset_of_app_info_get stdout ----
+
+thread 'c01_r1_04_info_is_a_superset_of_app_info_get' (23864) panicked at bins\headless\..\..\tests\adversarial\c01.rs:46:5:
+01 section 12.1 / A: app.info.get requires locale; got {"arch":"x86_64","formatVersion":"0.0","name":"Toontown","platform":"windows","registryVersion":"0.0.0","runMode":"headless","version":"0.0.1"}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- c01_r1_06_dependency_proof_rejects_graphics_dependencies stdout ----
+
+thread 'c01_r1_06_dependency_proof_rejects_graphics_dependencies' (30076) panicked at bins\headless\..\..\tests\adversarial\c01.rs:64:5:
+FFFFFF.
+======================================================================
+FAIL: test_direct_graphics_imports_cannot_pass (__main__.DependencyProof.test_direct_graphics_imports_cannot_pass) (dll='dcomp.dll')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c01-r1\tests\adversarial\headless_guard.py", line 29, in test_direct_graphics_imports_cannot_pass
+    self.assertEqual(guard.binary_violations([dll]), [dll], 'C01-R1-06')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['dcomp.dll']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'dcomp.dll'
+
+- []
++ ['dcomp.dll'] : C01-R1-06
+
+======================================================================
+FAIL: test_direct_graphics_imports_cannot_pass (__main__.DependencyProof.test_direct_graphics_imports_cannot_pass) (dll='d3d10_1.dll')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c01-r1\tests\adversarial\headless_guard.py", line 29, in test_direct_graphics_imports_cannot_pass
+    self.assertEqual(guard.binary_violations([dll]), [dll], 'C01-R1-06')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['d3d10_1.dll']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'d3d10_1.dll'
+
+- []
++ ['d3d10_1.dll'] : C01-R1-06
+
+======================================================================
+FAIL: test_direct_graphics_imports_cannot_pass (__main__.DependencyProof.test_direct_graphics_imports_cannot_pass) (dll='win32u.dll')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c01-r1\tests\adversarial\headless_guard.py", line 29, in test_direct_graphics_imports_cannot_pass
+    self.assertEqual(guard.binary_violations([dll]), [dll], 'C01-R1-06')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['win32u.dll']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'win32u.dll'
+
+- []
++ ['win32u.dll'] : C01-R1-06
+
+======================================================================
+FAIL: test_gui_and_gpu_crates_cannot_pass (__main__.DependencyProof.test_gui_and_gpu_crates_cannot_pass) (crate='sdl2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c01-r1\tests\adversarial\headless_guard.py", line 34, in test_gui_and_gpu_crates_cannot_pass
+    self.assertIsNotNone(guard.FORBIDDEN_CRATES.match(crate), 'C01-R1-06')
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : C01-R1-06
+
+======================================================================
+FAIL: test_gui_and_gpu_crates_cannot_pass (__main__.DependencyProof.test_gui_and_gpu_crates_cannot_pass) (crate='sdl2-sys')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c01-r1\tests\adversarial\headless_guard.py", line 34, in test_gui_and_gpu_crates_cannot_pass
+    self.assertIsNotNone(guard.FORBIDDEN_CRATES.match(crate), 'C01-R1-06')
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : C01-R1-06
+
+======================================================================
+FAIL: test_gui_and_gpu_crates_cannot_pass (__main__.DependencyProof.test_gui_and_gpu_crates_cannot_pass) (crate='ash')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c01-r1\tests\adversarial\headless_guard.py", line 34, in test_gui_and_gpu_crates_cannot_pass
+    self.assertIsNotNone(guard.FORBIDDEN_CRATES.match(crate), 'C01-R1-06')
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : C01-R1-06
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+FAILED (failures=6)
+
+
+---- c01_r1_01_license_allowlist_stays_within_user_policy stdout ----
+
+thread 'c01_r1_01_license_allowlist_stays_within_user_policy' (8992) panicked at bins\headless\..\..\tests\adversarial\c01.rs:19:5:
+production packages checked: 7
+development packages (not shipped, informational): MIT (172), MIT-0 (2), Apache-2.0 (17), Apache-2.0 OR MIT (1), CC-BY-4.0 (1), ISC (10), BSD-2-Clause (8), BSD-3-Clause (3), MPL-2.0 (1), BlueOak-1.0.0 (2), CC0-1.0 (1)
+licences ok
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: C01-R1-01: 0BSD is outside the approved allow-list
+
+true !== false
+
+    at file:///C:/Users/kaiga/work/review/m0-c01-r1/tests/adversarial/guards.mjs:29:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: true,
+  expected: false,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.23.2
+
+
+---- c01_r1_01_license_grouping_preserves_mandatory_copyleft stdout ----
+
+thread 'c01_r1_01_license_grouping_preserves_mandatory_copyleft' (28828) panicked at bins\headless\..\..\tests\adversarial\c01.rs:19:5:
+production packages checked: 7
+development packages (not shipped, informational): MIT (172), MIT-0 (2), Apache-2.0 (17), Apache-2.0 OR MIT (1), CC-BY-4.0 (1), ISC (10), BSD-2-Clause (8), BSD-3-Clause (3), MPL-2.0 (1), BlueOak-1.0.0 (2), CC0-1.0 (1)
+licences ok
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: C01-R1-01: (MIT OR Apache-2.0) AND (GPL-3.0-only OR AGPL-3.0-only) requires a forbidden licence
+
+true !== false
+
+    at file:///C:/Users/kaiga/work/review/m0-c01-r1/tests/adversarial/guards.mjs:22:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: true,
+  expected: false,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.23.2
+
+
+---- c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary stdout ----
+
+thread 'c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary' (1316) panicked at bins\headless\..\..\tests\adversarial\c01.rs:19:5:
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: C01-R1-02: dynamic import bypass has zero lint diagnostics (root C:\Users\kaiga\work\review\m0-c01-r1\)
+    at file:///C:/Users/kaiga/work/review/m0-c01-r1/tests/adversarial/guards.mjs:57:5 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.23.2
+
+
+
+failures:
+    c01_r1_01_license_allowlist_stays_within_user_policy
+    c01_r1_01_license_grouping_preserves_mandatory_copyleft
+    c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary
+    c01_r1_04_info_is_a_superset_of_app_info_get
+    c01_r1_06_dependency_proof_rejects_graphics_dependencies
+
+test result: FAILED. 2 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.52s
+
+error: test failed, to rerun pass `-p tt-headless --test adversarial_c01`
