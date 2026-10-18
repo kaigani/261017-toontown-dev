@@ -196,3 +196,40 @@ jobs:
           env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-2.json
           python3 -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
           python3 scripts/check-headless-deps.py target/release/toontown-headless
+
+  # C0.3 rasteriser determinism (spike): every fixture scene, every rasteriser configuration, must reproduce the
+  # committed SHA-256 hashes on all three OSes. The job FAILS on any difference. Run twice to compare processes.
+  raster:
+    name: raster determinism (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - name: Rust toolchain (pinned in rust-toolchain.toml)
+        run: |
+          tc=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$tc" --profile minimal
+          rustup override set "$tc"
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: raster
+      - run: cargo build --release --locked -p tt-render --example c03_raster
+      - name: Render fixtures and check committed hashes (two processes)
+        run: |
+          set +e
+          status=0
+          for run in 1 2; do
+            cargo run --release --locked -q -p tt-render --example c03_raster -- \
+              --out "c03-raster/run$run" --report "c03-raster/report-run$run.json" \
+              --check crates/render/examples/c03_raster/hashes.json || status=1
+          done
+          exit $status
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: c03-raster-${{ runner.os }}
+          path: c03-raster/
