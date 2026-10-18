@@ -1,6 +1,6 @@
 # ADR-0009 — Tablet input architecture
 
-Status: **proposed; not decided.** C0.4, 2026-10-18. The decision is conditional on two measurements nobody has yet:
+Status: **proposed; not decided.** C0.4, 2026-10-18; decision rules made exhaustive after review round 1. The decision is conditional on two measurements nobody has yet:
 the user's macOS run (`docs/manual-tests/M0-C0.2-tablet-macos.md`) and one real-tablet session on Windows. This ADR
 records the evidence, the candidates, and which outcome selects which candidate.
 
@@ -56,6 +56,7 @@ hardware. Sources: `reviews/M0-C0.2-handoff.md`, matrix 5 (CI 39116097955,
 | Id | Candidate | Platform | What it fixes | Known cost / risk |
 |---|---|---|---|---|
 | W | Web pointer events only (`pointerrawupdate` / coalesced events) | both | nothing to build; one code path | the losses above, if they occur with real hardware; twist mod 180 |
+| R | **RealTimeStylus on the main window** (`octotablet`, the spike's Windows native listener) | Windows | measured in T-W1 directly; nothing new to build | received 0 synthetic frames over the webview; real-pen behaviour unknown |
 | H | **Raw HID listener in the host**: `WM_INPUT` digitizer collection, decoded with `HidP_*` from the device's report descriptor; samples streamed over a Tauri channel and merged with DOM positions | Windows | received every synthetic frame | per-device report descriptors; vendor-specific usages; mapping to canvas coordinates; driver modes (Wacom WinTab vs Windows Ink) |
 | D | **Dedicated same-process input window** (WM_POINTER or RTS) over the canvas, forwarding samples to the page | Windows | WM_POINTER delivered 1024/1024; RTS positive control | it sits above the webview: focus, IME, cursor, hit-testing and resize synchronisation must be solved; composition hosting is not available in wry/Tauri today |
 | A | **AppKit `NSEvent` monitor in the host** (the spike's `native_macos.rs`), streamed over a channel | macOS | independent of WKWebView's pointer events | unmeasured: coordinates (bottom-left origin, backing scale, multiple displays), tilt calibration, eraser and button mapping |
@@ -70,25 +71,77 @@ The front end gets one **input-source abstraction** in M2/M4. The brush engine c
 pressure, tilt, twist, tool) and does not know whether they came from the DOM or from a native channel. That is
 needed under every outcome below.
 
-**Windows**, after one real-tablet session (Wacom or Windows Ink pen; E1 run alongside):
+The architecture is chosen **only from physical-pen evidence**, by the rule set below. Every analyzable log maps to a
+decision, a named next experiment, or an escalation, with no new analysis. The macOS log comes from T-M1
+(`docs/manual-tests/M0-C0.2-tablet-macos.md`, six strokes). The Windows log comes from T-W1
+(`docs/manual-tests/M0-C0.4-tablet-windows.md`, the same six strokes, with E1 alongside). The tables are the same
+for both platforms; only the native candidates differ. The go/no-go report carries an identical copy, and
+`desktop/src/test/decisionTables.test.ts` fails if the two copies differ.
 
-| Outcome with real hardware | Windows path |
+<!-- tablet-rules:begin -->
+**Step 0: is the log evidence?**
+
+| Condition | Action |
 |---|---|
-| The DOM delivers stationary and pressure-only updates, early frames and full twist | **W** |
-| The DOM loses them, and raw HID decodes to usable pressure/tilt | **H** (DOM keeps positions and hover; HID supplies pressure/tilt/twist) |
-| The DOM loses them, and raw HID is unusable, but WM_POINTER/RTS on an overlay window receives them | **D** |
-| None of W, H or D delivers usable pressure with a real pen | no-go for tablet quality on Windows in this shell; escalate (decision 7: Qt 6 only if Tauri fails on **both** OSes) |
+| `scripts/analyse-tablet-log.py` exits 2; or `source` is not `manual`; or the log has run/simulation records | not evidence: repeat T-M1 / T-W1; no decision |
+| A required stroke is missing, or the user marks it as a mistake | repeat that stroke; the rows that depend on it stay undecided |
+| The pen or tablet lacks a capability by its specification (tilt; barrel rotation, which only pens such as the Wacom Art Pen have), as recorded in "About this run" | that row is **n/a** for every path and does not count |
+| Synthetic input (`--spike-auto`, toolbar simulation) | never evidence for these tables |
 
-**macOS**, after the user's run:
+**Step 1: classify each capability, separately for each path P** (W = web pointer events; N = the native candidate
+being evaluated). Values are the analyzer's per-stroke figures for that path.
 
-| Outcome of the manual test | macOS path |
+| # | Capability | Stroke | Pass | Partial | Fail |
+|---|---|---|---|---|---|
+| 1 | Pen identity: `pointer` column pen (web) / tool pen or eraser (native) | 1–3 | all three strokes | one or two of them | none |
+| 2 | Pressure ≥ 256 levels | 1 | ≥ 256 | 16–255 | < 16, constant or binary |
+| 3 | Pressure ≥ 1024 levels | 1 | ≥ 1024 | 256–1023 | < 256 (row 2 decides) |
+| 4 | Tilt (`tilt x / y` extrema) | 3 | spans ≥ ±30° on both axes | non-zero range, but < ±30° on an axis | zero range on both axes while the pen tilts |
+| 5 | Twist (`twist range (nonzero)`) | 4 | range wider than 180° | non-zero range of at most 180° (e.g. 0..179, modulo 180) | no non-zero sample, or zero range, while the pen rolls |
+| 6 | Coalesced events (web only; n/a for N; the analyzer's coalescing line) | 2 | API available and batching observed | API available, batching not observed | API not available |
+| 7 | Sustained rate ≥ 120 Hz (`Hz`) | 2 | ≥ 120 Hz | 60–119 Hz | < 60 Hz |
+| 8 | Rate ≥ 200 Hz | 2 | ≥ 200 Hz | 120–199 Hz | < 120 Hz (row 7 decides) |
+| 9 | Stationary pressure-only updates (`samples`, `Hz`, pressure distinct) | 6 | ≥ 60 Hz with more than one pressure value | more than one sample with more than one pressure value, but < 60 Hz | one sample (the down), or a single pressure value |
+
+Pressure resolution is the analyzer's implied grid (from the smallest step) when stroke 1 has ≥ 64 distinct values.
+Otherwise it is the distinct count.
+
+**Step 2: what each W result requires.** "Native" means: take this attribute from the first native candidate, in
+priority order, that **passes** the row. If no measured candidate passes, use the row's "otherwise".
+
+| # | W pass / n/a | W partial | W fail |
+|---|---|---|---|
+| 1 | W | native tool identity, merged with W positions; otherwise W, with pen recognised by pressure > 0 | native for every pen attribute; otherwise **platform no-go** |
+| 2 | W | native pressure; otherwise W with reduced pressure resolution (documented limitation) | native pressure; otherwise **platform no-go** |
+| 3 | W | W (256–1023 levels are accepted; no native path for this row alone) | row 2 decides |
+| 4 | W | W with quantised tilt; native tilt only if a native path is already used for another row | native tilt; otherwise tilt-driven brush options disabled on that platform (documented limitation) |
+| 5 | W | native twist; otherwise twist treated modulo 180 (documented limitation) | native twist; otherwise barrel rotation unsupported on that platform (documented limitation) |
+| 6 | W | W if row 7 passes; otherwise row 7 decides | W if row 7 passes; otherwise native (macOS: A). If A also fails row 7, raising the floor to a WebKit with coalesced events is a **user decision** (ADR-0005), not taken here |
+| 7 | W | native if it passes; otherwise W with reduced fidelity (curve fitting smooths; documented limitation) | native if it reaches at least partial; otherwise **platform no-go** |
+| 8 | W | W (below the 200 Hz target, recorded) | row 7 decides |
+| 9 | W | W (pressure interpolated between updates) | native pressure updates merged with W; otherwise pressure changes without movement are ignored (documented limitation) |
+
+**Native candidates, in priority order.** Each is evaluated with the same Step 1 rows.
+- **Windows:**
+  - **R:** RealTimeStylus on the main window. This is the spike's Windows native listener, measured in T-W1 itself.
+  - **H:** decoded raw HID. It needs experiment **E-H1** (an `HidP_*` decoding prototype) before it can pass any row.
+  - **D:** a dedicated input window. It needs **E-D1** (an overlay prototype).
+
+  Candidates are evaluated in that order. When a row needs native and R does not pass it, the next experiment is E-H1,
+  then E-D1. The decision waits only for that experiment.
+- **macOS: A** (AppKit monitor), measured in T-M1 itself.
+
+**Step 3: the platform decision.**
+
+| Result of Step 2 | Platform path |
 |---|---|
-| WKWebView pointer events carry pen type, pressure and tilt from the tablet (not just Force Touch force) at ≥ 200 Hz with coalesced events | **W** |
-| WKWebView loses pressure, tilt or pen type, and the AppKit monitor receives them | **A** |
-| Neither path delivers tablet pressure | no-go for tablet quality on macOS in this shell; escalate as above |
-
-Combined: if both platforms end in no-go, plan §2.2 / decision 7 applies (Qt 6 is the only alternative). Any other
-combination keeps the Tauri shell.
+| Every row resolves to W | **W** |
+| One or more rows resolve to native, and one candidate passes all of them | **W + that candidate** for those attributes (hybrid: the DOM keeps positions and hover) |
+| A row needs native, and its pending experiment (E-H1, E-D1) has not run | run that experiment; then apply this table again |
+| A row resolves to a documented limitation | that path, with the limitation listed in the platform notes and reported to the user |
+| Any row ends in **platform no-go** | no-go for tablet quality on that platform in this shell: escalate |
+| **Both** platforms no-go | decision 7: Qt 6 is the only alternative |
+<!-- tablet-rules:end -->
 
 ## Consequences
 

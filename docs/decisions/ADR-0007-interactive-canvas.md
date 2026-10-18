@@ -1,6 +1,6 @@
 # ADR-0007 — Interactive canvas architecture (for M4)
 
-Status: accepted as the M4 direction (C0.4, 2026-10-18). The delta protocol is open (below). The macOS hardware
+Status: accepted as the M4 direction (C0.4, 2026-10-18; rule set added after review round 1). The delta protocol is open (below). The macOS hardware
 result is pending the user.
 
 ## Context
@@ -22,9 +22,15 @@ brush10k (10,000 filled brush outlines). Results (`reviews/M0-C0.3-handoff.md`; 
     the reviewer's fresh run is `reviews/evidence/M0-C0.3-r3/canvas-auto.json.gz`.
   - WebGPU GPU completion for paths100k is p50 about 8.5 ms. This is "completion latency [that] includes queue work
     and callback scheduling; it is not GPU timestamp duration" (reviewer, r4 closure).
-- **Full-list transport does not fit a frame.** A binary `tauri::ipc::Response` moves the 8.7 MB paths100k list in
-  p50 50–57 ms (128–172 MB/s), or 60–72 ms in the reviewer's fresh run. JS decode (flatten + earcut) adds 85–255 ms.
-  JSON IPC is about 100 MB/s round trip (C0.1).
+- **Full-list transport does not fit a frame.** Over binary `tauri::ipc::Response`, transfer p50 and JS decode
+  (flatten + earcut) are, per workload, across both back ends of the original automatic run
+  (`canvas-local-windows-rtx4090-auto.json.gz`) and the reviewer's fresh R3 run
+  (`reviews/evidence/M0-C0.3-r3/canvas-auto.json.gz`):
+  - **paths100k** (8.7 MB): transfer 50.3–70.4 ms, decode 85.3–130.5 ms;
+  - **brush10k** (10.09 MB): transfer 63.6–72.3 ms, decode 225.4–255.4 ms;
+  - **groups1k** (2.02 MB): transfer 13.2–16.3 ms, decode 30.4–37.1 ms.
+
+  Binary throughput was 128–172 MB/s in the original runs; JSON IPC is about 100 MB/s round trip (C0.1).
 - **CI runners.**
   - Windows runner: software WebGL2 (Microsoft Basic Render Driver) gives paths100k 0.6–0.8 fps, groups1k 16.9 and
     brush10k 8.9.
@@ -51,9 +57,11 @@ The reviewers' closure (r4) separates what is established from what is not:
 2. **There is one authoritative render list.** The resident GPU data is a cache of the logical render list produced
    by the Rust compositor (spec 06 §6.1), never a second scene model. The final-quality renderer (ADR-0006) consumes
    the same list. Any cache entry can be rebuilt from it, and resync is always possible.
-3. **WebGPU when an adapter is available; WebGL2 is mandatory and equal.** Both back ends ship from the start with
-   the same feature set and are tested on their own (`--spike-renderer webgl2` in the spike). A missing adapter is a
-   normal condition, not an error: both CI runners and the macOS 12 floor (ADR-0005) must work on WebGL2.
+3. **WebGPU and WebGL2 both ship; WebGL2 is mandatory and equal; the faster one is used.** Both back ends ship from
+   the start with the same feature set and are tested on their own (`--spike-renderer webgl2` in the spike). A
+   missing adapter is a normal condition, not an error: both CI runners and the macOS 12 floor (ADR-0005) must work
+   on WebGL2. Which back end runs on a machine, and what each measured outcome decides, is fixed by the rule set
+   below.
 4. **Binary IPC for geometry.** Loads and resyncs use `tauri::ipc::Response` binary payloads with a certified
    envelope:
    - the header is decoded and validated against its schema;
@@ -66,6 +74,47 @@ The reviewers' closure (r4) separates what is established from what is not:
    alternative for GPU-less machines, not a throughput fallback. A native `wgpu` child surface is **not** adopted. It
    remains a hypothesis to revisit only if real Mac or device evidence shows the webview path failing.
 
+## Canvas rule set (normative; the go/no-go report carries an identical copy)
+
+`desktop/src/test/decisionTables.test.ts` fails if the two copies differ.
+
+<!-- canvas-rules:begin -->
+**Per-scene target.** The C0.3 scenes and the same threshold for each:
+- **paths100k**: one drawing of 100,000 stroked paths;
+- **groups1k**: 1,000 transformed groups, the plan's "1 000-element scenes";
+- **brush10k**: 10,000 filled brush outlines.
+
+For one back end, a scene is:
+- **met** when its run completes and the analyzer reports `meetsTarget: true` (fps ≥ 57 over the 10 s pan/zoom);
+- **missed** when the run completes below 57 fps, including a complete run with "insufficient samples" (one sample
+  in 10 s is far below target);
+- **failed** when the run carries an error after the back end started;
+- **unavailable** when there is no WebGPU adapter or no WebGL2 context.
+
+**Back-end selection (product rule, M4).**
+- At first launch, and again after a GPU, driver or webview version change, the app measures both back ends that
+  start on a short built-in pan/zoom of the three scene shapes.
+- It uses the back end whose **worst** scene has the higher fps. A tie goes to WebGPU.
+- A back end that failed is excluded until the next version change.
+- The user can override the choice in preferences.
+
+So "WebGPU available but slower" selects WebGL2 on that machine; it is not a fault.
+
+**Outcome matrix.** It is applied per machine to the selected back end. For a spike log, that is the back end whose
+worst scene is better.
+
+| Outcome | Decision |
+|---|---|
+| The log does not analyze (analyzer exit 2) | not evidence: rerun; no decision |
+| WebGL2 unavailable or failed, WebGPU met or missed | WebGL2 is the mandatory path, so investigate (driver, OS, WebKit version) before any conclusion for that platform or floor; WebGPU is used on that machine meanwhile |
+| Both back ends unavailable or failed | no-go for the webview canvas on that platform until investigated |
+| WebGPU unavailable, failed or slower; WebGL2 works | the selection rule picks WebGL2; continue with the rows below |
+| All three scenes met | **go** as written |
+| groups1k and brush10k met, paths100k missed | **go**; M4 adds culling and level-of-detail for drawings of that size before they are supported at 60 fps |
+| groups1k met, brush10k missed (paths100k met or missed) | **go-with-condition**: M4 pre-tessellates fills in Rust and adds fill level-of-detail, and E-C2 re-measures brush10k. If it still misses, a native-wgpu integration prototype becomes required M4 work |
+| groups1k missed | **no-go** for the webview canvas as designed on that platform: a native-wgpu integration prototype (plan §2.3 fallback) becomes required M4 work |
+<!-- canvas-rules:end -->
+
 ## Open protocol questions (M4 design, to be measured)
 
 1. **Identity.** Which ids key resident data (drawing, stroke and fill ids from the document model), and how they map
@@ -77,7 +126,8 @@ The reviewers' closure (r4) separates what is established from what is not:
    - a bounded queue;
    - what is dropped and what must never be dropped (geometry, deletions).
 4. **Resync.** Full or per-drawing snapshots after a reload, a lost message, a webview crash or a revision mismatch;
-   how long a resync of a 100k-path drawing takes (C0.3: about 50–70 ms transfer plus 85–255 ms decode).
+   how long a resync of a 100k-path drawing takes (C0.3 paths100k: 50.3–70.4 ms transfer plus 85.3–130.5 ms decode;
+   to be re-measured on the M4 format).
 5. **Ownership, lifetime and eviction.** GPU memory budgets (spec 06 §6.9 caps) and evicting off-screen drawings.
 6. **Decode placement.** Decode currently runs on the main thread. Moving it to a worker conflicts with the IPC
    boundary's worker prohibition (C01-R4-02, accepted M1 C1.2 ticket), so that needs an ADR-0001 amendment. The
@@ -94,11 +144,6 @@ The reviewers' closure (r4) separates what is established from what is not:
   behaviour during resync.
 - **E-C3** (before M4 sign-off): on a GPU-less machine or VM, compare webview software rendering with tiled host
   bitmaps end to end.
-- **E-C4** (pending user): `docs/manual-tests/M0-C0.3-canvas-macos.md` on the user's Mac.
-  - If all three scenes reach ≥ 57 fps on WebGL2 (and WebGPU where it has an adapter), the decision stands as
-    written.
-  - If WebGL2 misses on paths100k only, M4 adds level-of-detail and culling before scenes of that size. The decision
-    stands.
-  - If WebGL2 misses on the 1k-group scene at Mac hardware rates, that is a no-go signal for the webview canvas on
-    macOS. A native-wgpu integration prototype then becomes required work (plan §2.3 fallback).
+- **E-C4** (pending user): `docs/manual-tests/M0-C0.3-canvas-macos.md` on the user's Mac. Its two logs (automatic,
+  and forced WebGL2) are decided by the canvas rule set above, with no further analysis.
 - Retina, multiple displays, ProMotion and weaker GPUs remain unmeasured (r4 closure); E-C4 covers one Mac only.
