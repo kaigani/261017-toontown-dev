@@ -1,0 +1,229 @@
+{
+  "$comment": "Main-menu bindings. Single source for the native menu (built by the Tauri host) and for the parity test (11 §14.1, from M1). Every command item names a command id from spec A / 01 §12. handler: host = executed natively by the Tauri host; frontend = executed by the web front end; pending = bound, not implemented yet (milestone says when). enabledWithoutProject follows 01 §1.3.",
+  "version": 1,
+  "menus": [
+    {
+      "id": "app",
+      "label": "Toontown",
+      "platforms": ["macos"],
+      "items": [
+        { "kind": "predefined", "item": "about" },
+        { "kind": "separator" },
+        {
+          "kind": "command",
+          "command": "ui.preferences.open",
+          "label": "Settings…",
+          "accelerator": "Cmd+,",
+          "enabledWithoutProject": true,
+          "handler": "pending",
+          "milestone": "M4"
+        },
+        { "kind": "separator" },
+        { "kind": "predefined", "item": "services" },
+        { "kind": "separator" },
+        { "kind": "predefined", "item": "hide" },
+        { "kind": "predefined", "item": "hideOthers" },
+        { "kind": "predefined", "item": "showAll" },
+        { "kind": "separator" },
+        {
+          "kind": "command",
+          "command": "app.quit",
+          "label": "Quit Toontown",
+          "accelerator": "Cmd+Q",
+          "enabledWithoutProject": true,
+          "handler": "host"
+        }
+      ]
+    },
+    {
+      "id": "file",
+      "label": "File",
+      "items": [
+        {
+          "kind": "command",
+          "command": "project.create",
+          "label": "New Project…",
+          "accelerator": "CmdOrCtrl+N",
+          "enabledWithoutProject": true,
+          "handler": "pending",
+          "milestone": "M1 (command), M4 (dialog)"
+        },
+        {
+          "kind": "command",
+          "command": "project.open",
+          "label": "Open…",
+          "accelerator": "CmdOrCtrl+O",
+          "enabledWithoutProject": true,
+          "handler": "pending",
+          "milestone": "M1 (command), M4 (dialog)"
+        },
+        { "kind": "separator" },
+        {
+          "kind": "command",
+          "command": "project.close",
+          "label": "Close Project",
+          "accelerator": "CmdOrCtrl+W",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M1"
+        },
+        {
+          "kind": "command",
+          "command": "project.save",
+          "label": "Save",
+          "accelerator": "CmdOrCtrl+S",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M1"
+        },
+        {
+          "kind": "command",
+          "command": "project.saveAs",
+          "label": "Save As…",
+          "accelerator": "CmdOrCtrl+Shift+S",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M1 (command), M4 (dialog)"
+        },
+        { "kind": "separator", "platforms": ["windows", "linux"] },
+        {
+          "kind": "command",
+          "command": "ui.preferences.open",
+          "label": "Preferences…",
+          "accelerator": "Ctrl+,",
+          "enabledWithoutProject": true,
+          "handler": "pending",
+          "milestone": "M4",
+          "platforms": ["windows", "linux"]
+        },
+        { "kind": "separator", "platforms": ["windows", "linux"] },
+        {
+          "kind": "command",
+          "command": "app.quit",
+          "label": "Exit",
+          "accelerator": "Ctrl+Q",
+          "enabledWithoutProject": true,
+          "handler": "host",
+          "platforms": ["windows", "linux"]
+        }
+      ]
+    },
+    {
+      "id": "edit",
+      "label": "Edit",
+      "items": [
+        {
+          "kind": "command",
+          "command": "edit.undo",
+          "label": "Undo",
+          "accelerator": "CmdOrCtrl+Z",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M1"
+        },
+        {
+          "kind": "command",
+          "command": "edit.redo",
+          "label": "Redo",
+          "accelerator": "CmdOrCtrl+Shift+Z",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M1"
+        },
+        { "kind": "separator" },
+        {
+          "kind": "command",
+          "command": "edit.cut",
+          "label": "Cut",
+          "accelerator": "CmdOrCtrl+X",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M4"
+        },
+        {
+          "kind": "command",
+          "command": "edit.copy",
+          "label": "Copy",
+          "accelerator": "CmdOrCtrl+C",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M4"
+        },
+        {
+          "kind": "command",
+          "command": "edit.paste",
+          "label": "Paste",
+          "accelerator": "CmdOrCtrl+V",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M4"
+        },
+        {
+          "kind": "command",
+          "command": "edit.delete",
+          "label": "Delete",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M4"
+        },
+        { "kind": "separator" },
+        {
+          "kind": "command",
+          "command": "edit.selectAll",
+          "label": "Select All",
+          "accelerator": "CmdOrCtrl+A",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M4"
+        }
+      ]
+    },
+    {
+      "id": "view",
+      "label": "View",
+      "items": [
+        {
+          "kind": "command",
+          "command": "view.transform.reset",
+          "label": "Reset View",
+          "enabledWithoutProject": false,
+          "handler": "pending",
+          "milestone": "M4"
+        },
+        { "kind": "separator" },
+        {
+          "kind": "command",
+          "command": "workspace.reset",
+          "label": "Restore Default Workspace",
+          "params": { "name": "Default", "select": true },
+          "enabledWithoutProject": true,
+          "handler": "frontend"
+        },
+        {
+          "kind": "command",
+          "command": "window.fullScreen.set",
+          "label": "Toggle Full Screen",
+          "accelerator": { "macos": "Ctrl+Cmd+F", "windows": "F11", "linux": "F11" },
+          "enabledWithoutProject": true,
+          "handler": "host"
+        }
+      ]
+    },
+    {
+      "id": "help",
+      "label": "Help",
+      "items": [
+        {
+          "kind": "command",
+          "command": "ui.help.open",
+          "label": "Toontown Help",
+          "enabledWithoutProject": true,
+          "handler": "pending",
+          "milestone": "M4"
+        },
+        { "kind": "separator", "platforms": ["windows", "linux"] },
+        { "kind": "predefined", "item": "about", "platforms": ["windows", "linux"] }
+      ]
+    }
+  ]
+}

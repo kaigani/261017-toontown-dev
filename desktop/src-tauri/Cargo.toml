@@ -1,0 +1,27 @@
+[package]
+name = "tt-desktop"
+description = "Toontown desktop host (Tauri 2): embeds the engine, native menu, typed IPC to the web front end"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lib]
+name = "tt_desktop"
+
+[[bin]]
+name = "toontown"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build.workspace = true
+
+[dependencies]
+tt-engine.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tauri.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,16 @@
+{
+  "name": "toontown-workspace",
+  "private": true,
+  "packageManager": "pnpm@10.12.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "pnpm -r --workspace-concurrency=1 lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "build": "pnpm -r build",
+    "format:check": "pnpm -r format:check",
+    "licenses:check": "node scripts/check-npm-licenses.mjs"
+  }
+}
