@@ -63,8 +63,9 @@ docs/decisions/ADR-0009-tablet-input.md and prints the outcome:
   Windows and A (AppKit monitor) on macOS. Raw HID (R) and a dedicated window (D) need experiments E-R1 / E-D1 and
   are not measured by this log;
 * numeric bands are half-open, on the unrounded value;
-* the candidate with the most rows at pass is selected, ties by priority (W > R > H > D on Windows, W > A on
-  macOS). The only exclusion is a candidate without any valid measurement (C04-R3-04);
+* the candidate with the highest share of applicable rows at pass is selected (n/a rows excluded), ties by
+  priority (W > R > H > D on Windows, W > A on macOS); a candidate with no applicable measured row is excluded;
+* pressure (row 2) or rate (row 7) at fail on the selected candidate makes the outcome "no-go on this platform";
 * every per-action statistic, including row 6's coalescing, uses only the measured episode's samples inside the
   action's span; samples outside every span are counted and excluded (C04-R3-01);
 * the raw Space/K key events (`keyEvents`) are validated and must account for every action transition (C04-R3-02);
@@ -72,6 +73,7 @@ docs/decisions/ADR-0009-tablet-input.md and prints the outcome:
 * the decision is also written to `--json` as `decision`. Standard library only.
 """
 
+from fractions import Fraction
 import gzip
 import json
 import math
@@ -533,6 +535,7 @@ STATIONARY_PASS_HZ = 60
 TILT_SPAN_DEG = 30
 TWIST_PASS_RANGE_DEG = 180
 PRIORITY = {"windows": ("W", "R", "H", "D"), "macos": ("W", "A")}
+NO_GO_ROWS = (2, 7)
 NATIVE_CANDIDATE = {"windows": "H", "macos": "A"}
 UNMEASURED_NOTE = {"R": "raw HID, needs experiment E-R1", "D": "dedicated input window, needs experiment E-D1"}
 # Mitigation for the selected candidate's non-pass rows: (partial, fail).
@@ -540,13 +543,13 @@ MITIGATIONS = {
     1: ("pen recognised by pressure > 0; eraser not distinguished",
         "pen not identified on this path: contacts with pressure > 0 are treated as pen; no eraser"),
     2: ("accept the measured resolution of 16 to 255 levels; brush response quantised",
-        "pressure unsupported on this platform: the tablet acts as a mouse for pressure"),
+        "no-go on this platform (Step 3)"),
     3: ("accept >= 256 levels", "as row 2"),
     4: ("accept the limited or quantised tilt", "tilt unsupported on this platform: tilt-driven brush options off"),
     5: ("twist limited to the measured range (e.g. modulo 180)", "barrel rotation unsupported on this platform"),
     6: ("accept one sample per dispatch", "accept one sample per dispatch; a floor change is a user decision (ADR-0005)"),
     7: ("interpolated sampling off; the >= 200 Hz target is recorded as below target",
-        "rate below 60 Hz: interpolated sampling off; the >= 120 and >= 200 Hz targets are recorded as below target"),
+        "no-go on this platform (Step 3)"),
     8: ("recorded as below the 200 Hz target", "recorded as below the 200 Hz target"),
     9: ("pressure interpolated between updates", "pressure changes without movement are ignored"),
 }
@@ -679,19 +682,33 @@ def aggregate(platform, results):
     if insufficient:
         return {"outcome": "insufficient evidence: repeat the actions named for " + ", ".join(insufficient),
                 "selected": None, "conditions": [], "scores": {}, "eligible": []}
-    # The only exclusion is a candidate without any valid measurement (C04-R3-04).
-    eligible = [c for c in order if c in results and any(r in ("pass", "partial", "fail") for r in results[c].values())]
+    # Ruling on the round-3 disputed note, option (a): the score is the share of applicable rows at pass (n/a rows are
+    # in neither numerator nor denominator); a candidate with no applicable measured row is excluded. Exact fractions,
+    # so equal shares tie exactly and fall to the fixed order. `scores` stays the plain pass count (diagnostic).
+    applicable = {c: [r for r in rows.values() if r in ("pass", "partial", "fail")] for c, rows in results.items()}
+    eligible = [c for c in order if c in results and applicable[c]]
     scores = {c: sum(1 for r in results[c].values() if r == "pass") for c in results}
+    shares = {c: Fraction(scores[c], len(applicable[c])) for c in eligible}
     unmeasured = [c for c in order if c not in results]
     if not eligible:
         return {"outcome": "not evidence: no candidate has a valid measurement; repeat the procedure",
-                "selected": None, "conditions": [], "scores": scores, "eligible": [], "unmeasured": unmeasured}
-    best = max(eligible, key=lambda c: (scores[c], -order.index(c)))
+                "selected": None, "conditions": [], "scores": scores, "shares": {}, "eligible": [],
+                "unmeasured": unmeasured}
+    best = max(eligible, key=lambda c: (shares[c], -order.index(c)))
+    # Option (c): pressure (row 2) or rate (row 7) at fail on the selected candidate makes the platform a no-go; the
+    # mitigation table still applies to its other rows.
+    blocking = [row for row in NO_GO_ROWS if results[best].get(row) == "fail"]
     conditions = [{"row": row, "result": r, "mitigation": MITIGATIONS[row][0 if r == "partial" else 1]}
-                  for row, r in sorted(results[best].items()) if r in ("partial", "fail")]
-    outcome = f"go: {best}" if not conditions else f"go-with-conditions: {best}"
-    return {"outcome": outcome, "selected": best, "conditions": conditions, "scores": scores, "eligible": eligible,
-            "unmeasured": unmeasured}
+                  for row, r in sorted(results[best].items()) if r in ("partial", "fail") and row not in blocking]
+    if blocking:
+        outcome = f"no-go on this platform: escalate (plan §6 decision 7); selected {best}, row(s) " \
+                  f"{', '.join(str(r) for r in blocking)} at fail"
+    else:
+        outcome = f"go: {best}" if not conditions else f"go-with-conditions: {best}"
+    return {"outcome": outcome, "selected": best, "conditions": conditions, "scores": scores,
+            "shares": {c: f"{v.numerator}/{v.denominator}" if v.denominator != 1 else str(v.numerator)
+                       for c, v in shares.items()},
+            "blocking": blocking, "eligible": eligible, "unmeasured": unmeasured}
 
 
 def tablet_decision(log, web, native, actions):
@@ -718,7 +735,8 @@ def print_decision(d):
         for row, name in ROWS.items():
             cells = [f"{d['rows'][c][str(row)]['result']} ({d['rows'][c][str(row)]['note']})" for c in cands]
             print(f"| {row} | {name} | {ROW_ACTION[row]} | " + " | ".join(cells) + " |")
-        print(f"\n- platform: {d['platform']}; scores (rows at pass): {d.get('scores')}; candidates with a valid measurement: {d.get('eligible')}")
+        print(f"\n- platform: {d['platform']}; share of applicable rows at pass: {d.get('shares')}; rows at pass: "
+              f"{d.get('scores')}; candidates with a valid measurement: {d.get('eligible')}")
         if d.get("unmeasured"):
             print("- not scored: " + ", ".join(f"{c} ({UNMEASURED_NOTE.get(c, 'not measured')})" for c in d["unmeasured"]))
     print(f"- outcome: **{d['outcome']}**")

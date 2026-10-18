@@ -32,7 +32,7 @@ const CASES: [name: string, adr: string, mustContain: string[]][] = [
       'Step 1',
       'Step 2',
       'Step 3',
-      'without any valid measurement',
+      'no-go on this platform',
       'E-R1',
       'E-D1',
       '| 9 |',

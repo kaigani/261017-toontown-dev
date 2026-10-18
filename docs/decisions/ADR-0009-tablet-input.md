@@ -147,10 +147,13 @@ synthetic frame. A T-W1 log measures W and H; a T-M1 log measures W and A. A can
 scored, and the decision is final for that evidence. Passing a row on a native path proves only that row: native pen
 identity says nothing about native pressure, tilt or rate.
 
-**Step 2: select one candidate** (ruling C04-R3-04).
-1. The only exclusion is a candidate **without any valid measurement**: not measured, or every row n/a.
-2. A candidate's **score** is its number of rows at pass.
-3. The candidate with the highest score is selected; ties go to the higher priority (W > R > H > D, or W > A).
+**Step 2: select one candidate** (rulings C04-R3-04 and, on the round-3 disputed note, option (a)).
+1. A candidate **without any applicable measured row** (not measured, or every row n/a) is excluded. This is the
+   only exclusion.
+2. A candidate's **score** is the **share of its applicable rows at pass**. An n/a row is in neither the numerator
+   nor the denominator, so a native candidate is not penalised for row 6.
+3. The candidate with the highest share is selected; equal shares go to the higher priority (W > R > H > D, or
+   W > A).
 4. **Two sources are never combined.** The other measured candidates may be offered as the "Tablet input interface"
    choice of spec 02 §6.3.
 
@@ -159,37 +162,37 @@ identity says nothing about native pressure, tilt or rate.
 | Result | Decision |
 |---|---|
 | No candidate has a valid measurement | **not evidence**: repeat the procedure |
-| The selected candidate passes every row that is not n/a | **go: that candidate** |
+| The selected candidate is at fail on row 2 (pressure) or row 7 (rate) | **no-go on this platform: escalate (plan §6 decision 7)**; the mitigation table still applies to its other rows (option (c) of the round-3 ruling) |
+| Otherwise, the selected candidate passes every row that is not n/a | **go: that candidate** |
 | Otherwise | **go-with-conditions: that candidate**, with each row at partial or fail and its mitigation from the table below |
 
 | # | Mitigation when partial | Mitigation when fail |
 |---|---|---|
 | 1 | pen recognised by pressure > 0; eraser not distinguished | pen not identified on this path: contacts with pressure > 0 are treated as pen; no eraser |
-| 2 | accept the measured resolution of 16 to 255 levels; brush response quantised | pressure unsupported on this platform: the tablet acts as a mouse for pressure |
+| 2 | accept the measured resolution of 16 to 255 levels; brush response quantised | no-go on this platform (Step 3) |
 | 3 | accept >= 256 levels | as row 2 |
 | 4 | accept the limited or quantised tilt | tilt unsupported on this platform: tilt-driven brush options off |
 | 5 | twist limited to the measured range (e.g. modulo 180) | barrel rotation unsupported on this platform |
 | 6 | accept one sample per dispatch | accept one sample per dispatch; a floor change is a user decision (ADR-0005) |
-| 7 | interpolated sampling off; the >= 200 Hz target is recorded as below target | rate below 60 Hz: interpolated sampling off; the >= 120 and >= 200 Hz targets are recorded as below target |
+| 7 | interpolated sampling off; the >= 200 Hz target is recorded as below target | no-go on this platform (Step 3) |
 | 8 | recorded as below the 200 Hz target | recorded as below the 200 Hz target |
 | 9 | pressure interpolated between updates | pressure changes without movement are ignored |
 
-**Worked examples** (checked by `scripts/test_decision_rules.py`):
+**Worked examples** (checked by `scripts/test_decision_rules.py`). The shares are exact fractions of applicable rows.
 1. **Windows.** All four candidates are measured, and every row not named here is at pass.
    - W: pressure partial (rows 2 and 3 at partial and fail), tilt at fail.
    - R: tilt at fail.
    - H: pressure at fail.
    - D: pressure and tilt at fail.
 
-   Scores: W 6, R 7 (row 6 is n/a for every native candidate), H 6, D 5. Decision: **go-with-conditions: R**, with
-   row 4 at fail: tilt unsupported on this platform.
+   Shares: W 6/9, R 7/8, H 6/8, D 5/8, so R is selected. Its rows 2 and 7 pass. Decision: **go-with-conditions: R**,
+   with row 4 at fail: tilt unsupported on this platform.
 2. **macOS.** W runs at 50 Hz and A at 90 Hz; every other row passes on both.
+   - W: rows 7 and 8 at fail, so 7 of 9 applicable rows pass (7/9).
+   - A: row 6 n/a, row 7 partial, row 8 fail, so 6 of 8 pass (3/4).
 
-   Scores: W 7 (rows 7 and 8 at fail), A 6 (row 6 n/a, row 7 partial, row 8 fail). Decision: **go-with-conditions:
-   W**, with:
-   - row 7 at fail: rate below 60 Hz, interpolated sampling off, and the 120 and 200 Hz targets recorded as below
-     target;
-   - row 8 at fail: recorded as below the 200 Hz target.
+   W is selected (7/9 > 3/4) and is at fail on row 7. Decision: **no-go on this platform: escalate (plan §6 decision
+   7)**. The A path is not selected: rule (c) changes the outcome, not the selection.
 
 `scripts/analyse-tablet-log.py` implements these steps and prints the decision for every manual log. Its constants
 are checked against this text by `scripts/test_decision_rules.py`.
