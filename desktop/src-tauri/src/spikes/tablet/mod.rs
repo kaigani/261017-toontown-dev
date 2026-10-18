@@ -14,6 +14,8 @@ mod native_macos;
 #[cfg(windows)]
 mod native_windows;
 #[cfg(windows)]
+mod probe_windows;
+#[cfg(windows)]
 mod simulate_windows;
 
 use std::path::PathBuf;
@@ -38,7 +40,8 @@ pub struct SpikeSettings {
     pub auto: bool,
 }
 
-/// One input packet from the native listener.
+/// One input packet as produced by a platform converter. The field set is pinned by the reviewers' replay tests
+/// (`tests/adversarial/c02-r1-*.rs` compile the converters against it); per-packet extras travel in [`WirePacket`].
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct NativePacket {
@@ -64,12 +67,98 @@ pub struct NativePacket {
     pub tool: String,
 }
 
-/// A batch of packets sent over the channel.
+/// Packets produced by one converter pass (internal; see [`WireBatch`] for what crosses the channel).
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct NativeBatch {
     /// Packets in arrival order.
     pub packets: Vec<NativePacket>,
+}
+
+/// A packet as sent over the channel: the converter's packet plus a gap-free host sequence number (so the page can
+/// count channel loss against a reference) and platform extras.
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct WirePacket {
+    /// Host sequence number, 0-based, contiguous for the listener's lifetime.
+    pub seq: u64,
+    /// The converted packet.
+    #[serde(flatten)]
+    pub packet: NativePacket,
+    /// Raw tilt as reported by the OS (macOS: `NSEvent.tilt`, scaled -1..1), next to the converted degrees.
+    pub raw_tilt_x: Option<f64>,
+    /// See `raw_tilt_x`.
+    pub raw_tilt_y: Option<f64>,
+    /// Device identity when the OS provides one (macOS: `deviceID` of tablet/proximity events).
+    pub device_id: Option<String>,
+    /// macOS: `NSEvent.windowNumber` (0 = no window); conversion input for `locationInWindow`.
+    pub window_number: Option<i64>,
+}
+
+/// A batch on the channel, with cumulative host-side loss counters.
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct WireBatch {
+    /// Packets in arrival order.
+    pub packets: Vec<WirePacket>,
+    /// Packets the host discarded because its buffer was full (cumulative).
+    pub host_dropped: u64,
+    /// Channel sends that failed (cumulative; their packets never reached the page).
+    pub send_failures: u64,
+}
+
+/// Wraps converter packets into [`WirePacket`]s with sequence numbers.
+#[derive(Debug, Default)]
+pub struct Sequencer {
+    next: std::sync::atomic::AtomicU64,
+}
+
+impl Sequencer {
+    /// Wraps `packet` with the next sequence number and no extras.
+    pub fn wrap(&self, packet: NativePacket) -> WirePacket {
+        WirePacket {
+            seq: self.next.fetch_add(1, Ordering::SeqCst),
+            packet,
+            raw_tilt_x: None,
+            raw_tilt_y: None,
+            device_id: None,
+            window_number: None,
+        }
+    }
+}
+
+/// The main window's geometry when the listener started (conversion inputs for native coordinates).
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct WindowGeometry {
+    /// Backing scale factor (physical pixels per logical pixel).
+    pub scale_factor: f64,
+    /// Client area origin on screen, physical pixels.
+    pub inner_x: i32,
+    /// See `inner_x`.
+    pub inner_y: i32,
+    /// Client area size, physical pixels.
+    pub inner_width: u32,
+    /// See `inner_width`.
+    pub inner_height: u32,
+}
+
+/// Host facts recorded in the log (the page adds what the webview knows).
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SpikeEnvironment {
+    /// `windows`, `macos`, `linux`.
+    pub os: &'static str,
+    /// CPU architecture.
+    pub arch: &'static str,
+    /// OS version string (Windows: `ver`; macOS: `sw_vers`), if it could be read.
+    pub os_version: Option<String>,
+    /// WebView2 runtime version (Windows) or WebKit framework version (macOS), from Tauri.
+    pub webview_version: Option<String>,
+    /// Logical CPUs available to the process.
+    pub cpu_count: Option<u32>,
+    /// Main window geometry now.
+    pub window: Option<WindowGeometry>,
 }
 
 /// Result of starting the native listener.
@@ -82,6 +171,10 @@ pub struct NativeStartInfo {
     pub tablets: Vec<String>,
     /// Backend timestamp granularity in ms, if known.
     pub timestamp_granularity_ms: Option<f64>,
+    /// Clock domain of `deviceMs` (only differences within one domain are meaningful).
+    pub device_clock: &'static str,
+    /// Main window geometry at start.
+    pub window: Option<WindowGeometry>,
 }
 
 /// What the front end needs to know about the spike launch.
@@ -101,7 +194,7 @@ pub struct SpikeMode {
 }
 
 /// Parameters of a synthetic pen stroke (Windows).
-#[derive(Debug, Clone, Copy, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct PenSimRequest {
     /// Target rectangle in the webview's CSS pixels (the canvas).
@@ -116,6 +209,10 @@ pub struct PenSimRequest {
     pub hz: u32,
     /// Number of contact frames (1..=10000). Pressure steps through 1..=1024 once per 1024 frames.
     pub frames: u32,
+    /// Path: `sine` (default), `zigzag` (at least 2 px between frames, so no two adjacent frames share a pixel) or
+    /// `stationary` (one fixed point, pressure-only changes).
+    #[serde(default)]
+    pub pattern: Option<String>,
 }
 
 /// Report of an injected stroke.
@@ -130,8 +227,20 @@ pub struct PenSimReport {
     pub hz: u32,
     /// Achieved rate over the contact frames.
     pub achieved_hz: f64,
-    /// Host wall-clock injection time of each contact frame, ms since the Unix epoch.
+    /// Host wall-clock time taken immediately **before** each contact frame's inject call, ms since the Unix epoch.
     pub inject_epoch_ms: Vec<f64>,
+    /// Host wall-clock time when each inject call returned.
+    pub inject_return_epoch_ms: Vec<f64>,
+    /// Screen position of each contact frame, physical pixels.
+    pub screen_x: Vec<i32>,
+    /// See `screen_x`.
+    pub screen_y: Vec<i32>,
+    /// Target rectangle on screen `[left, top, width, height]`, physical pixels.
+    pub screen_rect: [i32; 4],
+    /// Path pattern actually used.
+    pub pattern: String,
+    /// What was targeted: `webview` (this app's canvas) or `nativeWindow` (the probe window).
+    pub target: &'static str,
     /// Pressure injected in each contact frame (0..1024).
     pub pressure: Vec<u32>,
     /// Tilt X injected in each contact frame (degrees).
@@ -202,6 +311,56 @@ const NATIVE_BACKEND: Option<&str> = if cfg!(windows) {
     None
 };
 
+/// Main-window geometry (physical pixels), if the window exists.
+pub(crate) fn window_geometry(app: &AppHandle) -> Option<WindowGeometry> {
+    use tauri::Manager as _;
+    let window = app.get_webview_window("main")?;
+    let origin = window.inner_position().ok()?;
+    let size = window.inner_size().ok()?;
+    Some(WindowGeometry {
+        scale_factor: window.scale_factor().ok()?,
+        inner_x: origin.x,
+        inner_y: origin.y,
+        inner_width: size.width,
+        inner_height: size.height,
+    })
+}
+
+fn command_output(program: &str, args: &[&str]) -> Option<String> {
+    let out = std::process::Command::new(program).args(args).output().ok()?;
+    let text = String::from_utf8_lossy(&out.stdout).trim().to_owned();
+    (out.status.success() && !text.is_empty()).then_some(text)
+}
+
+fn os_version() -> Option<String> {
+    if cfg!(windows) {
+        command_output("cmd", &["/C", "ver"])
+    } else if cfg!(target_os = "macos") {
+        let name = command_output("sw_vers", &["-productVersion"])?;
+        let build = command_output("sw_vers", &["-buildVersion"]).unwrap_or_default();
+        Some(format!("macOS {name} ({build})"))
+    } else {
+        None
+    }
+}
+
+/// Host environment for the log: OS version, webview runtime version, CPU count, window geometry.
+///
+/// # Errors
+/// `spike.notEnabled`.
+#[tauri::command]
+pub fn spike_environment(app: AppHandle, spike: State<'_, TabletSpike>) -> Result<SpikeEnvironment, ErrorInfo> {
+    spike.require()?;
+    Ok(SpikeEnvironment {
+        os: std::env::consts::OS,
+        arch: std::env::consts::ARCH,
+        os_version: os_version(),
+        webview_version: tauri::webview_version().ok(),
+        cpu_count: std::thread::available_parallelism().ok().and_then(|n| u32::try_from(n.get()).ok()),
+        window: window_geometry(&app),
+    })
+}
+
 /// The spike launch, or `null` when the app was not started with `--spike tablet`.
 #[tauri::command]
 #[must_use]
@@ -223,7 +382,7 @@ pub fn spike_mode(spike: State<'_, TabletSpike>) -> Option<SpikeMode> {
 pub fn spike_tablet_native_start(
     app: AppHandle,
     spike: State<'_, TabletSpike>,
-    channel: Channel<NativeBatch>,
+    channel: Channel<WireBatch>,
 ) -> Result<NativeStartInfo, ErrorInfo> {
     spike.require()?;
     let mut slot = spike.native.lock().map_err(|_| error("internal", "spike state poisoned".into()))?;
@@ -239,7 +398,7 @@ pub fn spike_tablet_native_start(
 #[cfg(windows)]
 fn start_native(
     app: &AppHandle,
-    channel: Channel<NativeBatch>,
+    channel: Channel<WireBatch>,
     stop: Arc<AtomicBool>,
 ) -> Result<NativeStartInfo, ErrorInfo> {
     native_windows::start(app, channel, stop).map_err(|e| error("spike.nativeFailed", e))
@@ -248,14 +407,14 @@ fn start_native(
 #[cfg(target_os = "macos")]
 fn start_native(
     app: &AppHandle,
-    channel: Channel<NativeBatch>,
+    channel: Channel<WireBatch>,
     stop: Arc<AtomicBool>,
 ) -> Result<NativeStartInfo, ErrorInfo> {
     native_macos::start(app, channel, stop).map_err(|e| error("spike.nativeFailed", e))
 }
 
 #[cfg(not(any(windows, target_os = "macos")))]
-fn start_native(_: &AppHandle, _: Channel<NativeBatch>, _: Arc<AtomicBool>) -> Result<NativeStartInfo, ErrorInfo> {
+fn start_native(_: &AppHandle, _: Channel<WireBatch>, _: Arc<AtomicBool>) -> Result<NativeStartInfo, ErrorInfo> {
     Err(error("spike.unsupported", "no native tablet backend on this platform".into()))
 }
 
@@ -299,6 +458,9 @@ fn validate(r: &PenSimRequest) -> Result<(), ErrorInfo> {
     if !(1..=1000).contains(&r.hz) || !(1..=10_000).contains(&r.frames) {
         return Err(error("arg.invalid", "hz must be 1..=1000 and frames 1..=10000".into()));
     }
+    if !matches!(r.pattern.as_deref(), None | Some("sine" | "zigzag" | "stationary")) {
+        return Err(error("arg.invalid", "pattern must be sine, zigzag or stationary".into()));
+    }
     Ok(())
 }
 
@@ -312,6 +474,57 @@ async fn simulate_pen(app: AppHandle, request: PenSimRequest) -> Result<PenSimRe
 #[cfg(not(windows))]
 async fn simulate_pen(_: AppHandle, _: PenSimRequest) -> Result<PenSimReport, ErrorInfo> {
     Err(error("spike.unsupported", "synthetic pen injection exists only on Windows".into()))
+}
+
+/// Windows: the discriminating experiment of review C02-R1-04. Injects the same synthetic stroke into a plain
+/// same-process native window (recording WM_POINTER with pen history, an `octotablet` RealTimeStylus on that window,
+/// and raw HID input), then returns. The webview half of the matrix is the ordinary simulation with
+/// [`spike_raw_input_sink`] running.
+///
+/// # Errors
+/// `spike.notEnabled`, `spike.unsupported` (not Windows), `arg.invalid`, `spike.notForeground`, `spike.injectFailed`.
+#[tauri::command]
+pub async fn spike_probe_native_window(
+    app: AppHandle,
+    spike: State<'_, TabletSpike>,
+    request: PenSimRequest,
+) -> Result<serde_json::Value, ErrorInfo> {
+    spike.require()?;
+    validate(&request)?;
+    probe_native(app, request).await
+}
+
+#[cfg(windows)]
+async fn probe_native(app: AppHandle, request: PenSimRequest) -> Result<serde_json::Value, ErrorInfo> {
+    tauri::async_runtime::spawn_blocking(move || probe_windows::native_window_run(&app, &request))
+        .await
+        .map_err(|e| error("internal", format!("probe task failed: {e}")))?
+}
+
+#[cfg(not(windows))]
+async fn probe_native(_: AppHandle, _: PenSimRequest) -> Result<serde_json::Value, ErrorInfo> {
+    Err(error("spike.unsupported", "the native-window probe exists only on Windows".into()))
+}
+
+/// Windows: starts (`true`) or stops (`false`) a raw-input sink for HID digitizer collections (usage page 0x0D)
+/// on a hidden same-process window; stopping returns what it received. Used during the webview simulation.
+///
+/// # Errors
+/// `spike.notEnabled`, `spike.unsupported` (not Windows), `spike.probeFailed`.
+#[tauri::command]
+pub fn spike_raw_input_sink(spike: State<'_, TabletSpike>, start: bool) -> Result<serde_json::Value, ErrorInfo> {
+    spike.require()?;
+    raw_sink(start)
+}
+
+#[cfg(windows)]
+fn raw_sink(start: bool) -> Result<serde_json::Value, ErrorInfo> {
+    if start { probe_windows::raw_sink_start() } else { probe_windows::raw_sink_stop() }
+}
+
+#[cfg(not(windows))]
+fn raw_sink(_: bool) -> Result<serde_json::Value, ErrorInfo> {
+    Err(error("spike.unsupported", "raw input exists only on Windows".into()))
 }
 
 /// Writes the front end's JSON log to the `--spike-log` path (and exits the app after an automated run).
@@ -346,7 +559,7 @@ mod tests {
     use super::*;
 
     fn req() -> PenSimRequest {
-        PenSimRequest { left: 0.0, top: 0.0, width: 100.0, height: 100.0, hz: 240, frames: 100 }
+        PenSimRequest { left: 0.0, top: 0.0, width: 100.0, height: 100.0, hz: 240, frames: 100, pattern: None }
     }
 
     #[test]
@@ -366,12 +579,38 @@ mod tests {
         assert!(validate(&PenSimRequest { width: 5.0, ..req() }).is_err());
         assert!(validate(&PenSimRequest { left: f64::NAN, ..req() }).is_err());
         assert!(validate(&PenSimRequest { top: -1.0, ..req() }).is_err());
+        assert!(validate(&PenSimRequest { pattern: Some("zigzag".into()), ..req() }).is_ok());
+        assert!(validate(&PenSimRequest { pattern: Some("spiral".into()), ..req() }).is_err());
     }
 
     #[test]
     fn request_rejects_unknown_fields() {
         let bad = r#"{"left":0,"top":0,"width":100,"height":100,"hz":240,"frames":10,"x":1}"#;
         assert!(serde_json::from_str::<PenSimRequest>(bad).is_err());
+    }
+
+    #[test]
+    fn sequencer_is_gap_free_and_wire_packets_flatten() {
+        let seq = Sequencer::default();
+        let p = NativePacket {
+            kind: "pose",
+            host_epoch_ms: 1.0,
+            device_ms: Some(2.0),
+            x: 0.0,
+            y: 0.0,
+            pressure: None,
+            tilt_x: None,
+            tilt_y: None,
+            twist: None,
+            tool: "pen".into(),
+        };
+        let a = seq.wrap(p.clone());
+        let b = seq.wrap(p);
+        assert_eq!((a.seq, b.seq), (0, 1));
+        let v = serde_json::to_value(&b).unwrap();
+        assert_eq!(v["seq"], 1);
+        assert_eq!(v["deviceMs"], 2.0);
+        assert!(v.get("rawTiltX").is_some() && v.get("packet").is_none());
     }
 
     #[test]

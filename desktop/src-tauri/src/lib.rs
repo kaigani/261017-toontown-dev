@@ -67,7 +67,10 @@ pub fn run() -> Result<(), DesktopError> {
             spikes::tablet::spike_tablet_native_start,
             spikes::tablet::spike_tablet_native_stop,
             spikes::tablet::spike_pen_simulate,
-            spikes::tablet::spike_save_log
+            spikes::tablet::spike_save_log,
+            spikes::tablet::spike_environment,
+            spikes::tablet::spike_probe_native_window,
+            spikes::tablet::spike_raw_input_sink
         ])
         .run(tauri::generate_context!())?;
     Ok(())

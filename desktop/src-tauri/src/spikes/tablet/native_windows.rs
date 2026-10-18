@@ -2,18 +2,26 @@
 //!
 //! The `Manager` lives on the main (UI) thread, where Ink delivers its asynchronous-plugin callbacks. A helper thread
 //! asks the main thread to pump it every 2 ms and forwards the converted packets over the Tauri channel.
+//!
+//! Timestamps (C02-R1-02): in octotablet 0.1.0, `ToolEvent::Frame(t)` *terminates* the preceding group of events
+//! (its Ink backend emits `Pose` then `Frame(t)` per packet). [`pump`] therefore holds every packet until the frame
+//! that closes its group arrives, possibly in a later pump, and labels the whole group with that frame's time.
+//! `deviceMs` is on octotablet's own clock (arbitrary epoch); `hostEpochMs` is host wall time. The two are never mixed.
+//!
+//! The section from the `pump` function to the end of this file is compiled by the reviewers' replay test
+//! (`tests/adversarial/c02-r1-native-timestamps.rs`) against doubles; keep it to the types that prelude provides.
 
 use std::cell::RefCell;
+use std::marker::PhantomData;
 use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::mpsc;
 use std::time::Duration;
 
 use octotablet::events::{Event, ToolEvent};
-use tauri::ipc::Channel;
 use tauri::{AppHandle, Manager as _};
 
-use super::{NativeBatch, NativePacket, NativeStartInfo, epoch_ms};
+use super::{NativeBatch, NativePacket, NativeStartInfo, Sequencer, WireBatch, epoch_ms, window_geometry};
 
 thread_local! {
     static MANAGER: RefCell<Option<octotablet::Manager>> = const { RefCell::new(None) };
@@ -21,12 +29,47 @@ thread_local! {
 
 const PUMP_INTERVAL: Duration = Duration::from_millis(2);
 
+/// The production channel handed to [`pump`]: numbers packets ([`Sequencer`]) and counts failed sends before they
+/// reach the Tauri channel. Named `Channel` so that `pump` reads the same in production and in the replay test.
+pub(super) struct Channel<T> {
+    inner: tauri::ipc::Channel<WireBatch>,
+    seq: Arc<Sequencer>,
+    failures: Arc<AtomicU64>,
+    _batch: PhantomData<fn(T)>,
+}
+
+impl<T> Clone for Channel<T> {
+    fn clone(&self) -> Self {
+        Self {
+            inner: self.inner.clone(),
+            seq: Arc::clone(&self.seq),
+            failures: Arc::clone(&self.failures),
+            _batch: PhantomData,
+        }
+    }
+}
+
+impl Channel<NativeBatch> {
+    fn new(inner: tauri::ipc::Channel<WireBatch>) -> Self {
+        Self { inner, seq: Arc::default(), failures: Arc::default(), _batch: PhantomData }
+    }
+
+    fn send(&self, batch: NativeBatch) -> Result<(), ()> {
+        let packets = batch.packets.into_iter().map(|p| self.seq.wrap(p)).collect();
+        let wire = WireBatch { packets, host_dropped: 0, send_failures: self.failures.load(Ordering::SeqCst) };
+        self.inner.send(wire).map_err(|_| {
+            self.failures.fetch_add(1, Ordering::SeqCst);
+        })
+    }
+}
+
 pub(super) fn start(
     app: &AppHandle,
-    channel: Channel<NativeBatch>,
+    channel: tauri::ipc::Channel<WireBatch>,
     stop: Arc<AtomicBool>,
 ) -> Result<NativeStartInfo, String> {
     let window = app.get_webview_window("main").ok_or("no main window")?;
+    let geometry = window_geometry(app);
     let (tx, rx) = mpsc::channel::<Result<NativeStartInfo, String>>();
     app.run_on_main_thread(move || {
         // SAFETY: `build_raw` requires the window handle to stay valid while the Manager lives. The Manager is kept in
@@ -38,6 +81,8 @@ pub(super) fn start(
                 backend: "octotablet-ink",
                 tablets: manager.tablets().iter().map(|t| t.name.clone().unwrap_or_else(|| "unnamed".into())).collect(),
                 timestamp_granularity_ms: manager.timestamp_granularity().map(|d| d.as_secs_f64() * 1000.0),
+                device_clock: "octotablet FrameTimestamp, ms since an arbitrary epoch",
+                window: geometry,
             };
             MANAGER.with_borrow_mut(|m| *m = Some(manager));
             info
@@ -47,6 +92,7 @@ pub(super) fn start(
     .map_err(|e| e.to_string())?;
     let info = rx.recv_timeout(Duration::from_secs(5)).map_err(|e| format!("main thread did not answer: {e}"))??;
 
+    let channel = Channel::new(channel);
     let app = app.clone();
     std::thread::spawn(move || {
         while !stop.load(Ordering::SeqCst) {
@@ -65,15 +111,13 @@ fn pump(channel: &Channel<NativeBatch>) {
         let Some(manager) = m.as_mut() else { return };
         let Ok(events) = manager.pump();
         let now = epoch_ms();
-        let mut frame_ms = None;
         for event in events {
             if let Event::Tool { tool, event } = event {
                 let tool_name = tool.name.clone().unwrap_or_else(|| "pen".into());
-                let device_ms = frame_ms;
                 let packet = |kind| NativePacket {
                     kind,
                     host_epoch_ms: now,
-                    device_ms,
+                    device_ms: None,
                     x: 0.0,
                     y: 0.0,
                     pressure: None,
@@ -83,7 +127,7 @@ fn pump(channel: &Channel<NativeBatch>) {
                     tool: tool_name.clone(),
                 };
                 match event {
-                    ToolEvent::Pose(pose) => packets.push(NativePacket {
+                    ToolEvent::Pose(pose) => hold(NativePacket {
                         x: pose.position[0],
                         y: pose.position[1],
                         pressure: pose.pressure.get(),
@@ -93,13 +137,19 @@ fn pump(channel: &Channel<NativeBatch>) {
                         ..packet("pose")
                     }),
                     ToolEvent::Frame(ts) => {
-                        frame_ms = ts.map(|t| (t - octotablet::events::FrameTimestamp::epoch()).as_secs_f64() * 1000.0);
-                        packets.push(NativePacket { device_ms: frame_ms, ..packet("frame") });
+                        // The frame closes the group held so far: its time labels every packet of that group.
+                        let device_ms =
+                            ts.map(|t| (t - octotablet::events::FrameTimestamp::epoch()).as_secs_f64() * 1000.0);
+                        for mut held in release() {
+                            held.device_ms = device_ms;
+                            packets.push(held);
+                        }
+                        packets.push(NativePacket { device_ms, ..packet("frame") });
                     }
-                    ToolEvent::Down => packets.push(packet("down")),
-                    ToolEvent::Up => packets.push(packet("up")),
-                    ToolEvent::In { .. } => packets.push(packet("in")),
-                    ToolEvent::Out => packets.push(packet("out")),
+                    ToolEvent::Down => hold(packet("down")),
+                    ToolEvent::Up => hold(packet("up")),
+                    ToolEvent::In { .. } => hold(packet("in")),
+                    ToolEvent::Out => hold(packet("out")),
                     _ => {}
                 }
             }
@@ -108,4 +158,17 @@ fn pump(channel: &Channel<NativeBatch>) {
     if !packets.is_empty() {
         let _ = channel.send(NativeBatch { packets });
     }
+}
+
+thread_local! {
+    /// Packets of the group whose terminating `Frame` has not arrived yet (it may arrive in a later pump).
+    static HELD: RefCell<Vec<NativePacket>> = const { RefCell::new(Vec::new()) };
+}
+
+fn hold(packet: NativePacket) {
+    HELD.with_borrow_mut(|held| held.push(packet));
+}
+
+fn release() -> Vec<NativePacket> {
+    HELD.with_borrow_mut(std::mem::take)
 }

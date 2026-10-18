@@ -26,9 +26,14 @@ thiserror.workspace = true
 # C0.2 tablet spike (desktop host only; never in engine crates, so the headless guard is unaffected).
 [target.'cfg(windows)'.dependencies]
 octotablet = { version = "0.1.0", default-features = false, features = ["windows-ink"] }
+raw-window-handle = "0.6"
 windows = { version = "0.62", features = [
     "Win32_Foundation",
+    "Win32_Graphics_Gdi",
+    "Win32_System_Com",
+    "Win32_System_LibraryLoader",
     "Win32_UI_Controls",
+    "Win32_UI_Input",
     "Win32_UI_Input_Pointer",
     "Win32_UI_WindowsAndMessaging",
 ] }
