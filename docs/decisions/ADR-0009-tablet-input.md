@@ -92,12 +92,17 @@ Space at the start and end of each action, and K to skip it.
   keydown, and two transitions are at least 500 ms apart.
 - Every Space/K event is logged with what it did (`keyEvents`).
 
-Each episode belongs to the action whose span contains its first sample: web samples by the page's performance clock,
-native packets by host wall time. Every row below names an action, never an episode number.
+Every row below names an action, never an episode number.
 
-**Only samples inside an action's span are decision inputs.** Every per-action statistic is computed from the
-measured episode's samples inside that span, including row 6's coalescing, which comes from A2's own samples. Samples
-outside every span are excluded before anything is computed, and the analyzer prints how many per path.
+**Only samples inside an action's span are decision inputs** (C04-R4-01).
+- Each path's stream is **clipped to the action's span before it is split into episodes**: web samples by the
+  page's performance clock, native packets by host wall time.
+- Episode detection, the choice of the largest episode, split handling and every statistic use the clipped stream
+  only. Row 6's coalescing comes from A2's own clipped samples.
+- An episode keeps the capture-wide number of the episode its first in-span sample belongs to; that numbering is
+  what the manual tests' mapping tables use.
+- Samples outside every span never enter any per-action computation, and the analyzer prints how many there were
+  per path.
 - Per path, an action is "episode n", "split" (the episode with most samples is measured), "performed, no events"
   (done, but no contact on that path), "omitted" (skipped with K) or "unfinished" (saved mid-action).
 - Clicks on Save, the form or the listener button fall outside every action and are ignored.
@@ -108,7 +113,7 @@ outside every span are excluded before anything is computed, and the analyzer pr
 | Condition | Outcome |
 |---|---|
 | `scripts/analyse-tablet-log.py` exits 2; or `source` is not `manual`; or the log has run or simulation records; or the input is synthetic | **not evidence**: repeat the procedure |
-| Malformed action markers, including overlap on either clock, or raw key events that do not account for every marker transition (exit 2) | **not evidence**: repeat the procedure |
+| Malformed action markers, including overlap on either clock, or a raw key log that fails its state machine: every transition must be the keyup of a non-repeat keydown of the same key, at least 500 ms after the previous transition, with the label and time of the matching action record (exit 2, naming the event) | **not evidence**: repeat the procedure |
 | The log has no action markers (it predates them) | **not evidence**: repeat the procedure with the current build |
 | A row's action is omitted, unfinished or not recorded (A4 omitted is fine when "Pen has barrel rotation" is no) | **insufficient evidence: repeat that action** |
 | Row 7 or 8: A2 has a single sample (rate null) | **insufficient evidence: repeat A2** |

@@ -645,12 +645,13 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
   useEffect(() => {
     if (mode.auto) return;
     const pressed = new Set<string>();
-    const log = (e: KeyboardEvent, key: string, outcome: string) => {
+    // A transition is logged with the same time as its action record, so the analyzer can match them (C04-R4-02).
+    const log = (e: KeyboardEvent, key: string, outcome: string, t = performance.now()) => {
       keyEvents.current.push({
         type: e.type === 'keyup' ? 'keyup' : 'keydown',
         key,
         repeat: e.repeat,
-        t: performance.now(),
+        t,
         outcome,
       });
     };
@@ -699,17 +700,17 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
       let next: typeof step;
       if (key === ' ' && step.startPerf === null) {
         next = { index: step.index, startPerf: now };
-        log(e, key, `transition: ${action.id} started`);
+        log(e, key, `transition: ${action.id} started`, now);
         setStatus(`${action.id} ${action.name}: started. Press Space when it is done.`);
       } else if (key === ' ' && step.startPerf !== null) {
         actions.current.push(record('done', step.startPerf));
         next = { index: step.index + 1, startPerf: null };
-        log(e, key, `transition: ${action.id} done`);
+        log(e, key, `transition: ${action.id} done`, now);
         setStatus(`${action.id} ${action.name}: done.`);
       } else if (key === 'k' && step.startPerf === null) {
         actions.current.push(record('skipped', now));
         next = { index: step.index + 1, startPerf: null };
-        log(e, key, `transition: ${action.id} skipped`);
+        log(e, key, `transition: ${action.id} skipped`, now);
         setStatus(`${action.id} ${action.name}: skipped.`);
       } else {
         log(e, key, 'ignored: K while an action is running');

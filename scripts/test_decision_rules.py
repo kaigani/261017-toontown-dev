@@ -16,6 +16,7 @@ import importlib.util
 import json
 import pathlib
 import re
+import sys
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -143,11 +144,13 @@ def manual_log(rotation, markers=True):
                                 pointerId=1, x=n if aid != "A6" else 20, y=20,
                                 pressure=0 if aid == "A5" or kind == "up" else (n % 511 + 1) / 512,
                                 tiltX=0, tiltY=0, twist=0, dispatch=len(samples), coalescedCount=1))
-        records.append(dict(id=aid, state="done", startPerf=start - 100, endPerf=start + 5100,
-                            startEpochMs=1e12 + start - 100, endEpochMs=1e12 + start + 5100))
+        # Spans [start - 1, start + 4999): the last sample is at start + 4998. Actions are 1000 ms apart, so a skip in
+        # between keeps the page's 500 ms minimum between marker transitions (C04-R4-02).
+        records.append(dict(id=aid, state="done", startPerf=start - 1, endPerf=start + 4999,
+                            startEpochMs=1e12 + start - 1, endEpochMs=1e12 + start + 4999))
     if not rotation:
-        records.insert(3, dict(id="A4", state="skipped", startPerf=17500, endPerf=17500,
-                               startEpochMs=1e12 + 17500, endEpochMs=1e12 + 17500))
+        records.insert(3, dict(id="A4", state="skipped", startPerf=17499, endPerf=17499,
+                               startEpochMs=1e12 + 17499, endEpochMs=1e12 + 17499))
     log = dict(version=3, source="manual", environment=dict(coalescedApi=True, userAgent="test"),
                metadata=dict(penTilt="yes", penRotation="yes" if rotation else "no"),
                web=dict(samples=samples, frames=[]), native=dict(packets=[]), runs=[], simulations=[])
@@ -193,6 +196,98 @@ class ActionMapping(unittest.TestCase):
         self.assertEqual(d["rows"]["W"]["4"]["result"], "fail")
         self.assertEqual(d["rows"]["W"]["5"]["result"], "n/a")
         self.assertEqual(d["outcome"], "go-with-conditions: W")
+
+
+class OutsideSpanAndKeys(unittest.TestCase):
+    """C04-R4-01 (the reviewer's closure probe, made permanent, with boundaries taken from the fixture) and
+    C04-R4-02 (the raw key log as a state machine)."""
+
+    def decide(self, log):
+        web, native = tablet.web_analysis(log), tablet.native_analysis(log)
+        return tablet.tablet_decision(log, web, native, tablet.action_analysis(log, web, native))
+
+    def stray(self, log, inside, tail):
+        """A stray pen contact in A2: `inside` samples between the real A2 stroke's pointerup (end - 1) and A2's end,
+        then `tail` samples after the end."""
+        end = log["actions"][1]["endPerf"]
+        s = copy.deepcopy(log["web"]["samples"][0])
+        s.update(handlerT=0, dispatch=90000, coalescedCount=1)
+        extra = [dict(s, t=end - (inside - i) * 0.2, kind="down" if i == 0 else "move") for i in range(inside)]
+        extra += [dict(s, t=end + i, kind="move", dispatch=90001, coalescedCount=8, pressure=0.8) for i in range(tail)]
+        extra.append(dict(s, t=end + tail, kind="up", pressure=0))
+        log["web"]["samples"] = sorted(log["web"]["samples"] + extra, key=lambda q: q["t"])
+        return log
+
+    def test_outside_tail_cannot_choose_measured_episode(self):
+        base = self.stray(manual_log(False), inside=1, tail=0)
+        tailed = self.stray(manual_log(False), inside=1, tail=700)
+        a, b = self.decide(base), self.decide(tailed)
+        self.assertEqual(a["rows"], b["rows"], "an outside-span tail must not select a different A2 episode")
+        self.assertEqual(a["outcome"], b["outcome"])
+        # Two in-span samples: the tail must not turn a qualified candidate into a platform no-go either.
+        slow, slow_tail = self.stray(manual_log(False), 2, 0), self.stray(manual_log(False), 2, 700)
+        self.assertEqual(self.decide(slow)["outcome"], self.decide(slow_tail)["outcome"])
+
+    def test_outside_tail_longer_than_the_in_span_episode(self):
+        # A2's real episode has 600 samples; the stray contact has 3 inside and 2000 outside (2003 in total). Only
+        # its clipped 3 compete, so the real episode stays the measurement.
+        log = self.stray(manual_log(False), inside=3, tail=2000)
+        web, native = tablet.web_analysis(log), tablet.native_analysis(log)
+        actions = tablet.action_analysis(log, web, native)
+        a2 = actions["actions"][1]["web"]
+        self.assertEqual(a2["outcome"], "split: 2 episodes")
+        self.assertEqual(a2["measured"], 2)
+        self.assertEqual(a2["stats"]["samples"], web["strokes"][1]["samples"])
+        self.assertGreater(web["strokes"][2]["samples"], a2["stats"]["samples"])  # the unclipped stray is longer
+        self.assertFalse(a2["stats"]["coalescedObserved"])
+        self.assertEqual(self.decide(log)["rows"], self.decide(manual_log(False))["rows"])
+
+    @staticmethod
+    def keyed(log):
+        keys = []
+        for a in log["actions"]:
+            steps = [("k", a["startPerf"], "skipped")] if a["state"] == "skipped" else [
+                (" ", a["startPerf"], "started"), (" ", a["endPerf"], "done")]
+            for key, when, state in steps:
+                keys += [dict(type="keydown", key=key, repeat=False, t=when, outcome="pressed"),
+                         dict(type="keyup", key=key, repeat=False, t=when, outcome=f"transition: {a['id']} {state}")]
+        log["keyEvents"] = keys
+        return log
+
+    def test_key_log_is_validated_as_a_state_machine(self):
+        base = self.keyed(manual_log(False))
+        web, native = tablet.web_analysis(base), tablet.native_analysis(base)
+        self.assertEqual(tablet.action_analysis(base, web, native)["keyEvents"]["transitions"], 11)
+        mutations = {
+            "missing keydown": lambda k: [e for e in k if e["type"] == "keyup"],
+            "transitions 499 ms apart": lambda k: [dict(e, t=(i // 2) * 499) for i, e in enumerate(k)],
+            "wrong label": lambda k: [dict(e, outcome="transition: A6 skipped") if i == 1 else e for i, e in enumerate(k)],
+            "transition on a keydown": lambda k: [dict(e, type="keydown") if i == 1 else e for i, e in enumerate(k)],
+            "keydown of another key": lambda k: [dict(e, key="k") if i == 0 else e for i, e in enumerate(k)],
+            "repeat keydown only": lambda k: [dict(e, repeat=True, outcome="ignored: auto-repeat") if i == 0 else e
+                                              for i, e in enumerate(k)],
+        }
+        for name, mutate in mutations.items():
+            with self.subTest(mutation=name):
+                log = copy.deepcopy(base)
+                log["keyEvents"] = mutate(log["keyEvents"])
+                w, n = tablet.web_analysis(log), tablet.native_analysis(log)
+                with self.assertRaisesRegex(tablet.LogError, r"key event \d+|need"):
+                    tablet.action_analysis(log, w, n)
+
+    def test_malformed_key_log_exits_2_from_the_cli(self):
+        import subprocess
+        import tempfile
+        log = self.keyed(manual_log(False))
+        log["keyEvents"] = [e for e in log["keyEvents"] if e["type"] == "keyup"]
+        with tempfile.TemporaryDirectory() as d:
+            path = pathlib.Path(d) / "log.json"
+            path.write_text(json.dumps(log), encoding="utf-8")
+            r = subprocess.run([sys.executable, "-I", str(ROOT / "scripts/analyse-tablet-log.py"), str(path)],
+                               capture_output=True, text=True)
+        self.assertEqual(r.returncode, 2)
+        self.assertEqual(r.stdout, "")
+        self.assertIn("key event 0: transition without a non-repeat keydown", r.stderr)
 
 
 class CanvasRules(unittest.TestCase):

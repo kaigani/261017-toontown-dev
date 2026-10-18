@@ -46,8 +46,9 @@ person presses Space to start and to finish each action, and K to skip it; a mar
 deliberate press, at least 500 ms after the previous one, and every Space/K event is logged in `keyEvents` (C04-R3-02).
 Each record holds its state (`done`,
 `skipped`, `unfinished`), and its start and end on the page's performance clock and as wall-clock epoch ms. An
-episode belongs to the action whose span contains the episode's first sample: web samples by performance time,
-native packets by host wall time. Episodes outside every span (clicks on Save, the metadata form or the listener
+action's samples are clipped to its span before episodes are found (web samples by performance time, native
+packets by host wall time), so episodes, the largest episode and all statistics use in-span samples only
+(C04-R4-01); an episode keeps the capture-wide number of the episode its first in-span sample belongs to. Episodes outside every span (clicks on Save, the metadata form or the listener
 button) belong to no action. Per action and path the result is one of:
 * omitted (skipped);
 * unfinished (saved mid-action);
@@ -67,9 +68,11 @@ docs/decisions/ADR-0009-tablet-input.md and prints the outcome:
 * among the others, the highest share of applicable rows at pass is selected (n/a rows excluded), ties by priority
   (W > R > H > D on Windows, W > A on macOS); a candidate with no applicable measured row is excluded;
 * if every candidate is disqualified, the outcome is "no-go on this platform", naming the best available evidence;
-* every per-action statistic, including row 6's coalescing, uses only the measured episode's samples inside the
-  action's span; samples outside every span are counted and excluded (C04-R3-01);
-* the raw Space/K key events (`keyEvents`) are validated and must account for every action transition (C04-R3-02);
+* every per-action computation, from episode detection to row 6's coalescing, uses only the samples inside the
+  action's span; samples outside every span are counted and excluded (C04-R3-01, C04-R4-01);
+* the raw Space/K key log (`keyEvents`) is validated as a state machine: each transition is the keyup of a non-repeat
+  keydown of the same key, >= 500 ms after the previous one, with the label and time of its action record
+  (C04-R3-02, C04-R4-02);
 * each non-pass row of the selected candidate gets its fixed mitigation. Sources are never combined;
 * the decision is also written to `--json` as `decision`. Standard library only.
 """
@@ -416,40 +419,68 @@ ACTION_TIMES = ("startPerf", "endPerf", "startEpochMs", "endEpochMs")
 
 KEY_TYPES = ("keydown", "keyup")
 KEY_NAMES = (" ", "k")
+MIN_TRANSITION_MS = 500  # the page's minimum time between two marker transitions (TabletSpike.tsx)
 
 
-def path_outcome(state, indices, strokes, span, clock=None):
-    """Outcome of one action on one path. `stats` are computed only from the measured episode's samples that lie
-    inside the action's span (C04-R3-01): nothing outside the span reaches a decision input."""
+def path_outcome(state, stream, strokes, span, clock=None):
+    """Outcome of one action on one path (C04-R4-01). The path's raw stream (web samples or native packets) is clipped
+    to the action's span **before** it is split into episodes: episode detection, the largest episode, split handling
+    and every statistic use only samples inside the span, so nothing outside it reaches a decision input. Episodes
+    keep the number of the capture-wide episode their first in-span sample belongs to (the action -> episode
+    mapping of the manual tests)."""
     if state == "skipped":
         return {"outcome": "omitted", "episodes": [], "measured": None, "stats": None}
-    if state == "unfinished":
-        return {"outcome": "unfinished", "episodes": indices, "measured": None, "stats": None}
-    if not indices:
-        return {"outcome": "performed, no events", "episodes": [], "measured": None, "stats": None}
-    measured = max(indices, key=lambda i: strokes[i - 1]["samples"])
-    st = strokes[measured - 1]
     lo, hi = span
     if clock is None:  # web: page performance clock
-        pts = [q for q in st["_points"] if is_number(q.get("t")) and lo <= q["t"] < hi]
+        clipped = [q for q in stream if is_number(q.get("t")) and lo <= q["t"] < hi]
+        episodes = [points for _, points, _ in web_episodes(clipped)]
+    else:  # native: assigned by host wall time; intervals on the path's own clock
+        clipped = [q for q in stream if is_number(q.get("hostEpochMs")) and lo <= q["hostEpochMs"] < hi]
+        episodes = [e["points"] for e in native_episodes(clipped)]
+    number = {id(q): i + 1 for i, st in enumerate(strokes) for q in st["_points"]}
+    indices = sorted({number[id(points[0])] for points in episodes if id(points[0]) in number})
+    if state == "unfinished":
+        return {"outcome": "unfinished", "episodes": indices, "measured": None, "stats": None}
+    if not episodes:
+        return {"outcome": "performed, no events", "episodes": [], "measured": None, "stats": None}
+    pts = max(episodes, key=len)  # first of equal-size episodes
+    if clock is None:
         stats = stroke_stats(pts, [q["t"] for q in pts])
         stats["coalescedObserved"] = any((q.get("coalescedCount") or 1) > 1 for q in pts)
-    else:  # native: assigned by host wall time; intervals on the path's own clock
-        pts = [q for q in st["_points"] if is_number(q.get("hostEpochMs")) and lo <= q["hostEpochMs"] < hi]
+        key = pts[0].get("pointerType", "?") + (f"#{pts[0]['pointerId']}" if pts[0].get("pointerId") is not None else "")
+    else:
         stats = stroke_stats(pts, [native_time(q, clock) for q in pts])
-    stats.update(pointer=st["pointer"], truncated=st["truncated"])
-    return {"outcome": f"episode {indices[0]}" if len(indices) == 1 else f"split: {len(indices)} episodes",
+        key = pts[0].get("tool")
+    measured = number.get(id(pts[0]))
+    stats.update(pointer=key, truncated=measured is None or strokes[measured - 1]["truncated"])
+    return {"outcome": f"episode {indices[0]}" if len(episodes) == 1 else f"split: {len(episodes)} episodes",
             "episodes": indices, "measured": measured, "stats": stats}
 
 
+def expected_transitions(acts):
+    """(key, page label, time) of every marker transition the action records imply, in order."""
+    out = []
+    for a in acts:
+        if a["state"] == "skipped":
+            out.append(("k", f"transition: {a['id']} skipped", a["startPerf"]))
+        else:
+            out.append((" ", f"transition: {a['id']} started", a["startPerf"]))
+            if a["state"] == "done":
+                out.append((" ", f"transition: {a['id']} done", a["endPerf"]))
+    return out
+
+
 def validate_key_events(log, acts):
-    """The page's raw Space/K log (C04-R3-02). Malformed, or disagreeing with the action records: outcome (c)."""
+    """The page's raw Space/K log as a state machine (C04-R3-02, C04-R4-02). Each recorded transition must be the
+    keyup of a non-repeat keydown of the same key, at least MIN_TRANSITION_MS after the previous transition, with the
+    label and time of the next transition the action records imply. Any violation is outcome (c), naming the event."""
     events = log.get("keyEvents")
     if events is None:
         return None
     if not isinstance(events, list):
         raise LogError("`keyEvents` is not a list")
-    prev, transitions = None, 0
+    expected = expected_transitions(acts)
+    prev, pressed, last, done = None, set(), None, 0
     for k, e in enumerate(events):
         if not (isinstance(e, dict) and e.get("type") in KEY_TYPES and e.get("key") in KEY_NAMES
                 and is_number(e.get("t")) and isinstance(e.get("repeat"), bool) and isinstance(e.get("outcome"), str)):
@@ -457,14 +488,35 @@ def validate_key_events(log, acts):
         if prev is not None and e["t"] < prev:
             raise LogError(f"key event {k} goes back in time")
         prev = e["t"]
-        if e["outcome"].startswith("transition"):
-            if e["type"] != "keyup" or e["repeat"]:
-                raise LogError(f"key event {k} is a transition on a {e['type']}{' repeat' if e['repeat'] else ''}")
-            transitions += 1
-    expected = sum({"done": 2, "skipped": 1, "unfinished": 1}[a["state"]] for a in acts)
-    if transitions != expected:
-        raise LogError(f"the raw key events show {transitions} marker transitions but the action records need {expected}")
-    return {"events": len(events), "transitions": transitions,
+        typing = e["outcome"] == "ignored: typing in the form"
+        transition = e["outcome"].startswith("transition")
+        if e["type"] == "keydown":
+            if transition:
+                raise LogError(f"key event {k}: a transition on a keydown")
+            if not e["repeat"] and e["outcome"] == "pressed":
+                pressed.add(e["key"])
+            continue
+        if transition:
+            if e["repeat"]:
+                raise LogError(f"key event {k}: a transition on a repeat keyup")
+            if e["key"] not in pressed:
+                raise LogError(f"key event {k}: transition without a non-repeat keydown of the same key")
+            if last is not None and e["t"] - last < MIN_TRANSITION_MS:
+                raise LogError(f"key event {k}: transition {e['t'] - last:.1f} ms after the previous one "
+                               f"(minimum {MIN_TRANSITION_MS} ms)")
+            if done >= len(expected):
+                raise LogError(f"key event {k}: transition beyond those the action records imply")
+            key, label, when = expected[done]
+            if (e["key"], e["outcome"], e["t"]) != (key, label, when):
+                raise LogError(f"key event {k}: {e['outcome']!r} on {e['key']!r} at {e['t']} disagrees with the action "
+                               f"records ({label!r} on {key!r} at {when})")
+            done += 1
+            last = e["t"]
+        if not typing:
+            pressed.discard(e["key"])
+    if done != len(expected):
+        raise LogError(f"the raw key events show {done} marker transitions but the action records need {len(expected)}")
+    return {"events": len(events), "transitions": done,
             "ignored": sum(1 for e in events if e["outcome"].startswith("ignored"))}
 
 
@@ -477,6 +529,8 @@ def action_analysis(log, web, native):
         raise LogError("`actions` is not a list")
     seen, prev_end, prev_epoch_end, out = set(), None, None, []
     clock = native["clock"]
+    web_samples = log.get("web", {}).get("samples", [])
+    packets = log.get("native", {}).get("packets", [])
     for k, a in enumerate(acts):
         if not isinstance(a, dict) or a.get("id") not in ACTION_IDS or a.get("state") not in ACTION_STATES:
             raise LogError(f"action record {k} has no known id/state")
@@ -493,20 +547,14 @@ def action_analysis(log, web, native):
             raise LogError(f"action {a['id']} starts before the previous action ended on the native (epoch) clock")
         seen.add(a["id"])
         prev_end, prev_epoch_end = a["endPerf"], a["endEpochMs"]
-        web_idx = [i + 1 for i, st in enumerate(web["strokes"])
-                   if is_number(st.get("startT")) and a["startPerf"] <= st["startT"] < a["endPerf"]]
-        nat_idx = [i + 1 for i, st in enumerate(native["strokes"])
-                   if is_number(st.get("startEpochMs")) and a["startEpochMs"] <= st["startEpochMs"] < a["endEpochMs"]]
         out.append({"id": a["id"], "state": a["state"], "durationMs": a["endPerf"] - a["startPerf"],
-                    "web": path_outcome(a["state"], web_idx, web["strokes"], (a["startPerf"], a["endPerf"])),
-                    "native": path_outcome(a["state"], nat_idx, native["strokes"],
+                    "web": path_outcome(a["state"], web_samples, web["strokes"], (a["startPerf"], a["endPerf"])),
+                    "native": path_outcome(a["state"], packets, native["strokes"],
                                            (a["startEpochMs"], a["endEpochMs"]), clock)})
     keys = validate_key_events(log, acts)
     in_web = {i for r in out for i in r["web"]["episodes"]}
     in_nat = {i for r in out for i in r["native"]["episodes"]}
     spans = [(a["startPerf"], a["endPerf"], a["startEpochMs"], a["endEpochMs"]) for a in acts]
-    web_samples = log.get("web", {}).get("samples", [])
-    packets = log.get("native", {}).get("packets", [])
     web_out = sum(1 for q in web_samples if not any(is_number(q.get("t")) and lo <= q["t"] < hi
                                                      for lo, hi, _, _ in spans))
     nat_out = sum(1 for q in packets if not any(is_number(q.get("hostEpochMs")) and lo <= q["hostEpochMs"] < hi
