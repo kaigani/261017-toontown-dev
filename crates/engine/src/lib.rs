@@ -19,9 +19,11 @@ mod determinism;
 mod error;
 mod ping;
 mod selftest;
+pub mod wire;
 
 use std::time::Instant;
 
+use schemars::JsonSchema;
 use serde::Serialize;
 
 pub use components::{Component, components};
@@ -45,7 +47,7 @@ pub const APP_NAME: &str = "Toontown";
 pub const APP_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 /// How the engine was started (11 §3).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum RunMode {
     /// GUI running; agents attach to the live session.
@@ -69,8 +71,8 @@ pub struct EngineConfig {
 /// This is **not** the result of the spec query `app.info.get` (01 §12), which also reports `locale` and
 /// `languages[]`; those depend on settings and localisation, which do not exist yet. `app.info.get` is a registered
 /// query from C1.4 (ticket in `plan/traceability.csv`) and will be built on this type, not replace it.
-#[derive(Debug, Clone, Serialize)]
-#[serde(rename_all = "camelCase")]
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct EngineInfo {
     /// Application name.
     pub name: &'static str,
@@ -81,8 +83,10 @@ pub struct EngineInfo {
     /// CPU architecture (`x86_64`, `aarch64`).
     pub arch: &'static str,
     /// Project format / document schema version (10 §6.6).
+    #[schemars(regex(pattern = "^[0-9]+[.][0-9]+$"))]
     pub format_version: &'static str,
     /// Command-registry version (11 §4).
+    #[schemars(regex(pattern = "^[0-9]+[.][0-9]+[.][0-9]+$"))]
     pub registry_version: &'static str,
     /// Run mode.
     pub run_mode: RunMode,

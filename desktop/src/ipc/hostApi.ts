@@ -1,9 +1,26 @@
 // Typed host API. UI code depends on this interface only, never on a transport or on the Tauri packages.
-import { certify } from './schema';
+//
+// Product calls cross as JSON text in both directions (ADR-0012): arguments are sent as `{json: <text>}` written by
+// `stringifyWireJson`, and the host answers with JSON text (a UTF-8 body or a string), rejects with the JSON text of
+// an `ErrorInfo`, and emits events as JSON text. Text is parsed losslessly (64-bit integers survive as bigint) and
+// validated against the generated schemas. A transport that hands over objects instead (in-process test doubles)
+// goes through `certify`: plain data only, structured-clone-able (no Proxy), snapshotted, validated.
+import { certify, type Schema } from './schema';
 import { createBenchApi, createSpikeApi, type BenchApi, type SpikeApi } from './spikeApi';
 import type { HostTransport, Unlisten } from './transport';
 import type { EngineInfo, ErrorInfo, MenuCommandEvent, PingRequest, PingResponse } from './types';
-import { isEngineInfo, isErrorInfo, isMenuCommandEvent, isPingResponse } from './wireSchemas';
+import { certifyWireText, decodeWireBytes, stringifyWireJson } from './wireJson';
+import {
+  engineInfoSchema,
+  errorInfoSchema,
+  isEngineInfo,
+  isErrorInfo,
+  isMenuCommandEvent,
+  isPingResponse,
+  menuCommandEventSchema,
+  pingResponseSchema,
+  WIRE,
+} from './wireSchemas';
 
 export const MENU_COMMAND_EVENT = 'menu-command';
 
@@ -53,27 +70,51 @@ const NO_SPIKES: SpikeApi = {
   canvasPixels: notBuilt,
 };
 
+/**
+ * Accepts a value delivered by a transport: JSON text (string or UTF-8 bytes) is parsed losslessly and validated;
+ * anything else must pass `certify`. Returns undefined for anything invalid; never throws.
+ */
+export function acceptWire<T>(value: unknown, schema: Schema, check: (value: unknown) => value is T): T | undefined {
+  try {
+    if (typeof value === 'string') return certifyWireText<T>(value, schema, WIRE);
+    if (value instanceof ArrayBuffer) {
+      const text = decodeWireBytes(value);
+      return text === undefined ? undefined : certifyWireText<T>(text, schema, WIRE);
+    }
+    return certify(check, value);
+  } catch {
+    return undefined;
+  }
+}
+
 /** Normalises anything a transport rejects with into a `HostError`. */
 export function toHostError(error: unknown): HostError {
   if (error instanceof HostError) return error;
-  if (isErrorInfo(error)) return new HostError(error);
-  const message = error instanceof Error ? error.message : String(error);
+  const info = acceptWire<ErrorInfo>(error, errorInfoSchema, isErrorInfo);
+  if (info !== undefined) return new HostError(info);
+  let message: string;
+  try {
+    message = error instanceof Error ? error.message : String(error);
+  } catch {
+    message = 'unreadable error value';
+  }
   return new HostError({ code: 'internal', message });
 }
 
 async function call<T>(
   transport: HostTransport,
   command: string,
-  args: Record<string, unknown> | undefined,
+  args: unknown,
+  schema: Schema,
   check: (value: unknown) => value is T,
 ): Promise<T> {
   let value: unknown;
   try {
-    value = await transport.invoke(command, args);
+    value = await transport.invoke(command, args === undefined ? undefined : { json: stringifyWireJson(args) });
   } catch (error: unknown) {
     throw toHostError(error);
   }
-  const data = certify(check, value);
+  const data = acceptWire(value, schema, check);
   if (data === undefined) {
     throw new HostError({ code: 'ipc.invalidResponse', message: `unexpected response from ${command}` });
   }
@@ -83,12 +124,12 @@ async function call<T>(
 export function createHostApi(transport: HostTransport): HostApi {
   return {
     transportKind: transport.kind,
-    ping: (request) => call(transport, 'ping', { request }, isPingResponse),
-    appInfo: () => call(transport, 'app_info', undefined, isEngineInfo),
+    ping: (request) => call(transport, 'ping', request, pingResponseSchema, isPingResponse),
+    appInfo: () => call(transport, 'app_info', undefined, engineInfoSchema, isEngineInfo),
     onMenuCommand: (handler) =>
       transport.listen(MENU_COMMAND_EVENT, (payload) => {
         // Malformed events are dropped: they can only come from a host/front-end version mismatch.
-        const event = certify(isMenuCommandEvent, payload);
+        const event = acceptWire(payload, menuCommandEventSchema, isMenuCommandEvent);
         if (event !== undefined) handler(event);
       }),
     // M0 diagnostics exist only in the diagnostics build. Their command names live in spikeApi.ts, which the default

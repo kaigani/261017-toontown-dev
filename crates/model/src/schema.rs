@@ -538,6 +538,20 @@ fn build_definitions() -> Map<String, Value> {
     sorted.into_iter().collect()
 }
 
+/// Generates and post-processes the schema definitions of other (non-model) types, e.g. the engine's IPC wire
+/// types: integer bounds of their Rust types, `required` = every property not marked optional, sorted definitions.
+pub fn struct_definitions(register: impl FnOnce(&mut SchemaGenerator)) -> Map<String, Value> {
+    let mut g = SchemaSettings::draft2020_12().into_generator();
+    register(&mut g);
+    let mut defs = g.take_definitions(true);
+    for def in defs.values_mut() {
+        fix_integers(def);
+        complete_struct(def);
+    }
+    let sorted: BTreeMap<String, Value> = defs.into_iter().collect();
+    sorted.into_iter().collect()
+}
+
 /// All schema definitions (`$defs`), post-processed. Built once.
 #[must_use]
 pub fn definitions() -> &'static Map<String, Value> {

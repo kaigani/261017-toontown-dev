@@ -24,6 +24,7 @@ pub mod object;
 pub mod path;
 pub mod pointer;
 pub mod schema;
+pub mod schema_ts;
 pub mod types;
 pub mod validate;
 pub mod value;

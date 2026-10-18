@@ -2,6 +2,7 @@
 
 use std::time::Instant;
 
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::{Engine, EngineError};
@@ -10,19 +11,20 @@ use crate::{Engine, EngineError};
 pub const MAX_PING_PAYLOAD_BYTES: usize = 1 << 20;
 
 /// Parameters of a ping.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct PingRequest {
     /// Caller-chosen sequence number, echoed back.
     pub seq: u64,
     /// Optional payload, echoed back (lets the caller measure size-dependent cost).
     #[serde(default)]
+    #[schemars(extend("x-omitDefault" = true))]
     pub payload: Option<String>,
 }
 
 /// Result of a ping.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct PingResponse {
     /// The request's sequence number.
     pub seq: u64,

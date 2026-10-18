@@ -1,8 +1,12 @@
 // In-memory host used by tests and by `pnpm dev` outside Tauri. Mirrors the Rust host's behaviour for the
-// commands that exist; unknown commands reject with `command.unknown` like the real registry will (11 §10).
+// commands that exist: product commands take their arguments as `{json}` text like the real host (ADR-0012). It
+// answers with objects rather than text, so tests can wrap and tamper with responses; the host API accepts both
+// (text: lossless parse; objects: `certify`). Unknown commands reject with `command.unknown` (11 §10).
+import { FORMAT_VERSION, REGISTRY_VERSION } from './generated/wire';
 import { MOCK_DIAGNOSTIC_HANDLERS } from './mockDiagnostics';
 import type { HostTransport, Unlisten } from './transport';
 import type { EngineInfo, ErrorInfo, PingRequest, PingResponse } from './types';
+import { parseWireJson } from './wireJson';
 
 export const MOCK_MAX_PING_PAYLOAD_BYTES = 1 << 20;
 
@@ -18,8 +22,8 @@ export const MOCK_ENGINE_INFO: EngineInfo = {
   version: '0.0.1',
   platform: 'browser',
   arch: 'mock',
-  formatVersion: '0.0',
-  registryVersion: '0.0.0',
+  formatVersion: FORMAT_VERSION,
+  registryVersion: REGISTRY_VERSION,
   runMode: 'attached',
 };
 
@@ -33,7 +37,7 @@ export function createMockTransport(): MockTransport {
 
   const handlers: Record<string, (args: Record<string, unknown>) => Outcome> = {
     ping: (args) => {
-      const request = args['request'] as PingRequest;
+      const request = parseWireJson(String(args['json'])) as PingRequest;
       // UTF-8 bytes, exactly like Rust's `String::len` in crates/engine/src/ping.rs (not UTF-16 code units).
       const length = request.payload === undefined ? 0 : utf8.encode(request.payload).length;
       if (length > MOCK_MAX_PING_PAYLOAD_BYTES) {

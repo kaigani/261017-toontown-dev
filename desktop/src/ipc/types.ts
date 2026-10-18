@@ -1,48 +1,16 @@
-// Wire types shared with the Rust host (crates/engine, desktop/src-tauri). Hand-written in M0; from M1 they are
-// generated from the registry's JSON Schemas so the two sides cannot drift.
+// Wire types shared with the Rust host. The product types are generated from the Rust types (src/ipc/generated/,
+// ADR-0012), so the two sides cannot drift; integers that can exceed 2^53 - 1 are typed `number | bigint`. The M0
+// diagnostics and spike types below are hand-written (not product API).
 
-/** Error envelope of every failed host call: stable dotted code (11 §10), message, structured details. */
-export interface ErrorInfo {
-  code: string;
-  message: string;
-  details?: unknown;
-}
-
-export interface PingRequest {
-  seq: number;
-  payload?: string;
-}
-
-export interface PingResponse {
-  seq: number;
-  payload: string | null;
-  engineUptimeNs: number;
-  handlerNs: number;
-}
-
-export type RunMode = 'attached' | 'headless' | 'batchScript';
-
-/**
- * Internal engine bootstrap information (crates/engine `EngineInfo`). Not the spec query `app.info.get` (01 §12),
- * which adds `locale` and `languages[]` and arrives as a registered query in C1.4.
- */
-export interface EngineInfo {
-  name: string;
-  version: string;
-  platform: string;
-  arch: string;
-  formatVersion: string;
-  registryVersion: string;
-  runMode: RunMode;
-}
-
-/** A main-menu command the host forwarded to the front end (`desktop/src/ui-bindings/menu.json`). */
-export interface MenuCommandEvent {
-  command: string;
-  params: Record<string, unknown>;
-  handler: 'frontend' | 'pending';
-  milestone: string | null;
-}
+export type {
+  EngineInfo,
+  ErrorInfo,
+  MenuCommandEvent,
+  MenuHandler,
+  PingRequest,
+  PingResponse,
+  RunMode,
+} from './generated/wire';
 
 /** M0 diagnostics: what `toontown --ipc-bench` asks the front end to measure. */
 export interface BenchPlan {
