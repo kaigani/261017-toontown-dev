@@ -1,0 +1,51 @@
+# vello_cpu 0.3.0 dependency audit (features std, u8_pipeline, multithreading), generated 2026-10-18 from cargo tree --locked and the registry sources
+# crate version | licence | lines containing 'unsafe' (excluding // comments) | Rust lines in src/
+arrayvec v0.7.8 | MIT OR Apache-2.0 | 52 | 2413
+bytemuck v1.25.2 | Zlib OR Apache-2.0 OR MIT | 323 | 4162
+bytemuck_derive v1.12.1 | Zlib OR Apache-2.0 OR MIT | 7 | 2369
+cfg-if v1.0.5 | MIT OR Apache-2.0 | 0 | 218
+color v0.3.3 | Apache-2.0 OR MIT | 25 | 7861
+crossbeam-channel v0.5.17 | MIT OR Apache-2.0 | 65 | 7844
+crossbeam-deque v0.8.8 | MIT OR Apache-2.0 | 41 | 2367
+crossbeam-epoch v0.9.21 | MIT OR Apache-2.0 | 128 | 4945
+crossbeam-utils v0.8.23 | MIT OR Apache-2.0 | 76 | 4168
+either v1.19.0 | MIT OR Apache-2.0 | 2 | 2477
+euclid v0.22.14 | MIT OR Apache-2.0 | 44 | 18480
+fearless_simd v0.7.0 | Apache-2.0 OR MIT | 111 | 84164
+foldhash v0.2.0 | Zlib | 10 | 1128
+guillotiere v0.7.0 | MIT/Apache-2.0 | 0 | 2340
+hashbrown v0.17.1 | MIT OR Apache-2.0 | 450 | 23720
+kurbo v0.13.1 | Apache-2.0 OR MIT | 0 | 18310
+linebender_resource_handle v0.1.1 | Apache-2.0 OR MIT | 0 | 252
+log v0.4.34 | MIT OR Apache-2.0 | 6 | 5754
+num-traits v0.2.19 | MIT OR Apache-2.0 | 1 | 7815
+ordered-channel v1.2.0 | MIT OR Apache-2.0 | 0 | 293
+peniko v0.6.1 | Apache-2.0 OR MIT | 36 | 1977
+polycool v0.4.0 | MIT OR Apache-2.0 | 0 | 1353
+proc-macro2 v1.0.107 | MIT OR Apache-2.0 | 6 | 6029
+quote v1.0.47 | MIT OR Apache-2.0 | 0 | 2702
+rayon v1.12.0 | MIT OR Apache-2.0 | 67 | 27141
+rayon-core v1.13.0 | MIT OR Apache-2.0 | 86 | 7069
+smallvec v1.16.3 | MIT OR Apache-2.0 | 80 | 4149
+syn v3.0.9 | MIT OR Apache-2.0 | 82 | 51787
+thiserror v2.0.21 | MIT OR Apache-2.0 | 0 | 466
+thiserror-impl v2.0.21 | MIT OR Apache-2.0 | 1 | 2468
+thread_local v1.1.10 | MIT OR Apache-2.0 | 27 | 1191
+unicode-ident v1.0.27 | (MIT OR Apache-2.0) AND Unicode-3.0 | 2 | 976
+vello_common v0.3.0 | Apache-2.0 OR MIT | 0 | 15763
+vello_cpu v0.3.0 | Apache-2.0 OR MIT | 0 | 13954
+
+# libm-backed f32/f64 methods used by vello_common + vello_cpu (std builds call the platform libm):
+powf: 14 call sites
+powi: 5 call sites
+exp: 1 call sites
+hypot: 3 call sites
+
+# in-house rasteriser: crates/render/examples/c03_raster/ttraster.rs, 487 lines, 0 unsafe, no dependencies; libm calls: 0
+
+# libm-backed methods in kurbo 0.13.1 / peniko 0.6.1 / color 0.3.3 (call sites; not all on the paths the fixtures use):
+kurbo-0.13.1: sin=1 cos=2 tan=3 atan2=14 acos=1 powf=5 powi=100 ln=4 log2=2 hypot=43 cbrt=4 sin_cos=11
+peniko-0.6.1:
+color-0.3.3: atan2=1 powf=10 hypot=1 cbrt=2 sin_cos=1
+
+# vello_common flatten_simd.rs:671 computes the subdivision count as err_div.powf(1/6).ceil(): a 1-ulp libm difference at an integer boundary would change the geometry. Not observed on Windows/macOS/Linux CI (identical hashes), but a latent risk. vello_cpu has a 'libm' feature; whether it replaces std's float functions in std builds was not verified.

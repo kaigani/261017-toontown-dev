@@ -14,10 +14,12 @@ The log is validated before anything is printed; malformed or missing evidence e
 Estimators (also printed):
 * transfer = performance.now() around one binary `canvasScene` invoke (request, host encode, IPC, envelope check);
   throughput = total bytes / total transfer time;
-* display refresh = median rAF interval of the idle phase (nothing drawn);
+* display refresh = mean rAF interval of the idle phase (nothing drawn), (last - first) / (n - 1); the median would
+  be biased by WebKit's 1 ms timestamp rounding (a 60 Hz median reads 17 ms);
 * frame interval = difference of consecutive rAF timestamps during pan/zoom; fps = (n - 1) * 1000 / (last - first);
 * long frame = interval > 1.5 x display refresh;
-* 60 fps target met when fps >= 57 on a display of >= 59 Hz;
+* 60 fps target met when fps >= 57 (0.95 x 60); the display rate is printed next to it (a display below 60 Hz
+  cannot meet it);
 * CPU frame = JS update + record + submit; GPU frame (WebGPU) = submit to `onSubmittedWorkDone` (includes queueing);
 * IPC-per-frame ceiling = 1000 / (p50 transfer ms): the frame rate if the full render list had to cross IPC every
   frame (no decode or draw included).
@@ -157,11 +159,11 @@ def analyse_run(run):
     tr = run["transfers"]
     tms = [s["invokeMs"] for s in tr]
     total_bytes = sum(s["bytes"] for s in tr)
-    idle = stats(intervals(run["idle"]))
+    it = run["idle"]
     ts = [f["t"] for f in run["frames"]]
     iv = intervals(ts)
     fps = (len(ts) - 1) * 1000 / (ts[-1] - ts[0])
-    refresh = idle["p50"] if idle else None
+    refresh = (it[-1] - it[0]) / (len(it) - 1) if len(it) > 1 and it[-1] > it[0] else None
     gpu = [f["gpuMs"] for f in run["frames"] if f.get("gpuMs") is not None]
     transfer = stats(tms)
     info = run.get("renderer") or {}
@@ -186,7 +188,7 @@ def analyse_run(run):
         "longFrames": sum(1 for d in iv if refresh and d > 1.5 * refresh),
         "cpuMs": stats([f["cpuMs"] for f in run["frames"]]),
         "gpuMs": stats(gpu),
-        "meetsTarget": refresh is not None and fps >= 57 and 1000 / refresh >= 59,
+        "meetsTarget": fps >= 57,
     }
 
 

@@ -103,7 +103,7 @@ function compile(gl: WebGL2RenderingContext, vs: string, fs: string): WebGLProgr
   return program;
 }
 
-export function createWebGL2(canvas: HTMLCanvasElement): Renderer | null {
+export function createWebGL2(canvas: HTMLCanvasElement): Renderer {
   const gl = canvas.getContext('webgl2', {
     antialias: true,
     alpha: false,
@@ -111,7 +111,7 @@ export function createWebGL2(canvas: HTMLCanvasElement): Renderer | null {
     powerPreference: 'high-performance',
     preserveDrawingBuffer: false,
   });
-  if (!gl) return null;
+  if (!gl) throw new Error('webgl2 unavailable: canvas.getContext("webgl2") returned null');
   const strokeProgram = compile(gl, STROKE_VS, STROKE_FS);
   const fillProgram = compile(gl, FILL_VS, FILL_FS);
   const debug = gl.getExtension('WEBGL_debug_renderer_info');

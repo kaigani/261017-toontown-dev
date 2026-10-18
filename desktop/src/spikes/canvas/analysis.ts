@@ -4,9 +4,11 @@
 // Estimators (stated in the log and the readout):
 // * frame interval = difference of consecutive requestAnimationFrame timestamps during the 10 s pan/zoom (the
 //   presentation cadence the page achieved); fps = (frames − 1) · 1000 / (last − first);
-// * display refresh = median rAF interval during the 1 s idle phase before the run (nothing drawn);
+// * display refresh = mean rAF interval during the 1 s idle phase before the run (nothing drawn): (last − first) /
+//   (n − 1). Not the median: WebKit rounds timestamps to 1 ms, so a 60 Hz median reads 17 ms;
 // * long frame = interval > 1.5 × display refresh (a missed vsync);
-// * target "60 fps" is met when fps ≥ 57 (0.95 × 60) on a display of ≥ 59 Hz;
+// * target "60 fps" is met when fps ≥ 57 (0.95 × 60); the display rate is reported next to it (a display below
+//   60 Hz cannot meet it);
 // * CPU frame time = JS time to update uniforms/groups and record + submit; GPU time (WebGPU only) = submission to
 //   `onSubmittedWorkDone`;
 // * transfer time = performance.now() around one `canvasScene` invoke (request, host encode, IPC, envelope check).
@@ -77,7 +79,8 @@ export function summarizeRun(run: {
   const transferMs = stats(run.transfers.map((s) => s.invokeMs));
   const bytes = run.transfers.reduce((s, x) => s + x.bytes, 0);
   const ms = run.transfers.reduce((s, x) => s + x.invokeMs, 0);
-  const idle = stats(intervals(run.idle));
+  const idleFirst = run.idle[0];
+  const idleLast = run.idle[run.idle.length - 1];
   const ts = run.frames.map((f) => f.t);
   const iv = intervals(ts);
   const first = ts[0];
@@ -86,7 +89,10 @@ export function summarizeRun(run: {
     first !== undefined && last !== undefined && last > first
       ? ((ts.length - 1) * 1000) / (last - first)
       : null;
-  const refresh = idle?.p50 ?? null;
+  const refresh =
+    idleFirst !== undefined && idleLast !== undefined && run.idle.length > 1 && idleLast > idleFirst
+      ? (idleLast - idleFirst) / (run.idle.length - 1)
+      : null;
   const gpu = run.frames.map((f) => f.gpuMs).filter((v): v is number => v !== null);
   return {
     transferMs,
@@ -99,6 +105,6 @@ export function summarizeRun(run: {
     longFrames: refresh === null ? 0 : iv.filter((d) => d > 1.5 * refresh).length,
     cpuMs: stats(run.frames.map((f) => f.cpuMs)),
     gpuMs: stats(gpu),
-    meetsTarget: fps === null || refresh === null ? null : fps >= 57 && 1000 / refresh >= 59,
+    meetsTarget: fps === null ? null : fps >= 57,
   };
 }

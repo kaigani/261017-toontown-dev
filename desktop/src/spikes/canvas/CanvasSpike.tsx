@@ -139,12 +139,9 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
     return { canvas, geometry };
   }, []);
 
-  const makeRenderer = useCallback(
-    async (backend: Backend, canvas: HTMLCanvasElement): Promise<Renderer | null> => {
-      return backend === 'webgpu' ? createWebGPU(canvas) : createWebGL2(canvas);
-    },
-    [],
-  );
+  const makeRenderer = useCallback(async (backend: Backend, canvas: HTMLCanvasElement): Promise<Renderer> => {
+    return backend === 'webgpu' ? createWebGPU(canvas) : createWebGL2(canvas);
+  }, []);
 
   const runScene = useCallback(
     async (backend: Backend, scene: CanvasSceneKind): Promise<void> => {
@@ -171,7 +168,6 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
         if (!surface) throw new Error('no canvas host');
         run.canvas = surface.geometry;
         renderer = await makeRenderer(backend, surface.canvas);
-        if (!renderer) throw new Error(`${backend} is not available in this webview`);
         run.renderer = renderer.info;
 
         setStatus(`${backend} ${scene}: transferring the render list ${String(TRANSFERS)}×…`);
@@ -269,7 +265,6 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
       try {
         if (!surface) throw new Error('no canvas host');
         renderer = await makeRenderer(backend, surface.canvas);
-        if (!renderer) throw new Error(`${backend} is not available`);
         setStatus(`${backend}: pixel-frame transfer ${String(run.width)}×${String(run.height)}…`);
         for (let i = 0; i < PIXEL_TRANSFERS; i++) {
           const t0 = performance.now();

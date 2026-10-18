@@ -1,0 +1,277 @@
+## Hash identity against the committed hashes
+
+| rasteriser | scenes | windows x86_64 (Avx2) | windows x86_64 (Avx2) | macos aarch64 (Neon) | linux x86_64 (Avx2) | windows x86_64 (Avx2) | macos aarch64 (Neon) | linux x86_64 (Avx2) |
+|---|---|---|---|---|---|---|---|---|
+| ttraster | 23 | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical |
+| vello_cpu_fallback | 23 | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical |
+| vello_cpu_mt3 | 23 | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical |
+| vello_cpu_simd | 23 | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical | 23/23 identical |
+
+## Median render time per scene (ms; recomputed from msAll)
+
+
+### windows x86_64 - reviews/evidence/M0-C0.3/raster-report-local-windows.json (repeat 3)
+
+| scene | ttraster | vello_cpu_fallback | vello_cpu_mt3 | vello_cpu_simd |
+|---|---|---|---|---|
+| cubic_blobs | 0.124 | 0.041 | 0.345 | 0.067 |
+| thin_strokes | 0.084 | 0.062 | 0.202 | 0.045 |
+| aa_edge_angles | 0.267 | 0.134 | 0.206 | 0.105 |
+| translucent_overlap | 0.112 | 0.038 | 0.106 | 0.042 |
+| alpha_stack | 0.324 | 0.072 | 0.150 | 0.059 |
+| linear_gradient | 0.254 | 0.048 | 0.116 | 0.031 |
+| radial_gradient | 0.258 | 0.052 | 0.119 | 0.038 |
+| gradient_transformed | 0.155 | 0.040 | 0.118 | 0.031 |
+| clip_circle | 0.131 | 0.092 | 0.147 | 0.064 |
+| clip_nested | 0.159 | 0.058 | 0.139 | 0.045 |
+| glyph_nonzero | 0.058 | 0.034 | 0.113 | 0.037 |
+| glyph_evenodd | 0.073 | 0.036 | 0.118 | 0.043 |
+| degenerate | 0.028 | 0.027 | 0.095 | 0.012 |
+| star_nonzero | 0.058 | 0.034 | 0.111 | 0.028 |
+| star_evenodd | 0.084 | 0.035 | 0.105 | 0.029 |
+| coincident_edges | 0.055 | 0.033 | 0.105 | 0.029 |
+| extreme_coordinates | 0.112 | 0.031 | 0.103 | 0.014 |
+| subpixel_translation | 0.079 | 0.044 | 0.125 | 0.037 |
+| non_integer_scales | 0.195 | 0.056 | 0.120 | 0.033 |
+| stroked_curves | 0.171 | 0.048 | 0.124 | 0.034 |
+| many_small_paths | 0.379 | 0.300 | 0.273 | 0.202 |
+| hairline_grid | 0.082 | 0.101 | 0.127 | 0.057 |
+| perf_2000_cubics_512 | 17.093 | 6.522 | 2.733 | 5.010 |
+
+canvas-spike scenes with vello_cpu (host-raster fallback), median ms:
+
+| scene | size | renderer | ms |
+|---|---|---|---|
+| Paths100k | 1280x720 | vello_cpu_simd | 558.7 |
+| Paths100k | 1280x720 | vello_cpu_mt3 | 196.9 |
+| Paths100k | 1920x1080 | vello_cpu_simd | 1152.3 |
+| Paths100k | 1920x1080 | vello_cpu_mt3 | 398.1 |
+| Groups1k | 1280x720 | vello_cpu_simd | 76.7 |
+| Groups1k | 1280x720 | vello_cpu_mt3 | 26.3 |
+| Groups1k | 1920x1080 | vello_cpu_simd | 82.5 |
+| Groups1k | 1920x1080 | vello_cpu_mt3 | 29.9 |
+| Brush10k | 1280x720 | vello_cpu_simd | 74.6 |
+| Brush10k | 1280x720 | vello_cpu_mt3 | 35.0 |
+| Brush10k | 1920x1080 | vello_cpu_simd | 84.7 |
+| Brush10k | 1920x1080 | vello_cpu_mt3 | 33.8 |
+
+### windows x86_64 - reviews/evidence/M0-C0.3/raster-report-ci-Windows-39121780905.json (repeat 3)
+
+| scene | ttraster | vello_cpu_fallback | vello_cpu_mt3 | vello_cpu_simd |
+|---|---|---|---|---|
+| cubic_blobs | 0.210 | 0.141 | 0.539 | 0.095 |
+| thin_strokes | 0.153 | 0.127 | 0.529 | 0.119 |
+| aa_edge_angles | 0.472 | 0.242 | 0.598 | 0.293 |
+| translucent_overlap | 0.202 | 0.061 | 0.425 | 0.057 |
+| alpha_stack | 0.539 | 0.126 | 0.483 | 0.109 |
+| linear_gradient | 0.447 | 0.076 | 0.444 | 0.056 |
+| radial_gradient | 0.468 | 0.125 | 0.448 | 0.066 |
+| gradient_transformed | 0.304 | 0.073 | 0.427 | 0.054 |
+| clip_circle | 0.223 | 0.161 | 0.494 | 0.127 |
+| clip_nested | 0.296 | 0.105 | 0.470 | 0.080 |
+| glyph_nonzero | 0.104 | 0.066 | 0.488 | 0.052 |
+| glyph_evenodd | 0.151 | 0.070 | 0.437 | 0.082 |
+| degenerate | 0.072 | 0.055 | 0.404 | 0.018 |
+| star_nonzero | 0.099 | 0.063 | 0.474 | 0.027 |
+| star_evenodd | 0.155 | 0.075 | 0.445 | 0.048 |
+| coincident_edges | 0.093 | 0.096 | 0.475 | 0.029 |
+| extreme_coordinates | 0.164 | 0.087 | 0.454 | 0.023 |
+| subpixel_translation | 0.140 | 0.126 | 0.450 | 0.040 |
+| non_integer_scales | 0.361 | 0.148 | 0.426 | 0.056 |
+| stroked_curves | 0.310 | 0.133 | 0.463 | 0.047 |
+| many_small_paths | 0.773 | 0.534 | 0.983 | 0.388 |
+| hairline_grid | 0.204 | 0.174 | 0.540 | 0.104 |
+| perf_2000_cubics_512 | 34.213 | 11.175 | 7.505 | 8.769 |
+
+### macos aarch64 - reviews/evidence/M0-C0.3/raster-report-ci-macOS-39121780905.json (repeat 3)
+
+| scene | ttraster | vello_cpu_fallback | vello_cpu_mt3 | vello_cpu_simd |
+|---|---|---|---|---|
+| cubic_blobs | 0.111 | 0.069 | 0.174 | 0.022 |
+| thin_strokes | 0.076 | 0.065 | 0.133 | 0.039 |
+| aa_edge_angles | 0.277 | 0.161 | 0.210 | 0.099 |
+| translucent_overlap | 0.102 | 0.033 | 0.176 | 0.025 |
+| alpha_stack | 0.250 | 0.081 | 0.142 | 0.065 |
+| linear_gradient | 0.195 | 0.030 | 0.094 | 0.026 |
+| radial_gradient | 0.213 | 0.047 | 0.086 | 0.034 |
+| gradient_transformed | 0.127 | 0.040 | 0.070 | 0.024 |
+| clip_circle | 0.108 | 0.147 | 0.117 | 0.079 |
+| clip_nested | 0.174 | 0.069 | 0.121 | 0.042 |
+| glyph_nonzero | 0.052 | 0.028 | 0.073 | 0.033 |
+| glyph_evenodd | 0.059 | 0.031 | 0.099 | 0.029 |
+| degenerate | 0.033 | 0.017 | 0.136 | 0.022 |
+| star_nonzero | 0.048 | 0.027 | 0.136 | 0.021 |
+| star_evenodd | 0.052 | 0.026 | 0.110 | 0.015 |
+| coincident_edges | 0.047 | 0.027 | 0.178 | 0.019 |
+| extreme_coordinates | 0.080 | 0.020 | 0.355 | 0.017 |
+| subpixel_translation | 0.074 | 0.040 | 0.332 | 0.038 |
+| non_integer_scales | 0.272 | 0.058 | 0.158 | 0.126 |
+| stroked_curves | 0.237 | 0.050 | 0.192 | 0.044 |
+| many_small_paths | 0.464 | 0.319 | 0.343 | 0.220 |
+| hairline_grid | 0.085 | 0.115 | 0.147 | 0.071 |
+| perf_2000_cubics_512 | 18.038 | 7.368 | 3.475 | 5.767 |
+
+### linux x86_64 - reviews/evidence/M0-C0.3/raster-report-ci-Linux-39121780905.json (repeat 3)
+
+| scene | ttraster | vello_cpu_fallback | vello_cpu_mt3 | vello_cpu_simd |
+|---|---|---|---|---|
+| cubic_blobs | 0.153 | 0.047 | 0.216 | 0.033 |
+| thin_strokes | 0.084 | 0.074 | 0.217 | 0.049 |
+| aa_edge_angles | 0.436 | 0.209 | 0.343 | 0.142 |
+| translucent_overlap | 0.125 | 0.048 | 0.184 | 0.033 |
+| alpha_stack | 0.507 | 0.103 | 0.240 | 0.072 |
+| linear_gradient | 0.440 | 0.049 | 0.184 | 0.030 |
+| radial_gradient | 0.419 | 0.069 | 0.184 | 0.040 |
+| gradient_transformed | 0.270 | 0.048 | 0.162 | 0.028 |
+| clip_circle | 0.170 | 0.168 | 0.260 | 0.087 |
+| clip_nested | 0.240 | 0.081 | 0.194 | 0.052 |
+| glyph_nonzero | 0.066 | 0.043 | 0.184 | 0.024 |
+| glyph_evenodd | 0.098 | 0.057 | 0.181 | 0.023 |
+| degenerate | 0.042 | 0.030 | 0.169 | 0.015 |
+| star_nonzero | 0.072 | 0.043 | 0.181 | 0.023 |
+| star_evenodd | 0.133 | 0.053 | 0.166 | 0.022 |
+| coincident_edges | 0.061 | 0.044 | 0.167 | 0.023 |
+| extreme_coordinates | 0.144 | 0.031 | 0.164 | 0.020 |
+| subpixel_translation | 0.103 | 0.057 | 0.177 | 0.044 |
+| non_integer_scales | 0.236 | 0.078 | 0.190 | 0.053 |
+| stroked_curves | 0.255 | 0.060 | 0.181 | 0.041 |
+| many_small_paths | 0.534 | 0.411 | 0.457 | 0.298 |
+| hairline_grid | 0.155 | 0.148 | 0.229 | 0.096 |
+| perf_2000_cubics_512 | 26.420 | 9.480 | 4.743 | 6.741 |
+
+### windows x86_64 - reviews/evidence/M0-C0.3/raster-canvas-bench-ci-Windows-39121780905.json (repeat 1)
+
+| scene | ttraster | vello_cpu_fallback | vello_cpu_mt3 | vello_cpu_simd |
+|---|---|---|---|---|
+| cubic_blobs | 0.241 | 0.205 | 0.580 | 0.122 |
+| thin_strokes | 0.134 | 0.140 | 0.472 | 0.114 |
+| aa_edge_angles | 0.563 | 0.336 | 0.684 | 0.259 |
+| translucent_overlap | 0.215 | 0.070 | 0.410 | 0.097 |
+| alpha_stack | 0.567 | 0.160 | 0.417 | 0.148 |
+| linear_gradient | 0.444 | 0.082 | 0.524 | 0.106 |
+| radial_gradient | 0.473 | 0.094 | 0.422 | 0.119 |
+| gradient_transformed | 0.266 | 0.087 | 0.419 | 0.090 |
+| clip_circle | 0.260 | 0.185 | 0.581 | 0.241 |
+| clip_nested | 0.280 | 0.128 | 0.491 | 0.134 |
+| glyph_nonzero | 0.111 | 0.079 | 0.407 | 0.097 |
+| glyph_evenodd | 0.164 | 0.083 | 0.411 | 0.091 |
+| degenerate | 0.075 | 0.061 | 0.365 | 0.094 |
+| star_nonzero | 0.111 | 0.074 | 0.415 | 0.086 |
+| star_evenodd | 0.161 | 0.076 | 0.462 | 0.087 |
+| coincident_edges | 0.099 | 0.077 | 0.423 | 0.092 |
+| extreme_coordinates | 0.193 | 0.079 | 0.393 | 0.145 |
+| subpixel_translation | 0.171 | 0.105 | 0.443 | 0.056 |
+| non_integer_scales | 0.409 | 0.134 | 0.361 | 0.084 |
+| stroked_curves | 0.357 | 0.110 | 0.432 | 0.060 |
+| many_small_paths | 0.725 | 0.606 | 0.750 | 0.429 |
+| hairline_grid | 0.201 | 0.237 | 0.476 | 0.199 |
+| perf_2000_cubics_512 | 33.424 | 11.094 | 5.260 | 8.798 |
+
+canvas-spike scenes with vello_cpu (host-raster fallback), median ms:
+
+| scene | size | renderer | ms |
+|---|---|---|---|
+| Paths100k | 1280x720 | vello_cpu_simd | 1099.9 |
+| Paths100k | 1280x720 | vello_cpu_mt3 | 501.2 |
+| Paths100k | 1920x1080 | vello_cpu_simd | 1199.9 |
+| Paths100k | 1920x1080 | vello_cpu_mt3 | 538.1 |
+| Groups1k | 1280x720 | vello_cpu_simd | 79.3 |
+| Groups1k | 1280x720 | vello_cpu_mt3 | 36.1 |
+| Groups1k | 1920x1080 | vello_cpu_simd | 86.0 |
+| Groups1k | 1920x1080 | vello_cpu_mt3 | 39.9 |
+| Brush10k | 1280x720 | vello_cpu_simd | 80.4 |
+| Brush10k | 1280x720 | vello_cpu_mt3 | 50.3 |
+| Brush10k | 1920x1080 | vello_cpu_simd | 91.7 |
+| Brush10k | 1920x1080 | vello_cpu_mt3 | 48.3 |
+
+### macos aarch64 - reviews/evidence/M0-C0.3/raster-canvas-bench-ci-macOS-39121780905.json (repeat 1)
+
+| scene | ttraster | vello_cpu_fallback | vello_cpu_mt3 | vello_cpu_simd |
+|---|---|---|---|---|
+| cubic_blobs | 0.105 | 1.026 | 0.268 | 0.186 |
+| thin_strokes | 0.067 | 0.099 | 0.109 | 0.052 |
+| aa_edge_angles | 0.297 | 0.215 | 0.187 | 0.130 |
+| translucent_overlap | 0.114 | 0.042 | 0.104 | 0.027 |
+| alpha_stack | 0.257 | 0.114 | 0.107 | 0.067 |
+| linear_gradient | 0.212 | 0.163 | 0.109 | 0.024 |
+| radial_gradient | 0.219 | 0.049 | 0.097 | 0.031 |
+| gradient_transformed | 0.146 | 0.038 | 0.170 | 0.039 |
+| clip_circle | 0.124 | 0.105 | 0.130 | 0.083 |
+| clip_nested | 0.162 | 0.061 | 0.100 | 0.061 |
+| glyph_nonzero | 0.067 | 0.032 | 0.084 | 0.038 |
+| glyph_evenodd | 0.083 | 0.029 | 0.078 | 0.030 |
+| degenerate | 0.035 | 0.020 | 0.072 | 0.015 |
+| star_nonzero | 0.060 | 0.033 | 0.093 | 0.035 |
+| star_evenodd | 0.053 | 0.034 | 0.107 | 0.018 |
+| coincident_edges | 0.056 | 0.030 | 0.075 | 0.040 |
+| extreme_coordinates | 0.088 | 0.030 | 0.080 | 0.049 |
+| subpixel_translation | 0.088 | 0.048 | 0.091 | 0.031 |
+| non_integer_scales | 0.288 | 0.069 | 0.099 | 0.054 |
+| stroked_curves | 0.268 | 0.075 | 0.086 | 0.036 |
+| many_small_paths | 0.513 | 0.342 | 0.236 | 0.252 |
+| hairline_grid | 0.101 | 0.153 | 0.136 | 0.086 |
+| perf_2000_cubics_512 | 18.088 | 8.735 | 2.551 | 4.359 |
+
+canvas-spike scenes with vello_cpu (host-raster fallback), median ms:
+
+| scene | size | renderer | ms |
+|---|---|---|---|
+| Paths100k | 1280x720 | vello_cpu_simd | 885.6 |
+| Paths100k | 1280x720 | vello_cpu_mt3 | 462.8 |
+| Paths100k | 1920x1080 | vello_cpu_simd | 933.3 |
+| Paths100k | 1920x1080 | vello_cpu_mt3 | 543.8 |
+| Groups1k | 1280x720 | vello_cpu_simd | 85.1 |
+| Groups1k | 1280x720 | vello_cpu_mt3 | 26.2 |
+| Groups1k | 1920x1080 | vello_cpu_simd | 86.5 |
+| Groups1k | 1920x1080 | vello_cpu_mt3 | 31.5 |
+| Brush10k | 1280x720 | vello_cpu_simd | 73.5 |
+| Brush10k | 1280x720 | vello_cpu_mt3 | 32.6 |
+| Brush10k | 1920x1080 | vello_cpu_simd | 84.1 |
+| Brush10k | 1920x1080 | vello_cpu_mt3 | 26.4 |
+
+### linux x86_64 - reviews/evidence/M0-C0.3/raster-canvas-bench-ci-Linux-39121780905.json (repeat 1)
+
+| scene | ttraster | vello_cpu_fallback | vello_cpu_mt3 | vello_cpu_simd |
+|---|---|---|---|---|
+| cubic_blobs | 0.217 | 0.119 | 0.740 | 0.051 |
+| thin_strokes | 0.131 | 0.102 | 0.208 | 0.059 |
+| aa_edge_angles | 0.425 | 0.218 | 0.360 | 0.156 |
+| translucent_overlap | 0.129 | 0.055 | 0.160 | 0.040 |
+| alpha_stack | 0.501 | 0.110 | 0.238 | 0.079 |
+| linear_gradient | 0.412 | 0.057 | 0.163 | 0.037 |
+| radial_gradient | 0.403 | 0.090 | 0.183 | 0.047 |
+| gradient_transformed | 0.260 | 0.069 | 0.168 | 0.035 |
+| clip_circle | 0.176 | 0.135 | 0.261 | 0.098 |
+| clip_nested | 0.267 | 0.083 | 0.216 | 0.061 |
+| glyph_nonzero | 0.090 | 0.044 | 0.147 | 0.047 |
+| glyph_evenodd | 0.096 | 0.051 | 0.143 | 0.030 |
+| degenerate | 0.054 | 0.028 | 0.138 | 0.021 |
+| star_nonzero | 0.107 | 0.040 | 0.144 | 0.027 |
+| star_evenodd | 0.113 | 0.048 | 0.141 | 0.027 |
+| coincident_edges | 0.071 | 0.042 | 0.173 | 0.044 |
+| extreme_coordinates | 0.136 | 0.039 | 0.138 | 0.026 |
+| subpixel_translation | 0.091 | 0.062 | 0.181 | 0.059 |
+| non_integer_scales | 0.245 | 0.092 | 0.200 | 0.063 |
+| stroked_curves | 0.254 | 0.074 | 0.222 | 0.054 |
+| many_small_paths | 0.554 | 0.437 | 0.428 | 0.325 |
+| hairline_grid | 0.180 | 0.156 | 0.310 | 0.105 |
+| perf_2000_cubics_512 | 26.673 | 10.589 | 4.844 | 7.515 |
+
+canvas-spike scenes with vello_cpu (host-raster fallback), median ms:
+
+| scene | size | renderer | ms |
+|---|---|---|---|
+| Paths100k | 1280x720 | vello_cpu_simd | 1076.5 |
+| Paths100k | 1280x720 | vello_cpu_mt3 | 474.3 |
+| Paths100k | 1920x1080 | vello_cpu_simd | 1167.5 |
+| Paths100k | 1920x1080 | vello_cpu_mt3 | 514.0 |
+| Groups1k | 1280x720 | vello_cpu_simd | 75.6 |
+| Groups1k | 1280x720 | vello_cpu_mt3 | 33.6 |
+| Groups1k | 1920x1080 | vello_cpu_simd | 82.2 |
+| Groups1k | 1920x1080 | vello_cpu_mt3 | 49.9 |
+| Brush10k | 1280x720 | vello_cpu_simd | 75.1 |
+| Brush10k | 1280x720 | vello_cpu_mt3 | 37.6 |
+| Brush10k | 1920x1080 | vello_cpu_simd | 85.6 |
+| Brush10k | 1920x1080 | vello_cpu_mt3 | 39.4 |
+
+0 hash differences

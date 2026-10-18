@@ -81,11 +81,12 @@ export function webgpuApi(): GPU | null {
   return (navigator as unknown as MaybeGpuNavigator).gpu ?? null;
 }
 
-export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer | null> {
+/** Creates the WebGPU back end; throws with the step that failed (no API, no adapter, no context). */
+export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer> {
   const gpu = webgpuApi();
-  if (!gpu) return null;
+  if (!gpu) throw new Error('webgpu unavailable: navigator.gpu is absent');
   const adapter = await gpu.requestAdapter({ powerPreference: 'high-performance' });
-  if (!adapter) return null;
+  if (!adapter) throw new Error('webgpu unavailable: navigator.gpu.requestAdapter() returned null');
   const device = await adapter.requestDevice({
     requiredLimits: {
       maxBufferSize: adapter.limits.maxBufferSize,
@@ -93,7 +94,7 @@ export async function createWebGPU(canvas: HTMLCanvasElement): Promise<Renderer 
     },
   });
   const context = canvas.getContext('webgpu');
-  if (!context) return null;
+  if (!context) throw new Error('webgpu unavailable: canvas.getContext("webgpu") returned null');
   const format = gpu.getPreferredCanvasFormat();
   context.configure({ device, format, alphaMode: 'opaque' });
   const adapterInfo = adapter.info;

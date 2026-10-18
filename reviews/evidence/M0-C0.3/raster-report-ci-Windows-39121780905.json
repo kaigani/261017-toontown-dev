@@ -1,0 +1,1624 @@
+{
+  "arch": "x86_64",
+  "canvasBench": null,
+  "checkMismatches": [],
+  "detectedSimdLevel": "Avx2(Avx2 { _private: () })",
+  "format": "tt-c03-raster-report/1",
+  "hashes": {
+    "format": "tt-c03-raster-hashes/1",
+    "renderers": {
+      "ttraster": {
+        "aa_edge_angles": {
+          "height": 128,
+          "pixels": "a48f7652e86697bec854bb760673a6d06f3ea9632450c04fd6ea86e75c98f29b",
+          "png": "42a1497838725099b6fb9daae4f466cb5c8a67b5982ab162d2f3da96c1236e89",
+          "width": 128
+        },
+        "alpha_stack": {
+          "height": 128,
+          "pixels": "94c10d57e7448d248f5b4f3b2b8146399cf06970a7fa8ff9eb194cedbb772ca8",
+          "png": "ce3e80af98ac020958c5d082cc268bb3e299f44189e01a5cf1613afd66b918e3",
+          "width": 128
+        },
+        "clip_circle": {
+          "height": 128,
+          "pixels": "45aa0754d1d1b162b7e4bdca3f2e76ebe57c8184bf6d857dfa604bd5e068dc57",
+          "png": "3a94a4fc306ab4c6e816e656b5d04518047e6d9672346f9f9ddc2da203e536e0",
+          "width": 128
+        },
+        "clip_nested": {
+          "height": 128,
+          "pixels": "446e1603dc8035e243decfdf8b573d580405ef08cae799e67eaa9c004afcff43",
+          "png": "f33e3ac5e4dca0d8b4e46ddea60a7610d4c1ec3ad0095ca8d687a9568951b50f",
+          "width": 128
+        },
+        "coincident_edges": {
+          "height": 128,
+          "pixels": "7652d0317f4ce4c2172b0d589ffbac79726e603981338320767b654274921d6a",
+          "png": "49c28229ddbf5d5a492fbb4965b32880b89813c808e137b9396433852355de84",
+          "width": 128
+        },
+        "cubic_blobs": {
+          "height": 128,
+          "pixels": "13939f95eff3a18432b9982e2e6395007ddd3ae23c5afbbfb4b11b86885c82a1",
+          "png": "72d6b8222ad3545d05f3b7a08030a46849d01e8e6383d1f8fda3a5894fbe9243",
+          "width": 128
+        },
+        "degenerate": {
+          "height": 128,
+          "pixels": "38b0efed8f743b131aa91d7c357a9ff1ddb4359d8b3efff42dc29fcac045a715",
+          "png": "08eb8697da3a6e50e35a06bbafec3552e3e18e9384addb095e3076f14e5b08f5",
+          "width": 128
+        },
+        "extreme_coordinates": {
+          "height": 128,
+          "pixels": "c51bfe1a55fcf291faad373ffbe1df071d60674d6eaac8e55f4a8423a2728fdc",
+          "png": "fadbb90e4032c420cc1b25dd44d7c99f1552ea061a6e22cccf82e141b6281dd6",
+          "width": 128
+        },
+        "glyph_evenodd": {
+          "height": 128,
+          "pixels": "4e535259f1fd23488d6200dd7a201219ffb99cb1d867309aff97890af5aac06f",
+          "png": "5e9194c0225ad5d48738c2bbbadb5cfd12a0fc4995097c8912f761d790f70540",
+          "width": 128
+        },
+        "glyph_nonzero": {
+          "height": 128,
+          "pixels": "4e535259f1fd23488d6200dd7a201219ffb99cb1d867309aff97890af5aac06f",
+          "png": "5e9194c0225ad5d48738c2bbbadb5cfd12a0fc4995097c8912f761d790f70540",
+          "width": 128
+        },
+        "gradient_transformed": {
+          "height": 128,
+          "pixels": "196afb5072869d3e9785d52dbc787885216755445d08a537176343e3dd7fb308",
+          "png": "23032bfb62fbe054353859fe4684559ba9f3a73ac0ce0c94437579e83f31cff3",
+          "width": 128
+        },
+        "hairline_grid": {
+          "height": 128,
+          "pixels": "c7583240a422fa8c90b5e88a2b0a1aad1ee43e553a575d008e259e54f60097c1",
+          "png": "68fb2a6d34e0238c820cb16f3813605b37fe3b42aafae51d732f2e9d115bc534",
+          "width": 128
+        },
+        "linear_gradient": {
+          "height": 128,
+          "pixels": "ba84c16f33c710eb10b9269629bf35327130ee0cbc82c625f7733b06c8643cfc",
+          "png": "4d752ad1c67a15c66adbebf3540db428fa58563b1c24d0ab83e635f8c09603c0",
+          "width": 128
+        },
+        "many_small_paths": {
+          "height": 128,
+          "pixels": "10839964aa8da78c2162668fc601a9b1b2c4d34d50c2f888250834841fd2b8cd",
+          "png": "13f308fe544fd5fa97906ea6fd3fae0cd9fcca5093b8f98cd9afce0ab5b89173",
+          "width": 128
+        },
+        "non_integer_scales": {
+          "height": 128,
+          "pixels": "cd10b35d939c554b420aff9d0dabbd82f0d153b10b8cd18c5ff7b494f66977ef",
+          "png": "d9f38254df306e74e8aaf6437782ec6b9ca23d646472c2eb2f08c35fe256aa77",
+          "width": 128
+        },
+        "perf_2000_cubics_512": {
+          "height": 512,
+          "pixels": "9b9d79e941e255fd9414ef8a248ce82c3454e5d2b0bf0c2ff43b3abb1059be8e",
+          "png": "00fa41af7a8a2f50d4705cb15250a8b21e8962da7d1178421fbe53382a93c648",
+          "width": 512
+        },
+        "radial_gradient": {
+          "height": 128,
+          "pixels": "eb282dc1486a7ef4229788759420a15246b9a12c750c2a4779763264e620cb3c",
+          "png": "3f554759d4b34cb383e075f0c82a0a064d4697c17f0b11794a87b9616bce1061",
+          "width": 128
+        },
+        "star_evenodd": {
+          "height": 128,
+          "pixels": "4dff7390a532043163d3b44d8964d1a469c425a5275b8e8cab113b7bb587db8a",
+          "png": "4c72afc30206430c37302cfd7210d2dc3b38d2b1f0de0e157718831c7c62f959",
+          "width": 128
+        },
+        "star_nonzero": {
+          "height": 128,
+          "pixels": "0fececf5846ee2cd19cca48b30f2e9caea343d720d31a4aaedb7c56d161cb065",
+          "png": "2c951992379e5e7da4a37527f3a1a74aefe1df0f0f542fb359224b5acaf92ed2",
+          "width": 128
+        },
+        "stroked_curves": {
+          "height": 128,
+          "pixels": "37e4c23d131c18b7de33ee8f3130a77ea4e420f76000e5b22651d95456647ae1",
+          "png": "55788ca612e2c4ffd84da0b1f0fc4fa3305a96946761a8a00e4231d53f14e5d5",
+          "width": 128
+        },
+        "subpixel_translation": {
+          "height": 128,
+          "pixels": "2b201b57639809f49390bd2c0ea6df15bf3084fbaa730b60e9f154047de6770f",
+          "png": "d1904468507a32dd6446469e9ccd6a791ffe9f61e72ed47beca92f49e7034613",
+          "width": 128
+        },
+        "thin_strokes": {
+          "height": 128,
+          "pixels": "ab7856de8dba4df9951fbcf3b5cbd8399766b70a12b2d3793e24b0b4da4e0621",
+          "png": "fd78de7f51b842a7f90ce314a02e86b5c85b102ffc67c7a0c30d7e34b23b5047",
+          "width": 128
+        },
+        "translucent_overlap": {
+          "height": 128,
+          "pixels": "7be6488b3c7f495ba34700ec64ff4a5d123ef1ade4eecce6d64dce4f575fce27",
+          "png": "41f3e96f8ee0c76911ddee3e89f5971e963cc868f1b57739de2c97ca90700d40",
+          "width": 128
+        }
+      },
+      "vello_cpu_fallback": {
+        "aa_edge_angles": {
+          "height": 128,
+          "pixels": "925328c20aa35e2d696e5f1ea711285f3a3a3d6d4641ce190e1fb5cc17582791",
+          "png": "94990a8c1de5643017b485a932f918207b713eddc4be8feeef1e36e2a8966a57",
+          "width": 128
+        },
+        "alpha_stack": {
+          "height": 128,
+          "pixels": "3111d9aed1d93c43d60288d2b7d9785f38085d47276fbc269fb6a825b675c6aa",
+          "png": "c622ea51674ad43d329b2513405c4c703d2a7d64a0a448ecbe4672342fb0341a",
+          "width": 128
+        },
+        "clip_circle": {
+          "height": 128,
+          "pixels": "30822ea401f8a3865e8be6cfec55f6805ba4b79c530349c3757d8ba504bfd88b",
+          "png": "cb019da8f1af286bb3cd45741f45d807df816f95be3540470ec66651b8911356",
+          "width": 128
+        },
+        "clip_nested": {
+          "height": 128,
+          "pixels": "ca559898c1b50077ea8d904e530751072519a6429229176f2e357c253aea875c",
+          "png": "405b48b69e408afc127dbd9d63b5eacaf4e11b41a26e8e2d3364120b5b83f2db",
+          "width": 128
+        },
+        "coincident_edges": {
+          "height": 128,
+          "pixels": "a738edc7e5bb0d3f19d93a18779922df23ceeeaa6c42cf6eaf231d15b79da9d5",
+          "png": "46db05b7c01db7182f5427e43b58137ec2cc9c8a46cfc65793d04c8c8039ed12",
+          "width": 128
+        },
+        "cubic_blobs": {
+          "height": 128,
+          "pixels": "a8ae84ff577d33038b3c15b78777f11dc9b909d9e16bb8c4639c9bc397c179de",
+          "png": "1d17210cf76fc468594438c47e530d6a6f9187871420ece1a5e121b4b43f0d85",
+          "width": 128
+        },
+        "degenerate": {
+          "height": 128,
+          "pixels": "38b0efed8f743b131aa91d7c357a9ff1ddb4359d8b3efff42dc29fcac045a715",
+          "png": "08eb8697da3a6e50e35a06bbafec3552e3e18e9384addb095e3076f14e5b08f5",
+          "width": 128
+        },
+        "extreme_coordinates": {
+          "height": 128,
+          "pixels": "ee0533c58faccf8c41b88c5d197a5fac43a56c3a052f51bfa123e97c7bdc9979",
+          "png": "0b7a1bcb8c7f4f950908cf5183da019c741afcfcc8954c07000c7cfb11f3fb32",
+          "width": 128
+        },
+        "glyph_evenodd": {
+          "height": 128,
+          "pixels": "ff942bcb1118cb18f33e42c811bf7e2fe8f2748fb3ee848b8fcb1e64228b6cdb",
+          "png": "6c48b46874b8847369601156fa9bb7097b22979e7d8f9bb4c94df667c95581ab",
+          "width": 128
+        },
+        "glyph_nonzero": {
+          "height": 128,
+          "pixels": "ff942bcb1118cb18f33e42c811bf7e2fe8f2748fb3ee848b8fcb1e64228b6cdb",
+          "png": "6c48b46874b8847369601156fa9bb7097b22979e7d8f9bb4c94df667c95581ab",
+          "width": 128
+        },
+        "gradient_transformed": {
+          "height": 128,
+          "pixels": "9e9d969fecf4e8c2eaf18d5356712ceb5cdc3b384f18c58e29af3bf654b035a6",
+          "png": "78003130c4f1bf0a9941694041836b37e9b41f74a1c624cd2dbf7a2a456d46c8",
+          "width": 128
+        },
+        "hairline_grid": {
+          "height": 128,
+          "pixels": "3867b4d7be5b4a204c20967b6fcc099800fc7e3650e8c8c20d51935b9998fcdb",
+          "png": "9a486ac95df67dbee6c5bfb1e0e407abb3bafa7914f7e9da6b32aa74c245eea9",
+          "width": 128
+        },
+        "linear_gradient": {
+          "height": 128,
+          "pixels": "825a9ade2bc490aa19646979e2c696a71fa72154d5d1845e97544a76e2779e16",
+          "png": "9a8a73e85cb09512a15bc1053c7367d48a5f221e550f95f68a8fce5ed363c90c",
+          "width": 128
+        },
+        "many_small_paths": {
+          "height": 128,
+          "pixels": "e3c62dc8a161391927a557e53e4515abd0e72eecc0a0d7f52cf5bd14b5308629",
+          "png": "e5b6d2333374845efb9bddf5d148ef915d1ef2c8d048cd6e1b64ed6f1c2ddd72",
+          "width": 128
+        },
+        "non_integer_scales": {
+          "height": 128,
+          "pixels": "3bc27d4846cc948af9beab9f78c13e0fc3fdd406824ba3b3d6a181dbe7d86b8b",
+          "png": "8dc5ee2c7c3cc6e0eea72f7003e3888962b5461df4812e3aeaff2e5463341a68",
+          "width": 128
+        },
+        "perf_2000_cubics_512": {
+          "height": 512,
+          "pixels": "418c5784aabdd887fd78fb1ec264f908a5ade87a3d9db38df5be45aeb9ade6b9",
+          "png": "77714dfe73d6b6e0a52246ef4a828a381138e0986f2b66c2b799a5c68724cd21",
+          "width": 512
+        },
+        "radial_gradient": {
+          "height": 128,
+          "pixels": "f6f21e1c0d240d4322f62cad0926d0fc73228079986f29606cb2f53109201eac",
+          "png": "bba944b6f8b08dab09e2f81ea74111bf8dd16ef61d77af3a036a068e8f4fda35",
+          "width": 128
+        },
+        "star_evenodd": {
+          "height": 128,
+          "pixels": "c087117278276a63ed526aa24737e366dd7eef9d807866e840e612a8cd7e0842",
+          "png": "c98f4007992c224ba07c3322d8b0709ad0cb0c417f9816ce87927df34be2c081",
+          "width": 128
+        },
+        "star_nonzero": {
+          "height": 128,
+          "pixels": "49549279beb1e370b4ee581eec8d4577fc090292aca2b4ddd35716f54a1a7c98",
+          "png": "b280c90bf7b13ba99c0b09f86e2f280aee9b54a3f8542387c7cbca2eadc4aad3",
+          "width": 128
+        },
+        "stroked_curves": {
+          "height": 128,
+          "pixels": "f91867089a5adad3b8bb6c2c1a50dcd64869e04624611c3253ed8571e15f7def",
+          "png": "a89a5c7f6b2ea519f0b5f14510afe1e1b9a6fdb441905bb521bdcb072aece0cb",
+          "width": 128
+        },
+        "subpixel_translation": {
+          "height": 128,
+          "pixels": "b750228a5ee1a4f4d2300d627e8c34a0e392aaa6938aff11fd348a03d90d1205",
+          "png": "d7f68e7e3ff267f12cc3711e0fdf0d100d4735f6095f5ae448f808e8707fa445",
+          "width": 128
+        },
+        "thin_strokes": {
+          "height": 128,
+          "pixels": "0be8b7d0bc520a8197e163db6cf972eb16969b10f488525703186f3005bb50f6",
+          "png": "9f38347fa92f307faade03f036f8a6e5c7bf38cca5c64d16ec8b10c456e4cf19",
+          "width": 128
+        },
+        "translucent_overlap": {
+          "height": 128,
+          "pixels": "7aeef42245bde62fbb4a92aa71a44a526b3412fb50ad4a990ed905d1142e1112",
+          "png": "d18bb757bf9c84f8cdd4d565c059cd3a8a4a82208e8a3400213fcf734d7e791d",
+          "width": 128
+        }
+      },
+      "vello_cpu_mt3": {
+        "aa_edge_angles": {
+          "height": 128,
+          "pixels": "d7282b3e4717258ab605a8e0edd6a80fcdb624c2767dc9a2709a7133ec607095",
+          "png": "07c2bb269a53d66c4eb2dc3023bbdb1dd5a56ee1f2c990239110150077298bb8",
+          "width": 128
+        },
+        "alpha_stack": {
+          "height": 128,
+          "pixels": "3111d9aed1d93c43d60288d2b7d9785f38085d47276fbc269fb6a825b675c6aa",
+          "png": "c622ea51674ad43d329b2513405c4c703d2a7d64a0a448ecbe4672342fb0341a",
+          "width": 128
+        },
+        "clip_circle": {
+          "height": 128,
+          "pixels": "30822ea401f8a3865e8be6cfec55f6805ba4b79c530349c3757d8ba504bfd88b",
+          "png": "cb019da8f1af286bb3cd45741f45d807df816f95be3540470ec66651b8911356",
+          "width": 128
+        },
+        "clip_nested": {
+          "height": 128,
+          "pixels": "ca559898c1b50077ea8d904e530751072519a6429229176f2e357c253aea875c",
+          "png": "405b48b69e408afc127dbd9d63b5eacaf4e11b41a26e8e2d3364120b5b83f2db",
+          "width": 128
+        },
+        "coincident_edges": {
+          "height": 128,
+          "pixels": "a738edc7e5bb0d3f19d93a18779922df23ceeeaa6c42cf6eaf231d15b79da9d5",
+          "png": "46db05b7c01db7182f5427e43b58137ec2cc9c8a46cfc65793d04c8c8039ed12",
+          "width": 128
+        },
+        "cubic_blobs": {
+          "height": 128,
+          "pixels": "a8ae84ff577d33038b3c15b78777f11dc9b909d9e16bb8c4639c9bc397c179de",
+          "png": "1d17210cf76fc468594438c47e530d6a6f9187871420ece1a5e121b4b43f0d85",
+          "width": 128
+        },
+        "degenerate": {
+          "height": 128,
+          "pixels": "38b0efed8f743b131aa91d7c357a9ff1ddb4359d8b3efff42dc29fcac045a715",
+          "png": "08eb8697da3a6e50e35a06bbafec3552e3e18e9384addb095e3076f14e5b08f5",
+          "width": 128
+        },
+        "extreme_coordinates": {
+          "height": 128,
+          "pixels": "ee0533c58faccf8c41b88c5d197a5fac43a56c3a052f51bfa123e97c7bdc9979",
+          "png": "0b7a1bcb8c7f4f950908cf5183da019c741afcfcc8954c07000c7cfb11f3fb32",
+          "width": 128
+        },
+        "glyph_evenodd": {
+          "height": 128,
+          "pixels": "0c42b0f25e84504e2ea87794362acf51a6a77a64cae4731a6739592343fab9ac",
+          "png": "52d4598180001fbcfe9055272ee517b1958256e052713ee485aefb4736f79a06",
+          "width": 128
+        },
+        "glyph_nonzero": {
+          "height": 128,
+          "pixels": "0c42b0f25e84504e2ea87794362acf51a6a77a64cae4731a6739592343fab9ac",
+          "png": "52d4598180001fbcfe9055272ee517b1958256e052713ee485aefb4736f79a06",
+          "width": 128
+        },
+        "gradient_transformed": {
+          "height": 128,
+          "pixels": "9e9d969fecf4e8c2eaf18d5356712ceb5cdc3b384f18c58e29af3bf654b035a6",
+          "png": "78003130c4f1bf0a9941694041836b37e9b41f74a1c624cd2dbf7a2a456d46c8",
+          "width": 128
+        },
+        "hairline_grid": {
+          "height": 128,
+          "pixels": "3867b4d7be5b4a204c20967b6fcc099800fc7e3650e8c8c20d51935b9998fcdb",
+          "png": "9a486ac95df67dbee6c5bfb1e0e407abb3bafa7914f7e9da6b32aa74c245eea9",
+          "width": 128
+        },
+        "linear_gradient": {
+          "height": 128,
+          "pixels": "825a9ade2bc490aa19646979e2c696a71fa72154d5d1845e97544a76e2779e16",
+          "png": "9a8a73e85cb09512a15bc1053c7367d48a5f221e550f95f68a8fce5ed363c90c",
+          "width": 128
+        },
+        "many_small_paths": {
+          "height": 128,
+          "pixels": "e3c62dc8a161391927a557e53e4515abd0e72eecc0a0d7f52cf5bd14b5308629",
+          "png": "e5b6d2333374845efb9bddf5d148ef915d1ef2c8d048cd6e1b64ed6f1c2ddd72",
+          "width": 128
+        },
+        "non_integer_scales": {
+          "height": 128,
+          "pixels": "3bc27d4846cc948af9beab9f78c13e0fc3fdd406824ba3b3d6a181dbe7d86b8b",
+          "png": "8dc5ee2c7c3cc6e0eea72f7003e3888962b5461df4812e3aeaff2e5463341a68",
+          "width": 128
+        },
+        "perf_2000_cubics_512": {
+          "height": 512,
+          "pixels": "2ed006e99a4e5d156bef26118559f6e3fb65f088bf027bc6a32b7b5af8f2504b",
+          "png": "94665aeac9e2b08aaf1c8b71edbfeed62d2e0c29a93f15db498bd3aa527a6695",
+          "width": 512
+        },
+        "radial_gradient": {
+          "height": 128,
+          "pixels": "f6f21e1c0d240d4322f62cad0926d0fc73228079986f29606cb2f53109201eac",
+          "png": "bba944b6f8b08dab09e2f81ea74111bf8dd16ef61d77af3a036a068e8f4fda35",
+          "width": 128
+        },
+        "star_evenodd": {
+          "height": 128,
+          "pixels": "c087117278276a63ed526aa24737e366dd7eef9d807866e840e612a8cd7e0842",
+          "png": "c98f4007992c224ba07c3322d8b0709ad0cb0c417f9816ce87927df34be2c081",
+          "width": 128
+        },
+        "star_nonzero": {
+          "height": 128,
+          "pixels": "49549279beb1e370b4ee581eec8d4577fc090292aca2b4ddd35716f54a1a7c98",
+          "png": "b280c90bf7b13ba99c0b09f86e2f280aee9b54a3f8542387c7cbca2eadc4aad3",
+          "width": 128
+        },
+        "stroked_curves": {
+          "height": 128,
+          "pixels": "f91867089a5adad3b8bb6c2c1a50dcd64869e04624611c3253ed8571e15f7def",
+          "png": "a89a5c7f6b2ea519f0b5f14510afe1e1b9a6fdb441905bb521bdcb072aece0cb",
+          "width": 128
+        },
+        "subpixel_translation": {
+          "height": 128,
+          "pixels": "b750228a5ee1a4f4d2300d627e8c34a0e392aaa6938aff11fd348a03d90d1205",
+          "png": "d7f68e7e3ff267f12cc3711e0fdf0d100d4735f6095f5ae448f808e8707fa445",
+          "width": 128
+        },
+        "thin_strokes": {
+          "height": 128,
+          "pixels": "0be8b7d0bc520a8197e163db6cf972eb16969b10f488525703186f3005bb50f6",
+          "png": "9f38347fa92f307faade03f036f8a6e5c7bf38cca5c64d16ec8b10c456e4cf19",
+          "width": 128
+        },
+        "translucent_overlap": {
+          "height": 128,
+          "pixels": "7aeef42245bde62fbb4a92aa71a44a526b3412fb50ad4a990ed905d1142e1112",
+          "png": "d18bb757bf9c84f8cdd4d565c059cd3a8a4a82208e8a3400213fcf734d7e791d",
+          "width": 128
+        }
+      },
+      "vello_cpu_simd": {
+        "aa_edge_angles": {
+          "height": 128,
+          "pixels": "d7282b3e4717258ab605a8e0edd6a80fcdb624c2767dc9a2709a7133ec607095",
+          "png": "07c2bb269a53d66c4eb2dc3023bbdb1dd5a56ee1f2c990239110150077298bb8",
+          "width": 128
+        },
+        "alpha_stack": {
+          "height": 128,
+          "pixels": "3111d9aed1d93c43d60288d2b7d9785f38085d47276fbc269fb6a825b675c6aa",
+          "png": "c622ea51674ad43d329b2513405c4c703d2a7d64a0a448ecbe4672342fb0341a",
+          "width": 128
+        },
+        "clip_circle": {
+          "height": 128,
+          "pixels": "30822ea401f8a3865e8be6cfec55f6805ba4b79c530349c3757d8ba504bfd88b",
+          "png": "cb019da8f1af286bb3cd45741f45d807df816f95be3540470ec66651b8911356",
+          "width": 128
+        },
+        "clip_nested": {
+          "height": 128,
+          "pixels": "ca559898c1b50077ea8d904e530751072519a6429229176f2e357c253aea875c",
+          "png": "405b48b69e408afc127dbd9d63b5eacaf4e11b41a26e8e2d3364120b5b83f2db",
+          "width": 128
+        },
+        "coincident_edges": {
+          "height": 128,
+          "pixels": "a738edc7e5bb0d3f19d93a18779922df23ceeeaa6c42cf6eaf231d15b79da9d5",
+          "png": "46db05b7c01db7182f5427e43b58137ec2cc9c8a46cfc65793d04c8c8039ed12",
+          "width": 128
+        },
+        "cubic_blobs": {
+          "height": 128,
+          "pixels": "a8ae84ff577d33038b3c15b78777f11dc9b909d9e16bb8c4639c9bc397c179de",
+          "png": "1d17210cf76fc468594438c47e530d6a6f9187871420ece1a5e121b4b43f0d85",
+          "width": 128
+        },
+        "degenerate": {
+          "height": 128,
+          "pixels": "38b0efed8f743b131aa91d7c357a9ff1ddb4359d8b3efff42dc29fcac045a715",
+          "png": "08eb8697da3a6e50e35a06bbafec3552e3e18e9384addb095e3076f14e5b08f5",
+          "width": 128
+        },
+        "extreme_coordinates": {
+          "height": 128,
+          "pixels": "ee0533c58faccf8c41b88c5d197a5fac43a56c3a052f51bfa123e97c7bdc9979",
+          "png": "0b7a1bcb8c7f4f950908cf5183da019c741afcfcc8954c07000c7cfb11f3fb32",
+          "width": 128
+        },
+        "glyph_evenodd": {
+          "height": 128,
+          "pixels": "0c42b0f25e84504e2ea87794362acf51a6a77a64cae4731a6739592343fab9ac",
+          "png": "52d4598180001fbcfe9055272ee517b1958256e052713ee485aefb4736f79a06",
+          "width": 128
+        },
+        "glyph_nonzero": {
+          "height": 128,
+          "pixels": "0c42b0f25e84504e2ea87794362acf51a6a77a64cae4731a6739592343fab9ac",
+          "png": "52d4598180001fbcfe9055272ee517b1958256e052713ee485aefb4736f79a06",
+          "width": 128
+        },
+        "gradient_transformed": {
+          "height": 128,
+          "pixels": "9e9d969fecf4e8c2eaf18d5356712ceb5cdc3b384f18c58e29af3bf654b035a6",
+          "png": "78003130c4f1bf0a9941694041836b37e9b41f74a1c624cd2dbf7a2a456d46c8",
+          "width": 128
+        },
+        "hairline_grid": {
+          "height": 128,
+          "pixels": "3867b4d7be5b4a204c20967b6fcc099800fc7e3650e8c8c20d51935b9998fcdb",
+          "png": "9a486ac95df67dbee6c5bfb1e0e407abb3bafa7914f7e9da6b32aa74c245eea9",
+          "width": 128
+        },
+        "linear_gradient": {
+          "height": 128,
+          "pixels": "825a9ade2bc490aa19646979e2c696a71fa72154d5d1845e97544a76e2779e16",
+          "png": "9a8a73e85cb09512a15bc1053c7367d48a5f221e550f95f68a8fce5ed363c90c",
+          "width": 128
+        },
+        "many_small_paths": {
+          "height": 128,
+          "pixels": "e3c62dc8a161391927a557e53e4515abd0e72eecc0a0d7f52cf5bd14b5308629",
+          "png": "e5b6d2333374845efb9bddf5d148ef915d1ef2c8d048cd6e1b64ed6f1c2ddd72",
+          "width": 128
+        },
+        "non_integer_scales": {
+          "height": 128,
+          "pixels": "3bc27d4846cc948af9beab9f78c13e0fc3fdd406824ba3b3d6a181dbe7d86b8b",
+          "png": "8dc5ee2c7c3cc6e0eea72f7003e3888962b5461df4812e3aeaff2e5463341a68",
+          "width": 128
+        },
+        "perf_2000_cubics_512": {
+          "height": 512,
+          "pixels": "2ed006e99a4e5d156bef26118559f6e3fb65f088bf027bc6a32b7b5af8f2504b",
+          "png": "94665aeac9e2b08aaf1c8b71edbfeed62d2e0c29a93f15db498bd3aa527a6695",
+          "width": 512
+        },
+        "radial_gradient": {
+          "height": 128,
+          "pixels": "f6f21e1c0d240d4322f62cad0926d0fc73228079986f29606cb2f53109201eac",
+          "png": "bba944b6f8b08dab09e2f81ea74111bf8dd16ef61d77af3a036a068e8f4fda35",
+          "width": 128
+        },
+        "star_evenodd": {
+          "height": 128,
+          "pixels": "c087117278276a63ed526aa24737e366dd7eef9d807866e840e612a8cd7e0842",
+          "png": "c98f4007992c224ba07c3322d8b0709ad0cb0c417f9816ce87927df34be2c081",
+          "width": 128
+        },
+        "star_nonzero": {
+          "height": 128,
+          "pixels": "49549279beb1e370b4ee581eec8d4577fc090292aca2b4ddd35716f54a1a7c98",
+          "png": "b280c90bf7b13ba99c0b09f86e2f280aee9b54a3f8542387c7cbca2eadc4aad3",
+          "width": 128
+        },
+        "stroked_curves": {
+          "height": 128,
+          "pixels": "f91867089a5adad3b8bb6c2c1a50dcd64869e04624611c3253ed8571e15f7def",
+          "png": "a89a5c7f6b2ea519f0b5f14510afe1e1b9a6fdb441905bb521bdcb072aece0cb",
+          "width": 128
+        },
+        "subpixel_translation": {
+          "height": 128,
+          "pixels": "b750228a5ee1a4f4d2300d627e8c34a0e392aaa6938aff11fd348a03d90d1205",
+          "png": "d7f68e7e3ff267f12cc3711e0fdf0d100d4735f6095f5ae448f808e8707fa445",
+          "width": 128
+        },
+        "thin_strokes": {
+          "height": 128,
+          "pixels": "0be8b7d0bc520a8197e163db6cf972eb16969b10f488525703186f3005bb50f6",
+          "png": "9f38347fa92f307faade03f036f8a6e5c7bf38cca5c64d16ec8b10c456e4cf19",
+          "width": 128
+        },
+        "translucent_overlap": {
+          "height": 128,
+          "pixels": "7aeef42245bde62fbb4a92aa71a44a526b3412fb50ad4a990ed905d1142e1112",
+          "png": "d18bb757bf9c84f8cdd4d565c059cd3a8a4a82208e8a3400213fcf734d7e791d",
+          "width": 128
+        }
+      }
+    }
+  },
+  "os": "windows",
+  "repeat": 3,
+  "repeatFailures": [],
+  "scenes": [
+    {
+      "covers": "filled cubic Bézier shapes with inflections",
+      "height": 128,
+      "items": 2,
+      "name": "cubic_blobs",
+      "width": 128
+    },
+    {
+      "covers": "hairline and sub-pixel stroke widths 0.1–1.5 px, near-horizontal/vertical",
+      "height": 128,
+      "items": 12,
+      "name": "thin_strokes",
+      "width": 128
+    },
+    {
+      "covers": "anti-aliased edges at 64 directions (thin wedges)",
+      "height": 128,
+      "items": 64,
+      "name": "aa_edge_angles",
+      "width": 128
+    },
+    {
+      "covers": "overlapping translucent fills (alpha 128) in RGB",
+      "height": 128,
+      "items": 3,
+      "name": "translucent_overlap",
+      "width": 128
+    },
+    {
+      "covers": "20 layers of alpha 26/255 (accumulated rounding)",
+      "height": 128,
+      "items": 20,
+      "name": "alpha_stack",
+      "width": 128
+    },
+    {
+      "covers": "linear gradient, three stops, pad",
+      "height": 128,
+      "items": 1,
+      "name": "linear_gradient",
+      "width": 128
+    },
+    {
+      "covers": "radial gradient, translucent outer stop, pad",
+      "height": 128,
+      "items": 1,
+      "name": "radial_gradient",
+      "width": 128
+    },
+    {
+      "covers": "linear gradient under a rotation (rational sine/cosine)",
+      "height": 128,
+      "items": 1,
+      "name": "gradient_transformed",
+      "width": 128
+    },
+    {
+      "covers": "stripes clipped to a circle",
+      "height": 128,
+      "items": 1,
+      "name": "clip_circle",
+      "width": 128
+    },
+    {
+      "covers": "nested clips (rotated square inside circle), translucent content",
+      "height": 128,
+      "items": 1,
+      "name": "clip_nested",
+      "width": 128
+    },
+    {
+      "covers": "glyph-like outline with a reversed counter, non-zero",
+      "height": 128,
+      "items": 1,
+      "name": "glyph_nonzero",
+      "width": 128
+    },
+    {
+      "covers": "the same outline, even-odd",
+      "height": 128,
+      "items": 1,
+      "name": "glyph_evenodd",
+      "width": 128
+    },
+    {
+      "covers": "zero-area, collinear, zero-length and empty paths (should draw nothing visible)",
+      "height": 128,
+      "items": 6,
+      "name": "degenerate",
+      "width": 128
+    },
+    {
+      "covers": "self-intersecting pentagram, non-zero (centre filled)",
+      "height": 128,
+      "items": 1,
+      "name": "star_nonzero",
+      "width": 128
+    },
+    {
+      "covers": "self-intersecting pentagram, even-odd (centre empty)",
+      "height": 128,
+      "items": 1,
+      "name": "star_evenodd",
+      "width": 128
+    },
+    {
+      "covers": "abutting squares (shared edges, seams) and a path cancelled by its reverse",
+      "height": 128,
+      "items": 5,
+      "name": "coincident_edges",
+      "width": 128
+    },
+    {
+      "covers": "huge (±1e6..1e7) and tiny (1e-3 px) geometry crossing the canvas",
+      "height": 128,
+      "items": 4,
+      "name": "extreme_coordinates",
+      "width": 128
+    },
+    {
+      "covers": "identical shapes translated by k/8 px",
+      "height": 128,
+      "items": 16,
+      "name": "subpixel_translation",
+      "width": 128
+    },
+    {
+      "covers": "fills and strokes under scales 0.37, 0.5, 1.5, 2.71",
+      "height": 128,
+      "items": 8,
+      "name": "non_integer_scales",
+      "width": 128
+    },
+    {
+      "covers": "stroked cubics, widths 1–12, bevel joins, butt caps",
+      "height": 128,
+      "items": 3,
+      "name": "stroked_curves",
+      "width": 128
+    },
+    {
+      "covers": "500 random small translucent triangles (seeded, 1/64 grid)",
+      "height": 128,
+      "items": 500,
+      "name": "many_small_paths",
+      "width": 128
+    },
+    {
+      "covers": "1 px lines on and between pixel centres, crossing",
+      "height": 128,
+      "items": 32,
+      "name": "hairline_grid",
+      "width": 128
+    },
+    {
+      "covers": "speed: 2000 translucent cubic shapes at 512×512",
+      "height": 512,
+      "items": 2000,
+      "name": "perf_2000_cubics_512",
+      "width": 512
+    }
+  ],
+  "timingsMs": {
+    "ttraster": {
+      "aa_edge_angles": {
+        "msAll": [
+          0.48519999999999996,
+          0.453,
+          0.47150000000000003
+        ],
+        "msMedian": 0.47150000000000003
+      },
+      "alpha_stack": {
+        "msAll": [
+          0.5394,
+          0.5427000000000001,
+          0.5021
+        ],
+        "msMedian": 0.5394
+      },
+      "clip_circle": {
+        "msAll": [
+          0.2229,
+          0.20359999999999998,
+          0.24230000000000002
+        ],
+        "msMedian": 0.2229
+      },
+      "clip_nested": {
+        "msAll": [
+          0.2883,
+          0.296,
+          0.3115
+        ],
+        "msMedian": 0.296
+      },
+      "coincident_edges": {
+        "msAll": [
+          0.1288,
+          0.0926,
+          0.06889999999999999
+        ],
+        "msMedian": 0.0926
+      },
+      "cubic_blobs": {
+        "msAll": [
+          0.2368,
+          0.17229999999999998,
+          0.2097
+        ],
+        "msMedian": 0.2097
+      },
+      "degenerate": {
+        "msAll": [
+          0.0818,
+          0.07150000000000001,
+          0.0434
+        ],
+        "msMedian": 0.07150000000000001
+      },
+      "extreme_coordinates": {
+        "msAll": [
+          0.2474,
+          0.1641,
+          0.13549999999999998
+        ],
+        "msMedian": 0.1641
+      },
+      "glyph_evenodd": {
+        "msAll": [
+          0.1513,
+          0.18230000000000002,
+          0.1091
+        ],
+        "msMedian": 0.1513
+      },
+      "glyph_nonzero": {
+        "msAll": [
+          0.1202,
+          0.1039,
+          0.07669999999999999
+        ],
+        "msMedian": 0.1039
+      },
+      "gradient_transformed": {
+        "msAll": [
+          0.319,
+          0.27349999999999997,
+          0.3039
+        ],
+        "msMedian": 0.3039
+      },
+      "hairline_grid": {
+        "msAll": [
+          0.2145,
+          0.20350000000000001,
+          0.147
+        ],
+        "msMedian": 0.20350000000000001
+      },
+      "linear_gradient": {
+        "msAll": [
+          0.4472,
+          0.4359,
+          0.4684
+        ],
+        "msMedian": 0.4472
+      },
+      "many_small_paths": {
+        "msAll": [
+          0.723,
+          0.8963000000000001,
+          0.7733
+        ],
+        "msMedian": 0.7733
+      },
+      "non_integer_scales": {
+        "msAll": [
+          0.3991,
+          0.36069999999999997,
+          0.34890000000000004
+        ],
+        "msMedian": 0.36069999999999997
+      },
+      "perf_2000_cubics_512": {
+        "msAll": [
+          36.862199999999994,
+          33.714800000000004,
+          34.213100000000004
+        ],
+        "msMedian": 34.213100000000004
+      },
+      "radial_gradient": {
+        "msAll": [
+          0.4683,
+          0.4455,
+          0.5117999999999999
+        ],
+        "msMedian": 0.4683
+      },
+      "star_evenodd": {
+        "msAll": [
+          0.1686,
+          0.1549,
+          0.12769999999999998
+        ],
+        "msMedian": 0.1549
+      },
+      "star_nonzero": {
+        "msAll": [
+          0.1167,
+          0.0994,
+          0.0726
+        ],
+        "msMedian": 0.0994
+      },
+      "stroked_curves": {
+        "msAll": [
+          0.3557,
+          0.3101,
+          0.3009
+        ],
+        "msMedian": 0.3101
+      },
+      "subpixel_translation": {
+        "msAll": [
+          0.174,
+          0.1402,
+          0.1077
+        ],
+        "msMedian": 0.1402
+      },
+      "thin_strokes": {
+        "msAll": [
+          0.1593,
+          0.12229999999999999,
+          0.1529
+        ],
+        "msMedian": 0.1529
+      },
+      "translucent_overlap": {
+        "msAll": [
+          0.214,
+          0.1738,
+          0.202
+        ],
+        "msMedian": 0.202
+      }
+    },
+    "vello_cpu_fallback": {
+      "aa_edge_angles": {
+        "msAll": [
+          0.3261,
+          0.242,
+          0.20980000000000001
+        ],
+        "msMedian": 0.242
+      },
+      "alpha_stack": {
+        "msAll": [
+          0.1255,
+          0.1328,
+          0.1064
+        ],
+        "msMedian": 0.1255
+      },
+      "clip_circle": {
+        "msAll": [
+          0.1862,
+          0.16110000000000002,
+          0.1317
+        ],
+        "msMedian": 0.16110000000000002
+      },
+      "clip_nested": {
+        "msAll": [
+          0.1225,
+          0.1052,
+          0.0769
+        ],
+        "msMedian": 0.1052
+      },
+      "coincident_edges": {
+        "msAll": [
+          0.0995,
+          0.0956,
+          0.0601
+        ],
+        "msMedian": 0.0956
+      },
+      "cubic_blobs": {
+        "msAll": [
+          0.29540000000000005,
+          0.14129999999999998,
+          0.051199999999999996
+        ],
+        "msMedian": 0.14129999999999998
+      },
+      "degenerate": {
+        "msAll": [
+          0.08399999999999999,
+          0.0552,
+          0.025599999999999998
+        ],
+        "msMedian": 0.0552
+      },
+      "extreme_coordinates": {
+        "msAll": [
+          0.0919,
+          0.0872,
+          0.0522
+        ],
+        "msMedian": 0.0872
+      },
+      "glyph_evenodd": {
+        "msAll": [
+          0.0795,
+          0.0702,
+          0.0439
+        ],
+        "msMedian": 0.0702
+      },
+      "glyph_nonzero": {
+        "msAll": [
+          0.0778,
+          0.0658,
+          0.0376
+        ],
+        "msMedian": 0.0658
+      },
+      "gradient_transformed": {
+        "msAll": [
+          0.0844,
+          0.0727,
+          0.0477
+        ],
+        "msMedian": 0.0727
+      },
+      "hairline_grid": {
+        "msAll": [
+          0.192,
+          0.1739,
+          0.1561
+        ],
+        "msMedian": 0.1739
+      },
+      "linear_gradient": {
+        "msAll": [
+          0.0954,
+          0.076,
+          0.0505
+        ],
+        "msMedian": 0.076
+      },
+      "many_small_paths": {
+        "msAll": [
+          1.0058,
+          0.5341,
+          0.443
+        ],
+        "msMedian": 0.5341
+      },
+      "non_integer_scales": {
+        "msAll": [
+          0.2072,
+          0.1485,
+          0.1119
+        ],
+        "msMedian": 0.1485
+      },
+      "perf_2000_cubics_512": {
+        "msAll": [
+          13.4129,
+          10.9192,
+          11.1754
+        ],
+        "msMedian": 11.1754
+      },
+      "radial_gradient": {
+        "msAll": [
+          0.1252,
+          0.1281,
+          0.0712
+        ],
+        "msMedian": 0.1252
+      },
+      "star_evenodd": {
+        "msAll": [
+          0.0752,
+          0.1369,
+          0.058699999999999995
+        ],
+        "msMedian": 0.0752
+      },
+      "star_nonzero": {
+        "msAll": [
+          0.07229999999999999,
+          0.0628,
+          0.0359
+        ],
+        "msMedian": 0.0628
+      },
+      "stroked_curves": {
+        "msAll": [
+          0.1523,
+          0.1326,
+          0.0986
+        ],
+        "msMedian": 0.1326
+      },
+      "subpixel_translation": {
+        "msAll": [
+          0.13369999999999999,
+          0.126,
+          0.0929
+        ],
+        "msMedian": 0.126
+      },
+      "thin_strokes": {
+        "msAll": [
+          0.15080000000000002,
+          0.10189999999999999,
+          0.127
+        ],
+        "msMedian": 0.127
+      },
+      "translucent_overlap": {
+        "msAll": [
+          0.0607,
+          0.1056,
+          0.055600000000000004
+        ],
+        "msMedian": 0.0607
+      }
+    },
+    "vello_cpu_mt3": {
+      "aa_edge_angles": {
+        "msAll": [
+          0.6868,
+          0.5124,
+          0.5981
+        ],
+        "msMedian": 0.5981
+      },
+      "alpha_stack": {
+        "msAll": [
+          0.4784,
+          0.4827,
+          0.4858
+        ],
+        "msMedian": 0.4827
+      },
+      "clip_circle": {
+        "msAll": [
+          0.4781,
+          0.4944,
+          0.6083
+        ],
+        "msMedian": 0.4944
+      },
+      "clip_nested": {
+        "msAll": [
+          0.4263,
+          0.5537,
+          0.4704
+        ],
+        "msMedian": 0.4704
+      },
+      "coincident_edges": {
+        "msAll": [
+          0.475,
+          0.5014000000000001,
+          0.4686
+        ],
+        "msMedian": 0.475
+      },
+      "cubic_blobs": {
+        "msAll": [
+          0.7239,
+          0.5392,
+          0.40059999999999996
+        ],
+        "msMedian": 0.5392
+      },
+      "degenerate": {
+        "msAll": [
+          0.3845,
+          0.4041,
+          0.47550000000000003
+        ],
+        "msMedian": 0.4041
+      },
+      "extreme_coordinates": {
+        "msAll": [
+          0.4197,
+          0.4842,
+          0.4543
+        ],
+        "msMedian": 0.4543
+      },
+      "glyph_evenodd": {
+        "msAll": [
+          0.42260000000000003,
+          0.5052,
+          0.437
+        ],
+        "msMedian": 0.437
+      },
+      "glyph_nonzero": {
+        "msAll": [
+          0.4275,
+          0.4883,
+          0.5133
+        ],
+        "msMedian": 0.4883
+      },
+      "gradient_transformed": {
+        "msAll": [
+          0.42729999999999996,
+          0.5154,
+          0.40190000000000003
+        ],
+        "msMedian": 0.42729999999999996
+      },
+      "hairline_grid": {
+        "msAll": [
+          0.4477,
+          0.5400999999999999,
+          0.5739
+        ],
+        "msMedian": 0.5400999999999999
+      },
+      "linear_gradient": {
+        "msAll": [
+          0.3988,
+          0.44430000000000003,
+          0.5788
+        ],
+        "msMedian": 0.44430000000000003
+      },
+      "many_small_paths": {
+        "msAll": [
+          1.0016,
+          0.7123,
+          0.9825999999999999
+        ],
+        "msMedian": 0.9825999999999999
+      },
+      "non_integer_scales": {
+        "msAll": [
+          0.4263,
+          0.4184,
+          0.4819
+        ],
+        "msMedian": 0.4263
+      },
+      "perf_2000_cubics_512": {
+        "msAll": [
+          5.5652,
+          7.505000000000001,
+          7.6409
+        ],
+        "msMedian": 7.505000000000001
+      },
+      "radial_gradient": {
+        "msAll": [
+          0.37970000000000004,
+          0.4475,
+          0.5045
+        ],
+        "msMedian": 0.4475
+      },
+      "star_evenodd": {
+        "msAll": [
+          0.3967,
+          0.4828,
+          0.4453
+        ],
+        "msMedian": 0.4453
+      },
+      "star_nonzero": {
+        "msAll": [
+          0.40440000000000004,
+          0.474,
+          0.5124
+        ],
+        "msMedian": 0.474
+      },
+      "stroked_curves": {
+        "msAll": [
+          0.4289,
+          0.4626,
+          0.5616
+        ],
+        "msMedian": 0.4626
+      },
+      "subpixel_translation": {
+        "msAll": [
+          0.3625,
+          0.4678,
+          0.4501
+        ],
+        "msMedian": 0.4501
+      },
+      "thin_strokes": {
+        "msAll": [
+          0.4304,
+          0.7141,
+          0.5293
+        ],
+        "msMedian": 0.5293
+      },
+      "translucent_overlap": {
+        "msAll": [
+          0.33340000000000003,
+          0.4958,
+          0.42460000000000003
+        ],
+        "msMedian": 0.42460000000000003
+      }
+    },
+    "vello_cpu_simd": {
+      "aa_edge_angles": {
+        "msAll": [
+          0.2928,
+          0.2949,
+          0.1994
+        ],
+        "msMedian": 0.2928
+      },
+      "alpha_stack": {
+        "msAll": [
+          0.1883,
+          0.10900000000000001,
+          0.07830000000000001
+        ],
+        "msMedian": 0.10900000000000001
+      },
+      "clip_circle": {
+        "msAll": [
+          0.2044,
+          0.1273,
+          0.09519999999999999
+        ],
+        "msMedian": 0.1273
+      },
+      "clip_nested": {
+        "msAll": [
+          0.1164,
+          0.0804,
+          0.0569
+        ],
+        "msMedian": 0.0804
+      },
+      "coincident_edges": {
+        "msAll": [
+          0.036000000000000004,
+          0.027299999999999998,
+          0.0291
+        ],
+        "msMedian": 0.0291
+      },
+      "cubic_blobs": {
+        "msAll": [
+          0.1661,
+          0.0949,
+          0.0317
+        ],
+        "msMedian": 0.0949
+      },
+      "degenerate": {
+        "msAll": [
+          0.0258,
+          0.0177,
+          0.0155
+        ],
+        "msMedian": 0.0177
+      },
+      "extreme_coordinates": {
+        "msAll": [
+          0.0349,
+          0.022799999999999997,
+          0.020999999999999998
+        ],
+        "msMedian": 0.022799999999999997
+      },
+      "glyph_evenodd": {
+        "msAll": [
+          0.0823,
+          0.0864,
+          0.045599999999999995
+        ],
+        "msMedian": 0.0823
+      },
+      "glyph_nonzero": {
+        "msAll": [
+          0.0937,
+          0.0518,
+          0.0249
+        ],
+        "msMedian": 0.0518
+      },
+      "gradient_transformed": {
+        "msAll": [
+          0.08729999999999999,
+          0.054,
+          0.030000000000000002
+        ],
+        "msMedian": 0.054
+      },
+      "hairline_grid": {
+        "msAll": [
+          0.11689999999999999,
+          0.1039,
+          0.1004
+        ],
+        "msMedian": 0.1039
+      },
+      "linear_gradient": {
+        "msAll": [
+          0.1047,
+          0.0564,
+          0.0316
+        ],
+        "msMedian": 0.0564
+      },
+      "many_small_paths": {
+        "msAll": [
+          0.4341,
+          0.3876,
+          0.3346
+        ],
+        "msMedian": 0.3876
+      },
+      "non_integer_scales": {
+        "msAll": [
+          0.0739,
+          0.056499999999999995,
+          0.0507
+        ],
+        "msMedian": 0.056499999999999995
+      },
+      "perf_2000_cubics_512": {
+        "msAll": [
+          8.769300000000001,
+          8.8294,
+          8.250499999999999
+        ],
+        "msMedian": 8.769300000000001
+      },
+      "radial_gradient": {
+        "msAll": [
+          0.10110000000000001,
+          0.066,
+          0.0409
+        ],
+        "msMedian": 0.066
+      },
+      "star_evenodd": {
+        "msAll": [
+          0.07880000000000001,
+          0.0482,
+          0.0235
+        ],
+        "msMedian": 0.0482
+      },
+      "star_nonzero": {
+        "msAll": [
+          0.0342,
+          0.0266,
+          0.023200000000000002
+        ],
+        "msMedian": 0.0266
+      },
+      "stroked_curves": {
+        "msAll": [
+          0.0591,
+          0.0471,
+          0.0415
+        ],
+        "msMedian": 0.0471
+      },
+      "subpixel_translation": {
+        "msAll": [
+          0.0538,
+          0.0402,
+          0.0382
+        ],
+        "msMedian": 0.0402
+      },
+      "thin_strokes": {
+        "msAll": [
+          0.1189,
+          0.13620000000000002,
+          0.0586
+        ],
+        "msMedian": 0.1189
+      },
+      "translucent_overlap": {
+        "msAll": [
+          0.0935,
+          0.0573,
+          0.0342
+        ],
+        "msMedian": 0.0573
+      }
+    }
+  },
+  "ttrasterVsVelloFallback": {
+    "aa_edge_angles": {
+      "maxChannelDiff": 3,
+      "meanMaxChannelDiff": 0.0133056640625,
+      "pixels": 16384,
+      "pixelsDiffering": 188
+    },
+    "alpha_stack": {
+      "maxChannelDiff": 1,
+      "meanMaxChannelDiff": 0.5556640625,
+      "pixels": 16384,
+      "pixelsDiffering": 9104
+    },
+    "clip_circle": {
+      "maxChannelDiff": 43,
+      "meanMaxChannelDiff": 0.2291259765625,
+      "pixels": 16384,
+      "pixelsDiffering": 198
+    },
+    "clip_nested": {
+      "maxChannelDiff": 68,
+      "meanMaxChannelDiff": 0.7064208984375,
+      "pixels": 16384,
+      "pixelsDiffering": 676
+    },
+    "coincident_edges": {
+      "maxChannelDiff": 2,
+      "meanMaxChannelDiff": 0.0001220703125,
+      "pixels": 16384,
+      "pixelsDiffering": 1
+    },
+    "cubic_blobs": {
+      "maxChannelDiff": 62,
+      "meanMaxChannelDiff": 0.75616455078125,
+      "pixels": 16384,
+      "pixelsDiffering": 1885
+    },
+    "degenerate": {
+      "maxChannelDiff": 0,
+      "meanMaxChannelDiff": 0.0,
+      "pixels": 16384,
+      "pixelsDiffering": 0
+    },
+    "extreme_coordinates": {
+      "maxChannelDiff": 3,
+      "meanMaxChannelDiff": 0.000732421875,
+      "pixels": 16384,
+      "pixelsDiffering": 4
+    },
+    "glyph_evenodd": {
+      "maxChannelDiff": 58,
+      "meanMaxChannelDiff": 0.6204833984375,
+      "pixels": 16384,
+      "pixelsDiffering": 472
+    },
+    "glyph_nonzero": {
+      "maxChannelDiff": 58,
+      "meanMaxChannelDiff": 0.6204833984375,
+      "pixels": 16384,
+      "pixelsDiffering": 472
+    },
+    "gradient_transformed": {
+      "maxChannelDiff": 2,
+      "meanMaxChannelDiff": 0.199462890625,
+      "pixels": 16384,
+      "pixelsDiffering": 3267
+    },
+    "hairline_grid": {
+      "maxChannelDiff": 1,
+      "meanMaxChannelDiff": 0.0078125,
+      "pixels": 16384,
+      "pixelsDiffering": 128
+    },
+    "linear_gradient": {
+      "maxChannelDiff": 1,
+      "meanMaxChannelDiff": 0.3995361328125,
+      "pixels": 16384,
+      "pixelsDiffering": 6546
+    },
+    "many_small_paths": {
+      "maxChannelDiff": 15,
+      "meanMaxChannelDiff": 0.5323486328125,
+      "pixels": 16384,
+      "pixelsDiffering": 6141
+    },
+    "non_integer_scales": {
+      "maxChannelDiff": 61,
+      "meanMaxChannelDiff": 0.60809326171875,
+      "pixels": 16384,
+      "pixelsDiffering": 647
+    },
+    "perf_2000_cubics_512": {
+      "maxChannelDiff": 89,
+      "meanMaxChannelDiff": 1.8484115600585938,
+      "pixels": 262144,
+      "pixelsDiffering": 200757
+    },
+    "radial_gradient": {
+      "maxChannelDiff": 48,
+      "meanMaxChannelDiff": 6.817626953125,
+      "pixels": 16384,
+      "pixelsDiffering": 7218
+    },
+    "star_evenodd": {
+      "maxChannelDiff": 1,
+      "meanMaxChannelDiff": 0.0135498046875,
+      "pixels": 16384,
+      "pixelsDiffering": 222
+    },
+    "star_nonzero": {
+      "maxChannelDiff": 1,
+      "meanMaxChannelDiff": 0.0103759765625,
+      "pixels": 16384,
+      "pixelsDiffering": 170
+    },
+    "stroked_curves": {
+      "maxChannelDiff": 132,
+      "meanMaxChannelDiff": 1.1923828125,
+      "pixels": 16384,
+      "pixelsDiffering": 1023
+    },
+    "subpixel_translation": {
+      "maxChannelDiff": 51,
+      "meanMaxChannelDiff": 0.5360107421875,
+      "pixels": 16384,
+      "pixelsDiffering": 370
+    },
+    "thin_strokes": {
+      "maxChannelDiff": 1,
+      "meanMaxChannelDiff": 0.02130126953125,
+      "pixels": 16384,
+      "pixelsDiffering": 349
+    },
+    "translucent_overlap": {
+      "maxChannelDiff": 30,
+      "meanMaxChannelDiff": 0.64471435546875,
+      "pixels": 16384,
+      "pixelsDiffering": 3090
+    }
+  }
+}
