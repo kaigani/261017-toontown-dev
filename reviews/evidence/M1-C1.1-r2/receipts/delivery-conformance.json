@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.1-r2/conformance.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:53:34.582508+00:00",
+  "elapsed_seconds": 0.15819690003991127,
+  "exit_code": 0,
+  "log": "logs\\delivery-conformance.log",
+  "sha256": "48e779f72491cdf68e936c266c5f7a82fd6a774bacfd47f3d9cae8826dccf09e",
+  "proptest_seed": "1182712"
+}

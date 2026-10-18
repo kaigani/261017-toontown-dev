@@ -1,0 +1,23 @@
+{
+  "command": [
+    "pnpm",
+    "--dir",
+    "desktop",
+    "exec",
+    "vitest",
+    "run",
+    "--config",
+    "vite.config.ts",
+    "src/ipc/c11-r2-adversarial.test.ts",
+    "-t",
+    "TypeScript middle"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:43:34.684988+00:00",
+  "elapsed_seconds": 0.9982504000072367,
+  "exit_code": 0,
+  "log": "logs\\wire-typescript.log",
+  "sha256": "858726e058d6e25e94bb94507325890216a0736080ffc32dccbc8e03b63dce2a",
+  "proptest_seed": "1182712"
+}

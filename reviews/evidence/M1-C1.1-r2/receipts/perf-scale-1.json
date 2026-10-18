@@ -1,0 +1,20 @@
+{
+  "command": [
+    "cargo",
+    "run",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-model",
+    "--example",
+    "scale"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:43:50.163644+00:00",
+  "elapsed_seconds": 52.55150679999497,
+  "exit_code": 0,
+  "log": "logs\\perf-scale-1.log",
+  "sha256": "1c40fecb87ba5c4af0df4b39c59ceb1784cde82def9ef1ddc95232fb60a45bd5",
+  "proptest_seed": "1182712"
+}

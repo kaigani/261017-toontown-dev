@@ -1,0 +1,47 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.25s
+     Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-2955ce5ad9edf8da.exe)
+
+running 39 tests
+test canonical_serialization_rejects_nonfinite_values ... ok
+test elided_patch_must_not_write_null ... ok
+test diff_does_not_treat_opaque_arrays_as_child_collections ... ok
+test add_over_existing_object_property_is_invertible ... ok
+test root_add_is_rfc6902_replacement ... ok
+test move_over_existing_object_property_is_invertible ... ok
+test hostile_path_and_id_controls ... ok
+test cloning_a_system_generator_cannot_duplicate_ids ... ok
+test jsonschema_integer_multiple_of_does_not_round_before_testing ... ok
+test property_schema_resolves_nested_child_and_tuple_fields ... ok
+test schema_properties_have_format_introduction_annotations ... ok
+test nfc_applies_to_persisted_strings_beyond_names ... ok
+test canonical_scene_map_order_is_not_document_state ... ok
+test document_assembly_rechecks_schema_ranges_after_public_deserialize ... ok
+test image_element_bank_requires_exactly_one_bitmap_per_drawing ... ok
+test project_library_must_have_local_kind ... ok
+test depth_zero_results_validate_against_their_object_schema ... ok
+test project_requires_a_visible_palette ... ok
+test extension_and_metadata_names_are_never_interpreted ... ok
+test schema_integer_boundary_does_not_round_u64_max_up ... ok
+test linked_file_asset_requires_paths ... ok
+test texture_paths_must_be_under_textures ... ok
+test swatch_id_alias_is_accepted_by_the_validated_input_path ... ok
+test mouth_track_manual_ranges_stay_within_the_placement ... ok
+test int_means_signed_32_bit_unless_spec_states_otherwise ... ok
+test spline_handle_offsets_are_clamped_to_adjacent_key_times ... ok
+test duplicate_entry_ids_must_not_silently_overwrite_content ... ok
+test fixed_text_requires_width ... ok
+test brush_outline_must_be_closed ... ok
+test canonical_map_order_does_not_depend_on_insertion_order ... ok
+test every_valid_deep_library_object_has_a_resolvable_canonical_path ... ok
+test metadata_depth_is_enforced_at_model_input ... ok
+test child_stub_type_must_agree_with_the_containment_slot ... ok
+test containment_and_scene_limit_controls ... ok
+test nested_closed_value_objects_reject_unknown_fields ... ok
+test schema_mutations_cover_all_object_types_and_root_properties ... ok
+test derived_properties_are_output_only_on_validated_entity_input ... ok
+test million_system_ids_unique_ordered_and_correctly_prefixed ... ok
+test ten_megabyte_drawing_validation_measurement ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.74s
+

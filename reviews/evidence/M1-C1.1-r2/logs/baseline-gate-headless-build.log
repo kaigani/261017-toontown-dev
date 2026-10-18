@@ -1,0 +1,105 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling autocfg v1.5.1
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling cfg-if v1.0.5
+   Compiling memchr v2.8.3
+   Compiling zmij v1.0.23
+   Compiling foldhash v0.2.0
+   Compiling equivalent v1.0.3
+   Compiling allocator-api2 v0.2.21
+   Compiling getrandom v0.3.4
+   Compiling serde_json v1.0.154
+   Compiling zerocopy v0.8.63
+   Compiling version_check v0.9.5
+   Compiling ref-cast v1.0.27
+   Compiling regex-syntax v0.8.11
+   Compiling itoa v1.0.18
+   Compiling heck v0.5.0
+   Compiling parking_lot_core v0.9.12
+   Compiling once_cell v1.21.4
+   Compiling smallvec v1.16.3
+   Compiling scopeguard v1.2.0
+   Compiling windows-link v0.2.1
+   Compiling borrow-or-share v0.2.4
+   Compiling bit-vec v0.8.0
+   Compiling unicode-general-category v1.1.0
+   Compiling jsonschema-value v0.59.0
+   Compiling num-cmp v0.1.0
+   Compiling outref v0.5.2
+   Compiling bytecount v0.6.9
+   Compiling getrandom v0.4.3
+   Compiling percent-encoding v2.3.2
+   Compiling lock_api v0.4.14
+   Compiling vsimd v0.8.0
+   Compiling micromap v0.3.0
+   Compiling bit-set v0.8.0
+   Compiling thiserror v2.0.21
+   Compiling data-encoding v2.11.1
+   Compiling hashbrown v0.17.1
+   Compiling aho-corasick v1.1.5
+   Compiling tinyvec v1.13.3
+   Compiling dyn-clone v1.0.20
+   Compiling ryu v1.0.23
+   Compiling ahash v0.8.12
+   Compiling num-traits v0.2.19
+   Compiling typenum v1.20.1
+   Compiling const-oid v0.10.2
+   Compiling cpufeatures v0.3.1
+   Compiling clap_lex v1.1.1
+   Compiling anstyle v1.0.14
+   Compiling uuid-simd v0.8.0
+   Compiling unicode-normalization v0.1.26
+   Compiling hybrid-array v0.4.15
+   Compiling clap_builder v4.6.7
+   Compiling regex-automata v0.4.18
+   Compiling jsonschema-regex v0.59.0
+   Compiling parking_lot v0.12.5
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling num-integer v0.1.47
+   Compiling num-complex v0.4.6
+   Compiling num-bigint v0.4.8
+   Compiling num-iter v0.1.46
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling indexmap v2.14.2
+   Compiling num-rational v0.4.2
+   Compiling num v0.4.3
+   Compiling regex v1.13.1
+   Compiling fancy-regex v0.19.2
+   Compiling fraction v0.17.0
+   Compiling strum_macros v0.28.0
+   Compiling serde_derive_internals v0.30.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling schemars_derive v1.2.3
+   Compiling clap_derive v4.6.7
+   Compiling strum v0.28.0
+   Compiling clap v4.6.7
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\vector)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\registry)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\persist)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\executor)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\io)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\bins\headless)
+    Finished `release` profile [optimized + debuginfo] target(s) in 41.66s

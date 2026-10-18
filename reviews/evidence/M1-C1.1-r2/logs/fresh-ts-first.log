@@ -1,0 +1,61 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c11-r2/desktop
+
+ ❯ src/ipc/c11-r2-adversarial.test.ts (9 tests | 2 failed) 13ms
+   ❯ C11 R2 wire closure (9)
+     × does not let an inapplicable oneOf double branch corrupt an integer branch 4ms
+     × coerces scalar doubles declared through allOf 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > does not let an inapplicable oneOf double branch corrupt an integer branch
+AssertionError: expected undefined to deeply equal { kind: 'integer', …(1) }
+
+- Expected:
+{
+  "kind": "integer",
+  "x": 9007199254740993n,
+}
+
++ Received:
+undefined
+
+ ❯ src/ipc/c11-r2-adversarial.test.ts:29:47
+     27|     const text = '{"kind":"integer","x":9007199254740993}';
+     28|     expect(violations(schema, parseWireJson(text), '', {})).toEqual([]…
+     29|     expect(certifyWireText(text, schema, {})).toEqual({ kind: 'integer…
+       |                                               ^
+     30|   });
+     31|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > coerces scalar doubles declared through allOf
+AssertionError: expected undefined to deeply equal { x: 100000000000000000000 }
+
+- Expected:
+{
+  "x": 100000000000000000000,
+}
+
++ Received:
+undefined
+
+ ❯ src/ipc/c11-r2-adversarial.test.ts:34:72
+     32|   it('coerces scalar doubles declared through allOf', () => {
+     33|     const schema: Schema = { type: 'object', properties: { x: { allOf:…
+     34|     expect(certifyWireText('{"x":100000000000000000000}', schema, {}))…
+       |                                                                        ^
+     35|   });
+     36|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 7 passed (9)
+   Start at  14:38:47
+   Duration  441ms (setup 46%, transform 41%, import 8%, tests 4%, worker 2%)
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found

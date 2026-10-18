@@ -1,0 +1,21 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r2_adversarial",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:38:36.071956+00:00",
+  "elapsed_seconds": 50.04104920005193,
+  "exit_code": 101,
+  "log": "logs\\fresh-model-first.log",
+  "sha256": "225fb9485f5fac41dcf289e0543bad6650724987f86b7dbe8598432077c38cd5",
+  "proptest_seed": "1182712"
+}

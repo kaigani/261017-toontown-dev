@@ -1,0 +1,20 @@
+{
+  "command": [
+    "gh",
+    "run",
+    "view",
+    "39167094209",
+    "--repo",
+    "kaigani/261017-toontown-dev",
+    "--json",
+    "headSha,status,conclusion,jobs,url,workflowName"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:34:01.157675+00:00",
+  "elapsed_seconds": 1.5546348000061698,
+  "exit_code": 0,
+  "log": "logs\\ci-summary.log",
+  "sha256": "5dd6ed448d14411140a33e93fdc2c355fa6a7fd73ea45815da27cf8b51031218",
+  "proptest_seed": "1182712"
+}

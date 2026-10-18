@@ -1,0 +1,14 @@
+{
+  "command": [
+    "pnpm",
+    "lint"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:44:03.628576+00:00",
+  "elapsed_seconds": 15.729456899978686,
+  "exit_code": 0,
+  "log": "logs\\final-gate-lint.log",
+  "sha256": "1fd7114d7d6708f44264abbf49d7e89ece9f637f5284c64aa71a0cb6d15193d8",
+  "proptest_seed": "1182712"
+}

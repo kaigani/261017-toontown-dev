@@ -1,0 +1,19 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-engine",
+    "--test",
+    "c11_r1_wire",
+    "--locked"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:53:53.628808+00:00",
+  "elapsed_seconds": 0.9928089000168256,
+  "exit_code": 0,
+  "log": "logs\\r1-wire-closure.log",
+  "sha256": "2230499839bb94221fe4b2780cd2f4a539f9625504c53330dfdefdbff7f1c1cd",
+  "proptest_seed": "1182712"
+}

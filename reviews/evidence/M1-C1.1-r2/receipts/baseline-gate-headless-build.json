@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-headless"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:37:36.961590+00:00",
+  "elapsed_seconds": 41.750141000025906,
+  "exit_code": 0,
+  "log": "logs\\baseline-gate-headless-build.log",
+  "sha256": "dc3dd255b8046f9ebc549526b94222821c75d2e77c379702f6dfb8591b8f9af4",
+  "proptest_seed": "1182712"
+}

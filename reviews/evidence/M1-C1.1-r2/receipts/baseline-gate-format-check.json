@@ -1,0 +1,15 @@
+{
+  "command": [
+    "pnpm",
+    "format:check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:36:16.176287+00:00",
+  "elapsed_seconds": 1.70675020001363,
+  "exit_code": 0,
+  "log": "logs\\baseline-gate-format-check.log",
+  "sha256": "fa1bb38350ad42f74e074526ed178a803cdfa55b0368d2c08d3c89b8656813d3",
+  "proptest_seed": "1182712",
+  "original_windows_stream": "logs\\baseline-gate-format:check.log"
+}

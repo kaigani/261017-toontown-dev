@@ -1,0 +1,121 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.84s
+     Running tests\c11_r2_adversarial.rs (target\debug\deps\c11_r2_adversarial-68e9b986a80122da.exe)
+
+running 31 tests
+
+thread 'array_append_patch_inverse_restores_input' (22344) panicked at crates\model\tests\c11_r2_adversarial.rs:53:48:
+called `Result::unwrap()` on an `Err` value: ModelError { code: "arg.invalid", message: "array index out of range", details: Object {"pointer": String("/a/-"), "op": String("remove")} }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'missing_copy_source_is_not_implicitly_the_document_root' (1816) panicked at crates\model\tests\c11_r2_adversarial.rs:290:5:
+assertion failed: change::apply(&json!({"a":1}), &[op("copy", "/b", None, None, None)]).is_err()
+
+thread 'nested_array_move_with_overwrite_inverse_restores_input' (27604) panicked at crates\model\tests\c11_r2_adversarial.rs:53:5:
+assertion `left == right` failed: patch=[PatchOp { op: "move", from: Some("/a/0"), path: "/a/1/x", range: None, value: None, old_value: Some(Number(3)), elided: false }]; inverse=[PatchOp { op: "move", from: Some("/a/1/x"), path: "/a/0", range: None, value: None, old_value: None, elided: false }, PatchOp { op: "add", from: None, path: "/a/1/x", range: None, value: Some(Number(3)), old_value: None, elided: false }]
+  left: Object {"a": Array [Object {"x": Number(1)}, Object {"x": Number(3)}, Object {}]}
+ right: Object {"a": Array [Object {"x": Number(1)}, Object {"x": Number(2)}, Object {"x": Number(3)}]}
+
+thread 'range_patch_rejects_nonstring_mouth_value_without_deleting_text' (5244) panicked at crates\model\tests\c11_r2_adversarial.rs:285:5:
+malformed replacement must not delete B
+test array_append_patch_inverse_restores_input ... FAILED
+test missing_copy_source_is_not_implicitly_the_document_root ... FAILED
+test nonfinite_nested_structs_maps_and_model_constructors_are_rejected ... ok
+test ordinary_move_copy_test_and_array_index_shifts_invert ... ok
+test nested_array_move_with_overwrite_inverse_restores_input ... FAILED
+test range_patch_rejects_nonstring_mouth_value_without_deleting_text ... FAILED
+test elided_and_incomplete_operations_fail_without_mutating_input ... ok
+test canonical_writer_limits_are_explicit ... ok
+
+thread 'property_lookup_preserves_ref_property_annotations' (29452) panicked at crates\model\tests\c11_r2_adversarial.rs:469:5:
+assertion `left == right` failed: resolving Id must retain the owning property's readOnly
+  left: Null
+ right: true
+test property_lookup_preserves_ref_property_annotations ... FAILED
+
+thread 'property_lookup_follows_effect_condition_without_discarding_it' (6920) panicked at crates\model\tests\c11_r2_adversarial.rs:462:5:
+the drop-shadow transform is declared under Element then/allOf
+test property_lookup_follows_effect_condition_without_discarding_it ... FAILED
+test image_import_options_are_opaque ... ok
+
+thread 'cell_note_frame_map_keys_obey_signed_int_bounds' (20544) panicked at crates\model\tests\c11_r2_adversarial.rs:529:5:
+10 §1.1 frame is int even when used as a map key
+test cell_note_frame_map_keys_obey_signed_int_bounds ... FAILED
+register spot-check 1: pass
+test fixed_text_width_and_texture_paths_reject_new_invalid_cases ... ok
+
+thread 'mouth_label_frame_map_keys_are_positive_and_within_int' (30164) panicked at crates\model\tests\c11_r2_adversarial.rs:538:5:
+assertion failed: object::from_json::<SoundPlacement>(&p).is_err()
+test mouth_label_frame_map_keys_are_positive_and_within_int ... FAILED
+test spline_clamps_both_sides_for_irregular_key_spacing ... ok
+test duplicate_keys_are_rejected_even_at_distinct_frames ... ok
+test opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved ... ok
+register spot-check 5: pass
+test signed_int_boundaries_and_seed_exception ... ok
+test duplicate_local_ids_across_nested_nodes_share_drawing_scope ... ok
+register spot-check 6: pass
+test swatch_alias_equal_conflicting_and_nested_forms ... ok
+test public_serde_entries_cannot_evade_revalidation ... ok
+register spot-check 7: pass
+test model_depth_99_100_101_is_enforced_before_parsing ... ok
+register spot-check 8: pass
+register spot-check 9: pass
+register spot-check 10: pass
+register spot-check 13: pass
+register spot-check 15: pass
+test randomized_insertion_and_post_patch_revalidation_write_identical_bytes ... ok
+test duplicate_inline_collections_and_cross_entry_global_ids_are_rejected ... ok
+register spot-check 23: pass
+register spot-check 24: pass
+test new_entity_semantic_boundary_controls ... ok
+register spot-check 25: pass
+register spot-check 26: pass
+register spot-check 27: pass
+register spot-check 28: pass
+register spot-check 29: pass
+register spot-check 30: pass
+register spot-check 65: pass
+register spot-check 66: pass
+register spot-check 67: pass
+register spot-check 76: pass
+register spot-check 77: pass
+register spot-check 78: pass
+register spot-check 79: pass
+register spot-check 80: pass
+register spot-check 82: pass
+register spot-check 83: pass
+test every_model_stub_and_full_result_validates_at_depth_zero_one_two_all ... ok
+register spot-check 90: pass
+register spot-check 95: pass
+test duplicate_split_entries_all_five_maps_are_rejected ... ok
+register spot-check 96: pass
+register spot-check 99: pass
+register spot-check 101: pass
+test every_document_entry_kind_revalidates_deserialized_fields ... ok
+test duplicate_ids_across_split_types_and_inline_levels_are_rejected ... ok
+register spot-check 102: pass
+register spot-check 103: pass
+register spot-check 104: pass
+register spot-check 106: pass
+register spot-check 125: pass
+register spot-check 126: pass
+register spot-check 127: pass
+register spot-check 147: pass
+test forty_previously_implemented_register_rows_retain_constraints ... ok
+test cloned_generator_eight_threads_100k_each_are_unique ... ok
+
+failures:
+
+failures:
+    array_append_patch_inverse_restores_input
+    cell_note_frame_map_keys_obey_signed_int_bounds
+    missing_copy_source_is_not_implicitly_the_document_root
+    mouth_label_frame_map_keys_are_positive_and_within_int
+    nested_array_move_with_overwrite_inverse_restores_input
+    property_lookup_follows_effect_condition_without_discarding_it
+    property_lookup_preserves_ref_property_annotations
+    range_patch_rejects_nonstring_mouth_value_without_deleting_text
+
+test result: FAILED. 23 passed; 8 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.64s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r2_adversarial`

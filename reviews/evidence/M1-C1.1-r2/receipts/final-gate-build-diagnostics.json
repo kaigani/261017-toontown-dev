@@ -1,0 +1,16 @@
+{
+  "command": [
+    "pnpm",
+    "--dir",
+    "desktop",
+    "build:diagnostics"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:44:24.944369+00:00",
+  "elapsed_seconds": 2.0402158999932,
+  "exit_code": 0,
+  "log": "logs\\final-gate-build-diagnostics.log",
+  "sha256": "b0cbaf8729de27474f1477de3e884b5e5102f7929560dd32e9d0a7b92fd9c5b6",
+  "proptest_seed": "1182712"
+}

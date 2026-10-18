@@ -1,0 +1,41 @@
+   Compiling once_cell v1.21.4
+   Compiling ahash v0.8.12
+   Compiling referencing v0.59.0
+   Compiling jsonschema-value v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\colour)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\registry)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\persist)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\executor)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\io)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\engine)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.01s
+     Running tests\c11_r2_wire.rs (target\debug\deps\c11_r2_wire-21eb020d0bc06630.exe)
+
+running 6 tests
+test cross_language_exchange ... ok
+test wire_depth_one_under_and_one_over ... ok
+test fresh_hostile_text_cases_reject_and_escaped_unicode_roundtrips ... ok
+test integer_edges_are_lossless_or_typed_errors ... ok
+test nested_nonfinite_f32_f64_maps_and_sequences_are_errors ... ok
+
+thread 'writer_never_emits_text_its_reader_rejects_at_depth_boundary' (24588) panicked at crates\engine\tests\c11_r2_wire.rs:31:9:
+wire writer emits scalar at depth 129, reader caps at 128
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test writer_never_emits_text_its_reader_rejects_at_depth_boundary ... FAILED
+
+failures:
+
+failures:
+    writer_never_emits_text_its_reader_rejects_at_depth_boundary
+
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p tt-engine --test c11_r2_wire`

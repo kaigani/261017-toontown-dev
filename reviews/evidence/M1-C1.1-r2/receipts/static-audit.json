@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.1-r2/static_audit.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:48:40.133152+00:00",
+  "elapsed_seconds": 1.3351583000039682,
+  "exit_code": 0,
+  "log": "logs\\static-audit.log",
+  "sha256": "8978e6c9b8105c4d12801d6e48f4bca4cabd9b5b6ac13cfbfb38ec36acfd9aed",
+  "proptest_seed": "1182712"
+}
