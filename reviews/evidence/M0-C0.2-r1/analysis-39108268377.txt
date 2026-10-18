@@ -1,0 +1,16 @@
+userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0
+devicePixelRatio 1, getCoalescedEvents available: True
+native: {'backend': 'octotablet-ink', 'tablets': [], 'timestampGranularityMs': 1}, packets 0, invalid batches 0
+  status: Native listener running (octotablet-ink).
+  status: Simulating 1024 synthetic pen frames at 240 Hz…
+  status: Simulated 1024 frames at 240 Hz: web received 967/1024, native 0/1024.
+  status: Simulating 1024 synthetic pen frames at 500 Hz…
+  status: Simulated 1024 frames at 500 Hz: web received 1012/1024, native 0/1024.
+synthetic pen 240 Hz (achieved 240.0): web received 967/1024 (tilt exact 967), injection->event p50 0.24 p95 0.48 max 710.0 ms; native received 0/1024
+synthetic pen 500 Hz (achieved 500.0): web received 1012/1024 (tilt exact 1012), injection->event p50 0.32 p95 1.77 max 3.4 ms; native received 0/1024
+web path: 2 pen-down strokes
+  web stroke 0: samples 967, rate 201.3 Hz, interval median 4.20 ms max 714.1 ms, gaps>2x 3, pressure distinct 967 implied 1024, tilt x -59..60 y -60..59, twist nonzero 962
+      dispatches 262, coalesced per dispatch p50 4 max 5, event->handler latency p50 13.6 p95 16.3 ms
+  web stroke 1: samples 1012, rate 497.4 Hz, interval median 2.00 ms max 5.5 ms, gaps>2x 4, pressure distinct 1012 implied 1024, tilt x -59..60 y -60..59, twist nonzero 1007
+      dispatches 131, coalesced per dispatch p50 8 max 10, event->handler latency p50 14.8 p95 16.5 ms
+native path: 0 strokes

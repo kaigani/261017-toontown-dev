@@ -1,0 +1,112 @@
+python : test_C02_R1_02_native_timestamp_association
+(__main__.ToolingTests.test_C02_R1_02_native_timestamp_association) ... FAIL
+At line:3 char:1
++ python tests/adversarial/c02-r1-tooling.py *> reviews/evidence/M0-C0. ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_C02_R1_02_...ation) ... FAIL:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+test_C02_R1_03_native_pose_only_contact_boundaries
+(__main__.ToolingTests.test_C02_R1_03_native_pose_only_contact_boundaries) ... FAIL
+test_C02_R1_07_nearest_rank_percentile_matches_frontend
+(__main__.ToolingTests.test_C02_R1_07_nearest_rank_percentile_matches_frontend) ... FAIL
+test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts) ... FAIL
+
+======================================================================
+FAIL: test_C02_R1_02_native_timestamp_association (__main__.ToolingTests.test_C02_R1_02_native_timestamp_association)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r1\tests\adversarial\c02-r1-tooling.py", line 41, in
+test_C02_R1_02_native_timestamp_association
+    self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 101 != 0 :
+running 2 tests
+test c02_r1_02_pump_boundary_does_not_erase_device_time ... FAILED
+test c02_r1_02_frame_timestamp_labels_preceding_pose ... FAILED
+
+failures:
+
+failures:
+    c02_r1_02_frame_timestamp_labels_preceding_pose
+    c02_r1_02_pump_boundary_does_not_erase_device_time
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+thread 'c02_r1_02_pump_boundary_does_not_erase_device_time' (4228) panicked at
+C:\Users\kaiga\AppData\Local\Temp\toontown-c02-r1-v7uujk9p\native_test.rs:63:5:
+assertion `left == right` failed
+  left: [None, None, None]
+ right: [Some(100.0), Some(104.0), Some(108.0)]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'c02_r1_02_frame_timestamp_labels_preceding_pose' (628) panicked at
+C:\Users\kaiga\AppData\Local\Temp\toontown-c02-r1-v7uujk9p\native_test.rs:48:5:
+assertion `left == right` failed
+  left: [None, Some(100.0)]
+ right: [Some(100.0), Some(104.0)]
+
+
+======================================================================
+FAIL: test_C02_R1_03_native_pose_only_contact_boundaries
+(__main__.ToolingTests.test_C02_R1_03_native_pose_only_contact_boundaries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r1\tests\adversarial\c02-r1-tooling.py", line 56, in
+test_C02_R1_03_native_pose_only_contact_boundaries
+    self.assertIn('native path: 2 strokes',result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'native path: 2 strokes' not found in 'userAgent: fixture\ndevicePixelRatio 2, getCoalescedEvents
+available: False\nnative: None, packets 10, invalid batches 0\nweb path: 0 pen-down strokes\nnative path: 1 strokes\n
+native stroke 0: samples 6, rate 5.0 Hz, interval median 4.00 ms max 992.0 ms, gaps>2x 1, pressure distinct 1 implied
+None, tilt x 0..0 y 0..0, twist nonzero 0\n'
+
+======================================================================
+FAIL: test_C02_R1_07_nearest_rank_percentile_matches_frontend
+(__main__.ToolingTests.test_C02_R1_07_nearest_rank_percentile_matches_frontend)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r1\tests\adversarial\c02-r1-tooling.py", line 60, in
+test_C02_R1_07_nearest_rank_percentile_matches_frontend
+    self.assertEqual(analysis.pct([1,2,3,4,5,6],50),3)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 4 != 3
+
+======================================================================
+FAIL: test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r1\tests\adversarial\c02-r1-tooling.py", line 28, in
+test_C02_R1_08_macos_accessor_contracts
+    self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 101 != 0 :
+running 3 tests
+test proximity_control_does_not_read_pressure ... ok
+test c02_r1_08_native_tablet_point_never_calls_mouse_subtype ... FAILED
+test c02_r1_08_ordinary_mouse_move_never_calls_tablet_only_accessors ... FAILED
+
+failures:
+
+failures:
+    c02_r1_08_native_tablet_point_never_calls_mouse_subtype
+    c02_r1_08_ordinary_mouse_move_never_calls_tablet_only_accessors
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+thread 'c02_r1_08_native_tablet_point_never_calls_mouse_subtype' (29808) panicked at
+C:\Users\kaiga\AppData\Local\Temp\toontown-c02-mac-fux62f7a\mac_test.rs:18:9:
+AppKit subtype contract: native tablet events are not mouse/system/periodic events
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'c02_r1_08_ordinary_mouse_move_never_calls_tablet_only_accessors' (7008) panicked at
+C:\Users\kaiga\AppData\Local\Temp\toontown-c02-mac-fux62f7a\mac_test.rs:24:9:
+AppKit pressure contract: ordinary MouseMoved is not an allowed event type
+
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.498s
+
+FAILED (failures=4)

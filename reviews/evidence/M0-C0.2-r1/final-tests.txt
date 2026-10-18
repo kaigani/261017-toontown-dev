@@ -1,0 +1,250 @@
+> toontown-workspace@ test C:\Users\kaiga\work\review\m0-c02-r1
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m0-c02-r1\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c02-r1/desktop
+
+ ❯ src/test/c02-r1-tooling.test.ts (1 test | 1 failed) 1880ms
+   × C0.2 adversarial native conversion and offline analysis regressions 1880ms
+ ❯ src/test/c02-r1-measurement.test.tsx (5 tests | 5 failed) 84ms
+   × C02-R1-03: lifting between two perfect 250 Hz strokes is not a drop or contact time 5ms
+   × C02-R1-03: native contact summaries exclude pen-up time too 1ms
+   × C02-R1-06: API presence is not inferred from having observed a batch larger than one 1ms
+   × C02-R1-01: exported evidence retains injection timing and frame values for independent analysis 53ms
+   × C02-R1-05: a lossless 1024-contact-frame run reports zero missing frames 23ms
+node.exe :
+At C:\Users\kaiga\AppData\Roaming\npm\pnpm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/pnpm/bin/pnpm.cjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c02-r1-measurement.test.tsx > C02-R1-03: lifting between two perfect 250 Hz strokes is not a drop or
+contact time
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ src/test/c02-r1-measurement.test.tsx:40:23
+     38|   ];
+     39|   const result = summarizeWeb(samples, []);
+     40|   expect(result.gaps).toBe(0);
+       |                       ^
+     41|   expect(result.rateHz).toBe(250);
+     42| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/test/c02-r1-measurement.test.tsx > C02-R1-03: native contact summaries exclude pen-up time too
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ src/test/c02-r1-measurement.test.tsx:67:23
+     65|     })),
+     66|   );
+     67|   expect(result.gaps).toBe(0);
+       |                       ^
+     68|   expect(result.rateHz).toBe(250);
+     69| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/test/c02-r1-measurement.test.tsx > C02-R1-06: API presence is not inferred from having observed a batch
+larger than one
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/c02-r1-measurement.test.tsx:83:39
+     81|     // A low-rate pen is still on a browser supporting coalescing.
+     82|     const result = summarizeWeb([point(0), point(100), point(200)], []…
+     83|     expect(result.coalescedSupported).toBe(true);
+       |                                       ^
+     84|   } finally {
+     85|     capture.stop();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/test/c02-r1-measurement.test.tsx > C02-R1-01: exported evidence retains injection timing and frame values
+for independent analysis
+AssertionError: expected undefined to be defined
+ ❯ src/test/c02-r1-measurement.test.tsx:167:34
+    165|   const { saved, report } = await completedSimulation();
+    166|   const simulations = saved['simulations'] as { report?: PenSimReport …
+    167|   expect(simulations[0]?.report).toBeDefined();
+       |                                  ^
+    168|   expect(simulations[0]?.report).toEqual(report);
+    169|   expect(saved['environment']).toHaveProperty('timeOrigin');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/test/c02-r1-measurement.test.tsx > C02-R1-05: a lossless 1024-contact-frame run reports zero missing frames
+AssertionError: expected 1023 to be 1024 // Object.is equality
+
+- Expected
++ Received
+
+- 1024
++ 1023
+
+ ❯ src/test/c02-r1-measurement.test.tsx:175:40
+    173|   const { saved } = await completedSimulation();
+    174|   const simulations = saved['simulations'] as { web: { received: numbe…
+    175|   expect(simulations[0]?.web.received).toBe(1024);
+       |                                        ^
+    176|   expect(simulations[0]?.web.missing).toBe(0);
+    177| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/test/c02-r1-tooling.test.ts > C0.2 adversarial native conversion and offline analysis regressions
+Error: Command failed: python tests/adversarial/c02-r1-tooling.py
+test_C02_R1_02_native_timestamp_association (__main__.ToolingTests.test_C02_R1_02_native_timestamp_association) ...
+FAIL
+test_C02_R1_03_native_pose_only_contact_boundaries
+(__main__.ToolingTests.test_C02_R1_03_native_pose_only_contact_boundaries) ... FAIL
+test_C02_R1_07_nearest_rank_percentile_matches_frontend
+(__main__.ToolingTests.test_C02_R1_07_nearest_rank_percentile_matches_frontend) ... FAIL
+test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts) ... FAIL
+
+======================================================================
+FAIL: test_C02_R1_02_native_timestamp_association (__main__.ToolingTests.test_C02_R1_02_native_timestamp_association)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r1\tests\adversarial\c02-r1-tooling.py", line 41, in
+test_C02_R1_02_native_timestamp_association
+    self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 101 != 0 :
+running 2 tests
+test c02_r1_02_frame_timestamp_labels_preceding_pose ... FAILED
+test c02_r1_02_pump_boundary_does_not_erase_device_time ... FAILED
+
+failures:
+
+failures:
+    c02_r1_02_frame_timestamp_labels_preceding_pose
+    c02_r1_02_pump_boundary_does_not_erase_device_time
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+thread 'c02_r1_02_pump_boundary_does_not_erase_device_time' (28940) panicked at
+C:\Users\kaiga\AppData\Local\Temp\toontown-c02-r1-19h97g79\native_test.rs:63:5:
+assertion `left == right` failed
+  left: [None, None, None]
+ right: [Some(100.0), Some(104.0), Some(108.0)]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'c02_r1_02_frame_timestamp_labels_preceding_pose' (26192) panicked at
+C:\Users\kaiga\AppData\Local\Temp\toontown-c02-r1-19h97g79\native_test.rs:48:5:
+assertion `left == right` failed
+  left: [None, Some(100.0)]
+ right: [Some(100.0), Some(104.0)]
+
+
+ Test Files  2 failed | 17 passed (19)
+      Tests  6 failed | 208 passed | 3 expected fail (217)
+   Start at  00:51:55
+   Duration  41.74s (tests 75%, environment 17%, setup 5%, import 2%, transform 1%)
+
+    Isolate  19 workers spawned · ~448ms startup each (spawn + environment, per file)
+             at least ~8.06s faster with isolate: false — reuses workers across files instead of one per file
+
+C:\Users\kaiga\work\review\m0-c02-r1\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 test: `vitest run --config vite.config.ts`
+Exit status 1
+
+======================================================================
+FAIL: test_C02_R1_03_native_pose_only_contact_boundaries
+(__main__.ToolingTests.test_C02_R1_03_native_pose_only_contact_boundaries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r1\tests\adversarial\c02-r1-tooling.py", line 56, in
+test_C02_R1_03_native_pose_only_contact_boundaries
+    self.assertIn('native path: 2 strokes',result.stdout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'native path: 2 strokes' not found in 'userAgent: fixture\ndevicePixelRatio 2, getCoalescedEvents
+available: False\nnative: None, packets 10, invalid batches 0\nweb path: 0 pen-down strokes\nnative path: 1 strokes\n
+native stroke 0: samples 6, rate 5.0 Hz, interval median 4.00 ms max 992.0 ms, gaps>2x 1, pressure distinct 1 implied
+None, tilt x 0..0 y 0..0, twist nonzero 0\n'
+
+======================================================================
+FAIL: test_C02_R1_07_nearest_rank_percentile_matches_frontend
+(__main__.ToolingTests.test_C02_R1_07_nearest_rank_percentile_matches_frontend)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r1\tests\adversarial\c02-r1-tooling.py", line 60, in
+test_C02_R1_07_nearest_rank_percentile_matches_frontend
+    self.assertEqual(analysis.pct([1,2,3,4,5,6],50),3)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 4 != 3
+
+======================================================================
+FAIL: test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m0-c02-r1\tests\adversarial\c02-r1-tooling.py", line 28, in
+test_C02_R1_08_macos_accessor_contracts
+    self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 101 != 0 :
+running 3 tests
+test proximity_control_does_not_read_pressure ... ok
+test c02_r1_08_native_tablet_point_never_calls_mouse_subtype ... FAILED
+test c02_r1_08_ordinary_mouse_move_never_calls_tablet_only_accessors ... FAILED
+
+failures:
+
+failures:
+    c02_r1_08_native_tablet_point_never_calls_mouse_subtype
+    c02_r1_08_ordinary_mouse_move_never_calls_tablet_only_accessors
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+thread 'c02_r1_08_native_tablet_point_never_calls_mouse_subtype' (20992) panicked at
+C:\Users\kaiga\AppData\Local\Temp\toontown-c02-mac-p5ckbfbt\mac_test.rs:18:9:
+AppKit subtype contract: native tablet events are not mouse/system/periodic events
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'c02_r1_08_ordinary_mouse_move_never_calls_tablet_only_accessors' (6424) panicked at
+C:\Users\kaiga\AppData\Local\Temp\toontown-c02-mac-p5ckbfbt\mac_test.rs:24:9:
+AppKit pressure contract: ordinary MouseMoved is not an allowed event type
+
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.752s
+
+FAILED (failures=4)
+
+ ❯ src/test/c02-r1-tooling.test.ts:7:3
+      5|
+      6| it('C0.2 adversarial native conversion and offline analysis regression…
+      7|   execFileSync(process.platform === 'win32' ? 'python' : 'python3', ['…
+       |   ^
+      8|     cwd: fileURLToPath(new URL('../../../', import.meta.url)),
+      9|     encoding: 'utf8',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+ ELIFECYCLE  Test failed. See above for more details.
