@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python",
+    "-X",
+    "utf8",
+    "C:\\Users\\kaiga\\work\\review\\m0-c04-r5\\reviews\\evidence\\M0-C0.4-r5\\page_probe.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r5",
+  "started": "2026-10-18T17:12:15.968315+00:00",
+  "seconds": 2.311,
+  "exit": 0,
+  "expected": 0
+}

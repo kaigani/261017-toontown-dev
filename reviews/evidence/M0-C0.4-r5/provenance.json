@@ -1,0 +1,93 @@
+[
+  {
+    "command": [
+      "rustc",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "rustc 1.98.1 (48a229cea 2026-09-01)\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "cargo",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "cargo 1.98.1 (797e8a9bc 2026-08-05)\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "cargo",
+      "deny",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "cargo-deny 0.20.2\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "v22.23.2\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "pnpm --version"
+    ],
+    "exit": 0,
+    "stdout": "10.12.1\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "Python 3.13.1\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit": 0,
+    "stdout": "99d1a6bdf9008c81477cc0e441a52bda612e47d1\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "log",
+      "--oneline",
+      "906e8e3..99d1a6b"
+    ],
+    "exit": 0,
+    "stdout": "99d1a6b fix(c0.4): clip action streams before episode detection; key log as a state machine (C04-R4-01, -02)\nef25fc8 merge: Codex closure check of C0.4 (r4 closure, amended reviewer tests, probes)\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "906e8e3..99d1a6b",
+      "--",
+      "tests/adversarial",
+      "desktop/src/test"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

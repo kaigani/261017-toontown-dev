@@ -1,0 +1,196 @@
+{
+ "version": 3,
+ "web": {
+  "samples": 0,
+  "strokes": [],
+  "coalescedApi": true,
+  "coalescedObserved": false,
+  "coalescedPerDispatch": null,
+  "samplesPerFrame": null,
+  "handlerLatencyMs": {
+   "oldestCoalesced": null,
+   "newestCoalesced": null,
+   "allSamples": null
+  },
+  "loss": "unknown, gap heuristic only",
+  "truncated": 0
+ },
+ "native": {
+  "packets": 0,
+  "clock": "host",
+  "strokes": [],
+  "loss": "unknown, gap heuristic only",
+  "hostDropped": 0,
+  "sendFailures": 0,
+  "invalidBatches": 0,
+  "truncated": 0,
+  "info": null
+ },
+ "runs": [],
+ "actions": {
+  "actions": [
+   {
+    "id": "A1",
+    "state": "done",
+    "durationMs": 500,
+    "web": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    }
+   },
+   {
+    "id": "A2",
+    "state": "done",
+    "durationMs": 500,
+    "web": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    }
+   },
+   {
+    "id": "A3",
+    "state": "done",
+    "durationMs": 500,
+    "web": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    }
+   },
+   {
+    "id": "A4",
+    "state": "skipped",
+    "durationMs": 0,
+    "web": {
+     "outcome": "omitted",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    },
+    "native": {
+     "outcome": "omitted",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    }
+   },
+   {
+    "id": "A5",
+    "state": "done",
+    "durationMs": 500,
+    "web": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    }
+   },
+   {
+    "id": "A6",
+    "state": "done",
+    "durationMs": 500,
+    "web": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    },
+    "native": {
+     "outcome": "performed, no events",
+     "episodes": [],
+     "measured": null,
+     "stats": null
+    }
+   }
+  ],
+  "keyEvents": {
+   "events": 22,
+   "transitions": 11,
+   "ignored": 0
+  },
+  "excludedSamples": {
+   "web": 0,
+   "native": 0
+  },
+  "notRecorded": [],
+  "webOutside": [],
+  "nativeOutside": []
+ },
+ "decision": {
+  "outcome": "insufficient evidence: repeat the actions named for row 4 (W), row 5 (W)",
+  "selected": null,
+  "conditions": [],
+  "scores": {},
+  "eligible": [],
+  "platform": "windows",
+  "rows": {
+   "W": {
+    "1": {
+     "result": "fail",
+     "note": "0 of 3 actions report a pen"
+    },
+    "2": {
+     "result": "fail",
+     "note": "0 levels"
+    },
+    "3": {
+     "result": "fail",
+     "note": "0 levels"
+    },
+    "4": {
+     "result": "insufficient",
+     "note": "tilt absent and the pen's tilt support is not stated"
+    },
+    "5": {
+     "result": "insufficient",
+     "note": "A4 omitted; state whether the pen has barrel rotation"
+    },
+    "6": {
+     "result": "partial",
+     "note": "API True, batching in A2 False"
+    },
+    "7": {
+     "result": "fail",
+     "note": "performed, no events"
+    },
+    "8": {
+     "result": "fail",
+     "note": "performed, no events"
+    },
+    "9": {
+     "result": "fail",
+     "note": "only the down sample or one pressure value"
+    }
+   }
+  }
+ }
+}

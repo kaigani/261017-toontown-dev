@@ -1,0 +1,67 @@
+{
+  "frontend": {
+    "bursts": [
+      {
+        "payloadBytes": 0,
+        "roundTripMs": {
+          "max": 7.399999976158142,
+          "mean": 1.08,
+          "min": 0.6000000238418579,
+          "n": 50,
+          "p50": 0.800000011920929,
+          "p95": 1.9000000357627869,
+          "p99": 7.399999976158142
+        }
+      },
+      {
+        "payloadBytes": 1024,
+        "roundTripMs": {
+          "max": 1,
+          "mean": 0.7560000014305115,
+          "min": 0.6000000238418579,
+          "n": 50,
+          "p50": 0.7999999523162842,
+          "p95": 0.800000011920929,
+          "p99": 1
+        }
+      },
+      {
+        "payloadBytes": 65536,
+        "roundTripMs": {
+          "max": 2.400000035762787,
+          "mean": 1.9619999980926517,
+          "min": 1.699999988079071,
+          "n": 50,
+          "p50": 1.9000000357627869,
+          "p95": 2.200000047683716,
+          "p99": 2.400000035762787
+        }
+      },
+      {
+        "payloadBytes": 1048576,
+        "roundTripMs": {
+          "max": 22.600000023841854,
+          "mean": 20.954000004529952,
+          "min": 20,
+          "n": 50,
+          "p50": 20.80000001192093,
+          "p95": 21.80000001192093,
+          "p99": 22.600000023841854
+        }
+      }
+    ],
+    "count": 50,
+    "ok": true,
+    "transport": "tauri",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
+  },
+  "host": {
+    "arch": "x86_64",
+    "formatVersion": "0.0",
+    "name": "Toontown",
+    "platform": "windows",
+    "registryVersion": "0.0.0",
+    "runMode": "attached",
+    "version": "0.0.1"
+  }
+}
