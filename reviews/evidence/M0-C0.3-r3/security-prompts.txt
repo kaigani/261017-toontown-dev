@@ -1,0 +1,7 @@
+﻿
+   Id StartTime             MainWindowTitle 
+   -- ---------             --------------- 
+14372 10/17/2026 5:11:23 PM Windows Security
+18068 10/17/2026 5:55:01 PM Windows Security
+
+

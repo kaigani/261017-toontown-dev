@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python",
+    "-I",
+    "scripts/analyse-canvas-log.py",
+    "reviews\\evidence\\M0-C0.3-r3\\page-r3-one-frame.json"
+  ],
+  "exitCode": 2,
+  "stdoutBytes": 0
+}

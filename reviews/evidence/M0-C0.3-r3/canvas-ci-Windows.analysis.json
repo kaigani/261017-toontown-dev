@@ -1,0 +1,260 @@
+{
+ "version": 1,
+ "runs": [
+  {
+   "backend": "webgpu",
+   "scene": "paths100k",
+   "outcome": "failed",
+   "error": "webgpu unavailable: navigator.gpu.requestAdapter() returned null"
+  },
+  {
+   "backend": "webgpu",
+   "scene": "groups1k",
+   "outcome": "failed",
+   "error": "webgpu unavailable: navigator.gpu.requestAdapter() returned null"
+  },
+  {
+   "backend": "webgpu",
+   "scene": "brush10k",
+   "outcome": "failed",
+   "error": "webgpu unavailable: navigator.gpu.requestAdapter() returned null"
+  },
+  {
+   "backend": "webgl2",
+   "scene": "paths100k",
+   "outcome": "ok",
+   "error": null,
+   "gpu": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+   "canvas": {
+    "cssHeight": 445,
+    "cssWidth": 1008,
+    "dpr": 1,
+    "height": 445,
+    "width": 1008
+   },
+   "bytesPerTransfer": 8700096.0,
+   "transferMs": {
+    "n": 10,
+    "p50": 99.20000000001164,
+    "p95": 3135.9000000000233,
+    "max": 3135.9000000000233,
+    "mean": 402.7700000000012
+   },
+   "transferMBps": 21.600655460932977,
+   "encodeMs": {
+    "n": 10,
+    "p50": 5.5524,
+    "p95": 8.7498,
+    "max": 8.7498,
+    "mean": 6.48483
+   },
+   "generateMs": 10.2921,
+   "ipcPerFrameCeilingFps": 10.080645161289139,
+   "decodeMs": 159.70000000001164,
+   "decode": {
+    "cubics": 200000,
+    "fillBytes": 0,
+    "fillPaths": 0,
+    "fillVertices": 0,
+    "paths": 100000,
+    "segments": 2832713,
+    "strokeBytes": 90646816,
+    "strokePaths": 100000,
+    "tolerance": 0.5,
+    "triangles": 0
+   },
+   "uploadMs": {
+    "completeMs": 52.29999999998836,
+    "cpuMs": 52.20000000001164
+   },
+   "refreshMs": 15.625,
+   "frames": 8,
+   "intervalMs": {
+    "n": 7,
+    "p50": 1812.5,
+    "p95": 1859.2999999999993,
+    "max": 1859.2999999999993,
+    "mean": 1647.3142857142855
+   },
+   "fps": 0.6070487026502013,
+   "longFrames": 7,
+   "cpuMs": {
+    "n": 8,
+    "p50": 0,
+    "p95": 0.3999999999650754,
+    "max": 0.3999999999650754,
+    "mean": 0.09999999999854481
+   },
+   "gpuMs": null,
+   "meetsTarget": false
+  },
+  {
+   "backend": "webgl2",
+   "scene": "groups1k",
+   "outcome": "ok",
+   "error": null,
+   "gpu": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+   "canvas": {
+    "cssHeight": 445,
+    "cssWidth": 1008,
+    "dpr": 1,
+    "height": 445,
+    "width": 1008
+   },
+   "bytesPerTransfer": 2024072.0,
+   "transferMs": {
+    "n": 10,
+    "p50": 26,
+    "p95": 406.7999999999883,
+    "max": 406.7999999999883,
+    "mean": 64.00999999999766
+   },
+   "transferMBps": 31.621184189971473,
+   "encodeMs": {
+    "n": 10,
+    "p50": 1.3245,
+    "p95": 25.5688,
+    "max": 25.5688,
+    "mean": 3.80674
+   },
+   "generateMs": 33.4978,
+   "ipcPerFrameCeilingFps": 38.46153846153846,
+   "decodeMs": 62.79999999998836,
+   "decode": {
+    "cubics": 50000,
+    "fillBytes": 4565620,
+    "fillPaths": 10000,
+    "fillVertices": 175915,
+    "paths": 20000,
+    "segments": 101961,
+    "strokeBytes": 3262752,
+    "strokePaths": 10000,
+    "tolerance": 0.5,
+    "triangles": 145915
+   },
+   "uploadMs": {
+    "completeMs": 3.400000000023283,
+    "cpuMs": 3.300000000046566
+   },
+   "refreshMs": 15.626562499999977,
+   "frames": 136,
+   "intervalMs": {
+    "n": 135,
+    "p50": 78.09999999999854,
+    "p95": 93.79999999999927,
+    "max": 109.5,
+    "mean": 74.07333333333332
+   },
+   "fps": 13.500135001350017,
+   "longFrames": 135,
+   "cpuMs": {
+    "n": 136,
+    "p50": 0.1000000000349246,
+    "p95": 0.5,
+    "max": 5.7999999999883585,
+    "mean": 0.20955882353197974
+   },
+   "gpuMs": null,
+   "meetsTarget": false
+  },
+  {
+   "backend": "webgl2",
+   "scene": "brush10k",
+   "outcome": "ok",
+   "error": null,
+   "gpu": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+   "canvas": {
+    "cssHeight": 445,
+    "cssWidth": 1008,
+    "dpr": 1,
+    "height": 445,
+    "width": 1008
+   },
+   "bytesPerTransfer": 10085716.0,
+   "transferMs": {
+    "n": 10,
+    "p50": 114.89999999996508,
+    "p95": 133.09999999997672,
+    "max": 133.09999999997672,
+    "mean": 116.50999999999767
+   },
+   "transferMBps": 86.56523903527767,
+   "encodeMs": {
+    "n": 10,
+    "p50": 6.263,
+    "p95": 7.4884,
+    "max": 7.4884,
+    "mean": 6.36806
+   },
+   "generateMs": 21.6283,
+   "ipcPerFrameCeilingFps": 8.70322019147349,
+   "decodeMs": 489.8999999999651,
+   "decode": {
+    "cubics": 0,
+    "fillBytes": 30166256,
+    "fillPaths": 10000,
+    "fillVertices": 1088402,
+    "paths": 10000,
+    "segments": 0,
+    "strokeBytes": 0,
+    "strokePaths": 0,
+    "tolerance": 0.5,
+    "triangles": 1062652
+   },
+   "uploadMs": {
+    "completeMs": 17.29999999998836,
+    "cpuMs": 17.199999999953434
+   },
+   "refreshMs": 15.874603174603152,
+   "frames": 74,
+   "intervalMs": {
+    "n": 73,
+    "p50": 140.59999999999854,
+    "p95": 171.90000000000146,
+    "max": 187.5,
+    "mean": 137.2
+   },
+   "fps": 7.28862973760933,
+   "longFrames": 73,
+   "cpuMs": {
+    "n": 74,
+    "p50": 0.1000000000349246,
+    "p95": 4.600000000034925,
+    "max": 10.700000000011642,
+    "mean": 0.5878378378409842
+   },
+   "gpuMs": null,
+   "meetsTarget": false
+  }
+ ],
+ "pixelRuns": [
+  {
+   "backend": "webgpu",
+   "outcome": "failed",
+   "error": "webgpu unavailable: navigator.gpu.requestAdapter() returned null"
+  },
+  {
+   "backend": "webgl2",
+   "outcome": "ok",
+   "width": 1008,
+   "height": 445,
+   "bytes": 1794256,
+   "transferMs": {
+    "n": 20,
+    "p50": 23.80000000004657,
+    "p95": 26.5,
+    "max": 29.29999999998836,
+    "mean": 24.185000000006404
+   },
+   "uploadMs": {
+    "n": 20,
+    "p50": 0.19999999995343387,
+    "p95": 0.40000000002328306,
+    "max": 1.199999999953434,
+    "mean": 0.20999999999476132
+   },
+   "transferMBps": 74.18879470744366,
+   "frameCostP50Ms": 24.000000000000004
+  }
+ ]
+}

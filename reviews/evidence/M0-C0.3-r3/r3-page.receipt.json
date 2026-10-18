@@ -1,0 +1,5 @@
+{
+  "command": "pnpm --dir desktop exec vitest run --config vite.config.ts src/test/c03-r3-page.test.tsx",
+  "exitCode": 1,
+  "seconds": 1.617159128189087
+}

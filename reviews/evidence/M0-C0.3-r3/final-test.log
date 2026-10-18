@@ -1,0 +1,49 @@
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m0-c03-r3
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m0-c03-r3\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c03-r3/desktop
+
+ ❯ src/test/c03-r3-page.test.tsx (2 tests | 1 failed) 135ms
+   × C03-R3-01: completed 0.1 Hz phase is accepted even with one recorded pan frame 54ms
+
+ Test Files  1 failed | 29 passed (30)
+      Tests  1 failed | 263 passed | 3 expected fail (267)
+   Start at  06:12:05
+   Duration  52.43s (tests 77%, environment 14%, setup 6%, import 2%, transform 1%)
+
+    Isolate  30 workers spawned · ~318ms startup each (spawn + environment, per file)
+             at least ~9.22s faster with isolate: false — reuses workers across files instead of one per file
+
+C:\Users\kaiga\work\review\m0-c03-r3\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 test: `vitest run --config vite.config.ts`
+Exit status 1
+ ELIFECYCLE  Test failed. See above for more details.
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c03-r3-page.test.tsx > C03-R3-01: completed 0.1 Hz phase is accepted even with one recorded pan frame
+AssertionError: error: run 0 (webgl2/paths100k): pan/zoom frames missing
+: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ src/test/c03-r3-page.test.tsx:167:30
+    165|   }
+    166|   const r = analyze(log);
+    167|   expect(r.status, r.stderr).toBe(0);
+       |                              ^
+    168| });
+    169|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
