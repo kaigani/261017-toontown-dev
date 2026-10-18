@@ -1,0 +1,197 @@
+[
+  {
+    "scene": "aa_edge_angles",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "alpha_stack",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "clip_circle",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "clip_nested",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "coincident_edges",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "cubic_blobs",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "degenerate",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "extreme_coordinates",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "glyph_evenodd",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "glyph_nonzero",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "gradient_transformed",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "hairline_grid",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "linear_gradient",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "many_small_paths",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "non_integer_scales",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "perf_2000_cubics_512",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "radial_gradient",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "star_evenodd",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "star_nonzero",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_00",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_01",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_02",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_03",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_04",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_05",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_06",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_07",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_08",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_09",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_10",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_11",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_12",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_13",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_14",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stress_15",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "stroked_curves",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "subpixel_translation",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "thin_strokes",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  },
+  {
+    "scene": "translucent_overlap",
+    "opt1EqualsOpt3": true,
+    "committedMatch": true
+  }
+]

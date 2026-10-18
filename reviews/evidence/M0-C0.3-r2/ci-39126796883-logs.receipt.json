@@ -1,0 +1,5 @@
+{
+  "command": "gh run view 39126796883 --log",
+  "exitCode": 0,
+  "seconds": 3.739
+}

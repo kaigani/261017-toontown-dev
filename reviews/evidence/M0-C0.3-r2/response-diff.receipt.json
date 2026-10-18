@@ -1,0 +1,14 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "3ee0207..5e8c7b7",
+    "--",
+    ".",
+    ":!reviews",
+    ":!crates/render/examples/c03_raster/goldens",
+    ":!crates/render/examples/c03_raster/hashes.json"
+  ],
+  "exitCode": 0,
+  "seconds": 0.022750139236450195
+}

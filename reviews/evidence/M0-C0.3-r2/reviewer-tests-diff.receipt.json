@@ -1,0 +1,13 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "3ee0207..5e8c7b7",
+    "--",
+    "tests/adversarial",
+    "desktop/src/test",
+    "crates/render/tests"
+  ],
+  "exitCode": 0,
+  "seconds": 0.019144296646118164
+}

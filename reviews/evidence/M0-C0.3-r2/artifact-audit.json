@@ -1,0 +1,2250 @@
+{
+  "goldens": 234,
+  "goldenBytes": 6088664,
+  "artifactPngsCompared": 2808,
+  "artifacts": [
+    {
+      "run": 39126106552,
+      "os": "Windows",
+      "process": 1,
+      "entries": 234,
+      "detected": "Avx2(Avx2 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "cf58c593f5dc9f816eef36f8013ca3f4a733185a46bd585b780de229fc2d64eb"
+    },
+    {
+      "run": 39126106552,
+      "os": "Windows",
+      "process": 2,
+      "entries": 234,
+      "detected": "Avx2(Avx2 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "e9f55cf239b249e153b1423e56de4456c135d7b5156c96c8ced2d59538114ea1"
+    },
+    {
+      "run": 39126106552,
+      "os": "macOS",
+      "process": 1,
+      "entries": 234,
+      "detected": "Neon(Neon { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "a26d2cb15a5460957304aa5af6733a601049fa357a79a2d7f22a65f220fed4bf"
+    },
+    {
+      "run": 39126106552,
+      "os": "macOS",
+      "process": 2,
+      "entries": 234,
+      "detected": "Neon(Neon { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "6ab09e268c836ec26b73bcf8b055552b17b212ec9c750956c3037ad2287abbf6"
+    },
+    {
+      "run": 39126106552,
+      "os": "Linux",
+      "process": 1,
+      "entries": 234,
+      "detected": "Avx512(Avx512 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "b3a563dd9bb03f3f0cffb80c97703a7432d5793f91c294f037d8eca407e116c5"
+    },
+    {
+      "run": 39126106552,
+      "os": "Linux",
+      "process": 2,
+      "entries": 234,
+      "detected": "Avx512(Avx512 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx512(Avx512 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "f078729d60f95681afe3c0d0afd44a9e59506564fd96ce9400196d385fef3252"
+    },
+    {
+      "run": 39126796883,
+      "os": "Windows",
+      "process": 1,
+      "entries": 234,
+      "detected": "Avx2(Avx2 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "8d3048bbb968fb3a383584e0e9281a94f4dce5a155c5252f5218a0a6dfdf1436"
+    },
+    {
+      "run": 39126796883,
+      "os": "Windows",
+      "process": 2,
+      "entries": 234,
+      "detected": "Avx2(Avx2 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "2fabee7505495247a7044700aecb125cba791be347c7538c602e273655fd6e0a"
+    },
+    {
+      "run": 39126796883,
+      "os": "macOS",
+      "process": 1,
+      "entries": 234,
+      "detected": "Neon(Neon { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "92491a4b7e015e7f7ad9531097865aebaaaf93abf6280d348e44deebb5422ef4"
+    },
+    {
+      "run": 39126796883,
+      "os": "macOS",
+      "process": 2,
+      "entries": 234,
+      "detected": "Neon(Neon { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Neon(Neon { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "3eceacc935575815de9445b357a322dda60b031adf34d2008e95956c4e2db8e6"
+    },
+    {
+      "run": 39126796883,
+      "os": "Linux",
+      "process": 1,
+      "entries": 234,
+      "detected": "Avx2(Avx2 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "72e92e98023c8e7227473ae8c7cf79ffcaedbef04e1458bc899d8f131dbdd1d3"
+    },
+    {
+      "run": 39126796883,
+      "os": "Linux",
+      "process": 2,
+      "entries": 234,
+      "detected": "Avx2(Avx2 { _private: () })",
+      "configurations": [
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_fallback",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_simd",
+          "renderMode": "OptimizeSpeed",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_mt3",
+          "renderMode": "OptimizeSpeed",
+          "threads": 3
+        },
+        {
+          "level": "Fallback(Fallback { _private: () })",
+          "name": "vello_cpu_f32_fallback",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        },
+        {
+          "level": "Avx2(Avx2 { _private: () })",
+          "name": "vello_cpu_f32_simd",
+          "renderMode": "OptimizeQuality",
+          "threads": 0
+        }
+      ],
+      "reportSha": "14aa88571e9dd9ce18409d4f804257dfc6974b093cf1866e5e69a75c5a7dcaf1"
+    }
+  ],
+  "opacity": [
+    {
+      "config": "ttraster",
+      "scene": "aa_edge_angles",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "alpha_stack",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "clip_circle",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "clip_nested",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "coincident_edges",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "cubic_blobs",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "degenerate",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "extreme_coordinates",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "glyph_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "glyph_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "gradient_transformed",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "hairline_grid",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "linear_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "many_small_paths",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "non_integer_scales",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "perf_2000_cubics_512",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "radial_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "star_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "star_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_00",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_01",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_02",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_03",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_04",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_05",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_06",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_07",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_08",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_09",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_10",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_11",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_12",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_13",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_14",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stress_15",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "stroked_curves",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "subpixel_translation",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "thin_strokes",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "ttraster",
+      "scene": "translucent_overlap",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "aa_edge_angles",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "alpha_stack",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "clip_circle",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "clip_nested",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "coincident_edges",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "cubic_blobs",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "degenerate",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "extreme_coordinates",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "glyph_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "glyph_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "gradient_transformed",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "hairline_grid",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "linear_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "many_small_paths",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "non_integer_scales",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "perf_2000_cubics_512",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "radial_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "star_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "star_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_00",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_01",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_02",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_03",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_04",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_05",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_06",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_07",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_08",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_09",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_10",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_11",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_12",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_13",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_14",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stress_15",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "stroked_curves",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "subpixel_translation",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "thin_strokes",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_fallback",
+      "scene": "translucent_overlap",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "aa_edge_angles",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "alpha_stack",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "clip_circle",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "clip_nested",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "coincident_edges",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "cubic_blobs",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "degenerate",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "extreme_coordinates",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "glyph_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "glyph_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "gradient_transformed",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "hairline_grid",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "linear_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "many_small_paths",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "non_integer_scales",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "perf_2000_cubics_512",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "radial_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "star_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "star_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_00",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_01",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_02",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_03",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_04",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_05",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_06",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_07",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_08",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_09",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_10",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_11",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_12",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_13",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_14",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stress_15",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "stroked_curves",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "subpixel_translation",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "thin_strokes",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_f32_simd",
+      "scene": "translucent_overlap",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "aa_edge_angles",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "alpha_stack",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "clip_circle",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "clip_nested",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "coincident_edges",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "cubic_blobs",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "degenerate",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "extreme_coordinates",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "glyph_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "glyph_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "gradient_transformed",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "hairline_grid",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "linear_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "many_small_paths",
+      "opaqueBackground": true,
+      "minAlpha": 250,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "non_integer_scales",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "perf_2000_cubics_512",
+      "opaqueBackground": true,
+      "minAlpha": 251,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "radial_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "star_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "star_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_00",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_01",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_02",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_03",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_04",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_05",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_06",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_07",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_08",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_09",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_10",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 254
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_11",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_12",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_13",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_14",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stress_15",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "stroked_curves",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "subpixel_translation",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "thin_strokes",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_fallback",
+      "scene": "translucent_overlap",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "aa_edge_angles",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "alpha_stack",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "clip_circle",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "clip_nested",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "coincident_edges",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "cubic_blobs",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "degenerate",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "extreme_coordinates",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "glyph_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "glyph_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "gradient_transformed",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "hairline_grid",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "linear_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "many_small_paths",
+      "opaqueBackground": true,
+      "minAlpha": 250,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "non_integer_scales",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "perf_2000_cubics_512",
+      "opaqueBackground": true,
+      "minAlpha": 251,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "radial_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "star_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "star_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_00",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_01",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_02",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_03",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_04",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_05",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_06",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_07",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_08",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_09",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_10",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 254
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_11",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_12",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_13",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_14",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stress_15",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "stroked_curves",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "subpixel_translation",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "thin_strokes",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_mt3",
+      "scene": "translucent_overlap",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "aa_edge_angles",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "alpha_stack",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "clip_circle",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "clip_nested",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "coincident_edges",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "cubic_blobs",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "degenerate",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "extreme_coordinates",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "glyph_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "glyph_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "gradient_transformed",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "hairline_grid",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "linear_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "many_small_paths",
+      "opaqueBackground": true,
+      "minAlpha": 250,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "non_integer_scales",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "perf_2000_cubics_512",
+      "opaqueBackground": true,
+      "minAlpha": 251,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "radial_gradient",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "star_evenodd",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "star_nonzero",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_00",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_01",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_02",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_03",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_04",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_05",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_06",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_07",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_08",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_09",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_10",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 254
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_11",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_12",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_13",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_14",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stress_15",
+      "opaqueBackground": false,
+      "minAlpha": 0,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "stroked_curves",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "subpixel_translation",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "thin_strokes",
+      "opaqueBackground": true,
+      "minAlpha": 255,
+      "maxAlpha": 255
+    },
+    {
+      "config": "vello_cpu_simd",
+      "scene": "translucent_overlap",
+      "opaqueBackground": true,
+      "minAlpha": 254,
+      "maxAlpha": 255
+    }
+  ],
+  "simdDifferentScenes": {
+    "vello_cpu": [
+      "aa_edge_angles",
+      "glyph_evenodd",
+      "glyph_nonzero",
+      "perf_2000_cubics_512",
+      "stress_00",
+      "stress_01",
+      "stress_02",
+      "stress_03",
+      "stress_04",
+      "stress_05",
+      "stress_06",
+      "stress_07",
+      "stress_08",
+      "stress_09",
+      "stress_10",
+      "stress_11",
+      "stress_12",
+      "stress_13",
+      "stress_14",
+      "stress_15"
+    ],
+    "vello_cpu_f32": [
+      "aa_edge_angles",
+      "glyph_evenodd",
+      "glyph_nonzero",
+      "perf_2000_cubics_512",
+      "stress_00",
+      "stress_01",
+      "stress_02",
+      "stress_03",
+      "stress_04",
+      "stress_05",
+      "stress_06",
+      "stress_07",
+      "stress_08",
+      "stress_09",
+      "stress_10",
+      "stress_11",
+      "stress_12",
+      "stress_13",
+      "stress_14",
+      "stress_15"
+    ]
+  },
+  "speed": [
+    {
+      "os": "Windows",
+      "kind": "fallback",
+      "u8Ms": 11.9579,
+      "f32Ms": 11.8686,
+      "statisticalMedianPercent": -0.7467866431396741,
+      "reportU8Ms": 11.9579,
+      "reportF32Ms": 11.8686,
+      "reportUpperMedianPercent": -0.7467866431396741
+    },
+    {
+      "os": "Windows",
+      "kind": "simd",
+      "u8Ms": 8.559199999999999,
+      "f32Ms": 9.139899999999999,
+      "statisticalMedianPercent": 6.784512571268353,
+      "reportU8Ms": 8.559199999999999,
+      "reportF32Ms": 9.139899999999999,
+      "reportUpperMedianPercent": 6.784512571268353
+    },
+    {
+      "os": "macOS",
+      "kind": "fallback",
+      "u8Ms": 6.650542,
+      "f32Ms": 6.981625,
+      "statisticalMedianPercent": 4.9782859803005675,
+      "reportU8Ms": 6.650542,
+      "reportF32Ms": 6.981625,
+      "reportUpperMedianPercent": 4.9782859803005675
+    },
+    {
+      "os": "macOS",
+      "kind": "simd",
+      "u8Ms": 5.2222919999999995,
+      "f32Ms": 5.063458,
+      "statisticalMedianPercent": -3.041461488557129,
+      "reportU8Ms": 5.2222919999999995,
+      "reportF32Ms": 5.063458,
+      "reportUpperMedianPercent": -3.041461488557129
+    },
+    {
+      "os": "Linux",
+      "kind": "fallback",
+      "u8Ms": 7.992064999999999,
+      "f32Ms": 8.655795000000001,
+      "statisticalMedianPercent": 8.30486238537853,
+      "reportU8Ms": 7.992064999999999,
+      "reportF32Ms": 8.655795000000001,
+      "reportUpperMedianPercent": 8.30486238537853
+    },
+    {
+      "os": "Linux",
+      "kind": "simd",
+      "u8Ms": 4.981151,
+      "f32Ms": 5.711972,
+      "statisticalMedianPercent": 14.671729485815632,
+      "reportU8Ms": 4.981151,
+      "reportF32Ms": 5.711972,
+      "reportUpperMedianPercent": 14.671729485815632
+    }
+  ],
+  "provenance": [
+    {
+      "os": "Windows",
+      "committedReportIdentical": true
+    },
+    {
+      "os": "macOS",
+      "committedReportIdentical": true
+    },
+    {
+      "os": "Linux",
+      "committedReportIdentical": true
+    }
+  ],
+  "nativeEqualsDefault": true
+}

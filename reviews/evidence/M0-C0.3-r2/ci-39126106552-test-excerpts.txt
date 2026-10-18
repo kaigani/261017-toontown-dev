@@ -1,0 +1,6 @@
+raster determinism (ubuntu-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:10:02.6441709Z ^[[36;1mcargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1^[[0m
+raster determinism (ubuntu-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:10:06.0979035Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+raster determinism (macos-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:10:11.7291690Z ^[[36;1mcargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1^[[0m
+raster determinism (macos-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:10:15.3002840Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+raster determinism (windows-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:11:06.1344110Z ^[[36;1mcargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1^[[0m
+raster determinism (windows-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T12:11:12.4854854Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s

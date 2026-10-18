@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python",
+    "scripts/compare-raster-reports.py",
+    "crates/render/examples/c03_raster/hashes.json",
+    "reviews/evidence/M0-C0.3/raster-r1-report-local-windows.json",
+    "reviews/evidence/M0-C0.3/raster-r1-report-ci-Linux-39126106552.json",
+    "reviews/evidence/M0-C0.3/raster-r1-report-ci-Windows-39126106552.json",
+    "reviews/evidence/M0-C0.3/raster-r1-report-ci-macOS-39126106552.json"
+  ],
+  "exitCode": 0,
+  "seconds": 0.03701448440551758
+}
