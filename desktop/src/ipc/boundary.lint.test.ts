@@ -1,35 +1,59 @@
 // @vitest-environment node
 /// <reference types="node" />
-// Permanent positive and negative cases for the IPC boundary lint (eslint.ipc-boundary.js, C01-R1-02). Each case is
-// linted with the project's real ESLint configuration as if it were a file inside src/.
+// Permanent positive and negative cases for the IPC boundary lint (boundary/eslint.js; C01-R1-02, C01-R2-01). Each
+// case is linted with the project's real ESLint configuration as a file inside the desktop package.
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { ESLint } from 'eslint';
-import { describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it } from 'vitest';
 
-import { ipcBoundaryRules } from '../../eslint.ipc-boundary.js';
+import { EXTENSIONS, ipcBoundaryRules, MAX_SRC_DEPTH } from '../../boundary/eslint.js';
 
 const desktop = fileURLToPath(new URL('../../', import.meta.url));
+const probes = `${desktop}src/__probes__/lint-${String(process.pid)}/`;
 const eslint = new ESLint({ cwd: desktop });
 const BOUNDARY_RULES = new Set(Object.keys(ipcBoundaryRules));
+const COMMENTS = '@eslint-community/eslint-comments/';
 
-/** Lints `code` as the given src file and returns the boundary-rule violations. */
-async function boundaryViolations(code: string, file = 'src/lib/latency.ts'): Promise<string[]> {
-  const [result] = await eslint.lintText(code, { filePath: `${desktop}${file}` });
+afterAll(() => {
+  rmSync(probes, { recursive: true, force: true });
+});
+
+function boundaryHits(result: ESLint.LintResult | undefined): string[] {
   const fatal = result?.messages.filter((m) => m.fatal) ?? [];
   if (fatal.length > 0)
     throw new Error(`lint failed to parse the case: ${fatal.map((m) => m.message).join('; ')}`);
   return (result?.messages ?? [])
-    .filter((m) => m.ruleId && BOUNDARY_RULES.has(m.ruleId))
-    .map((m) => m.ruleId ?? '');
+    .map((m) => m.ruleId ?? '')
+    .filter((id) => BOUNDARY_RULES.has(id) || id.startsWith(COMMENTS));
+}
+
+/** Lints `code` as if it were the given (existing) file and returns the boundary-rule violations. */
+async function lintAs(code: string, file = 'src/lib/latency.ts'): Promise<string[]> {
+  const [result] = await eslint.lintText(code, { filePath: `${desktop}${file}` });
+  return boundaryHits(result);
+}
+
+/** Writes `code` to a new probe file under src/__probes__/ and lints it from disk. */
+async function lintFile(relative: string, code: string): Promise<string[]> {
+  const file = `${probes}${relative}`;
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, code);
+  const [result] = await eslint.lintFiles([file]);
+  return boundaryHits(result);
 }
 
 const TAURI = ['@tauri-apps', 'api', 'core'].join('/');
 const GLOBAL = ['__TAURI', '__'].join('');
 const INTERNALS = ['__TAURI', '_INTERNALS__'].join('');
+const DIRECT = `import { invoke } from '${TAURI}';\nexport const f = () => invoke('app_info');\n`;
+const T = 120_000;
 
 const BYPASSES: Record<string, string> = {
-  'static import': `import { invoke } from '${TAURI}';\nexport const f = () => invoke('app_info');\n`,
+  'static import': DIRECT,
   'type-only import': `import type { InvokeArgs } from '${TAURI}';\nexport type A = InvokeArgs;\n`,
   're-export': `export { invoke } from '${TAURI}';\n`,
   'export star': `export * from '${TAURI}';\n`,
@@ -38,49 +62,172 @@ const BYPASSES: Record<string, string> = {
   'dynamic import via variable': `const spec = '${TAURI}';\nexport const f = () => import(spec);\n`,
   'dynamic import via concatenation': `export const f = () => import('@tauri' + '-apps/api/core');\n`,
   require: `declare const require: (id: string) => unknown;\nexport const m = require('${TAURI}');\n`,
-  'import.meta.glob': `export const m = import.meta.glob('/node_modules/@tauri*');
-`,
-  'import.meta.glob through a cast': `export const m = (import.meta as unknown as { glob(p: string): unknown }).glob('/node_modules/@tauri*');
-`,
-  'aliased import.meta': `const meta: unknown = import.meta;
-export const m = meta;
-`,
+  'import.meta.glob': `export const m = import.meta.glob('/node_modules/@tauri*');\n`,
+  'import.meta.glob through a cast': `export const m = (import.meta as unknown as { glob(p: string): unknown }).glob('/node_modules/@tauri*');\n`,
+  'aliased import.meta': `const meta: unknown = import.meta;\nexport const m = meta;\n`,
   'window global': `export const t = (window as unknown as Record<string, unknown>).${GLOBAL};\n`,
   'computed window global': `export const t = (window as unknown as Record<string, unknown>)['${INTERNALS}'];\n`,
   'bare global': `declare const ${INTERNALS}: unknown;\nexport const t = ${INTERNALS};\n`,
   'in operator': `export const has = '${INTERNALS}' in window;\n`,
   eval: `export const f = () => eval('1');\n`,
   'new Function': `export const f = new Function('return 1');\n`,
+  'raw transport (static)': `import { createTauriTransport } from '../ipc/tauriTransport';\nexport const f = () => createTauriTransport().invoke('app_info');\n`,
+  'raw transport (dynamic)': `export const f = async () => (await import('../ipc/tauriTransport')).createTauriTransport();\n`,
+  'raw transport (re-export)': `export * from '../ipc/tauriTransport';\n`,
+  'raw transport (with extension)': `export { createTauriTransport } from '../ipc/tauriTransport.ts';\n`,
+  'absolute specifier': `export * from '/src/ipc';\n`,
+  'drive specifier': `export * from 'C:/src/ipc';\n`,
+  'file: specifier': `export * from 'file:///src/ipc';\n`,
+  'backslash specifier': `export * from '..\\\\ipc';\n`,
+  'non-canonical relative': `export * from '../ipc/../ipc';\n`,
+  'bare parent': `export * from '..';\n`,
+  'outside src (desktop root)': `export * from '../../vite.config';\n`,
+  'outside desktop (repo tests)': `export * from '../../../tests/adversarial/fixtures/c01-r2-outside.mts';\n`,
 };
 
-describe('IPC boundary lint', () => {
+const DISABLES: Record<string, string> = {
+  'blanket block disable': `/* eslint-disable */\n${DIRECT}`,
+  'blanket line disable': `import { invoke } from '${TAURI}'; // eslint-disable-line\nexport const f = () => invoke('x');\n`,
+  'next-line disable of the rule': `// eslint-disable-next-line no-restricted-imports\n${DIRECT}`,
+  'block disable of several boundary rules': `/* eslint-disable no-restricted-imports, no-restricted-syntax */\n${DIRECT}`,
+  'disable of the comments rule itself': `/* eslint-disable ${COMMENTS}no-restricted-disable */\n${DIRECT}`,
+  'disable of no-eval': `// eslint-disable-next-line no-eval\nexport const f = () => eval('1');\n`,
+};
+
+describe('IPC boundary lint: rejected forms', () => {
   for (const [name, code] of Object.entries(BYPASSES)) {
-    it(`rejects ${name} outside src/ipc/tauriTransport.ts`, async () => {
-      expect(await boundaryViolations(code)).not.toEqual([]);
-    }, 60_000);
+    it(
+      `rejects ${name} in ordinary src code`,
+      async () => {
+        expect(await lintAs(code)).not.toEqual([]);
+      },
+      T,
+    );
   }
 
-  it('accepts the transport file itself', async () => {
-    const code = `import { invoke } from '${TAURI}';\nexport const f = () => invoke('app_info');\n`;
-    expect(await boundaryViolations(code, 'src/ipc/tauriTransport.ts')).toEqual([]);
-  }, 60_000);
-
-  it('accepts ordinary code that goes through the host API', async () => {
-    const code = `import { useHost } from '../ipc';
-export const f = () => useHost().appInfo();
-export const lazy = () => import('../ipc');
-export const dev = import.meta.env.DEV;
-`;
-    expect(await boundaryViolations(code)).toEqual([]);
-  }, 60_000);
-
-  it('accepts the real source tree', async () => {
-    const results = await eslint.lintFiles(['src/**/*.{ts,tsx}']);
-    const hits = results.flatMap((r) =>
-      r.messages
-        .filter((m) => m.ruleId && BOUNDARY_RULES.has(m.ruleId))
-        .map((m) => `${r.filePath}: ${m.message}`),
+  for (const [name, code] of Object.entries(DISABLES)) {
+    it(
+      `rejects ${name}`,
+      async () => {
+        // The disable either is reported itself (eslint-comments) or fails to silence the boundary; lint fails.
+        const hits = await lintAs(code);
+        expect(hits).not.toEqual([]);
+        if (!name.includes('comments rule'))
+          expect(
+            hits.some((id) => id.startsWith(COMMENTS)),
+            hits.join(','),
+          ).toBe(true);
+      },
+      T,
     );
-    expect(hits).toEqual([]);
-  }, 120_000);
+  }
+
+  for (const ext of EXTENSIONS) {
+    it(
+      `covers .${ext} files`,
+      async () => {
+        const code =
+          ext === 'cjs'
+            ? `const { invoke } = require('${TAURI}');\nmodule.exports = () => invoke('app_info');\n`
+            : DIRECT;
+        // Distinct base names: TypeScript keeps only one of probe.ts / probe.tsx in a folder.
+        expect(await lintFile(`ext/probe-${ext}.${ext}`, code)).not.toEqual([]);
+      },
+      T,
+    );
+  }
+
+  it(
+    'rejects the raw transport inside src/ipc too (only index.ts may import it)',
+    async () => {
+      expect(await lintAs(`export * from './tauriTransport';\n`, 'src/ipc/hostApi.ts')).not.toEqual([]);
+    },
+    T,
+  );
+
+  it(
+    'rejects climbing out of src/ at any depth',
+    async () => {
+      expect(await lintAs(`export * from '../vite.config';\n`, 'src/App.tsx')).not.toEqual([]);
+      expect(await lintFile('a/b/deep.ts', `export * from '../../../../../vite.config';\n`)).not.toEqual([]);
+    },
+    T,
+  );
+
+  it(
+    'test files may reach only tests/ and boundary/ outside src/',
+    async () => {
+      expect(await lintAs(`export * from '../../vite.config';\n`, 'src/ipc/hostApi.test.ts')).not.toEqual([]);
+      expect(await lintAs(`export * from '../../../crates/x';\n`, 'src/ipc/hostApi.test.ts')).not.toEqual([]);
+      expect(await lintAs(`export * from '../../../../x';\n`, 'src/ipc/hostApi.test.ts')).not.toEqual([]);
+    },
+    T,
+  );
+});
+
+describe('IPC boundary lint: accepted forms', () => {
+  it(
+    'the transport file may import Tauri',
+    async () => {
+      expect(await lintAs(DIRECT, 'src/ipc/tauriTransport.ts')).toEqual([]);
+    },
+    T,
+  );
+
+  it(
+    'src/ipc/index.ts may import the transport',
+    async () => {
+      const code = `import { createTauriTransport } from './tauriTransport';\nexport const t = createTauriTransport;\n`;
+      expect(await lintAs(code, 'src/ipc/index.ts')).toEqual([]);
+    },
+    T,
+  );
+
+  it(
+    'ordinary code using the host API, relative imports inside src/, and import.meta.env',
+    async () => {
+      const code = `import { useHost } from '../ipc';\nexport { HostError } from '../ipc/hostApi';\nexport const f = () => useHost().appInfo();\nexport const lazy = () => import('../ipc');\nexport const dev = import.meta.env.DEV;\n`;
+      expect(await lintAs(code)).toEqual([]);
+      expect(await lintAs(`export * from './ipc';\nexport * from '.';\n`, 'src/App.tsx')).toEqual([]);
+      expect(await lintFile('a/b/deep-ok.ts', `export * from '../../../../ipc';\n`)).toEqual([]);
+    },
+    T,
+  );
+
+  it(
+    'test files may import repository test helpers and the boundary definitions',
+    async () => {
+      const code = `export * from '../../../tests/adversarial/frontend-cases';\nexport * from '../../boundary/eslint.js';\n`;
+      expect(await lintAs(code, 'src/ipc/hostApi.test.ts')).toEqual([]);
+    },
+    T,
+  );
+
+  it(
+    'the committed source tree is clean and no deeper than the per-depth rules cover',
+    async () => {
+      const tracked = execFileSync('git', ['ls-files', '--', 'src', 'boundary', '*.ts', '*.js'], {
+        cwd: desktop,
+        encoding: 'utf8',
+      })
+        .split('\n')
+        .filter((f) => new RegExp(`\\.(${EXTENSIONS.join('|')})$`).test(f));
+      for (const f of tracked.filter((x) => x.startsWith('src/'))) {
+        expect(f.split('/').length - 2, f).toBeLessThanOrEqual(MAX_SRC_DEPTH);
+      }
+      const results = await eslint.lintFiles(tracked.map((f) => `${desktop}${f}`));
+      const hits = results.flatMap((r) => boundaryHits(r).map((id) => `${r.filePath}: ${id}`));
+      expect(hits).toEqual([]);
+    },
+    T,
+  );
+});
+
+describe('public surface of src/ipc', () => {
+  it('does not export the raw transport', async () => {
+    const names = Object.keys(await import('./index'));
+    expect(names).not.toContain('createTauriTransport');
+    expect(names).not.toContain('isTauriRuntime');
+    for (const n of names) expect(n.toLowerCase()).not.toContain('tauri');
+  });
 });

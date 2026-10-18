@@ -2,9 +2,12 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
+import { ipcBoundary } from './boundary/vite-plugin.ts';
+
 // Tauri expects a fixed dev port and must not clear its terminal output.
-export default defineConfig({
-  plugins: [react()],
+export default defineConfig(({ mode }) => ({
+  // The IPC boundary is enforced at bundling time for dev, build and Vitest (boundary/vite-plugin.ts).
+  plugins: [ipcBoundary({ allowTestSupport: mode === 'test' }), react()],
   clearScreen: false,
   server: {
     port: 1420,
@@ -21,5 +24,8 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['src/test/setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
+    // Boundary tests write probe files under src/__probes__ and lint/bundle the tree; run files one at a time so
+    // no test ever observes another test's probes.
+    fileParallelism: false,
   },
-});
+}));

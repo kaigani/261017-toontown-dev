@@ -4,7 +4,9 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-import { ipcBoundaryExemption, ipcBoundaryRules } from './eslint.ipc-boundary.js';
+import comments from '@eslint-community/eslint-plugin-eslint-comments';
+
+import { ipcBoundaryConfig } from './boundary/eslint.js';
 
 export default tseslint.config(
   { ignores: ['dist', 'src-tauri', 'node_modules', 'coverage'] },
@@ -23,18 +25,15 @@ export default tseslint.config(
       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
     },
   },
+  // The IPC boundary: every JS/TS file of the package (boundary/eslint.js).
+  ...ipcBoundaryConfig(comments),
   {
-    // The host is reached only through src/ipc (swappable transport). See eslint.ipc-boundary.js.
-    files: ['src/**/*.{ts,tsx}'],
-    rules: ipcBoundaryRules,
+    // JavaScript files are not in a TypeScript project: lint them without type information.
+    files: ['**/*.{js,jsx,mjs,cjs}'],
+    extends: [tseslint.configs.disableTypeChecked],
   },
   {
-    // The transport implementation, and the test that exercises the boundary rules with bypass samples.
-    files: ['src/ipc/tauriTransport.ts', 'src/ipc/boundary.lint.test.ts'],
-    rules: ipcBoundaryExemption,
-  },
-  {
-    files: ['*.config.{js,ts}', 'eslint.*.js'],
+    files: ['*.config.{js,ts}', 'boundary/**'],
     languageOptions: { globals: globals.node },
     extends: [tseslint.configs.disableTypeChecked],
   },

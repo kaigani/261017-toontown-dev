@@ -8,7 +8,8 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["vite.config.ts", "eslint.config.js", "eslint.ipc-boundary.js"]
+  "include": ["vite.config.ts", "eslint.config.js", "boundary"]
 }

@@ -1,4 +1,4 @@
-// Typed host API. UI code depends on this interface only, never on a transport or on @tauri-apps/*.
+// Typed host API. UI code depends on this interface only, never on a transport or on the Tauri packages.
 import { certify } from './schema';
 import type { HostTransport, Unlisten } from './transport';
 import type { BenchPlan, EngineInfo, ErrorInfo, MenuCommandEvent, PingRequest, PingResponse } from './types';
