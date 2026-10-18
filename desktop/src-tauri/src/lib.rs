@@ -47,6 +47,7 @@ pub fn run() -> Result<(), DesktopError> {
         .manage(engine)
         .manage(diagnostics::Diagnostics { bench: bench.clone() })
         .manage(spikes::tablet::TabletSpike::new(launch.spike.clone()))
+        .manage(spikes::canvas::CanvasSpike::new(launch.spike.clone()))
         .menu(move |app| menu::build(app, &menu_manifest))
         .on_menu_event(move |app, event| menu::on_event(app, &manifest, event.id().as_ref()))
         .setup(move |app| {
@@ -55,6 +56,12 @@ pub fn run() -> Result<(), DesktopError> {
             }
             if let Some(settings) = &launch.spike {
                 spikes::tablet::arm_auto_timeout(app.handle(), settings);
+                if settings.name == "canvas" {
+                    // Measure on the largest canvas the display allows (the page records the actual size).
+                    if let Some(window) = tauri::Manager::get_webview_window(app, "main") {
+                        let _ = window.maximize();
+                    }
+                }
             }
             Ok(())
         })
@@ -70,7 +77,9 @@ pub fn run() -> Result<(), DesktopError> {
             spikes::tablet::spike_save_log,
             spikes::tablet::spike_environment,
             spikes::tablet::spike_probe_native_window,
-            spikes::tablet::spike_raw_input_sink
+            spikes::tablet::spike_raw_input_sink,
+            spikes::canvas::spike_canvas_scene,
+            spikes::canvas::spike_canvas_pixels
         ])
         .run(tauri::generate_context!())?;
     Ok(())

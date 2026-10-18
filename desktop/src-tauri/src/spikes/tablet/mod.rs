@@ -32,12 +32,14 @@ use tt_engine::ErrorInfo;
 /// Spike launch settings (`--spike tablet [--spike-log <file>]`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SpikeSettings {
-    /// Spike name; only `tablet` exists.
+    /// Spike name: `tablet` (C0.2) or `canvas` (C0.3).
     pub name: String,
     /// Where `spike_save_log` writes the JSON log.
     pub log_path: Option<PathBuf>,
-    /// `--spike-auto`: the page runs the synthetic-pen scenarios, saves the log and the app exits.
+    /// `--spike-auto`: the page runs its automated scenarios, saves the log and the app exits.
     pub auto: bool,
+    /// `--spike-renderer auto|webgpu|webgl2` (canvas spike only; `None` = auto).
+    pub renderer: Option<String>,
 }
 
 /// One input packet as produced by a platform converter. The field set is pinned by the reviewers' replay tests
@@ -191,6 +193,8 @@ pub struct SpikeMode {
     pub pen_simulation: bool,
     /// Automated run (`--spike-auto`).
     pub auto: bool,
+    /// Canvas spike: forced renderer (`webgpu`, `webgl2`) or `null` for automatic choice.
+    pub renderer: Option<String>,
 }
 
 /// Parameters of a synthetic pen stroke (Windows).
@@ -320,19 +324,27 @@ pub fn arm_auto_timeout(app: &AppHandle, settings: &SpikeSettings) {
 /// Managed state of the tablet spike.
 #[derive(Debug, Default)]
 pub struct TabletSpike {
+    /// The spike launch, whichever spike it is (mode, environment and log saving are shared by all spikes).
+    launch: Option<SpikeSettings>,
+    /// `launch` if it is the tablet spike.
     settings: Option<SpikeSettings>,
     native: Mutex<Option<Arc<AtomicBool>>>,
 }
 
 impl TabletSpike {
-    /// State for the given launch settings (`None` = spike disabled).
+    /// State for the given launch settings (`None` = no spike).
     #[must_use]
-    pub fn new(settings: Option<SpikeSettings>) -> Self {
-        Self { settings: settings.filter(|s| s.name == "tablet"), native: Mutex::new(None) }
+    pub fn new(launch: Option<SpikeSettings>) -> Self {
+        let settings = launch.clone().filter(|s| s.name == "tablet");
+        Self { launch, settings, native: Mutex::new(None) }
     }
 
     fn require(&self) -> Result<&SpikeSettings, ErrorInfo> {
         self.settings.as_ref().ok_or_else(|| error("spike.notEnabled", "start the app with --spike tablet".into()))
+    }
+
+    fn require_any(&self) -> Result<&SpikeSettings, ErrorInfo> {
+        self.launch.as_ref().ok_or_else(|| error("spike.notEnabled", "start the app with --spike <name>".into()))
     }
 }
 
@@ -399,7 +411,7 @@ fn os_version() -> Option<String> {
 /// `spike.notEnabled`.
 #[tauri::command]
 pub fn spike_environment(app: AppHandle, spike: State<'_, TabletSpike>) -> Result<SpikeEnvironment, ErrorInfo> {
-    spike.require()?;
+    spike.require_any()?;
     Ok(SpikeEnvironment {
         os: std::env::consts::OS,
         arch: std::env::consts::ARCH,
@@ -414,12 +426,13 @@ pub fn spike_environment(app: AppHandle, spike: State<'_, TabletSpike>) -> Resul
 #[tauri::command]
 #[must_use]
 pub fn spike_mode(spike: State<'_, TabletSpike>) -> Option<SpikeMode> {
-    spike.settings.as_ref().map(|s| SpikeMode {
+    spike.launch.as_ref().map(|s| SpikeMode {
         name: s.name.clone(),
         log_path: s.log_path.as_ref().map(|p| p.display().to_string()),
         native_backend: NATIVE_BACKEND,
         pen_simulation: cfg!(windows),
         auto: s.auto,
+        renderer: s.renderer.clone(),
     })
 }
 
@@ -588,7 +601,7 @@ pub fn spike_save_log(
     spike: State<'_, TabletSpike>,
     log: serde_json::Value,
 ) -> Result<SavedLog, ErrorInfo> {
-    let settings = spike.require()?;
+    let settings = spike.require_any()?;
     let Some(path) = settings.log_path.as_ref() else {
         return Err(error("spike.noLogPath", "start the app with --spike-log <file> to save the log".into()));
     };
@@ -616,9 +629,9 @@ mod tests {
     #[test]
     fn disabled_unless_tablet() {
         assert!(TabletSpike::new(None).require().is_err());
-        let other = SpikeSettings { name: "canvas".into(), log_path: None, auto: false };
+        let other = SpikeSettings { name: "canvas".into(), log_path: None, auto: false, renderer: None };
         assert!(TabletSpike::new(Some(other)).require().is_err());
-        let tablet = SpikeSettings { name: "tablet".into(), log_path: None, auto: false };
+        let tablet = SpikeSettings { name: "tablet".into(), log_path: None, auto: false, renderer: None };
         assert!(TabletSpike::new(Some(tablet)).require().is_ok());
     }
 

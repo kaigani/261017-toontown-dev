@@ -23,4 +23,9 @@ export interface HostTransport {
     channelArg: string,
     onMessage: (message: unknown) => void,
   ): Promise<unknown>;
+  /**
+   * Invokes a host command whose result is a binary body (`tauri::ipc::Response`), resolving with the raw bytes.
+   * The bytes are still unvalidated; the typed API checks their envelope. Optional, like `invokeWithChannel`.
+   */
+  invokeBinary?(command: string, args?: Record<string, unknown>): Promise<ArrayBuffer>;
 }

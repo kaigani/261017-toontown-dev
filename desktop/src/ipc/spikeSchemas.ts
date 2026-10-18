@@ -4,6 +4,8 @@ import type {
   NativeBatch,
   NativeStartInfo,
   PenSimReport,
+  PixelFrameHeader,
+  RenderListHeader,
   ProbeResult,
   SavedLog,
   SpikeEnvironment,
@@ -24,12 +26,42 @@ const SAFE_INT: Schema = {
   maximum: Number.MAX_SAFE_INTEGER,
 };
 
-export const spikeModeSchema = obj({
-  name: { type: 'string', enum: ['tablet'] },
-  logPath: nullable(STRING),
-  nativeBackend: nullable({ type: 'string', enum: ['octotablet-ink', 'appkit-nsevent'] }),
-  penSimulation: { type: 'boolean' },
-  auto: { type: 'boolean' },
+export const spikeModeSchema = obj(
+  {
+    name: { type: 'string', enum: ['tablet', 'canvas'] },
+    logPath: nullable(STRING),
+    nativeBackend: nullable({ type: 'string', enum: ['octotablet-ink', 'appkit-nsevent'] }),
+    penSimulation: { type: 'boolean' },
+    auto: { type: 'boolean' },
+  },
+  { renderer: nullable({ type: 'string', enum: ['webgpu', 'webgl2'] }) },
+);
+
+const U32: Schema = { type: 'integer', minimum: 0, maximum: 4294967295 };
+
+/** Envelope of a binary render list, decoded from its 72-byte header by spikeApi.ts. */
+export const renderListHeaderSchema = obj({
+  version: { type: 'integer', minimum: 1, maximum: 1 },
+  headerLength: { type: 'integer', minimum: 72, maximum: 72 },
+  kind: { type: 'string', enum: ['paths100k', 'groups1k', 'brush10k'] },
+  seed: U32,
+  frame: U32,
+  groups: U32,
+  paths: U32,
+  verbs: U32,
+  points: U32,
+  bounds: { type: 'array', items: NUMBER },
+  flags: U32,
+  encodeNs: U64,
+  generateNs: U64,
+  byteLength: U64,
+});
+
+export const pixelFrameHeaderSchema = obj({
+  width: { type: 'integer', minimum: 1, maximum: 8192 },
+  height: { type: 'integer', minimum: 1, maximum: 8192 },
+  fillNs: U32,
+  byteLength: U64,
 });
 
 export const nativePacketSchema = obj({
@@ -140,3 +172,5 @@ export const isSpikeEnvironment = guard<SpikeEnvironment>(spikeEnvironmentSchema
 export const isPenSimReport = guard<PenSimReport>(penSimReportSchema);
 export const isProbeResult = guard<ProbeResult>(probeResultSchema);
 export const isSavedLog = guard<SavedLog>(savedLogSchema);
+export const isRenderListHeader = guard<RenderListHeader>(renderListHeaderSchema);
+export const isPixelFrameHeader = guard<PixelFrameHeader>(pixelFrameHeaderSchema);

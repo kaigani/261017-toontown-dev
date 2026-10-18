@@ -10,8 +10,11 @@
 //! * `--check` exits with status 1 if any hash differs from the committed file (CI runs this on Windows, macOS and
 //!   Linux, so a cross-OS difference fails the build); every scene is still rendered and reported first.
 //! * Each scene is rendered `--repeat` times (default 3); differing hashes between repeats also fail.
+//! * `--canvas-bench` also times `vello_cpu` on the C0.3 canvas-spike scenes at 1280×720 and 1920×1080 (host-raster
+//!   fallback estimate; timing only, not hash-checked).
 #![allow(clippy::print_stdout, clippy::print_stderr, reason = "command-line spike tool")]
 
+mod canvas_bench;
 mod scene;
 mod ttraster;
 mod vello;
@@ -103,11 +106,18 @@ struct Args {
     report: Option<PathBuf>,
     write_hashes: Option<PathBuf>,
     check: Option<PathBuf>,
+    canvas_bench: bool,
 }
 
 fn args() -> Result<Args, Box<dyn Error>> {
-    let mut a =
-        Args { out: PathBuf::from("target/c03-raster"), repeat: 3, report: None, write_hashes: None, check: None };
+    let mut a = Args {
+        out: PathBuf::from("target/c03-raster"),
+        repeat: 3,
+        report: None,
+        write_hashes: None,
+        check: None,
+        canvas_bench: false,
+    };
     let mut it = std::env::args().skip(1);
     while let Some(flag) = it.next() {
         let mut value = || it.next().ok_or_else(|| format!("{flag} needs a value"));
@@ -117,6 +127,7 @@ fn args() -> Result<Args, Box<dyn Error>> {
             "--report" => a.report = Some(PathBuf::from(value()?)),
             "--write-hashes" => a.write_hashes = Some(PathBuf::from(value()?)),
             "--check" => a.check = Some(PathBuf::from(value()?)),
+            "--canvas-bench" => a.canvas_bench = true,
             other => return Err(format!("unknown argument {other}").into()),
         }
     }
@@ -227,6 +238,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
 
+    let canvas = if args.canvas_bench { canvas_bench::run(&[(1280, 720), (1920, 1080)], 3) } else { Value::Null };
     let report = json!({
         "format": "tt-c03-raster-report/1",
         "os": std::env::consts::OS,
@@ -240,11 +252,28 @@ fn main() -> Result<(), Box<dyn Error>> {
         "ttrasterVsVelloFallback": diffs,
         "repeatFailures": failures,
         "checkMismatches": mismatches,
+        "canvasBench": canvas,
     });
     if let Some(path) = &args.report {
         fs::write(path, serde_json::to_string_pretty(&report)? + "\n")?;
     }
     print_summary(&report, &scenes);
+    if let Some(rows) = report["canvasBench"]["rows"].as_array() {
+        println!(
+            "
+canvas-spike scenes with vello_cpu (host-raster fallback), median ms:"
+        );
+        for r in rows {
+            println!(
+                "  {} {}x{} {}: {:.1} ms",
+                r["scene"],
+                r["width"],
+                r["height"],
+                r["renderer"],
+                r["msMedian"].as_f64().unwrap_or(f64::NAN)
+            );
+        }
+    }
     if !failures.is_empty() || !mismatches.is_empty() {
         for f in failures.iter().chain(&mismatches) {
             eprintln!("FAIL {f}");

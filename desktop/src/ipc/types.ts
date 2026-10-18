@@ -53,11 +53,60 @@ export interface BenchPlan {
 // ---- M0 spike: C0.2 tablet input (desktop/src-tauri/src/spikes/tablet). Not product API. ----
 
 export interface SpikeMode {
-  name: 'tablet';
+  name: 'tablet' | 'canvas';
   logPath: string | null;
   nativeBackend: 'octotablet-ink' | 'appkit-nsevent' | null;
   penSimulation: boolean;
   auto: boolean;
+  /** Canvas spike: renderer forced with `--spike-renderer` (`null` or absent = automatic). */
+  renderer?: 'webgpu' | 'webgl2' | null;
+}
+
+// ---- M0 spike: C0.3 canvas throughput (desktop/src-tauri/src/spikes/canvas). Not product API. ----
+
+export type CanvasSceneKind = 'paths100k' | 'groups1k' | 'brush10k';
+
+export interface CanvasSceneRequest {
+  scene: CanvasSceneKind;
+  seed: number;
+  frame: number;
+}
+
+/** Header of a `TTRL` v1 render list (format: desktop/src-tauri/src/spikes/canvas/renderlist.rs). */
+export interface RenderListHeader {
+  version: 1;
+  headerLength: 72;
+  kind: CanvasSceneKind;
+  seed: number;
+  frame: number;
+  groups: number;
+  paths: number;
+  verbs: number;
+  points: number;
+  bounds: number[];
+  flags: number;
+  encodeNs: number;
+  generateNs: number;
+  /** Total bytes, equal to the length computed from the counts. */
+  byteLength: number;
+}
+
+/** A certified render-list envelope and its bytes (the sections are decoded by the page). */
+export interface RenderListPayload {
+  header: RenderListHeader;
+  bytes: ArrayBuffer;
+}
+
+export interface PixelFrameHeader {
+  width: number;
+  height: number;
+  fillNs: number;
+  byteLength: number;
+}
+
+export interface PixelFramePayload {
+  header: PixelFrameHeader;
+  bytes: ArrayBuffer;
 }
 
 export interface NativePacket {

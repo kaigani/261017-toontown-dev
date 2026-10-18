@@ -1,5 +1,6 @@
-// M0 spike API (C0.2 tablet input). Same boundary as the product API: every value from the host, including each
+// M0 spike API (C0.2 tablet input, C0.3 canvas throughput). Same boundary as the product API: every value from the host, including each
 // streamed channel message, is certified against its schema before UI code sees it. Not product API.
+import { certifyPixelFrame, certifyRenderList } from './binaryEnvelope';
 import { HostError, toHostError } from './hostApi';
 import { certify } from './schema';
 import {
@@ -13,11 +14,14 @@ import {
 } from './spikeSchemas';
 import type { HostTransport } from './transport';
 import type {
+  CanvasSceneRequest,
   NativeBatch,
   NativeStartInfo,
   PenSimReport,
   PenSimRequest,
+  PixelFramePayload,
   ProbeResult,
+  RenderListPayload,
   SavedLog,
   SpikeEnvironment,
   SpikeMode,
@@ -43,6 +47,25 @@ export interface SpikeApi {
   rawInputSink(start: boolean): Promise<ProbeResult>;
   /** Writes the log to the `--spike-log` path. */
   saveLog(log: unknown): Promise<SavedLog>;
+  /** C0.3: one binary render list (`tauri::ipc::Response`), its envelope certified. */
+  canvasScene(request: CanvasSceneRequest): Promise<RenderListPayload>;
+  /** C0.3: a synthetic RGBA8 frame of `width × height` (host-raster fallback estimate), its envelope certified. */
+  canvasPixels(width: number, height: number, frame: number): Promise<PixelFramePayload>;
+}
+
+async function binary(
+  transport: HostTransport,
+  command: string,
+  args: Record<string, unknown>,
+): Promise<ArrayBuffer> {
+  if (!transport.invokeBinary) {
+    throw new HostError({ code: 'ipc.unsupported', message: 'transport has no binary responses' });
+  }
+  try {
+    return await transport.invokeBinary(command, args);
+  } catch (error: unknown) {
+    throw toHostError(error);
+  }
 }
 
 async function checked<T>(
@@ -98,5 +121,13 @@ export function createSpikeApi(transport: HostTransport): SpikeApi {
     rawInputSink: (start) =>
       checked(transport.invoke('spike_raw_input_sink', { start }), 'spike_raw_input_sink', isProbeResult),
     saveLog: (log) => checked(transport.invoke('spike_save_log', { log }), 'spike_save_log', isSavedLog),
+    canvasScene: async (request) => {
+      const bytes = await binary(transport, 'spike_canvas_scene', { request });
+      return { header: certifyRenderList(bytes), bytes };
+    },
+    canvasPixels: async (width, height, frame) => {
+      const bytes = await binary(transport, 'spike_canvas_pixels', { width, height, frame });
+      return { header: certifyPixelFrame(bytes), bytes };
+    },
   };
 }

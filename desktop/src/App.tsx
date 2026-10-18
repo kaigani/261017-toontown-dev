@@ -12,6 +12,10 @@ import { StatusBar, type StatusMessage } from './status/StatusBar';
 const TabletSpike = lazy(() =>
   import('./spikes/tablet/TabletSpike').then((m) => ({ default: m.TabletSpike })),
 );
+// M0 spike page (C0.3), loaded only when the host was started with --spike canvas.
+const CanvasSpike = lazy(() =>
+  import('./spikes/canvas/CanvasSpike').then((m) => ({ default: m.CanvasSpike })),
+);
 
 export function App() {
   const host = useHost();
@@ -75,7 +79,7 @@ export function App() {
   if (spike) {
     return (
       <Suspense fallback={<p>Loading spike…</p>}>
-        <TabletSpike mode={spike} />
+        {spike.name === 'canvas' ? <CanvasSpike mode={spike} /> : <TabletSpike mode={spike} />}
       </Suspense>
     );
   }

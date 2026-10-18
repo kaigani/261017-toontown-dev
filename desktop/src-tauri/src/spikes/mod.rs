@@ -5,4 +5,5 @@
 //! spike command refuses with `spike.notEnabled` otherwise. No MCP server exists in M0, and none of these commands
 //! may ever be exposed to agents.
 
+pub mod canvas;
 pub mod tablet;

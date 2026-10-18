@@ -38,17 +38,23 @@ pub enum ArgsError {
     BadCount(String),
     /// An argument this binary does not know.
     #[error(
-        "unknown argument `{0}` (usage: toontown [--ipc-bench <out.json> [--ipc-bench-count <n>]] [--spike tablet [--spike-log <file>]])"
+        "unknown argument `{0}` (usage: toontown [--ipc-bench <out.json> [--ipc-bench-count <n>]] [--spike tablet|canvas [--spike-log <file>] [--spike-auto] [--spike-renderer auto|webgpu|webgl2]])"
     )]
     Unknown(String),
     /// `--spike` names a spike that does not exist.
-    #[error("unknown spike `{0}` (available: tablet)")]
+    #[error("unknown spike `{0}` (available: tablet, canvas)")]
     UnknownSpike(String),
+    /// `--spike-renderer` with a value other than `auto`, `webgpu`, `webgl2`.
+    #[error("unknown renderer `{0}` (auto, webgpu, webgl2)")]
+    BadRenderer(String),
+    /// `--spike-renderer` without `--spike canvas`.
+    #[error("--spike-renderer needs --spike canvas")]
+    RendererWithoutCanvas,
     /// `--spike-log` without `--spike`.
     #[error("--spike-log needs --spike")]
     LogWithoutSpike,
     /// `--spike-auto` without `--spike` and `--spike-log`.
-    #[error("--spike-auto needs --spike tablet and --spike-log <file>")]
+    #[error("--spike-auto needs --spike <name> and --spike-log <file>")]
     AutoWithoutLog,
 }
 
@@ -62,6 +68,7 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     let mut spike = None;
     let mut spike_log = None;
     let mut spike_auto = false;
+    let mut renderer = None;
     let mut it = args.into_iter();
     while let Some(arg) = it.next() {
         match arg.as_str() {
@@ -72,13 +79,20 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
             }
             "--spike" => {
                 let name = it.next().ok_or(ArgsError::MissingValue("--spike"))?;
-                if name != "tablet" {
+                if name != "tablet" && name != "canvas" {
                     return Err(ArgsError::UnknownSpike(name));
                 }
                 spike = Some(name);
             }
             "--spike-log" => spike_log = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--spike-log"))?)),
             "--spike-auto" => spike_auto = true,
+            "--spike-renderer" => {
+                let r = it.next().ok_or(ArgsError::MissingValue("--spike-renderer"))?;
+                if !matches!(r.as_str(), "auto" | "webgpu" | "webgl2") {
+                    return Err(ArgsError::BadRenderer(r));
+                }
+                renderer = Some(r);
+            }
             // macOS adds `-psn_…` when launched from Finder on older systems.
             other if other.starts_with("-psn_") => {}
             other => return Err(ArgsError::Unknown(other.to_owned())),
@@ -90,9 +104,17 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     if spike_auto && (spike.is_none() || spike_log.is_none()) {
         return Err(ArgsError::AutoWithoutLog);
     }
+    if renderer.is_some() && spike.as_deref() != Some("canvas") {
+        return Err(ArgsError::RendererWithoutCanvas);
+    }
     Ok(LaunchOptions {
         bench: out.map(|out| BenchSettings { out, count }),
-        spike: spike.map(|name| crate::spikes::tablet::SpikeSettings { name, log_path: spike_log, auto: spike_auto }),
+        spike: spike.map(|name| crate::spikes::tablet::SpikeSettings {
+            name,
+            log_path: spike_log,
+            auto: spike_auto,
+            renderer: renderer.filter(|r| r != "auto"),
+        }),
     })
 }
 
@@ -203,7 +225,19 @@ mod tests {
         let o = parse_args(args(&["--spike", "tablet", "--spike-log", "t.json"])).unwrap();
         let s = o.spike.unwrap();
         assert_eq!((s.name.as_str(), s.log_path), ("tablet", Some(PathBuf::from("t.json"))));
-        assert_eq!(parse_args(args(&["--spike", "canvas"])), Err(ArgsError::UnknownSpike("canvas".into())));
+        assert_eq!(parse_args(args(&["--spike", "paint"])), Err(ArgsError::UnknownSpike("paint".into())));
+        let canvas = parse_args(args(&["--spike", "canvas", "--spike-renderer", "webgl2"])).unwrap().spike.unwrap();
+        assert_eq!((canvas.name.as_str(), canvas.renderer.as_deref()), ("canvas", Some("webgl2")));
+        let auto = parse_args(args(&["--spike", "canvas", "--spike-renderer", "auto"])).unwrap().spike.unwrap();
+        assert_eq!(auto.renderer, None);
+        assert_eq!(
+            parse_args(args(&["--spike", "canvas", "--spike-renderer", "gl"])),
+            Err(ArgsError::BadRenderer("gl".into()))
+        );
+        assert_eq!(
+            parse_args(args(&["--spike", "tablet", "--spike-renderer", "webgl2"])),
+            Err(ArgsError::RendererWithoutCanvas)
+        );
         assert_eq!(parse_args(args(&["--spike-log", "t.json"])), Err(ArgsError::LogWithoutSpike));
         assert_eq!(parse_args(args(&["--spike"])), Err(ArgsError::MissingValue("--spike")));
         assert_eq!(parse_args(args(&["--spike", "tablet", "--spike-auto"])), Err(ArgsError::AutoWithoutLog));
