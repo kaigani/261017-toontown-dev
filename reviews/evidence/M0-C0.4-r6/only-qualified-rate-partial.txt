@@ -1,0 +1,20 @@
+
+### Decision (ADR-0009 tablet rule set)
+
+| row | capability | action | W | H |
+|---|---|---|---|---|
+| 1 | pen identity | A1-A3 | pass (injected row result) | pass (injected row result) |
+| 2 | pressure >= 256 levels | A1 | fail (injected row result) | pass (injected row result) |
+| 3 | pressure >= 1024 levels | A1 | pass (injected row result) | pass (injected row result) |
+| 4 | tilt | A3 | pass (injected row result) | pass (injected row result) |
+| 5 | twist (barrel rotation) | A4 | pass (injected row result) | pass (injected row result) |
+| 6 | coalesced events | A2 | pass (injected row result) | n/a (injected row result) |
+| 7 | sustained rate >= 120 Hz | A2 | pass (injected row result) | partial (injected row result) |
+| 8 | rate >= 200 Hz | A2 | pass (injected row result) | fail (injected row result) |
+| 9 | stationary pressure-only updates | A6 | pass (injected row result) | pass (injected row result) |
+
+- platform: windows; share of applicable rows at pass: {'W': '8/9', 'H': '3/4'}; rows at pass: {'W': 8, 'H': 6}; candidates with a valid measurement: ['W', 'H']; disqualified (row 2 or 7 at fail): {'W': [2]}
+- not scored: R (raw HID, needs experiment E-R1), D (dedicated input window, needs experiment E-D1)
+- outcome: **go-with-conditions: H**
+- condition: row 7 sustained rate >= 120 Hz at partial: interpolated sampling off; the >= 200 Hz target is recorded as below target
+- condition: row 8 rate >= 200 Hz at fail: recorded as below the 200 Hz target

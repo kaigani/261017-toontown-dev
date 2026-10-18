@@ -1,0 +1,13 @@
+{
+  "command": [
+    "cargo",
+    "fmt",
+    "--all",
+    "--check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+  "started": "2026-10-18T17:33:39.547767+00:00",
+  "seconds": 0.512,
+  "exit": 0,
+  "expected": 0
+}

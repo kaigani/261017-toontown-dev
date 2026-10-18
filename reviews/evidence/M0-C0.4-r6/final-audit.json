@@ -1,0 +1,846 @@
+{
+  "reviewedHead": "929f91a99ab06402bc024108fbc82f9aae3f91d9",
+  "receipts": [
+    {
+      "name": "lint",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm lint"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:05.309314+00:00",
+      "seconds": 10.573,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm typecheck"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:15.883454+00:00",
+      "seconds": 2.794,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "test",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm test"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:18.677778+00:00",
+      "seconds": 59.776,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "format-check",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm format:check"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:33:18.454761+00:00",
+      "seconds": 1.519,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "licenses-check",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm licenses:check"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:33:19.973819+00:00",
+      "seconds": 0.873,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "frontend-build-diagnostics",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm --dir desktop build:diagnostics"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:33:20.847583+00:00",
+      "seconds": 1.892,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "frontend-build-default",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm --dir desktop build"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:33:22.740060+00:00",
+      "seconds": 1.61,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:33:39.547767+00:00",
+      "seconds": 0.512,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:33:40.059869+00:00",
+      "seconds": 35.132,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "rust-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:34:15.192825+00:00",
+      "seconds": 88.433,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "clippy-diagnostics",
+      "command": [
+        "cargo",
+        "clippy",
+        "-p",
+        "tt-desktop",
+        "--all-targets",
+        "--locked",
+        "--features",
+        "m0-diagnostics",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:35:43.627727+00:00",
+      "seconds": 8.332,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "rust-tests-diagnostics",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-desktop",
+        "--locked",
+        "--features",
+        "m0-diagnostics"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:35:51.960122+00:00",
+      "seconds": 26.079,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "deny",
+      "command": [
+        "cargo",
+        "deny",
+        "--locked",
+        "check"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:36:18.040009+00:00",
+      "seconds": 1.955,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "headless-build",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-headless"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:36:19.995080+00:00",
+      "seconds": 5.309,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "headless-selftest-1",
+      "command": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r6\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:36:25.304642+00:00",
+      "seconds": 0.09,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "headless-selftest-2",
+      "command": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r6\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:36:25.395173+00:00",
+      "seconds": 0.013,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "headless-guard",
+      "command": [
+        "python",
+        "scripts/check-headless-deps.py",
+        "target/release/toontown-headless.exe"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:36:25.409010+00:00",
+      "seconds": 0.163,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "raster",
+      "command": [
+        "cargo",
+        "run",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-render",
+        "--example",
+        "c03_raster",
+        "--",
+        "--repeat",
+        "3",
+        "--out",
+        "target/c04-r6-raster",
+        "--report",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r6\\reviews\\evidence\\M0-C0.4-r6\\raster.json",
+        "--check",
+        "crates/render/examples/c03_raster/hashes.json"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:36:25.572334+00:00",
+      "seconds": 34.224,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "tauri-build-default",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm --dir desktop tauri build --no-bundle -- --locked"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:36:59.797221+00:00",
+      "seconds": 77.601,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "tauri-build-diagnostics",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm --dir desktop tauri build --no-bundle --config src-tauri/tauri.diagnostics.conf.json -- --locked"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:38:17.826198+00:00",
+      "seconds": 35.35,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "binary-gating-default",
+      "command": [
+        "python",
+        "scripts/check-diagnostics-gating.py",
+        "target/release/toontown.exe",
+        "--expect",
+        "default"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:38:17.400743+00:00",
+      "seconds": 0.066,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "binary-gating-diagnostics",
+      "command": [
+        "python",
+        "scripts/check-diagnostics-gating.py",
+        "target/release/toontown.exe",
+        "--expect",
+        "diagnostics"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:38:53.178175+00:00",
+      "seconds": 0.055,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "independent-gating-default",
+      "command": [
+        "python",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r6\\reviews\\evidence\\M0-C0.4-r6\\probe_gating.py",
+        "default"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:38:17.467580+00:00",
+      "seconds": 0.358,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "independent-gating-diagnostics",
+      "command": [
+        "python",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r6\\reviews\\evidence\\M0-C0.4-r6\\probe_gating.py",
+        "diagnostics"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:38:53.233998+00:00",
+      "seconds": 2.423,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "test_decision_rules",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "scripts/test_decision_rules.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:21.275428+00:00",
+      "seconds": 0.656,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "c02-r1-tooling",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c02-r1-tooling.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:21.931723+00:00",
+      "seconds": 0.775,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "c02-r2-tooling",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c02-r2-tooling.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:22.707163+00:00",
+      "seconds": 0.72,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "c02-r3-tooling",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c02-r3-tooling.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:23.427544+00:00",
+      "seconds": 0.376,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "c03-r1-tooling",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c03-r1-tooling.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:23.803684+00:00",
+      "seconds": 1.839,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "c03-r2-tooling",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c03-r2-tooling.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:25.643766+00:00",
+      "seconds": 0.738,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "c04-r2-decisions",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c04-r2-decisions.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:26.382464+00:00",
+      "seconds": 0.14,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "c04-r3-decisions",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c04-r3-decisions.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:26.522900+00:00",
+      "seconds": 0.197,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "c04-r3-page",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c04-r3-page.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:26.720165+00:00",
+      "seconds": 1.707,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "closure-probes",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r6\\reviews\\evidence\\M0-C0.4-r6\\closure_probes.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:28.476543+00:00",
+      "seconds": 1.44,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "page-probe",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r6\\reviews\\evidence\\M0-C0.4-r6\\page_probe.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:29.916648+00:00",
+      "seconds": 1.948,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "rebreak",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r6\\reviews\\evidence\\M0-C0.4-r6\\rebreak.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:31.865052+00:00",
+      "seconds": 2.196,
+      "exit": 1,
+      "expected": 0
+    },
+    {
+      "name": "rebreak-closed",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "reviews/evidence/M0-C0.4-r6/rebreak_closed.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:33:28.878388+00:00",
+      "seconds": 2.226,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "scoped-rebreak",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "reviews/evidence/M0-C0.4-r6/scoped_rebreak.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:33:31.104305+00:00",
+      "seconds": 1.016,
+      "exit": 0,
+      "expected": 0
+    },
+    {
+      "name": "c04-r5-decisions",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r6\\tests\\adversarial\\c04-r5-decisions.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r6",
+      "started": "2026-10-18T17:32:34.061591+00:00",
+      "seconds": 0.144,
+      "exit": 0,
+      "expected": 0
+    }
+  ],
+  "headlessPairs": [
+    [
+      "engine.components",
+      true
+    ],
+    [
+      "engine.versions",
+      true
+    ],
+    [
+      "engine.ping",
+      true
+    ],
+    [
+      "determinism.ieee754",
+      true
+    ],
+    [
+      "headless.mcpLinked",
+      true
+    ]
+  ],
+  "rasterRepeat": 3,
+  "rasterMismatches": 0,
+  "rasterRepeatFailures": 0,
+  "goldenRecords": 234,
+  "historicalObservation": "rebreak.py expects obsolete 50 Hz; actual 200 Hz; exit 1",
+  "closureRegression": "c04-r5-decisions: all three invariant subtests pass; exit 0",
+  "openCounts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 0
+  },
+  "changedPaths": [
+    "reviews/M0-C0.4-r6-closure.md",
+    "reviews/evidence/M0-C0.4-r6/all-disqualified-windows.txt",
+    "reviews/evidence/M0-C0.4-r6/all-na.txt",
+    "reviews/evidence/M0-C0.4-r6/audit_ci.py",
+    "reviews/evidence/M0-C0.4-r6/binary-gating-default.log.gz",
+    "reviews/evidence/M0-C0.4-r6/binary-gating-default.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/binary-gating-diagnostics.log.gz",
+    "reviews/evidence/M0-C0.4-r6/binary-gating-diagnostics.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/boundary-one-inside.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/boundary-one-inside.json.gz",
+    "reviews/evidence/M0-C0.4-r6/boundary-one-inside.log.gz",
+    "reviews/evidence/M0-C0.4-r6/c02-r1-tooling.log.gz",
+    "reviews/evidence/M0-C0.4-r6/c02-r1-tooling.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/c02-r2-tooling.log.gz",
+    "reviews/evidence/M0-C0.4-r6/c02-r2-tooling.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/c02-r3-tooling.log.gz",
+    "reviews/evidence/M0-C0.4-r6/c02-r3-tooling.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/c03-r1-tooling.log.gz",
+    "reviews/evidence/M0-C0.4-r6/c03-r1-tooling.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/c03-r2-tooling.log.gz",
+    "reviews/evidence/M0-C0.4-r6/c03-r2-tooling.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/c04-r2-decisions.log.gz",
+    "reviews/evidence/M0-C0.4-r6/c04-r2-decisions.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/c04-r3-decisions.log.gz",
+    "reviews/evidence/M0-C0.4-r6/c04-r3-decisions.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/c04-r3-page.log.gz",
+    "reviews/evidence/M0-C0.4-r6/c04-r3-page.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/c04-r5-decisions.log.gz",
+    "reviews/evidence/M0-C0.4-r6/c04-r5-decisions.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/ci-39149491879.json",
+    "reviews/evidence/M0-C0.4-r6/ci-39149491879.log.gz",
+    "reviews/evidence/M0-C0.4-r6/ci-audit.json",
+    "reviews/evidence/M0-C0.4-r6/clip-3-inside-0-outside.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/clip-3-inside-0-outside.json.gz",
+    "reviews/evidence/M0-C0.4-r6/clip-3-inside-0-outside.log.gz",
+    "reviews/evidence/M0-C0.4-r6/clip-3-inside-4000-outside.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/clip-3-inside-4000-outside.json.gz",
+    "reviews/evidence/M0-C0.4-r6/clip-3-inside-4000-outside.log.gz",
+    "reviews/evidence/M0-C0.4-r6/clip-650-inside-0-outside.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/clip-650-inside-0-outside.json.gz",
+    "reviews/evidence/M0-C0.4-r6/clip-650-inside-0-outside.log.gz",
+    "reviews/evidence/M0-C0.4-r6/clip-650-inside-4000-outside.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/clip-650-inside-4000-outside.json.gz",
+    "reviews/evidence/M0-C0.4-r6/clip-650-inside-4000-outside.log.gz",
+    "reviews/evidence/M0-C0.4-r6/clippy-diagnostics.log.gz",
+    "reviews/evidence/M0-C0.4-r6/clippy-diagnostics.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/clippy.log.gz",
+    "reviews/evidence/M0-C0.4-r6/clippy.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/clock-baseline.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/clock-baseline.json.gz",
+    "reviews/evidence/M0-C0.4-r6/clock-baseline.log.gz",
+    "reviews/evidence/M0-C0.4-r6/clock-noncontact-control.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/clock-noncontact-control.json.gz",
+    "reviews/evidence/M0-C0.4-r6/clock-noncontact-control.log.gz",
+    "reviews/evidence/M0-C0.4-r6/clock-outside.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/clock-outside.json.gz",
+    "reviews/evidence/M0-C0.4-r6/clock-outside.log.gz",
+    "reviews/evidence/M0-C0.4-r6/closure-probes.log.gz",
+    "reviews/evidence/M0-C0.4-r6/closure-probes.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/closure-results.json",
+    "reviews/evidence/M0-C0.4-r6/closure_probes.py",
+    "reviews/evidence/M0-C0.4-r6/deny.log.gz",
+    "reviews/evidence/M0-C0.4-r6/deny.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/equal-share-different-counts.txt",
+    "reviews/evidence/M0-C0.4-r6/example-1.txt",
+    "reviews/evidence/M0-C0.4-r6/example-2.txt",
+    "reviews/evidence/M0-C0.4-r6/example-3.txt",
+    "reviews/evidence/M0-C0.4-r6/final-audit.json",
+    "reviews/evidence/M0-C0.4-r6/final_audit.py",
+    "reviews/evidence/M0-C0.4-r6/fmt.log.gz",
+    "reviews/evidence/M0-C0.4-r6/fmt.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/format-check.log.gz",
+    "reviews/evidence/M0-C0.4-r6/format-check.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/frontend-build-default.log.gz",
+    "reviews/evidence/M0-C0.4-r6/frontend-build-default.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/frontend-build-diagnostics.log.gz",
+    "reviews/evidence/M0-C0.4-r6/frontend-build-diagnostics.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/headless-build.log.gz",
+    "reviews/evidence/M0-C0.4-r6/headless-build.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/headless-guard.log.gz",
+    "reviews/evidence/M0-C0.4-r6/headless-guard.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/headless-selftest-1.log.gz",
+    "reviews/evidence/M0-C0.4-r6/headless-selftest-1.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/headless-selftest-2.log.gz",
+    "reviews/evidence/M0-C0.4-r6/headless-selftest-2.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/independent-gating-default.json",
+    "reviews/evidence/M0-C0.4-r6/independent-gating-default.log.gz",
+    "reviews/evidence/M0-C0.4-r6/independent-gating-default.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/independent-gating-diagnostics.json",
+    "reviews/evidence/M0-C0.4-r6/independent-gating-diagnostics.log.gz",
+    "reviews/evidence/M0-C0.4-r6/independent-gating-diagnostics.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/ipc-bench.json",
+    "reviews/evidence/M0-C0.4-r6/keys-499ms-transitions.json.gz",
+    "reviews/evidence/M0-C0.4-r6/keys-499ms-transitions.log.gz",
+    "reviews/evidence/M0-C0.4-r6/keys-missing-keydown.json.gz",
+    "reviews/evidence/M0-C0.4-r6/keys-missing-keydown.log.gz",
+    "reviews/evidence/M0-C0.4-r6/keys-transition-on-keydown.json.gz",
+    "reviews/evidence/M0-C0.4-r6/keys-transition-on-keydown.log.gz",
+    "reviews/evidence/M0-C0.4-r6/keys-valid.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/keys-valid.json.gz",
+    "reviews/evidence/M0-C0.4-r6/keys-valid.log.gz",
+    "reviews/evidence/M0-C0.4-r6/keys-wrong-action-label.json.gz",
+    "reviews/evidence/M0-C0.4-r6/keys-wrong-action-label.log.gz",
+    "reviews/evidence/M0-C0.4-r6/licenses-check.log.gz",
+    "reviews/evidence/M0-C0.4-r6/licenses-check.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/lint.log.gz",
+    "reviews/evidence/M0-C0.4-r6/lint.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/mac-native-share-wins.txt",
+    "reviews/evidence/M0-C0.4-r6/mac-tie-different-counts.txt",
+    "reviews/evidence/M0-C0.4-r6/mapping-rotation-False-native-prefix-2.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/mapping-rotation-False-native-prefix-2.json.gz",
+    "reviews/evidence/M0-C0.4-r6/mapping-rotation-False-native-prefix-2.log.gz",
+    "reviews/evidence/M0-C0.4-r6/mapping-rotation-True-native-prefix-2.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/mapping-rotation-True-native-prefix-2.json.gz",
+    "reviews/evidence/M0-C0.4-r6/mapping-rotation-True-native-prefix-2.log.gz",
+    "reviews/evidence/M0-C0.4-r6/native-eight-of-eight.txt",
+    "reviews/evidence/M0-C0.4-r6/native-priority-tie.txt",
+    "reviews/evidence/M0-C0.4-r6/no-applicable-rows.txt",
+    "reviews/evidence/M0-C0.4-r6/one-episode-crossing-end.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/one-episode-crossing-end.json.gz",
+    "reviews/evidence/M0-C0.4-r6/one-episode-crossing-end.log.gz",
+    "reviews/evidence/M0-C0.4-r6/only-qualified-rate-partial.txt",
+    "reviews/evidence/M0-C0.4-r6/overlap-EpochMs.json.gz",
+    "reviews/evidence/M0-C0.4-r6/overlap-EpochMs.log.gz",
+    "reviews/evidence/M0-C0.4-r6/overlap-Perf.json.gz",
+    "reviews/evidence/M0-C0.4-r6/overlap-Perf.log.gz",
+    "reviews/evidence/M0-C0.4-r6/page-499-500.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/page-499-500.json",
+    "reviews/evidence/M0-C0.4-r6/page-499-500.log.gz",
+    "reviews/evidence/M0-C0.4-r6/page-keydown-only.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/page-keydown-only.json",
+    "reviews/evidence/M0-C0.4-r6/page-keydown-only.log.gz",
+    "reviews/evidence/M0-C0.4-r6/page-missing-keydowns.json",
+    "reviews/evidence/M0-C0.4-r6/page-missing-keydowns.log.gz",
+    "reviews/evidence/M0-C0.4-r6/page-performed-omitted.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/page-performed-omitted.json",
+    "reviews/evidence/M0-C0.4-r6/page-performed-omitted.log.gz",
+    "reviews/evidence/M0-C0.4-r6/page-probe.log.gz",
+    "reviews/evidence/M0-C0.4-r6/page-probe.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/page-valid-markers.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/page-valid-markers.json",
+    "reviews/evidence/M0-C0.4-r6/page-valid-markers.log.gz",
+    "reviews/evidence/M0-C0.4-r6/page_cases.tsx",
+    "reviews/evidence/M0-C0.4-r6/page_probe.py",
+    "reviews/evidence/M0-C0.4-r6/probe_gating.py",
+    "reviews/evidence/M0-C0.4-r6/provenance.json",
+    "reviews/evidence/M0-C0.4-r6/r6-clock-baseline.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/r6-clock-baseline.json.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-clock-baseline.log.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-clock-outside.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/r6-clock-outside.json.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-clock-outside.log.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-in-span-host-only.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/r6-in-span-host-only.json.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-in-span-host-only.log.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-in-span-mixed.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/r6-in-span-mixed.json.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-in-span-mixed.log.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-missing-keyup-end.json.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-missing-keyup-end.log.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-missing-keyup-middle.json.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-missing-keyup-middle.log.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-web-only-action.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/r6-web-only-action.json.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-web-only-action.log.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-web-only-capture.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/r6-web-only-capture.json.gz",
+    "reviews/evidence/M0-C0.4-r6/r6-web-only-capture.log.gz",
+    "reviews/evidence/M0-C0.4-r6/raster.json.gz",
+    "reviews/evidence/M0-C0.4-r6/raster.log.gz",
+    "reviews/evidence/M0-C0.4-r6/raster.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/raw-macos-example-2.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/raw-macos-example-2.json.gz",
+    "reviews/evidence/M0-C0.4-r6/raw-macos-example-2.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-499ms-matching-record.json.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-499ms-matching-record.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-closed-results.json",
+    "reviews/evidence/M0-C0.4-r6/rebreak-closed.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-closed.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/rebreak-different-keyup.json.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-different-keyup.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-ignored-events-after-save.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/rebreak-ignored-events-after-save.json.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-ignored-events-after-save.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-keys-valid.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/rebreak-keys-valid.json.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-keys-valid.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-label-mismatch.json.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-label-mismatch.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-missing-final-keyup.json.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-missing-final-keyup.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-repeat-first.json.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-repeat-first.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-results.json",
+    "reviews/evidence/M0-C0.4-r6/rebreak-transition-after-save.json.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak-transition-after-save.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rebreak.py",
+    "reviews/evidence/M0-C0.4-r6/rebreak.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/rebreak_closed.py",
+    "reviews/evidence/M0-C0.4-r6/run_gates.py",
+    "reviews/evidence/M0-C0.4-r6/rust-tests-diagnostics.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rust-tests-diagnostics.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/rust-tests.log.gz",
+    "reviews/evidence/M0-C0.4-r6/rust-tests.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/scoped-rebreak-results.json",
+    "reviews/evidence/M0-C0.4-r6/scoped-rebreak.log.gz",
+    "reviews/evidence/M0-C0.4-r6/scoped-rebreak.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/scoped_rebreak.py",
+    "reviews/evidence/M0-C0.4-r6/single-applicable-row.txt",
+    "reviews/evidence/M0-C0.4-r6/split-boundary-baseline.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/split-boundary-baseline.json.gz",
+    "reviews/evidence/M0-C0.4-r6/split-boundary-baseline.log.gz",
+    "reviews/evidence/M0-C0.4-r6/split-boundary-outside-tail.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/split-boundary-outside-tail.json.gz",
+    "reviews/evidence/M0-C0.4-r6/split-boundary-outside-tail.log.gz",
+    "reviews/evidence/M0-C0.4-r6/split-slow-baseline.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/split-slow-baseline.json.gz",
+    "reviews/evidence/M0-C0.4-r6/split-slow-baseline.log.gz",
+    "reviews/evidence/M0-C0.4-r6/split-slow-outside-tail.analysis.json",
+    "reviews/evidence/M0-C0.4-r6/split-slow-outside-tail.json.gz",
+    "reviews/evidence/M0-C0.4-r6/split-slow-outside-tail.log.gz",
+    "reviews/evidence/M0-C0.4-r6/tauri-build-default.log.gz",
+    "reviews/evidence/M0-C0.4-r6/tauri-build-default.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/tauri-build-diagnostics.log.gz",
+    "reviews/evidence/M0-C0.4-r6/tauri-build-diagnostics.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/test.log.gz",
+    "reviews/evidence/M0-C0.4-r6/test.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/test_decision_rules.log.gz",
+    "reviews/evidence/M0-C0.4-r6/test_decision_rules.receipt.json",
+    "reviews/evidence/M0-C0.4-r6/typecheck.log.gz",
+    "reviews/evidence/M0-C0.4-r6/typecheck.receipt.json"
+  ],
+  "builderReviewerTestDiffEmpty": true,
+  "readinessBullets": 14
+}
