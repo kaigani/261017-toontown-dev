@@ -49,12 +49,11 @@ pub(super) fn start(
             // SAFETY: AppKit passes a valid NSEvent for the duration of the handler.
             #[allow(unsafe_code)]
             let e = unsafe { event.as_ref() };
-            if let Some(packet) = convert(e) {
-                if let Ok(mut b) = sink.lock() {
-                    if b.len() < MAX_BUFFERED {
-                        b.push(packet);
-                    }
-                }
+            if let Some(packet) = convert(e)
+                && let Ok(mut b) = sink.lock()
+                && b.len() < MAX_BUFFERED
+            {
+                b.push(packet);
             }
             // Return the event unchanged so the webview still receives it.
             event.as_ptr()

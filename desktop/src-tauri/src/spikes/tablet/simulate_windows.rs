@@ -174,8 +174,14 @@ fn inject_stroke(
     let start_at = position(rect, 0, n);
     let hover = POINTER_FLAG_INRANGE | POINTER_FLAG_UPDATE;
     let mut next = Instant::now();
+    // Fixed-rate schedule. After a stall (the thread was descheduled), resume from now instead of injecting the
+    // missed frames back to back: a catch-up burst makes the OS coalesce or drop input and would be measured as loss.
     let wait = |next: &mut Instant| {
         *next += period;
+        let now = Instant::now();
+        if now > *next + period {
+            *next = now;
+        }
         while Instant::now() < *next {
             std::hint::spin_loop();
         }
