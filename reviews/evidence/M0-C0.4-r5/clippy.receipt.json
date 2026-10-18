@@ -1,0 +1,17 @@
+{
+  "command": [
+    "cargo",
+    "clippy",
+    "--workspace",
+    "--all-targets",
+    "--locked",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r5",
+  "started": "2026-10-18T17:11:27.968271+00:00",
+  "seconds": 35.808,
+  "exit": 0,
+  "expected": 0
+}

@@ -1,0 +1,15 @@
+{
+  "commit": "ef25fc8",
+  "results": [
+    {
+      "case": "baseline",
+      "rate": 200.0,
+      "outcome": "go-with-conditions: A"
+    },
+    {
+      "case": "outside",
+      "rate": 50.0,
+      "outcome": "no-go on this platform: escalate (plan \u00a76 decision 7); best available evidence: A (3/7)"
+    }
+  ]
+}
