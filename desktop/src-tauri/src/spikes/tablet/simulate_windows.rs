@@ -186,6 +186,15 @@ pub(super) fn focus_snapshot(when: &'static str, target: HWND) -> FocusSnapshot 
     }
 }
 
+/// Which window is topmost at `at` (class and owning process), for refusal messages.
+fn covering(at: POINT) -> String {
+    // SAFETY: plain Win32 queries with no preconditions.
+    #[allow(unsafe_code)]
+    let root = unsafe { GetAncestor(WindowFromPoint(at), GA_ROOT) };
+    let (pid, class) = window_pid_class(root);
+    format!("({},{}) root {} class {class:?} pid {pid} (own pid {})", at.x, at.y, hwnd_number(root), std::process::id())
+}
+
 /// The canvas rectangle of the request (webview CSS pixels) on screen, physical pixels, clamped to the client area.
 pub(super) fn canvas_rect(window: &tauri::WebviewWindow, request: &PenSimRequest) -> Result<Rect, ErrorInfo> {
     let scale = window.scale_factor().map_err(|e| error("internal", e.to_string()))?;
@@ -305,7 +314,10 @@ pub(super) fn inject_stroke(
         let at = position(rect, &pattern, i, n);
         if !window_at_is(target, at) {
             let _ = inject(&device, &frame(POINTER_FLAG_UP, last, 0, 0, 0, 0));
-            return Err(error("spike.notForeground", format!("another window covered the target after {i} frames")));
+            return Err(error(
+                "spike.notForeground",
+                format!("another window covered the target after {i} frames: {}", covering(at)),
+            ));
         }
         last = at;
         let flags = if i == 0 {

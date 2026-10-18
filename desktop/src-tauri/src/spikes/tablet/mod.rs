@@ -340,7 +340,8 @@ pub(crate) fn error(code: &str, message: String) -> ErrorInfo {
     ErrorInfo { code: code.to_owned(), message, details: serde_json::json!({}) }
 }
 
-/// Monotonic nanoseconds since a process-wide anchor (the first call).
+/// Monotonic nanoseconds since a process-wide anchor (the first call). Used by the Windows injector.
+#[cfg(windows)]
 pub(crate) fn monotonic_ns() -> u64 {
     static ANCHOR: std::sync::OnceLock<std::time::Instant> = std::sync::OnceLock::new();
     let anchor = ANCHOR.get_or_init(std::time::Instant::now);

@@ -459,10 +459,10 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
   }, [host, mode.nativeBackend, setStatus]);
 
   const runScenario = useCallback(
-    async (scenario: Scenario, target?: MatrixRect) => {
+    async (scenario: Scenario, target?: MatrixRect): Promise<RunRecord | null> => {
       const canvas = canvasRef.current?.getBoundingClientRect();
       const c = capture.current;
-      if (!canvas || !c) return;
+      if (!canvas || !c) return null;
       const rect = target ?? matrixRectFor(canvas);
       const request: PenSimRequest = {
         left: rect.left,
@@ -501,7 +501,7 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
         run.error = 'spike.geometryChanged: the matrix rectangle is no longer inside the canvas';
         finish();
         setStatus(`${scenario.label} failed: ${run.error}`);
-        return;
+        return run;
       }
       if (scenario.target === 'nativeWindow') {
         try {
@@ -512,7 +512,7 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
           setStatus(`${scenario.label} failed: ${run.error}`);
         }
         finish();
-        return;
+        return run;
       }
       // Raw-input listener alongside the webview run (Windows); its absence is recorded, not fatal.
       const sink = host.spike.rawInputSink(true).then(
@@ -569,6 +569,7 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
         setStatus(`${scenario.label} failed: ${run.error}`);
         if (await sink) void host.spike.rawInputSink(false).catch(() => undefined);
       }
+      return run;
     },
     [host, setStatus],
   );
@@ -664,8 +665,14 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
         const canvas = canvasRef.current?.getBoundingClientRect();
         const rect = canvas ? matrixRectFor(canvas) : undefined;
         for (const s of AUTO_SCENARIOS) {
-          await runScenario(s, rect);
-          await sleep(300);
+          const run = await runScenario(s, rect);
+          // A refused stroke (something covered the target, e.g. a transient system window) is kept as a failed
+          // run and retried once, as a separate run, after a pause.
+          if (run?.error?.startsWith('spike.notForeground')) {
+            await sleep(1500);
+            await runScenario({ ...s, label: `${s.label} (retry)` }, rect);
+          }
+          await sleep(800);
         }
       }
       await save();
