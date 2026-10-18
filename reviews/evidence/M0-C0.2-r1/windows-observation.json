@@ -1,0 +1,1002 @@
+{
+  "pid": 28048,
+  "exitCode": 0,
+  "elapsed": 3.537859399977606,
+  "snapshots": [
+    {
+      "elapsed": 4.799978341907263e-06,
+      "windows": [
+        {
+          "hwnd": 14354008,
+          "parent": 65548,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4195010,
+          "parent": null,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 589888,
+          "parent": 65548,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4196290,
+          "parent": null,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "elapsed": 0.505234099982772,
+      "windows": [
+        {
+          "hwnd": 14354008,
+          "parent": 65548,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4195010,
+          "parent": null,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2687708,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tauri Window",
+          "title": "Toontown",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 30213686,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "WRY_WEBVIEW",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 13042440,
+          "parent": 30213686,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Chrome_WidgetWin_0",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 7603510,
+          "parent": 13042440,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_WidgetWin_1",
+          "title": "Toontown",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2293858,
+          "parent": 7603510,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_RenderWidgetHostHWND",
+          "title": "Chrome Legacy Window",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 3276990,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tao Thread Event Target",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 589888,
+          "parent": 65548,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4196290,
+          "parent": null,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 9699604,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 2033494,
+          "parent": 9699604,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "MSCTFIME UI",
+          "title": "MSCTFIME UI",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        }
+      ]
+    },
+    {
+      "elapsed": 1.0110107000218704,
+      "windows": [
+        {
+          "hwnd": 14354008,
+          "parent": 65548,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4195010,
+          "parent": null,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2687708,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tauri Window",
+          "title": "Toontown",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 30213686,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "WRY_WEBVIEW",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 13042440,
+          "parent": 30213686,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Chrome_WidgetWin_0",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 7603510,
+          "parent": 13042440,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_WidgetWin_1",
+          "title": "Toontown",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2293858,
+          "parent": 7603510,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_RenderWidgetHostHWND",
+          "title": "Chrome Legacy Window",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2230126,
+          "parent": 7603510,
+          "pid": 17664,
+          "tid": 12328,
+          "cls": "Intermediate D3D Window",
+          "title": "",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 3276990,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tao Thread Event Target",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 589888,
+          "parent": 65548,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4196290,
+          "parent": null,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 9699604,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 2033494,
+          "parent": 9699604,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "MSCTFIME UI",
+          "title": "MSCTFIME UI",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        }
+      ]
+    },
+    {
+      "elapsed": 1.5160533000016585,
+      "windows": [
+        {
+          "hwnd": 14354008,
+          "parent": 65548,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4195010,
+          "parent": null,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2687708,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tauri Window",
+          "title": "Toontown",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 30213686,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "WRY_WEBVIEW",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 13042440,
+          "parent": 30213686,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Chrome_WidgetWin_0",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 7603510,
+          "parent": 13042440,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_WidgetWin_1",
+          "title": "Toontown",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2293858,
+          "parent": 7603510,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_RenderWidgetHostHWND",
+          "title": "Chrome Legacy Window",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2230126,
+          "parent": 7603510,
+          "pid": 17664,
+          "tid": 12328,
+          "cls": "Intermediate D3D Window",
+          "title": "",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 3276990,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tao Thread Event Target",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 589888,
+          "parent": 65548,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4196290,
+          "parent": null,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 9699604,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 2033494,
+          "parent": 9699604,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "MSCTFIME UI",
+          "title": "MSCTFIME UI",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        }
+      ]
+    },
+    {
+      "elapsed": 2.0207004999974743,
+      "windows": [
+        {
+          "hwnd": 14354008,
+          "parent": 65548,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4195010,
+          "parent": null,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 31786814,
+          "parent": null,
+          "pid": 28048,
+          "tid": 28016,
+          "cls": "TabletPenServiceHelperClass",
+          "title": "WISPTIS",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 7800782,
+          "parent": null,
+          "pid": 28048,
+          "tid": 22384,
+          "cls": "GDI+ Hook Window Class",
+          "title": "GDI+ Window (toontown.exe)",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 3737386,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "ATL:00007FFAF78DDF90",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 2687708,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tauri Window",
+          "title": "Toontown",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 30213686,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "WRY_WEBVIEW",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 13042440,
+          "parent": 30213686,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Chrome_WidgetWin_0",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 7603510,
+          "parent": 13042440,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_WidgetWin_1",
+          "title": "Toontown",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2293858,
+          "parent": 7603510,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_RenderWidgetHostHWND",
+          "title": "Chrome Legacy Window",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2230126,
+          "parent": 7603510,
+          "pid": 17664,
+          "tid": 12328,
+          "cls": "Intermediate D3D Window",
+          "title": "",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 3276990,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tao Thread Event Target",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 589888,
+          "parent": 65548,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4196290,
+          "parent": null,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 9439046,
+          "parent": 31786814,
+          "pid": 28048,
+          "tid": 28016,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 5506704,
+          "parent": 7800782,
+          "pid": 28048,
+          "tid": 22384,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 9699604,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 2033494,
+          "parent": 9699604,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "MSCTFIME UI",
+          "title": "MSCTFIME UI",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        }
+      ]
+    },
+    {
+      "elapsed": 2.525815100001637,
+      "windows": [
+        {
+          "hwnd": 2687708,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tauri Window",
+          "title": "Toontown",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 30213686,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "WRY_WEBVIEW",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 13042440,
+          "parent": 30213686,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Chrome_WidgetWin_0",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 7603510,
+          "parent": 13042440,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_WidgetWin_1",
+          "title": "Toontown",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2293858,
+          "parent": 7603510,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_RenderWidgetHostHWND",
+          "title": "Chrome Legacy Window",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2230126,
+          "parent": 7603510,
+          "pid": 17664,
+          "tid": 12328,
+          "cls": "Intermediate D3D Window",
+          "title": "",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 14354008,
+          "parent": 65548,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4195010,
+          "parent": null,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 31786814,
+          "parent": null,
+          "pid": 28048,
+          "tid": 28016,
+          "cls": "TabletPenServiceHelperClass",
+          "title": "WISPTIS",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 7800782,
+          "parent": null,
+          "pid": 28048,
+          "tid": 22384,
+          "cls": "GDI+ Hook Window Class",
+          "title": "GDI+ Window (toontown.exe)",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 3737386,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "ATL:00007FFAF78DDF90",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 3276990,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tao Thread Event Target",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 589888,
+          "parent": 65548,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4196290,
+          "parent": null,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2033494,
+          "parent": 9699604,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "MSCTFIME UI",
+          "title": "MSCTFIME UI",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 9699604,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 9439046,
+          "parent": 31786814,
+          "pid": 28048,
+          "tid": 28016,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 5506704,
+          "parent": 7800782,
+          "pid": 28048,
+          "tid": 22384,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        }
+      ]
+    },
+    {
+      "elapsed": 3.0324767000274733,
+      "windows": [
+        {
+          "hwnd": 2687708,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tauri Window",
+          "title": "Toontown",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 30213686,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "WRY_WEBVIEW",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 13042440,
+          "parent": 30213686,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Chrome_WidgetWin_0",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 7603510,
+          "parent": 13042440,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_WidgetWin_1",
+          "title": "Toontown",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2293858,
+          "parent": 7603510,
+          "pid": 23832,
+          "tid": 13504,
+          "cls": "Chrome_RenderWidgetHostHWND",
+          "title": "Chrome Legacy Window",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2230126,
+          "parent": 7603510,
+          "pid": 17664,
+          "tid": 12328,
+          "cls": "Intermediate D3D Window",
+          "title": "",
+          "process": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\155.0.4283.60\\msedgewebview2.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 14354008,
+          "parent": 65548,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4195010,
+          "parent": null,
+          "pid": 14372,
+          "tid": 11748,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 31786814,
+          "parent": null,
+          "pid": 28048,
+          "tid": 28016,
+          "cls": "TabletPenServiceHelperClass",
+          "title": "WISPTIS",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 7800782,
+          "parent": null,
+          "pid": 28048,
+          "tid": 22384,
+          "cls": "GDI+ Hook Window Class",
+          "title": "GDI+ Window (toontown.exe)",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 3737386,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "ATL:00007FFAF78DDF90",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 3276990,
+          "parent": null,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "Tao Thread Event Target",
+          "title": "",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 589888,
+          "parent": 65548,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Windows.UI.Core.CoreWindow",
+          "title": "DesktopWindowXamlSource",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 4196290,
+          "parent": null,
+          "pid": 18068,
+          "tid": 25616,
+          "cls": "Shell_SystemDialogProxy",
+          "title": "Windows Security",
+          "process": "C:\\Windows\\System32\\PickerHost.exe",
+          "visible": true
+        },
+        {
+          "hwnd": 2033494,
+          "parent": 9699604,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "MSCTFIME UI",
+          "title": "MSCTFIME UI",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 9699604,
+          "parent": 2687708,
+          "pid": 28048,
+          "tid": 17896,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 9439046,
+          "parent": 31786814,
+          "pid": 28048,
+          "tid": 28016,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        },
+        {
+          "hwnd": 5506704,
+          "parent": 7800782,
+          "pid": 28048,
+          "tid": 22384,
+          "cls": "IME",
+          "title": "Default IME",
+          "process": "C:\\Users\\kaiga\\work\\review\\m0-c02-r1\\target\\release\\toontown.exe",
+          "visible": false
+        }
+      ]
+    }
+  ]
+}

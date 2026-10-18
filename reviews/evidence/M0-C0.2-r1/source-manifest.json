@@ -1,0 +1,61 @@
+{
+  "retrievedAt": "2026-10-18T07:52:30.594777+00:00",
+  "sources": [
+    {
+      "file": "mdn-PointerEvent.json",
+      "url": "https://raw.githubusercontent.com/mdn/browser-compat-data/main/api/PointerEvent.json",
+      "sha256": "dda3ae309702d2636ad04fa24f89bf34b6c8014f4746323c8062bc89307cc8ce"
+    },
+    {
+      "file": "WebEventFactory.mm",
+      "url": "https://raw.githubusercontent.com/WebKit/WebKit/main/Source/WebKit/Shared/mac/WebEventFactory.mm",
+      "sha256": "19800870042b1878d4265df9126b6631d9dcd21bf8cc93d71709627ea64d980b"
+    },
+    {
+      "file": "PointerEvent.cpp",
+      "url": "https://raw.githubusercontent.com/WebKit/WebKit/main/Source/WebCore/dom/PointerEvent.cpp",
+      "sha256": "ddfc52f3422eba46a24fab6d79f1c6a6d3813436cb0bb97b7ba0d8cf4d3c7a06"
+    },
+    {
+      "file": "PointerCaptureController.cpp",
+      "url": "https://raw.githubusercontent.com/WebKit/WebKit/main/Source/WebCore/page/PointerCaptureController.cpp",
+      "sha256": "44d88b508a2f44ef32197d9062bb6f4bdb2ac87f55e5776208db256a964e9933"
+    },
+    {
+      "file": "chromium-pen.cc",
+      "url": "https://raw.githubusercontent.com/chromium/chromium/main/ui/views/win/pen_event_processor.cc",
+      "sha256": "5fd2db83805767950113bd2617295097a278f558671e5f66c3299d8fc6cf6964"
+    },
+    {
+      "file": "chromium-hwnd.cc",
+      "url": "https://raw.githubusercontent.com/chromium/chromium/main/ui/views/win/hwnd_message_handler.cc",
+      "sha256": "c7e26e5de8ffa876a3846b2559dcb79376ce3d725da849bf5af25a3636ba545c"
+    },
+    {
+      "file": "chromium-legacy.cc",
+      "url": "https://raw.githubusercontent.com/chromium/chromium/main/content/browser/renderer_host/legacy_render_widget_host_win.cc",
+      "sha256": "beb88ddd8dcfc2ac889a95067c4edd8fd7547594a168c6d13bcc085c0af23b04"
+    },
+    {
+      "file": "apple-pressure.md",
+      "url": "https://developer.apple.com/documentation/appkit/nsevent/pressure.md",
+      "sha256": "c841df9599460763ac0562c38c4b36cfc3f7f528e66c8899136ad925f9db4c8d"
+    },
+    {
+      "file": "apple-subtype.md",
+      "url": "https://developer.apple.com/documentation/appkit/nsevent/subtype.md",
+      "sha256": "6f63003f58df88c66b76daf5e5fe71e94559bfeb9c85486c9aba34c05f355c8e"
+    },
+    {
+      "file": "apple-tilt.md",
+      "url": "https://developer.apple.com/documentation/appkit/nsevent/tilt.md",
+      "sha256": "16a3614100341160696143e1d6b1cf20c680f5a53e9e2022023cf4c0302b8ff1"
+    },
+    {
+      "file": "apple-locationinwindow.md",
+      "url": "https://developer.apple.com/documentation/appkit/nsevent/locationinwindow.md",
+      "sha256": "feff8241ee84644b8dc4ab5b31533dcd10e6b3a1e7b2790bd4d7daa335b8ce4f"
+    }
+  ],
+  "archive": "upstream-sources.zip"
+}

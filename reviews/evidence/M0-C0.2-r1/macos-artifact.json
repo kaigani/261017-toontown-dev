@@ -1,0 +1,12 @@
+{
+  "artifactId": 12129805367,
+  "archive": [
+    "Toontown-macos-arm64.app.tar.gz",
+    "ipc-bench.json"
+  ],
+  "binary": "Toontown.app/Contents/MacOS/toontown",
+  "mode": "0o755",
+  "size": 12395128,
+  "machOHeader": "cffaedfe0c0000010000000002000000",
+  "cpuType": "0x100000c"
+}

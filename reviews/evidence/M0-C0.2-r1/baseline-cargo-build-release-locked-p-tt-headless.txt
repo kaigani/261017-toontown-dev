@@ -1,0 +1,50 @@
+cmd.exe :    Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\model)
+At line:3 char:76
++ ... 0-9]+','-'; & cmd.exe /d /c $check *> "reviews/evidence/M0-C0.2-r1/ba ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...1\crates\model):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling typenum v1.20.1
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling const-oid v0.10.2
+   Compiling serde_json v1.0.154
+   Compiling serde v1.0.229
+   Compiling thiserror v2.0.21
+   Compiling cpufeatures v0.3.1
+   Compiling cfg-if v1.0.5
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling clap_lex v1.1.1
+   Compiling heck v0.5.0
+   Compiling anstyle v1.0.14
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\persist)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\registry)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\executor)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\render)
+   Compiling clap_builder v4.6.7
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\io)
+   Compiling hybrid-array v0.4.15
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling syn v3.0.9
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling thiserror-impl v2.0.21
+   Compiling serde_derive v1.0.229
+   Compiling clap_derive v4.6.7
+   Compiling clap v4.6.7
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m0-c02-r1\bins\headless)
+    Finished `release` profile [optimized + debuginfo] target(s) in 6.03s
