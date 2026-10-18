@@ -480,6 +480,16 @@ impl Document {
                 "the project's library stub does not match the library",
             ));
         }
+        // REV-01/REV-02: an object's rev is the documentRev of a committed transaction, never newer than the document.
+        for (key, rev) in self.index.revs_ahead() {
+            out.push(Issue {
+                code: codes::ARG_INVALID,
+                severity: Severity::Error,
+                object_id: Some(key.clone()),
+                pointer: "/rev".to_owned(),
+                message: format!("rev {rev} is newer than documentRev {}", self.document_rev),
+            });
+        }
         // ID-01: unique across the project.
         for (id, count) in self.index.duplicates() {
             out.push(Issue::error(codes::ID_DUPLICATE, &id, "", format!("id `{id}` is used by {count} objects")));

@@ -468,3 +468,15 @@ fn schemas_are_valid_draft_2020_12() {
         "project.properties.set"
     );
 }
+
+/// REV-01/REV-02: no object may carry a revision newer than the document's `documentRev`.
+#[test]
+fn revisions_newer_than_the_document_are_integrity_errors() {
+    let mut parts = sample_parts(1).unwrap();
+    let bob = parts.elements.iter().position(|e| e.name() == "Bob").unwrap();
+    let mut v = serde_json::to_value(&parts.elements[bob]).unwrap();
+    v["channels"]["rotation"]["keys"][0]["rev"] = json!(99);
+    parts.elements[bob] = from_json::<Element>(&v).unwrap();
+    let errors = Document::from_parts(parts).unwrap_err();
+    assert!(errors.iter().any(|e| e.details()["pointer"] == "/rev" && e.message().contains("rev 99")), "{errors:?}");
+}
