@@ -77,12 +77,13 @@ const run = {
   upload: { cpuMs: 10, completeMs: 20 },
   idle,
   frames,
+  phases: { idle: { start: idle[0], end: idle[idle.length - 1] }, panZoom: { start: 2000, end: t } },
   snapshot: null,
   error: null,
 };
 const log = {
   spike: 'canvas',
-  version: 1,
+  version: 2,
   source: 'auto',
   environment: {
     timeOrigin: 1_700_000_000_000,
@@ -136,12 +137,32 @@ describe('canvas analyzer', () => {
     expect(r.stdout).toContain('| webgl2 | paths100k | test GPU |');
   });
 
+  it('accepts a complete 1 Hz run as a missed target (C03-R2-02)', () => {
+    const slow = Array.from({ length: 10 }, (_, k) => ({ t: 3000 + 1000 * k, cpuMs: 0.2, gpuMs: null }));
+    const r = analyse({
+      ...log,
+      runs: [
+        {
+          ...run,
+          idle: [100, 1100],
+          frames: slow,
+          phases: { idle: { start: 100, end: 1100 }, panZoom: { start: 2000, end: 12_000 } },
+        },
+      ],
+    });
+    expect(r.status, r.stderr).toBe(0);
+    const a = (r.json as Analysis).runs[0];
+    expect(a?.fps).toBeCloseTo(1, 9);
+    expect(a?.meetsTarget).toBe(false);
+    expect(r.stdout).toContain('missed');
+  });
+
   it('labels an explicitly failed run and rejects malformed or contradictory logs', () => {
     const failed = analyse({ ...log, runs: [{ ...run, frames: [], error: 'webgpu is not available' }] });
     expect(failed.status, failed.stderr).toBe(0);
     expect(failed.stdout).toContain('**FAILED**: webgpu is not available');
     const cases: [string, unknown, string][] = [
-      ['version', { ...log, version: 2 }, 'unsupported canvas log version'],
+      ['version', { ...log, version: 3 }, 'unsupported canvas log version'],
       ['source', { ...log, source: undefined }, 'source'],
       ['manual with runs', { ...log, source: 'manual' }, "source 'manual'"],
       ['auto without runs', { ...log, runs: [], pixelRuns: [] }, 'has no runs'],
@@ -150,7 +171,71 @@ describe('canvas analyzer', () => {
         { ...log, runs: [{ ...run, transfers: transfers.slice(1) }] },
         'transfer samples',
       ],
-      ['short pan/zoom', { ...log, runs: [{ ...run, frames: frames.slice(0, 100) }] }, 'shorter than'],
+      [
+        'truncated pan/zoom samples',
+        { ...log, runs: [{ ...run, frames: frames.slice(0, 100) }] },
+        'truncated',
+      ],
+      [
+        'pan/zoom phase ended early',
+        {
+          ...log,
+          runs: [
+            {
+              ...run,
+              frames: frames.slice(0, 100),
+              phases: { ...run.phases, panZoom: { start: 2000, end: frames[99]?.t } },
+            },
+          ],
+        },
+        'incomplete run',
+      ],
+      [
+        'idle phase ended early',
+        {
+          ...log,
+          runs: [
+            {
+              ...run,
+              idle: idle.slice(0, 30),
+              phases: { ...run.phases, idle: { start: 100, end: idle[29] } },
+            },
+          ],
+        },
+        'incomplete run',
+      ],
+      ['phase spans missing', { ...log, runs: [{ ...run, phases: undefined }] }, 'phase spans missing'],
+      [
+        'version 1 log with short pan/zoom samples',
+        { ...log, version: 1, runs: [{ ...run, frames: frames.slice(0, 100) }] },
+        'shorter than',
+      ],
+      [
+        'seed outside the workload table',
+        { ...log, parameters: { ...log.parameters, seed: 2 } },
+        'seed 2 not in the supported workload table',
+      ],
+      [
+        'points moved into verbs',
+        {
+          ...log,
+          runs: [
+            {
+              ...run,
+              transfers: transfers.map((x) => ({
+                ...x,
+                header: { ...x.header, points: 0, verbs: x.header.verbs + 8 * x.header.points },
+              })),
+            },
+          ],
+        },
+        'header points = 0',
+      ],
+      [
+        'decode statistics impossible for the header',
+        { ...log, runs: [{ ...run, decode: { ...run.decode, cubics: 300_001 } }] },
+        "exceed the header's verbs",
+      ],
       ['no time origin', { ...log, environment: {} }, 'timeOrigin'],
       [
         'header counts of another scene',

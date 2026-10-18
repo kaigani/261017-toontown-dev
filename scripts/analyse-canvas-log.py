@@ -5,19 +5,26 @@ Usage: python scripts/analyse-canvas-log.py <log.json | log.json.gz> [--json <ou
 Every number is recomputed from the raw samples in the log; the page's own readout is not stored and not used.
 The log is validated completely before anything is printed; malformed, incomplete or contradictory evidence exits
 with status 2 and prints nothing on stdout (C03-R1-01):
-* `spike` must be `canvas` and `version` 1; `source` must be `auto`, `interactive` or `manual`, and agree with
+* `spike` must be `canvas` and `version` 1 or 2; `source` must be `auto`, `interactive` or `manual`, and agree with
   `environment.mode.auto`;
 * the environment must be complete: time origin, user agent, device pixel ratio, viewport, screen, WebGPU API flag,
   forced renderer (consistent with the launch mode), launch mode, and host facts (or the host error);
-* parameters must declare the scenes, seed, flattening tolerance, transfer/pixel counts and durations;
+* parameters must declare the scenes, seed, flattening tolerance, transfer/pixel counts and durations; the seed must be
+  one in the workload table (seed 1), anything else is rejected rather than left unchecked;
 * an `auto` log must contain the full matrix: one run per expected back end (the forced one, else WebGPU when its API
   exists, and WebGL2) and declared scene, in order, and one pixel run per back end; an explicitly failed run (with
   its error) counts as an observation, a missing one does not. A `manual` log must contain no runs;
-* every successful run must match the declared workload: transfers numbered 0..n-1 in order, every transfer's byte
-  count equal to the scene's encoded size (from its logged header counts, which must match the scene, or from the
-  workload table for seed 1), decode statistics equal to the workload (paths, cubics, stroke/fill paths, and at
-  tolerance 0.5 segments, fill vertices and triangles), non-negative durations, upload completion not before its CPU
-  part, idle and pan/zoom timestamps monotonic and covering the declared durations, a CPU time for every frame,
+* every successful run must match the declared workload: transfers numbered 0..n-1 in order; every transfer's byte
+  count equal to the scene's size in the workload table and, when the transfer logs its header (current logs), to the
+  size its header counts imply, with every header count (groups, paths, points, verbs) equal to the table's and the
+  header naming the same scene, seed and frame (C03-R2-01); decode statistics consistent with the decoded header
+  (paths equal, cubics within its verbs and points, strokes with segments, fills with vertices) and equal to the
+  workload (paths, cubics, stroke/fill paths, and at tolerance 0.5 segments, fill vertices and triangles);
+  non-negative durations, upload completion not before its CPU
+  part, idle and pan/zoom timestamps monotonic and covering the declared durations (version 2: each phase's
+  logged span lasts at least its declared duration and its samples end exactly on the span's end, so a complete
+  slow run passes and a truncated one does not; version 1: the stored samples themselves span the durations), a
+  CPU time for every frame,
   a GPU completion time for every WebGPU frame and none for WebGL2, renderer facts, and canvas geometry consistent
   with the device pixel ratio;
 * pixel runs must have one sample per declared transfer, numbered in order, with the byte count of their size.
@@ -44,20 +51,29 @@ import math
 import os
 import sys
 
-VERSION = 1
+# Log versions read: 1 (C0.3 rounds 0-1, no phase spans) and 2 (current page, explicit phase spans; C03-R2-02).
+VERSIONS = (1, 2)
+PHASES_SINCE = 2
+ANALYSIS_VERSION = 1
 SOURCES = ("auto", "interactive", "manual")
 BACKENDS = ("webgpu", "webgl2")
 SCENES = ("paths100k", "groups1k", "brush10k")
-# Workload of the TTRL v1 scenes for seed 1 (desktop/src-tauri/src/spikes/canvas/renderlist.rs): encoded bytes, header
-# counts and the decoder's statistics; segment/vertex/triangle counts hold for the flattening tolerance 0.5.
+# Workload of the TTRL v1 scenes for seed 1 (desktop/src-tauri/src/spikes/canvas/renderlist.rs, whose test
+# `scenes_have_the_specified_sizes` pins the same header counts): encoded bytes, every header count and the decoder's
+# statistics; segment/vertex/triangle counts hold for the flattening tolerance 0.5. Seed 1 is the only supported seed:
+# a log with any other seed is rejected, never left unchecked (C03-R2-01).
 WORKLOAD = {
-    "paths100k": {"bytes": 8_700_096, "groups": 1, "paths": 100_000, "cubics": 200_000, "strokePaths": 100_000,
-                  "fillPaths": 0, "segments": 2_832_713, "fillVertices": 0, "triangles": 0},
-    "groups1k": {"bytes": 2_024_072, "groups": 1000, "paths": 20_000, "cubics": 50_000, "strokePaths": 10_000,
-                 "fillPaths": 10_000, "segments": 101_961, "fillVertices": 175_915, "triangles": 145_915},
-    "brush10k": {"bytes": 10_085_716, "groups": 1, "paths": 10_000, "cubics": 0, "strokePaths": 0,
-                 "fillPaths": 10_000, "segments": 0, "fillVertices": 1_088_402, "triangles": 1_062_652},
+    "paths100k": {"bytes": 8_700_096, "groups": 1, "paths": 100_000, "points": 700_000, "verbs": 300_000,
+                  "cubics": 200_000, "strokePaths": 100_000, "fillPaths": 0, "segments": 2_832_713, "fillVertices": 0,
+                  "triangles": 0},
+    "groups1k": {"bytes": 2_024_072, "groups": 1000, "paths": 20_000, "points": 170_000, "verbs": 80_000,
+                 "cubics": 50_000, "strokePaths": 10_000, "fillPaths": 10_000, "segments": 101_961,
+                 "fillVertices": 175_915, "triangles": 145_915},
+    "brush10k": {"bytes": 10_085_716, "groups": 1, "paths": 10_000, "points": 1_088_402, "verbs": 1_098_402,
+                 "cubics": 0, "strokePaths": 0, "fillPaths": 10_000, "segments": 0, "fillVertices": 1_088_402,
+                 "triangles": 1_062_652},
 }
+HEADER_COUNTS = ("groups", "paths", "points", "verbs")
 TABLE_SEED = 1
 TABLE_TOLERANCE = 0.5
 
@@ -157,6 +173,8 @@ def validate_parameters(log):
         raise LogError(f"parameters.scenes {scenes!r} is not a list of distinct known scenes")
     if not integer(params.get("seed")):
         raise LogError("parameters.seed is missing")
+    if params["seed"] != TABLE_SEED:
+        raise LogError(f"seed {params['seed']} not in the supported workload table (supported: {TABLE_SEED})")
     if not num(params.get("flattenTolerance")) or params["flattenTolerance"] <= 0:
         raise LogError("parameters.flattenTolerance is missing")
     return params
@@ -168,11 +186,12 @@ def expected_backends(env):
     return ["webgpu", "webgl2"] if env["webgpuApi"] else ["webgl2"]
 
 
-def validate_run(run, label, params):
+def validate_run(run, label, params, version):
     tr = run.get("transfers")
     if not isinstance(tr, list) or len(tr) != params["transfers"]:
         raise LogError(f"{label}: expected {params['transfers']} transfer samples")
-    want = WORKLOAD[run["scene"]] if params["seed"] == TABLE_SEED else None
+    want = WORKLOAD[run["scene"]]  # validate_parameters admits only the table seed
+    headers = []
     for k, x in enumerate(tr):
         if not (isinstance(x, dict) and x.get("i") == k and x.get("frame") == k):
             raise LogError(f"{label}: transfer {k} is not numbered {k} (i/frame {x.get('i')!r}/{x.get('frame')!r})")
@@ -182,17 +201,18 @@ def validate_run(run, label, params):
         header = x.get("header")
         if header is not None:
             if not (isinstance(header, dict) and all(integer(header.get(f)) and header[f] >= 0
-                                                     for f in ("groups", "paths", "points", "verbs"))):
+                                                     for f in HEADER_COUNTS)):
                 raise LogError(f"{label}: transfer {k} header counts malformed")
             if header.get("kind") != run["scene"] or header.get("seed") != params["seed"] or header.get("frame") != k:
                 raise LogError(f"{label}: transfer {k} header describes another scene, seed or frame")
             if x["bytes"] != encoded_len(header):
                 raise LogError(f"{label}: transfer {k} is {x['bytes']} bytes; its header counts imply {encoded_len(header)}")
-            if want and (header["paths"] != want["paths"] or header["groups"] != want["groups"]):
-                raise LogError(f"{label}: transfer {k} header counts differ from the {run['scene']} workload")
-        elif want is None:
-            raise LogError(f"{label}: no header counts and no workload table for seed {params['seed']}")
-        if want and x["bytes"] != want["bytes"]:
+            for f in HEADER_COUNTS:
+                if header[f] != want[f]:
+                    raise LogError(f"{label}: transfer {k} header {f} = {header[f]} differs from the "
+                                   f"{run['scene']} workload ({want[f]})")
+            headers.append(header)
+        if x["bytes"] != want["bytes"]:
             raise LogError(f"{label}: transfer {k} is {x['bytes']} bytes; {run['scene']} encodes to {want['bytes']}")
     if len({x["bytes"] for x in tr}) != 1:
         raise LogError(f"{label}: transfers of one scene differ in size")
@@ -205,26 +225,65 @@ def validate_run(run, label, params):
         raise LogError(f"{label}: decode tolerance {dec.get('tolerance')!r} differs from the declared parameter")
     if dec["strokePaths"] + dec["fillPaths"] != dec["paths"]:
         raise LogError(f"{label}: decode stroke + fill paths do not add up to its paths")
-    if want:
-        keys = ["paths", "cubics", "strokePaths", "fillPaths"]
-        if dec["tolerance"] == TABLE_TOLERANCE:
-            keys += ["segments", "fillVertices", "triangles"]
-        for k in keys:
-            if dec[k] != want[k]:
-                raise LogError(f"{label}: decode {k} = {dec[k]} contradicts the {run['scene']} workload ({want[k]})")
+    # The decoder's own counts must be possible for the list it decoded (every run, independent of the table): it
+    # decodes exactly the header's paths, every cubic is one verb with three points, strokes need segments, fills
+    # need vertices, and a fill triangle needs fill vertices.
+    for h in headers or [want]:
+        if dec["paths"] != h["paths"]:
+            raise LogError(f"{label}: decode paths = {dec['paths']} but the header declares {h['paths']}")
+        if dec["cubics"] > h["verbs"] or 3 * dec["cubics"] > h["points"]:
+            raise LogError(f"{label}: decode cubics = {dec['cubics']} exceed the header's verbs or points")
+    if dec["paths"] and not (dec["segments"] or dec["fillVertices"]):
+        raise LogError(f"{label}: decode produced no geometry for {dec['paths']} paths")
+    if (dec["strokePaths"] > 0) != (dec["segments"] > 0) or (dec["fillPaths"] > 0) != (dec["fillVertices"] > 0):
+        raise LogError(f"{label}: decode stroke/fill paths disagree with its segments/fill vertices")
+    if dec["triangles"] and not dec["fillVertices"]:
+        raise LogError(f"{label}: decode triangles without fill vertices")
+    keys = ["paths", "cubics", "strokePaths", "fillPaths"]
+    if dec["tolerance"] == TABLE_TOLERANCE:
+        keys += ["segments", "fillVertices", "triangles"]
+    for k in keys:
+        if dec[k] != want[k]:
+            raise LogError(f"{label}: decode {k} = {dec[k]} contradicts the {run['scene']} workload ({want[k]})")
     up = run.get("upload")
     if not (isinstance(up, dict) and nonneg(up.get("cpuMs")) and nonneg(up.get("completeMs"))
             and up["completeMs"] + 1e-6 >= up["cpuMs"]):
         raise LogError(f"{label}: upload record missing, negative or completed before its CPU part")
     idle = run.get("idle")
-    if not isinstance(idle, list) or len(idle) < 2 or not monotonic(idle) or idle[-1] - idle[0] < params["idleMs"]:
-        raise LogError(f"{label}: idle timestamps missing, non-monotonic or shorter than {params['idleMs']} ms")
+    if not isinstance(idle, list) or len(idle) < 2 or not monotonic(idle):
+        raise LogError(f"{label}: idle timestamps missing or non-monotonic")
     frames = run.get("frames")
     if not isinstance(frames, list) or len(frames) < 2:
         raise LogError(f"{label}: pan/zoom frames missing")
     ts = [f.get("t") if isinstance(f, dict) else None for f in frames]
-    if not monotonic(ts) or ts[-1] - ts[0] < params["panZoomMs"] - 100:
-        raise LogError(f"{label}: frame timestamps non-monotonic or shorter than {params['panZoomMs']} ms")
+    if not monotonic(ts):
+        raise LogError(f"{label}: frame timestamps non-monotonic")
+    if version >= PHASES_SINCE:
+        # Completion comes from the page's explicit phase spans, so a complete run passes at any frame rate (a 1 Hz
+        # run stores only the frames after its start); the raw samples must lie exactly within the spans.
+        phases = run.get("phases")
+        if not isinstance(phases, dict):
+            raise LogError(f"{label}: phase spans missing (log version {version})")
+        for name, samples, duration, first_is_start in (("idle", idle, params["idleMs"], True),
+                                                        ("panZoom", ts, params["panZoomMs"], False)):
+            span = phases.get(name)
+            if not (isinstance(span, dict) and num(span.get("start")) and num(span.get("end"))):
+                raise LogError(f"{label}: {name} phase span missing or malformed")
+            if span["end"] - span["start"] < duration:
+                raise LogError(f"{label}: {name} phase lasted {span['end'] - span['start']:.1f} ms, shorter than "
+                               f"the declared {duration} ms (incomplete run)")
+            first_ok = samples[0] == span["start"] if first_is_start else samples[0] > span["start"]
+            if not first_ok or samples[-1] != span["end"]:
+                raise LogError(f"{label}: {name} samples do not cover their phase span (truncated or extended)")
+        if phases["idle"]["end"] > phases["panZoom"]["start"]:
+            raise LogError(f"{label}: the idle phase overlaps the pan/zoom phase")
+    else:
+        # Version 1 logs record no spans; the stored samples must cover the durations (pan/zoom within one 100 ms
+        # frame of slack, which a run slower than 10 Hz cannot meet: the reason for version 2).
+        if idle[-1] - idle[0] < params["idleMs"]:
+            raise LogError(f"{label}: idle timestamps shorter than {params['idleMs']} ms")
+        if ts[-1] - ts[0] < params["panZoomMs"] - 100:
+            raise LogError(f"{label}: frame timestamps shorter than {params['panZoomMs']} ms")
     if idle[-1] > ts[0]:
         raise LogError(f"{label}: the idle phase overlaps the pan/zoom phase")
     for k, f in enumerate(frames):
@@ -249,8 +308,8 @@ def validate_run(run, label, params):
 def validate(log):
     if log.get("spike") != "canvas":
         raise LogError(f"not a canvas-spike log (spike {log.get('spike')!r})")
-    if log.get("version") != VERSION:
-        raise LogError(f"unsupported canvas log version {log.get('version')!r} (this analyzer reads {VERSION})")
+    if log.get("version") not in VERSIONS:
+        raise LogError(f"unsupported canvas log version {log.get('version')!r} (this analyzer reads {VERSIONS})")
     source = log.get("source")
     if source not in SOURCES:
         raise LogError(f"unknown or missing source {source!r} (expected one of {SOURCES})")
@@ -286,7 +345,7 @@ def validate(log):
             if not isinstance(run["error"], str) or not run["error"]:
                 raise LogError(f"{label}: failed run without an error message")
             continue
-        validate_run(run, label, params)
+        validate_run(run, label, params, log["version"])
     for i, p in enumerate(pixels):
         if not isinstance(p, dict) or p.get("backend") not in backends:
             raise LogError(f"pixel run {i}: unknown or unexpected back end")
@@ -363,7 +422,7 @@ def s3(st, d=2):
 def report(log, runs, pixels):
     env = log["environment"]
     host = env.get("host") or {}
-    print("## Canvas spike log (version 1)\n")
+    print(f"## Canvas spike log (version {log['version']})\n")
     print(f"- source: {log['source']}; userAgent: {env.get('userAgent')}")
     print(f"- host: {host.get('os')} {host.get('arch')}, {host.get('osVersion')}, webview {host.get('webviewVersion')}, "
           f"CPUs {host.get('cpuCount')}; DPR {env.get('devicePixelRatio')}, viewport {env.get('viewport')}")
@@ -439,7 +498,7 @@ def main(argv):
                         f.write(base64.b64decode(s.split(",", 1)[1]))
     if out_json:
         with open(out_json, "w", encoding="utf-8") as f:
-            json.dump({"version": VERSION, "runs": runs, "pixelRuns": pixels}, f, indent=1)
+            json.dump({"version": ANALYSIS_VERSION, "runs": runs, "pixelRuns": pixels}, f, indent=1)
     return 0
 
 

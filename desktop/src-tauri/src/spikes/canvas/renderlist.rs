@@ -477,6 +477,11 @@ mod tests {
         assert_eq!(b.paths.len(), 10_000);
         // Polygons with 20..=200 vertices: move + (2n - 1) lines + close.
         assert!(b.paths.iter().all(|r| (21..=201).contains(&r.verb_count)));
+        // The seed-1 header counts and encoded sizes in scripts/analyse-canvas-log.py's workload table (C03-R2-01).
+        let counts = |s: &Scene| (s.groups.len(), s.paths.len(), s.points.len() / 2, s.verbs.len(), encoded_len(s));
+        assert_eq!(counts(&p), (1, 100_000, 700_000, 300_000, 8_700_096));
+        assert_eq!(counts(&g), (1000, 20_000, 170_000, 80_000, 2_024_072));
+        assert_eq!(counts(&b), (1, 10_000, 1_088_402, 1_098_402, 10_085_716));
     }
 
     #[test]

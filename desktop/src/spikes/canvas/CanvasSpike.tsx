@@ -5,7 +5,8 @@
 // (100 000 cubic paths; 1 000 transformed groups; 10 000 brush strokes) it measures:
 // render-list transfer (10 sequential binary invokes), decode, upload, an idle phase (display refresh), and 10 s of
 // scripted pan/zoom; then the per-frame cost of moving a finished bitmap across IPC (host-raster fallback). Raw
-// samples go into a version-1 log; `scripts/analyse-canvas-log.py` recomputes every summary from them.
+// samples go into a version-2 log; `scripts/analyse-canvas-log.py` recomputes every summary from them. Version 2 adds
+// each run's explicit phase spans (C03-R2-02), so a complete run is recognisable at any frame rate.
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { toHostError, useHost, type CanvasSceneKind, type SpikeEnvironment, type SpikeMode } from '../../ipc';
@@ -16,7 +17,7 @@ import type { Backend, Renderer, UploadTiming } from './renderer';
 import { createWebGL2 } from './webgl2';
 import { createWebGPU, webgpuApi } from './webgpu';
 
-export const CANVAS_LOG_VERSION = 1;
+export const CANVAS_LOG_VERSION = 2;
 const SCENES: CanvasSceneKind[] = ['paths100k', 'groups1k', 'brush10k'];
 const SEED = 1;
 const TRANSFERS = 10;
@@ -32,6 +33,13 @@ interface CanvasGeometry {
   dpr: number;
 }
 
+/** rAF timestamps bounding one measured phase: `start` is the frame the phase began on (before its first sample),
+ * `end` the frame on which its duration was reached (its last sample). */
+interface PhaseSpan {
+  start: number;
+  end: number;
+}
+
 interface RunRecord {
   backend: Backend;
   scene: CanvasSceneKind;
@@ -45,6 +53,8 @@ interface RunRecord {
   /** rAF timestamps of the idle phase (nothing drawn). */
   idle: number[];
   frames: FrameSample[];
+  /** Phase spans (C03-R2-02): completion is `end - start >= duration`, independent of how many frames fit in it. */
+  phases: { idle: PhaseSpan | null; panZoom: PhaseSpan | null };
   /** JPEG data URL of one frame at the camera's start position (visual check of what was drawn). */
   snapshot: string | null;
   error: string | null;
@@ -158,6 +168,7 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
         upload: null,
         idle: [],
         frames: [],
+        phases: { idle: null, panZoom: null },
         snapshot: null,
         error: null,
       };
@@ -220,7 +231,10 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
         for (;;) {
           const t = await nextFrame();
           run.idle.push(t);
-          if (t - idleStart >= IDLE_MS) break;
+          if (t - idleStart >= IDLE_MS) {
+            run.phases.idle = { start: idleStart, end: t };
+            break;
+          }
         }
 
         setStatus(`${backend} ${scene}: pan/zoom for ${String(PAN_ZOOM_MS / 1000)} s…`);
@@ -241,7 +255,10 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
               sample.gpuMs = ms;
             }),
           );
-          if (elapsed >= PAN_ZOOM_MS) break;
+          if (elapsed >= PAN_ZOOM_MS) {
+            run.phases.panZoom = { start, end: t };
+            break;
+          }
         }
         await Promise.all(pending);
         const summary = summarizeRun(run);
