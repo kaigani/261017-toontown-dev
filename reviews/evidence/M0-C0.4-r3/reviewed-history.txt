@@ -1,0 +1,4 @@
+47459da fix(c0.4): executable, total tablet and canvas rule sets; action markers (C04-R2-01..04)
+07300da merge: main (master plan refresh b9b966b)
+534168d merge: Codex review round 2 of C0.4 (report, evidence, permanent tests)
+b9b966b plan: refresh master plan copy (public repo, sidecar moved to M8 C8.3, decisions §6)

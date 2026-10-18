@@ -1,0 +1,117 @@
+{
+  "mode": "default",
+  "sha256": "2ab87b0d012427853106113f174cfb98f0a5aa7af611d810c0e1e633b792cf54",
+  "bytes": 9410048,
+  "binary_counts": {
+    "bench_plan": 0,
+    "bench_report": 0,
+    "spike_mode": 0,
+    "spike_tablet_native_start": 0,
+    "spike_tablet_native_stop": 0,
+    "spike_pen_simulate": 0,
+    "spike_save_log": 0,
+    "spike_environment": 0,
+    "spike_probe_native_window": 0,
+    "spike_raw_input_sink": 0,
+    "spike_canvas_scene": 0,
+    "spike_canvas_pixels": 0,
+    "--ipc-bench": 7,
+    "--spike": 18,
+    "app_info": 2
+  },
+  "dist": [
+    {
+      "file": "assets\\index-B2rIT20y.css",
+      "sha256": "d548e9010c188a0538ab9a3d26bbbe551ae5f72eaad7b168d882f3f33813f3d9",
+      "names": []
+    },
+    {
+      "file": "assets\\index-Cs3IjWqJ.js",
+      "sha256": "e7630d94a60a41cc3dbfdb4e399b18fbf87deec3114d7cc4fa4ee67224237228",
+      "names": []
+    },
+    {
+      "file": "assets\\index-Cs3IjWqJ.js.map",
+      "sha256": "d94f71ae8d06bf6b7c26e52eacf71c535311f9a7e7ea2ea9378fca4344cfc26d",
+      "names": [
+        "TabletSpike",
+        "CanvasSpike"
+      ]
+    },
+    {
+      "file": "assets\\tauri-transport-CqPEAjyd.js",
+      "sha256": "2d454f17617b058577c9a7cf94f29bbd7838c1f4c3daa54db8aea1a9023c684a",
+      "names": []
+    },
+    {
+      "file": "assets\\tauri-transport-CqPEAjyd.js.map",
+      "sha256": "74c1e42c5aeab7af451d4c95d5cf90ff4cd2332d3fb5260476090973c3d8d35f",
+      "names": []
+    },
+    {
+      "file": "index.html",
+      "sha256": "8653e4491bcebcae9c7b4b8f669d19503857a006b83e447cd9b143a4515dfe92",
+      "names": []
+    }
+  ],
+  "launches": [
+    {
+      "variant": "ordinary",
+      "args": [
+        "--spike",
+        "tablet"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "toontown: `--spike` is an M0 diagnostic and this build has none; build with `--config src-tauri/tauri.diagnostics.conf.json` (docs/dev-setup.md)\n"
+    },
+    {
+      "variant": "ordinary",
+      "args": [
+        "--ipc-bench",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r3\\reviews\\evidence\\M0-C0.4-r3\\must-not-exist.json"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "toontown: `--ipc-bench` is an M0 diagnostic and this build has none; build with `--config src-tauri/tauri.diagnostics.conf.json` (docs/dev-setup.md)\n"
+    },
+    {
+      "variant": "ordinary",
+      "args": [
+        "--not-a-real-flag"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "toontown: unknown argument `--not-a-real-flag` (usage: toontown [--ipc-bench <out.json> [--ipc-bench-count <n>]] [--spike tablet|canvas [--spike-log <file>] [--spike-auto] [--spike-renderer auto|webgpu|webgl2]])\n"
+    },
+    {
+      "variant": "runtime-environment",
+      "args": [
+        "--spike",
+        "tablet"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "toontown: `--spike` is an M0 diagnostic and this build has none; build with `--config src-tauri/tauri.diagnostics.conf.json` (docs/dev-setup.md)\n"
+    },
+    {
+      "variant": "runtime-environment",
+      "args": [
+        "--ipc-bench",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r3\\reviews\\evidence\\M0-C0.4-r3\\must-not-exist.json"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "toontown: `--ipc-bench` is an M0 diagnostic and this build has none; build with `--config src-tauri/tauri.diagnostics.conf.json` (docs/dev-setup.md)\n"
+    },
+    {
+      "variant": "runtime-environment",
+      "args": [
+        "--not-a-real-flag"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "toontown: unknown argument `--not-a-real-flag` (usage: toontown [--ipc-bench <out.json> [--ipc-bench-count <n>]] [--spike tablet|canvas [--spike-log <file>] [--spike-auto] [--spike-renderer auto|webgpu|webgl2]])\n"
+    }
+  ]
+}

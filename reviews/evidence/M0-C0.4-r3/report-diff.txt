@@ -1,0 +1,315 @@
+diff --git a/reviews/M0-C0.4-go-no-go.md b/reviews/M0-C0.4-go-no-go.md
+index 6eb1fe0..db298b4 100644
+--- a/reviews/M0-C0.4-go-no-go.md
++++ b/reviews/M0-C0.4-go-no-go.md
+@@ -1,7 +1,7 @@
+ # M0 C0.4 — go/no-go report
+ 
+-Branch `m0-foundations`. Builder: Claude Opus 5.5. Date: 2026-10-18. **Revised after review round 1**
+-(`reviews/M0-C0.4-r1.md`; response `reviews/M0-C0.4-r1-response.md`).
++Branch `m0-foundations`. Builder: Claude Opus 5.5. Date: 2026-10-18. **Revised after review rounds 1
++and 2** (`reviews/M0-C0.4-r{1,2}.md`; responses `reviews/M0-C0.4-r{1,2}-response.md`).
+ 
+ The report has one section per risk in plan §2.3, then two further sections:
+ - the FFmpeg licensing item of the M0 checkpoint list;
+@@ -23,8 +23,8 @@ received from the user.
+ | Risk (plan §2.3) | Decision | Settles it | Pending user |
+ |---|---|---|---|
+ | Shell (plan C0.4: "Tauri shell confirmed") | **go** | — | the Qt condition ("fails on both OSes") is re-evaluated only if (a) ends in no-go on **both** OSes |
+-| (a) Tablet input in WebView2 / WKWebView | **go-with-conditions**; architecture **not chosen**; every physical-pen log maps to a path by the rule set in (a) / ADR-0009 | T-W1 (`docs/manual-tests/M0-C0.4-tablet-windows.md`) with E1; T-M1; E-H1 / E-D1 if the rules call for them | yes |
+-| (b) Canvas throughput | **go-with-conditions** (ADR-0007); every canvas log maps to a decision by the rule set in (b) / ADR-0007 | E-C1–E-C4 | the macOS canvas run |
++| (a) Tablet input in WebView2 / WKWebView | **go-with-conditions**; architecture **not chosen**; every physical-pen log maps to one outcome by the rule set in (a) / ADR-0009, which the tablet analyzer prints | T-W1 (`docs/manual-tests/M0-C0.4-tablet-windows.md`) with E1; T-M1; E-R1 / E-D1 to score raw HID and a dedicated window | yes |
++| (b) Canvas throughput | **go-with-conditions** (ADR-0007); every canvas log maps to one outcome by the rule set in (b) / ADR-0007, which the canvas analyzer prints | E-C1–E-C4 | the macOS canvas run |
+ | (c) WebGPU availability / WebGL2 path | **go** (WebGL2 mandatory and measured on its own) | E-C4 on a real Mac | the macOS canvas run |
+ | (d) CPU rasteriser determinism | **go** (ADR-0006: `vello_cpu` f32, `Level::fallback()`) | R-1–R-3 for untested CPU families | no |
+ | (e) Printing and scanners | **go-with-conditions: plan only, no spike was done** | P-1 (print spike), S-1 (scanner stretch) | no |
+@@ -85,83 +85,127 @@ received from the user.
+ 
+ **Experiments that settle it:**
+ - **T-W1:** one real-tablet session on Windows (any Windows Ink or Wacom pen),
+-  `docs/manual-tests/M0-C0.4-tablet-windows.md`. It uses the same six strokes as the Mac test and records the web
+-  path and the native RealTimeStylus path (R). **E1**, a WebView2 DevTools-protocol input trace, runs alongside it on
++  `docs/manual-tests/M0-C0.4-tablet-windows.md`. It uses the same six actions A1–A6 as the Mac test, with Space/K
++  markers, and records the web path (W) and the native RealTimeStylus path (H). **E1**, a WebView2 DevTools-protocol input trace, runs alongside it on
+   the same hardware. Synthetic auto-matrix output is not physical-pen validation.
+-- **T-M1:** the user's Mac run, `docs/manual-tests/M0-C0.2-tablet-macos.md`. Stroke 6 (stationary pressure) was added
+-  in this round.
+-- **E-H1 / E-D1:** decoded raw HID and a dedicated input window, run only when the rule set below calls for them.
++- **T-M1:** the user's Mac run, `docs/manual-tests/M0-C0.2-tablet-macos.md`, with the same actions, measuring W and
++  the AppKit monitor (A).
++- **E-R1 / E-D1:** decoded raw HID (R) and a dedicated input window (D). They let those candidates be scored, and
++  are run when the orchestrator orders them; the rule set decides from whatever is measured.
+ 
+ **Decision.** Go-with-conditions:
+ - the shell is kept;
+ - a single input-source abstraction is built (ADR-0009);
+ - the platform path is chosen by the rule set below, which is identical to ADR-0009 "Decision" and checked by
+-  `desktop/src/test/decisionTables.test.ts`. Every analyzable physical-pen log maps to a path, a named next
+-  experiment or an escalation, with no new analysis.
++  `desktop/src/test/decisionTables.test.ts`;
++- the rule set is total: every log maps to one evidence outcome or one decision. `scripts/analyse-tablet-log.py`
++  prints that outcome for every manual log, and `scripts/test_decision_rules.py` checks its constants against the
++  text.
+ 
+ <!-- tablet-rules:begin -->
++**Actions and episodes.** The procedures number the **actions** a person performs:
++- A1 pressure ramp;
++- A2 speed;
++- A3 tilt;
++- A4 barrel rotation (optional);
++- A5 hover;
++- A6 stationary pressure.
++
++The analyzer numbers **contact episodes**. The page records an action marker when the person presses Space at the
++start and end of each action, and K to skip it. Each episode belongs to the action whose span contains its first
++sample: web samples by the page's performance clock, native packets by host wall time. Every row below names an
++action, never an episode number.
++- Per path, an action is "episode n", "split" (the episode with most samples is measured), "performed, no events"
++  (done, but no contact on that path), "omitted" (skipped with K) or "unfinished" (saved mid-action).
++- Clicks on Save, the form or the listener button fall outside every action and are ignored.
++- The manual tests show the expected mapping for a clean run.
++
+ **Step 0: is the log evidence?**
+ 
+-| Condition | Action |
++| Condition | Outcome |
+ |---|---|
+-| `scripts/analyse-tablet-log.py` exits 2; or `source` is not `manual`; or the log has run/simulation records | not evidence: repeat T-M1 / T-W1; no decision |
+-| A required stroke is missing, or the user marks it as a mistake | repeat that stroke; the rows that depend on it stay undecided |
+-| The pen or tablet lacks a capability by its specification (tilt; barrel rotation, which only pens such as the Wacom Art Pen have), as recorded in "About this run" | that row is **n/a** for every path and does not count |
+-| Synthetic input (`--spike-auto`, toolbar simulation) | never evidence for these tables |
++| `scripts/analyse-tablet-log.py` exits 2; or `source` is not `manual`; or the log has run or simulation records; or the input is synthetic | **not evidence**: repeat the procedure |
++| The log has no action markers (it predates them) | **not evidence**: repeat the procedure with the current build |
++| A row's action is omitted, unfinished or not recorded (A4 omitted is fine when "Pen has barrel rotation" is no) | **insufficient evidence: repeat that action** |
++| Row 7 or 8: A2 has a single sample (rate null) | **insufficient evidence: repeat A2** |
++| Row 4 or 5 fails and the pen's tilt or rotation support is not stated in "About this run" | **insufficient evidence: state the pen's capability** |
++| The pen lacks tilt or barrel rotation by specification ("About this run": no) | that row is **n/a** for every candidate |
++
++Any "insufficient evidence" outcome ends the evaluation with that outcome. Otherwise continue.
+ 
+-**Step 1: classify each capability, separately for each path P** (W = web pointer events; N = the native candidate
+-being evaluated). Values are the analyzer's per-stroke figures for that path.
++**Step 1: classify each row for each measured candidate.** Bands are half-open, `[low, high)`, and apply to the
++analyzer's **unrounded** value. Row 6 is n/a for native candidates. "Performed, no events" counts as the fail
++column.
+ 
+-| # | Capability | Stroke | Pass | Partial | Fail |
++| # | Capability | Action | Pass | Partial | Fail |
+ |---|---|---|---|---|---|
+-| 1 | Pen identity: `pointer` column pen (web) / tool pen or eraser (native) | 1–3 | all three strokes | one or two of them | none |
+-| 2 | Pressure ≥ 256 levels | 1 | ≥ 256 | 16–255 | < 16, constant or binary |
+-| 3 | Pressure ≥ 1024 levels | 1 | ≥ 1024 | 256–1023 | < 256 (row 2 decides) |
+-| 4 | Tilt (`tilt x / y` extrema) | 3 | spans ≥ ±30° on both axes | non-zero range, but < ±30° on an axis | zero range on both axes while the pen tilts |
+-| 5 | Twist (`twist range (nonzero)`) | 4 | range wider than 180° | non-zero range of at most 180° (e.g. 0..179, modulo 180) | no non-zero sample, or zero range, while the pen rolls |
+-| 6 | Coalesced events (web only; n/a for N; the analyzer's coalescing line) | 2 | API available and batching observed | API available, batching not observed | API not available |
+-| 7 | Sustained rate ≥ 120 Hz (`Hz`) | 2 | ≥ 120 Hz | 60–119 Hz | < 60 Hz |
+-| 8 | Rate ≥ 200 Hz | 2 | ≥ 200 Hz | 120–199 Hz | < 120 Hz (row 7 decides) |
+-| 9 | Stationary pressure-only updates (`samples`, `Hz`, pressure distinct) | 6 | ≥ 60 Hz with more than one pressure value | more than one sample with more than one pressure value, but < 60 Hz | one sample (the down), or a single pressure value |
+-
+-Pressure resolution is the analyzer's implied grid (from the smallest step) when stroke 1 has ≥ 64 distinct values.
+-Otherwise it is the distinct count.
+-
+-**Step 2: what each W result requires.** "Native" means: take this attribute from the first native candidate, in
+-priority order, that **passes** the row. If no measured candidate passes, use the row's "otherwise".
+-
+-| # | W pass / n/a | W partial | W fail |
+-|---|---|---|---|
+-| 1 | W | native tool identity, merged with W positions; otherwise W, with pen recognised by pressure > 0 | native for every pen attribute; otherwise **platform no-go** |
+-| 2 | W | native pressure; otherwise W with reduced pressure resolution (documented limitation) | native pressure; otherwise **platform no-go** |
+-| 3 | W | W (256–1023 levels are accepted; no native path for this row alone) | row 2 decides |
+-| 4 | W | W with quantised tilt; native tilt only if a native path is already used for another row | native tilt; otherwise tilt-driven brush options disabled on that platform (documented limitation) |
+-| 5 | W | native twist; otherwise twist treated modulo 180 (documented limitation) | native twist; otherwise barrel rotation unsupported on that platform (documented limitation) |
+-| 6 | W | W if row 7 passes; otherwise row 7 decides | W if row 7 passes; otherwise native (macOS: A). If A also fails row 7, raising the floor to a WebKit with coalesced events is a **user decision** (ADR-0005), not taken here |
+-| 7 | W | native if it passes; otherwise W with reduced fidelity (curve fitting smooths; documented limitation) | native if it reaches at least partial; otherwise **platform no-go** |
+-| 8 | W | W (below the 200 Hz target, recorded) | row 7 decides |
+-| 9 | W | W (pressure interpolated between updates) | native pressure updates merged with W; otherwise pressure changes without movement are ignored (documented limitation) |
+-
+-**Native candidates, in priority order.** Each is evaluated with the same Step 1 rows.
+-- **Windows:**
+-  - **R:** RealTimeStylus on the main window. This is the spike's Windows native listener, measured in T-W1 itself.
+-  - **H:** decoded raw HID. It needs experiment **E-H1** (an `HidP_*` decoding prototype) before it can pass any row.
+-  - **D:** a dedicated input window. It needs **E-D1** (an overlay prototype).
+-
+-  Candidates are evaluated in that order. When a row needs native and R does not pass it, the next experiment is E-H1,
+-  then E-D1. The decision waits only for that experiment.
+-- **macOS: A** (AppKit monitor), measured in T-M1 itself.
+-
+-**Step 3: the platform decision.**
+-
+-| Result of Step 2 | Platform path |
++| 1 | Pen identity (`pointer` pen/eraser) | A1–A3 | all three actions | one or two of them | none |
++| 2 | Pressure ≥ 256 levels | A1 | [256, ∞) levels | [16, 256) levels | [0, 16) levels |
++| 3 | Pressure ≥ 1024 levels | A1 | [1024, ∞) levels | [256, 1024) levels | [0, 256) levels |
++| 4 | Tilt (`tilt x / y` extrema) | A3 | min ≤ −30° and max ≥ +30° on both axes | a non-zero range, otherwise | zero range on both axes |
++| 5 | Twist (`twist range (nonzero)`) | A4 | range width in (180°, ∞) | non-zero samples, width in (0°, 180°] | no non-zero sample, or width 0 |
++| 6 | Coalesced events (web only) | A2 | API available, batching observed | API available, no batching | API not available |
++| 7 | Sustained rate (`Hz`) | A2 | [120, ∞) Hz | [60, 120) Hz | [0, 60) Hz |
++| 8 | Rate ≥ 200 Hz (`Hz`) | A2 | [200, ∞) Hz | [120, 200) Hz | [0, 120) Hz |
++| 9 | Stationary pressure-only updates | A6 | more than one sample and pressure value, [60, ∞) Hz | more than one sample and pressure value, rate below 60 Hz or undefined | one sample (the down only), or a single pressure value |
++
++Pressure levels are the analyzer's implied grid when A1 has ≥ 64 distinct values; otherwise they are the distinct
++count. In row 9, one sample is the failure the row tests, not missing evidence.
++
++**Candidates and priority.** Each measured candidate is evaluated against every row on its own.
++- **Windows:** **W** (web pointer events) > **R** (raw HID; measurable only after experiment E-R1 decodes it) > **H**
++  (RealTimeStylus on the main window, the spike's native listener) > **D** (dedicated input window with direct
++  WM_POINTER; measurable only after E-D1).
++- **macOS:** **W** > **A** (AppKit monitor).
++
++W comes first because it needs no native code, and R next because raw HID was the only path that saw every
++synthetic frame. A T-W1 log measures W and H; a T-M1 log measures W and A. A candidate that is not measured is not
++scored, and the decision is final for that evidence. Passing a row on a native path proves only that row: native pen
++identity says nothing about native pressure, tilt or rate.
++
++**Step 2: select one candidate.**
++1. A candidate is **eligible** when rows 1, 2 and 7 are not at fail (the core rows).
++2. Its **score** is its number of rows at pass.
++3. The eligible candidate with the highest score is selected; ties go to the higher priority.
++4. **Two sources are never combined.** The other eligible candidates may be offered as the "Tablet input interface"
++   choice of spec 02 §6.3.
++
++**Step 3: the decision.**
++
++| Result | Decision |
+ |---|---|
+-| Every row resolves to W | **W** |
+-| One or more rows resolve to native, and one candidate passes all of them | **W + that candidate** for those attributes (hybrid: the DOM keeps positions and hover) |
+-| A row needs native, and its pending experiment (E-H1, E-D1) has not run | run that experiment; then apply this table again |
+-| A row resolves to a documented limitation | that path, with the limitation listed in the platform notes and reported to the user |
+-| Any row ends in **platform no-go** | no-go for tablet quality on that platform in this shell: escalate |
+-| **Both** platforms no-go | decision 7: Qt 6 is the only alternative |
++| No candidate is eligible | **platform no-go** for tablet quality in this shell: escalate. Decision 7 (Qt 6) applies only if **both** platforms are no-go |
++| The selected candidate passes every row that is not n/a | **go: that candidate** |
++| Otherwise | **go-with-conditions: that candidate**, with each row at partial or fail and its mitigation from the table below |
++
++| # | Mitigation when partial | Mitigation when fail |
++|---|---|---|
++| 1 | pen recognised by pressure > 0; eraser not distinguished | candidate ineligible (core row) |
++| 2 | accept the measured resolution of 16 to 255 levels; brush response quantised | candidate ineligible (core row) |
++| 3 | accept >= 256 levels | as row 2 |
++| 4 | accept the limited or quantised tilt | tilt unsupported on this platform: tilt-driven brush options off |
++| 5 | twist limited to the measured range (e.g. modulo 180) | barrel rotation unsupported on this platform |
++| 6 | accept one sample per dispatch | accept one sample per dispatch; a floor change is a user decision (ADR-0005) |
++| 7 | interpolated sampling off; the >= 200 Hz target is recorded as below target | candidate ineligible (core row) |
++| 8 | recorded as below the 200 Hz target | recorded as below the 200 Hz target (row 7 decides eligibility) |
++| 9 | pressure interpolated between updates | pressure changes without movement are ignored |
++
++**Worked examples** (checked by `scripts/test_decision_rules.py`):
++1. **Windows.** All four candidates are measured, and every row not named here is at pass.
++   - W: pressure partial (rows 2 and 3 at partial and fail), tilt at fail.
++   - R: tilt at fail.
++   - H: pressure at fail.
++   - D: pressure and tilt at fail.
++
++   H and D are ineligible (row 2 at fail). W scores 6 and R scores 7, since row 6 is n/a for R. Decision:
++   **go-with-conditions: R**, with row 4 at fail: tilt unsupported on this platform.
++2. **macOS.** W runs at 50 Hz and A at 90 Hz; every other row passes on both. W is ineligible (row 7 at fail).
++   Decision: **go-with-conditions: A**, with:
++   - row 7 at partial: interpolated sampling off, and the 200 Hz target recorded as below target;
++   - row 8 at fail: recorded as below the 200 Hz target.
++
++`scripts/analyse-tablet-log.py` implements these steps and prints the decision for every manual log. Its constants
++are checked against this text by `scripts/test_decision_rules.py`.
+ <!-- tablet-rules:end -->
+ 
+ No-go on **both** OSes invokes decision 7 (Qt 6 is the only alternative). Any other combination keeps Tauri.
+@@ -216,43 +260,60 @@ No-go on **both** OSes invokes decision 7 (Qt 6 is the only alternative). Any ot
+ - E-C4: the user's Mac.
+ 
+ **Rule set for every canvas log**, including E-C4 (`docs/manual-tests/M0-C0.3-canvas-macos.md`). It is identical to
+-ADR-0007 "Canvas rule set" and checked by `desktop/src/test/decisionTables.test.ts`:
++ADR-0007 "Canvas rule set" and checked by `desktop/src/test/decisionTables.test.ts`. `scripts/analyse-canvas-log.py`
++prints its outcome for every accepted log:
+ 
+ <!-- canvas-rules:begin -->
+-**Per-scene target.** The C0.3 scenes and the same threshold for each:
++**Scenes.** The rule set uses the three C0.3 scenes, with the same threshold for each:
+ - **paths100k**: one drawing of 100,000 stroked paths;
+ - **groups1k**: 1,000 transformed groups, the plan's "1 000-element scenes";
+ - **brush10k**: 10,000 filled brush outlines.
+ 
+-For one back end, a scene is:
+-- **met** when its run completes and the analyzer reports `meetsTarget: true` (fps ≥ 57 over the 10 s pan/zoom);
+-- **missed** when the run completes below 57 fps, including a complete run with "insufficient samples" (one sample
+-  in 10 s is far below target);
+-- **failed** when the run carries an error after the back end started;
+-- **unavailable** when there is no WebGPU adapter or no WebGL2 context.
+-
+-**Back-end selection (product rule, M4).**
+-- At first launch, and again after a GPU, driver or webview version change, the app measures both back ends that
+-  start on a short built-in pan/zoom of the three scene shapes.
+-- It uses the back end whose **worst** scene has the higher fps. A tie goes to WebGPU.
+-- A back end that failed is excluded until the next version change.
+-- The user can override the choice in preferences.
+-
+-So "WebGPU available but slower" selects WebGL2 on that machine; it is not a fault.
+-
+-**Outcome matrix.** It is applied per machine to the selected back end. For a spike log, that is the back end whose
+-worst scene is better.
++**Step 0: what each cell is.** Every back end × scene cell of an accepted log (analyzer exit 0) is exactly one of:
+ 
+-| Outcome | Decision |
++| Cell status | When |
+ |---|---|
+-| The log does not analyze (analyzer exit 2) | not evidence: rerun; no decision |
+-| WebGL2 unavailable or failed, WebGPU met or missed | WebGL2 is the mandatory path, so investigate (driver, OS, WebKit version) before any conclusion for that platform or floor; WebGPU is used on that machine meanwhile |
+-| Both back ends unavailable or failed | no-go for the webview canvas on that platform until investigated |
+-| WebGPU unavailable, failed or slower; WebGL2 works | the selection rule picks WebGL2; continue with the rows below |
+-| All three scenes met | **go** as written |
+-| groups1k and brush10k met, paths100k missed | **go**; M4 adds culling and level-of-detail for drawings of that size before they are supported at 60 fps |
+-| groups1k met, brush10k missed (paths100k met or missed) | **go-with-condition**: M4 pre-tessellates fills in Rust and adds fill level-of-detail, and E-C2 re-measures brush10k. If it still misses, a native-wgpu integration prototype becomes required M4 work |
+-| groups1k missed | **no-go** for the webview canvas as designed on that platform: a native-wgpu integration prototype (plan §2.3 fallback) becomes required M4 work |
++| **met** | the run completed and fps ≥ 57 over the 10 s pan/zoom (`meetsTarget: true`) |
++| **missed** | the run completed and fps < 57 |
++| **insufficient evidence** | the run completed but has no cadence estimate (fewer than two samples: `fps` null) |
++| **failed** | the run carries an error after the back end started |
++| **unavailable** | the error starts "webgpu unavailable" or "webgl2 unavailable", or the page reports no WebGPU API |
++| **not measured** (missing run) | the log has no run for the cell: an incomplete interactive capture, or a forced renderer |
++
++A log the analyzer rejects (exit 2) is **not evidence: repeat the run**. Cells that are not measured are listed as
++"not measured: repeat with `--spike canvas --spike-auto`", plus `--spike-renderer webgl2` for WebGL2 cells. Cells with
++insufficient evidence are listed as "insufficient evidence: repeat with …". Only measured cells are decided.
++
++**Step 1: back-end selection** (the product rule, M4, and its application to a log).
++- A back end is **scorable** when all three of its cells are met or missed. Its score is its worst scene's fps.
++- The scorable back end with the higher score is selected; a tie goes to WebGPU.
++- A back end without a valid measurement (any cell insufficient, not measured, failed or unavailable) is **never
++  selected over** one with a valid measurement.
++- In the product, both back ends are measured at first launch and after a GPU, driver or webview version change. A
++  failed back end is excluded until the next version change, and the user can override the choice in preferences.
++
++So "WebGPU available but slower" selects WebGL2; it is not a fault.
++
++**Step 2: the outcome.** Apply the first row that matches.
++
++| # | Condition | Outcome |
++|---|---|---|
++| 1 | Both back ends have a failed or unavailable cell | **no-go** for the webview canvas on that platform until investigated |
++| 2 | No back end is scorable | **insufficient evidence: repeat the listed runs**; no decision |
++| 3 | Selected back end: groups1k missed | **no-go** for the webview canvas as designed: a native-wgpu integration prototype (plan §2.3 fallback) becomes required M4 work |
++| 4 | Selected back end: groups1k met, brush10k missed (paths100k met or missed) | **go-with-condition**: M4 pre-tessellates fills in Rust and adds fill level-of-detail, and E-C2 re-measures brush10k. If it still misses, a native-wgpu integration prototype becomes required M4 work |
++| 5 | Selected back end: groups1k and brush10k met, paths100k missed | **go**; M4 adds culling and level-of-detail for drawings of that size before they are supported at 60 fps |
++| 6 | Selected back end: all three met | **go** as written |
++
++**Overrides on that outcome:**
++- **WebGL2 has a failed or unavailable cell** while WebGPU is scorable: WebGL2 is the mandatory path, so investigate
++  (driver, OS, WebKit version) before any conclusion for that platform or floor. The row 3–6 outcome for WebGPU is
++  the interim decision for that machine.
++- **Any cell is not measured or has insufficient evidence** and a back end was selected: the outcome is
++  **provisional**, and the listed runs complete it.
++
++`scripts/analyse-canvas-log.py` implements these steps and prints the decision for every accepted log, so every
++canvas log maps to an outcome by the analyzer itself.
+ <!-- canvas-rules:end -->
+ 
+ ## (c) WebGPU availability in WKWebView / the WebGL2 path — go
+@@ -276,7 +337,8 @@ and by design on macOS.
+ **Conditional on the macOS run:** decided by the rule set in (b). In summary:
+ - WebGPU unavailable, failed or slower → WebGL2 is selected, and nothing changes;
+ - WebGL2 unavailable or failed → investigate before any macOS or floor conclusion (WebGPU is used meanwhile);
+-- both unavailable → no-go for the macOS webview canvas until investigated.
++- both unavailable → no-go for the macOS webview canvas until investigated;
++- no back end with a valid measurement of all three scenes (missing runs, one-sample runs) → insufficient evidence: repeat the listed runs.
+ 
+ No CI run has shown WebGL2 failing.
+ 

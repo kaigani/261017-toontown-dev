@@ -1,0 +1,720 @@
+{
+  "reviewed": "47459da976a34963962c5dc7ca479273dac3273a",
+  "receipts": {
+    "binary-gating-default.receipt.json": {
+      "command": [
+        "python",
+        "scripts/check-diagnostics-gating.py",
+        "target/release/toontown.exe",
+        "--expect",
+        "default"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:44:57.094312+00:00",
+      "seconds": 0.062,
+      "exit": 0
+    },
+    "binary-gating-diagnostics.receipt.json": {
+      "command": [
+        "python",
+        "scripts/check-diagnostics-gating.py",
+        "target/release/toontown.exe",
+        "--expect",
+        "diagnostics"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:46:33.541812+00:00",
+      "seconds": 0.052,
+      "exit": 0
+    },
+    "builder-decisions.receipt.json": {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "scripts/test_decision_rules.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:46:47.549301+00:00",
+      "seconds": 0.109,
+      "exit": 0
+    },
+    "c02-r1-tooling.receipt.json": {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c02-r1-tooling.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:46:49.381927+00:00",
+      "seconds": 0.645,
+      "exit": 0
+    },
+    "c02-r2-tooling.receipt.json": {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c02-r2-tooling.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:46:50.027437+00:00",
+      "seconds": 0.573,
+      "exit": 0
+    },
+    "c02-r3-tooling.receipt.json": {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c02-r3-tooling.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:46:50.600784+00:00",
+      "seconds": 0.317,
+      "exit": 0
+    },
+    "c03-r1-tooling.receipt.json": {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c03-r1-tooling.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:46:50.918461+00:00",
+      "seconds": 0.971,
+      "exit": 0
+    },
+    "c03-r2-tooling.receipt.json": {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c03-r2-tooling.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:46:51.889995+00:00",
+      "seconds": 0.608,
+      "exit": 0
+    },
+    "clippy-diagnostics.receipt.json": {
+      "command": [
+        "cargo",
+        "clippy",
+        "-p",
+        "tt-desktop",
+        "--all-targets",
+        "--locked",
+        "--features",
+        "m0-diagnostics",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:41:06.106057+00:00",
+      "seconds": 7.737,
+      "exit": 0
+    },
+    "clippy.receipt.json": {
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:39:15.429989+00:00",
+      "seconds": 34.786,
+      "exit": 0
+    },
+    "deny.receipt.json": {
+      "command": [
+        "cargo",
+        "deny",
+        "--locked",
+        "check"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:41:37.319021+00:00",
+      "seconds": 0.86,
+      "exit": 0
+    },
+    "features-desktop.receipt.json": {
+      "command": [
+        "cargo",
+        "tree",
+        "--locked",
+        "-e",
+        "features",
+        "-p",
+        "tt-desktop",
+        "--features",
+        "m0-diagnostics"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:42:17.418459+00:00",
+      "seconds": 0.206,
+      "exit": 0
+    },
+    "features-headless.receipt.json": {
+      "command": [
+        "cargo",
+        "tree",
+        "--locked",
+        "-e",
+        "features",
+        "-p",
+        "tt-headless"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:42:17.285424+00:00",
+      "seconds": 0.132,
+      "exit": 0
+    },
+    "fmt.receipt.json": {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:39:14.895855+00:00",
+      "seconds": 0.534,
+      "exit": 0
+    },
+    "format-check.receipt.json": {
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm format:check"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:43:10.303877+00:00",
+      "seconds": 1.414,
+      "exit": 0
+    },
+    "frontend-build-default.receipt.json": {
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm --dir desktop build"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:43:39.910201+00:00",
+      "seconds": 1.584,
+      "exit": 0
+    },
+    "frontend-build-diagnostics.receipt.json": {
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm --dir desktop build:diagnostics"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:45:56.465834+00:00",
+      "seconds": 1.825,
+      "exit": 0
+    },
+    "headless-build.receipt.json": {
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-headless"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:41:38.179850+00:00",
+      "seconds": 4.908,
+      "exit": 0
+    },
+    "headless-guard.receipt.json": {
+      "command": [
+        "python",
+        "scripts/check-headless-deps.py",
+        "target/release/toontown-headless.exe"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:42:17.682063+00:00",
+      "seconds": 0.152,
+      "exit": 0
+    },
+    "headless-selftest-1.receipt.json": {
+      "command": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r3\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:42:17.624818+00:00",
+      "seconds": 0.051,
+      "exit": 0
+    },
+    "headless-selftest-2.receipt.json": {
+      "command": [
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r3\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:42:17.676243+00:00",
+      "seconds": 0.005,
+      "exit": 0
+    },
+    "licenses-check.receipt.json": {
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm licenses:check"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:43:11.718451+00:00",
+      "seconds": 0.856,
+      "exit": 0
+    },
+    "lint.receipt.json": {
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm lint"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:41:57.987630+00:00",
+      "seconds": 10.47,
+      "exit": 0
+    },
+    "r2-amended.receipt.json": {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c04-r2-decisions.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:46:47.445786+00:00",
+      "seconds": 0.103,
+      "exit": 0
+    },
+    "r3-decisions.receipt.json": {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c04-r3-decisions.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:46:47.658397+00:00",
+      "seconds": 0.127,
+      "exit": 1
+    },
+    "r3-page.receipt.json": {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "tests/adversarial/c04-r3-page.py"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:46:47.785530+00:00",
+      "seconds": 1.596,
+      "exit": 1
+    },
+    "raster.receipt.json": {
+      "command": [
+        "cargo",
+        "run",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-render",
+        "--example",
+        "c03_raster",
+        "--",
+        "--repeat",
+        "3",
+        "--out",
+        "target/c04-review-raster",
+        "--report",
+        "C:\\Users\\kaiga\\work\\review\\m0-c04-r3\\reviews\\evidence\\M0-C0.4-r3\\raster.json",
+        "--check",
+        "crates/render/examples/c03_raster/hashes.json"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:41:43.088499+00:00",
+      "seconds": 34.196,
+      "exit": 0
+    },
+    "rust-tests-diagnostics.receipt.json": {
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-desktop",
+        "--locked",
+        "--features",
+        "m0-diagnostics"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:41:13.843314+00:00",
+      "seconds": 23.475,
+      "exit": 0
+    },
+    "rust-tests.receipt.json": {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:39:50.217188+00:00",
+      "seconds": 75.887,
+      "exit": 0
+    },
+    "tauri-build-default.receipt.json": {
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm --dir desktop tauri build --no-bundle -- --locked"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:43:41.494839+00:00",
+      "seconds": 75.598,
+      "exit": 0
+    },
+    "tauri-build-diagnostics.receipt.json": {
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm --dir desktop tauri build --no-bundle --config src-tauri/tauri.diagnostics.conf.json -- --locked"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:45:58.291546+00:00",
+      "seconds": 35.249,
+      "exit": 0
+    },
+    "test.receipt.json": {
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm test"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:42:11.328867+00:00",
+      "seconds": 58.974,
+      "exit": 0
+    },
+    "typecheck.receipt.json": {
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "pnpm typecheck"
+      ],
+      "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r3",
+      "started": "2026-10-18T15:42:08.458191+00:00",
+      "seconds": 2.87,
+      "exit": 0
+    }
+  },
+  "headlessChecks": [
+    [
+      "engine.components",
+      true
+    ],
+    [
+      "engine.versions",
+      true
+    ],
+    [
+      "engine.ping",
+      true
+    ],
+    [
+      "determinism.ieee754",
+      true
+    ],
+    [
+      "headless.mcpLinked",
+      true
+    ]
+  ],
+  "rasterEntries": 234,
+  "rasterRepeat": 3,
+  "ciJobs": 8,
+  "frontendFilesPerOS": 34,
+  "productPathsUnchanged": true,
+  "planSyncVerified": true,
+  "intendedFailures": "R3 Python: three assertions; R3 page: two assertions",
+  "logs": {
+    "binary-gating-default.log": {
+      "bytes": 122,
+      "sha256": "11bfee405bfef11ec2cee994f44aaef6696cbfe6bbddc0e12616c0cb94f40c92"
+    },
+    "binary-gating-diagnostics.log": {
+      "bytes": 128,
+      "sha256": "a727778244d51f332557e594ba09a9f556e9c37b23ada43a3bd9a6a3e91525d3"
+    },
+    "builder-decisions.log": {
+      "bytes": 1796,
+      "sha256": "045c3237eb755f3a05168cf949e920574d01ee99288ee1a9224ce34389797678"
+    },
+    "c02-r1-tooling.log": {
+      "bytes": 613,
+      "sha256": "251481c4a9e68effee6410624dc5d3d777c6a87bab39a448c7dd86994abac18f"
+    },
+    "c02-r2-tooling.log": {
+      "bytes": 1432,
+      "sha256": "273b950a2a5083e48ca70c2351b95690290a526b6b6c12205fa62c4a15205f3a"
+    },
+    "c02-r3-tooling.log": {
+      "bytes": 286,
+      "sha256": "736b3a02ca25de06737ae9ea4738143468d29ca95ad6cd4fdebe7f5dba079b85"
+    },
+    "c03-r1-tooling.log": {
+      "bytes": 116,
+      "sha256": "9a9c05d08f436d0b215c6e5c057f07a969ecb18a486e2a417928639fa3258fa5"
+    },
+    "c03-r2-tooling.log": {
+      "bytes": 112,
+      "sha256": "b1a84fa64b8b2c78b55c13d6684acc0fb990d7cc2a95e4fc831bb721440a287b"
+    },
+    "canvas-ci-macos.log": {
+      "bytes": 3125,
+      "sha256": "3854984bcf03ca54bdcf29a360650acedbd8d3219e59d74f207d29ed1e5b2e56"
+    },
+    "canvas-ci-windows.log": {
+      "bytes": 3474,
+      "sha256": "c46bdf3a1dc995dd15c1e2dc72546394f404163c59a6a8dd0c0679c856007d53"
+    },
+    "canvas-mac-no-adapter.log": {
+      "bytes": 3226,
+      "sha256": "8b28b0607c2ef7c4e3297bdff21e39e06e9ec55589e4706b351626ca49254abc"
+    },
+    "canvas-malformed.log": {
+      "bytes": 72,
+      "sha256": "a104f137e000203a1e36fe6ddf495ffff90c78e49d435fef76077977919b8bec"
+    },
+    "canvas-missing-backend.log": {
+      "bytes": 3294,
+      "sha256": "eb775b3c40f232efd809ff1655687482ed0a73c26116e7aaa8499e371aac840b"
+    },
+    "canvas-missing-scene.log": {
+      "bytes": 3520,
+      "sha256": "1642db7c1d0622a11a8e1132c83beef8e2e777c64df519f95ffe951fa2ee6226"
+    },
+    "canvas-null-both.log": {
+      "bytes": 5297,
+      "sha256": "3c5572858bbe8666eeac63aa8db31e0565b79449606cb6dad7d7120da6a31367"
+    },
+    "canvas-null-one.log": {
+      "bytes": 4671,
+      "sha256": "3ff77462df2109fe26acaf8253d4d6306bc9b07e60e51eeb69af121423642fa0"
+    },
+    "ci-39140679107.log": {
+      "bytes": 1137146,
+      "sha256": "7c2e1947ce335c1838677a4a6748ca2f0db8028fb37f7f2d2d5117d8f1e55596"
+    },
+    "clippy-diagnostics.log": {
+      "bytes": 989,
+      "sha256": "d282cb049b404cf1726c213641e907bdb2d142f6eb68f65c6bee19c6e1f7111f"
+    },
+    "clippy.log": {
+      "bytes": 10022,
+      "sha256": "cf44630ffe803f9ad9084331e26bf8892c2f24f6ccbccff8e882a1c7f6b4e36e"
+    },
+    "coalescing-baseline.log": {
+      "bytes": 4598,
+      "sha256": "3f5a8d4e6bb0320308de6776a6c87c7dfd723e4cd841fab9dd5b56b2eaf31031"
+    },
+    "coalescing-outside.log": {
+      "bytes": 4767,
+      "sha256": "1ad926970a28fc0492602b4223eda8e6d8b016405c0ade93e58cb2bfa3df6ca1"
+    },
+    "copy-baseline.log": {
+      "bytes": 214,
+      "sha256": "699d25167edbd72892aa7099459db74c286b8943c8ab43b63afd7a1b31d76746"
+    },
+    "copy-canvas-divergence.log": {
+      "bytes": 2224,
+      "sha256": "6a68552487703fdc5bd9f98ddde5b2b0be686f5e20b9fc14a2ab114c0c49cc68"
+    },
+    "copy-tablet-divergence.log": {
+      "bytes": 2377,
+      "sha256": "7ebdbbcb01b0e0bc3e374933c281e41a91ec3e96a46fd1d4a3531318cc9f84d5"
+    },
+    "deny.log": {
+      "bytes": 54257,
+      "sha256": "c616ac54c72f62bca1771cd59a870da138e528746f278716b2ffb0420f62e04e"
+    },
+    "duplicate.log": {
+      "bytes": 36,
+      "sha256": "2d4023e768c2b5966d5688237934ba479e78756d57bac538f4a8d6e6051c5472"
+    },
+    "epoch-overlap-accepted.log": {
+      "bytes": 4755,
+      "sha256": "0ac5e385b50455128423b362fb9a5e5fe15a9f7354d7c605f9b66a66a8e02301"
+    },
+    "features-desktop.log": {
+      "bytes": 152770,
+      "sha256": "4f6e5ea8d7e9f4186f7f191631c715fb42f4f1e71b10fef0d11955013d2e0689"
+    },
+    "features-headless.log": {
+      "bytes": 10741,
+      "sha256": "e7728e25349100d155fc0f990b56f5c020e8ede30bdb636b9aaa4d40c7ce044d"
+    },
+    "fmt.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "format-check.log": {
+      "bytes": 270,
+      "sha256": "b3c879675f9c9e02c9dc9dc3ee12b6924b80c3242323dfe30f66c5f88b363cd4"
+    },
+    "frontend-build-default.log": {
+      "bytes": 1077,
+      "sha256": "711a712ae9bf6ac72f20bdc8c3eed69d713eae890356e5d5d22e9f4ddde43037"
+    },
+    "frontend-build-diagnostics.log": {
+      "bytes": 1293,
+      "sha256": "1934f059ef3bcc01a0b8ef4365908c122cd24cb208aadb2498d4fe8f7f47606f"
+    },
+    "headless-build.log": {
+      "bytes": 2146,
+      "sha256": "73d2b606560ab030ae81bb561078cf0e7fc9e2c7b7755dba4c328b0a07a2f451"
+    },
+    "headless-guard.log": {
+      "bytes": 371,
+      "sha256": "c4f73f32988b9007c08f5c50f328e170dc8c25424d825e98508934a32036d14a"
+    },
+    "headless-selftest-1.log": {
+      "bytes": 1015,
+      "sha256": "141f347eee73ef83b63a3f8be8543247a16c5246c5319ea691933ca4fcc9deb3"
+    },
+    "headless-selftest-2.log": {
+      "bytes": 1015,
+      "sha256": "141f347eee73ef83b63a3f8be8543247a16c5246c5319ea691933ca4fcc9deb3"
+    },
+    "identity-only-native.log": {
+      "bytes": 4250,
+      "sha256": "2e19599f41c267a509696e484144c55b0a321602dc89ee086b639e3c30178f70"
+    },
+    "licenses-check.log": {
+      "bytes": 502,
+      "sha256": "2f67cffff599bd321ee0615dca1d2c59c19a42ac318070096dc6582e4010d7d4"
+    },
+    "lint.log": {
+      "bytes": 213,
+      "sha256": "b9836b0460271f5dbfa775f94400e766db3379d9f317ff27c845bbd1870d8846"
+    },
+    "mapping-False.log": {
+      "bytes": 4971,
+      "sha256": "91bb04a796a3ec7419bfec0ff9eb1e7fb2bbd0428c93e2b367e9d7593e6e0037"
+    },
+    "mapping-True.log": {
+      "bytes": 5264,
+      "sha256": "374e8f2b27e2f14282002c04c1ac55d9ed1aa3fce7445c25273919dddcba9e09"
+    },
+    "page-regressions.log": {
+      "bytes": 2478,
+      "sha256": "cc179d8f16686ce8f85c86e9ec421f7d17c502b256cd528dacfa2f6502616115"
+    },
+    "perf-overlap.log": {
+      "bytes": 58,
+      "sha256": "80d5c33925ac6afb4d62b9b7281fbdaea0aaab6ced00235e15eb523e6e28cebb"
+    },
+    "r2-amended.log": {
+      "bytes": 602,
+      "sha256": "7242a48d0d9bc3a6925b2e532d549489b1441035f3fe7443a20052eb1b115ed6"
+    },
+    "r3-decisions.log": {
+      "bytes": 3266,
+      "sha256": "0d2af4d955d18cf9e5491c3323b9d2d9fbad43bd35d44bb1975e2b3487cffd05"
+    },
+    "r3-page.log": {
+      "bytes": 2098,
+      "sha256": "73e707246f0af995b52f4cc76fc5752f8030838e8ba8660b6391e7a8e311a284"
+    },
+    "raster.log": {
+      "bytes": 4724,
+      "sha256": "138e5d860cf0e760ea8131ae47954f48e526fa61f01544fdb0a1532a28981845"
+    },
+    "rate-119.95.log": {
+      "bytes": 3899,
+      "sha256": "dd1e6d8138c8cfe62b4f8f49627ccdde27562b93f6564ec7e763db713f5c38be"
+    },
+    "rate-120.0.log": {
+      "bytes": 3741,
+      "sha256": "34fe07fee38b6823dbc48eaa6034c44fc245df5abffeac8075bc5b3ffb1e3a41"
+    },
+    "rate-199.99.log": {
+      "bytes": 3740,
+      "sha256": "0f671efb627b95f395ee699a4549e0e1275bed8eda244fa8afe8c5228236bfd8"
+    },
+    "rate-200.0.log": {
+      "bytes": 3654,
+      "sha256": "30c43f6fc62bd78e42e32393d8b41175eabd68ce9f582c44bee3099821afed78"
+    },
+    "rate-None.log": {
+      "bytes": 3361,
+      "sha256": "4c23e99fef2719ce8700dc5857a9dae4573dda98dfdb811302b8c99e8eccbca6"
+    },
+    "rate-single.log": {
+      "bytes": 3355,
+      "sha256": "7a055567582daa7372447c4f98d0bc5a2f843212c88606b39d3026e62d631aed"
+    },
+    "reversed.log": {
+      "bytes": 58,
+      "sha256": "fa349fdc1b1a99493bc0a1dde85af9de5ca109aa79e2cf66ffee4f1bcccf611c"
+    },
+    "rust-tests-diagnostics.log": {
+      "bytes": 5400,
+      "sha256": "8d69bce640f8bd39d5c7a74087878f56e9ee7aad72e8a71fe2db3cf0623f7460"
+    },
+    "rust-tests.log": {
+      "bytes": 20516,
+      "sha256": "93e4a802ffdcf4a2c5422b9459975968a509e62fb03fc76853b4a97bf13c8e40"
+    },
+    "split-rate.log": {
+      "bytes": 3749,
+      "sha256": "2a94421eb8d5b2aaf2088632ad895cd8a537338c3af4abd7c2bfda0b6f4d091f"
+    },
+    "tauri-build-default.log": {
+      "bytes": 9691,
+      "sha256": "e85b9cff67aac0c57c99863a96e6bb23460e0f2cb72243ed51399bb526c9c22c"
+    },
+    "tauri-build-diagnostics.log": {
+      "bytes": 2357,
+      "sha256": "a1dfd0ab77bbbbbe90656ef497c82440d61d94502055222c0ab79dd2cec8095b"
+    },
+    "test.log": {
+      "bytes": 2090,
+      "sha256": "7ad916a1c654e2f2dc054052d7b2ae494560d5fec9b448cd3c21987e14eb3034"
+    },
+    "typecheck.log": {
+      "bytes": 244,
+      "sha256": "3d9104947152352a0303dd3ecc66a211eec067e7060120a000ef708ceb70b5a2"
+    },
+    "wrong-order.log": {
+      "bytes": 48,
+      "sha256": "1d8108e34088d78133ab06a4aa099949ec08db67a0255895f33044da281eca3d"
+    }
+  }
+}

@@ -79,16 +79,27 @@ class DecisionContracts(unittest.TestCase):
                     self.assertEqual(len(matches), 1, f'{hz} Hz must match exactly one of {cells}')
 
     def test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row(self):
-        # ADR says its Stroke column denotes the analyzer's per-stroke figures.
-        stationary_index = int(capability_row(9)[2])
+        # R3 adjudication: one document integer cannot equal both 4 and 5.
+        # Row 9 names an action; exercise the real marker-to-episode resolver.
+        self.assertEqual(capability_row(9)[2], 'A6')
         for rotation in (False, True):
             with self.subTest(rotation_capable=rotation):
                 log = manual_fixture(rotation)
+                ids = ['A1', 'A2', 'A3'] + (['A4'] if rotation else []) + ['A5', 'A6']
+                log['actions'] = [dict(id=aid, state='done', startPerf=i*6000-100,
+                    endPerf=i*6000+5100, startEpochMs=1e12+i*6000-100,
+                    endEpochMs=1e12+i*6000+5100) for i, aid in enumerate(ids)]
+                if not rotation:
+                    log['actions'].insert(3, dict(id='A4', state='skipped', startPerf=17500,
+                        endPerf=17500, startEpochMs=1e12+17500, endEpochMs=1e12+17500))
                 self.assertTrue(analyzer.is_manual(log, analyzer.log_version(log)))
-                strokes = analyzer.web_analysis(log)['strokes']
-                self.assertEqual(stationary_index, len(strokes),
-                                 'Stationary pressure is the last contact: 4 without roll, 5 with roll; '
-                                 'hover creates no row. Publish an explicit action-to-episode mapping.')
+                web, native = analyzer.web_analysis(log), analyzer.native_analysis(log)
+                mapped = analyzer.action_analysis(log, web, native)
+                by_id = {a['id']: a for a in mapped['actions']}
+                self.assertEqual(by_id['A6']['web']['measured'], 5 if rotation else 4)
+                self.assertEqual(by_id['A6']['web']['measured'], len(web['strokes']))
+                self.assertEqual(by_id['A5']['web']['outcome'], 'performed, no events')
+                self.assertEqual(by_id['A4']['web']['outcome'], 'episode 4' if rotation else 'omitted')
 
 
 if __name__ == '__main__':
