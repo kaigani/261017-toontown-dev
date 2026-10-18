@@ -84,6 +84,11 @@ function errorText(e: unknown): string {
   return `${err.code}: ${err.message}`;
 }
 
+/** A complete run whose cadence cannot be estimated (fewer than two samples spanning time; C03-R3-01). */
+function cadenceGap(frames: number): string {
+  return `insufficient samples (n=${String(frames)})`;
+}
+
 function fmt(v: number | null | undefined, digits = 1): string {
   return v === null || v === undefined || !Number.isFinite(v) ? '–' : v.toFixed(digits);
 }
@@ -264,7 +269,9 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
         const summary = summarizeRun(run);
         setRows((r) => [...r, { run, summary }]);
         setStatus(
-          `${backend} ${scene}: ${fmt(summary.fps)} fps (interval p95 ${fmt(summary.intervalMs?.p95, 2)} ms).`,
+          summary.fps === null
+            ? `${backend} ${scene}: complete; cadence not estimated, ${cadenceGap(run.frames.length)}.`
+            : `${backend} ${scene}: ${fmt(summary.fps)} fps (interval p95 ${fmt(summary.intervalMs?.p95, 2)} ms).`,
         );
       } catch (e: unknown) {
         run.error = errorText(e);
@@ -446,14 +453,20 @@ export function CanvasSpike({ mode }: { mode: SpikeMode }) {
                 <td>{fmt(s.encodeMs?.p50, 2)}</td>
                 <td>{fmt(run.decode?.ms)}</td>
                 <td>{fmt(run.upload?.completeMs)}</td>
-                <td>{fmt(s.fps)}</td>
+                <td>{s.fps === null ? cadenceGap(run.frames.length) : fmt(s.fps)}</td>
                 <td>
                   {fmt(s.intervalMs?.p50, 2)} / {fmt(s.intervalMs?.p95, 2)} / {fmt(s.intervalMs?.max, 1)}
                 </td>
                 <td>{String(s.longFrames)}</td>
                 <td>{fmt(s.cpuMs?.p95, 2)}</td>
                 <td>{fmt(s.gpuMs?.p95, 2)}</td>
-                <td>{s.meetsTarget === null ? '–' : s.meetsTarget ? 'met' : 'missed'}</td>
+                <td>
+                  {s.meetsTarget === null
+                    ? `not estimated: ${cadenceGap(run.frames.length)}`
+                    : s.meetsTarget
+                      ? 'met'
+                      : 'missed'}
+                </td>
               </tr>
             ))}
             {pixelSummary.map((p) => (

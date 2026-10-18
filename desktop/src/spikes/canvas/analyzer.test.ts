@@ -119,8 +119,23 @@ const log = {
 };
 
 interface Analysis {
-  runs: { fps: number; intervalMs: { p95: number; max: number }; longFrames: number; meetsTarget: boolean }[];
+  runs: {
+    fps: number | null;
+    intervalMs: { p95: number; max: number } | null;
+    longFrames: number;
+    meetsTarget: boolean | null;
+    complete: boolean;
+    cadence: string;
+  }[];
 }
+
+// A complete pan/zoom phase observed by a single sample: a 0.1 Hz display reaches the 10 s span on its first callback.
+const oneFrame = {
+  ...run,
+  idle: [100, 10_100],
+  frames: [{ t: 30_100, cpuMs: 0.2, gpuMs: null }],
+  phases: { idle: { start: 100, end: 10_100 }, panZoom: { start: 20_100, end: 30_100 } },
+};
 
 describe('canvas analyzer', () => {
   it('recomputes the run summary the page shows', () => {
@@ -155,6 +170,47 @@ describe('canvas analyzer', () => {
     expect(a?.fps).toBeCloseTo(1, 9);
     expect(a?.meetsTarget).toBe(false);
     expect(r.stdout).toContain('missed');
+  });
+
+  it('accepts a complete one-frame run as complete with insufficient cadence samples (C03-R3-01)', () => {
+    const r = analyse({ ...log, runs: [oneFrame] });
+    expect(r.status, r.stderr).toBe(0);
+    const a = (r.json as Analysis).runs[0];
+    expect(a?.complete).toBe(true);
+    expect(a?.cadence).toBe('insufficient samples (n=1)');
+    expect(a?.fps).toBeNull();
+    expect(a?.intervalMs).toBeNull();
+    expect(a?.meetsTarget).toBeNull();
+    expect(r.stdout).toContain('not estimated: insufficient samples (n=1) (run complete)');
+    expect(r.stdout).not.toContain('| met |');
+    // The page's own summary declines to estimate in the same way.
+    const page = summarizeRun(oneFrame);
+    expect(page.fps).toBeNull();
+    expect(page.meetsTarget).toBeNull();
+  });
+
+  it('rejects zero frames under a claimed complete span, and one frame in a version-1 log (C03-R3-01)', () => {
+    const cases: [string, unknown][] = [
+      ['zero frames, complete span', { ...log, runs: [{ ...oneFrame, frames: [] }] }],
+      ['one frame, version 1', { ...log, version: 1, runs: [oneFrame] }],
+      [
+        'one frame, span ends early',
+        {
+          ...log,
+          runs: [{ ...oneFrame, phases: { ...oneFrame.phases, panZoom: { start: 20_101, end: 30_100 } } }],
+        },
+      ],
+      [
+        'one frame before the span end',
+        { ...log, runs: [{ ...oneFrame, frames: [{ t: 30_000, cpuMs: 0.2, gpuMs: null }] }] },
+      ],
+    ];
+    for (const [name, bad] of cases) {
+      const r = analyse(bad);
+      expect(r.status, name).toBe(2);
+      expect(r.stdout, name).toBe('');
+    }
+    expect(analyse(cases[0]?.[1]).stderr).toContain('pan/zoom frames missing');
   });
 
   it('labels an explicitly failed run and rejects malformed or contradictory logs', () => {

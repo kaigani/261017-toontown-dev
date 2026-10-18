@@ -37,7 +37,9 @@ Estimators (also printed):
 * frame interval = difference of consecutive rAF timestamps during pan/zoom; fps = (n - 1) * 1000 / (last - first);
 * long frame = interval > 1.5 x display refresh;
 * 60 fps target met when fps >= 57 (0.95 x 60); the display rate is printed next to it (a display below 60 Hz
-  cannot meet it);
+  cannot meet it). A complete run with fewer than two pan/zoom samples (or no time between them) has no cadence
+  estimate: fps and the target read "insufficient samples (n=...)" and the run is still reported as complete
+  (C03-R3-01);
 * CPU frame = JS update + record + submit; GPU frame (WebGPU) = submit to `onSubmittedWorkDone` (includes queueing);
 * IPC-per-frame ceiling = 1000 / (p50 transfer ms): the frame rate if the full render list had to cross IPC every
   frame (no decode or draw included).
@@ -253,8 +255,12 @@ def validate_run(run, label, params, version):
     if not isinstance(idle, list) or len(idle) < 2 or not monotonic(idle):
         raise LogError(f"{label}: idle timestamps missing or non-monotonic")
     frames = run.get("frames")
-    if not isinstance(frames, list) or len(frames) < 2:
-        raise LogError(f"{label}: pan/zoom frames missing")
+    # Version 2 judges completion on the phase span alone, so one sample is a complete observation (a 0.1 Hz display
+    # reaches the 10 s span on its first callback; C03-R3-01); zero samples is malformed even with a span. Version 1
+    # has no span and needs the samples themselves to cover the duration.
+    min_frames = 1 if version >= PHASES_SINCE else 2
+    if not isinstance(frames, list) or len(frames) < min_frames:
+        raise LogError(f"{label}: pan/zoom frames missing (need at least {min_frames})")
     ts = [f.get("t") if isinstance(f, dict) else None for f in frames]
     if not monotonic(ts):
         raise LogError(f"{label}: frame timestamps non-monotonic")
@@ -372,13 +378,22 @@ def analyse_run(run):
     it = run["idle"]
     ts = [f["t"] for f in run["frames"]]
     iv = intervals(ts)
-    fps = (len(ts) - 1) * 1000 / (ts[-1] - ts[0])
+    # Cadence needs a pair of samples spanning time; otherwise the run is still complete (validated on its phase span)
+    # but its cadence statistics are unavailable and stated as such, never invented (C03-R3-01).
+    if len(ts) < 2:
+        cadence = f"insufficient samples (n={len(ts)})"
+    elif ts[-1] <= ts[0]:
+        cadence = f"insufficient samples (n={len(ts)}, zero-length span)"
+    else:
+        cadence = None
+    fps = None if cadence else (len(ts) - 1) * 1000 / (ts[-1] - ts[0])
     refresh = (it[-1] - it[0]) / (len(it) - 1) if len(it) > 1 and it[-1] > it[0] else None
     gpu = [f["gpuMs"] for f in run["frames"] if f.get("gpuMs") is not None]
     transfer = stats(tms)
     info = run.get("renderer") or {}
     return {
-        "backend": run["backend"], "scene": run["scene"], "outcome": "ok", "error": None,
+        "backend": run["backend"], "scene": run["scene"], "outcome": "ok", "error": None, "complete": True,
+        "cadence": cadence or "ok",
         "gpu": info.get("unmaskedRenderer") or info.get("renderer") or " ".join(
             str(info.get(k)) for k in ("vendor", "architecture", "device", "description") if info.get(k)) or "-",
         "canvas": run["canvas"],
@@ -398,7 +413,7 @@ def analyse_run(run):
         "longFrames": sum(1 for d in iv if refresh and d > 1.5 * refresh),
         "cpuMs": stats([f["cpuMs"] for f in run["frames"]]),
         "gpuMs": stats(gpu),
-        "meetsTarget": fps >= 57,
+        "meetsTarget": None if fps is None else fps >= 57,
     }
 
 
@@ -417,6 +432,12 @@ def analyse_pixels(p):
 
 def s3(st, d=2):
     return "-" if not st else f"{st['p50']:.{d}f} / {st['p95']:.{d}f} / {st['max']:.{d}f}"
+
+
+def target(r):
+    if r["meetsTarget"] is None:
+        return f"not estimated: {r['cadence']} (run complete)"
+    return "met" if r["meetsTarget"] else "missed"
 
 
 def report(log, runs, pixels):
@@ -441,8 +462,9 @@ def report(log, runs, pixels):
         print(f"| {r['backend']} | {r['scene']} | {r['gpu']} | {c['width']}x{c['height']} | "
               f"{r['bytesPerTransfer'] / 1e6:.2f} | {s3(r['transferMs'], 1)} | {fmt(r['transferMBps'], 0)} | "
               f"{s3(r['encodeMs'])} | {r['decodeMs']:.1f} | {r['uploadMs']['cpuMs']:.1f} / {r['uploadMs']['completeMs']:.1f} | "
-              f"{fmt(r['refreshMs'], 2)} | {r['fps']:.1f} | {s3(r['intervalMs'])} | {r['longFrames']} of {r['frames'] - 1} | "
-              f"{s3(r['cpuMs'])} | {s3(r['gpuMs'])} | {'met' if r['meetsTarget'] else 'missed'} | "
+              f"{fmt(r['refreshMs'], 2)} | {fmt(r['fps']) if r['fps'] is not None else r['cadence']} | {s3(r['intervalMs'])} | "
+              f"{r['longFrames']} of {max(r['frames'] - 1, 0)} | {s3(r['cpuMs'])} | {s3(r['gpuMs'])} | "
+              f"{target(r)} | "
               f"{fmt(r['ipcPerFrameCeilingFps'])} |")
     print("\nDecode details (segments = stroke instances; triangles = fill triangles):\n")
     for r in runs:
