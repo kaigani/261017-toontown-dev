@@ -1,0 +1,16 @@
+{
+  "windows-latest": {
+    "rustPassed": 65,
+    "vitest": [
+      "2026-10-18T09:52:15.8432277Z ^[[2m      Tests ^[[22m ^[[1m^[[32m228 passed^[[39m^[[22m^[[2m | ^[[22m^[[36m3 expected fail^[[39m^[[90m (231)^[[39m",
+      "2026-10-18T09:52:16.0528531Z # tests 9"
+    ]
+  },
+  "macos-latest": {
+    "rustPassed": 59,
+    "vitest": [
+      "2026-10-18T09:52:35.9319350Z ^[[2m      Tests ^[[22m ^[[1m^[[32m228 passed^[[39m^[[22m^[[2m | ^[[22m^[[36m3 expected fail^[[39m^[[90m (231)^[[39m",
+      "2026-10-18T09:52:36.5437010Z # tests 9"
+    ]
+  }
+}

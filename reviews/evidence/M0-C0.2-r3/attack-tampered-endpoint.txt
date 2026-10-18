@@ -1,0 +1,1 @@
+error: run 'webview sine 240 Hz': saved achievedHz 239.0965940666826 disagrees with the host estimator recomputed from contactStartNs/contactEndNs (193.83704577653023); tolerance 1e-09 relative

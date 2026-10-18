@@ -1,0 +1,196 @@
+{
+ "version": 3,
+ "web": {
+  "samples": 0,
+  "strokes": [],
+  "coalescedApi": false,
+  "coalescedObserved": false,
+  "coalescedPerDispatch": null,
+  "samplesPerFrame": null,
+  "handlerLatencyMs": {
+   "oldestCoalesced": null,
+   "newestCoalesced": null,
+   "allSamples": null
+  },
+  "loss": "unknown, gap heuristic only",
+  "truncated": 0
+ },
+ "native": {
+  "packets": 0,
+  "clock": "host",
+  "strokes": [],
+  "loss": "unknown, gap heuristic only",
+  "hostDropped": 0,
+  "sendFailures": 0,
+  "invalidBatches": 0,
+  "truncated": 0,
+  "info": null
+ },
+ "runs": [
+  {
+   "label": "webview sine 240 Hz",
+   "target": "webview",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 240,
+    "frames": 1024,
+    "pattern": "sine"
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: fixture covering window"
+  },
+  {
+   "label": "webview sine 240 Hz (retry)",
+   "target": "webview",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 240,
+    "frames": 1024,
+    "pattern": "sine"
+   },
+   "outcome": "failed",
+   "error": "spike.notForeground: fixture covering window"
+  },
+  {
+   "label": "webview sine 500 Hz",
+   "target": "webview",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 500,
+    "frames": 1024,
+    "pattern": "sine"
+   },
+   "outcome": "failed",
+   "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+  },
+  {
+   "label": "webview zigzag 240 Hz",
+   "target": "webview",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 240,
+    "frames": 1024,
+    "pattern": "zigzag"
+   },
+   "outcome": "failed",
+   "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+  },
+  {
+   "label": "webview stationary 240 Hz",
+   "target": "webview",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 240,
+    "frames": 1024,
+    "pattern": "stationary"
+   },
+   "outcome": "failed",
+   "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+  },
+  {
+   "label": "webview pressure-only 240 Hz",
+   "target": "webview",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 240,
+    "frames": 1024,
+    "pattern": "pressureOnly"
+   },
+   "outcome": "failed",
+   "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+  },
+  {
+   "label": "native window sine 240 Hz, no RTS",
+   "target": "nativeWindow",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 240,
+    "frames": 1024,
+    "pattern": "sine"
+   },
+   "outcome": "failed",
+   "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+  },
+  {
+   "label": "native window stationary 240 Hz, no RTS",
+   "target": "nativeWindow",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 240,
+    "frames": 1024,
+    "pattern": "stationary"
+   },
+   "outcome": "failed",
+   "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+  },
+  {
+   "label": "native window pressure-only 240 Hz, no RTS",
+   "target": "nativeWindow",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 240,
+    "frames": 1024,
+    "pattern": "pressureOnly"
+   },
+   "outcome": "failed",
+   "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+  },
+  {
+   "label": "native window sine 240 Hz",
+   "target": "nativeWindow",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 240,
+    "frames": 1024,
+    "pattern": "sine"
+   },
+   "outcome": "failed",
+   "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+  },
+  {
+   "label": "native window stationary 240 Hz",
+   "target": "nativeWindow",
+   "request": {
+    "left": 8,
+    "top": 58,
+    "width": 1012,
+    "height": 275,
+    "hz": 240,
+    "frames": 1024,
+    "pattern": "stationary"
+   },
+   "outcome": "failed",
+   "error": "spike.geometryChanged: the matrix rectangle is no longer inside the canvas"
+  }
+ ]
+}

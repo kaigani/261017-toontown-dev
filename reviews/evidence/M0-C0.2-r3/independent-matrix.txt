@@ -1,0 +1,38 @@
+MATRIX 3 request [(8, 58, 1012, 275)] canvas [(8, 58, 1012, 311.109375)]
+webview sine 240 Hz Hz 240.123333 240.129712 frames 969 RTS None menus None focus endpoint changes {}
+webview sine 500 Hz Hz 497.310178 497.470683 frames 931 RTS None menus None focus endpoint changes {}
+webview zigzag 240 Hz Hz 239.999981 240.007176 frames 1022 RTS None menus None focus endpoint changes {}
+webview stationary 240 Hz Hz 239.999981 240.009348 frames 1 RTS None menus None focus endpoint changes {'captureHwnd': [0, 655944]}
+webview pressure-only 240 Hz FAILED spike.notForeground: another window covered the target after 0 frames
+native window sine 240 Hz, no RTS Hz 239.99997 239.997911 frames 1024 RTS None menus None focus endpoint changes {'captureHwnd': [655944, 0]}
+native window stationary 240 Hz, no RTS Hz 239.999981 240.009238 frames 1024 RTS None menus None focus endpoint changes {}
+native window pressure-only 240 Hz, no RTS Hz 239.999953 240.006653 frames 1024 RTS None menus None focus endpoint changes {}
+native window sine 240 Hz Hz 239.999959 240.003079 frames 17 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1007}, 'missingAt1025': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 'unionWithWM': 1024} menus None focus endpoint changes {}
+native window stationary 240 Hz Hz 239.999981 240.009788 frames 16 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1008}, 'missingAt1025': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 'unionWithWM': 1024} menus None focus endpoint changes {}
+latency {'oldest': {'50': 14.0, '95': 16.300000000046566, '99': 17.5, 'max': 31.79999999998836}, 'newest': {'50': 2.099999999976717, '95': 4.5, '99': 9.0, 'max': 20.599999999976717}, 'all': {'50': 8.200000000011642, '95': 15.0, '99': 16.5, 'max': 31.79999999998836}} coalescing {'50': 4, '95': 8, '99': 9, 'max': 11}
+MATRIX 4 request [(8, 58, 1012, 275)] canvas [(8, 58, 1012, 311.109375)]
+webview sine 240 Hz Hz 240.000049 240.003409 frames 970 RTS None menus None focus endpoint changes {}
+webview sine 500 Hz Hz 495.304211 495.454461 frames 919 RTS None menus None focus endpoint changes {}
+webview zigzag 240 Hz Hz 239.999959 240.015259 frames 1022 RTS None menus None focus endpoint changes {}
+webview stationary 240 Hz Hz 239.999964 240.013582 frames 1 RTS None menus None focus endpoint changes {'captureHwnd': [0, 459316]}
+webview pressure-only 240 Hz FAILED spike.notForeground: another window covered the target after 0 frames: (522,246) root 459316 class "Chrome_WidgetWin_2" pid 7700 (own pid 7604)
+webview pressure-only 240 Hz (retry) FAILED spike.notForeground: another window covered the target after 0 frames: (522,246) root 459316 class "Chrome_WidgetWin_2" pid 7700 (own pid 7604)
+native window sine 240 Hz, no RTS Hz 239.999959 240.010846 frames 1024 RTS None menus None focus endpoint changes {'captureHwnd': [459316, 0]}
+native window stationary 240 Hz, no RTS Hz 239.999959 240.014132 frames 1024 RTS None menus None focus endpoint changes {}
+native window pressure-only 240 Hz, no RTS Hz 239.999959 240.011039 frames 1024 RTS None menus None focus endpoint changes {}
+native window sine 240 Hz Hz 239.999953 240.010406 frames 17 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1007}, 'missingAt1025': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 'unionWithWM': 1024} menus None focus endpoint changes {}
+native window stationary 240 Hz Hz 239.99997 240.014297 frames 16 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1008}, 'missingAt1025': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 'unionWithWM': 1024} menus None focus endpoint changes {}
+latency {'oldest': {'50': 14.099999999974898, '95': 16.600000000036744, '99': 20.0, 'max': 35.800000000048385}, 'newest': {'50': 2.2000000000116415, '95': 4.599999999976717, '99': 8.5, 'max': 16.5}, 'all': {'50': 8.200000000011642, '95': 15.5, '99': 17.099999999976717, 'max': 35.800000000048385}} coalescing {'50': 4, '95': 8, '99': 9, 'max': 10}
+MATRIX 5 request [(8, 58, 1012, 275)] canvas [(8, 58, 1012, 311.109375)]
+webview sine 240 Hz Hz 239.096594 239.094071 frames 864 RTS None menus 0 focus endpoint changes {}
+webview sine 500 Hz Hz 499.235229 499.308688 frames 912 RTS None menus 0 focus endpoint changes {}
+webview zigzag 240 Hz Hz 239.999621 240.005705 frames 1021 RTS None menus 0 focus endpoint changes {}
+webview stationary 240 Hz Hz 239.99997 240.011108 frames 1 RTS None menus 1 focus endpoint changes {}
+webview pressure-only 240 Hz Hz 238.663306 238.673266 frames 1 RTS None menus 1 focus endpoint changes {}
+native window sine 240 Hz, no RTS Hz 240.000651 240.009183 frames 1024 RTS None menus None focus endpoint changes {}
+native window stationary 240 Hz, no RTS Hz 239.999964 240.025158 frames 1024 RTS None menus None focus endpoint changes {}
+native window pressure-only 240 Hz, no RTS Hz 240.00042 240.008166 frames 1024 RTS None menus None focus endpoint changes {}
+native window sine 240 Hz Hz 240.002687 240.017019 frames 17 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1007}, 'missingAt1025': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 'unionWithWM': 1024} menus None focus endpoint changes {}
+native window stationary 240 Hz Hz 239.999976 240.016538 frames 16 RTS {'exactFloat32Matches': {'1024': 0, '1025': 1008}, 'missingAt1025': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 'unionWithWM': 1024} menus None focus endpoint changes {}
+latency {'oldest': {'50': 13.900000000025102, '95': 16.20000000001346, '99': 17.199999999953434, 'max': 335.6000000000349}, 'newest': {'50': 2.099999999976717, '95': 4.400000000023283, '99': 14.400000000023283, 'max': 334.9000000000233}, 'all': {'50': 8.099999999976717, '95': 15.200000000011642, '99': 16.400000000023283, 'max': 335.6000000000349}} coalescing {'50': 4, '95': 8, '99': 9, 'max': 10}
+All asserted controls passed. Endpoint snapshots do not establish uninterrupted focus within a run.
