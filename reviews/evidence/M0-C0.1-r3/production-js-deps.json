@@ -1,0 +1,90 @@
+[
+  {
+    "name": "@toontown/desktop",
+    "version": "0.0.1",
+    "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\desktop",
+    "private": true,
+    "dependencies": {
+      "@tauri-apps/api": {
+        "from": "@tauri-apps/api",
+        "version": "2.12.4",
+        "resolved": "https://registry.npmjs.org/@tauri-apps/api/-/api-2.12.4.tgz",
+        "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\@tauri-apps+api@2.12.4\\node_modules\\@tauri-apps\\api"
+      },
+      "react": {
+        "from": "react",
+        "version": "19.3.1",
+        "resolved": "https://registry.npmjs.org/react/-/react-19.3.1.tgz",
+        "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\react@19.3.1\\node_modules\\react"
+      },
+      "react-dom": {
+        "from": "react-dom",
+        "version": "19.3.1",
+        "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-19.3.1.tgz",
+        "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\react-dom@19.3.1_react@19.3.1\\node_modules\\react-dom",
+        "dependencies": {
+          "react": {
+            "from": "react",
+            "version": "19.3.1",
+            "resolved": "https://registry.npmjs.org/react/-/react-19.3.1.tgz",
+            "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\react@19.3.1\\node_modules\\react"
+          },
+          "scheduler": {
+            "from": "scheduler",
+            "version": "0.28.0",
+            "resolved": "https://registry.npmjs.org/scheduler/-/scheduler-0.28.0.tgz",
+            "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\scheduler@0.28.0\\node_modules\\scheduler"
+          }
+        }
+      },
+      "dockview-react": {
+        "from": "dockview-react",
+        "version": "8.6.0",
+        "resolved": "https://registry.npmjs.org/dockview-react/-/dockview-react-8.6.0.tgz",
+        "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\dockview-react@8.6.0_react-_271372c53ae020e7e0dcdac6949cb9f0\\node_modules\\dockview-react",
+        "dependencies": {
+          "react": {
+            "from": "react",
+            "version": "19.3.1",
+            "resolved": "https://registry.npmjs.org/react/-/react-19.3.1.tgz",
+            "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\react@19.3.1\\node_modules\\react"
+          },
+          "dockview": {
+            "from": "dockview",
+            "version": "8.6.0",
+            "resolved": "https://registry.npmjs.org/dockview/-/dockview-8.6.0.tgz",
+            "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\dockview@8.6.0\\node_modules\\dockview",
+            "dependencies": {
+              "dockview-core": {
+                "from": "dockview-core",
+                "version": "8.6.0",
+                "resolved": "https://registry.npmjs.org/dockview-core/-/dockview-core-8.6.0.tgz",
+                "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\dockview-core@8.6.0\\node_modules\\dockview-core"
+              }
+            }
+          },
+          "react-dom": {
+            "from": "react-dom",
+            "version": "19.3.1",
+            "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-19.3.1.tgz",
+            "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\react-dom@19.3.1_react@19.3.1\\node_modules\\react-dom",
+            "dependencies": {
+              "react": {
+                "from": "react",
+                "version": "19.3.1",
+                "resolved": "https://registry.npmjs.org/react/-/react-19.3.1.tgz",
+                "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\react@19.3.1\\node_modules\\react"
+              },
+              "scheduler": {
+                "from": "scheduler",
+                "version": "0.28.0",
+                "resolved": "https://registry.npmjs.org/scheduler/-/scheduler-0.28.0.tgz",
+                "path": "C:\\Users\\kaiga\\work\\review\\m0-c01-r3\\node_modules\\.pnpm\\scheduler@0.28.0\\node_modules\\scheduler"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,203 @@
+293: bundle (windows-latest)	Tauri build (unsigned)	﻿2026-10-18T05:34:12.8494705Z ##[group]Run pnpm --dir desktop tauri build --bundles nsis -- --locked
+294: bundle (windows-latest)	Tauri build (unsigned)	2026-10-18T05:34:12.8495325Z pnpm --dir desktop tauri build --bundles nsis -- --locked
+388: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:37:22.6818780Z           "p50": 2.300000000046566,
+389: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:37:22.6819573Z           "p95": 2.699999999953434,
+400: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:37:22.6827333Z           "p50": 2.300000000046566,
+401: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:37:22.6828095Z           "p95": 2.6000000000931323,
+412: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:37:22.6835334Z           "p50": 4.599999999976717,
+413: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:37:22.6835865Z           "p95": 5.099999999976717,
+424: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:37:22.6841991Z           "p50": 39.300000000046566,
+425: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:37:22.6842472Z           "p95": 46.40000000002328,
+431: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:37:22.6847609Z     "ok": true,
+432: bundle (windows-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:37:22.6848014Z     "transport": "tauri",
+774: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T05:32:50.7861868Z env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-1.json
+775: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T05:32:50.7862681Z env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-2.json
+776: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T05:32:50.7863752Z python3 -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
+786: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T05:32:51.0158907Z crate graph: 43 crates, forbidden: none
+788: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T05:32:51.0161043Z forbidden libraries: none
+789: headless without a display (ubuntu)	Self-test with no display server	2026-10-18T05:32:51.0161608Z headless dependency check passed
+1174: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:21.2522630Z  ✓ src/ipc/boundary.lint.test.ts (53 tests) 5400ms
+1179: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:21.9481860Z  ✓ src/ipc/schema.test.ts (14 tests) 7ms
+1180: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:22.4790670Z  ✓ src/ipc/boundary.build.test.ts (19 tests) 299ms
+1181: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:23.0601980Z  ✓ src/test/c01-r2-schema.test.ts (12 tests) 8ms
+1182: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:23.5955250Z  ✓ src/ipc/hostApi.test.ts (6 tests) 5ms
+1183: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:24.1589640Z  ✓ src/lib/latency.test.ts (7 tests) 6ms
+1184: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:24.8148310Z  ✓ src/App.test.tsx (5 tests) 95ms
+1185: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:25.3491510Z  ✓ src/ui-bindings/menu.test.ts (4 tests) 3ms
+1186: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:25.8892200Z  ✓ src/diagnostics/ipcBench.test.ts (3 tests) 4ms
+1187: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:31.9810730Z  ✓ src/test/c01-r2-node.test.ts (2 tests) 5943ms
+1189: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:32.5428870Z  ✓ src/test/adversarial.test.ts (8 tests) 6ms
+1191: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:32.5461350Z  Test Files  11 passed (11)
+1192: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:32.5461940Z       Tests  133 passed (133)
+1255: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:32.6796640Z # tests 9
+1257: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:32.6797240Z # pass 9
+1258: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:32.6797440Z # fail 0
+1260: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:32.6797940Z # skipped 0
+1280: check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:33:34.7243620Z licences ok
+1281: check (macos-latest)	Front end — build (frontendDist is embedded by the Tauri host)	﻿2026-10-18T05:33:34.7293120Z ##[group]Run pnpm --dir desktop build
+1282: check (macos-latest)	Front end — build (frontendDist is embedded by the Tauri host)	2026-10-18T05:33:34.7293480Z pnpm --dir desktop build
+1396: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9325240Z test bindings::tests::command_id_syntax ... ok
+1397: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9325910Z test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+1398: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9328870Z test bindings::tests::embedded_manifest_is_valid ... ok
+1399: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9329980Z test bindings::tests::per_platform_accelerators ... ok
+1401: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9333380Z test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+1402: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9333980Z test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+1403: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9338580Z test bindings::tests::quit_is_bound_on_every_platform ... ok
+1404: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9351500Z test diagnostics::tests::bench_with_count ... ok
+1405: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9351990Z test diagnostics::tests::errors ... ok
+1406: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9352470Z test diagnostics::tests::no_arguments_is_interactive ... ok
+1407: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9353090Z test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+1408: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9353670Z test menu::tests::event_serializes_camel_case ... ok
+1409: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9354170Z test menu::tests::frontend_command_carries_params ... ok
+1410: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9354680Z test menu::tests::pending_command_carries_milestone ... ok
+1411: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9355260Z test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+1412: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9355840Z test tests::tauri_config_matches_workspace_and_plan ... ok
+1413: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9356320Z test menu::tests::host_commands ... ok
+1415: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9357030Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+1425: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9444260Z test components::tests::every_component_cites_spec_sections ... ok
+1426: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9444830Z test components::tests::lists_every_plan_crate_once ... ok
+1427: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9445330Z test determinism::tests::hex_encodes_lowercase ... ok
+1428: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9445870Z test determinism::tests::workload_has_expected_shape ... ok
+1429: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9446620Z test error::tests::limit_exceeded_wire_form ... ok
+1431: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9460340Z test ping::tests::echoes_seq_and_payload ... ok
+1432: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9465900Z test ping::tests::payload_limit_is_inclusive ... ok
+1433: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9470130Z test ping::tests::request_rejects_unknown_fields ... ok
+1435: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9480190Z test selftest::tests::dotted_version_parser ... ok
+1436: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9489680Z test determinism::tests::probe_matches_golden ... ok
+1437: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9490190Z test selftest::tests::push_keeps_ok_consistent ... ok
+1438: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9490600Z test tests::engine_is_send_and_sync ... ok
+1439: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9491440Z test tests::info_reports_versions_and_mode ... ok
+1440: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9491960Z test tests::info_serializes_camel_case ... ok
+1441: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9497010Z test determinism::tests::probe_is_stable_within_a_run ... ok
+1442: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9497520Z test selftest::tests::selftest_passes ... ok
+1444: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9498640Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+1459: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9556950Z test cli::tests::actions_are_exclusive ... ok
+1460: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9557410Z test cli::tests::an_action_is_required ... ok
+1461: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9557870Z test cli::tests::future_modes_are_typed_errors ... ok
+1462: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9558290Z test cli::tests::option_combinations ... ok
+1463: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9558640Z test cli::tests::version_line ... ok
+1464: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9558960Z test cli::tests::selftest_human_passes ... ok
+1465: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9563460Z test cli::tests::selftest_json_passes ... ok
+1467: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:51.9564740Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+1472: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:52.3058300Z test c01_r1_01_license_allowlist_stays_within_user_policy ... ok
+1473: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:52.3061190Z test c01_r1_01_license_grouping_preserves_mandatory_copyleft ... ok
+1474: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:52.3066050Z test c01_r1_05_rust_control_rejects_multibyte_over_limit ... ok
+1475: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:52.3066920Z test c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get ... ok
+1476: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:52.3068270Z test wire_engine_info_field_names_match_typescript ... ok
+1477: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:52.6755900Z test c01_r1_06_dependency_proof_rejects_graphics_dependencies ... ok
+1478: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:54.1063180Z test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... ok
+1480: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:54.1064150Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.15s
+1485: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:54.1457730Z test mcp_stdio_not_yet_available_exits_three ... ok
+1486: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:54.1476190Z test selftest_runs_with_display_environment_removed ... ok
+1487: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:54.1492260Z test selftest_exits_zero_with_json_report ... ok
+1488: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:54.1492700Z test usage_error_exits_two ... ok
+1489: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:54.1496680Z test version_exits_zero ... ok
+1491: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:54.1497390Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+1496: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:55.1074170Z test rejects_a_real_appkit_import ... ok
+1498: check (macos-latest)	Run cargo test --workspace --locked	2026-10-18T05:33:55.1074790Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.95s
+1678: check (macos-latest)	Run taiki-e/install-action@v2	2026-10-18T05:33:55.6730460Z shell: /usr/bin/env -u ENV -u BASH_ENV -u CDPATH -u SHELLOPTS -u BASHOPTS /bin/sh -eu {0}
+2382: check (macos-latest)	Run cargo deny --locked check	2026-10-18T05:33:59.7537920Z advisories ok, bans ok, licenses ok, sources ok
+2389: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:33:59.7593950Z env -u DISPLAY -u WAYLAND_DISPLAY "$exe" --selftest
+2391: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:33:59.7594510Z "$exe" --selftest --json > selftest-2.json
+2393: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:33:59.7595640Z $PY -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
+2429: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:34:01.4250970Z crate graph: 44 crates, forbidden: none
+2431: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:34:01.4251920Z forbidden libraries: none
+2432: check (macos-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:34:01.4252190Z headless dependency check passed
+2842: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:34:42.8760773Z  ✓ src/ipc/boundary.lint.test.ts (53 tests) 13413ms
+2848: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:34:44.5635237Z  ✓ src/ipc/schema.test.ts (14 tests) 14ms
+2849: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:34:45.9170860Z  ✓ src/ipc/boundary.build.test.ts (19 tests) 782ms
+2850: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:34:47.5900051Z  ✓ src/test/c01-r2-schema.test.ts (12 tests) 14ms
+2851: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:34:49.1761304Z  ✓ src/ipc/hostApi.test.ts (6 tests) 10ms
+2852: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:34:50.7703075Z  ✓ src/lib/latency.test.ts (7 tests) 12ms
+2853: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:34:52.6502208Z  ✓ src/App.test.tsx (5 tests) 203ms
+2854: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:34:54.1942057Z  ✓ src/ui-bindings/menu.test.ts (4 tests) 7ms
+2855: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:34:55.7699972Z  ✓ src/diagnostics/ipcBench.test.ts (3 tests) 10ms
+2856: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:35:11.5166971Z  ✓ src/test/c01-r2-node.test.ts (2 tests) 15349ms
+2858: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:35:13.1097743Z  ✓ src/test/adversarial.test.ts (8 tests) 12ms
+2860: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:35:13.1236307Z  Test Files  11 passed (11)
+2861: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:35:13.1238101Z       Tests  133 passed (133)
+2924: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:35:13.3472402Z # tests 9
+2926: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:35:13.3473791Z # pass 9
+2927: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:35:13.3474417Z # fail 0
+2929: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:35:13.3479215Z # skipped 0
+2949: check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-18T05:35:18.4469880Z licences ok
+2950: check (windows-latest)	Front end — build (frontendDist is embedded by the Tauri host)	﻿2026-10-18T05:35:18.4933884Z ##[group]Run pnpm --dir desktop build
+2951: check (windows-latest)	Front end — build (frontendDist is embedded by the Tauri host)	2026-10-18T05:35:18.4934389Z pnpm --dir desktop build
+3065: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9624513Z test bindings::tests::command_id_syntax ... ok
+3066: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9633608Z test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+3067: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9634847Z test bindings::tests::embedded_manifest_is_valid ... ok
+3068: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9643909Z test bindings::tests::per_platform_accelerators ... ok
+3069: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9644842Z test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+3070: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9650309Z test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+3071: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9653898Z test bindings::tests::quit_is_bound_on_every_platform ... ok
+3072: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9657591Z test diagnostics::tests::bench_with_count ... ok
+3073: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9661599Z test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+3074: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9664087Z test diagnostics::tests::errors ... ok
+3075: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9665043Z test diagnostics::tests::no_arguments_is_interactive ... ok
+3076: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9670783Z test menu::tests::event_serializes_camel_case ... ok
+3077: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9674961Z test menu::tests::frontend_command_carries_params ... ok
+3078: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9683899Z test menu::tests::pending_command_carries_milestone ... ok
+3079: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9692790Z test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+3080: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9696502Z test menu::tests::host_commands ... ok
+3081: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9697339Z test tests::tauri_config_matches_workspace_and_plan ... ok
+3083: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9698636Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+3094: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9964428Z test components::tests::every_component_cites_spec_sections ... ok
+3095: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9965787Z test components::tests::lists_every_plan_crate_once ... ok
+3096: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9968296Z test determinism::tests::hex_encodes_lowercase ... ok
+3097: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:08.9997600Z test determinism::tests::probe_matches_golden ... ok
+3098: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0003709Z test determinism::tests::workload_has_expected_shape ... ok
+3099: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0008470Z test error::tests::limit_exceeded_wire_form ... ok
+3100: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0011711Z test ping::tests::echoes_seq_and_payload ... ok
+3101: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0023671Z test determinism::tests::probe_is_stable_within_a_run ... ok
+3102: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0029168Z test ping::tests::request_rejects_unknown_fields ... ok
+3103: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0033401Z test selftest::tests::dotted_version_parser ... ok
+3104: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0034281Z test ping::tests::payload_limit_is_inclusive ... ok
+3105: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0063181Z test selftest::tests::push_keeps_ok_consistent ... ok
+3106: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0064059Z test selftest::tests::selftest_passes ... ok
+3107: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0067447Z test tests::engine_is_send_and_sync ... ok
+3108: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0068710Z test tests::info_reports_versions_and_mode ... ok
+3109: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0072243Z test tests::info_serializes_camel_case ... ok
+3111: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0073507Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+3128: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0454409Z test cli::tests::actions_are_exclusive ... ok
+3129: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0455486Z test cli::tests::an_action_is_required ... ok
+3130: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0464146Z test cli::tests::future_modes_are_typed_errors ... ok
+3131: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0472361Z test cli::tests::option_combinations ... ok
+3132: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0499967Z test cli::tests::selftest_human_passes ... ok
+3133: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0505607Z test cli::tests::version_line ... ok
+3134: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0508814Z test cli::tests::selftest_json_passes ... ok
+3136: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.0510118Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+3141: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.4009868Z test c01_r1_01_license_allowlist_stays_within_user_policy ... ok
+3142: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.4340323Z test c01_r1_01_license_grouping_preserves_mandatory_copyleft ... ok
+3143: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.4347039Z test c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get ... ok
+3144: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:09.4356466Z test c01_r1_05_rust_control_rejects_multibyte_over_limit ... ok
+3145: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:11.5015175Z test c01_r1_06_dependency_proof_rejects_graphics_dependencies ... ok
+3146: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:11.5095070Z test wire_engine_info_field_names_match_typescript ... ok
+3147: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:14.5665284Z test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... ok
+3149: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:14.5666907Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.50s
+3154: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:14.5927889Z test mcp_stdio_not_yet_available_exits_three ... ok
+3155: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:14.5956690Z test selftest_exits_zero_with_json_report ... ok
+3156: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:14.6043142Z test usage_error_exits_two ... ok
+3157: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:14.6049624Z test selftest_runs_with_display_environment_removed ... ok
+3158: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:14.6139616Z test version_exits_zero ... ok
+3160: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:14.6144939Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+3165: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:15.2149038Z test rejects_a_real_direct_composition_import ... ok
+3167: check (windows-latest)	Run cargo test --workspace --locked	2026-10-18T05:36:15.2150929Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s
+4048: check (windows-latest)	Run cargo deny --locked check	2026-10-18T05:36:35.2800363Z advisories ok, bans ok, licenses ok, sources ok
+4055: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:36:35.3054807Z env -u DISPLAY -u WAYLAND_DISPLAY "$exe" --selftest
+4057: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:36:35.3055475Z "$exe" --selftest --json > selftest-2.json
+4059: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:36:35.3056806Z $PY -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
+4095: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:36:40.0592226Z crate graph: 43 crates, forbidden: none
+4097: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:36:40.0596883Z forbidden libraries: none
+4098: check (windows-latest)	Headless binary — build, self-test (twice, compared), linked-library proof	2026-10-18T05:36:40.0597495Z headless dependency check passed
+4470: bundle (macos-latest)	Tauri build (unsigned)	﻿2026-10-18T05:33:00.2083580Z ##[group]Run pnpm --dir desktop tauri build --bundles app -- --locked
+4471: bundle (macos-latest)	Tauri build (unsigned)	2026-10-18T05:33:00.2084100Z pnpm --dir desktop tauri build --bundles app -- --locked
+4556: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:33:44.1246030Z           "p50": 0,
+4557: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:33:44.1246280Z           "p95": 1,
+4568: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:33:44.1248330Z           "p50": 0,
+4569: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:33:44.1248500Z           "p95": 1,
+4580: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:33:44.1250420Z           "p50": 1,
+4581: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:33:44.1250700Z           "p95": 1.0000000000002274,
+4592: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:33:44.1252800Z           "p50": 4,
+4593: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:33:44.1252940Z           "p95": 8,
+4599: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:33:44.1253810Z     "ok": true,
+4600: bundle (macos-latest)	IPC benchmark in the real webview (toontown --ipc-bench)	2026-10-18T05:33:44.1253970Z     "transport": "tauri",

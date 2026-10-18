@@ -1,0 +1,204 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c01-r3/desktop
+
+ ❯ src/test/c01-r3-schema.test.ts (14 tests | 8 failed) 32ms
+   ❯ C01-R3-03: arrays must have every index and no extra named properties (3)
+     × plain-data preflight rejects a hole compensated by an extra property 4ms
+     × certify rejects the same shape nested under an unconstrained JSON property 1ms
+     × the real menu-event path drops the malformed array 2ms
+   ❯ C01-R3-04: structured-clone failures must fail through the host boundary (3)
+     × certify rejects a transparent object proxy without throwing 1ms
+     × a ping with an uncloneable transport value yields ipc.invalidResponse 2ms
+     × an uncloneable menu event is dropped without throwing through the listener 0ms
+   ❯ C01-R3-05: declared Safari 15/macOS 12 runtime floor (2)
+     × valid transport values still work when structuredClone is unavailable 0ms
+     × valid transport values still work when Object.hasOwn is unavailable 0ms
+node.exe : 
+At C:\Users\kaiga\AppData\Roaming\npm\pnpm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/pnpm/bin/pnpm.cjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c01-r3-schema.test.ts > C01-R3-03: arrays must have every index and no extra named properties > 
+plain-data preflight rejects a hole compensated by an extra property
+AssertionError: expected [] to not deeply equal []
+
+Compared values have no visual difference.
+
+ ❯ src/test/c01-r3-schema.test.ts:19:56
+     17| describe('C01-R3-03: arrays must have every index and no extra named p…
+     18|   it('plain-data preflight rejects a hole compensated by an extra prop…
+     19|     expect(plainDataViolations(sparseWithExtra())).not.toEqual([]);
+       |                                                        ^
+     20|   });
+     21|   it('certify rejects the same shape nested under an unconstrained JSO…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/test/c01-r3-schema.test.ts > C01-R3-03: arrays must have every index and no extra named properties > 
+certify rejects the same shape nested under an unconstrained JSON property
+AssertionError: expected { data: [ undefined ] } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "data": [
+    undefined,
+  ],
+}
+
+ ❯ src/test/c01-r3-schema.test.ts:22:55
+     20|   });
+     21|   it('certify rejects the same shape nested under an unconstrained JSO…
+     22|     expect(certify(any, { data: sparseWithExtra() })).toBeUndefined();
+       |                                                       ^
+     23|   });
+     24|   it('the real menu-event path drops the malformed array', async () =>…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/test/c01-r3-schema.test.ts > C01-R3-03: arrays must have every index and no extra named properties > the 
+real menu-event path drops the malformed array
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      Object {
+        "command": "workspace.reset",
+        "handler": "frontend",
+        "milestone": null,
+        "params": Object {
+          "data": Array [
+            ,
+          ],
+        },
+      },
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/test/c01-r3-schema.test.ts:41:25
+     39|     };
+     40|     await createHostApi(transport).onMenuCommand(handler);
+     41|     expect(handler).not.toHaveBeenCalled();
+       |                         ^
+     42|   });
+     43| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/test/c01-r3-schema.test.ts > C01-R3-04: structured-clone failures must fail through the host boundary > 
+certify rejects a transparent object proxy without throwing
+DataCloneError: #<Object> could not be cloned.
+ ❯ certify src/ipc/schema.ts:164:29
+    162| export function certify<T>(check: (value: unknown) => value is T, valu…
+    163|   if (plainDataViolations(value).length > 0) return undefined;
+    164|   const snapshot: unknown = structuredClone(value);
+       |                             ^
+    165|   return check(snapshot) ? snapshot : undefined;
+    166| }
+ ❯ src/test/c01-r3-schema.test.ts:47:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/test/c01-r3-schema.test.ts > C01-R3-04: structured-clone failures must fail through the host boundary > a 
+ping with an uncloneable transport value yields ipc.invalidResponse
+AssertionError: expected DOMException{ stack: 'DataCloneError…' } to match object { code: 'ipc.invalidResponse' }
+
+- Expected
++ Received
+
+- {
+-   "code": "ipc.invalidResponse",
++ DataCloneError {
++   "message": "#<Object> could not be cloned.",
+  }
+
+ ❯ src/test/c01-r3-schema.test.ts:56:60
+     54|       listen: () => Promise.resolve(() => undefined),
+     55|     };
+     56|     await expect(createHostApi(transport).ping({ seq: 1 })).rejects.to…
+       |                                                            ^
+     57|       code: 'ipc.invalidResponse',
+     58|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/test/c01-r3-schema.test.ts > C01-R3-04: structured-clone failures must fail through the host boundary > an 
+uncloneable menu event is dropped without throwing through the listener
+DataCloneError: #<Object> could not be cloned.
+ ❯ certify src/ipc/schema.ts:164:29
+    162| export function certify<T>(check: (value: unknown) => value is T, valu…
+    163|   if (plainDataViolations(value).length > 0) return undefined;
+    164|   const snapshot: unknown = structuredClone(value);
+       |                             ^
+    165|   return check(snapshot) ? snapshot : undefined;
+    166| }
+ ❯ src/ipc/hostApi.ts:75:23
+ ❯ Object.listen src/test/c01-r3-schema.test.ts:70:9
+ ❯ Object.onMenuCommand src/ipc/hostApi.ts:73:17
+ ❯ src/test/c01-r3-schema.test.ts:74:43
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/test/c01-r3-schema.test.ts > C01-R3-05: declared Safari 15/macOS 12 runtime floor > valid transport values 
+still work when structuredClone is unavailable
+AssertionError: expected TypeError: structuredClone is not a funct… to be undefined
+
+- Expected:
+undefined
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 6 passed (14)
+   Start at  22:49:32
+   Duration  279ms (setup 66%, tests 21%, transform 8%, import 4%, worker 2%)
+
+
++ Received:
+TypeError {
+  "message": "structuredClone is not a function",
+}
+
+ ❯ src/test/c01-r3-schema.test.ts:92:19
+     90|       vi.unstubAllGlobals();
+     91|     }
+     92|     expect(error).toBeUndefined();
+       |                   ^
+     93|     expect(value).toEqual(response);
+     94|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  src/test/c01-r3-schema.test.ts > C01-R3-05: declared Safari 15/macOS 12 runtime floor > valid transport values 
+still work when Object.hasOwn is unavailable
+AssertionError: expected TypeError: Object.hasOwn is not a function to be undefined
+
+- Expected:
+undefined
+
++ Received:
+TypeError {
+  "message": "Object.hasOwn is not a function",
+}
+
+ ❯ src/test/c01-r3-schema.test.ts:108:19
+    106|       Object.defineProperty(Object, 'hasOwn', descriptor);
+    107|     }
+    108|     expect(error).toBeUndefined();
+       |                   ^
+    109|     expect(value).toEqual(response);
+    110|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found
