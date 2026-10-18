@@ -1,0 +1,19 @@
+{
+  "command": [
+    "gh",
+    "run",
+    "view",
+    "39172780461",
+    "--json",
+    "databaseId,headSha,status,conclusion,jobs,url,event,createdAt,updatedAt"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:45:12.740687+00:00",
+  "elapsed_seconds": 15.0833787000156,
+  "exit_code": 0,
+  "log": "logs/ci-metadata.log",
+  "sha256": "87ccaa091a99b0e10dd39ec1f70f97885188f110ce59fbf0350ae3b37dbe6dca",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

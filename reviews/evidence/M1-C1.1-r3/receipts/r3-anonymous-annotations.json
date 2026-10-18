@@ -1,0 +1,24 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r3_adversarial",
+    "anonymous_variant_property_declarations_have_since",
+    "--locked",
+    "--",
+    "--exact",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:56:36.311839+00:00",
+  "elapsed_seconds": 13.929038500005845,
+  "exit_code": 101,
+  "log": "logs/r3-anonymous-annotations.log",
+  "sha256": "cb2075342ffe6aef5c4e9ec33060937c774fed2554c65fe97caf5c4be98ad784",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

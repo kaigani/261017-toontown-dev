@@ -1,0 +1,1586 @@
+{
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "receipts": [
+    {
+      "name": "baseline-pnpm",
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 124.92487709998386,
+      "sha256": "1268f193ba9e3cabdf24c3b7dff2ca6769a2e0d2c516bfbacc70febfc389ff45"
+    },
+    {
+      "name": "baseline-rust",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--no-fail-fast"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 147.3541727999691,
+      "sha256": "5ef07214ad78359d52ffb2aec0e274348457e246d7dc95d7b70c1228fc9a4baa"
+    },
+    {
+      "name": "ci-full",
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "39172780461",
+        "--log"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 5.001229999994393,
+      "sha256": "243151613b5ff56f7ec0f47faed9d2e994068778579b76757b064cea4c658a08"
+    },
+    {
+      "name": "ci-metadata",
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "39172780461",
+        "--json",
+        "databaseId,headSha,status,conclusion,jobs,url,event,createdAt,updatedAt"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 15.0833787000156,
+      "sha256": "87ccaa091a99b0e10dd39ec1f70f97885188f110ce59fbf0350ae3b37dbe6dca"
+    },
+    {
+      "name": "clippy-diagnostics",
+      "command": [
+        "cargo",
+        "clippy",
+        "-p",
+        "tt-desktop",
+        "--all-targets",
+        "--locked",
+        "--features",
+        "m0-diagnostics",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 34.2516190999886,
+      "sha256": "92ca27610e49a1b34dc4fc9087b363997310bbc9c55eb0840c88ea7704c9359d"
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 42.18335379997734,
+      "sha256": "bb9542bba5a33970d8e4152750a66df14297fbaf71444a90e6176344067182a9"
+    },
+    {
+      "name": "deny-version",
+      "command": [
+        "cargo",
+        "deny",
+        "--version"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.2982011999702081,
+      "sha256": "1758f5ea93d8ad3585079f05c19358b7bb969cce1bf6c7bdab6659a8cd1ef6b8"
+    },
+    {
+      "name": "deny",
+      "command": [
+        "cargo",
+        "deny",
+        "--locked",
+        "check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 9.06890219997149,
+      "sha256": "1a8196cd8c27cbc5f4f4fb1816dd633bef3aeed813fa5d5aa0f4825644af964c"
+    },
+    {
+      "name": "diagnostics-gate",
+      "command": [
+        "python",
+        "scripts/check-diagnostics-gating.py",
+        "target/release/toontown.exe",
+        "--expect",
+        "default"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.11792510002851486,
+      "sha256": "2bfba554695fe73127b3eb63c3c9a641e064d0ea56244487f7513120056a6e53"
+    },
+    {
+      "name": "final-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.6806551000336185,
+      "sha256": "1a8288d172462890dd14c89abfb2758320eb205577b3dcd9175c9f0eac00cdd6"
+    },
+    {
+      "name": "final-fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.3936707999673672,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "final-workspace",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--no-fail-fast"
+      ],
+      "exit_code": 101,
+      "elapsed_seconds": 40.069928399985656,
+      "sha256": "a925ed6abfecaa545aa6e17b1cf04168a5e76267e10fdd4678a1b599889e1a92"
+    },
+    {
+      "name": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.6367287000175565,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "format",
+      "command": [
+        "pnpm",
+        "format:check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.647749700001441,
+      "sha256": "7c64d3015bdae03d10ea677abd4fcf26700fe6a384e06e5f59efef6f2f7be1ae"
+    },
+    {
+      "name": "frontend-build-default",
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.787616399989929,
+      "sha256": "5aa3ab2c4b8a9c8513cc2543fcd43af65b1ed7b56f94092f598bcccc25c576e3"
+    },
+    {
+      "name": "frontend-build-diagnostics",
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "build:diagnostics"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.3468345999717712,
+      "sha256": "04b4905362230522b3bb56e5b15a316340ac7c6b14c831d679cf36e6f843830f"
+    },
+    {
+      "name": "headless-1",
+      "command": [
+        "target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.11705659999279305,
+      "sha256": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d"
+    },
+    {
+      "name": "headless-2",
+      "command": [
+        "target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.034818299987819046,
+      "sha256": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d"
+    },
+    {
+      "name": "headless-build",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-headless"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 37.25688140001148,
+      "sha256": "f5778f3f2a2c564585c731606c795212e62465d7d1e595badb5ade3cdbb0830c"
+    },
+    {
+      "name": "headless-guard",
+      "command": [
+        "python",
+        "scripts/check-headless-deps.py",
+        "target/release/toontown-headless.exe"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.22110299998894334,
+      "sha256": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295"
+    },
+    {
+      "name": "install",
+      "command": [
+        "pnpm",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5496488999924622,
+      "sha256": "9510efdf03c3d670e47501f487ba7856e4e4d8b7bb4bb54cb2e8466b92ac6f8a"
+    },
+    {
+      "name": "licenses",
+      "command": [
+        "pnpm",
+        "licenses:check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.435420299996622,
+      "sha256": "d892e495530455c52fce3513654b0de2d6fc40ec205d4e70e00b6fcd40d1eee7"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "pnpm",
+        "lint"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 16.20187489996897,
+      "sha256": "53c9c8d5ffd15e6f081894693b613d095d95a4f1a8a89e605b202fb55f6adab0"
+    },
+    {
+      "name": "node-final",
+      "command": [
+        "node",
+        "--test",
+        "scripts/check-npm-licenses.test.mjs"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.13208209996810183,
+      "sha256": "2a12661c0bc1cab94c97375c7916dca9d39aa4c77d18ec33da3d24cd9f1262dd"
+    },
+    {
+      "name": "node-version",
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.031884900003205985,
+      "sha256": "ed7de8ea0cd4b667ff55ad318ae19bed3b87fd3e7f1027a7ce127bb04df124c4"
+    },
+    {
+      "name": "old-tooling",
+      "command": [
+        "python",
+        "tests/adversarial/c03-r1-tooling.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.1378371000173502,
+      "sha256": "8972e85395f558f89cbe085e1bb86096a7eb379e128bb79ec13276e8263e72cb"
+    },
+    {
+      "name": "pnpm-final",
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 84.98479919997044,
+      "sha256": "7c057da35d6fabc09ba5f9de6ddb4e1def6e00fc114c6fbb8ad681e04417a12f"
+    },
+    {
+      "name": "policy",
+      "command": [
+        "python",
+        "tests/adversarial/c11-r2-review-policy.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.21068439999362454,
+      "sha256": "02bd9b99326f45e4aedb351128168939862dbd57568dada15ddb46a740543db1"
+    },
+    {
+      "name": "python-version",
+      "command": [
+        "python",
+        "--version"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.038977300049737096,
+      "sha256": "6661d0c2df33bef5d9f73854a4077f010efb8264ecd67f29bb03271eca58b956"
+    },
+    {
+      "name": "r3-anonymous-annotations",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r3_adversarial",
+        "anonymous_variant_property_declarations_have_since",
+        "--locked",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "exit_code": 101,
+      "elapsed_seconds": 13.929038500005845,
+      "sha256": "cb2075342ffe6aef5c4e9ec33060937c774fed2554c65fe97caf5c4be98ad784"
+    },
+    {
+      "name": "r3-model-final",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r3_adversarial",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 101,
+      "elapsed_seconds": 3.0503456000005826,
+      "sha256": "27bd9f85a196222238f1b7e7807fbb769e6f0c1d9a697b5fbe7a3c633ca15071"
+    },
+    {
+      "name": "r3-model-first",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r3_adversarial",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 101,
+      "elapsed_seconds": 21.93412420002278,
+      "sha256": "acb8284dfaf13c60440b5798511c738f73d9fb36c5d11e30ce29ca4262186e28"
+    },
+    {
+      "name": "r3-ts-first",
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "exec",
+        "vitest",
+        "run",
+        "--config",
+        "vite.config.ts",
+        "src/ipc/c11-r3-adversarial.test.ts"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 1.2182907999958843,
+      "sha256": "176510fad60791a45bd2a703a20c8fbe0a1cb3714cda33748d7bd8ee7ea3fae4"
+    },
+    {
+      "name": "r3-wire-first",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-engine",
+        "--test",
+        "c11_r3_wire",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 14.261622700025328,
+      "sha256": "f63c8c3428d806b635a9d391d808104ea689b8d190137a8fd2728f931350c54b"
+    },
+    {
+      "name": "random-10000",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r3_random",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 3.8608133000088856,
+      "sha256": "41b54367f88c237c2d7f419f689d7b89680340cd833230540975da7fbccda4a2"
+    },
+    {
+      "name": "raster",
+      "command": [
+        "cargo",
+        "run",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-render",
+        "--example",
+        "c03_raster",
+        "--",
+        "--out",
+        "target/review-m1-c11-r3-raster",
+        "--report",
+        "reviews/evidence/M1-C1.1-r3/raster.json",
+        "--check",
+        "crates/render/examples/c03_raster/hashes.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 45.062024699989706,
+      "sha256": "1c816c0d616d0da86ffccdc5c34982e1950323d6251f544801fe1a88423af162"
+    },
+    {
+      "name": "register-spotchecks-final",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r3_register",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.1852799000334926,
+      "sha256": "9b22da0dc720580eec7dc8cd6a97afe6e95d8c0b5660ad6ecc66916acff7c1ea"
+    },
+    {
+      "name": "register-spotchecks",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r3_register",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 101,
+      "elapsed_seconds": 6.322708000021521,
+      "sha256": "e8d18c5f07ba778f3a674dac75ba9a693e1cbd4fd180a3c194b232c3f8972b74"
+    },
+    {
+      "name": "rust-diagnostics",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-desktop",
+        "--locked",
+        "--features",
+        "m0-diagnostics"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 27.826014899997972,
+      "sha256": "f0a08403f7e6ea708d82890b2b6f2808d9ce5afc9a5c6bacf4f81de28e4ae959"
+    },
+    {
+      "name": "rust-final",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--no-fail-fast"
+      ],
+      "exit_code": 101,
+      "elapsed_seconds": 59.991321499983314,
+      "sha256": "a5806e047e1df671760f83bf1bd26fa6bc7c986818fd3f2baa27c0665d9ca15b"
+    },
+    {
+      "name": "tauri-release",
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "--dir",
+        "desktop",
+        "tauri",
+        "build",
+        "--no-bundle",
+        "--",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 124.28936950000934,
+      "sha256": "0d7cb84ccf0a34e3c3b7911f7c2e0a912798d68d418cc970b77431d516e75241"
+    },
+    {
+      "name": "ticket-04-created",
+      "command": [
+        "gh",
+        "issue",
+        "create",
+        "--title",
+        "C11-R3-04: property_schema narrows nullable and enum alternatives (P2)",
+        "--body-file",
+        "reviews/evidence/M1-C1.1-r3/tickets/C11-R3-04.md"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.1385591000434943,
+      "sha256": "48485a12c885f5a74d58d91107c46fce5e9849e4917063098ba2f721d92b799a"
+    },
+    {
+      "name": "ticket-04",
+      "command": [
+        "gh",
+        "issue",
+        "create",
+        "--title",
+        "C11-R3-04: property_schema narrows nullable and enum alternatives (P2)",
+        "--body-file",
+        "reviews/evidence/M1-C1.1-r3/tickets/C11-R3-04.md"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.15063799999188632,
+      "sha256": "047735d843a530456e3946053389e9cf8390fcb00bfebb1a9670d088ed1608c2"
+    },
+    {
+      "name": "ticket-05-created",
+      "command": [
+        "gh",
+        "issue",
+        "create",
+        "--title",
+        "C11-R3-05: composite numeric replies reject mixed double and wide integer fields (P2)",
+        "--body-file",
+        "reviews/evidence/M1-C1.1-r3/tickets/C11-R3-05.md"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.8329177999985404,
+      "sha256": "686b088bb334373608233e44022e21c46eb3112db6a0a1f75158cb7a8442f1ba"
+    },
+    {
+      "name": "ticket-05",
+      "command": [
+        "gh",
+        "issue",
+        "create",
+        "--title",
+        "C11-R3-05: composite numeric replies reject mixed double and wide integer fields (P2)",
+        "--body-file",
+        "reviews/evidence/M1-C1.1-r3/tickets/C11-R3-05.md"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.1044048999901861,
+      "sha256": "30d9ab1b8ac817ff2fceab02431dbcbb92c212ffdb21840eed098163c8f8e86f"
+    },
+    {
+      "name": "ticket-06-created",
+      "command": [
+        "gh",
+        "issue",
+        "create",
+        "--title",
+        "C11-R3-06: anonymous DynamicParam properties lack x-since (P2)",
+        "--body-file",
+        "reviews/evidence/M1-C1.1-r3/tickets/C11-R3-06.md"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.8443962000310421,
+      "sha256": "44fb7bfff8bc9304c3f91d3febe6fa0913d39dca87bdc1b9c2afae90cf4c0d8d"
+    },
+    {
+      "name": "ticket-06",
+      "command": [
+        "gh",
+        "issue",
+        "create",
+        "--title",
+        "C11-R3-06: anonymous DynamicParam properties lack x-since (P2)",
+        "--body-file",
+        "reviews/evidence/M1-C1.1-r3/tickets/C11-R3-06.md"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.09704740002052858,
+      "sha256": "10f6da16897a2410a4257a093fc55f9555153d6a603d78336567bbed36e9bdda"
+    },
+    {
+      "name": "toolchain",
+      "command": [
+        "rustc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.8278873999952339,
+      "sha256": "2073de5abf149185c2f4d7473dc833bc921b99135560d24ae7b2293f33a9c376"
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "pnpm",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 3.536080399993807,
+      "sha256": "6ba5b8a64de44c0ecc31dfb57208f4ac4425c5b3b40b51eb2ab2a1fec628b0ef"
+    }
+  ],
+  "historical_hashes": [
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/build.log",
+      "expected": "3809a10aa910bc1568653b5172a236e0b80459bcb9f6c88ad63b3adf65e27a1d",
+      "actual": "3809a10aa910bc1568653b5172a236e0b80459bcb9f6c88ad63b3adf65e27a1d"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/c03-r1-tooling.log",
+      "expected": "bc7dc78f2ca456531bd791a2b35e549a425156cafd75d8518554f87a31d58f6c",
+      "actual": "bc7dc78f2ca456531bd791a2b35e549a425156cafd75d8518554f87a31d58f6c"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/clippy-diag.log",
+      "expected": "de4a5009eab598aa0d85bea80079fe7d7b78692ae0601a6e62ce5b8529321727",
+      "actual": "de4a5009eab598aa0d85bea80079fe7d7b78692ae0601a6e62ce5b8529321727"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/clippy.log",
+      "expected": "0b83b12de97c61fe9993f2e585c32f2a50880dd903aae4e98ab080eb345a1c8b",
+      "actual": "0b83b12de97c61fe9993f2e585c32f2a50880dd903aae4e98ab080eb345a1c8b"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/deny.log",
+      "expected": "69c387dc462b9c37f752f53d1c7a2a510e7bfc60550534035443e44d43c24a3d",
+      "actual": "69c387dc462b9c37f752f53d1c7a2a510e7bfc60550534035443e44d43c24a3d"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/fmt.log",
+      "expected": "e20fecd1b340974b1c268348f4daa9d31a5c67f6065c319097a12bbe3e21f962",
+      "actual": "e20fecd1b340974b1c268348f4daa9d31a5c67f6065c319097a12bbe3e21f962"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/headless-build.log",
+      "expected": "209f49f77639079e1cfc190dfc5fcc24229ffe4ea711f84ef4f3428f2f6b3817",
+      "actual": "209f49f77639079e1cfc190dfc5fcc24229ffe4ea711f84ef4f3428f2f6b3817"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/headless-deps.log",
+      "expected": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295",
+      "actual": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/node-test.log",
+      "expected": "66549fa20a928a0339c38d2fa116b2ab9a70cf4a7df12a7c874d609484d2827b",
+      "actual": "66549fa20a928a0339c38d2fa116b2ab9a70cf4a7df12a7c874d609484d2827b"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/pnpm-format.log",
+      "expected": "3741b86ebc596c5914a8805d60966c473eb165aa935bad114c67be1d4b114bb1",
+      "actual": "3741b86ebc596c5914a8805d60966c473eb165aa935bad114c67be1d4b114bb1"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/pnpm-licenses.log",
+      "expected": "26eeca268a0c4bdfb47c1188020ecd167a2a1b3944c625ed7225fe0fb7f10535",
+      "actual": "26eeca268a0c4bdfb47c1188020ecd167a2a1b3944c625ed7225fe0fb7f10535"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/pnpm-lint.log",
+      "expected": "9acfaa811763526641b9fd04d72d6150daffdae7aa0f42b3e1e1fe4afbbe7a21",
+      "actual": "9acfaa811763526641b9fd04d72d6150daffdae7aa0f42b3e1e1fe4afbbe7a21"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/pnpm-test.log",
+      "expected": "0da34cdedfc5cbe9b14d56f30a890934c112db45aa359226df488a0c182b30d1",
+      "actual": "0da34cdedfc5cbe9b14d56f30a890934c112db45aa359226df488a0c182b30d1"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/pnpm-typecheck.log",
+      "expected": "de37029285525bc9cfc231919392594833e45e9f3c3c5f6c5a7925c99161762f",
+      "actual": "de37029285525bc9cfc231919392594833e45e9f3c3c5f6c5a7925c99161762f"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/selftest-1.json",
+      "expected": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+      "actual": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/selftest-2.json",
+      "expected": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+      "actual": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/selftest-compare.log",
+      "expected": "67bd29b3acc47c40247ef48e2155b582d8ac3af5ed0afd23947c089ed02d3e9c",
+      "actual": "67bd29b3acc47c40247ef48e2155b582d8ac3af5ed0afd23947c089ed02d3e9c"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/test-diag.log",
+      "expected": "276086b57c88d98597d66280e567907d3ec4d150959a5225302bf61c6f6b7d5e",
+      "actual": "276086b57c88d98597d66280e567907d3ec4d150959a5225302bf61c6f6b7d5e"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/gates/test.log",
+      "expected": "76dca7f927bc17d353310b019743da4ecc312007a0278d5d241471553b3b4bc9",
+      "actual": "76dca7f927bc17d353310b019743da4ecc312007a0278d5d241471553b3b4bc9"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/measurements/ab-input-pass-disabled.patch",
+      "expected": "33f2910f07951ccd68c0a71fe2583243a03589a0a725512e8e8a73bb33266ac2",
+      "actual": "33f2910f07951ccd68c0a71fe2583243a03589a0a725512e8e8a73bb33266ac2"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/measurements/ab-no-input-pass-1.json",
+      "expected": "097bb644390fa56b5505e2ca5dba2155114494495fc56c18905a7cefb467f4c2",
+      "actual": "097bb644390fa56b5505e2ca5dba2155114494495fc56c18905a7cefb467f4c2"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/measurements/ab-no-input-pass-2.json",
+      "expected": "74e24de9bc33315c58833279773e102594b89128fd7f7314fad6cd3e175138ad",
+      "actual": "74e24de9bc33315c58833279773e102594b89128fd7f7314fad6cd3e175138ad"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/measurements/rust-10mb-drawing-release.log",
+      "expected": "56e12f0e57b44a89401fdd0bf6d9609fc90c4e08890267013191ff0be19922ba",
+      "actual": "56e12f0e57b44a89401fdd0bf6d9609fc90c4e08890267013191ff0be19922ba"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/measurements/scale-1.json",
+      "expected": "62fdaee76974ea0a334e332360e9967956686c5f92b03fd56b41e0c6c9e6f9c4",
+      "actual": "62fdaee76974ea0a334e332360e9967956686c5f92b03fd56b41e0c6c9e6f9c4"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/measurements/scale-1.stderr.log",
+      "expected": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/measurements/scale-2.json",
+      "expected": "aa1cdf4005054e25020c0154efd6c700abc39c4275dcf79fccbe77b9091fb90c",
+      "actual": "aa1cdf4005054e25020c0154efd6c700abc39c4275dcf79fccbe77b9091fb90c"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/measurements/scale-2.stderr.log",
+      "expected": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r2-response/measurements/ts-10mb-drawing-node.log",
+      "expected": "c8049ff073e4e7206580276d8c51e5a9614b0d3475498ec0d26d49b191678741",
+      "actual": "c8049ff073e4e7206580276d8c51e5a9614b0d3475498ec0d26d49b191678741"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r1-response/rust-10mb-drawing-release.log",
+      "expected": "80dfe26e72ad72c35ca85be9a2de3456c3ab0b7a7b78482a7e245b55b8fe59ff",
+      "actual": "80dfe26e72ad72c35ca85be9a2de3456c3ab0b7a7b78482a7e245b55b8fe59ff"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r1-response/ts-10mb-drawing-node.log",
+      "expected": "f4ee7b610fc9040bb7c9cc8b65afaa3d51cde3f21dfcf175a188b90d36ccd0e7",
+      "actual": "f4ee7b610fc9040bb7c9cc8b65afaa3d51cde3f21dfcf175a188b90d36ccd0e7"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r1-response/gates/test.log",
+      "expected": "46264458dfbb64b30f410b1c78c4391e75a4d89f03f0cec9dd128597393c984f",
+      "actual": "46264458dfbb64b30f410b1c78c4391e75a4d89f03f0cec9dd128597393c984f"
+    },
+    {
+      "file": "reviews/evidence/M1-C1.1-r1-response/gates/pnpm.log",
+      "expected": "596549d761ac0ac3f7da6c4df7f7ef9aa5ba35ff3b80f8acb8aed0642cdaa7b7",
+      "actual": "596549d761ac0ac3f7da6c4df7f7ef9aa5ba35ff3b80f8acb8aed0642cdaa7b7"
+    }
+  ],
+  "historical_hash_mismatches": [],
+  "historical_rust_totals": {
+    "M1-C1.1-r1-response": {
+      "passed": 209,
+      "failed": 0,
+      "ignored": 1
+    },
+    "M1-C1.1-r2-response": {
+      "passed": 258,
+      "failed": 0,
+      "ignored": 1
+    }
+  },
+  "scale_measurements": [
+    {
+      "drawingJsonBytes": 28568777,
+      "drawing100kParseValidateMs": 1084.103,
+      "palette10kParseValidateMs": 62.513,
+      "drawings10kParseValidateMs": 48.241,
+      "elements1kParseValidateMs": 19.78,
+      "documentAssembleAndCheckMs": 1359.141,
+      "objectCount": 121092,
+      "drawingCanonicalWriteMs": 962.019,
+      "drawingObjectJsonDepthAllWithPathsMs": 886.054,
+      "documentCloneMs": 0.961,
+      "drawingEntryRawJsonMs": 397.503,
+      "drawingOwnViewsMs": 557.131,
+      "diffWholeDocumentNoSharedEntriesMs": 3099.508,
+      "diffWholeDocumentChanges": 1,
+      "diffOneStrokeIn100kStrokeEntryMs": 1499.107,
+      "diffOneStrokeChangedObjects": 1
+    },
+    {
+      "drawingJsonBytes": 28568777,
+      "drawing100kParseValidateMs": 1017.572,
+      "palette10kParseValidateMs": 53.387,
+      "drawings10kParseValidateMs": 40.409,
+      "elements1kParseValidateMs": 17.058,
+      "documentAssembleAndCheckMs": 1337.198,
+      "objectCount": 121092,
+      "drawingCanonicalWriteMs": 851.772,
+      "drawingObjectJsonDepthAllWithPathsMs": 881.072,
+      "documentCloneMs": 0.857,
+      "drawingEntryRawJsonMs": 410.393,
+      "drawingOwnViewsMs": 560.202,
+      "diffWholeDocumentNoSharedEntriesMs": 3068.131,
+      "diffWholeDocumentChanges": 1,
+      "diffOneStrokeIn100kStrokeEntryMs": 1454.507,
+      "diffOneStrokeChangedObjects": 1
+    }
+  ],
+  "ci": {
+    "run": 39172780461,
+    "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39172780461",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "bundle (windows-latest)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run pnpm/action-setup@v6",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run pnpm install --frozen-lockfile",
+            "conclusion": "success"
+          },
+          {
+            "name": "Tauri build, default (unsigned; no M0 diagnostics)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Default build registers no M0 diagnostic command and refuses the flags",
+            "conclusion": "success"
+          },
+          {
+            "name": "Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)",
+            "conclusion": "success"
+          },
+          {
+            "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+            "conclusion": "success"
+          },
+          {
+            "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+            "conclusion": "success"
+          },
+          {
+            "name": "C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Collect artifacts",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run pnpm/action-setup@v6",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "rust_test_summaries": {},
+        "workspace_rust": {},
+        "vitest": [],
+        "node": []
+      },
+      {
+        "name": "check (windows-latest)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run pnpm/action-setup@v6",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run pnpm install --frozen-lockfile",
+            "conclusion": "success"
+          },
+          {
+            "name": "Front end — lint, type-check, test, format, licences",
+            "conclusion": "success"
+          },
+          {
+            "name": "Front end — build, diagnostics variant then default (frontendDist is embedded by the Tauri host)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo fmt --all --check",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo test --workspace --locked",
+            "conclusion": "success"
+          },
+          {
+            "name": "Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run taiki-e/install-action@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo deny --locked check",
+            "conclusion": "success"
+          },
+          {
+            "name": "Headless binary — build, self-test (twice, compared), linked-library proof",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run pnpm/action-setup@v6",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "rust_test_summaries": {
+          "passed": 307,
+          "failed": 0,
+          "ignored": 1
+        },
+        "workspace_rust": {
+          "passed": 258,
+          "failed": 0,
+          "ignored": 1
+        },
+        "vitest": [
+          "Tests  322 passed (322)"
+        ],
+        "node": [
+          "# pass 9"
+        ]
+      },
+      {
+        "name": "raster determinism (macos-latest)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+            "conclusion": "success"
+          },
+          {
+            "name": "Render fixtures and check committed hashes (two processes)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "rust_test_summaries": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "workspace_rust": {},
+        "vitest": [],
+        "node": []
+      },
+      {
+        "name": "raster determinism (ubuntu-latest)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+            "conclusion": "success"
+          },
+          {
+            "name": "Render fixtures and check committed hashes (two processes)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "rust_test_summaries": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "workspace_rust": {},
+        "vitest": [],
+        "node": []
+      },
+      {
+        "name": "headless without a display (ubuntu)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo build --release --locked -p tt-headless",
+            "conclusion": "success"
+          },
+          {
+            "name": "Self-test with no display server",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "rust_test_summaries": {},
+        "workspace_rust": {},
+        "vitest": [],
+        "node": []
+      },
+      {
+        "name": "bundle (macos-latest)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run pnpm/action-setup@v6",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run pnpm install --frozen-lockfile",
+            "conclusion": "success"
+          },
+          {
+            "name": "Tauri build, default (unsigned; no M0 diagnostics)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Default build registers no M0 diagnostic command and refuses the flags",
+            "conclusion": "success"
+          },
+          {
+            "name": "Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)",
+            "conclusion": "success"
+          },
+          {
+            "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+            "conclusion": "success"
+          },
+          {
+            "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Collect artifacts",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run pnpm/action-setup@v6",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "rust_test_summaries": {},
+        "workspace_rust": {},
+        "vitest": [],
+        "node": []
+      },
+      {
+        "name": "check (macos-latest)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run pnpm/action-setup@v6",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run pnpm install --frozen-lockfile",
+            "conclusion": "success"
+          },
+          {
+            "name": "Front end — lint, type-check, test, format, licences",
+            "conclusion": "success"
+          },
+          {
+            "name": "Front end — build, diagnostics variant then default (frontendDist is embedded by the Tauri host)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo fmt --all --check",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo test --workspace --locked",
+            "conclusion": "success"
+          },
+          {
+            "name": "Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run taiki-e/install-action@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo deny --locked check",
+            "conclusion": "success"
+          },
+          {
+            "name": "Headless binary — build, self-test (twice, compared), linked-library proof",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run pnpm/action-setup@v6",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "rust_test_summaries": {
+          "passed": 295,
+          "failed": 0,
+          "ignored": 1
+        },
+        "workspace_rust": {
+          "passed": 252,
+          "failed": 0,
+          "ignored": 1
+        },
+        "vitest": [
+          "Tests  322 passed (322)"
+        ],
+        "node": [
+          "# pass 9"
+        ]
+      },
+      {
+        "name": "raster determinism (windows-latest)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+            "conclusion": "success"
+          },
+          {
+            "name": "Render fixtures and check committed hashes (two processes)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run Swatinem/rust-cache@v2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "rust_test_summaries": {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        "workspace_rust": {},
+        "vitest": [],
+        "node": []
+      }
+    ]
+  },
+  "local_rust_totals": {
+    "baseline-rust": {
+      "passed": 258,
+      "failed": 0,
+      "ignored": 1
+    },
+    "rust-final": {
+      "passed": 270,
+      "failed": 5,
+      "ignored": 1
+    },
+    "final-workspace": {
+      "passed": 270,
+      "failed": 6,
+      "ignored": 1
+    },
+    "rust-diagnostics": {
+      "passed": 49,
+      "failed": 0,
+      "ignored": 0
+    }
+  },
+  "old_reviewer_cargo_suites": {
+    "c11_r1_wire": {
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    "c11_r2_wire": {
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0
+    },
+    "c11_r1_adversarial": {
+      "passed": 39,
+      "failed": 0,
+      "ignored": 0
+    },
+    "c11_r2_adversarial": {
+      "passed": 39,
+      "failed": 0,
+      "ignored": 0
+    }
+  },
+  "ci_python_policy_test_executed": false,
+  "headless-1": [
+    [
+      "engine.components",
+      true
+    ],
+    [
+      "engine.versions",
+      true
+    ],
+    [
+      "engine.ping",
+      true
+    ],
+    [
+      "determinism.ieee754",
+      true
+    ],
+    [
+      "headless.mcpLinked",
+      true
+    ]
+  ],
+  "headless-2": [
+    [
+      "engine.components",
+      true
+    ],
+    [
+      "engine.versions",
+      true
+    ],
+    [
+      "engine.ping",
+      true
+    ],
+    [
+      "determinism.ieee754",
+      true
+    ],
+    [
+      "headless.mcpLinked",
+      true
+    ]
+  ]
+}

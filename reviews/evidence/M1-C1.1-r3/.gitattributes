@@ -1,0 +1,5 @@
+# Preserve exact command output and patch bytes for the receipts; native tools
+# emit CRLF, blank lines, and intentional trailing context whitespace.
+*.log -text -whitespace
+*.patch -text -whitespace
+*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

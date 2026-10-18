@@ -1,0 +1,15 @@
+{
+  "command": [
+    "pnpm",
+    "test"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:54:36.467939+00:00",
+  "elapsed_seconds": 84.98479919997044,
+  "exit_code": 1,
+  "log": "logs/pnpm-final.log",
+  "sha256": "7c057da35d6fabc09ba5f9de6ddb4e1def6e00fc114c6fbb8ad681e04417a12f",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

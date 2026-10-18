@@ -1,0 +1,12 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.19s
+     Running tests\c11_r3_register.rs (target\debug\deps\c11_r3_register-a0763fcdede4df4c.exe)
+
+running 4 tests
+test rows_146_and_148_drawing_pivot_and_ordered_nodes ... ok
+test rows_128_to_137_transform_constraints_and_pivots ... ok
+test rows_138_to_141_camera_export_skeleton_and_bone_blocks ... ok
+test rows_111_to_124_element_variant_blocks_are_required_and_typed ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+

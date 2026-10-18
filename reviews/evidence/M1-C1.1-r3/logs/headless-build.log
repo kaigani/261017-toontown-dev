@@ -1,0 +1,54 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling serde_core v1.0.229
+   Compiling memchr v2.8.3
+   Compiling serde_json v1.0.154
+   Compiling once_cell v1.21.4
+   Compiling smallvec v1.16.3
+   Compiling serde v1.0.229
+   Compiling anstyle v1.0.14
+   Compiling clap_lex v1.1.1
+   Compiling clap_builder v4.6.7
+   Compiling parking_lot_core v0.9.12
+   Compiling aho-corasick v1.1.5
+   Compiling parking_lot v0.12.5
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling regex-automata v0.4.18
+   Compiling indexmap v2.14.2
+   Compiling strum_macros v0.28.0
+   Compiling serde_derive_internals v0.30.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling clap_derive v4.6.7
+   Compiling schemars_derive v1.2.3
+   Compiling ref-cast v1.0.27
+   Compiling strum v0.28.0
+   Compiling thiserror v2.0.21
+   Compiling regex v1.13.1
+   Compiling fancy-regex v0.19.2
+   Compiling clap v4.6.7
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\persist)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\registry)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\fx)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\executor)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\lipsync)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\io)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\bins\headless)
+    Finished `release` profile [optimized + debuginfo] target(s) in 37.13s

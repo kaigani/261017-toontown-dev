@@ -1,0 +1,22 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r3_register",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:54:02.330554+00:00",
+  "elapsed_seconds": 2.1852799000334926,
+  "exit_code": 0,
+  "log": "logs/register-spotchecks-final.log",
+  "sha256": "9b22da0dc720580eec7dc8cd6a97afe6e95d8c0b5660ad6ecc66916acff7c1ea",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

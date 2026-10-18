@@ -1,0 +1,57 @@
+diff --git a/crates/engine/tests/c11_r1_wire.rs b/crates/engine/tests/c11_r1_wire.rs
+index a8c4d9e..6f181c1 100644
+--- a/crates/engine/tests/c11_r1_wire.rs
++++ b/crates/engine/tests/c11_r1_wire.rs
+@@ -5,8 +5,13 @@ use tt_engine::wire::{from_wire_json, to_wire_json};
+ #[test]
+ fn opaque_json_integer_outside_u64_is_not_silently_rounded() {
+     let text = r#"{"com.example.tool":{"n":-18446744073709551615}}"#;
+-    let v: Value = from_wire_json(text).unwrap();
+-    assert_eq!(to_wire_json(&v).unwrap(), text, "opaque extension integer loses precision in Rust");
++    // Amended per the orchestrator's C1.1 round-1 ruling on C11-R1-07 ("must be lossless or typed error"; precedent
++    // C01-R1-04): the builder chose the typed error, so the reviewer's lossless assertion now applies whenever the
++    // text is accepted, and a rejection must be the typed `arg.invalid`. Rounding remains a failure either way.
++    match from_wire_json::<Value>(text) {
++        Ok(v) => assert_eq!(to_wire_json(&v).unwrap(), text, "opaque extension integer loses precision in Rust"),
++        Err(e) => assert_eq!(e.code, "arg.invalid", "an inexact integer literal is a typed error"),
++    }
+ }
+ 
+ #[test]
+diff --git a/crates/model/tests/c11_r1_adversarial.rs b/crates/model/tests/c11_r1_adversarial.rs
+index 2bbf82c..e658719 100644
+--- a/crates/model/tests/c11_r1_adversarial.rs
++++ b/crates/model/tests/c11_r1_adversarial.rs
+@@ -457,7 +457,9 @@ fn ten_megabyte_drawing_validation_measurement() {
+ #[test]
+ fn jsonschema_integer_multiple_of_does_not_round_before_testing() {
+     let s = json!({"type":"integer","multipleOf":5});
+-    let validator = jsonschema::JSONSchema::options().with_draft(jsonschema::Draft::Draft202012).compile(&s).unwrap();
++    // Ported by the builder to the jsonschema 0.59 API after the C11-R1-18 upgrade (`JSONSchema::options().compile`
++    // no longer exists); the schema, the draft and both assertions are unchanged.
++    let validator = jsonschema::options().with_draft(jsonschema::Draft::Draft202012).build(&s).unwrap();
+     assert!(validator.is_valid(&json!(9007199254740995u64)), "exact integer divisible by 5 rejected");
+     assert!(!validator.is_valid(&json!(9007199254740999u64)), "integer not divisible by 5 accepted");
+ }
+diff --git a/tests/adversarial/guards.mjs b/tests/adversarial/guards.mjs
+index 3aea32b..c9b7a02 100644
+--- a/tests/adversarial/guards.mjs
++++ b/tests/adversarial/guards.mjs
+@@ -35,12 +35,15 @@ if (process.argv[2] === "licensing") {
+   const table = /^\[licenses\][\s\S]*?^allow\s*=\s*\[([\s\S]*?)\]/m.exec(deny);
+   assert(table, "deny.toml must have a [licenses] allow list");
+   const rust = [...table[1].replace(/#.*$/gm, "").matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+-  const approved = ["MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "MPL-2.0", "Unicode-3.0", "0BSD"];
++  // Amended again by the builder in M1 C1.1 round 1 per the orchestrator's C11-R1-18 ruling (2026-10-18): MIT-0 is
++  // approved (borrow-or-share, needed by current jsonschema releases), so it moves from the rejected controls below
++  // into the approved set; every other control is unchanged.
++  const approved = ["MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "MPL-2.0", "Unicode-3.0", "0BSD", "MIT-0"];
+   assert.deepEqual([...ALLOWED].sort(), [...rust].sort(), "C01-R1-01: JS and Rust allow-lists drifted");
+   assert.deepEqual([...rust].sort(), [...approved].sort(), "C01-R1-01: allow-list differs from the approved set");
+   const adr = readFileSync(new URL("../../docs/decisions/ADR-0003-licensing-policy.md", import.meta.url), "utf8");
+   for (const id of approved) assert(adr.includes(id), `ADR-0003 must list ${id}`);
+-  for (const outside of ["Unlicense", "CC0-1.0", "MIT-0", "BlueOak-1.0.0", "LGPL-2.1-only", "GPL-3.0-only", "AGPL-3.0-only"]) {
++  for (const outside of ["Unlicense", "CC0-1.0", "BlueOak-1.0.0", "LGPL-2.1-only", "GPL-3.0-only", "AGPL-3.0-only"]) {
+     assert.equal(satisfies(outside), false, `C01-R1-01: ${outside} is outside the approved allow-list`);
+   }
+ } else if (process.argv[2] === "imports") {

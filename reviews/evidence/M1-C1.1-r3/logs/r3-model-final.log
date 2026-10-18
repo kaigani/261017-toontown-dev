@@ -1,0 +1,46 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.19s
+     Running tests\c11_r3_adversarial.rs (target\debug\deps\c11_r3_adversarial-b11cc61fb7ce29a8.exe)
+
+running 10 tests
+
+thread 'opaque_mouth_track_lookalikes_are_ordinary_json_changes' (28264) panicked at crates\model\tests\c11_r3_adversarial.rs:119:51:
+called `Result::unwrap()` on an `Err` value: ModelError { code: "arg.invalid", message: "a mouth-string value holds only the mouth letters A–G and X (10 §4.14)", details: Object {"pointer": String("/meta/com.example.tool/mouthTrack/mouths"), "op": String("replace")} }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'zero_length_exposure_runs_are_invalid_range_payloads' (19840) panicked at crates\model\tests\c11_r3_adversarial.rs:109:9:
+zero counts are not exposure runs (10 section 4.7)
+test malformed_mouth_ranges_return_typed_errors ... 
+thread 'ok
+resolved_stateless_move_inverse_does_not_shift_numeric_object_keystest moving_into_own_subtree_fails_atomically_and_copying_parent_succeeds ... ok
+' (test append_move_remove_sequences_restore_nested_arrays ... 22776) panicked at ok
+crates\model\tests\c11_r3_adversarial.rs:test opaque_mouth_track_lookalikes_are_ordinary_json_changes ... FAILED131:5
+:
+test zero_length_exposure_runs_are_invalid_range_payloads ... FAILEDassertion `left == right` failed: resolved paths and oldValue meet invert's documented contract: [PatchOp { op: "copy", from: Some("/a/1/x"), path: "/a/0", range: None, value: None, old_value: None, elided: false }, PatchOp { op: "replace", from: None, path: "/a/2/x", range: None, value: Some(String("old")), old_value: None, elided: false }]
+  left: Object {"a": Object {"1": Object {"x": String("source")}, "2": Object {"x": String("old")}, "0": String("source")}}
+ right: Object {"a": Object {"0": String("source"), "1": Object {"x": String("old")}, "2": Object {"x": String("untouched")}}}
+
+test resolved_stateless_move_inverse_does_not_shift_numeric_object_keys ... FAILED
+test property_schema_nested_conditionals_and_ref_annotations_survive ... ok
+
+thread 'property_schema_preserves_every_enum_alternative' (24012) panicked at crates\model\tests\c11_r3_adversarial.rs:175:9:
+valid pen tip oval rejected by discovered schema
+test property_schema_preserves_every_enum_alternative ... FAILED
+
+thread 'property_schema_preserves_nullable_value_domains' (27556) panicked at crates\model\tests\c11_r3_adversarial.rs:152:9:
+pen /colourId: Some(Object {"anyOf": Array [Object {"$ref": String("#/$defs/Id")}, Object {"type": String("null")}], "description": String("Colour bound to the pen; `null` = use the current colour."), "x-ref": String("swatch"), "x-since": String("1.0"), "type": String("string"), "pattern": String("^[A-Za-z0-9_-]{1,64}$")})
+test property_schema_preserves_nullable_value_domains ... FAILED
+test frame_map_keys_and_nfc_values_at_fresh_boundaries ... ok
+
+failures:
+
+failures:
+    opaque_mouth_track_lookalikes_are_ordinary_json_changes
+    property_schema_preserves_every_enum_alternative
+    property_schema_preserves_nullable_value_domains
+    resolved_stateless_move_inverse_does_not_shift_numeric_object_keys
+    zero_length_exposure_runs_are_invalid_range_payloads
+
+test result: FAILED. 5 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r3_adversarial`

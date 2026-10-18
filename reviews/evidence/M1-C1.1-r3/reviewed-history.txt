@@ -1,0 +1,4 @@
+eb54b55 docs(c1.1): record the round-2 CI run
+2d006cb docs(c1.1): round-2 review response, handoff, round-1 erratum
+e49b4e9 fix(model): C1.1 review round 2 — all P1 and P2 findings
+8976d61 merge: Codex review round 2 of C1.1 (block; 3 P1, 8 P2)

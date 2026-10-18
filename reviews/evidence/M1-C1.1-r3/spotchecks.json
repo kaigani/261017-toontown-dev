@@ -1,0 +1,452 @@
+[
+  {
+    "citation": "10 §4.6, L420",
+    "requirement": "sound: yes (sound column) | no | `streamed`, `showMouthShapes`, `placements`, `lipSyncMappings` (§4.14)",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:15",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 111,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L421",
+    "requirement": "media: yes | no | `sequences` (§4.15), `transform`, `channels`",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:1",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 112,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L422",
+    "requirement": "peg: no | yes | `transform` (with peg fields), `channels`, `exportGroup`",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:1",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 113,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L423",
+    "requirement": "camera: no | yes (camera peg) | `camera`, `transform`, `channels`",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:274",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 114,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L424",
+    "requirement": "skeleton: no | yes (`bones` and `skin` parameter elements) | `skeleton`, `transform`, `channels`",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:673",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 115,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L425",
+    "requirement": "bone: no | yes (chained bones) | `bone`, `channels`",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:677",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 116,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L426",
+    "requirement": "effectParameter: no | yes | `slot`: `mask`, `sprites`, `bones`, `skin` (06 §2.3). Created and deleted only with its effect or skeleton.",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:1",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 117,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L427",
+    "requirement": "colourTransform: no | yes | `params`, `channels` (06)",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:1",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 118,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L427",
+    "requirement": "clipping: no | yes | `params`, `channels` (06)",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:1",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 119,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L427",
+    "requirement": "dropShadow: no | yes | `params`, `channels` (06)",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:1",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 120,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L427",
+    "requirement": "blur: no | yes | `params`, `channels` (06)",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:1",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 121,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L427",
+    "requirement": "shake: no | yes | `params`, `channels` (06)",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:1",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 122,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L428",
+    "requirement": "particleNature: no | yes | `params`, `blocks` (06 §3.8, §8.4)",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:1",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 123,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L428",
+    "requirement": "particleImpact: no | yes | `params`, `blocks` (06 §3.8, §8.4)",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:1",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 124,
+    "r3_spotcheck": {
+      "name": "rows_111_to_124_element_variant_blocks_are_required_and_typed",
+      "location": "crates/model/tests/c11_r3_register.rs:31",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_111_to_124_element_variant_blocks_are_required_and_typed --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/schema.rs:370",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L437",
+    "requirement": "scale: `{ x, y }` | (1, 1) | \\|s\\| ≥ 0.001; negative values flip.",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:282",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 128,
+    "r3_spotcheck": {
+      "name": "rows_128_to_137_transform_constraints_and_pivots",
+      "location": "crates/model/tests/c11_r3_register.rs:63",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_128_to_137_transform_constraints_and_pivots --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:270",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L438",
+    "requirement": "keepProportions: bool | false | —",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:284",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 129,
+    "r3_spotcheck": {
+      "name": "rows_128_to_137_transform_constraints_and_pivots",
+      "location": "crates/model/tests/c11_r3_register.rs:63",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_128_to_137_transform_constraints_and_pivots --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:270",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L439",
+    "requirement": "rotationPivot: point2 (field) | (0, 0) | Elements.",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:288",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 130,
+    "r3_spotcheck": {
+      "name": "rows_128_to_137_transform_constraints_and_pivots",
+      "location": "crates/model/tests/c11_r3_register.rs:63",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_128_to_137_transform_constraints_and_pivots --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:270",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L439",
+    "requirement": "scalePivot: point2 (field) | (0, 0) | Elements.",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:292",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 131,
+    "r3_spotcheck": {
+      "name": "rows_128_to_137_transform_constraints_and_pivots",
+      "location": "crates/model/tests/c11_r3_register.rs:63",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_128_to_137_transform_constraints_and_pivots --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:270",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L440",
+    "requirement": "rotateAboutPivot: bool | false | Elements.",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:296",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 132,
+    "r3_spotcheck": {
+      "name": "rows_128_to_137_transform_constraints_and_pivots",
+      "location": "crates/model/tests/c11_r3_register.rs:63",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_128_to_137_transform_constraints_and_pivots --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:270",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L441",
+    "requirement": "pivot: point2 (field) | (0, 0) | Pegs and skeletons.",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:300",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 133,
+    "r3_spotcheck": {
+      "name": "rows_128_to_137_transform_constraints_and_pivots",
+      "location": "crates/model/tests/c11_r3_register.rs:63",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_128_to_137_transform_constraints_and_pivots --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:270",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L442",
+    "requirement": "applyPivotTo: enum | `rotation` | Pegs and skeletons: `rotation`, `scaling`, `both`.",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:304",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 134,
+    "r3_spotcheck": {
+      "name": "rows_128_to_137_transform_constraints_and_pivots",
+      "location": "crates/model/tests/c11_r3_register.rs:63",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_128_to_137_transform_constraints_and_pivots --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:270",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L443",
+    "requirement": "useChildDrawingPivot: bool | false | Pegs (05 §2.3).",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:308",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 135,
+    "r3_spotcheck": {
+      "name": "rows_128_to_137_transform_constraints_and_pivots",
+      "location": "crates/model/tests/c11_r3_register.rs:63",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_128_to_137_transform_constraints_and_pivots --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:270",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L444",
+    "requirement": "lockDepth: bool | false | Nodes with a motion path (05 §9.3).",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:310",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 136,
+    "r3_spotcheck": {
+      "name": "rows_128_to_137_transform_constraints_and_pivots",
+      "location": "crates/model/tests/c11_r3_register.rs:63",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_128_to_137_transform_constraints_and_pivots --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:270",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L445",
+    "requirement": "orientToPath: bool | false | 05 §8.3.",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:312",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 137,
+    "r3_spotcheck": {
+      "name": "rows_128_to_137_transform_constraints_and_pivots",
+      "location": "crates/model/tests/c11_r3_register.rs:63",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_128_to_137_transform_constraints_and_pivots --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:270",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L451",
+    "requirement": "camera: `fovMode`: `static` \\| `dynamic` (`static`); `fov`: angle 1–179 (41.1121) | 05 §12.3",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:274",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 138,
+    "r3_spotcheck": {
+      "name": "rows_138_to_141_camera_export_skeleton_and_bone_blocks",
+      "location": "crates/model/tests/c11_r3_register.rs:89",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_138_to_141_camera_export_skeleton_and_bone_blocks --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/element.rs:410",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L452",
+    "requirement": "exportGroup: `groupOnVectorExport`: bool (false); `addComposite`: bool (false) | 05 §8.2, 09",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:665",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 139,
+    "r3_spotcheck": {
+      "name": "rows_138_to_141_camera_export_skeleton_and_bone_blocks",
+      "location": "crates/model/tests/c11_r3_register.rs:89",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_138_to_141_camera_export_skeleton_and_bone_blocks --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/validate.rs:781",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L453",
+    "requirement": "skeleton: `boneColour`: colour \\| null (null = preference); `showTrack` (false); `showRoot` (true); `showBones` (true); `showInfluence` (false); `vectorQuality`: `low` \\| `medium` \\| `high` \\| `highest` (`medium`); `deformationEnabled` (true) | 05 §13.6",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:673",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 140,
+    "r3_spotcheck": {
+      "name": "rows_138_to_141_camera_export_skeleton_and_bone_blocks",
+      "location": "crates/model/tests/c11_r3_register.rs:89",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_138_to_141_camera_export_skeleton_and_bone_blocks --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/validate.rs:781",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.6, L454",
+    "requirement": "bone: `rest`: `{x, y, rotation, length}` (fields, degrees; length > 0.01); `influence`: `{ type: \"infinite\" \\| \"elliptical\", lengthRadius: number, widthRadius: number, region: [point2] \\| null }` (infinite; radii default 0.75 × and 0.35 × rest length) | 05 §13.1–13.3",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/element.rs:677",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 141,
+    "r3_spotcheck": {
+      "name": "rows_138_to_141_camera_export_skeleton_and_bone_blocks",
+      "location": "crates/model/tests/c11_r3_register.rs:89",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_138_to_141_camera_export_skeleton_and_bone_blocks --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/validate.rs:781",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.8, L487",
+    "requirement": "pivot: point2 (du) | (0, 0) | Drawing pivot (02 §3.8).",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/drawing.rs:437",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 146,
+    "r3_spotcheck": {
+      "name": "rows_146_and_148_drawing_pivot_and_ordered_nodes",
+      "location": "crates/model/tests/c11_r3_register.rs:116",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_146_and_148_drawing_pivot_and_ordered_nodes --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/drawing.rs:419",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  },
+  {
+    "citation": "10 §4.8, L489",
+    "requirement": "nodes: [drawingNode] | [] | Back-to-front (02 §3.1). Stored in the drawing's own package entry (§6.3).",
+    "status": "implemented",
+    "implementation": "crates/model/src/entities/drawing.rs:441",
+    "note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "row": 148,
+    "r3_spotcheck": {
+      "name": "rows_146_and_148_drawing_pivot_and_ordered_nodes",
+      "location": "crates/model/tests/c11_r3_register.rs:116",
+      "command": "cargo test -p tt-model --test c11_r3_register rows_146_and_148_drawing_pivot_and_ordered_nodes --locked -- --exact --nocapture",
+      "implementation": "crates/model/src/entities/drawing.rs:419",
+      "scope": "Persisted model shape/constraints; accepted command/rendering deferrals retain their owners."
+    }
+  }
+]

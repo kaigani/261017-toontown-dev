@@ -1,0 +1,22 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-engine",
+    "--test",
+    "c11_r3_wire",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:48:47.363241+00:00",
+  "elapsed_seconds": 14.261622700025328,
+  "exit_code": 0,
+  "log": "logs/r3-wire-first.log",
+  "sha256": "f63c8c3428d806b635a9d391d808104ea689b8d190137a8fd2728f931350c54b",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}
