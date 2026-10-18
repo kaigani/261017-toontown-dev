@@ -1,0 +1,16 @@
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m0-c01-r1
+> pnpm -r test
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m0-c01-r1\desktop
+> vitest run
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m0-c01-r1/desktop
+
+
+ Test Files  5 passed (5)
+      Tests  22 passed (22)
+   Start at  21:28:36
+   Duration  1.10s (environment 75%, setup 14%, transform 7%, tests 2%, import 2%)

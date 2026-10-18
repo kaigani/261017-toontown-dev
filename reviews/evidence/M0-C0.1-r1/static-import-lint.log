@@ -1,0 +1,18 @@
+
+> toontown-workspace@ lint C:\Users\kaiga\work\review\m0-c01-r1
+> pnpm -r --workspace-concurrency=1 lint
+
+
+> @toontown/desktop@0.0.1 lint C:\Users\kaiga\work\review\m0-c01-r1\desktop
+> eslint . --max-warnings 0
+
+
+C:\Users\kaiga\work\review\m0-c01-r1\desktop\src\review-boundary-probe.ts
+  1:1  error  '@tauri-apps/api/core' import is restricted from being used by a pattern. Talk to the Rust host only through src/ipc (createHostApi / useHost)  no-restricted-imports
+
+✖ 1 problem (1 error, 0 warnings)
+
+C:\Users\kaiga\work\review\m0-c01-r1\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 lint: `eslint . --max-warnings 0`
+Exit status 1
+ ELIFECYCLE  Command failed with exit code 1.
