@@ -1,4 +1,5 @@
 // Typed host API. UI code depends on this interface only, never on a transport or on @tauri-apps/*.
+import { certify } from './schema';
 import type { HostTransport, Unlisten } from './transport';
 import type { BenchPlan, EngineInfo, ErrorInfo, MenuCommandEvent, PingRequest, PingResponse } from './types';
 import {
@@ -56,10 +57,11 @@ async function call<T>(
   } catch (error: unknown) {
     throw toHostError(error);
   }
-  if (!check(value)) {
+  const data = certify(check, value);
+  if (data === undefined) {
     throw new HostError({ code: 'ipc.invalidResponse', message: `unexpected response from ${command}` });
   }
-  return value;
+  return data;
 }
 
 export function createHostApi(transport: HostTransport): HostApi {
@@ -70,7 +72,8 @@ export function createHostApi(transport: HostTransport): HostApi {
     onMenuCommand: (handler) =>
       transport.listen(MENU_COMMAND_EVENT, (payload) => {
         // Malformed events are dropped: they can only come from a host/front-end version mismatch.
-        if (isMenuCommandEvent(payload)) handler(payload);
+        const event = certify(isMenuCommandEvent, payload);
+        if (event !== undefined) handler(event);
       }),
     benchPlan: () => call(transport, 'bench_plan', undefined, isBenchPlanOrNull),
     benchReport: async (report) => {
