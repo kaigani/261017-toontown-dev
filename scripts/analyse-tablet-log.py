@@ -63,9 +63,10 @@ docs/decisions/ADR-0009-tablet-input.md and prints the outcome:
   Windows and A (AppKit monitor) on macOS. Raw HID (R) and a dedicated window (D) need experiments E-R1 / E-D1 and
   are not measured by this log;
 * numeric bands are half-open, on the unrounded value;
-* the candidate with the highest share of applicable rows at pass is selected (n/a rows excluded), ties by
-  priority (W > R > H > D on Windows, W > A on macOS); a candidate with no applicable measured row is excluded;
-* pressure (row 2) or rate (row 7) at fail on the selected candidate makes the outcome "no-go on this platform";
+* a candidate at fail on pressure (row 2) or rate (row 7) is disqualified: listed with its share, never selected;
+* among the others, the highest share of applicable rows at pass is selected (n/a rows excluded), ties by priority
+  (W > R > H > D on Windows, W > A on macOS); a candidate with no applicable measured row is excluded;
+* if every candidate is disqualified, the outcome is "no-go on this platform", naming the best available evidence;
 * every per-action statistic, including row 6's coalescing, uses only the measured episode's samples inside the
   action's span; samples outside every span are counted and excluded (C04-R3-01);
 * the raw Space/K key events (`keyEvents`) are validated and must account for every action transition (C04-R3-02);
@@ -543,13 +544,13 @@ MITIGATIONS = {
     1: ("pen recognised by pressure > 0; eraser not distinguished",
         "pen not identified on this path: contacts with pressure > 0 are treated as pen; no eraser"),
     2: ("accept the measured resolution of 16 to 255 levels; brush response quantised",
-        "no-go on this platform (Step 3)"),
+        "disqualifies the candidate (Step 2)"),
     3: ("accept >= 256 levels", "as row 2"),
     4: ("accept the limited or quantised tilt", "tilt unsupported on this platform: tilt-driven brush options off"),
     5: ("twist limited to the measured range (e.g. modulo 180)", "barrel rotation unsupported on this platform"),
     6: ("accept one sample per dispatch", "accept one sample per dispatch; a floor change is a user decision (ADR-0005)"),
     7: ("interpolated sampling off; the >= 200 Hz target is recorded as below target",
-        "no-go on this platform (Step 3)"),
+        "disqualifies the candidate (Step 2)"),
     8: ("recorded as below the 200 Hz target", "recorded as below the 200 Hz target"),
     9: ("pressure interpolated between updates", "pressure changes without movement are ignored"),
 }
@@ -694,21 +695,28 @@ def aggregate(platform, results):
         return {"outcome": "not evidence: no candidate has a valid measurement; repeat the procedure",
                 "selected": None, "conditions": [], "scores": scores, "shares": {}, "eligible": [],
                 "unmeasured": unmeasured}
-    best = max(eligible, key=lambda c: (shares[c], -order.index(c)))
-    # Option (c): pressure (row 2) or rate (row 7) at fail on the selected candidate makes the platform a no-go; the
-    # mitigation table still applies to its other rows.
-    blocking = [row for row in NO_GO_ROWS if results[best].get(row) == "fail"]
+    # Final C0.4 ruling: a candidate at fail on row 2 (pressure) or row 7 (rate) is disqualified. The selection is
+    # among the others by share, ties by the fixed order; disqualified candidates are listed with their shares but
+    # never selected. If every candidate is disqualified, the platform is a no-go, and the best share is named only
+    # as the best available evidence.
+    rank = lambda c: (shares[c], -order.index(c))  # noqa: E731
+    disqualified = {c: [row for row in NO_GO_ROWS if results[c].get(row) == "fail"] for c in eligible}
+    disqualified = {c: rows for c, rows in disqualified.items() if rows}
+    qualified = [c for c in eligible if c not in disqualified]
+    shares_text = {c: f"{v.numerator}/{v.denominator}" if v.denominator != 1 else str(v.numerator)
+                   for c, v in shares.items()}
+    base = {"scores": scores, "shares": shares_text, "eligible": eligible, "unmeasured": unmeasured,
+            "disqualified": disqualified}
+    if not qualified:
+        evidence = max(eligible, key=rank)
+        return {**base, "outcome": "no-go on this platform: escalate (plan §6 decision 7); best available evidence: "
+                                   f"{evidence} ({shares_text[evidence]})",
+                "selected": None, "bestEvidence": evidence, "conditions": []}
+    best = max(qualified, key=rank)
     conditions = [{"row": row, "result": r, "mitigation": MITIGATIONS[row][0 if r == "partial" else 1]}
-                  for row, r in sorted(results[best].items()) if r in ("partial", "fail") and row not in blocking]
-    if blocking:
-        outcome = f"no-go on this platform: escalate (plan §6 decision 7); selected {best}, row(s) " \
-                  f"{', '.join(str(r) for r in blocking)} at fail"
-    else:
-        outcome = f"go: {best}" if not conditions else f"go-with-conditions: {best}"
-    return {"outcome": outcome, "selected": best, "conditions": conditions, "scores": scores,
-            "shares": {c: f"{v.numerator}/{v.denominator}" if v.denominator != 1 else str(v.numerator)
-                       for c, v in shares.items()},
-            "blocking": blocking, "eligible": eligible, "unmeasured": unmeasured}
+                  for row, r in sorted(results[best].items()) if r in ("partial", "fail")]
+    outcome = f"go: {best}" if not conditions else f"go-with-conditions: {best}"
+    return {**base, "outcome": outcome, "selected": best, "bestEvidence": best, "conditions": conditions}
 
 
 def tablet_decision(log, web, native, actions):
@@ -736,7 +744,8 @@ def print_decision(d):
             cells = [f"{d['rows'][c][str(row)]['result']} ({d['rows'][c][str(row)]['note']})" for c in cands]
             print(f"| {row} | {name} | {ROW_ACTION[row]} | " + " | ".join(cells) + " |")
         print(f"\n- platform: {d['platform']}; share of applicable rows at pass: {d.get('shares')}; rows at pass: "
-              f"{d.get('scores')}; candidates with a valid measurement: {d.get('eligible')}")
+              f"{d.get('scores')}; candidates with a valid measurement: {d.get('eligible')}; disqualified (row 2 or "
+              f"7 at fail): {d.get('disqualified') or 'none'}")
         if d.get("unmeasured"):
             print("- not scored: " + ", ".join(f"{c} ({UNMEASURED_NOTE.get(c, 'not measured')})" for c in d["unmeasured"]))
     print(f"- outcome: **{d['outcome']}**")

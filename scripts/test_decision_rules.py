@@ -80,8 +80,9 @@ class TabletRules(unittest.TestCase):
             "D": {**ok, 2: "fail", 3: "fail", 4: "fail", 6: "n/a"},
         }
         d = tablet.aggregate("windows", results)
-        self.assertEqual(d["eligible"], ["W", "R", "H", "D"])  # nothing is excluded by a failed row (C04-R3-04)
-        self.assertEqual(d["shares"], {"W": "2/3", "R": "7/8", "H": "3/4", "D": "5/8"})  # option (a)
+        self.assertEqual(d["eligible"], ["W", "R", "H", "D"])
+        self.assertEqual(d["shares"], {"W": "2/3", "R": "7/8", "H": "3/4", "D": "5/8"})
+        self.assertEqual(d["disqualified"], {"H": [2], "D": [2]})
         self.assertEqual(d["outcome"], "go-with-conditions: R")
         self.assertEqual([(c["row"], c["result"]) for c in d["conditions"]], [(4, "fail")])
         self.assertIn("tilt unsupported", d["conditions"][0]["mitigation"])
@@ -91,18 +92,25 @@ class TabletRules(unittest.TestCase):
         d = tablet.aggregate("macos", {"W": {**ok, 7: "fail", 8: "fail"},
                                        "A": {**ok, 6: "n/a", 7: "partial", 8: "fail"}})
         self.assertEqual(d["shares"], {"W": "7/9", "A": "3/4"})
-        # W is selected (7/9 > 3/4); its row 7 fail makes the platform a no-go (option (c)); A is not re-selected.
-        self.assertEqual(d["selected"], "W")
-        self.assertTrue(d["outcome"].startswith("no-go on this platform: escalate (plan §6 decision 7)"))
-        self.assertEqual([(c["row"], c["result"]) for c in d["conditions"]], [(8, "fail")])
+        # W is disqualified (row 7 at fail) and listed only; A (row 7 partial) is selected.
+        self.assertEqual(d["disqualified"], {"W": [7]})
+        self.assertEqual(d["outcome"], "go-with-conditions: A")
+        self.assertEqual([(c["row"], c["result"]) for c in d["conditions"]], [(7, "partial"), (8, "fail")])
 
-    def test_reviewer_r3_04_case_under_share_ranking_and_no_go(self):
-        # W 7/9 beats R 6/8; W's pressure fail then makes the platform a no-go (options (a) + (c)).
+    def test_worked_example_3_all_disqualified(self):
+        ok = {r: "pass" for r in range(1, 10)}
+        d = tablet.aggregate("macos", {"W": {**ok, 2: "fail"}, "A": {**ok, 6: "n/a", 7: "fail"}})
+        self.assertIsNone(d["selected"])
+        self.assertEqual(d["bestEvidence"], "W")  # W 8/9 > A 7/8; named only as evidence
+        self.assertTrue(d["outcome"].startswith("no-go on this platform: escalate (plan §6 decision 7)"))
+
+    def test_reviewer_r3_04_case_selects_r(self):
+        # W fails pressure, so it is disqualified although its share 7/9 is higher than R's 3/4.
         ok = {r: "pass" for r in range(1, 10)}
         d = tablet.aggregate("windows", {"W": {**ok, 2: "fail", 3: "fail"}, "R": {**ok, 4: "fail", 5: "fail", 6: "n/a"}})
         self.assertEqual((d["scores"], d["shares"]), ({"W": 7, "R": 6}, {"W": "7/9", "R": "3/4"}))
-        self.assertEqual((d["selected"], d["blocking"]), ("W", [2]))
-        self.assertTrue(d["outcome"].startswith("no-go on this platform"))
+        self.assertEqual((d["selected"], d["disqualified"]), ("R", {"W": [2]}))
+        self.assertEqual(d["outcome"], "go-with-conditions: R")
 
     def test_share_excludes_na_rows(self):
         # A native path is not penalised for row 6: A 8/8 beats W 8/9.
