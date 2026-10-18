@@ -4,7 +4,7 @@
 
 use proptest::prelude::*;
 use serde_json::{Map, Number, Value, json};
-use tt_model::change::{apply, diff_json, invert};
+use tt_model::change::{apply, diff_json, invert_against};
 use tt_model::entities::ModelObject;
 use tt_model::entities::drawing::Stroke;
 use tt_model::entities::element::{Element, ElementInit, ElementType, ParamSlot};
@@ -252,7 +252,7 @@ proptest! {
     fn patches_apply_and_invert(a in arb_json(), b in arb_json()) {
         let patch = diff_json(&a, &b, "", ObjectType::Scene);
         prop_assert_eq!(&apply(&a, &patch).unwrap(), &b);
-        prop_assert_eq!(&apply(&b, &invert(&patch)).unwrap(), &a);
+        prop_assert_eq!(&apply(&b, &invert_against(&a, &patch).unwrap()).unwrap(), &a);
     }
 
     /// C11-R2-02: random RFC 6902 sequences (add with overwrite or `-` append, remove, replace, move with shifting
@@ -262,14 +262,14 @@ proptest! {
     fn random_rfc6902_sequences_invert_against_their_pre_state(doc in arb_json(), seed in any::<u64>(), n in 1usize..10) {
         let patch = random_patch(&doc, seed, n);
         let after = apply(&doc, &patch).unwrap();
-        let inverse = tt_model::change::invert_against(&doc, &patch).unwrap();
+        let inverse = invert_against(&doc, &patch).unwrap();
         prop_assert_eq!(&apply(&after, &inverse).unwrap(), &doc, "patch {:?} inverse {:?}", patch, inverse);
         for op in &inverse {
             for p in std::iter::once(&op.path).chain(op.from.as_ref()) {
                 prop_assert!(!tt_model::pointer::parse(p).unwrap().iter().any(|t| t == "-"), "`-` in inverse {:?}", op);
             }
         }
-        let again = tt_model::change::invert_against(&after, &inverse).unwrap();
+        let again = invert_against(&after, &inverse).unwrap();
         prop_assert_eq!(&apply(&doc, &again).unwrap(), &after);
     }
 
@@ -290,7 +290,7 @@ proptest! {
         let patch = diff_json(&a, &b, "", ObjectType::Scene);
         prop_assert!(patch.iter().all(|op| op.op != "replace"), "{:?}", patch);
         prop_assert_eq!(&apply(&a, &patch).unwrap(), &b);
-        prop_assert_eq!(&apply(&b, &invert(&patch)).unwrap(), &a);
+        prop_assert_eq!(&apply(&b, &invert_against(&a, &patch).unwrap()).unwrap(), &a);
     }
 
     #[test]
@@ -307,7 +307,7 @@ proptest! {
             prop_assert!(patch[0].range.is_some());
         }
         prop_assert_eq!(&apply(&va, &patch).unwrap(), &vb);
-        prop_assert_eq!(&apply(&vb, &invert(&patch)).unwrap(), &va);
+        prop_assert_eq!(&apply(&vb, &invert_against(&va, &patch).unwrap()).unwrap(), &va);
     }
 }
 

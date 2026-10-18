@@ -3,11 +3,13 @@
 //! A change set lists, per addressable object, `created` (with `parentId`, `index`), `deleted` (with `parentId`) or
 //! `modified` with an RFC 6902 patch against the object's **own view**: its JSON with `rev` removed and each child
 //! object reduced to `{id, type}`. A child's property change therefore never changes its parent (REV-02), while
-//! membership and order of a child collection do. Every operation carries `oldValue`, so a patch inverts exactly
-//! ([`invert`]); exposure and mouth-track edits use the `range` form so long scenes give small patches.
+//! membership and order of a child collection do. Every operation carries `oldValue`, and a patch is inverted
+//! against the state it applies to ([`invert_against`], [`apply_with_inverse`]; there is no stateless inversion,
+//! C11-R3-02); exposure and mouth-track edits use the `range` form so long scenes give small patches.
 //!
-//! **Range operations.** `{op: "replace", path, range: {from, to}, value, oldValue}` on `/exposure` (runs) or
-//! `…/mouthTrack/mouths` (one letter per frame): frames `from…` covered by `oldValue` are replaced by `value`
+//! **Range operations.** `{op: "replace", path, range: {from, to}, value, oldValue}` on an element's `/exposure`
+//! (runs) or a sound placement's `/mouthTrack/mouths` (one letter per frame) — only these declared fields, never a
+//! lookalike inside opaque `meta`/`ext` data, which is replaced as an ordinary value (C11-R3-01): frames `from…` covered by `oldValue` are replaced by `value`
 //! (frame `from` is the first changed frame; `to = from + max(|old|, |new|) − 1`). Frames past the end of an
 //! exposure are blank, so both windows have equal length there.
 
@@ -370,8 +372,13 @@ fn diff_collection(a: &[Value], b: &[Value], path: &str, out: &mut Vec<PatchOp>)
 }
 
 /// Exposure runs expanded to one entry per frame.
+/// Exposure runs expanded to frames; `None` unless every run has a count ≥ 1 (10 §4.7, C11-R3-03) and the total is
+/// bounded.
 fn expand_runs(v: &Value) -> Option<Vec<Value>> {
     let runs: Vec<ExposureRun> = serde_json::from_value(v.clone()).ok()?;
+    if runs.iter().any(|(_, c)| *c == 0) {
+        return None;
+    }
     let mut out = Vec::new();
     for (d, c) in runs {
         let cell = d.map_or(Value::Null, |d| Value::String(d.as_str().to_owned()));
@@ -468,7 +475,9 @@ fn diff_into(a: &Value, b: &Value, path: &str, ty: ObjectType, out: &mut Vec<Pat
         out.push(op);
         return;
     }
-    if path.ends_with("/mouthTrack/mouths")
+    // The declared mouth-track text of a placement's own view; the same suffix inside opaque data is ordinary JSON.
+    if ty == ObjectType::SoundPlacement
+        && path == "/mouthTrack/mouths"
         && let (Some(x), Some(y)) = (a.as_str(), b.as_str())
         && let Some(op) = mouths_patch(x, y, path)
     {
@@ -526,76 +535,6 @@ pub fn apply_with_inverse(value: &Value, patch: &[PatchOp]) -> Result<(Value, Ve
         steps.push(apply_op(&mut v, op)?);
     }
     Ok((v, steps.into_iter().rev().flatten().collect()))
-}
-
-/// The inverse of a patch without its pre-state (10 §2.6). Exact for **resolved** patches — concrete array indices
-/// and `oldValue` on every operation that overwrites — which is what [`diff_json`] and [`invert_against`] produce.
-///
-/// An operation whose inverse needs information the patch does not carry inverts to an operation [`apply`] refuses,
-/// never to a guess: an elided value, a `remove` without `oldValue`, an append (`…/-`: only the pre-state knows the
-/// index it created) and a `move` into an ancestor of its source. Use [`invert_against`] for unresolved patches.
-#[must_use]
-pub fn invert(patch: &[PatchOp]) -> Vec<PatchOp> {
-    let mut out = Vec::with_capacity(patch.len());
-    for p in patch.iter().rev() {
-        let mut inverse: Vec<PatchOp> = match (p.op, &p.old_value) {
-            ("add" | "copy", Some(old)) => vec![new_op("replace", &p.path, None, Some(old.clone()), p.value.clone())],
-            ("add" | "copy", None) if p.path.is_empty() => vec![new_op("replace", "", None, None, p.value.clone())],
-            // An append's `-` stays `-`; `apply` refuses to remove `-` (RFC 6902 §4.2), so this inverse fails loudly.
-            ("add" | "copy", None) => vec![new_op("remove", &p.path, None, None, p.value.clone())],
-            ("remove", old) => vec![new_op("add", &p.path, None, old.clone(), None)],
-            ("replace", _) => vec![PatchOp {
-                // `to = from + max(|old|, |new|) − 1` is symmetric, so the range is unchanged.
-                range: p.range,
-                ..new_op("replace", &p.path, None, p.old_value.clone(), p.value.clone())
-            }],
-            ("move", None) => {
-                vec![new_op("move", p.from.as_deref().unwrap_or_default(), Some(p.path.clone()), None, None)]
-            }
-            ("move", Some(old)) => {
-                // The destination was an object member, so its overwrite shifted nothing. Copy the moved value back
-                // to its source first (that insertion may shift the destination's own path), then restore the
-                // destination's old value at its shifted path. A source inside the destination cannot be restored
-                // without the pre-state: moving the destination into its own descendant is refused by `apply`.
-                let from = p.from.clone().unwrap_or_default();
-                if from.starts_with(&format!("{}/", p.path)) {
-                    vec![new_op("move", &from, Some(p.path.clone()), None, None)]
-                } else {
-                    vec![
-                        new_op("copy", &from, Some(p.path.clone()), None, None),
-                        new_op("replace", &shift_after_insert(&p.path, &from), None, Some(old.clone()), None),
-                    ]
-                }
-            }
-            _ => Vec::new(),
-        };
-        if p.elided {
-            for i in &mut inverse {
-                i.elided = true;
-            }
-        }
-        out.extend(inverse);
-    }
-    out
-}
-
-/// `path` after an element was inserted at the array position `inserted`: indices at or after the insertion point
-/// in the same array move up by one.
-fn shift_after_insert(path: &str, inserted: &str) -> String {
-    let (Ok(p), Ok(ins)) = (pointer::parse(path), pointer::parse(inserted)) else { return path.to_owned() };
-    let Some((last, parent)) = ins.split_last() else { return path.to_owned() };
-    let Some(at) = pointer::array_index(last) else { return path.to_owned() };
-    if p.len() <= parent.len() || p.get(..parent.len()) != Some(parent) {
-        return path.to_owned();
-    }
-    let mut tokens = p;
-    if let Some(t) = tokens.get_mut(parent.len())
-        && let Some(i) = pointer::array_index(t)
-        && i >= at
-    {
-        *t = (i + 1).to_string();
-    }
-    pointer::join(&tokens)
 }
 
 fn patch_err(op: &PatchOp, msg: impl Into<String>) -> ModelError {
@@ -670,6 +609,14 @@ fn take(root: &mut Value, path: &str, op: &PatchOp) -> Result<Value, ModelError>
 /// `to = from + max(|old|, |new|) − 1`, and `oldValue` must be exactly the content of the window it replaces.
 fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
     let r = op.range.ok_or_else(|| patch_err(op, "range missing"))?;
+    // Range semantics belong to the declared fields only (C11-R3-01): an element's `exposure` and a placement's
+    // `mouthTrack/mouths`, never anything inside opaque `meta`/`ext` values (those are replaced wholesale).
+    let tokens = pointer::parse(&op.path)?;
+    let declared = matches!(tokens.as_slice(), [.., e] if e == "exposure")
+        || matches!(tokens.as_slice(), [.., t, m] if t == "mouthTrack" && m == "mouths");
+    if !declared || tokens.iter().any(|t| t == "meta" || t == "ext") {
+        return Err(patch_err(op, "range operations apply only to `exposure` and `mouthTrack/mouths`"));
+    }
     let (Some(value), Some(old)) = (op.value.as_ref(), op.old_value.as_ref()) else {
         return Err(patch_err(op, "a range replace needs value and oldValue"));
     };
@@ -706,8 +653,10 @@ fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
         }
         Value::Array(_) => {
             let mut frames = expand_runs(target).ok_or_else(|| patch_err(op, "not exposure runs"))?;
-            let new = expand_runs(value).ok_or_else(|| patch_err(op, "value is not exposure runs"))?;
-            let old = expand_runs(old).ok_or_else(|| patch_err(op, "oldValue is not exposure runs"))?;
+            let new = expand_runs(value)
+                .ok_or_else(|| patch_err(op, "value is not exposure runs (each `[drawingId | null, count ≥ 1]`)"))?;
+            let old = expand_runs(old)
+                .ok_or_else(|| patch_err(op, "oldValue is not exposure runs (each `[drawingId | null, count ≥ 1]`)"))?;
             check_to(old.len(), new.len())?;
             // Frames past the end are blank (10 §4.7).
             if frames.len() < start + old.len() {
@@ -841,30 +790,67 @@ mod tests {
         PatchOp { from: from.map(str::to_owned), ..new_op(kind, path, None, value, old) }
     }
 
-    fn range(value: Value, old: Value, from: u32, to: u32) -> PatchOp {
-        PatchOp { range: Some(FrameRange { from, to }), ..op("replace", "/m", None, Some(value), Some(old)) }
+    fn range_at(path: &str, value: Value, old: Value, from: u32, to: u32) -> PatchOp {
+        PatchOp { range: Some(FrameRange { from, to }), ..op("replace", path, None, Some(value), Some(old)) }
+    }
+
+    fn mouths(value: Value, old: Value, from: u32, to: u32) -> PatchOp {
+        range_at("/mouthTrack/mouths", value, old, from, to)
+    }
+
+    fn exposure(value: Value, old: Value, from: u32, to: u32) -> PatchOp {
+        range_at("/exposure", value, old, from, to)
     }
 
     #[test]
     fn range_replace_checks_types_window_and_bounds() {
-        let doc = json!({"m": "ABC"});
-        assert_eq!(apply(&doc, &[range(json!("X"), json!("B"), 2, 2)]).unwrap(), json!({"m": "AXC"}));
+        let doc = json!({"mouthTrack": {"mouths": "ABC"}});
+        assert_eq!(
+            apply(&doc, &[mouths(json!("X"), json!("B"), 2, 2)]).unwrap(),
+            json!({"mouthTrack": {"mouths": "AXC"}})
+        );
         for bad in [
-            range(json!(42), json!("B"), 2, 2),     // value of the wrong type
-            range(json!("X"), json!(7), 2, 2),      // oldValue of the wrong type
-            range(json!("X"), json!("C"), 2, 2),    // oldValue is not the window's content
-            range(json!("X"), json!("B"), 2, 3),    // `to` inconsistent with the values
-            range(json!("X"), json!("B"), 0, 0),    // frame 0
-            range(json!("Z"), json!("B"), 2, 2),    // not a mouth letter
-            range(json!("XX"), json!("BCD"), 2, 4), // window past the end
+            mouths(json!(42), json!("B"), 2, 2),     // value of the wrong type
+            mouths(json!("X"), json!(7), 2, 2),      // oldValue of the wrong type
+            mouths(json!("X"), json!("C"), 2, 2),    // oldValue is not the window's content
+            mouths(json!("X"), json!("B"), 2, 3),    // `to` inconsistent with the values
+            mouths(json!("X"), json!("B"), 0, 0),    // frame 0
+            mouths(json!("Z"), json!("B"), 2, 2),    // not a mouth letter
+            mouths(json!("XX"), json!("BCD"), 2, 4), // window past the end
         ] {
             assert!(apply(&doc, std::slice::from_ref(&bad)).is_err(), "{bad:?}");
         }
-        let runs = json!({"m": [["a", 2], ["b", 1]]});
-        let ok = range(json!([["c", 1]]), json!([["a", 1]]), 2, 2);
-        assert_eq!(apply(&runs, std::slice::from_ref(&ok)).unwrap(), json!({"m": [["a", 1], ["c", 1], ["b", 1]]}));
-        assert!(apply(&runs, &[range(json!("X"), json!([["a", 1]]), 2, 2)]).is_err());
-        assert!(apply(&runs, &[range(json!([["c", 1]]), json!([["b", 1]]), 2, 2)]).is_err());
+        let runs = json!({"exposure": [["a", 2], ["b", 1]]});
+        let ok = exposure(json!([["c", 1]]), json!([["a", 1]]), 2, 2);
+        assert_eq!(
+            apply(&runs, std::slice::from_ref(&ok)).unwrap(),
+            json!({"exposure": [["a", 1], ["c", 1], ["b", 1]]})
+        );
+        for bad in [
+            exposure(json!("X"), json!([["a", 1]]), 2, 2), // value of the wrong form
+            exposure(json!([["c", 1]]), json!([["b", 1]]), 2, 2), // oldValue is not the window's content
+            exposure(json!([["c", 0]]), json!([["a", 1]]), 2, 2), // zero-count run (C11-R3-03)
+            exposure(json!([["c", 1], ["d", 0]]), json!([["a", 1]]), 2, 2),
+            exposure(json!([["c", 1]]), json!([["a", 1], ["a", 0]]), 2, 2),
+        ] {
+            assert!(apply(&runs, std::slice::from_ref(&bad)).is_err(), "{bad:?}");
+        }
+    }
+
+    #[test]
+    fn range_operations_apply_only_to_declared_fields() {
+        let doc = json!({"meta": {"tool": {"mouthTrack": {"mouths": "hello"}}},
+            "ext": {"com.example": {"mouthTrack": {"mouths": "hello"}}}, "note": "hello"});
+        for path in ["/meta/tool/mouthTrack/mouths", "/ext/com.example/mouthTrack/mouths", "/note"] {
+            let p = range_at(path, json!("world"), json!("hello"), 1, 5);
+            assert!(apply(&doc, std::slice::from_ref(&p)).is_err(), "{path}");
+        }
+        // A diff of such opaque text is an ordinary replace that applies.
+        let mut after = doc.clone();
+        after["meta"]["tool"]["mouthTrack"]["mouths"] = json!("world");
+        let patch = diff_json(&doc, &after, "", ObjectType::SoundPlacement);
+        assert!(patch.iter().all(|o| o.range.is_none()), "{patch:?}");
+        assert_eq!(apply(&doc, &patch).unwrap(), after);
     }
 
     #[test]
@@ -887,7 +873,5 @@ mod tests {
         assert_eq!(inverse[0].path, "/o/x");
         assert!(inverse.iter().all(|o| !o.path.ends_with("/-")), "{inverse:?}");
         assert_eq!(apply(&after, &inverse).unwrap(), doc);
-        // Stateless inversion refuses what it cannot resolve instead of guessing.
-        assert!(apply(&after, &invert(&patch[..1])).is_err());
     }
 }

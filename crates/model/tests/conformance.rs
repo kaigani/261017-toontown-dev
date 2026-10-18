@@ -395,7 +395,12 @@ fn change_sets_describe_and_invert_edits() {
         if let OwnChange::Modified(patch) = c {
             let before = &old[&o.key];
             assert_eq!(&change::apply(before, patch).unwrap(), &o.json, "{}: {patch:?}", o.key);
-            assert_eq!(&change::apply(&o.json, &change::invert(patch)).unwrap(), before, "{} inverse", o.key);
+            assert_eq!(
+                &change::apply(&o.json, &change::invert_against(before, patch).unwrap()).unwrap(),
+                before,
+                "{} inverse",
+                o.key
+            );
             for op in patch {
                 assert!(op.old_value.is_some() || op.op == "add" || op.op == "move", "{op:?} lacks oldValue");
             }

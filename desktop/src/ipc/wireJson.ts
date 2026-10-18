@@ -287,20 +287,17 @@ function applicable(
   out.push(s);
   const all = ownSchema(s, 'allOf') as unknown;
   if (Array.isArray(all)) for (const a of all as Schema[]) applicable(a, defs, container, out, depth + 1);
-  // Only the `anyOf`/`oneOf` alternatives the container matches apply (C11-R2-05): as parsed, or with its digit-only
-  // bigints read as doubles (a double branch cannot match before coercion). An unrelated double branch therefore
-  // never converts an integer that another branch accepts.
+  // Only the `anyOf`/`oneOf` alternatives the container matches apply (C11-R2-05): as parsed, or after coercion
+  // under that alternative alone (C11-R3-05), so a branch needing a large double and a wide integer at once
+  // matches, and an unrelated double branch never converts an integer that another branch accepts.
   for (const k of ['anyOf', 'oneOf'] as const) {
     const alts = ownSchema(s, k) as unknown;
     if (!Array.isArray(alts)) continue;
-    let asDoubles: unknown;
     for (const a of alts as Schema[]) {
-      if (violations(a, container, '', defs).length === 0) {
-        applicable(a, defs, container, out, depth + 1);
-        continue;
-      }
-      asDoubles ??= bigintsAsNumbers(container, 0);
-      if (violations(a, asDoubles, '', defs).length === 0) applicable(a, defs, container, out, depth + 1);
+      const matches =
+        violations(a, container, '', defs).length === 0 ||
+        violations(a, coerceWith(container, [a], defs, 0), '', defs).length === 0;
+      if (matches) applicable(a, defs, container, out, depth + 1);
     }
   }
   const cond = ownSchema(s, 'if');
@@ -325,18 +322,6 @@ function memberSchemas(schemas: SchemaObject[], key: string | number): Schema[] 
       const sub = prop ?? (typeof ap === 'boolean' ? undefined : ap);
       if (sub !== undefined) out.push(sub);
     }
-  }
-  return out;
-}
-
-/** A copy of a parsed value with every `bigint` read as a double (only to test which alternative applies). */
-function bigintsAsNumbers(value: unknown, depth: number): unknown {
-  if (typeof value === 'bigint') return Number(value);
-  if (depth > MAX_DEPTH || typeof value !== 'object' || value === null) return value;
-  if (Array.isArray(value)) return value.map((v: unknown) => bigintsAsNumbers(v, depth + 1));
-  const out: object = {};
-  for (const k of Object.keys(value)) {
-    defineKey(out, k, bigintsAsNumbers(Object.getOwnPropertyDescriptor(value, k)?.value, depth + 1));
   }
   return out;
 }

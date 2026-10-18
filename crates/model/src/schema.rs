@@ -349,14 +349,39 @@ fn full_or_stub(ty: ObjectType, def: &mut Value) {
 }
 
 /// Every property of every definition records the format version that introduced it (10 §2.8 `x-since`).
+///
+/// The pass descends into anonymous declarations too — the object alternatives of an untagged enum such as
+/// `DynamicParam`, inline objects under properties, items and map values (C11-R3-06) — but not into conditional
+/// predicates (`if`/`then`/`else`), which constrain properties declared elsewhere.
 fn annotate_since(def: &mut Value) {
-    if let Some(props) = props_mut(def) {
-        for p in props.values_mut() {
-            if let Value::Object(pm) = p {
-                pm.entry("x-since").or_insert(json!(crate::FORMAT_VERSION));
+    fn walk(v: &mut Value, depth: usize) {
+        let Value::Object(m) = v else { return };
+        if depth > 32 {
+            return;
+        }
+        if let Some(Value::Object(props)) = m.get_mut("properties") {
+            for p in props.values_mut() {
+                if let Value::Object(pm) = p {
+                    pm.entry("x-since").or_insert(json!(crate::FORMAT_VERSION));
+                }
+                walk(p, depth + 1);
             }
         }
+        for k in ["items", "additionalProperties"] {
+            if let Some(sub) = m.get_mut(k) {
+                walk(sub, depth + 1);
+            }
+        }
+        for k in ["prefixItems", "anyOf", "oneOf", "allOf"] {
+            if let Some(Value::Array(subs)) = m.get_mut(k) {
+                subs.iter_mut().for_each(|sub| walk(sub, depth + 1));
+            }
+        }
+        if let Some(Value::Object(pp)) = m.get_mut("patternProperties") {
+            pp.values_mut().for_each(|sub| walk(sub, depth + 1));
+        }
     }
+    walk(def, 0);
 }
 
 /// The decimal form of a `frame` used as a map key: 1–2147483647 (10 §1.1 `frame` = `int ≥ 1`, `int` signed 32-bit;
@@ -654,14 +679,18 @@ pub fn property_schema(ty: ObjectType, pointer: &str) -> Option<Value> {
         }
         current = next;
     }
+    // The first candidate is the property's own declaration (definitions come before their conditional branches): its
+    // keywords are kept whole, following only its `$ref` chain, so alternatives (`anyOf` of an ID and null, a `oneOf`
+    // of enum constants) keep their logic instead of being flattened into one narrower schema (C11-R3-04). Later
+    // candidates (kind rules) contribute annotations only.
+    let annotation =
+        |k: &str| k.starts_with("x-") || matches!(k, "description" | "title" | "readOnly" | "writeOnly" | "deprecated");
     let mut merged = Map::new();
-    for c in current {
-        let mut layer = vec![c];
-        expand(defs, c, &mut layer, 0);
-        for l in layer {
+    for (i, c) in current.into_iter().enumerate() {
+        for l in ref_chain(defs, c) {
             if let Value::Object(m) = l {
                 for (k, v) in m {
-                    if k != "$ref" && !merged.contains_key(k) {
+                    if k != "$ref" && !merged.contains_key(k) && (i == 0 || annotation(k)) {
                         merged.insert(k.clone(), v.clone());
                     }
                 }
@@ -669,6 +698,21 @@ pub fn property_schema(ty: ObjectType, pointer: &str) -> Option<Value> {
         }
     }
     Some(Value::Object(merged))
+}
+
+/// A schema followed by the targets of its `$ref` chain (a declaration's own keywords first).
+fn ref_chain<'a>(defs: &'a Map<String, Value>, mut v: &'a Value) -> Vec<&'a Value> {
+    let mut out = vec![v];
+    for _ in 0..32 {
+        match v.get("$ref").and_then(Value::as_str).and_then(|r| r.strip_prefix("#/$defs/")).and_then(|n| defs.get(n)) {
+            Some(d) => {
+                out.push(d);
+                v = d;
+            }
+            None => break,
+        }
+    }
+    out
 }
 
 fn deref<'a>(defs: &'a Map<String, Value>, mut v: &'a Value) -> &'a Value {

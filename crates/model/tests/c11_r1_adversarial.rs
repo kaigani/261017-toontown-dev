@@ -257,8 +257,11 @@ fn add_over_existing_object_property_is_invertible() {
     let a = json!({"a":1});
     let patch = vec![op("add", "/a", None, Some(json!(2)), Some(json!(1)))];
     let b = change::apply(&a, &patch).unwrap();
+    // Amended by the builder in round 3 per the orchestrator's C11-R3-02 ruling (stateless `invert` removed from the
+    // public API; `invert_against` is the only inversion, "update ... every caller"): the inverse is computed from the
+    // pre-state. The assertion is unchanged.
     assert_eq!(
-        change::apply(&b, &change::invert(&patch)).unwrap(),
+        change::apply(&b, &change::invert_against(&a, &patch).unwrap()).unwrap(),
         a,
         "RFC6902 add replaces existing property; oldValue must restore it"
     );
@@ -269,7 +272,14 @@ fn move_over_existing_object_property_is_invertible() {
     let a = json!({"a":1,"b":2});
     let patch = vec![op("move", "/b", Some("/a"), None, Some(json!(2)))];
     let b = change::apply(&a, &patch).unwrap();
-    assert_eq!(change::apply(&b, &change::invert(&patch)).unwrap(), a, "10 §2.6 every patch invertible");
+    // Amended by the builder in round 3 per the orchestrator's C11-R3-02 ruling (stateless `invert` removed from the
+    // public API; `invert_against` is the only inversion, "update ... every caller"): the inverse is computed from the
+    // pre-state. The assertion is unchanged.
+    assert_eq!(
+        change::apply(&b, &change::invert_against(&a, &patch).unwrap()).unwrap(),
+        a,
+        "10 §2.6 every patch invertible"
+    );
 }
 
 #[test]

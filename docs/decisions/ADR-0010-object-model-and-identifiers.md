@@ -1,7 +1,7 @@
 # ADR-0010 — Object model, identifiers and addressing
 
 Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 4, 11, 12, 13,
-14). Spec: 10 §1–§5, design decisions D1, D3, D4, D5, D6, D9; 11 §5.1.
+14) and round 3 (decision 4). Spec: 10 §1–§5, design decisions D1, D3, D4, D5, D6, D9; 11 §5.1.
 
 ## Context
 
@@ -36,7 +36,9 @@ written. Everything later (executor, persistence, MCP, every area's commands) bu
    canonical form, object-local rules; C11-R1-02), and an entry ID given twice is `id.duplicate`, never a silent
    overwrite (C11-R1-01; `assemble` keeps the first entry and reports the dropped one for the C1.3 repair path). This
    costs a full validation of every entry (1.7–2.4 s for the 121 092-object scale document), so the executor must
-   derive snapshots by revalidating only the entries a transaction touched (C1.2).
+   derive snapshots by revalidating only the entries a transaction touched (C1.2). Undo and redo invert a
+   transaction's patches with `change::apply_with_inverse` / `invert_against`, against the state they applied to;
+   there is no stateless inversion (C11-R3-02, ADR-0011 §7).
 5. **One struct per object type, strict.** Serde with `deny_unknown_fields`; field declaration order is schema order
    (JSON-02). Type-specific element blocks (10 §4.6) are optional fields that are **absent** when they do not apply
    (never `null`); nullable properties are written explicitly as `null` (JSON-04). Unknown properties of newer minor

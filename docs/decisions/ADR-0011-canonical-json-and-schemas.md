@@ -1,6 +1,6 @@
 # ADR-0011 — Canonical JSON, schemas and change sets
 
-Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 3, 5, 7, 8) and round 2
+Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 3, 5, 7, 8) and rounds 2 and 3
 (2026-10-18: decisions 5, 7, 8).
 Spec: 10 §2.6–§2.8, §6.5 (JSON-01…05), §9, §10.4.
 
@@ -54,7 +54,11 @@ definitions the application validates with; 10 §2.6 for change sets that can be
    positions, array items, map and pattern-map values (C11-R1-19). It keeps every candidate schema down the path,
    so a field declared only in a kind rule (an effect's typed `params`) is found, and merges the final candidates
    with a declaration's own annotations before the referenced definition's keywords, so `readOnly`/`x-since`
-   beside a `$ref` survive (C11-R2-06). Every property carries `x-since`, including those added after generation
+   beside a `$ref` survive (C11-R2-06). Only the property's own declaration contributes validation keywords, whole
+   (its `anyOf`/`oneOf` alternatives intact); later candidates from kind rules add annotations only, so the
+   discovered schema never narrows the value domain (a nullable reference still accepts `null`, an enum keeps every
+   value; C11-R3-04). The `x-since` pass also reaches anonymous declarations (the object alternatives of
+   `DynamicParam`, inline objects under properties, items and maps) but not conditional predicates (C11-R3-06). Every property carries `x-since`, including those added after generation
    (`MouthTrack.stale`; the pass runs last, C11-R2-11). Frame-keyed maps (`cellNotes`, mouth-track `labels`)
    accept only keys 1–2 147 483 647 (`schema::FRAME_KEY_PATTERN`, 10 §1.1, §4.7, §4.14; C11-R2-08). Validation uses the `jsonschema` crate **0.59** (draft
    2020-12, default features off); MIT-0, which its dependency tree needs, was accepted on 2026-10-18 (ADR-0003,
@@ -73,13 +77,18 @@ definitions the application validates with; 10 §2.6 for change sets that can be
    created, a `move`'s destination is resolved after its source was removed and undone before the source is
    restored — and `oldValue` on every inverse operation, so inverses are themselves invertible. A property test
    checks `apply(after, invert_against(before, p)) = before` and the double inverse over random RFC 6902 sequences
-   (appends, overwrites, nested-array moves, copies, tests) on random documents. Stateless `invert` remains for
-   resolved patches (what `diff_json` and `invert_against` produce); for an append or a move into the source's
-   ancestor it returns an operation `apply` refuses, never a guess. `apply` refuses an operation whose value is
+   (appends, overwrites, nested-array moves, copies, tests) on random documents. **There is no stateless
+   inversion** (C11-R3-02): an inverse depends on the document (whether a numeric token addresses an array element
+   or an object member, which index an append created), so the former `change::invert(patch)` was removed from the
+   public API and every caller uses `invert_against`. `apply` refuses an operation whose value is
    missing or elided (an elided value is unknown, never `null`: the consumer rereads), a `move`/`copy` without
    `from` (RFC 6902 §4.4/§4.5; C11-R2-04), and a malformed range replace: `value`/`oldValue` of the target's form
-   (mouth letters A–G, X for a mouth string; runs for exposure), `from ≥ 1`, `to` consistent with the values, and
-   `oldValue` equal to the window's current content (C11-R2-03). It supports RFC 6902 root `add`/`replace`;
+   (mouth letters A–G, X for a mouth string; runs for exposure, each with a count ≥ 1, 10 §4.7, C11-R3-03),
+   `from ≥ 1`, `to` consistent with the values, and `oldValue` equal to the window's current content (C11-R2-03).
+   Range semantics belong only to the declared fields — an element's `exposure`, a sound placement's
+   `mouthTrack/mouths` — so `diff_json` emits range operations only there, and `apply` refuses a range operation on
+   any other path or inside `meta`/`ext`; opaque text that looks like a mouth track is replaced wholesale as an
+   ordinary value (C11-R3-01). The object rules also report a zero-count exposure run (`runCount`). It supports RFC 6902 root `add`/`replace`;
    whether `doc.object.patch` may replace a whole object is a command decision (C1.2). Exposure and mouth-track
    edits use one range
    operation: `{op: "replace", path, range: {from, to}, value, oldValue}` where frames from `from` covered by

@@ -232,7 +232,10 @@ fn opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved() {
     b["meta"]["blob"]["children"][0]["name"] = json!("changed");
     let patch = change::diff_json(&a, &b, "", ObjectType::Pen);
     assert_eq!(change::apply(&a, &patch).unwrap(), b);
-    assert_eq!(change::apply(&b, &change::invert(&patch)).unwrap(), a);
+    // Amended by the builder in round 3 per the orchestrator's C11-R3-02 ruling (stateless `invert` removed from the
+    // public API; `invert_against` is the only inversion, "update ... every caller"): the inverse is computed from the
+    // pre-state. The assertion is unchanged.
+    assert_eq!(change::apply(&b, &change::invert_against(&a, &patch).unwrap()).unwrap(), a);
 }
 
 #[test]
@@ -302,7 +305,9 @@ fn elided_and_incomplete_operations_fail_without_mutating_input() {
         p.elided = true;
         assert!(change::apply(&value, &[p.clone()]).is_err());
         if k != "test" {
-            assert!(change::apply(&value, &change::invert(&[p])).is_err());
+            // Amended by the builder in round 3 per the orchestrator's C11-R3-02 ruling (stateless `invert` removed;
+            // `invert_against` is the only inversion): an elided operation cannot be inverted. Still asserts failure.
+            assert!(change::invert_against(&value, &[p]).is_err());
         }
     }
     assert_eq!(value, json!({"a":[0,1],"b":1}));

@@ -832,6 +832,12 @@ impl Check for Element {
             }
         }
         if let Some(runs) = &self.exposure {
+            // 10 §4.7: every run covers at least one frame (C11-R3-03; also enforced at the patch boundary).
+            for (i, (_, count)) in runs.iter().enumerate() {
+                if *count == 0 {
+                    out.push(&format!("{at}/exposure/{i}/1"), "runCount", "an exposure run covers at least one frame");
+                }
+            }
             if crate::object::canonical_runs(runs) != *runs {
                 out.push(&ptr(at, "exposure"), "canonical", "exposure runs are canonical (merged, no trailing blank)");
             }
@@ -1093,4 +1099,23 @@ pub fn exposure_usage(e: &Element) -> BTreeMap<String, u64> {
         }
     }
     m
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn zero_count_exposure_runs_are_reported_by_the_model_check() {
+        let parts = crate::fixture::sample_parts(1).unwrap();
+        let e = parts.elements.iter().find(|e| e.exposure.as_ref().is_some_and(|r| !r.is_empty())).unwrap();
+        let mut v = serde_json::to_value(e).unwrap();
+        v["exposure"].as_array_mut().unwrap().insert(0, json!([null, 0]));
+        // Public `Deserialize` bypasses the schema; the object-local rule still reports the zero-count run.
+        let bad: Element = serde_json::from_value(v).unwrap();
+        let mut issues = Issues::new(10);
+        bad.check("", &mut issues);
+        let errors = issues.into_errors();
+        assert!(errors.iter().any(|e| e.details()["rule"] == "runCount"), "{errors:?}");
+    }
 }

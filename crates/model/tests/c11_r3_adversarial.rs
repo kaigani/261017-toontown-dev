@@ -140,7 +140,10 @@ fn resolved_stateless_move_inverse_does_not_shift_numeric_object_keys() {
     let patch = [op("move", "/a/1/x", Some("/a/0"), None, Some(json!("old")))];
     roundtrip(&before, &patch);
     let after = change::apply(&before, &patch).unwrap();
-    let inverse = change::invert(&patch);
+    // Amended by the builder in round 3 per the orchestrator's C11-R3-02 ruling (stateless `invert` removed from the
+    // public API; `invert_against` is the only inversion; "the reviewer's test must pass"): the inverse is computed
+    // from `before`. The assertion and its message are unchanged.
+    let inverse = change::invert_against(&before, &patch).unwrap();
     assert_eq!(
         change::apply(&after, &inverse).unwrap(),
         before,

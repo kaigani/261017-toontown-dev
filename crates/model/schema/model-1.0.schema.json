@@ -1022,13 +1022,15 @@
             "type": "object",
             "properties": {
               "elementId": {
-                "$ref": "#/$defs/Id"
+                "$ref": "#/$defs/Id",
+                "x-since": "1.0"
               },
               "ranges": {
                 "type": "array",
                 "items": {
                   "$ref": "#/$defs/FrameRange"
-                }
+                },
+                "x-since": "1.0"
               }
             },
             "required": ["elementId", "ranges"],
@@ -1473,7 +1475,8 @@
           "properties": {
             "value": {
               "type": "number",
-              "description": "The value."
+              "description": "The value.",
+              "x-since": "1.0"
             }
           },
           "required": ["value"],
@@ -1488,7 +1491,8 @@
                 "$ref": "#/$defs/FrameValue"
               },
               "description": "Keyframes sorted by frame, at least one.",
-              "minItems": 1
+              "minItems": 1,
+              "x-since": "1.0"
             }
           },
           "required": ["keyframes"],

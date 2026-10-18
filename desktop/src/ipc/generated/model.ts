@@ -1123,12 +1123,14 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
           properties: {
             elementId: {
               $ref: "#/$defs/Id",
+              "x-since": "1.0",
             },
             ranges: {
               type: "array",
               items: {
                 $ref: "#/$defs/FrameRange",
               },
+              "x-since": "1.0",
             },
           },
           required: [
@@ -1644,6 +1646,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
           value: {
             type: "number",
             description: "The value.",
+            "x-since": "1.0",
           },
         },
         required: [
@@ -1661,6 +1664,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
             },
             description: "Keyframes sorted by frame, at least one.",
             minItems: 1,
+            "x-since": "1.0",
           },
         },
         required: [
