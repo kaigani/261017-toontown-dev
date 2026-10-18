@@ -1,5 +1,5 @@
-// The front-end IPC boundary, bundler half (C01-R2-01, C01-R3-01/02). Used by vite.config.ts for dev, build and
-// Vitest, so a bypass that slips past the linter still cannot be bundled. Two plugins:
+// The front-end IPC boundary, bundler half (C01-R2-01, C01-R3-01/02, C01-R4-01). Used by vite.config.ts for dev,
+// build and Vitest, so a bypass that slips past the linter still cannot be bundled. Two plugins:
 //
 // `toontown-ipc-boundary` (enforce: pre) checks every import edge on RESOLVED module ids, not on spelling:
 //   1. A module inside an @tauri-apps package may be imported only by src/ipc/tauriTransport.ts (or by the package
@@ -14,21 +14,27 @@
 //      at all.
 //
 // `toontown-ipc-boundary-scan` (normal order, so it sees code after Vite's TypeScript/JSX transform):
-//   5. The transformed code of every application module except the transport is parsed, and any string literal,
-//      template element or identifier mentioning `__TAURI` or `@tauri-apps` is an error. Literals are compared
-//      decoded, so escapes such as '__TAURI' are caught; a textual match anywhere (comments included) is
-//      an error too.
-//   6. Every emitted chunk is parsed and each mention is attributed to a module through the chunk's module map: all
-//      mentions must come from the transport or from @tauri-apps package code, and the chunk's total must equal
-//      the sum attributed to those modules.
-// The rule and file lists are shared with the lint half (./eslint.js).
-import { existsSync } from 'node:fs';
+//   5. The transformed code of every application module except the transport is scanned (./scan.mjs: decoded
+//      literals and escapes, char-code and base64 sequences, constant string folding) and any mention of
+//      `__TAURI` or `@tauri-apps` is an error.
+//   6. renderChunk: each chunk's mentions must be attributable, through the chunk's module map, to the transport or
+//      to @tauri-apps package code.
+//   7. generateBundle, on the FINAL (minified) output: the transport and every @tauri-apps module must sit in the
+//      dedicated `tauri-transport` chunk (manualChunks in vite.config.ts) and nowhere else; that chunk may contain
+//      nothing else, may export no more than src/ipc/index.ts imports from the transport, and may be imported only
+//      by the chunk containing src/ipc/index.ts; no other chunk or emitted .js/.html asset may mention Tauri in any
+//      form the scanner detects. This catches constant expressions the minifier folds after renderChunk.
+//   8. writeBundle: the same final-output scan on the files as written to disk.
+// boundary/check-dist.mjs repeats 7/8 on dist/ after `vite build`, independent of this plugin. The rule and file lists
+// are shared with the lint half (./eslint.js).
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { parseAst, type Plugin } from 'vite';
 
 import { IPC_INDEX_FILE, SAMPLE_FILES, TRANSPORT_FILE } from './eslint.js';
+import { astMentions, isTransportChunkFile, mentions, TRANSPORT_CHUNK } from './scan.mjs';
 
 export interface IpcBoundaryOptions {
   /** Vitest only: allow test code to load the repository's tests/ folder and desktop/boundary/. */
@@ -44,43 +50,13 @@ export interface IpcBoundaryOptions {
 
 const slash = (p: string) => p.replaceAll('\\', '/');
 const TAURI_PACKAGE = /\/node_modules\/(@tauri-apps\/|\.vite\/deps\/@tauri-apps_)/;
-const TAURI_TEXT = /__TAURI|@tauri-apps/;
-
-/** Mentions of the Tauri globals or package names in parsed code: decoded string literals, template elements and
- * identifiers. Returns null when the code does not parse as JavaScript. */
-export function tauriMentions(code: string): string[] | null {
-  let program: unknown;
-  try {
-    program = parseAst(code);
-  } catch {
-    return null;
-  }
-  const hits: string[] = [];
-  const stack: unknown[] = [program];
-  while (stack.length > 0) {
-    const node = stack.pop();
-    if (typeof node !== 'object' || node === null) continue;
-    if (Array.isArray(node)) {
-      stack.push(...(node as unknown[]));
-      continue;
-    }
-    const n = node as Record<string, unknown>;
-    const type = n['type'];
-    if (type === 'Literal' && typeof n['value'] === 'string' && TAURI_TEXT.test(n['value']))
-      hits.push(n['value']);
-    if ((type === 'Identifier' || type === 'PrivateIdentifier') && typeof n['name'] === 'string') {
-      if (TAURI_TEXT.test(n['name'])) hits.push(n['name']);
-    }
-    if (type === 'TemplateElement') {
-      const value = n['value'] as { cooked?: string | null; raw?: string } | undefined;
-      const text = value?.cooked ?? value?.raw ?? '';
-      if (TAURI_TEXT.test(text)) hits.push(text);
-    }
-    for (const [k, v] of Object.entries(n)) {
-      if (k !== 'type' && typeof v === 'object' && v !== null) stack.push(v);
-    }
-  }
-  return hits;
+/** vite.config.ts `manualChunks`: the transport and every @tauri-apps module go into one dedicated chunk. */
+export function transportChunk(desktopDir: string): (id: string) => string | null {
+  const transport = `${slash(desktopDir)}/${TRANSPORT_FILE}`;
+  return (id) => {
+    const p = slash(id.split('?')[0] ?? id);
+    return p === transport || TAURI_PACKAGE.test(p) ? TRANSPORT_CHUNK : null;
+  };
 }
 
 export function ipcBoundary(options: IpcBoundaryOptions): Plugin[] {
@@ -191,6 +167,89 @@ export function ipcBoundary(options: IpcBoundaryOptions): Plugin[] {
     },
   };
 
+  /** Final-output checks shared by generateBundle (in memory) and writeBundle (on disk). */
+  interface EmittedChunk {
+    type: 'chunk';
+    fileName: string;
+    name: string;
+    code: string;
+    moduleIds: string[];
+    exports: string[];
+    imports: string[];
+    dynamicImports: string[];
+  }
+  interface EmittedAsset {
+    type: 'asset';
+    fileName: string;
+    source: string | Uint8Array;
+  }
+  type Emitted = EmittedChunk | EmittedAsset;
+
+  /** How many bindings src/ipc/index.ts imports from the transport (the most the transport chunk may export). */
+  function transportBindingsUsedByIndex(): number {
+    const program = parseAst(readFileSync(index, 'utf8'), { lang: 'ts' }) as unknown as {
+      body: { type: string; source?: { value?: unknown }; specifiers?: unknown[] }[];
+    };
+    return program.body
+      .filter(
+        (s) => s.type === 'ImportDeclaration' && /(^|\/)tauriTransport(\.ts)?$/.test(String(s.source?.value)),
+      )
+      .reduce((n, s) => n + (s.specifiers?.length ?? 0), 0);
+  }
+
+  function finalOutputProblems(files: Emitted[], readCode: (f: Emitted) => string | null): string[] {
+    const problems: string[] = [];
+    const chunks = files.filter((f): f is EmittedChunk => f.type === 'chunk');
+    const transportChunks = chunks.filter((c) => c.name === TRANSPORT_CHUNK);
+    const tauriModule = (id: string) => {
+      const p = slash(id.split('?')[0] ?? id);
+      return p === transport || TAURI_PACKAGE.test(p);
+    };
+    if (transportChunks.length > 1) problems.push(`more than one ${TRANSPORT_CHUNK} chunk`);
+    for (const c of chunks) {
+      const isTransportChunk = c.name === TRANSPORT_CHUNK;
+      for (const id of c.moduleIds) {
+        if (!isTransportChunk && tauriModule(id))
+          problems.push(`${c.fileName} contains ${id} outside ${TRANSPORT_CHUNK}`);
+        if (isTransportChunk && !tauriModule(id) && !id.startsWith('\0')) {
+          problems.push(`${TRANSPORT_CHUNK} also contains ${id}`);
+        }
+      }
+    }
+    for (const t of transportChunks) {
+      const allowed = transportBindingsUsedByIndex();
+      if (t.exports.length > allowed) {
+        problems.push(
+          `${t.fileName} exports ${String(t.exports.length)} bindings; src/ipc/index.ts uses ${String(allowed)}`,
+        );
+      }
+      for (const c of chunks) {
+        if (c === t || !(c.imports.includes(t.fileName) || c.dynamicImports.includes(t.fileName))) continue;
+        if (!c.moduleIds.some((id) => slash(id.split('?')[0] ?? id) === index)) {
+          problems.push(`${c.fileName} imports ${t.fileName} but does not contain ${IPC_INDEX_FILE}`);
+        }
+      }
+    }
+    for (const f of files) {
+      if (!/\.(m?js|cjs|html)$/.test(f.fileName)) continue;
+      if (f.type === 'chunk' && f.name === TRANSPORT_CHUNK) continue;
+      if (f.type === 'asset' && isTransportChunkFile(f.fileName)) continue;
+      const code = readCode(f);
+      if (code === null) continue;
+      const hits = mentions(code, { javascript: !f.fileName.endsWith('.html') });
+      if (hits.length > 0)
+        problems.push(`${f.fileName} mentions Tauri after minification (${hits.slice(0, 3).join(', ')})`);
+    }
+    return problems;
+  }
+
+  const inMemory = (f: Emitted) =>
+    f.type === 'chunk'
+      ? f.code
+      : typeof f.source === 'string'
+        ? f.source
+        : Buffer.from(f.source).toString('utf8');
+
   const scanner: Plugin = {
     name: 'toontown-ipc-boundary-scan',
     transform(code, id) {
@@ -209,38 +268,51 @@ export function ipcBoundary(options: IpcBoundaryOptions): Plugin[] {
       // JS-like modules (by extension, or an inline <script> proxy such as index.html?html-proxy&index=0.js) are
       // parsed; anything else (HTML, CSS) is scanned as text only.
       const jsLike = /\.(?:[cm]?[jt]sx?)$/.test(p) || /[?&]html-proxy\b.*\.js$/.test(id);
-      const hits = jsLike ? tauriMentions(code) : [];
-      if (TAURI_TEXT.test(code) || hits === null || hits.length > 0) {
-        const what =
-          hits === null ? 'cannot be parsed for the Tauri scan' : 'mentions __TAURI* or @tauri-apps';
-        this.error(`IPC boundary: ${p} ${what}; only ${TRANSPORT_FILE} may reach Tauri`);
+      const hits = mentions(code, { javascript: jsLike });
+      if (hits.length > 0) {
+        this.error(
+          `IPC boundary: ${p} mentions __TAURI* or @tauri-apps (${hits.slice(0, 3).join(', ')}); only ${TRANSPORT_FILE} may`,
+        );
       }
       return null;
     },
     renderChunk(code, chunk) {
-      const total = tauriMentions(code);
-      if (total === null)
-        this.error(`IPC boundary: emitted chunk ${chunk.fileName} cannot be parsed for the scan`);
+      // Attribution counts parsed (AST) mentions, which add up across modules; every module other than the transport
+      // and @tauri-apps code must have no mention at all, of any kind.
+      const total = astMentions(code)?.length ?? Number.NaN;
       let attributed = 0;
       for (const [id, rendered] of Object.entries(chunk.modules)) {
         if (!rendered.code) continue;
-        const hits = tauriMentions(rendered.code);
-        const p = filePath(id) ?? slash(id);
-        if (mayMentionTauri(p)) {
-          attributed += hits?.length ?? 0;
-        } else if (hits === null || hits.length > 0) {
+        if (mayMentionTauri(filePath(id) ?? slash(id))) {
+          attributed += astMentions(rendered.code)?.length ?? 0;
+        } else if (mentions(rendered.code).length > 0) {
           this.error(
-            `IPC boundary: emitted code of ${p} in ${chunk.fileName} mentions __TAURI* or @tauri-apps`,
+            `IPC boundary: emitted code of ${id} in ${chunk.fileName} mentions __TAURI* or @tauri-apps`,
           );
         }
       }
-      if ((total?.length ?? 0) !== attributed) {
+      if (total !== attributed) {
         this.error(
-          `IPC boundary: chunk ${chunk.fileName} has ${String(total?.length)} Tauri mentions but only ` +
-            `${String(attributed)} come from ${TRANSPORT_FILE} or @tauri-apps package code`,
+          `IPC boundary: chunk ${chunk.fileName} has ${String(total)} Tauri mentions but ${String(attributed)} ` +
+            `come from ${TRANSPORT_FILE} or @tauri-apps package code`,
         );
       }
       return null;
+    },
+    generateBundle(_options, bundle) {
+      // Runs after minification: constant expressions the minifier folded are visible here (C01-R4-01).
+      const problems = finalOutputProblems(Object.values(bundle) as unknown as Emitted[], inMemory);
+      if (problems.length > 0) this.error(`IPC boundary (final output): ${problems.join('; ')}`);
+    },
+    writeBundle(options, bundle) {
+      const dir = options.dir ?? (options.file ? path.dirname(options.file) : null);
+      if (!dir) return;
+      const fromDisk = (f: Emitted) => {
+        const file = path.join(dir, f.fileName);
+        return existsSync(file) ? readFileSync(file, 'utf8') : null;
+      };
+      const problems = finalOutputProblems(Object.values(bundle) as unknown as Emitted[], fromDisk);
+      if (problems.length > 0) this.error(`IPC boundary (written output): ${problems.join('; ')}`);
     },
   };
 

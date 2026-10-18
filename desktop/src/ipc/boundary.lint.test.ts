@@ -165,6 +165,47 @@ describe('IPC boundary lint: rejected forms', () => {
   );
 });
 
+const ASSEMBLY_AND_WORKERS: Record<string, string> = {
+  'String.fromCharCode': 'export const n = String.fromCharCode(95, 95);\n',
+  'String.fromCodePoint': 'export const n = String.fromCodePoint(95);\n',
+  'String.raw': 'export const n = String.raw`a`;\n',
+  'concat on a literal': "export const n = 'a'.concat('b');\n",
+  'concat on a template': 'export const n = `a`.concat(`b`);\n',
+  'join on an array literal': "export const n = ['a', 'b'].join('');\n",
+  'template with literal pieces': "export const n = `${'_'}${'_'}x`;\n",
+  atob: "export const n = atob('eA==');\n",
+  'window.atob': "export const n = window.atob('eA==');\n",
+  Worker: "export const w = () => new Worker('w.js');\n",
+  SharedWorker: "export const w = () => new SharedWorker('w.js');\n",
+  'window.Worker': "export const w = () => new window.Worker('w.js');\n",
+  'navigator.serviceWorker': 'export const w = () => navigator.serviceWorker;\n',
+  'new URL(…, import.meta.url)': "export const u = new URL('./w.js', import.meta.url);\n",
+  '?worker import': "export { default } from './w?worker';\n",
+};
+
+describe('IPC boundary lint: string assembly and workers (C01-R4-01/02)', () => {
+  for (const [name, code] of Object.entries(ASSEMBLY_AND_WORKERS)) {
+    it(
+      `rejects ${name} in shipped code`,
+      async () => {
+        expect(await lintAs(code)).not.toEqual([]);
+      },
+      T,
+    );
+  }
+
+  it(
+    'allows ordinary join, templates with variables and these APIs in tests',
+    async () => {
+      const ordinary = 'export const f = (xs: string[], v: string) => [xs.join(","), `a${v}`];\n';
+      expect(await lintAs(ordinary)).toEqual([]);
+      const inTest = "export const n = ['a', 'b'].join('') + String.fromCharCode(95) + atob('eA==');\n";
+      expect(await lintAs(inTest, 'src/ipc/hostApi.test.ts')).toEqual([]);
+    },
+    T,
+  );
+});
+
 describe('IPC boundary lint: accepted forms', () => {
   it(
     'the transport file may import Tauri',

@@ -75,6 +75,45 @@ const baseSyntax = [
   },
 ];
 
+// Shipped application code only (src/, not tests, not the transport), C01-R4-01/02:
+//   * string-assembly APIs that can build a Tauri name the scanners cannot see in the source (the final-output scan
+//     still catches whatever the minifier folds; `atob` is never folded, so lint is its only guard);
+//   * workers, whose separate bundles do not run the boundary plugin (lifting this ban is ticketed to M1 C1.2).
+const ASSEMBLY =
+  'String assembly from fragments is not allowed in application code (IPC boundary, ADR-0001).';
+const WORKERS =
+  'Workers are not allowed until the IPC boundary covers worker builds (ADR-0001; ticket M1 C1.2).';
+const productSyntax = [
+  {
+    selector:
+      "CallExpression[callee.property.name='concat']:matches([callee.object.type='Literal'], [callee.object.type='TemplateLiteral'])",
+    message: ASSEMBLY,
+  },
+  {
+    selector: "CallExpression[callee.property.name='join'][callee.object.type='ArrayExpression']",
+    message: ASSEMBLY,
+  },
+  { selector: 'TemplateLiteral > Literal', message: ASSEMBLY },
+  { selector: "NewExpression[callee.name='URL']:has(MetaProperty)", message: WORKERS },
+  { selector: `${SOURCE}[value=/[?&](worker|sharedworker)(&|=|$)/]`, message: WORKERS },
+];
+const productProperties = [
+  ...['fromCharCode', 'fromCodePoint', 'raw'].map((property) => ({
+    object: 'String',
+    property,
+    message: ASSEMBLY,
+  })),
+  ...['window', 'globalThis', 'self'].flatMap((object) => [
+    { object, property: 'atob', message: ASSEMBLY },
+    ...['Worker', 'SharedWorker', 'Worklet'].map((property) => ({ object, property, message: WORKERS })),
+  ]),
+  { object: 'navigator', property: 'serviceWorker', message: WORKERS },
+];
+const productGlobals = [
+  { name: 'atob', message: ASSEMBLY },
+  ...['Worker', 'SharedWorker', 'Worklet'].map((name) => ({ name, message: WORKERS })),
+];
+
 function restrictedImports({ allowTransport }) {
   const patterns = [{ group: ['@tauri-apps/*', '@tauri-apps'], message: HOST }];
   if (!allowTransport) patterns.push({ group: ['**/tauriTransport', '**/tauriTransport.*'], message: RAW });
@@ -86,6 +125,7 @@ export const BOUNDARY_RULE_NAMES = [
   'no-restricted-imports',
   'no-restricted-syntax',
   'no-restricted-globals',
+  'no-restricted-properties',
   'no-eval',
   'no-new-func',
 ];
@@ -94,6 +134,7 @@ export const ipcBoundaryRules = {
   'no-restricted-imports': restrictedImports({ allowTransport: false }),
   'no-restricted-syntax': ['error', ...baseSyntax],
   'no-restricted-globals': ['error', ...TAURI_GLOBALS.map((name) => ({ name, message: HOST }))],
+  'no-restricted-properties': 'off',
   'no-eval': 'error',
   'no-new-func': 'error',
 };
@@ -133,6 +174,7 @@ export function ipcBoundaryConfig(commentsPlugin) {
         'no-restricted-syntax': [
           'error',
           ...baseSyntax,
+          ...productSyntax,
           { selector: `${SOURCE}[value=/^${up(d + 1)}/]`, message: OUTSIDE },
         ],
       },
@@ -153,6 +195,19 @@ export function ipcBoundaryConfig(commentsPlugin) {
     });
   }
   blocks.push(
+    {
+      // Shipped application code: string-assembly and worker APIs (see productProperties / productGlobals).
+      files: [`src/**/*.${EXT}`],
+      ignores: [`src/**/*.test.${EXT}`],
+      rules: {
+        'no-restricted-properties': ['error', ...productProperties],
+        'no-restricted-globals': [
+          'error',
+          ...TAURI_GLOBALS.map((name) => ({ name, message: HOST })),
+          ...productGlobals,
+        ],
+      },
+    },
     {
       files: [IPC_INDEX_FILE],
       rules: { 'no-restricted-imports': restrictedImports({ allowTransport: true }) },

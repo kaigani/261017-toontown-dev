@@ -2,7 +2,10 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-import { ipcBoundary } from './boundary/vite-plugin.ts';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { ipcBoundary, transportChunk } from './boundary/vite-plugin.ts';
 
 // Tauri expects a fixed dev port and must not clear its terminal output.
 const TEST_SETUP = 'src/test/setup.ts';
@@ -28,6 +31,13 @@ export default defineConfig(({ mode }) => ({
     // WebView2 (Chromium) and WKWebView on macOS 12+ (Safari 15+).
     target: ['es2022', 'chrome110', 'safari15'],
     sourcemap: true,
+    rolldownOptions: {
+      output: {
+        // The transport and every @tauri-apps module form one dedicated chunk, so the boundary's final-output checks
+        // can attribute Tauri code after minification (boundary/vite-plugin.ts, boundary/check-dist.mjs).
+        manualChunks: transportChunk(path.dirname(fileURLToPath(import.meta.url))),
+      },
+    },
   },
   test: {
     environment: 'jsdom',
