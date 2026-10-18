@@ -1,0 +1,20 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-engine",
+    "--test",
+    "c11_r2_wire",
+    "cross_language_exchange",
+    "--locked"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:43:35.734466+00:00",
+  "elapsed_seconds": 0.22585519996937364,
+  "exit_code": 101,
+  "log": "logs\\wire-import.log",
+  "sha256": "0533bef577375427fc6d7defef6c6c1b40b413d825ecef737030ea371bec0a89",
+  "proptest_seed": "1182712"
+}

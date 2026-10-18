@@ -1,0 +1,15 @@
+{
+  "command": [
+    "target/release/toontown-headless.exe",
+    "--selftest",
+    "--json"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:38:18.901382+00:00",
+  "elapsed_seconds": 0.054606499965302646,
+  "exit_code": 1,
+  "log": "logs\\baseline-gate-headless-2.log",
+  "sha256": "088d33c002a604f23ffd4a5d833679ae2f2f96e4a686077d61de2e4e1cde0de3",
+  "proptest_seed": "1182712"
+}

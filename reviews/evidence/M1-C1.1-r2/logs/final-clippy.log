@@ -1,0 +1,30 @@
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\model)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\engine)
+error: unnecessary `if let` since only the `Ok` variant of the iterator element is used
+   --> crates\model\tests\c11_r2_adversarial.rs:154:5
+    |
+154 | /     for typed in [serde_json::from_value::<T>(v.clone()), serde_json::from_str::<T>(&v.to_string())] {
+155 | |         if let Ok(t) = typed {
+156 | |             assert!(object::revalidate(&t).is_err());
+157 | |         }
+158 | |     }
+    | |_____^
+    |
+help: try `.flatten()` and remove the `if let` statement in the for loop
+   --> crates\model\tests\c11_r2_adversarial.rs:155:9
+    |
+155 | /         if let Ok(t) = typed {
+156 | |             assert!(object::revalidate(&t).is_err());
+157 | |         }
+    | |_________^
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#manual_flatten
+    = note: `-D clippy::manual-flatten` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::manual_flatten)]`
+help: try
+    |
+154 ~     for t in [serde_json::from_value::<T>(v.clone()), serde_json::from_str::<T>(&v.to_string())].into_iter().flatten() {
+155 +         assert!(object::revalidate(&t).is_err());
+156 +     }
+    |
+
+error: could not compile `tt-model` (test "c11_r2_adversarial") due to 1 previous error

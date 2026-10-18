@@ -1,0 +1,23 @@
+FF
+======================================================================
+FAIL: test_claimed_response_raw_logs_are_committed (__main__.ReviewPolicy.test_claimed_response_raw_logs_are_committed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c11-r2\tests\adversarial\c11-r2-review-policy.py", line 37, in test_claimed_response_raw_logs_are_committed
+    self.assertFalse(required - tracked, "C11-R2-09: measurement logs cited by receipt are missing: " + str(required - tracked))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'reviews/evidence/M1-C1.1-r1-response/ts-10mb-drawing-node.log', 'reviews/evidence/M1-C1.1-r1-response/rust-10mb-drawing-release.log'} is not false : C11-R2-09: measurement logs cited by receipt are missing: {'reviews/evidence/M1-C1.1-r1-response/ts-10mb-drawing-node.log', 'reviews/evidence/M1-C1.1-r1-response/rust-10mb-drawing-release.log'}
+
+======================================================================
+FAIL: test_only_two_authorized_reviewer_test_edits (__main__.ReviewPolicy.test_only_two_authorized_reviewer_test_edits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c11-r2\tests\adversarial\c11-r2-review-policy.py", line 31, in test_only_two_authorized_reviewer_test_edits
+    self.assertFalse(changed - allowed, "C11-R2-01: unauthorized reviewer-test edit: " + str(changed - allowed))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'tests/adversarial/guards.mjs'} is not false : C11-R2-01: unauthorized reviewer-test edit: {'tests/adversarial/guards.mjs'}
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.039s
+
+FAILED (failures=2)

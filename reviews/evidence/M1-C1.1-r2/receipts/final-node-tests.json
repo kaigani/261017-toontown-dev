@@ -1,0 +1,15 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "scripts/check-npm-licenses.test.mjs"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:48:41.731714+00:00",
+  "elapsed_seconds": 0.12623430002713576,
+  "exit_code": 0,
+  "log": "logs\\final-node-tests.log",
+  "sha256": "588d1eb8027f0890bff8dd886d42067e672c4a50a9a1a5de02eb725416b3beb9",
+  "proptest_seed": "1182712"
+}

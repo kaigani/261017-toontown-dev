@@ -1,0 +1,1152 @@
+{
+  "receiptCount": 71,
+  "receipts": [
+    {
+      "name": "baseline-gate-build-default",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "build"
+      ],
+      "sha256": "ff9dc79031717f47ccb7b68ae7972cf140c2f138f05ab9e300c82e3cd6b62a33"
+    },
+    {
+      "name": "baseline-gate-build-diagnostics",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "build:diagnostics"
+      ],
+      "sha256": "d416d4d033cb720812a69d52f61e2f95adf9e92933c0d96baf0753429cedcb15"
+    },
+    {
+      "name": "baseline-gate-clippy-diagnostics",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "clippy",
+        "-p",
+        "tt-desktop",
+        "--all-targets",
+        "--locked",
+        "--features",
+        "m0-diagnostics",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "sha256": "e6a2310b32cdfabdb6f47d0e0911f90a461306e75c3889ce9b86f54057aad0a6"
+    },
+    {
+      "name": "baseline-gate-clippy",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "sha256": "eb9e7d9ac9ba165aaac8dd1c686884021185467d534bf98895d893b6a67aff5f"
+    },
+    {
+      "name": "baseline-gate-deny",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "deny",
+        "--locked",
+        "check"
+      ],
+      "sha256": "b78ea716bbf8d2c7b03d5231b992e6c8cb4b7d38fe4b77a9972ba0a6de68383e"
+    },
+    {
+      "name": "baseline-gate-fmt",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "baseline-gate-format-check",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "format:check"
+      ],
+      "sha256": "fa1bb38350ad42f74e074526ed178a803cdfa55b0368d2c08d3c89b8656813d3"
+    },
+    {
+      "name": "baseline-gate-headless-1",
+      "exit_code": 1,
+      "command": [
+        "target/release/toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "sha256": "088d33c002a604f23ffd4a5d833679ae2f2f96e4a686077d61de2e4e1cde0de3"
+    },
+    {
+      "name": "baseline-gate-headless-2",
+      "exit_code": 1,
+      "command": [
+        "target/release/toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "sha256": "088d33c002a604f23ffd4a5d833679ae2f2f96e4a686077d61de2e4e1cde0de3"
+    },
+    {
+      "name": "baseline-gate-headless-build",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-headless"
+      ],
+      "sha256": "dc3dd255b8046f9ebc549526b94222821c75d2e77c379702f6dfb8591b8f9af4"
+    },
+    {
+      "name": "baseline-gate-headless-guard",
+      "exit_code": 0,
+      "command": [
+        "python",
+        "scripts/check-headless-deps.py",
+        "target/release/toontown-headless.exe"
+      ],
+      "sha256": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295"
+    },
+    {
+      "name": "baseline-gate-licenses-check",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "licenses:check"
+      ],
+      "sha256": "724d86e6337a9dcb52f053e408bb28f6b35b8e6c0df3a8a236919f2065116b51"
+    },
+    {
+      "name": "baseline-gate-lint",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "lint"
+      ],
+      "sha256": "1fd7114d7d6708f44264abbf49d7e89ece9f637f5284c64aa71a0cb6d15193d8"
+    },
+    {
+      "name": "baseline-gate-raster",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "run",
+        "--release",
+        "--locked",
+        "-q",
+        "-p",
+        "tt-render",
+        "--example",
+        "c03_raster",
+        "--",
+        "--out",
+        "target/c11-r2-raster",
+        "--report",
+        "reviews/evidence/M1-C1.1-r2/raster.json",
+        "--check",
+        "crates/render/examples/c03_raster/hashes.json"
+      ],
+      "sha256": "d5b50065a92f255ff29fea698d73da064986c0f3d013881f9a5db4d3872855ec"
+    },
+    {
+      "name": "baseline-gate-test-diagnostics",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-desktop",
+        "--locked",
+        "--features",
+        "m0-diagnostics"
+      ],
+      "sha256": "74ecb4608bff889004529e24a1b5d019b246cc472ad8e332749e33e23cfa7ac4"
+    },
+    {
+      "name": "baseline-gate-tooling",
+      "exit_code": 0,
+      "command": [
+        "python",
+        "tests/adversarial/c03-r1-tooling.py"
+      ],
+      "sha256": "3b2f1a89069ca38d642519c08328c620d676437882d866b9abb647fd03189c6b"
+    },
+    {
+      "name": "baseline-gate-typecheck",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "typecheck"
+      ],
+      "sha256": "f684683161492213cb433f18e9bab0949de13a3263e266e7974a0e03acb4cf21"
+    },
+    {
+      "name": "baseline-pnpm",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "sha256": "61932798346436f5deeffe8a1dfa18e123d9555e9b5e42a25d03a19baa7ffaba"
+    },
+    {
+      "name": "baseline-rust",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--no-fail-fast"
+      ],
+      "sha256": "300993d0a4bb2a3825a49581f44a6fd0d81bb50bc6ac5012e9261564980b7b7b"
+    },
+    {
+      "name": "ci-capture",
+      "exit_code": 0,
+      "command": [
+        "python",
+        "reviews/evidence/M1-C1.1-r2/capture_ci.py"
+      ],
+      "sha256": "49905d4b01efb1c66c55c3e1d7d764fe707c60fd707a4ca40146cb604d22cac1"
+    },
+    {
+      "name": "ci-summary",
+      "exit_code": 0,
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "39167094209",
+        "--repo",
+        "kaigani/261017-toontown-dev",
+        "--json",
+        "headSha,status,conclusion,jobs,url,workflowName"
+      ],
+      "sha256": "5dd6ed448d14411140a33e93fdc2c355fa6a7fd73ea45815da27cf8b51031218"
+    },
+    {
+      "name": "conformance-verified",
+      "exit_code": 0,
+      "command": [
+        "python",
+        "reviews/evidence/M1-C1.1-r2/conformance.py"
+      ],
+      "sha256": "351de9fe5b393601ca5115eda8a5233987a927c9312d25c66b34526f2822a013"
+    },
+    {
+      "name": "conformance",
+      "exit_code": 0,
+      "command": [
+        "python",
+        "reviews/evidence/M1-C1.1-r2/conformance.py"
+      ],
+      "sha256": "c1657e8bb466885a6acb4e7db5cd4d0927008c567cbe1fcebdc60ab2367282df"
+    },
+    {
+      "name": "delivery-clippy",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "sha256": "411e741108efde6291bb2c5a75b491e1aafaeed5570137a801c330eaf2d21cc3"
+    },
+    {
+      "name": "delivery-conformance",
+      "exit_code": 0,
+      "command": [
+        "python",
+        "reviews/evidence/M1-C1.1-r2/conformance.py"
+      ],
+      "sha256": "48e779f72491cdf68e936c266c5f7a82fd6a774bacfd47f3d9cae8826dccf09e"
+    },
+    {
+      "name": "delivery-fmt",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "delivery-install",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "sha256": "61cfebaf4ef193cb4e0cec5f53c2bead7d3e24ba860120d724329e6692f21f9a"
+    },
+    {
+      "name": "exchange-v2-wire-export",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-engine",
+        "--test",
+        "c11_r2_wire",
+        "cross_language_exchange",
+        "--locked"
+      ],
+      "sha256": "e7ca02bc72cf0f96fa0cdf95a6dfd065cf4a40add0488e736f9c3c9ac1d77f82"
+    },
+    {
+      "name": "exchange-v2-wire-import",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-engine",
+        "--test",
+        "c11_r2_wire",
+        "cross_language_exchange",
+        "--locked"
+      ],
+      "sha256": "8c45f076bc18a38fd15a7ffbeaf34b14e72bc1cc1987836d7ffa0bdb8c069a38"
+    },
+    {
+      "name": "exchange-v2-wire-typescript",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "exec",
+        "vitest",
+        "run",
+        "--config",
+        "vite.config.ts",
+        "src/ipc/c11-r2-adversarial.test.ts",
+        "-t",
+        "exchange"
+      ],
+      "sha256": "9d883a4fc390c96e5194e3345584f055a385f96d2acccf7b38b70b43704a171b"
+    },
+    {
+      "name": "final-clippy-clean",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "sha256": "2e9626106331d137dc3de162d2df3839dbd758e7dc5cffe08d331d4ca8156dca"
+    },
+    {
+      "name": "final-clippy",
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "sha256": "37c302e5137709146749c3a3444824703c5b363628ab45081d5d5b92c9a65d2f"
+    },
+    {
+      "name": "final-fmt",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "final-gate-build-default",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "build"
+      ],
+      "sha256": "d7a2ffc9ba3d617fc41d3f507851df7101c3f018d490e6343af24a66340b6d8e"
+    },
+    {
+      "name": "final-gate-build-diagnostics",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "build:diagnostics"
+      ],
+      "sha256": "b0cbaf8729de27474f1477de3e884b5e5102f7929560dd32e9d0a7b92fd9c5b6"
+    },
+    {
+      "name": "final-gate-format-check",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "format:check"
+      ],
+      "sha256": "fa1bb38350ad42f74e074526ed178a803cdfa55b0368d2c08d3c89b8656813d3"
+    },
+    {
+      "name": "final-gate-licenses-check",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "licenses:check"
+      ],
+      "sha256": "724d86e6337a9dcb52f053e408bb28f6b35b8e6c0df3a8a236919f2065116b51"
+    },
+    {
+      "name": "final-gate-lint",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "lint"
+      ],
+      "sha256": "1fd7114d7d6708f44264abbf49d7e89ece9f637f5284c64aa71a0cb6d15193d8"
+    },
+    {
+      "name": "final-gate-typecheck",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "typecheck"
+      ],
+      "sha256": "f684683161492213cb433f18e9bab0949de13a3263e266e7974a0e03acb4cf21"
+    },
+    {
+      "name": "final-headless-1",
+      "exit_code": 0,
+      "command": [
+        ".\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "sha256": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d"
+    },
+    {
+      "name": "final-headless-2",
+      "exit_code": 0,
+      "command": [
+        ".\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "sha256": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d"
+    },
+    {
+      "name": "final-model-verified",
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r2_adversarial",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "sha256": "300c5a578a2b70951e857e17019bcf770069fe6706ce81020b494eb7b09d181c"
+    },
+    {
+      "name": "final-node-tests",
+      "exit_code": 0,
+      "command": [
+        "node",
+        "--test",
+        "scripts/check-npm-licenses.test.mjs"
+      ],
+      "sha256": "588d1eb8027f0890bff8dd886d42067e672c4a50a9a1a5de02eb725416b3beb9"
+    },
+    {
+      "name": "final-pnpm-test",
+      "exit_code": 1,
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "sha256": "5b0e964cfc83880de909211a39f09a5d83aa256fc72c88696a410bec9a48471c"
+    },
+    {
+      "name": "final-semantic-closure",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r2_adversarial",
+        "new_entity_semantic_boundary_controls",
+        "--locked",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "sha256": "025b23fde0f5216db6a1665426058b4aa9a977d9b87f56964e71613756fb5892"
+    },
+    {
+      "name": "final-workspace-verified",
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--no-fail-fast"
+      ],
+      "sha256": "cdf572ed70e070256e0c8e4fb03de1995af1d3e799536c37b0146ee16a0cc8b4"
+    },
+    {
+      "name": "final-workspace",
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--no-fail-fast"
+      ],
+      "sha256": "759ca7d802d70df3fa82b7580c802e09c3bbf56b411312d0069803768b3c99fe"
+    },
+    {
+      "name": "fresh-model-first",
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r2_adversarial",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "sha256": "225fb9485f5fac41dcf289e0543bad6650724987f86b7dbe8598432077c38cd5"
+    },
+    {
+      "name": "fresh-model-second",
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r2_adversarial",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "sha256": "56f4f8e257b662f0f56eeb770675583494c04d7052035f89e67251499251d639"
+    },
+    {
+      "name": "fresh-model-third",
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r2_adversarial",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "sha256": "a08b05223757eb9dbe42f1139961f3eb952e3beabbcc5e0461dbc7741968ff2e"
+    },
+    {
+      "name": "fresh-ts-first",
+      "exit_code": 1,
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "exec",
+        "vitest",
+        "run",
+        "--config",
+        "vite.config.ts",
+        "src/ipc/c11-r2-adversarial.test.ts"
+      ],
+      "sha256": "df2c6b3f6d18a3e0afa94a23a8d99095be1faa3c5837309df901c27835c179d4"
+    },
+    {
+      "name": "fresh-wire-first",
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-engine",
+        "--test",
+        "c11_r2_wire",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "sha256": "88de1b6f088e779a87bf6f47bed208001be23716ac4e25b41218d6d194f1bcd4"
+    },
+    {
+      "name": "guards-allowlist",
+      "exit_code": 0,
+      "command": [
+        "node",
+        "tests/adversarial/guards.mjs",
+        "allowlist"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "guards-imports",
+      "exit_code": 0,
+      "command": [
+        "node",
+        "tests/adversarial/guards.mjs",
+        "imports"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "guards-licensing",
+      "exit_code": 0,
+      "command": [
+        "node",
+        "tests/adversarial/guards.mjs",
+        "licensing"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "last-clippy",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "sha256": "219a1ff89a9d1bc7d32344769f8f200a00947dd2c846383791c3e724940de2f8"
+    },
+    {
+      "name": "last-fmt",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "perf-scale-1",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "run",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-model",
+        "--example",
+        "scale"
+      ],
+      "sha256": "1c40fecb87ba5c4af0df4b39c59ceb1784cde82def9ef1ddc95232fb60a45bd5"
+    },
+    {
+      "name": "perf-scale-2",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "run",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-model",
+        "--example",
+        "scale"
+      ],
+      "sha256": "d340d1e287bb268cd536ca35ab95460bcc8a7efee074630529a0d0cbbcefebcd"
+    },
+    {
+      "name": "r1-model-closure",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r1_adversarial",
+        "--locked"
+      ],
+      "sha256": "b1d2aa54cb60cfe5e49251edb5000cd7ab1b5f85f4fd2602423de9ab0a884adc"
+    },
+    {
+      "name": "r1-ts-closure",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "exec",
+        "vitest",
+        "run",
+        "--config",
+        "vite.config.ts",
+        "src/ipc/c11-r1-adversarial.test.ts",
+        "--reporter",
+        "verbose"
+      ],
+      "sha256": "f778e2167725c888e1f4c3ff615ed6b3fbfc7861ab0598b26b559ca68bd8a33f"
+    },
+    {
+      "name": "r1-wire-closure",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-engine",
+        "--test",
+        "c11_r1_wire",
+        "--locked"
+      ],
+      "sha256": "2230499839bb94221fe4b2780cd2f4a539f9625504c53330dfdefdbff7f1c1cd"
+    },
+    {
+      "name": "r2-initial-pnpm",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "sha256": "a7dcad7441f3d843308b8c2080b7ab54f94f4c5fc9072e0c4c3229bb3d3b49a2"
+    },
+    {
+      "name": "r2-initial-rust",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--no-fail-fast"
+      ],
+      "sha256": "c9507acb8b0bc76fde39ef1de022db8ee4aad4005a3ec1734d13a51752a7d1e1"
+    },
+    {
+      "name": "release-gate-diagnostics-guard",
+      "exit_code": 0,
+      "command": [
+        "python",
+        "scripts/check-diagnostics-gating.py",
+        "target/release/toontown.exe",
+        "--expect",
+        "default"
+      ],
+      "sha256": "ec6c58620d380159a420a0bdda3463e224c3b47bacb4adf34be0018a200f4928"
+    },
+    {
+      "name": "release-gate-tauri-release",
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "--dir",
+        "desktop",
+        "tauri",
+        "build",
+        "--no-bundle",
+        "--",
+        "--locked"
+      ],
+      "sha256": "6eff8ee57d34cf68ae754eb22e3eff03c5b4a1979f3a1a11b6cf9a8240878df1"
+    },
+    {
+      "name": "review-policy",
+      "exit_code": 1,
+      "command": [
+        "python",
+        "tests/adversarial/c11-r2-review-policy.py"
+      ],
+      "sha256": "5c6e0e0dc24728c51f86640ce38bf923030c8477b70d27f1ecbae0db9bb683b6"
+    },
+    {
+      "name": "static-audit",
+      "exit_code": 0,
+      "command": [
+        "python",
+        "reviews/evidence/M1-C1.1-r2/static_audit.py"
+      ],
+      "sha256": "8978e6c9b8105c4d12801d6e48f4bca4cabd9b5b6ac13cfbfb38ec36acfd9aed"
+    },
+    {
+      "name": "wire-export",
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-engine",
+        "--test",
+        "c11_r2_wire",
+        "cross_language_exchange",
+        "--locked"
+      ],
+      "sha256": "7a922cb318a83d731cc91bf7f5be70862c8d592f0e1679ffeca6dc93b01b9d6d"
+    },
+    {
+      "name": "wire-import",
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-engine",
+        "--test",
+        "c11_r2_wire",
+        "cross_language_exchange",
+        "--locked"
+      ],
+      "sha256": "0533bef577375427fc6d7defef6c6c1b40b413d825ecef737030ea371bec0a89"
+    },
+    {
+      "name": "wire-typescript",
+      "exit_code": 0,
+      "command": [
+        "pnpm",
+        "--dir",
+        "desktop",
+        "exec",
+        "vitest",
+        "run",
+        "--config",
+        "vite.config.ts",
+        "src/ipc/c11-r2-adversarial.test.ts",
+        "-t",
+        "TypeScript middle"
+      ],
+      "sha256": "858726e058d6e25e94bb94507325890216a0736080ffc32dccbc8e03b63dce2a"
+    }
+  ],
+  "tests": {
+    "r2-initial-rust": {
+      "passed": 209,
+      "failed": 0,
+      "ignored": 1
+    },
+    "final-workspace-verified": {
+      "passed": 243,
+      "failed": 11,
+      "ignored": 1
+    },
+    "r1-model-closure": {
+      "passed": 39,
+      "failed": 0,
+      "ignored": 0
+    },
+    "r1-wire-closure": {
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    "round1TypeScript": "6 passed (6)",
+    "typescriptBaseline": "313 passed (313)",
+    "typescriptFinal": "2 failed | 320 passed (322)"
+  },
+  "ci": [
+    {
+      "job": "bundle (macos-latest)",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39167094209/job/117792193626",
+      "conclusion": "success",
+      "skippedSteps": [
+        "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)"
+      ]
+    },
+    {
+      "job": "headless without a display (ubuntu)",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39167094209/job/117792193716",
+      "conclusion": "success",
+      "skippedSteps": []
+    },
+    {
+      "job": "raster determinism (ubuntu-latest)",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39167094209/job/117792193745",
+      "conclusion": "success",
+      "skippedSteps": []
+    },
+    {
+      "job": "bundle (windows-latest)",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39167094209/job/117792193748",
+      "conclusion": "success",
+      "skippedSteps": []
+    },
+    {
+      "job": "check (macos-latest)",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39167094209/job/117792193753",
+      "conclusion": "success",
+      "skippedSteps": [],
+      "workspace": {
+        "passed": 203,
+        "failed": 0,
+        "ignored": 1
+      },
+      "vitest": "^[[22m ^[[1m^[[32m313 passed^[[39m^[[22m^[[90m (313)^[[39m",
+      "nodePassed": 9,
+      "commandsVerified": [
+        "pnpm install --frozen-lockfile",
+        "pnpm lint",
+        "pnpm typecheck",
+        "pnpm test",
+        "pnpm format:check",
+        "pnpm licenses:check",
+        "pnpm --dir desktop build:diagnostics",
+        "pnpm --dir desktop build",
+        "cargo fmt --all --check",
+        "cargo clippy --workspace --all-targets --locked -- -D warnings",
+        "cargo test --workspace --locked",
+        "cargo deny --locked check",
+        "check-headless-deps.py",
+        "cargo test -p tt-desktop --locked --features m0-diagnostics"
+      ]
+    },
+    {
+      "job": "check (windows-latest)",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39167094209/job/117792193794",
+      "conclusion": "success",
+      "skippedSteps": [],
+      "workspace": {
+        "passed": 209,
+        "failed": 0,
+        "ignored": 1
+      },
+      "vitest": "^[[22m ^[[1m^[[32m313 passed^[[39m^[[22m^[[90m (313)^[[39m",
+      "nodePassed": 9,
+      "commandsVerified": [
+        "pnpm install --frozen-lockfile",
+        "pnpm lint",
+        "pnpm typecheck",
+        "pnpm test",
+        "pnpm format:check",
+        "pnpm licenses:check",
+        "pnpm --dir desktop build:diagnostics",
+        "pnpm --dir desktop build",
+        "cargo fmt --all --check",
+        "cargo clippy --workspace --all-targets --locked -- -D warnings",
+        "cargo test --workspace --locked",
+        "cargo deny --locked check",
+        "check-headless-deps.py",
+        "cargo test -p tt-desktop --locked --features m0-diagnostics"
+      ]
+    },
+    {
+      "job": "raster determinism (macos-latest)",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39167094209/job/117792193946",
+      "conclusion": "success",
+      "skippedSteps": []
+    },
+    {
+      "job": "raster determinism (windows-latest)",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39167094209/job/117792193954",
+      "conclusion": "success",
+      "skippedSteps": []
+    }
+  ],
+  "artifacts": {
+    "archives": 7,
+    "bytes": 78068425,
+    "rawExtractedFiles": 23,
+    "recomputedAnalyses": [
+      "canvas-spike-Windows",
+      "tablet-spike-windows",
+      "canvas-spike-macOS"
+    ]
+  },
+  "headlessChecks": [
+    [
+      "engine.components",
+      true
+    ],
+    [
+      "engine.versions",
+      true
+    ],
+    [
+      "engine.ping",
+      true
+    ],
+    [
+      "determinism.ieee754",
+      true
+    ],
+    [
+      "headless.mcpLinked",
+      true
+    ]
+  ],
+  "rasterReportsComparedToCommittedHashes": [
+    "raster.json",
+    "ci\\c03-raster-Linux\\report-run1.json",
+    "ci\\c03-raster-Linux\\report-run2.json",
+    "ci\\c03-raster-macOS\\report-run1.json",
+    "ci\\c03-raster-macOS\\report-run2.json",
+    "ci\\c03-raster-Windows\\report-run1.json",
+    "ci\\c03-raster-Windows\\report-run2.json"
+  ],
+  "performance": [
+    {
+      "source": "M1-C1.1-r1-response\\model-scale-windows-run2.json",
+      "sha256": "2c16b7f2dab3d86e44908fe1836f027ddc6d8127071c417b697fddb59769e477",
+      "measurements": {
+        "drawingJsonBytes": 28568777,
+        "drawing100kParseValidateMs": 1000.385,
+        "palette10kParseValidateMs": 42.024,
+        "drawings10kParseValidateMs": 40.808,
+        "elements1kParseValidateMs": 15.596,
+        "documentAssembleAndCheckMs": 1263.496,
+        "objectCount": 121092,
+        "drawingCanonicalWriteMs": 899.697,
+        "drawingObjectJsonDepthAllWithPathsMs": 1023.164,
+        "documentCloneMs": 1.014,
+        "drawingEntryRawJsonMs": 523.63,
+        "drawingOwnViewsMs": 721.177,
+        "diffWholeDocumentNoSharedEntriesMs": 3686.831,
+        "diffWholeDocumentChanges": 1,
+        "diffOneStrokeIn100kStrokeEntryMs": 1729.936,
+        "diffOneStrokeChangedObjects": 1
+      }
+    },
+    {
+      "source": "M1-C1.1-r1-response\\model-scale-windows.json",
+      "sha256": "198e38b53511d9f3fcef85a46c079b41bb5e2705a554b4f518c83e1b26af1ce4",
+      "measurements": {
+        "drawingJsonBytes": 28568777,
+        "drawing100kParseValidateMs": 1035.706,
+        "palette10kParseValidateMs": 45.828,
+        "drawings10kParseValidateMs": 41.496,
+        "elements1kParseValidateMs": 16.331,
+        "documentAssembleAndCheckMs": 1253.597,
+        "objectCount": 121092,
+        "drawingCanonicalWriteMs": 881.61,
+        "drawingObjectJsonDepthAllWithPathsMs": 950.564,
+        "documentCloneMs": 0.909,
+        "drawingEntryRawJsonMs": 436.673,
+        "drawingOwnViewsMs": 614.526,
+        "diffWholeDocumentNoSharedEntriesMs": 3512.435,
+        "diffWholeDocumentChanges": 1,
+        "diffOneStrokeIn100kStrokeEntryMs": 1628.967,
+        "diffOneStrokeChangedObjects": 1
+      }
+    },
+    {
+      "source": "M1-C1.1-r2\\logs\\perf-scale-1.log",
+      "sha256": "1c40fecb87ba5c4af0df4b39c59ceb1784cde82def9ef1ddc95232fb60a45bd5",
+      "measurements": {
+        "drawingJsonBytes": 28568777,
+        "drawing100kParseValidateMs": 997.458,
+        "palette10kParseValidateMs": 43.559,
+        "drawings10kParseValidateMs": 41.1,
+        "elements1kParseValidateMs": 15.757,
+        "documentAssembleAndCheckMs": 1171.188,
+        "objectCount": 121092,
+        "drawingCanonicalWriteMs": 684.525,
+        "drawingObjectJsonDepthAllWithPathsMs": 879.945,
+        "documentCloneMs": 0.862,
+        "drawingEntryRawJsonMs": 399.974,
+        "drawingOwnViewsMs": 558.956,
+        "diffWholeDocumentNoSharedEntriesMs": 3109.234,
+        "diffWholeDocumentChanges": 1,
+        "diffOneStrokeIn100kStrokeEntryMs": 1564.582,
+        "diffOneStrokeChangedObjects": 1
+      }
+    },
+    {
+      "source": "M1-C1.1-r2\\logs\\perf-scale-2.log",
+      "sha256": "d340d1e287bb268cd536ca35ab95460bcc8a7efee074630529a0d0cbbcefebcd",
+      "measurements": {
+        "drawingJsonBytes": 28568777,
+        "drawing100kParseValidateMs": 981.915,
+        "palette10kParseValidateMs": 42.147,
+        "drawings10kParseValidateMs": 39.238,
+        "elements1kParseValidateMs": 14.91,
+        "documentAssembleAndCheckMs": 1218.357,
+        "objectCount": 121092,
+        "drawingCanonicalWriteMs": 684.371,
+        "drawingObjectJsonDepthAllWithPathsMs": 894.641,
+        "documentCloneMs": 0.863,
+        "drawingEntryRawJsonMs": 410.618,
+        "drawingOwnViewsMs": 588.596,
+        "diffWholeDocumentNoSharedEntriesMs": 3157.053,
+        "diffWholeDocumentChanges": 1,
+        "diffOneStrokeIn100kStrokeEntryMs": 1532.724,
+        "diffOneStrokeChangedObjects": 1
+      }
+    }
+  ],
+  "conformance": {
+    "implemented": 226,
+    "divergent": 9,
+    "deferred": 193,
+    "missing": 0
+  },
+  "findings": {
+    "P1": 3,
+    "P2": 8,
+    "P0": 0
+  }
+}

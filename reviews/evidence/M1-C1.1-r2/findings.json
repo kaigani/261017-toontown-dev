@@ -1,0 +1,116 @@
+[
+  {
+    "id": "C11-R2-01",
+    "priority": "P1",
+    "title": "Unauthorized third reviewer-test edit",
+    "targetCheckpoint": "C1.1 retry",
+    "regressions": [
+      "test_only_two_authorized_reviewer_test_edits"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "C11-R2-02",
+    "priority": "P1",
+    "title": "Array patch inverses fail or restore wrong content",
+    "targetCheckpoint": "C1.1 retry",
+    "regressions": [
+      "array_append_patch_inverse_restores_input",
+      "nested_array_move_with_overwrite_inverse_restores_input"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "C11-R2-03",
+    "priority": "P1",
+    "title": "Malformed range replacement deletes text",
+    "targetCheckpoint": "C1.1 retry",
+    "regressions": [
+      "range_patch_rejects_nonstring_mouth_value_without_deleting_text"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "C11-R2-04",
+    "priority": "P2",
+    "title": "Missing copy source defaults to root",
+    "targetCheckpoint": "C1.2 before patch consumers",
+    "regressions": [
+      "missing_copy_source_is_not_implicitly_the_document_root"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "C11-R2-05",
+    "priority": "P2",
+    "title": "Composite numeric coercion rejects valid values",
+    "targetCheckpoint": "C1.2 schema consumers",
+    "regressions": [
+      "does not let an inapplicable oneOf double branch corrupt an integer branch",
+      "coerces scalar doubles declared through allOf"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "C11-R2-06",
+    "priority": "P2",
+    "title": "Property discovery loses conditionals and annotations",
+    "targetCheckpoint": "C1.1 retry",
+    "regressions": [
+      "property_lookup_follows_effect_condition_without_discarding_it",
+      "property_lookup_preserves_ref_property_annotations"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "C11-R2-07",
+    "priority": "P2",
+    "title": "Generic wire writer/reader depth mismatch",
+    "targetCheckpoint": "C1.2 before payload expansion",
+    "regressions": [
+      "writer_never_emits_text_its_reader_rejects_at_depth_boundary"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "C11-R2-08",
+    "priority": "P2",
+    "title": "Frame-map keys escape signed/positive bounds",
+    "targetCheckpoint": "C1.1 retry",
+    "regressions": [
+      "cell_note_frame_map_keys_obey_signed_int_bounds",
+      "mouth_label_frame_map_keys_are_positive_and_within_int"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "C11-R2-09",
+    "priority": "P2",
+    "title": "Historical response raw logs absent",
+    "targetCheckpoint": "C1.1 retry",
+    "regressions": [
+      "test_claimed_response_raw_logs_are_committed"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "C11-R2-10",
+    "priority": "P2",
+    "title": "Declared pattern-map text skips NFC",
+    "targetCheckpoint": "C1.1 retry",
+    "regressions": [
+      "nfc_is_applied_to_declared_non_name_strings_without_touching_opaque_values"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "C11-R2-11",
+    "priority": "P2",
+    "title": "Published MouthTrack.stale lacks x-since",
+    "targetCheckpoint": "C1.1 retry",
+    "regressions": [
+      "every_schema_property_has_since_and_envelope_type_is_readonly"
+    ],
+    "status": "open"
+  }
+]

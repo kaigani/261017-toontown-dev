@@ -1,0 +1,21 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-engine",
+    "--test",
+    "c11_r2_wire",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:39:32.790191+00:00",
+  "elapsed_seconds": 14.303616799996234,
+  "exit_code": 101,
+  "log": "logs\\fresh-wire-first.log",
+  "sha256": "88de1b6f088e779a87bf6f47bed208001be23716ac4e25b41218d6d194f1bcd4",
+  "proptest_seed": "1182712"
+}

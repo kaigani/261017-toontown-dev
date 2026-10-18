@@ -1,0 +1,908 @@
+{
+  "base": "7c5405d",
+  "addedReviewFlags": [
+    {
+      "path": "crates/engine/tests/c11_r1_wire.rs",
+      "added": "        Ok(v) => assert_eq!(to_wire_json(&v).unwrap(), text, \"opaque extension integer loses precision in Rust\"),"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "#![allow(clippy::unwrap_used, clippy::panic, reason = \"test\")]"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "    serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap()"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "            let count = usize::try_from(n[\"count\"].as_u64().unwrap()).unwrap();"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "                n[\"open\"].as_str().unwrap().repeat(count),"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "                n[\"inner\"].as_str().unwrap(),"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "                n[\"close\"].as_str().unwrap().repeat(count)"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "        None => case[\"text\"].as_str().unwrap().to_owned(),"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "    let cases = c[\"reject\"].as_array().unwrap();"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "            Ok(v) => panic!(\"accepted {}: {v}\", case[\"why\"]),"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "    for case in c[\"accept\"].as_array().unwrap() {"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "        let v: Value = from_wire_json(&text(case)).unwrap_or_else(|e| panic!(\"rejected {}: {e:?}\", case[\"why\"]));"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "        assert_eq!(to_wire_json(&v).unwrap(), case[\"canonical\"].as_str().unwrap(), \"{}\", case[\"why\"]);"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "    for case in c[\"bytes\"].as_array().unwrap() {"
+    },
+    {
+      "path": "crates/engine/tests/wire_corpus.rs",
+      "added": "            case[\"bytes\"].as_array().unwrap().iter().map(|b| u8::try_from(b.as_u64().unwrap()).unwrap()).collect();"
+    },
+    {
+      "path": "crates/model/src/id.rs",
+      "added": "                .unwrap();"
+    },
+    {
+      "path": "crates/model/src/input.rs",
+      "added": "            serde_json::to_string(&v).unwrap(),"
+    },
+    {
+      "path": "crates/model/src/json_text.rs",
+      "added": "        let v: Value = parse(&format!(\"{}{}\", \"[\".repeat(MAX_TEXT_DEPTH), \"]\".repeat(MAX_TEXT_DEPTH))).unwrap();"
+    },
+    {
+      "path": "crates/model/tests/c11_r1_adversarial.rs",
+      "added": "    let validator = jsonschema::options().with_draft(jsonschema::Draft::Draft202012).build(&s).unwrap();"
+    }
+  ],
+  "productPanicMatches": [],
+  "publicMutableDocumentMethods": [],
+  "jsonschemaDependencyTree": [
+    {
+      "name": "ahash",
+      "version": "0.8.12",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "getrandom",
+        "runtime-rng",
+        "serde",
+        "std"
+      ]
+    },
+    {
+      "name": "aho-corasick",
+      "version": "1.1.5",
+      "license": "Unlicense OR MIT",
+      "features": [
+        "perf-literal",
+        "std"
+      ]
+    },
+    {
+      "name": "allocator-api2",
+      "version": "0.2.21",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc"
+      ]
+    },
+    {
+      "name": "autocfg",
+      "version": "1.5.1",
+      "license": "Apache-2.0 OR MIT",
+      "features": []
+    },
+    {
+      "name": "bit-set",
+      "version": "0.8.0",
+      "license": "Apache-2.0 OR MIT",
+      "features": [
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "bit-vec",
+      "version": "0.8.0",
+      "license": "Apache-2.0 OR MIT",
+      "features": [
+        "std"
+      ]
+    },
+    {
+      "name": "bitflags",
+      "version": "2.13.2",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "serde",
+        "serde_core",
+        "std"
+      ]
+    },
+    {
+      "name": "borrow-or-share",
+      "version": "0.2.4",
+      "license": "MIT-0",
+      "features": [
+        "alloc"
+      ]
+    },
+    {
+      "name": "bumpalo",
+      "version": "3.20.3",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ]
+    },
+    {
+      "name": "bytecount",
+      "version": "0.6.9",
+      "license": "Apache-2.0/MIT",
+      "features": [
+        "runtime-dispatch-simd"
+      ]
+    },
+    {
+      "name": "cfg-if",
+      "version": "1.0.5",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "data-encoding",
+      "version": "2.11.1",
+      "license": "MIT",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "email_address",
+      "version": "0.2.9",
+      "license": "MIT",
+      "features": [
+        "default",
+        "serde",
+        "serde_support"
+      ]
+    },
+    {
+      "name": "equivalent",
+      "version": "1.0.3",
+      "license": "Apache-2.0 OR MIT",
+      "features": []
+    },
+    {
+      "name": "fancy-regex",
+      "version": "0.19.2",
+      "license": "MIT",
+      "features": [
+        "default",
+        "perf",
+        "std",
+        "unicode",
+        "variable-lookbehinds"
+      ]
+    },
+    {
+      "name": "fluent-uri",
+      "version": "0.4.1",
+      "license": "MIT",
+      "features": [
+        "alloc",
+        "default",
+        "impl-error",
+        "serde",
+        "std"
+      ]
+    },
+    {
+      "name": "foldhash",
+      "version": "0.2.0",
+      "license": "Zlib",
+      "features": [
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "fraction",
+      "version": "0.17.0",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "num-bigint",
+        "with-bigint"
+      ]
+    },
+    {
+      "name": "futures-core",
+      "version": "0.3.34",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "futures-io",
+      "version": "0.3.34",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "futures-macro",
+      "version": "0.3.34",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "futures-sink",
+      "version": "0.3.34",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "futures-task",
+      "version": "0.3.34",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "std"
+      ]
+    },
+    {
+      "name": "futures-util",
+      "version": "0.3.34",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "async-await",
+        "async-await-macro",
+        "default",
+        "futures-io",
+        "futures-macro",
+        "futures-sink",
+        "io",
+        "memchr",
+        "sink",
+        "slab",
+        "std"
+      ]
+    },
+    {
+      "name": "getrandom",
+      "version": "0.3.4",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "wasm_js"
+      ]
+    },
+    {
+      "name": "hashbrown",
+      "version": "0.17.1",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "allocator-api2",
+        "default",
+        "default-hasher",
+        "equivalent",
+        "inline-more",
+        "raw-entry"
+      ]
+    },
+    {
+      "name": "heck",
+      "version": "0.5.0",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "indexmap",
+      "version": "2.14.2",
+      "license": "Apache-2.0 OR MIT",
+      "features": [
+        "default",
+        "serde",
+        "std"
+      ]
+    },
+    {
+      "name": "itoa",
+      "version": "1.0.18",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "js-sys",
+      "version": "0.3.106",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std",
+        "unsafe-eval"
+      ]
+    },
+    {
+      "name": "jsonschema-regex",
+      "version": "0.59.0",
+      "license": "MIT",
+      "features": []
+    },
+    {
+      "name": "jsonschema-value",
+      "version": "0.59.0",
+      "license": "MIT",
+      "features": [
+        "default",
+        "serde_json"
+      ]
+    },
+    {
+      "name": "jsonschema",
+      "version": "0.59.0",
+      "license": "MIT",
+      "features": []
+    },
+    {
+      "name": "libc",
+      "version": "0.2.191",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "lock_api",
+      "version": "0.4.14",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "atomic_usize",
+        "default"
+      ]
+    },
+    {
+      "name": "memchr",
+      "version": "2.8.3",
+      "license": "Unlicense OR MIT",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "micromap",
+      "version": "0.3.0",
+      "license": "MIT",
+      "features": [
+        "default"
+      ]
+    },
+    {
+      "name": "num-bigint",
+      "version": "0.4.8",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "num-cmp",
+      "version": "0.1.0",
+      "license": "MIT/Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "num-complex",
+      "version": "0.4.6",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ]
+    },
+    {
+      "name": "num-integer",
+      "version": "0.1.47",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "i128",
+        "std"
+      ]
+    },
+    {
+      "name": "num-iter",
+      "version": "0.1.46",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "i128",
+        "std"
+      ]
+    },
+    {
+      "name": "num-rational",
+      "version": "0.4.2",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "num-bigint",
+        "num-bigint-std",
+        "std"
+      ]
+    },
+    {
+      "name": "num-traits",
+      "version": "0.2.19",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "i128",
+        "std"
+      ]
+    },
+    {
+      "name": "num",
+      "version": "0.4.3",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "num-bigint",
+        "std"
+      ]
+    },
+    {
+      "name": "once_cell",
+      "version": "1.21.4",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "race",
+        "std"
+      ]
+    },
+    {
+      "name": "outref",
+      "version": "0.5.2",
+      "license": "MIT",
+      "features": []
+    },
+    {
+      "name": "parking_lot",
+      "version": "0.12.5",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ]
+    },
+    {
+      "name": "parking_lot_core",
+      "version": "0.9.12",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "percent-encoding",
+      "version": "2.3.2",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "pin-project-lite",
+      "version": "0.2.17",
+      "license": "Apache-2.0 OR MIT",
+      "features": []
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.107",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "proc-macro",
+        "span-locations"
+      ]
+    },
+    {
+      "name": "quote",
+      "version": "1.0.47",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "proc-macro"
+      ]
+    },
+    {
+      "name": "r-efi",
+      "version": "5.3.0",
+      "license": "MIT OR Apache-2.0 OR LGPL-2.1-or-later",
+      "features": []
+    },
+    {
+      "name": "redox_syscall",
+      "version": "0.5.18",
+      "license": "MIT",
+      "features": [
+        "default",
+        "userspace"
+      ]
+    },
+    {
+      "name": "ref-cast-impl",
+      "version": "1.0.27",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "ref-cast",
+      "version": "1.0.27",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "referencing",
+      "version": "0.59.0",
+      "license": "MIT",
+      "features": [
+        "default"
+      ]
+    },
+    {
+      "name": "regex-automata",
+      "version": "0.4.18",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "dfa-onepass",
+        "dfa-search",
+        "hybrid",
+        "meta",
+        "nfa",
+        "nfa-backtrack",
+        "nfa-pikevm",
+        "nfa-thompson",
+        "perf",
+        "perf-inline",
+        "perf-literal",
+        "perf-literal-multisubstring",
+        "perf-literal-substring",
+        "std",
+        "syntax",
+        "unicode",
+        "unicode-age",
+        "unicode-bool",
+        "unicode-case",
+        "unicode-gencat",
+        "unicode-perl",
+        "unicode-script",
+        "unicode-segment",
+        "unicode-word-boundary"
+      ]
+    },
+    {
+      "name": "regex-syntax",
+      "version": "0.8.11",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std",
+        "unicode",
+        "unicode-age",
+        "unicode-bool",
+        "unicode-case",
+        "unicode-gencat",
+        "unicode-perl",
+        "unicode-script",
+        "unicode-segment"
+      ]
+    },
+    {
+      "name": "regex",
+      "version": "1.13.1",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "perf",
+        "perf-backtrack",
+        "perf-cache",
+        "perf-dfa",
+        "perf-inline",
+        "perf-literal",
+        "perf-onepass",
+        "std",
+        "unicode",
+        "unicode-age",
+        "unicode-bool",
+        "unicode-case",
+        "unicode-gencat",
+        "unicode-perl",
+        "unicode-script",
+        "unicode-segment"
+      ]
+    },
+    {
+      "name": "rustversion",
+      "version": "1.0.23",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "scopeguard",
+      "version": "1.2.0",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "serde",
+      "version": "1.0.229",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "derive",
+        "rc",
+        "serde_derive",
+        "std"
+      ]
+    },
+    {
+      "name": "serde_core",
+      "version": "1.0.229",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "rc",
+        "result",
+        "std"
+      ]
+    },
+    {
+      "name": "serde_derive",
+      "version": "1.0.229",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ]
+    },
+    {
+      "name": "serde_json",
+      "version": "1.0.154",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "float_roundtrip",
+        "indexmap",
+        "preserve_order",
+        "raw_value",
+        "std",
+        "unbounded_depth"
+      ]
+    },
+    {
+      "name": "slab",
+      "version": "0.4.12",
+      "license": "MIT",
+      "features": [
+        "std"
+      ]
+    },
+    {
+      "name": "smallvec",
+      "version": "1.16.3",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "const_generics",
+        "const_new",
+        "union"
+      ]
+    },
+    {
+      "name": "strum",
+      "version": "0.28.0",
+      "license": "MIT",
+      "features": [
+        "default",
+        "derive",
+        "std",
+        "strum_macros"
+      ]
+    },
+    {
+      "name": "strum_macros",
+      "version": "0.28.0",
+      "license": "MIT",
+      "features": []
+    },
+    {
+      "name": "syn",
+      "version": "2.0.119",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "clone-impls",
+        "default",
+        "derive",
+        "extra-traits",
+        "full",
+        "parsing",
+        "printing",
+        "proc-macro",
+        "visit"
+      ]
+    },
+    {
+      "name": "syn",
+      "version": "3.0.9",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "clone-impls",
+        "default",
+        "derive",
+        "extra-traits",
+        "fold",
+        "full",
+        "parsing",
+        "printing",
+        "proc-macro",
+        "visit",
+        "visit-mut"
+      ]
+    },
+    {
+      "name": "unicode-general-category",
+      "version": "1.1.0",
+      "license": "Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.27",
+      "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "features": []
+    },
+    {
+      "name": "uuid-simd",
+      "version": "0.8.0",
+      "license": "MIT",
+      "features": [
+        "alloc",
+        "detect",
+        "std"
+      ]
+    },
+    {
+      "name": "version_check",
+      "version": "0.9.5",
+      "license": "MIT/Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "vsimd",
+      "version": "0.8.0",
+      "license": "MIT",
+      "features": [
+        "alloc",
+        "detect",
+        "std"
+      ]
+    },
+    {
+      "name": "wasip2",
+      "version": "1.0.4+wasi-0.2.12",
+      "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "features": []
+    },
+    {
+      "name": "wasm-bindgen-macro-support",
+      "version": "0.2.129",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "wasm-bindgen-macro",
+      "version": "0.2.129",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "wasm-bindgen-shared",
+      "version": "0.2.129",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "wasm-bindgen",
+      "version": "0.2.129",
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ]
+    },
+    {
+      "name": "windows-link",
+      "version": "0.2.1",
+      "license": "MIT OR Apache-2.0",
+      "features": []
+    },
+    {
+      "name": "wit-bindgen",
+      "version": "0.57.1",
+      "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "features": []
+    },
+    {
+      "name": "zerocopy-derive",
+      "version": "0.8.63",
+      "license": "BSD-2-Clause OR Apache-2.0 OR MIT",
+      "features": []
+    },
+    {
+      "name": "zerocopy",
+      "version": "0.8.63",
+      "license": "BSD-2-Clause OR Apache-2.0 OR MIT",
+      "features": [
+        "simd"
+      ]
+    },
+    {
+      "name": "zmij",
+      "version": "1.0.23",
+      "license": "MIT",
+      "features": []
+    }
+  ],
+  "specIssuesRemoved": [
+    9,
+    10,
+    12
+  ],
+  "specIssuesRetained": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    11
+  ]
+}

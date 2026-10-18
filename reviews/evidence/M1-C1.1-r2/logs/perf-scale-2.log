@@ -1,0 +1,28 @@
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.18s
+     Running `target\release\examples\scale.exe`
+{
+  "tool": "crates/model/examples/scale.rs",
+  "profile": "release",
+  "os": "windows",
+  "arch": "x86_64",
+  "timesAreWallClockMs": true,
+  "commit": "see receipt",
+  "measurements": {
+    "drawingJsonBytes": 28568777,
+    "drawing100kParseValidateMs": 981.915,
+    "palette10kParseValidateMs": 42.147,
+    "drawings10kParseValidateMs": 39.238,
+    "elements1kParseValidateMs": 14.91,
+    "documentAssembleAndCheckMs": 1218.357,
+    "objectCount": 121092,
+    "drawingCanonicalWriteMs": 684.371,
+    "drawingObjectJsonDepthAllWithPathsMs": 894.641,
+    "documentCloneMs": 0.863,
+    "drawingEntryRawJsonMs": 410.618,
+    "drawingOwnViewsMs": 588.596,
+    "diffWholeDocumentNoSharedEntriesMs": 3157.053,
+    "diffWholeDocumentChanges": 1,
+    "diffOneStrokeIn100kStrokeEntryMs": 1532.724,
+    "diffOneStrokeChangedObjects": 1
+  }
+}

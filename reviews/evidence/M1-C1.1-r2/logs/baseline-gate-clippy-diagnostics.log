@@ -1,0 +1,47 @@
+    Checking smallvec v1.16.3
+   Compiling getrandom v0.4.3
+   Compiling crc32fast v1.5.2
+   Compiling crossbeam-utils v0.8.23
+    Checking parking_lot_core v0.9.12
+    Checking icu_normalizer v2.3.0
+    Checking octotablet v0.1.0
+   Compiling uuid v1.28.0
+   Compiling flate2 v1.1.10
+    Checking parking_lot v0.12.5
+    Checking idna_adapter v1.2.2
+   Compiling cfb v0.14.0
+   Compiling schemars v0.8.22
+    Checking referencing v0.59.0
+    Checking idna v1.1.0
+   Compiling png v0.17.16
+   Compiling png v0.18.1
+    Checking url v2.5.8
+   Compiling infer v0.22.0
+    Checking jsonschema v0.59.0
+    Checking crossbeam-channel v0.5.17
+    Checking urlpattern v0.6.0
+   Compiling ico v0.5.0
+   Compiling tauri-utils v2.10.2
+    Checking tao v0.37.1
+    Checking muda v0.20.0
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\model)
+    Checking tauri-runtime v2.12.2
+    Checking tauri-runtime-wry v2.12.2
+   Compiling tauri-build v2.7.3
+   Compiling tauri-codegen v2.7.3
+   Compiling tauri v2.12.4
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\desktop\src-tauri)
+   Compiling tauri-macros v2.7.3
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\anim)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\colour)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\vector)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\persist)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\registry)
+    Checking tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\audio)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\fx)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\executor)
+    Checking tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\lipsync)
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\render)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\io)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\engine)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 11.19s

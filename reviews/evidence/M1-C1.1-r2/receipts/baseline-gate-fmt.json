@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cargo",
+    "fmt",
+    "--all",
+    "--check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:35:56.664255+00:00",
+  "elapsed_seconds": 0.5199437999981456,
+  "exit_code": 0,
+  "log": "logs\\baseline-gate-fmt.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "proptest_seed": "1182712"
+}

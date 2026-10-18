@@ -1,0 +1,220 @@
+diff --git a/crates/engine/tests/c11_r1_wire.rs b/crates/engine/tests/c11_r1_wire.rs
+index a8c4d9e..6f181c1 100644
+--- a/crates/engine/tests/c11_r1_wire.rs
++++ b/crates/engine/tests/c11_r1_wire.rs
+@@ -5,8 +5,13 @@ use tt_engine::wire::{from_wire_json, to_wire_json};
+ #[test]
+ fn opaque_json_integer_outside_u64_is_not_silently_rounded() {
+     let text = r#"{"com.example.tool":{"n":-18446744073709551615}}"#;
+-    let v: Value = from_wire_json(text).unwrap();
+-    assert_eq!(to_wire_json(&v).unwrap(), text, "opaque extension integer loses precision in Rust");
++    // Amended per the orchestrator's C1.1 round-1 ruling on C11-R1-07 ("must be lossless or typed error"; precedent
++    // C01-R1-04): the builder chose the typed error, so the reviewer's lossless assertion now applies whenever the
++    // text is accepted, and a rejection must be the typed `arg.invalid`. Rounding remains a failure either way.
++    match from_wire_json::<Value>(text) {
++        Ok(v) => assert_eq!(to_wire_json(&v).unwrap(), text, "opaque extension integer loses precision in Rust"),
++        Err(e) => assert_eq!(e.code, "arg.invalid", "an inexact integer literal is a typed error"),
++    }
+ }
+ 
+ #[test]
+diff --git a/crates/engine/tests/wire_corpus.rs b/crates/engine/tests/wire_corpus.rs
+new file mode 100644
+index 0000000..210fc7e
+--- /dev/null
++++ b/crates/engine/tests/wire_corpus.rs
+@@ -0,0 +1,62 @@
++//! The shared hostile-JSON corpus (C11-R1-17): the engine's text reader accepts and rejects exactly the texts the
++//! front end's `parseWireJson` does (`desktop/src/ipc/wireCorpus.test.ts` runs the same file).
++#![allow(clippy::unwrap_used, clippy::panic, reason = "test")]
++use serde_json::Value;
++use tt_engine::wire::{from_wire_json, to_wire_json};
++
++fn corpus() -> Value {
++    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/wire/hostile-json.json");
++    serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap()
++}
++
++fn text(case: &Value) -> String {
++    match case.get("nest") {
++        Some(n) => {
++            let count = usize::try_from(n["count"].as_u64().unwrap()).unwrap();
++            format!(
++                "{}{}{}",
++                n["open"].as_str().unwrap().repeat(count),
++                n["inner"].as_str().unwrap(),
++                n["close"].as_str().unwrap().repeat(count)
++            )
++        }
++        None => case["text"].as_str().unwrap().to_owned(),
++    }
++}
++
++#[test]
++fn the_corpus_depth_is_the_engine_limit() {
++    assert_eq!(corpus()["maxDepth"], tt_model::json_text::MAX_TEXT_DEPTH);
++}
++
++#[test]
++fn every_hostile_text_is_rejected_with_a_typed_error() {
++    let c = corpus();
++    let cases = c["reject"].as_array().unwrap();
++    assert!(cases.len() > 50);
++    for case in cases {
++        match from_wire_json::<Value>(&text(case)) {
++            Ok(v) => panic!("accepted {}: {v}", case["why"]),
++            Err(e) => assert_eq!(e.code, "arg.invalid", "{}", case["why"]),
++        }
++    }
++}
++
++#[test]
++fn every_valid_text_is_accepted_and_written_canonically() {
++    let c = corpus();
++    for case in c["accept"].as_array().unwrap() {
++        let v: Value = from_wire_json(&text(case)).unwrap_or_else(|e| panic!("rejected {}: {e:?}", case["why"]));
++        assert_eq!(to_wire_json(&v).unwrap(), case["canonical"].as_str().unwrap(), "{}", case["why"]);
++    }
++}
++
++#[test]
++fn invalid_utf8_bodies_are_rejected() {
++    let c = corpus();
++    for case in c["bytes"].as_array().unwrap() {
++        let bytes: Vec<u8> =
++            case["bytes"].as_array().unwrap().iter().map(|b| u8::try_from(b.as_u64().unwrap()).unwrap()).collect();
++        assert!(std::str::from_utf8(&bytes).is_err(), "{}", case["why"]);
++    }
++}
+diff --git a/crates/model/tests/c11_r1_adversarial.rs b/crates/model/tests/c11_r1_adversarial.rs
+index 2bbf82c..e658719 100644
+--- a/crates/model/tests/c11_r1_adversarial.rs
++++ b/crates/model/tests/c11_r1_adversarial.rs
+@@ -457,7 +457,9 @@ fn ten_megabyte_drawing_validation_measurement() {
+ #[test]
+ fn jsonschema_integer_multiple_of_does_not_round_before_testing() {
+     let s = json!({"type":"integer","multipleOf":5});
+-    let validator = jsonschema::JSONSchema::options().with_draft(jsonschema::Draft::Draft202012).compile(&s).unwrap();
++    // Ported by the builder to the jsonschema 0.59 API after the C11-R1-18 upgrade (`JSONSchema::options().compile`
++    // no longer exists); the schema, the draft and both assertions are unchanged.
++    let validator = jsonschema::options().with_draft(jsonschema::Draft::Draft202012).build(&s).unwrap();
+     assert!(validator.is_valid(&json!(9007199254740995u64)), "exact integer divisible by 5 rejected");
+     assert!(!validator.is_valid(&json!(9007199254740999u64)), "integer not divisible by 5 accepted");
+ }
+diff --git a/crates/model/tests/golden/numbers.json b/crates/model/tests/golden/numbers.json
+index 856629a..1b9f1fd 100644
+--- a/crates/model/tests/golden/numbers.json
++++ b/crates/model/tests/golden/numbers.json
+@@ -645,7 +645,7 @@
+     ["40bee64d0e560419", "7910.301"],
+     ["55eb87398e4b3c78", "7.891992377149377e+105"],
+     ["05a481d90ccac89c", "1.7652280285153028e-281"],
+-    ["43fc93418ad51291", "32944984306792075000"],
++    ["43fc93418ad51291", "32944984306792075264"],
+     ["c11c993000000000", "-468556"],
+     ["40ae28795810624e", "3860.237"],
+     ["17e74b46f39e649b", "1.5955037376315175e-193"],
+@@ -825,7 +825,7 @@
+     ["40a0d2a978d4fdf4", "2153.331"],
+     ["522a951d4a97df49", "6.610042045353736e+87"],
+     ["059f1b779ba77bb8", "1.338832661122371e-281"],
+-    ["443b9651f62d72a5", "508893799244018000000"],
++    ["443b9651f62d72a5", "508893799244018024448"],
+     ["c0e8080000000000", "-49216"],
+     ["40c0d67f3b645a1d", "8620.994"],
+     ["2af2e89b8cc27112", "8.44231181623011e-102"],
+@@ -933,7 +933,7 @@
+     ["717143f304cf0229", "2.810696189163087e+238"],
+     ["4122e45a00000000", "619053"],
+     ["40c22b2b22d0e560", "9302.337"],
+-    ["c3e19e60862bc7bf", "-10156466194731629000"],
++    ["c3e19e60862bc7bf", "-10156466194731628544"],
+     ["059eb7c8ef727b4e", "1.3220738881382589e-281"],
+     ["ad4d2a4c73a4d5de", "-1.7896854424585674e-90"],
+     ["412c766a00000000", "932661"],
+@@ -1725,7 +1725,7 @@
+     ["40a109b126e978d5", "2180.846"],
+     ["628ffc874c5a1f6a", "5.8943174184326744e+166"],
+     ["0599403763237c5a", "1.0867758664396202e-281"],
+-    ["c3eef0b82763ad2e", "-17835874358911398000"],
++    ["c3eef0b82763ad2e", "-17835874358911397888"],
+     ["41220a6800000000", "591156"],
+     ["40c032653f7ced91", "8292.791"],
+     ["93eba707113c4370", "-1.0267547363850917e-212"],
+@@ -1750,7 +1750,7 @@
+     ["40c2338439581062", "9319.033"],
+     ["2fe4cec5266536a8", "5.615586497273032e-78"],
+     ["057aadcf26f674a6", "2.870600003493474e-282"],
+-    ["441e46918c366251", "139621830457692540000"],
++    ["441e46918c366251", "139621830457692536832"],
+     ["412a5d2a00000000", "863893"],
+     ["40c1688f5c28f5c3", "8913.12"],
+     ["a1cab52af67d0972", "-6.683876034467384e-146"],
+@@ -1883,7 +1883,7 @@
+     ["32285a5d36056d91", "4.516512048032042e-67"],
+     ["4122279400000000", "594890"],
+     ["40ab7772b020c49c", "3515.724"],
+-    ["c36a9a4f029b15ef", "-59904108250312570"],
++    ["c36a9a4f029b15ef", "-59904108250312568"],
+     ["05a1b7c137cde415", "1.5251187568534706e-281"],
+     ["392d749489f2f8e8", "2.8364510279079804e-33"],
+     ["411a716400000000", "433241"],
+@@ -1898,7 +1898,7 @@
+     ["1628374a5013b4c2", "6.178953482283761e-202"],
+     ["c121522a00000000", "-567573"],
+     ["40bccc96c8b43958", "7372.589"],
+-    ["c3ecfb2cf92f97de", "-16706498407786541000"],
++    ["c3ecfb2cf92f97de", "-16706498407786541056"],
+     ["0590a401cc0a52dd", "7.162001648016155e-282"],
+     ["5197ecd83dc3b19f", "1.1619673099352777e+85"],
+     ["c114941000000000", "-337156"],
+diff --git a/crates/model/tests/golden/sample/drawings/dr_01K742SG0KKMCAP9X1E6Z5P4SW.json b/crates/model/tests/golden/sample/drawings/dr_01K742SG0KKMCAP9X1E6Z5P4SW.json
+index 8ceb324..dcd66b1 100644
+--- a/crates/model/tests/golden/sample/drawings/dr_01K742SG0KKMCAP9X1E6Z5P4SW.json
++++ b/crates/model/tests/golden/sample/drawings/dr_01K742SG0KKMCAP9X1E6Z5P4SW.json
+@@ -199,8 +199,8 @@
+   "createdAt": "2026-10-17T09:30:12.345Z",
+   "ext": {
+     "com.example.tool": {
+-      "stage": "clean-up",
+-      "pass": 2
++      "pass": 2,
++      "stage": "clean-up"
+     }
+   }
+ }
+diff --git a/crates/model/tests/properties.rs b/crates/model/tests/properties.rs
+index a4a4f38..c67d8a1 100644
+--- a/crates/model/tests/properties.rs
++++ b/crates/model/tests/properties.rs
+@@ -66,6 +66,8 @@ fn stroke_json() -> impl Strategy<Value = Value> {
+     (prop::sample::select(vec!["brush", "pencil", "invisible"]), any::<bool>(), prop::collection::vec(prop::array::uniform6(any_double()), 2..12), 0.0f64..50.0)
+         .prop_map(|(kind, closed, points, thickness)| {
+             let pts: Vec<Value> = points.iter().map(|p| json!(p.to_vec())).collect();
++            // Brush outlines are always closed (10 §4.9, C11-R1-05).
++            let closed = closed || kind == "brush";
+             json!({"id": "s42", "type": "stroke", "rev": 1, "kind": kind, "closed": closed, "points": pts,
+                    "colourId": if kind == "invisible" { Value::Null } else { json!("col_a") },
+                    "fillMatrix": null,
+diff --git a/tests/adversarial/guards.mjs b/tests/adversarial/guards.mjs
+index 3aea32b..c9b7a02 100644
+--- a/tests/adversarial/guards.mjs
++++ b/tests/adversarial/guards.mjs
+@@ -35,12 +35,15 @@ if (process.argv[2] === "licensing") {
+   const table = /^\[licenses\][\s\S]*?^allow\s*=\s*\[([\s\S]*?)\]/m.exec(deny);
+   assert(table, "deny.toml must have a [licenses] allow list");
+   const rust = [...table[1].replace(/#.*$/gm, "").matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+-  const approved = ["MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "MPL-2.0", "Unicode-3.0", "0BSD"];
++  // Amended again by the builder in M1 C1.1 round 1 per the orchestrator's C11-R1-18 ruling (2026-10-18): MIT-0 is
++  // approved (borrow-or-share, needed by current jsonschema releases), so it moves from the rejected controls below
++  // into the approved set; every other control is unchanged.
++  const approved = ["MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "MPL-2.0", "Unicode-3.0", "0BSD", "MIT-0"];
+   assert.deepEqual([...ALLOWED].sort(), [...rust].sort(), "C01-R1-01: JS and Rust allow-lists drifted");
+   assert.deepEqual([...rust].sort(), [...approved].sort(), "C01-R1-01: allow-list differs from the approved set");
+   const adr = readFileSync(new URL("../../docs/decisions/ADR-0003-licensing-policy.md", import.meta.url), "utf8");
+   for (const id of approved) assert(adr.includes(id), `ADR-0003 must list ${id}`);
+-  for (const outside of ["Unlicense", "CC0-1.0", "MIT-0", "BlueOak-1.0.0", "LGPL-2.1-only", "GPL-3.0-only", "AGPL-3.0-only"]) {
++  for (const outside of ["Unlicense", "CC0-1.0", "BlueOak-1.0.0", "LGPL-2.1-only", "GPL-3.0-only", "AGPL-3.0-only"]) {
+     assert.equal(satisfies(outside), false, `C01-R1-01: ${outside} is outside the approved allow-list`);
+   }
+ } else if (process.argv[2] === "imports") {
