@@ -19,6 +19,7 @@ Recorded per plan §3.2 (no unrecorded global installs).
 | Tool | How | Why |
 |---|---|---|
 | `cargo-deny` 0.20.2 | `cargo install --locked cargo-deny` (into `~/.cargo/bin`) | licence/advisory/source gate (`deny.toml`, ADR-0003) |
+| rustup target `aarch64-apple-darwin` for toolchain 1.98.1 | `rustup target add aarch64-apple-darwin --toolchain 1.98.1` | attempted cross type-check of the macOS code (C0.2); it stops at C build scripts that need the macOS SDK, so the macOS CI runner is the real compile check |
 
 The Tauri CLI is **not** global: it is the `@tauri-apps/cli` dev dependency of `desktop/` (`pnpm --dir desktop tauri …`).
 Tauri downloads NSIS into its own cache on the first Windows bundle build.
@@ -41,6 +42,8 @@ pnpm --dir desktop tauri build --bundles nsis   # Windows installer (macOS: --bu
 cargo run -p tt-headless -- --selftest    # headless engine self-test
 python scripts/check-headless-deps.py target/release/toontown-headless.exe   # after cargo build --release -p tt-headless
 target/release/toontown.exe --ipc-bench out.json   # automated IPC latency benchmark (M0 diagnostics)
+target/release/toontown.exe --spike tablet --spike-log t.json   # C0.2 tablet spike page (add --spike-auto on Windows
+                                                                 # for the synthetic-pen run; needs an uncovered desktop)
 ```
 
 ## Repository rules

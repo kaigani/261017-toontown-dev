@@ -140,10 +140,19 @@ jobs:
           cat ipc-bench.json
           $PY -c "import json,sys; r=json.load(open('ipc-bench.json')); sys.exit(0 if r.get('frontend',{}).get('ok') else 1)"
 
+      - name: C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)
+        if: runner.os == 'Windows'
+        continue-on-error: true
+        timeout-minutes: 4
+        run: |
+          target/release/toontown.exe --spike tablet --spike-log "$PWD/tablet-spike-windows.json" --spike-auto
+          python -c "import json; r=json.load(open('tablet-spike-windows.json')); [print(m['message']) for m in r['statusLog']]; print(json.dumps(r['simulations'], indent=1)); print(json.dumps(r['summary']['web'], indent=1)); print(json.dumps(r['summary']['native'], indent=1))"
+
       - name: Collect artifacts
         run: |
           mkdir -p out
           cp ipc-bench.json out/
+          if [ -f tablet-spike-windows.json ]; then cp tablet-spike-windows.json out/; fi
           if [ "$RUNNER_OS" = "Windows" ]; then
             cp target/release/bundle/nsis/*.exe out/
             cp target/release/toontown.exe out/
