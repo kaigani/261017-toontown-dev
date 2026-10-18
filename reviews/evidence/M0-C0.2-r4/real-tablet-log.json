@@ -1,0 +1,992 @@
+{
+  "environment": {
+    "coalescedApi": true,
+    "devicePixelRatio": 1,
+    "gpu": {
+      "architecture": "lovelace",
+      "available": true,
+      "description": "",
+      "device": "",
+      "vendor": "nvidia"
+    },
+    "hardwareConcurrency": 32,
+    "host": {
+      "arch": "x86_64",
+      "cpuCount": 32,
+      "os": "windows",
+      "osVersion": "Microsoft Windows [Version 10.0.26200.9711]",
+      "webviewVersion": "155.0.4283.60",
+      "window": {
+        "innerHeight": 780,
+        "innerWidth": 1280,
+        "innerX": 60,
+        "innerY": 103,
+        "scaleFactor": 1
+      }
+    },
+    "hostError": null,
+    "mode": {
+      "auto": true,
+      "logPath": "C:\\Users\\kaiga\\work\\review\\m0-c02-r4\\reviews\\evidence\\M0-C0.2-r4\\real-tablet-log.json",
+      "name": "tablet",
+      "nativeBackend": "octotablet-ink",
+      "penSimulation": true
+    },
+    "perfNowAtSave": 24763.39999997616,
+    "screen": {
+      "height": 1080,
+      "width": 1920
+    },
+    "timeOrigin": 1792319262472.3,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0",
+    "viewport": {
+      "height": 780,
+      "width": 1280
+    }
+  },
+  "matrixSize": {
+    "height": 275,
+    "width": 1012
+  },
+  "metadata": {
+    "computer": "",
+    "driver": "",
+    "notes": "",
+    "osVersion": "",
+    "tablet": "",
+    "tester": "",
+    "webkit": ""
+  },
+  "native": {
+    "hostDropped": 0,
+    "invalidBatches": 0,
+    "maxSamples": 200000,
+    "packets": [],
+    "sendFailures": 0,
+    "truncated": 0
+  },
+  "nativeInfo": {
+    "backend": "octotablet-ink",
+    "deviceClock": "octotablet FrameTimestamp, ms since an arbitrary epoch",
+    "tablets": [],
+    "timestampGranularityMs": 1,
+    "window": {
+      "innerHeight": 780,
+      "innerWidth": 1280,
+      "innerX": 60,
+      "innerY": 103,
+      "scaleFactor": 1
+    }
+  },
+  "runs": [
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+      "label": "webview sine 240 Hz",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 2217.300000011921,
+      "perfStart": 1910.0999999642372,
+      "probe": null,
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "sine",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:44.382Z",
+      "target": "webview",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+      "label": "webview sine 240 Hz (retry)",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 4026.599999964237,
+      "perfStart": 3719.699999988079,
+      "probe": null,
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "sine",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:46.191Z",
+      "target": "webview",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+      "label": "webview sine 500 Hz",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 5149.699999988079,
+      "perfStart": 4830.699999988079,
+      "probe": null,
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 500,
+        "left": 8,
+        "pattern": "sine",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:47.302Z",
+      "target": "webview",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+      "label": "webview sine 500 Hz (retry)",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 6971.699999988079,
+      "perfStart": 6651,
+      "probe": null,
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 500,
+        "left": 8,
+        "pattern": "sine",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:49.123Z",
+      "target": "webview",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+      "label": "webview zigzag 240 Hz",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 8098,
+      "perfStart": 7784.099999964237,
+      "probe": null,
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "zigzag",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:50.256Z",
+      "target": "webview",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+      "label": "webview zigzag 240 Hz (retry)",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 9914.30000001192,
+      "perfStart": 9600.69999998808,
+      "probe": null,
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "zigzag",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:52.072Z",
+      "target": "webview",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+      "label": "webview stationary 240 Hz",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 11031,
+      "perfStart": 10717.5,
+      "probe": null,
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "stationary",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:53.189Z",
+      "target": "webview",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+      "label": "webview stationary 240 Hz (retry)",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 12846.599999964235,
+      "perfStart": 12533,
+      "probe": null,
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "stationary",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:55.005Z",
+      "target": "webview",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+      "label": "webview pressure-only 240 Hz",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 13968.80000001192,
+      "perfStart": 13648.399999976158,
+      "probe": null,
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "pressureOnly",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:56.120Z",
+      "target": "webview",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+      "label": "webview pressure-only 240 Hz (retry)",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 15791.5,
+      "perfStart": 15471.19999998808,
+      "probe": null,
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "pressureOnly",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:57.943Z",
+      "target": "webview",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": null,
+      "label": "native window sine 240 Hz, no RTS",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 17417.899999976158,
+      "perfStart": 16597.30000001192,
+      "probe": {
+        "error": {
+          "code": "spike.notForeground",
+          "details": {},
+          "message": "the target must be visible and uncovered to inject pen input (target 0x8107ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+        },
+        "listeners": {
+          "rawInput": {
+            "deviceNames": [],
+            "devices": 0,
+            "error": null,
+            "hidReports": 0,
+            "messages": 0,
+            "other": 0,
+            "registered": true,
+            "reportBytes": 0,
+            "reports": [],
+            "truncated": 0
+          },
+          "rts": null,
+          "wmPointer": {
+            "down": 0,
+            "enter": 0,
+            "entries": [],
+            "historyEntries": 0,
+            "historyErrors": 0,
+            "leave": 0,
+            "truncated": 0,
+            "up": 0,
+            "update": 0
+          }
+        },
+        "report": null,
+        "rts": false,
+        "target": "nativeWindow"
+      },
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "sine",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:27:59.069Z",
+      "target": "nativeWindow",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": null,
+      "label": "native window stationary 240 Hz, no RTS",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 19041.599999964237,
+      "perfStart": 18219.89999997616,
+      "probe": {
+        "error": {
+          "code": "spike.notForeground",
+          "details": {},
+          "message": "the target must be visible and uncovered to inject pen input (target 0x8207ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+        },
+        "listeners": {
+          "rawInput": {
+            "deviceNames": [],
+            "devices": 0,
+            "error": null,
+            "hidReports": 0,
+            "messages": 0,
+            "other": 0,
+            "registered": true,
+            "reportBytes": 0,
+            "reports": [],
+            "truncated": 0
+          },
+          "rts": null,
+          "wmPointer": {
+            "down": 0,
+            "enter": 0,
+            "entries": [],
+            "historyEntries": 0,
+            "historyErrors": 0,
+            "leave": 0,
+            "truncated": 0,
+            "up": 0,
+            "update": 0
+          }
+        },
+        "report": null,
+        "rts": false,
+        "target": "nativeWindow"
+      },
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "stationary",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:28:00.692Z",
+      "target": "nativeWindow",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": null,
+      "label": "native window pressure-only 240 Hz, no RTS",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 20680.099999964237,
+      "perfStart": 19846.30000001192,
+      "probe": {
+        "error": {
+          "code": "spike.notForeground",
+          "details": {},
+          "message": "the target must be visible and uncovered to inject pen input (target 0x8307ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+        },
+        "listeners": {
+          "rawInput": {
+            "deviceNames": [],
+            "devices": 0,
+            "error": null,
+            "hidReports": 0,
+            "messages": 0,
+            "other": 0,
+            "registered": true,
+            "reportBytes": 0,
+            "reports": [],
+            "truncated": 0
+          },
+          "rts": null,
+          "wmPointer": {
+            "down": 0,
+            "enter": 0,
+            "entries": [],
+            "historyEntries": 0,
+            "historyErrors": 0,
+            "leave": 0,
+            "truncated": 0,
+            "up": 0,
+            "update": 0
+          }
+        },
+        "report": null,
+        "rts": false,
+        "target": "nativeWindow"
+      },
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "pressureOnly",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:28:02.318Z",
+      "target": "nativeWindow",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": null,
+      "label": "native window sine 240 Hz",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 22318,
+      "perfStart": 21482.89999997616,
+      "probe": {
+        "error": {
+          "code": "spike.notForeground",
+          "details": {},
+          "message": "the target must be visible and uncovered to inject pen input (target 0x8407ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+        },
+        "listeners": {
+          "rawInput": {
+            "deviceNames": [],
+            "devices": 0,
+            "error": null,
+            "hidReports": 0,
+            "messages": 0,
+            "other": 0,
+            "registered": true,
+            "reportBytes": 0,
+            "reports": [],
+            "truncated": 0
+          },
+          "rts": {
+            "downs": 0,
+            "error": null,
+            "frames": 0,
+            "poses": 0,
+            "pressures": [],
+            "proximityIn": 0,
+            "proximityOut": 0,
+            "tablets": [],
+            "truncated": 0,
+            "ups": 0
+          },
+          "wmPointer": {
+            "down": 0,
+            "enter": 0,
+            "entries": [],
+            "historyEntries": 0,
+            "historyErrors": 0,
+            "leave": 0,
+            "truncated": 0,
+            "up": 0,
+            "update": 0
+          }
+        },
+        "report": null,
+        "rts": true,
+        "target": "nativeWindow"
+      },
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "sine",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:28:03.955Z",
+      "target": "nativeWindow",
+      "webRange": [
+        0,
+        0
+      ]
+    },
+    {
+      "canvasRect": {
+        "height": 346.8125,
+        "left": 8,
+        "top": 58,
+        "width": 1264
+      },
+      "error": null,
+      "label": "native window stationary 240 Hz",
+      "nativeRange": [
+        0,
+        0
+      ],
+      "perfEnd": 23958.19999998808,
+      "perfStart": 23122.099999964237,
+      "probe": {
+        "error": {
+          "code": "spike.notForeground",
+          "details": {},
+          "message": "the target must be visible and uncovered to inject pen input (target 0xc70114, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+        },
+        "listeners": {
+          "rawInput": {
+            "deviceNames": [],
+            "devices": 0,
+            "error": null,
+            "hidReports": 0,
+            "messages": 0,
+            "other": 0,
+            "registered": true,
+            "reportBytes": 0,
+            "reports": [],
+            "truncated": 0
+          },
+          "rts": {
+            "downs": 0,
+            "error": null,
+            "frames": 0,
+            "poses": 0,
+            "pressures": [],
+            "proximityIn": 0,
+            "proximityOut": 0,
+            "tablets": [],
+            "truncated": 0,
+            "ups": 0
+          },
+          "wmPointer": {
+            "down": 0,
+            "enter": 0,
+            "entries": [],
+            "historyEntries": 0,
+            "historyErrors": 0,
+            "leave": 0,
+            "truncated": 0,
+            "up": 0,
+            "update": 0
+          }
+        },
+        "report": null,
+        "rts": true,
+        "target": "nativeWindow"
+      },
+      "rawInput": null,
+      "report": null,
+      "request": {
+        "frames": 1024,
+        "height": 275,
+        "hz": 240,
+        "left": 8,
+        "pattern": "stationary",
+        "top": 58,
+        "width": 1012
+      },
+      "startedAt": "2026-10-18T10:28:05.594Z",
+      "target": "nativeWindow",
+      "webRange": [
+        0,
+        0
+      ]
+    }
+  ],
+  "savedAt": "2026-10-18T10:28:07.235Z",
+  "simulations": [],
+  "source": "auto",
+  "spike": "tablet",
+  "statusLog": [
+    {
+      "at": "2026-10-18T10:27:43.877Z",
+      "message": "Native listener running (octotablet-ink)."
+    },
+    {
+      "at": "2026-10-18T10:27:44.382Z",
+      "message": "webview sine 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:44.689Z",
+      "message": "webview sine 240 Hz failed: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "at": "2026-10-18T10:27:46.191Z",
+      "message": "webview sine 240 Hz (retry): injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:46.498Z",
+      "message": "webview sine 240 Hz (retry) failed: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "at": "2026-10-18T10:27:47.302Z",
+      "message": "webview sine 500 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:47.622Z",
+      "message": "webview sine 500 Hz failed: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "at": "2026-10-18T10:27:49.123Z",
+      "message": "webview sine 500 Hz (retry): injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:49.443Z",
+      "message": "webview sine 500 Hz (retry) failed: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "at": "2026-10-18T10:27:50.256Z",
+      "message": "webview zigzag 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:50.570Z",
+      "message": "webview zigzag 240 Hz failed: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "at": "2026-10-18T10:27:52.072Z",
+      "message": "webview zigzag 240 Hz (retry): injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:52.386Z",
+      "message": "webview zigzag 240 Hz (retry) failed: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "at": "2026-10-18T10:27:53.189Z",
+      "message": "webview stationary 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:53.503Z",
+      "message": "webview stationary 240 Hz failed: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "at": "2026-10-18T10:27:55.005Z",
+      "message": "webview stationary 240 Hz (retry): injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:55.318Z",
+      "message": "webview stationary 240 Hz (retry) failed: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "at": "2026-10-18T10:27:56.120Z",
+      "message": "webview pressure-only 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:56.441Z",
+      "message": "webview pressure-only 240 Hz failed: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "at": "2026-10-18T10:27:57.943Z",
+      "message": "webview pressure-only 240 Hz (retry): injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:58.263Z",
+      "message": "webview pressure-only 240 Hz (retry) failed: spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "at": "2026-10-18T10:27:59.069Z",
+      "message": "native window sine 240 Hz, no RTS: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:27:59.890Z",
+      "message": "native window sine 240 Hz, no RTS: probe finished."
+    },
+    {
+      "at": "2026-10-18T10:28:00.692Z",
+      "message": "native window stationary 240 Hz, no RTS: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:28:01.513Z",
+      "message": "native window stationary 240 Hz, no RTS: probe finished."
+    },
+    {
+      "at": "2026-10-18T10:28:02.318Z",
+      "message": "native window pressure-only 240 Hz, no RTS: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:28:03.152Z",
+      "message": "native window pressure-only 240 Hz, no RTS: probe finished."
+    },
+    {
+      "at": "2026-10-18T10:28:03.955Z",
+      "message": "native window sine 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:28:04.790Z",
+      "message": "native window sine 240 Hz: probe finished."
+    },
+    {
+      "at": "2026-10-18T10:28:05.594Z",
+      "message": "native window stationary 240 Hz: injecting 1024 synthetic pen frames…"
+    },
+    {
+      "at": "2026-10-18T10:28:06.430Z",
+      "message": "native window stationary 240 Hz: probe finished."
+    }
+  ],
+  "summary": {
+    "native": {
+      "clock": "host",
+      "contactSamples": 0,
+      "gaps": 0,
+      "loss": {
+        "basis": "unknown",
+        "note": "unknown, gap heuristic only"
+      },
+      "maxIntervalMs": null,
+      "medianIntervalMs": null,
+      "medianRateHz": null,
+      "pointerTypes": {},
+      "pressure": {
+        "distinct": 0,
+        "levelsImplied": null,
+        "max": null,
+        "min": null,
+        "minStep": null
+      },
+      "rateHz": null,
+      "samples": 0,
+      "strokes": [],
+      "tiltPresent": false,
+      "tiltRangeX": null,
+      "tiltRangeY": null,
+      "twistPresent": false
+    },
+    "web": {
+      "coalescedObserved": false,
+      "coalescedPerDispatch": null,
+      "coalescedSupported": true,
+      "contactSamples": 0,
+      "gaps": 0,
+      "handlerLatencyMs": {
+        "allSamples": null,
+        "newestCoalesced": null,
+        "oldestCoalesced": null
+      },
+      "loss": {
+        "basis": "unknown",
+        "note": "unknown, gap heuristic only"
+      },
+      "maxIntervalMs": null,
+      "medianIntervalMs": null,
+      "medianRateHz": null,
+      "pointerTypes": {},
+      "pressure": {
+        "distinct": 0,
+        "levelsImplied": null,
+        "max": null,
+        "min": null,
+        "minStep": null
+      },
+      "rateHz": null,
+      "samples": 0,
+      "samplesPerFrame": null,
+      "strokes": [],
+      "tiltPresent": false,
+      "tiltRangeX": null,
+      "tiltRangeY": null,
+      "twistPresent": false
+    }
+  },
+  "version": 3,
+  "web": {
+    "contextMenus": [],
+    "frames": [],
+    "maxSamples": 200000,
+    "samples": [],
+    "truncated": 0
+  }
+}

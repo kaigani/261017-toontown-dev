@@ -1,0 +1,40 @@
+## Tablet spike log (version 3)
+
+- userAgent: Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/30.1.3
+- host: macos aarch64, test double, webview test double, CPUs 8
+- GPU (navigator.gpu): {'available': False}
+devicePixelRatio 1, getCoalescedEvents available: False
+native: None, packets 0, invalid batches 0
+- native clock used: host; channel loss: unknown, gap heuristic only; host dropped 0, send failures 0, truncated 0
+- web samples 0, truncated 0; web loss: unknown, gap heuristic only
+- coalescing: API available False, batching observed False, per dispatch -
+- handler - event ms: oldest coalesced -; newest -; all samples -
+- outcome: 11 synthetic runs, 0 ok, 11 explicitly failed
+web path: 0 pen-down strokes
+native path: 0 strokes
+
+### Web path strokes (pointer events)
+
+No contact episodes.
+
+### Native path strokes (host listener, host clock)
+
+No contact episodes.
+
+### Synthetic runs (InjectSyntheticPointerInput; simulation, not tablet hardware)
+
+Geometry: runs DIFFER in screen rectangle - (physical px, [left, top, width, height]).
+
+| run | outcome | pattern (varying axes) | Hz: host / first-to-last | web events: received / missing | WM_POINTER on target (history) | RTS: poses, frames | raw-input sink HID reports (not decoded) | inject call ms p50 |
+|---|---|---|---|---|---|---|---|---|
+| webview sine 240 Hz | **FAILED**: spike.notForeground: fixture covering window | - | - | - | - | - | - | - |
+| webview sine 240 Hz (retry) | **FAILED**: spike.notForeground: fixture covering window | - | - | - | - | - | - | - |
+| webview sine 500 Hz | **FAILED**: spike.geometryChanged: the matrix rectangle is no longer inside the canvas | - | - | - | - | - | - | - |
+| webview zigzag 240 Hz | **FAILED**: spike.geometryChanged: the matrix rectangle is no longer inside the canvas | - | - | - | - | - | - | - |
+| webview stationary 240 Hz | **FAILED**: spike.geometryChanged: the matrix rectangle is no longer inside the canvas | - | - | - | - | - | - | - |
+| webview pressure-only 240 Hz | **FAILED**: spike.geometryChanged: the matrix rectangle is no longer inside the canvas | - | - | - | - | - | - | - |
+| native window sine 240 Hz, no RTS | **FAILED**: spike.geometryChanged: the matrix rectangle is no longer inside the canvas | - | - | - | - | - | - | - |
+| native window stationary 240 Hz, no RTS | **FAILED**: spike.geometryChanged: the matrix rectangle is no longer inside the canvas | - | - | - | - | - | - | - |
+| native window pressure-only 240 Hz, no RTS | **FAILED**: spike.geometryChanged: the matrix rectangle is no longer inside the canvas | - | - | - | - | - | - | - |
+| native window sine 240 Hz | **FAILED**: spike.geometryChanged: the matrix rectangle is no longer inside the canvas | - | - | - | - | - | - | - |
+| native window stationary 240 Hz | **FAILED**: spike.geometryChanged: the matrix rectangle is no longer inside the canvas | - | - | - | - | - | - | - |

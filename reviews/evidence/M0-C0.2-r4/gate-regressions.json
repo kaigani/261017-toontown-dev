@@ -1,0 +1,17 @@
+[
+  {
+    "command": "python tests/adversarial/c02-r3-tooling.py",
+    "exit": 0,
+    "seconds": 0.37
+  },
+  {
+    "command": "python tests/adversarial/c02-r1-tooling.py",
+    "exit": 0,
+    "seconds": 0.63
+  },
+  {
+    "command": "python tests/adversarial/c02-r2-tooling.py",
+    "exit": 0,
+    "seconds": 0.66
+  }
+]

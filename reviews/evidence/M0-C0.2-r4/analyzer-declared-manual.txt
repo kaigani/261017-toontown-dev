@@ -1,0 +1,34 @@
+## Tablet spike log (version 3)
+
+- userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0
+- host: windows x86_64, Microsoft Windows [Version 10.0.26100.33438], webview 154.0.4258.62, CPUs 4
+- GPU (navigator.gpu): {'available': False}
+devicePixelRatio 1, getCoalescedEvents available: True
+native: {'backend': 'octotablet-ink', 'deviceClock': 'octotablet FrameTimestamp, ms since an arbitrary epoch', 'tablets': [], 'timestampGranularityMs': 1, 'window': {'innerHeight': 729, 'innerWidth': 1028, 'innerX': 8, 'innerY': 51, 'scaleFactor': 1}}, packets 0, invalid batches 0
+- native clock used: host; channel loss: unknown, gap heuristic only; host dropped 0, send failures 0, truncated 0
+- web samples 2816, truncated 0; web loss: unknown, gap heuristic only
+- coalescing: API available True, batching observed True, per dispatch p50 4.00 / p95 8.00 / max 10.0
+- handler - event ms: oldest coalesced p50 13.90 / p95 16.20 / max 335.6; newest p50 2.10 / p95 4.40 / max 334.9; all samples p50 8.10 / p95 15.20 / max 335.6
+- outcome: no synthetic runs (manual/hardware log; loss unknown)
+web path: 5 pen-down strokes
+native path: 0 strokes
+
+### Web path strokes (pointer events)
+
+| stroke | pointer | samples | ms | Hz | vs 200 Hz | median / max interval ms | >2x median | pressure levels (distinct / implied) | tilt x / y (deg) | twist range (nonzero) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | pen#2 | 864 | 4666 | 185.0 | below target | 4.20 / 1052.8 | 5 | 864 / 1024 | -60..60 / -60..60 | 0..179 (859) |
+| 2 | pen#3 | 912 | 2021 | 450.8 | meets target | 2.10 / 12.5 | 36 | 912 / 1024 | -60..60 / -60..60 | 0..179 (907) |
+| 3 | pen#4 | 1021 | 4248 | 240.1 | meets target | 4.20 / 6.0 | 0 | 1021 / 1024 | -60..60 / -60..60 | 0..179 (1015) |
+| 4 | pen#5 | 1 | 0 | - | - | - / - | 0 | 1 / - | -60..-60 / 60..60 | 0..0 (0) |
+| 5 | pen#9 | 1 | 0 | - | - | - / - | 0 | 1 / - | 20..20 / -10..-10 | 90..90 (1) |
+
+`*` = episode cut off at the start or end of the capture. `>2x median` is a heuristic, not a loss count.
+
+### Native path strokes (host listener, host clock)
+
+No contact episodes.
+
+### Synthetic runs (InjectSyntheticPointerInput; simulation, not tablet hardware)
+
+No synthetic runs: outcome (b), a manual/hardware log. There is no injection reference, so loss is "unknown, gap heuristic only".

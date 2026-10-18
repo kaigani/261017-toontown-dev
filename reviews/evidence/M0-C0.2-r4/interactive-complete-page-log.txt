@@ -1,0 +1,32 @@
+## Tablet spike log (version 3)
+
+- userAgent: Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/30.1.3
+- host: macos aarch64, test double, webview test double, CPUs 8
+- GPU (navigator.gpu): {'available': False}
+devicePixelRatio 1, getCoalescedEvents available: False
+native: None, packets 0, invalid batches 0
+- native clock used: host; channel loss: unknown, gap heuristic only; host dropped 0, send failures 0, truncated 0
+- web samples 0, truncated 0; web loss: unknown, gap heuristic only
+- coalescing: API available False, batching observed False, per dispatch -
+- handler - event ms: oldest coalesced -; newest -; all samples -
+- outcome: 1 synthetic runs, 1 ok, 0 explicitly failed
+web path: 0 pen-down strokes
+native path: 0 strokes
+
+### Web path strokes (pointer events)
+
+No contact episodes.
+
+### Native path strokes (host listener, host clock)
+
+No contact episodes.
+
+### Synthetic runs (InjectSyntheticPointerInput; simulation, not tablet hardware)
+
+Geometry: all successful runs share screen rectangle [16, 109, 1012, 275] (physical px, [left, top, width, height]).
+
+| run | outcome | pattern (varying axes) | Hz: host / first-to-last | web events: received / missing | WM_POINTER on target (history) | RTS: poses, frames | raw-input sink HID reports (not decoded) | inject call ms p50 |
+|---|---|---|---|---|---|---|---|---|
+| webview sine 240 Hz | ok | sine (position, pressure, tiltX, tiltY, rotation) | 239.097 / 239.094 | 0 / 1024 | not measured (the webview's input window belongs to msedgewebview2.exe) | 0, 0 | - (command.unknown: no such command: spike_raw_input_sink) | 0.075 |
+
+- **webview sine 240 Hz**: rate: saved 239.0965940666826; saved value equals the recomputed host estimator (relative tolerance 1e-09); focus start: foreground this process (Tauri Window, the target), keyboard focus pid 5200 (Chrome_WidgetWin_1); focus end: foreground this process (Tauri Window, the target), keyboard focus pid 5200 (Chrome_WidgetWin_1); web missing frames: 0-1023; longest runs of consecutive missing frames (first-last (count)): 0-1023 (1024); repeated-pixel frames 92, 421, 604, 933, of them missing 4; web tilt exact 0 of 0; web twist vs injected rotation: exact 0, mod 180 0, absent 0, other 0; event - injection ms -; handler - injection ms -; contextmenu events (press-and-hold) during the run: 0

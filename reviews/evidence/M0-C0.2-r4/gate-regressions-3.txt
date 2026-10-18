@@ -1,0 +1,15 @@
+python tests/adversarial/c02-r2-tooling.py
+test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success (__main__.AnalyzerAttacks.test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success) ... ok
+test_C02_R2_01_explicit_v1_is_rejected (__main__.AnalyzerAttacks.test_C02_R2_01_explicit_v1_is_rejected) ... ok
+test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) ... ok
+test_C02_R2_02_achieved_rate_is_recomputed_or_rejected (__main__.AnalyzerAttacks.test_C02_R2_02_achieved_rate_is_recomputed_or_rejected) ... ok
+test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) ... ok
+test_explicit_failure_without_report_remains_analyzable (__main__.AnalyzerAttacks.test_explicit_failure_without_report_remains_analyzable) ... ok
+test_lossless_stationary_including_down_has_zero_missing (__main__.AnalyzerAttacks.test_lossless_stationary_including_down_has_zero_missing) ... ok
+test_macos_extended_accessor_contracts (__main__.AnalyzerAttacks.test_macos_extended_accessor_contracts) ... ok
+test_pause_segmentation_and_pose_only_native_reference_unknown (__main__.AnalyzerAttacks.test_pause_segmentation_and_pose_only_native_reference_unknown) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.551s
+
+OK

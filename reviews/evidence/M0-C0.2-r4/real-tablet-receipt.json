@@ -1,0 +1,55 @@
+{
+  "command": [
+    "C:\\Users\\kaiga\\work\\review\\m0-c02-r4\\target\\release\\toontown.exe",
+    "--spike",
+    "tablet",
+    "--spike-log",
+    "C:\\Users\\kaiga\\work\\review\\m0-c02-r4\\reviews\\evidence\\M0-C0.2-r4\\real-tablet-log.json",
+    "--spike-auto"
+  ],
+  "exit": 0,
+  "seconds": 24.99,
+  "uiAutomation": "none; no windows or security prompts dismissed",
+  "source": "auto",
+  "analyzerExit": 0,
+  "outcome": [
+    "- outcome: 15 synthetic runs, 0 ok, 15 explicitly failed"
+  ],
+  "errors": [
+    "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+    "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+    "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+    "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+    "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+    "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+    "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+    "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+    "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+    "spike.notForeground: the target must be visible and uncovered to inject pen input (target 0x5a010c, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)",
+    {
+      "code": "spike.notForeground",
+      "details": {},
+      "message": "the target must be visible and uncovered to inject pen input (target 0x8107ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "code": "spike.notForeground",
+      "details": {},
+      "message": "the target must be visible and uncovered to inject pen input (target 0x8207ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "code": "spike.notForeground",
+      "details": {},
+      "message": "the target must be visible and uncovered to inject pen input (target 0x8307ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "code": "spike.notForeground",
+      "details": {},
+      "message": "the target must be visible and uncovered to inject pen input (target 0x8407ce, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    },
+    {
+      "code": "spike.notForeground",
+      "details": {},
+      "message": "the target must be visible and uncovered to inject pen input (target 0xc70114, rect (68, 161, 1012, 275), (69,162) -> 0x149070e root 0x149070e; (1078,162) -> 0x149070e root 0x149070e; (69,434) -> 0x149070e root 0x149070e; (1078,434) -> 0xa071a root 0xa071a)"
+    }
+  ]
+}

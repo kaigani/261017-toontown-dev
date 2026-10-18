@@ -1,0 +1,27 @@
+[
+  {
+    "command": "cargo fmt --all --check",
+    "exit": 0,
+    "seconds": 0.35
+  },
+  {
+    "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "exit": 0,
+    "seconds": 39.52
+  },
+  {
+    "command": "cargo test --workspace --locked",
+    "exit": 0,
+    "seconds": 50.52
+  },
+  {
+    "command": "cargo deny --locked check",
+    "exit": 0,
+    "seconds": 0.92
+  },
+  {
+    "command": "cargo build --release --locked -p tt-headless",
+    "exit": 0,
+    "seconds": 4.77
+  }
+]

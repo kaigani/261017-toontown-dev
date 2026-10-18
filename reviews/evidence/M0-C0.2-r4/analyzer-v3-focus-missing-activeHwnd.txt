@@ -1,0 +1,1 @@
+error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['activeHwnd']

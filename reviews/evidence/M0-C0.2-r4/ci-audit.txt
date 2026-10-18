@@ -1,0 +1,6 @@
+check (macos-latest) success Rust: 59 skipped: []
+bundle (windows-latest) success Rust: 0 skipped: []
+check (windows-latest) success Rust: 65 skipped: []
+headless without a display (ubuntu) success Rust: 0 skipped: []
+bundle (macos-latest) success Rust: 0 skipped: ['C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)']
+Exact-commit CI: 5/5; both OSes execute gates, reviewer suites and real IPC; macOS tablet step skipped.

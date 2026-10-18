@@ -1,0 +1,1 @@
+error: unknown log source 'unexpected' (expected one of ('manual', 'interactive', 'auto'))

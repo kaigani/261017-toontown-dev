@@ -1,0 +1,1 @@
+error: log was saved by a --spike-auto run but has no run records
