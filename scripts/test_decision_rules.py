@@ -80,8 +80,8 @@ class TabletRules(unittest.TestCase):
             "D": {**ok, 2: "fail", 3: "fail", 4: "fail", 6: "n/a"},
         }
         d = tablet.aggregate("windows", results)
-        self.assertEqual(d["eligible"], ["W", "R"])
-        self.assertEqual((d["scores"]["W"], d["scores"]["R"]), (6, 7))
+        self.assertEqual(d["eligible"], ["W", "R", "H", "D"])  # nothing is excluded by a failed row (C04-R3-04)
+        self.assertEqual(d["scores"], {"W": 6, "R": 7, "H": 6, "D": 5})
         self.assertEqual(d["outcome"], "go-with-conditions: R")
         self.assertEqual([(c["row"], c["result"]) for c in d["conditions"]], [(4, "fail")])
         self.assertIn("tilt unsupported", d["conditions"][0]["mitigation"])
@@ -90,8 +90,17 @@ class TabletRules(unittest.TestCase):
         ok = {r: "pass" for r in range(1, 10)}
         d = tablet.aggregate("macos", {"W": {**ok, 7: "fail", 8: "fail"},
                                        "A": {**ok, 6: "n/a", 7: "partial", 8: "fail"}})
-        self.assertEqual(d["outcome"], "go-with-conditions: A")
-        self.assertEqual([(c["row"], c["result"]) for c in d["conditions"]], [(7, "partial"), (8, "fail")])
+        self.assertEqual(d["scores"], {"W": 7, "A": 6})
+        self.assertEqual(d["outcome"], "go-with-conditions: W")
+        self.assertEqual([(c["row"], c["result"]) for c in d["conditions"]], [(7, "fail"), (8, "fail")])
+        self.assertIn("rate below 60 Hz", d["conditions"][0]["mitigation"])
+
+    def test_ranking_is_strictly_by_pass_count(self):
+        # The reviewer's C04-R3-04 case: W 7 passes with pressure at fail beats R with 6.
+        ok = {r: "pass" for r in range(1, 10)}
+        d = tablet.aggregate("windows", {"W": {**ok, 2: "fail", 3: "fail"}, "R": {**ok, 4: "fail", 5: "fail", 6: "n/a"}})
+        self.assertEqual(d["selected"], "W")
+        self.assertIn("pressure unsupported", d["conditions"][0]["mitigation"])
 
     def test_ties_follow_priority_and_insufficient_evidence_stops_the_evaluation(self):
         ok = {r: "pass" for r in range(1, 10)}
@@ -99,8 +108,8 @@ class TabletRules(unittest.TestCase):
         self.assertEqual(d["outcome"], "go-with-conditions: W")  # 8 vs 8 passes: W has priority
         d = tablet.aggregate("windows", {"W": {**ok, 7: "insufficient"}})
         self.assertTrue(d["outcome"].startswith("insufficient evidence"))
-        d = tablet.aggregate("macos", {"W": {**ok, 1: "fail"}, "A": {**ok, 2: "fail"}})
-        self.assertTrue(d["outcome"].startswith("platform no-go"))
+        d = tablet.aggregate("macos", {"W": {r: "n/a" for r in range(1, 10)}})
+        self.assertTrue(d["outcome"].startswith("not evidence"))
 
 
 def manual_log(rotation, markers=True):
@@ -142,6 +151,18 @@ class ActionMapping(unittest.TestCase):
                 self.assertEqual(by["A6"]["web"]["measured"], a6)
                 self.assertEqual(by["A5"]["web"]["outcome"], "performed, no events")
                 self.assertEqual(by["A4"]["web"]["outcome"], "episode 4" if rotation else "omitted")
+
+    def test_contacts_outside_every_action_change_no_decision_input(self):
+        base = manual_log(False)
+        stray = copy.deepcopy(base)
+        # A batched contact before A1 (outside every span): it must not reach row 6 or any other row.
+        before = [dict(s, t=s["t"] - 900, coalescedCount=4, dispatch=-1) for s in base["web"]["samples"][:50]]
+        before[-1] = dict(before[-1], kind="up", pressure=0)
+        stray["web"]["samples"] = before + base["web"]["samples"]
+        (a1, d1), (a2, d2) = self.analyse(base), self.analyse(stray)
+        self.assertEqual(a2["excludedSamples"]["web"], 50)
+        self.assertEqual(d1["rows"], d2["rows"])
+        self.assertEqual(d1["outcome"], d2["outcome"])
 
     def test_log_without_markers_is_not_evidence(self):
         _, d = self.analyse(manual_log(False, markers=False))

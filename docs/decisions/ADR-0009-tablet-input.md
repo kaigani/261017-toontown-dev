@@ -86,10 +86,18 @@ and `desktop/src/test/decisionTables.test.ts` fails if the two differ.
 - A5 hover;
 - A6 stationary pressure.
 
-The analyzer numbers **contact episodes**. The page records an action marker when the person presses Space at the
-start and end of each action, and K to skip it. Each episode belongs to the action whose span contains its first
-sample: web samples by the page's performance clock, native packets by host wall time. Every row below names an
-action, never an episode number.
+The analyzer numbers **contact episodes**. The page records an action marker when the person presses and releases
+Space at the start and end of each action, and K to skip it.
+- Markers are taken on the **keyup** of a deliberate press. Auto-repeat keydowns are ignored, a keyup needs its own
+  keydown, and two transitions are at least 500 ms apart.
+- Every Space/K event is logged with what it did (`keyEvents`).
+
+Each episode belongs to the action whose span contains its first sample: web samples by the page's performance clock,
+native packets by host wall time. Every row below names an action, never an episode number.
+
+**Only samples inside an action's span are decision inputs.** Every per-action statistic is computed from the
+measured episode's samples inside that span, including row 6's coalescing, which comes from A2's own samples. Samples
+outside every span are excluded before anything is computed, and the analyzer prints how many per path.
 - Per path, an action is "episode n", "split" (the episode with most samples is measured), "performed, no events"
   (done, but no contact on that path), "omitted" (skipped with K) or "unfinished" (saved mid-action).
 - Clicks on Save, the form or the listener button fall outside every action and are ignored.
@@ -100,6 +108,7 @@ action, never an episode number.
 | Condition | Outcome |
 |---|---|
 | `scripts/analyse-tablet-log.py` exits 2; or `source` is not `manual`; or the log has run or simulation records; or the input is synthetic | **not evidence**: repeat the procedure |
+| Malformed action markers, including overlap on either clock, or raw key events that do not account for every marker transition (exit 2) | **not evidence**: repeat the procedure |
 | The log has no action markers (it predates them) | **not evidence**: repeat the procedure with the current build |
 | A row's action is omitted, unfinished or not recorded (A4 omitted is fine when "Pen has barrel rotation" is no) | **insufficient evidence: repeat that action** |
 | Row 7 or 8: A2 has a single sample (rate null) | **insufficient evidence: repeat A2** |
@@ -119,7 +128,7 @@ column.
 | 3 | Pressure ≥ 1024 levels | A1 | [1024, ∞) levels | [256, 1024) levels | [0, 256) levels |
 | 4 | Tilt (`tilt x / y` extrema) | A3 | min ≤ −30° and max ≥ +30° on both axes | a non-zero range, otherwise | zero range on both axes |
 | 5 | Twist (`twist range (nonzero)`) | A4 | range width in (180°, ∞) | non-zero samples, width in (0°, 180°] | no non-zero sample, or width 0 |
-| 6 | Coalesced events (web only) | A2 | API available, batching observed | API available, no batching | API not available |
+| 6 | Coalesced events (web only) | A2 | API available, batching observed in A2's samples | API available, no batching in A2 | API not available |
 | 7 | Sustained rate (`Hz`) | A2 | [120, ∞) Hz | [60, 120) Hz | [0, 60) Hz |
 | 8 | Rate ≥ 200 Hz (`Hz`) | A2 | [200, ∞) Hz | [120, 200) Hz | [0, 120) Hz |
 | 9 | Stationary pressure-only updates | A6 | more than one sample and pressure value, [60, ∞) Hz | more than one sample and pressure value, rate below 60 Hz or undefined | one sample (the down only), or a single pressure value |
@@ -138,31 +147,31 @@ synthetic frame. A T-W1 log measures W and H; a T-M1 log measures W and A. A can
 scored, and the decision is final for that evidence. Passing a row on a native path proves only that row: native pen
 identity says nothing about native pressure, tilt or rate.
 
-**Step 2: select one candidate.**
-1. A candidate is **eligible** when rows 1, 2 and 7 are not at fail (the core rows).
-2. Its **score** is its number of rows at pass.
-3. The eligible candidate with the highest score is selected; ties go to the higher priority.
-4. **Two sources are never combined.** The other eligible candidates may be offered as the "Tablet input interface"
+**Step 2: select one candidate** (ruling C04-R3-04).
+1. The only exclusion is a candidate **without any valid measurement**: not measured, or every row n/a.
+2. A candidate's **score** is its number of rows at pass.
+3. The candidate with the highest score is selected; ties go to the higher priority (W > R > H > D, or W > A).
+4. **Two sources are never combined.** The other measured candidates may be offered as the "Tablet input interface"
    choice of spec 02 §6.3.
 
 **Step 3: the decision.**
 
 | Result | Decision |
 |---|---|
-| No candidate is eligible | **platform no-go** for tablet quality in this shell: escalate. Decision 7 (Qt 6) applies only if **both** platforms are no-go |
+| No candidate has a valid measurement | **not evidence**: repeat the procedure |
 | The selected candidate passes every row that is not n/a | **go: that candidate** |
 | Otherwise | **go-with-conditions: that candidate**, with each row at partial or fail and its mitigation from the table below |
 
 | # | Mitigation when partial | Mitigation when fail |
 |---|---|---|
-| 1 | pen recognised by pressure > 0; eraser not distinguished | candidate ineligible (core row) |
-| 2 | accept the measured resolution of 16 to 255 levels; brush response quantised | candidate ineligible (core row) |
+| 1 | pen recognised by pressure > 0; eraser not distinguished | pen not identified on this path: contacts with pressure > 0 are treated as pen; no eraser |
+| 2 | accept the measured resolution of 16 to 255 levels; brush response quantised | pressure unsupported on this platform: the tablet acts as a mouse for pressure |
 | 3 | accept >= 256 levels | as row 2 |
 | 4 | accept the limited or quantised tilt | tilt unsupported on this platform: tilt-driven brush options off |
 | 5 | twist limited to the measured range (e.g. modulo 180) | barrel rotation unsupported on this platform |
 | 6 | accept one sample per dispatch | accept one sample per dispatch; a floor change is a user decision (ADR-0005) |
-| 7 | interpolated sampling off; the >= 200 Hz target is recorded as below target | candidate ineligible (core row) |
-| 8 | recorded as below the 200 Hz target | recorded as below the 200 Hz target (row 7 decides eligibility) |
+| 7 | interpolated sampling off; the >= 200 Hz target is recorded as below target | rate below 60 Hz: interpolated sampling off; the >= 120 and >= 200 Hz targets are recorded as below target |
+| 8 | recorded as below the 200 Hz target | recorded as below the 200 Hz target |
 | 9 | pressure interpolated between updates | pressure changes without movement are ignored |
 
 **Worked examples** (checked by `scripts/test_decision_rules.py`):
@@ -172,11 +181,14 @@ identity says nothing about native pressure, tilt or rate.
    - H: pressure at fail.
    - D: pressure and tilt at fail.
 
-   H and D are ineligible (row 2 at fail). W scores 6 and R scores 7, since row 6 is n/a for R. Decision:
-   **go-with-conditions: R**, with row 4 at fail: tilt unsupported on this platform.
-2. **macOS.** W runs at 50 Hz and A at 90 Hz; every other row passes on both. W is ineligible (row 7 at fail).
-   Decision: **go-with-conditions: A**, with:
-   - row 7 at partial: interpolated sampling off, and the 200 Hz target recorded as below target;
+   Scores: W 6, R 7 (row 6 is n/a for every native candidate), H 6, D 5. Decision: **go-with-conditions: R**, with
+   row 4 at fail: tilt unsupported on this platform.
+2. **macOS.** W runs at 50 Hz and A at 90 Hz; every other row passes on both.
+
+   Scores: W 7 (rows 7 and 8 at fail), A 6 (row 6 n/a, row 7 partial, row 8 fail). Decision: **go-with-conditions:
+   W**, with:
+   - row 7 at fail: rate below 60 Hz, interpolated sampling off, and the 120 and 200 Hz targets recorded as below
+     target;
    - row 8 at fail: recorded as below the 200 Hz target.
 
 `scripts/analyse-tablet-log.py` implements these steps and prints the decision for every manual log. Its constants

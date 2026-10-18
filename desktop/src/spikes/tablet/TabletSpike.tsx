@@ -51,6 +51,18 @@ const ACTIONS = [
   { id: 'A6', name: 'stationary pressure' },
 ] as const;
 
+/** Minimum time between two marker transitions (C04-R3-02): a bouncing key or pen button cannot advance twice. */
+const MIN_TRANSITION_MS = 500;
+
+/** One raw Space/K keyboard event and what the page did with it (C04-R3-02). */
+export interface KeyEventRecord {
+  type: 'keydown' | 'keyup';
+  key: string;
+  repeat: boolean;
+  t: number;
+  outcome: string;
+}
+
 export interface ActionRecord {
   id: string;
   state: 'done' | 'skipped' | 'unfinished';
@@ -415,6 +427,8 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
     startPerf: null,
   });
   const actionStepRef = useRef(actionStep);
+  const keyEvents = useRef<KeyEventRecord[]>([]);
+  const lastTransition = useRef(Number.NEGATIVE_INFINITY);
 
   // Drawing: web samples as a pressure-width line, native packets as red dots.
   const draw = useCallback((s: WebSample) => {
@@ -623,49 +637,93 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
     [runScenario],
   );
 
-  // Action markers (C04-R2-02): Space starts / finishes the current action, K skips it. Ignored while typing in the
-  // metadata form and in --spike-auto runs.
+  // Action markers (C04-R2-02, C04-R3-02): Space starts / finishes the current action, K skips it. A transition
+  // happens on **keyup** of a deliberate press only: auto-repeat keydowns are ignored, a keyup needs its own
+  // non-repeat keydown, and transitions are at least MIN_TRANSITION_MS apart. Every Space/K event is recorded in
+  // `keyEvents` with what it did, so a corrupted sequence can be diagnosed. Ignored while typing in the metadata
+  // form and in --spike-auto runs.
   useEffect(() => {
     if (mode.auto) return;
+    const pressed = new Set<string>();
+    const log = (e: KeyboardEvent, key: string, outcome: string) => {
+      keyEvents.current.push({
+        type: e.type === 'keyup' ? 'keyup' : 'keydown',
+        key,
+        repeat: e.repeat,
+        t: performance.now(),
+        outcome,
+      });
+    };
     const onKey = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement | null;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
       const key = e.key.toLowerCase();
       if (key !== ' ' && key !== 'k') return;
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+        log(e, key, 'ignored: typing in the form');
+        return;
+      }
+      // Also stops Space from activating a focused toolbar button (browsers click on keyup).
       e.preventDefault();
+      if (e.type === 'keydown') {
+        if (e.repeat) {
+          log(e, key, 'ignored: auto-repeat');
+        } else {
+          pressed.add(key);
+          log(e, key, 'pressed');
+        }
+        return;
+      }
+      if (!pressed.delete(key)) {
+        log(e, key, 'ignored: keyup without its keydown');
+        return;
+      }
+      const now = performance.now();
+      if (now - lastTransition.current < MIN_TRANSITION_MS) {
+        log(e, key, `ignored: within ${String(MIN_TRANSITION_MS)} ms of the last transition`);
+        return;
+      }
       const step = actionStepRef.current;
       const action = ACTIONS[step.index];
-      if (!action) return;
-      const now = performance.now();
-      const record = (state: ActionRecord['state'], start: number) => ({
+      if (!action) {
+        log(e, key, 'ignored: all actions recorded');
+        return;
+      }
+      const record = (state: ActionRecord['state'], begin: number) => ({
         id: action.id,
         state,
-        startPerf: start,
+        startPerf: begin,
         endPerf: now,
-        startEpochMs: performance.timeOrigin + start,
+        startEpochMs: performance.timeOrigin + begin,
         endEpochMs: performance.timeOrigin + now,
       });
       let next: typeof step;
       if (key === ' ' && step.startPerf === null) {
         next = { index: step.index, startPerf: now };
+        log(e, key, `transition: ${action.id} started`);
         setStatus(`${action.id} ${action.name}: started. Press Space when it is done.`);
       } else if (key === ' ' && step.startPerf !== null) {
         actions.current.push(record('done', step.startPerf));
         next = { index: step.index + 1, startPerf: null };
+        log(e, key, `transition: ${action.id} done`);
         setStatus(`${action.id} ${action.name}: done.`);
       } else if (key === 'k' && step.startPerf === null) {
         actions.current.push(record('skipped', now));
         next = { index: step.index + 1, startPerf: null };
+        log(e, key, `transition: ${action.id} skipped`);
         setStatus(`${action.id} ${action.name}: skipped.`);
       } else {
+        log(e, key, 'ignored: K while an action is running');
         return;
       }
+      lastTransition.current = now;
       actionStepRef.current = next;
       setActionStep(next);
     };
     window.addEventListener('keydown', onKey);
+    window.addEventListener('keyup', onKey);
     return () => {
       window.removeEventListener('keydown', onKey);
+      window.removeEventListener('keyup', onKey);
     };
   }, [mode.auto, setStatus]);
 
@@ -718,6 +776,8 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
           ];
         })(),
       ],
+      // Every Space/K event with what it did (C04-R3-02).
+      keyEvents: keyEvents.current,
       runs: runs.current,
       simulations: simulations.current,
       web: {
@@ -756,6 +816,8 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
     simulations.current.length = 0;
     nativeCounters.current.truncated = 0;
     actions.current.length = 0;
+    keyEvents.current.length = 0;
+    lastTransition.current = Number.NEGATIVE_INFINITY;
     actionStepRef.current = { index: 0, startPerf: null };
     setActionStep(actionStepRef.current);
     setRunRows([]);
