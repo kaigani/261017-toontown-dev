@@ -349,12 +349,9 @@ impl<T: ModelObject> JsonSchema for ChildList<T> {
     }
 
     fn json_schema(generator: &mut SchemaGenerator) -> Schema {
+        // The child's schema accepts the full child or its stub (constant `type`), so another type's stub fails.
         let child = generator.subschema_for::<T>();
-        json_schema!({
-            "type": "array",
-            "items": { "anyOf": [ { "$ref": "#/$defs/Stub" }, child ] },
-            "x-childList": T::TYPE.as_str()
-        })
+        json_schema!({ "type": "array", "items": child, "x-childList": T::TYPE.as_str() })
     }
 }
 
@@ -403,7 +400,7 @@ impl<T: ModelObject> JsonSchema for ChildRef<T> {
 
     fn json_schema(generator: &mut SchemaGenerator) -> Schema {
         let child = generator.subschema_for::<T>();
-        json_schema!({ "anyOf": [ { "$ref": "#/$defs/Stub" }, child ], "x-childRef": T::TYPE.as_str() })
+        json_schema!({ "allOf": [child], "x-childRef": T::TYPE.as_str() })
     }
 }
 

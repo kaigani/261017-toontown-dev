@@ -12,8 +12,10 @@
   losslessly and validated; objects from in-process transports go through `certify`. Errors map to `HostError`
   (stable dotted `code`, 11 §10).
 - `wireJson.ts` — strict, lossless JSON parser and writer: integers beyond 2^53 − 1 are `bigint`, objects are built
-  with defined own keys, duplicate keys and depth > 64 are errors; schema-directed coercion turns digit-only doubles
-  back into numbers.
+  with defined own keys; duplicate keys, unpaired surrogates, depth > 128 and integer literals the engine could not
+  hold exactly are errors, exactly as in the engine's reader (shared corpus `tests/fixtures/wire/hostile-json.json`,
+  `wireCorpus.test.ts`); schema-directed coercion (through conditional branches) turns digit-only doubles back into
+  numbers.
 - `schema.ts` — the JSON Schema validator (draft 2020-12 keywords used by the generated schemas, `$ref` through a
   definitions table, bigint-aware integers; own-property semantics only, exact-index arrays, own plain-data copy)
   and `certify` (plain data, structured-clone probe through `MessageChannel` that rejects every Proxy, validated

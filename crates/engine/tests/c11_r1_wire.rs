@@ -5,8 +5,13 @@ use tt_engine::wire::{from_wire_json, to_wire_json};
 #[test]
 fn opaque_json_integer_outside_u64_is_not_silently_rounded() {
     let text = r#"{"com.example.tool":{"n":-18446744073709551615}}"#;
-    let v: Value = from_wire_json(text).unwrap();
-    assert_eq!(to_wire_json(&v).unwrap(), text, "opaque extension integer loses precision in Rust");
+    // Amended per the orchestrator's C1.1 round-1 ruling on C11-R1-07 ("must be lossless or typed error"; precedent
+    // C01-R1-04): the builder chose the typed error, so the reviewer's lossless assertion now applies whenever the
+    // text is accepted, and a rejection must be the typed `arg.invalid`. Rounding remains a failure either way.
+    match from_wire_json::<Value>(text) {
+        Ok(v) => assert_eq!(to_wire_json(&v).unwrap(), text, "opaque extension integer loses precision in Rust"),
+        Err(e) => assert_eq!(e.code, "arg.invalid", "an inexact integer literal is a typed error"),
+    }
 }
 
 #[test]

@@ -136,30 +136,95 @@ pub struct Document {
     bank_users: Arc<HashMap<Id, Vec<Id>>>,
     /// Bank of each drawing.
     drawing_bank: Arc<HashMap<Id, Id>>,
+    /// Problems found while assembling the parts (entries given twice; C11-R1-01).
+    assembly: Arc<Vec<Issue>>,
 }
 
 impl Document {
-    /// Assembles and checks a document. Every object must already satisfy its object-local rules (they are checked
-    /// again here) and the document-level integrity rules of 10 §5 and §7.2.
+    /// Assembles and checks a document: the validated constructor. Parts are typed values that may come from the
+    /// public `Deserialize` impls without having passed [`crate::object::from_json`], so every entry first runs
+    /// through that input path again ([`crate::object::revalidate`]: depth limit, normalisation, schema, canonical
+    /// form, object-local rules; C11-R1-02). Then the document-level integrity rules of 10 §5 and §7.2 apply, and an
+    /// entry given twice is an error, never a silent overwrite (C11-R1-01).
     ///
     /// # Errors
-    /// Every error-severity issue found (object-local rules as `arg.invalid`, integrity rules with the codes of
-    /// 10 §9). Warnings (e.g. unresolved colour IDs) do not prevent assembly; read them with [`Document::issues`].
+    /// Every error found (object input errors with their codes and `details.objectId`, integrity rules with the
+    /// codes of 10 §9). Warnings (e.g. unresolved colour IDs) do not prevent assembly; read them with
+    /// [`Document::issues`].
     pub fn from_parts(parts: DocumentParts) -> Result<Self, Vec<ModelError>> {
+        let parts = Self::revalidate_parts(parts)?;
         let doc = Self::assemble(parts);
         let errors: Vec<ModelError> =
             doc.issues().into_iter().filter(|i| i.severity == Severity::Error).map(|i| i.to_error()).collect();
         if errors.is_empty() { Ok(doc) } else { Err(errors) }
     }
 
+    fn revalidate_parts(parts: DocumentParts) -> Result<DocumentParts, Vec<ModelError>> {
+        fn one<T: crate::entities::ModelObject + Check>(o: &T, errors: &mut Vec<ModelError>) -> Option<T> {
+            match crate::object::revalidate(o) {
+                Ok(v) => Some(v),
+                Err(es) => {
+                    for e in es {
+                        let mut details = e.details().clone();
+                        if let Some(m) = details.as_object_mut() {
+                            m.insert("objectId".into(), json!(o.object_id().as_str()));
+                        }
+                        errors.push(ModelError::with_details(e.code(), e.message().to_owned(), details));
+                    }
+                    None
+                }
+            }
+        }
+        fn many<T: crate::entities::ModelObject + Check>(v: &[T], errors: &mut Vec<ModelError>) -> Vec<T> {
+            v.iter().filter_map(|o| one(o, errors)).collect()
+        }
+        let mut errors = Vec::new();
+        let out = DocumentParts {
+            document_rev: parts.document_rev,
+            project: one(&parts.project, &mut errors).unwrap_or(parts.project.clone()),
+            palettes: many(&parts.palettes, &mut errors),
+            banks: many(&parts.banks, &mut errors),
+            drawings: many(&parts.drawings, &mut errors),
+            scenes: many(&parts.scenes, &mut errors),
+            elements: many(&parts.elements, &mut errors),
+            library: one(&parts.library, &mut errors).unwrap_or(parts.library.clone()),
+        };
+        if errors.is_empty() { Ok(out) } else { Err(errors) }
+    }
+
     /// Assembles a document without rejecting integrity errors (the load path reports and repairs them, 10 §7.2).
+    /// An entry ID given twice keeps the first entry and reports `id.duplicate` with the dropped entry's name.
     #[must_use]
     pub fn assemble(parts: DocumentParts) -> Self {
-        let palettes = parts.palettes.into_iter().map(|p| (p.id.clone(), Arc::new(p))).collect();
-        let banks = parts.banks.into_iter().map(|b| (b.id.clone(), Arc::new(b))).collect();
-        let drawings = parts.drawings.into_iter().map(|d| (d.id.clone(), Arc::new(d))).collect();
-        let scenes = parts.scenes.into_iter().map(|s| (s.id.clone(), Arc::new(s))).collect();
-        let elements = parts.elements.into_iter().map(|e| (e.id.clone(), Arc::new(e))).collect();
+        fn collect<T>(
+            items: Vec<T>,
+            id: impl Fn(&T) -> &Id,
+            name: impl Fn(&T) -> &str,
+            what: &str,
+            issues: &mut Vec<Issue>,
+        ) -> BTreeMap<Id, Arc<T>> {
+            let mut out = BTreeMap::new();
+            for item in items {
+                let key = id(&item).clone();
+                if out.contains_key(&key) {
+                    issues.push(Issue::error(
+                        codes::ID_DUPLICATE,
+                        &key,
+                        "",
+                        format!("{what} `{key}` is given more than once (dropped duplicate named `{}`)", name(&item)),
+                    ));
+                    continue;
+                }
+                out.insert(key, Arc::new(item));
+            }
+            out
+        }
+        let mut assembly = Vec::new();
+        let palettes = collect(parts.palettes, |p| &p.id, |p| &p.name, "palette", &mut assembly);
+        let banks = collect(parts.banks, |b| &b.id, |_| "", "drawing bank", &mut assembly);
+        let drawings = collect(parts.drawings, |d| &d.id, |d| &d.name, "drawing", &mut assembly);
+        let scenes = collect(parts.scenes, |s| &s.id, |s| &s.name, "scene", &mut assembly);
+        let elements = collect(parts.elements, |e| &e.id, |e| &e.name, "element", &mut assembly);
         let mut doc = Self {
             document_rev: parts.document_rev,
             project: Arc::new(parts.project),
@@ -173,6 +238,7 @@ impl Document {
             element_scene: Arc::new(HashMap::new()),
             bank_users: Arc::new(HashMap::new()),
             drawing_bank: Arc::new(HashMap::new()),
+            assembly: Arc::new(assembly),
         };
         doc.rebuild_derived();
         doc
@@ -396,7 +462,7 @@ impl Document {
     /// Every issue of the document: object-local rules of each entry and the document-level integrity rules.
     #[must_use]
     pub fn issues(&self) -> Vec<Issue> {
-        let mut out = Vec::new();
+        let mut out = self.assembly.as_ref().clone();
         self.object_issues(&mut out);
         self.integrity_issues(&mut out);
         out
@@ -478,6 +544,24 @@ impl Document {
                 project_id,
                 "/library",
                 "the project's library stub does not match the library",
+            ));
+        }
+        // 10 §3, §4.17: the document's library is the project-local library.
+        if self.library.kind != crate::entities::library::LibraryKind::Local {
+            out.push(Issue::error(
+                codes::ARG_INVALID,
+                &self.library.id,
+                "/kind",
+                "the project's library has kind `local`",
+            ));
+        }
+        // 03 §1.2: at least one visible palette.
+        if !self.palettes().any(|p| !p.hidden) {
+            out.push(Issue::error(
+                codes::ARG_INVALID,
+                project_id,
+                "/palettes",
+                "a project has at least one visible (not hidden) palette",
             ));
         }
         // REV-01/REV-02: an object's rev is the documentRev of a committed transaction, never newer than the document.
@@ -796,6 +880,21 @@ impl Document {
                     format!("drawing bank `{bank_id}` does not exist"),
                 )),
                 Some(bank) => {
+                    if e.element_type == ElementType::Image {
+                        // 10 §4.10: a drawing of an image element contains exactly one bitmap node.
+                        for d in bank.drawings.ids().iter().filter_map(|d| self.drawings.get(d)) {
+                            let ok = matches!(d.nodes.as_slice(),
+                                [n] if n.kind == crate::entities::drawing::NodeKind::Bitmap);
+                            if !ok {
+                                out.push(Issue::error(
+                                    codes::ARG_INVALID,
+                                    &d.id,
+                                    "/nodes",
+                                    "a drawing of an image element contains exactly one bitmap node",
+                                ));
+                            }
+                        }
+                    }
                     let drawings: BTreeSet<&Id> = bank.drawings.ids().iter().collect();
                     for (i, (d, _)) in e.exposure.iter().flatten().enumerate() {
                         if let Some(d) = d

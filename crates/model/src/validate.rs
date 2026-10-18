@@ -152,6 +152,14 @@ fn check_swatch_values(sw: &Swatch, at: &str, out: &mut Issues) {
         if !Swatch::value_matches_kind(sw.kind, value) {
             out.push(&vat, "valueKind", format!("value does not match swatch kind {:?}", sw.kind));
         }
+        if let SwatchValue::Texture(t) = value {
+            // 10 §4.13: texture images are package entries under `textures/` (§6.3).
+            let iat = ptr(&vat, "image");
+            check_entry_path(&t.image, &iat, out);
+            if !t.image.starts_with("textures/") {
+                out.push(&iat, "texturePath", "texture images are package entries under `textures/`");
+            }
+        }
         if let SwatchValue::Gradient(g) = value {
             if g.stops.len() < 2 {
                 out.push(&ptr(&vat, "stops"), "stops", "a gradient needs at least two stops");
@@ -189,13 +197,10 @@ impl Check for Palette {
         for (i, sw) in self.swatches.iter().enumerate() {
             let at_i = format!("{wat}/{i}");
             sw.check(&at_i, out);
-            let keys: Vec<_> = sw.values.keys().collect();
-            if keys != style_ids {
-                out.push(
-                    &ptr(&at_i, "values"),
-                    "valuePerStyle",
-                    "a swatch has exactly one value per style, in style order",
-                );
+            // Exactly one value per style (10 §4.13); the map's order is the canonical key order (JSON-02).
+            let keys: BTreeSet<_> = sw.values.keys().collect();
+            if keys.len() != style_ids.len() || style_ids.iter().any(|s| !keys.contains(s)) {
+                out.push(&ptr(&at_i, "values"), "valuePerStyle", "a swatch has exactly one value per style");
             }
         }
         meta_ext(at, &self.ext, out);
@@ -234,12 +239,50 @@ impl Check for Asset {
                 }
             }
         }
+        if let Some(link) = &self.link {
+            // 10 §4.16: a file link has the relative and the absolute path; a library-item link has the library and
+            // item IDs (the template version only for templates). Fields of the other kind are null.
+            use crate::entities::asset::LinkKind;
+            let lat = ptr(at, "link");
+            let (needed, unused): (&[Presence], &[Presence]) = match link.kind {
+                LinkKind::File => (
+                    &[("path", link.path.is_some()), ("absolutePath", link.absolute_path.is_some())],
+                    &[
+                        ("libraryId", link.library_id.is_some()),
+                        ("itemId", link.item_id.is_some()),
+                        ("versionId", link.version_id.is_some()),
+                    ],
+                ),
+                LinkKind::LibraryItem => (
+                    &[("libraryId", link.library_id.is_some()), ("itemId", link.item_id.is_some())],
+                    &[("path", link.path.is_some()), ("absolutePath", link.absolute_path.is_some())],
+                ),
+            };
+            for (f, present) in needed {
+                if !present {
+                    out.push(&ptr(&lat, f), "linkKind", format!("a {:?} link has `{f}`", link.kind));
+                }
+            }
+            for (f, present) in unused {
+                if *present {
+                    out.push(&ptr(&lat, f), "linkKind", format!("a {:?} link has no `{f}`", link.kind));
+                }
+            }
+            for (f, p) in [("path", &link.path), ("absolutePath", &link.absolute_path)] {
+                if p.as_deref() == Some("") {
+                    out.push(&ptr(&lat, f), "linkPath", "link paths are not empty");
+                }
+            }
+        }
         if let Some(e) = &self.entry {
             check_entry_path(e, &ptr(at, "entry"), out);
         }
         meta_ext(at, &self.ext, out);
     }
 }
+
+/// A field name and whether the field is present.
+type Presence<'a> = (&'a str, bool);
 
 /// Package entry names: relative, `/`-separated, no `..`, no drive letters, no leading `/` (10 ZIP-01).
 pub fn check_entry_path(entry: &str, at: &str, out: &mut Issues) {
@@ -281,6 +324,9 @@ impl Check for Stroke {
             StrokeKind::Brush => {
                 if self.line_style.is_some() {
                     out.push(&ptr(at, "lineStyle"), "kind", "brush strokes have no line style");
+                }
+                if !self.closed {
+                    out.push(&ptr(at, "closed"), "brushClosed", "brush outlines are closed (10 §4.9)");
                 }
             }
             StrokeKind::Invisible => {
@@ -352,6 +398,12 @@ impl Check for DrawingNode {
         }
         for p in present.iter().filter(|p| !allowed.contains(p)) {
             out.push(&ptr(at, p), "kind", format!("a {:?} node has no `{p}`", self.kind));
+        }
+        if self.kind == NodeKind::Text
+            && self.width_mode == Some(crate::entities::drawing::WidthMode::Fixed)
+            && self.width.is_none()
+        {
+            out.push(&ptr(at, "width"), "fixedWidth", "fixed-width text has a `width` (10 §4.9)");
         }
         if self.kind == NodeKind::Bitmap {
             for (k, v) in [("width", self.width), ("height", self.height)] {
@@ -627,6 +679,16 @@ impl Check for SoundPlacement {
                     "mouthsLength",
                     "one mouth letter per frame of the placement",
                 );
+            }
+            // 10 §4.14: manual ranges are placement-relative frames (1 = the placement's first frame).
+            for (i, r) in t.manual.iter().enumerate() {
+                if r.from < 1 || r.from > r.to || u64::from(r.to) > frames {
+                    out.push(
+                        &format!("{at}/mouthTrack/manual/{i}"),
+                        "manualRange",
+                        format!("manual ranges satisfy 1 ≤ from ≤ to ≤ {frames} (the placement's frames)"),
+                    );
+                }
             }
         }
         meta_ext(at, &self.ext, out);

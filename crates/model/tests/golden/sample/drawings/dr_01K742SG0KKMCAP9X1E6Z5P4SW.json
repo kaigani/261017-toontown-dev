@@ -199,8 +199,8 @@
   "createdAt": "2026-10-17T09:30:12.345Z",
   "ext": {
     "com.example.tool": {
-      "stage": "clean-up",
-      "pass": 2
+      "pass": 2,
+      "stage": "clean-up"
     }
   }
 }

@@ -86,7 +86,10 @@ describe('lossless wire JSON', () => {
     for (const [hex, text] of golden.cases) {
       view.setBigUint64(0, BigInt(`0x${hex}`));
       const x = view.getFloat64(0);
-      expect(JSON.stringify(x), hex).toBe(text);
+      // The canonical form is ECMAScript's except for integral doubles from 2^53 to 1e21, which both writers write
+      // as their exact integer digits (C11-R1-07); there `JSON.stringify` pads the shortest digits with zeros.
+      const large = Number.isInteger(x) && Math.abs(x) >= 2 ** 53 && Math.abs(x) < 1e21;
+      expect(large ? BigInt(x).toString() : JSON.stringify(x), hex).toBe(text);
       expect(stringifyWireJson(x)).toBe(text);
       const back = parseWireJson(text);
       expect(typeof back === 'bigint' ? Number(back) : back).toBe(x === 0 ? 0 : x);

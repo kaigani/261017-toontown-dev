@@ -66,6 +66,8 @@ fn stroke_json() -> impl Strategy<Value = Value> {
     (prop::sample::select(vec!["brush", "pencil", "invisible"]), any::<bool>(), prop::collection::vec(prop::array::uniform6(any_double()), 2..12), 0.0f64..50.0)
         .prop_map(|(kind, closed, points, thickness)| {
             let pts: Vec<Value> = points.iter().map(|p| json!(p.to_vec())).collect();
+            // Brush outlines are always closed (10 §4.9, C11-R1-05).
+            let closed = closed || kind == "brush";
             json!({"id": "s42", "type": "stroke", "rev": 1, "kind": kind, "closed": closed, "points": pts,
                    "colourId": if kind == "invisible" { Value::Null } else { json!("col_a") },
                    "fillMatrix": null,

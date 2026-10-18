@@ -3,6 +3,9 @@
 Ambiguities, contradictions or gaps found in `spec/` during implementation. One entry per issue:
 section, quote, problem, decision taken (ADR link) or question for the spec owner.
 
+Review C1.1 round 1 found SI-009, SI-010 and SI-012 to be misreadings and they were removed (their numbers are not
+reused); the decisions they described are now justified from the spec directly in ADR-0010 §1 and §14.
+
 ## SI-001 — 09 §4.4 "≈ CRF 18 equivalent" under platform H.264 encoders (found in C0.4; open)
 
 - **Section:** 09 §4.4 Video settings.
@@ -30,7 +33,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Sections:** 10 §4.5 (`role`: `normal`, `background`); 04 §6.1 and 05 §8.1 (Normal, Foreground, Background,
   Envelope); `anim.node.options.set` in A_command_registry (`role?: enum "normal"|"background"`).
 - **Decision taken (ADR-0010):** the persisted enum is the superset `normal`, `foreground`, `background`,
-  `envelope`, so 04/05's roles can be stored. Commands that accept only two values keep their narrower parameter.
+  `envelope`, so 04/05's roles can be stored. Commands that accept only two values keep their narrower parameter
+  until the owner rules; how a two-value command parameter maps onto the four persisted roles must then be stated
+  explicitly (review C1.1 r1).
 - **Question:** confirm the four roles belong in 10 §4.5 and `anim.node.options.set`.
 
 ## SI-004 — properties named `type` collide with the envelope `type`; pen fields (found in C1.1; decided)
@@ -40,7 +45,8 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   smoothness is `int` in 10 §4.2 and `number` in 02 §6.1.
 - **Decision taken (ADR-0010, following D6 for `elementType`):** persisted names `transitionType`, `particleType`,
   pen `kind` (`brush`/`eraser`) and pen `tipAngle` (0–360, default 0); `tip` as in 10; smoothness `int` 0–10 as in 10
-  (10 owns the persisted format). Command parameters may keep the short names.
+  (10 owns the persisted format). Command parameters may keep the short names; constructor and command tests (C1.2
+  on) must keep the persisted and the parameter names distinct (review C1.1 r1).
 
 ## SI-005 — persisted properties defined outside section 10 (found in C1.1; decided)
 
@@ -56,40 +62,45 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   IDs like keys); `motionPoint:#n` / `motionPoint:@id`; `key:"n"` on the position channel selects the keyframe
   motion point at frame n.
 
-## SI-007 — effect naming and the drop-shadow transform shape (found in C1.1; decided)
+## SI-007 — particle effect names (found in C1.1; decided)
 
 - **Sections:** 06 §3.8.1 / §8.4 call the particle effects `natureParticles` / `actionParticles`; 10 §4.5 uses
-  `particleNature` / `particleImpact`. 06 §3.4 gives the drop-shadow transform as `{xAxis, yAxis, origin}`, 06 §7 as
-  a "2×3 matrix".
-- **Decision taken:** 10's element type names are persisted; `params.transform` uses 06 §3.4's parameter shape
-  (a 2×3 affine written as axes and origin). Particle effects have no effect-level parameters (`params: {}`).
+  `particleNature` / `particleImpact`.
+- **Decision taken:** 10's element type names are persisted. Particle effects have no effect-level parameters
+  (`params: {}`).
+- **Not a conflict (review C1.1 r1):** 06 §3.4's drop-shadow transform `{xAxis, yAxis, origin}` and 06 §7's "2×3
+  matrix" describe the same affine transform; `params.transform` uses the §3.4 shape.
 
 ## SI-008 — `importOptions` of image elements is undefined (found in C1.1; open)
 
 - **Section:** 10 §4.6 ("plus `importOptions` (section 09)"); section 09 defines no such object.
-- **Decision taken:** an opaque JSON object, preserved verbatim, until section 09 (M10) defines it.
-
-## SI-009 — camera transform pivots (found in C1.1; decided)
-
-- **Section:** 10 §4.6 assigns `rotationPivot`/`scalePivot`/`rotateAboutPivot` to "Elements" and `pivot`/
-  `applyPivotTo` to pegs and skeletons; cameras (05 §12.3: offset, roll, FOV) are not covered.
-- **Decision taken:** camera transforms carry no pivot fields.
-
-## SI-010 — swatch ID prefix example (found in C1.1; decided)
-
-- **Section:** 10 ID-02 example `sw_…`; 10 §4.13 and 03 §12.3 examples `col_…`.
-- **Decision taken (ADR-0010):** generated colour IDs use `col_` (IDs are opaque either way).
+- **Decision taken:** an opaque JSON object until section 09 (M10) defines it: never interpreted, no string inside it
+  normalised, only its keys written in canonical order (ADR-0011 §3; review C1.1 r1 finding 03).
 
 ## SI-011 — meaning of `depth` in `doc.object.get` (found in C1.1; decided)
 
 - **Section:** 10 §10.2 (`depth: int = 1 (-1 = all, 0–20)`), 11 §7.4; only the depth-1 example of 10 §10.4 defines it.
+- **Problem (refined by review C1.1 r1):** the depth-1 example and the stub rules support a counting convention, but
+  depth 0 is not clearly defined.
 - **Decision taken (ADR-0010):** depth counts object levels returned in full: 1 = the object with child objects as
   stubs (matches the example), n = n levels, 0 = the object itself as a stub, -1 = all. Value objects are complete
-  at every depth.
+  at every depth. Every result, the depth-0 stub included, validates against the type's schema (finding 11).
 
-## SI-012 — two commands per drawing rename and lock (found in C1.1; decided for `x-command`)
+## SI-013 — brush strokes with `closed: false` in section 02's example (found in C1.1 r1; decided)
 
-- **Sections:** `element.drawing.rename` (04) and `draw.drawing.rename` (02); `element.drawingLock.set` (04) and
-  `draw.lock.set` (02).
-- **Decision taken:** the drawing schema's `x-command` names the 04 commands, which own drawing management; both
-  stay registered (C1.2 decides whether one is an alias).
+- **Sections:** 10 §4.9 stroke table: "`closed` | bool | false | Brush outlines are closed."; 02's internal stroke
+  example (02 §13.4 "JSON shapes") shows `{"id": "b_7", "kind": "brush", "closed": false, …}`.
+- **Problem:** 10 states the invariant for brush strokes; 02's example contradicts it (there the brush points are
+  the spine, and `bezier` may be `null` once the outline was edited).
+- **Decision taken (ADR-0010 §15):** 10 owns the persisted format, so a persisted brush stroke has `closed: true`;
+  `closed: false` with `kind: "brush"` is rejected. 02's spine is the stroke's `spine`.
+- **Question:** confirm 02's example predates the 10 §4.9 stroke format.
+
+## SI-014 — order of map keys in canonical JSON (found in C1.1 r1; decided)
+
+- **Sections:** 10 JSON-02 (keys in schema order; unknown keys last in lexicographic order), JSON-05, AG-06; maps
+  such as 10 §4.3 `paletteStyles`, 10 §4.13 swatch `values` and the content of `meta`/`ext`.
+- **Problem:** JSON-02 orders an object's properties by its schema; a map's keys have no schema order, yet JSON-05/
+  AG-06 require equal documents to give identical bytes.
+- **Decision taken (ADR-0011 §3):** map keys and the keys of objects inside opaque values are written in
+  lexicographic (code point) order, the order JSON-02 already uses for unknown keys.

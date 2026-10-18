@@ -250,3 +250,20 @@ impl Channel {
         }
     }
 }
+
+/// Clamps spline handle frame offsets as 05 §10.3 requires (10 §4.12): the right handle of key `k` to
+/// `0 ≤ dt ≤ t(k+1) − t(k)`, the left handle of key `k` to `−(t(k) − t(k−1)) ≤ dt ≤ 0`; the outer handles of the first
+/// and last key keep only the sign rule. Keys out of frame order are left alone (validation rejects them).
+pub(crate) fn clamp_handles(keys: &mut [Key]) {
+    if !keys.windows(2).all(|w| w[0].frame < w[1].frame) {
+        return;
+    }
+    let frames: Vec<f64> = keys.iter().map(|k| f64::from(k.frame)).collect();
+    for (i, k) in keys.iter_mut().enumerate() {
+        let t = f64::from(k.frame);
+        let next = frames.get(i + 1).map_or(f64::INFINITY, |n| n - t);
+        let prev = i.checked_sub(1).and_then(|j| frames.get(j)).map_or(f64::INFINITY, |p| t - p);
+        k.handles.right.dt = k.handles.right.dt.clamp(0.0, next);
+        k.handles.left.dt = k.handles.left.dt.clamp(-prev, 0.0);
+    }
+}

@@ -81,8 +81,12 @@ export const STRING: Schema = { type: 'string' };
 export const NUMBER: Schema = { type: 'number' };
 export const ANY: Schema = {};
 
-/** Nesting deeper than this is rejected rather than risking stack exhaustion. */
-export const MAX_DEPTH = 64;
+/**
+ * Nesting deeper than this is rejected rather than risking stack exhaustion. Equal to the engine's
+ * `tt_model::json_text::MAX_TEXT_DEPTH` (the outermost value is at depth 1; scalars count), so both sides accept
+ * exactly the same texts (C11-R1-17); model objects are limited to 100 levels inside it (C11-R1-09).
+ */
+export const MAX_DEPTH = 128;
 
 const NO_DEFS: Defs = {};
 const REF_PREFIX = '#/$defs/';

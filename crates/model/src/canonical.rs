@@ -8,7 +8,11 @@
 //! - **JSON-03** Numbers use the ECMAScript `Number::toString` form (the shortest digits that round-trip to the same
 //!   double, `-0` as `0`, integers without a fraction, exponent form outside 1e-7 ≤ |x| < 1e21), which is also what
 //!   `JSON.stringify` writes, so the front end and the engine agree byte for byte. Integers held as `i64`/`u64` are
-//!   written exactly. NaN and infinities are rejected.
+//!   written exactly. NaN and infinities are rejected. One deliberate difference (C11-R1-07): an integral double with
+//!   2^53 ≤ |x| < 1e21 is written as its exact integer digits (`2^64` as `18446744073709551616`, not ECMAScript's
+//!   `18446744073709552000`), because an integer literal denotes an exact integer to every reader of these texts
+//!   ([`crate::json_text`], the front end's `parseWireJson`) and the shortest digits would denote a different one.
+//!   The front end's writer does the same, so both writers still agree byte for byte.
 //! - **Tuples.** An array of 1–8 scalars (numbers, strings, booleans, null) is written on one line as `[a, b, c]`:
 //!   stroke points, exposure runs, pressure samples, matrices and other small tuples (JSON-03). Empty arrays and
 //!   objects are written `[]` and `{}`.
@@ -33,6 +37,10 @@ pub fn format_f64(x: f64) -> Result<String, ModelError> {
     }
     if x == 0.0 {
         return Ok("0".to_owned());
+    }
+    if x.fract() == 0.0 && x.abs() >= 9_007_199_254_740_992.0 && x.abs() < 1e21 {
+        // Exact integer digits (see the module header); `{:.0}` formats the double's exact value.
+        return Ok(format!("{x:.0}"));
     }
     let mut buf = ryu::Buffer::new();
     let s = buf.format_finite(x.abs());
@@ -178,11 +186,269 @@ pub fn to_canonical_string(value: &Value) -> Result<String, ModelError> {
 /// Serialises a typed value and writes it canonically.
 ///
 /// # Errors
-/// As [`to_canonical_string`], plus `internal` if serialisation fails.
+/// As [`to_value`].
 pub fn to_canonical<T: Serialize + ?Sized>(value: &T) -> Result<String, ModelError> {
-    let v = serde_json::to_value(value)
-        .map_err(|e| ModelError::new(codes::INTERNAL, format!("serialisation failed: {e}")))?;
-    to_canonical_string(&v)
+    to_canonical_string(&to_value(value)?)
+}
+
+/// Serialises a typed value to a JSON value, rejecting what `serde_json` would silently change: a NaN or infinite
+/// `f32`/`f64` (written as `null` by `serde_json`; 10 §1.1 makes them invalid) and nesting deeper than
+/// [`crate::MAX_JSON_DEPTH`].
+///
+/// # Errors
+/// `arg.invalid` for a non-finite number (`details.pointer` locates it); `doc.limitExceeded` for too deep nesting;
+/// `internal` if serialisation fails otherwise.
+pub fn to_value<T: Serialize + ?Sized>(value: &T) -> Result<Value, ModelError> {
+    check_finite(value)?;
+    serde_json::to_value(value).map_err(|e| ModelError::new(codes::INTERNAL, format!("serialisation failed: {e}")))
+}
+
+/// Checks that a typed value contains no NaN or infinite number (see [`to_value`]) without building JSON.
+///
+/// # Errors
+/// As [`to_value`].
+pub fn check_finite<T: Serialize + ?Sized>(value: &T) -> Result<(), ModelError> {
+    value.serialize(finite::Finite { depth: 0 }).map_err(|e| match e {
+        finite::Error::NonFinite => {
+            ModelError::new(codes::ARG_INVALID, "NaN and infinities are not valid JSON numbers (10 §1.1)")
+        }
+        finite::Error::TooDeep => {
+            ModelError::new(codes::LIMIT_EXCEEDED, format!("JSON nested deeper than {}", crate::MAX_JSON_DEPTH))
+        }
+        finite::Error::Other(m) => ModelError::new(codes::INTERNAL, format!("serialisation failed: {m}")),
+    })
+}
+
+/// A serializer that produces nothing and fails on a non-finite float.
+mod finite {
+    use serde::ser::{self, Serialize};
+
+    #[derive(Debug)]
+    pub(super) enum Error {
+        NonFinite,
+        TooDeep,
+        Other(String),
+    }
+
+    impl std::fmt::Display for Error {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            match self {
+                Self::NonFinite => f.write_str("non-finite number"),
+                Self::TooDeep => f.write_str("nested too deeply"),
+                Self::Other(m) => f.write_str(m),
+            }
+        }
+    }
+
+    impl std::error::Error for Error {}
+
+    impl ser::Error for Error {
+        fn custom<T: std::fmt::Display>(msg: T) -> Self {
+            Self::Other(msg.to_string())
+        }
+    }
+
+    #[derive(Clone, Copy)]
+    pub(super) struct Finite {
+        pub(super) depth: usize,
+    }
+
+    impl Finite {
+        fn nested(self) -> Result<Self, Error> {
+            if self.depth >= crate::MAX_JSON_DEPTH { Err(Error::TooDeep) } else { Ok(Self { depth: self.depth + 1 }) }
+        }
+    }
+
+    type R = Result<(), Error>;
+
+    impl ser::Serializer for Finite {
+        type Ok = ();
+        type Error = Error;
+        type SerializeSeq = Self;
+        type SerializeTuple = Self;
+        type SerializeTupleStruct = Self;
+        type SerializeTupleVariant = Self;
+        type SerializeMap = Self;
+        type SerializeStruct = Self;
+        type SerializeStructVariant = Self;
+
+        fn serialize_bool(self, _: bool) -> R {
+            Ok(())
+        }
+        fn serialize_i8(self, _: i8) -> R {
+            Ok(())
+        }
+        fn serialize_i16(self, _: i16) -> R {
+            Ok(())
+        }
+        fn serialize_i32(self, _: i32) -> R {
+            Ok(())
+        }
+        fn serialize_i64(self, _: i64) -> R {
+            Ok(())
+        }
+        fn serialize_i128(self, _: i128) -> R {
+            Ok(())
+        }
+        fn serialize_u8(self, _: u8) -> R {
+            Ok(())
+        }
+        fn serialize_u16(self, _: u16) -> R {
+            Ok(())
+        }
+        fn serialize_u32(self, _: u32) -> R {
+            Ok(())
+        }
+        fn serialize_u64(self, _: u64) -> R {
+            Ok(())
+        }
+        fn serialize_u128(self, _: u128) -> R {
+            Ok(())
+        }
+        fn serialize_f32(self, v: f32) -> R {
+            if v.is_finite() { Ok(()) } else { Err(Error::NonFinite) }
+        }
+        fn serialize_f64(self, v: f64) -> R {
+            if v.is_finite() { Ok(()) } else { Err(Error::NonFinite) }
+        }
+        fn serialize_char(self, _: char) -> R {
+            Ok(())
+        }
+        fn serialize_str(self, _: &str) -> R {
+            Ok(())
+        }
+        fn serialize_bytes(self, _: &[u8]) -> R {
+            Ok(())
+        }
+        fn serialize_none(self) -> R {
+            Ok(())
+        }
+        fn serialize_some<T: Serialize + ?Sized>(self, v: &T) -> R {
+            v.serialize(self)
+        }
+        fn serialize_unit(self) -> R {
+            Ok(())
+        }
+        fn serialize_unit_struct(self, _: &'static str) -> R {
+            Ok(())
+        }
+        fn serialize_unit_variant(self, _: &'static str, _: u32, _: &'static str) -> R {
+            Ok(())
+        }
+        fn serialize_newtype_struct<T: Serialize + ?Sized>(self, _: &'static str, v: &T) -> R {
+            v.serialize(self)
+        }
+        fn serialize_newtype_variant<T: Serialize + ?Sized>(
+            self,
+            _: &'static str,
+            _: u32,
+            _: &'static str,
+            v: &T,
+        ) -> R {
+            v.serialize(self.nested()?)
+        }
+        fn serialize_seq(self, _: Option<usize>) -> Result<Self, Error> {
+            self.nested()
+        }
+        fn serialize_tuple(self, _: usize) -> Result<Self, Error> {
+            self.nested()
+        }
+        fn serialize_tuple_struct(self, _: &'static str, _: usize) -> Result<Self, Error> {
+            self.nested()
+        }
+        fn serialize_tuple_variant(self, _: &'static str, _: u32, _: &'static str, _: usize) -> Result<Self, Error> {
+            self.nested()?.nested()
+        }
+        fn serialize_map(self, _: Option<usize>) -> Result<Self, Error> {
+            self.nested()
+        }
+        fn serialize_struct(self, _: &'static str, _: usize) -> Result<Self, Error> {
+            self.nested()
+        }
+        fn serialize_struct_variant(self, _: &'static str, _: u32, _: &'static str, _: usize) -> Result<Self, Error> {
+            self.nested()?.nested()
+        }
+    }
+
+    impl ser::SerializeSeq for Finite {
+        type Ok = ();
+        type Error = Error;
+        fn serialize_element<T: Serialize + ?Sized>(&mut self, v: &T) -> R {
+            v.serialize(*self)
+        }
+        fn end(self) -> R {
+            Ok(())
+        }
+    }
+
+    impl ser::SerializeTuple for Finite {
+        type Ok = ();
+        type Error = Error;
+        fn serialize_element<T: Serialize + ?Sized>(&mut self, v: &T) -> R {
+            v.serialize(*self)
+        }
+        fn end(self) -> R {
+            Ok(())
+        }
+    }
+
+    impl ser::SerializeTupleStruct for Finite {
+        type Ok = ();
+        type Error = Error;
+        fn serialize_field<T: Serialize + ?Sized>(&mut self, v: &T) -> R {
+            v.serialize(*self)
+        }
+        fn end(self) -> R {
+            Ok(())
+        }
+    }
+
+    impl ser::SerializeTupleVariant for Finite {
+        type Ok = ();
+        type Error = Error;
+        fn serialize_field<T: Serialize + ?Sized>(&mut self, v: &T) -> R {
+            v.serialize(*self)
+        }
+        fn end(self) -> R {
+            Ok(())
+        }
+    }
+
+    impl ser::SerializeMap for Finite {
+        type Ok = ();
+        type Error = Error;
+        fn serialize_key<T: Serialize + ?Sized>(&mut self, k: &T) -> R {
+            k.serialize(*self)
+        }
+        fn serialize_value<T: Serialize + ?Sized>(&mut self, v: &T) -> R {
+            v.serialize(*self)
+        }
+        fn end(self) -> R {
+            Ok(())
+        }
+    }
+
+    impl ser::SerializeStruct for Finite {
+        type Ok = ();
+        type Error = Error;
+        fn serialize_field<T: Serialize + ?Sized>(&mut self, _: &'static str, v: &T) -> R {
+            v.serialize(*self)
+        }
+        fn end(self) -> R {
+            Ok(())
+        }
+    }
+
+    impl ser::SerializeStructVariant for Finite {
+        type Ok = ();
+        type Error = Error;
+        fn serialize_field<T: Serialize + ?Sized>(&mut self, _: &'static str, v: &T) -> R {
+            v.serialize(*self)
+        }
+        fn end(self) -> R {
+            Ok(())
+        }
+    }
 }
 
 /// Writes a JSON value compactly (no white space) with canonical number formatting and the given key order. Used
@@ -282,7 +548,10 @@ mod tests {
             (41.1121, "41.1121"),
             (1e21, "1e+21"),
             (1e20, "100000000000000000000"),
-            (123_456_789_012_345_680_000.0, "123456789012345680000"),
+            // Integral doubles from 2^53 to 1e21 are written as their exact integer value (C11-R1-07).
+            (123_456_789_012_345_680_000.0, "123456789012345683968"),
+            (18_446_744_073_709_551_616.0, "18446744073709551616"),
+            (-18_446_744_073_709_551_616.0, "-18446744073709551616"),
             (1e-6, "0.000001"),
             (1e-7, "1e-7"),
             (1.5e-7, "1.5e-7"),
@@ -323,6 +592,19 @@ mod tests {
         normalize_numbers(&mut v);
         assert_eq!(to_compact_string(&v).unwrap(), "{\"a\":1,\"b\":0,\"c\":1.5,\"d\":[2,1e+300]}");
         assert!(v["a"].is_i64());
+    }
+
+    #[test]
+    fn non_finite_values_are_errors_not_null() {
+        assert_eq!(to_canonical(&f64::NAN).unwrap_err().code(), codes::ARG_INVALID);
+        assert!(to_value(&vec![1.0, f64::INFINITY]).is_err());
+        assert!(to_value(&std::collections::BTreeMap::from([("a", f32::NEG_INFINITY)])).is_err());
+        assert!(to_value(&Some(1.5)).is_ok());
+        let mut deep = json!(0);
+        for _ in 0..200 {
+            deep = json!([deep]);
+        }
+        assert_eq!(to_value(&deep).unwrap_err().code(), codes::LIMIT_EXCEEDED);
     }
 
     #[test]

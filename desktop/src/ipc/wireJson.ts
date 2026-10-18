@@ -9,8 +9,20 @@
 // The parser builds every object and array itself, so its output is plain data by construction: own enumerable
 // data properties defined (never assigned: an own `__proto__` key is just a key), dense arrays, no proxies, at most
 // MAX_DEPTH levels. Duplicate keys, lone control characters, trailing garbage and non-JSON tokens are errors.
+//
+// The engine reads text with the same rules (`tt_model::json_text`), and both run the shared corpus
+// `tests/fixtures/wire/hostile-json.json`, so they reject exactly the same texts (C11-R1-17): unpaired surrogates
+// (the engine's UTF-8 strings cannot hold them) and integer literals that neither fit the 64-bit ranges nor are
+// exactly a double (the engine would have to round them; C11-R1-07) are errors here too. Both writers write an
+// integral double with 2^53 <= |x| < 1e21 as its exact integer digits, which a reader takes as that exact integer.
 
 import { hasOwn, MAX_DEPTH, type Defs, type Schema, type SchemaObject, violations } from './schema';
+
+/** A code point in the surrogate range: with the `u` flag only an unpaired surrogate matches. */
+const LONE_SURROGATE = /[\uD800-\uDFFF]/u;
+const I64_MIN = -(2n ** 63n);
+const U64_MAX = 2n ** 64n - 1n;
+const TWO_53 = 2 ** 53;
 
 /** A malformed JSON text. */
 export class WireJsonError extends Error {
@@ -60,12 +72,18 @@ export function parseWireJson(text: string): unknown {
       pos += c === 0x5c ? 2 : 1;
     }
     pos++;
+    let s: string;
     try {
-      return JSON.parse(text.slice(start, pos)) as string;
+      s = JSON.parse(text.slice(start, pos)) as string;
     } catch {
       pos = start;
       return fail('invalid string');
     }
+    if (LONE_SURROGATE.test(s)) {
+      pos = start;
+      return fail('unpaired surrogate');
+    }
+    return s;
   };
   const number = (): number | bigint => {
     const m = /-?(?:0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/uy;
@@ -77,7 +95,12 @@ export function parseWireJson(text: string): unknown {
     if (match[1] === undefined && match[2] === undefined) {
       const n = Number(token);
       // An integer token whose value is not a safe integer cannot be held exactly by a number.
-      return Number.isSafeInteger(n) ? n : BigInt(token);
+      if (Number.isSafeInteger(n)) return n;
+      const exact = BigInt(token);
+      // Accepted when the engine can hold it exactly too: a 64-bit integer, or exactly the value of a double.
+      if ((exact >= I64_MIN && exact <= U64_MAX) || (Number.isFinite(n) && BigInt(n) === exact)) return exact;
+      pos -= token.length;
+      return fail('integer literal is outside the 64-bit ranges and not exactly a double');
     }
     const n = Number(token);
     if (!Number.isFinite(n)) fail('number out of range');
@@ -165,11 +188,14 @@ export function stringifyWireJson(value: unknown): string {
     if (v === null) return 'null';
     switch (typeof v) {
       case 'string':
+        if (LONE_SURROGATE.test(v)) throw new WireJsonError('unpaired surrogate', 0);
         return JSON.stringify(v);
       case 'boolean':
         return v ? 'true' : 'false';
       case 'number':
         if (!Number.isFinite(v)) throw new WireJsonError('non-finite number', 0);
+        // Exact integer digits from 2^53 to 1e21 (the engine's canonical writer does the same; see the header).
+        if (Number.isInteger(v) && Math.abs(v) >= TWO_53 && Math.abs(v) < 1e21) return BigInt(v).toString();
         return JSON.stringify(v);
       case 'bigint':
         return v.toString();
@@ -184,6 +210,7 @@ export function stringifyWireJson(value: unknown): string {
           for (const k of Object.keys(v)) {
             const x: unknown = Object.getOwnPropertyDescriptor(v, k)?.value;
             if (x === undefined) continue;
+            if (LONE_SURROGATE.test(k)) throw new WireJsonError('unpaired surrogate', 0);
             parts.push(`${JSON.stringify(k)}:${write(x, depth + 1)}`);
           }
           out = `{${parts.join(',')}}`;
@@ -231,59 +258,91 @@ function wantsDouble(schema: Schema, value: unknown, defs: Defs, depth: number):
   return false;
 }
 
-function childSchemas(schema: Schema, defs: Defs, key: string | number, depth: number): Schema[] {
-  if (typeof schema === 'boolean' || depth > 16) return [];
+/**
+ * The schema objects that apply to `container` under `schema`: the schema itself, every `allOf`/`anyOf`/`oneOf`
+ * member and the `if` branch the container selects (`then` when it satisfies `if`, otherwise `else`), with `$ref`s
+ * resolved. The generated model schemas put the full-object requirements and the kind rules (e.g. effect parameter
+ * types) under such branches (C11-R1-08). Evaluated once per container, not per member.
+ */
+function applicable(
+  schema: Schema,
+  defs: Defs,
+  container: unknown,
+  out: SchemaObject[],
+  depth: number,
+): void {
+  if (typeof schema === 'boolean' || depth > 16) return;
   const s = deref(schema, defs) as SchemaObject;
-  const out: Schema[] = [];
-  if (typeof key === 'number') {
-    const prefix = ownSchema(s, 'prefixItems') as unknown;
-    const p = Array.isArray(prefix) ? (prefix as Schema[])[key] : undefined;
-    if (p !== undefined) out.push(p);
-    else {
-      const items = ownSchema(s, 'items');
-      if (items !== undefined) out.push(items);
-    }
-  } else {
-    const prop = ownSchema(ownSchema(s, 'properties') as object | undefined, key);
-    if (prop !== undefined) out.push(prop);
-    else {
-      const ap = ownSchema(s, 'additionalProperties');
-      if (ap !== undefined && typeof ap !== 'boolean') out.push(ap);
-    }
-  }
+  if (typeof s === 'boolean') return;
+  out.push(s);
   for (const k of ['anyOf', 'oneOf', 'allOf'] as const) {
     const alts = ownSchema(s, k) as unknown;
-    if (Array.isArray(alts))
-      for (const a of alts as Schema[]) out.push(...childSchemas(a, defs, key, depth + 1));
+    if (Array.isArray(alts)) for (const a of alts as Schema[]) applicable(a, defs, container, out, depth + 1);
+  }
+  const cond = ownSchema(s, 'if');
+  if (cond !== undefined) {
+    const branch = ownSchema(s, violations(cond, container, '', defs).length === 0 ? 'then' : 'else');
+    if (branch !== undefined) applicable(branch, defs, container, out, depth + 1);
+  }
+}
+
+/** The schemas of member `key` (`properties`/`additionalProperties`, or `prefixItems`/`items`) of applicable schemas. */
+function memberSchemas(schemas: SchemaObject[], key: string | number): Schema[] {
+  const out: Schema[] = [];
+  for (const s of schemas) {
+    if (typeof key === 'number') {
+      const prefix = ownSchema(s, 'prefixItems') as unknown;
+      const p = Array.isArray(prefix) ? (prefix as Schema[])[key] : undefined;
+      const sub = p ?? ownSchema(s, 'items');
+      if (sub !== undefined) out.push(sub);
+    } else {
+      const prop = ownSchema(ownSchema(s, 'properties') as object | undefined, key);
+      const ap = ownSchema(s, 'additionalProperties');
+      const sub = prop ?? (typeof ap === 'boolean' ? undefined : ap);
+      if (sub !== undefined) out.push(sub);
+    }
+  }
+  return out;
+}
+
+/** Whether a parsed value holds a `bigint` anywhere (the parser produces plain data at most MAX_DEPTH deep). */
+function holdsBigint(value: unknown, depth: number): boolean {
+  if (typeof value === 'bigint') return true;
+  if (depth > MAX_DEPTH || typeof value !== 'object' || value === null) return false;
+  if (Array.isArray(value)) return value.some((v: unknown) => holdsBigint(v, depth + 1));
+  return Object.keys(value).some((k) =>
+    holdsBigint(Object.getOwnPropertyDescriptor(value, k)?.value, depth + 1),
+  );
+}
+
+function coerceWith(value: unknown, schemas: Schema[], defs: Defs, depth: number): unknown {
+  if (typeof value === 'bigint') {
+    return schemas.some((s) => wantsDouble(s, value, defs, 0)) ? Number(value) : value;
+  }
+  if (depth > MAX_DEPTH || typeof value !== 'object' || value === null || schemas.length === 0) return value;
+  const app: SchemaObject[] = [];
+  for (const s of schemas) applicable(s, defs, value, app, 0);
+  // Only members that can hold a bigint need their schemas.
+  const sub = (item: unknown, key: string | number): unknown =>
+    typeof item === 'object' || typeof item === 'bigint'
+      ? coerceWith(item, memberSchemas(app, key), defs, depth + 1)
+      : item;
+  if (Array.isArray(value)) return value.map((item: unknown, i): unknown => sub(item, i));
+  const out: object = {};
+  for (const k of Object.keys(value)) {
+    defineKey(out, k, sub(Object.getOwnPropertyDescriptor(value, k)?.value, k));
   }
   return out;
 }
 
 /**
- * Converts `bigint` literals back to `number` where the schema says the value is a double (see the header). Returns
- * a new value; objects and arrays are rebuilt with defined (never assigned) keys.
+ * Converts `bigint` literals back to `number` where the schema says the value is a double (see the header): where
+ * any schema that applies at the position asks for a double. Returns a new value with objects and arrays rebuilt
+ * with defined (never assigned) keys, or the value itself when it holds no `bigint` (nothing to convert).
  */
 export function coerceNumbers(value: unknown, schema: Schema, defs: Defs, depth = 0): unknown {
-  if (typeof value === 'bigint') {
-    return wantsDouble(schema, value, defs, 0) ? Number(value) : value;
-  }
-  if (depth > MAX_DEPTH || typeof value !== 'object' || value === null) return value;
-  if (Array.isArray(value)) {
-    return value.map((item: unknown, i): unknown => {
-      const schemas = childSchemas(schema, defs, i, 0);
-      return schemas.length === 0 ? item : coerceNumbers(item, schemas[0] ?? true, defs, depth + 1);
-    });
-  }
-  const out: object = {};
-  for (const k of Object.keys(value)) {
-    const item: unknown = Object.getOwnPropertyDescriptor(value, k)?.value;
-    const schemas = childSchemas(schema, defs, k, 0);
-    // Several candidate schemas (alternatives): coerce only if one of them asks for a double.
-    const target =
-      schemas.find((c) => typeof item === 'bigint' && wantsDouble(c, item, defs, 0)) ?? schemas[0];
-    defineKey(out, k, target === undefined ? item : coerceNumbers(item, target, defs, depth + 1));
-  }
-  return out;
+  if (!holdsBigint(value, depth)) return value;
+  return coerceWith(value, [schema], defs, depth);
 }
 
 /**

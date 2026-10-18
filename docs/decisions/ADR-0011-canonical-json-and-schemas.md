@@ -1,6 +1,7 @@
 # ADR-0011 — Canonical JSON, schemas and change sets
 
-Status: accepted (M1 C1.1, 2026-10-18). Spec: 10 §2.6–§2.8, §6.5 (JSON-01…05), §9, §10.4.
+Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 3, 5, 7, 8).
+Spec: 10 §2.6–§2.8, §6.5 (JSON-01…05), §9, §10.4.
 
 ## Context
 
@@ -11,44 +12,73 @@ definitions the application validates with; 10 §2.6 for change sets that can be
 
 1. **Number form (JSON-03).** Numbers are written exactly as ECMAScript `Number.prototype.toString` (= `JSON.stringify`)
    writes them: shortest round-trip digits, `-0` as `0`, no fraction on integral values, exponent form outside
-   1e-7 ≤ |x| < 1e21. Integers held as `i64`/`u64` are exact at any magnitude. NaN and infinities are rejected. The
-   Rust writer (`tt_model::canonical`) and `JSON.stringify` agree on 2 000 shared vectors
-   (`crates/model/tests/golden/numbers.json`, checked by Rust and by Vitest). Integral doubles on input become
-   integers (JSON has one number type). `serde_json` is built with `float_roundtrip`, without which parsing can be
-   off by one ulp and canonical text would drift (found by the property tests).
+   1e-7 ≤ |x| < 1e21. Integers held as `i64`/`u64` are exact at any magnitude. One exception (C11-R1-07): an
+   integral double with 2^53 ≤ |x| < 1e21 is written as its **exact** integer digits (2^64 as
+   `18446744073709551616`, where ECMAScript writes `18446744073709552000`). Both forms are equally short and round-
+   trip to the same double (JSON-03 is met), but every reader of these texts takes an integer literal as an exact
+   integer, and the shortest digits name a different one. NaN and infinities are rejected on **every** serialisation
+   path: `canonical::to_value` checks floats while serialising, because `serde_json` would silently write them as
+   `null` (C11-R1-16); `object::to_json`, `to_canonical` and `wire::to_wire_json` all use it. The Rust writer and the
+   front end's `stringifyWireJson` agree on 2 000 shared vectors (`crates/model/tests/golden/numbers.json`, checked
+   by Rust and by Vitest). Integral doubles on input become integers (JSON has one number type). `serde_json` is
+   built with `float_roundtrip`, without which parsing can be off by one ulp and canonical text would drift (found
+   by the property tests).
 2. **Layout (JSON-01, JSON-03).** Two-space indentation, `\n`, final newline, UTF-8 without BOM; only `"`, `\` and
    control characters are escaped. An array of 1–8 scalars is written on one line (`[x, y, inX, inY, outX, outY]`,
    `["dr_…", 6]`, matrices); everything else one element per line.
 3. **Key order (JSON-02)** is schema order = struct declaration order (`serde_json` with `preserve_order`), envelope
-   first and `meta`, `ext` last. Map-valued properties are written in a fixed order: swatch values in style order
-   (normalised when a palette is parsed), frame-keyed maps numerically, channel maps by channel id; a scene's
-   `paletteStyles` keeps its stored order (part of the document state, so equal documents write equal text).
+   first and `meta`, `ext` last. The keys of maps — `paletteStyles`, swatch `values`, element `channels`, effect
+   `params` of no declared shape, and every object inside opaque `meta`/`ext`/`importOptions` values — are written in
+   lexicographic (code point) order, recursively; frame-keyed maps numerically. The order is a pure function of
+   content (10 AG-06, JSON-05; C11-R1-06): it is established by the input pass of every validated object
+   (`tt_model::input`, ADR-0010 §15) and `Document::from_parts` revalidates every entry, so two equal documents write
+   equal bytes whatever order their maps were built in. (Round 1 replaced the earlier rule that a stored map order
+   is document state; spec 10 §4.3 defines a map. JSON-02 does not state map-key order; SI-014.)
 4. **Omissions (JSON-04).** Only properties marked `x-omitDefault` may be omitted when default: `meta`, `ext`, an
    element's `note` and `cellNotes`, mouth-track `labels`, an unnamed drawing node's `name`, a texture value's
    informative `width`/`height`, an error's `details`.
 5. **Schemas (10 §2.8).** Generated with `schemars` (draft 2020-12) from the model types and completed by one
    deterministic pass: `required` = every property not marked `x-omitDefault`/`x-kindSpecific`; kind-specific
    properties are absent, never `null`; one `if/then` rule per element type, drawing-node kind, stroke kind,
-   channel kind and library-item kind; integer bounds of the Rust type (32-bit `int` unless stated; revisions, sizes
-   and seeds 64-bit); per-entity name patterns and lengths (10 §1.3); child objects accept full objects or stubs
-   (10 §2.2); query-only properties are declared with `x-derived`/`x-transient`; every object schema carries
-   `x-since` and `x-objectType`; `x-unit`, `x-command` (checked against `spec/A_command_registry.md` by a test) and
-   `x-ref` annotate fields. Validation uses the `jsonschema` crate pinned at 0.18.3 with its `draft202012` feature
-   (later releases depend on an MIT-0 crate outside the ADR-0003 allow-list; open question in the C1.1 handoff).
+   channel kind and library-item kind; integer bounds as the spec states them (C11-R1-14): `int` is signed 32-bit
+   (10 §1.1), so frames, durations, counts and loops are 0/1…2^31−1 even where the Rust field is `u32`; the stated
+   exceptions are revisions and byte sizes (64-bit) and the particle seed (0–2^32−1, 06 §3.8.3); per-entity name
+   patterns and lengths (10 §1.3). **Full object or stub** (10 §2.2 "Both forms validate", C11-R1-11): every object
+   schema is `if {required: [rev]} then {full requirements and kind rules} else {only id/colourId, type, name}`, with
+   its constant `type`, so a child slot accepts exactly its own type's full objects and stubs and a depth-0 result
+   validates. Query-only properties are declared with `x-derived`/`x-transient`; every object schema carries
+   `x-objectType` and **every property** carries `x-since` (C11-R1-13); the envelope `type` is `readOnly`; `x-unit`,
+   `x-command` (checked against `spec/A_command_registry.md` by a test) and `x-ref` annotate fields.
+   `schema::property_schema` resolves any JSON Pointer through `$ref`s, alternatives, conditional branches, tuple
+   positions, array items and map values (C11-R1-19). Validation uses the `jsonschema` crate **0.59** (draft
+   2020-12, default features off); MIT-0, which its dependency tree needs, was accepted on 2026-10-18 (ADR-0003,
+   C11-R1-18). The upgrade fixes the reproduced integer `multipleOf` rounding of 0.18.3.
 6. **Publication.** `crates/model/schema/model-1.0.schema.json` (all definitions, kept current by a test),
    `tt_model::schema::object_schema(type)` (what `doc.schema.get` returns) and the generated front-end module
    `desktop/src/ipc/generated/model.ts` (ADR-0012).
 7. **Change sets (10 §2.6).** Each addressable object is diffed by its **own view**: its JSON without `rev`, each
    child object reduced to `{id, type}`. A child's property change therefore never touches the parent (REV-02), while
-   membership and order of a child collection produce `add`/`remove`/`move` operations on the parent. Every
-   operation carries `oldValue`; `invert` reverses a patch exactly. Exposure and mouth-track edits use one range
+   membership and order of a child collection produce `add`/`remove`/`move` operations on the parent — only at the
+   type's declared child-list slots; any other array, in particular inside opaque `meta`/`ext`, is an ordinary value
+   (C11-R1-03). Every operation carries `oldValue`; an `add`, `move` or `copy` that overwrites an object member
+   carries the overwritten value as `oldValue` and `apply` checks it, so `invert` restores it (C11-R1-04). `apply`
+   refuses an operation whose value is missing or elided (an elided value is unknown, never `null`: the consumer
+   rereads) and supports RFC 6902 root `add`/`replace`; whether `doc.object.patch` may replace a whole object is a
+   command decision (C1.2). Exposure and mouth-track edits use one range
    operation: `{op: "replace", path, range: {from, to}, value, oldValue}` where frames from `from` covered by
    `oldValue` are replaced by `value` and `to = from + max(|old|, |new|) − 1`. Entries shared by two snapshots (same
    `Arc`) are skipped, so a diff costs what changed. Values over 64 KiB are elided in events (`elide`).
 
+8. **Text reading (C11-R1-07, R1-17).** JSON text from outside is read by `tt_model::json_text` before `serde_json`:
+   RFC 8259 only, unique keys after unescaping, no unpaired surrogates, nesting ≤ 128, and an integer literal must
+   fit `i64`/`u64` or be exactly a double — otherwise `arg.invalid`, never a rounded value. The front end's
+   `parseWireJson` applies the same rules; both run `tests/fixtures/wire/hostile-json.json` (ADR-0012).
+
 ## Consequences
 
 - Saving the same document twice is byte-identical, verified by golden files of a sample project that uses every
-  object and element type, and by property tests over generated entities.
+  object and element type, and by property tests over generated entities; equal documents built in different orders
+  are byte-identical too.
 - Front end and engine produce identical number text, so canonical JSON can be produced on either side.
-- Upgrading `jsonschema` needs the MIT-0 licence approved first (or the dependency to change).
+- Nesting limits nest: objects ≤ 100 levels (model input), text ≤ 128 (both readers), writers ≤ 128 below the
+  root; an accepted object can always be written, wrapped in a reply and read back (C11-R1-09).

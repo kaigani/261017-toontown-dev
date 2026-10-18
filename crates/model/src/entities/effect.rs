@@ -356,7 +356,8 @@ model_struct! {
         variant: Option<String>,
         /// Last applied preset (informational).
         preset_id: Option<String>,
-        /// Seed of all random choices, 0–2³²−1 (06 §4.6).
+        /// Seed of all random choices, 0–2³²−1 (06 §3.8.3, §4.6: a full unsigned 32-bit range, stated explicitly).
+        #[schemars(extend("maximum" = 4_294_967_295_u32))]
         seed: u32,
         /// Built-in sprite set.
         sprite_set_id: Option<String>,

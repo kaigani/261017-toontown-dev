@@ -21,10 +21,13 @@ use crate::error::{ModelError, codes};
 use crate::id::{Id, IdRef};
 use crate::types::ObjectType;
 
-/// Maximum length of a path string accepted by the parser.
-pub const MAX_PATH_LEN: usize = 4096;
-/// Maximum number of segments in a path.
-pub const MAX_SEGMENTS: usize = 32;
+/// Maximum number of segments in a path. Every object the model accepts has a canonical path within this bound
+/// (C11-R1-10): an object nested `n` levels deep sits at JSON depth ≥ `n`, and objects are at most
+/// [`crate::input::MAX_MODEL_DEPTH`] deep.
+pub const MAX_SEGMENTS: usize = crate::input::MAX_MODEL_DEPTH;
+/// Maximum length of a path string accepted by the parser: [`MAX_SEGMENTS`] segments of the longest name (128
+/// characters, each at most 4 UTF-8 bytes, escaped) plus type and quotes stay below it.
+pub const MAX_PATH_LEN: usize = 64 * 1024;
 
 /// A special reference allowed as the first segment (11 §5.1).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

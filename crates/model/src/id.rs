@@ -7,7 +7,7 @@
 
 use std::borrow::Cow;
 use std::fmt;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex, PoisonError};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use schemars::{JsonSchema, Schema, SchemaGenerator, json_schema};
@@ -189,27 +189,40 @@ enum Source {
     Seeded { state: u64, clock_ms: u64 },
 }
 
-/// Generates ULID-style IDs (ID-02). Within one generator IDs are strictly increasing (monotonic ULIDs): when two IDs
-/// fall in the same millisecond the random part of the later one is the earlier one's plus one.
-#[derive(Debug, Clone)]
-pub struct IdGenerator {
+#[derive(Debug)]
+struct GeneratorState {
     source: Source,
     last_ms: u64,
     last_random: u128,
 }
 
+/// Generates ULID-style IDs (ID-02). Within one generator IDs are strictly increasing (monotonic ULIDs): when two IDs
+/// fall in the same millisecond the random part of the later one is the earlier one's plus one.
+///
+/// Cloning a generator yields a **handle to the same sequence** (C11-R1-20): clones share one monotonic state behind
+/// a mutex, so IDs drawn through any clone, from any thread, are distinct and increasing in drawing order. A copied
+/// state would repeat the next random part within a millisecond and duplicate IDs.
+#[derive(Debug, Clone)]
+pub struct IdGenerator {
+    state: Arc<Mutex<GeneratorState>>,
+}
+
 impl IdGenerator {
+    fn with(source: Source) -> Self {
+        Self { state: Arc::new(Mutex::new(GeneratorState { source, last_ms: 0, last_random: 0 })) }
+    }
+
     /// A generator using operating-system randomness and the system clock (the product default).
     #[must_use]
     pub fn system() -> Self {
-        Self { source: Source::System, last_ms: 0, last_random: 0 }
+        Self::with(Source::System)
     }
 
     /// A deterministic generator: the same seed and start time always produce the same IDs. IDs from seeded
     /// generators are unique within a project but not across projects; the product uses [`IdGenerator::system`].
     #[must_use]
     pub fn seeded(seed: u64, start_ms: u64) -> Self {
-        Self { source: Source::Seeded { state: seed, clock_ms: start_ms }, last_ms: 0, last_random: 0 }
+        Self::with(Source::Seeded { state: seed, clock_ms: start_ms })
     }
 
     /// The next ID for an object of type `ty`: `<prefix>_<ULID>`.
@@ -217,7 +230,10 @@ impl IdGenerator {
     /// # Errors
     /// `internal` when the operating system's random source fails.
     pub fn next(&mut self, ty: ObjectType) -> Result<Id, ModelError> {
-        let (mut ms, random) = match &mut self.source {
+        // A poisoned lock still holds a consistent state: every update below happens after the last fallible step.
+        let mut st = self.state.lock().unwrap_or_else(PoisonError::into_inner);
+        let st = &mut *st;
+        let (mut ms, random) = match &mut st.source {
             Source::System => {
                 let mut buf = [0u8; 10];
                 getrandom::fill(&mut buf)
@@ -235,16 +251,16 @@ impl IdGenerator {
             }
         };
         let mut random = random;
-        if ms <= self.last_ms {
+        if ms <= st.last_ms {
             // Same (or an earlier) millisecond: keep the previous time and increment the random part.
-            ms = self.last_ms;
-            random = self.last_random.wrapping_add(1) & ((1u128 << 80) - 1);
+            ms = st.last_ms;
+            random = st.last_random.wrapping_add(1) & ((1u128 << 80) - 1);
             if random == 0 {
                 ms = ms.saturating_add(1);
             }
         }
-        self.last_ms = ms;
-        self.last_random = random;
+        st.last_ms = ms;
+        st.last_random = random;
         Id::parse(&format!("{}_{}", ty.id_prefix(), encode_ulid(ms, random)))
     }
 }
@@ -302,6 +318,18 @@ mod tests {
             assert!(s.starts_with("el_") && s.len() == 29, "{s}");
             assert!(s > prev.as_str(), "{s} after {prev}");
             prev = s.to_owned();
+        }
+    }
+
+    #[test]
+    fn clones_share_one_sequence() {
+        for mut g in [IdGenerator::system(), IdGenerator::seeded(3, 0)] {
+            let mut c = g.clone();
+            let ids: Vec<Id> = (0..100)
+                .map(|i| if i % 2 == 0 { g.next(ObjectType::Pen) } else { c.next(ObjectType::Pen) })
+                .collect::<Result<_, _>>()
+                .unwrap();
+            assert!(ids.windows(2).all(|w| w[0] < w[1]), "clones draw one increasing sequence");
         }
     }
 

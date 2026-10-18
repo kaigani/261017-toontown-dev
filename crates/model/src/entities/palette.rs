@@ -145,7 +145,7 @@ model_struct! {
         kind: SwatchKind,
         /// Whether a gradient/texture fill follows bone deformation (03 §7.5).
         deformable: bool,
-        /// Exactly one value per style of the palette, keyed by style ID, in style order.
+        /// Exactly one value per style of the palette, keyed by style ID (keys in canonical order, ADR-0011 §3).
         #[schemars(extend("x-command" = "colour.swatch.set"))]
         values: IndexMap<Id, SwatchValue>,
         /// Free-form metadata.

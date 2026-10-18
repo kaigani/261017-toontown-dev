@@ -2,6 +2,7 @@
 # Graph: `cargo tree --locked -p vello_cpu --prefix none` (resolved features std, u8_pipeline, f32_pipeline,
 # multithreading; normal and build dependencies). Sources: src/**/*.rs in the cargo registry.
 # Columns: crate version | licence | lines matching the whole word `unsafe`, excluding `//` lines | source lines
+allocator-api2 v0.2.21 | MIT OR Apache-2.0 | 214 | 8053
 arrayvec v0.7.8 | MIT OR Apache-2.0 | 52 | 2413
 autocfg v1.5.1 | Apache-2.0 OR MIT | 0 | 925
 bytemuck v1.25.2 | Zlib OR Apache-2.0 OR MIT | 323 | 4162
@@ -13,6 +14,7 @@ crossbeam-deque v0.8.8 | MIT OR Apache-2.0 | 41 | 2367
 crossbeam-epoch v0.9.21 | MIT OR Apache-2.0 | 128 | 4945
 crossbeam-utils v0.8.23 | MIT OR Apache-2.0 | 76 | 4168
 either v1.19.0 | MIT OR Apache-2.0 | 2 | 2477
+equivalent v1.0.3 | Apache-2.0 OR MIT | 0 | 119
 euclid v0.22.14 | MIT OR Apache-2.0 | 44 | 18480
 fearless_simd v0.7.0 | Apache-2.0 OR MIT | 111 | 84164
 foldhash v0.2.0 | Zlib | 10 | 1128
@@ -37,7 +39,7 @@ thread_local v1.1.10 | MIT OR Apache-2.0 | 27 | 1191
 unicode-ident v1.0.27 | (MIT OR Apache-2.0) AND Unicode-3.0 | 2 | 976
 vello_common v0.3.0 | Apache-2.0 OR MIT | 0 | 15763
 vello_cpu v0.3.0 | Apache-2.0 OR MIT | 0 | 13954
-# TOTAL: 35 crates (vello_cpu included), 339030 source lines, 1727 unsafe-word lines
+# TOTAL: 37 crates (vello_cpu included), 347202 source lines, 1941 unsafe-word lines
 # These are lexical exposure indicators, not counts of unsafe blocks and not a safety proof. vello_cpu and
 # vello_common contain no `unsafe` themselves.
 

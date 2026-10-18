@@ -457,7 +457,9 @@ fn ten_megabyte_drawing_validation_measurement() {
 #[test]
 fn jsonschema_integer_multiple_of_does_not_round_before_testing() {
     let s = json!({"type":"integer","multipleOf":5});
-    let validator = jsonschema::JSONSchema::options().with_draft(jsonschema::Draft::Draft202012).compile(&s).unwrap();
+    // Ported by the builder to the jsonschema 0.59 API after the C11-R1-18 upgrade (`JSONSchema::options().compile`
+    // no longer exists); the schema, the draft and both assertions are unchanged.
+    let validator = jsonschema::options().with_draft(jsonschema::Draft::Draft202012).build(&s).unwrap();
     assert!(validator.is_valid(&json!(9007199254740995u64)), "exact integer divisible by 5 rejected");
     assert!(!validator.is_valid(&json!(9007199254740999u64)), "integer not divisible by 5 accepted");
 }

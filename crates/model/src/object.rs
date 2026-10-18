@@ -1,9 +1,11 @@
 //! Parsing and writing single objects: the one input path every JSON object takes into the model.
 //!
-//! [`from_json`] runs, in order: number normalisation (integral doubles become integers), name normalisation (NFC,
-//! trimmed; 10 §1.3), schema validation against the type's generated schema (10 §2.8), typed deserialisation,
-//! canonicalisation (exposure runs, swatch value order; 10 §4.7, §4.13) and the object-local semantic rules of
-//! [`crate::validate`]. A value that passes is canonical: [`to_json`] of it is the persisted JSON (10 DM-1).
+//! [`from_json`] runs, in order: the depth limit ([`crate::input::MAX_MODEL_DEPTH`]), number normalisation (integral
+//! doubles become integers), the schema-directed input normalisation of [`crate::input`] (NFC strings, trimmed
+//! names, the swatch `id` alias, canonical key order; opaque `meta`/`ext` values untouched), schema validation
+//! against the type's generated schema (10 §2.8), typed deserialisation, canonicalisation (exposure runs, spline
+//! handle clamping; 10 §4.7, §4.12) and the object-local semantic rules of [`crate::validate`]. A value that passes
+//! is canonical: [`to_json`] of it is the persisted JSON (10 DM-1), whatever order its input keys had.
 
 use serde_json::Value;
 
@@ -12,46 +14,35 @@ use crate::entities::ModelObject;
 use crate::entities::element::{Element, ExposureRun};
 use crate::error::{ModelError, codes};
 use crate::schema;
-use crate::types::ObjectType;
 use crate::validate::{Check, Issues};
 
 /// Maximum number of errors reported for one object.
 pub const MAX_ERRORS: usize = 100;
 
-/// Applies the input normalisation of 10 §1.1/§1.3 to a JSON value in place: integral doubles become integers and
-/// the `name` of every embedded object is NFC-normalised and trimmed.
-pub fn normalize_input(value: &mut Value) {
+/// Applies the input normalisation of 10 §1.1/§1.3 for an object of type `ty` to a JSON value in place (see
+/// [`crate::input`]).
+pub fn normalize_input(ty: crate::types::ObjectType, value: &mut Value) {
     canonical::normalize_numbers(value);
-    normalize_names(value, 0);
-}
-
-fn normalize_names(value: &mut Value, depth: usize) {
-    if depth > crate::MAX_JSON_DEPTH {
-        return;
-    }
-    match value {
-        Value::Object(m) => {
-            let is_object = m.get("type").and_then(Value::as_str).and_then(ObjectType::parse).is_some();
-            if is_object && let Some(Value::String(n)) = m.get_mut("name") {
-                *n = crate::name::normalize(n);
-            }
-            for v in m.values_mut() {
-                normalize_names(v, depth + 1);
-            }
-        }
-        Value::Array(items) => items.iter_mut().for_each(|v| normalize_names(v, depth + 1)),
-        _ => {}
-    }
+    crate::input::prepare(ty, value);
 }
 
 /// Parses and validates one object of type `T` from JSON.
 ///
 /// # Errors
 /// Every problem found, as `doc.schemaViolation` (schema and shape) or `arg.invalid` (semantic rules), each with
-/// `details.pointer`; at most [`MAX_ERRORS`].
+/// `details.pointer`; at most [`MAX_ERRORS`]. `doc.limitExceeded` for nesting deeper than
+/// [`crate::input::MAX_MODEL_DEPTH`].
 pub fn from_json<T: ModelObject + Check>(value: &Value) -> Result<T, Vec<ModelError>> {
+    let limit = crate::input::MAX_MODEL_DEPTH;
+    if crate::input::depth(value, limit) > limit {
+        return Err(vec![ModelError::with_details(
+            codes::LIMIT_EXCEEDED,
+            format!("object nested deeper than {limit} levels"),
+            serde_json::json!({ "pointer": "", "maxDepth": limit }),
+        )]);
+    }
     let mut v = value.clone();
-    normalize_input(&mut v);
+    normalize_input(T::TYPE, &mut v);
     let violations = schema::validate(T::TYPE, &v, MAX_ERRORS).map_err(|e| vec![e])?;
     if !violations.is_empty() {
         return Err(violations.iter().map(schema::Violation::to_error).collect());
@@ -65,13 +56,22 @@ pub fn from_json<T: ModelObject + Check>(value: &Value) -> Result<T, Vec<ModelEr
     if issues.is_empty() { Ok(parsed) } else { Err(issues.into_errors()) }
 }
 
+/// Runs a typed value through the validated input path again: [`from_json`] of its [`to_json`]. Used where typed
+/// values arrive without having passed [`from_json`] (public `Deserialize`, document parts; C11-R1-02).
+///
+/// # Errors
+/// As [`to_json`] and [`from_json`].
+pub fn revalidate<T: ModelObject + Check>(object: &T) -> Result<T, Vec<ModelError>> {
+    from_json(&to_json(object).map_err(|e| vec![e])?)
+}
+
 /// The persisted JSON of an object (its own entry form: children stored in other entries appear as ID-only stubs;
 /// the document serialiser adds names and expands them).
 ///
 /// # Errors
-/// `internal` if serialisation fails (non-finite numbers cannot be constructed through [`from_json`]).
+/// As [`canonical::to_value`]: a non-finite number is an error, never `null` (10 §1.1).
 pub fn to_json<T: ModelObject>(object: &T) -> Result<Value, ModelError> {
-    serde_json::to_value(object).map_err(|e| ModelError::new(codes::INTERNAL, format!("serialisation failed: {e}")))
+    canonical::to_value(object)
 }
 
 /// The canonical text of an object (10 §6.5).
@@ -116,16 +116,23 @@ impl Canonicalize for Element {
         if let Some(runs) = self.exposure.take() {
             self.exposure = Some(canonical_runs(&runs));
         }
+        for ch in self.channels.iter_mut().flat_map(|m| m.values_mut()) {
+            if ch.curve_type == Some(crate::entities::channel::CurveType::Spline)
+                && let Some(keys) = ch.keys.as_mut()
+            {
+                crate::entities::channel::clamp_handles(keys);
+            }
+        }
         self
     }
 }
 
-impl Canonicalize for crate::entities::palette::Palette {
+impl Canonicalize for crate::entities::channel::Channel {
     fn canonicalized(mut self) -> Self {
-        // Swatch values in style order (10 §4.13; written in a deterministic order).
-        let order: Vec<_> = self.styles.iter().map(|s| s.id.clone()).collect();
-        for sw in &mut self.swatches {
-            sw.values.sort_by_key(|k, _| order.iter().position(|o| o == k).unwrap_or(usize::MAX));
+        if self.curve_type == Some(crate::entities::channel::CurveType::Spline)
+            && let Some(keys) = self.keys.as_mut()
+        {
+            crate::entities::channel::clamp_handles(keys);
         }
         self
     }
@@ -137,6 +144,7 @@ macro_rules! plain_canonical {
 
 plain_canonical!(
     crate::entities::project::Project,
+    crate::entities::palette::Palette,
     crate::entities::palette::PaletteStyle,
     crate::entities::palette::Swatch,
     crate::entities::pen::Pen,
@@ -147,7 +155,6 @@ plain_canonical!(
     crate::entities::drawing::Stroke,
     crate::entities::scene::Scene,
     crate::entities::transition::Transition,
-    crate::entities::channel::Channel,
     crate::entities::channel::Key,
     crate::entities::channel::MotionPoint,
     crate::entities::effect::ParticleBlock,

@@ -56,21 +56,24 @@ pub fn wire_definitions() -> Map<String, Value> {
 /// Serialises a wire value as compact JSON text with canonical number formatting (exact 64-bit integers).
 ///
 /// # Errors
-/// `internal` (as [`ErrorInfo`]) if the value cannot be serialised (non-finite numbers).
+/// `arg.invalid` (as [`ErrorInfo`]) for a NaN or infinite number, which `serde_json` would silently write as `null`
+/// (10 §1.1, C11-R1-16); `doc.limitExceeded` for nesting deeper than the model limit; `internal` otherwise.
 pub fn to_wire_json<T: Serialize>(value: &T) -> Result<String, ErrorInfo> {
-    let v = serde_json::to_value(value).map_err(|e| internal(&e.to_string()))?;
-    tt_model::canonical::to_compact_string(&v).map_err(|e| internal(e.message()))
+    let v = tt_model::canonical::to_value(value).map_err(|e| model_error(&e))?;
+    tt_model::canonical::to_compact_string(&v).map_err(|e| model_error(&e))
 }
 
-/// Parses a request's JSON text. Unknown fields are rejected where the type denies them.
+/// Parses a request's JSON text with the shared strict rules of [`tt_model::json_text`] (the same texts the front
+/// end's `parseWireJson` accepts: duplicate keys, unpaired surrogates, inexact integer literals and nesting beyond
+/// 128 are errors). Unknown fields are rejected where the type denies them.
 ///
 /// # Errors
-/// `arg.invalid` with the parser's message.
+/// `arg.invalid` with the reason and `details.offset` or `details.line`/`details.column`.
 pub fn from_wire_json<T: DeserializeOwned>(text: &str) -> Result<T, ErrorInfo> {
-    serde_json::from_str(text).map_err(|e| ErrorInfo {
-        code: "arg.invalid".to_owned(),
-        message: format!("invalid request: {e}"),
-        details: serde_json::json!({ "line": e.line(), "column": e.column() }),
+    tt_model::json_text::parse(text).map_err(|e| ErrorInfo {
+        code: e.code().to_owned(),
+        message: format!("invalid request: {}", e.message()),
+        details: e.details().clone(),
     })
 }
 
@@ -81,12 +84,8 @@ pub fn error_json(e: &ErrorInfo) -> String {
         .unwrap_or_else(|_| "{\"code\":\"internal\",\"message\":\"unserialisable error\",\"details\":{}}".to_owned())
 }
 
-fn internal(message: &str) -> ErrorInfo {
-    ErrorInfo {
-        code: "internal".to_owned(),
-        message: format!("serialisation failed: {message}"),
-        details: serde_json::json!({}),
-    }
+fn model_error(e: &tt_model::ModelError) -> ErrorInfo {
+    ErrorInfo { code: e.code().to_owned(), message: e.message().to_owned(), details: e.details().clone() }
 }
 
 #[cfg(test)]

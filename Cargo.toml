@@ -33,12 +33,11 @@ serde = { version = "1.0", features = ["derive"] }
 # preserve_order: object keys keep insertion (= schema) order, which canonical JSON relies on (10 §6.5 JSON-02).
 # float_roundtrip: parse doubles with correct rounding, so text → f64 → canonical text is byte-identical (JSON-03,
 # JSON-05); without it serde_json's fast parser can be off by one ulp (found by crates/model/tests/properties.rs).
-serde_json = { version = "1.0", features = ["preserve_order", "float_roundtrip"] }
+serde_json = { version = "1.0", features = ["preserve_order", "float_roundtrip", "unbounded_depth"] }
 schemars = { version = "1.2", features = ["preserve_order", "indexmap2"] }
 indexmap = { version = "2.14", features = ["serde"] }
-# 0.18: every later release depends on `borrow-or-share` (MIT-0, not on the ADR-0003 allow-list; open question in
-# reviews/M1-C1.1-handoff.md). Draft 2020-12 behind its feature flag.
-jsonschema = { version = "=0.18.3", default-features = false, features = ["draft202012"] }
+# Current release (MIT-0 accepted for its borrow-or-share dependency, ADR-0003); no network schema resolution.
+jsonschema = { version = "0.59", default-features = false }
 unicode-normalization = "0.1"
 getrandom = "0.4"
 ryu = "1.0"

@@ -109,6 +109,10 @@ fn ts_type(s: &Value, defs: &Map<String, Value>, indent: usize) -> String {
     };
     if let Some(r) = m.get("$ref").and_then(Value::as_str) {
         let name = r.trim_start_matches("#/$defs/");
+        // A model object position holds the full object or its stub (10 §2.2).
+        if defs.get(name).is_some_and(|d| d.get("x-objectType").is_some()) {
+            return format!("{} | {}Stub", type_name(name), type_name(name));
+        }
         return type_name(name);
     }
     if let Some(c) = m.get("const") {
@@ -182,8 +186,13 @@ fn object_type(m: &Map<String, Value>, defs: &Map<String, Value>, indent: usize)
     let additional = m.get("additionalProperties");
     match props {
         Some(p) if !p.is_empty() => {
-            let required: Vec<&str> = m
+            // A model object schema accepts the full object or its stub: `if: {required: [rev]}` selects the full
+            // object, whose requirements are under `then` (the stub is its own `…Stub` type).
+            let full = m.get("if") == Some(&serde_json::json!({ "required": ["rev"] }));
+            let required_of = if full { m.get("then").unwrap_or(&Value::Null) } else { &Value::Null };
+            let required: Vec<&str> = required_of
                 .get("required")
+                .or_else(|| m.get("required"))
                 .and_then(Value::as_array)
                 .map(|r| r.iter().filter_map(Value::as_str).collect())
                 .unwrap_or_default();
@@ -214,6 +223,20 @@ fn object_type(m: &Map<String, Value>, defs: &Map<String, Value>, indent: usize)
             }
         },
     }
+}
+
+/// The stub interface of a model object definition: its ID field, `type` and (for named types) an optional `name`.
+fn stub_type(def: &Value) -> Option<String> {
+    def.get("x-objectType")?;
+    let props = def.get("properties")?.as_object()?;
+    let id_field = def.get("required")?.as_array()?.first()?.as_str()?;
+    let ty = props.get("type")?.get("const")?;
+    let mut out = format!("{{\n  {}: Id;\n  type: {};\n", key(id_field), literal_type(ty));
+    if props.contains_key("name") {
+        out.push_str("  name?: string;\n");
+    }
+    out.push('}');
+    Some(out)
 }
 
 /// Whether a definition is a single object type (it can be an `interface`): it has `properties`, and any
@@ -259,6 +282,10 @@ pub fn module(header: &str, consts: &[(&str, Value)], defs_name: &str, defs: &Ma
             let _ = write!(out, "\n{doc}export interface {} {t}\n", type_name(name));
         } else {
             let _ = write!(out, "\n{doc}export type {} = {t};\n", type_name(name));
+        }
+        if let Some(stub) = stub_type(def) {
+            let n = type_name(name);
+            let _ = write!(out, "\n/** A `{n}` reduced to its stub (10 §2.2). */\nexport interface {n}Stub {stub}\n");
         }
     }
     out

@@ -19,6 +19,8 @@ pub mod entities;
 pub mod error;
 pub mod fixture;
 pub mod id;
+pub mod input;
+pub mod json_text;
 pub mod name;
 pub mod object;
 pub mod overlay;

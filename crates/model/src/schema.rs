@@ -99,7 +99,10 @@ fn int_bounds(format: &str) -> Option<(Value, Value)> {
     Some(match format {
         "uint8" => (json!(0), json!(u8::MAX)),
         "uint16" => (json!(0), json!(u16::MAX)),
-        "uint32" => (json!(0), json!(u32::MAX)),
+        // 10 §1.1: `int` is the 32-bit *signed* range unless a section states otherwise; unsigned Rust fields
+        // (frames, durations, counts) take its non-negative part. Stated exceptions carry their own `maximum`
+        // (particle seed: 0–2^32−1, 06 §3.8.3) or a 64-bit type (revisions, byte sizes: 10 §5 entries over 4 GiB).
+        "uint32" => (json!(0), json!(i32::MAX)),
         "uint64" => (json!(0), json!(u64::MAX)),
         "int8" => (json!(i8::MIN), json!(i8::MAX)),
         "int16" => (json!(i16::MIN), json!(i16::MAX)),
@@ -184,7 +187,8 @@ fn query_only_properties(ty: ObjectType) -> Vec<(&'static str, Value)> {
     };
     let ids = || json!({"type": "array", "items": {"$ref": "#/$defs/Id"}});
     let nullable_id = || json!({"anyOf": [{"$ref": "#/$defs/Id"}, {"type": "null"}]});
-    let count = || json!({"type": "integer", "minimum": 0, "maximum": u32::MAX});
+    // Derived frames, lengths and counts are `int`s (10 §1.1: signed 32-bit), non-negative.
+    let count = || json!({"type": "integer", "minimum": 0, "maximum": i32::MAX});
     let mut out = vec![("path", transient(json!({"type": "string", "description": "Canonical path (10 §2.4)."})))];
     match ty {
         ObjectType::Project => {
@@ -288,23 +292,9 @@ fn complete_object(ty: ObjectType, def: &mut Value) {
         name.insert("pattern".into(), json!("^[a-z][A-Za-z]*(\\.[a-z][A-Za-z]*)?$"));
         name.insert("maxLength".into(), json!(64));
     }
-    // Child objects appear in full or as stubs (10 §2.2: "Both forms validate against the schema").
-    for (field, slot) in crate::document::slots_of(ty) {
-        let Some(p) = props.get_mut(*field) else { continue };
-        let target = match slot {
-            crate::document::SlotKind::Inline => p.get_mut("items"),
-            crate::document::SlotKind::InlineMap => p.get_mut("additionalProperties"),
-            crate::document::SlotKind::InlineOne => Some(p),
-            // Split children are already `ChildList`/`ChildRef` schemas accepting stubs.
-            crate::document::SlotKind::Split(_) | crate::document::SlotKind::SplitOne(_) => None,
-        };
-        if let Some(t) = target {
-            let original = std::mem::take(t);
-            let (annotations, inner): (Map<String, Value>, Value) = split_annotations(original);
-            let mut wrapped = annotations;
-            wrapped.insert("anyOf".into(), json!([{ "$ref": "#/$defs/Stub" }, inner]));
-            *t = Value::Object(wrapped);
-        }
+    // The envelope `type` is persisted read-only (10 §2.7).
+    if let Some(t) = props.get_mut("type").and_then(Value::as_object_mut) {
+        t.insert("readOnly".into(), json!(true));
     }
     for (k, s) in query_only_properties(ty) {
         props.insert(k.to_owned(), s);
@@ -320,21 +310,53 @@ fn complete_object(ty: ObjectType, def: &mut Value) {
         ObjectType::LibraryItem => add_library_item_rules(def),
         _ => {}
     }
+    full_or_stub(ty, def);
 }
 
-/// Separates annotation keywords (description, x-*, readOnly) from the validating part of a property schema.
-fn split_annotations(v: Value) -> (Map<String, Value>, Value) {
-    let Value::Object(m) = v else { return (Map::new(), v) };
-    let mut ann = Map::new();
-    let mut rest = Map::new();
-    for (k, val) in m {
-        if k == "description" || k == "readOnly" || k.starts_with("x-") {
-            ann.insert(k, val);
-        } else {
-            rest.insert(k, val);
+/// Makes an object schema accept the full object or its stub (10 §2.2: "Both forms validate against the schema";
+/// a full object always contains `rev`, an object without `rev` is a stub). The schema's own `type` constant then
+/// restricts a stub to this type, so every child slot accepts only stubs of its own type. Full-object requirements
+/// and the kind rules move under `then`; the stub branch allows only `id`/`colourId`, `type` and `name`.
+fn full_or_stub(ty: ObjectType, def: &mut Value) {
+    let Value::Object(m) = def else { return };
+    let full_required = m.remove("required").unwrap_or_else(|| json!([]));
+    let mut rules: Vec<Value> = match m.remove("allOf") {
+        Some(Value::Array(a)) => a,
+        _ => Vec::new(),
+    };
+    if let Some(cond) = m.remove("if") {
+        let mut r = Map::new();
+        r.insert("if".into(), cond);
+        if let Some(t) = m.remove("then") {
+            r.insert("then".into(), t);
+        }
+        if let Some(e) = m.remove("else") {
+            r.insert("else".into(), e);
+        }
+        rules.push(Value::Object(r));
+    }
+    // A stub's `name` is optional: entries reference split children by `{id, type}` and the document serialiser adds
+    // the name when it renders a stub (10 §2.2).
+    m.insert("required".into(), json!([ty.id_field(), "type"]));
+    m.insert("if".into(), json!({ "required": ["rev"] }));
+    let mut then = Map::new();
+    then.insert("required".into(), full_required);
+    if !rules.is_empty() {
+        then.insert("allOf".into(), Value::Array(rules));
+    }
+    m.insert("then".into(), Value::Object(then));
+    m.insert("else".into(), json!({ "propertyNames": { "enum": [ty.id_field(), "type", "name"] } }));
+}
+
+/// Every property of every definition records the format version that introduced it (10 §2.8 `x-since`).
+fn annotate_since(def: &mut Value) {
+    if let Some(props) = props_mut(def) {
+        for p in props.values_mut() {
+            if let Value::Object(pm) = p {
+                pm.entry("x-since").or_insert(json!(crate::FORMAT_VERSION));
+            }
         }
     }
-    (ann, Value::Object(rest))
 }
 
 fn kind_rule(property: &str, value: &str, then: Value) -> Value {
@@ -525,6 +547,7 @@ fn build_definitions() -> Map<String, Value> {
             if let Some(ty) = type_of_def(def) {
                 complete_object(ty, def);
             }
+            annotate_since(def);
         }
     }
     // Inserted after the struct pass: a stub's `name` and its `id`/`colourId` alternatives are not all required.
@@ -576,46 +599,63 @@ pub fn object_schema(ty: ObjectType) -> Value {
 }
 
 /// The schema of one property of a type, addressed by a JSON Pointer into the object (10 §10.2 `doc.schema.get
-/// {property}`). `$ref`s are resolved; nullable wrappers are looked through.
+/// {property}`). `$ref`s are resolved; alternatives (`anyOf`/`oneOf`/`allOf`, conditional branches) are searched for
+/// the first that declares the next token; tuple positions use `prefixItems`, other array positions `items`, map
+/// keys `additionalProperties`.
 #[must_use]
 pub fn property_schema(ty: ObjectType, pointer: &str) -> Option<Value> {
     let tokens = crate::pointer::parse(pointer).ok()?;
     let defs = definitions();
     let mut cur = defs.get(&def_name(ty))?.clone();
     for t in &tokens {
-        cur = deref(defs, &cur);
-        let next = if let Some(p) = cur.get("properties").and_then(|p| p.get(t)) {
-            p.clone()
-        } else if let Some(items) = cur.get("items") {
-            items.clone()
-        } else {
-            let ap = cur.get("additionalProperties").filter(|v| v.is_object())?;
-            ap.clone()
-        };
+        let mut cands = Vec::new();
+        expand(defs, &cur, &mut cands, 0);
+        let index = crate::pointer::array_index(t);
+        let next = cands.iter().find_map(|c| {
+            c.get("properties")
+                .and_then(|p| p.get(t))
+                .or_else(|| index.and_then(|i| c.get("prefixItems").and_then(|p| p.get(i))))
+                .or_else(|| index.and(c.get("items")).filter(|v| v.is_object()))
+                .or_else(|| c.get("additionalProperties").filter(|v| v.is_object()))
+                .cloned()
+        })?;
         cur = next;
     }
-    Some(deref(defs, &cur))
+    Some(resolve_ref(defs, &cur))
 }
 
-fn deref(defs: &Map<String, Value>, v: &Value) -> Value {
+fn resolve_ref(defs: &Map<String, Value>, v: &Value) -> Value {
     let mut cur = v.clone();
-    for _ in 0..16 {
-        if let Some(r) = cur.get("$ref").and_then(Value::as_str) {
-            match r.strip_prefix("#/$defs/").and_then(|n| defs.get(n)) {
-                Some(d) => cur = d.clone(),
-                None => break,
-            }
-        } else if let Some(Value::Array(any)) = cur.get("anyOf") {
-            let non_null: Vec<&Value> = any.iter().filter(|s| *s != &json!({"type": "null"})).collect();
-            match non_null.as_slice() {
-                [one] => cur = (*one).clone(),
-                _ => break,
-            }
-        } else {
-            break;
+    for _ in 0..32 {
+        match cur.get("$ref").and_then(Value::as_str).and_then(|r| r.strip_prefix("#/$defs/")).and_then(|n| defs.get(n))
+        {
+            Some(d) => cur = d.clone(),
+            None => break,
         }
     }
     cur
+}
+
+/// A schema and every schema it may defer to: `$ref` targets, `anyOf`/`oneOf`/`allOf` members and conditional
+/// branches (all of them: the lookup is by property name, not by instance).
+fn expand(defs: &Map<String, Value>, s: &Value, out: &mut Vec<Value>, depth: usize) {
+    if depth > 16 {
+        return;
+    }
+    let s = resolve_ref(defs, s);
+    for k in ["anyOf", "oneOf", "allOf"] {
+        if let Some(Value::Array(alts)) = s.get(k) {
+            for a in alts {
+                expand(defs, a, out, depth + 1);
+            }
+        }
+    }
+    for k in ["then", "else"] {
+        if let Some(b) = s.get(k) {
+            expand(defs, b, out, depth + 1);
+        }
+    }
+    out.insert(0, s);
 }
 
 /// The schema bundle published for other consumers: every definition plus the object-type index.
@@ -656,18 +696,18 @@ impl Violation {
     }
 }
 
-fn validator(ty: ObjectType) -> Result<&'static jsonschema::JSONSchema, ModelError> {
-    static VALIDATORS: OnceLock<BTreeMap<ObjectType, Result<jsonschema::JSONSchema, String>>> = OnceLock::new();
+fn validator(ty: ObjectType) -> Result<&'static jsonschema::Validator, ModelError> {
+    static VALIDATORS: OnceLock<BTreeMap<ObjectType, Result<jsonschema::Validator, String>>> = OnceLock::new();
     let all = VALIDATORS.get_or_init(|| {
         ObjectType::ALL
             .iter()
             .map(|t| {
                 let schema = object_schema(*t);
                 // Draft 2020-12; compiling also checks the schema itself (a defect is reported, not hidden).
-                let v = jsonschema::JSONSchema::options()
+                let v = jsonschema::options()
                     .with_draft(jsonschema::Draft::Draft202012)
                     .should_validate_formats(false)
-                    .compile(&schema)
+                    .build(&schema)
                     .map_err(|e| e.to_string());
                 (*t, v)
             })
@@ -686,17 +726,14 @@ fn validator(ty: ObjectType) -> Result<&'static jsonschema::JSONSchema, ModelErr
 /// `internal` if the schema itself fails to compile (a build defect covered by tests).
 pub fn validate(ty: ObjectType, value: &Value, limit: usize) -> Result<Vec<Violation>, ModelError> {
     let v = validator(ty)?;
-    Ok(match v.validate(value) {
-        Ok(()) => Vec::new(),
-        Err(errors) => errors
-            .take(limit)
-            .map(|e| Violation {
-                pointer: e.instance_path.to_string(),
-                schema_path: e.schema_path.to_string(),
-                message: e.to_string(),
-            })
-            .collect(),
-    })
+    Ok(v.iter_errors(value)
+        .take(limit)
+        .map(|e| Violation {
+            pointer: e.instance_path().to_string(),
+            schema_path: e.schema_path().to_string(),
+            message: e.to_string(),
+        })
+        .collect())
 }
 
 /// Whether a value is valid for an object type.
