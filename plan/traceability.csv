@@ -7,7 +7,7 @@ spec_section,requirement_id_or_quote,milestone,checkpoint,status,test
 11 §3,"offscreen renders always use the deterministic software rasteriser",M0,C0.3,planned,
 11 §4,"initialize result reports ... command-registry version ... document schema version ... run mode",M1,C1.4,engine facade exposes all four (EngineInfo),crates/engine/src/lib.rs::info_reports_versions_and_mode
 11 §10,"Errors use stable dotted codes area.reason",M0,C0.1,done for engine facade and IPC,crates/engine/src/error.rs::limit_exceeded_wire_form; desktop/src/ipc/hostApi.test.ts
-11 P7,"Given the same document and the same command sequence ... rendered pixels MUST be identical",M0,C0.1,partial (IEEE-754 probe across OSes),crates/engine/src/determinism.rs::probe_matches_golden; ci.yml check (selftest twice)
+11 P7,"Given the same document and the same command sequence ... rendered pixels MUST be identical",M0,C0.1,partial (IEEE-754 probe identical on Windows x86_64 / macOS aarch64 / Linux x86_64 in CI run 39096183925),crates/engine/src/determinism.rs::probe_matches_golden; ci.yml check (selftest twice)
 11 P7,"rasteriser output identical across OSes",M0,C0.3,planned,
 11 §14.1,"Parity test (build gate)",M1,C1.2,planned (manifest exists),
 11 §14.5,"Determinism tests ... byte-for-byte across runs",M3,C3.3,planned,
