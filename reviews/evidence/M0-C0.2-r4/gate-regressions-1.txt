@@ -1,0 +1,7 @@
+python tests/adversarial/c02-r3-tooling.py
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs (__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.222s
+
+OK

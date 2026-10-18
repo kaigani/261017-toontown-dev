@@ -1,0 +1,282 @@
+[
+  {
+    "case": "intact-matrix5-no-source",
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 12846,
+    "stderr": "",
+    "pass": true
+  },
+  {
+    "case": "manual-retains-simulations",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has 5 simulation entries but no run records; synthetic evidence without its runs is missing evidence, not a manual capture",
+    "pass": true
+  },
+  {
+    "case": "auto-empty-runs-retains-sims",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has 5 simulation entries but no run records; synthetic evidence without its runs is missing evidence, not a manual capture",
+    "pass": true
+  },
+  {
+    "case": "auto-empty-runs-no-sims",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log was saved by a --spike-auto run but has no run records",
+    "pass": true
+  },
+  {
+    "case": "unknown-source-with-runs",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: unknown log source 'unexpected' (expected one of ('manual', 'interactive', 'auto'))",
+    "pass": true
+  },
+  {
+    "case": "manual-with-runs",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log declares source 'manual' but contains synthetic runs",
+    "pass": true
+  },
+  {
+    "case": "manual-auto-environment",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log was saved by a --spike-auto run but has no run records",
+    "pass": true
+  },
+  {
+    "case": "declared-manual",
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 2390,
+    "stderr": "",
+    "pass": true
+  },
+  {
+    "case": "v2-manual-without-source",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has no run records and does not declare `source: \"manual\"`; it cannot be treated as a manual/hardware capture (source None)",
+    "pass": true
+  },
+  {
+    "case": "v2-orphan-runs-empty",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has 5 simulation entries but no run records; synthetic evidence without its runs is missing evidence, not a manual capture",
+    "pass": true
+  },
+  {
+    "case": "v2-orphan-runs-absent",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has 5 simulation entries but no run records; synthetic evidence without its runs is missing evidence, not a manual capture",
+    "pass": true
+  },
+  {
+    "case": "v3-manual-without-source",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has no run records and does not declare `source: \"manual\"`; it cannot be treated as a manual/hardware capture (source None)",
+    "pass": true
+  },
+  {
+    "case": "v3-orphan-runs-empty",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has 5 simulation entries but no run records; synthetic evidence without its runs is missing evidence, not a manual capture",
+    "pass": true
+  },
+  {
+    "case": "v3-orphan-runs-absent",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has 5 simulation entries but no run records; synthetic evidence without its runs is missing evidence, not a manual capture",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-empty",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': version 3 needs one start and one end focus snapshot, found []",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-one",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': version 3 needs one start and one end focus snapshot, found ['start']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-two-missing-fields",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['ownPid', 'targetHwnd', 'foregroundHwnd', 'foregroundPid', 'focusHwnd', 'focusPid', 'activeHwnd', 'captureHwnd', 'foregroundClass', 'focusClass']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-duplicate-role",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': version 3 needs one start and one end focus snapshot, found ['start', 'start']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-missing-ownPid",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['ownPid']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-missing-targetHwnd",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['targetHwnd']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-missing-foregroundHwnd",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['foregroundHwnd']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-missing-foregroundPid",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['foregroundPid']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-missing-focusHwnd",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['focusHwnd']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-missing-focusPid",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['focusPid']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-missing-activeHwnd",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['activeHwnd']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-missing-captureHwnd",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['captureHwnd']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-missing-foregroundClass",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['foregroundClass']",
+    "pass": true
+  },
+  {
+    "case": "v3-focus-missing-focusClass",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: run 'webview sine 240 Hz': focus snapshot 'start' lacks valid fields ['focusClass']",
+    "pass": true
+  },
+  {
+    "case": "v2-focus-empty-control",
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 12863,
+    "stderr": "",
+    "pass": true
+  },
+  {
+    "case": "versionless-pure-manual",
+    "exit": 0,
+    "expected": 0,
+    "stdoutBytes": 2913,
+    "stderr": "",
+    "pass": true
+  },
+  {
+    "case": "versionless-runs-empty",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has no `version` field but carries synthetic artefacts ['runs']; this analyzer only accepts versioned synthetic evidence (versions (2, 3))",
+    "pass": true
+  },
+  {
+    "case": "versionless-simulations-empty",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has no `version` field but carries synthetic artefacts ['simulations']; this analyzer only accepts versioned synthetic evidence (versions (2, 3))",
+    "pass": true
+  },
+  {
+    "case": "versionless-source-populated",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has no `version` field but carries synthetic artefacts ['source']; this analyzer only accepts versioned synthetic evidence (versions (2, 3))",
+    "pass": true
+  },
+  {
+    "case": "versionless-runs-populated",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has no `version` field but carries synthetic artefacts ['runs']; this analyzer only accepts versioned synthetic evidence (versions (2, 3))",
+    "pass": true
+  },
+  {
+    "case": "versionless-auto-flag",
+    "exit": 2,
+    "expected": 2,
+    "stdoutBytes": 0,
+    "stderr": "error: log has no `version` field but carries synthetic artefacts ['environment.mode.auto']; this analyzer only accepts versioned synthetic evidence (versions (2, 3))",
+    "pass": true
+  }
+]

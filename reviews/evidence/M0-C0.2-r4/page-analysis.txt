@@ -1,0 +1,12 @@
+auto-after-drawing-page-log.json.gz True auto 0 ['- outcome: 10 synthetic runs, 1 ok, 9 explicitly failed']
+auto-before-page-log.json.gz True auto 2 error: log was saved by a --spike-auto run but has no run records
+auto-cleared-page-log.json.gz True auto 2 error: log was saved by a --spike-auto run but has no run records
+auto-complete-page-log.json.gz True auto 0 ['- outcome: 10 synthetic runs, 1 ok, 9 explicitly failed']
+auto-pending-page-log.json.gz True auto 2 error: run 'webview sine 240 Hz': successful run has no raw report (missing evidence, not an empty result)
+auto-refusal-page-log.json.gz True auto 0 ['- outcome: 11 synthetic runs, 0 ok, 11 explicitly failed']
+interactive-after-drawing-page-log.json.gz True interactive 0 ['- outcome: 1 synthetic runs, 1 ok, 0 explicitly failed']
+interactive-before-page-log.json.gz True manual 0 ['- outcome: no synthetic runs (manual/hardware log; loss unknown)']
+interactive-cleared-page-log.json.gz True manual 0 ['- outcome: no synthetic runs (manual/hardware log; loss unknown)']
+interactive-complete-page-log.json.gz True interactive 0 ['- outcome: 1 synthetic runs, 1 ok, 0 explicitly failed']
+interactive-pending-page-log.json.gz True interactive 2 error: run 'webview sine 240 Hz': successful run has no raw report (missing evidence, not an empty result)
+manual-page-log.json.gz True manual 0 ['- outcome: no synthetic runs (manual/hardware log; loss unknown)']
