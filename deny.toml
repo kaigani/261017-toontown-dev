@@ -30,9 +30,10 @@ version = 2
 confidence-threshold = 0.93
 # Keep the user's full allow-list even when a licence is not currently used.
 unused-allowed-license = "allow"
-# The user's allow-list (MIT, Apache-2.0, BSD, ISC, Zlib, MPL-2.0) plus Unicode-3.0, an OSI-approved permissive
-# licence required by the ICU4X crates (icu_*, litemap, potential_utf, tinystr, writeable, yoke, zerofrom, zerovec,
-# zerotrie) that Tauri pulls in through url -> idna. Recorded in ADR-0003. Add nothing here without an ADR update.
+# THE single allow-list for both ecosystems: scripts/check-npm-licenses.mjs reads this array for the shipped
+# JavaScript. Approved set (ADR-0003): the user's list (MIT, Apache-2.0, BSD-2/3-Clause, ISC, Zlib, MPL-2.0) plus
+# Unicode-3.0 (ICU4X crates pulled in by Tauri through url -> idna) and 0BSD, both accepted by the orchestrator on
+# 2026-10-17. Add nothing here without an ADR-0003 update.
 allow = [
     "MIT",
     "Apache-2.0",
@@ -42,6 +43,7 @@ allow = [
     "Zlib",
     "MPL-2.0",
     "Unicode-3.0",
+    "0BSD",
 ]
 
 [licenses.private]
