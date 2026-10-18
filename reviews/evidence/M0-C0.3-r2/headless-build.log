@@ -1,0 +1,23 @@
+   Compiling serde_core v1.0.229
+   Compiling thiserror v2.0.21
+   Compiling serde v1.0.229
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\crates\registry)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\crates\persist)
+   Compiling clap_lex v1.1.1
+   Compiling anstyle v1.0.14
+   Compiling heck v0.5.0
+   Compiling syn v3.0.9
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\crates\executor)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\crates\io)
+   Compiling clap_builder v4.6.7
+   Compiling thiserror-impl v2.0.21
+   Compiling serde_derive v1.0.229
+   Compiling clap_derive v4.6.7
+   Compiling serde_json v1.0.154
+   Compiling clap v4.6.7
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\bins\headless)
+    Finished `release` profile [optimized + debuginfo] target(s) in 4.11s

@@ -1,0 +1,307 @@
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m0-c03-r2\crates\render)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.01s
+     Running unittests src\lib.rs (target\debug\deps\tt_anim-7b4783037aaaad85.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_audio-1e04a85dd172a15e.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_colour-ab96adef9b22ea43.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_desktop-0497244a9b60f0b4.exe)
+
+running 35 tests
+test bindings::tests::command_id_syntax ... ok
+test diagnostics::tests::bench_with_count ... ok
+test diagnostics::tests::errors ... ok
+test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+test bindings::tests::per_platform_accelerators ... ok
+test bindings::tests::embedded_manifest_is_valid ... ok
+test menu::tests::event_serializes_camel_case ... ok
+test bindings::tests::quit_is_bound_on_every_platform ... ok
+test spikes::canvas::renderlist::tests::encoder_refuses_invalid_geometry ... ok
+test spikes::tablet::tests::validates_simulation_requests ... ok
+test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+test diagnostics::tests::no_arguments_is_interactive ... ok
+test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+test menu::tests::frontend_command_carries_params ... ok
+test spikes::canvas::renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+test spikes::tablet::simulate_windows::tests::sine_repeats_pixels_where_the_review_found_missing_frames ... ok
+test menu::tests::pending_command_carries_milestone ... ok
+test spikes::tablet::simulate_windows::tests::pressure_steps_through_every_level ... ok
+test spikes::tablet::tests::disabled_unless_tablet ... ok
+test spikes::tablet::simulate_windows::tests::zigzag_never_repeats_a_pixel_in_adjacent_frames_and_stationary_always_does ... ok
+test spikes::tablet::simulate_windows::tests::pressure_only_holds_tilt_and_rotation_and_position ... ok
+test spikes::tablet::tests::request_rejects_unknown_fields ... ok
+test spikes::tablet::tests::sequencer_is_gap_free_and_wire_packets_flatten ... ok
+test spikes::tablet::simulate_windows::tests::positions_stay_inside_the_rectangle ... ok
+test diagnostics::tests::spike_flags ... ok
+test spikes::tablet::simulate_windows::tests::tilt_and_rotation_stay_in_range ... ok
+test spikes::tablet::tests::packet_serializes_camel_case ... ok
+test tests::tauri_config_matches_workspace_and_plan ... ok
+test menu::tests::host_commands ... ok
+test spikes::canvas::renderlist::tests::encoding_has_the_documented_layout ... ok
+test spikes::canvas::renderlist::tests::scenes_have_the_specified_sizes ... ok
+test spikes::canvas::renderlist::tests::generation_is_reproducible ... ok
+test spikes::canvas::renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+
+     Running unittests src\main.rs (target\debug\deps\toontown-70d3afd6f1da5f4f.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_engine-cee1a80754fb0b35.exe)
+
+running 16 tests
+test components::tests::lists_every_plan_crate_once ... ok
+test components::tests::every_component_cites_spec_sections ... ok
+test determinism::tests::hex_encodes_lowercase ... ok
+test error::tests::limit_exceeded_wire_form ... ok
+test ping::tests::request_rejects_unknown_fields ... ok
+test selftest::tests::dotted_version_parser ... ok
+test determinism::tests::workload_has_expected_shape ... ok
+test tests::info_serializes_camel_case ... ok
+test ping::tests::payload_limit_is_inclusive ... ok
+test tests::info_reports_versions_and_mode ... ok
+test ping::tests::echoes_seq_and_payload ... ok
+test tests::engine_is_send_and_sync ... ok
+test selftest::tests::push_keeps_ok_consistent ... ok
+test selftest::tests::selftest_passes ... ok
+test determinism::tests::probe_matches_golden ... ok
+test determinism::tests::probe_is_stable_within_a_run ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_executor-6b0587da201515ca.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_fx-d68f6f5c004c8383.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\main.rs (target\debug\deps\toontown_headless-16025d1d543af814.exe)
+
+running 7 tests
+test cli::tests::actions_are_exclusive ... ok
+test cli::tests::version_line ... ok
+test cli::tests::future_modes_are_typed_errors ... ok
+test cli::tests::an_action_is_required ... ok
+test cli::tests::option_combinations ... ok
+test cli::tests::selftest_human_passes ... ok
+test cli::tests::selftest_json_passes ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running ..\..\tests\adversarial\c01.rs (target\debug\deps\adversarial_c01-70c655663d6f222c.exe)
+
+running 7 tests
+test wire_engine_info_field_names_match_typescript ... ok
+test c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get ... ok
+test c01_r1_05_rust_control_rejects_multibyte_over_limit ... ok
+test c01_r1_01_license_grouping_preserves_mandatory_copyleft ... ok
+test c01_r1_01_license_allowlist_stays_within_user_policy ... ok
+test c01_r1_06_dependency_proof_rejects_graphics_dependencies ... ok
+test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.17s
+
+     Running tests\cli.rs (target\debug\deps\cli-1773b48765510e7d.exe)
+
+running 5 tests
+test mcp_stdio_not_yet_available_exits_three ... ok
+test selftest_exits_zero_with_json_report ... ok
+test usage_error_exits_two ... ok
+test version_exits_zero ... ok
+test selftest_runs_with_display_environment_removed ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests\guard_fixtures.rs (target\debug\deps\guard_fixtures-8b51c09128df6a1a.exe)
+
+running 1 test
+test rejects_a_real_direct_composition_import ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_io-e7129a4dbd3b8d12.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_lipsync-3cade18845beaafa.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_mcp-df34e5fed74d627b.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_model-2c167e61e4250453.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_persist-ed85b1246dfbac9f.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_registry-df95bd379af7c457.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_render-fac3965d5df65643.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c03_fixed_configurations.rs (target\debug\deps\c03_fixed_configurations-fcd16e3fa7de4ea0.exe)
+
+running 2 tests
+test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
+test fixed_scalar_configuration_hashes_identically_across_oses ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.72s
+
+     Running tests\c03_r1_stress.rs (target\debug\deps\c03_r1_stress-66472f5103f88b72.exe)
+
+running 3 tests
+test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
+test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
+test extended_corpus_repeats_and_cross_os_hashes ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 12.43s
+
+     Running tests\c03_r2_quality.rs (target\debug\deps\c03_r2_quality-31a26e3da83eab82.exe)
+
+running 1 test
+test quality_pipeline_opacity_full_corpus ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.39s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_vector-3dbfe76117f8aabf.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_anim
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_audio
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_colour
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_desktop
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_engine
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_executor
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_fx
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_io
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_lipsync
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_mcp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_model
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_persist
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_registry
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_render
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_vector
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
