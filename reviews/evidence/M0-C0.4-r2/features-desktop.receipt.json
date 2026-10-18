@@ -1,0 +1,17 @@
+{
+  "command": [
+    "cargo",
+    "tree",
+    "--locked",
+    "-e",
+    "features",
+    "-p",
+    "tt-desktop",
+    "--features",
+    "m0-diagnostics"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m0-c04-r2",
+  "started": "2026-10-18T15:00:29.987123+00:00",
+  "seconds": 0.462,
+  "exit": 0
+}

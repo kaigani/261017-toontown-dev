@@ -1,0 +1,30 @@
+{
+  "master": {
+    "path": "C:\\Users\\kaiga\\Documents\\SYNC\\261017 toontown\\plan\\IMPLEMENTATION_PLAN.md",
+    "sha256": "74b71a9e5ea4ea2a37bbd0a875149620a19eb4a88e0af3079b921933f2bf17df",
+    "rows": [
+      {
+        "line": 175,
+        "text": "| M8 | Sound, lip-sync, media | 07 | L | C8.1 import/decode/storage, waveform cache, mixer, playback sync, scrubbing, Timeline/X-sheet sound display, sound editor \u00b7 C8.2 lip-sync detector (model + fallback + transcript alignment), track model, mapping, apply, panel, mouth templates; accuracy corpus; E3 \u00b7 C8.3 FFmpeg sidecar build, fetch/verify mechanism and decoder readiness (moved here from M10 on 2026-10-18 because import needs the sidecar first; see ADR-0008), media elements, movie import as sequence |"
+      },
+      {
+        "line": 177,
+        "text": "| M10 | Output and input complete | 09 | L | C10.1 FFmpeg encoders (sidecar itself built in M8 C8.3): MP4/MOV/GIF export, audio mux, rendered preview + player, snapshot, export reports, repeat-encode determinism checks (09 \u00a711.1(6)); E1 full \u00b7 C10.2 PDF export, print layout/preview/PDF/OS print, vector import (PDF/AI/SVG), PSD layers, keyed image import, publishing framework (descriptors, OAuth in system browser, OS credential store; no service shipped) \u00b7 C10.3 capture: webcams via nokhwa, keying, light table, auto-capture; scanners and tethered cameras as stretch |"
+      }
+    ]
+  },
+  "repo": {
+    "path": "C:\\Users\\kaiga\\work\\review\\m0-c04-r2\\plan\\IMPLEMENTATION_PLAN.md",
+    "sha256": "ceed7fc3bc3af7eef51a9e7e8785b0e84473c2bfb2e2980b9d08cd3431a0ae19",
+    "rows": [
+      {
+        "line": 175,
+        "text": "| M8 | Sound, lip-sync, media | 07 | L | C8.1 import/decode/storage, waveform cache, mixer, playback sync, scrubbing, Timeline/X-sheet sound display, sound editor \u00b7 C8.2 lip-sync detector (model + fallback + transcript alignment), track model, mapping, apply, panel, mouth templates; accuracy corpus; E3 \u00b7 C8.3 media elements, movie import as sequence |"
+      },
+      {
+        "line": 177,
+        "text": "| M10 | Output and input complete | 09 | L | C10.1 FFmpeg sidecar: MP4/MOV/GIF export, audio mux, rendered preview + player, snapshot, export reports; E1 full \u00b7 C10.2 PDF export, print layout/preview/PDF/OS print, vector import (PDF/AI/SVG), PSD layers, keyed image import, publishing framework (descriptors, OAuth in system browser, OS credential store; no service shipped) \u00b7 C10.3 capture: webcams via nokhwa, keying, light table, auto-capture; scanners and tethered cameras as stretch |"
+      }
+    ]
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "interpretation": "Step 3 rows evaluated literally; no added mixed-native or partial-native rule.",
+  "tablet": [
+    {
+      "case": "pressure512 / supported tilt absent /150Hz / stationary missing; R,H,D all measured fail relevant rows",
+      "classification": {
+        "identity": "pass",
+        "pressure256": "pass",
+        "pressure1024": "partial",
+        "tilt": "fail",
+        "twist": "n/a",
+        "coalesced": "pass",
+        "rate120": "pass",
+        "rate200": "partial",
+        "stationary": "fail"
+      },
+      "resolution": "W, tilt options disabled; stationary pressure ignored; both documented limitations"
+    },
+    {
+      "case": "same, R fails and H,D not measured",
+      "resolution": "E-H1, then E-D1 as needed; no hardware decision"
+    },
+    {
+      "case": "all candidates measured; W pressure partial and tilt fail; R passes pressure only; H passes tilt only; D fails both",
+      "step2": {
+        "pressure": "R",
+        "tilt": "H"
+      },
+      "step3": []
+    },
+    {
+      "case": "Mac W50Hz, A90Hz; other rows W pass/n/a; row7 accepts native partial",
+      "step2": {
+        "rate120": "A (partial accepted by row7)"
+      },
+      "step3": []
+    },
+    {
+      "case": "Mac W has no pen identity, A pen identity passes but A pressure binary; W pressure passes",
+      "conflict": "row1 native for EVERY pen attribute vs row2 W pressure; Step3 says only candidate passes all rows. No check requires native pressure to pass when row1 alone switches every attribute."
+    }
+  ],
+  "canvas": [
+    {
+      "case": "requested 45/58 paths; brush40 both",
+      "webgpu": [
+        45,
+        60,
+        40
+      ],
+      "webgl2": [
+        58,
+        60,
+        40
+      ],
+      "selected": "webgpu",
+      "decision": "fill LOD / E-C2, native prototype if still missed"
+    },
+    {
+      "case": "R1 available slower WebGPU",
+      "webgpu": [
+        60,
+        40,
+        60
+      ],
+      "webgl2": [
+        60,
+        60,
+        60
+      ],
+      "selected": "webgl2",
+      "decision": "go"
+    },
+    {
+      "case": "Windows software runner",
+      "webgpu": null,
+      "webgl2": [
+        0.8,
+        16.9,
+        8.9
+      ],
+      "selected": "webgl2",
+      "decision": "native-wgpu prototype required"
+    },
+    {
+      "case": "Mac virtual runner / no WebGPU adapter",
+      "webgpu": null,
+      "webgl2": [
+        22.1,
+        60,
+        60
+      ],
+      "selected": "webgl2",
+      "decision": "go with path culling / LOD"
+    },
+    {
+      "case": "physical Mac no adapter but GL passes",
+      "webgpu": null,
+      "webgl2": [
+        60,
+        60,
+        60
+      ],
+      "selected": "webgl2",
+      "decision": "go"
+    },
+    {
+      "case": "mandatory GL fails but GPU works",
+      "webgpu": [
+        60,
+        60,
+        60
+      ],
+      "webgl2": null,
+      "decision": "investigate mandatory WebGL2"
+    },
+    {
+      "case": "both unavailable",
+      "webgpu": null,
+      "webgl2": null,
+      "decision": "no-go until investigated"
+    },
+    {
+      "case": "malformed log",
+      "webgpu": null,
+      "webgl2": null,
+      "decision": "rerun; not evidence"
+    },
+    {
+      "case": "partial-canvas",
+      "analyzerAccepted": true,
+      "scenes": [
+        {
+          "backend": "webgl2",
+          "scene": "paths100k",
+          "fps": null
+        }
+      ],
+      "decision": "missing-scene guard absent"
+    },
+    {
+      "case": "null-cadence-both",
+      "analyzerAccepted": true,
+      "scenes": [
+        {
+          "backend": "webgpu",
+          "scene": "paths100k",
+          "fps": null
+        },
+        {
+          "backend": "webgpu",
+          "scene": "groups1k",
+          "fps": null
+        },
+        {
+          "backend": "webgpu",
+          "scene": "brush10k",
+          "fps": null
+        },
+        {
+          "backend": "webgl2",
+          "scene": "paths100k",
+          "fps": null
+        },
+        {
+          "backend": "webgl2",
+          "scene": "groups1k",
+          "fps": null
+        },
+        {
+          "backend": "webgl2",
+          "scene": "brush10k",
+          "fps": null
+        }
+      ],
+      "decision": "worst-fps comparison has no score for complete null cadence"
+    }
+  ],
+  "canvas_scene_combinations": [
+    {
+      "fps": [
+        40,
+        40,
+        40
+      ],
+      "selected": "webgl2",
+      "decision": "native-wgpu prototype required"
+    },
+    {
+      "fps": [
+        40,
+        40,
+        60
+      ],
+      "selected": "webgl2",
+      "decision": "native-wgpu prototype required"
+    },
+    {
+      "fps": [
+        40,
+        60,
+        40
+      ],
+      "selected": "webgl2",
+      "decision": "fill LOD / E-C2, native prototype if still missed"
+    },
+    {
+      "fps": [
+        40,
+        60,
+        60
+      ],
+      "selected": "webgl2",
+      "decision": "go with path culling / LOD"
+    },
+    {
+      "fps": [
+        60,
+        40,
+        40
+      ],
+      "selected": "webgl2",
+      "decision": "native-wgpu prototype required"
+    },
+    {
+      "fps": [
+        60,
+        40,
+        60
+      ],
+      "selected": "webgl2",
+      "decision": "native-wgpu prototype required"
+    },
+    {
+      "fps": [
+        60,
+        60,
+        40
+      ],
+      "selected": "webgl2",
+      "decision": "fill LOD / E-C2, native prototype if still missed"
+    },
+    {
+      "fps": [
+        60,
+        60,
+        60
+      ],
+      "selected": "webgl2",
+      "decision": "go"
+    }
+  ],
+  "regressions_exit": 1
+}
