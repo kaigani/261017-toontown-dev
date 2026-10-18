@@ -116,6 +116,102 @@
         "png": "2c951992379e5e7da4a37527f3a1a74aefe1df0f0f542fb359224b5acaf92ed2",
         "width": 128
       },
+      "stress_00": {
+        "height": 128,
+        "pixels": "26324cf8179e12881962b5f8083ecee1b6a0f837f2fa8d1dc54247db0d90c1ca",
+        "png": "aaf4c8ef4493cdec7cfe1859e2ed2c53c143cf394afed0e94e32218ad80ec48d",
+        "width": 128
+      },
+      "stress_01": {
+        "height": 128,
+        "pixels": "9da6a262cac80ff97910b5b9a290dff05ac7eb9a490c526146d812be697721e6",
+        "png": "3899415d1447c721e5811e76cdad4bfaaa40182f5abb9ba682a1ca20e185c16f",
+        "width": 128
+      },
+      "stress_02": {
+        "height": 128,
+        "pixels": "a99e9202a2657b21413cfe7a733552ae0b0f85ccc39014a37bb1ec6107091813",
+        "png": "d8db4f011bb357965ba205cb5fddfe385f9e3bf30b4b7b6ec9ea61211d9065db",
+        "width": 128
+      },
+      "stress_03": {
+        "height": 128,
+        "pixels": "067f84ec490c400fd09310a4b08759c27b30da802b9e193c44249082c30391a3",
+        "png": "917f3244d8a15999d543acacd35d16926dce81e977bb63794b980451fa52c2a8",
+        "width": 128
+      },
+      "stress_04": {
+        "height": 128,
+        "pixels": "6f7008516f8e6e899a4bb7ae69752aa44d1505bc288f588a49a27268a00d79f1",
+        "png": "d5af51e33796dadeaccd2358ae5cae8f02ba03c703c3d9962d8d44ef540772bf",
+        "width": 128
+      },
+      "stress_05": {
+        "height": 128,
+        "pixels": "10290be35aab5e60c8e76acbd85c08b3b303117c37db74875cbcd8edfc6e23be",
+        "png": "7a10db89103009e2a4e42083f92da101557a14c547a5026556aabcebb3777de5",
+        "width": 128
+      },
+      "stress_06": {
+        "height": 128,
+        "pixels": "a4e2a06903ac7c2ea4c5634e90a8945b81daa158e25aa10e72ac238d818d331d",
+        "png": "cd607daebc2ce41e8b5792d05e2918a8c4d7be9f0f8b644b1053e314a45feb71",
+        "width": 128
+      },
+      "stress_07": {
+        "height": 128,
+        "pixels": "da9376733ca4b2008b6c88a6a4736b0ca602e51fdf9944bfb0b99abe931c4dc3",
+        "png": "b6d0b17122c0c1a9271cb1d0e322f5bbb16354661ddc067a45db691fee912189",
+        "width": 128
+      },
+      "stress_08": {
+        "height": 128,
+        "pixels": "a6dd887e5b8daa904cb313f49ed0b919d723d0ab9a2002a20fcad4405617866f",
+        "png": "ce47e73847e6a48489767c29c6327b69b2d387a0122d83ab83d4c8bcb559017e",
+        "width": 128
+      },
+      "stress_09": {
+        "height": 128,
+        "pixels": "163842e80b7080ee5d570bd582e6fac2de1ffbbbd9c04c2041c38c49c33d0386",
+        "png": "b65580284fc794e2ba9f41b727d19b51f5a08b3aaeeb75fe4d986bd9fd3b9a2f",
+        "width": 128
+      },
+      "stress_10": {
+        "height": 128,
+        "pixels": "07d2780140263b851267d414040a03c627ffb89431da8d56d122142c8afd2e85",
+        "png": "451a5659778181b2ac014c13819daab325129a8cd1b5dd3cdfcd502fba6ccfff",
+        "width": 128
+      },
+      "stress_11": {
+        "height": 128,
+        "pixels": "3e6a0201b782373d57e8fd30c57c2d5ffa751037c3125a1216dbac34efff5dc5",
+        "png": "7bf134c3655f34ec08b51455c0b4e693e5a6dee457a33a547a06105343cd7dbe",
+        "width": 128
+      },
+      "stress_12": {
+        "height": 128,
+        "pixels": "da518bbfd072c48a698536e547a3f4356275436a9fad141e5d3410a559feb727",
+        "png": "543bc5e2d729ae4d52a627466b746f4ec6deb731dd71715e926d303df03a3823",
+        "width": 128
+      },
+      "stress_13": {
+        "height": 128,
+        "pixels": "75295d771695622dad3c24725545d74787df91821d9dd6fa5b63746d2a4ca6d5",
+        "png": "4d4ce1da45c78d307cdaca9fa2dbd8f1898058aaeb6226f44e063de8a07c49c3",
+        "width": 128
+      },
+      "stress_14": {
+        "height": 128,
+        "pixels": "922aecaabd576e9314a7c1c93f28c6f46311ccd82eec4bb2df7dd0b8d918c03b",
+        "png": "0e2633ede5c145791384a7d0e11ca045f3966290a550cb989ef1605219a68992",
+        "width": 128
+      },
+      "stress_15": {
+        "height": 128,
+        "pixels": "bab0596e9fb821706cd511cf33a30cdc2fcc89f03f9664692c74316907151029",
+        "png": "303bd3bd0b4997b9e0dddbd0b935971308db47c31f949531bffef57c6b41c1a2",
+        "width": 128
+      },
       "stroked_curves": {
         "height": 128,
         "pixels": "37e4c23d131c18b7de33ee8f3130a77ea4e420f76000e5b22651d95456647ae1",
@@ -138,6 +234,478 @@
         "height": 128,
         "pixels": "7be6488b3c7f495ba34700ec64ff4a5d123ef1ade4eecce6d64dce4f575fce27",
         "png": "41f3e96f8ee0c76911ddee3e89f5971e963cc868f1b57739de2c97ca90700d40",
+        "width": 128
+      }
+    },
+    "vello_cpu_f32_fallback": {
+      "aa_edge_angles": {
+        "height": 128,
+        "pixels": "0957b1309815729c2d6348c36fafb3e41ec8e836e6aff71ba2f9539a49e30335",
+        "png": "a6904b590b259baf498bb51fd0e94ae10eb0bb29a54ce152937fc922433ebbf7",
+        "width": 128
+      },
+      "alpha_stack": {
+        "height": 128,
+        "pixels": "e99dd8b2050928a031f68f05b265ac66f68b56339f36dc8df25d6c22bcb96def",
+        "png": "a57024ddec66542c8fe7c3fb298d5fc984238eb4ec6a0c5af1afde9a7b20e81d",
+        "width": 128
+      },
+      "clip_circle": {
+        "height": 128,
+        "pixels": "b77403eb74cfa325910630e8b836470cfe98848ed3c6ee447ce69bfb01b870ac",
+        "png": "0fecdf104228a16554fc26eeb4d1e1564d7391b40faa8c664be5ee9927134dc7",
+        "width": 128
+      },
+      "clip_nested": {
+        "height": 128,
+        "pixels": "53c2bf42becb9be54c31a599bb404d0f5efe53a5dda41f85701f496a31ce113b",
+        "png": "f7343a348ca2ef49a617c7085b071026ee6620afddaf5027c080f346df55a05e",
+        "width": 128
+      },
+      "coincident_edges": {
+        "height": 128,
+        "pixels": "f88dbc98651378a0005815ee45906ca3af299a277fb63b76b4ade9805c7c9a57",
+        "png": "1280d2086ee0439683b0e4df369c2ff2c8ea967d558a9b117eef1bde0c656c9c",
+        "width": 128
+      },
+      "cubic_blobs": {
+        "height": 128,
+        "pixels": "b1205e0051267f9509bd0a71f14235a83a1cbb7d4eef1121e7fd368585790a90",
+        "png": "635337347cde938a21beeab59e0163f653883e894f2cf5ed73a61cb62a87b1ce",
+        "width": 128
+      },
+      "degenerate": {
+        "height": 128,
+        "pixels": "38b0efed8f743b131aa91d7c357a9ff1ddb4359d8b3efff42dc29fcac045a715",
+        "png": "08eb8697da3a6e50e35a06bbafec3552e3e18e9384addb095e3076f14e5b08f5",
+        "width": 128
+      },
+      "extreme_coordinates": {
+        "height": 128,
+        "pixels": "bbbae6a108fe57171bb0f48afc25fc53fdbef09ab54cb14d8e9469e4cbe4ca19",
+        "png": "56eba231a46edfa53c88024961b3f8a2e16e2ef0e32072ef018c744ec543ea92",
+        "width": 128
+      },
+      "glyph_evenodd": {
+        "height": 128,
+        "pixels": "ff942bcb1118cb18f33e42c811bf7e2fe8f2748fb3ee848b8fcb1e64228b6cdb",
+        "png": "6c48b46874b8847369601156fa9bb7097b22979e7d8f9bb4c94df667c95581ab",
+        "width": 128
+      },
+      "glyph_nonzero": {
+        "height": 128,
+        "pixels": "ff942bcb1118cb18f33e42c811bf7e2fe8f2748fb3ee848b8fcb1e64228b6cdb",
+        "png": "6c48b46874b8847369601156fa9bb7097b22979e7d8f9bb4c94df667c95581ab",
+        "width": 128
+      },
+      "gradient_transformed": {
+        "height": 128,
+        "pixels": "f11e4966708f8b63f8be10a77e7bb0b411d9fa6fd971c9a307db8ea36d69957e",
+        "png": "ae81a5e0ff624013a6483f561e0cdb1e487bd36fc831ad3e7c93d6dda11b6583",
+        "width": 128
+      },
+      "hairline_grid": {
+        "height": 128,
+        "pixels": "c7583240a422fa8c90b5e88a2b0a1aad1ee43e553a575d008e259e54f60097c1",
+        "png": "68fb2a6d34e0238c820cb16f3813605b37fe3b42aafae51d732f2e9d115bc534",
+        "width": 128
+      },
+      "linear_gradient": {
+        "height": 128,
+        "pixels": "825a9ade2bc490aa19646979e2c696a71fa72154d5d1845e97544a76e2779e16",
+        "png": "9a8a73e85cb09512a15bc1053c7367d48a5f221e550f95f68a8fce5ed363c90c",
+        "width": 128
+      },
+      "many_small_paths": {
+        "height": 128,
+        "pixels": "c62933b9bd0edcd7e28f6aadb785d7651a9d6d95db4d54abce70856b365a71f6",
+        "png": "cc38084ec92fbd13a46b5a3ba1f8bd220bc89944f8c371392ffa0463ea67c33f",
+        "width": 128
+      },
+      "non_integer_scales": {
+        "height": 128,
+        "pixels": "3cd04b617d5f70d48d93f8ab02d3b009574b13f126b8c46dfd7f0e1963e878d3",
+        "png": "a27180218e3c675c26036a2eb0b7e0f1d5e68f980130407c5d60c037ca0570c0",
+        "width": 128
+      },
+      "perf_2000_cubics_512": {
+        "height": 512,
+        "pixels": "c84840afa699e6450744f41e48794221165150082142eb52e006235e063ef8aa",
+        "png": "0e76bc671e48bea44eb458e4377ed1603d8a8f0c2baa15c315b6ebdb1a519ed8",
+        "width": 512
+      },
+      "radial_gradient": {
+        "height": 128,
+        "pixels": "e347647d6ec9a5b18fe29d60aad11d04d40df945dfafbba806842e6b763e62d1",
+        "png": "49fec258700453a0690db62015bfdc99d4d4d2e5866a347956d99a5fa3de9a27",
+        "width": 128
+      },
+      "star_evenodd": {
+        "height": 128,
+        "pixels": "2ac2be796237e16cf549434e307130a28807f6293ceddc27c0ea2a842a686e57",
+        "png": "68a8b8b5bd0fec763fcfce8dc47db2dd05e964754143d173f05c2d0e79f6d485",
+        "width": 128
+      },
+      "star_nonzero": {
+        "height": 128,
+        "pixels": "0f09adf86255af1a62798d2095f37142c3edb1e2d95ebea21ae1b7b13b187581",
+        "png": "0cc2c1c7ea21516994d95fa0f7b8387a8ac8ef26ed378e3ccb9851347f0a0b37",
+        "width": 128
+      },
+      "stress_00": {
+        "height": 128,
+        "pixels": "887c052b844556a8ebd11cf5959b2e903258a063ed3212bc5a9e74449fafe16a",
+        "png": "ba0e0e8b4f3bd97ead32d06912796ccac451af1272be19f2e70a92bcbe990884",
+        "width": 128
+      },
+      "stress_01": {
+        "height": 128,
+        "pixels": "e565873647af0941bc4963a200bf53960076d356b2b8782341499d0fe9d4be2f",
+        "png": "e8377e6d2e3b0b0dbed97ace496d32ee503d66bbf84e659efb68f5be6a16b82a",
+        "width": 128
+      },
+      "stress_02": {
+        "height": 128,
+        "pixels": "041c7afc24871bc20e1c0ce7c54375903a374f78a18c96bc128f78da2d1e3431",
+        "png": "a9acaef8b70b776620cc9cb4074cd397b97ca424116e9b068aecea86f977a8f0",
+        "width": 128
+      },
+      "stress_03": {
+        "height": 128,
+        "pixels": "49e92135548e02ab4a67022c95287e8c541420434d531e89443bd536a4d1d0bd",
+        "png": "c515441373339aae468b8a9a885d923f01e8e3888f33c00174108385a895e96f",
+        "width": 128
+      },
+      "stress_04": {
+        "height": 128,
+        "pixels": "3eafb4d084829cd7dccd2f73a00d1237c74aa818042b7eac0d4900b6aabe9827",
+        "png": "d83b39d08a7398fff2bd9c967571052fc0525bef6bb9ef782242117cf3ff50d5",
+        "width": 128
+      },
+      "stress_05": {
+        "height": 128,
+        "pixels": "0f33a584b67b4ac5d0bf4ecde80c2c93663412bdc9c4997114a24ac364d0d8ee",
+        "png": "c13e563df7632896ae681f355f4e4fa795be5cd1f769da3aec80b7fbde46d4aa",
+        "width": 128
+      },
+      "stress_06": {
+        "height": 128,
+        "pixels": "8adc9d9191fa12d454ae6e11b9fe5f85f7111c3d2a70fb50b0c90e28322685b8",
+        "png": "9a62f0ce03505c9c415294d1b737b71d6fe3cbedf7078864615218fcf8b19844",
+        "width": 128
+      },
+      "stress_07": {
+        "height": 128,
+        "pixels": "b7d535646550aa15ea6500d5d48d454dcb67139d76e2789aaade3ca8acd382f7",
+        "png": "fa2d0aa2db5f9d478d338a339256e034cb958b089afdb01af2f1a129ceac96c1",
+        "width": 128
+      },
+      "stress_08": {
+        "height": 128,
+        "pixels": "bb74679c210e6fffa58ee47ee2426045d2ae0384f6dc15ebb464065d923a0cc8",
+        "png": "2f0831a53eae3d1d4f40e904dd6d12c2ba73308b0636740a3362654b8af55de9",
+        "width": 128
+      },
+      "stress_09": {
+        "height": 128,
+        "pixels": "77964301a369c5282156c687a5256249c18704aad7b82cf27d8aba107471d6e5",
+        "png": "8194bdeed676384617e3da014bec11c6c6cf11ac55e2ed5f151a0ea55c02443e",
+        "width": 128
+      },
+      "stress_10": {
+        "height": 128,
+        "pixels": "81c668b398295bd60feaf9f365226910cf190efd1a21a13b60222afe79d1396f",
+        "png": "e4e9c1262dc178f1d55505d14e8663b7bb92f3a2e7c43d8f7ed113f5a921bdd5",
+        "width": 128
+      },
+      "stress_11": {
+        "height": 128,
+        "pixels": "c4f0f8bf6a3270089fa8bcf76f100ce1f31a782486dc9ec5da9a285a4f678fa0",
+        "png": "110762cf548832a7b0348c4ecf67e6236f12ee126854c8730747a20b6defecbb",
+        "width": 128
+      },
+      "stress_12": {
+        "height": 128,
+        "pixels": "f71c51a6d0f7911bcd82cfef2127cbad6c892e20699a38f4c7f1cc53d4b82570",
+        "png": "00625fe2c038f96a25ad6af91d6dfa67568329b21bfee258d9c62ac748a28706",
+        "width": 128
+      },
+      "stress_13": {
+        "height": 128,
+        "pixels": "ea52828cb4220ed7f1b7c98ba04e3d0def704464bc05b9a85c0090d90e45cd40",
+        "png": "3f066d327cbf73bc2ebec8c9f1975932386456cb3889e4d1af0a4963ebd887af",
+        "width": 128
+      },
+      "stress_14": {
+        "height": 128,
+        "pixels": "12cecda0de8bb2c89f5b99a19af50f44f78299512029f5dda4b7086c52daf67e",
+        "png": "f553c2a74d1fdb36613b0c11a2dc0abfce27ebde1ea30ad11cfa476725430813",
+        "width": 128
+      },
+      "stress_15": {
+        "height": 128,
+        "pixels": "2d8efb78174a836981e8e9ef95fd4d91475e15f7965fe08223a3ac4799ac46c1",
+        "png": "5acf8aab485027fa68e8afbb1a1e2477813b223a56f24b14233a9a4c63e2f63d",
+        "width": 128
+      },
+      "stroked_curves": {
+        "height": 128,
+        "pixels": "ffcde2f54ce2d373b633ada7e77c3f6889d51717a55346b571e6422e4498edd6",
+        "png": "a629c054ef95a6cb5a283ee96fab86e0c06cd7a91484c96f9117b4ea6b6a378d",
+        "width": 128
+      },
+      "subpixel_translation": {
+        "height": 128,
+        "pixels": "b750228a5ee1a4f4d2300d627e8c34a0e392aaa6938aff11fd348a03d90d1205",
+        "png": "d7f68e7e3ff267f12cc3711e0fdf0d100d4735f6095f5ae448f808e8707fa445",
+        "width": 128
+      },
+      "thin_strokes": {
+        "height": 128,
+        "pixels": "3e8dd1ccb2ee9f9d96f027e10cb79040c88b7f2e2cc8710370460e7846f50870",
+        "png": "803878133de3a03bd9c1ca5e3c3335f2cb4b5d66b2f00666fa1e569d2fe059b6",
+        "width": 128
+      },
+      "translucent_overlap": {
+        "height": 128,
+        "pixels": "6adb9b7922dcacf4f62634b343928d822bebe3cd76e2a6942b60e50f2d2fb4e2",
+        "png": "dbfa721144ffa42bcc569677e7ed2efb53927e6cfd95a9e37b1bd7c28b3f6e78",
+        "width": 128
+      }
+    },
+    "vello_cpu_f32_simd": {
+      "aa_edge_angles": {
+        "height": 128,
+        "pixels": "64954c3b8e741df211d742333fb4bf5d46e7b08eb9bfb3501012bf282442ffaa",
+        "png": "a284d71e0af9fecf71badd9bc228c6a5447f5730b31a15405b19cd83dda7ddc9",
+        "width": 128
+      },
+      "alpha_stack": {
+        "height": 128,
+        "pixels": "e99dd8b2050928a031f68f05b265ac66f68b56339f36dc8df25d6c22bcb96def",
+        "png": "a57024ddec66542c8fe7c3fb298d5fc984238eb4ec6a0c5af1afde9a7b20e81d",
+        "width": 128
+      },
+      "clip_circle": {
+        "height": 128,
+        "pixels": "b77403eb74cfa325910630e8b836470cfe98848ed3c6ee447ce69bfb01b870ac",
+        "png": "0fecdf104228a16554fc26eeb4d1e1564d7391b40faa8c664be5ee9927134dc7",
+        "width": 128
+      },
+      "clip_nested": {
+        "height": 128,
+        "pixels": "53c2bf42becb9be54c31a599bb404d0f5efe53a5dda41f85701f496a31ce113b",
+        "png": "f7343a348ca2ef49a617c7085b071026ee6620afddaf5027c080f346df55a05e",
+        "width": 128
+      },
+      "coincident_edges": {
+        "height": 128,
+        "pixels": "f88dbc98651378a0005815ee45906ca3af299a277fb63b76b4ade9805c7c9a57",
+        "png": "1280d2086ee0439683b0e4df369c2ff2c8ea967d558a9b117eef1bde0c656c9c",
+        "width": 128
+      },
+      "cubic_blobs": {
+        "height": 128,
+        "pixels": "b1205e0051267f9509bd0a71f14235a83a1cbb7d4eef1121e7fd368585790a90",
+        "png": "635337347cde938a21beeab59e0163f653883e894f2cf5ed73a61cb62a87b1ce",
+        "width": 128
+      },
+      "degenerate": {
+        "height": 128,
+        "pixels": "38b0efed8f743b131aa91d7c357a9ff1ddb4359d8b3efff42dc29fcac045a715",
+        "png": "08eb8697da3a6e50e35a06bbafec3552e3e18e9384addb095e3076f14e5b08f5",
+        "width": 128
+      },
+      "extreme_coordinates": {
+        "height": 128,
+        "pixels": "bbbae6a108fe57171bb0f48afc25fc53fdbef09ab54cb14d8e9469e4cbe4ca19",
+        "png": "56eba231a46edfa53c88024961b3f8a2e16e2ef0e32072ef018c744ec543ea92",
+        "width": 128
+      },
+      "glyph_evenodd": {
+        "height": 128,
+        "pixels": "0c42b0f25e84504e2ea87794362acf51a6a77a64cae4731a6739592343fab9ac",
+        "png": "52d4598180001fbcfe9055272ee517b1958256e052713ee485aefb4736f79a06",
+        "width": 128
+      },
+      "glyph_nonzero": {
+        "height": 128,
+        "pixels": "0c42b0f25e84504e2ea87794362acf51a6a77a64cae4731a6739592343fab9ac",
+        "png": "52d4598180001fbcfe9055272ee517b1958256e052713ee485aefb4736f79a06",
+        "width": 128
+      },
+      "gradient_transformed": {
+        "height": 128,
+        "pixels": "f11e4966708f8b63f8be10a77e7bb0b411d9fa6fd971c9a307db8ea36d69957e",
+        "png": "ae81a5e0ff624013a6483f561e0cdb1e487bd36fc831ad3e7c93d6dda11b6583",
+        "width": 128
+      },
+      "hairline_grid": {
+        "height": 128,
+        "pixels": "c7583240a422fa8c90b5e88a2b0a1aad1ee43e553a575d008e259e54f60097c1",
+        "png": "68fb2a6d34e0238c820cb16f3813605b37fe3b42aafae51d732f2e9d115bc534",
+        "width": 128
+      },
+      "linear_gradient": {
+        "height": 128,
+        "pixels": "825a9ade2bc490aa19646979e2c696a71fa72154d5d1845e97544a76e2779e16",
+        "png": "9a8a73e85cb09512a15bc1053c7367d48a5f221e550f95f68a8fce5ed363c90c",
+        "width": 128
+      },
+      "many_small_paths": {
+        "height": 128,
+        "pixels": "c62933b9bd0edcd7e28f6aadb785d7651a9d6d95db4d54abce70856b365a71f6",
+        "png": "cc38084ec92fbd13a46b5a3ba1f8bd220bc89944f8c371392ffa0463ea67c33f",
+        "width": 128
+      },
+      "non_integer_scales": {
+        "height": 128,
+        "pixels": "3cd04b617d5f70d48d93f8ab02d3b009574b13f126b8c46dfd7f0e1963e878d3",
+        "png": "a27180218e3c675c26036a2eb0b7e0f1d5e68f980130407c5d60c037ca0570c0",
+        "width": 128
+      },
+      "perf_2000_cubics_512": {
+        "height": 512,
+        "pixels": "18667f5a6ec60826db62a2db4ace51a2c9fe284b72c24e3370fde5dc19f5a999",
+        "png": "30c00ca1d786d98973692ef8af2b745f5752be596cede1e5f3aca9fd5d979e93",
+        "width": 512
+      },
+      "radial_gradient": {
+        "height": 128,
+        "pixels": "e347647d6ec9a5b18fe29d60aad11d04d40df945dfafbba806842e6b763e62d1",
+        "png": "49fec258700453a0690db62015bfdc99d4d4d2e5866a347956d99a5fa3de9a27",
+        "width": 128
+      },
+      "star_evenodd": {
+        "height": 128,
+        "pixels": "2ac2be796237e16cf549434e307130a28807f6293ceddc27c0ea2a842a686e57",
+        "png": "68a8b8b5bd0fec763fcfce8dc47db2dd05e964754143d173f05c2d0e79f6d485",
+        "width": 128
+      },
+      "star_nonzero": {
+        "height": 128,
+        "pixels": "0f09adf86255af1a62798d2095f37142c3edb1e2d95ebea21ae1b7b13b187581",
+        "png": "0cc2c1c7ea21516994d95fa0f7b8387a8ac8ef26ed378e3ccb9851347f0a0b37",
+        "width": 128
+      },
+      "stress_00": {
+        "height": 128,
+        "pixels": "ed38509d36ca933fed3e6664ba52e198e672cab24490b33f2299d8ac0cd12b0a",
+        "png": "93ddef451264716b62402f23fa89b4b4c34ba3bc76ac0dff02758df0435a30c7",
+        "width": 128
+      },
+      "stress_01": {
+        "height": 128,
+        "pixels": "5453faacf24c67988c41f82087337364b2ef811d3af08b368def23c3f0ed973c",
+        "png": "691cb7c8486e9e5b112ceda4c4a1ae540188a5423128587a361bf78beff3b3ef",
+        "width": 128
+      },
+      "stress_02": {
+        "height": 128,
+        "pixels": "94a168767e39f6adbd0bdf2bda13c50575324d8a1584f684acbd8430d6267d7a",
+        "png": "484734668783394836e696921c17cdededa143e04d2583c8ccfc0ab1937f2a09",
+        "width": 128
+      },
+      "stress_03": {
+        "height": 128,
+        "pixels": "06f8cd551d9a399673a2208ffaa7868bf9fff5bf761161616fd118fe465740e6",
+        "png": "2a361a74e08d1c396d8e9e84f3af2756a3f3b3407734d76e1c099706d619649a",
+        "width": 128
+      },
+      "stress_04": {
+        "height": 128,
+        "pixels": "1aa3e814a318a4d9aacdfaea0bcb3ae0cc77cf75f4f0967ac37b52be71abe1f7",
+        "png": "65c2e63ec2a3fe26759c6362be3451f3406dfd01a8132c642c3926fe8a636e88",
+        "width": 128
+      },
+      "stress_05": {
+        "height": 128,
+        "pixels": "789fd0aebd3ee948ea9f4c302afb9c1e0545e0b70a60e96cdbe9652a51a1fc39",
+        "png": "ed4017d402d4de814b4a1344d51114e7acb90697b3aab734c27a913f6dcdd056",
+        "width": 128
+      },
+      "stress_06": {
+        "height": 128,
+        "pixels": "c122598ce766a314a0975972fb41ffe27622b5f662c49eec5d3a8955cb8778da",
+        "png": "0912d90a5cfd8618410385101865d153230e3b98bbecaef08b535acb9afee82e",
+        "width": 128
+      },
+      "stress_07": {
+        "height": 128,
+        "pixels": "79349e71e8d3ecdeed5270fefd142b34c8f8454cd3e3e15d7e839e67a71ffb4c",
+        "png": "c304aa238fa95d671fafccb75e5dd03f5b8fcd0323b7df630e0a1b40487f9490",
+        "width": 128
+      },
+      "stress_08": {
+        "height": 128,
+        "pixels": "07ce7c56b8bc5bec6a9c969bd0ef811883af1229629ac8e84d703d0a74e299cb",
+        "png": "07c00d5be784c19242a314cc300f73982d5bfb73111c61ef8783b3bc5589a665",
+        "width": 128
+      },
+      "stress_09": {
+        "height": 128,
+        "pixels": "ca1acecc923e15f54e246426122a278454ab355d55bd0b67f9ac5c55e380a10b",
+        "png": "1b7e13db63835bd306b4e9f48742de2a829c536559124d17ec9f6d193ed5d02e",
+        "width": 128
+      },
+      "stress_10": {
+        "height": 128,
+        "pixels": "c9569e6449285a8a45c2351bee12ba29a81616b280ecb7d4bcef2eba433e935e",
+        "png": "f79b4ad131246af0b8074dfca7530c701cbb137c79f50672b07f382dc516e865",
+        "width": 128
+      },
+      "stress_11": {
+        "height": 128,
+        "pixels": "d0890a6c74141f3c94d65e89fe510ca6c0245f23680f8a9e7c1a473c73833831",
+        "png": "664e641b12049ce01c400cf7122a0ecf3a9d75f370308667350575a834b7a505",
+        "width": 128
+      },
+      "stress_12": {
+        "height": 128,
+        "pixels": "ef70020c799e73a314f2d6fa7d99163fd8f9f1a260c4b51939b09389fe246b9b",
+        "png": "eaa25ef6f9b0510df975730e7cae177da05fa7cd00807609b3842e7236ba3c88",
+        "width": 128
+      },
+      "stress_13": {
+        "height": 128,
+        "pixels": "ed14da49d818d14039eeecaf6035a8923fb71dbca2149ca0fd7163306d32f265",
+        "png": "73f3a06da962509c318bca323aea49c56bee9d587be1778bda69c1253291da84",
+        "width": 128
+      },
+      "stress_14": {
+        "height": 128,
+        "pixels": "ebd4429e01cdb9decc95ed5236eb22500f5a57bed0246fd04e1d475b393ebbc4",
+        "png": "4da59010d2d573d7bd73a4db0db17f8ec092231af83d040f26480678fb793e49",
+        "width": 128
+      },
+      "stress_15": {
+        "height": 128,
+        "pixels": "d4dfd59b63b3deef2635ac0ee7e6a406c5fe761835a4864894ecd41a7bd55575",
+        "png": "aaff6592375dc4c4af574ce79f222367d1fed05856c9e65f038091223505bdff",
+        "width": 128
+      },
+      "stroked_curves": {
+        "height": 128,
+        "pixels": "ffcde2f54ce2d373b633ada7e77c3f6889d51717a55346b571e6422e4498edd6",
+        "png": "a629c054ef95a6cb5a283ee96fab86e0c06cd7a91484c96f9117b4ea6b6a378d",
+        "width": 128
+      },
+      "subpixel_translation": {
+        "height": 128,
+        "pixels": "b750228a5ee1a4f4d2300d627e8c34a0e392aaa6938aff11fd348a03d90d1205",
+        "png": "d7f68e7e3ff267f12cc3711e0fdf0d100d4735f6095f5ae448f808e8707fa445",
+        "width": 128
+      },
+      "thin_strokes": {
+        "height": 128,
+        "pixels": "3e8dd1ccb2ee9f9d96f027e10cb79040c88b7f2e2cc8710370460e7846f50870",
+        "png": "803878133de3a03bd9c1ca5e3c3335f2cb4b5d66b2f00666fa1e569d2fe059b6",
+        "width": 128
+      },
+      "translucent_overlap": {
+        "height": 128,
+        "pixels": "6adb9b7922dcacf4f62634b343928d822bebe3cd76e2a6942b60e50f2d2fb4e2",
+        "png": "dbfa721144ffa42bcc569677e7ed2efb53927e6cfd95a9e37b1bd7c28b3f6e78",
         "width": 128
       }
     },
@@ -254,6 +822,102 @@
         "height": 128,
         "pixels": "49549279beb1e370b4ee581eec8d4577fc090292aca2b4ddd35716f54a1a7c98",
         "png": "b280c90bf7b13ba99c0b09f86e2f280aee9b54a3f8542387c7cbca2eadc4aad3",
+        "width": 128
+      },
+      "stress_00": {
+        "height": 128,
+        "pixels": "f908f975a40c7ecededda33bf6b8e518707b6b3789890ed404eecf009bf860e9",
+        "png": "08a7653908b2dae498f7e13b12bda98c8cda83100e52ed76a9a880818eed4525",
+        "width": 128
+      },
+      "stress_01": {
+        "height": 128,
+        "pixels": "77a07f6caa58eb98ba60e9b8f57c23cd871874820b5e775545794306f926930b",
+        "png": "d05d6e4d9b6fa9d2e9988a5bd354171451aa674840c300667bfe46d2412e2cb8",
+        "width": 128
+      },
+      "stress_02": {
+        "height": 128,
+        "pixels": "34ad0a2044c457f79f9a5728819feb7244ccbf862f03117525abce29b2b6be1b",
+        "png": "53589e9f6cedc07a2f9700a12899f980b1e4b8c8117754d0b4d3b85018db7ab7",
+        "width": 128
+      },
+      "stress_03": {
+        "height": 128,
+        "pixels": "a144c0d561a774e0cf1bdcfcbdc29614f81ae33d81ac098cfc0242d7180f47a1",
+        "png": "f9d57d8fff212b863a2e6a9f0737a1736655c067fcc0b5e85d4ca8cc46397130",
+        "width": 128
+      },
+      "stress_04": {
+        "height": 128,
+        "pixels": "6ede714ee70d09c0d2d212fb810719b65db38da56321d60f809ef3bb8528c13b",
+        "png": "60fca5e7ffb897856c39db99e3ac371de6d38cb750f38436470bb73bc95eddfc",
+        "width": 128
+      },
+      "stress_05": {
+        "height": 128,
+        "pixels": "c780b58da64fe749b06584ff55acdbe3ec8005a20738ed463b7e3b95fd1f1b31",
+        "png": "3d4ce24ccd1dd7ad697d01ed1fb6d80198684ef2e66f2382885a5ad364a600df",
+        "width": 128
+      },
+      "stress_06": {
+        "height": 128,
+        "pixels": "242cb1a929a8d567bf3d825d5149c215e195f81ece9b7250d3052adb46e2cf03",
+        "png": "e924b2dc45f75e5604d063c69df0ff577a812fcf4861e98625d95e4d60be5c79",
+        "width": 128
+      },
+      "stress_07": {
+        "height": 128,
+        "pixels": "d92e7ffd44041cb08e1cc576da9ad4404838c1ee17049db8e2f2599b51951f80",
+        "png": "cb5619fd6bd9e76655102f8ccdf35f8b678f7b6da433f079f07380cefb1fa613",
+        "width": 128
+      },
+      "stress_08": {
+        "height": 128,
+        "pixels": "4dbaacd520639bc8a31be7e281785933242f1cabe5c7e3fd44c1e594f2e0dd1e",
+        "png": "2dda12b8e8ef5a71f41aa19e86c3c709b4797ede2b16df72bfd6f25a5c22e455",
+        "width": 128
+      },
+      "stress_09": {
+        "height": 128,
+        "pixels": "3ad7f5f8e99d1bb55037e70d25a9801e27ef5058430c9b855856c077f813b100",
+        "png": "a30703162bfd790e9c7093b250450d6185db2dfe3d684d1d38a75a53896b6c06",
+        "width": 128
+      },
+      "stress_10": {
+        "height": 128,
+        "pixels": "03e476a02a1fbf8a16fd4df383855a948b0f5a96c5271e8746cecfdda76499e7",
+        "png": "5887c29b3f16445d3e1537601ef7787bab49302aae3abeb14d64199691c07cbc",
+        "width": 128
+      },
+      "stress_11": {
+        "height": 128,
+        "pixels": "506d5731e02187c796ea7782d3c19944266c067a7d47c187925da480d7d07438",
+        "png": "0000f09448d304f13575e72fe6d75781add67f0ebda0252bfb8080cb73cf0b32",
+        "width": 128
+      },
+      "stress_12": {
+        "height": 128,
+        "pixels": "cff5090452ab0827f76c7e23c2fd18c7aff2d82af3f4859f7b7198027e801d47",
+        "png": "16cdedcbd89cb927740fa37d7998c59efff247d0c74c9a258d7fb343bbd0017e",
+        "width": 128
+      },
+      "stress_13": {
+        "height": 128,
+        "pixels": "cffcee211d262f8626edbebf2ce455566b22dd916d91b508e61b73defc0803df",
+        "png": "58f58fa25f337fdebba87e4092c9bb475ac4420edbe9df2a4e64efbf6a847c9a",
+        "width": 128
+      },
+      "stress_14": {
+        "height": 128,
+        "pixels": "b6737f48474792661aaf93cffb731aa20b336e3bc06b0ede066a6439c9156340",
+        "png": "82885bcc9dae0a5db3dc7e67cba07167e3da2fcc264e5b4c83953c7be02d809b",
+        "width": 128
+      },
+      "stress_15": {
+        "height": 128,
+        "pixels": "f4d6fa61c4cecd206b81a0754accb5ac4a96e49935cb801f37faacb1b32d1210",
+        "png": "61364f8812f106ee57e83ce915f2497cbc75de62695c95947742e4e543dedf24",
         "width": 128
       },
       "stroked_curves": {
@@ -396,6 +1060,102 @@
         "png": "b280c90bf7b13ba99c0b09f86e2f280aee9b54a3f8542387c7cbca2eadc4aad3",
         "width": 128
       },
+      "stress_00": {
+        "height": 128,
+        "pixels": "94041cc476edadabf1911e4a2a83e9967c2dc0355cf309a1b36b421938625479",
+        "png": "bdae3451cac7fe38bc8d588b884df7dde3695f71d2766ae1dda882cb090c492a",
+        "width": 128
+      },
+      "stress_01": {
+        "height": 128,
+        "pixels": "819db03d43582eb804aa9c5ca04317b7e7a26c5489b6c18d11d139bcbeeb05f5",
+        "png": "7b6ad6bb5471102b7ab8d7e7c4cb3050c5ae6846b7222e8e17a155cf37422bdd",
+        "width": 128
+      },
+      "stress_02": {
+        "height": 128,
+        "pixels": "3ab32115d1e1e6f198e62c5934ec2c99246572dc60ba0ca1aee5d2ebfbae686e",
+        "png": "818e398d32de2ad89a1f376a9247e3f35f35dd6eb319878be3c3d9ef208dff60",
+        "width": 128
+      },
+      "stress_03": {
+        "height": 128,
+        "pixels": "f51719a6a04455bd859b5cf6574ed6af1ba941583a47881d593173c0cca9011b",
+        "png": "d0f6fb014b2a1fb826172a27c3ff474380ca81464248313cac86cfb8e82d8dd9",
+        "width": 128
+      },
+      "stress_04": {
+        "height": 128,
+        "pixels": "e40ba18fb1ca782fc955495157e3f5d623a17aac32efbe6e10b85269c8f90c53",
+        "png": "e6e2e207856fe3ee722acc73acb2fce7fd49cfaf89c68a8c7fa9743f2a76254c",
+        "width": 128
+      },
+      "stress_05": {
+        "height": 128,
+        "pixels": "9ee34bc29c7853b9a6d33787fe8c896563245581db7b6028cc35f19c4491059c",
+        "png": "13d145cb2638f9f1789d543f6fa584f8beae51387f3fae0b0dbeca7c07e8f45d",
+        "width": 128
+      },
+      "stress_06": {
+        "height": 128,
+        "pixels": "ecf7999c71acd8c99a684d60f0bebf8e9cf67fc96b38cffd70c19a7a571f1d6c",
+        "png": "ab8701fe2ab9959ef002c131783701adf62edb9e10745318aca1541ba715e1fc",
+        "width": 128
+      },
+      "stress_07": {
+        "height": 128,
+        "pixels": "d897bdb5ca72aad28c32299321e6354d2c5ef61323eac7f0c9049feeaa5b7c1a",
+        "png": "da98042e6959b1dadf06006255b8202fd3b51c345d8d1dac6132079f83b9b87e",
+        "width": 128
+      },
+      "stress_08": {
+        "height": 128,
+        "pixels": "b16d7686606b456e10a8ea06d77d24e1537fd8783e05f80d776b1b9b03633461",
+        "png": "2e928917888f580d372f6c72ce7da7781cda37b47e0a45e773da1ca64777fa49",
+        "width": 128
+      },
+      "stress_09": {
+        "height": 128,
+        "pixels": "ee042d685741cb3754d6264398c719d9ecfe7f6745623cceb81065fbb87b1af1",
+        "png": "a78ef8f79edf0aa4a0448805c8ba9d20b5c027db979af2068439cc80ab7ea143",
+        "width": 128
+      },
+      "stress_10": {
+        "height": 128,
+        "pixels": "54ab057d393e80f8f33aafb6053b6046862a919574f229b0ebd7769faa8d377d",
+        "png": "dafac64651eaaf1c4242ffe828a441a972a744fbace354fef1d1cde3aaa08938",
+        "width": 128
+      },
+      "stress_11": {
+        "height": 128,
+        "pixels": "e8597398f7b38fc0cc90a4e98ae579827fa9bb97b25e682702d6d8f0adc48034",
+        "png": "0cd30a6b2cee3d1c0c061f3ef37785d39dcc26d227322e8b8419a6f99a4a1510",
+        "width": 128
+      },
+      "stress_12": {
+        "height": 128,
+        "pixels": "1ce79dc8502e37af2dc3600e9600c921c800731de398f1d86279618c35210568",
+        "png": "58cff43fee64d8bed34521d2a53f418aeda6e0e9c34b264874c453462a42aa1f",
+        "width": 128
+      },
+      "stress_13": {
+        "height": 128,
+        "pixels": "9845e1d7c64b3c4a5585d03453f010879eda6dec42119d8ab1978029ae3ed6f6",
+        "png": "4e38274e7b43121f4c04b2b854063becbb7a810c480c4cde15e03eac3ccbf89c",
+        "width": 128
+      },
+      "stress_14": {
+        "height": 128,
+        "pixels": "725ea59b9ac2f26303b4984a96706724d8867ce0dd8cf790a9189bdb7b136707",
+        "png": "88e22c538c05a64ec06668868212b1795b218c2cc6d68bdd538f7d9681840fb2",
+        "width": 128
+      },
+      "stress_15": {
+        "height": 128,
+        "pixels": "04f45d876e336f51568508c550a9ac1aff01157cfc61f7d564c23e9e7075ecf7",
+        "png": "88f8780823fb41623f57366b5b77b662e43b15d28d184aa5a57d5f4f5c96f902",
+        "width": 128
+      },
       "stroked_curves": {
         "height": 128,
         "pixels": "f91867089a5adad3b8bb6c2c1a50dcd64869e04624611c3253ed8571e15f7def",
@@ -534,6 +1294,102 @@
         "height": 128,
         "pixels": "49549279beb1e370b4ee581eec8d4577fc090292aca2b4ddd35716f54a1a7c98",
         "png": "b280c90bf7b13ba99c0b09f86e2f280aee9b54a3f8542387c7cbca2eadc4aad3",
+        "width": 128
+      },
+      "stress_00": {
+        "height": 128,
+        "pixels": "94041cc476edadabf1911e4a2a83e9967c2dc0355cf309a1b36b421938625479",
+        "png": "bdae3451cac7fe38bc8d588b884df7dde3695f71d2766ae1dda882cb090c492a",
+        "width": 128
+      },
+      "stress_01": {
+        "height": 128,
+        "pixels": "819db03d43582eb804aa9c5ca04317b7e7a26c5489b6c18d11d139bcbeeb05f5",
+        "png": "7b6ad6bb5471102b7ab8d7e7c4cb3050c5ae6846b7222e8e17a155cf37422bdd",
+        "width": 128
+      },
+      "stress_02": {
+        "height": 128,
+        "pixels": "3ab32115d1e1e6f198e62c5934ec2c99246572dc60ba0ca1aee5d2ebfbae686e",
+        "png": "818e398d32de2ad89a1f376a9247e3f35f35dd6eb319878be3c3d9ef208dff60",
+        "width": 128
+      },
+      "stress_03": {
+        "height": 128,
+        "pixels": "f51719a6a04455bd859b5cf6574ed6af1ba941583a47881d593173c0cca9011b",
+        "png": "d0f6fb014b2a1fb826172a27c3ff474380ca81464248313cac86cfb8e82d8dd9",
+        "width": 128
+      },
+      "stress_04": {
+        "height": 128,
+        "pixels": "e40ba18fb1ca782fc955495157e3f5d623a17aac32efbe6e10b85269c8f90c53",
+        "png": "e6e2e207856fe3ee722acc73acb2fce7fd49cfaf89c68a8c7fa9743f2a76254c",
+        "width": 128
+      },
+      "stress_05": {
+        "height": 128,
+        "pixels": "9ee34bc29c7853b9a6d33787fe8c896563245581db7b6028cc35f19c4491059c",
+        "png": "13d145cb2638f9f1789d543f6fa584f8beae51387f3fae0b0dbeca7c07e8f45d",
+        "width": 128
+      },
+      "stress_06": {
+        "height": 128,
+        "pixels": "ecf7999c71acd8c99a684d60f0bebf8e9cf67fc96b38cffd70c19a7a571f1d6c",
+        "png": "ab8701fe2ab9959ef002c131783701adf62edb9e10745318aca1541ba715e1fc",
+        "width": 128
+      },
+      "stress_07": {
+        "height": 128,
+        "pixels": "d897bdb5ca72aad28c32299321e6354d2c5ef61323eac7f0c9049feeaa5b7c1a",
+        "png": "da98042e6959b1dadf06006255b8202fd3b51c345d8d1dac6132079f83b9b87e",
+        "width": 128
+      },
+      "stress_08": {
+        "height": 128,
+        "pixels": "b16d7686606b456e10a8ea06d77d24e1537fd8783e05f80d776b1b9b03633461",
+        "png": "2e928917888f580d372f6c72ce7da7781cda37b47e0a45e773da1ca64777fa49",
+        "width": 128
+      },
+      "stress_09": {
+        "height": 128,
+        "pixels": "ee042d685741cb3754d6264398c719d9ecfe7f6745623cceb81065fbb87b1af1",
+        "png": "a78ef8f79edf0aa4a0448805c8ba9d20b5c027db979af2068439cc80ab7ea143",
+        "width": 128
+      },
+      "stress_10": {
+        "height": 128,
+        "pixels": "54ab057d393e80f8f33aafb6053b6046862a919574f229b0ebd7769faa8d377d",
+        "png": "dafac64651eaaf1c4242ffe828a441a972a744fbace354fef1d1cde3aaa08938",
+        "width": 128
+      },
+      "stress_11": {
+        "height": 128,
+        "pixels": "e8597398f7b38fc0cc90a4e98ae579827fa9bb97b25e682702d6d8f0adc48034",
+        "png": "0cd30a6b2cee3d1c0c061f3ef37785d39dcc26d227322e8b8419a6f99a4a1510",
+        "width": 128
+      },
+      "stress_12": {
+        "height": 128,
+        "pixels": "1ce79dc8502e37af2dc3600e9600c921c800731de398f1d86279618c35210568",
+        "png": "58cff43fee64d8bed34521d2a53f418aeda6e0e9c34b264874c453462a42aa1f",
+        "width": 128
+      },
+      "stress_13": {
+        "height": 128,
+        "pixels": "9845e1d7c64b3c4a5585d03453f010879eda6dec42119d8ab1978029ae3ed6f6",
+        "png": "4e38274e7b43121f4c04b2b854063becbb7a810c480c4cde15e03eac3ccbf89c",
+        "width": 128
+      },
+      "stress_14": {
+        "height": 128,
+        "pixels": "725ea59b9ac2f26303b4984a96706724d8867ce0dd8cf790a9189bdb7b136707",
+        "png": "88e22c538c05a64ec06668868212b1795b218c2cc6d68bdd538f7d9681840fb2",
+        "width": 128
+      },
+      "stress_15": {
+        "height": 128,
+        "pixels": "04f45d876e336f51568508c550a9ac1aff01157cfc61f7d564c23e9e7075ecf7",
+        "png": "88f8780823fb41623f57366b5b77b662e43b15d28d184aa5a57d5f4f5c96f902",
         "width": 128
       },
       "stroked_curves": {

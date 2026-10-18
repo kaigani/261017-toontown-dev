@@ -254,6 +254,96 @@ fn star(cx: f64, cy: f64, r: f64, points: usize, step: usize) -> Path {
     p.z()
 }
 
+/// Names of the 16 stress scenes (C03-R1-04, the reviewer's extended corpus).
+const STRESS_NAMES: [&str; 16] = [
+    "stress_00",
+    "stress_01",
+    "stress_02",
+    "stress_03",
+    "stress_04",
+    "stress_05",
+    "stress_06",
+    "stress_07",
+    "stress_08",
+    "stress_09",
+    "stress_10",
+    "stress_11",
+    "stress_12",
+    "stress_13",
+    "stress_14",
+    "stress_15",
+];
+
+/// The reviewer's stress scene for `seed` (`crates/render/tests/c03_r1_stress.rs`, `stress`), reproduced exactly:
+/// 65-stop transparent radial/linear gradients, irrational transform literals, thin stroked cubics, transparent
+/// background. The literals are exact decimal inputs, not computed with libm.
+#[allow(
+    clippy::approx_constant,
+    clippy::excessive_precision,
+    reason = "the reviewer's literal bit patterns, kept verbatim"
+)]
+pub fn stress_scene(seed: u32) -> Scene {
+    let f = f64::from(seed);
+    let stops = (0..65)
+        .map(|i| {
+            (
+                i as f32 / 64.0,
+                [
+                    ((i * 71 + seed * 13) % 256) as u8,
+                    ((i * 117 + 19) % 256) as u8,
+                    ((i * 41 + seed) % 256) as u8,
+                    ((i * 67 + 31) % 256) as u8,
+                ],
+            )
+        })
+        .collect::<Vec<_>>();
+    let mut items = vec![Item::Fill {
+        path: Path::new().m(-30.0, -30.0).l(190.0, -30.0).l(190.0, 190.0).l(-30.0, 190.0).z(),
+        paint: Paint::Radial {
+            c: (64.0 + f / 997.0, 51.0 + f / 887.0),
+            r: 51.414_213_562_373_095,
+            stops: stops.clone(),
+        },
+        rule: FillRule::NonZero,
+        transform: [
+            0.707_106_781_186_547_6,
+            0.707_106_781_186_547_6,
+            -0.353_553_390_593_273_8,
+            0.353_553_390_593_273_8,
+            41.0,
+            -13.0,
+        ],
+    }];
+    for j in 0..24 {
+        let g = f64::from(j);
+        items.push(Item::Stroke {
+            path: Path::new().m(-3.0 + f / 313.0, g * 5.13).c(
+                170.0 - g * 3.17,
+                -91.1 + f / 101.0,
+                -131.17 + g,
+                217.13,
+                123.7,
+                g * 5.13 + 1.414_213_562_373_095_1,
+            ),
+            paint: Paint::Linear {
+                p0: (0.1, -3.7),
+                p1: (111.414_213_562_373_1, 97.732_050_807_568_88),
+                stops: stops.clone(),
+            },
+            width: 0.1 + g / 17.0,
+            transform: [0.866_025_403_784_438_6, 0.5, -0.5, 0.866_025_403_784_438_6, f / 997.0, -11.0],
+        });
+    }
+    Scene {
+        name: STRESS_NAMES[seed as usize % 16],
+        width: 128,
+        height: 128,
+        background: [0, 0, 0, 0],
+        items,
+        covers: "stress: 65-stop transparent radial/linear gradients, irrational transforms, thin stroked cubics, transparent background",
+    }
+}
+
 /// All fixture scenes, in a fixed order.
 pub fn scenes() -> Vec<Scene> {
     let mut out = Vec::new();
@@ -510,5 +600,6 @@ pub fn scenes() -> Vec<Scene> {
         items: big,
         covers: "speed: 2000 translucent cubic shapes at 512×512",
     });
+    out.extend((0..16).map(stress_scene));
     out
 }

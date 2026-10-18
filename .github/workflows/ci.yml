@@ -239,6 +239,9 @@ jobs:
               --out "c03-raster/run$run" --report "c03-raster/report-run$run.json" \
               --check crates/render/examples/c03_raster/hashes.json || status=1
           done
+          # Fixed scalar configurations against the committed hashes as a test (C03-R1-04; also run by cargo test in
+          # the Windows and macOS check jobs).
+          cargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1
           # Host-raster fallback timing of the canvas-spike scenes (timing only; not hash-checked).
           cargo run --release --locked -q -p tt-render --example c03_raster -- --repeat 1             --out c03-raster/bench --report c03-raster/canvas-bench.json --canvas-bench > /dev/null || status=1
           exit $status

@@ -58,7 +58,9 @@ fn png_bytes(w: u32, h: u32, rgba: &[u8]) -> Result<Vec<u8>, Box<dyn Error>> {
     Ok(out)
 }
 
-/// Premultiplied to straight alpha for PNG (all fixture backgrounds are opaque, so this is the identity in practice).
+/// Premultiplied to straight alpha for PNG. This is **not** an identity (C03-R1-05): the stress scenes have a
+/// transparent background, and `vello_cpu`'s u8 pipeline leaves alpha below 255 over an opaque background (as low as
+/// 250 in `many_small_paths`), so the RGB values change on export. The pixel hash covers the premultiplied buffer.
 fn unpremultiply(rgba: &[u8]) -> Vec<u8> {
     let mut out = rgba.to_vec();
     for px in out.as_chunks_mut::<4>().0 {
@@ -93,11 +95,13 @@ impl Renderer {
     }
 }
 
-const RENDERERS: [Renderer; 4] = [
+const RENDERERS: [Renderer; 6] = [
     Renderer::Tt,
     Renderer::Vello(vello::Config::Fallback),
     Renderer::Vello(vello::Config::Detected),
     Renderer::Vello(vello::Config::Threads3),
+    Renderer::Vello(vello::Config::QualityFallback),
+    Renderer::Vello(vello::Config::QualityDetected),
 ];
 
 struct Args {
@@ -239,11 +243,24 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let canvas = if args.canvas_bench { canvas_bench::run(&[(1280, 720), (1920, 1080)], 3) } else { Value::Null };
+    let configurations: Vec<Value> = RENDERERS
+        .iter()
+        .filter_map(|r| match r {
+            Renderer::Vello(c) => {
+                let st = c.settings();
+                Some(json!({"name": c.name(), "level": format!("{:?}", st.level), "threads": st.num_threads,
+                    "renderMode": format!("{:?}", c.render_mode())}))
+            }
+            Renderer::Tt => None,
+        })
+        .collect();
     let report = json!({
         "format": "tt-c03-raster-report/1",
         "os": std::env::consts::OS,
         "arch": std::env::consts::ARCH,
         "detectedSimdLevel": format!("{:?}", vello_cpu::Level::new()),
+        // The fixed configurations and the level each one actually used on this machine (C03-R1-04).
+        "configurations": configurations,
         "repeat": args.repeat,
         "scenes": scenes.iter().map(|s| json!({"name": s.name, "width": s.width, "height": s.height,
             "items": s.items.len(), "covers": s.covers})).collect::<Vec<_>>(),

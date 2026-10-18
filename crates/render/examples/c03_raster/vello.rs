@@ -7,15 +7,21 @@ use vello_cpu::{Level, Pixmap, RasterizerSettings, RenderContext, RenderMode, Re
 
 use crate::scene::{Affine, FillRule, Item, Paint, Path, Rgba, Scene, Seg};
 
-/// Which `vello_cpu` configuration to use.
+/// Which `vello_cpu` configuration to use. Every configuration is a fixed, named combination with its own committed
+/// hashes (C03-R1-04): the scalar level and the detected level are different arithmetic paths and may differ in
+/// pixels; the report records the level each configuration actually used.
 #[derive(Clone, Copy, Debug)]
 pub enum Config {
-    /// SIMD level detected at run time (AVX2/SSE4.2 on x86-64, NEON on arm64).
+    /// SIMD level detected at run time (AVX2/AVX-512 on x86-64, NEON on arm64), u8 pipeline.
     Detected,
-    /// `Level::fallback()`: no platform SIMD intrinsics.
+    /// `Level::fallback()`: no platform SIMD intrinsics, u8 pipeline.
     Fallback,
-    /// Detected SIMD level with 3 worker threads (`multithreading` feature).
+    /// Detected SIMD level with 3 worker threads (`multithreading` feature), u8 pipeline.
     Threads3,
+    /// `Level::fallback()` with the f32 pipeline (`RenderMode::OptimizeQuality`, C03-R1-05).
+    QualityFallback,
+    /// Detected SIMD level with the f32 pipeline.
+    QualityDetected,
 }
 
 impl Config {
@@ -24,6 +30,15 @@ impl Config {
             Config::Detected => "vello_cpu_simd",
             Config::Fallback => "vello_cpu_fallback",
             Config::Threads3 => "vello_cpu_mt3",
+            Config::QualityFallback => "vello_cpu_f32_fallback",
+            Config::QualityDetected => "vello_cpu_f32_simd",
+        }
+    }
+
+    pub fn render_mode(self) -> RenderMode {
+        match self {
+            Config::QualityFallback | Config::QualityDetected => RenderMode::OptimizeQuality,
+            _ => RenderMode::OptimizeSpeed,
         }
     }
 
@@ -32,6 +47,8 @@ impl Config {
             Config::Detected => RenderSettings { level: Level::new(), num_threads: 0 },
             Config::Fallback => RenderSettings { level: Level::fallback(), num_threads: 0 },
             Config::Threads3 => RenderSettings { level: Level::new(), num_threads: 3 },
+            Config::QualityFallback => RenderSettings { level: Level::fallback(), num_threads: 0 },
+            Config::QualityDetected => RenderSettings { level: Level::new(), num_threads: 0 },
         }
     }
 }
@@ -109,7 +126,7 @@ pub fn render(scene: &Scene, config: Config) -> Vec<u8> {
     ctx.flush();
     let mut pixmap = Pixmap::new(scene.width, scene.height);
     let settings = RasterizerSettings {
-        render_mode: RenderMode::OptimizeSpeed,
+        render_mode: config.render_mode(),
         target_init: vello_cpu::TargetInit::Clear(colour(scene.background)),
         ..RasterizerSettings::default()
     };
