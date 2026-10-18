@@ -20,6 +20,7 @@ import {
   type SpikeMode,
 } from '../../ipc';
 import {
+  inferPressureScale,
   matchSimulation,
   summarizeNative,
   summarizeWeb,
@@ -43,13 +44,16 @@ interface Scenario {
   hz: number;
   frames: number;
   pattern: PenPattern;
+  /** Native-window runs: attach a RealTimeStylus to the probe window (default true). */
+  rts?: boolean;
   /** Shrinks/shifts the canvas rectangle (CSS px) to move the path off the default pixel grid. */
   inset?: { left: number; top: number; right: number; bottom: number };
 }
 
 // `--spike-auto` (Windows runner): the original two runs, the reviewer's four-missing-frames experiment (a shifted
 // rectangle with a path that never repeats a pixel, and a pressure-only stationary stroke), then the C02-R1-04
-// matrix: the same strokes into a plain same-process native window.
+// matrix: the same strokes into a plain same-process native window, with and without a RealTimeStylus attached (the
+// first CI run showed WM_POINTER stopping after ~20 frames while Ink was attached).
 const AUTO_SCENARIOS: Scenario[] = [
   { label: 'webview sine 240 Hz', target: 'webview', hz: 240, frames: 1024, pattern: 'sine' },
   { label: 'webview sine 500 Hz', target: 'webview', hz: 500, frames: 1024, pattern: 'sine' },
@@ -69,6 +73,22 @@ const AUTO_SCENARIOS: Scenario[] = [
     hz: 240,
     frames: 1024,
     pattern: 'stationary',
+  },
+  {
+    label: 'native window sine 240 Hz, no RTS',
+    target: 'nativeWindow',
+    hz: 240,
+    frames: 1024,
+    pattern: 'sine',
+    rts: false,
+  },
+  {
+    label: 'native window stationary 240 Hz, no RTS',
+    target: 'nativeWindow',
+    hz: 240,
+    frames: 1024,
+    pattern: 'stationary',
+    rts: false,
   },
 ];
 
@@ -459,7 +479,7 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
       };
       if (scenario.target === 'nativeWindow') {
         try {
-          run.probe = await host.spike.probeNativeWindow(request);
+          run.probe = await host.spike.probeNativeWindow(request, scenario.rts ?? true);
           setStatus(`${scenario.label}: probe finished.`);
         } catch (e: unknown) {
           run.error = errorText(e);
@@ -489,15 +509,17 @@ export function TabletSpike({ mode }: { mode: SpikeMode }) {
           epochMs: performance.timeOrigin + s.t,
           handlerEpochMs: performance.timeOrigin + s.handlerT,
         }));
+        const nativeRun = native.current.slice(run.nativeRange[0], run.nativeRange[1]);
         const nat = matchSimulation(
           report,
-          native.current.slice(run.nativeRange[0], run.nativeRange[1]),
+          nativeRun,
           (p) => ({
             pressure: p.kind === 'pose' ? p.pressure : null,
             tiltX: p.tiltX,
             tiltY: p.tiltY,
             epochMs: p.hostEpochMs,
           }),
+          inferPressureScale(nativeRun.filter((p) => p.kind === 'pose').map((p) => p.pressure)),
         );
         simulations.current.push({ label: scenario.label, request, report, web, native: nat });
         setStatus(

@@ -478,7 +478,8 @@ async fn simulate_pen(_: AppHandle, _: PenSimRequest) -> Result<PenSimReport, Er
 
 /// Windows: the discriminating experiment of review C02-R1-04. Injects the same synthetic stroke into a plain
 /// same-process native window (recording WM_POINTER with pen history, an `octotablet` RealTimeStylus on that window,
-/// and raw HID input), then returns. The webview half of the matrix is the ordinary simulation with
+/// and raw HID input), then returns. `rts: false` leaves the RealTimeStylus out, so that WM_POINTER delivery is
+/// measured without Ink attached to the window. The webview half of the matrix is the ordinary simulation with
 /// [`spike_raw_input_sink`] running.
 ///
 /// # Errors
@@ -488,21 +489,22 @@ pub async fn spike_probe_native_window(
     app: AppHandle,
     spike: State<'_, TabletSpike>,
     request: PenSimRequest,
+    rts: Option<bool>,
 ) -> Result<serde_json::Value, ErrorInfo> {
     spike.require()?;
     validate(&request)?;
-    probe_native(app, request).await
+    probe_native(app, request, rts.unwrap_or(true)).await
 }
 
 #[cfg(windows)]
-async fn probe_native(app: AppHandle, request: PenSimRequest) -> Result<serde_json::Value, ErrorInfo> {
-    tauri::async_runtime::spawn_blocking(move || probe_windows::native_window_run(&app, &request))
+async fn probe_native(app: AppHandle, request: PenSimRequest, rts: bool) -> Result<serde_json::Value, ErrorInfo> {
+    tauri::async_runtime::spawn_blocking(move || probe_windows::native_window_run(&app, &request, rts))
         .await
         .map_err(|e| error("internal", format!("probe task failed: {e}")))?
 }
 
 #[cfg(not(windows))]
-async fn probe_native(_: AppHandle, _: PenSimRequest) -> Result<serde_json::Value, ErrorInfo> {
+async fn probe_native(_: AppHandle, _: PenSimRequest, _: bool) -> Result<serde_json::Value, ErrorInfo> {
     Err(error("spike.unsupported", "the native-window probe exists only on Windows".into()))
 }
 

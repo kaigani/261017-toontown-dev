@@ -33,8 +33,8 @@ use windows::Win32::System::Com::{COINIT_APARTMENTTHREADED, CoInitializeEx, CoUn
 use windows::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows::Win32::UI::Input::Pointer::{GetPointerPenInfoHistory, POINTER_FLAG_INCONTACT, POINTER_PEN_INFO};
 use windows::Win32::UI::Input::{
-    GetRawInputData, HRAWINPUT, RAWINPUT, RAWINPUTDEVICE, RAWINPUTHEADER, RID_INPUT, RIDEV_INPUTSINK, RIDEV_PAGEONLY,
-    RIDEV_REMOVE, RIM_TYPEHID, RegisterRawInputDevices,
+    GetRawInputData, GetRawInputDeviceInfoW, HRAWINPUT, RAWHID, RAWINPUT, RAWINPUTDEVICE, RAWINPUTHEADER, RID_INPUT,
+    RIDEV_INPUTSINK, RIDEV_PAGEONLY, RIDEV_REMOVE, RIDI_DEVICENAME, RIM_TYPEHID, RegisterRawInputDevices,
 };
 use windows::Win32::UI::WindowsAndMessaging::{
     CreateWindowExW, DefWindowProcW, DestroyWindow, DispatchMessageW, MSG, MsgWaitForMultipleObjects, PM_REMOVE,
@@ -122,6 +122,11 @@ struct RawCounts {
     /// Distinct `hDevice` values.
     devices: u64,
     report_bytes: u64,
+    /// Device interface names of the distinct devices (`RIDI_DEVICENAME`).
+    device_names: Vec<String>,
+    /// Each HID report as hex, in arrival order, up to `MAX_ENTRIES` (for offline decoding).
+    reports: Vec<String>,
+    truncated: u64,
 }
 
 #[derive(Debug, Default, Clone, Serialize)]
@@ -249,7 +254,9 @@ fn record_raw(state: &mut ThreadState, lparam: LPARAM) {
     // SAFETY: the buffer is 8-byte aligned and starts with a RAWINPUTHEADER written by GetRawInputData.
     #[allow(unsafe_code)]
     let input = unsafe { &*buffer.as_ptr().cast::<RAWINPUT>() };
-    state.raw_devices.insert(input.header.hDevice.0 as isize);
+    if state.raw_devices.insert(input.header.hDevice.0 as isize) {
+        state.raw.device_names.push(device_name(input.header.hDevice));
+    }
     state.raw.devices = state.raw_devices.len() as u64;
     if input.header.dwType == RIM_TYPEHID.0 {
         // SAFETY: dwType says the union holds a RAWHID.
@@ -257,9 +264,45 @@ fn record_raw(state: &mut ThreadState, lparam: LPARAM) {
         let hid = unsafe { input.data.hid };
         state.raw.hid_reports += u64::from(hid.dwCount);
         state.raw.report_bytes += u64::from(hid.dwCount) * u64::from(hid.dwSizeHid);
+        // The reports follow the RAWHID counters inside the copied buffer.
+        let base = buffer.as_ptr().cast::<u8>();
+        let start = std::mem::offset_of!(RAWINPUT, data) + std::mem::offset_of!(RAWHID, bRawData);
+        // SAFETY: `copied` bytes of `buffer` were written by GetRawInputData; the slice stays inside them.
+        #[allow(unsafe_code)]
+        let bytes = unsafe { std::slice::from_raw_parts(base, copied as usize) };
+        let size = hid.dwSizeHid as usize;
+        for i in 0..hid.dwCount as usize {
+            let Some(report) = bytes.get(start + i * size..start + (i + 1) * size) else { break };
+            if state.raw.reports.len() < MAX_ENTRIES {
+                state.raw.reports.push(report.iter().map(|b| format!("{b:02x}")).collect());
+            } else {
+                state.raw.truncated += 1;
+            }
+        }
     } else {
         state.raw.other += 1;
     }
+}
+
+fn device_name(device: HANDLE) -> String {
+    let mut chars = 0_u32;
+    // SAFETY: size query (no buffer) for a device handle reported by WM_INPUT.
+    #[allow(unsafe_code)]
+    unsafe {
+        GetRawInputDeviceInfoW(Some(device), RIDI_DEVICENAME, None, &mut chars);
+    }
+    if chars == 0 {
+        return String::new();
+    }
+    let mut name = vec![0_u16; chars as usize];
+    // SAFETY: `name` holds `chars` UTF-16 units, as the size query reported.
+    #[allow(unsafe_code)]
+    let written =
+        unsafe { GetRawInputDeviceInfoW(Some(device), RIDI_DEVICENAME, Some(name.as_mut_ptr().cast()), &mut chars) };
+    if written == u32::MAX {
+        return String::new();
+    }
+    String::from_utf16_lossy(&name).trim_end_matches(char::from(0)).to_owned()
 }
 
 extern "system" fn window_proc(hwnd: HWND, msg: u32, wparam: WPARAM, lparam: LPARAM) -> LRESULT {
@@ -499,10 +542,14 @@ fn create_window(rect: Option<Rect>) -> Result<HWND, String> {
 
 /// The native-window half of the C02-R1-04 matrix: a topmost probe window over the canvas rectangle, the same
 /// synthetic stroke, and all three listeners on that window.
-pub(super) fn native_window_run(app: &AppHandle, request: &PenSimRequest) -> Result<serde_json::Value, ErrorInfo> {
+pub(super) fn native_window_run(
+    app: &AppHandle,
+    request: &PenSimRequest,
+    rts: bool,
+) -> Result<serde_json::Value, ErrorInfo> {
     let window = app.get_webview_window("main").ok_or_else(|| error("internal", "no main window".into()))?;
     let rect = canvas_rect(&window, request)?;
-    let probe = ProbeThread::spawn(Config { rect: Some(rect), rts: true })?;
+    let probe = ProbeThread::spawn(Config { rect: Some(rect), rts })?;
     std::thread::sleep(Duration::from_millis(300));
     let injected = inject_stroke(probe.hwnd(), rect, request, "nativeWindow");
     std::thread::sleep(Duration::from_millis(500));
@@ -513,6 +560,7 @@ pub(super) fn native_window_run(app: &AppHandle, request: &PenSimRequest) -> Res
     };
     serde_json::to_value(serde_json::json!({
         "target": "nativeWindow",
+        "rts": rts,
         "report": report,
         "error": failure,
         "listeners": listeners,

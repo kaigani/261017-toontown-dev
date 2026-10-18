@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 
 import type { NativePacket, PenSimReport } from '../../ipc';
-import { matchSimulation, summarizeNative, summarizeWeb, type FrameRecord, type WebSample } from './analysis';
+import {
+  inferPressureScale,
+  matchSimulation,
+  summarizeNative,
+  summarizeWeb,
+  type FrameRecord,
+  type WebSample,
+} from './analysis';
 
 const ws = (i: number, over: Partial<WebSample> = {}): WebSample => ({
   t: i * 4,
@@ -208,5 +215,28 @@ describe('review round 1 (C0.2)', () => {
     expect(m.missingFrames).toEqual([2]);
     expect(m.latencyMs?.p50).toBe(1);
     expect(m.handlerLatencyMs?.p50).toBe(5);
+  });
+});
+
+describe('pressure scale', () => {
+  it('infers the Ink range of the synthetic device and matches every frame with it', () => {
+    const rts = Array.from({ length: 1024 }, (_, i) => (i + 1) / 1025);
+    expect(inferPressureScale(rts)).toBe(1025);
+    expect(inferPressureScale([0.5])).toBe(1024);
+    expect(inferPressureScale(Array.from({ length: 10 }, (_, i) => i / 10))).toBe(1024);
+    const report: PenSimReport = {
+      method: 'test',
+      frames: 1024,
+      hz: 240,
+      achievedHz: 240,
+      injectEpochMs: Array.from({ length: 1024 }, (_, i) => i),
+      pressure: Array.from({ length: 1024 }, (_, i) => i + 1),
+      tiltX: Array.from({ length: 1024 }, () => 0),
+      tiltY: Array.from({ length: 1024 }, () => 0),
+      rotation: Array.from({ length: 1024 }, () => 0),
+    };
+    const pick = (p: number) => ({ pressure: p, tiltX: null, tiltY: null, epochMs: 0 });
+    expect(matchSimulation(report, rts, pick).received).toBeLessThan(1024);
+    expect(matchSimulation(report, rts, pick, inferPressureScale(rts)).received).toBe(1024);
   });
 });

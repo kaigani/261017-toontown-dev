@@ -421,9 +421,27 @@ export interface SimulationMatch {
 }
 
 /**
- * Matches samples to injected frames by pressure: frame i was injected with pressure k = 1 + (i mod 1024) on the
- * 0..1024 scale, so k identifies the frame within the first 1024 frames. `pick` extracts a sample's values and its
- * wall-clock times in ms. Every sample with pressure counts, including the pointerdown (C02-R1-05).
+ * Normalised pressures are raw / scale: 1024 for web pointer events from the synthetic pen, the device range for
+ * octotablet's Ink backend (1025 for the synthetic device). Inferred from the smallest step between distinct values
+ * when it lies near 1024, else 1024 (same rule as the analyzer script).
+ */
+export function inferPressureScale(values: readonly (number | null)[]): number {
+  const distinct = [...new Set(values.filter((v): v is number => v !== null && v > 0))].sort((a, b) => a - b);
+  let step = Infinity;
+  for (let i = 1; i < distinct.length; i++) {
+    const d = (distinct[i] ?? 0) - (distinct[i - 1] ?? 0);
+    if (d > 1e-9 && d < step) step = d;
+  }
+  if (!Number.isFinite(step)) return 1024;
+  const scale = Math.round(1 / step);
+  return scale >= 1000 && scale <= 1100 ? scale : 1024;
+}
+
+/**
+ * Matches samples to injected frames by pressure: frame i was injected with pressure k = 1 + (i mod 1024), so k
+ * identifies the frame within the first 1024 frames; a sample's k is round(pressure * scale). `pick` extracts a
+ * sample's values and its wall-clock times in ms. Every sample with pressure counts, including the pointerdown
+ * (C02-R1-05).
  */
 export function matchSimulation<S>(
   report: PenSimReport,
@@ -435,13 +453,14 @@ export function matchSimulation<S>(
     epochMs: number;
     handlerEpochMs?: number;
   },
+  scale = 1024,
 ): SimulationMatch {
   const frames = Math.min(report.frames, 1024);
   const firstSeen = new Map<number, ReturnType<typeof pick>>();
   for (const s of samples) {
     const v = pick(s);
     if (v.pressure === null || v.pressure <= 0) continue;
-    const k = Math.round(v.pressure * 1024);
+    const k = Math.round(v.pressure * scale);
     if (k >= 1 && k <= frames && !firstSeen.has(k)) firstSeen.set(k, v);
   }
   const latencies: number[] = [];

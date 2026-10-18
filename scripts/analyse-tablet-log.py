@@ -248,23 +248,36 @@ def native_analysis(log):
 
 # ---- synthetic runs -----------------------------------------------------------------------------------------------
 
-def frames_by_pressure(values, frames):
-    """{k: first index into values} for pressure values identifying frame k-1 (k = round(p * 1024))."""
+def pressure_scale(values):
+    """Normalised pressures are raw / scale. Web pointer events use 1024 for the synthetic pen; octotablet's Ink
+    backend divides by the device range, which is 1025 for the synthetic device. Inferred from the smallest step
+    between distinct values when that lies near 1024, else 1024."""
+    distinct = sorted({v for v in values if v is not None and v > 0})
+    steps = [b - a for a, b in zip(distinct, distinct[1:]) if b - a > 1e-9]
+    if not steps:
+        return 1024
+    scale = round(1 / min(steps))
+    return scale if 1000 <= scale <= 1100 else 1024
+
+
+def frames_by_pressure(values, frames, scale=1024):
+    """{k: first index into values} for pressure values identifying frame k-1 (k = round(p * scale))."""
     seen = {}
     for i, p in enumerate(values):
         if p is None or p <= 0:
             continue
-        k = round(p * 1024)
+        k = round(p * scale)
         if 1 <= k <= frames and k not in seen:
             seen[k] = i
     return seen
 
 
-def match(report, values, times=None):
+def match(report, values, times=None, scale=1024):
     frames = min(report.get("frames", 0), 1024)
-    seen = frames_by_pressure(values, frames)
+    seen = frames_by_pressure(values, frames, scale)
     missing = [k - 1 for k in range(1, frames + 1) if k not in seen]
-    out = {"injected": frames, "received": len(seen), "missing": len(missing), "missingFrames": missing}
+    out = {"injected": frames, "received": len(seen), "missing": len(missing), "missingFrames": missing,
+           "pressureScale": scale}
     inject = report.get("injectEpochMs", [])
     if times is not None:
         lat = [times[i] - inject[k - 1] for k, i in seen.items() if k - 1 < len(inject) and times[i] is not None]
@@ -275,6 +288,28 @@ def match(report, values, times=None):
         out["repeatedPixelFrames"] = len(repeated)
         out["missingAmongRepeatedPixel"] = sum(1 for i in repeated if i in set(missing))
     return out
+
+
+def raw_pressure(raw, report):
+    """Locates the pressure field in raw HID reports: the 16-bit little-endian offset whose values cover the most
+    injected pressure values (each identifies one contact frame). Returns frames found that way, or None."""
+    reports = [bytes.fromhex(h) for h in (raw or {}).get("reports", [])]
+    if not reports or not report:
+        return None
+    frames = min(report.get("frames", 0), 1024)
+    wanted = set(range(1, frames + 1))
+    best = None
+    for off in range(0, min(len(r) for r in reports) - 1):
+        values = {int.from_bytes(r[off:off + 2], "little") for r in reports}
+        hit = len(values & wanted)
+        if best is None or hit > best[1]:
+            best = (off, hit)
+    if best is None or best[1] < frames // 2:
+        return {"offset": None, "received": 0, "note": "no 16-bit field matches the injected pressures"}
+    off = best[0]
+    seen = {int.from_bytes(r[off:off + 2], "little") for r in reports} & wanted
+    missing = [k - 1 for k in range(1, frames + 1) if k not in seen]
+    return {"offset": off, "injected": frames, "received": len(seen), "missing": len(missing), "missingFrames": missing}
 
 
 def run_analysis(log):
@@ -296,9 +331,14 @@ def run_analysis(log):
             entry["wmPointer"] = None if report is None else match(report, [e["pressure"] / 1024 for e in contact])
             entry["wmPointerCounts"] = {k: wm.get(k) for k in ("down", "update", "up", "historyEntries",
                                                                 "historyErrors", "truncated")}
-            rts = listeners.get("rts") or {}
-            entry["rts"] = {"poses": rts.get("poses"), "error": rts.get("error"), "tablets": rts.get("tablets"),
-                            "frames": None if report is None else match(report, rts.get("pressures", []))}
+            rts = listeners.get("rts")
+            if rts is None:
+                entry["rts"] = {"attached": False}
+            else:
+                entry["rts"] = {"attached": True, "poses": rts.get("poses"), "error": rts.get("error"),
+                                "tablets": rts.get("tablets"),
+                                "frames": None if report is None else match(
+                                    report, rts.get("pressures", []), scale=pressure_scale(rts.get("pressures", [])))}
             entry["rawInput"] = listeners.get("rawInput")
         elif report:
             w0, w1 = run.get("webRange", [0, 0])
@@ -310,10 +350,13 @@ def run_analysis(log):
                 handler = [origin + s["handlerT"] for s in web]
                 entry["web"]["handlerLatencyMs"] = match(report, [s.get("pressure") for s in web], handler)["latencyMs"]
             poses = [p for p in packets[n0:n1] if p.get("kind") == "pose"]
-            entry["rts"] = {"poses": len(poses), "frames": match(report, [p.get("pressure") for p in poses],
-                                                                  [p.get("hostEpochMs") for p in poses])}
+            pressures = [p.get("pressure") for p in poses]
+            entry["rts"] = {"poses": len(poses), "frames": match(report, pressures, [p.get("hostEpochMs") for p in poses],
+                                                                  scale=pressure_scale(pressures))}
             raw = run.get("rawInput") or {}
             entry["rawInput"] = (raw.get("listeners") or {}).get("rawInput") if "listeners" in raw else raw or None
+        if report and entry.get("rawInput"):
+            entry["rawPressure"] = raw_pressure(entry["rawInput"], report)
         if report:
             entry["achievedHz"] = report.get("achievedHz")
             entry["pattern"] = report.get("pattern")
@@ -363,7 +406,7 @@ def print_runs(runs):
         return
     print("\n### Synthetic runs (InjectSyntheticPointerInput; simulation, not tablet hardware)\n")
     print("| run | pattern | achieved Hz | web events: received / missing | WM_POINTER (history) | "
-          "RTS: poses, frames received | raw HID reports | inject call ms (p50) | error |")
+          "RTS: poses, frames received | raw HID reports (all frames incl. hover) | inject call ms (p50) | error |")
     print("|---|---|---|---|---|---|---|---|---|")
     for r in runs:
         web = r.get("web")
@@ -376,8 +419,14 @@ def print_runs(runs):
             wm_cell = f"{wm['received']} / {wm['missing']} missing" if wm else "-"
         else:
             wm_cell = "not observable (WebView2 input window is in another process)"
-        rts_cell = f"{fmt(rts.get('poses'))}, {fmt(rf.get('received'))}" + (f" ({rts['error']})" if rts.get("error") else "")
+        if rts.get("attached") is False:
+            rts_cell = "not attached"
+        else:
+            rts_cell = f"{fmt(rts.get('poses'))}, {fmt(rf.get('received'))}" + (f" ({rts['error']})" if rts.get("error") else "")
         raw_cell = fmt(raw.get("hidReports")) if raw.get("registered", True) else f"not registered ({raw.get('error')})"
+        rp = r.get("rawPressure")
+        if rp and rp.get("offset") is not None:
+            raw_cell += f"; frames by pressure {rp['received']} / {rp['missing']} missing"
         if raw.get("error") and not raw.get("hidReports"):
             raw_cell = f"- ({raw.get('error')})"
         call = (r.get("injectCallMs") or {}).get("p50")
@@ -394,9 +443,20 @@ def print_runs(runs):
                              f"{w['missingAmongRepeatedPixel']}")
             parts.append(f"event - injection ms {lat_text(w.get('latencyMs'))}; "
                          f"handler - injection ms {lat_text(w.get('handlerLatencyMs'))}")
+        rp = r.get("rawPressure")
+        if rp and rp.get("offset") is not None and rp["missing"]:
+            parts.append(f"raw HID missing frames: {ranges(rp['missingFrames'])}")
+        raw = r.get("rawInput") or {}
+        if raw.get("deviceNames"):
+            parts.append(f"raw devices: {raw['deviceNames']}")
         if r.get("wmPointer"):
             w = r["wmPointer"]
             parts.append(f"WM_POINTER missing frames: {ranges(w['missingFrames'])}; counts {r['wmPointerCounts']}")
+            rf = (r.get("rts") or {}).get("frames")
+            if rf:
+                union = set(range(w["injected"])) - (set(w["missingFrames"]) & set(rf["missingFrames"]))
+                parts.append(f"RTS missing frames (pressure scale {rf['pressureScale']}): {ranges(rf['missingFrames'])}; "
+                             f"WM_POINTER or RTS together: {len(union)} / {w['injected']}")
         if parts:
             print(f"- **{r['label']}**: " + "; ".join(parts))
 

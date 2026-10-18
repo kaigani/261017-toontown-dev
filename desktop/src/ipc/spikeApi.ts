@@ -34,8 +34,11 @@ export interface SpikeApi {
   nativeStop(): Promise<void>;
   /** Windows only: injects a synthetic pen stroke into the app's own window. */
   simulatePen(request: PenSimRequest): Promise<PenSimReport>;
-  /** Windows only: the same stroke into a plain same-process native window with three listeners (C02-R1-04). */
-  probeNativeWindow(request: PenSimRequest): Promise<ProbeResult>;
+  /**
+   * Windows only: the same stroke into a plain same-process native window with WM_POINTER and raw-input listeners,
+   * plus a RealTimeStylus unless `rts` is false (C02-R1-04).
+   */
+  probeNativeWindow(request: PenSimRequest, rts?: boolean): Promise<ProbeResult>;
   /** Windows only: starts (`true`) or stops (`false`, returns its counts) the raw-input HID listener. */
   rawInputSink(start: boolean): Promise<ProbeResult>;
   /** Writes the log to the `--spike-log` path. */
@@ -86,9 +89,9 @@ export function createSpikeApi(transport: HostTransport): SpikeApi {
     },
     simulatePen: (request) =>
       checked(transport.invoke('spike_pen_simulate', { request }), 'spike_pen_simulate', isPenSimReport),
-    probeNativeWindow: (request) =>
+    probeNativeWindow: (request, rts = true) =>
       checked(
-        transport.invoke('spike_probe_native_window', { request }),
+        transport.invoke('spike_probe_native_window', { request, rts }),
         'spike_probe_native_window',
         isProbeResult,
       ),
