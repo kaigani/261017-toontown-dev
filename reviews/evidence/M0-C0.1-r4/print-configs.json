@@ -1,0 +1,90 @@
+[
+  {
+    "command": "pnpm --dir desktop exec eslint --print-config src/review-config-probe.ts",
+    "exit": 0,
+    "linterOptions": {
+      "noInlineConfig": true,
+      "reportUnusedDisableDirectives": 1
+    },
+    "compat/compat": [
+      2
+    ]
+  },
+  {
+    "command": "pnpm --dir desktop exec eslint --print-config src/review-config-probe.tsx",
+    "exit": 0,
+    "linterOptions": {
+      "noInlineConfig": true,
+      "reportUnusedDisableDirectives": 1
+    },
+    "compat/compat": [
+      2
+    ]
+  },
+  {
+    "command": "pnpm --dir desktop exec eslint --print-config src/review-config-probe.mts",
+    "exit": 0,
+    "linterOptions": {
+      "noInlineConfig": true,
+      "reportUnusedDisableDirectives": 1
+    },
+    "compat/compat": [
+      2
+    ]
+  },
+  {
+    "command": "pnpm --dir desktop exec eslint --print-config src/review-config-probe.cts",
+    "exit": 0,
+    "linterOptions": {
+      "noInlineConfig": true,
+      "reportUnusedDisableDirectives": 1
+    },
+    "compat/compat": [
+      2
+    ]
+  },
+  {
+    "command": "pnpm --dir desktop exec eslint --print-config src/review-config-probe.js",
+    "exit": 0,
+    "linterOptions": {
+      "noInlineConfig": true,
+      "reportUnusedDisableDirectives": 1
+    },
+    "compat/compat": [
+      2
+    ]
+  },
+  {
+    "command": "pnpm --dir desktop exec eslint --print-config src/review-config-probe.jsx",
+    "exit": 0,
+    "linterOptions": {
+      "noInlineConfig": true,
+      "reportUnusedDisableDirectives": 1
+    },
+    "compat/compat": [
+      2
+    ]
+  },
+  {
+    "command": "pnpm --dir desktop exec eslint --print-config src/review-config-probe.mjs",
+    "exit": 0,
+    "linterOptions": {
+      "noInlineConfig": true,
+      "reportUnusedDisableDirectives": 1
+    },
+    "compat/compat": [
+      2
+    ]
+  },
+  {
+    "command": "pnpm --dir desktop exec eslint --print-config src/review-config-probe.cjs",
+    "exit": 0,
+    "linterOptions": {
+      "noInlineConfig": true,
+      "reportUnusedDisableDirectives": 1
+    },
+    "compat/compat": [
+      2
+    ]
+  }
+]

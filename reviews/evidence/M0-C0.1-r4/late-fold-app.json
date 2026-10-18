@@ -1,0 +1,13 @@
+[
+  {
+    "stage": "renderChunk order post",
+    "snippet": "/src/__probes__/r4-app-Cl8wu5/probe.js\nvar bypass = () => window[String.fromCharCode(95, 95, 84, 65, 85, 82, 73, 95, 73, 78, 84, 69, 82, 78, 65, 76, 83, 95, 95)].invoke(\"review_raw_probe\");\n\n//#endregion\n//#region node_modules/.pnpm/react@19.3.1/node_modules/r"
+  },
+  {
+    "stage": "final app bundle",
+    "snippet": "in`,t}function n(e){if(e.ep)return;e.ep=!0;let n=t(e);fetch(e.href,n)}})();var l=()=>window.__TAURI_INTERNALS__.invoke(`review_raw_probe`),u=o((e=>{var t=Symbol.for(`react.transitional.element`),n=Sym"
+  },
+  {
+    "buildAccepted": true
+  }
+]

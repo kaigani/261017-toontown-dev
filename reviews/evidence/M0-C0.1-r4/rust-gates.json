@@ -1,0 +1,38 @@
+[
+  {
+    "name": "fmt",
+    "command": "cargo fmt --all -- --check",
+    "exit": 0,
+    "seconds": 0.4
+  },
+  {
+    "name": "clippy",
+    "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "exit": 0,
+    "seconds": 34.24
+  },
+  {
+    "name": "rust-test",
+    "command": "cargo test --workspace --locked",
+    "exit": 0,
+    "seconds": 46.36
+  },
+  {
+    "name": "deny",
+    "command": "cargo deny --locked check",
+    "exit": 0,
+    "seconds": 0.85
+  },
+  {
+    "name": "release-headless",
+    "command": "cargo build -p tt-headless --release --locked",
+    "exit": 0,
+    "seconds": 4.77
+  },
+  {
+    "name": "release-desktop",
+    "command": "pnpm --dir desktop tauri build --no-bundle -- --locked",
+    "exit": 0,
+    "seconds": 73.01
+  }
+]

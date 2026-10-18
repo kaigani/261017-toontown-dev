@@ -1,0 +1,32 @@
+[
+  {
+    "name": "r4-regression",
+    "command": "node --test tests/adversarial/c01-r4-boundary.test.mjs",
+    "exit": 1,
+    "seconds": 1.31
+  },
+  {
+    "name": "review-lint",
+    "command": "pnpm lint",
+    "exit": 0,
+    "seconds": 5.09
+  },
+  {
+    "name": "review-typecheck",
+    "command": "pnpm typecheck",
+    "exit": 0,
+    "seconds": 2.24
+  },
+  {
+    "name": "review-test",
+    "command": "pnpm test",
+    "exit": 1,
+    "seconds": 29.41
+  },
+  {
+    "name": "review-format",
+    "command": "pnpm format:check",
+    "exit": 0,
+    "seconds": 1.01
+  }
+]
