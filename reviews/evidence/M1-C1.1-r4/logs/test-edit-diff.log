@@ -1,0 +1,237 @@
+diff --git a/crates/model/tests/c11_r1_adversarial.rs b/crates/model/tests/c11_r1_adversarial.rs
+index e658719..c74504d 100644
+--- a/crates/model/tests/c11_r1_adversarial.rs
++++ b/crates/model/tests/c11_r1_adversarial.rs
+@@ -257,8 +257,11 @@ fn add_over_existing_object_property_is_invertible() {
+     let a = json!({"a":1});
+     let patch = vec![op("add", "/a", None, Some(json!(2)), Some(json!(1)))];
+     let b = change::apply(&a, &patch).unwrap();
++    // Amended by the builder in round 3 per the orchestrator's C11-R3-02 ruling (stateless `invert` removed from the
++    // public API; `invert_against` is the only inversion, "update ... every caller"): the inverse is computed from the
++    // pre-state. The assertion is unchanged.
+     assert_eq!(
+-        change::apply(&b, &change::invert(&patch)).unwrap(),
++        change::apply(&b, &change::invert_against(&a, &patch).unwrap()).unwrap(),
+         a,
+         "RFC6902 add replaces existing property; oldValue must restore it"
+     );
+@@ -269,7 +272,14 @@ fn move_over_existing_object_property_is_invertible() {
+     let a = json!({"a":1,"b":2});
+     let patch = vec![op("move", "/b", Some("/a"), None, Some(json!(2)))];
+     let b = change::apply(&a, &patch).unwrap();
+-    assert_eq!(change::apply(&b, &change::invert(&patch)).unwrap(), a, "10 §2.6 every patch invertible");
++    // Amended by the builder in round 3 per the orchestrator's C11-R3-02 ruling (stateless `invert` removed from the
++    // public API; `invert_against` is the only inversion, "update ... every caller"): the inverse is computed from the
++    // pre-state. The assertion is unchanged.
++    assert_eq!(
++        change::apply(&b, &change::invert_against(&a, &patch).unwrap()).unwrap(),
++        a,
++        "10 §2.6 every patch invertible"
++    );
+ }
+ 
+ #[test]
+diff --git a/crates/model/tests/c11_r2_adversarial.rs b/crates/model/tests/c11_r2_adversarial.rs
+index 99d31b8..20a5aeb 100644
+--- a/crates/model/tests/c11_r2_adversarial.rs
++++ b/crates/model/tests/c11_r2_adversarial.rs
+@@ -232,7 +232,10 @@ fn opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved() {
+     b["meta"]["blob"]["children"][0]["name"] = json!("changed");
+     let patch = change::diff_json(&a, &b, "", ObjectType::Pen);
+     assert_eq!(change::apply(&a, &patch).unwrap(), b);
+-    assert_eq!(change::apply(&b, &change::invert(&patch)).unwrap(), a);
++    // Amended by the builder in round 3 per the orchestrator's C11-R3-02 ruling (stateless `invert` removed from the
++    // public API; `invert_against` is the only inversion, "update ... every caller"): the inverse is computed from the
++    // pre-state. The assertion is unchanged.
++    assert_eq!(change::apply(&b, &change::invert_against(&a, &patch).unwrap()).unwrap(), a);
+ }
+ 
+ #[test]
+@@ -302,7 +305,9 @@ fn elided_and_incomplete_operations_fail_without_mutating_input() {
+         p.elided = true;
+         assert!(change::apply(&value, &[p.clone()]).is_err());
+         if k != "test" {
+-            assert!(change::apply(&value, &change::invert(&[p])).is_err());
++            // Amended by the builder in round 3 per the orchestrator's C11-R3-02 ruling (stateless `invert` removed;
++            // `invert_against` is the only inversion): an elided operation cannot be inverted. Still asserts failure.
++            assert!(change::invert_against(&value, &[p]).is_err());
+         }
+     }
+     assert_eq!(value, json!({"a":[0,1],"b":1}));
+diff --git a/crates/model/tests/c11_r3_adversarial.rs b/crates/model/tests/c11_r3_adversarial.rs
+index 8b2145a..d4026d1 100644
+--- a/crates/model/tests/c11_r3_adversarial.rs
++++ b/crates/model/tests/c11_r3_adversarial.rs
+@@ -140,7 +140,10 @@ fn resolved_stateless_move_inverse_does_not_shift_numeric_object_keys() {
+     let patch = [op("move", "/a/1/x", Some("/a/0"), None, Some(json!("old")))];
+     roundtrip(&before, &patch);
+     let after = change::apply(&before, &patch).unwrap();
+-    let inverse = change::invert(&patch);
++    // Amended by the builder in round 3 per the orchestrator's C11-R3-02 ruling (stateless `invert` removed from the
++    // public API; `invert_against` is the only inversion; "the reviewer's test must pass"): the inverse is computed
++    // from `before`. The assertion and its message are unchanged.
++    let inverse = change::invert_against(&before, &patch).unwrap();
+     assert_eq!(
+         change::apply(&after, &inverse).unwrap(),
+         before,
+diff --git a/crates/model/tests/conformance.rs b/crates/model/tests/conformance.rs
+index ff6c0d5..f3c70c5 100644
+--- a/crates/model/tests/conformance.rs
++++ b/crates/model/tests/conformance.rs
+@@ -395,7 +395,12 @@ fn change_sets_describe_and_invert_edits() {
+         if let OwnChange::Modified(patch) = c {
+             let before = &old[&o.key];
+             assert_eq!(&change::apply(before, patch).unwrap(), &o.json, "{}: {patch:?}", o.key);
+-            assert_eq!(&change::apply(&o.json, &change::invert(patch)).unwrap(), before, "{} inverse", o.key);
++            assert_eq!(
++                &change::apply(&o.json, &change::invert_against(before, patch).unwrap()).unwrap(),
++                before,
++                "{} inverse",
++                o.key
++            );
+             for op in patch {
+                 assert!(op.old_value.is_some() || op.op == "add" || op.op == "move", "{op:?} lacks oldValue");
+             }
+diff --git a/crates/model/tests/properties.rs b/crates/model/tests/properties.rs
+index 39a1218..f23fb68 100644
+--- a/crates/model/tests/properties.rs
++++ b/crates/model/tests/properties.rs
+@@ -4,7 +4,7 @@
+ 
+ use proptest::prelude::*;
+ use serde_json::{Map, Number, Value, json};
+-use tt_model::change::{apply, diff_json, invert};
++use tt_model::change::{apply, diff_json, invert_against};
+ use tt_model::entities::ModelObject;
+ use tt_model::entities::drawing::Stroke;
+ use tt_model::entities::element::{Element, ElementInit, ElementType, ParamSlot};
+@@ -252,7 +252,7 @@ proptest! {
+     fn patches_apply_and_invert(a in arb_json(), b in arb_json()) {
+         let patch = diff_json(&a, &b, "", ObjectType::Scene);
+         prop_assert_eq!(&apply(&a, &patch).unwrap(), &b);
+-        prop_assert_eq!(&apply(&b, &invert(&patch)).unwrap(), &a);
++        prop_assert_eq!(&apply(&b, &invert_against(&a, &patch).unwrap()).unwrap(), &a);
+     }
+ 
+     /// C11-R2-02: random RFC 6902 sequences (add with overwrite or `-` append, remove, replace, move with shifting
+@@ -262,14 +262,14 @@ proptest! {
+     fn random_rfc6902_sequences_invert_against_their_pre_state(doc in arb_json(), seed in any::<u64>(), n in 1usize..10) {
+         let patch = random_patch(&doc, seed, n);
+         let after = apply(&doc, &patch).unwrap();
+-        let inverse = tt_model::change::invert_against(&doc, &patch).unwrap();
++        let inverse = invert_against(&doc, &patch).unwrap();
+         prop_assert_eq!(&apply(&after, &inverse).unwrap(), &doc, "patch {:?} inverse {:?}", patch, inverse);
+         for op in &inverse {
+             for p in std::iter::once(&op.path).chain(op.from.as_ref()) {
+                 prop_assert!(!tt_model::pointer::parse(p).unwrap().iter().any(|t| t == "-"), "`-` in inverse {:?}", op);
+             }
+         }
+-        let again = tt_model::change::invert_against(&after, &inverse).unwrap();
++        let again = invert_against(&after, &inverse).unwrap();
+         prop_assert_eq!(&apply(&doc, &again).unwrap(), &after);
+     }
+ 
+@@ -290,7 +290,7 @@ proptest! {
+         let patch = diff_json(&a, &b, "", ObjectType::Scene);
+         prop_assert!(patch.iter().all(|op| op.op != "replace"), "{:?}", patch);
+         prop_assert_eq!(&apply(&a, &patch).unwrap(), &b);
+-        prop_assert_eq!(&apply(&b, &invert(&patch)).unwrap(), &a);
++        prop_assert_eq!(&apply(&b, &invert_against(&a, &patch).unwrap()).unwrap(), &a);
+     }
+ 
+     #[test]
+@@ -307,7 +307,7 @@ proptest! {
+             prop_assert!(patch[0].range.is_some());
+         }
+         prop_assert_eq!(&apply(&va, &patch).unwrap(), &vb);
+-        prop_assert_eq!(&apply(&vb, &invert(&patch)).unwrap(), &va);
++        prop_assert_eq!(&apply(&vb, &invert_against(&va, &patch).unwrap()).unwrap(), &va);
+     }
+ }
+ 
+diff --git a/desktop/src/ipc/generated/model.ts b/desktop/src/ipc/generated/model.ts
+index b082184..4e46108 100644
+--- a/desktop/src/ipc/generated/model.ts
++++ b/desktop/src/ipc/generated/model.ts
+@@ -1123,12 +1123,14 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
+           properties: {
+             elementId: {
+               $ref: "#/$defs/Id",
++              "x-since": "1.0",
+             },
+             ranges: {
+               type: "array",
+               items: {
+                 $ref: "#/$defs/FrameRange",
+               },
++              "x-since": "1.0",
+             },
+           },
+           required: [
+@@ -1644,6 +1646,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
+           value: {
+             type: "number",
+             description: "The value.",
++            "x-since": "1.0",
+           },
+         },
+         required: [
+@@ -1661,6 +1664,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
+             },
+             description: "Keyframes sorted by frame, at least one.",
+             minItems: 1,
++            "x-since": "1.0",
+           },
+         },
+         required: [
+diff --git a/desktop/src/ipc/wireJson.ts b/desktop/src/ipc/wireJson.ts
+index 603acda..9eb9cf8 100644
+--- a/desktop/src/ipc/wireJson.ts
++++ b/desktop/src/ipc/wireJson.ts
+@@ -287,20 +287,17 @@ function applicable(
+   out.push(s);
+   const all = ownSchema(s, 'allOf') as unknown;
+   if (Array.isArray(all)) for (const a of all as Schema[]) applicable(a, defs, container, out, depth + 1);
+-  // Only the `anyOf`/`oneOf` alternatives the container matches apply (C11-R2-05): as parsed, or with its digit-only
+-  // bigints read as doubles (a double branch cannot match before coercion). An unrelated double branch therefore
+-  // never converts an integer that another branch accepts.
++  // Only the `anyOf`/`oneOf` alternatives the container matches apply (C11-R2-05): as parsed, or after coercion
++  // under that alternative alone (C11-R3-05), so a branch needing a large double and a wide integer at once
++  // matches, and an unrelated double branch never converts an integer that another branch accepts.
+   for (const k of ['anyOf', 'oneOf'] as const) {
+     const alts = ownSchema(s, k) as unknown;
+     if (!Array.isArray(alts)) continue;
+-    let asDoubles: unknown;
+     for (const a of alts as Schema[]) {
+-      if (violations(a, container, '', defs).length === 0) {
+-        applicable(a, defs, container, out, depth + 1);
+-        continue;
+-      }
+-      asDoubles ??= bigintsAsNumbers(container, 0);
+-      if (violations(a, asDoubles, '', defs).length === 0) applicable(a, defs, container, out, depth + 1);
++      const matches =
++        violations(a, container, '', defs).length === 0 ||
++        violations(a, coerceWith(container, [a], defs, 0), '', defs).length === 0;
++      if (matches) applicable(a, defs, container, out, depth + 1);
+     }
+   }
+   const cond = ownSchema(s, 'if');
+@@ -329,18 +326,6 @@ function memberSchemas(schemas: SchemaObject[], key: string | number): Schema[]
+   return out;
+ }
+ 
+-/** A copy of a parsed value with every `bigint` read as a double (only to test which alternative applies). */
+-function bigintsAsNumbers(value: unknown, depth: number): unknown {
+-  if (typeof value === 'bigint') return Number(value);
+-  if (depth > MAX_DEPTH || typeof value !== 'object' || value === null) return value;
+-  if (Array.isArray(value)) return value.map((v: unknown) => bigintsAsNumbers(v, depth + 1));
+-  const out: object = {};
+-  for (const k of Object.keys(value)) {
+-    defineKey(out, k, bigintsAsNumbers(Object.getOwnPropertyDescriptor(value, k)?.value, depth + 1));
+-  }
+-  return out;
+-}
+-
+ /** Whether a parsed value holds a `bigint` anywhere (the parser produces plain data at most MAX_DEPTH deep). */
+ function holdsBigint(value: unknown, depth: number): boolean {
+   if (typeof value === 'bigint') return true;

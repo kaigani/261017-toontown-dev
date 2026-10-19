@@ -1,0 +1,391 @@
+{
+  "reviewed_commit": "3b6179f57bbdf65ac847787f34ef937f88035178",
+  "verdict": "block",
+  "findings": {
+    "P0": 0,
+    "P1": 1,
+    "new_P2": 0
+  },
+  "final_register": {
+    "implemented": 234,
+    "deferred": 193,
+    "divergent": 1,
+    "missing": 0
+  },
+  "receipts": [
+    {
+      "name": "ci-full",
+      "exit_code": 0,
+      "sha256": "b9206d05a5929d4b6c675a4d140bef0905d58a956c7cfcb9236f0f7160e55a3d"
+    },
+    {
+      "name": "ci-metadata",
+      "exit_code": 0,
+      "sha256": "67a804e2e770cca9f91934d6533818ea5695cc5baf56f03911d1eb243352b8a7"
+    },
+    {
+      "name": "clippy-diagnostics",
+      "exit_code": 0,
+      "sha256": "582d4810fe173dd8f8c84d9d694ace103d96a2c589ae65af4e9a7a101c381264"
+    },
+    {
+      "name": "clippy",
+      "exit_code": 0,
+      "sha256": "a2ebd4086160dd255a66d12a1a07649cd74bbb7b14e75813bc782a19215e7cde"
+    },
+    {
+      "name": "closure-probe-final",
+      "exit_code": 0,
+      "sha256": "371379b64cad3cbf0e391f306c89b630697e243d34510e8b0dafc77e70e50810"
+    },
+    {
+      "name": "closure-probe",
+      "exit_code": 0,
+      "sha256": "781918e1a5256dec9b6b6470a66557cbedcc50c7d2f422487f67cd6badfda2d8"
+    },
+    {
+      "name": "deny",
+      "exit_code": 0,
+      "sha256": "fc9d5b0b045630024c382cf0366d3d67fd89348a3d8190a6d996c475b46dd19c"
+    },
+    {
+      "name": "diagnostics-gate",
+      "exit_code": 0,
+      "sha256": "e50dd4bad4d68c69c63cfacff1aca0a9acd2f09bcb2d58c5000623205da93cf2"
+    },
+    {
+      "name": "final-clippy",
+      "exit_code": 0,
+      "sha256": "08c4738aea512a1cec0e55d1da7e1da58dff187760ac5d052d30724e80d48f46"
+    },
+    {
+      "name": "final-fmt",
+      "exit_code": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "final-workspace",
+      "exit_code": 101,
+      "sha256": "d299d89e41f6a740fa9538fb8ed480b3929fea5889f0d87d7b8728a3e337c36f"
+    },
+    {
+      "name": "fmt",
+      "exit_code": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "frontend-build-diagnostics",
+      "exit_code": 0,
+      "sha256": "6fac32c05136f6f5908176c5dbc26e5c8b9a6fad9dfd618c193115d107d0cf94"
+    },
+    {
+      "name": "frontend-build",
+      "exit_code": 0,
+      "sha256": "85e563c6c352e4b198e357c2579d9f78149fed52537d797b95d0deb8f964ec20"
+    },
+    {
+      "name": "headless-build",
+      "exit_code": 0,
+      "sha256": "3f31d902da945353f80f732de91bb278d010b80c2cb044b6eaa9559bef5eee1c"
+    },
+    {
+      "name": "headless-guard",
+      "exit_code": 0,
+      "sha256": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295"
+    },
+    {
+      "name": "install",
+      "exit_code": 0,
+      "sha256": "becbab0a9b18d7f7bccfa9f8540d91b9b5d4165ca552276e724b10c2abee71dc"
+    },
+    {
+      "name": "issue-state",
+      "exit_code": 0,
+      "sha256": "02d4d8a94e6f68ded1eb4dec1a58d2470b08f96cbaa94496f74af2ccffc0a502"
+    },
+    {
+      "name": "new-regressions",
+      "exit_code": 101,
+      "sha256": "025b1230620125d6b284342ed44660a11fa6f04b16ef869d1ae886fa9e1316f3"
+    },
+    {
+      "name": "old-tooling",
+      "exit_code": 0,
+      "sha256": "9b3c91db3b114714cc782848ef0b60c61f253008bd896c8eb73a32a9e4abd16d"
+    },
+    {
+      "name": "pnpm-format-check",
+      "exit_code": 0,
+      "sha256": "38f97b0ce619895c99e61caaaa6f0e71b10b99c44f97a672b43e133dddddc315"
+    },
+    {
+      "name": "pnpm-licenses-check",
+      "exit_code": 0,
+      "sha256": "95387981f537543fb37bf3b64d45aebe48c9a4c9654243278dbf0e9096e1eb0f"
+    },
+    {
+      "name": "pnpm-lint",
+      "exit_code": 0,
+      "sha256": "e499ddaeba33503aab7a1106595c034e2f39b73519b763a287c6bf1885bc4b96"
+    },
+    {
+      "name": "pnpm-test",
+      "exit_code": 0,
+      "sha256": "0c9dbb1d17cf65d98161f571f038741e5b40b19e704ed927162a62696072bf4b"
+    },
+    {
+      "name": "pnpm-typecheck",
+      "exit_code": 0,
+      "sha256": "c4b53517a25c162085c4dde6938c384738e692c700379f1dca8eb9caf7f1373a"
+    },
+    {
+      "name": "random-fresh",
+      "exit_code": 0,
+      "sha256": "045de95d78e7f9f5d64a8e973cba8adae05059d3d50d7f37bcf86759591a4736"
+    },
+    {
+      "name": "random-recorded",
+      "exit_code": 0,
+      "sha256": "77e832caf4807f0899accbba033311eb5dbae84a39f08da72a7526b7c340b7ab"
+    },
+    {
+      "name": "raster",
+      "exit_code": 0,
+      "sha256": "3d4dfb169edeed1f8f349d78253f46dfca4cf6b7fdd187a093d0bb7bda341597"
+    },
+    {
+      "name": "review-policy",
+      "exit_code": 0,
+      "sha256": "68466bd8b006340f275166e476988d5ca0f2507e0a8a76b0a1ac28600933b0a3"
+    },
+    {
+      "name": "reviewed-diff",
+      "exit_code": 0,
+      "sha256": "13e840f559eb5d60aa921594b4f2809a6c0996c83a9e4fa9baaf5febbe9452e6"
+    },
+    {
+      "name": "reviewed-history",
+      "exit_code": 0,
+      "sha256": "38f56a139894e3d8b058695a991faeccf770dbbb136a304371a0ee4fea514da9"
+    },
+    {
+      "name": "rustdoc",
+      "exit_code": 0,
+      "sha256": "4ede194ae02366f274609259b490dea482f58bc3ba79b95bf08012fba64e1828"
+    },
+    {
+      "name": "selftest-1",
+      "exit_code": 0,
+      "sha256": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d"
+    },
+    {
+      "name": "selftest-2",
+      "exit_code": 0,
+      "sha256": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d"
+    },
+    {
+      "name": "tauri-release",
+      "exit_code": 0,
+      "sha256": "cbb2be9b84fbe0d0d0f1195dce487f01bc95559d457dc0d6cde6fe0c9e5ed8e6"
+    },
+    {
+      "name": "test-diagnostics",
+      "exit_code": 0,
+      "sha256": "183a380c76616d353f28634a3d963e08f8bc16a801bc2c9e0e422fe409a49631"
+    },
+    {
+      "name": "test-edit-diff",
+      "exit_code": 0,
+      "sha256": "3a1c383b07b9560f7bbf6d48ae1eb7d622ae6169b174df1749955e048120b3d2"
+    },
+    {
+      "name": "workspace",
+      "exit_code": 0,
+      "sha256": "a48a851d73571e9c1e5b25d64c0188ff996f41f4c851222486f0ba3e7dfcab14"
+    }
+  ],
+  "rust_counts_pass_fail_ignore": {
+    "workspace": [
+      278,
+      0,
+      1
+    ],
+    "final-workspace": [
+      278,
+      2,
+      1
+    ],
+    "new-regressions": [
+      0,
+      2,
+      0
+    ],
+    "test-diagnostics": [
+      49,
+      0,
+      0
+    ],
+    "closure-probe-final": [
+      7,
+      0,
+      0
+    ]
+  },
+  "vitest": 326,
+  "node": 9,
+  "policy": 2,
+  "old_tooling": 12,
+  "reviewer_suites": {
+    "R1": 49,
+    "R2": 56,
+    "R3_previous_regressions": 8
+  },
+  "random": {
+    "recorded": {
+      "seed": "202610180311",
+      "cases": 10000,
+      "operation_counts": [
+        8206,
+        6005,
+        9589,
+        5769,
+        8189,
+        12084
+      ]
+    },
+    "fresh": {
+      "seed": "127004733114628",
+      "cases": 10000,
+      "operation_counts": [
+        8406,
+        6059,
+        9618,
+        5746,
+        8198,
+        12281
+      ]
+    }
+  },
+  "headless_checks": [
+    [
+      "engine.components",
+      true
+    ],
+    [
+      "engine.versions",
+      true
+    ],
+    [
+      "engine.ping",
+      true
+    ],
+    [
+      "determinism.ieee754",
+      true
+    ],
+    [
+      "headless.mcpLinked",
+      true
+    ]
+  ],
+  "ci_jobs": 8,
+  "ci_policy_omission": "Existing R3 carryover",
+  "tracked_changes_within_authorized_scope": true,
+  "artifact_sha256": {
+    "crates/model/tests/c11_r4_exposure_bounds.rs": "844d0437c66a1d9517bdd27e9efd6c7ed4bb855760fc852e11bd539eb4067061",
+    "reviews/M1-C1.1-r4-closure.md": "3a6e5179823845e944464a695f1ebd49796d7b5312ab7c804a09983b88a08899",
+    "reviews/evidence/M1-C1.1-r4/.gitattributes": "cacfab4310c6cd81b93f30764bc04813f4abbb1ab6058f4f782a81a9eea57c24",
+    "reviews/evidence/M1-C1.1-r4/api-audit.json": "ce3098667039cd1d6d2e6c234de6b83262e6e3eb84356f1b8f725880c24ef2f6",
+    "reviews/evidence/M1-C1.1-r4/audit_docs.py": "9945e5dd6cabbfcb0c24b6bd3339262c492531716756661489b29c16b46d9629",
+    "reviews/evidence/M1-C1.1-r4/audit_final.py": "455e4a6e5caabb00547e189ee8f2f2082d4dc8bfe33331f6f088de04d1fd5d01",
+    "reviews/evidence/M1-C1.1-r4/audit_static.py": "a8053d1052830d1c08c43103af0ffcc45bcff0d172ef66dd0b909724a89d7bf0",
+    "reviews/evidence/M1-C1.1-r4/ci-audit.json": "54b2dc22031ed7a219f1fb246cd4a94f80e6d7b527267b78e01c723b24ad3cf8",
+    "reviews/evidence/M1-C1.1-r4/closure_probe.rs": "f3e495ce568e88dba25ef2e7b90f7d67a1257db993139e8ca6268f40da3fa8d3",
+    "reviews/evidence/M1-C1.1-r4/conformance.json": "4ea222653b0afa1170e385fffd4a17efe58b72870fbed49330332cfaf589f48d",
+    "reviews/evidence/M1-C1.1-r4/conformance.py": "dd2037617ca3f1595009bfb5d8f58cefb492e7c0db16141eec3744a0753f90c1",
+    "reviews/evidence/M1-C1.1-r4/docs-audit.json": "655ac3013454ecb165ed755459841825b10df3f12b03258f04e787b2978551cf",
+    "reviews/evidence/M1-C1.1-r4/fresh-seed.txt": "d87aedcf36599511ba43dceb7845339a65c3731fab545cc63766aead976bd0a9",
+    "reviews/evidence/M1-C1.1-r4/launch-note.txt": "3d1c3a248724e82d1d7ab8931217a9d2c623d409a2f48a8901d1ba810f53e000",
+    "reviews/evidence/M1-C1.1-r4/logs/ci-full.log": "b9206d05a5929d4b6c675a4d140bef0905d58a956c7cfcb9236f0f7160e55a3d",
+    "reviews/evidence/M1-C1.1-r4/logs/ci-metadata.log": "67a804e2e770cca9f91934d6533818ea5695cc5baf56f03911d1eb243352b8a7",
+    "reviews/evidence/M1-C1.1-r4/logs/clippy-diagnostics.log": "582d4810fe173dd8f8c84d9d694ace103d96a2c589ae65af4e9a7a101c381264",
+    "reviews/evidence/M1-C1.1-r4/logs/clippy.log": "a2ebd4086160dd255a66d12a1a07649cd74bbb7b14e75813bc782a19215e7cde",
+    "reviews/evidence/M1-C1.1-r4/logs/closure-probe-final.log": "371379b64cad3cbf0e391f306c89b630697e243d34510e8b0dafc77e70e50810",
+    "reviews/evidence/M1-C1.1-r4/logs/closure-probe.log": "781918e1a5256dec9b6b6470a66557cbedcc50c7d2f422487f67cd6badfda2d8",
+    "reviews/evidence/M1-C1.1-r4/logs/deny.log": "fc9d5b0b045630024c382cf0366d3d67fd89348a3d8190a6d996c475b46dd19c",
+    "reviews/evidence/M1-C1.1-r4/logs/diagnostics-gate.log": "e50dd4bad4d68c69c63cfacff1aca0a9acd2f09bcb2d58c5000623205da93cf2",
+    "reviews/evidence/M1-C1.1-r4/logs/final-clippy.log": "08c4738aea512a1cec0e55d1da7e1da58dff187760ac5d052d30724e80d48f46",
+    "reviews/evidence/M1-C1.1-r4/logs/final-fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reviews/evidence/M1-C1.1-r4/logs/final-workspace.log": "d299d89e41f6a740fa9538fb8ed480b3929fea5889f0d87d7b8728a3e337c36f",
+    "reviews/evidence/M1-C1.1-r4/logs/fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reviews/evidence/M1-C1.1-r4/logs/frontend-build-diagnostics.log": "6fac32c05136f6f5908176c5dbc26e5c8b9a6fad9dfd618c193115d107d0cf94",
+    "reviews/evidence/M1-C1.1-r4/logs/frontend-build.log": "85e563c6c352e4b198e357c2579d9f78149fed52537d797b95d0deb8f964ec20",
+    "reviews/evidence/M1-C1.1-r4/logs/headless-build.log": "3f31d902da945353f80f732de91bb278d010b80c2cb044b6eaa9559bef5eee1c",
+    "reviews/evidence/M1-C1.1-r4/logs/headless-guard.log": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295",
+    "reviews/evidence/M1-C1.1-r4/logs/install.log": "becbab0a9b18d7f7bccfa9f8540d91b9b5d4165ca552276e724b10c2abee71dc",
+    "reviews/evidence/M1-C1.1-r4/logs/issue-state.log": "02d4d8a94e6f68ded1eb4dec1a58d2470b08f96cbaa94496f74af2ccffc0a502",
+    "reviews/evidence/M1-C1.1-r4/logs/new-regressions.log": "025b1230620125d6b284342ed44660a11fa6f04b16ef869d1ae886fa9e1316f3",
+    "reviews/evidence/M1-C1.1-r4/logs/old-tooling.log": "9b3c91db3b114714cc782848ef0b60c61f253008bd896c8eb73a32a9e4abd16d",
+    "reviews/evidence/M1-C1.1-r4/logs/pnpm-format-check.log": "38f97b0ce619895c99e61caaaa6f0e71b10b99c44f97a672b43e133dddddc315",
+    "reviews/evidence/M1-C1.1-r4/logs/pnpm-licenses-check.log": "95387981f537543fb37bf3b64d45aebe48c9a4c9654243278dbf0e9096e1eb0f",
+    "reviews/evidence/M1-C1.1-r4/logs/pnpm-lint.log": "e499ddaeba33503aab7a1106595c034e2f39b73519b763a287c6bf1885bc4b96",
+    "reviews/evidence/M1-C1.1-r4/logs/pnpm-test.log": "0c9dbb1d17cf65d98161f571f038741e5b40b19e704ed927162a62696072bf4b",
+    "reviews/evidence/M1-C1.1-r4/logs/pnpm-typecheck.log": "c4b53517a25c162085c4dde6938c384738e692c700379f1dca8eb9caf7f1373a",
+    "reviews/evidence/M1-C1.1-r4/logs/random-fresh.log": "045de95d78e7f9f5d64a8e973cba8adae05059d3d50d7f37bcf86759591a4736",
+    "reviews/evidence/M1-C1.1-r4/logs/random-recorded.log": "77e832caf4807f0899accbba033311eb5dbae84a39f08da72a7526b7c340b7ab",
+    "reviews/evidence/M1-C1.1-r4/logs/raster.log": "3d4dfb169edeed1f8f349d78253f46dfca4cf6b7fdd187a093d0bb7bda341597",
+    "reviews/evidence/M1-C1.1-r4/logs/review-policy.log": "68466bd8b006340f275166e476988d5ca0f2507e0a8a76b0a1ac28600933b0a3",
+    "reviews/evidence/M1-C1.1-r4/logs/reviewed-diff.log": "13e840f559eb5d60aa921594b4f2809a6c0996c83a9e4fa9baaf5febbe9452e6",
+    "reviews/evidence/M1-C1.1-r4/logs/reviewed-history.log": "38f56a139894e3d8b058695a991faeccf770dbbb136a304371a0ee4fea514da9",
+    "reviews/evidence/M1-C1.1-r4/logs/rustdoc.log": "4ede194ae02366f274609259b490dea482f58bc3ba79b95bf08012fba64e1828",
+    "reviews/evidence/M1-C1.1-r4/logs/selftest-1.log": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+    "reviews/evidence/M1-C1.1-r4/logs/selftest-2.log": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+    "reviews/evidence/M1-C1.1-r4/logs/tauri-release.log": "cbb2be9b84fbe0d0d0f1195dce487f01bc95559d457dc0d6cde6fe0c9e5ed8e6",
+    "reviews/evidence/M1-C1.1-r4/logs/test-diagnostics.log": "183a380c76616d353f28634a3d963e08f8bc16a801bc2c9e0e422fe409a49631",
+    "reviews/evidence/M1-C1.1-r4/logs/test-edit-diff.log": "3a1c383b07b9560f7bbf6d48ae1eb7d622ae6169b174df1749955e048120b3d2",
+    "reviews/evidence/M1-C1.1-r4/logs/workspace.log": "a48a851d73571e9c1e5b25d64c0188ff996f41f4c851222486f0ba3e7dfcab14",
+    "reviews/evidence/M1-C1.1-r4/raster.json": "40d001fdb064edccf67fb3325e74d5a7b0a04c47a32d584925c6027af5b074ea",
+    "reviews/evidence/M1-C1.1-r4/receipts/ci-full.json": "dd7afdd88395e23ae8d36951722a140ccdc30de327561d545fd1c58f04fe9d2e",
+    "reviews/evidence/M1-C1.1-r4/receipts/ci-metadata.json": "6458c8d66c7ac61421c6b0642e81cb7e006a5938187db585f17910f89ca757dc",
+    "reviews/evidence/M1-C1.1-r4/receipts/clippy-diagnostics.json": "0c467c7a5ab501e1abd02cab1af238efe7ae96462b2c3b9508891aa01436d853",
+    "reviews/evidence/M1-C1.1-r4/receipts/clippy.json": "bf1c6b23d5ff4e954e47e93e1871795a4f26627cb63f5f84848d6cd879bd7d06",
+    "reviews/evidence/M1-C1.1-r4/receipts/closure-probe-final.json": "266bbb177511380eeccba12f469d65b707f814104066959c3524100d8cdae4d9",
+    "reviews/evidence/M1-C1.1-r4/receipts/closure-probe.json": "9dc4d797330a8c768b64825cf363493d73ec2f465b87d3156a246ffe42d075f3",
+    "reviews/evidence/M1-C1.1-r4/receipts/deny.json": "7115c5b361aa8f396b495903e8f53b56a50e7d5a1bb11f22a8ae3d2f218804c8",
+    "reviews/evidence/M1-C1.1-r4/receipts/diagnostics-gate.json": "7e29bb03adf1100969e7362afda61ec2a261c07d61eea6c07c2ee288e1bd2166",
+    "reviews/evidence/M1-C1.1-r4/receipts/final-clippy.json": "238f24f0cbd6ccd18b8b198cba156a5e5507e7595f6dc66ed3158593d798e832",
+    "reviews/evidence/M1-C1.1-r4/receipts/final-fmt.json": "5e8d8a620ce26b0b39f800759bb699ff464870024bb434bf4d904076eac0665a",
+    "reviews/evidence/M1-C1.1-r4/receipts/final-workspace.json": "45cc57363caf3832050ffe37458d4a52888e351a6602c54e450a01059820512b",
+    "reviews/evidence/M1-C1.1-r4/receipts/fmt.json": "41ebec56be28b9b00c3e78dbfbc60cec45ad23b97da5d2c41da0f7203035c9e5",
+    "reviews/evidence/M1-C1.1-r4/receipts/frontend-build-diagnostics.json": "4698d5f6b1f55949cfeda210a14e2f96b05cecb6ddd60bf31a8e6794e85ca234",
+    "reviews/evidence/M1-C1.1-r4/receipts/frontend-build.json": "ff227fc2fd0c761b5efd2fd88e009998a38e24218ba959983e1d3c1d1599d385",
+    "reviews/evidence/M1-C1.1-r4/receipts/headless-build.json": "0d30bc9ff9588fec980d9b70fa4211d9d8a9023cc2149025a2897cfc5be77e22",
+    "reviews/evidence/M1-C1.1-r4/receipts/headless-guard.json": "649d0a4b940b60077b7272d4d15c94acafa7091fc0881045a620061c58610796",
+    "reviews/evidence/M1-C1.1-r4/receipts/install.json": "a269f48ef3121732f5a0fe62434731b43ca4df893a2ade6a3bb8b9994a45262d",
+    "reviews/evidence/M1-C1.1-r4/receipts/issue-state.json": "287998dc8bfafe85edd9450c88ba860da5542b58fda3ae527934b09151fddd91",
+    "reviews/evidence/M1-C1.1-r4/receipts/new-regressions.json": "c98bbda201fcfd53980bcf070c424b80d12175251b5370896fd449d3f19708c5",
+    "reviews/evidence/M1-C1.1-r4/receipts/old-tooling.json": "5bb2395b1c170c88259945057a586a2fb66ba3fc0376265ddf809c540d97fb51",
+    "reviews/evidence/M1-C1.1-r4/receipts/pnpm-format-check.json": "2f84c79e4948d935812459de8af273092311f34ca3a645322381555085f31288",
+    "reviews/evidence/M1-C1.1-r4/receipts/pnpm-licenses-check.json": "0dabe8db603cdbd3383febc00e390fcebfc09d57305c06e5a7e23d0a512a232c",
+    "reviews/evidence/M1-C1.1-r4/receipts/pnpm-lint.json": "a3d1359a408c030bc56f6bc203d7b9a68f82f2758bfe6e6dae90e46746a72320",
+    "reviews/evidence/M1-C1.1-r4/receipts/pnpm-test.json": "bdb446a7f6eab7e8b668a22ec01de0fca46da0132e67a1716a95668e2f6ec8b0",
+    "reviews/evidence/M1-C1.1-r4/receipts/pnpm-typecheck.json": "7a67139e586c46387b218ad2d62432bfeb8c840115bee69638c548f68f5a2548",
+    "reviews/evidence/M1-C1.1-r4/receipts/random-fresh.json": "0939a6fa8c3b9689829997665f51d31412e995b4f451a752c9c876e8c537ce86",
+    "reviews/evidence/M1-C1.1-r4/receipts/random-recorded.json": "895a577b76a94c9e6c7e3ceeea24afdc00761af9168c44a095aa2753bd72e64f",
+    "reviews/evidence/M1-C1.1-r4/receipts/raster.json": "06977f4a09c83e1f2ecc84c05a69ccb804fb5fd683a5e63452fcb4607636a8cc",
+    "reviews/evidence/M1-C1.1-r4/receipts/review-policy.json": "19a52726c45ba66a32bf75481ad9721deff0b99a7473ffea17478afe39c03879",
+    "reviews/evidence/M1-C1.1-r4/receipts/reviewed-diff.json": "0dd5c9f69723d671dd90daeebe360b7cfbe8cf2212b60ef9612734345d678827",
+    "reviews/evidence/M1-C1.1-r4/receipts/reviewed-history.json": "161e4de2aa2ae42fff9f7d5a13891695e694907425a95d11013dd7ecec134eb1",
+    "reviews/evidence/M1-C1.1-r4/receipts/rustdoc.json": "b9ad4a13ecfd0ec7fd91ad6eb5121486de986cac5ede391ae9cbe30f35c238a0",
+    "reviews/evidence/M1-C1.1-r4/receipts/selftest-1.json": "8046dafba386992f4757206076a427d05f35878bc70ca2752464bd5a4d9adb5f",
+    "reviews/evidence/M1-C1.1-r4/receipts/selftest-2.json": "834a24ed16689749b132ec58fa2f80e5f04596d5d2b3db5e3dfc35040d9363ac",
+    "reviews/evidence/M1-C1.1-r4/receipts/tauri-release.json": "252a5aeb31046fd63dbe0dcbc15a46f0be892e600bb2c109ef1148d42ab96775",
+    "reviews/evidence/M1-C1.1-r4/receipts/test-diagnostics.json": "69d8739c57468909b999f42115a7d7d188d2e74afba0db8e57d5e6de450ec392",
+    "reviews/evidence/M1-C1.1-r4/receipts/test-edit-diff.json": "ece7ae39b5d033405dd53a5bd23afafdf52539c2947e4a41319f052b42bfa742",
+    "reviews/evidence/M1-C1.1-r4/receipts/workspace.json": "75b0f36b43e5bc60d8a209e54651de63e0c591408c2f4ee88e7111a7f76abccf",
+    "reviews/evidence/M1-C1.1-r4/register-closure.json": "c839f504514bbed2693908826be4380d50b47b6748638dc55ebea0a41a95a8f9",
+    "reviews/evidence/M1-C1.1-r4/run_gates.py": "db3b6be5642490784959e9bf27c736125ada171290cea18825b78e68746a91bc",
+    "reviews/evidence/M1-C1.1-r4/run_probe.py": "1fad24994a740a1ce9194023423cb54e326a51ed74f6a23ee29a8231b70c74eb",
+    "reviews/evidence/M1-C1.1-r4/test-edit-audit.json": "c8294895542f19af3da35d5a0264df6e898ded1771f0e6af61843b00c2e6ee15"
+  }
+}

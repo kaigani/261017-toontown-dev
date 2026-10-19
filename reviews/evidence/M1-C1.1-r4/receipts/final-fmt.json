@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cargo",
+    "fmt",
+    "--all",
+    "--check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r4",
+  "base": "3b6179f57bbdf65ac847787f34ef937f88035178",
+  "started_utc": "2026-10-18T23:54:39.183406+00:00",
+  "elapsed_seconds": 1.861,
+  "exit_code": 0,
+  "log": "logs/final-fmt.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "env": {}
+}

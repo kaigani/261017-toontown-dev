@@ -1,0 +1,21 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r4_closure_probe",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r4",
+  "base": "3b6179f57bbdf65ac847787f34ef937f88035178",
+  "started_utc": "2026-10-18T23:56:13.330718+00:00",
+  "elapsed_seconds": 2.132,
+  "exit_code": 0,
+  "log": "logs/closure-probe-final.log",
+  "sha256": "371379b64cad3cbf0e391f306c89b630697e243d34510e8b0dafc77e70e50810",
+  "env": {}
+}
