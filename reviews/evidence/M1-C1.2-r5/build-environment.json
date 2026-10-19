@@ -1,0 +1,12 @@
+{
+  "firstRun": "gates-run/gates",
+  "failure": "MSVC LNK1180 insufficient disk space; volume free bytes 0; recorder failed flushing log",
+  "recovery": "cargo clean --profile dev inside validated review root; removed 14537 disposable build files (9.7 GiB); 10011365376 free bytes afterward",
+  "env": {
+    "CARGO_PROFILE_DEV_DEBUG": "0",
+    "CARGO_PROFILE_TEST_DEBUG": "0",
+    "CARGO_INCREMENTAL": "0",
+    "CARGO_BUILD_JOBS": "4"
+  },
+  "qualification": "Only debug symbols/incremental cache/build parallelism changed. Debug assertions and product sources remain unchanged. Initial successful frontend/fmt/clippy logs retained; all Rust gates rerun."
+}

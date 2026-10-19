@@ -1,0 +1,21 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r5/audit-delta.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r5",
+  "startedAt": "2026-10-19T13:49:28.967907+00:00",
+  "durationSeconds": 0.184,
+  "exitCode": 1,
+  "head": "ec4329cb1abb47821ada701175730a3e691d41d7",
+  "dirtyFiles": [
+    "?? reviews/evidence/M1-C1.2-r5/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\schema-delta.log",
+  "sha256": "245f778c01a43432c4587a10fff65b18ef72edce9bf9e83a053ef0df2709f40f",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r5\\reviews\\evidence\\M1-C1.2-r5"
+  }
+}

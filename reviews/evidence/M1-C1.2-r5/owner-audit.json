@@ -1,0 +1,3826 @@
+{
+  "rows": [
+    {
+      "id": "agent.activity.export",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.activity.list",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.activity.persist.set",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.confirmation.requested",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.confirmation.respond",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.policy.defaults.set",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.server.set",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.server.status",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.session.connected",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.session.disconnect",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.session.disconnected",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.session.grant",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.session.pause",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.session.resume",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.token.regenerate",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "agent.typedTools.set",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "anim.bone.create",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.bone.delete",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.bone.influence.set",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.bone.parent.set",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.bone.pose.set",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.bone.reach.apply",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.bone.rest.set",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.camera.create",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.camera.current.get",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.camera.current.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.camera.currentChanged",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.camera.delete",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.camera.get",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.camera.list",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.camera.select",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.camera.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.changed",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.channel.copy",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.channel.cut",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.channel.paste",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.depth.move",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.display.allPegs.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.display.antialiasToolOverlays.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.display.arms.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.display.changed",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.display.envelopes.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.display.frameMarkers.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.display.get",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.display.pegGhosts.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.display.pivotPath.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.display.smoothPaths.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.evaluate",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.flip.apply",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.function.curveType.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.function.get",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.function.key.add",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.function.key.duplicate",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.function.key.remove",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.function.key.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.function.list",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.function.preset.apply",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.function.sample",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.function.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.functionEditor.get",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.functionEditor.open",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.functionEditor.syncFrame.set",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.functionEditor.view.set",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.hierarchy.attach",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.hierarchy.changed",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.hierarchy.detach",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.hierarchy.get",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.hierarchy.select",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.key.add",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.key.list",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.key.move",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.key.remove",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.loop.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.node.get",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.node.options.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.node.pathDisplay.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.path.get",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.path.lockDepth.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.path.point.add",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.path.point.remove",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.path.point.select",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.path.point.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.path.sample",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.path.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.peg.create",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.pegOnlyMode.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.point.copy",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.point.paste",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.prefs.get",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.prefs.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.projection.get",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.record.completed",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.record.options.get",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.record.options.set",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.record.run",
+      "owner": "M6 C6.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.reset.apply",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.segment.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.segment.uniform.apply",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.skeleton.create",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.skeleton.deform.get",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.skeleton.delete",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.skeleton.get",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.skeleton.restPose.apply",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.skeleton.root.select",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.skeleton.set",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.skeleton.skin.add",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.skeleton.skin.remove",
+      "owner": "M6 C6.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.snapLastKey.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.stretch.apply",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.tool.changed",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.tool.get",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.tool.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.transform.set",
+      "owner": "M3 C3.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "anim.view.coords.get",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.view.get",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.view.slot.select",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "anim.view.type.set",
+      "owner": "M6 C6.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:173"
+    },
+    {
+      "id": "app.info.get",
+      "owner": "M1 C1.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "capture.auto.start",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.auto.stop",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.device.added",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.device.dialog.open",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.device.get",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.device.list",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.device.removed",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.device.select",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.device.settings.set",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.display.set",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.frame.add",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.frame.addFromFile",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.frame.captured",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.inputLock.set",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.keyColour.set",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.keying.set",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.lightTable.references.list",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.lightTable.set",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.preview.get",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.session.close",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.session.error",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.session.get",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.session.open",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.source.set",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "capture.target.set",
+      "owner": "M10 C10.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "cell.blank.add",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.blank.remove",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.clipboard.apply",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.clipboard.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.columnate.apply",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.cycle.create",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.drawing.duplicate",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.exposure.add",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.exposure.remove",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.exposure.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.exposures.changed",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.fill.apply",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.label.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.note.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.range.add",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.range.delete",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.range.move",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.select",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "cell.selection.changed",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "cell.selection.get",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "colour.autoColourUpdate.set",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.current.changed",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.current.get",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.current.set",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.editor.close",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.editor.open",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.fillMapping.get",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.fillMapping.set",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.gap.close",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "colour.gapClosing.get",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "colour.gapClosing.set",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "colour.missing.list",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.paint.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "colour.paint.remove",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "colour.paintUnpainted.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "colour.palette.changed",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.palette.create",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.palette.delete",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.palette.duplicate",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.palette.export",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.palette.get",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.palette.import",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.palette.list",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.palette.rename",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.palette.select",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.palette.set",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.pick",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.recolour.apply",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.recovery.performed",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.recovery.run",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.sceneStyle.changed",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.sceneStyles.get",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.selection.apply",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.style.changed",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.style.delete",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.style.duplicate",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.style.list",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.style.rename",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.style.select",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.swatch.changed",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.swatch.create",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.swatch.delete",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.swatch.get",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.swatch.list",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.swatch.move",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.swatch.set",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.swatchNames.set",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.tintBlend.apply",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.tintDialog.open",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.tintOffset.apply",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "colour.usage.list",
+      "owner": "M7 C7.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "doc.asset.embed",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.asset.export",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.asset.list",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.asset.relink",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.asset.remove",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.asset.status.changed",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.blob.get",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.export.json",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.import.json",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.loadReport.get",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.object.refs",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.package.changedOnDisk",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.package.export",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.package.get",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.repair",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.schema.validate",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "doc.validate",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "draw.arrange.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.bounds.get",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.breakApart.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.centreLine.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.content.add",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.current.get",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.cut.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.drawing.changed",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.drawing.get",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.drawing.rename",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.drawing.render",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.ellipse.add",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.envelope.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.erase.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.feather.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.flatten.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.flip.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.group.create",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.group.delete",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.hitTest.get",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.inspectorPreview.set",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.line.add",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.linesToBrush.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.lock.set",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.object.delete",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.optimize.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.pivot.set",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.point.add",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.point.delete",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.point.move",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.point.set",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.pointSelection.set",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.polyline.add",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.rectangle.add",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.repositionAll.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.rotate.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.segment.move",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.selection.changed",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.selection.get",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.selection.set",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.smooth.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.stroke.add",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.stroke.set",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.text.add",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.text.set",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.textFormat.set",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.transform.apply",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.vectorFile.import",
+      "owner": "M2 C2.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.vectorize.preview",
+      "owner": "M2 C2.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.vectorize.run",
+      "owner": "M2 C2.4",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "draw.viewMapping.get",
+      "owner": "M2 C2.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:169"
+    },
+    {
+      "id": "drawAid.autoLightTable.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.background.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.changed",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.currentOnTop.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.grid.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.lightTableShade.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.onionSkin.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.onionSkinCycle.run",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.onionSkinStyle.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.selectionDisplay.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.state.get",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "drawAid.staticLightTable.add",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "drawAid.staticLightTable.list",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "drawAid.staticLightTable.remove",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "drawAid.staticLightTable.set",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "drawAid.staticLightTablePanel.set",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "drawAid.strokes.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "element.annotation.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.childExposure.apply",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.clone",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.collapsed.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.colour.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.create",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.current.move",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.current.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.delete",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.drawing.changed",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.drawing.create",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.drawing.delete",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.drawing.duplicate",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.drawing.list",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.drawing.rename",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.drawingContent.delete",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.drawingLock.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.duplicate",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.get",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.hierarchy.get",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.hierarchy.select",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.list",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.lock.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.mediaLength.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.note.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.order.move",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.order.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.parent.remove",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.parent.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.parentPeg.create",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.properties.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.rename",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.select",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.solo.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.state.changed",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.timing.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.typeColour.get",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.typeColour.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.unusedDrawing.list",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "element.visibility.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "export.drawingPdf.run",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.formats.list",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.job.finished",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.movie.defaults.get",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.movie.defaults.set",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.movie.run",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.movie.validate",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.publish.account.close",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.publish.account.get",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.publish.account.open",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.publish.categories.list",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.publish.run",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.publish.service.list",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.publish.validate",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.report.get",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.settings.get",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.settings.set",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "export.snapshot.run",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "fx.allEffects.changed",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.allEffects.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.allEffects.set",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.block.add",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.block.defaults.apply",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.block.get",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.block.list",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.block.remove",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.block.seed.set",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.block.set",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.block.type.set",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.changed",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.create",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.curve.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.dropShadow.transform.set",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.hitTest.run",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.keyframe.add",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.keyframe.list",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.keyframe.remove",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.list",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.paramElement.add",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.paramElement.list",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.paramElement.remove",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.paramRows.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.paramRows.set",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.params.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.params.set",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.particles.get",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preset.apply",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preset.changed",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preset.create",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preset.delete",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preset.export",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preset.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preset.import",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preset.list",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preset.rename",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.cache.delete",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.close",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.frame.get",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.frameRendered",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.invalidated",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.open",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.options.get",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.options.set",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.render",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.status.get",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.preview.stop",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.renderList.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.renderer.capabilities.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.renderer.options.changed",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.renderer.options.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.renderer.options.set",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.shake.displacement.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.simulation.run",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.spriteSet.get",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.spriteSet.list",
+      "owner": "M7 C7.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.timing.set",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.types.get",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "fx.types.list",
+      "owner": "M7 C7.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:174"
+    },
+    {
+      "id": "import.completed",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "import.file.get",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "import.file.run",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "import.formats.list",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "import.keyedImage.get",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "import.keyedImages.run",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "import.movie.run",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "import.options.get",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "import.options.set",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "import.vectorize.settings.get",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "import.vectorize.settings.set",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "inspect.contactSheet.render",
+      "owner": "M3 C3.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "inspect.coordinates.convert",
+      "owner": "M3 C3.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "inspect.frame.describe",
+      "owner": "M3 C3.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "inspect.hitTest",
+      "owner": "M3 C3.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "inspect.screenshot",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "inspect.ui.tree",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "keymap.changed",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "keymap.export",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "keymap.get",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "keymap.import",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "keymap.list",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "keymap.remove",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "keymap.reset",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "keymap.set",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "library.changed",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.close",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.closed",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.create",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.drawing.insert",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.element.duplicate",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.folder.create",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.folder.delete",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.folder.rename",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.item.delete",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.item.duplicate",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.item.get",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.item.import",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.item.list",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.item.move",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.item.rename",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.item.thumbnail.get",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.list",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.node.get",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.open",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.opened",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.preview.get",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.preview.set",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.project.get",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.refresh.run",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.save",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.selection.get",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.selection.set",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.starter.open",
+      "owner": "M9 C9.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.changed",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.create",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.edit.changed",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.edit.get",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.edit.start",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.edit.stop",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.export",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.frame.render",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.get",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.insert",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.template.search",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.templateUpdate.apply",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.templateUpdate.list",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.tree.get",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.view.get",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.view.set",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "library.writeAccess.set",
+      "owner": "M9 C9.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "lipsync.apply",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.detect",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.display.set",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.mapping.get",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.mapping.mouth.set",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.mapping.set",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.mouth.set",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.panel.close",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.panel.open",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.panel.state.set",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.settings.get",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.settings.set",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.shapes.list",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.template.import",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.template.list",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.track.changed",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.track.clear",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.track.get",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.track.set",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "lipsync.track.stale",
+      "owner": "M8 C8.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.movie.import",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.movie.probe",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.object.list",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.object.relink",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.sequence.add",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.sequence.get",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.sequence.list",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.sequence.move",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.sequence.naturalTiming.apply",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.sequence.remove",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.sequence.set",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.sound.play",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.sound.stop",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "media.source.missing",
+      "owner": "M8 C8.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "playback.forceRate.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.loop.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.player.close",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "playback.player.get",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "playback.player.open",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "playback.player.set",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "playback.preview.run",
+      "owner": "M10 C10.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "playback.range.changed",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.range.get",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.range.mode.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.range.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.rate.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.start",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.started",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.state.get",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.stop",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "playback.stopped",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "prefs.changed",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "prefs.get",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "prefs.list",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "prefs.reset",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "prefs.set",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "print.pageSetup.get",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "print.pageSetup.set",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "print.preview.get",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "print.printer.list",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "print.run",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "print.settings.get",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "print.settings.set",
+      "owner": "M10 C10.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:177"
+    },
+    {
+      "id": "project.autosaved",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.backup.list",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.backup.open",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.close",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.closed",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.create",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.info.get",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.open",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.presets.list",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.properties.get",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.properties.set",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.recent.list",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.recent.remove",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.recovery.delete",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.recovery.list",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.recovery.open",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.save",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.saveAs",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "project.saved",
+      "owner": "M1 C1.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:168"
+    },
+    {
+      "id": "render.frame.run",
+      "owner": "M3 C3.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "render.limits.get",
+      "owner": "M3 C3.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "render.range.run",
+      "owner": "M3 C3.3",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "sound.asset.get",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.asset.import",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.asset.list",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.asset.missing",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.asset.probe",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.asset.relink",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.editor.close",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.editor.open",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.editor.state.get",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.editor.state.set",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.element.changed",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.element.streamed.set",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.envelope.clear",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.envelope.get",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.envelope.point.add",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.envelope.point.move",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.envelope.point.remove",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.envelope.set",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.fade.apply",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.import",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.placement.add",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.placement.get",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.placement.list",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.placement.move",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.placement.remove",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.placement.set",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.placement.split",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.placement.trim",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.play",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.playback.set",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.range.delete",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.range.select",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.recent.list",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.scrubbing.set",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.settings.get",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.silence.list",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.stop",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.waveform.get",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.waveform.ready",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "sound.waveforms.set",
+      "owner": "M8 C8.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:175"
+    },
+    {
+      "id": "storyline.changed",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.currentScene.changed",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.currentScene.get",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.currentScene.set",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.frame.get",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.frame.render",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.get",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.play.changed",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.play.start",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.play.stop",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.playhead.get",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.playhead.set",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.scene.create",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.scene.delete",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.scene.get",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.scene.list",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.scene.move",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.scene.rename",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.scene.set",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.scene.visible.set",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.selection.changed",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.selection.get",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.selection.set",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.transition.get",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.transition.list",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.transition.remove",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.transition.set",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.transition.types.list",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.view.get",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.view.set",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "storyline.warning.changed",
+      "owner": "M9 C9.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:176"
+    },
+    {
+      "id": "timeline.backgroundColour.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.currentFrame.changed",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.currentFrame.move",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.currentFrame.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.effectParameterRows.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.frameLabel.get",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.playbackRange.changed",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.playbackRange.get",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.playbackRange.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.rows.list",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.singleCellSelection.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.soundWaveforms.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.timeDisplay.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.transferOptions.get",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.transferOptions.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "timeline.view.set",
+      "owner": "M5 C5.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "tool.active.changed",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.active.get",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.active.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.brush.options.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.drawTopLayer.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.eraser.options.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.group.select",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.list",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.options.changed",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.options.get",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.options.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.pen.changed",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.pen.create",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.pen.delete",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.pen.list",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.pen.rename",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.pen.select",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.pen.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.pencil.options.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.placeBehind.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.polyline.options.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.select.options.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.settings.get",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.snapToContour.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.symmetry.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.tablet.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "tool.text.options.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.contextHelpMode.set",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.help.get",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.help.open",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.message.shown",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.preferences.open",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.startScreen.set",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.statusBar.get",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.statusBar.set",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.theme.list",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.tips.list",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.tips.reset",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "ui.tips.set",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "view.active.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "view.coordinates.convert",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "view.list",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "view.pan.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "view.rotation.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "view.transform.get",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "view.transform.reset",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "view.type.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "view.zoom.set",
+      "owner": "M4 C4.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "window.geometry.get",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "window.geometry.set",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "window.minimized.set",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "window.raiseAll.run",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "workspace.export",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "workspace.import",
+      "owner": "M4 C4.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:171"
+    },
+    {
+      "id": "xsheet.columnWidth.set",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "xsheet.currentCell.set",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "xsheet.display.set",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "xsheet.exposures.get",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "xsheet.exposures.set",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "xsheet.lightTable.add",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "xsheet.lightTable.changed",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "xsheet.lightTable.list",
+      "owner": "M3 C3.1",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:170"
+    },
+    {
+      "id": "xsheet.lightTable.move",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "xsheet.lightTable.remove",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "xsheet.lightTable.set",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    },
+    {
+      "id": "xsheet.panel.set",
+      "owner": "M5 C5.2",
+      "plan": "plan/IMPLEMENTATION_PLAN.md:172"
+    }
+  ],
+  "checked": 727,
+  "ownerCounts": {
+    "M1 C1.4": 17,
+    "M6 C6.3": 16,
+    "M3 C3.2": 36,
+    "M6 C6.2": 15,
+    "M6 C6.1": 34,
+    "M10 C10.3": 25,
+    "M3 C3.1": 63,
+    "M5 C5.2": 14,
+    "M7 C7.1": 45,
+    "M2 C2.3": 54,
+    "M1 C1.3": 36,
+    "M2 C2.4": 3,
+    "M4 C4.2": 50,
+    "M10 C10.2": 25,
+    "M10 C10.1": 15,
+    "M7 C7.2": 38,
+    "M7 C7.3": 23,
+    "M8 C8.3": 15,
+    "M3 C3.3": 7,
+    "M4 C4.1": 31,
+    "M9 C9.1": 45,
+    "M9 C9.3": 1,
+    "M8 C8.2": 20,
+    "M5 C5.1": 28,
+    "M8 C8.1": 40,
+    "M9 C9.2": 31
+  },
+  "planOwners": {
+    "M0 C0.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:167",
+      "text": "| M0 | Foundations and spikes | 00, 11 §3 | M | C0.1 repo, CI (Windows + macOS), Tauri hello, dockview shell · C0.2 tablet input spike (pressure, tilt, coalesced events) on WebView2 and WKWebView with real tablets · C0.3 canvas spike (render list → WebGPU/WebGL2, 100 k paths, binary IPC bandwidth) and rasteriser determinism across both OSes · C0.4 go/no-go report: Tauri shell confirmed (Electron is excluded; Qt 6 only if Tauri fails on both OSes), `vello_cpu` vs own rasteriser, FFmpeg/encoder licensing |"
+    },
+    "M0 C0.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:167",
+      "text": "| M0 | Foundations and spikes | 00, 11 §3 | M | C0.1 repo, CI (Windows + macOS), Tauri hello, dockview shell · C0.2 tablet input spike (pressure, tilt, coalesced events) on WebView2 and WKWebView with real tablets · C0.3 canvas spike (render list → WebGPU/WebGL2, 100 k paths, binary IPC bandwidth) and rasteriser determinism across both OSes · C0.4 go/no-go report: Tauri shell confirmed (Electron is excluded; Qt 6 only if Tauri fails on both OSes), `vello_cpu` vs own rasteriser, FFmpeg/encoder licensing |"
+    },
+    "M0 C0.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:167",
+      "text": "| M0 | Foundations and spikes | 00, 11 §3 | M | C0.1 repo, CI (Windows + macOS), Tauri hello, dockview shell · C0.2 tablet input spike (pressure, tilt, coalesced events) on WebView2 and WKWebView with real tablets · C0.3 canvas spike (render list → WebGPU/WebGL2, 100 k paths, binary IPC bandwidth) and rasteriser determinism across both OSes · C0.4 go/no-go report: Tauri shell confirmed (Electron is excluded; Qt 6 only if Tauri fails on both OSes), `vello_cpu` vs own rasteriser, FFmpeg/encoder licensing |"
+    },
+    "M0 C0.4": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:167",
+      "text": "| M0 | Foundations and spikes | 00, 11 §3 | M | C0.1 repo, CI (Windows + macOS), Tauri hello, dockview shell · C0.2 tablet input spike (pressure, tilt, coalesced events) on WebView2 and WKWebView with real tablets · C0.3 canvas spike (render list → WebGPU/WebGL2, 100 k paths, binary IPC bandwidth) and rasteriser determinism across both OSes · C0.4 go/no-go report: Tauri shell confirmed (Electron is excluded; Qt 6 only if Tauri fails on both OSes), `vello_cpu` vs own rasteriser, FFmpeg/encoder licensing |"
+    },
+    "M1 C1.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:168",
+      "text": "| M1 | Core kernel | 10, 11, 01 §3 | XL | C1.1 object model, IDs, revs, change sets, canonical JSON, schemas, path addressing · C1.2 registry, executor, undo/redo/checkpoints, batch, dryRun, expectRev, requestId, enablement, `edit.*` · C1.3 persistence: package + folder form, manifest, atomic save, backups, autosave, recovery, locks, migrations skeleton, `project.*`, `doc.*` · C1.4 MCP server: generic tools, resources, subscriptions, events, permissions, confirmation protocol, audit log, headless binary, batch-script mode, docs resources |"
+    },
+    "M1 C1.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:168",
+      "text": "| M1 | Core kernel | 10, 11, 01 §3 | XL | C1.1 object model, IDs, revs, change sets, canonical JSON, schemas, path addressing · C1.2 registry, executor, undo/redo/checkpoints, batch, dryRun, expectRev, requestId, enablement, `edit.*` · C1.3 persistence: package + folder form, manifest, atomic save, backups, autosave, recovery, locks, migrations skeleton, `project.*`, `doc.*` · C1.4 MCP server: generic tools, resources, subscriptions, events, permissions, confirmation protocol, audit log, headless binary, batch-script mode, docs resources |"
+    },
+    "M1 C1.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:168",
+      "text": "| M1 | Core kernel | 10, 11, 01 §3 | XL | C1.1 object model, IDs, revs, change sets, canonical JSON, schemas, path addressing · C1.2 registry, executor, undo/redo/checkpoints, batch, dryRun, expectRev, requestId, enablement, `edit.*` · C1.3 persistence: package + folder form, manifest, atomic save, backups, autosave, recovery, locks, migrations skeleton, `project.*`, `doc.*` · C1.4 MCP server: generic tools, resources, subscriptions, events, permissions, confirmation protocol, audit log, headless binary, batch-script mode, docs resources |"
+    },
+    "M1 C1.4": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:168",
+      "text": "| M1 | Core kernel | 10, 11, 01 §3 | XL | C1.1 object model, IDs, revs, change sets, canonical JSON, schemas, path addressing · C1.2 registry, executor, undo/redo/checkpoints, batch, dryRun, expectRev, requestId, enablement, `edit.*` · C1.3 persistence: package + folder form, manifest, atomic save, backups, autosave, recovery, locks, migrations skeleton, `project.*`, `doc.*` · C1.4 MCP server: generic tools, resources, subscriptions, events, permissions, confirmation protocol, audit log, headless binary, batch-script mode, docs resources |"
+    },
+    "M2 C2.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:169",
+      "text": "| M2 | Vector engine and drawing commands | 02, 03 (model and paint) | XL | C2.1 strokes, curve fitting, brush outline, pencil, invisible, text and bitmap nodes · C2.2 planar map: noding, zones, sides, gap closing, paint by id/point, colour IDs, recovery · C2.3 flatten/optimize/smooth/centre line/convert/feather/arrange/group, `draw.*` and `colour.paint.*` commands, `render_drawing` · C2.4 vectorize (trace + fit), topology property tests, E2 headless |"
+    },
+    "M2 C2.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:169",
+      "text": "| M2 | Vector engine and drawing commands | 02, 03 (model and paint) | XL | C2.1 strokes, curve fitting, brush outline, pencil, invisible, text and bitmap nodes · C2.2 planar map: noding, zones, sides, gap closing, paint by id/point, colour IDs, recovery · C2.3 flatten/optimize/smooth/centre line/convert/feather/arrange/group, `draw.*` and `colour.paint.*` commands, `render_drawing` · C2.4 vectorize (trace + fit), topology property tests, E2 headless |"
+    },
+    "M2 C2.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:169",
+      "text": "| M2 | Vector engine and drawing commands | 02, 03 (model and paint) | XL | C2.1 strokes, curve fitting, brush outline, pencil, invisible, text and bitmap nodes · C2.2 planar map: noding, zones, sides, gap closing, paint by id/point, colour IDs, recovery · C2.3 flatten/optimize/smooth/centre line/convert/feather/arrange/group, `draw.*` and `colour.paint.*` commands, `render_drawing` · C2.4 vectorize (trace + fit), topology property tests, E2 headless |"
+    },
+    "M2 C2.4": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:169",
+      "text": "| M2 | Vector engine and drawing commands | 02, 03 (model and paint) | XL | C2.1 strokes, curve fitting, brush outline, pencil, invisible, text and bitmap nodes · C2.2 planar map: noding, zones, sides, gap closing, paint by id/point, colour IDs, recovery · C2.3 flatten/optimize/smooth/centre line/convert/feather/arrange/group, `draw.*` and `colour.paint.*` commands, `render_drawing` · C2.4 vectorize (trace + fit), topology property tests, E2 headless |"
+    },
+    "M3 C3.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:170",
+      "text": "| M3 | Elements, timing, staging maths, final renderer | 04 (model), 05 §1–2, §8–10, §12, 06 §6, 09 §11 | XL | C3.1 element types, exposure runs, cells, clone/duplicate, hierarchy, `element.*`, `cell.*`, `xsheet.*` JSON · C3.2 transforms, pivots, TCB paths, velocity, channels, easing, cameras, projection, `anim.evaluate`, E4 numeric · C3.3 compositor, render list, deterministic `render_frame`, contact sheet, `describe_frame`, `hit_test`, `convert_coordinates`, PNG sequence export, golden images · C3.4 E1 headless (minus MP4) |"
+    },
+    "M3 C3.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:170",
+      "text": "| M3 | Elements, timing, staging maths, final renderer | 04 (model), 05 §1–2, §8–10, §12, 06 §6, 09 §11 | XL | C3.1 element types, exposure runs, cells, clone/duplicate, hierarchy, `element.*`, `cell.*`, `xsheet.*` JSON · C3.2 transforms, pivots, TCB paths, velocity, channels, easing, cameras, projection, `anim.evaluate`, E4 numeric · C3.3 compositor, render list, deterministic `render_frame`, contact sheet, `describe_frame`, `hit_test`, `convert_coordinates`, PNG sequence export, golden images · C3.4 E1 headless (minus MP4) |"
+    },
+    "M3 C3.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:170",
+      "text": "| M3 | Elements, timing, staging maths, final renderer | 04 (model), 05 §1–2, §8–10, §12, 06 §6, 09 §11 | XL | C3.1 element types, exposure runs, cells, clone/duplicate, hierarchy, `element.*`, `cell.*`, `xsheet.*` JSON · C3.2 transforms, pivots, TCB paths, velocity, channels, easing, cameras, projection, `anim.evaluate`, E4 numeric · C3.3 compositor, render list, deterministic `render_frame`, contact sheet, `describe_frame`, `hit_test`, `convert_coordinates`, PNG sequence export, golden images · C3.4 E1 headless (minus MP4) |"
+    },
+    "M3 C3.4": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:170",
+      "text": "| M3 | Elements, timing, staging maths, final renderer | 04 (model), 05 §1–2, §8–10, §12, 06 §6, 09 §11 | XL | C3.1 element types, exposure runs, cells, clone/duplicate, hierarchy, `element.*`, `cell.*`, `xsheet.*` JSON · C3.2 transforms, pivots, TCB paths, velocity, channels, easing, cameras, projection, `anim.evaluate`, E4 numeric · C3.3 compositor, render list, deterministic `render_frame`, contact sheet, `describe_frame`, `hit_test`, `convert_coordinates`, PNG sequence export, golden images · C3.4 E1 headless (minus MP4) |"
+    },
+    "M4 C4.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:171",
+      "text": "| M4 | Desktop shell and first interactive views | 01, 02 §4–§10, 11 §6.4 | XL | C4.1 start screen, project wizard, menus, prefs, keymap editor, themes, workspaces, docking, history panel, status bar, agent indicator, messages, settings persistence · C4.2 interactive renderer in the webview, Drawing view with brush/pencil/select/eraser/paint/shape tools, pens, onion skin, grids, light tables; gesture equivalence; `pointer`/`key`/`inspect_ui`/`screenshot` · C4.3 Camera view with select/transform; parity test gate; E6 coexistence |"
+    },
+    "M4 C4.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:171",
+      "text": "| M4 | Desktop shell and first interactive views | 01, 02 §4–§10, 11 §6.4 | XL | C4.1 start screen, project wizard, menus, prefs, keymap editor, themes, workspaces, docking, history panel, status bar, agent indicator, messages, settings persistence · C4.2 interactive renderer in the webview, Drawing view with brush/pencil/select/eraser/paint/shape tools, pens, onion skin, grids, light tables; gesture equivalence; `pointer`/`key`/`inspect_ui`/`screenshot` · C4.3 Camera view with select/transform; parity test gate; E6 coexistence |"
+    },
+    "M4 C4.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:171",
+      "text": "| M4 | Desktop shell and first interactive views | 01, 02 §4–§10, 11 §6.4 | XL | C4.1 start screen, project wizard, menus, prefs, keymap editor, themes, workspaces, docking, history panel, status bar, agent indicator, messages, settings persistence · C4.2 interactive renderer in the webview, Drawing view with brush/pencil/select/eraser/paint/shape tools, pens, onion skin, grids, light tables; gesture equivalence; `pointer`/`key`/`inspect_ui`/`screenshot` · C4.3 Camera view with select/transform; parity test gate; E6 coexistence |"
+    },
+    "M5 C5.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:172",
+      "text": "| M5 | Timeline and Exposure Sheet | 04 (views), 01 §6.2–6.4 | L | C5.1 Timeline (rows, bars, keyframes, ruler, zoom, selection, drag/drop, paste special) · C5.2 Exposure Sheet (thumbnails, display modes, all cell commands, cycles, columnate, drawing management, static light table), Properties/Cells panels |"
+    },
+    "M5 C5.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:172",
+      "text": "| M5 | Timeline and Exposure Sheet | 04 (views), 01 §6.2–6.4 | L | C5.1 Timeline (rows, bars, keyframes, ruler, zoom, selection, drag/drop, paste special) · C5.2 Exposure Sheet (thumbnails, display modes, all cell commands, cycles, columnate, drawing management, static light table), Properties/Cells panels |"
+    },
+    "M6 C6.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:173",
+      "text": "| M6 | Staging and animation complete | 05 | XL | C6.1 Top/Side views, display options, all animation tools, peg-only mode, flips, hierarchy commands · C6.2 motion path UI, keyframes, function editor, velocity, easing, cameras UI, motion recording · C6.3 bones: tools, kinematics, IK, skinning, zones of influence, skeleton properties; E4 interactive |"
+    },
+    "M6 C6.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:173",
+      "text": "| M6 | Staging and animation complete | 05 | XL | C6.1 Top/Side views, display options, all animation tools, peg-only mode, flips, hierarchy commands · C6.2 motion path UI, keyframes, function editor, velocity, easing, cameras UI, motion recording · C6.3 bones: tools, kinematics, IK, skinning, zones of influence, skeleton properties; E4 interactive |"
+    },
+    "M6 C6.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:173",
+      "text": "| M6 | Staging and animation complete | 05 | XL | C6.1 Top/Side views, display options, all animation tools, peg-only mode, flips, hierarchy commands · C6.2 motion path UI, keyframes, function editor, velocity, easing, cameras UI, motion recording · C6.3 bones: tools, kinematics, IK, skinning, zones of influence, skeleton properties; E4 interactive |"
+    },
+    "M7 C7.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:174",
+      "text": "| M7 | Colour and effects complete | 03 (UI), 06 | L+L | C7.1 palette panel, colour editor, styles, tint offset/blend, gradients, textures, edit-texture tool, `.animpal` · C7.2 effect elements and parameter rows, colour transform, clipping, drop shadow, blur, shake, presets, AA clipping/flatten/blur in final renderer · C7.3 particle engine, all particle types and presets, effect preview panel, determinism goldens across restarts |"
+    },
+    "M7 C7.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:174",
+      "text": "| M7 | Colour and effects complete | 03 (UI), 06 | L+L | C7.1 palette panel, colour editor, styles, tint offset/blend, gradients, textures, edit-texture tool, `.animpal` · C7.2 effect elements and parameter rows, colour transform, clipping, drop shadow, blur, shake, presets, AA clipping/flatten/blur in final renderer · C7.3 particle engine, all particle types and presets, effect preview panel, determinism goldens across restarts |"
+    },
+    "M7 C7.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:174",
+      "text": "| M7 | Colour and effects complete | 03 (UI), 06 | L+L | C7.1 palette panel, colour editor, styles, tint offset/blend, gradients, textures, edit-texture tool, `.animpal` · C7.2 effect elements and parameter rows, colour transform, clipping, drop shadow, blur, shake, presets, AA clipping/flatten/blur in final renderer · C7.3 particle engine, all particle types and presets, effect preview panel, determinism goldens across restarts |"
+    },
+    "M8 C8.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:175",
+      "text": "| M8 | Sound, lip-sync, media | 07 | L | C8.1 import/decode/storage, waveform cache, mixer, playback sync, scrubbing, Timeline/X-sheet sound display, sound editor · C8.2 lip-sync detector (model + fallback + transcript alignment), track model, mapping, apply, panel, mouth templates; accuracy corpus; E3 · C8.3 FFmpeg sidecar build, fetch/verify mechanism and decoder readiness (moved here from M10 on 2026-10-18 because import needs the sidecar first; see ADR-0008), media elements, movie import as sequence |"
+    },
+    "M8 C8.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:175",
+      "text": "| M8 | Sound, lip-sync, media | 07 | L | C8.1 import/decode/storage, waveform cache, mixer, playback sync, scrubbing, Timeline/X-sheet sound display, sound editor · C8.2 lip-sync detector (model + fallback + transcript alignment), track model, mapping, apply, panel, mouth templates; accuracy corpus; E3 · C8.3 FFmpeg sidecar build, fetch/verify mechanism and decoder readiness (moved here from M10 on 2026-10-18 because import needs the sidecar first; see ADR-0008), media elements, movie import as sequence |"
+    },
+    "M8 C8.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:175",
+      "text": "| M8 | Sound, lip-sync, media | 07 | L | C8.1 import/decode/storage, waveform cache, mixer, playback sync, scrubbing, Timeline/X-sheet sound display, sound editor · C8.2 lip-sync detector (model + fallback + transcript alignment), track model, mapping, apply, panel, mouth templates; accuracy corpus; E3 · C8.3 FFmpeg sidecar build, fetch/verify mechanism and decoder readiness (moved here from M10 on 2026-10-18 because import needs the sidecar first; see ADR-0008), media elements, movie import as sequence |"
+    },
+    "M9 C9.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:176",
+      "text": "| M9 | Library and storyline | 08 | L | C9.1 libraries, folders, items, templates (.animtpl), create/insert copy-link, edit mode, locking · C9.2 scene manager, storyline panel, transitions, timing model, storyline playback, transition rendering; E5 · C9.3 starter-content pipeline (loader, thumbnails, validation; content authored separately) |"
+    },
+    "M9 C9.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:176",
+      "text": "| M9 | Library and storyline | 08 | L | C9.1 libraries, folders, items, templates (.animtpl), create/insert copy-link, edit mode, locking · C9.2 scene manager, storyline panel, transitions, timing model, storyline playback, transition rendering; E5 · C9.3 starter-content pipeline (loader, thumbnails, validation; content authored separately) |"
+    },
+    "M9 C9.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:176",
+      "text": "| M9 | Library and storyline | 08 | L | C9.1 libraries, folders, items, templates (.animtpl), create/insert copy-link, edit mode, locking · C9.2 scene manager, storyline panel, transitions, timing model, storyline playback, transition rendering; E5 · C9.3 starter-content pipeline (loader, thumbnails, validation; content authored separately) |"
+    },
+    "M10 C10.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:177",
+      "text": "| M10 | Output and input complete | 09 | L | C10.1 FFmpeg encoders (sidecar itself built in M8 C8.3): MP4/MOV/GIF export, audio mux, rendered preview + player, snapshot, export reports, repeat-encode determinism checks (09 §11.1(6)); E1 full · C10.2 PDF export, print layout/preview/PDF/OS print, vector import (PDF/AI/SVG), PSD layers, keyed image import, publishing framework (descriptors, OAuth in system browser, OS credential store; no service shipped) · C10.3 capture: webcams via nokhwa, keying, light table, auto-capture; scanners and tethered cameras as stretch |"
+    },
+    "M10 C8.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:177",
+      "text": "| M10 | Output and input complete | 09 | L | C10.1 FFmpeg encoders (sidecar itself built in M8 C8.3): MP4/MOV/GIF export, audio mux, rendered preview + player, snapshot, export reports, repeat-encode determinism checks (09 §11.1(6)); E1 full · C10.2 PDF export, print layout/preview/PDF/OS print, vector import (PDF/AI/SVG), PSD layers, keyed image import, publishing framework (descriptors, OAuth in system browser, OS credential store; no service shipped) · C10.3 capture: webcams via nokhwa, keying, light table, auto-capture; scanners and tethered cameras as stretch |"
+    },
+    "M10 C10.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:177",
+      "text": "| M10 | Output and input complete | 09 | L | C10.1 FFmpeg encoders (sidecar itself built in M8 C8.3): MP4/MOV/GIF export, audio mux, rendered preview + player, snapshot, export reports, repeat-encode determinism checks (09 §11.1(6)); E1 full · C10.2 PDF export, print layout/preview/PDF/OS print, vector import (PDF/AI/SVG), PSD layers, keyed image import, publishing framework (descriptors, OAuth in system browser, OS credential store; no service shipped) · C10.3 capture: webcams via nokhwa, keying, light table, auto-capture; scanners and tethered cameras as stretch |"
+    },
+    "M10 C10.3": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:177",
+      "text": "| M10 | Output and input complete | 09 | L | C10.1 FFmpeg encoders (sidecar itself built in M8 C8.3): MP4/MOV/GIF export, audio mux, rendered preview + player, snapshot, export reports, repeat-encode determinism checks (09 §11.1(6)); E1 full · C10.2 PDF export, print layout/preview/PDF/OS print, vector import (PDF/AI/SVG), PSD layers, keyed image import, publishing framework (descriptors, OAuth in system browser, OS credential store; no service shipped) · C10.3 capture: webcams via nokhwa, keying, light table, auto-capture; scanners and tethered cameras as stretch |"
+    },
+    "M11 C11.1": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:178",
+      "text": "| M11 | Hardening, conformance, packaging | 11 §14, 10 §5 | L | C11.1 full conformance suite green on both OSes, performance targets (1 000 elements, 100 k strokes, 10 k drawings, 10 k swatches), fuzzing of the command surface and package reader · C11.2 installers (MSI/NSIS, DMG, signing, notarisation), auto-update channel, crash reporting opt-in, migrations fixtures, docs, prompts, typed-tools option, localisation scaffolding |"
+    },
+    "M11 C11.2": {
+      "source": "plan/IMPLEMENTATION_PLAN.md:178",
+      "text": "| M11 | Hardening, conformance, packaging | 11 §14, 10 §5 | L | C11.1 full conformance suite green on both OSes, performance targets (1 000 elements, 100 k strokes, 10 k drawings, 10 k swatches), fuzzing of the command surface and package reader · C11.2 installers (MSI/NSIS, DMG, signing, notarisation), auto-update channel, crash reporting opt-in, migrations fixtures, docs, prompts, typed-tools option, localisation scaffolding |"
+    }
+  }
+}

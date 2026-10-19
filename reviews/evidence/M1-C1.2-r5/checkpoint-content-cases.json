@@ -1,0 +1,914 @@
+[
+  {
+    "case": "unchanged",
+    "detail": "summary",
+    "batch": {
+      "status": "ok",
+      "result": {
+        "stepCount": 5
+      },
+      "changes": [
+        {
+          "id": "sc_01K742SG0Y2ZME2BB2NQBPP1HR",
+          "type": "scene",
+          "op": "modified",
+          "rev": 3,
+          "patch": [
+            {
+              "op": "add",
+              "path": "/meta",
+              "value": {
+                "r5": "scene only"
+              }
+            }
+          ]
+        }
+      ],
+      "undo": {
+        "stepId": "u-2",
+        "label": "R5 unchanged summary"
+      },
+      "warnings": [],
+      "documentRev": 3,
+      "steps": [
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-before",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "changes": [
+              {
+                "id": "sc_01K742SG0Y2ZME2BB2NQBPP1HR",
+                "type": "scene",
+                "op": "modified",
+                "rev": 3,
+                "patch": [
+                  {
+                    "op": "add",
+                    "path": "/meta",
+                    "value": {
+                      "r5": "scene only"
+                    }
+                  }
+                ]
+              }
+            ],
+            "documentRev": 3
+          },
+          "targets": {
+            "ids": [
+              "sc_01K742SG0Y2ZME2BB2NQBPP1HR"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-after",
+            "documentRev": 3
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 3,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 3,
+            "toRev": 3,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        }
+      ]
+    },
+    "committed": {
+      "fromRev": 2,
+      "toRev": 3,
+      "changes": [],
+      "truncated": false
+    }
+  },
+  {
+    "case": "unchanged",
+    "detail": "full",
+    "batch": {
+      "status": "ok",
+      "result": {
+        "stepCount": 5
+      },
+      "changes": [
+        {
+          "id": "sc_01K742SG0Y2ZME2BB2NQBPP1HR",
+          "type": "scene",
+          "op": "modified",
+          "rev": 3,
+          "patch": [
+            {
+              "op": "add",
+              "path": "/meta",
+              "value": {
+                "r5": "scene only"
+              }
+            }
+          ]
+        }
+      ],
+      "undo": {
+        "stepId": "u-2",
+        "label": "R5 unchanged full"
+      },
+      "warnings": [],
+      "documentRev": 3,
+      "steps": [
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-before",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "changes": [
+              {
+                "id": "sc_01K742SG0Y2ZME2BB2NQBPP1HR",
+                "type": "scene",
+                "op": "modified",
+                "rev": 3,
+                "patch": [
+                  {
+                    "op": "add",
+                    "path": "/meta",
+                    "value": {
+                      "r5": "scene only"
+                    }
+                  }
+                ]
+              }
+            ],
+            "documentRev": 3
+          },
+          "targets": {
+            "ids": [
+              "sc_01K742SG0Y2ZME2BB2NQBPP1HR"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-after",
+            "documentRev": 3
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 3,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 3,
+            "toRev": 3,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        }
+      ]
+    },
+    "committed": {
+      "fromRev": 2,
+      "toRev": 3,
+      "changes": [],
+      "truncated": false
+    }
+  },
+  {
+    "case": "changed",
+    "detail": "summary",
+    "batch": {
+      "status": "ok",
+      "result": {
+        "stepCount": 5
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 3,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/meta/r5",
+              "value": 1,
+              "oldValue": 0
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 3,
+          "patch": []
+        }
+      ],
+      "undo": {
+        "stepId": "u-2",
+        "label": "R5 changed summary"
+      },
+      "warnings": [],
+      "documentRev": 3,
+      "steps": [
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-before",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "changes": [
+              {
+                "id": "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD",
+                "type": "stroke",
+                "op": "modified",
+                "rev": 3,
+                "patch": [
+                  {
+                    "op": "replace",
+                    "path": "/meta/r5",
+                    "value": 1,
+                    "oldValue": 0
+                  }
+                ]
+              },
+              {
+                "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+                "type": "drawing",
+                "op": "modified",
+                "rev": 3,
+                "patch": []
+              }
+            ],
+            "documentRev": 3
+          },
+          "targets": {
+            "ids": [
+              "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-after",
+            "documentRev": 3
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 3,
+            "changes": [
+              {
+                "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+                "type": "drawing",
+                "op": "modified",
+                "rev": 3
+              }
+            ],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 3,
+            "toRev": 3,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        }
+      ]
+    },
+    "committed": {
+      "fromRev": 2,
+      "toRev": 3,
+      "changes": [
+        {
+          "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 3
+        }
+      ],
+      "truncated": false
+    }
+  },
+  {
+    "case": "changed",
+    "detail": "full",
+    "batch": {
+      "status": "ok",
+      "result": {
+        "stepCount": 5
+      },
+      "changes": [
+        {
+          "id": "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 3,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/meta/r5",
+              "value": 1,
+              "oldValue": 0
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 3,
+          "patch": []
+        }
+      ],
+      "undo": {
+        "stepId": "u-2",
+        "label": "R5 changed full"
+      },
+      "warnings": [],
+      "documentRev": 3,
+      "steps": [
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-before",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "changes": [
+              {
+                "id": "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD",
+                "type": "stroke",
+                "op": "modified",
+                "rev": 3,
+                "patch": [
+                  {
+                    "op": "replace",
+                    "path": "/meta/r5",
+                    "value": 1,
+                    "oldValue": 0
+                  }
+                ]
+              },
+              {
+                "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+                "type": "drawing",
+                "op": "modified",
+                "rev": 3,
+                "patch": []
+              }
+            ],
+            "documentRev": 3
+          },
+          "targets": {
+            "ids": [
+              "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-after",
+            "documentRev": 3
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 3,
+            "changes": [
+              {
+                "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+                "type": "drawing",
+                "op": "modified",
+                "rev": 3,
+                "patch": []
+              }
+            ],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 3,
+            "toRev": 3,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        }
+      ]
+    },
+    "committed": {
+      "fromRev": 2,
+      "toRev": 3,
+      "changes": [
+        {
+          "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 3,
+          "patch": []
+        }
+      ],
+      "truncated": false
+    }
+  },
+  {
+    "case": "noop",
+    "detail": "summary",
+    "batch": {
+      "status": "ok",
+      "result": {
+        "stepCount": 5
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2,
+      "steps": [
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-before",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "changes": [],
+            "documentRev": 2
+          },
+          "targets": {
+            "ids": [
+              "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-after",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 2,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 2,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        }
+      ]
+    },
+    "committed": {
+      "fromRev": 2,
+      "toRev": 2,
+      "changes": [],
+      "truncated": false
+    }
+  },
+  {
+    "case": "noop",
+    "detail": "full",
+    "batch": {
+      "status": "ok",
+      "result": {
+        "stepCount": 5
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2,
+      "steps": [
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-before",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "changes": [],
+            "documentRev": 2
+          },
+          "targets": {
+            "ids": [
+              "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-after",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 2,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 2,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        }
+      ]
+    },
+    "committed": {
+      "fromRev": 2,
+      "toRev": 2,
+      "changes": [],
+      "truncated": false
+    }
+  },
+  {
+    "case": "reverted",
+    "detail": "summary",
+    "batch": {
+      "status": "ok",
+      "result": {
+        "stepCount": 6
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2,
+      "steps": [
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-before",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "changes": [
+              {
+                "id": "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD",
+                "type": "stroke",
+                "op": "modified",
+                "rev": 3,
+                "patch": [
+                  {
+                    "op": "replace",
+                    "path": "/meta/r5",
+                    "value": 1,
+                    "oldValue": 0
+                  }
+                ]
+              },
+              {
+                "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+                "type": "drawing",
+                "op": "modified",
+                "rev": 3,
+                "patch": []
+              }
+            ],
+            "documentRev": 3
+          },
+          "targets": {
+            "ids": [
+              "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "changes": [],
+            "documentRev": 2
+          },
+          "targets": {
+            "ids": [
+              "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-after",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 2,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 2,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        }
+      ]
+    },
+    "committed": {
+      "fromRev": 2,
+      "toRev": 2,
+      "changes": [],
+      "truncated": false
+    }
+  },
+  {
+    "case": "reverted",
+    "detail": "full",
+    "batch": {
+      "status": "ok",
+      "result": {
+        "stepCount": 6
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2,
+      "steps": [
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-before",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "changes": [
+              {
+                "id": "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD",
+                "type": "stroke",
+                "op": "modified",
+                "rev": 3,
+                "patch": [
+                  {
+                    "op": "replace",
+                    "path": "/meta/r5",
+                    "value": 1,
+                    "oldValue": 0
+                  }
+                ]
+              },
+              {
+                "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+                "type": "drawing",
+                "op": "modified",
+                "rev": 3,
+                "patch": []
+              }
+            ],
+            "documentRev": 3
+          },
+          "targets": {
+            "ids": [
+              "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        {
+          "status": "ok",
+          "result": {
+            "changes": [],
+            "documentRev": 2
+          },
+          "targets": {
+            "ids": [
+              "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "name": "r5-after",
+            "documentRev": 2
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 2,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        {
+          "status": "ok",
+          "result": {
+            "fromRev": 2,
+            "toRev": 2,
+            "changes": [],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        }
+      ]
+    },
+    "committed": {
+      "fromRev": 2,
+      "toRev": 2,
+      "changes": [],
+      "truncated": false
+    }
+  }
+]

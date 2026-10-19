@@ -1,0 +1,9 @@
+{
+  "unchangedReviewerTests": 71,
+  "testChanges": [
+    "crates/executor/tests/c12_invalidation_property.rs",
+    "crates/registry/tests/declared.rs"
+  ],
+  "sensitiveLines": 19,
+  "dependencyChanges": []
+}

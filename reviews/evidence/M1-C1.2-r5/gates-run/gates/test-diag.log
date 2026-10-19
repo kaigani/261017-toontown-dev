@@ -1,0 +1,17 @@
+$ cargo test -p tt-desktop --locked --features m0-diagnostics
+   Compiling smallvec v1.16.3
+   Compiling getrandom v0.4.3
+   Compiling uuid v1.28.0
+   Compiling crossbeam-utils v0.8.23
+   Compiling crc32fast v1.5.2
+   Compiling parking_lot_core v0.9.12
+   Compiling cssparser v0.37.0
+rustc-LLVM ERROR: IO failure on output stream: no space on device
+error: could not compile `parking_lot_core` (lib)
+
+Caused by:
+warning: build failed, waiting for other jobs to finish...
+rustc-LLVM ERROR: IO failure on output stream: no space on device
+error: linking with `link.exe` failed: exit code: 1201
+  |
+  = 

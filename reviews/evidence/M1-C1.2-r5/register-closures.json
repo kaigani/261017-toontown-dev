@@ -1,0 +1,63 @@
+{
+  "commands": [
+    {
+      "id": "doc.diff",
+      "before": "divergent",
+      "after": "implemented",
+      "owner": "M1 C1.2",
+      "priorFindings": [
+        "C12-R4-01"
+      ],
+      "currentFindings": [],
+      "evidence": "c12_r4_closure; closure-probe.rs; fresh-invalidation-property.rs; schema-closure.json; sample30-audit.json"
+    },
+    {
+      "id": "export.publish.service.list",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M10 C10.2",
+      "priorFindings": [
+        "C12-R4-02"
+      ],
+      "currentFindings": [],
+      "evidence": "c12_r4_closure; closure-probe.rs; fresh-invalidation-property.rs; schema-closure.json; sample30-audit.json"
+    },
+    {
+      "id": "storyline.play.changed",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M9 C9.2",
+      "priorFindings": [
+        "C12-R4-02"
+      ],
+      "currentFindings": [],
+      "evidence": "c12_r4_closure; closure-probe.rs; fresh-invalidation-property.rs; schema-closure.json; sample30-audit.json"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R02",
+      "requirement": "Every inventory entry has constrained parameter/result schemas (plan 3.2; 11 14.2)",
+      "before": "divergent",
+      "after": "implemented",
+      "findings": [],
+      "evidence": "compact-gates/gates/test.log; ci-audit.json; logs/scoped-probes.log; schema-closure.json; logs/scoped-probes.log"
+    },
+    {
+      "id": "R12",
+      "requirement": "Query steps see prior staged changes (11 7.3)",
+      "before": "divergent",
+      "after": "implemented",
+      "findings": [],
+      "evidence": "compact-gates/gates/test.log; ci-audit.json; logs/scoped-probes.log; schema-closure.json; logs/scoped-probes.log"
+    },
+    {
+      "id": "R37",
+      "requirement": "Historical doc.diff within retained 10k window",
+      "before": "divergent",
+      "after": "implemented",
+      "findings": [],
+      "evidence": "compact-gates/gates/test.log; ci-audit.json; logs/scoped-probes.log; schema-closure.json; logs/scoped-probes.log"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "seed": "0xc125a570261019",
+  "source": "crates\\executor\\tests\\c12_invalidation_property.rs",
+  "sourceSha256": "4bcf33ec9d468380e1948644599eee075b8b864ad7b1cece1c3b9a443e6ca9b1",
+  "evidenceCopy": "fresh-invalidation-property.rs",
+  "permanentTestUnmodified": true,
+  "edits": [
+    "fresh seed",
+    "success-only coverage counter print"
+  ],
+  "exitCode": 0
+}

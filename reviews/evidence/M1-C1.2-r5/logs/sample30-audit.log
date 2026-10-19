@@ -1,0 +1,58 @@
+662 declarations -> reviews\evidence\M1-C1.2-r5\sample30-qpw_ntcg\declared.rs, reviews\evidence\M1-C1.2-r5\sample30-qpw_ntcg\declared.json
+{
+  "seed": "0xc12520261019",
+  "sampleSize": 30,
+  "contextDeclarationsAudited": 662,
+  "foreignSetsRemoved": 69,
+  "affectedDeclarations": 62,
+  "newOrModifiedSets": 0,
+  "sampleDirectOwnSets": 13,
+  "allNamedDefinitionsUnchanged": true,
+  "controls": [
+    {
+      "id": "export.publish.account.close",
+      "field": "connected",
+      "constRetained": false,
+      "oppositeRejected": true,
+      "source": "spec/A_command_registry.md:938"
+    },
+    {
+      "id": "storyline.play.start",
+      "field": "playing",
+      "constRetained": true,
+      "oppositeRejected": true,
+      "source": "spec/A_command_registry.md:849"
+    },
+    {
+      "id": "storyline.play.stop",
+      "field": "playing",
+      "constRetained": false,
+      "oppositeRejected": true,
+      "source": "spec/A_command_registry.md:850"
+    }
+  ],
+  "syntheticContext": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "connected": {
+          "type": "boolean"
+        },
+        "numeric": {
+          "type": "number"
+        },
+        "mixed": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
+    }
+  },
+  "qualification": "Scope is fix-induced narrowing and preservation of accepted owning domains, not reopening prior schema rulings."
+}

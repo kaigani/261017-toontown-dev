@@ -1,0 +1,39 @@
+{
+  "command": [
+    "cargo",
+    "run",
+    "--release",
+    "--locked",
+    "-q",
+    "-p",
+    "tt-render",
+    "--example",
+    "c03_raster",
+    "--",
+    "--out",
+    "reviews/evidence/M1-C1.2-r5/raster",
+    "--report",
+    "reviews/evidence/M1-C1.2-r5/raster-report.json",
+    "--check",
+    "crates/render/examples/c03_raster/hashes.json"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r5",
+  "startedAt": "2026-10-19T14:02:15.222294+00:00",
+  "durationSeconds": 62.084,
+  "exitCode": 0,
+  "head": "ec4329cb1abb47821ada701175730a3e691d41d7",
+  "dirtyFiles": [
+    "?? reviews/evidence/M1-C1.2-r5/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\raster.log",
+  "sha256": "f1a108b8e751de56c8a93859593151e4903428d3954d8da0f1daae88518c1ba0",
+  "extraEnv": {
+    "CARGO_BUILD_JOBS": "4",
+    "CARGO_INCREMENTAL": "0",
+    "CARGO_PROFILE_DEV_DEBUG": "0",
+    "CARGO_PROFILE_TEST_DEBUG": "0",
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r5\\reviews\\evidence\\M1-C1.2-r5"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "entries": 796,
+  "rootSchemasMatched": 1592,
+  "allNestedDefinitionsMatched": true,
+  "registrySha256": "89755b94d5a2b6d0d221bcfd93ecf17c3b8fef30195e0b6e0d929a4f3efe4fff",
+  "typescriptSha256": "c309f92dad164a3fadeab002344acd6fd089acb980a073558509c7aa2fc80ba3",
+  "extractedTablesSha256": "45c17187d03401958ad08050977164903bbbc4181f9c0004df2342261f4b1d38",
+  "nodeStderr": "",
+  "bigintBoundsComparedLosslessly": true
+}

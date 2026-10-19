@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r5\reviews\evidence\M1-C1.2-r5\audit-delta.py", line 28, in <module>
+    assert Validator(row[part]).is_valid(row['samples'][part]), (cid, part)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('tool.pen.set', 'result')

@@ -1,0 +1,33 @@
+{
+  "equalIgnoringTiming": true,
+  "checks": [
+    [
+      "engine.components",
+      true
+    ],
+    [
+      "engine.versions",
+      true
+    ],
+    [
+      "engine.ping",
+      true
+    ],
+    [
+      "determinism.ieee754",
+      true
+    ],
+    [
+      "kernel.executor",
+      true
+    ],
+    [
+      "headless.mcpLinked",
+      true
+    ]
+  ],
+  "sha256": {
+    "selftest-1.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "selftest-2.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4"
+  }
+}

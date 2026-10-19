@@ -1,0 +1,25 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r5/run-probes.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r5",
+  "startedAt": "2026-10-19T13:57:26.094895+00:00",
+  "durationSeconds": 19.884,
+  "exitCode": 0,
+  "head": "ec4329cb1abb47821ada701175730a3e691d41d7",
+  "dirtyFiles": [
+    "?? reviews/evidence/M1-C1.2-r5/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\scoped-probes.log",
+  "sha256": "251acc6d87b02d0873bf33ed2c472a1874eef3f4b3ea73b92a02abea1e6065dd",
+  "extraEnv": {
+    "CARGO_BUILD_JOBS": "4",
+    "CARGO_INCREMENTAL": "0",
+    "CARGO_PROFILE_DEV_DEBUG": "0",
+    "CARGO_PROFILE_TEST_DEBUG": "0",
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r5\\reviews\\evidence\\M1-C1.2-r5"
+  }
+}
