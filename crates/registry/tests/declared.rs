@@ -108,6 +108,8 @@ fn parameter_constraints_come_from_the_spec() {
 /// Scalar leaves of a value, as JSON Pointers.
 fn leaves(v: &Value, at: &str, out: &mut Vec<String>) {
     match v {
+        // An open object (a bound command's parameters, `x-open`): any members, not probed.
+        Value::Object(m) if m.contains_key("x-open") => {}
         Value::Object(m) => {
             m.iter().for_each(|(k, x)| leaves(x, &format!("{at}/{}", k.replace('~', "~0").replace('/', "~1")), out))
         }
@@ -119,6 +121,7 @@ fn leaves(v: &Value, at: &str, out: &mut Vec<String>) {
 /// Object positions of a value, as JSON Pointers.
 fn objects(v: &Value, at: &str, out: &mut Vec<String>) {
     match v {
+        Value::Object(m) if m.contains_key("x-open") => {}
         Value::Object(m) => {
             out.push(at.to_owned());
             m.iter().for_each(|(k, x)| objects(x, &format!("{at}/{}", k.replace('~', "~0").replace('/', "~1")), out));
@@ -196,4 +199,71 @@ fn placeholders_are_strict_and_recorded() {
     for f in &families {
         assert!(issues.contains(&format!("`{f}.*`")), "no spec issue records the placeholders of `{f}.*`");
     }
+}
+
+/// Every example the owning sections give for a declaration's types or for the command itself validates against the
+/// generated schema (C12-R3-01: the positive counterpart of the mutation test).
+#[test]
+fn owning_section_examples_validate() {
+    let mut checked = 0;
+    for (i, c) in DECLARED.iter().enumerate() {
+        for ex in tt_registry::declared_spec_examples(i) {
+            let part = ex["part"].as_str().unwrap();
+            let schema = declared_schema(i, part == "result");
+            let target = match ex["type"].as_str() {
+                Some(t) => json!({
+                    "$schema": "https://json-schema.org/draft/2020-12/schema",
+                    "$defs": schema["$defs"],
+                    "$ref": format!("#/$defs/{t}"),
+                }),
+                None => schema.clone(),
+            };
+            let errors = tt_registry::schema_violations(&target, &ex["value"], 5).unwrap();
+            assert!(
+                errors.is_empty(),
+                "{} {part}: the {} example of {} ({}) is rejected: {errors:?}",
+                c.decl.id,
+                ex["section"],
+                ex["type"],
+                if ex["literal"] == true { "literal" } else { "placeholders filled" }
+            );
+            checked += 1;
+        }
+    }
+    println!("section examples validated: {checked}");
+    assert!(checked > 60, "{checked}");
+}
+
+/// Every placeholder node names the spec issue that justifies it (C12-R3-01), and that issue is about its family.
+#[test]
+fn placeholders_carry_their_spec_issue() {
+    let issues =
+        std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../plan/spec-issues.md"))
+            .unwrap();
+    fn walk(v: &Value, out: &mut Vec<(bool, Option<String>)>) {
+        match v {
+            Value::Object(m) => {
+                if m.get("x-placeholder") == Some(&Value::Bool(true)) {
+                    out.push((true, m.get("x-specIssue").and_then(Value::as_str).map(str::to_owned)));
+                }
+                m.values().for_each(|x| walk(x, out));
+            }
+            Value::Array(a) => a.iter().for_each(|x| walk(x, out)),
+            _ => {}
+        }
+    }
+    let mut n = 0;
+    for (i, c) in DECLARED.iter().enumerate() {
+        let family = c.decl.id.split('.').next().unwrap();
+        let mut found = Vec::new();
+        walk(&declared_schema(i, false), &mut found);
+        walk(&declared_schema(i, true), &mut found);
+        for (_, issue) in found {
+            let issue = issue.unwrap_or_else(|| panic!("{}: a placeholder without its spec issue", c.decl.id));
+            let heading = format!("## {issue} — `{family}.*`");
+            assert!(issues.contains(&heading), "{}: {issue} is not the issue of `{family}.*`", c.decl.id);
+            n += 1;
+        }
+    }
+    println!("placeholders with their issue: {n}");
 }

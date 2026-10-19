@@ -197,7 +197,6 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Section:** 05 and spec A (`anim.*` command rows).
 - **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `anim.function.get` `/$defs/spec.Function/pins/*`: a member whose type is not stated (`pin`)
   - `anim.function.preset.apply` `/result/segments`: a member whose type is not stated (`segments`)
   - `anim.node.get` `/result/static`: a member whose type is not stated (`static`)
   - `anim.prefs.set` `/result/prefs`: a member whose type is not stated (`prefs`)
@@ -228,6 +227,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   - `colour.palette.set` `/params/palette`: an object whose fields are not listed
   - `colour.swatch.create` `/params/value`: an object whose fields are not listed
   - `colour.swatch.create` `/params/values`: an object whose fields are not listed
+  - `colour.swatch.list` `/result/swatches/*/value`: an object whose fields are not listed
   - `colour.swatch.set` `/params/values`: an object whose fields are not listed
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
@@ -239,9 +239,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   - `draw.content.add` `/params/content`: an object whose fields are not listed
   - `draw.content.add` `/result/idMap`: an object whose fields are not listed
   - `draw.current.get` `/result/activeView`: a member whose type is not stated (`activeView`)
+  - `draw.drawing.get` `/$defs/spec.DrawingReadback/nodes/*/strokes/*/textureMatrix`: a member whose type is not stated (`textureMatrix`)
+  - `draw.drawing.get` `/$defs/spec.DrawingReadback/nodes/*/zones/*/textureMatrix`: a member whose type is not stated (`textureMatrix`)
   - `draw.erase.apply` `/params/pen`: an object whose fields are not listed
   - `draw.hitTest.get` `/result/hits/*`: an object whose fields are not listed
-  - `draw.selection.changed` `/result/selectedPoints/*`: an object whose fields are not listed
   - `draw.text.add` `/params/format`: an object whose fields are not listed
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
@@ -251,19 +252,12 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Section:** 02 and spec A (`drawAid.*` command rows).
 - **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
   - `drawAid.changed` `/result/state`: an object whose fields are not listed
-  - `drawAid.lightTableShade.set` `/result/auto`: a member whose type is not stated (`auto`)
-  - `drawAid.lightTableShade.set` `/result/static`: a member whose type is not stated (`static`)
-  - `drawAid.staticLightTable.set` `/result/entries/*`: an object whose fields are not listed
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
-## SI-028 — `element.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-028 — `element.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 04 and spec A (`element.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `element.get` `/$defs/spec.ElementInfo/media`: a member whose type is not stated (`media`)
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved in C1.2 r3 (C12-R3-01):** every position of `element.*` is now typed from its owning section or its sibling commands; no placeholder remains.
 
 ## SI-029 — `export.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -281,7 +275,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   - `export.publish.validate` `/params/export`: an object whose fields are not listed
   - `export.publish.validate` `/params/metadata`: an object whose fields are not listed
   - `export.report.get` `/result/cameraSize`: a member whose type is not stated (`cameraSize`)
+  - `export.settings.get` `/result/settings`: an object whose fields are not listed
   - `export.settings.set` `/params/settings`: an object whose fields are not listed
+  - `export.settings.set` `/result/settings`: an object whose fields are not listed
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
@@ -294,6 +290,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   - `fx.create` `/params/params`: an object whose fields are not listed
   - `fx.dropShadow.transform.set` `/result/transform`: a member whose type is not stated (`transform`)
   - `fx.keyframe.add` `/params/values`: an object whose fields are not listed
+  - `fx.keyframe.list` `/result/keyframes/*/values`: an object whose fields are not listed
   - `fx.params.get` `/result/values`: an object whose fields are not listed
   - `fx.params.get` `/result/derived`: an object whose fields are not listed
   - `fx.params.set` `/params/values`: an object whose fields are not listed
@@ -304,6 +301,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   - `fx.preset.get` `/$defs/spec.Preset/static`: an object whose fields are not listed
   - `fx.preset.get` `/$defs/spec.Preset/dynamic`: an object whose fields are not listed
   - `fx.renderList.get` `/result/items/*`: a type the section does not define (RenderItem)
+  - `fx.renderer.options.changed` `/result/values`: an object whose fields are not listed
   - `fx.renderer.options.get` `/result/values`: an object whose fields are not listed
   - `fx.renderer.options.set` `/params/values`: an object whose fields are not listed
   - `fx.renderer.options.set` `/result/values`: an object whose fields are not listed
@@ -312,24 +310,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
-## SI-031 — `import.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-031 — `import.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 09 and spec A (`import.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `import.file.get` `/$defs/spec.ImportFileInfo/pages`: a member whose type is not stated (`pages`)
-  - `import.file.run` `/$defs/spec.ImportResult/errors/*`: a member whose type is not stated (`error`)
-  - `import.keyedImages.run` `/$defs/spec.ImportResult/errors/*`: a member whose type is not stated (`error`)
-  - `import.movie.run` `/$defs/spec.ImportResult/errors/*`: a member whose type is not stated (`error`)
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved in C1.2 r3 (C12-R3-01):** every position of `import.*` is now typed from its owning section or its sibling commands; no placeholder remains.
 
-## SI-032 — `keymap.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-032 — `keymap.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 01 and spec A (`keymap.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `keymap.set` `/params/params`: an object whose fields are not listed
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved in C1.2 r3 (C12-R3-01):** every position of `keymap.*` is now typed from its owning section or its sibling commands; no placeholder remains.
 
 ## SI-033 — `library.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -344,13 +331,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Section:** 07 and spec A (`lipsync.*` command rows).
 - **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
   - `lipsync.apply` `/params/mapping`: an object whose fields are not listed
-  - `lipsync.apply` `/$defs/spec.ApplyResult/framesSkipped/*`: a member whose type is not stated (`framesSkipped`)
-  - `lipsync.apply` `/$defs/spec.ApplyResult/unmappedMouths/*`: a member whose type is not stated (`unmappedMouth`)
   - `lipsync.detect` `/params/phonemeMap`: an object whose fields are not listed
-  - `lipsync.mapping.set` `/result/mapping`: a member whose type is not stated (`mapping`)
-  - `lipsync.settings.get` `/result/phonemeMap`: a member whose type is not stated (`phonemeMap`)
+  - `lipsync.settings.get` `/result/phonemeMap`: an object whose fields are not listed
   - `lipsync.settings.set` `/params/phonemeMap`: an object whose fields are not listed
-  - `lipsync.settings.set` `/result/phonemeMap`: a member whose type is not stated (`phonemeMap`)
+  - `lipsync.settings.set` `/result/phonemeMap`: an object whose fields are not listed
   - `lipsync.shapes.list` `/result/shapes/*/referenceImage`: a member whose type is not stated (`referenceImage`)
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
@@ -364,22 +348,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
-## SI-036 — `prefs.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-036 — `prefs.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 01 and spec A (`prefs.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `prefs.get` `/result/values`: an object whose fields are not listed
-  - `prefs.list` `/result/*/default`: a member whose type is not stated (`default`)
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved in C1.2 r3 (C12-R3-01):** every position of `prefs.*` is now typed from its owning section or its sibling commands; no placeholder remains.
 
-## SI-037 — `print.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-037 — `print.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 09 and spec A (`print.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `print.settings.set` `/params/values`: an object whose fields are not listed
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved in C1.2 r3 (C12-R3-01):** every position of `print.*` is now typed from its owning section or its sibling commands; no placeholder remains.
 
 ## SI-038 — `sound.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -404,10 +379,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
   - `tool.list` `/result/tools/*/options`: an object whose fields are not listed
   - `tool.list` `/result/tools/*/optionSchema`: an object whose fields are not listed
+  - `tool.options.changed` `/result/options`: an object whose fields are not listed
   - `tool.options.get` `/result/options`: an object whose fields are not listed
   - `tool.options.set` `/params/options`: an object whose fields are not listed
+  - `tool.options.set` `/result/options`: an object whose fields are not listed
   - `tool.pen.create` `/params/settings`: an object whose fields are not listed
-  - `tool.pen.set` `/result/pen`: a member whose type is not stated (`pen`)
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
@@ -428,16 +404,8 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
-## SI-043 — `xsheet.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-043 — `xsheet.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 04 and spec A (`xsheet.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `xsheet.exposures.set` `/params/columns/*`: an object whose fields are not listed
-  - `xsheet.exposures.set` `/result/createdDrawings/*`: a member whose type is not stated (`createdDrawing`)
-  - `xsheet.lightTable.add` `/params/items/*`: an object whose fields are not listed
-  - `xsheet.panel.set` `/result/lightTable`: a member whose type is not stated (`lightTable`)
-  - `xsheet.panel.set` `/result/toolbar`: a member whose type is not stated (`toolbar`)
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved in C1.2 r3 (C12-R3-01):** every position of `xsheet.*` is now typed from its owning section or its sibling commands; no placeholder remains.
 
 <!-- end of generated placeholder issues -->

@@ -75,7 +75,8 @@ EXTRA_NUMBERS = re.compile(
     r"^(rotationDegrees|duration|t|p|pressure|minSize|smoothness|roll|effectiveFov|zoomLevel|age|freedMB|"
     r"cacheUsedMB|cacheBudgetMB|systemMemoryMB|recommendedTextureCacheMB|effectiveFps|depthNudgeStep|"
     r"defaultTension|defaultContinuity|defaultBias|captureSpeed|total|lightTableShade|movieOpacity)$")
-EXTRA_INTEGERS = re.compile(r"^(sceneLength|cycleLength|bitDepth|fileSize|maxInlinePixels|maxTextureSize|rowsSelected)$")
+EXTRA_INTEGERS = re.compile(
+    r"^(sceneLength|cycleLength|bitDepth|fileSize|maxInlinePixels|maxTextureSize|rowsSelected|framesSkipped|pages)$")
 EXTRA_BOOLEANS = re.compile(
     r"^(visibleInScene|visibleInXsheet|hiddenByParent|annotation|placeBehind|drawTopLayer|snapToContour|symmetry|approximated|reusedAsset|decodable|complete|optional|"
     r"fitToCamera|preserveImageLayers|preserveVectorLayers|dark|hidden|deformable|descendantKeyed|constant|"
@@ -89,7 +90,8 @@ EXTRA_STRINGS = re.compile(
     r"^(onConflict|tool|tipShape|variant|category|operation|orientation|paperSize|audioFormat|displayUnits|"
     r"outputDevice|view|projection|extension|option|gapClosing|onionSkinStyle|defaultRange|exposureText|"
     r"preset|background|aid|keyedChannel|param|rendering|visibility|actual|change|target|slot|group|swatch|placement|"
-    r"before|after|previous|next|small|medium|large|linear|radial|texture|resolved|enabledRange|conflictMode)$")
+    r"before|after|previous|next|small|medium|large|linear|radial|texture|resolved|enabledRange|conflictMode|"
+    r"unmappedMouth)$")
 EXTRA_ID_LISTS = re.compile(r"^(removed|added|updated|created|movedKeys|mergedKeys|skipped|elementList|notes)$")
 
 
@@ -198,7 +200,9 @@ def infer(values: list, name: str = "", optional: frozenset = frozenset()):
             return dict(SCALAR_PLACEHOLDER)
         return {"anyOf": [named, {"type": "null"}]}
     if kinds <= {"integer", "number"}:
-        if named and named.get("type") in ("integer", "number"):
+        if "number" in kinds:
+            base = dict(NUMBER)  # the example has a fraction: never narrowed to integer by the name
+        elif named and named.get("type") in ("integer", "number"):
             base = named
         else:
             base = dict(NUMBER)
@@ -217,7 +221,8 @@ def infer(values: list, name: str = "", optional: frozenset = frozenset()):
         if items:
             item = infer(items, _singular(name), optional)
         else:
-            item = leaf_for_name(_singular(name)) or dict(SCALAR_PLACEHOLDER)
+            # An empty example list: typed later by the field's name or context (warnings, frames, mouths …).
+            item = leaf_for_name(_singular(name)) or {}
         base = {"type": "array", "items": item, "maxItems": 100000}
     elif kinds == {"object"} and all(set(v) == {"$typeRef"} for v in values):
         base = {"$ref": f"#/$defs/{values[0]['$typeRef']}"}
@@ -250,11 +255,38 @@ def _blocks(text: str):
             for m in re.finditer(r"```[a-zA-Z]*\n(.*?)```", text, re.S)]
 
 
+# Every section example a type was read from: name → (section, instance). Instances are the example with its
+# placeholders read as values (`"…"` → a non-empty string, `#RRGGBBAA` → a colour, `{ /* T */ }` → T's example);
+# `literal` marks examples that are strict JSON as written.
+EXAMPLES: dict = {}
+
+
+def _instance(text: str):
+    """The example as an instance (placeholders filled), or None."""
+    t = re.sub(r'"…"', '"x"', text)
+    t = re.sub(r'"…([^"]*)"', r'"x\1"', t)
+    t = t.replace('"#RRGGBBAA"', '"#000000FF"')
+    cleaned, _ = _clean_json(t)
+    try:
+        return json.loads(cleaned)
+    except ValueError:
+        return None
+
+
 def _add(types: dict, unparsed: list, section: str, name: str, body: str, base=None):
     v, optional = _parse(body)
     if v is None:
         unparsed.append(f"{section}:{name}")
         return
+    if name not in EXAMPLES:
+        try:
+            json.loads(body)
+            literal = True
+        except ValueError:
+            literal = False
+        inst = _instance(body)
+        if inst is not None and not base:
+            EXAMPLES[name] = {"section": section, "literal": literal, "value": inst}
     schema = infer([v], name, frozenset(optional))
     if base:
         schema = {"allOf": [{"$ref": f"#/$defs/{base}"}], "x-extends": base, **schema}
@@ -294,11 +326,20 @@ def catalogue():
             unparsed.append(f"{section}:{name}")
             continue
         _add(types, unparsed, section, name, m.group(1))
+    # Shapes the prose beside an example states (05 §19.4: "`pins` lists the implicit keyframe pins `{frame, value}`").
+    text05 = next(SPEC.glob("05_*.md")).read_text(encoding="utf-8")
+    if "Function" in types and "`pins` lists the implicit keyframe pins `{frame, value}`" in text05:
+        types["Function"]["properties"]["pins"] = {
+            "type": "array", "maxItems": 100000,
+            "items": {"type": "object", "properties": {"frame": dict(NUMBER), "value": dict(NUMBER)},
+                      "required": ["frame", "value"], "additionalProperties": False}}
     return types, unparsed
 
 
 # Untitled example blocks that define a shape: (section, heading the block follows, type name).
 ANCHORS = [
+    ("02", "**`draw.drawing.get` result:**", "DrawingReadback"),
+    ("04", "`xsheet.exposures.set` writes the same shape back:", "ExposureSheetWrite"),
     ("04", "### 17.2 Exposure sheet as JSON", "ExposureSheet"),
     ("04", "### 17.3 Transfer options object", "TransferOptions"),
     ("04", "`element.get` returns:", "ElementInfo"),

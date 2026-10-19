@@ -6380,7 +6380,7 @@ export const COMMAND_INDEX = {
     examples: [
       {
         values: {
-          key1: 1,
+          key1: true,
         },
       },
     ],
@@ -9659,7 +9659,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               type: "number",
             },
             length: {
-              type: "integer",
+              type: "number",
+              minimum: 0.01,
             },
             x: {
               type: "number",
@@ -10091,17 +10092,41 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       position: {
-        type: "integer",
+        type: "object",
+        properties: {
+          x: {
+            type: "number",
+          },
+          y: {
+            type: "number",
+          },
+          z: {
+            type: "number",
+          },
+        },
+        required: [
+          "x",
+          "y",
+          "z",
+        ],
+        additionalProperties: false,
+        description: "Default: {0,0,16}.",
       },
       roll: {
         type: "number",
       },
       fovMode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "static",
+          "dynamic",
+        ],
       },
       fov: {
         type: "number",
+        minimum: 1,
+        maximum: 179,
+        default: 41.1121,
       },
       effectiveFov: {
         type: "number",
@@ -10353,10 +10378,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "object",
         properties: {
           from: {
-            type: "integer",
+            type: "number",
           },
           to: {
-            type: "integer",
+            type: "number",
           },
         },
         required: [
@@ -10411,7 +10436,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       keyCount: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -10460,7 +10485,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       keyCount: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -10515,7 +10540,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       keyCount: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -11387,7 +11412,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             frame: {
-              type: "integer",
+              type: "number",
             },
             nodes: {
               type: "array",
@@ -11513,7 +11538,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       curveType: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "spline",
+          "interpolation",
+          "velocityBased",
+        ],
       },
     },
     required: [
@@ -11639,17 +11668,23 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       pins: {
         type: "array",
-        items: {
-          type: [
-            "string",
-            "number",
-            "boolean",
-            "null",
-          ],
-          "x-placeholder": true,
-          description: "type not stated by the owning section (spec issue); a scalar",
-        },
         maxItems: 100000,
+        items: {
+          type: "object",
+          properties: {
+            frame: {
+              type: "number",
+            },
+            value: {
+              type: "number",
+            },
+          },
+          required: [
+            "frame",
+            "value",
+          ],
+          additionalProperties: false,
+        },
       },
     },
     additionalProperties: false,
@@ -11701,7 +11736,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       frame: {
-        type: "integer",
+        type: "number",
       },
       value: {
         type: "number",
@@ -11891,7 +11926,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       frame: {
-        type: "integer",
+        type: "number",
       },
       value: {
         type: "number",
@@ -11936,10 +11971,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             curveType: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "spline",
+                "interpolation",
+                "velocityBased",
+              ],
             },
             keyCount: {
-              type: "integer",
+              type: "number",
             },
             allowedCurveTypes: {
               type: "array",
@@ -12027,6 +12066,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-023",
       },
     },
     required: [
@@ -12079,7 +12119,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             frame: {
-              type: "integer",
+              type: "number",
             },
             value: {
               type: "number",
@@ -12128,7 +12168,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             frame: {
-              type: "integer",
+              type: "number",
             },
             value: {
               type: "number",
@@ -12138,7 +12178,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             handleMode: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "smooth",
+                "broken",
+              ],
             },
             left: {
               type: "object",
@@ -12174,7 +12217,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             preset: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "constant",
+                "linear",
+                "easeInOut",
+                "fastInOut",
+                "extremeEaseInOut",
+                "extremeFastInOut",
+                "slowAcceleration",
+                "slowDeceleration",
+              ],
             },
           },
           required: [
@@ -12209,7 +12261,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxLength: 65536,
       },
       keyCount: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -12243,17 +12295,21 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       projection: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "x",
+          "y",
+          "z",
+        ],
       },
       selectedFrames: {
         type: "array",
         items: {
-          type: "integer",
+          type: "number",
         },
         maxItems: 100000,
       },
       syncFrame: {
-        type: "integer",
+        type: "number",
       },
       view: {
         type: "string",
@@ -12448,7 +12504,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
         minLength: 1,
         maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "object ID or path reference (10 §3) or \"next\"",
       },
       approximated: {
         type: "boolean",
@@ -12596,7 +12652,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               type: "string",
               minLength: 1,
               maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
+              description: "object ID or path reference (10 §3) or \"next\"",
             },
             childIds: {
               type: "array",
@@ -12992,7 +13048,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       cycleLength: {
-        type: "integer",
+        type: "number",
       },
       duration: {
         type: "number",
@@ -13049,6 +13105,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-023",
       },
       options: {
         type: "array",
@@ -13253,7 +13310,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       length: {
-        type: "integer",
+        type: "number",
       },
       points: {
         type: "array",
@@ -13271,7 +13328,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               maxLength: 65536,
             },
             frame: {
-              type: "integer",
+              type: "number",
             },
             x: {
               type: "number",
@@ -13455,7 +13512,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       frame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -13842,7 +13899,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           properties: {
             kind: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "key",
+                "control",
+              ],
             },
             frame: {
               type: "integer",
@@ -13858,12 +13918,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             tension: {
               type: "number",
+              minimum: -1,
+              maximum: 1,
             },
             continuity: {
               type: "number",
+              minimum: -1,
+              maximum: 1,
             },
             bias: {
               type: "number",
+              minimum: -1,
+              maximum: 1,
             },
             constantSegment: {
               type: "boolean",
@@ -14162,24 +14228,29 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       defaultTension: {
         type: "number",
+        minimum: -1,
+        maximum: 1,
       },
       defaultContinuity: {
         type: "number",
+        minimum: -1,
+        maximum: 1,
       },
       defaultBias: {
         type: "number",
+        minimum: -1,
+        maximum: 1,
       },
       units: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        type: "string",
+        enum: [
+          "fields",
+          "inches",
+          "centimetres",
+        ],
       },
       displayUnits: {
-        type: "string",
-        maxLength: 65536,
+        type: "boolean",
       },
       boxHighlighting: {
         type: "boolean",
@@ -14195,6 +14266,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       depthNudgeStep: {
         type: "number",
+        minimum: 0.0001,
+        maximum: 1,
       },
     },
     required: [
@@ -14276,6 +14349,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-023",
       },
     },
     required: [
@@ -14305,6 +14379,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           additionalProperties: false,
           "x-placeholder": true,
           description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-023",
         },
         maxItems: 100000,
       },
@@ -14338,7 +14413,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               type: "number",
             },
             depth: {
-              type: "integer",
+              type: "number",
             },
             visible: {
               type: "boolean",
@@ -14429,10 +14504,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       firstFrame: {
-        type: "integer",
+        type: "number",
       },
       lastFrame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -14457,9 +14532,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       captureSpeed: {
         type: "number",
+        minimum: 0.1,
+        maximum: 10,
       },
       smoothness: {
-        type: "number",
+        type: "integer",
+        minimum: 0,
+        maximum: 100,
       },
       autoExtendExposure: {
         type: "boolean",
@@ -14499,12 +14578,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
+        type: "object",
+        properties: {
+          captureSpeed: {
+            type: "number",
+            minimum: 0.1,
+            maximum: 10,
+          },
+          smoothness: {
+            type: "integer",
+            minimum: 0,
+            maximum: 100,
+          },
+          autoExtendExposure: {
+            type: "boolean",
+          },
         },
-        maxItems: 100000,
+        required: [
+          "captureSpeed",
+          "smoothness",
+          "autoExtendExposure",
+        ],
+        additionalProperties: false,
       },
     },
     required: [
@@ -14590,13 +14685,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       firstFrame: {
-        type: "integer",
+        type: "number",
       },
       lastFrame: {
-        type: "integer",
+        type: "number",
       },
       keyCount: {
-        type: "integer",
+        type: "number",
       },
       channels: {
         type: "array",
@@ -15526,7 +15621,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       tool: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "select",
+          "transform",
+          "record",
+          "rotate",
+          "skew",
+          "scale",
+          "motion",
+          "boneCreate",
+          "boneSetup",
+          "boneManipulate",
+          "boneInverse",
+          "boneForward",
+          "boneInfluence",
+          "boneParent",
+        ],
       },
     },
     required: [
@@ -15549,7 +15659,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       tool: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "select",
+          "transform",
+          "record",
+          "rotate",
+          "skew",
+          "scale",
+          "motion",
+          "boneCreate",
+          "boneSetup",
+          "boneManipulate",
+          "boneInverse",
+          "boneForward",
+          "boneInfluence",
+          "boneParent",
+        ],
       },
     },
     required: [
@@ -15598,7 +15723,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       tool: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "select",
+          "transform",
+          "record",
+          "rotate",
+          "skew",
+          "scale",
+          "motion",
+          "boneCreate",
+          "boneSetup",
+          "boneManipulate",
+          "boneInverse",
+          "boneForward",
+          "boneInfluence",
+          "boneParent",
+        ],
       },
     },
     required: [
@@ -15821,6 +15961,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           additionalProperties: false,
           "x-placeholder": true,
           description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-023",
         },
         maxItems: 100000,
       },
@@ -15856,6 +15997,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           additionalProperties: false,
           "x-placeholder": true,
           description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-023",
         },
         maxItems: 100000,
       },
@@ -15889,7 +16031,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       type: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "drawing",
+          "camera",
+          "top",
+          "side",
+        ],
       },
       zoom: {
         type: "number",
@@ -15939,7 +16086,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       slot: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "A",
+          "B",
+          "other",
+        ],
+        default: "other",
       },
     },
     required: [
@@ -15991,7 +16143,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       slot: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "A",
+          "B",
+          "other",
+        ],
+        default: "other",
       },
       state: {
         type: "string",
@@ -16045,7 +16202,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       type: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "drawing",
+          "camera",
+          "top",
+          "side",
+        ],
       },
     },
     required: [
@@ -18016,6 +18178,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-024",
       },
     },
     additionalProperties: false,
@@ -18211,6 +18374,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-024",
       },
     },
     required: [
@@ -18230,6 +18394,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-024",
       },
       rejected: {
         type: "array",
@@ -18595,7 +18760,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
         minLength: 1,
         maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "object ID or path reference (10 §3) or \"new\"",
       },
       drawingId: {
         type: "string",
@@ -18613,7 +18778,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       nextFrame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -18845,7 +19010,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               description: "object ID or path reference (10 §3)",
             },
             frame: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -18903,13 +19068,23 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       reference: {
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3) or \"none\" | \"previousCapture\"",
       },
       opacity: {
-        type: "number",
+        type: "integer",
+        minimum: 0,
+        maximum: 100,
+        default: 50,
       },
       aspectRatio: {
-        type: "number",
+        type: "string",
+        enum: [
+          "fit",
+          "fill",
+          "stretch",
+        ],
       },
     },
     required: [
@@ -18979,6 +19154,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-024",
       },
     },
     required: [
@@ -19639,17 +19815,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
         minLength: 1,
         maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "object ID or path reference (10 §3) or \"new\"",
       },
       frame: {
         type: "integer",
       },
       insertMode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "insert",
+          "overwrite",
+        ],
+        default: "insert",
       },
       advance: {
         type: "boolean",
+        default: true,
       },
     },
     required: [
@@ -19704,10 +19885,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               description: "object ID or path reference (10 §3)",
             },
             from: {
-              type: "integer",
+              type: "number",
             },
             to: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -19769,10 +19950,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               description: "object ID or path reference (10 §3)",
             },
             from: {
-              type: "integer",
+              type: "number",
             },
             to: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -20035,10 +20216,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxLength: 65536,
       },
       elementCount: {
-        type: "integer",
+        type: "number",
       },
       frames: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -20123,16 +20304,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       from: {
-        type: "integer",
+        type: "number",
       },
       to: {
-        type: "integer",
+        type: "number",
       },
       totalFrames: {
         type: "integer",
       },
       loops: {
         type: "integer",
+        minimum: 1,
+        maximum: 999,
       },
       sequence: {
         type: "array",
@@ -20144,10 +20327,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               maxLength: 65536,
             },
             from: {
-              type: "integer",
+              type: "number",
             },
             to: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -20493,13 +20676,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       from: {
-        type: "integer",
+        type: "number",
       },
       to: {
-        type: "integer",
+        type: "number",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -20558,10 +20741,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               description: "object ID or path reference (10 §3)",
             },
             from: {
-              type: "integer",
+              type: "number",
             },
             to: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -21083,10 +21266,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       from: {
-        type: "integer",
+        type: "number",
       },
       to: {
-        type: "integer",
+        type: "number",
       },
       currentElementId: {
         type: "string",
@@ -21095,7 +21278,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       currentFrame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -21131,13 +21314,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       from: {
-        type: "integer",
+        type: "number",
       },
       to: {
-        type: "integer",
+        type: "number",
       },
       rowsSelected: {
-        type: "integer",
+        type: "number",
       },
       currentElementId: {
         type: "string",
@@ -21146,7 +21329,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       currentFrame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -21590,6 +21773,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             additionalProperties: false,
             "x-placeholder": true,
             description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+            "x-specIssue": "SI-025",
           },
         ],
       },
@@ -21640,7 +21824,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -21741,7 +21925,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -21764,7 +21948,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "off",
+          "small",
+          "medium",
+          "large",
+        ],
       },
       tolerancesPx: {
         type: "object",
@@ -21823,7 +22012,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "off",
+          "small",
+          "medium",
+          "large",
+        ],
       },
     },
     required: [
@@ -22159,7 +22353,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -22311,7 +22505,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -22476,7 +22670,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -22557,6 +22751,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           additionalProperties: false,
           "x-placeholder": true,
           description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-025",
         },
         maxItems: 100000,
       },
@@ -22683,6 +22878,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-025",
       },
     },
     required: [
@@ -22735,10 +22931,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "file-system path (11 §6.2)",
       },
       paletteCount: {
-        type: "integer",
+        type: "number",
       },
       textureCount: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -22780,469 +22976,188 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-spec": "`paletteId: id; includeUsage: bool = false; thumbnails: bool = false; thumbnailSize: int = 32 (8..256)`",
   },
-  "colour.palette.get.Colour": {
-    type: "string",
-    pattern: "^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
-    description: "sRGB colour with straight alpha, #RRGGBBAA (written upper case; #RRGGBB accepted on input).",
-  },
-  "colour.palette.get.Ext": {
-    type: "object",
-    propertyNames: {
-      pattern: "^[A-Za-z0-9][A-Za-z0-9-]*(\\.[A-Za-z0-9][A-Za-z0-9-]*)+$",
-    },
-    description: "Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim.",
-  },
-  "colour.palette.get.GradientStop": {
+  "colour.palette.get.spec.PaletteObject": {
     type: "object",
     additionalProperties: false,
-    properties: {
-      position: {
-        type: "number",
-        maximum: 1,
-        description: "Position along the gradient, 0–1.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      rgba: {
-        $ref: "#/$defs/colour.palette.get.Colour",
-        description: "Colour at the stop.",
-        "x-since": "1.0",
-      },
-    },
     required: [
-      "position",
-      "rgba",
+      "id",
+      "name",
+      "styles",
+      "swatches",
     ],
-    description: "A gradient stop (03 §12.3).",
-  },
-  "colour.palette.get.GradientValue": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      stops: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/colour.palette.get.GradientStop",
-        },
-        description: "The stops.",
-        minItems: 2,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "stops",
-    ],
-    description: "`{stops}` with at least two stops sorted by position.",
-  },
-  "colour.palette.get.Id": {
-    type: "string",
-    pattern: "^[A-Za-z0-9_-]{1,64}$",
-  },
-  "colour.palette.get.Palette": {
-    type: "object",
-    additionalProperties: false,
+    "x-specSection": "03",
     properties: {
       id: {
-        $ref: "#/$defs/colour.palette.get.Id",
-        description: "Immutable ID.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
         type: "string",
-        const: "palette",
-        readOnly: true,
-        description: "Always `palette`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
+        minLength: 1,
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3)",
       },
       name: {
-        pattern: "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
-        description: "Unique in the project.",
-        "x-command": "colour.palette.rename",
-        minLength: 1,
-        maxLength: 128,
         type: "string",
-        "x-since": "1.0",
+        maxLength: 65536,
       },
       styles: {
         type: "array",
-        items: {
-          $ref: "#/$defs/colour.palette.get.PaletteStyle",
-        },
-        description: "Styles in order; at least one.",
         minItems: 1,
-        "x-since": "1.0",
+        maxItems: 100000,
+        items: {
+          type: "object",
+          properties: {
+            id: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            name: {
+              type: "string",
+              maxLength: 65536,
+            },
+          },
+          required: [
+            "id",
+            "name",
+          ],
+          additionalProperties: false,
+        },
       },
       swatches: {
         type: "array",
+        maxItems: 100000,
         items: {
-          $ref: "#/$defs/colour.palette.get.Swatch",
-        },
-        description: "Swatches in user order; may be empty.",
-        "x-since": "1.0",
-      },
-      hidden: {
-        type: "boolean",
-        description: "Internal palette never shown to the user (03 §1.2; SI-005).",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/colour.palette.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "A palette (10 §4.13, 03 §1.3 and §12.3).",
-    "x-objectType": "palette",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "name",
-        "styles",
-        "swatches",
-        "hidden",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "colour.palette.get.PaletteStyle": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/colour.palette.get.Id",
-        description: "Immutable ID.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "paletteStyle",
-        readOnly: true,
-        description: "Always `paletteStyle`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      name: {
-        pattern: "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
-        description: "Unique in the palette.",
-        "x-command": "colour.style.rename",
-        minLength: 1,
-        maxLength: 128,
-        type: "string",
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/colour.palette.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "A palette style: an alternative set of values for all swatches of its palette (03 §1.5).",
-    "x-objectType": "paletteStyle",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "name",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "colour.palette.get.SolidValue": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      rgba: {
-        $ref: "#/$defs/colour.palette.get.Colour",
-        description: "The colour.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "rgba",
-    ],
-    description: "`{rgba}`.",
-  },
-  "colour.palette.get.Swatch": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      colourId: {
-        $ref: "#/$defs/colour.palette.get.Id",
-        description: "Immutable colour ID, unique across the project.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "swatch",
-        readOnly: true,
-        description: "Always `swatch`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      name: {
-        pattern: "^(?:[^\\u0000-\\u001F\\u007F\\s]|[^\\u0000-\\u001F\\u007F\\s][^\\u0000-\\u001F\\u007F]*[^\\u0000-\\u001F\\u007F\\s])$",
-        description: "Label; names may repeat.",
-        "x-command": "colour.swatch.set",
-        minLength: 1,
-        maxLength: 128,
-        type: "string",
-        "x-since": "1.0",
-      },
-      kind: {
-        $ref: "#/$defs/colour.palette.get.SwatchKind",
-        description: "Solid, gradient or texture; shared by all styles.",
-        "x-command": "colour.swatch.set",
-        "x-since": "1.0",
-      },
-      deformable: {
-        type: "boolean",
-        description: "Whether a gradient/texture fill follows bone deformation (03 §7.5).",
-        "x-since": "1.0",
-      },
-      values: {
-        type: "object",
-        additionalProperties: false,
-        patternProperties: {
-          "^[A-Za-z0-9_-]{1,64}$": {
-            $ref: "#/$defs/colour.palette.get.SwatchValue",
+          type: "object",
+          additionalProperties: false,
+          required: [
+            "colourId",
+            "name",
+            "kind",
+            "deformable",
+            "values",
+          ],
+          properties: {
+            colourId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            name: {
+              type: "string",
+              maxLength: 65536,
+            },
+            kind: {
+              type: "string",
+              enum: [
+                "solid",
+                "linearGradient",
+                "radialGradient",
+                "texture",
+              ],
+            },
+            deformable: {
+              type: "boolean",
+            },
+            values: {
+              type: "object",
+              properties: {},
+              additionalProperties: {
+                anyOf: [
+                  {
+                    type: "object",
+                    properties: {
+                      rgba: {
+                        type: "string",
+                        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
+                        description: "#RRGGBB or #RRGGBBAA",
+                      },
+                    },
+                    required: [
+                      "rgba",
+                    ],
+                    additionalProperties: false,
+                  },
+                  {
+                    type: "object",
+                    properties: {
+                      stops: {
+                        type: "array",
+                        minItems: 2,
+                        maxItems: 256,
+                        items: {
+                          type: "object",
+                          properties: {
+                            position: {
+                              type: "number",
+                              minimum: 0,
+                              maximum: 1,
+                            },
+                            rgba: {
+                              type: "string",
+                              pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
+                              description: "#RRGGBB or #RRGGBBAA",
+                            },
+                          },
+                          required: [
+                            "position",
+                            "rgba",
+                          ],
+                          additionalProperties: false,
+                        },
+                      },
+                    },
+                    required: [
+                      "stops",
+                    ],
+                    additionalProperties: false,
+                  },
+                  {
+                    type: "object",
+                    properties: {
+                      image: {
+                        type: "string",
+                        minLength: 1,
+                        maxLength: 4096,
+                        description: "file-system path (11 §6.2)",
+                      },
+                      tile: {
+                        type: "boolean",
+                      },
+                      width: {
+                        type: "integer",
+                      },
+                      height: {
+                        type: "integer",
+                      },
+                    },
+                    required: [
+                      "image",
+                      "tile",
+                    ],
+                    additionalProperties: false,
+                  },
+                ],
+              },
+              propertyNames: {
+                minLength: 1,
+                maxLength: 4096,
+              },
+            },
+            usageCount: {
+              type: "integer",
+              minimum: 0,
+            },
+            thumbnail: {
+              type: "string",
+              description: "base64 PNG",
+            },
           },
         },
-        description: "Exactly one value per style of the palette, keyed by style ID (keys in canonical order, ADR-0011 §3).",
-        "x-command": "colour.swatch.set",
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/colour.palette.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
       },
     },
-    "x-since": "1.0",
-    description: "A swatch (03 §1.4, §12.3). Its identifier field is `colourId` (10 §2.2); `id` is accepted as an alias on input.",
-    "x-objectType": "swatch",
-    required: [
-      "colourId",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "colourId",
-        "type",
-        "rev",
-        "name",
-        "kind",
-        "deformable",
-        "values",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "colourId",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "colour.palette.get.SwatchKind": {
-    oneOf: [
-      {
-        type: "string",
-        const: "solid",
-        description: "One RGBA colour per style.",
-      },
-      {
-        type: "string",
-        const: "linearGradient",
-        description: "Linear gradient stops per style.",
-      },
-      {
-        type: "string",
-        const: "radialGradient",
-        description: "Radial gradient stops per style.",
-      },
-      {
-        type: "string",
-        const: "texture",
-        description: "Bitmap texture per style.",
-      },
-    ],
-    description: "Kind of a swatch (03 §1.4).",
-  },
-  "colour.palette.get.SwatchValue": {
-    anyOf: [
-      {
-        $ref: "#/$defs/colour.palette.get.SolidValue",
-        description: "A solid colour.",
-      },
-      {
-        $ref: "#/$defs/colour.palette.get.GradientValue",
-        description: "A gradient (linear or radial; the swatch `kind` says which).",
-      },
-      {
-        $ref: "#/$defs/colour.palette.get.TextureValue",
-        description: "A texture.",
-      },
-    ],
-    description: "The value of a swatch in one style (03 §12.3): `{rgba}`, `{stops}` or `{image, tile}`.",
-  },
-  "colour.palette.get.TextureValue": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      image: {
-        type: "string",
-        description: "Package entry path of the image, e.g. `textures/fabric-day.png`.",
-        minLength: 1,
-        maxLength: 1024,
-        "x-since": "1.0",
-      },
-      tile: {
-        type: "boolean",
-        description: "Repeat the image (true) or stretch it over the zone (false).",
-        "x-since": "1.0",
-      },
-      width: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Informative pixel width.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      height: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Informative pixel height.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "image",
-      "tile",
-    ],
-    description: "`{image, tile}`: a texture image entry (under `textures/`) and the tile flag; `width`/`height` informative.",
   },
   "colour.palette.get.result": {
-    $ref: "#/$defs/colour.palette.get.Palette",
+    $ref: "#/$defs/colour.palette.get.spec.PaletteObject",
     title: "colour.palette.get result",
     "x-spec": "Palette object (+ `usageCount` and base64 PNG `thumbnail` per swatch when requested)",
   },
@@ -23300,10 +23215,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             from: {
-              type: "integer",
+              type: "number",
             },
             to: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -23401,7 +23316,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               maxItems: 100000,
             },
             swatchCount: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -23530,6 +23445,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-025",
       },
       mode: {
         type: "string",
@@ -23874,7 +23790,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               description: "object ID or path reference (10 §3)",
             },
             count: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -24168,7 +24084,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -24363,7 +24279,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               maxLength: 65536,
             },
             index: {
-              type: "integer",
+              type: "number",
             },
             sceneIds: {
               type: "array",
@@ -24579,6 +24495,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-025",
       },
       values: {
         type: "object",
@@ -24586,6 +24503,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-025",
       },
       copyFrom: {
         type: "string",
@@ -24739,8 +24657,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "number",
       },
       thumbnail: {
-        type: "string",
-        maxLength: 65536,
+        type: "boolean",
+        default: false,
       },
     },
     required: [
@@ -24824,19 +24742,30 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             kind: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "solid",
+                "linearGradient",
+                "radialGradient",
+                "texture",
+              ],
             },
             index: {
               type: "integer",
             },
             deformable: {
               type: "boolean",
+              default: false,
             },
             value: {
-              type: "number",
+              type: "object",
+              properties: {},
+              additionalProperties: false,
+              "x-placeholder": true,
+              description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+              "x-specIssue": "SI-025",
             },
             usageCount: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -24975,6 +24904,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-025",
       },
     },
     required: [
@@ -27641,7 +27571,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -27761,7 +27691,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -27833,7 +27763,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -27861,6 +27791,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-026",
       },
       offset: {
         type: "object",
@@ -27908,9 +27839,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-026",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -27962,7 +27894,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       frame: {
-        type: "integer",
+        type: "number",
       },
       cellEmpty: {
         type: "boolean",
@@ -27979,6 +27911,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-026",
       },
     },
     required: [
@@ -28084,7 +28017,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -28114,7 +28047,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
       commandId: {
         type: "string",
@@ -28215,1690 +28148,645 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-spec": "`drawingId?: id; elementId?: id; frame?: int; include?: [enum \"zones\"|\"pressure\"|\"outline\"|\"bounds\"]; flatten: bool = false; ids?: [id]`",
   },
-  "draw.drawing.get.Alignment": {
-    oneOf: [
-      {
-        type: "string",
-        const: "left",
-        description: "Left.",
-      },
-      {
-        type: "string",
-        const: "centre",
-        description: "Centre.",
-      },
-      {
-        type: "string",
-        const: "right",
-        description: "Right.",
-      },
-      {
-        type: "string",
-        const: "justify",
-        description: "Justify.",
-      },
-    ],
-    description: "Paragraph alignment.",
-  },
-  "draw.drawing.get.Blob": {
+  "draw.drawing.get.spec.DrawingReadback": {
     type: "object",
-    additionalProperties: false,
     properties: {
-      entry: {
+      drawingId: {
         type: "string",
-        description: "Package entry path.",
         minLength: 1,
-        maxLength: 1024,
-        "x-since": "1.0",
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3)",
       },
-      mediaType: {
+      elementId: {
         type: "string",
-        description: "IANA media type.",
         minLength: 1,
-        maxLength: 255,
-        "x-since": "1.0",
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3)",
       },
-      size: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Size in bytes (64-bit: entries larger than 4 GiB are supported, 10 §5).",
-        "x-since": "1.0",
-      },
-      sha256: {
+      name: {
         type: "string",
-        description: "Lower-case hex SHA-256 of the bytes.",
-        pattern: "^[0-9a-f]{64}$",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "entry",
-      "mediaType",
-      "size",
-      "sha256",
-    ],
-    description: "A binary payload stored as a package entry (10 §1.1). Never inlined in object JSON.",
-  },
-  "draw.drawing.get.Colour": {
-    type: "string",
-    pattern: "^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
-    description: "sRGB colour with straight alpha, #RRGGBBAA (written upper case; #RRGGBB accepted on input).",
-  },
-  "draw.drawing.get.ColourRecoveryEntry": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      colourId: {
-        $ref: "#/$defs/draw.drawing.get.Id",
-        description: "The colour ID.",
-        "x-since": "1.0",
-      },
-      paletteId: {
-        $ref: "#/$defs/draw.drawing.get.Id",
-        description: "Owning palette ID.",
-        "x-since": "1.0",
-      },
-      paletteName: {
-        type: "string",
-        description: "Owning palette name.",
-        "x-since": "1.0",
-      },
-      styles: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/draw.drawing.get.RecoveryStyle",
-        },
-        description: "The palette's styles.",
-        "x-since": "1.0",
-      },
-      swatch: {
-        $ref: "#/$defs/draw.drawing.get.Swatch",
-        description: "The full swatch (all style values).",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "colourId",
-      "paletteId",
-      "paletteName",
-      "styles",
-      "swatch",
-    ],
-    description: "A recovery copy of one swatch used by a drawing (10 §4.11, 03 §11.2).",
-  },
-  "draw.drawing.get.Drawing": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/draw.drawing.get.Id",
-        description: "Immutable ID.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "drawing",
-        readOnly: true,
-        description: "Always `drawing`.",
-        "x-since": "1.0",
+        maxLength: 65536,
       },
       rev: {
         type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change (the drawing revision of 02 §3.12).",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      name: {
-        pattern: "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s])$",
-        description: "Unique in the bank; default next unused integer.",
-        "x-command": "element.drawing.rename",
-        minLength: 1,
-        maxLength: 64,
-        type: "string",
-        "x-since": "1.0",
       },
       locked: {
         type: "boolean",
-        description: "Locked drawings reject content edits with `drawing.locked`.",
-        "x-command": "element.drawingLock.set",
-        "x-since": "1.0",
+      },
+      space: {
+        type: "object",
+        properties: {
+          units: {
+            type: "string",
+            maxLength: 65536,
+          },
+          duPerField: {
+            type: "number",
+          },
+          yAxis: {
+            type: "string",
+            maxLength: 65536,
+          },
+          origin: {
+            type: "string",
+            maxLength: 65536,
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "units",
+          "duPerField",
+          "yAxis",
+          "origin",
+        ],
       },
       pivot: {
-        $ref: "#/$defs/draw.drawing.get.Point2",
-        description: "Drawing pivot (du).",
-        "x-unit": "du",
-        "x-since": "1.0",
-      },
-      mouthShape: {
-        anyOf: [
-          {
-            $ref: "#/$defs/draw.drawing.get.MouthShape",
+        type: "object",
+        properties: {
+          x: {
+            type: "number",
           },
-          {
-            type: "null",
+          y: {
+            type: "number",
           },
+        },
+        additionalProperties: false,
+        required: [
+          "x",
+          "y",
         ],
-        description: "Mouth shape for automatic lip-sync mapping.",
-        "x-since": "1.0",
+      },
+      bounds: {
+        type: "object",
+        properties: {
+          x: {
+            type: "number",
+          },
+          y: {
+            type: "number",
+          },
+          width: {
+            type: "number",
+          },
+          height: {
+            type: "number",
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "x",
+          "y",
+          "width",
+          "height",
+        ],
       },
       nodes: {
         type: "array",
         items: {
-          $ref: "#/$defs/draw.drawing.get.DrawingNode",
-        },
-        description: "Nodes, back to front.",
-        "x-since": "1.0",
-      },
-      colourRecovery: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/draw.drawing.get.ColourRecoveryEntry",
-        },
-        description: "One entry per colour ID the drawing uses (written on save).",
-        "x-since": "1.0",
-      },
-      createdAt: {
-        $ref: "#/$defs/draw.drawing.get.Timestamp",
-        description: "Creation time.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/draw.drawing.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      thumbnail: {
-        anyOf: [
-          {
-            $ref: "#/$defs/draw.drawing.get.Blob",
-          },
-          {
-            type: "null",
-          },
-        ],
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      usage: {
-        type: "array",
-        items: {
           type: "object",
           properties: {
-            elementId: {
-              $ref: "#/$defs/draw.drawing.get.Id",
-              "x-since": "1.0",
+            type: {
+              type: "string",
+              maxLength: 65536,
             },
-            ranges: {
+            id: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            layerKind: {
+              type: "string",
+              maxLength: 65536,
+            },
+            strokes: {
               type: "array",
               items: {
-                $ref: "#/$defs/draw.drawing.get.FrameRange",
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4096,
+                    description: "object ID or path reference (10 §3)",
+                  },
+                  kind: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                  closed: {
+                    type: "boolean",
+                  },
+                  bezier: {
+                    type: "array",
+                    items: {
+                      anyOf: [
+                        {
+                          type: "object",
+                          properties: {
+                            x: {
+                              type: "number",
+                            },
+                            y: {
+                              type: "number",
+                            },
+                          },
+                          additionalProperties: false,
+                          required: [
+                            "x",
+                            "y",
+                          ],
+                        },
+                        {
+                          type: "string",
+                          maxLength: 65536,
+                        },
+                      ],
+                    },
+                    maxItems: 100000,
+                  },
+                  colourId: {
+                    anyOf: [
+                      {
+                        type: "string",
+                        minLength: 1,
+                        maxLength: 4096,
+                        description: "object ID or path reference (10 §3)",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  lineStyle: {
+                    type: "object",
+                    properties: {
+                      thickness: {
+                        type: "number",
+                      },
+                      lineType: {
+                        type: "string",
+                        maxLength: 65536,
+                      },
+                    },
+                    additionalProperties: false,
+                    required: [
+                      "thickness",
+                      "lineType",
+                    ],
+                  },
+                  penId: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4096,
+                    description: "object ID or path reference (10 §3)",
+                  },
+                  pressure: {
+                    anyOf: [
+                      {
+                        type: "array",
+                        items: {
+                          type: "object",
+                          properties: {
+                            t: {
+                              type: "number",
+                            },
+                            p: {
+                              type: "number",
+                            },
+                          },
+                          additionalProperties: false,
+                          required: [
+                            "t",
+                            "p",
+                          ],
+                        },
+                        maxItems: 100000,
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  leftZoneId: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4096,
+                    description: "object ID or path reference (10 §3)",
+                  },
+                  rightZoneId: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4096,
+                    description: "object ID or path reference (10 §3)",
+                  },
+                  pen: {
+                    type: "object",
+                    properties: {
+                      tipShape: {
+                        type: "string",
+                        maxLength: 65536,
+                      },
+                      minSize: {
+                        type: "number",
+                      },
+                      maxSize: {
+                        type: "integer",
+                      },
+                      tipAngle: {
+                        type: "number",
+                      },
+                    },
+                    additionalProperties: false,
+                    required: [
+                      "tipShape",
+                      "minSize",
+                      "maxSize",
+                      "tipAngle",
+                    ],
+                  },
+                  textureMatrix: {
+                    type: [
+                      "string",
+                      "number",
+                      "boolean",
+                      "null",
+                    ],
+                    "x-placeholder": true,
+                    description: "type not stated by the owning section (spec issue); a scalar",
+                    "x-specIssue": "SI-026",
+                  },
+                  outline: {
+                    type: "array",
+                    items: {
+                      type: "array",
+                      items: {
+                        type: "string",
+                        maxLength: 65536,
+                      },
+                      maxItems: 100000,
+                    },
+                    maxItems: 100000,
+                  },
+                },
+                additionalProperties: false,
+                required: [
+                  "id",
+                  "kind",
+                  "closed",
+                  "bezier",
+                  "colourId",
+                ],
               },
-              "x-since": "1.0",
+              maxItems: 100000,
             },
-          },
-          required: [
-            "elementId",
-            "ranges",
-          ],
-          additionalProperties: false,
-        },
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      isEmpty: {
-        type: "boolean",
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      zones: {
-        type: "array",
-        items: {
-          type: "object",
-        },
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "A drawing (10 §4.8). Stored in its own package entry `banks/<bankId>/<drawingId>.json`.",
-    "x-objectType": "drawing",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "name",
-        "locked",
-        "pivot",
-        "mouthShape",
-        "nodes",
-        "colourRecovery",
-        "createdAt",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "draw.drawing.get.DrawingNode": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/draw.drawing.get.Id",
-        description: "ID, unique within the drawing (ID-03).",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "drawingNode",
-        readOnly: true,
-        description: "Always `drawingNode`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      name: {
-        pattern: "^(?:[^\\u0000-\\u001F\\u007F\\s]|[^\\u0000-\\u001F\\u007F\\s][^\\u0000-\\u001F\\u007F]*[^\\u0000-\\u001F\\u007F\\s])$",
-        description: "Optional name.",
-        "x-omitDefault": true,
-        minLength: 1,
-        maxLength: 255,
-        type: "string",
-        "x-since": "1.0",
-      },
-      kind: {
-        $ref: "#/$defs/draw.drawing.get.NodeKind",
-        description: "Layer, group, text or bitmap; read-only.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      hint: {
-        "x-kindSpecific": true,
-        description: "Layer: type hint.",
-        $ref: "#/$defs/draw.drawing.get.LayerHint",
-        "x-since": "1.0",
-      },
-      strokes: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/draw.drawing.get.Stroke",
-        },
-        description: "Layer: strokes.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      children: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/draw.drawing.get.DrawingNode",
-        },
-        description: "Group: child nodes, back to front.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      transform: {
-        type: "array",
-        items: {
-          type: "number",
-        },
-        minItems: 6,
-        maxItems: 6,
-        description: "Text and bitmap: placement in drawing space.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      widthMode: {
-        "x-kindSpecific": true,
-        description: "Text: auto or fixed width.",
-        $ref: "#/$defs/draw.drawing.get.WidthMode",
-        "x-since": "1.0",
-      },
-      width: {
-        type: "number",
-        "x-kindSpecific": true,
-        description: "Text: wrap width in du (fixed mode); bitmap: pixel width 1–16384.",
-        "x-since": "1.0",
-      },
-      height: {
-        type: "number",
-        "x-kindSpecific": true,
-        description: "Bitmap: pixel height 1–16384.",
-        "x-since": "1.0",
-      },
-      text: {
-        type: "string",
-        description: "Text: the characters (≤ 100 000).",
-        maxLength: 100000,
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      runs: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/draw.drawing.get.TextRun",
-        },
-        description: "Text: character runs covering the text.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      paragraphs: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/draw.drawing.get.Paragraph",
-        },
-        description: "Text: paragraphs.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      image: {
-        "x-kindSpecific": true,
-        description: "Bitmap: PNG pixels (8-bit RGBA, straight alpha).",
-        $ref: "#/$defs/draw.drawing.get.Blob",
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/draw.drawing.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "A node of a drawing (10 §4.9): a layer (`hint`, `strokes`), a group (`children`), a text object (`transform`,\n`widthMode`, `width`, `text`, `runs`, `paragraphs`) or a bitmap (`image`, `width`, `height`, `transform`).\nProperties of other kinds are absent.",
-    "x-objectType": "drawingNode",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "kind",
-      ],
-      allOf: [
-        {
-          if: {
-            properties: {
-              kind: {
-                const: "layer",
+            zones: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4096,
+                    description: "object ID or path reference (10 §3)",
+                  },
+                  colourId: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4096,
+                    description: "object ID or path reference (10 §3)",
+                  },
+                  textureMatrix: {
+                    type: [
+                      "string",
+                      "number",
+                      "boolean",
+                      "null",
+                    ],
+                    "x-placeholder": true,
+                    description: "type not stated by the owning section (spec issue); a scalar",
+                    "x-specIssue": "SI-026",
+                  },
+                  boundaryStrokeIds: {
+                    type: "array",
+                    items: {
+                      type: "string",
+                      minLength: 1,
+                      maxLength: 4096,
+                      description: "object ID or path reference (10 §3)",
+                    },
+                    maxItems: 100000,
+                  },
+                  holes: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        boundaryStrokeIds: {
+                          type: "array",
+                          items: {
+                            type: "string",
+                            minLength: 1,
+                            maxLength: 4096,
+                            description: "object ID or path reference (10 §3)",
+                          },
+                          maxItems: 100000,
+                        },
+                        zoneId: {
+                          type: "string",
+                          minLength: 1,
+                          maxLength: 4096,
+                          description: "object ID or path reference (10 §3)",
+                        },
+                      },
+                      additionalProperties: false,
+                      required: [
+                        "boundaryStrokeIds",
+                        "zoneId",
+                      ],
+                    },
+                    maxItems: 100000,
+                  },
+                  parentZoneId: {
+                    anyOf: [
+                      {
+                        type: "string",
+                        minLength: 1,
+                        maxLength: 4096,
+                        description: "object ID or path reference (10 §3)",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  area: {
+                    type: "number",
+                  },
+                  bounds: {
+                    type: "object",
+                    properties: {
+                      x: {
+                        type: "number",
+                      },
+                      y: {
+                        type: "number",
+                      },
+                      width: {
+                        type: "integer",
+                      },
+                      height: {
+                        type: "integer",
+                      },
+                    },
+                    additionalProperties: false,
+                    required: [
+                      "x",
+                      "y",
+                      "width",
+                      "height",
+                    ],
+                  },
+                  interiorPoint: {
+                    type: "object",
+                    properties: {
+                      x: {
+                        type: "number",
+                      },
+                      y: {
+                        type: "number",
+                      },
+                    },
+                    additionalProperties: false,
+                    required: [
+                      "x",
+                      "y",
+                    ],
+                  },
+                },
+                additionalProperties: false,
+                required: [
+                  "id",
+                  "colourId",
+                  "textureMatrix",
+                  "boundaryStrokeIds",
+                  "holes",
+                  "parentZoneId",
+                  "area",
+                  "bounds",
+                  "interiorPoint",
+                ],
               },
+              maxItems: 100000,
             },
-            required: [
-              "kind",
-            ],
-          },
-          then: {
-            required: [
-              "hint",
-              "strokes",
-            ],
-            properties: {
-              children: false,
-              transform: false,
-              widthMode: false,
-              width: false,
-              height: false,
-              text: false,
-              runs: false,
-              paragraphs: false,
-              image: false,
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              kind: {
-                const: "group",
+            children: {
+              type: "array",
+              items: {
+                type: "string",
+                maxLength: 65536,
               },
+              maxItems: 100000,
             },
-            required: [
-              "kind",
-            ],
-          },
-          then: {
-            required: [
-              "children",
-            ],
-            properties: {
-              hint: false,
-              strokes: false,
-              transform: false,
-              widthMode: false,
-              width: false,
-              height: false,
-              text: false,
-              runs: false,
-              paragraphs: false,
-              image: false,
+            text: {
+              type: "string",
+              maxLength: 65536,
             },
-          },
-        },
-        {
-          if: {
-            properties: {
-              kind: {
-                const: "text",
-              },
-            },
-            required: [
-              "kind",
-            ],
-          },
-          then: {
-            required: [
-              "transform",
-              "widthMode",
-              "text",
-              "runs",
-              "paragraphs",
-            ],
-            properties: {
-              hint: false,
-              strokes: false,
-              children: false,
-              height: false,
-              image: false,
-              width: {
+            transform: {
+              type: "array",
+              items: {
                 type: "number",
-                minimum: 0,
-                "x-unit": "du",
               },
+              maxItems: 100000,
+            },
+            widthMode: {
+              type: "string",
+              maxLength: 65536,
+            },
+            width: {
+              anyOf: [
+                {
+                  type: "integer",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            runs: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  start: {
+                    type: "integer",
+                  },
+                  length: {
+                    type: "integer",
+                  },
+                  font: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                  size: {
+                    type: "integer",
+                  },
+                  bold: {
+                    type: "boolean",
+                  },
+                  italic: {
+                    type: "boolean",
+                  },
+                  baseline: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                  kerning: {
+                    type: "number",
+                  },
+                  autoKern: {
+                    type: "boolean",
+                  },
+                  colourId: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4096,
+                    description: "object ID or path reference (10 §3)",
+                  },
+                  outlineColourId: {
+                    anyOf: [
+                      {
+                        type: "string",
+                        minLength: 1,
+                        maxLength: 4096,
+                        description: "object ID or path reference (10 §3)",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                },
+                additionalProperties: false,
+                required: [
+                  "start",
+                  "length",
+                  "font",
+                  "size",
+                  "bold",
+                  "italic",
+                  "baseline",
+                  "kerning",
+                  "autoKern",
+                  "colourId",
+                  "outlineColourId",
+                ],
+              },
+              maxItems: 100000,
+            },
+            paragraphs: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  start: {
+                    type: "integer",
+                  },
+                  length: {
+                    type: "integer",
+                  },
+                  align: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                  leftMargin: {
+                    type: "number",
+                  },
+                  rightMargin: {
+                    type: "number",
+                  },
+                  indent: {
+                    type: "number",
+                  },
+                  lineSpacing: {
+                    type: "number",
+                  },
+                },
+                additionalProperties: false,
+                required: [
+                  "start",
+                  "length",
+                  "align",
+                  "leftMargin",
+                  "rightMargin",
+                  "indent",
+                  "lineSpacing",
+                ],
+              },
+              maxItems: 100000,
+            },
+            bounds: {
+              type: "object",
+              properties: {
+                x: {
+                  type: "number",
+                },
+                y: {
+                  type: "number",
+                },
+                width: {
+                  type: "integer",
+                },
+                height: {
+                  type: "integer",
+                },
+              },
+              additionalProperties: false,
+              required: [
+                "x",
+                "y",
+                "width",
+                "height",
+              ],
+            },
+            mediaId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            pixelWidth: {
+              type: "integer",
+            },
+            pixelHeight: {
+              type: "integer",
             },
           },
+          additionalProperties: false,
+          required: [
+            "type",
+            "id",
+          ],
         },
-        {
-          if: {
-            properties: {
-              kind: {
-                const: "bitmap",
-              },
-            },
-            required: [
-              "kind",
-            ],
-          },
-          then: {
-            required: [
-              "image",
-              "width",
-              "height",
-              "transform",
-            ],
-            properties: {
-              hint: false,
-              strokes: false,
-              children: false,
-              widthMode: false,
-              text: false,
-              runs: false,
-              paragraphs: false,
-              width: {
-                type: "integer",
-                minimum: 1,
-                maximum: 16384,
-              },
-              height: {
-                type: "integer",
-                minimum: 1,
-                maximum: 16384,
-              },
-            },
-          },
-        },
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
+        maxItems: 100000,
       },
     },
-  },
-  "draw.drawing.get.Ext": {
-    type: "object",
-    propertyNames: {
-      pattern: "^[A-Za-z0-9][A-Za-z0-9-]*(\\.[A-Za-z0-9][A-Za-z0-9-]*)+$",
-    },
-    description: "Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim.",
-  },
-  "draw.drawing.get.FrameRange": {
-    type: "object",
     additionalProperties: false,
-    properties: {
-      from: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "First frame (1-based).",
-        "x-since": "1.0",
-      },
-      to: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Last frame (inclusive).",
-        "x-since": "1.0",
-      },
-    },
     required: [
-      "from",
-      "to",
+      "drawingId",
+      "elementId",
+      "name",
+      "rev",
+      "locked",
+      "space",
+      "pivot",
+      "bounds",
+      "nodes",
     ],
-    description: "An inclusive frame range `{from, to}` (10 §1.1).",
-  },
-  "draw.drawing.get.GradientStop": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      position: {
-        type: "number",
-        maximum: 1,
-        description: "Position along the gradient, 0–1.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      rgba: {
-        $ref: "#/$defs/draw.drawing.get.Colour",
-        description: "Colour at the stop.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "position",
-      "rgba",
-    ],
-    description: "A gradient stop (03 §12.3).",
-  },
-  "draw.drawing.get.GradientValue": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      stops: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/draw.drawing.get.GradientStop",
-        },
-        description: "The stops.",
-        minItems: 2,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "stops",
-    ],
-    description: "`{stops}` with at least two stops sorted by position.",
-  },
-  "draw.drawing.get.Id": {
-    type: "string",
-    pattern: "^[A-Za-z0-9_-]{1,64}$",
-  },
-  "draw.drawing.get.LayerHint": {
-    oneOf: [
-      {
-        type: "string",
-        const: "brush",
-        description: "Contour artwork.",
-      },
-      {
-        type: "string",
-        const: "pencil",
-        description: "Centre-line artwork.",
-      },
-    ],
-    description: "Type hint of a layer (02 §3.1).",
-  },
-  "draw.drawing.get.LineStyle": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      thickness: {
-        type: "number",
-        "x-unit": "du",
-        description: "Thickness in drawing units.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      lineType: {
-        $ref: "#/$defs/draw.drawing.get.LineType",
-        description: "Line type.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "thickness",
-      "lineType",
-    ],
-    description: "Line style of a pencil stroke.",
-  },
-  "draw.drawing.get.LineType": {
-    oneOf: [
-      {
-        type: "string",
-        const: "solid",
-        description: "Solid line.",
-      },
-    ],
-    description: "Line type of a pencil line style (02 §3.2; other types MAY be added).",
-  },
-  "draw.drawing.get.MouthShape": {
-    oneOf: [
-      {
-        type: "string",
-        const: "A",
-        description: "A.",
-      },
-      {
-        type: "string",
-        const: "B",
-        description: "B.",
-      },
-      {
-        type: "string",
-        const: "C",
-        description: "C.",
-      },
-      {
-        type: "string",
-        const: "D",
-        description: "D.",
-      },
-      {
-        type: "string",
-        const: "E",
-        description: "E.",
-      },
-      {
-        type: "string",
-        const: "F",
-        description: "F.",
-      },
-      {
-        type: "string",
-        const: "G",
-        description: "G.",
-      },
-      {
-        type: "string",
-        const: "X",
-        description: "X (rest).",
-      },
-    ],
-    description: "Mouth shape letters (07 §10; 10 §4.8 `mouthShape`).",
-  },
-  "draw.drawing.get.NodeKind": {
-    oneOf: [
-      {
-        type: "string",
-        const: "layer",
-        description: "Planar stroke graph.",
-      },
-      {
-        type: "string",
-        const: "group",
-        description: "Child nodes.",
-      },
-      {
-        type: "string",
-        const: "text",
-        description: "Rich text object.",
-      },
-      {
-        type: "string",
-        const: "bitmap",
-        description: "Embedded raster image.",
-      },
-    ],
-    description: "Kind of a drawing node (02 §3.1).",
-  },
-  "draw.drawing.get.Paragraph": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      start: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 0,
-        description: "First code point.",
-        "x-since": "1.0",
-      },
-      length: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 0,
-        description: "Number of code points.",
-        "x-since": "1.0",
-      },
-      alignment: {
-        $ref: "#/$defs/draw.drawing.get.Alignment",
-        description: "Alignment.",
-        "x-since": "1.0",
-      },
-      marginLeft: {
-        type: "number",
-        "x-unit": "du",
-        description: "Left margin (du).",
-        "x-since": "1.0",
-      },
-      marginRight: {
-        type: "number",
-        "x-unit": "du",
-        description: "Right margin (du).",
-        "x-since": "1.0",
-      },
-      indent: {
-        type: "number",
-        "x-unit": "du",
-        description: "First-line indent (du).",
-        "x-since": "1.0",
-      },
-      lineSpacing: {
-        type: "number",
-        description: "Line spacing factor.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "start",
-      "length",
-      "alignment",
-      "marginLeft",
-      "marginRight",
-      "indent",
-      "lineSpacing",
-    ],
-    description: "Paragraph formatting of a text node (10 §4.9).",
-  },
-  "draw.drawing.get.Point2": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      x: {
-        type: "number",
-        description: "X coordinate.",
-        "x-since": "1.0",
-      },
-      y: {
-        type: "number",
-        description: "Y coordinate.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "x",
-      "y",
-    ],
-    description: "A 2-D point `{x, y}` (10 §1.1).",
-  },
-  "draw.drawing.get.RecoveryStyle": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      styleId: {
-        $ref: "#/$defs/draw.drawing.get.Id",
-        description: "Style ID.",
-        "x-since": "1.0",
-      },
-      styleName: {
-        type: "string",
-        description: "Style name.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "styleId",
-      "styleName",
-    ],
-    description: "A style reference inside a colour-recovery entry.",
-  },
-  "draw.drawing.get.Script": {
-    oneOf: [
-      {
-        type: "string",
-        const: "normal",
-        description: "Normal.",
-      },
-      {
-        type: "string",
-        const: "subscript",
-        description: "Subscript.",
-      },
-      {
-        type: "string",
-        const: "superscript",
-        description: "Superscript.",
-      },
-    ],
-    description: "Vertical script position of a text run.",
-  },
-  "draw.drawing.get.Sides": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      left: {
-        anyOf: [
-          {
-            $ref: "#/$defs/draw.drawing.get.ZoneFill",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Left side.",
-        "x-since": "1.0",
-      },
-      right: {
-        anyOf: [
-          {
-            $ref: "#/$defs/draw.drawing.get.ZoneFill",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Right side.",
-        "x-since": "1.0",
-      },
-    },
-    description: "Fills on the left and right side of a stroke, relative to point order.",
-    required: [
-      "left",
-      "right",
-    ],
-  },
-  "draw.drawing.get.SolidValue": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      rgba: {
-        $ref: "#/$defs/draw.drawing.get.Colour",
-        description: "The colour.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "rgba",
-    ],
-    description: "`{rgba}`.",
-  },
-  "draw.drawing.get.Spine": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      points: {
-        type: "array",
-        items: {
-          type: "array",
-          items: {
-            type: "number",
-          },
-          minItems: 6,
-          maxItems: 6,
-        },
-        description: "The fitted centre path.",
-        "x-unit": "du",
-        "x-since": "1.0",
-      },
-      pressure: {
-        type: "array",
-        items: {
-          type: "array",
-          items: {
-            type: "number",
-          },
-          minItems: 2,
-          maxItems: 2,
-        },
-        description: "Pressure map: `(t, p)` samples ordered by `t`.",
-        "x-since": "1.0",
-      },
-      pen: {
-        $ref: "#/$defs/draw.drawing.get.SpinePen",
-        description: "Pen used.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "points",
-      "pressure",
-      "pen",
-    ],
-    description: "The spine of an unedited brush stroke (02 §3.2).",
-  },
-  "draw.drawing.get.SpinePen": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      penId: {
-        anyOf: [
-          {
-            $ref: "#/$defs/draw.drawing.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "The pen used, if it still exists.",
-        "x-ref": "pen",
-        "x-since": "1.0",
-      },
-      tip: {
-        $ref: "#/$defs/draw.drawing.get.Tip",
-        description: "Tip shape.",
-        "x-since": "1.0",
-      },
-      minSize: {
-        type: "number",
-        "x-unit": "du",
-        description: "Minimum size (du).",
-        minimum: 0,
-        maximum: 100,
-        "x-since": "1.0",
-      },
-      maxSize: {
-        type: "number",
-        "x-unit": "du",
-        description: "Maximum size (du).",
-        minimum: 0,
-        maximum: 100,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "penId",
-      "tip",
-      "minSize",
-      "maxSize",
-    ],
-    description: "The pen recorded on a brush spine (02 §3.2).",
-  },
-  "draw.drawing.get.Stroke": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/draw.drawing.get.Id",
-        description: "ID, unique within the drawing (ID-03).",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "stroke",
-        readOnly: true,
-        description: "Always `stroke`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      kind: {
-        $ref: "#/$defs/draw.drawing.get.StrokeKind",
-        description: "Brush, pencil or invisible.",
-        "x-since": "1.0",
-      },
-      closed: {
-        type: "boolean",
-        description: "Whether the path is closed (brush outlines are).",
-        "x-since": "1.0",
-      },
-      points: {
-        type: "array",
-        items: {
-          type: "array",
-          items: {
-            type: "number",
-          },
-          minItems: 6,
-          maxItems: 6,
-        },
-        description: "Anchors with handle offsets; at least 2 (1 for a closed dab).",
-        minItems: 1,
-        "x-unit": "du",
-        "x-since": "1.0",
-      },
-      colourId: {
-        anyOf: [
-          {
-            $ref: "#/$defs/draw.drawing.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Brush: fill colour; pencil: line colour; `null` for invisible strokes.",
-        "x-ref": "swatch",
-        "x-since": "1.0",
-      },
-      fillMatrix: {
-        type: [
-          "array",
-          "null",
-        ],
-        items: {
-          type: "number",
-        },
-        minItems: 6,
-        maxItems: 6,
-        description: "Placement of a gradient/texture colour space for brush strokes.",
-        "x-since": "1.0",
-      },
-      lineStyle: {
-        anyOf: [
-          {
-            $ref: "#/$defs/draw.drawing.get.LineStyle",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Pencil strokes only.",
-        "x-since": "1.0",
-      },
-      spine: {
-        anyOf: [
-          {
-            $ref: "#/$defs/draw.drawing.get.Spine",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Brush strokes while unedited.",
-        "x-since": "1.0",
-      },
-      sides: {
-        $ref: "#/$defs/draw.drawing.get.Sides",
-        description: "Zone fills on each side.",
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/draw.drawing.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "A stroke of a layer (10 §4.9, 02 §3.2). `lineStyle` is non-null for pencil strokes only; `spine` only for\nunedited brush strokes.",
-    "x-objectType": "stroke",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "kind",
-        "closed",
-        "points",
-        "colourId",
-        "fillMatrix",
-        "lineStyle",
-        "spine",
-        "sides",
-      ],
-      allOf: [
-        {
-          if: {
-            properties: {
-              kind: {
-                const: "pencil",
-              },
-            },
-            required: [
-              "kind",
-            ],
-          },
-          then: {
-            properties: {
-              lineStyle: {
-                $ref: "#/$defs/draw.drawing.get.LineStyle",
-              },
-              spine: {
-                type: "null",
-              },
-              fillMatrix: {
-                type: "null",
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              kind: {
-                const: "invisible",
-              },
-            },
-            required: [
-              "kind",
-            ],
-          },
-          then: {
-            properties: {
-              lineStyle: {
-                type: "null",
-              },
-              spine: {
-                type: "null",
-              },
-              fillMatrix: {
-                type: "null",
-              },
-              colourId: {
-                type: "null",
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              kind: {
-                const: "brush",
-              },
-            },
-            required: [
-              "kind",
-            ],
-          },
-          then: {
-            properties: {
-              lineStyle: {
-                type: "null",
-              },
-            },
-          },
-        },
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "draw.drawing.get.StrokeKind": {
-    oneOf: [
-      {
-        type: "string",
-        const: "brush",
-        description: "Filled outline.",
-      },
-      {
-        type: "string",
-        const: "pencil",
-        description: "Centre line drawn with a line style.",
-      },
-      {
-        type: "string",
-        const: "invisible",
-        description: "Never rendered; separates and closes zones.",
-      },
-    ],
-    description: "Kind of a stroke (02 §3.2).",
-  },
-  "draw.drawing.get.Swatch": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      colourId: {
-        $ref: "#/$defs/draw.drawing.get.Id",
-        description: "Immutable colour ID, unique across the project.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "swatch",
-        readOnly: true,
-        description: "Always `swatch`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      name: {
-        pattern: "^(?:[^\\u0000-\\u001F\\u007F\\s]|[^\\u0000-\\u001F\\u007F\\s][^\\u0000-\\u001F\\u007F]*[^\\u0000-\\u001F\\u007F\\s])$",
-        description: "Label; names may repeat.",
-        "x-command": "colour.swatch.set",
-        minLength: 1,
-        maxLength: 128,
-        type: "string",
-        "x-since": "1.0",
-      },
-      kind: {
-        $ref: "#/$defs/draw.drawing.get.SwatchKind",
-        description: "Solid, gradient or texture; shared by all styles.",
-        "x-command": "colour.swatch.set",
-        "x-since": "1.0",
-      },
-      deformable: {
-        type: "boolean",
-        description: "Whether a gradient/texture fill follows bone deformation (03 §7.5).",
-        "x-since": "1.0",
-      },
-      values: {
-        type: "object",
-        additionalProperties: false,
-        patternProperties: {
-          "^[A-Za-z0-9_-]{1,64}$": {
-            $ref: "#/$defs/draw.drawing.get.SwatchValue",
-          },
-        },
-        description: "Exactly one value per style of the palette, keyed by style ID (keys in canonical order, ADR-0011 §3).",
-        "x-command": "colour.swatch.set",
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/draw.drawing.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "A swatch (03 §1.4, §12.3). Its identifier field is `colourId` (10 §2.2); `id` is accepted as an alias on input.",
-    "x-objectType": "swatch",
-    required: [
-      "colourId",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "colourId",
-        "type",
-        "rev",
-        "name",
-        "kind",
-        "deformable",
-        "values",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "colourId",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "draw.drawing.get.SwatchKind": {
-    oneOf: [
-      {
-        type: "string",
-        const: "solid",
-        description: "One RGBA colour per style.",
-      },
-      {
-        type: "string",
-        const: "linearGradient",
-        description: "Linear gradient stops per style.",
-      },
-      {
-        type: "string",
-        const: "radialGradient",
-        description: "Radial gradient stops per style.",
-      },
-      {
-        type: "string",
-        const: "texture",
-        description: "Bitmap texture per style.",
-      },
-    ],
-    description: "Kind of a swatch (03 §1.4).",
-  },
-  "draw.drawing.get.SwatchValue": {
-    anyOf: [
-      {
-        $ref: "#/$defs/draw.drawing.get.SolidValue",
-        description: "A solid colour.",
-      },
-      {
-        $ref: "#/$defs/draw.drawing.get.GradientValue",
-        description: "A gradient (linear or radial; the swatch `kind` says which).",
-      },
-      {
-        $ref: "#/$defs/draw.drawing.get.TextureValue",
-        description: "A texture.",
-      },
-    ],
-    description: "The value of a swatch in one style (03 §12.3): `{rgba}`, `{stops}` or `{image, tile}`.",
-  },
-  "draw.drawing.get.TextRun": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      start: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 0,
-        description: "First code point.",
-        "x-since": "1.0",
-      },
-      length: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 0,
-        description: "Number of code points.",
-        "x-since": "1.0",
-      },
-      font: {
-        type: "string",
-        description: "Font family name (kept even when the font is missing).",
-        "x-since": "1.0",
-      },
-      size: {
-        type: "number",
-        "x-unit": "du",
-        description: "Size in drawing units.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      bold: {
-        type: "boolean",
-        description: "Bold.",
-        "x-since": "1.0",
-      },
-      italic: {
-        type: "boolean",
-        description: "Italic.",
-        "x-since": "1.0",
-      },
-      script: {
-        $ref: "#/$defs/draw.drawing.get.Script",
-        description: "Script position.",
-        "x-since": "1.0",
-      },
-      kerning: {
-        type: "number",
-        description: "Manual kerning.",
-        "x-since": "1.0",
-      },
-      autoKerning: {
-        type: "boolean",
-        description: "Automatic kerning.",
-        "x-since": "1.0",
-      },
-      colourId: {
-        anyOf: [
-          {
-            $ref: "#/$defs/draw.drawing.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Fill colour.",
-        "x-ref": "swatch",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "start",
-      "length",
-      "font",
-      "size",
-      "bold",
-      "italic",
-      "script",
-      "kerning",
-      "autoKerning",
-      "colourId",
-    ],
-    description: "Character formatting of a run of a text node (10 §4.9).",
-  },
-  "draw.drawing.get.TextureValue": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      image: {
-        type: "string",
-        description: "Package entry path of the image, e.g. `textures/fabric-day.png`.",
-        minLength: 1,
-        maxLength: 1024,
-        "x-since": "1.0",
-      },
-      tile: {
-        type: "boolean",
-        description: "Repeat the image (true) or stretch it over the zone (false).",
-        "x-since": "1.0",
-      },
-      width: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Informative pixel width.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      height: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Informative pixel height.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "image",
-      "tile",
-    ],
-    description: "`{image, tile}`: a texture image entry (under `textures/`) and the tile flag; `width`/`height` informative.",
-  },
-  "draw.drawing.get.Timestamp": {
-    type: "string",
-    pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$",
-    description: "ISO-8601 UTC timestamp with milliseconds.",
-  },
-  "draw.drawing.get.Tip": {
-    oneOf: [
-      {
-        type: "string",
-        const: "round",
-        description: "Round nib (default).",
-      },
-      {
-        type: "string",
-        const: "oval",
-        description: "Oval nib.",
-      },
-      {
-        type: "string",
-        const: "square",
-        description: "Square nib.",
-      },
-      {
-        type: "string",
-        const: "flat",
-        description: "Flat nib.",
-      },
-    ],
-    description: "Tip shape (02 §6.1).",
-  },
-  "draw.drawing.get.WidthMode": {
-    oneOf: [
-      {
-        type: "string",
-        const: "auto",
-        description: "No wrapping.",
-      },
-      {
-        type: "string",
-        const: "fixed",
-        description: "Word wrap at `width`.",
-      },
-    ],
-    description: "Width mode of a text node.",
-  },
-  "draw.drawing.get.ZoneFill": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      colourId: {
-        anyOf: [
-          {
-            $ref: "#/$defs/draw.drawing.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Colour ID; `null` = unpainted.",
-        "x-ref": "swatch",
-        "x-since": "1.0",
-      },
-      matrix: {
-        type: [
-          "array",
-          "null",
-        ],
-        items: {
-          type: "number",
-        },
-        minItems: 6,
-        maxItems: 6,
-        description: "Gradient/texture placement; `null` for none.",
-        "x-since": "1.0",
-      },
-    },
-    description: "The fill of the zone on one side of a stroke (10 §4.9).",
-    required: [
-      "colourId",
-      "matrix",
-    ],
+    "x-specSection": "02",
   },
   "draw.drawing.get.result": {
-    $ref: "#/$defs/draw.drawing.get.Drawing",
+    $ref: "#/$defs/draw.drawing.get.spec.DrawingReadback",
     title: "draw.drawing.get result",
     "x-spec": "drawing JSON (§13.4)",
   },
@@ -30067,7 +28955,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -30194,7 +29082,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -30279,7 +29167,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -30334,6 +29222,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-026",
       },
       region: {
         type: "array",
@@ -30406,7 +29295,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -30497,7 +29386,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           maxItems: 100000,
         },
         rev: {
-          type: "integer",
+          type: "number",
         },
       },
       required: [
@@ -30557,7 +29446,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -30618,7 +29507,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -30664,7 +29553,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -30714,7 +29603,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -30777,6 +29666,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           additionalProperties: false,
           "x-placeholder": true,
           description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          "x-specIssue": "SI-026",
         },
         maxItems: 100000,
       },
@@ -30794,7 +29684,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -30947,7 +29837,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -31005,7 +29895,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -31096,7 +29986,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -31149,7 +30039,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -31214,7 +30104,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -31280,7 +30170,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -31348,7 +30238,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -31429,7 +30319,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -31527,7 +30417,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -31624,20 +30514,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               description: "object ID or path reference (10 §3)",
             },
             anchor: {
-              type: "object",
-              properties: {
-                x: {
-                  type: "number",
-                },
-                y: {
-                  type: "number",
-                },
-              },
-              required: [
-                "x",
-                "y",
-              ],
-              additionalProperties: false,
+              type: "integer",
             },
           },
           required: [
@@ -31793,7 +30670,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -31920,7 +30797,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -32097,7 +30974,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -32162,7 +31039,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -32204,10 +31081,35 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "array",
         items: {
           type: "object",
-          properties: {},
+          properties: {
+            strokeId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            anchor: {
+              type: "object",
+              properties: {
+                x: {
+                  type: "number",
+                },
+                y: {
+                  type: "number",
+                },
+              },
+              required: [
+                "x",
+                "y",
+              ],
+              additionalProperties: false,
+            },
+          },
+          required: [
+            "strokeId",
+            "anchor",
+          ],
           additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
         },
         maxItems: 100000,
       },
@@ -32551,7 +31453,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -32605,7 +31507,24 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               type: "number",
             },
             pressure: {
-              type: "number",
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  t: {
+                    type: "number",
+                  },
+                  p: {
+                    type: "number",
+                  },
+                },
+                required: [
+                  "t",
+                  "p",
+                ],
+                additionalProperties: false,
+              },
+              maxItems: 100000,
             },
           },
           required: [
@@ -32687,7 +31606,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "number",
           },
           maxSize: {
-            type: "integer",
+            type: "number",
           },
           tipAngle: {
             type: "number",
@@ -32781,7 +31700,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
       hints: {
         type: "array",
@@ -32905,7 +31824,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -32956,6 +31875,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "(Text panel fields) — shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-026",
       },
       colourId: {
         type: "string",
@@ -33006,7 +31926,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -33132,7 +32052,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -33258,7 +32178,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -33400,7 +32320,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       rev: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -33499,7 +32419,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           maxItems: 100000,
         },
         rev: {
-          type: "integer",
+          type: "number",
         },
       },
       required: [
@@ -33829,9 +32749,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "#RRGGBB or #RRGGBBAA",
       },
       useSceneColour: {
-        type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+        type: "boolean",
       },
     },
     required: [
@@ -33863,6 +32781,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-027",
       },
     },
     required: [
@@ -33932,7 +32851,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       type: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "normal",
+          "field12",
+          "field16",
+        ],
       },
       overlay: {
         type: "boolean",
@@ -33965,24 +32888,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       auto: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
-        ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
+        type: "boolean",
       },
       static: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
-        ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
+        type: "boolean",
       },
     },
     required: [
@@ -34021,12 +32930,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       previous: {
-        type: "string",
-        maxLength: 65536,
+        type: "integer",
+        minimum: 0,
+        maximum: 3,
       },
       next: {
-        type: "string",
-        maxLength: 65536,
+        type: "integer",
+        minimum: 0,
+        maximum: 3,
       },
     },
     required: [
@@ -34305,10 +33216,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             visible: {
               type: "boolean",
+              default: true,
             },
             placement: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "overlay",
+                "underlay",
+              ],
+              default: "underlay",
             },
           },
           required: [
@@ -34418,10 +33334,42 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "array",
         items: {
           type: "object",
-          properties: {},
+          properties: {
+            entryId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            sourceId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            sourceKind: {
+              type: "string",
+              maxLength: 65536,
+            },
+            visible: {
+              type: "boolean",
+            },
+            placement: {
+              type: "string",
+              enum: [
+                "overlay",
+                "underlay",
+              ],
+            },
+          },
+          required: [
+            "entryId",
+            "sourceId",
+            "sourceKind",
+            "visible",
+            "placement",
+          ],
           additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
         },
         maxItems: 100000,
       },
@@ -36553,10 +35501,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               description: "object ID or path reference (10 §3)",
             },
             from: {
-              type: "integer",
+              type: "number",
             },
             to: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -36967,7 +35915,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       deletedDrawingCount: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -37124,10 +36072,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               description: "object ID or path reference (10 §3)",
             },
             from: {
-              type: "integer",
+              type: "number",
             },
             to: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -37246,10 +36194,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
                 type: "object",
                 properties: {
                   from: {
-                    type: "integer",
+                    type: "number",
                   },
                   to: {
-                    type: "integer",
+                    type: "number",
                   },
                 },
                 required: [
@@ -37261,7 +36209,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               maxItems: 100000,
             },
             useCount: {
-              type: "integer",
+              type: "number",
             },
             locked: {
               type: "boolean",
@@ -37640,14 +36588,38 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       media: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
+        anyOf: [
+          {
+            type: "object",
+            additionalProperties: false,
+            required: [
+              "path",
+              "startFrame",
+              "length",
+              "missing",
+            ],
+            properties: {
+              path: {
+                type: "string",
+                minLength: 1,
+                maxLength: 4096,
+                description: "file-system path (11 §6.2)",
+              },
+              startFrame: {
+                type: "integer",
+              },
+              length: {
+                type: "integer",
+              },
+              missing: {
+                type: "boolean",
+              },
+            },
+          },
+          {
+            type: "null",
+          },
         ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
       },
     },
     additionalProperties: false,
@@ -37739,7 +36711,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       depth: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -37871,10 +36843,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               description: "object ID or path reference (10 §3)",
             },
             depth: {
-              type: "integer",
+              type: "number",
             },
             index: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -37982,10 +36954,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       from: {
-        type: "integer",
+        type: "number",
       },
       to: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -38608,12 +37580,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             start: {
               type: "integer",
+              minimum: 1,
             },
             duration: {
-              type: "number",
+              type: "integer",
+              minimum: 1,
             },
             loops: {
               type: "integer",
+              minimum: 1,
             },
           },
           required: [
@@ -38702,7 +37677,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       category: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "drawings",
+          "images",
+          "sounds",
+          "pegs",
+          "skeletons",
+          "media",
+          "cameras",
+          "effects",
+          "effectParameters",
+        ],
       },
       colour: {
         type: "string",
@@ -39144,7 +38129,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             kind: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "movie",
+                "sequence",
+                "still",
+                "vector",
+                "document",
+              ],
             },
             video: {
               type: [
@@ -39155,6 +38146,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               ],
               "x-placeholder": true,
               description: "type not stated by the owning section (spec issue); a scalar",
+              "x-specIssue": "SI-029",
             },
             audio: {
               type: [
@@ -39165,6 +38157,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               ],
               "x-placeholder": true,
               description: "type not stated by the owning section (spec issue); a scalar",
+              "x-specIssue": "SI-029",
             },
             alpha: {
               type: "boolean",
@@ -39181,6 +38174,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               ],
               "x-placeholder": true,
               description: "type not stated by the owning section (spec issue); a scalar",
+              "x-specIssue": "SI-029",
             },
             presets: {
               type: "array",
@@ -39281,6 +38275,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-undefinedType": "ExportMovieParams",
     title: "export.movie.defaults.get result",
     "x-spec": "`ExportMovieParams`",
+    "x-specIssue": "SI-029",
   },
   "export.movie.defaults.set.params": {
     title: "export.movie.defaults.set parameters",
@@ -39292,6 +38287,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-029",
       },
     },
     required: [
@@ -39309,6 +38305,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-undefinedType": "ExportMovieParams",
     title: "export.movie.defaults.set result",
     "x-spec": "`ExportMovieParams`",
+    "x-specIssue": "SI-029",
   },
   "export.movie.run.params": {
     title: "export.movie.run parameters",
@@ -39336,6 +38333,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-029",
       },
       type: {
         type: "string",
@@ -39649,6 +38647,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-029",
       },
       type: {
         type: "string",
@@ -39750,7 +38749,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       frameCount: {
-        type: "integer",
+        type: "number",
       },
       durationSec: {
         type: "number",
@@ -39773,7 +38772,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       estimatedBytes: {
-        type: "integer",
+        type: "number",
       },
       enabledRanges: {
         type: "array",
@@ -40043,6 +39042,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-029",
       },
       metadata: {
         type: "object",
@@ -40352,7 +39352,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
                   type: "number",
                 },
                 maxBytes: {
-                  type: "integer",
+                  type: "number",
                 },
               },
               required: [
@@ -40387,12 +39387,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               type: "array",
               items: {
                 type: "string",
-                maxLength: 65536,
+                enum: [
+                  "public",
+                  "unlisted",
+                  "private",
+                ],
+                default: "private",
               },
               maxItems: 100000,
             },
             connected: {
-              type: "boolean",
+              const: false,
             },
           },
           required: [
@@ -40437,6 +39442,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-029",
       },
       metadata: {
         type: "object",
@@ -40444,6 +39450,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-029",
       },
     },
     required: [
@@ -40469,7 +39476,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               maxLength: 65536,
             },
             limit: {
-              type: "integer",
+              type: "number",
             },
             actual: {
               type: "string",
@@ -40517,7 +39524,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxLength: 65536,
       },
       totalBytes: {
-        type: "integer",
+        type: "number",
       },
       cameraSize: {
         type: [
@@ -40528,6 +39535,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-029",
       },
       fps: {
         type: "number",
@@ -40551,7 +39559,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
                     maxLength: 65536,
                   },
                   bytes: {
-                    type: "integer",
+                    type: "number",
                   },
                 },
                 required: [
@@ -40603,15 +39611,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       preset: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "default",
+          "custom",
+        ],
       },
       settings: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        type: "object",
+        properties: {},
+        additionalProperties: false,
+        "x-placeholder": true,
+        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-029",
       },
     },
     required: [
@@ -40642,6 +39653,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-029",
       },
     },
     required: [
@@ -40656,15 +39668,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       preset: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "default",
+          "custom",
+        ],
       },
       settings: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        type: "object",
+        properties: {},
+        additionalProperties: false,
+        "x-placeholder": true,
+        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-029",
       },
     },
     required: [
@@ -41057,7 +40072,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       startFrame: {
-        type: "integer",
+        type: "number",
       },
       duration: {
         type: "number",
@@ -41659,6 +40674,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "x-placeholder": true,
           description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
           "x-undefinedType": "BlockSummary",
+          "x-specIssue": "SI-030",
         },
         maxItems: 100000,
       },
@@ -41737,6 +40753,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       seed: {
         type: "integer",
+        minimum: 0,
+        maximum: 4294967295,
       },
     },
     required: [
@@ -41761,6 +40779,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       clamp: {
         type: "boolean",
@@ -42640,6 +41659,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       presetId: {
         type: "string",
@@ -42899,6 +41919,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-030",
       },
     },
     required: [
@@ -46901,6 +45922,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
     },
     required: [
@@ -46915,6 +45937,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       frame: {
         type: "integer",
+        description: "Default: current.",
       },
       created: {
         type: "boolean",
@@ -46961,13 +45984,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           properties: {
             frame: {
               type: "integer",
+              description: "Default: current.",
             },
             values: {
-              type: "array",
-              items: {
-                type: "number",
-              },
-              maxItems: 100000,
+              type: "object",
+              properties: {},
+              additionalProperties: false,
+              "x-placeholder": true,
+              description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+              "x-specIssue": "SI-030",
             },
           },
           required: [
@@ -47075,7 +46100,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             type: {
               type: "string",
-              maxLength: 65536,
+              description: "one of the values the owning section lists (effect type)",
             },
             parentId: {
               type: "string",
@@ -47084,13 +46109,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               description: "object ID or path reference (10 §3)",
             },
             startFrame: {
-              type: "integer",
+              type: "number",
             },
             duration: {
               type: "number",
             },
             loops: {
-              type: "integer",
+              type: "number",
             },
             animated: {
               type: "boolean",
@@ -47218,7 +46243,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           properties: {
             slot: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "mask",
+                "sprites",
+                "bones",
+                "skin",
+              ],
             },
             elementId: {
               type: "string",
@@ -47457,6 +46487,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       isKeyframe: {
         type: "boolean",
@@ -47467,6 +46498,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
     },
     required: [
@@ -47493,6 +46525,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       frame: {
         type: "integer",
@@ -47538,6 +46571,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       keyframeCreated: {
         type: "boolean",
@@ -47619,13 +46653,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       seed: {
-        type: "integer",
+        type: "number",
       },
       frame: {
         type: "integer",
       },
       count: {
-        type: "integer",
+        type: "number",
       },
       truncated: {
         type: "boolean",
@@ -47636,7 +46670,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             index: {
-              type: "integer",
+              type: "number",
             },
             pos: {
               type: "object",
@@ -47679,7 +46713,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               additionalProperties: false,
             },
             size: {
-              type: "integer",
+              type: "number",
             },
             rotation: {
               type: "number",
@@ -47776,6 +46810,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
     },
     required: [
@@ -47872,6 +46907,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "Values for static parameters (only those present are applied) — shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       dynamic: {
         type: "object",
@@ -47879,6 +46915,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "For each animatable parameter either a constant value or a keyframe list `[{frame, value, interpolation?}]` with frames relative to the block or effect start (1 = first frame) — shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       spriteSetId: {
         type: "string",
@@ -48136,6 +47173,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "Values for static parameters (only those present are applied) — shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       dynamic: {
         type: "object",
@@ -48143,6 +47181,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "For each animatable parameter either a constant value or a keyframe list `[{frame, value, interpolation?}]` with frames relative to the block or effect start (1 = first frame) — shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       spriteSetId: {
         type: "string",
@@ -48287,14 +47326,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             name: {
               type: "string",
               maxLength: 65536,
+              description: "(1–60)",
             },
             source: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "builtin",
+                "user",
+                "all",
+              ],
+              default: "all",
             },
             effectType: {
               type: "string",
-              maxLength: 65536,
+              description: "one of the values the owning section lists (effect type)",
             },
             particleType: {
               type: "string",
@@ -48473,9 +47518,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       frame: {
         type: "integer",
+        description: "Default: current.",
       },
       size: {
-        type: "integer",
+        type: "string",
+        enum: [
+          "quarter",
+          "half",
+          "full",
+        ],
       },
       jobId: {
         type: "string",
@@ -48566,14 +47617,23 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       size: {
-        type: "integer",
+        type: "string",
+        enum: [
+          "quarter",
+          "half",
+          "full",
+        ],
       },
       followCurrentFrame: {
-        type: "integer",
+        type: "boolean",
       },
       defaultRange: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "single",
+          "playbackRange",
+          "fromCurrent",
+        ],
       },
     },
     required: [
@@ -48616,14 +47676,23 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       size: {
-        type: "integer",
+        type: "string",
+        enum: [
+          "quarter",
+          "half",
+          "full",
+        ],
       },
       followCurrentFrame: {
-        type: "integer",
+        type: "boolean",
       },
       defaultRange: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "single",
+          "playbackRange",
+          "fromCurrent",
+        ],
       },
     },
     required: [
@@ -48683,7 +47752,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       type: "object",
       properties: {
         framesRendered: {
-          type: "integer",
+          type: "number",
         },
       },
       required: [
@@ -48731,9 +47800,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           properties: {
             frame: {
               type: "integer",
+              description: "Default: current.",
             },
             size: {
-              type: "integer",
+              type: "string",
+              enum: [
+                "quarter",
+                "half",
+                "full",
+              ],
             },
           },
           required: [
@@ -48828,6 +47903,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "x-placeholder": true,
           description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
           "x-undefinedType": "RenderItem",
+          "x-specIssue": "SI-030",
         },
         maxItems: 100000,
       },
@@ -48853,7 +47929,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       maxTextureSize: {
-        type: "integer",
+        type: "number",
       },
       interactiveAntialiasingSupported: {
         type: "boolean",
@@ -48888,11 +47964,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       values: {
-        type: "array",
-        items: {
-          type: "number",
-        },
-        maxItems: 100000,
+        type: "object",
+        properties: {},
+        additionalProperties: false,
+        "x-placeholder": true,
+        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       restartRequired: {
         type: "boolean",
@@ -48923,6 +48000,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
     },
     required: [
@@ -48941,6 +48019,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
     },
     required: [
@@ -48959,6 +48038,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-030",
       },
       restartRequired: {
         type: "boolean",
@@ -49004,7 +48084,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             frame: {
-              type: "integer",
+              type: "number",
             },
             dx: {
               type: "number",
@@ -49078,10 +48158,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       type: "object",
       properties: {
         framesSimulated: {
-          type: "integer",
+          type: "number",
         },
         peakCount: {
-          type: "integer",
+          type: "number",
         },
       },
       required: [
@@ -49134,7 +48214,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             index: {
-              type: "integer",
+              type: "number",
             },
             thumbnail: {
               type: "string",
@@ -49197,7 +48277,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               maxItems: 100000,
             },
             variantCount: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -49262,10 +48342,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       duration: {
-        type: "number",
+        type: "integer",
+        minimum: 1,
       },
       loops: {
         type: "integer",
+        minimum: 1,
+        maximum: 999,
       },
       removedKeyframes: {
         type: "array",
@@ -49513,6 +48596,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-030",
       },
     },
     additionalProperties: false,
@@ -49766,6 +48850,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-030",
       },
     },
     additionalProperties: false,
@@ -49943,14 +49028,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       pages: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
+        anyOf: [
+          {
+            type: "integer",
+          },
+          {
+            type: "null",
+          },
         ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
       },
       frames: {
         anyOf: [
@@ -50246,14 +49331,32 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       errors: {
         type: "array",
         items: {
-          type: [
-            "string",
-            "number",
-            "boolean",
-            "null",
+          type: "object",
+          additionalProperties: false,
+          required: [
+            "code",
+            "message",
           ],
-          "x-placeholder": true,
-          description: "type not stated by the owning section (spec issue); a scalar",
+          properties: {
+            code: {
+              type: "string",
+              maxLength: 256,
+            },
+            message: {
+              type: "string",
+              maxLength: 65536,
+            },
+            objectIds: {
+              type: "array",
+              items: {
+                type: "string",
+                minLength: 1,
+                maxLength: 4096,
+                description: "object ID or path reference (10 §3)",
+              },
+              maxItems: 100000,
+            },
+          },
         },
         maxItems: 100000,
       },
@@ -50697,14 +49800,32 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       errors: {
         type: "array",
         items: {
-          type: [
-            "string",
-            "number",
-            "boolean",
-            "null",
+          type: "object",
+          additionalProperties: false,
+          required: [
+            "code",
+            "message",
           ],
-          "x-placeholder": true,
-          description: "type not stated by the owning section (spec issue); a scalar",
+          properties: {
+            code: {
+              type: "string",
+              maxLength: 256,
+            },
+            message: {
+              type: "string",
+              maxLength: 65536,
+            },
+            objectIds: {
+              type: "array",
+              items: {
+                type: "string",
+                minLength: 1,
+                maxLength: 4096,
+                description: "object ID or path reference (10 §3)",
+              },
+              maxItems: 100000,
+            },
+          },
         },
         maxItems: 100000,
       },
@@ -50899,14 +50020,32 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       errors: {
         type: "array",
         items: {
-          type: [
-            "string",
-            "number",
-            "boolean",
-            "null",
+          type: "object",
+          additionalProperties: false,
+          required: [
+            "code",
+            "message",
           ],
-          "x-placeholder": true,
-          description: "type not stated by the owning section (spec issue); a scalar",
+          properties: {
+            code: {
+              type: "string",
+              maxLength: 256,
+            },
+            message: {
+              type: "string",
+              maxLength: 65536,
+            },
+            objectIds: {
+              type: "array",
+              items: {
+                type: "string",
+                minLength: 1,
+                maxLength: 4096,
+                description: "object ID or path reference (10 §3)",
+              },
+              maxItems: 100000,
+            },
+          },
         },
         maxItems: 100000,
       },
@@ -50965,7 +50104,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       movieOpacity: {
-        type: "number",
+        anyOf: [
+          {
+            type: "integer",
+            minimum: 1,
+            maximum: 100,
+          },
+          {
+            type: "null",
+          },
+        ],
       },
       lastFolder: {
         type: "string",
@@ -51026,7 +50174,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       movieOpacity: {
-        type: "number",
+        anyOf: [
+          {
+            type: "integer",
+            minimum: 1,
+            maximum: 100,
+          },
+          {
+            type: "null",
+          },
+        ],
       },
       lastFolder: {
         type: "string",
@@ -52385,15 +51542,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       params: {
         type: "object",
-        properties: {
-          steps: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "steps",
-        ],
+        "x-open": true,
+        description: "the bound command's parameters, validated against that command's parameter schema (01 §12.4)",
       },
       keys: {
         type: "string",
@@ -52433,9 +51583,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         properties: {
           commandId: {
             type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
+            maxLength: 65536,
           },
           params: {
             type: "array",
@@ -52502,15 +51650,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       params: {
         type: "object",
-        properties: {
-          steps: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "steps",
-        ],
+        "x-open": true,
+        description: "the bound command's parameters, validated against that command's parameter schema (01 §12.4)",
       },
       keys: {
         type: "string",
@@ -52595,15 +51736,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       params: {
         type: "object",
-        properties: {
-          steps: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "steps",
-        ],
+        "x-open": true,
+        description: "the bound command's parameters, validated against that command's parameter schema (01 §12.4)",
       },
       keys: {
         type: "string",
@@ -52673,15 +51807,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       params: {
         type: "object",
-        properties: {
-          steps: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "steps",
-        ],
+        "x-open": true,
+        description: "the bound command's parameters, validated against that command's parameter schema (01 §12.4)",
       },
       keys: {
         type: "string",
@@ -52763,10 +51890,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       params: {
         type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-open": true,
+        description: "the bound command's parameters, validated against its schema (01 §12.4)",
       },
       keys: {
         type: "string",
@@ -52812,15 +51937,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       params: {
         type: "object",
-        properties: {
-          steps: {
-            type: "number",
-          },
-        },
-        additionalProperties: false,
-        required: [
-          "steps",
-        ],
+        "x-open": true,
+        description: "the bound command's parameters, validated against that command's parameter schema (01 §12.4)",
       },
       keys: {
         type: "string",
@@ -53194,7 +52312,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       deletedNodeCount: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -53365,6 +52483,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-undefinedType": "ItemDetails",
     title: "library.item.get result",
     "x-spec": "`ItemDetails`",
+    "x-specIssue": "SI-033",
   },
   "library.item.import.params": {
     title: "library.item.import parameters",
@@ -54135,7 +53254,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       frameCount: {
-        type: "integer",
+        type: "number",
       },
       playing: {
         type: "boolean",
@@ -54191,7 +53310,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       frameCount: {
-        type: "integer",
+        type: "number",
       },
       playing: {
         type: "boolean",
@@ -54628,10 +53747,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxLength: 65536,
       },
       frameCount: {
-        type: "integer",
+        type: "number",
       },
       elementCount: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -54828,7 +53947,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "file-system path (11 §6.2)",
       },
       sizeBytes: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -54886,7 +54005,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "number",
       },
       frameCount: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -55868,7 +54987,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "thumbnails",
+          "list",
+          "details",
+        ],
       },
       currentNodeId: {
         type: "string",
@@ -55925,7 +55048,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "thumbnails",
+          "list",
+          "details",
+        ],
       },
     },
     required: [
@@ -56009,6 +55136,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-034",
       },
       startFrame: {
         type: "integer",
@@ -56101,14 +55229,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       framesSkipped: {
         type: "array",
         items: {
-          type: [
-            "string",
-            "number",
-            "boolean",
-            "null",
-          ],
-          "x-placeholder": true,
-          description: "type not stated by the owning section (spec issue); a scalar",
+          type: "integer",
         },
         maxItems: 100000,
       },
@@ -56122,14 +55243,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       unmappedMouths: {
         type: "array",
         items: {
-          type: [
-            "string",
-            "number",
-            "boolean",
-            "null",
-          ],
-          "x-placeholder": true,
-          description: "type not stated by the owning section (spec issue); a scalar",
+          type: "string",
+          maxLength: 65536,
         },
         maxItems: 100000,
       },
@@ -56238,6 +55353,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-034",
       },
       manualEdits: {
         type: "string",
@@ -56315,10 +55431,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             start: {
-              type: "integer",
+              type: "number",
             },
             end: {
-              type: "integer",
+              type: "number",
             },
             mouth: {
               type: "string",
@@ -56620,7 +55736,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mouth: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "X",
+        ],
       },
       drawingId: {
         type: "string",
@@ -56700,14 +55825,42 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       mapping: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
+        type: "object",
+        properties: {
+          "A..X": {
+            type: "object",
+            properties: {
+              drawingId: {
+                type: "string",
+                minLength: 1,
+                maxLength: 4096,
+                description: "object ID or path reference (10 §3)",
+              },
+              drawingName: {
+                type: "string",
+                maxLength: 65536,
+              },
+              rule: {
+                type: "string",
+                enum: [
+                  "stored",
+                  "name",
+                  "property",
+                  "order",
+                  "none",
+                ],
+              },
+            },
+            required: [
+              "rule",
+            ],
+            additionalProperties: false,
+          },
+        },
+        required: [
+          "A..X",
         ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
+        additionalProperties: false,
       },
       complete: {
         type: "boolean",
@@ -56764,7 +55917,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       framesWritten: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -56878,26 +56031,30 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       minHoldFrames: {
         type: "integer",
+        minimum: 0,
+        maximum: 6,
       },
       anticipationFrames: {
         type: "integer",
+        minimum: 0,
+        maximum: 4,
       },
       silenceThresholdDb: {
         type: "number",
+        minimum: 10,
+        maximum: 60,
       },
       language: {
         type: "string",
         maxLength: 65536,
       },
       phonemeMap: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
-        ],
+        type: "object",
+        properties: {},
+        additionalProperties: false,
         "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
+        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-034",
       },
     },
     required: [
@@ -56939,6 +56096,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-034",
       },
       resetPhonemeMap: {
         type: "boolean",
@@ -56953,26 +56111,30 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       minHoldFrames: {
         type: "integer",
+        minimum: 0,
+        maximum: 6,
       },
       anticipationFrames: {
         type: "integer",
+        minimum: 0,
+        maximum: 4,
       },
       silenceThresholdDb: {
         type: "number",
+        minimum: 10,
+        maximum: 60,
       },
       language: {
         type: "string",
         maxLength: 65536,
       },
       phonemeMap: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
-        ],
+        type: "object",
+        properties: {},
+        additionalProperties: false,
         "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
+        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-034",
       },
     },
     required: [
@@ -57006,7 +56168,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               pattern: "^[A-X]$",
             },
             index: {
-              type: "integer",
+              type: "number",
             },
             description: {
               type: "string",
@@ -57028,6 +56190,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               ],
               "x-placeholder": true,
               description: "type not stated by the owning section (spec issue); a scalar",
+              "x-specIssue": "SI-034",
             },
           },
           required: [
@@ -57330,10 +56493,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             start: {
-              type: "integer",
+              type: "number",
             },
             end: {
-              type: "integer",
+              type: "number",
             },
             mouth: {
               type: "string",
@@ -57501,10 +56664,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             start: {
-              type: "integer",
+              type: "number",
             },
             end: {
-              type: "integer",
+              type: "number",
             },
             mouth: {
               type: "string",
@@ -57543,7 +56706,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       framesWritten: {
-        type: "integer",
+        type: "number",
       },
       track: {
         $ref: "#/$defs/lipsync.track.set.spec.LipTrack",
@@ -57677,10 +56840,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           maxItems: 100000,
         },
         startFrame: {
-          type: "integer",
+          type: "number",
         },
         stopFrame: {
-          type: "integer",
+          type: "number",
         },
         soundElementId: {
           type: "string",
@@ -57770,7 +56933,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "number",
       },
       frameCount: {
-        type: "integer",
+        type: "number",
       },
       width: {
         type: "number",
@@ -57841,13 +57004,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               type: "boolean",
             },
             frameCount: {
-              type: "integer",
+              type: "number",
             },
             durationSec: {
               type: "number",
             },
             sequenceCount: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -57910,7 +57073,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       frameCount: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -58002,6 +57165,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       startFrame: {
         type: "integer",
+        minimum: 1,
       },
       stopFrame: {
         type: "integer",
@@ -58230,6 +57394,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       startFrame: {
         type: "integer",
+        minimum: 1,
       },
       stopFrame: {
         type: "integer",
@@ -58631,6 +57796,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-undefinedType": "PlayerState",
     title: "playback.player.get result",
     "x-spec": "`PlayerState`",
+    "x-specIssue": "SI-035",
   },
   "playback.player.open.params": {
     title: "playback.player.open parameters",
@@ -58667,7 +57833,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       frameCount: {
-        type: "integer",
+        type: "number",
       },
       fps: {
         type: "number",
@@ -58728,6 +57894,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-undefinedType": "PlayerState",
     title: "playback.player.set result",
     "x-spec": "`PlayerState`",
+    "x-specIssue": "SI-035",
   },
   "playback.preview.run.params": {
     title: "playback.preview.run parameters",
@@ -58985,7 +58152,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "auto",
+          "free",
+        ],
       },
       start: {
         type: "integer",
@@ -59036,7 +58206,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       sceneLength: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -59078,7 +58248,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "auto",
+          "free",
+        ],
       },
       start: {
         type: "integer",
@@ -59121,7 +58294,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "auto",
+          "free",
+        ],
       },
       start: {
         type: "integer",
@@ -59171,7 +58347,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       fps: {
-        type: "number",
+        anyOf: [
+          {
+            type: "string",
+            enum: [
+              "project",
+            ],
+          },
+          {
+            type: "number",
+            minimum: 1,
+            maximum: 120,
+          },
+        ],
+        default: "project",
       },
       effectiveFps: {
         type: "number",
@@ -59215,7 +58404,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       frame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -59245,7 +58434,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       frame: {
-        type: "integer",
+        type: "number",
       },
       mode: {
         type: "string",
@@ -59382,7 +58571,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       frame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -59410,7 +58599,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       frame: {
-        type: "integer",
+        type: "number",
       },
       reason: {
         type: "string",
@@ -59493,9 +58682,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       values: {
         type: "object",
         properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        additionalProperties: {
+          type: [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+          ],
+          description: "a preference value of the key's type (01 §7)",
+        },
+        propertyNames: {
+          minLength: 1,
+          maxLength: 256,
+        },
+        description: "preference key → value (01 §7)",
       },
     },
     required: [
@@ -59532,16 +58732,21 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         },
         default: {
           type: [
-            "string",
-            "number",
             "boolean",
-            "null",
+            "integer",
+            "number",
+            "string",
           ],
-          "x-placeholder": true,
-          description: "type not stated by the owning section (spec issue); a scalar",
+          description: "a preference value of the key's type (01 §7)",
         },
         value: {
-          type: "number",
+          type: [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+          ],
+          description: "a preference value of the key's type (01 §7)",
         },
         min: {
           type: "number",
@@ -59626,15 +58831,21 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       values: {
         type: "object",
-        description: "(key → value)",
-        additionalProperties: {
-          type: "number",
-        },
         properties: {},
+        additionalProperties: {
+          type: [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+          ],
+          description: "a preference value of the key's type (01 §7)",
+        },
         propertyNames: {
           minLength: 1,
-          maxLength: 4096,
+          maxLength: 256,
         },
+        description: "preference key → value (01 §7)",
       },
     },
     required: [
@@ -59695,7 +58906,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       orientation: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "portrait",
+          "landscape",
+        ],
       },
       printableArea: {
         type: "object",
@@ -59765,7 +58979,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       orientation: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "portrait",
+          "landscape",
+        ],
       },
     },
     required: [
@@ -59886,7 +59103,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       pageCount: {
-        type: "integer",
+        type: "number",
       },
       pages: {
         type: "array",
@@ -59895,11 +59112,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           properties: {
             page: {
               type: "integer",
+              default: 1,
             },
             frames: {
               type: "array",
               items: {
-                type: "integer",
+                type: "number",
               },
               maxItems: 100000,
             },
@@ -60328,7 +59546,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             pagesPrinted: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -60455,10 +59673,99 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       values: {
         type: "object",
-        properties: {},
+        properties: {
+          copies: {
+            type: "integer",
+            minimum: 1,
+            maximum: 999,
+            default: 1,
+          },
+          collate: {
+            type: "boolean",
+            default: false,
+          },
+          layout: {
+            type: "string",
+            enum: [
+              "single",
+              "grid",
+              "flipbook",
+            ],
+            default: "single",
+          },
+          rows: {
+            type: "integer",
+            minimum: 1,
+            maximum: 20,
+            default: 3,
+          },
+          columns: {
+            type: "integer",
+            minimum: 1,
+            maximum: 20,
+            default: 2,
+          },
+          bindingMarginMm: {
+            type: "number",
+            default: 15,
+          },
+          type: {
+            type: "string",
+            enum: [
+              "wholeMovie",
+              "currentSceneCamera",
+              "currentSceneXsheet",
+              "element",
+            ],
+            default: "wholeMovie",
+          },
+          elementId: {
+            type: "string",
+            minLength: 1,
+            maxLength: 4096,
+            description: "object ID or path reference (10 §3)",
+          },
+          range: {
+            type: "string",
+            enum: [
+              "all",
+              "frames",
+              "selection",
+              "playbackRange",
+            ],
+            default: "all",
+          },
+          from: {
+            type: "integer",
+          },
+          to: {
+            type: "integer",
+          },
+          keyDrawingsOnly: {
+            type: "boolean",
+            default: false,
+          },
+          individualDrawingsOnly: {
+            type: "boolean",
+            default: false,
+          },
+          cameraFrame: {
+            type: "boolean",
+            default: false,
+          },
+          paperSize: {
+            type: "string",
+            maxLength: 65536,
+          },
+          orientation: {
+            type: "string",
+            enum: [
+              "portrait",
+              "landscape",
+            ],
+          },
+        },
         additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
       },
     },
     required: [
@@ -61546,16 +60853,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       maxInlinePixels: {
-        type: "integer",
+        type: "number",
       },
       maxInlineBytes: {
-        type: "integer",
+        type: "number",
       },
       maxWidth: {
-        type: "integer",
+        type: "number",
       },
       maxHeight: {
-        type: "integer",
+        type: "number",
       },
       formats: {
         type: "array",
@@ -61922,16 +61229,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       bitDepth: {
-        type: "integer",
+        type: "number",
       },
       sampleRate: {
-        type: "integer",
+        type: "number",
       },
       durationSec: {
         type: "number",
       },
       fileSize: {
-        type: "integer",
+        type: "number",
       },
       missing: {
         type: "boolean",
@@ -62067,10 +61374,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               maxItems: 100000,
             },
             bitDepth: {
-              type: "integer",
+              type: "number",
             },
             sampleRate: {
-              type: "integer",
+              type: "number",
             },
             durationSec: {
               type: "number",
@@ -62079,7 +61386,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               type: "boolean",
             },
             placementCount: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -62173,16 +61480,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       bitDepth: {
-        type: "integer",
+        type: "number",
       },
       sampleRate: {
-        type: "integer",
+        type: "number",
       },
       durationSec: {
         type: "number",
       },
       fileSize: {
-        type: "integer",
+        type: "number",
       },
       exceedsLimit: {
         type: "boolean",
@@ -62348,7 +61655,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       zoom: {
-        type: "number",
+        type: "integer",
+        minimum: 0,
+        maximum: 100,
       },
       scrubbing: {
         type: "boolean",
@@ -62424,7 +61733,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "integer",
       },
       zoom: {
-        type: "number",
+        type: "integer",
+        minimum: 0,
+        maximum: 100,
       },
       scrubbing: {
         type: "boolean",
@@ -62642,16 +61953,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         items: {
           type: "object",
           properties: {
-            x: {
+            time: {
               type: "number",
             },
-            y: {
+            left: {
+              type: "number",
+            },
+            right: {
               type: "number",
             },
           },
           required: [
-            "x",
-            "y",
+            "time",
+            "left",
+            "right",
           ],
           additionalProperties: false,
         },
@@ -62709,16 +62024,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         items: {
           type: "object",
           properties: {
-            x: {
+            time: {
               type: "number",
             },
-            y: {
+            left: {
+              type: "number",
+            },
+            right: {
               type: "number",
             },
           },
           required: [
-            "x",
-            "y",
+            "time",
+            "left",
+            "right",
           ],
           additionalProperties: false,
         },
@@ -62761,16 +62080,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         items: {
           type: "object",
           properties: {
-            x: {
+            time: {
               type: "number",
             },
-            y: {
+            left: {
+              type: "number",
+            },
+            right: {
               type: "number",
             },
           },
           required: [
-            "x",
-            "y",
+            "time",
+            "left",
+            "right",
           ],
           additionalProperties: false,
         },
@@ -62837,16 +62160,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         items: {
           type: "object",
           properties: {
-            x: {
+            time: {
               type: "number",
             },
-            y: {
+            left: {
+              type: "number",
+            },
+            right: {
               type: "number",
             },
           },
           required: [
-            "x",
-            "y",
+            "time",
+            "left",
+            "right",
           ],
           additionalProperties: false,
         },
@@ -62998,10 +62325,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       startFrame: {
-        type: "integer",
+        type: "number",
       },
       stopFrame: {
-        type: "integer",
+        type: "number",
       },
       durationSec: {
         type: "number",
@@ -63110,9 +62437,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       startFrame: {
         type: "integer",
+        minimum: 1,
       },
       stopFrame: {
-        type: "integer",
+        anyOf: [
+          {
+            type: "string",
+            enum: [
+              "natural",
+            ],
+          },
+          {
+            type: "integer",
+          },
+        ],
       },
     },
     required: [
@@ -63428,9 +62766,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       startFrame: {
         type: "integer",
+        minimum: 1,
       },
       stopFrame: {
-        type: "integer",
+        anyOf: [
+          {
+            type: "string",
+            enum: [
+              "natural",
+            ],
+          },
+          {
+            type: "integer",
+          },
+        ],
       },
     },
     required: [
@@ -63710,18 +63059,31 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       inPoint: {
         type: "number",
+        minimum: 0,
       },
       outPoint: {
         type: "number",
+        description: "(≤ duration)",
       },
       startFrame: {
         type: "integer",
+        minimum: 1,
       },
       stopFrame: {
-        type: "integer",
+        anyOf: [
+          {
+            type: "string",
+            enum: [
+              "natural",
+            ],
+          },
+          {
+            type: "integer",
+          },
+        ],
       },
       naturalEndFrame: {
-        type: "integer",
+        type: "number",
       },
       clamped: {
         type: "boolean",
@@ -64026,6 +63388,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-038",
       },
     },
     required: [
@@ -64117,10 +63480,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             startFrame: {
-              type: "integer",
+              type: "number",
             },
             endFrame: {
-              type: "integer",
+              type: "number",
             },
             startTime: {
               type: "number",
@@ -64145,10 +63508,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             startFrame: {
-              type: "integer",
+              type: "number",
             },
             endFrame: {
-              type: "integer",
+              type: "number",
             },
             startTime: {
               type: "number",
@@ -64432,7 +63795,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxItems: 100000,
       },
       globalLength: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -64489,7 +63852,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       index: {
-        type: "integer",
+        type: "number",
       },
       name: {
         type: "string",
@@ -64575,13 +63938,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       localFrame: {
-        type: "integer",
+        type: "number",
       },
       transition: {
         type: "object",
         properties: {
           editPoint: {
-            type: "integer",
+            type: "number",
           },
           t: {
             type: "number",
@@ -64596,7 +63959,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
                 description: "object ID or path reference (10 §3)",
               },
               localFrame: {
-                type: "integer",
+                type: "number",
               },
             },
             required: [
@@ -64615,7 +63978,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
                 description: "object ID or path reference (10 §3)",
               },
               localFrame: {
-                type: "integer",
+                type: "number",
               },
             },
             required: [
@@ -64901,10 +64264,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       playing: {
-        type: "boolean",
+        const: true,
       },
       globalFrame: {
-        type: "integer",
+        type: "number",
       },
       sceneId: {
         type: "string",
@@ -64944,7 +64307,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         const: true,
       },
       globalFrame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -64969,7 +64332,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         const: false,
       },
       globalFrame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -65000,7 +64363,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       localFrame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -65071,6 +64434,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       index: {
         type: "integer",
+        minimum: 1,
       },
       name: {
         type: "string",
@@ -65806,7 +65170,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       kind: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "none",
+          "scene",
+          "transition",
+        ],
       },
       sceneId: {
         type: "string",
@@ -65896,6 +65264,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-039",
       },
     },
     required: [
@@ -66458,7 +65827,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           properties: {
             type: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "none",
+                "fade",
+                "crossDissolve",
+                "wipe",
+                "slide",
+                "clockWipe",
+                "checker",
+              ],
             },
             parameters: {
               type: "array",
@@ -66471,7 +65848,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
                   },
                   type: {
                     type: "string",
-                    maxLength: 65536,
+                    enum: [
+                      "none",
+                      "fade",
+                      "crossDissolve",
+                      "wipe",
+                      "slide",
+                      "clockWipe",
+                      "checker",
+                    ],
                   },
                   min: {
                     type: "number",
@@ -66480,7 +65865,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
                     type: "number",
                   },
                   step: {
-                    type: "integer",
+                    type: "number",
                   },
                   default: {
                     type: [
@@ -66491,6 +65876,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
                     ],
                     "x-placeholder": true,
                     description: "type not stated by the owning section (spec issue); a scalar",
+                    "x-specIssue": "SI-039",
                   },
                   values: {
                     type: "array",
@@ -66537,13 +65923,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       zoom: {
-        type: "number",
+        type: "integer",
+        minimum: 0,
+        maximum: 100,
       },
       playing: {
         type: "boolean",
       },
       globalFrame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -66575,7 +65963,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       zoom: {
-        type: "number",
+        type: "integer",
+        minimum: 0,
+        maximum: 100,
       },
     },
     required: [
@@ -66631,7 +66021,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         },
       },
       paddingFrames: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -66695,6 +66085,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       frame: {
         type: "integer",
+        minimum: 1,
       },
       source: {
         type: "string",
@@ -66762,6 +66153,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       frame: {
         type: "integer",
+        minimum: 1,
       },
       moved: {
         type: "boolean",
@@ -66801,6 +66193,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       frame: {
         type: "integer",
+        minimum: 1,
       },
       clamped: {
         type: "boolean",
@@ -66898,7 +66291,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "auto",
+          "free",
+        ],
       },
       start: {
         type: "integer",
@@ -66929,7 +66325,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "auto",
+          "free",
+        ],
       },
       start: {
         type: "integer",
@@ -66973,7 +66372,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "auto",
+          "free",
+        ],
       },
       start: {
         type: "integer",
@@ -67020,10 +66422,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "object ID or path reference (10 §3)",
       },
       sceneLength: {
-        type: "integer",
+        type: "number",
       },
       currentFrame: {
-        type: "integer",
+        type: "number",
       },
       playbackRange: {
         type: "object",
@@ -67033,10 +66435,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             maxLength: 65536,
           },
           start: {
-            type: "integer",
+            type: "number",
           },
           end: {
-            type: "integer",
+            type: "number",
           },
         },
         required: [
@@ -67081,7 +66483,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maxLength: 65536,
       },
       depth: {
-        type: "integer",
+        type: "number",
       },
       parentId: {
         type: "string",
@@ -67105,13 +66507,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "object",
         properties: {
           start: {
-            type: "integer",
+            type: "number",
           },
           end: {
-            type: "integer",
+            type: "number",
           },
           loops: {
-            type: "integer",
+            type: "number",
           },
         },
         required: [
@@ -67127,7 +66529,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "object",
           properties: {
             frame: {
-              type: "integer",
+              type: "number",
             },
             channels: {
               type: "array",
@@ -67182,10 +66584,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               maxLength: 65536,
             },
             from: {
-              type: "integer",
+              type: "number",
             },
             to: {
-              type: "integer",
+              type: "number",
             },
           },
           required: [
@@ -67300,7 +66702,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       unit: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "frames",
+          "feetFrames",
+        ],
       },
     },
     required: [
@@ -67328,17 +66733,78 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-spec": "`operation: enum \"paste\"|\"cut\"|\"dragDrop\"`",
   },
+  "timeline.transferOptions.get.spec.TransferOptions": {
+    type: "object",
+    properties: {
+      overwriteDrawings: {
+        type: "boolean",
+      },
+      exposure: {
+        type: "boolean",
+      },
+      autoExtend: {
+        type: "boolean",
+      },
+      updateColours: {
+        type: "boolean",
+      },
+      keyframeSubstitution: {
+        type: "boolean",
+      },
+      boundaryKeys: {
+        type: "boolean",
+      },
+      pegKeys: {
+        type: "object",
+        properties: {
+          motion: {
+            type: "boolean",
+          },
+          rotation: {
+            type: "boolean",
+          },
+          scale: {
+            type: "boolean",
+          },
+          pivot: {
+            type: "boolean",
+          },
+          velocity: {
+            type: "boolean",
+          },
+          skew: {
+            type: "boolean",
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "motion",
+          "rotation",
+          "scale",
+          "pivot",
+          "velocity",
+          "skew",
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "overwriteDrawings",
+      "exposure",
+      "autoExtend",
+      "updateColours",
+      "keyframeSubstitution",
+      "boundaryKeys",
+      "pegKeys",
+    ],
+    "x-specSection": "04",
+  },
   "timeline.transferOptions.get.result": {
     title: "timeline.transferOptions.get result",
     type: "object",
     properties: {
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        $ref: "#/$defs/timeline.transferOptions.get.spec.TransferOptions",
       },
     },
     required: [
@@ -67442,15 +66908,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       operation: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "paste",
+          "cut",
+          "dragDrop",
+        ],
       },
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        $ref: "#/$defs/timeline.transferOptions.set.spec.TransferOptions",
       },
     },
     required: [
@@ -67485,13 +66950,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       zoomLevel: {
-        type: "number",
+        type: "integer",
       },
       firstFrame: {
         type: "integer",
       },
       lastFrame: {
-        type: "integer",
+        type: "number",
       },
     },
     required: [
@@ -67516,9 +66981,31 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       toolId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        enum: [
+          "select",
+          "contourEditor",
+          "perspective",
+          "repositionAll",
+          "brush",
+          "pencil",
+          "rectangle",
+          "ellipse",
+          "polyline",
+          "line",
+          "paint",
+          "unpaint",
+          "paintUnpainted",
+          "dropper",
+          "closeGap",
+          "stroke",
+          "editTexture",
+          "eraser",
+          "cutter",
+          "scissor",
+          "zoom",
+          "grabber",
+          "text",
+        ],
       },
       temporary: {
         type: "boolean",
@@ -67545,9 +67032,31 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       toolId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        enum: [
+          "select",
+          "contourEditor",
+          "perspective",
+          "repositionAll",
+          "brush",
+          "pencil",
+          "rectangle",
+          "ellipse",
+          "polyline",
+          "line",
+          "paint",
+          "unpaint",
+          "paintUnpainted",
+          "dropper",
+          "closeGap",
+          "stroke",
+          "editTexture",
+          "eraser",
+          "cutter",
+          "scissor",
+          "zoom",
+          "grabber",
+          "text",
+        ],
       },
       temporaryToolId: {
         anyOf: [
@@ -67620,9 +67129,31 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       toolId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        enum: [
+          "select",
+          "contourEditor",
+          "perspective",
+          "repositionAll",
+          "brush",
+          "pencil",
+          "rectangle",
+          "ellipse",
+          "polyline",
+          "line",
+          "paint",
+          "unpaint",
+          "paintUnpainted",
+          "dropper",
+          "closeGap",
+          "stroke",
+          "editTexture",
+          "eraser",
+          "cutter",
+          "scissor",
+          "zoom",
+          "grabber",
+          "text",
+        ],
       },
     },
     required: [
@@ -67653,12 +67184,19 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
+        type: "object",
+        properties: {
+          penId: {
+            type: "string",
+            minLength: 1,
+            maxLength: 4096,
+            description: "object ID or path reference (10 §3)",
+          },
         },
-        maxItems: 100000,
+        required: [
+          "penId",
+        ],
+        additionalProperties: false,
       },
     },
     required: [
@@ -67717,12 +67255,19 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
+        type: "object",
+        properties: {
+          penId: {
+            type: "string",
+            minLength: 1,
+            maxLength: 4096,
+            description: "object ID or path reference (10 §3)",
+          },
         },
-        maxItems: 100000,
+        required: [
+          "penId",
+        ],
+        additionalProperties: false,
       },
     },
     required: [
@@ -67806,6 +67351,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               additionalProperties: false,
               "x-placeholder": true,
               description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+              "x-specIssue": "SI-040",
             },
             optionSchema: {
               type: "object",
@@ -67813,6 +67359,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               additionalProperties: false,
               "x-placeholder": true,
               description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+              "x-specIssue": "SI-040",
             },
           },
           required: [
@@ -67852,25 +67399,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       toolId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
-        ],
+        type: "string",
+        maxLength: 65536,
       },
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        type: "object",
+        properties: {},
+        additionalProperties: false,
+        "x-placeholder": true,
+        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-040",
       },
     },
     required: [
@@ -67902,9 +67440,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       toolId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        maxLength: 65536,
       },
       options: {
         type: "object",
@@ -67912,6 +67448,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-040",
       },
     },
     required: [
@@ -67935,6 +67472,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-040",
       },
     },
     required: [
@@ -67950,17 +67488,15 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       toolId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        maxLength: 65536,
       },
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        type: "object",
+        properties: {},
+        additionalProperties: false,
+        "x-placeholder": true,
+        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-040",
       },
     },
     required: [
@@ -68034,6 +67570,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: false,
         "x-placeholder": true,
         description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        "x-specIssue": "SI-040",
       },
     },
     additionalProperties: false,
@@ -68138,23 +67675,39 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             type: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "brush",
+                "eraser",
+              ],
             },
             tipShape: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "round",
+                "oval",
+                "square",
+                "flat",
+              ],
             },
             minSize: {
               type: "number",
+              minimum: 0,
+              maximum: 100,
             },
             maxSize: {
-              type: "integer",
+              type: "number",
+              minimum: 0,
+              maximum: 100,
             },
             smoothness: {
               type: "number",
+              minimum: 0,
+              maximum: 10,
             },
             tipAngle: {
               type: "number",
+              minimum: 0,
+              maximum: 360,
             },
           },
           required: [
@@ -68265,7 +67818,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       type: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "brush",
+          "eraser",
+        ],
+        default: "brush",
       },
     },
     required: [
@@ -68321,19 +67878,209 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-spec": "`penId: id; tipShape?: enum \"round\"|\"oval\"|\"square\"|\"flat\"; minSize?: number (0–100); maxSize?: number (0–100); smoothness?: number (0–10); tipAngle?: number (0–360)`",
   },
+  "tool.pen.set.Ext": {
+    type: "object",
+    propertyNames: {
+      pattern: "^[A-Za-z0-9][A-Za-z0-9-]*(\\.[A-Za-z0-9][A-Za-z0-9-]*)+$",
+    },
+    description: "Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim.",
+  },
+  "tool.pen.set.Id": {
+    type: "string",
+    pattern: "^[A-Za-z0-9_-]{1,64}$",
+  },
+  "tool.pen.set.Pen": {
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      id: {
+        $ref: "#/$defs/tool.pen.set.Id",
+        description: "Immutable ID.",
+        readOnly: true,
+        "x-since": "1.0",
+      },
+      type: {
+        type: "string",
+        const: "pen",
+        readOnly: true,
+        description: "Always `pen`.",
+        "x-since": "1.0",
+      },
+      rev: {
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+        description: "Revision of the last change (10 REV-02).",
+        readOnly: true,
+        "x-since": "1.0",
+      },
+      name: {
+        pattern: "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
+        description: "Unique in the project; default `Pen <n>`.",
+        "x-command": "tool.pen.rename",
+        minLength: 1,
+        maxLength: 64,
+        type: "string",
+        "x-since": "1.0",
+      },
+      kind: {
+        $ref: "#/$defs/tool.pen.set.PenKind",
+        description: "Brush or eraser pen (02 §6.1; SI-004).",
+        "x-since": "1.0",
+      },
+      minSize: {
+        type: "number",
+        "x-unit": "du",
+        description: "Width at lowest pressure, 0–100 du; `minSize ≤ maxSize`.",
+        minimum: 0,
+        maximum: 100,
+        "x-since": "1.0",
+      },
+      maxSize: {
+        type: "number",
+        "x-unit": "du",
+        description: "Width at full pressure, 0–100 du.",
+        minimum: 0,
+        maximum: 100,
+        "x-since": "1.0",
+      },
+      smoothness: {
+        type: "integer",
+        description: "Curve-fitting tolerance and pressure smoothing, 0–10 (10 §4.2: int).",
+        minimum: 0,
+        maximum: 10,
+        "x-since": "1.0",
+      },
+      tip: {
+        $ref: "#/$defs/tool.pen.set.Tip",
+        description: "Tip shape.",
+        "x-since": "1.0",
+      },
+      tipAngle: {
+        type: "number",
+        "x-unit": "degree",
+        description: "Orientation of non-round tips, 0–360 degrees (02 §6.1; SI-004).",
+        minimum: 0,
+        maximum: 360,
+        "x-since": "1.0",
+      },
+      colourId: {
+        anyOf: [
+          {
+            $ref: "#/$defs/tool.pen.set.Id",
+          },
+          {
+            type: "null",
+          },
+        ],
+        description: "Colour bound to the pen; `null` = use the current colour.",
+        "x-ref": "swatch",
+        "x-since": "1.0",
+      },
+      meta: {
+        type: "object",
+        additionalProperties: true,
+        description: "Free-form metadata.",
+        "x-omitDefault": true,
+        "x-since": "1.0",
+      },
+      ext: {
+        $ref: "#/$defs/tool.pen.set.Ext",
+        description: "Extension data.",
+        "x-omitDefault": true,
+        "x-since": "1.0",
+      },
+      path: {
+        type: "string",
+        description: "Canonical path (10 §2.4).",
+        "x-transient": true,
+        readOnly: true,
+        "x-since": "1.0",
+      },
+    },
+    "x-since": "1.0",
+    description: "A pen preset (10 §4.2). Unique name in the project.",
+    "x-objectType": "pen",
+    required: [
+      "id",
+      "type",
+    ],
+    if: {
+      required: [
+        "rev",
+      ],
+    },
+    then: {
+      required: [
+        "id",
+        "type",
+        "rev",
+        "name",
+        "kind",
+        "minSize",
+        "maxSize",
+        "smoothness",
+        "tip",
+        "tipAngle",
+        "colourId",
+      ],
+    },
+    else: {
+      propertyNames: {
+        enum: [
+          "id",
+          "type",
+          "name",
+        ],
+      },
+    },
+  },
+  "tool.pen.set.PenKind": {
+    oneOf: [
+      {
+        type: "string",
+        const: "brush",
+        description: "Used by the Brush (and Pencil/shape thickness).",
+      },
+      {
+        type: "string",
+        const: "eraser",
+        description: "Used by the Eraser.",
+      },
+    ],
+    description: "Tool family of a pen (02 §6.1 \"Type\"). Persisted as `kind` because `type` is the envelope field (SI-004).",
+  },
+  "tool.pen.set.Tip": {
+    oneOf: [
+      {
+        type: "string",
+        const: "round",
+        description: "Round nib (default).",
+      },
+      {
+        type: "string",
+        const: "oval",
+        description: "Oval nib.",
+      },
+      {
+        type: "string",
+        const: "square",
+        description: "Square nib.",
+      },
+      {
+        type: "string",
+        const: "flat",
+        description: "Flat nib.",
+      },
+    ],
+    description: "Tip shape (02 §6.1).",
+  },
   "tool.pen.set.result": {
     title: "tool.pen.set result",
     type: "object",
     properties: {
       pen: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
-        ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
+        $ref: "#/$defs/tool.pen.set.Pen",
       },
     },
     required: [
@@ -68368,12 +68115,27 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
+        type: "object",
+        properties: {
+          thicknessSource: {
+            type: "string",
+            enum: [
+              "penMax",
+              "fixed",
+            ],
+            default: "penMax",
+          },
+          thickness: {
+            type: "number",
+            minimum: 0,
+            maximum: 100,
+          },
         },
-        maxItems: 100000,
+        required: [
+          "thicknessSource",
+          "thickness",
+        ],
+        additionalProperties: false,
       },
     },
     required: [
@@ -68433,12 +68195,24 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
+        type: "object",
+        properties: {
+          snap: {
+            type: "boolean",
+            default: true,
+          },
+          snapRadius: {
+            type: "number",
+            minimum: 1,
+            maximum: 50,
+            default: 8,
+          },
         },
-        maxItems: 100000,
+        required: [
+          "snap",
+          "snapRadius",
+        ],
+        additionalProperties: false,
       },
     },
     required: [
@@ -68468,12 +68242,21 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
+        type: "object",
+        properties: {
+          rectRule: {
+            type: "string",
+            enum: [
+              "inside",
+              "intersect",
+            ],
+            default: "inside",
+          },
         },
-        maxItems: 100000,
+        required: [
+          "rectRule",
+        ],
+        additionalProperties: false,
       },
     },
     required: [
@@ -68587,13 +68370,24 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "none",
+          "mirror",
+          "kaleidoscope",
+        ],
+        default: "none",
       },
       angle: {
         type: "number",
+        minimum: 0,
+        maximum: 360,
+        default: 0,
       },
       mirrors: {
-        type: "boolean",
+        type: "integer",
+        minimum: 2,
+        maximum: 16,
+        default: 6,
       },
     },
     required: [
@@ -68740,12 +68534,101 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       options: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
+        type: "object",
+        properties: {
+          font: {
+            type: "string",
+            maxLength: 65536,
+          },
+          size: {
+            type: "number",
+            minimum: 1,
+            maximum: 512,
+            default: 36,
+          },
+          bold: {
+            type: "boolean",
+            default: false,
+          },
+          italic: {
+            type: "boolean",
+            default: false,
+          },
+          baseline: {
+            type: "string",
+            enum: [
+              "normal",
+              "subscript",
+              "superscript",
+            ],
+            default: "normal",
+          },
+          kerning: {
+            type: "integer",
+            minimum: -60,
+            maximum: 60,
+            default: 0,
+          },
+          autoKern: {
+            type: "boolean",
+            default: true,
+          },
+          align: {
+            type: "string",
+            enum: [
+              "left",
+              "centre",
+              "right",
+              "justify",
+            ],
+            default: "left",
+          },
+          leftMargin: {
+            type: "number",
+            default: 0,
+          },
+          rightMargin: {
+            type: "number",
+            default: 0,
+          },
+          indent: {
+            type: "number",
+            default: 0,
+          },
+          lineSpacing: {
+            type: "number",
+            default: 0,
+          },
+          outlineColourId: {
+            anyOf: [
+              {
+                type: "string",
+                minLength: 1,
+                maxLength: 4096,
+                description: "object ID or path reference (10 §3)",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
         },
-        maxItems: 100000,
+        required: [
+          "font",
+          "size",
+          "bold",
+          "italic",
+          "baseline",
+          "kerning",
+          "autoKern",
+          "align",
+          "leftMargin",
+          "rightMargin",
+          "indent",
+          "lineSpacing",
+          "outlineColourId",
+        ],
+        additionalProperties: false,
       },
     },
     required: [
@@ -68886,6 +68769,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-041",
       },
       source: {
         type: "string",
@@ -68987,6 +68871,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         "x-placeholder": true,
         description: "type not stated by the owning section (spec issue); a scalar",
+        "x-specIssue": "SI-041",
       },
       playback: {
         type: "boolean",
@@ -69089,9 +68974,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       properties: {
         messageId: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
+          maxLength: 65536,
         },
         description: {
           type: "string",
@@ -69156,9 +69039,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       messageId: {
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        maxLength: 65536,
       },
       suppressed: {
         type: "boolean",
@@ -69341,6 +69222,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           ],
           "x-placeholder": true,
           description: "type not stated by the owning section (spec issue); a scalar",
+          "x-specIssue": "SI-042",
         },
       },
       required: [
@@ -69652,7 +69534,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       type: {
         type: "string",
-        maxLength: 65536,
+        enum: [
+          "drawing",
+          "camera",
+          "top",
+          "side",
+          "previous",
+        ],
       },
     },
     required: [
@@ -69707,6 +69595,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       zoom: {
         type: "number",
+        minimum: 0.0625,
+        maximum: 64,
       },
       rotationDegrees: {
         type: "number",
@@ -72672,6 +72562,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       frame: {
         type: "integer",
+        minimum: 1,
       },
     },
     required: [
@@ -72706,34 +72597,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       thumbnails: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        type: "boolean",
       },
       exposureText: {
-        type: "string",
-        maxLength: 65536,
+        type: "boolean",
       },
       elementNames: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        type: "boolean",
       },
       notes: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+        type: "boolean",
       },
     },
     required: [
@@ -72989,14 +72862,79 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       columns: {
         type: "array",
+        maxItems: 100000,
         items: {
           type: "object",
-          properties: {},
           additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+          required: [
+            "elementId",
+            "exposures",
+          ],
+          properties: {
+            elementId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            from: {
+              type: "integer",
+              minimum: 1,
+              maximum: 100000,
+            },
+            to: {
+              type: "integer",
+              minimum: 1,
+              maximum: 100000,
+            },
+            exposures: {
+              type: "array",
+              maxItems: 100000,
+              items: {
+                type: "object",
+                additionalProperties: false,
+                required: [
+                  "from",
+                  "to",
+                ],
+                properties: {
+                  drawing: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                  drawingId: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4096,
+                    description: "object ID or path reference (10 §3)",
+                  },
+                  from: {
+                    type: "integer",
+                    minimum: 1,
+                    maximum: 100000,
+                  },
+                  to: {
+                    type: "integer",
+                    minimum: 1,
+                    maximum: 100000,
+                  },
+                },
+                anyOf: [
+                  {
+                    required: [
+                      "drawing",
+                    ],
+                  },
+                  {
+                    required: [
+                      "drawingId",
+                    ],
+                  },
+                ],
+              },
+            },
+          },
         },
-        maxItems: 100000,
       },
       createMissingDrawings: {
         type: "boolean",
@@ -73021,10 +72959,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       rev: {
-        type: "integer",
+        type: "number",
       },
       sceneLength: {
-        type: "integer",
+        type: "number",
       },
       changed: {
         type: "array",
@@ -73035,17 +72973,34 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       createdDrawings: {
         type: "array",
-        items: {
-          type: [
-            "string",
-            "number",
-            "boolean",
-            "null",
-          ],
-          "x-placeholder": true,
-          description: "type not stated by the owning section (spec issue); a scalar",
-        },
         maxItems: 100000,
+        items: {
+          type: "object",
+          additionalProperties: false,
+          required: [
+            "elementId",
+            "drawingId",
+            "name",
+          ],
+          properties: {
+            elementId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            drawingId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            name: {
+              type: "string",
+              maxLength: 65536,
+            },
+          },
+        },
       },
     },
     required: [
@@ -73065,10 +73020,49 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "array",
         items: {
           type: "object",
-          properties: {},
+          properties: {
+            itemId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            elementId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            drawingId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            label: {
+              type: "string",
+              maxLength: 65536,
+            },
+            visible: {
+              type: "boolean",
+            },
+            placement: {
+              type: "string",
+              enum: [
+                "over",
+                "under",
+              ],
+            },
+          },
+          required: [
+            "itemId",
+            "elementId",
+            "drawingId",
+            "label",
+            "visible",
+            "placement",
+          ],
           additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
         },
         maxItems: 100000,
       },
@@ -73170,7 +73164,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             placement: {
               type: "string",
-              maxLength: 65536,
+              enum: [
+                "over",
+                "under",
+              ],
             },
           },
           required: [
@@ -73358,34 +73355,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       elementList: {
-        type: "array",
-        items: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        maxItems: 100000,
+        type: "boolean",
       },
       lightTable: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
-        ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
+        type: "boolean",
       },
       toolbar: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
-        ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
+        type: "boolean",
       },
     },
     required: [
@@ -73745,7 +73721,7 @@ export interface anim_bone_pose_set_params {
     /** object ID or path reference (10 §3) */
     boneId: string;
     rotation?: number;
-    length?: number | bigint;
+    length?: number;
     x?: number;
     y?: number;
   })[];
@@ -73865,9 +73841,14 @@ export interface anim_camera_get_params {
 export interface anim_camera_get_result {
   /** object ID or path reference (10 §3) */
   id: string;
-  position: number | bigint;
+  /** Default: {0,0,16}. */
+  position: {
+    x: number;
+    y: number;
+    z: number;
+  };
   roll: number;
-  fovMode: string;
+  fovMode: 'static' | 'dynamic';
   fov: number;
   effectiveFov: number;
   worldPosition: {
@@ -73930,8 +73911,8 @@ export interface anim_changed_result {
   nodeIds: string[];
   channels: string[];
   frames?: {
-    from: number | bigint;
-    to: number | bigint;
+    from: number;
+    to: number;
   };
 }
 
@@ -73944,7 +73925,7 @@ export interface anim_channel_copy_params {
 }
 
 export interface anim_channel_copy_result {
-  keyCount: number | bigint;
+  keyCount: number;
 }
 
 export interface anim_channel_cut_params {
@@ -73955,7 +73936,7 @@ export interface anim_channel_cut_params {
 }
 
 export interface anim_channel_cut_result {
-  keyCount: number | bigint;
+  keyCount: number;
 }
 
 export interface anim_channel_paste_params {
@@ -73966,7 +73947,7 @@ export interface anim_channel_paste_params {
 }
 
 export interface anim_channel_paste_result {
-  keyCount: number | bigint;
+  keyCount: number;
 }
 
 export interface anim_depth_move_params {
@@ -74179,7 +74160,7 @@ export interface anim_evaluate_spec_NodeEval {
 
 export interface anim_evaluate_result {
   frames: ({
-    frame: number | bigint;
+    frame: number;
     nodes: anim_evaluate_spec_NodeEval[];
   })[];
 }
@@ -74204,7 +74185,7 @@ export interface anim_function_curveType_set_params {
 
 export interface anim_function_curveType_set_result {
   channel: string;
-  curveType: string;
+  curveType: 'spline' | 'interpolation' | 'velocityBased';
 }
 
 export interface anim_function_get_params {
@@ -74233,7 +74214,10 @@ export interface anim_function_get_spec_Function {
     };
     preset: string | null;
   })[];
-  pins: (string | number | boolean | null)[];
+  pins: ({
+    frame: number;
+    value: number;
+  })[];
 }
 
 export type anim_function_get_result = anim_function_get_spec_Function;
@@ -74247,7 +74231,7 @@ export interface anim_function_key_add_params {
 }
 
 export interface anim_function_key_add_result {
-  frame: number | bigint;
+  frame: number;
   value: number;
 }
 
@@ -74295,7 +74279,7 @@ export interface anim_function_key_set_params {
 }
 
 export interface anim_function_key_set_result {
-  frame: number | bigint;
+  frame: number;
   value: number;
 }
 
@@ -74307,8 +74291,8 @@ export interface anim_function_list_params {
 export interface anim_function_list_result {
   channels: ({
     channel: string;
-    curveType: string;
-    keyCount: number | bigint;
+    curveType: 'spline' | 'interpolation' | 'velocityBased';
+    keyCount: number;
     allowedCurveTypes: string[];
   })[];
 }
@@ -74338,7 +74322,7 @@ export interface anim_function_sample_params {
 
 export interface anim_function_sample_result {
   samples: ({
-    frame: number | bigint;
+    frame: number;
     value: number;
   })[];
 }
@@ -74349,10 +74333,10 @@ export interface anim_function_set_params {
   channel: string;
   curveType?: 'spline' | 'interpolation' | 'velocityBased';
   keys: ({
-    frame: number | bigint;
+    frame: number;
     value: number;
     constantSegment?: boolean;
-    handleMode?: string;
+    handleMode?: 'smooth' | 'broken';
     left?: {
       dt: number;
       dv: number;
@@ -74361,7 +74345,7 @@ export interface anim_function_set_params {
       dt: number;
       dv: number;
     };
-    preset?: string;
+    preset?: 'constant' | 'linear' | 'easeInOut' | 'fastInOut' | 'extremeEaseInOut' | 'extremeFastInOut' | 'slowAcceleration' | 'slowDeceleration';
   })[];
 }
 
@@ -74369,7 +74353,7 @@ export interface anim_function_set_result {
   /** object ID or path reference (10 §3) */
   nodeId: string;
   channel: string;
-  keyCount: number | bigint;
+  keyCount: number;
 }
 
 export type anim_functionEditor_get_params = Record<string, unknown>;
@@ -74378,9 +74362,9 @@ export interface anim_functionEditor_get_result {
   /** object ID or path reference (10 §3) */
   nodeId: string;
   channel: string;
-  projection: string;
-  selectedFrames: (number | bigint)[];
-  syncFrame: number | bigint;
+  projection: 'x' | 'y' | 'z';
+  selectedFrames: number[];
+  syncFrame: number;
   view: string;
 }
 
@@ -74428,7 +74412,7 @@ export interface anim_hierarchy_attach_params {
 
 export interface anim_hierarchy_attach_result {
   childIds: string[];
-  /** object ID or path reference (10 §3) */
+  /** object ID or path reference (10 §3) or "next" */
   parentId: string;
   approximated: boolean;
 }
@@ -74466,7 +74450,7 @@ export interface anim_hierarchy_get_result {
     id: string;
     kind: string;
     name: string;
-    /** object ID or path reference (10 §3) */
+    /** object ID or path reference (10 §3) or "next" */
     parentId: string;
     childIds: string[];
   })[];
@@ -74552,7 +74536,7 @@ export interface anim_loop_set_params {
 export interface anim_loop_set_result {
   /** object ID or path reference (10 §3) */
   nodeId: string;
-  cycleLength: number | bigint;
+  cycleLength: number;
   duration: number;
 }
 
@@ -74612,12 +74596,12 @@ export interface anim_path_get_spec_Path {
   /** object ID or path reference (10 §3) */
   nodeId: string;
   lockDepth: boolean;
-  length: number | bigint;
+  length: number;
   points: ({
     /** object ID or path reference (10 §3) */
     id: string;
     kind: string;
-    frame: number | bigint;
+    frame: number;
     x: number;
     y: number;
     z: number;
@@ -74664,7 +74648,7 @@ export interface anim_path_point_add_params {
 export interface anim_path_point_add_result {
   /** object ID or path reference (10 §3) */
   pointId: string;
-  frame: number | bigint;
+  frame: number;
 }
 
 export interface anim_path_point_remove_params {
@@ -74747,7 +74731,7 @@ export interface anim_path_set_params {
   /** object ID or path reference (10 §3) */
   nodeId: string;
   points: ({
-    kind: string;
+    kind: 'key' | 'control';
     frame?: number | bigint;
     x: number;
     y: number;
@@ -74822,8 +74806,8 @@ export interface anim_prefs_get_result {
   defaultTension: number;
   defaultContinuity: number;
   defaultBias: number;
-  units: string[];
-  displayUnits: string;
+  units: 'fields' | 'inches' | 'centimetres';
+  displayUnits: boolean;
   boxHighlighting: boolean;
   keepSelectionVisible: boolean;
   linearByDefault: boolean;
@@ -74861,7 +74845,7 @@ export interface anim_projection_get_result {
   points: ({
     x: number;
     y: number;
-    depth: number | bigint;
+    depth: number;
     visible: boolean;
   })[];
   nodes: ({
@@ -74884,8 +74868,8 @@ export type anim_record_completed_params = Record<string, unknown>;
 export interface anim_record_completed_result {
   /** object ID or path reference (10 §3) */
   nodeId: string;
-  firstFrame: number | bigint;
-  lastFrame: number | bigint;
+  firstFrame: number;
+  lastFrame: number;
 }
 
 export type anim_record_options_get_params = Record<string, unknown>;
@@ -74903,7 +74887,11 @@ export interface anim_record_options_set_params {
 }
 
 export interface anim_record_options_set_result {
-  options: string[];
+  options: {
+    captureSpeed: number;
+    smoothness: number;
+    autoExtendExposure: boolean;
+  };
 }
 
 export interface anim_record_run_params {
@@ -74923,9 +74911,9 @@ export interface anim_record_run_params {
 }
 
 export interface anim_record_run_result {
-  firstFrame: number | bigint;
-  lastFrame: number | bigint;
-  keyCount: number | bigint;
+  firstFrame: number;
+  lastFrame: number;
+  keyCount: number;
   channels: string[];
 }
 
@@ -75145,13 +75133,13 @@ export type anim_tool_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface anim_tool_changed_result {
-  tool: string;
+  tool: 'select' | 'transform' | 'record' | 'rotate' | 'skew' | 'scale' | 'motion' | 'boneCreate' | 'boneSetup' | 'boneManipulate' | 'boneInverse' | 'boneForward' | 'boneInfluence' | 'boneParent';
 }
 
 export type anim_tool_get_params = Record<string, unknown>;
 
 export interface anim_tool_get_result {
-  tool: string;
+  tool: 'select' | 'transform' | 'record' | 'rotate' | 'skew' | 'scale' | 'motion' | 'boneCreate' | 'boneSetup' | 'boneManipulate' | 'boneInverse' | 'boneForward' | 'boneInfluence' | 'boneParent';
 }
 
 export interface anim_tool_set_params {
@@ -75160,7 +75148,7 @@ export interface anim_tool_set_params {
 }
 
 export interface anim_tool_set_result {
-  tool: string;
+  tool: 'select' | 'transform' | 'record' | 'rotate' | 'skew' | 'scale' | 'motion' | 'boneCreate' | 'boneSetup' | 'boneManipulate' | 'boneInverse' | 'boneForward' | 'boneInfluence' | 'boneParent';
 }
 
 export interface anim_transform_set_params {
@@ -75222,7 +75210,7 @@ export interface anim_view_get_params {
 }
 
 export interface anim_view_get_result {
-  type: string;
+  type: 'drawing' | 'camera' | 'top' | 'side';
   zoom: number;
   pan: {
     x: number;
@@ -75235,7 +75223,7 @@ export interface anim_view_get_result {
     maxX: number;
     maxY: number;
   };
-  slot: string;
+  slot: 'A' | 'B' | 'other';
 }
 
 export interface anim_view_slot_select_params {
@@ -75247,7 +75235,7 @@ export interface anim_view_slot_select_params {
 export interface anim_view_slot_select_result {
   /** object ID or path reference (10 §3) */
   viewId: string;
-  slot: string;
+  slot: 'A' | 'B' | 'other';
   state: string;
 }
 
@@ -75260,7 +75248,7 @@ export interface anim_view_type_set_params {
 export interface anim_view_type_set_result {
   /** object ID or path reference (10 §3) */
   viewId: string;
-  type: string;
+  type: 'drawing' | 'camera' | 'top' | 'side';
 }
 
 /** `app.context.set` parameters. */
@@ -76051,14 +76039,14 @@ export type capture_frame_captured_params = Record<string, unknown>;
 export interface capture_frame_captured_result {
   /** object ID or path reference (10 §3) */
   sessionId?: string;
-  /** object ID or path reference (10 §3) */
+  /** object ID or path reference (10 §3) or "new" */
   elementId: string;
   /** object ID or path reference (10 §3) */
   drawingId: string;
   /** object ID or path reference (10 §3) */
   cellId: string;
   frame: number | bigint;
-  nextFrame: number | bigint;
+  nextFrame: number;
 }
 
 export interface capture_inputLock_set_params {
@@ -76121,7 +76109,7 @@ export interface capture_lightTable_references_list_result {
     elementId?: string;
     /** object ID or path reference (10 §3) */
     drawingId?: string;
-    frame?: number | bigint;
+    frame?: number;
   })[];
 }
 
@@ -76135,9 +76123,10 @@ export interface capture_lightTable_set_params {
 }
 
 export interface capture_lightTable_set_result {
+  /** object ID or path reference (10 §3) or "none" | "previousCapture" */
   reference: string;
   opacity: number;
-  aspectRatio: number;
+  aspectRatio: 'fit' | 'fill' | 'stretch';
 }
 
 export interface capture_preview_get_params {
@@ -76325,10 +76314,10 @@ export interface capture_target_set_params {
 }
 
 export interface capture_target_set_result {
-  /** object ID or path reference (10 §3) */
+  /** object ID or path reference (10 §3) or "new" */
   elementId: string;
   frame: number | bigint;
-  insertMode: string;
+  insertMode: 'insert' | 'overwrite';
   advance: boolean;
 }
 
@@ -76342,8 +76331,8 @@ export interface cell_blank_add_result {
   changed: ({
     /** object ID or path reference (10 §3) */
     elementId: string;
-    from: number | bigint;
-    to: number | bigint;
+    from: number;
+    to: number;
   })[];
 }
 
@@ -76357,8 +76346,8 @@ export interface cell_blank_remove_result {
   changed: ({
     /** object ID or path reference (10 §3) */
     elementId: string;
-    from: number | bigint;
-    to: number | bigint;
+    from: number;
+    to: number;
   })[];
 }
 
@@ -76422,8 +76411,8 @@ export interface cell_clipboard_set_params {
 
 export interface cell_clipboard_set_result {
   contentType: string;
-  elementCount: number | bigint;
-  frames: number | bigint;
+  elementCount: number;
+  frames: number;
 }
 
 export interface cell_columnate_apply_params {
@@ -76442,14 +76431,14 @@ export interface cell_columnate_apply_params {
 }
 
 export interface cell_columnate_apply_result {
-  from: number | bigint;
-  to: number | bigint;
+  from: number;
+  to: number;
   totalFrames: number | bigint;
-  loops: number | bigint;
+  loops: number;
   sequence: ({
     drawing: string;
-    from: number | bigint;
-    to: number | bigint;
+    from: number;
+    to: number;
   })[];
 }
 
@@ -76537,9 +76526,9 @@ export interface cell_exposures_changed_result {
   sceneId: string;
   /** object ID or path reference (10 §3) */
   elementId: string;
-  from: number | bigint;
-  to: number | bigint;
-  rev: number | bigint;
+  from: number;
+  to: number;
+  rev: number;
 }
 
 export interface cell_fill_apply_params {
@@ -76552,8 +76541,8 @@ export interface cell_fill_apply_result {
   changed: ({
     /** object ID or path reference (10 §3) */
     elementId: string;
-    from: number | bigint;
-    to: number | bigint;
+    from: number;
+    to: number;
   })[];
 }
 
@@ -76673,23 +76662,23 @@ export type cell_selection_changed_params = Record<string, unknown>;
 /** Event payload (delivered to subscribers). */
 export interface cell_selection_changed_result {
   elementIds: string[];
-  from: number | bigint;
-  to: number | bigint;
+  from: number;
+  to: number;
   /** object ID or path reference (10 §3) */
   currentElementId: string;
-  currentFrame: number | bigint;
+  currentFrame: number;
 }
 
 export type cell_selection_get_params = Record<string, unknown>;
 
 export interface cell_selection_get_result {
   elementIds: string[];
-  from: number | bigint;
-  to: number | bigint;
-  rowsSelected: number | bigint;
+  from: number;
+  to: number;
+  rowsSelected: number;
   /** object ID or path reference (10 §3) */
   currentElementId: string;
-  currentFrame: number | bigint;
+  currentFrame: number;
 }
 
 /** `{name}` parameters. */
@@ -76834,7 +76823,7 @@ export interface colour_fillMapping_set_result {
     objectId: string;
     reason: string;
   })[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface colour_gap_close_params {
@@ -76857,13 +76846,13 @@ export interface colour_gap_close_params {
 
 export interface colour_gap_close_result {
   strokeId: string | null;
-  rev: number | bigint;
+  rev: number;
 }
 
 export type colour_gapClosing_get_params = Record<string, unknown>;
 
 export interface colour_gapClosing_get_result {
-  mode: string;
+  mode: 'off' | 'small' | 'medium' | 'large';
   tolerancesPx: {
     small: string;
     medium: string;
@@ -76876,7 +76865,7 @@ export interface colour_gapClosing_set_params {
 }
 
 export interface colour_gapClosing_set_result {
-  mode: string;
+  mode: 'off' | 'small' | 'medium' | 'large';
 }
 
 export interface colour_missing_list_params {
@@ -76948,7 +76937,7 @@ export interface colour_paint_apply_result {
     reason: string;
   })[];
   addedStrokeIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface colour_paint_remove_params {
@@ -76981,7 +76970,7 @@ export interface colour_paint_remove_result {
     target: string;
     reason: string;
   })[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface colour_paintUnpainted_apply_params {
@@ -77017,7 +77006,7 @@ export interface colour_paintUnpainted_apply_result {
   })[];
   skippedPainted: number | bigint;
   addedStrokeIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -77079,8 +77068,8 @@ export interface colour_palette_export_params {
 export interface colour_palette_export_result {
   /** file-system path (11 §6.2) */
   path: string;
-  paletteCount: number | bigint;
-  textureCount: number | bigint;
+  paletteCount: number;
+  textureCount: number;
 }
 
 export interface colour_palette_get_params {
@@ -77091,140 +77080,44 @@ export interface colour_palette_get_params {
   thumbnailSize?: number;
 }
 
-/** sRGB colour with straight alpha, #RRGGBBAA (written upper case; #RRGGBB accepted on input). */
-export type colour_palette_get_Colour = string;
-
-/** Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim. */
-export type colour_palette_get_Ext = Record<string, unknown>;
-
-/** A gradient stop (03 §12.3). */
-export interface colour_palette_get_GradientStop {
-  /** Position along the gradient, 0–1. */
-  position: number;
-  /** Colour at the stop. */
-  rgba: colour_palette_get_Colour;
-}
-
-/** `{stops}` with at least two stops sorted by position. */
-export interface colour_palette_get_GradientValue {
-  /** The stops. */
-  stops: colour_palette_get_GradientStop[];
-}
-
-export type colour_palette_get_Id = string;
-
-/** A palette (10 §4.13, 03 §1.3 and §12.3). */
-export interface colour_palette_get_Palette {
-  /** Immutable ID. */
-  id: colour_palette_get_Id;
-  /** Always `palette`. */
-  type: 'palette';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** Unique in the project. */
+export interface colour_palette_get_spec_PaletteObject {
+  /** object ID or path reference (10 §3) */
+  id: string;
   name: string;
-  /** Styles in order; at least one. */
-  styles: (colour_palette_get_PaletteStyle | colour_palette_get_PaletteStyleStub)[];
-  /** Swatches in user order; may be empty. */
-  swatches: (colour_palette_get_Swatch | colour_palette_get_SwatchStub)[];
-  /** Internal palette never shown to the user (03 §1.2; SI-005). */
-  hidden: boolean;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: colour_palette_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
+  styles: ({
+    /** object ID or path reference (10 §3) */
+    id: string;
+    name: string;
+  })[];
+  swatches: ({
+    /** object ID or path reference (10 §3) */
+    colourId: string;
+    name: string;
+    kind: 'solid' | 'linearGradient' | 'radialGradient' | 'texture';
+    deformable: boolean;
+    values: Record<string, {
+      /** #RRGGBB or #RRGGBBAA */
+      rgba: string;
+    } | {
+      stops: ({
+        position: number;
+        /** #RRGGBB or #RRGGBBAA */
+        rgba: string;
+      })[];
+    } | {
+      /** file-system path (11 §6.2) */
+      image: string;
+      tile: boolean;
+      width?: number | bigint;
+      height?: number | bigint;
+    }>;
+    usageCount?: number | bigint;
+    /** base64 PNG */
+    thumbnail?: string;
+  })[];
 }
 
-/** A `colour_palette_get_Palette` reduced to its stub (10 §2.2). */
-export interface colour_palette_get_PaletteStub {
-  id: colour_palette_get_Id;
-  type: 'palette';
-  name?: string;
-}
-
-/** A palette style: an alternative set of values for all swatches of its palette (03 §1.5). */
-export interface colour_palette_get_PaletteStyle {
-  /** Immutable ID. */
-  id: colour_palette_get_Id;
-  /** Always `paletteStyle`. */
-  type: 'paletteStyle';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** Unique in the palette. */
-  name: string;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: colour_palette_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-}
-
-/** A `colour_palette_get_PaletteStyle` reduced to its stub (10 §2.2). */
-export interface colour_palette_get_PaletteStyleStub {
-  id: colour_palette_get_Id;
-  type: 'paletteStyle';
-  name?: string;
-}
-
-/** `{rgba}`. */
-export interface colour_palette_get_SolidValue {
-  /** The colour. */
-  rgba: colour_palette_get_Colour;
-}
-
-/** A swatch (03 §1.4, §12.3). Its identifier field is `colourId` (10 §2.2); `id` is accepted as an alias on input. */
-export interface colour_palette_get_Swatch {
-  /** Immutable colour ID, unique across the project. */
-  colourId: colour_palette_get_Id;
-  /** Always `swatch`. */
-  type: 'swatch';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** Label; names may repeat. */
-  name: string;
-  /** Solid, gradient or texture; shared by all styles. */
-  kind: colour_palette_get_SwatchKind;
-  /** Whether a gradient/texture fill follows bone deformation (03 §7.5). */
-  deformable: boolean;
-  /** Exactly one value per style of the palette, keyed by style ID (keys in canonical order, ADR-0011 §3). */
-  values: Record<string, colour_palette_get_SwatchValue>;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: colour_palette_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-}
-
-/** A `colour_palette_get_Swatch` reduced to its stub (10 §2.2). */
-export interface colour_palette_get_SwatchStub {
-  colourId: colour_palette_get_Id;
-  type: 'swatch';
-  name?: string;
-}
-
-/** Kind of a swatch (03 §1.4). */
-export type colour_palette_get_SwatchKind = 'solid' | 'linearGradient' | 'radialGradient' | 'texture';
-
-/** The value of a swatch in one style (03 §12.3): `{rgba}`, `{stops}` or `{image, tile}`. */
-export type colour_palette_get_SwatchValue = colour_palette_get_SolidValue | colour_palette_get_GradientValue | colour_palette_get_TextureValue;
-
-/** `{image, tile}`: a texture image entry (under `textures/`) and the tile flag; `width`/`height` informative. */
-export interface colour_palette_get_TextureValue {
-  /** Package entry path of the image, e.g. `textures/fabric-day.png`. */
-  image: string;
-  /** Repeat the image (true) or stretch it over the zone (false). */
-  tile: boolean;
-  /** Informative pixel width. */
-  width?: number;
-  /** Informative pixel height. */
-  height?: number;
-}
-
-export type colour_palette_get_result = colour_palette_get_Palette | colour_palette_get_PaletteStub;
+export type colour_palette_get_result = colour_palette_get_spec_PaletteObject;
 
 export interface colour_palette_import_params {
   /** file-system path (11 §6.2) */
@@ -77236,8 +77129,8 @@ export interface colour_palette_import_params {
 export interface colour_palette_import_result {
   paletteIds: string[];
   renamed: ({
-    from: number | bigint;
-    to: number | bigint;
+    from: number;
+    to: number;
   })[];
   reIdentified: string[];
   missingTextures: string[];
@@ -77258,7 +77151,7 @@ export interface colour_palette_list_result {
       id: string;
       name: string;
     })[];
-    swatchCount: number | bigint;
+    swatchCount: number;
   })[];
   /** object ID or path reference (10 §3) */
   currentPaletteId: string;
@@ -77362,7 +77255,7 @@ export interface colour_recolour_apply_result {
   changed: ({
     /** object ID or path reference (10 §3) */
     drawingId: string;
-    count: number | bigint;
+    count: number;
   })[];
   pensChanged: string[];
   skippedLocked: string[];
@@ -77428,7 +77321,7 @@ export interface colour_selection_apply_params {
 
 export interface colour_selection_apply_result {
   changed: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -77483,7 +77376,7 @@ export interface colour_style_list_result {
     /** object ID or path reference (10 §3) */
     id: string;
     name: string;
-    index: number | bigint;
+    index: number;
     sceneIds: string[];
   })[];
 }
@@ -77588,7 +77481,7 @@ export interface colour_swatch_get_result {
   resolved: string;
   width?: number;
   height?: number;
-  thumbnail?: string;
+  thumbnail?: boolean;
 }
 
 export interface colour_swatch_list_params {
@@ -77611,11 +77504,12 @@ export interface colour_swatch_list_result {
     /** object ID or path reference (10 §3) */
     colourId: string;
     name: string;
-    kind: string;
+    kind: 'solid' | 'linearGradient' | 'radialGradient' | 'texture';
     index: number | bigint;
     deformable: boolean;
-    value: number;
-    usageCount?: number | bigint;
+    /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+    value: Record<string, unknown>;
+    usageCount?: number;
   })[];
 }
 
@@ -78410,7 +78304,7 @@ export interface draw_arrange_apply_params {
 
 export interface draw_arrange_apply_result {
   order: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_bounds_get_params {
@@ -78438,7 +78332,7 @@ export interface draw_breakApart_apply_params {
 
 export interface draw_breakApart_apply_result {
   groupIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_centreLine_apply_params {
@@ -78454,7 +78348,7 @@ export interface draw_centreLine_apply_result {
   strokeIds: string[];
   removedIds: string[];
   warnings: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_content_add_params {
@@ -78474,7 +78368,7 @@ export interface draw_content_add_params {
 export interface draw_content_add_result {
   /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
   idMap: Record<string, unknown>;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_current_get_params {
@@ -78487,7 +78381,7 @@ export interface draw_current_get_result {
   elementId: string;
   /** object ID or path reference (10 §3) */
   sceneId: string;
-  frame: number | bigint;
+  frame: number;
   cellEmpty: boolean;
   locked: boolean;
   /** type not stated by the owning section (spec issue); a scalar */
@@ -78513,7 +78407,7 @@ export interface draw_cut_apply_params {
 export interface draw_cut_apply_result {
   insideIds: string[];
   removedIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -78523,7 +78417,7 @@ export type draw_drawing_changed_params = Record<string, unknown>;
 export interface draw_drawing_changed_result {
   /** object ID or path reference (10 §3) */
   drawingId: string;
-  rev: number | bigint;
+  rev: number;
   /** object ID or path reference (10 §3) */
   commandId: string;
   createdIds: string[];
@@ -78542,383 +78436,137 @@ export interface draw_drawing_get_params {
   ids?: string[];
 }
 
-/** Paragraph alignment. */
-export type draw_drawing_get_Alignment = 'left' | 'centre' | 'right' | 'justify';
-
-/** A binary payload stored as a package entry (10 §1.1). Never inlined in object JSON. */
-export interface draw_drawing_get_Blob {
-  /** Package entry path. */
-  entry: string;
-  /** IANA media type. */
-  mediaType: string;
-  /** Size in bytes (64-bit: entries larger than 4 GiB are supported, 10 §5). */
-  size: number | bigint;
-  /** Lower-case hex SHA-256 of the bytes. */
-  sha256: string;
-}
-
-/** sRGB colour with straight alpha, #RRGGBBAA (written upper case; #RRGGBB accepted on input). */
-export type draw_drawing_get_Colour = string;
-
-/** A recovery copy of one swatch used by a drawing (10 §4.11, 03 §11.2). */
-export interface draw_drawing_get_ColourRecoveryEntry {
-  /** The colour ID. */
-  colourId: draw_drawing_get_Id;
-  /** Owning palette ID. */
-  paletteId: draw_drawing_get_Id;
-  /** Owning palette name. */
-  paletteName: string;
-  /** The palette's styles. */
-  styles: draw_drawing_get_RecoveryStyle[];
-  /** The full swatch (all style values). */
-  swatch: draw_drawing_get_Swatch | draw_drawing_get_SwatchStub;
-}
-
-/** A drawing (10 §4.8). Stored in its own package entry `banks/<bankId>/<drawingId>.json`. */
-export interface draw_drawing_get_Drawing {
-  /** Immutable ID. */
-  id: draw_drawing_get_Id;
-  /** Always `drawing`. */
-  type: 'drawing';
-  /** Revision of the last change (the drawing revision of 02 §3.12). */
-  rev: number | bigint;
-  /** Unique in the bank; default next unused integer. */
+export interface draw_drawing_get_spec_DrawingReadback {
+  /** object ID or path reference (10 §3) */
+  drawingId: string;
+  /** object ID or path reference (10 §3) */
+  elementId: string;
   name: string;
-  /** Locked drawings reject content edits with `drawing.locked`. */
+  rev: number | bigint;
   locked: boolean;
-  /** Drawing pivot (du). */
-  pivot: draw_drawing_get_Point2;
-  /** Mouth shape for automatic lip-sync mapping. */
-  mouthShape: draw_drawing_get_MouthShape | null;
-  /** Nodes, back to front. */
-  nodes: (draw_drawing_get_DrawingNode | draw_drawing_get_DrawingNodeStub)[];
-  /** One entry per colour ID the drawing uses (written on save). */
-  colourRecovery: draw_drawing_get_ColourRecoveryEntry[];
-  /** Creation time. */
-  createdAt: draw_drawing_get_Timestamp;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: draw_drawing_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-  thumbnail?: draw_drawing_get_Blob | null;
-  usage?: ({
-    elementId: draw_drawing_get_Id;
-    ranges: draw_drawing_get_FrameRange[];
+  space: {
+    units: string;
+    duPerField: number;
+    yAxis: string;
+    origin: string;
+  };
+  pivot: {
+    x: number;
+    y: number;
+  };
+  bounds: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+  nodes: ({
+    type: string;
+    /** object ID or path reference (10 §3) */
+    id: string;
+    layerKind?: string;
+    strokes?: ({
+      /** object ID or path reference (10 §3) */
+      id: string;
+      kind: string;
+      closed: boolean;
+      bezier: ({
+        x: number;
+        y: number;
+      } | string)[];
+      colourId: string | null;
+      lineStyle?: {
+        thickness: number;
+        lineType: string;
+      };
+      /** object ID or path reference (10 §3) */
+      penId?: string;
+      pressure?: ({
+        t: number;
+        p: number;
+      })[] | null;
+      /** object ID or path reference (10 §3) */
+      leftZoneId?: string;
+      /** object ID or path reference (10 §3) */
+      rightZoneId?: string;
+      pen?: {
+        tipShape: string;
+        minSize: number;
+        maxSize: number | bigint;
+        tipAngle: number;
+      };
+      /** type not stated by the owning section (spec issue); a scalar */
+      textureMatrix?: string | number | boolean | null;
+      outline?: string[][];
+    })[];
+    zones?: ({
+      /** object ID or path reference (10 §3) */
+      id: string;
+      /** object ID or path reference (10 §3) */
+      colourId: string;
+      /** type not stated by the owning section (spec issue); a scalar */
+      textureMatrix: string | number | boolean | null;
+      boundaryStrokeIds: string[];
+      holes: ({
+        boundaryStrokeIds: string[];
+        /** object ID or path reference (10 §3) */
+        zoneId: string;
+      })[];
+      parentZoneId: string | null;
+      area: number;
+      bounds: {
+        x: number;
+        y: number;
+        width: number | bigint;
+        height: number | bigint;
+      };
+      interiorPoint: {
+        x: number;
+        y: number;
+      };
+    })[];
+    children?: string[];
+    text?: string;
+    transform?: number[];
+    widthMode?: string;
+    width?: number | bigint | null;
+    runs?: ({
+      start: number | bigint;
+      length: number | bigint;
+      font: string;
+      size: number | bigint;
+      bold: boolean;
+      italic: boolean;
+      baseline: string;
+      kerning: number;
+      autoKern: boolean;
+      /** object ID or path reference (10 §3) */
+      colourId: string;
+      outlineColourId: string | null;
+    })[];
+    paragraphs?: ({
+      start: number | bigint;
+      length: number | bigint;
+      align: string;
+      leftMargin: number;
+      rightMargin: number;
+      indent: number;
+      lineSpacing: number;
+    })[];
+    bounds?: {
+      x: number;
+      y: number;
+      width: number | bigint;
+      height: number | bigint;
+    };
+    /** object ID or path reference (10 §3) */
+    mediaId?: string;
+    pixelWidth?: number | bigint;
+    pixelHeight?: number | bigint;
   })[];
-  isEmpty?: boolean;
-  zones?: (Record<string, unknown>)[];
 }
 
-/** A `draw_drawing_get_Drawing` reduced to its stub (10 §2.2). */
-export interface draw_drawing_get_DrawingStub {
-  id: draw_drawing_get_Id;
-  type: 'drawing';
-  name?: string;
-}
-
-/** A node of a drawing (10 §4.9): a layer (`hint`, `strokes`), a group (`children`), a text object (`transform`, `widthMode`, `width`, `text`, `runs`, `paragraphs`) or a bitmap (`image`, `width`, `height`, `transform`). Properties of other kinds are absent. */
-export interface draw_drawing_get_DrawingNode {
-  /** ID, unique within the drawing (ID-03). */
-  id: draw_drawing_get_Id;
-  /** Always `drawingNode`. */
-  type: 'drawingNode';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** Optional name. */
-  name?: string;
-  /** Layer, group, text or bitmap; read-only. */
-  kind: draw_drawing_get_NodeKind;
-  /** Layer: type hint. */
-  hint?: draw_drawing_get_LayerHint;
-  /** Layer: strokes. */
-  strokes?: (draw_drawing_get_Stroke | draw_drawing_get_StrokeStub)[];
-  /** Group: child nodes, back to front. */
-  children?: (draw_drawing_get_DrawingNode | draw_drawing_get_DrawingNodeStub)[];
-  /** Text and bitmap: placement in drawing space. */
-  transform?: number[];
-  /** Text: auto or fixed width. */
-  widthMode?: draw_drawing_get_WidthMode;
-  /** Text: wrap width in du (fixed mode); bitmap: pixel width 1–16384. */
-  width?: number;
-  /** Bitmap: pixel height 1–16384. */
-  height?: number;
-  /** Text: the characters (≤ 100 000). */
-  text?: string;
-  /** Text: character runs covering the text. */
-  runs?: draw_drawing_get_TextRun[];
-  /** Text: paragraphs. */
-  paragraphs?: draw_drawing_get_Paragraph[];
-  /** Bitmap: PNG pixels (8-bit RGBA, straight alpha). */
-  image?: draw_drawing_get_Blob;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: draw_drawing_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-}
-
-/** A `draw_drawing_get_DrawingNode` reduced to its stub (10 §2.2). */
-export interface draw_drawing_get_DrawingNodeStub {
-  id: draw_drawing_get_Id;
-  type: 'drawingNode';
-  name?: string;
-}
-
-/** Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim. */
-export type draw_drawing_get_Ext = Record<string, unknown>;
-
-/** An inclusive frame range `{from, to}` (10 §1.1). */
-export interface draw_drawing_get_FrameRange {
-  /** First frame (1-based). */
-  from: number;
-  /** Last frame (inclusive). */
-  to: number;
-}
-
-/** A gradient stop (03 §12.3). */
-export interface draw_drawing_get_GradientStop {
-  /** Position along the gradient, 0–1. */
-  position: number;
-  /** Colour at the stop. */
-  rgba: draw_drawing_get_Colour;
-}
-
-/** `{stops}` with at least two stops sorted by position. */
-export interface draw_drawing_get_GradientValue {
-  /** The stops. */
-  stops: draw_drawing_get_GradientStop[];
-}
-
-export type draw_drawing_get_Id = string;
-
-/** Type hint of a layer (02 §3.1). */
-export type draw_drawing_get_LayerHint = 'brush' | 'pencil';
-
-/** Line style of a pencil stroke. */
-export interface draw_drawing_get_LineStyle {
-  /** Thickness in drawing units. */
-  thickness: number;
-  /** Line type. */
-  lineType: draw_drawing_get_LineType;
-}
-
-/** Line type of a pencil line style (02 §3.2; other types MAY be added). */
-export type draw_drawing_get_LineType = 'solid';
-
-/** Mouth shape letters (07 §10; 10 §4.8 `mouthShape`). */
-export type draw_drawing_get_MouthShape = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'X';
-
-/** Kind of a drawing node (02 §3.1). */
-export type draw_drawing_get_NodeKind = 'layer' | 'group' | 'text' | 'bitmap';
-
-/** Paragraph formatting of a text node (10 §4.9). */
-export interface draw_drawing_get_Paragraph {
-  /** First code point. */
-  start: number;
-  /** Number of code points. */
-  length: number;
-  /** Alignment. */
-  alignment: draw_drawing_get_Alignment;
-  /** Left margin (du). */
-  marginLeft: number;
-  /** Right margin (du). */
-  marginRight: number;
-  /** First-line indent (du). */
-  indent: number;
-  /** Line spacing factor. */
-  lineSpacing: number;
-}
-
-/** A 2-D point `{x, y}` (10 §1.1). */
-export interface draw_drawing_get_Point2 {
-  /** X coordinate. */
-  x: number;
-  /** Y coordinate. */
-  y: number;
-}
-
-/** A style reference inside a colour-recovery entry. */
-export interface draw_drawing_get_RecoveryStyle {
-  /** Style ID. */
-  styleId: draw_drawing_get_Id;
-  /** Style name. */
-  styleName: string;
-}
-
-/** Vertical script position of a text run. */
-export type draw_drawing_get_Script = 'normal' | 'subscript' | 'superscript';
-
-/** Fills on the left and right side of a stroke, relative to point order. */
-export interface draw_drawing_get_Sides {
-  /** Left side. */
-  left: draw_drawing_get_ZoneFill | null;
-  /** Right side. */
-  right: draw_drawing_get_ZoneFill | null;
-}
-
-/** `{rgba}`. */
-export interface draw_drawing_get_SolidValue {
-  /** The colour. */
-  rgba: draw_drawing_get_Colour;
-}
-
-/** The spine of an unedited brush stroke (02 §3.2). */
-export interface draw_drawing_get_Spine {
-  /** The fitted centre path. */
-  points: number[][];
-  /** Pressure map: `(t, p)` samples ordered by `t`. */
-  pressure: number[][];
-  /** Pen used. */
-  pen: draw_drawing_get_SpinePen;
-}
-
-/** The pen recorded on a brush spine (02 §3.2). */
-export interface draw_drawing_get_SpinePen {
-  /** The pen used, if it still exists. */
-  penId: draw_drawing_get_Id | null;
-  /** Tip shape. */
-  tip: draw_drawing_get_Tip;
-  /** Minimum size (du). */
-  minSize: number;
-  /** Maximum size (du). */
-  maxSize: number;
-}
-
-/** A stroke of a layer (10 §4.9, 02 §3.2). `lineStyle` is non-null for pencil strokes only; `spine` only for unedited brush strokes. */
-export interface draw_drawing_get_Stroke {
-  /** ID, unique within the drawing (ID-03). */
-  id: draw_drawing_get_Id;
-  /** Always `stroke`. */
-  type: 'stroke';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** Brush, pencil or invisible. */
-  kind: draw_drawing_get_StrokeKind;
-  /** Whether the path is closed (brush outlines are). */
-  closed: boolean;
-  /** Anchors with handle offsets; at least 2 (1 for a closed dab). */
-  points: number[][];
-  /** Brush: fill colour; pencil: line colour; `null` for invisible strokes. */
-  colourId: draw_drawing_get_Id | null;
-  /** Placement of a gradient/texture colour space for brush strokes. */
-  fillMatrix: number[] | null;
-  /** Pencil strokes only. */
-  lineStyle: draw_drawing_get_LineStyle | null;
-  /** Brush strokes while unedited. */
-  spine: draw_drawing_get_Spine | null;
-  /** Zone fills on each side. */
-  sides: draw_drawing_get_Sides;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: draw_drawing_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-}
-
-/** A `draw_drawing_get_Stroke` reduced to its stub (10 §2.2). */
-export interface draw_drawing_get_StrokeStub {
-  id: draw_drawing_get_Id;
-  type: 'stroke';
-}
-
-/** Kind of a stroke (02 §3.2). */
-export type draw_drawing_get_StrokeKind = 'brush' | 'pencil' | 'invisible';
-
-/** A swatch (03 §1.4, §12.3). Its identifier field is `colourId` (10 §2.2); `id` is accepted as an alias on input. */
-export interface draw_drawing_get_Swatch {
-  /** Immutable colour ID, unique across the project. */
-  colourId: draw_drawing_get_Id;
-  /** Always `swatch`. */
-  type: 'swatch';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** Label; names may repeat. */
-  name: string;
-  /** Solid, gradient or texture; shared by all styles. */
-  kind: draw_drawing_get_SwatchKind;
-  /** Whether a gradient/texture fill follows bone deformation (03 §7.5). */
-  deformable: boolean;
-  /** Exactly one value per style of the palette, keyed by style ID (keys in canonical order, ADR-0011 §3). */
-  values: Record<string, draw_drawing_get_SwatchValue>;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: draw_drawing_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-}
-
-/** A `draw_drawing_get_Swatch` reduced to its stub (10 §2.2). */
-export interface draw_drawing_get_SwatchStub {
-  colourId: draw_drawing_get_Id;
-  type: 'swatch';
-  name?: string;
-}
-
-/** Kind of a swatch (03 §1.4). */
-export type draw_drawing_get_SwatchKind = 'solid' | 'linearGradient' | 'radialGradient' | 'texture';
-
-/** The value of a swatch in one style (03 §12.3): `{rgba}`, `{stops}` or `{image, tile}`. */
-export type draw_drawing_get_SwatchValue = draw_drawing_get_SolidValue | draw_drawing_get_GradientValue | draw_drawing_get_TextureValue;
-
-/** Character formatting of a run of a text node (10 §4.9). */
-export interface draw_drawing_get_TextRun {
-  /** First code point. */
-  start: number;
-  /** Number of code points. */
-  length: number;
-  /** Font family name (kept even when the font is missing). */
-  font: string;
-  /** Size in drawing units. */
-  size: number;
-  /** Bold. */
-  bold: boolean;
-  /** Italic. */
-  italic: boolean;
-  /** Script position. */
-  script: draw_drawing_get_Script;
-  /** Manual kerning. */
-  kerning: number;
-  /** Automatic kerning. */
-  autoKerning: boolean;
-  /** Fill colour. */
-  colourId: draw_drawing_get_Id | null;
-}
-
-/** `{image, tile}`: a texture image entry (under `textures/`) and the tile flag; `width`/`height` informative. */
-export interface draw_drawing_get_TextureValue {
-  /** Package entry path of the image, e.g. `textures/fabric-day.png`. */
-  image: string;
-  /** Repeat the image (true) or stretch it over the zone (false). */
-  tile: boolean;
-  /** Informative pixel width. */
-  width?: number;
-  /** Informative pixel height. */
-  height?: number;
-}
-
-/** ISO-8601 UTC timestamp with milliseconds. */
-export type draw_drawing_get_Timestamp = string;
-
-/** Tip shape (02 §6.1). */
-export type draw_drawing_get_Tip = 'round' | 'oval' | 'square' | 'flat';
-
-/** Width mode of a text node. */
-export type draw_drawing_get_WidthMode = 'auto' | 'fixed';
-
-/** The fill of the zone on one side of a stroke (10 §4.9). */
-export interface draw_drawing_get_ZoneFill {
-  /** Colour ID; `null` = unpainted. */
-  colourId: draw_drawing_get_Id | null;
-  /** Gradient/texture placement; `null` for none. */
-  matrix: number[] | null;
-}
-
-export type draw_drawing_get_result = draw_drawing_get_Drawing | draw_drawing_get_DrawingStub;
+export type draw_drawing_get_result = draw_drawing_get_spec_DrawingReadback;
 
 export interface draw_drawing_rename_params {
   /** object ID or path reference (10 §3) */
@@ -78961,7 +78609,7 @@ export interface draw_drawing_render_result {
   width: number;
   height: number;
   drawingToPixel: number[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_ellipse_add_params {
@@ -78992,7 +78640,7 @@ export interface draw_ellipse_add_result {
   zoneIds: string[];
   /** object ID or path reference (10 §3) */
   layerId: string;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_envelope_apply_params {
@@ -79010,7 +78658,7 @@ export interface draw_envelope_apply_params {
 
 export interface draw_envelope_apply_result {
   ids: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_erase_apply_params {
@@ -79036,7 +78684,7 @@ export interface draw_erase_apply_params {
 export interface draw_erase_apply_result {
   removedIds: string[];
   createdIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_feather_apply_params {
@@ -79065,7 +78713,7 @@ export interface draw_flatten_apply_result {
   /** object ID or path reference (10 §3) */
   layerId: string;
   removedIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_flip_apply_params {
@@ -79078,7 +78726,7 @@ export interface draw_flip_apply_params {
 
 export interface draw_flip_apply_result {
   ids: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_group_create_params {
@@ -79091,7 +78739,7 @@ export interface draw_group_create_params {
 export interface draw_group_create_result {
   /** object ID or path reference (10 §3) */
   groupId: string;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_group_delete_params {
@@ -79103,7 +78751,7 @@ export interface draw_group_delete_params {
 
 export interface draw_group_delete_result {
   memberIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_hitTest_get_params {
@@ -79120,7 +78768,7 @@ export interface draw_hitTest_get_params {
 export interface draw_hitTest_get_result {
   hits: (Record<string, unknown>)[];
   zoneId: string | null;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_inspectorPreview_set_params {
@@ -79159,7 +78807,7 @@ export interface draw_line_add_result {
   zoneIds: string[];
   /** object ID or path reference (10 §3) */
   layerId: string;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_linesToBrush_apply_params {
@@ -79173,7 +78821,7 @@ export interface draw_linesToBrush_apply_params {
 
 export interface draw_linesToBrush_apply_result {
   strokeIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_lock_set_params {
@@ -79197,7 +78845,7 @@ export interface draw_object_delete_params {
 
 export interface draw_object_delete_result {
   removedIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_optimize_apply_params {
@@ -79210,7 +78858,7 @@ export interface draw_optimize_apply_params {
 export interface draw_optimize_apply_result {
   layerIds: string[];
   merged: number | bigint;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_pivot_set_params {
@@ -79227,7 +78875,7 @@ export interface draw_pivot_set_result {
     x: number;
     y: number;
   };
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_point_add_params {
@@ -79246,7 +78894,7 @@ export interface draw_point_add_result {
   /** object ID or path reference (10 §3) */
   strokeId: string;
   anchor: number | bigint;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_point_delete_params {
@@ -79261,7 +78909,7 @@ export interface draw_point_delete_params {
 export interface draw_point_delete_result {
   modifiedIds: string[];
   removedIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_point_move_params {
@@ -79281,7 +78929,7 @@ export interface draw_point_move_params {
 
 export interface draw_point_move_result {
   modifiedIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_point_set_params {
@@ -79306,7 +78954,7 @@ export interface draw_point_set_params {
 export interface draw_point_set_result {
   /** object ID or path reference (10 §3) */
   strokeId: string;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_pointSelection_set_params {
@@ -79330,10 +78978,7 @@ export interface draw_pointSelection_set_result {
   selectedPoints: ({
     /** object ID or path reference (10 §3) */
     strokeId: string;
-    anchor: {
-      x: number;
-      y: number;
-    };
+    anchor: number | bigint;
   })[];
 }
 
@@ -79370,7 +79015,7 @@ export interface draw_polyline_add_result {
   zoneIds: string[];
   /** object ID or path reference (10 §3) */
   layerId: string;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_rectangle_add_params {
@@ -79401,7 +79046,7 @@ export interface draw_rectangle_add_result {
   zoneIds: string[];
   /** object ID or path reference (10 §3) */
   layerId: string;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_repositionAll_apply_params {
@@ -79442,7 +79087,7 @@ export interface draw_rotate_apply_params {
 
 export interface draw_rotate_apply_result {
   ids: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_segment_move_params {
@@ -79459,7 +79104,7 @@ export interface draw_segment_move_params {
 export interface draw_segment_move_result {
   /** object ID or path reference (10 §3) */
   strokeId: string;
-  rev: number | bigint;
+  rev: number;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -79470,7 +79115,14 @@ export interface draw_selection_changed_result {
   /** object ID or path reference (10 §3) */
   drawingId: string;
   selectedIds: string[];
-  selectedPoints: (Record<string, unknown>)[];
+  selectedPoints: ({
+    /** object ID or path reference (10 §3) */
+    strokeId: string;
+    anchor: {
+      x: number;
+      y: number;
+    };
+  })[];
 }
 
 export interface draw_selection_get_params {
@@ -79547,7 +79199,7 @@ export interface draw_smooth_apply_params {
 
 export interface draw_smooth_apply_result {
   removedPointCount: number | bigint;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_stroke_add_params {
@@ -79561,7 +79213,10 @@ export interface draw_stroke_add_params {
   points?: ({
     x: number;
     y: number;
-    pressure?: number;
+    pressure?: ({
+      t: number;
+      p: number;
+    })[];
   })[];
   bezier?: ({
     x: number;
@@ -79580,7 +79235,7 @@ export interface draw_stroke_add_params {
   pen?: {
     tipShape: string;
     minSize: number;
-    maxSize: number | bigint;
+    maxSize: number;
     tipAngle: number;
   };
   /** object ID or path reference (10 §3) Default: current colour. */
@@ -79602,7 +79257,7 @@ export interface draw_stroke_add_result {
   /** object ID or path reference (10 §3) */
   layerId: string;
   removedIds: string[];
-  rev: number | bigint;
+  rev: number;
   hints: string[];
 }
 
@@ -79626,7 +79281,7 @@ export interface draw_stroke_set_params {
 export interface draw_stroke_set_result {
   strokeIds: string[];
   removedIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_text_add_params {
@@ -79654,7 +79309,7 @@ export interface draw_text_add_result {
     width: number;
     height: number;
   };
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_text_set_params {
@@ -79686,7 +79341,7 @@ export interface draw_text_set_result {
     width: number;
     height: number;
   };
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_textFormat_set_params {
@@ -79715,7 +79370,7 @@ export interface draw_textFormat_set_params {
 export interface draw_textFormat_set_result {
   /** object ID or path reference (10 §3) */
   textId: string;
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_transform_apply_params {
@@ -79751,7 +79406,7 @@ export interface draw_transform_apply_params {
 export interface draw_transform_apply_result {
   ids: string[];
   removedIds: string[];
-  rev: number | bigint;
+  rev: number;
 }
 
 export interface draw_vectorFile_import_params {
@@ -79840,8 +79495,7 @@ export interface drawAid_background_set_params {
 export interface drawAid_background_set_result {
   /** #RRGGBB or #RRGGBBAA */
   colour: string;
-  /** #RRGGBB or #RRGGBBAA */
-  useSceneColour: string;
+  useSceneColour: boolean;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -79870,7 +79524,7 @@ export interface drawAid_grid_set_params {
 
 export interface drawAid_grid_set_result {
   visible: boolean;
-  type: string;
+  type: 'normal' | 'field12' | 'field16';
   overlay: boolean;
 }
 
@@ -79880,10 +79534,8 @@ export interface drawAid_lightTableShade_set_params {
 }
 
 export interface drawAid_lightTableShade_set_result {
-  /** type not stated by the owning section (spec issue); a scalar */
-  auto: string | number | boolean | null;
-  /** type not stated by the owning section (spec issue); a scalar */
-  static: string | number | boolean | null;
+  auto: boolean;
+  static: boolean;
 }
 
 export interface drawAid_onionSkin_set_params {
@@ -79894,8 +79546,8 @@ export interface drawAid_onionSkin_set_params {
 
 export interface drawAid_onionSkin_set_result {
   enabled: boolean;
-  previous: string;
-  next: string;
+  previous: number;
+  next: number;
 }
 
 export interface drawAid_onionSkinCycle_run_params {
@@ -79974,7 +79626,7 @@ export interface drawAid_staticLightTable_list_result {
     sourceId: string;
     sourceKind: string;
     visible: boolean;
-    placement: string;
+    placement: 'overlay' | 'underlay';
   })[];
 }
 
@@ -79997,7 +79649,15 @@ export interface drawAid_staticLightTable_set_params {
 }
 
 export interface drawAid_staticLightTable_set_result {
-  entries: (Record<string, unknown>)[];
+  entries: ({
+    /** object ID or path reference (10 §3) */
+    entryId: string;
+    /** object ID or path reference (10 §3) */
+    sourceId: string;
+    sourceKind: string;
+    visible: boolean;
+    placement: 'overlay' | 'underlay';
+  })[];
 }
 
 export interface drawAid_staticLightTablePanel_set_params {
@@ -80518,8 +80178,8 @@ export interface element_childExposure_apply_result {
   changed: ({
     /** object ID or path reference (10 §3) */
     elementId: string;
-    from: number | bigint;
-    to: number | bigint;
+    from: number;
+    to: number;
   })[];
 }
 
@@ -80609,7 +80269,7 @@ export interface element_delete_params {
 export interface element_delete_result {
   deletedIds: string[];
   reparentedIds: string[];
-  deletedDrawingCount: number | bigint;
+  deletedDrawingCount: number;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -80647,8 +80307,8 @@ export interface element_drawing_delete_result {
   clearedCells: ({
     /** object ID or path reference (10 §3) */
     elementId: string;
-    from: number | bigint;
-    to: number | bigint;
+    from: number;
+    to: number;
   })[];
 }
 
@@ -80677,10 +80337,10 @@ export interface element_drawing_list_result {
     id: string;
     name: string;
     exposures: ({
-      from: number | bigint;
-      to: number | bigint;
+      from: number;
+      to: number;
     })[];
-    useCount: number | bigint;
+    useCount: number;
     locked: boolean;
     empty: boolean;
     missing: boolean;
@@ -80765,8 +80425,13 @@ export interface element_get_spec_ElementInfo {
   cloneGroupId: string | null;
   cloneIds: string[];
   drawingCount: number | bigint;
-  /** type not stated by the owning section (spec issue); a scalar */
-  media: string | number | boolean | null;
+  media: {
+    /** file-system path (11 §6.2) */
+    path: string;
+    startFrame: number | bigint;
+    length: number | bigint;
+    missing: boolean;
+  } | null;
 }
 
 export type element_get_result = element_get_spec_ElementInfo;
@@ -80784,7 +80449,7 @@ export interface element_hierarchy_get_result {
   previousSiblingId: string;
   /** object ID or path reference (10 §3) */
   nextSiblingId: string;
-  depth: number | bigint;
+  depth: number;
 }
 
 export interface element_hierarchy_select_params {
@@ -80815,8 +80480,8 @@ export interface element_list_result {
     type: string;
     /** object ID or path reference (10 §3) */
     parentId: string;
-    depth: number | bigint;
-    index: number | bigint;
+    depth: number;
+    index: number;
   })[];
 }
 
@@ -80839,8 +80504,8 @@ export interface element_mediaLength_set_params {
 export interface element_mediaLength_set_result {
   /** object ID or path reference (10 §3) */
   elementId: string;
-  from: number | bigint;
-  to: number | bigint;
+  from: number;
+  to: number;
 }
 
 export interface element_note_set_params {
@@ -80982,7 +80647,7 @@ export interface element_timing_set_result {
     /** object ID or path reference (10 §3) */
     id: string;
     start: number | bigint;
-    duration: number;
+    duration: number | bigint;
     loops: number | bigint;
   })[];
 }
@@ -81001,7 +80666,7 @@ export interface element_typeColour_set_params {
 }
 
 export interface element_typeColour_set_result {
-  category: string;
+  category: 'drawings' | 'images' | 'sounds' | 'pegs' | 'skeletons' | 'media' | 'cameras' | 'effects' | 'effectParameters';
   /** #RRGGBB or #RRGGBBAA */
   colour: string;
 }
@@ -81103,7 +80768,7 @@ export interface export_formats_list_result {
     id: string;
     name: string;
     extensions: string[];
-    kind: string;
+    kind: 'movie' | 'sequence' | 'still' | 'vector' | 'document';
     /** type not stated by the owning section (spec issue); a scalar */
     video: string | number | boolean | null;
     /** type not stated by the owning section (spec issue); a scalar */
@@ -81246,11 +80911,11 @@ export interface export_movie_validate_params {
 }
 
 export interface export_movie_validate_result {
-  frameCount: number | bigint;
+  frameCount: number;
   durationSec: number;
   outputPaths: string[];
   conflicts: boolean[];
-  estimatedBytes?: number | bigint;
+  estimatedBytes?: number;
   enabledRanges: string[];
   warnings: ({
     code: string;
@@ -81382,14 +81047,14 @@ export interface export_publish_service_list_result {
     limits: {
       minSec: number;
       maxSec: number;
-      maxBytes: number | bigint;
+      maxBytes: number;
     };
     fields: ({
       name: string;
       required: boolean;
     })[];
-    visibilities: string[];
-    connected: boolean;
+    visibilities: ('public' | 'unlisted' | 'private')[];
+    connected: false;
   })[];
 }
 
@@ -81408,7 +81073,7 @@ export interface export_publish_validate_result {
   ok: boolean;
   problems: ({
     code: string;
-    limit?: number | bigint;
+    limit?: number;
     actual?: string;
   })[];
 }
@@ -81420,7 +81085,7 @@ export interface export_report_get_params {
 
 export interface export_report_get_result {
   file: string;
-  totalBytes: number | bigint;
+  totalBytes: number;
   /** type not stated by the owning section (spec issue); a scalar */
   cameraSize: string | number | boolean | null;
   fps: number;
@@ -81428,7 +81093,7 @@ export interface export_report_get_result {
     kind: string;
     items: ({
       name: string;
-      bytes: number | bigint;
+      bytes: number;
     })[];
   })[];
 }
@@ -81438,8 +81103,9 @@ export interface export_settings_get_params {
 }
 
 export interface export_settings_get_result {
-  preset: string;
-  settings: string[];
+  preset: 'default' | 'custom';
+  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  settings: Record<string, unknown>;
 }
 
 export interface export_settings_set_params {
@@ -81450,8 +81116,9 @@ export interface export_settings_set_params {
 }
 
 export interface export_settings_set_result {
-  preset: string;
-  settings: string[];
+  preset: 'default' | 'custom';
+  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  settings: Record<string, unknown>;
 }
 
 export interface export_snapshot_run_params {
@@ -81552,7 +81219,7 @@ export interface fx_block_add_params {
 export interface fx_block_add_result {
   /** object ID or path reference (10 §3) */
   blockId: string;
-  startFrame: number | bigint;
+  startFrame: number;
   duration: number;
 }
 
@@ -81716,7 +81383,7 @@ export interface fx_block_seed_set_params {
 }
 
 export interface fx_block_seed_set_result {
-  seed: number | bigint;
+  seed: number;
 }
 
 export interface fx_block_set_params {
@@ -82752,6 +82419,7 @@ export interface fx_keyframe_add_params {
 }
 
 export interface fx_keyframe_add_result {
+  /** Default: current. */
   frame: number | bigint;
   created: boolean;
 }
@@ -82765,8 +82433,10 @@ export interface fx_keyframe_list_params {
 
 export interface fx_keyframe_list_result {
   keyframes: ({
+    /** Default: current. */
     frame: number | bigint;
-    values: number[];
+    /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+    values: Record<string, unknown>;
   })[];
 }
 
@@ -82797,12 +82467,13 @@ export interface fx_list_result {
     /** object ID or path reference (10 §3) */
     id: string;
     name: string;
+    /** one of the values the owning section lists (effect type) */
     type: string;
     /** object ID or path reference (10 §3) */
     parentId: string;
-    startFrame: number | bigint;
+    startFrame: number;
     duration: number;
-    loops: number | bigint;
+    loops: number;
     animated: boolean;
     paramElementIds: string[];
   })[];
@@ -82827,7 +82498,7 @@ export interface fx_paramElement_list_params {
 
 export interface fx_paramElement_list_result {
   slots: ({
-    slot: string;
+    slot: 'mask' | 'sprites' | 'bones' | 'skin';
     /** object ID or path reference (10 §3) */
     elementId: string;
     attachedIds: string[];
@@ -82923,12 +82594,12 @@ export interface fx_particles_get_params {
 export interface fx_particles_get_result {
   /** object ID or path reference (10 §3) */
   blockId: string;
-  seed: number | bigint;
+  seed: number;
   frame: number | bigint;
-  count: number | bigint;
+  count: number;
   truncated: boolean;
   particles: ({
-    index: number | bigint;
+    index: number;
     pos: {
       x: number;
       y: number;
@@ -82939,7 +82610,7 @@ export interface fx_particles_get_result {
       y: number;
       z: number;
     };
-    size: number | bigint;
+    size: number;
     rotation: number;
     alpha: boolean;
     age: number;
@@ -83091,8 +82762,10 @@ export interface fx_preset_list_result {
   presets: ({
     /** object ID or path reference (10 §3) */
     id: string;
+    /** (1–60) */
     name: string;
-    source: string;
+    source: 'builtin' | 'user' | 'all';
+    /** one of the values the owning section lists (effect type) */
     effectType: string;
     particleType: string;
     variant: string;
@@ -83139,8 +82812,9 @@ export type fx_preview_frameRendered_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface fx_preview_frameRendered_result {
+  /** Default: current. */
   frame: number | bigint;
-  size: number | bigint;
+  size: 'quarter' | 'half' | 'full';
   /** object ID or path reference (10 §3) */
   jobId: string;
 }
@@ -83163,9 +82837,9 @@ export interface fx_preview_open_result {
 export type fx_preview_options_get_params = Record<string, unknown>;
 
 export interface fx_preview_options_get_result {
-  size: number | bigint;
-  followCurrentFrame: number | bigint;
-  defaultRange: string;
+  size: 'quarter' | 'half' | 'full';
+  followCurrentFrame: boolean;
+  defaultRange: 'single' | 'playbackRange' | 'fromCurrent';
 }
 
 export interface fx_preview_options_set_params {
@@ -83175,9 +82849,9 @@ export interface fx_preview_options_set_params {
 }
 
 export interface fx_preview_options_set_result {
-  size: number | bigint;
-  followCurrentFrame: number | bigint;
-  defaultRange: string;
+  size: 'quarter' | 'half' | 'full';
+  followCurrentFrame: boolean;
+  defaultRange: 'single' | 'playbackRange' | 'fromCurrent';
 }
 
 export interface fx_preview_render_params {
@@ -83203,8 +82877,9 @@ export interface fx_preview_status_get_result {
   cacheBudgetMB: number;
   usedPercent: number;
   cachedFrames: ({
+    /** Default: current. */
     frame: number | bigint;
-    size: number | bigint;
+    size: 'quarter' | 'half' | 'full';
   })[];
 }
 
@@ -83233,7 +82908,7 @@ export type fx_renderer_capabilities_get_params = Record<string, unknown>;
 
 export interface fx_renderer_capabilities_get_result {
   gpuAccelerated: boolean;
-  maxTextureSize: number | bigint;
+  maxTextureSize: number;
   interactiveAntialiasingSupported: boolean;
   systemMemoryMB: number;
   recommendedTextureCacheMB: number;
@@ -83244,7 +82919,8 @@ export type fx_renderer_options_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface fx_renderer_options_changed_result {
-  values: number[];
+  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  values: Record<string, unknown>;
   restartRequired: boolean;
 }
 
@@ -83275,7 +82951,7 @@ export interface fx_shake_displacement_get_params {
 
 export interface fx_shake_displacement_get_result {
   samples: ({
-    frame: number | bigint;
+    frame: number;
     dx: number;
     dy: number;
     dz: number;
@@ -83306,7 +82982,7 @@ export interface fx_spriteSet_get_result {
   id: string;
   name: string;
   variants: ({
-    index: number | bigint;
+    index: number;
     thumbnail?: string;
   })[];
 }
@@ -83321,7 +82997,7 @@ export interface fx_spriteSet_list_result {
     id: string;
     name: string;
     particleTypes: string[];
-    variantCount: number | bigint;
+    variantCount: number;
   })[];
 }
 
@@ -83337,8 +83013,8 @@ export interface fx_timing_set_params {
 
 export interface fx_timing_set_result {
   startFrame: number | bigint;
-  duration: number;
-  loops: number | bigint;
+  duration: number | bigint;
+  loops: number;
   removedKeyframes: (number | bigint)[];
 }
 
@@ -83491,8 +83167,7 @@ export interface import_file_get_spec_ImportFileInfo {
     visible: boolean;
     mode: string;
   })[];
-  /** type not stated by the owning section (spec issue); a scalar */
-  pages: string | number | boolean | null;
+  pages: number | bigint | null;
   frames: number | bigint | null;
   durationSec: number | null;
   fps: number | null;
@@ -83549,7 +83224,11 @@ export interface import_file_run_spec_ImportResult {
     code: string;
     file: string;
   })[];
-  errors: (string | number | boolean | null)[];
+  errors: ({
+    code: string;
+    message: string;
+    objectIds?: string[];
+  })[];
 }
 
 export interface import_file_run_result {
@@ -83643,7 +83322,11 @@ export interface import_keyedImages_run_spec_ImportResult {
     code: string;
     file: string;
   })[];
-  errors: (string | number | boolean | null)[];
+  errors: ({
+    code: string;
+    message: string;
+    objectIds?: string[];
+  })[];
 }
 
 export interface import_keyedImages_run_result {
@@ -83685,7 +83368,11 @@ export interface import_movie_run_spec_ImportResult {
     code: string;
     file: string;
   })[];
-  errors: (string | number | boolean | null)[];
+  errors: ({
+    code: string;
+    message: string;
+    objectIds?: string[];
+  })[];
 }
 
 export interface import_movie_run_result {
@@ -83699,7 +83386,7 @@ export interface import_options_get_result {
   fitToCamera: boolean;
   preserveImageLayers: boolean;
   preserveVectorLayers: boolean;
-  movieOpacity?: number;
+  movieOpacity?: number | null;
   /** file-system path (11 §6.2) */
   lastFolder: string;
 }
@@ -83715,7 +83402,7 @@ export interface import_options_set_result {
   fitToCamera: boolean;
   preserveImageLayers: boolean;
   preserveVectorLayers: boolean;
-  movieOpacity?: number;
+  movieOpacity?: number | null;
   /** file-system path (11 §6.2) */
   lastFolder: string;
 }
@@ -84128,9 +83815,8 @@ export interface keymap_get_params {
 export interface keymap_get_spec_Binding {
   /** object ID or path reference (10 §3) */
   commandId: string;
-  params: {
-    steps: number;
-  };
+  /** the bound command's parameters, validated against that command's parameter schema (01 §12.4) */
+  params: Record<string, unknown>;
   keys: string;
   context: string;
   isDefault: boolean;
@@ -84139,7 +83825,6 @@ export interface keymap_get_spec_Binding {
 export interface keymap_get_result {
   bindings: keymap_get_spec_Binding[];
   effectiveCommand?: {
-    /** object ID or path reference (10 §3) */
     commandId: string;
     params?: string[];
   };
@@ -84155,9 +83840,8 @@ export interface keymap_import_params {
 export interface keymap_import_spec_Binding {
   /** object ID or path reference (10 §3) */
   commandId: string;
-  params: {
-    steps: number;
-  };
+  /** the bound command's parameters, validated against that command's parameter schema (01 §12.4) */
+  params: Record<string, unknown>;
   keys: string;
   context: string;
   isDefault: boolean;
@@ -84178,9 +83862,8 @@ export interface keymap_list_params {
 export interface keymap_list_spec_Binding {
   /** object ID or path reference (10 §3) */
   commandId: string;
-  params: {
-    steps: number;
-  };
+  /** the bound command's parameters, validated against that command's parameter schema (01 §12.4) */
+  params: Record<string, unknown>;
   keys: string;
   context: string;
   isDefault: boolean;
@@ -84197,9 +83880,8 @@ export interface keymap_remove_params {
 export interface keymap_remove_spec_Binding {
   /** object ID or path reference (10 §3) */
   commandId: string;
-  params: {
-    steps: number;
-  };
+  /** the bound command's parameters, validated against that command's parameter schema (01 §12.4) */
+  params: Record<string, unknown>;
   keys: string;
   context: string;
   isDefault: boolean;
@@ -84220,7 +83902,7 @@ export interface keymap_reset_result {
 
 export interface keymap_set_params {
   commandId: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  /** the bound command's parameters, validated against its schema (01 §12.4) */
   params?: Record<string, unknown>;
   keys: string;
   context?: 'global' | 'drawing' | 'staging';
@@ -84231,9 +83913,8 @@ export interface keymap_set_params {
 export interface keymap_set_spec_Binding {
   /** object ID or path reference (10 §3) */
   commandId: string;
-  params: {
-    steps: number;
-  };
+  /** the bound command's parameters, validated against that command's parameter schema (01 §12.4) */
+  params: Record<string, unknown>;
   keys: string;
   context: string;
   isDefault: boolean;
@@ -84334,7 +84015,7 @@ export interface library_folder_delete_params {
 }
 
 export interface library_folder_delete_result {
-  deletedNodeCount: number | bigint;
+  deletedNodeCount: number;
 }
 
 export interface library_folder_rename_params {
@@ -84548,7 +84229,7 @@ export interface library_preview_get_result {
   /** object ID or path reference (10 §3) */
   itemId: string;
   frame: number | bigint;
-  frameCount: number | bigint;
+  frameCount: number;
   playing: boolean;
   enabled: boolean;
 }
@@ -84565,7 +84246,7 @@ export interface library_preview_set_result {
   /** object ID or path reference (10 §3) */
   itemId: string;
   frame: number | bigint;
-  frameCount: number | bigint;
+  frameCount: number;
   playing: boolean;
   enabled: boolean;
 }
@@ -84671,8 +84352,8 @@ export interface library_template_create_result {
   /** object ID or path reference (10 §3) */
   templateId: string;
   name: string;
-  frameCount: number | bigint;
-  elementCount: number | bigint;
+  frameCount: number;
+  elementCount: number;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -84731,7 +84412,7 @@ export interface library_template_export_params {
 export interface library_template_export_result {
   /** file-system path (11 §6.2) */
   path: string;
-  sizeBytes: number | bigint;
+  sizeBytes: number;
 }
 
 export interface library_template_frame_render_params {
@@ -84748,7 +84429,7 @@ export interface library_template_frame_render_result {
   png: string;
   width: number;
   height: number;
-  frameCount: number | bigint;
+  frameCount: number;
 }
 
 export interface library_template_get_params {
@@ -84961,7 +84642,7 @@ export interface library_tree_get_result {
 export type library_view_get_params = Record<string, unknown>;
 
 export interface library_view_get_result {
-  mode: string;
+  mode: 'thumbnails' | 'list' | 'details';
   /** object ID or path reference (10 §3) */
   currentNodeId: string;
   selectedNodeIds: string[];
@@ -84973,7 +84654,7 @@ export interface library_view_set_params {
 }
 
 export interface library_view_set_result {
-  mode: string;
+  mode: 'thumbnails' | 'list' | 'details';
 }
 
 export interface library_writeAccess_set_params {
@@ -85018,9 +84699,9 @@ export interface lipsync_apply_spec_ApplyResult {
     drawing: string;
   })[];
   framesWritten: number | bigint;
-  framesSkipped: (string | number | boolean | null)[];
+  framesSkipped: (number | bigint)[];
   conflicts: boolean[];
-  unmappedMouths: (string | number | boolean | null)[];
+  unmappedMouths: string[];
   elementExtended: boolean;
   dryRun: boolean;
 }
@@ -85063,8 +84744,8 @@ export interface lipsync_detect_spec_LipTrack {
     label: string | null;
   })[];
   segments: ({
-    start: number | bigint;
-    end: number | bigint;
+    start: number;
+    end: number;
     mouth: string;
     phoneme: string;
   })[];
@@ -85120,7 +84801,7 @@ export interface lipsync_mapping_mouth_set_params {
 }
 
 export interface lipsync_mapping_mouth_set_result {
-  mouth: string;
+  mouth: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'X';
   /** object ID or path reference (10 §3) */
   drawingId: string;
   drawingName: string;
@@ -85138,8 +84819,14 @@ export interface lipsync_mapping_set_params {
 }
 
 export interface lipsync_mapping_set_result {
-  /** type not stated by the owning section (spec issue); a scalar */
-  mapping: string | number | boolean | null;
+  mapping: {
+    "A..X": {
+      /** object ID or path reference (10 §3) */
+      drawingId?: string;
+      drawingName?: string;
+      rule: 'stored' | 'name' | 'property' | 'order' | 'none';
+    };
+  };
   complete: boolean;
 }
 
@@ -85153,7 +84840,7 @@ export interface lipsync_mouth_set_params {
 }
 
 export interface lipsync_mouth_set_result {
-  framesWritten: number | bigint;
+  framesWritten: number;
 }
 
 export type lipsync_panel_close_params = Record<string, unknown>;
@@ -85188,12 +84875,12 @@ export interface lipsync_panel_state_set_result {
 export type lipsync_settings_get_params = Record<string, unknown>;
 
 export interface lipsync_settings_get_result {
-  minHoldFrames: number | bigint;
-  anticipationFrames: number | bigint;
+  minHoldFrames: number;
+  anticipationFrames: number;
   silenceThresholdDb: number;
   language: string;
-  /** type not stated by the owning section (spec issue); a scalar */
-  phonemeMap: string | number | boolean | null;
+  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  phonemeMap: Record<string, unknown>;
 }
 
 export interface lipsync_settings_set_params {
@@ -85207,12 +84894,12 @@ export interface lipsync_settings_set_params {
 }
 
 export interface lipsync_settings_set_result {
-  minHoldFrames: number | bigint;
-  anticipationFrames: number | bigint;
+  minHoldFrames: number;
+  anticipationFrames: number;
   silenceThresholdDb: number;
   language: string;
-  /** type not stated by the owning section (spec issue); a scalar */
-  phonemeMap: string | number | boolean | null;
+  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  phonemeMap: Record<string, unknown>;
 }
 
 export type lipsync_shapes_list_params = Record<string, unknown>;
@@ -85220,7 +84907,7 @@ export type lipsync_shapes_list_params = Record<string, unknown>;
 export interface lipsync_shapes_list_result {
   shapes: ({
     mouth: string;
-    index: number | bigint;
+    index: number;
     description: string;
     sounds: boolean[];
     /** type not stated by the owning section (spec issue); a scalar */
@@ -85304,8 +84991,8 @@ export interface lipsync_track_get_spec_LipTrack {
     label: string | null;
   })[];
   segments: ({
-    start: number | bigint;
-    end: number | bigint;
+    start: number;
+    end: number;
     mouth: string;
     phoneme: string;
   })[];
@@ -85338,15 +85025,15 @@ export interface lipsync_track_set_spec_LipTrack {
     label: string | null;
   })[];
   segments: ({
-    start: number | bigint;
-    end: number | bigint;
+    start: number;
+    end: number;
     mouth: string;
     phoneme: string;
   })[];
 }
 
 export interface lipsync_track_set_result {
-  framesWritten: number | bigint;
+  framesWritten: number;
   track: lipsync_track_set_spec_LipTrack;
 }
 
@@ -85390,7 +85077,7 @@ export interface media_movie_probe_result {
   decodable: boolean;
   durationSec: number;
   fps: number;
-  frameCount: number | bigint;
+  frameCount: number;
   width: number;
   height: number;
   hasAudio: boolean;
@@ -85409,9 +85096,9 @@ export interface media_object_list_result {
     kind: string;
     location: string;
     missing: boolean;
-    frameCount: number | bigint;
+    frameCount: number;
     durationSec?: number;
-    sequenceCount: number | bigint;
+    sequenceCount: number;
   })[];
 }
 
@@ -85427,7 +85114,7 @@ export interface media_object_relink_params {
 export interface media_object_relink_result {
   /** object ID or path reference (10 §3) */
   mediaObjectId: string;
-  frameCount: number | bigint;
+  frameCount: number;
 }
 
 export interface media_sequence_add_params {
@@ -85642,7 +85329,7 @@ export interface playback_player_open_params {
 export interface playback_player_open_result {
   /** object ID or path reference (10 §3) */
   playerId: string;
-  frameCount: number | bigint;
+  frameCount: number;
   fps: number;
   durationSec: number;
 }
@@ -85719,7 +85406,7 @@ export type playback_range_changed_params = Record<string, unknown>;
 export interface playback_range_changed_result {
   /** object ID or path reference (10 §3) */
   sceneId: string;
-  mode: string;
+  mode: 'auto' | 'free';
   start: number | bigint;
   end: number | bigint;
 }
@@ -85733,7 +85420,7 @@ export interface playback_range_get_result {
   mode: 'auto' | 'free';
   start: number | bigint;
   end: number | bigint;
-  sceneLength: number | bigint;
+  sceneLength: number;
 }
 
 export interface playback_range_mode_set_params {
@@ -85743,7 +85430,7 @@ export interface playback_range_mode_set_params {
 }
 
 export interface playback_range_mode_set_result {
-  mode: string;
+  mode: 'auto' | 'free';
   start: number | bigint;
   end: number | bigint;
 }
@@ -85756,7 +85443,7 @@ export interface playback_range_set_params {
 }
 
 export interface playback_range_set_result {
-  mode: string;
+  mode: 'auto' | 'free';
   start: number | bigint;
   end: number | bigint;
   adjusted: boolean;
@@ -85767,7 +85454,7 @@ export interface playback_rate_set_params {
 }
 
 export interface playback_rate_set_result {
-  fps: number;
+  fps: 'project' | number;
   effectiveFps: number;
 }
 
@@ -85781,7 +85468,7 @@ export interface playback_start_result {
   playing: true;
   /** object ID or path reference (10 §3) */
   sceneId: string;
-  frame: number | bigint;
+  frame: number;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -85791,7 +85478,7 @@ export type playback_started_params = Record<string, unknown>;
 export interface playback_started_result {
   /** object ID or path reference (10 §3) */
   sceneId: string;
-  frame: number | bigint;
+  frame: number;
   mode: string;
 }
 
@@ -85826,7 +85513,7 @@ export type playback_state_get_result = playback_state_get_spec_PlaybackState;
 export type playback_stop_params = Record<string, unknown>;
 
 export interface playback_stop_result {
-  frame: number | bigint;
+  frame: number;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -85836,7 +85523,7 @@ export type playback_stopped_params = Record<string, unknown>;
 export interface playback_stopped_result {
   /** object ID or path reference (10 §3) */
   sceneId: string;
-  frame: number | bigint;
+  frame: number;
   reason: 'user' | 'end' | 'navigation' | 'sceneChanged';
 }
 
@@ -85854,8 +85541,8 @@ export interface prefs_get_params {
 }
 
 export interface prefs_get_result {
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  values: Record<string, unknown>;
+  /** preference key → value (01 §7) */
+  values: Record<string, boolean | number | bigint | string>;
 }
 
 export interface prefs_list_params {
@@ -85865,9 +85552,10 @@ export interface prefs_list_params {
 export type prefs_list_result = ({
   key: string;
   type: string;
-  /** type not stated by the owning section (spec issue); a scalar */
-  default: string | number | boolean | null;
-  value: number;
+  /** a preference value of the key's type (01 §7) */
+  default: boolean | number | bigint | string;
+  /** a preference value of the key's type (01 §7) */
+  value: boolean | number | bigint | string;
   min?: number;
   max?: number;
   values?: number[];
@@ -85885,8 +85573,8 @@ export interface prefs_reset_result {
 }
 
 export interface prefs_set_params {
-  /** (key → value) */
-  values: Record<string, number>;
+  /** preference key → value (01 §7) */
+  values: Record<string, boolean | number | bigint | string>;
 }
 
 export interface prefs_set_result {
@@ -85901,7 +85589,7 @@ export interface print_pageSetup_get_params {
 
 export interface print_pageSetup_get_result {
   paperSize: string;
-  orientation: string;
+  orientation: 'portrait' | 'landscape';
   printableArea: {
     x: number;
     y: number;
@@ -85919,7 +85607,7 @@ export interface print_pageSetup_set_params {
 
 export interface print_pageSetup_set_result {
   paperSize: string;
-  orientation: string;
+  orientation: 'portrait' | 'landscape';
 }
 
 export interface print_preview_get_params {
@@ -85945,10 +85633,10 @@ export interface print_preview_get_params {
 }
 
 export interface print_preview_get_result {
-  pageCount: number | bigint;
+  pageCount: number;
   pages: ({
     page: number | bigint;
-    frames: (number | bigint)[];
+    frames: number[];
   })[];
   /** base64 text */
   data: string;
@@ -86069,8 +85757,25 @@ export interface print_settings_get_result {
 }
 
 export interface print_settings_set_params {
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  values: Record<string, unknown>;
+  values: {
+    copies?: number;
+    collate?: boolean;
+    layout?: 'single' | 'grid' | 'flipbook';
+    rows?: number;
+    columns?: number;
+    bindingMarginMm?: number;
+    type?: 'wholeMovie' | 'currentSceneCamera' | 'currentSceneXsheet' | 'element';
+    /** object ID or path reference (10 §3) */
+    elementId?: string;
+    range?: 'all' | 'frames' | 'selection' | 'playbackRange';
+    from?: number | bigint;
+    to?: number | bigint;
+    keyDrawingsOnly?: boolean;
+    individualDrawingsOnly?: boolean;
+    cameraFrame?: boolean;
+    paperSize?: string;
+    orientation?: 'portrait' | 'landscape';
+  };
 }
 
 export interface print_settings_set_result {
@@ -86409,10 +86114,10 @@ export type render_frame_run_result = render_frame_run_spec_RenderResult;
 export type render_limits_get_params = Record<string, unknown>;
 
 export interface render_limits_get_result {
-  maxInlinePixels: number | bigint;
-  maxInlineBytes: number | bigint;
-  maxWidth: number | bigint;
-  maxHeight: number | bigint;
+  maxInlinePixels: number;
+  maxInlineBytes: number;
+  maxWidth: number;
+  maxHeight: number;
   formats: string[];
 }
 
@@ -86493,10 +86198,10 @@ export interface sound_asset_get_result {
   assetId: string;
   name: string;
   channels: string[];
-  bitDepth: number | bigint;
-  sampleRate: number | bigint;
+  bitDepth: number;
+  sampleRate: number;
   durationSec: number;
-  fileSize: number | bigint;
+  fileSize: number;
   missing: boolean;
   usedBy: ({
     /** object ID or path reference (10 §3) */
@@ -86530,11 +86235,11 @@ export interface sound_asset_list_result {
     assetId: string;
     name: string;
     channels: string[];
-    bitDepth: number | bigint;
-    sampleRate: number | bigint;
+    bitDepth: number;
+    sampleRate: number;
     durationSec: number;
     missing: boolean;
-    placementCount: number | bigint;
+    placementCount: number;
   })[];
 }
 
@@ -86558,10 +86263,10 @@ export interface sound_asset_probe_result {
   decodable: boolean;
   format: string;
   channels: string[];
-  bitDepth: number | bigint;
-  sampleRate: number | bigint;
+  bitDepth: number;
+  sampleRate: number;
   durationSec: number;
-  fileSize: number | bigint;
+  fileSize: number;
   exceedsLimit: boolean;
 }
 
@@ -86689,8 +86394,9 @@ export interface sound_envelope_point_add_params {
 export interface sound_envelope_point_add_result {
   index: number | bigint;
   points: ({
-    x: number;
-    y: number;
+    time: number;
+    left: number;
+    right: number;
   })[];
 }
 
@@ -86706,8 +86412,9 @@ export interface sound_envelope_point_move_params {
 
 export interface sound_envelope_point_move_result {
   points: ({
-    x: number;
-    y: number;
+    time: number;
+    left: number;
+    right: number;
   })[];
 }
 
@@ -86719,8 +86426,9 @@ export interface sound_envelope_point_remove_params {
 
 export interface sound_envelope_point_remove_result {
   points: ({
-    x: number;
-    y: number;
+    time: number;
+    left: number;
+    right: number;
   })[];
 }
 
@@ -86737,8 +86445,9 @@ export interface sound_envelope_set_params {
 
 export interface sound_envelope_set_result {
   points: ({
-    x: number;
-    y: number;
+    time: number;
+    left: number;
+    right: number;
   })[];
 }
 
@@ -86778,8 +86487,8 @@ export interface sound_import_result {
   placementId: string;
   /** object ID or path reference (10 §3) */
   assetId: string;
-  startFrame: number | bigint;
-  stopFrame: number | bigint;
+  startFrame: number;
+  stopFrame: number;
   durationSec: number;
   reusedAsset: boolean;
   warnings: ({
@@ -86804,7 +86513,7 @@ export interface sound_placement_add_result {
   /** object ID or path reference (10 §3) */
   placementId: string;
   startFrame: number | bigint;
-  stopFrame: number | bigint;
+  stopFrame: 'natural' | number | bigint;
 }
 
 export interface sound_placement_get_params {
@@ -86886,7 +86595,7 @@ export interface sound_placement_move_params {
 
 export interface sound_placement_move_result {
   startFrame: number | bigint;
-  stopFrame: number | bigint;
+  stopFrame: 'natural' | number | bigint;
 }
 
 export interface sound_placement_remove_params {
@@ -86959,10 +86668,11 @@ export interface sound_placement_trim_params {
 
 export interface sound_placement_trim_result {
   inPoint: number;
+  /** (≤ duration) */
   outPoint: number;
   startFrame: number | bigint;
-  stopFrame: number | bigint;
-  naturalEndFrame: number | bigint;
+  stopFrame: 'natural' | number | bigint;
+  naturalEndFrame: number;
   clamped: boolean;
 }
 
@@ -87069,14 +86779,14 @@ export interface sound_silence_list_params {
 /** with */
 export interface sound_silence_list_result {
   silences: ({
-    startFrame: number | bigint;
-    endFrame: number | bigint;
+    startFrame: number;
+    endFrame: number;
     startTime: number;
     endTime: number;
   })[];
   speech: ({
-    startFrame: number | bigint;
-    endFrame: number | bigint;
+    startFrame: number;
+    endFrame: number;
     startTime: number;
     endTime: number;
   })[];
@@ -87151,7 +86861,7 @@ export interface storyline_changed_result {
   reason: 'scenes' | 'order' | 'visibility' | 'length' | 'transition' | 'properties';
   sceneIds: string[];
   editPoints: (number | bigint)[];
-  globalLength: number | bigint;
+  globalLength: number;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -87168,7 +86878,7 @@ export type storyline_currentScene_get_params = Record<string, unknown>;
 export interface storyline_currentScene_get_result {
   /** object ID or path reference (10 §3) */
   sceneId: string;
-  index: number | bigint;
+  index: number;
   name: string;
 }
 
@@ -87191,19 +86901,19 @@ export interface storyline_frame_get_result {
   kind: 'scene' | 'transition' | 'blank' | 'padding';
   /** object ID or path reference (10 §3) */
   sceneId?: string;
-  localFrame?: number | bigint;
+  localFrame?: number;
   transition?: {
-    editPoint: number | bigint;
+    editPoint: number;
     t: number;
     outgoing?: {
       /** object ID or path reference (10 §3) */
       sceneId: string;
-      localFrame: number | bigint;
+      localFrame: number;
     };
     incoming?: {
       /** object ID or path reference (10 §3) */
       sceneId: string;
-      localFrame: number | bigint;
+      localFrame: number;
     };
   };
 }
@@ -87279,8 +86989,8 @@ export type storyline_play_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface storyline_play_changed_result {
-  playing: boolean;
-  globalFrame: number | bigint;
+  playing: true;
+  globalFrame: number;
   /** object ID or path reference (10 §3) */
   sceneId: string;
 }
@@ -87292,14 +87002,14 @@ export interface storyline_play_start_params {
 
 export interface storyline_play_start_result {
   playing: true;
-  globalFrame: number | bigint;
+  globalFrame: number;
 }
 
 export type storyline_play_stop_params = Record<string, unknown>;
 
 export interface storyline_play_stop_result {
   playing: false;
-  globalFrame: number | bigint;
+  globalFrame: number;
 }
 
 export type storyline_playhead_get_params = Record<string, unknown>;
@@ -87308,7 +87018,7 @@ export interface storyline_playhead_get_result {
   globalFrame: number | bigint;
   /** object ID or path reference (10 §3) */
   sceneId: string;
-  localFrame: number | bigint;
+  localFrame: number;
 }
 
 export interface storyline_playhead_set_params {
@@ -87524,7 +87234,7 @@ export type storyline_selection_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface storyline_selection_changed_result {
-  kind: string;
+  kind: 'none' | 'scene' | 'transition';
   /** object ID or path reference (10 §3) */
   sceneId?: string;
   editPoint?: number | bigint;
@@ -87693,13 +87403,13 @@ export type storyline_transition_types_list_params = Record<string, unknown>;
 
 export interface storyline_transition_types_list_result {
   types: ({
-    type: string;
+    type: 'none' | 'fade' | 'crossDissolve' | 'wipe' | 'slide' | 'clockWipe' | 'checker';
     parameters: ({
       name: string;
-      type: string;
+      type: 'none' | 'fade' | 'crossDissolve' | 'wipe' | 'slide' | 'clockWipe' | 'checker';
       min?: number;
       max?: number;
-      step?: number | bigint;
+      step?: number;
       /** type not stated by the owning section (spec issue); a scalar */
       default: string | number | boolean | null;
       values?: number[];
@@ -87712,7 +87422,7 @@ export type storyline_view_get_params = Record<string, unknown>;
 export interface storyline_view_get_result {
   zoom: number;
   playing: boolean;
-  globalFrame: number | bigint;
+  globalFrame: number;
 }
 
 export interface storyline_view_set_params {
@@ -87736,7 +87446,7 @@ export interface storyline_warning_changed_result {
     message: string;
     objectIds?: string[];
   };
-  paddingFrames: number | bigint;
+  paddingFrames: number;
 }
 
 export interface timeline_backgroundColour_set_params {
@@ -87808,7 +87518,7 @@ export type timeline_playbackRange_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface timeline_playbackRange_changed_result {
-  mode: string;
+  mode: 'auto' | 'free';
   start: number | bigint;
   end: number | bigint;
 }
@@ -87816,7 +87526,7 @@ export interface timeline_playbackRange_changed_result {
 export type timeline_playbackRange_get_params = Record<string, unknown>;
 
 export interface timeline_playbackRange_get_result {
-  mode: string;
+  mode: 'auto' | 'free';
   start: number | bigint;
   end: number | bigint;
 }
@@ -87828,7 +87538,7 @@ export interface timeline_playbackRange_set_params {
 }
 
 export interface timeline_playbackRange_set_result {
-  mode: string;
+  mode: 'auto' | 'free';
   start: number | bigint;
   end: number | bigint;
 }
@@ -87843,12 +87553,12 @@ export interface timeline_rows_list_params {
 export interface timeline_rows_list_spec_TimelineModel {
   /** object ID or path reference (10 §3) */
   sceneId: string;
-  sceneLength: number | bigint;
-  currentFrame: number | bigint;
+  sceneLength: number;
+  currentFrame: number;
   playbackRange: {
     mode: string;
-    start: number | bigint;
-    end: number | bigint;
+    start: number;
+    end: number;
   };
   rows: timeline_rows_list_spec_TimelineRow[];
 }
@@ -87858,7 +87568,7 @@ export interface timeline_rows_list_spec_TimelineRow {
   elementId: string;
   name: string;
   type: string;
-  depth: number | bigint;
+  depth: number;
   /** object ID or path reference (10 §3) */
   parentId: string;
   collapsed: boolean;
@@ -87866,12 +87576,12 @@ export interface timeline_rows_list_spec_TimelineRow {
   hiddenByParent: boolean;
   locked: boolean;
   bar: {
-    start: number | bigint;
-    end: number | bigint;
-    loops: number | bigint;
+    start: number;
+    end: number;
+    loops: number;
   };
   keyframes: ({
-    frame: number | bigint;
+    frame: number;
     channels: ('position' | 'scale' | 'rotation' | 'skew')[];
     segmentAfter: 'constant' | 'interpolated';
   })[];
@@ -87880,8 +87590,8 @@ export interface timeline_rows_list_spec_TimelineRow {
     /** object ID or path reference (10 §3) */
     clipId: string;
     file: string;
-    from: number | bigint;
-    to: number | bigint;
+    from: number;
+    to: number;
   })[];
 }
 
@@ -87908,15 +87618,32 @@ export interface timeline_timeDisplay_set_params {
 }
 
 export interface timeline_timeDisplay_set_result {
-  unit: string;
+  unit: 'frames' | 'feetFrames';
 }
 
 export interface timeline_transferOptions_get_params {
   operation: 'paste' | 'cut' | 'dragDrop';
 }
 
+export interface timeline_transferOptions_get_spec_TransferOptions {
+  overwriteDrawings: boolean;
+  exposure: boolean;
+  autoExtend: boolean;
+  updateColours: boolean;
+  keyframeSubstitution: boolean;
+  boundaryKeys: boolean;
+  pegKeys: {
+    motion: boolean;
+    rotation: boolean;
+    scale: boolean;
+    pivot: boolean;
+    velocity: boolean;
+    skew: boolean;
+  };
+}
+
 export interface timeline_transferOptions_get_result {
-  options: string[];
+  options: timeline_transferOptions_get_spec_TransferOptions;
 }
 
 export interface timeline_transferOptions_set_spec_TransferOptions {
@@ -87942,8 +87669,8 @@ export interface timeline_transferOptions_set_params {
 }
 
 export interface timeline_transferOptions_set_result {
-  operation: string;
-  options: string[];
+  operation: 'paste' | 'cut' | 'dragDrop';
+  options: timeline_transferOptions_set_spec_TransferOptions;
 }
 
 export interface timeline_view_set_params {
@@ -87954,9 +87681,9 @@ export interface timeline_view_set_params {
 }
 
 export interface timeline_view_set_result {
-  zoomLevel: number;
+  zoomLevel: number | bigint;
   firstFrame: number | bigint;
-  lastFrame: number | bigint;
+  lastFrame: number;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -87964,16 +87691,14 @@ export type tool_active_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface tool_active_changed_result {
-  /** object ID or path reference (10 §3) */
-  toolId: string;
+  toolId: 'select' | 'contourEditor' | 'perspective' | 'repositionAll' | 'brush' | 'pencil' | 'rectangle' | 'ellipse' | 'polyline' | 'line' | 'paint' | 'unpaint' | 'paintUnpainted' | 'dropper' | 'closeGap' | 'stroke' | 'editTexture' | 'eraser' | 'cutter' | 'scissor' | 'zoom' | 'grabber' | 'text';
   temporary: boolean;
 }
 
 export type tool_active_get_params = Record<string, unknown>;
 
 export interface tool_active_get_result {
-  /** object ID or path reference (10 §3) */
-  toolId: string;
+  toolId: 'select' | 'contourEditor' | 'perspective' | 'repositionAll' | 'brush' | 'pencil' | 'rectangle' | 'ellipse' | 'polyline' | 'line' | 'paint' | 'unpaint' | 'paintUnpainted' | 'dropper' | 'closeGap' | 'stroke' | 'editTexture' | 'eraser' | 'cutter' | 'scissor' | 'zoom' | 'grabber' | 'text';
   temporaryToolId: string | null;
   group: string;
 }
@@ -87983,8 +87708,7 @@ export interface tool_active_set_params {
 }
 
 export interface tool_active_set_result {
-  /** object ID or path reference (10 §3) */
-  toolId: string;
+  toolId: 'select' | 'contourEditor' | 'perspective' | 'repositionAll' | 'brush' | 'pencil' | 'rectangle' | 'ellipse' | 'polyline' | 'line' | 'paint' | 'unpaint' | 'paintUnpainted' | 'dropper' | 'closeGap' | 'stroke' | 'editTexture' | 'eraser' | 'cutter' | 'scissor' | 'zoom' | 'grabber' | 'text';
 }
 
 export interface tool_brush_options_set_params {
@@ -87993,7 +87717,10 @@ export interface tool_brush_options_set_params {
 }
 
 export interface tool_brush_options_set_result {
-  options: string[];
+  options: {
+    /** object ID or path reference (10 §3) */
+    penId: string;
+  };
 }
 
 export interface tool_drawTopLayer_set_params {
@@ -88010,7 +87737,10 @@ export interface tool_eraser_options_set_params {
 }
 
 export interface tool_eraser_options_set_result {
-  options: string[];
+  options: {
+    /** object ID or path reference (10 §3) */
+    penId: string;
+  };
 }
 
 export interface tool_group_select_params {
@@ -88044,8 +87774,9 @@ export type tool_options_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface tool_options_changed_result {
-  toolId: string | null;
-  options: string[];
+  toolId: string;
+  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  options: Record<string, unknown>;
 }
 
 export interface tool_options_get_params {
@@ -88053,7 +87784,6 @@ export interface tool_options_get_params {
 }
 
 export interface tool_options_get_result {
-  /** object ID or path reference (10 §3) */
   toolId: string;
   /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
   options: Record<string, unknown>;
@@ -88066,9 +87796,9 @@ export interface tool_options_set_params {
 }
 
 export interface tool_options_set_result {
-  /** object ID or path reference (10 §3) */
   toolId: string;
-  options: string[];
+  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  options: Record<string, unknown>;
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -88117,10 +87847,10 @@ export interface tool_pen_list_result {
     /** object ID or path reference (10 §3) */
     penId: string;
     name: string;
-    type: string;
-    tipShape: string;
+    type: 'brush' | 'eraser';
+    tipShape: 'round' | 'oval' | 'square' | 'flat';
     minSize: number;
-    maxSize: number | bigint;
+    maxSize: number;
     smoothness: number;
     tipAngle: number;
   })[];
@@ -88150,7 +87880,7 @@ export interface tool_pen_select_params {
 export interface tool_pen_select_result {
   /** object ID or path reference (10 §3) */
   penId: string;
-  type: string;
+  type: 'brush' | 'eraser';
 }
 
 export interface tool_pen_set_params {
@@ -88163,9 +87893,58 @@ export interface tool_pen_set_params {
   tipAngle?: number;
 }
 
+/** Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim. */
+export type tool_pen_set_Ext = Record<string, unknown>;
+
+export type tool_pen_set_Id = string;
+
+/** A pen preset (10 §4.2). Unique name in the project. */
+export interface tool_pen_set_Pen {
+  /** Immutable ID. */
+  id: tool_pen_set_Id;
+  /** Always `pen`. */
+  type: 'pen';
+  /** Revision of the last change (10 REV-02). */
+  rev: number | bigint;
+  /** Unique in the project; default `Pen <n>`. */
+  name: string;
+  /** Brush or eraser pen (02 §6.1; SI-004). */
+  kind: tool_pen_set_PenKind;
+  /** Width at lowest pressure, 0–100 du; `minSize ≤ maxSize`. */
+  minSize: number;
+  /** Width at full pressure, 0–100 du. */
+  maxSize: number;
+  /** Curve-fitting tolerance and pressure smoothing, 0–10 (10 §4.2: int). */
+  smoothness: number;
+  /** Tip shape. */
+  tip: tool_pen_set_Tip;
+  /** Orientation of non-round tips, 0–360 degrees (02 §6.1; SI-004). */
+  tipAngle: number;
+  /** Colour bound to the pen; `null` = use the current colour. */
+  colourId: tool_pen_set_Id | null;
+  /** Free-form metadata. */
+  meta?: Record<string, unknown>;
+  /** Extension data. */
+  ext?: tool_pen_set_Ext;
+  /** Canonical path (10 §2.4). */
+  path?: string;
+}
+
+/** A `tool_pen_set_Pen` reduced to its stub (10 §2.2). */
+export interface tool_pen_set_PenStub {
+  id: tool_pen_set_Id;
+  type: 'pen';
+  name?: string;
+}
+
+/** Tool family of a pen (02 §6.1 "Type"). Persisted as `kind` because `type` is the envelope field (SI-004). */
+export type tool_pen_set_PenKind = 'brush' | 'eraser';
+
+/** Tip shape (02 §6.1). */
+export type tool_pen_set_Tip = 'round' | 'oval' | 'square' | 'flat';
+
 export interface tool_pen_set_result {
-  /** type not stated by the owning section (spec issue); a scalar */
-  pen: string | number | boolean | null;
+  pen: tool_pen_set_Pen | tool_pen_set_PenStub;
 }
 
 export interface tool_pencil_options_set_params {
@@ -88174,7 +87953,10 @@ export interface tool_pencil_options_set_params {
 }
 
 export interface tool_pencil_options_set_result {
-  options: string[];
+  options: {
+    thicknessSource: 'penMax' | 'fixed';
+    thickness: number;
+  };
 }
 
 export interface tool_placeBehind_set_params {
@@ -88191,7 +87973,10 @@ export interface tool_polyline_options_set_params {
 }
 
 export interface tool_polyline_options_set_result {
-  options: string[];
+  options: {
+    snap: boolean;
+    snapRadius: number;
+  };
 }
 
 export interface tool_select_options_set_params {
@@ -88199,7 +87984,9 @@ export interface tool_select_options_set_params {
 }
 
 export interface tool_select_options_set_result {
-  options: string[];
+  options: {
+    rectRule: 'inside' | 'intersect';
+  };
 }
 
 export type tool_settings_get_params = Record<string, unknown>;
@@ -88228,9 +88015,9 @@ export interface tool_symmetry_set_params {
 }
 
 export interface tool_symmetry_set_result {
-  mode: string;
+  mode: 'none' | 'mirror' | 'kaleidoscope';
   angle: number;
-  mirrors: boolean;
+  mirrors: number;
 }
 
 export interface tool_tablet_set_params {
@@ -88262,7 +88049,21 @@ export interface tool_text_options_set_params {
 }
 
 export interface tool_text_options_set_result {
-  options: string[];
+  options: {
+    font: string;
+    size: number;
+    bold: boolean;
+    italic: boolean;
+    baseline: 'normal' | 'subscript' | 'superscript';
+    kerning: number;
+    autoKern: boolean;
+    align: 'left' | 'centre' | 'right' | 'justify';
+    leftMargin: number;
+    rightMargin: number;
+    indent: number;
+    lineSpacing: number;
+    outlineColourId: string | null;
+  };
 }
 
 export interface ui_contextHelpMode_set_params {
@@ -88354,7 +88155,6 @@ export type ui_theme_list_result = ({
 export type ui_tips_list_params = Record<string, unknown>;
 
 export type ui_tips_list_result = ({
-  /** object ID or path reference (10 §3) */
   messageId: string;
   description: string;
   suppressed: boolean;
@@ -88372,7 +88172,6 @@ export interface ui_tips_set_params {
 }
 
 export interface ui_tips_set_result {
-  /** object ID or path reference (10 §3) */
   messageId: string;
   suppressed: boolean;
 }
@@ -88500,7 +88299,7 @@ export interface view_type_set_params {
 export interface view_type_set_result {
   /** object ID or path reference (10 §3) */
   viewId: string;
-  type: string;
+  type: 'drawing' | 'camera' | 'top' | 'side' | 'previous';
 }
 
 export interface view_zoom_set_params {
@@ -89516,10 +89315,10 @@ export interface xsheet_display_set_params {
 }
 
 export interface xsheet_display_set_result {
-  thumbnails: string[];
-  exposureText: string;
-  elementNames: string[];
-  notes: string[];
+  thumbnails: boolean;
+  exposureText: boolean;
+  elementNames: boolean;
+  notes: boolean;
 }
 
 export interface xsheet_exposures_get_params {
@@ -89578,21 +89377,49 @@ export type xsheet_exposures_get_result = xsheet_exposures_get_spec_ExposureShee
 export interface xsheet_exposures_set_params {
   /** object ID or path reference (10 §3) */
   sceneId?: string;
-  columns: (Record<string, unknown>)[];
+  columns: ({
+    /** object ID or path reference (10 §3) */
+    elementId: string;
+    from?: number;
+    to?: number;
+    exposures: ({
+      drawing?: string;
+      /** object ID or path reference (10 §3) */
+      drawingId?: string;
+      from: number;
+      to: number;
+    })[];
+  })[];
   createMissingDrawings?: boolean;
   expectRev?: number | bigint;
   dryRun?: boolean;
 }
 
 export interface xsheet_exposures_set_result {
-  rev: number | bigint;
-  sceneLength: number | bigint;
+  rev: number;
+  sceneLength: number;
   changed: boolean[];
-  createdDrawings: (string | number | boolean | null)[];
+  createdDrawings: ({
+    /** object ID or path reference (10 §3) */
+    elementId: string;
+    /** object ID or path reference (10 §3) */
+    drawingId: string;
+    name: string;
+  })[];
 }
 
 export interface xsheet_lightTable_add_params {
-  items?: (Record<string, unknown>)[];
+  items?: ({
+    /** object ID or path reference (10 §3) */
+    itemId: string;
+    /** object ID or path reference (10 §3) */
+    elementId: string;
+    /** object ID or path reference (10 §3) */
+    drawingId: string;
+    label: string;
+    visible: boolean;
+    placement: 'over' | 'under';
+  })[];
 }
 
 export interface xsheet_lightTable_add_result {
@@ -89619,7 +89446,7 @@ export interface xsheet_lightTable_list_result {
     drawingId: string;
     label: string;
     visible: boolean;
-    placement: string;
+    placement: 'over' | 'under';
   })[];
 }
 
@@ -89660,9 +89487,7 @@ export interface xsheet_panel_set_params {
 }
 
 export interface xsheet_panel_set_result {
-  elementList: string[];
-  /** type not stated by the owning section (spec issue); a scalar */
-  lightTable: string | number | boolean | null;
-  /** type not stated by the owning section (spec issue); a scalar */
-  toolbar: string | number | boolean | null;
+  elementList: boolean;
+  lightTable: boolean;
+  toolbar: boolean;
 }

@@ -88,8 +88,13 @@ fn unsafe_integer(s: &Map<String, Value>) -> bool {
 fn union(parts: Vec<String>) -> String {
     let mut seen: Vec<String> = Vec::new();
     for p in parts {
-        if !seen.contains(&p) {
-            seen.push(p);
+        // A part that is itself a flat union (`number | bigint`) joins member by member, so no member repeats.
+        let flat = !p.contains(['{', '[', '(', '<']);
+        let members: Vec<String> = if flat { p.split(" | ").map(str::to_owned).collect() } else { vec![p] };
+        for m in members {
+            if !seen.contains(&m) {
+                seen.push(m);
+            }
         }
     }
     if seen.iter().any(|p| p == "unknown") {

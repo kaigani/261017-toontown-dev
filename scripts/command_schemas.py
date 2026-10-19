@@ -35,8 +35,8 @@ MODEL_ALIASES = {
     "element object": "ElementInfo",
     "exposure-sheet object": "ExposureSheet",
     "timeline object": "TimelineModel",
-    "drawing JSON": "Drawing",
-    "Palette object": "Palette",
+    "drawing JSON": "DrawingReadback",
+    "Palette object": "PaletteObject",
     "Effect": "Element",
 }
 
@@ -64,14 +64,16 @@ PARAM_GROUPS: dict = {}   # `PrintParams` = `…`: parameter groups spread into 
 
 
 # Untyped fields that hold a section type of the same area (09: a capture session's `keying`, a job's `manifest`).
-FIELD_TYPES = {"keying": "Keying", "manifest": "Manifest"}
+FIELD_TYPES = {"keying": "Keying", "manifest": "Manifest", "pen": "Pen"}
 
 
 class Closer:
-    def __init__(self, cid: str):
+    def __init__(self, cid: str, fields: dict | None = None):
         self.cid = cid
         self.placeholders: list = []
         self.defs: set = set()
+        # Typed fields of the command's context, by name (C12-R3-01): what an untyped field of the same name is.
+        self.fields = fields or {}
 
     def note(self, pointer: str, what: str):
         self.placeholders.append({"pointer": pointer or "/", "kind": what})
@@ -120,6 +122,8 @@ class Closer:
             # A strict placeholder from a section's example (a member whose example value is only `null`).
             self.note(at, f"leaf `{name or '(value)'}`")
             return dict(s)
+        if s.get("x-open"):
+            return dict(s)  # an object the section leaves open on purpose (a bound command's parameters)
         s = dict(s)
         meta = {k: s[k] for k in ("$schema", "title", "description", "x-spec", "x-jobResult") if k in s}
         if "x-specType" in s:
@@ -174,6 +178,10 @@ class Closer:
         return s
 
     def leaf_or(self, v, at: str, name: str):
+        untyped_list = empty_list(v) or bare_object(v)
+        if name in self.fields and (not isinstance(v, dict) or not _typed(v) or untyped_list):
+            # The same field, typed by a sibling command or the command's own parameters.
+            return self.close(copy.deepcopy(self.fields[name]), at, name)
         if not isinstance(v, dict) or not _typed(v):
             return self.untyped(v if isinstance(v, dict) else {}, at, name)
         return self.close(v, at, name)
@@ -196,6 +204,9 @@ class Closer:
             self.note(at, f"leaf `{name or '(value)'}`")
             leaf = dict(ct.SCALAR_PLACEHOLDER)
         out = dict(leaf)
+        if out.get("type") == "integer":
+            # Only the name says it is numeric: no integer domain is inferred from a name (C12-R3-01).
+            out["type"] = "number"
         for k in ("default", "nullable"):
             if k in s:
                 out[k] = s[k]
@@ -253,6 +264,19 @@ def _primitive(word: str):
     return None
 
 
+def bare_object(s) -> bool:
+    """An object the spec leaves without fields (`object`)."""
+    return isinstance(s, dict) and s.get("type") == "object" and not s.get("properties") and         not isinstance(s.get("additionalProperties"), dict) and not s.get("x-open")
+
+
+def empty_list(s) -> bool:
+    """A list whose items the spec does not type (`x[]`, `[object]`)."""
+    if not (isinstance(s, dict) and s.get("type") == "array"):
+        return False
+    items = s.get("items") or {}
+    return not _typed(items) or bare_object(items)
+
+
 def _typed(s: dict) -> bool:
     return any(k in s for k in ("type", "$ref", "anyOf", "oneOf", "allOf", "const", "enum", "x-specType"))
 
@@ -276,6 +300,8 @@ def sample(s, defs: dict, full: bool = True, depth: int = 0, name: str = ""):
         if not ref.startswith("spec."):
             raise Unsampleable(f"model type {ref}")
         return sample(defs[ref], defs, full, depth + 1, name)
+    if s.get("x-open"):
+        return {"x-open": True}  # an open object (any members); the negative test does not probe inside it
     if "default" in s:
         return s["default"]
     if "const" in s:

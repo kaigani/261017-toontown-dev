@@ -24,6 +24,7 @@ these files (the registry refuses an id declared twice). crates/registry/tests/d
 the spec, every example and sample validates, every mutated leaf and unknown member is rejected, every owner is the
 plan's and every placeholder family has its spec issue; CI regenerates the files and fails on a difference.
 """
+import copy
 import importlib.util
 import json
 import pathlib
@@ -825,9 +826,54 @@ FIELD_TYPES_BY_COMMAND = {
 }
 
 
+def section_types_03_01():
+    """03 §12.3 Palette JSON object (`colour.palette.get`), from its example and rules: swatch values are keyed by
+    style ID; solid `{rgba}`, gradients `{stops:[{position, rgba}]}` with ≥ 2 stops, texture `{image, tile}` with
+    informative `width`/`height`; `usageCount` and a base64 PNG `thumbnail` per swatch when requested (spec A).
+    01 §12.4 Binding: `params` holds the bound command's parameters (validated against that command's schema)."""
+    colour = dict(ct.COLOUR)
+    value = {"anyOf": [
+        {"type": "object", "properties": {"rgba": colour}, "required": ["rgba"], "additionalProperties": False},
+        {"type": "object", "properties": {"stops": {"type": "array", "minItems": 2, "maxItems": 256, "items": {
+            "type": "object", "properties": {"position": {"type": "number", "minimum": 0, "maximum": 1},
+                                             "rgba": colour},
+            "required": ["position", "rgba"], "additionalProperties": False}}},
+         "required": ["stops"], "additionalProperties": False},
+        {"type": "object", "properties": {"image": dict(ct.PATH), "tile": {"type": "boolean"},
+                                          "width": {"type": "integer"}, "height": {"type": "integer"}},
+         "required": ["image", "tile"], "additionalProperties": False}]}
+    swatch = {"type": "object", "additionalProperties": False,
+              "required": ["colourId", "name", "kind", "deformable", "values"],
+              "properties": {"colourId": dict(ct.ID), "name": dict(ct.STRING),
+                             "kind": {"type": "string", "enum": ["solid", "linearGradient", "radialGradient", "texture"]},
+                             "deformable": {"type": "boolean"},
+                             "values": {"type": "object", "properties": {}, "additionalProperties": value,
+                                        "propertyNames": {"minLength": 1, "maxLength": 4096}},
+                             "usageCount": {"type": "integer", "minimum": 0},
+                             "thumbnail": {"type": "string", "description": "base64 PNG"}}}
+    cs.SPEC_TYPES["PaletteObject"] = {
+        "type": "object", "additionalProperties": False, "required": ["id", "name", "styles", "swatches"],
+        "x-specSection": "03",
+        "properties": {"id": dict(ct.ID), "name": dict(ct.STRING),
+                       "styles": {"type": "array", "minItems": 1, "maxItems": 100000, "items": {
+                           "type": "object", "properties": {"id": dict(ct.ID), "name": dict(ct.STRING)},
+                           "required": ["id", "name"], "additionalProperties": False}},
+                       "swatches": {"type": "array", "maxItems": 100000, "items": swatch}}}
+    if "Binding" in cs.SPEC_TYPES:
+        cs.SPEC_TYPES["Binding"]["properties"]["params"] = {
+            "type": "object", "x-open": True,
+            "description": "the bound command's parameters, validated against that command's parameter schema (01 §12.4)"}
+
+
 def section_types_04():
-    """04 §17.5: `timeline.rows.list` returns `{…}` where each row is `{…}` (brace notation in prose)."""
+    """04 §17.5: `timeline.rows.list` returns `{…}` where each row is `{…}` (brace notation in prose); `element.get`'s
+    `media`, for media elements, is `{path, startFrame, length, missing}` (else null)."""
     text = (ROOT / "spec" / "04_timeline_xsheet.md").read_text(encoding="utf-8")
+    if "ElementInfo" in cs.SPEC_TYPES and "`media`, for media elements: `{path, startFrame, length, missing}`" in text:
+        media = {"type": "object", "additionalProperties": False, "required": ["path", "startFrame", "length", "missing"],
+                 "properties": {"path": dict(ct.PATH), "startFrame": {"type": "integer"}, "length": {"type": "integer"},
+                                "missing": {"type": "boolean"}}}
+        cs.SPEC_TYPES["ElementInfo"]["properties"]["media"] = {"anyOf": [media, {"type": "null"}]}
     m = re.search(r"`timeline\.rows\.list` returns `\{(.*?)\}`\s*where each row is `\{(.*?)\}`", text, re.S)
     if not m:
         raise SystemExit("04 §17.5: timeline.rows.list shape not found")
@@ -837,6 +883,165 @@ def section_types_04():
     row = re.sub(r':\s*"(\w+)"((?:\|"\w+")+)', lambda x: ': enum "' + x.group(1) + '"' + x.group(2), row)
     cs.SPEC_TYPES["TimelineRow"] = parse_fields(row, "TimelineRow", params=False)
     cs.SPEC_TYPES["TimelineModel"] = parse_fields(outer, "TimelineModel", params=False)
+
+
+# A preference value (01 §7: each key has a type among bool, int, number, string and enum).
+PREF_VALUE = {"type": ["boolean", "integer", "number", "string"], "description": "a preference value of the key's type (01 §7)"}
+
+
+def _pref_map():
+    return {"type": "object", "properties": {}, "additionalProperties": dict(PREF_VALUE),
+            "propertyNames": {"minLength": 1, "maxLength": 256}, "description": "preference key → value (01 §7)"}
+
+
+def overrides(e: dict, ps: dict, rs: dict):
+    """Shapes the owning sections define for positions spec A leaves untyped (C12-R3-01)."""
+    cid = e["id"]
+    if cid == "prefs.list" and rs.get("type") == "array":
+        for k in ("value", "default"):
+            rs["items"]["properties"][k] = dict(PREF_VALUE)
+    if cid == "prefs.get" and "values" in rs.get("properties", {}):
+        rs["properties"]["values"] = _pref_map()
+    if cid == "prefs.set" and "values" in ps.get("properties", {}):
+        ps["properties"]["values"] = _pref_map()
+    if cid == "print.settings.set" and "values" in ps.get("properties", {}) and "PrintParams" in cs.PARAM_GROUPS:
+        # 09 §11.2: the stored print settings are the PrintParams fields; any subset is written.
+        group = copy.deepcopy(cs.PARAM_GROUPS["PrintParams"])
+        group.pop("required", None)
+        ps["properties"]["values"] = group
+    if cid == "xsheet.exposures.set":
+        # 04 §17.2: columns written back; a run names its drawing by `drawing` (name) or `drawingId`; `from` defaults
+        # to 1 and `to` to the later of the last run's end and the current last exposed frame.
+        frame = {"type": "integer", "minimum": 1, "maximum": 100000}
+        run = {"type": "object", "additionalProperties": False, "required": ["from", "to"],
+               "properties": {"drawing": dict(ct.STRING), "drawingId": dict(ct.ID), "from": dict(frame), "to": dict(frame)},
+               "anyOf": [{"required": ["drawing"]}, {"required": ["drawingId"]}]}
+        column = {"type": "object", "additionalProperties": False, "required": ["elementId", "exposures"],
+                  "properties": {"elementId": dict(ct.ID), "from": dict(frame), "to": dict(frame),
+                                 "exposures": {"type": "array", "maxItems": 100000, "items": run}}}
+        if "columns" in ps.get("properties", {}):
+            ps["properties"]["columns"] = {"type": "array", "maxItems": 100000, "items": column}
+        if "createdDrawings" in rs.get("properties", {}):
+            rs["properties"]["createdDrawings"] = {"type": "array", "maxItems": 100000, "items": {
+                "type": "object", "additionalProperties": False, "required": ["elementId", "drawingId", "name"],
+                "properties": {"elementId": dict(ct.ID), "drawingId": dict(ct.ID), "name": dict(ct.STRING)}}}
+    if cid == "keymap.set" and "params" in ps.get("properties", {}):
+        ps["properties"]["params"] = {"type": "object", "x-open": True,
+                                      "description": "the bound command's parameters, validated against its schema (01 §12.4)"}
+    if cid in ("timeline.transferOptions.get", "timeline.transferOptions.set") and "options" in rs.get("properties", {}):
+        rs["properties"]["options"] = {"x-specType": "TransferOptions"}  # 04 §17.3
+    if (cid.endswith(".options.set") and "options" in rs.get("properties", {}) and not rs["properties"]["options"]
+            and "options" not in ps.get("properties", {})):
+        # A tool's options result is the option object the parameters set (02 §10, 05).
+        props = copy.deepcopy(ps.get("properties", {}))
+        rs["properties"]["options"] = {"type": "object", "properties": props, "required": list(props),
+                                       "additionalProperties": False}
+
+
+def field_index(e: dict, raw: dict) -> dict:
+    """Typed fields of the command's context, by name: its family's results (siblings sharing the id prefix), its own
+    parameters, then its family's parameters. Nested fields count too (`points: [{strokeId, anchor: int}]`)."""
+    fam = ".".join(e["id"].split(".")[:2])  # `sound.envelope` holds `.get`, `.set` and `.point.*`
+    out: dict = {}
+
+    def collect(schema, into):
+        if not isinstance(schema, dict):
+            return
+        for k, v in (schema.get("properties") or {}).items():
+            if isinstance(v, dict) and cs._typed(v) and not cs.empty_list(v):
+                into.setdefault(k, v)
+            collect(v, into)
+        if isinstance(schema.get("items"), dict):
+            collect(schema["items"], into)
+
+    for other, (p, r) in raw.items():
+        if other != e["id"] and ".".join(other.split(".")[:2]) == fam:
+            collect(r, out)
+    collect(raw[e["id"]][0], out)
+    for other, (p, r) in raw.items():
+        if other != e["id"] and ".".join(other.split(".")[:2]) == fam:
+            collect(p, out)
+    return out
+
+
+# Section examples written for a command's parameters or result (not a named type): (command, part, example).
+COMMAND_EXAMPLES = [("xsheet.exposures.set", "params", "ExposureSheetWrite")]
+
+
+_DROP = object()
+
+
+def _filled(value, within=()):
+    """A section example with `{ /* Type */ }` references replaced by that type's example. A type already being
+    filled (a recursive tree such as `LibraryNode.children`) is not repeated: a list leaves it out."""
+    if isinstance(value, dict):
+        if set(value) == {"$typeRef"}:
+            name = value["$typeRef"]
+            ref = ct.EXAMPLES.get(name)
+            if ref is None or name in within:
+                return _DROP
+            return _filled(ref["value"], within + (name,))
+        return {k: v for k, v in ((k, _filled(v, within)) for k, v in value.items()) if v is not _DROP}
+    if isinstance(value, list):
+        return [v for v in (_filled(x, within) for x in value) if v is not _DROP]
+    if isinstance(value, str) and ct.ENUM_TEXT.fullmatch(value):
+        return value.split("|")[0]  # an enumeration written as `"a|b|c"`: one of its values
+    return value
+
+
+def _example_value(name: str):
+    return _filled(ct.EXAMPLES[name]["value"], (name,))
+
+
+def spec_examples(e: dict, ps: dict, rs: dict) -> list:
+    """The owning sections' examples this declaration must accept (C12-R3-01 positive check): the example of every
+    section type in its schemas, and examples written for the command itself."""
+    out = []
+    for part, schema in (("params", ps), ("result", rs)):
+        for key in (schema.get("$defs") or {}):
+            if key.startswith("spec.") and key[5:] in ct.EXAMPLES:
+                ex = ct.EXAMPLES[key[5:]]
+                out.append({"part": part, "type": key, "section": ex["section"], "literal": ex["literal"],
+                            "value": _example_value(key[5:])})
+    for cid, part, name in COMMAND_EXAMPLES:
+        if cid == e["id"] and name in ct.EXAMPLES:
+            ex = ct.EXAMPLES[name]
+            out.append({"part": part, "type": None, "section": ex["section"], "literal": ex["literal"],
+                        "value": _example_value(name)})
+    return out
+
+
+# The spec issue of each command family's placeholders, as first assigned (round 2); numbers never move. A family
+# that gains placeholders later gets the next free number.
+STABLE_ISSUES = {
+    "anim": "SI-023", "capture": "SI-024", "colour": "SI-025", "draw": "SI-026", "drawAid": "SI-027",
+    "element": "SI-028", "export": "SI-029", "fx": "SI-030", "import": "SI-031", "keymap": "SI-032",
+    "library": "SI-033", "lipsync": "SI-034", "playback": "SI-035", "prefs": "SI-036", "print": "SI-037",
+    "sound": "SI-038", "storyline": "SI-039", "tool": "SI-040", "ui": "SI-041", "view": "SI-042", "xsheet": "SI-043",
+}
+
+
+def placeholder_issue_ids(schemas: list) -> dict:
+    """Family → spec issue id (STABLE_ISSUES, then the next free numbers)."""
+    out = dict(STABLE_ISSUES)
+    n = 44
+    for f in sorted({e["id"].split(".")[0] for e in schemas if e["placeholders"]}):
+        if f not in out:
+            out[f] = f"SI-{n:03d}"
+            n += 1
+    return out
+
+
+def mark_placeholders(node, issue: str):
+    """Every placeholder node carries the spec issue that justifies it (`x-specIssue`)."""
+    if isinstance(node, dict):
+        if node.get("x-placeholder"):
+            node["x-specIssue"] = issue
+        for v in node.values():
+            mark_placeholders(v, issue)
+    elif isinstance(node, list):
+        for v in node:
+            mark_placeholders(v, issue)
 
 
 def local_types(e: dict):
@@ -858,8 +1063,18 @@ def write_placeholder_issues(schemas: list, by_id: dict):
     for e in schemas:
         for p in e["placeholders"]:
             fam.setdefault(e["id"].split(".")[0], []).append((e["id"], p["pointer"], p["kind"]))
-    lines, n = [], 23
-    for f in sorted(fam):
+    lines = []
+    issue_of = placeholder_issue_ids(schemas)
+    for f in sorted(issue_of, key=lambda x: issue_of[x]):
+        if f not in fam:
+            lines += [
+                f"## {issue_of[f]} — `{f}.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)",
+                "",
+                f"- **Resolved in C1.2 r3 (C12-R3-01):** every position of `{f}.*` is now typed from its owning section "
+                "or its sibling commands; no placeholder remains.",
+                "",
+            ]
+            continue
         secs = sorted({by_id[c]["section"] for c, _, _ in fam[f]})
         rows = []
         for cid, ptr, kind in fam[f]:
@@ -871,7 +1086,7 @@ def write_placeholder_issues(schemas: list, by_id: dict):
                 what = f"a member whose type is not stated (`{kind.split('`')[1]}`)"
             rows.append(f"  - `{cid}` `{ptr}`: {what}")
         lines += [
-            f"## SI-{n:03d} — `{f}.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+            f"## {issue_of[f]} — `{f}.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
             "",
             f"- **Section:** {', '.join(secs)} and spec A (`{f}.*` command rows).",
             "- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):",
@@ -882,7 +1097,6 @@ def write_placeholder_issues(schemas: list, by_id: dict):
             "- **Question:** define these shapes in the owning section (field names and types).",
             "",
         ]
-        n += 1
     text = ISSUES.read_text(encoding="utf-8")
     block = ISSUES_BEGIN + "\n\n" + "\n".join(lines) + "\n" + ISSUES_END
     if ISSUES_BEGIN in text:
@@ -902,11 +1116,16 @@ def main() -> int:
     typed = typed_ids()
     todo = [e for e in entries if e["id"] not in typed]
     register_section_types()
+    section_types_03_01()
     section_types_04()
     schemas, results, rows = [], {}, []
     deferred = lambda e: e["result"].strip().startswith("same as") or e["result"].strip() in ("settings", "editor state")
     for e in todo:
         results[e["id"]] = None if deferred(e) else result_schema(e, results)
+    raw = {}
+    for e in todo:
+        local_types(e)
+        raw[e["id"]] = (params_schema(e, by_id), results[e["id"]] or {})
     for e in todo:
         local_types(e)
         ps = params_schema(e, by_id)
@@ -915,9 +1134,11 @@ def main() -> int:
                 ps["properties"][field] = {"x-specType": tname}
         rs = results[e["id"]] or result_schema(e, results)
         results[e["id"]] = rs
-        closer = cs.Closer(e["id"])
+        overrides(e, ps, rs)
+        fields = field_index(e, raw)
+        closer = cs.Closer(e["id"], fields)
         ps = closer.finish(closer.close(ps, "/params"))
-        rcloser = cs.Closer(e["id"])
+        rcloser = cs.Closer(e["id"], fields)
         rs = rcloser.finish(rcloser.close(rs, "/result"))
         placeholders = [dict(p, side="params") for p in closer.placeholders] + \
             [dict(p, side="result") for p in rcloser.placeholders]
@@ -927,7 +1148,16 @@ def main() -> int:
         if "x-jobResult" in rs:
             samples["jobResult"] = _sample({**rs["x-jobResult"], "$defs": rs.get("$defs", {})}, True)
         rows.append((e, ps, rs, scopes, title, ex, samples))
-        schemas.append({"id": e["id"], "params": ps, "result": rs, "samples": samples, "placeholders": placeholders})
+        schemas.append({"id": e["id"], "params": ps, "result": rs, "samples": samples, "placeholders": placeholders,
+                        "specExamples": spec_examples(e, ps, rs)})
+    issue_of = placeholder_issue_ids(schemas)
+    for entry in schemas:
+        family = entry["id"].split(".")[0]
+        if family in issue_of:
+            mark_placeholders(entry["params"], issue_of[family])
+            mark_placeholders(entry["result"], issue_of[family])
+            for p in entry["placeholders"]:
+                p["issue"] = issue_of[family]
     if UNPARSED:
         print("unparsed fragments (kept as described any-values):", file=sys.stderr)
         for u in UNPARSED:

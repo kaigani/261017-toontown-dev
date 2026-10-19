@@ -553,6 +553,18 @@ pub fn declared_sample(index: usize, part: &str) -> Value {
         .unwrap_or(Value::Null)
 }
 
+/// The owning sections' examples the `index`-th generated declaration must accept (C12-R3-01): each
+/// `{part, type, section, literal, value}`, `type` naming the `$defs` entry the example is of (`null`: the whole part).
+#[must_use]
+pub fn declared_spec_examples(index: usize) -> Vec<Value> {
+    declared_entries()
+        .get(index)
+        .and_then(|e| e.get("specExamples"))
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default()
+}
+
 /// The placeholders of the `index`-th generated declaration: positions whose type or shape the owning section does
 /// not define (each family is a spec issue).
 #[must_use]

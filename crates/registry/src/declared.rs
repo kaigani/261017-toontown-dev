@@ -300,7 +300,7 @@ pub static DECLARED: &[Command] = &[
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Set one or more preferences atomically",
-                params: "{\"values\": {\"key1\": 1}}",
+                params: "{\"values\": {\"key1\": true}}",
             }],
             params_schema: || crate::declared_schema(13, false),
             result_schema: || crate::declared_schema(13, true),
