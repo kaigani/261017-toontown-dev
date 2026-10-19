@@ -131,6 +131,7 @@ fn the_application_context_follows_commands() {
 #[test]
 fn jobs_run_off_the_document_thread() {
     let h = fixture();
+    let events = h.subscribe();
     let started = h
         .jobs()
         .submit("test.job", "user", |p| {
@@ -168,6 +169,9 @@ fn jobs_run_off_the_document_thread() {
     let all = ok(&h, "job.list", json!({}));
     assert_eq!(all.as_array().unwrap().len(), 2);
     assert_eq!(err(&h, "job.wait", json!({ "jobId": "job-99" })).code, "job.notFound");
+    let names: Vec<String> = events.try_iter().map(|e| e.name).collect();
+    assert!(names.iter().any(|n| n == "job.progress"), "{names:?}");
+    assert_eq!(names.iter().filter(|n| *n == "job.finished").count(), 2, "{names:?}");
 }
 
 #[test]

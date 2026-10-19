@@ -43,7 +43,7 @@ use tt_registry::{AssemblyError, CommandError, Kind, Registry, Status as DeclSta
 pub use app::{AppState, Mode};
 pub use cx::Cx;
 pub use history::MAX_STEPS as MAX_UNDO_STEPS;
-pub use jobs::{JobProgress, JobRecord, JobState, JobTable};
+pub use jobs::{JobNotifier, JobProgress, JobRecord, JobState, JobTable};
 pub use session::Event;
 pub use types::{
     BatchRequest, BatchStep, ChangeRecord, Envelope, Invocation, InvokeOptions, Origin, Status, UndoRef, Warning,
@@ -137,8 +137,9 @@ impl ExecutorHandle {
     pub fn spawn(config: ExecutorConfig) -> Result<Self, CommandError> {
         let registry = registry().map_err(|e| CommandError::internal(format!("registry assembly failed: {}", e.0)))?;
         let (tx, rx) = mpsc::channel::<Request>();
-        let jobs = Arc::new(JobTable::default());
         let subscribers: Arc<Mutex<Vec<Sender<Event>>>> = Arc::new(Mutex::new(Vec::new()));
+        let job_subs = subscribers.clone();
+        let jobs = Arc::new(JobTable::with_notifier(Box::new(move |e| broadcast(&job_subs, std::slice::from_ref(&e)))));
         let session = session::Session { jobs: jobs.clone(), ..session::Session::default() };
         let subs = subscribers.clone();
         std::thread::Builder::new()
@@ -270,11 +271,17 @@ fn document_thread(mut core: run::Core, rx: &Receiver<Request>, subscribers: &Mu
             }
         }
         let events = core.take_events();
-        if !events.is_empty() {
-            let mut subs = subscribers.lock().unwrap_or_else(PoisonError::into_inner);
-            subs.retain(|s| events.iter().all(|e| s.send(e.clone()).is_ok()));
-        }
+        broadcast(subscribers, &events);
     }
+}
+
+/// Delivers events to every live subscriber (dropping closed ones).
+fn broadcast(subscribers: &Mutex<Vec<Sender<Event>>>, events: &[Event]) {
+    if events.is_empty() {
+        return;
+    }
+    let mut subs = subscribers.lock().unwrap_or_else(PoisonError::into_inner);
+    subs.retain(|s| events.iter().all(|e| s.send(e.clone()).is_ok()));
 }
 
 /// `list_commands` on the document thread: enablement is evaluated against the current context.

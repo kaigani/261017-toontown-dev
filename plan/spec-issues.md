@@ -104,3 +104,64 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   AG-06 require equal documents to give identical bytes.
 - **Decision taken (ADR-0011 §3):** map keys and the keys of objects inside opaque values are written in
   lexicographic (code point) order, the order JSON-02 already uses for unknown keys.
+
+## SI-015 — `include: ["stats"]` of `doc.object.get` is undefined (found in C1.2; decided)
+
+- **Section:** 10 §10.2 `doc.object.get` (`include?: [enum "derived"|"stats"]`); no section defines "stats".
+- **Problem:** the result is object-model JSON that validates against the type schema (10 §2.8), so statistics cannot
+  be added inside the object.
+- **Decision taken (ADR-0013 §9):** with `stats`, the result carries `stats: [{id, jsonBytes, objectsByType}]`, one
+  per returned object, beside `object`/`objects`.
+- **Question:** confirm or define the intended statistics.
+
+## SI-016 — event entries put their payload in different columns (found in C1.2; decided)
+
+- **Section:** A_command_registry: `app.state.changed`, `project.*` and `lipsync.*` events list the payload under
+  *Parameters* with *Result* "—"; `doc.changed`, `job.*`, `agent.*` events list it under *Result* with *Parameters*
+  "—".
+- **Decision taken (ADR-0013 §1):** every event is registered with no parameters and its payload as the result
+  schema; `describe_command` shows the spec's columns verbatim.
+- **Question:** normalise the columns in spec A.
+
+## SI-017 — base and form of batch step references (found in C1.2; decided)
+
+- **Section:** 11 §7.3 ("Steps may reference earlier results: `"$2.result.strokeId"` or a named step
+  `"$walk.result.elementId"`"), 11 §5.1 (`$<n>.<field>`).
+- **Problem:** whether `n` counts from 0 or 1, what a path segment may be, and whether a reference may be part of a
+  longer string are not stated.
+- **Decision taken (ADR-0013 §6):** `n` is 1-based (the batch error reports `stepIndex` 1-based too); the path is
+  dotted and walks the step's envelope (`result`, `targets`, `changes.0.id`, …; numeric segments index arrays); only a
+  string that is exactly a reference is replaced; a reference to a missing step or value is `arg.invalid`.
+- **Question:** confirm 1-based numbering.
+
+## SI-018 — `@current` as the start of a path (found in C1.2; decided)
+
+- **Section:** 11 §5.1 ("`@current` (current scene / element / frame / drawing as appropriate)"), 10 §2.4 (special
+  references MAY be the first segment).
+- **Problem:** "as appropriate" depends on the parameter's type, which a path start does not have.
+- **Decision taken (ADR-0013 §7):** a bare `@current` given to a typed parameter is the current object of that type;
+  as a path start it is the current element, else the current scene. `@selection` is the single selected object, and
+  list parameters expand it; `@activeView` is what the central view shows.
+- **Question:** confirm.
+
+## SI-019 — main-toolbar item names (found in C1.2; decided)
+
+- **Section:** 01 §5.7 ("Every toolbar item is a command reference (command ID plus optional fixed parameters)"),
+  01 §12.1 `window.toolbar.items.set` (`items: [string] (command references, group IDs, "separator", "space",
+  "flexibleSpace")`).
+- **Problem:** group IDs are not listed and the string form of a command reference with fixed parameters is not
+  defined; several default items (grid type, overlay, first/last frame, play/stop, the drop-downs) are not single
+  commands.
+- **Decision taken (ADR-0013 §8):** items are registered command ids or the group ids `gridType`, `gridOverlay`,
+  `onionSkinPrevious`, `onionSkinNext`, `firstFrame`, `previousFrame`, `playStop`, `nextFrame`, `lastFrame`,
+  `cameraList`, `sceneList`, `workspaceList`, plus the three spacers. Fixed parameters are not expressible yet.
+- **Question:** define group IDs and the fixed-parameter form.
+
+## SI-020 — error codes the executor needs that 11 §10 does not list (found in C1.2; decided)
+
+- **Section:** 11 §10 (generic codes), 11 §7.7 (checkpoints, jobs), 11 §14.6 (never-block watchdog).
+- **Decision taken (ADR-0013):** `command.notImplemented` (registered command implemented by a later milestone;
+  `details.milestone`), `command.timeout` (watchdog budget exceeded; the call may still complete),
+  `history.diverged` (a replayed undo step does not match the document; nothing applied), `checkpoint.exists`,
+  `checkpoint.notFound`, `job.notFound`.
+- **Question:** add them to 11 §10.

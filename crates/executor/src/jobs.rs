@@ -69,11 +69,21 @@ struct Table {
     next: u64,
 }
 
+/// Receives `job.progress` and `job.finished` events.
+pub type JobNotifier = Box<dyn Fn(crate::session::Event) + Send + Sync>;
+
 /// The shared job table.
-#[derive(Debug, Default)]
+#[derive(Default)]
 pub struct JobTable {
     table: Mutex<Table>,
     changed: Condvar,
+    notify: Option<JobNotifier>,
+}
+
+impl std::fmt::Debug for JobTable {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("JobTable").field("table", &self.table).finish_non_exhaustive()
+    }
 }
 
 /// Handle a running job uses to report progress and observe cancellation.
@@ -101,17 +111,31 @@ impl JobProgress {
 }
 
 impl JobTable {
+    /// A table that reports progress and completion as `job.progress` / `job.finished` events (11 §9).
+    #[must_use]
+    pub fn with_notifier(notify: JobNotifier) -> Self {
+        Self { notify: Some(notify), ..Self::default() }
+    }
+
     fn lock(&self) -> std::sync::MutexGuard<'_, Table> {
         self.table.lock().unwrap_or_else(PoisonError::into_inner)
     }
 
     fn update(&self, id: &str, f: impl FnOnce(&mut JobRecord)) {
         let mut t = self.lock();
-        if let Some(r) = t.jobs.get_mut(id) {
+        let record = t.jobs.get_mut(id).map(|r| {
             f(r);
-        }
+            r.clone()
+        });
         drop(t);
         self.changed.notify_all();
+        if let (Some(notify), Some(r)) = (&self.notify, record) {
+            let name = if r.state.is_final() { "job.finished" } else { "job.progress" };
+            notify(crate::session::Event {
+                name: name.to_owned(),
+                payload: serde_json::to_value(&r).unwrap_or(Value::Null),
+            });
+        }
     }
 
     /// Starts a job on its own thread and returns its id at once.

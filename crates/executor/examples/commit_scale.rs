@@ -90,7 +90,9 @@ fn main() {
         change::diff_json(&a.1, &b.1, "", a.0)
     });
     time(&mut log, "wholeEntryOwnViewDiffMs", || change::diff(&doc, &next).unwrap());
-    time(&mut log, "stampRevisionsMs", || next.with_revisions(doc.document_rev() + 1, std::slice::from_ref(&stroke)).unwrap());
+    time(&mut log, "stampRevisionsMs", || {
+        next.with_revisions(doc.document_rev() + 1, std::slice::from_ref(&stroke)).unwrap()
+    });
     // The two parts of the full staged integrity guarantee kept by the C1.1 ruling: the entry's full input path
     // (depth, normalisation, schema, typed parse, object rules, frame limits) and the document-wide issues().
     time(&mut log, "stagedEntryInputPathMs", || from_json::<Drawing>(&after).unwrap());
