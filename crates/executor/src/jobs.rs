@@ -169,11 +169,12 @@ impl JobTable {
             id
         };
         let progress = JobProgress { table: self.clone(), job_id: job_id.clone(), cancel };
+        let command = command_id.to_owned();
         std::thread::Builder::new()
             .name(format!("tt-{job_id}"))
             .spawn(move || {
                 progress.table.update(&progress.job_id, |r| r.state = JobState::Running);
-                let outcome = work(&progress);
+                let outcome = work(&progress).and_then(|v| check_final_result(&command, v));
                 let cancelled = progress.cancelled();
                 progress.table.update(&progress.job_id, |r| match outcome {
                     _ if cancelled => r.state = JobState::Cancelled,
@@ -237,4 +238,31 @@ impl JobTable {
 
 fn not_found(job_id: &str) -> CommandError {
     CommandError::with_details("job.notFound", format!("no job `{job_id}`"), serde_json::json!({ "jobId": job_id }))
+}
+
+/// A job's final result must satisfy the `x-jobResult` schema its command declares (11 §15.2, §14.2; C12-R1-13); a
+/// result that does not fails the job with `internal` (a defect of the job, never handed to a client).
+fn check_final_result(command_id: &str, v: Value) -> Result<Value, CommandError> {
+    let Some(schema) = crate::registry()
+        .ok()
+        .and_then(|r| r.get(command_id))
+        .and_then(|e| e.result_schema().get("x-jobResult").cloned())
+    else {
+        return Ok(v);
+    };
+    let mut schema = schema;
+    if let Some(m) = schema.as_object_mut() {
+        m.insert("$schema".into(), Value::String("https://json-schema.org/draft/2020-12/schema".into()));
+    }
+    let violations = tt_registry::schema_violations(&schema, &v, 10)
+        .map_err(|e| CommandError::internal(format!("final-result schema of `{command_id}`: {}", e.message)))?;
+    if violations.is_empty() {
+        Ok(v)
+    } else {
+        Err(CommandError::with_details(
+            tt_registry::codes::INTERNAL,
+            format!("the result of `{command_id}` violates its declared final-result schema"),
+            serde_json::json!({ "commandId": command_id, "violations": violations }),
+        ))
+    }
 }

@@ -76,6 +76,14 @@ jobs:
           pnpm --dir desktop build
 
       - run: cargo fmt --all --check
+
+      - name: Generated command declarations are current (C12-R1-12)
+        run: |
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+          PYTHONIOENCODING=utf-8 $PY scripts/gen-command-declarations.py
+          git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json
+
       - run: cargo clippy --workspace --all-targets --locked -- -D warnings
       - run: cargo test --workspace --locked
 

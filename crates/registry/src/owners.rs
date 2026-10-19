@@ -1,14 +1,31 @@
-//! Owning milestone of each spec A command that has no typed declaration yet (plan §4).
+//! Owning milestone/checkpoint of each spec A command not implemented in M1 (plan §4; C12-R1-21).
 //!
-//! The mapping follows the plan's milestone table: a namespace belongs to the milestone that delivers its section's
-//! commands, with the exceptions the plan names explicitly (C2.3 delivers `colour.paint.*` with `draw.*`; C3.2
-//! delivers `anim.evaluate`; C3.3 delivers the deterministic `render.frame.run`, `render.limits.get` and the
-//! inspection/render-backed `inspect.*` queries; C4.2 delivers `inspect.ui.tree` / `inspect.screenshot`). M1
-//! commands declared in `tt-executor` report their own owning checkpoint instead.
+//! Generated declarations carry the owner `scripts/gen-command-declarations.py` assigns from the plan's milestone
+//! table (checkpoint by checkpoint: e.g. `import.movie.run` → M8 C8.3, the transform/channel/key/easing/camera
+//! `anim.*` commands → M3 C3.2, motion-path and function-editor UI → M6 C6.2, bones → M6 C6.3). For other ids (the
+//! M1 namespaces and hand-written declarations) the namespace rule below applies.
+
+use std::collections::BTreeMap;
+use std::sync::OnceLock;
+
+use crate::Status;
 
 /// The milestone (and checkpoint, where the plan names one) that implements a command, e.g. `"M2 C2.3"`.
 #[must_use]
 pub fn owner_of(id: &str) -> &'static str {
+    static GENERATED: OnceLock<BTreeMap<&'static str, &'static str>> = OnceLock::new();
+    let generated = GENERATED.get_or_init(|| {
+        crate::declared::DECLARED
+            .iter()
+            .filter_map(|c| match c.decl.status {
+                Status::NotImplemented { owner } => Some((c.decl.id, owner)),
+                Status::Implemented => None,
+            })
+            .collect()
+    });
+    if let Some(owner) = generated.get(id) {
+        return owner;
+    }
     // Explicit exceptions first.
     let exact: &[(&str, &str)] = &[
         ("anim.evaluate", "M3 C3.2"),
@@ -63,6 +80,9 @@ mod tests {
         }
         assert_eq!(owner_of("colour.paint.apply"), "M2 C2.3");
         assert_eq!(owner_of("colour.swatch.add"), "M7 C7.1");
+        assert_eq!(owner_of("import.movie.run"), "M8 C8.3");
+        assert_eq!(owner_of("anim.key.add"), "M3 C3.2");
+        assert_eq!(owner_of("anim.bone.create"), "M6 C6.3");
         assert_eq!(owner_of("draw.stroke.add"), "M2 C2.3");
         assert_eq!(owner_of("render.frame.run"), "M3 C3.3");
     }

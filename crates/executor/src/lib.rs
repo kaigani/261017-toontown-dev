@@ -85,7 +85,15 @@ pub const DEFAULT_BUDGET: Duration = Duration::from_secs(30);
 /// [`AssemblyError`] if a declaration does not match spec A (a build defect, covered by tests).
 pub fn registry() -> Result<&'static Registry, AssemblyError> {
     static REGISTRY: OnceLock<Result<Registry, AssemblyError>> = OnceLock::new();
-    REGISTRY.get_or_init(|| Registry::assemble(commands::ALL)).as_ref().map_err(Clone::clone)
+    REGISTRY
+        .get_or_init(|| {
+            // Hand-written declarations and the generated ones of every other spec A entry (C12-R1-12).
+            let mut all: Vec<&'static tt_registry::Command> = commands::ALL.to_vec();
+            all.extend(tt_registry::declared::DECLARED.iter());
+            Registry::assemble(&all)
+        })
+        .as_ref()
+        .map_err(Clone::clone)
 }
 
 enum Request {

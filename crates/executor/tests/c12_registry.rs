@@ -34,13 +34,14 @@ fn registry_covers_spec_a_and_types_every_m1_command() {
         assert!(untyped.is_empty(), "kernel-level {ns} commands without a declaration: {untyped:?}");
     }
     println!("typed declarations: {typed}");
-    assert!(typed >= 130);
+    assert_eq!(typed, 796, "every entry is declared (C12-R1-12)");
 }
 
 #[test]
 fn every_declaration_has_schemas_and_valid_examples() {
     for e in registry().entries() {
-        let Some(c) = e.command else { continue };
+        // Every entry has a declaration (hand-written or generated; C12-R1-12): nothing is skipped.
+        let c = e.command.unwrap_or_else(|| panic!("{}: no declaration", e.id()));
         let params = e.params_schema();
         let result = e.result_schema();
         assert_eq!(
@@ -137,12 +138,12 @@ fn ui_binding_manifest_parity() {
             );
         }
     }
-    // Reverse direction for typed declarations: reachable from the manifest, a declared GUI location, or agentOnly
-    // with a justification (11 §14.1).
+    // Reverse direction for every entry (nothing skipped; C12-R1-12): reachable from the manifest, a declared GUI
+    // location, or agentOnly with a justification (11 §14.1).
     let bound: Vec<&str> = items.iter().map(|i| i["command"].as_str().unwrap()).collect();
     let mut unreachable = Vec::new();
     for e in r.entries() {
-        let Some(c) = e.command else { continue };
+        let c = e.command.unwrap_or_else(|| panic!("{}: no declaration", e.id()));
         let ok = bound.contains(&e.id())
             || c.decl.gui.is_some_and(|g| !g.is_empty())
             || c.decl.agent_only.is_some_and(|j| j.len() > 10);

@@ -95,6 +95,10 @@ fn union(parts: Vec<String>) -> String {
     if seen.iter().any(|p| p == "unknown") {
         return "unknown".to_owned();
     }
+    // `"scene" | string` is `string` in TypeScript (the schema keeps the distinction, e.g. a pattern on the string).
+    if seen.iter().any(|p| p == "string") {
+        seen.retain(|p| !p.split(" | ").all(|x| x.len() >= 2 && x.starts_with('\'') && x.ends_with('\'')));
+    }
     match seen.len() {
         0 => "never".to_owned(),
         1 => seen.remove(0),

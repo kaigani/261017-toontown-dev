@@ -12,15 +12,20 @@
 //!   attribute gives the rest. A declaration whose implementation belongs to a later checkpoint names it
 //!   ([`Status::NotImplemented`]) and fails with the typed `command.notImplemented` error after validating its
 //!   parameters.
+//! - **Generated declarations.** Every other spec A entry ([`declared::DECLARED`], generated from spec A's columns by
+//!   `scripts/gen-command-declarations.py`; C12-R1-12): parameter and result schemas, scopes, undo label,
+//!   confirmation conditions, `needsProject`, an example, the GUI location or agent-only justification, and the
+//!   owning milestone/checkpoint of plan §4 ([`owner_of`]). The executor validates the parameters and answers
+//!   `command.notImplemented` naming the owner.
 //! - **The inventory.** Every entry of spec A ([`inventory::INVENTORY`], generated from the spec and kept equal to it
-//!   by a test). An entry without a typed declaration is registered as a stub: it is listed, described and
-//!   invocable, and fails with `command.notImplemented` naming the owning milestone ([`owner_of`]).
+//!   by a test); declarations attach to it.
 //!
 //! The executor (`tt-executor`) assembles both into a [`Registry`] and is the only component that runs handlers.
 //!
 //! Spec sections implemented: 11 §2 (registry), §7.1–§7.2 (discovery), §8 (kinds, validation), §14.1–§14.2
 //! (parity, schemas, examples); spec A. Milestone: M1 (C1.2). Decisions: ADR-0013.
 
+pub mod declared;
 pub mod inventory;
 mod owners;
 
@@ -516,6 +521,26 @@ impl Entry {
     }
 }
 
+/// The parameter (`result = false`) or result schema of the `index`-th generated declaration (`declared.json`).
+#[must_use]
+pub fn declared_schema(index: usize, result: bool) -> Value {
+    static SCHEMAS: OnceLock<Vec<Value>> = OnceLock::new();
+    let all = SCHEMAS.get_or_init(|| match serde_json::from_str::<Value>(include_str!("declared.json")) {
+        Ok(Value::Array(a)) => a,
+        _ => Vec::new(),
+    });
+    all.get(index).and_then(|e| e.get(if result { "result" } else { "params" })).cloned().unwrap_or(Value::Null)
+}
+
+/// The handler of a generated declaration. Never reached: the executor answers `command.notImplemented` for every
+/// entry whose status is [`Status::NotImplemented`] after validating its parameters.
+///
+/// # Errors
+/// Always `internal`.
+pub fn not_implemented_handler(_cx: &mut dyn Any, _params: Value) -> Result<Value, CommandError> {
+    Err(CommandError::internal("a not-implemented command reached its handler"))
+}
+
 fn parse_example(text: &str) -> Value {
     serde_json::from_str(text).unwrap_or(Value::Null)
 }
@@ -678,6 +703,23 @@ pub fn validate_params(id: &str, schema: &Value, params: &Value) -> Result<(), C
         err = err.hint("pass the parameters as a JSON object; see describe_command");
     }
     Err(err)
+}
+
+/// Validates a value against a schema (draft 2020-12): at most `limit` violations as `{pointer, message}`.
+///
+/// # Errors
+/// `internal` if the schema does not compile.
+pub fn schema_violations(schema: &Value, value: &Value, limit: usize) -> Result<Vec<Value>, CommandError> {
+    let validator = jsonschema::options()
+        .with_draft(jsonschema::Draft::Draft202012)
+        .should_validate_formats(false)
+        .build(schema)
+        .map_err(|e| CommandError::internal(format!("schema does not compile: {e}")))?;
+    Ok(validator
+        .iter_errors(value)
+        .take(limit)
+        .map(|e| json!({ "pointer": e.instance_path().to_string(), "message": e.to_string() }))
+        .collect())
 }
 
 fn classify(e: &jsonschema::ValidationError<'_>, pointer: String, schema: &Value) -> (&'static str, String, Value) {

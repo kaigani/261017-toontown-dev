@@ -246,21 +246,24 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
 }
 
 #[test]
-fn every_inventory_stub_answers_with_its_owner() {
+fn every_generated_declaration_answers_with_its_owner() {
     let registry = tt_executor::registry().unwrap();
     let h = fixture();
     let mut n = 0;
-    for e in registry.entries().filter(|e| e.command.is_none()) {
-        let env = h.invoke(Invocation::user(e.id(), json!({})));
+    for c in tt_registry::declared::DECLARED {
+        let e = registry.get(c.decl.id).unwrap();
+        assert!(std::ptr::eq(e.command.unwrap(), c), "{}: the generated declaration is attached", e.id());
+        let params: Value = serde_json::from_str(c.decl.examples[0].params).unwrap();
+        let env = h.invoke(Invocation::user(e.id(), params));
         let err = env.error.unwrap();
         if e.spec.kind == tt_registry::Kind::Event {
             assert_eq!(err.code, "command.disabled", "{}", e.id());
         } else {
-            assert_eq!(err.code, "command.notImplemented", "{}", e.id());
+            assert_eq!(err.code, "command.notImplemented", "{}: {err:?}", e.id());
             assert_eq!(err.details["milestone"], json!(tt_registry::owner_of(e.id())));
         }
         n += 1;
     }
-    println!("stubs: {n}");
+    println!("generated declarations: {n}");
     assert!(n > 600);
 }
