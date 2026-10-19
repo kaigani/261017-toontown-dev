@@ -1,0 +1,106 @@
+{
+  "status": "ok",
+  "result": {
+    "stepCount": 3
+  },
+  "changes": [
+    {
+      "id": "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD",
+      "type": "stroke",
+      "op": "modified",
+      "rev": 2,
+      "patch": [
+        {
+          "op": "add",
+          "path": "/meta",
+          "value": {
+            "closure": 891
+          }
+        }
+      ]
+    },
+    {
+      "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 2,
+      "patch": []
+    }
+  ],
+  "undo": {
+    "stepId": "u-1",
+    "label": "closure immediate staged checkpoint"
+  },
+  "warnings": [],
+  "documentRev": 2,
+  "steps": [
+    {
+      "status": "ok",
+      "result": {
+        "changes": [
+          {
+            "id": "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 2,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/meta",
+                "value": {
+                  "closure": 891
+                }
+              }
+            ]
+          },
+          {
+            "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 2,
+            "patch": []
+          }
+        ],
+        "documentRev": 2
+      },
+      "targets": {
+        "ids": [
+          "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD"
+        ]
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "name": "closure-staged",
+        "documentRev": 2
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "fromRev": 2,
+        "toRev": 2,
+        "changes": [
+          {
+            "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 2,
+            "patch": []
+          }
+        ],
+        "truncated": false
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    }
+  ]
+}

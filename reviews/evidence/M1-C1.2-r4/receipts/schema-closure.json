@@ -1,0 +1,21 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r4/audit-schemas.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r4",
+  "startedAt": "2026-10-19T12:28:29.630644+00:00",
+  "durationSeconds": 6.745,
+  "exitCode": 1,
+  "head": "f2100570e636292028e70bc6a32ab444c37547ae",
+  "dirtyFiles": [
+    "?? reviews/evidence/M1-C1.2-r4/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\schema-closure.log",
+  "sha256": "b6255a98ff2d3df91a9f4a52f2478ca4c7fec17dac08556839de6aa7a9e99302",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r4\\reviews\\evidence\\M1-C1.2-r4"
+  }
+}

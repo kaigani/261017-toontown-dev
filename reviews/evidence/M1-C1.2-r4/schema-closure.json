@@ -1,0 +1,2427 @@
+{
+  "seed": "0xc12420261019",
+  "cases": [
+    {
+      "id": "anim.path.get",
+      "part": "result",
+      "value": {
+        "nodeId": "n42",
+        "lockDepth": false,
+        "length": 14.37,
+        "points": [
+          {
+            "id": "p1",
+            "kind": "key",
+            "frame": 1,
+            "x": -4,
+            "y": 0,
+            "z": 0,
+            "tension": 0,
+            "continuity": 0,
+            "bias": 0,
+            "constantSegment": false,
+            "lockDepth": false,
+            "arcLength": 0
+          },
+          {
+            "id": "p2",
+            "kind": "control",
+            "frame": 7.412,
+            "x": 0,
+            "y": 3,
+            "z": 0,
+            "tension": 0,
+            "continuity": 0,
+            "bias": 0,
+            "arcLength": 6.02
+          },
+          {
+            "id": "p3",
+            "kind": "key",
+            "frame": 24,
+            "x": 4,
+            "y": 0,
+            "z": 0,
+            "tension": 0,
+            "continuity": 0,
+            "bias": 0,
+            "constantSegment": false,
+            "lockDepth": false,
+            "arcLength": 14.37
+          }
+        ]
+      },
+      "source": "05 section 19.4 exact Path example",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "anim.path.get",
+      "part": "result",
+      "value": {
+        "nodeId": "n42",
+        "lockDepth": false,
+        "length": 22.875,
+        "points": [
+          {
+            "id": "p1",
+            "kind": "key",
+            "frame": 1,
+            "x": -4,
+            "y": 0,
+            "z": 0,
+            "tension": 0,
+            "continuity": 0,
+            "bias": 0,
+            "constantSegment": false,
+            "lockDepth": false,
+            "arcLength": 0
+          },
+          {
+            "id": "p2",
+            "kind": "control",
+            "frame": 8.625,
+            "x": 0,
+            "y": 3,
+            "z": 0,
+            "tension": 0,
+            "continuity": 0,
+            "bias": 0,
+            "arcLength": 6.02
+          },
+          {
+            "id": "p3",
+            "kind": "key",
+            "frame": 24,
+            "x": 4,
+            "y": 0,
+            "z": 0,
+            "tension": 0,
+            "continuity": 0,
+            "bias": 0,
+            "constantSegment": false,
+            "lockDepth": false,
+            "arcLength": 14.37
+          }
+        ]
+      },
+      "source": "05 section 19.4 exact Path example",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "anim.function.get",
+      "part": "result",
+      "value": {
+        "nodeId": "n42",
+        "channel": "velocity",
+        "curveType": "spline",
+        "keys": [
+          {
+            "frame": 1,
+            "value": 0,
+            "constantSegment": false,
+            "handleMode": "smooth",
+            "left": {
+              "dt": 0,
+              "dv": 0
+            },
+            "right": {
+              "dt": 3.67,
+              "dv": 0
+            },
+            "preset": null
+          },
+          {
+            "frame": 12,
+            "value": 45,
+            "constantSegment": false,
+            "handleMode": "smooth",
+            "left": {
+              "dt": -3.67,
+              "dv": 0
+            },
+            "right": {
+              "dt": 0,
+              "dv": 0
+            },
+            "preset": null
+          }
+        ],
+        "pins": [
+          {
+            "frame": 1,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 14.37
+          }
+        ]
+      },
+      "source": "05 section 19.4 Function example and explicit velocity pins prose",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "anim.function.get",
+      "part": "result",
+      "value": {
+        "nodeId": "n42",
+        "channel": "velocity",
+        "curveType": "spline",
+        "keys": [
+          {
+            "frame": 1,
+            "value": 0,
+            "constantSegment": false,
+            "handleMode": "smooth",
+            "left": {
+              "dt": 0,
+              "dv": 0
+            },
+            "right": {
+              "dt": 3.67,
+              "dv": 0
+            },
+            "preset": null
+          },
+          {
+            "frame": 12,
+            "value": 45,
+            "constantSegment": false,
+            "handleMode": "smooth",
+            "left": {
+              "dt": -3.67,
+              "dv": 0
+            },
+            "right": {
+              "dt": 0,
+              "dv": 0
+            },
+            "preset": null
+          }
+        ],
+        "pins": [
+          {
+            "frame": 3,
+            "value": 1.25
+          },
+          {
+            "frame": 17,
+            "value": 9.125
+          }
+        ]
+      },
+      "source": "05 section 19.4 Function example and explicit velocity pins prose",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "draw.pointSelection.set",
+      "part": "result",
+      "value": {
+        "selectedPoints": [
+          {
+            "strokeId": "stroke-r3",
+            "anchor": 2
+          }
+        ]
+      },
+      "source": "02 and A: anchor is integer index",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "draw.pointSelection.set",
+      "part": "result",
+      "value": {
+        "selectedPoints": [
+          {
+            "strokeId": "closure-stroke",
+            "anchor": 5
+          }
+        ]
+      },
+      "source": "02 and A: anchor is integer index",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "xsheet.panel.set",
+      "part": "result",
+      "value": {
+        "elementList": true,
+        "lightTable": false,
+        "toolbar": true
+      },
+      "source": "04 and A: three boolean panels",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "xsheet.panel.set",
+      "part": "result",
+      "value": {
+        "elementList": false,
+        "lightTable": true,
+        "toolbar": false
+      },
+      "source": "04 and A: three boolean panels",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "prefs.list",
+      "part": "result",
+      "value": [
+        {
+          "key": "general.workspace.autoSave",
+          "type": "bool",
+          "default": true,
+          "value": true,
+          "applies": "live",
+          "description": "Save workspace automatically"
+        }
+      ],
+      "source": "01 preference types include bool",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "prefs.list",
+      "part": "result",
+      "value": [
+        {
+          "key": "general.workspace.autoSave",
+          "type": "bool",
+          "default": false,
+          "value": false,
+          "applies": "live",
+          "description": "Save workspace automatically"
+        }
+      ],
+      "source": "01 preference types include bool",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "keymap.list",
+      "part": "result",
+      "value": [
+        {
+          "commandId": "app.frame.set",
+          "params": {
+            "frame": 7
+          },
+          "keys": "Primary+7",
+          "context": "global",
+          "isDefault": false
+        }
+      ],
+      "source": "01 section 12.4: arbitrary command parameter object",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "keymap.list",
+      "part": "result",
+      "value": [
+        {
+          "commandId": "doc.object.find",
+          "params": {
+            "type": "stroke",
+            "limit": 17
+          },
+          "keys": "Primary+7",
+          "context": "global",
+          "isDefault": false
+        }
+      ],
+      "source": "01 section 12.4: arbitrary command parameter object",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "tool.polyline.options.set",
+      "part": "result",
+      "value": {
+        "options": {
+          "snap": true,
+          "snapRadius": 8
+        }
+      },
+      "source": "02 polyline options and A parameter fields",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "tool.polyline.options.set",
+      "part": "result",
+      "value": {
+        "options": {
+          "snap": false,
+          "snapRadius": 5.75
+        }
+      },
+      "source": "02 polyline options and A parameter fields",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "print.settings.set",
+      "part": "params",
+      "value": {
+        "values": {
+          "copies": 2
+        }
+      },
+      "source": "09 PrintParams copies plus A values object",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "print.settings.set",
+      "part": "params",
+      "value": {
+        "values": {
+          "copies": 7
+        }
+      },
+      "source": "09 PrintParams copies plus A values object",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "export.settings.get",
+      "part": "result",
+      "value": {
+        "preset": "default",
+        "settings": {}
+      },
+      "source": "09 settings are an object in paired export.settings.set",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "export.settings.get",
+      "part": "result",
+      "value": {
+        "preset": "custom",
+        "settings": {}
+      },
+      "source": "09 settings are an object in paired export.settings.set",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "drawAid.staticLightTable.set",
+      "part": "result",
+      "value": {
+        "entries": [
+          {
+            "entryId": "r3-entry",
+            "sourceId": "r3-drawing",
+            "sourceKind": "drawing",
+            "visible": true,
+            "placement": "underlay"
+          }
+        ]
+      },
+      "source": "02 section 13.5 entries defined by staticLightTable.list",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "drawAid.staticLightTable.set",
+      "part": "result",
+      "value": {
+        "entries": [
+          {
+            "entryId": "closure-entry",
+            "sourceId": "closure-drawing",
+            "sourceKind": "drawing",
+            "visible": false,
+            "placement": "overlay"
+          }
+        ]
+      },
+      "source": "02 section 13.5 entries defined by staticLightTable.list",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "tool.pen.set",
+      "part": "result",
+      "value": {
+        "pen": {
+          "id": "pen_r3",
+          "type": "pen",
+          "rev": 1,
+          "name": "Pen 1",
+          "kind": "brush",
+          "minSize": 0.5,
+          "maxSize": 2,
+          "smoothness": 3,
+          "tip": "round",
+          "tipAngle": 0,
+          "colourId": null
+        }
+      },
+      "source": "02 section 6.1 and 10 section 4.2: Pen is a model object; Rust regression uses valid sample_parts Pen",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "tool.pen.set",
+      "part": "result",
+      "value": {
+        "pen": {
+          "id": "closure-pen",
+          "type": "pen",
+          "rev": 1,
+          "name": "Closure Pen",
+          "kind": "brush",
+          "minSize": 1.25,
+          "maxSize": 8.75,
+          "smoothness": 3,
+          "tip": "round",
+          "tipAngle": 0,
+          "colourId": null
+        }
+      },
+      "source": "02 section 6.1 and 10 section 4.2: Pen is a model object; Rust regression uses valid sample_parts Pen",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "sound.envelope.set",
+      "part": "result",
+      "value": {
+        "points": [
+          {
+            "time": 0.25,
+            "left": 0.5,
+            "right": 0.75
+          }
+        ]
+      },
+      "source": "07 envelope points: time, left, right",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "sound.envelope.set",
+      "part": "result",
+      "value": {
+        "points": [
+          {
+            "time": 0.375,
+            "left": 0.125,
+            "right": 0.875
+          },
+          {
+            "time": 0.875,
+            "left": 1,
+            "right": 0
+          }
+        ]
+      },
+      "source": "07 envelope points: time, left, right",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "sound.envelope.point.move",
+      "part": "result",
+      "value": {
+        "points": [
+          {
+            "time": 0.25,
+            "left": 0.5,
+            "right": 0.75
+          }
+        ]
+      },
+      "source": "07 envelope points: time, left, right",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "sound.envelope.point.move",
+      "part": "result",
+      "value": {
+        "points": [
+          {
+            "time": 0.375,
+            "left": 0.125,
+            "right": 0.875
+          },
+          {
+            "time": 0.875,
+            "left": 1,
+            "right": 0
+          }
+        ]
+      },
+      "source": "07 envelope points: time, left, right",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "sound.envelope.point.remove",
+      "part": "result",
+      "value": {
+        "points": [
+          {
+            "time": 0.25,
+            "left": 0.5,
+            "right": 0.75
+          }
+        ]
+      },
+      "source": "07 envelope points: time, left, right",
+      "group": "original14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "sound.envelope.point.remove",
+      "part": "result",
+      "value": {
+        "points": [
+          {
+            "time": 0.375,
+            "left": 0.125,
+            "right": 0.875
+          },
+          {
+            "time": 0.875,
+            "left": 1,
+            "right": 0
+          }
+        ]
+      },
+      "source": "07 envelope points: time, left, right",
+      "group": "fresh14",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "sound.asset.probe",
+      "part": "params",
+      "value": {
+        "path": "C:/closure/audio dialog.wav"
+      },
+      "source": "07 \u00a715.2 asset commands / \u00a73.1 audio formats; explicit path input",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "playback.start",
+      "part": "params",
+      "value": {
+        "sceneId": "closure-scene",
+        "fromFrame": 17
+      },
+      "source": "09 \u00a712 playback commands; current scene and integer fromFrame",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "tool.placeBehind.set",
+      "part": "result",
+      "value": {
+        "enabled": false
+      },
+      "source": "02 \u00a77 drawing behind; \u00a713.3 paired boolean enabled",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "fx.preview.open",
+      "part": "result",
+      "value": {
+        "panelId": "closure-preview"
+      },
+      "source": "06 effect preview / fx.preview.open command row",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "colour.fillMapping.set",
+      "part": "params",
+      "value": {
+        "drawingId": "closure-drawing",
+        "objectIds": [
+          "closure-zone"
+        ],
+        "mapping": "clipboard"
+      },
+      "source": "03 fill mapping / colour.fillMapping.set; SI-025 explicit object shape remains deferred",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "export.report.get",
+      "part": "result",
+      "value": {
+        "file": "closure.svg",
+        "totalBytes": 1189,
+        "cameraSize": "1920x1080",
+        "fps": 23.976,
+        "groups": [
+          {
+            "kind": "paths",
+            "items": [
+              {
+                "name": "line",
+                "bytes": 127
+              }
+            ]
+          }
+        ]
+      },
+      "source": "09 \u00a74.10 size report / export.report.get; cameraSize scalar uses accepted SI-029 placeholder",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "lipsync.track.get",
+      "part": "result",
+      "value": {
+        "tracks": [
+          {
+            "placementId": "closure-placement",
+            "fps": 24,
+            "startFrame": 17,
+            "source": "transcript",
+            "stale": false,
+            "frames": [
+              {
+                "frame": 17,
+                "mouth": "X",
+                "manual": false,
+                "label": null
+              }
+            ],
+            "segments": [
+              {
+                "start": 0.125,
+                "end": 0.375,
+                "mouth": "X",
+                "phoneme": "sil"
+              }
+            ]
+          }
+        ]
+      },
+      "source": "07 \u00a715.4 literal LipTrack shape with fresh values and fractional segment times",
+      "group": "random20",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "library.closed",
+      "part": "result",
+      "value": {
+        "libraryId": "closure-library"
+      },
+      "source": "08 \u00a713 event command row: libraryId",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "draw.polyline.add",
+      "part": "params",
+      "value": {
+        "points": [
+          {
+            "x": 1.25,
+            "y": -2.5,
+            "inHandle": {
+              "x": 0.125,
+              "y": -0.375
+            },
+            "outHandle": {
+              "x": 2.25,
+              "y": 1.5
+            }
+          }
+        ],
+        "closed": false,
+        "snap": true,
+        "snapRadius": 4.75,
+        "layer": "behind",
+        "symmetry": false
+      },
+      "source": "02 \u00a77.3 Polyline / \u00a713.2 command input; geometric points",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "anim.point.paste",
+      "part": "params",
+      "value": {
+        "targetPointIds": [
+          "closure-point"
+        ],
+        "properties": [
+          "rotationPivot",
+          "scaleX"
+        ],
+        "again": false
+      },
+      "source": "05 point Copy/Paste Special / anim.point.paste command row",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "anim.camera.current.get",
+      "part": "result",
+      "value": {
+        "cameraId": "closure-camera"
+      },
+      "source": "05 current camera / anim.camera.current.get command row",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "anim.skeleton.skin.remove",
+      "part": "result",
+      "value": {
+        "elementIds": [
+          "closure-element-1",
+          "closure-element-2"
+        ]
+      },
+      "source": "05 skin group / anim.skeleton.skin.remove command row and typed parameters",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "draw.linesToBrush.apply",
+      "part": "params",
+      "value": {
+        "drawingId": "closure-drawing",
+        "ids": [
+          "closure-line"
+        ],
+        "penId": "closure-brush"
+      },
+      "source": "02 Convert Lines to Brush / \u00a713.2 command row",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "colour.style.duplicate",
+      "part": "result",
+      "value": {
+        "styleId": "closure-style",
+        "name": "Night palette"
+      },
+      "source": "03 Duplicate Style / colour.style.duplicate command row",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "ui.tips.reset",
+      "part": "result",
+      "value": {
+        "reenabled": 17
+      },
+      "source": "01 tips / ui.tips.reset command row, explicit int",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "draw.object.delete",
+      "part": "result",
+      "value": {
+        "removedIds": [
+          "closure-zone",
+          "closure-stroke"
+        ],
+        "rev": 73
+      },
+      "source": "02 Delete Object / \u00a713.2 command row",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "tool.tablet.set",
+      "part": "params",
+      "value": {
+        "ignoreTablet": false,
+        "portraitCorrection": true,
+        "compatibilityMode": false,
+        "inputInterface": "Windows Ink"
+      },
+      "source": "02 \u00a76.3 tablet settings and \u00a713.3 explicit parameter fields",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "tool.active.set",
+      "part": "result",
+      "value": {
+        "toolId": "contourEditor"
+      },
+      "source": "02 tools and tool.active.set enum input; result returns selected toolId",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "keymap.remove",
+      "part": "result",
+      "value": {
+        "removed": [
+          {
+            "commandId": "doc.object.find",
+            "params": {
+              "type": "stroke",
+              "limit": 17
+            },
+            "keys": "Primary+7",
+            "context": "global",
+            "isDefault": false
+          }
+        ]
+      },
+      "source": "01 \u00a712.4 Binding; arbitrary bound command parameters",
+      "group": "random20",
+      "acceptedBefore": false,
+      "acceptedNow": true,
+      "errors": []
+    },
+    {
+      "id": "export.publish.service.list",
+      "part": "result",
+      "value": {
+        "services": [
+          {
+            "id": "closure-service",
+            "name": "Review Service",
+            "formats": [
+              "mp4"
+            ],
+            "limits": {
+              "minSec": 0.5,
+              "maxSec": 90,
+              "maxBytes": 1000000
+            },
+            "fields": [
+              {
+                "name": "title",
+                "required": true
+              }
+            ],
+            "visibilities": [
+              "private",
+              "public"
+            ],
+            "connected": true
+          }
+        ]
+      },
+      "source": "09 \u00a74.9 and \u00a712.3 service.list/account.get/account.close; a configured service can be signed in",
+      "group": "random20",
+      "acceptedBefore": true,
+      "acceptedNow": false,
+      "errors": [
+        {
+          "path": [
+            "services",
+            0,
+            "connected"
+          ],
+          "message": "False was expected"
+        }
+      ]
+    },
+    {
+      "id": "storyline.play.changed",
+      "part": "result",
+      "value": {
+        "playing": false,
+        "globalFrame": 17,
+        "sceneId": "closure-scene"
+      },
+      "source": "08 storyline playback state event, emitted when playback stops; start has playing:true, stop has playing:false",
+      "group": "constant-regression-sweep",
+      "acceptedBefore": true,
+      "acceptedNow": false,
+      "errors": [
+        {
+          "path": [
+            "playing"
+          ],
+          "message": "True was expected"
+        }
+      ]
+    }
+  ],
+  "context": {
+    "foreignTwoSegmentFamilyIsolated": true,
+    "accountToServiceCollision": {
+      "const": false
+    },
+    "rootCause": "first two ID segments group distinct subfamilies; first typed field wins, including command-specific constants"
+  },
+  "specExamples": [
+    {
+      "id": "keymap.get",
+      "section": "01",
+      "type": "spec.Binding",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "keymap.import",
+      "section": "01",
+      "type": "spec.Binding",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "keymap.list",
+      "section": "01",
+      "type": "spec.Binding",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "keymap.remove",
+      "section": "01",
+      "type": "spec.Binding",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "keymap.set",
+      "section": "01",
+      "type": "spec.Binding",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "draw.drawing.get",
+      "section": "02",
+      "type": "spec.DrawingReadback",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "element.get",
+      "section": "04",
+      "type": "spec.ElementInfo",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "cell.clipboard.apply",
+      "section": "04",
+      "type": "spec.TransferOptions",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "cell.clipboard.set",
+      "section": "04",
+      "type": "spec.TransferOptions",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "cell.range.move",
+      "section": "04",
+      "type": "spec.TransferOptions",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "timeline.transferOptions.get",
+      "section": "04",
+      "type": "spec.TransferOptions",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "timeline.transferOptions.set",
+      "section": "04",
+      "type": "spec.TransferOptions",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "timeline.transferOptions.set",
+      "section": "04",
+      "type": "spec.TransferOptions",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "xsheet.exposures.get",
+      "section": "04",
+      "type": "spec.ExposureSheet",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "xsheet.exposures.set",
+      "section": "04",
+      "type": null,
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "anim.evaluate",
+      "section": "05",
+      "type": "spec.NodeEval",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "anim.function.get",
+      "section": "05",
+      "type": "spec.Function",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "anim.path.get",
+      "section": "05",
+      "type": "spec.Path",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "anim.skeleton.get",
+      "section": "05",
+      "type": "spec.Skeleton",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "fx.block.defaults.apply",
+      "section": "06",
+      "type": "spec.Block",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "fx.block.get",
+      "section": "06",
+      "type": "spec.Block",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "fx.block.set",
+      "section": "06",
+      "type": "spec.Block",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "fx.block.type.set",
+      "section": "06",
+      "type": "spec.Block",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "fx.types.get",
+      "section": "06",
+      "type": "spec.TypeDescriptor",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "fx.types.list",
+      "section": "06",
+      "type": "spec.TypeDescriptor",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "sound.placement.get",
+      "section": "07",
+      "type": "spec.Placement",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "sound.placement.list",
+      "section": "07",
+      "type": "spec.Placement",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "sound.placement.set",
+      "section": "07",
+      "type": "spec.Placement",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "sound.waveform.get",
+      "section": "07",
+      "type": "spec.WaveformSummary",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "lipsync.apply",
+      "section": "07",
+      "type": "spec.ApplyResult",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "lipsync.detect",
+      "section": "07",
+      "type": "spec.LipTrack",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "lipsync.track.get",
+      "section": "07",
+      "type": "spec.LipTrack",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "lipsync.track.set",
+      "section": "07",
+      "type": "spec.LipTrack",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "media.sequence.get",
+      "section": "07",
+      "type": "spec.MediaSequence",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "media.sequence.list",
+      "section": "07",
+      "type": "spec.MediaSequence",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "media.sequence.naturalTiming.apply",
+      "section": "07",
+      "type": "spec.MediaSequence",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "media.sequence.set",
+      "section": "07",
+      "type": "spec.MediaSequence",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "library.item.list",
+      "section": "08",
+      "type": "spec.ItemSummary",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "library.list",
+      "section": "08",
+      "type": "spec.LibraryInfo",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "library.node.get",
+      "section": "08",
+      "type": "spec.LibraryNode",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "library.template.insert",
+      "section": "08",
+      "type": "spec.InsertOptions",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "library.template.insert",
+      "section": "08",
+      "type": "spec.InsertResult",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "library.template.search",
+      "section": "08",
+      "type": "spec.ItemSummary",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "library.tree.get",
+      "section": "08",
+      "type": "spec.LibraryNode",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.get",
+      "section": "08",
+      "type": "spec.SceneInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.get",
+      "section": "08",
+      "type": "spec.StorylineModel",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.get",
+      "section": "08",
+      "type": "spec.TransitionInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.scene.get",
+      "section": "08",
+      "type": "spec.SceneInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.scene.get",
+      "section": "08",
+      "type": "spec.TransitionInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.scene.list",
+      "section": "08",
+      "type": "spec.SceneInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.scene.list",
+      "section": "08",
+      "type": "spec.TransitionInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.scene.set",
+      "section": "08",
+      "type": "spec.SceneInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.scene.set",
+      "section": "08",
+      "type": "spec.TransitionInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.transition.get",
+      "section": "08",
+      "type": "spec.TransitionInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.transition.list",
+      "section": "08",
+      "type": "spec.TransitionInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.transition.remove",
+      "section": "08",
+      "type": "spec.TransitionInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "storyline.transition.set",
+      "section": "08",
+      "type": "spec.TransitionInfo",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "playback.preview.run",
+      "section": "09",
+      "type": "spec.Manifest",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "playback.state.get",
+      "section": "09",
+      "type": "spec.PlaybackState",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "render.frame.run",
+      "section": "09",
+      "type": "spec.RenderResult",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "render.range.run",
+      "section": "09",
+      "type": "spec.Manifest",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "import.file.get",
+      "section": "09",
+      "type": "spec.ImportFileInfo",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "import.file.run",
+      "section": "09",
+      "type": "spec.ImportResult",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "import.keyedImage.get",
+      "section": "09",
+      "type": "spec.Keying",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "import.keyedImages.run",
+      "section": "09",
+      "type": "spec.Keying",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "import.keyedImages.run",
+      "section": "09",
+      "type": "spec.ImportResult",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "import.movie.run",
+      "section": "09",
+      "type": "spec.ImportResult",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "import.vectorize.settings.get",
+      "section": "09",
+      "type": "spec.VectorizeSettings",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "import.vectorize.settings.set",
+      "section": "09",
+      "type": "spec.VectorizeSettings",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "export.drawingPdf.run",
+      "section": "09",
+      "type": "spec.Manifest",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "export.movie.run",
+      "section": "09",
+      "type": "spec.Manifest",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "export.publish.run",
+      "section": "09",
+      "type": "spec.Manifest",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "export.snapshot.run",
+      "section": "09",
+      "type": "spec.Manifest",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "capture.device.added",
+      "section": "09",
+      "type": "spec.Device",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "capture.device.list",
+      "section": "09",
+      "type": "spec.Device",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "capture.frame.add",
+      "section": "09",
+      "type": "spec.CaptureResult",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "capture.frame.addFromFile",
+      "section": "09",
+      "type": "spec.Keying",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "capture.frame.addFromFile",
+      "section": "09",
+      "type": "spec.CaptureResult",
+      "literal": true,
+      "valid": true
+    },
+    {
+      "id": "capture.keying.set",
+      "section": "09",
+      "type": "spec.Keying",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "capture.keying.set",
+      "section": "09",
+      "type": "spec.Keying",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "capture.session.get",
+      "section": "09",
+      "type": "spec.CaptureSession",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "capture.session.get",
+      "section": "09",
+      "type": "spec.Keying",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "capture.source.set",
+      "section": "09",
+      "type": "spec.CaptureSession",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "capture.source.set",
+      "section": "09",
+      "type": "spec.Keying",
+      "literal": false,
+      "valid": true
+    },
+    {
+      "id": "print.run",
+      "section": "09",
+      "type": "spec.Manifest",
+      "literal": false,
+      "valid": true
+    }
+  ],
+  "literalOrigins": [
+    {
+      "id": "keymap.get",
+      "type": "spec.Binding",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "keymap.import",
+      "type": "spec.Binding",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "keymap.list",
+      "type": "spec.Binding",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "keymap.remove",
+      "type": "spec.Binding",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "keymap.set",
+      "type": "spec.Binding",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "draw.drawing.get",
+      "type": "spec.DrawingReadback",
+      "foundVerbatimParsedValue": false
+    },
+    {
+      "id": "element.get",
+      "type": "spec.ElementInfo",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "cell.clipboard.apply",
+      "type": "spec.TransferOptions",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "cell.clipboard.set",
+      "type": "spec.TransferOptions",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "cell.range.move",
+      "type": "spec.TransferOptions",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "timeline.transferOptions.get",
+      "type": "spec.TransferOptions",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "timeline.transferOptions.set",
+      "type": "spec.TransferOptions",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "timeline.transferOptions.set",
+      "type": "spec.TransferOptions",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "xsheet.exposures.get",
+      "type": "spec.ExposureSheet",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "xsheet.exposures.set",
+      "type": null,
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "anim.function.get",
+      "type": "spec.Function",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "anim.path.get",
+      "type": "spec.Path",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "anim.skeleton.get",
+      "type": "spec.Skeleton",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "fx.block.defaults.apply",
+      "type": "spec.Block",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "fx.block.get",
+      "type": "spec.Block",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "fx.block.set",
+      "type": "spec.Block",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "fx.block.type.set",
+      "type": "spec.Block",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "fx.types.get",
+      "type": "spec.TypeDescriptor",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "fx.types.list",
+      "type": "spec.TypeDescriptor",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "sound.placement.get",
+      "type": "spec.Placement",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "sound.placement.list",
+      "type": "spec.Placement",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "sound.placement.set",
+      "type": "spec.Placement",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "sound.waveform.get",
+      "type": "spec.WaveformSummary",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "lipsync.apply",
+      "type": "spec.ApplyResult",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "lipsync.detect",
+      "type": "spec.LipTrack",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "lipsync.track.get",
+      "type": "spec.LipTrack",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "lipsync.track.set",
+      "type": "spec.LipTrack",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "media.sequence.get",
+      "type": "spec.MediaSequence",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "media.sequence.list",
+      "type": "spec.MediaSequence",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "media.sequence.naturalTiming.apply",
+      "type": "spec.MediaSequence",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "media.sequence.set",
+      "type": "spec.MediaSequence",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "library.list",
+      "type": "spec.LibraryInfo",
+      "foundVerbatimParsedValue": false
+    },
+    {
+      "id": "library.template.insert",
+      "type": "spec.InsertOptions",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "library.template.insert",
+      "type": "spec.InsertResult",
+      "foundVerbatimParsedValue": false
+    },
+    {
+      "id": "playback.state.get",
+      "type": "spec.PlaybackState",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "import.file.get",
+      "type": "spec.ImportFileInfo",
+      "foundVerbatimParsedValue": false
+    },
+    {
+      "id": "import.file.run",
+      "type": "spec.ImportResult",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "import.keyedImages.run",
+      "type": "spec.ImportResult",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "import.movie.run",
+      "type": "spec.ImportResult",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "import.vectorize.settings.get",
+      "type": "spec.VectorizeSettings",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "import.vectorize.settings.set",
+      "type": "spec.VectorizeSettings",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "capture.device.added",
+      "type": "spec.Device",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "capture.device.list",
+      "type": "spec.Device",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "capture.frame.add",
+      "type": "spec.CaptureResult",
+      "foundVerbatimParsedValue": true
+    },
+    {
+      "id": "capture.frame.addFromFile",
+      "type": "spec.CaptureResult",
+      "foundVerbatimParsedValue": true
+    }
+  ],
+  "placeholders": [
+    {
+      "id": "view.list",
+      "path": "result/items/properties/transform",
+      "issue": "SI-042",
+      "documented": true
+    },
+    {
+      "id": "ui.message.shown",
+      "path": "result/properties/details",
+      "issue": "SI-041",
+      "documented": true
+    },
+    {
+      "id": "ui.statusBar.get",
+      "path": "result/properties/pointer",
+      "issue": "SI-041",
+      "documented": true
+    },
+    {
+      "id": "draw.content.add",
+      "path": "params/properties/content",
+      "issue": "SI-026",
+      "documented": true
+    },
+    {
+      "id": "draw.content.add",
+      "path": "result/properties/idMap",
+      "issue": "SI-026",
+      "documented": true
+    },
+    {
+      "id": "draw.current.get",
+      "path": "result/properties/activeView",
+      "issue": "SI-026",
+      "documented": true
+    },
+    {
+      "id": "draw.drawing.get",
+      "path": "result/$defs/spec.DrawingReadback/properties/nodes/items/properties/strokes/items/properties/textureMatrix",
+      "issue": "SI-026",
+      "documented": true
+    },
+    {
+      "id": "draw.drawing.get",
+      "path": "result/$defs/spec.DrawingReadback/properties/nodes/items/properties/zones/items/properties/textureMatrix",
+      "issue": "SI-026",
+      "documented": true
+    },
+    {
+      "id": "draw.erase.apply",
+      "path": "params/properties/pen",
+      "issue": "SI-026",
+      "documented": true
+    },
+    {
+      "id": "draw.hitTest.get",
+      "path": "result/properties/hits/items",
+      "issue": "SI-026",
+      "documented": true
+    },
+    {
+      "id": "draw.text.add",
+      "path": "params/properties/format",
+      "issue": "SI-026",
+      "documented": true
+    },
+    {
+      "id": "tool.list",
+      "path": "result/properties/tools/items/properties/options",
+      "issue": "SI-040",
+      "documented": true
+    },
+    {
+      "id": "tool.list",
+      "path": "result/properties/tools/items/properties/optionSchema",
+      "issue": "SI-040",
+      "documented": true
+    },
+    {
+      "id": "tool.options.changed",
+      "path": "result/properties/options",
+      "issue": "SI-040",
+      "documented": true
+    },
+    {
+      "id": "tool.options.get",
+      "path": "result/properties/options",
+      "issue": "SI-040",
+      "documented": true
+    },
+    {
+      "id": "tool.options.set",
+      "path": "params/properties/options",
+      "issue": "SI-040",
+      "documented": true
+    },
+    {
+      "id": "tool.options.set",
+      "path": "result/properties/options",
+      "issue": "SI-040",
+      "documented": true
+    },
+    {
+      "id": "tool.pen.create",
+      "path": "params/properties/settings",
+      "issue": "SI-040",
+      "documented": true
+    },
+    {
+      "id": "drawAid.changed",
+      "path": "result/properties/state",
+      "issue": "SI-027",
+      "documented": true
+    },
+    {
+      "id": "colour.fillMapping.set",
+      "path": "params/properties/mapping/anyOf/1",
+      "issue": "SI-025",
+      "documented": true
+    },
+    {
+      "id": "colour.palette.create",
+      "path": "params/properties/swatches/items",
+      "issue": "SI-025",
+      "documented": true
+    },
+    {
+      "id": "colour.palette.duplicate",
+      "path": "result/properties/idMap",
+      "issue": "SI-025",
+      "documented": true
+    },
+    {
+      "id": "colour.palette.set",
+      "path": "params/properties/palette",
+      "issue": "SI-025",
+      "documented": true
+    },
+    {
+      "id": "colour.swatch.create",
+      "path": "params/properties/value",
+      "issue": "SI-025",
+      "documented": true
+    },
+    {
+      "id": "colour.swatch.create",
+      "path": "params/properties/values",
+      "issue": "SI-025",
+      "documented": true
+    },
+    {
+      "id": "colour.swatch.list",
+      "path": "result/properties/swatches/items/properties/value",
+      "issue": "SI-025",
+      "documented": true
+    },
+    {
+      "id": "colour.swatch.set",
+      "path": "params/properties/values",
+      "issue": "SI-025",
+      "documented": true
+    },
+    {
+      "id": "anim.function.preset.apply",
+      "path": "result/properties/segments",
+      "issue": "SI-023",
+      "documented": true
+    },
+    {
+      "id": "anim.node.get",
+      "path": "result/properties/static",
+      "issue": "SI-023",
+      "documented": true
+    },
+    {
+      "id": "anim.prefs.set",
+      "path": "result/properties/prefs",
+      "issue": "SI-023",
+      "documented": true
+    },
+    {
+      "id": "anim.projection.get",
+      "path": "params/properties/points/items",
+      "issue": "SI-023",
+      "documented": true
+    },
+    {
+      "id": "anim.view.coords.get",
+      "path": "params/properties/points/items",
+      "issue": "SI-023",
+      "documented": true
+    },
+    {
+      "id": "anim.view.coords.get",
+      "path": "result/properties/points/items",
+      "issue": "SI-023",
+      "documented": true
+    },
+    {
+      "id": "fx.block.list",
+      "path": "result/properties/blocks/items",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.block.set",
+      "path": "params/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.create",
+      "path": "params/properties/params",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.dropShadow.transform.set",
+      "path": "result/properties/transform",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.keyframe.add",
+      "path": "params/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.keyframe.list",
+      "path": "result/properties/keyframes/items/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.params.get",
+      "path": "result/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.params.get",
+      "path": "result/properties/derived",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.params.set",
+      "path": "params/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.params.set",
+      "path": "result/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.preset.apply",
+      "path": "result/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.preset.create",
+      "path": "params/$defs/spec.Preset/properties/static",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.preset.create",
+      "path": "params/$defs/spec.Preset/properties/dynamic",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.preset.get",
+      "path": "result/$defs/spec.Preset/properties/static",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.preset.get",
+      "path": "result/$defs/spec.Preset/properties/dynamic",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.renderList.get",
+      "path": "result/properties/items/items",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.renderer.options.changed",
+      "path": "result/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.renderer.options.get",
+      "path": "result/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.renderer.options.set",
+      "path": "params/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.renderer.options.set",
+      "path": "result/properties/values",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.types.get",
+      "path": "result/$defs/spec.TypeDescriptor/properties/particleTypes",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "fx.types.list",
+      "path": "result/$defs/spec.TypeDescriptor/properties/particleTypes",
+      "issue": "SI-030",
+      "documented": true
+    },
+    {
+      "id": "sound.scrubbing.set",
+      "path": "result/properties/effective",
+      "issue": "SI-038",
+      "documented": true
+    },
+    {
+      "id": "lipsync.apply",
+      "path": "params/properties/mapping",
+      "issue": "SI-034",
+      "documented": true
+    },
+    {
+      "id": "lipsync.detect",
+      "path": "params/properties/phonemeMap",
+      "issue": "SI-034",
+      "documented": true
+    },
+    {
+      "id": "lipsync.settings.get",
+      "path": "result/properties/phonemeMap",
+      "issue": "SI-034",
+      "documented": true
+    },
+    {
+      "id": "lipsync.settings.set",
+      "path": "params/properties/phonemeMap",
+      "issue": "SI-034",
+      "documented": true
+    },
+    {
+      "id": "lipsync.settings.set",
+      "path": "result/properties/phonemeMap",
+      "issue": "SI-034",
+      "documented": true
+    },
+    {
+      "id": "lipsync.shapes.list",
+      "path": "result/properties/shapes/items/properties/referenceImage",
+      "issue": "SI-034",
+      "documented": true
+    },
+    {
+      "id": "library.item.get",
+      "path": "result",
+      "issue": "SI-033",
+      "documented": true
+    },
+    {
+      "id": "storyline.selection.set",
+      "path": "result/properties/selection",
+      "issue": "SI-039",
+      "documented": true
+    },
+    {
+      "id": "storyline.transition.types.list",
+      "path": "result/properties/types/items/properties/parameters/items/properties/default",
+      "issue": "SI-039",
+      "documented": true
+    },
+    {
+      "id": "playback.player.get",
+      "path": "result",
+      "issue": "SI-035",
+      "documented": true
+    },
+    {
+      "id": "playback.player.set",
+      "path": "result",
+      "issue": "SI-035",
+      "documented": true
+    },
+    {
+      "id": "export.formats.list",
+      "path": "result/properties/formats/items/properties/video",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.formats.list",
+      "path": "result/properties/formats/items/properties/audio",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.formats.list",
+      "path": "result/properties/formats/items/properties/settingsSchema",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.movie.defaults.get",
+      "path": "result",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.movie.defaults.set",
+      "path": "params/properties/values",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.movie.defaults.set",
+      "path": "result",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.movie.run",
+      "path": "params/properties/settings",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.movie.validate",
+      "path": "params/properties/settings",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.publish.run",
+      "path": "params/properties/export",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.publish.validate",
+      "path": "params/properties/export",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.publish.validate",
+      "path": "params/properties/metadata",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.report.get",
+      "path": "result/properties/cameraSize",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.settings.get",
+      "path": "result/properties/settings",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.settings.set",
+      "path": "params/properties/settings",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "export.settings.set",
+      "path": "result/properties/settings",
+      "issue": "SI-029",
+      "documented": true
+    },
+    {
+      "id": "capture.device.get",
+      "path": "result/properties/settingsSchema",
+      "issue": "SI-024",
+      "documented": true
+    },
+    {
+      "id": "capture.device.settings.set",
+      "path": "params/properties/values",
+      "issue": "SI-024",
+      "documented": true
+    },
+    {
+      "id": "capture.device.settings.set",
+      "path": "result/properties/applied",
+      "issue": "SI-024",
+      "documented": true
+    },
+    {
+      "id": "capture.preview.get",
+      "path": "result/properties/capturedAt",
+      "issue": "SI-024",
+      "documented": true
+    }
+  ]
+}
