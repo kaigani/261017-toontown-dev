@@ -8,6 +8,11 @@ publish.workspace = true
 
 [dependencies]
 tt-model.workspace = true
+tt-registry-macros.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+jsonschema.workspace = true
 
 [lints]
 workspace = true

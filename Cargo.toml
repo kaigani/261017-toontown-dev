@@ -14,6 +14,7 @@ repository = "https://github.com/kaigani/261017-toontown-dev"
 # Internal crates (plan §3.1). Path dependencies only; never published.
 tt-model = { path = "crates/model" }
 tt-registry = { path = "crates/registry" }
+tt-registry-macros = { path = "crates/registry-macros" }
 tt-executor = { path = "crates/executor" }
 tt-vector = { path = "crates/vector" }
 tt-colour = { path = "crates/colour" }

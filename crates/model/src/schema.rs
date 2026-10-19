@@ -133,6 +133,13 @@ fn fix_integers(v: &mut Value) {
     }
 }
 
+/// Applies the model's integer bounds to any generated schema (the `format` of Rust integer types becomes
+/// `minimum`/`maximum`, `int` being signed 32-bit per 10 §1.1). Used for command parameter and result schemas, which
+/// keep serde's own `required` set (optional and defaulted parameters are not required).
+pub fn apply_integer_bounds(v: &mut Value) {
+    fix_integers(v);
+}
+
 /// Removes the `null` alternative of a property schema (`type: [T, "null"]` or `anyOf: [S, {type: null}]`).
 fn strip_null(p: &mut Value) {
     let Some(m) = p.as_object_mut() else { return };

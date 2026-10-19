@@ -4522,7 +4522,21 @@ dependencies = [
 name = "tt-registry"
 version = "0.0.1"
 dependencies = [
+ "jsonschema",
+ "schemars 1.2.3",
+ "serde",
+ "serde_json",
  "tt-model",
+ "tt-registry-macros",
+]
+
+[[package]]
+name = "tt-registry-macros"
+version = "0.0.1"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.119",
 ]
 
 [[package]]
