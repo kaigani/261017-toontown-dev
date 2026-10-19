@@ -1,0 +1,219 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r1\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.90s
+     Running tests\c12_r1_contracts.rs (target\debug\deps\c12_r1_contracts-0f744da5bdc723c0.exe)
+
+running 36 tests
+
+thread 'edit_commands_promised_for_c12_are_implemented' (7000) panicked at crates\executor\tests\c12_r1_contracts.rs:521:9:
+assertion `left == right` failed: plan 4 C1.2 explicitly includes edit.*: edit.cut
+  left: NotImplemented { owner: "M4 C4.1" }
+ right: Implemented
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'registry_file_and_network_commands_declare_required_scopes' (17396) panicked at crates\executor\tests\c12_r1_contracts.rs:382:9:
+11 §6.1: export.movie.run scopes [Edit] omit FilesWrite
+test edit_commands_promised_for_c12_are_implemented ... FAILED
+test registry_file_and_network_commands_declare_required_scopes ... FAILED
+
+thread 'registry_owners_follow_the_milestone_plan' (26436) panicked at crates\executor\tests\c12_r1_contracts.rs:488:5:
+assertion `left == right` failed: plan 4 moved movie import with the decoder to M8
+  left: String("M10")
+ right: "M8 C8.3"
+test registry_owners_follow_the_milestone_plan ... FAILED
+
+thread 'edit_clipboard_is_disabled_without_a_project' (5848) panicked at crates\executor\tests\c12_r1_contracts.rs:337:5:
+assertion `left == right` failed: 01 §1.3 all edit commands disabled
+  left: None
+ right: Some("project.none")
+test edit_clipboard_is_disabled_without_a_project ... FAILED
+
+thread 'registry_stubs_have_actual_parameter_constraints_and_examples' (6948) panicked at crates\executor\tests\c12_r1_contracts.rs:367:5:
+plan §3.2 / 11 §14.2: 662 entries have incomplete declarations; first: ["anim.bone.create", "anim.bone.delete", "anim.bone.influence.set", "anim.bone.parent.set", "anim.bone.pose.set", "anim.bone.reach.apply", "anim.bone.rest.set", "anim.camera.create"]
+test registry_stubs_have_actual_parameter_constraints_and_examples ... FAILED
+
+thread 'every_registry_entry_has_a_gui_binding_or_agent_only_justification' (17224) panicked at crates\executor\tests\c12_r1_contracts.rs:506:5:
+11 14.1 reverse parity excludes 659 inventory entries
+test every_registry_entry_has_a_gui_binding_or_agent_only_justification ... FAILED
+test request_id_collision_returns_original_result_per_literal_spec ... ok
+
+thread 'agent_cannot_cancel_another_sessions_job' (29248) panicked at crates\executor\tests\c12_r1_contracts.rs:204:5:
+cross-session cancellation succeeded: JobRecord { job_id: "job-1", command_id: "review.held", state: Cancelled, progress: 0.0, message: "", started_at: "2026-10-19T05:31:23.050Z", result: None, error: None, session: "agent:other" }
+test agent_cannot_cancel_another_sessions_job ... FAILED
+
+thread 'agent_cannot_read_another_sessions_jobs_with_all_true' (27584) panicked at crates\executor\tests\c12_r1_contracts.rs:186:5:
+11 §15.2: all jobs are for the GUI
+test agent_cannot_read_another_sessions_jobs_with_all_true ... FAILED
+
+thread 'job_wait_obeys_request_id_and_retains_document_revision' (29344) panicked at crates\executor\tests\c12_r1_contracts.rs:145:5:
+assertion `left == right` failed: 11 §7.2 idempotency applies to run_command job.wait
+  left: Envelope { status: Ok, result: Some(Object {"jobId": String("job-1"), "commandId": String("review.held"), "state": String("running"), "progress": Number(0.0), "message": String(""), "startedAt": String("2026-10-19T05:31:23.049Z"), "session": String("user"), "timedOut": Bool(true)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: None, error: None, dry_run: false, steps: None }
+ right: Envelope { status: Ok, result: Some(Object {"jobId": String("job-1"), "commandId": String("review.held"), "state": String("succeeded"), "progress": Number(1.0), "message": String(""), "startedAt": String("2026-10-19T05:31:23.049Z"), "result": Object {"privateResult": String("owner only")}, "session": String("user")}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: None, error: None, dry_run: false, steps: None }
+
+thread 'clipboard_set_validates_the_content_for_its_kind' (15036) panicked at crates\executor\tests\c12_r1_contracts.rs:482:5:
+01 12.1 promises validation against the content schema: Envelope { status: Ok, result: Some(Object {"kind": String("drawingObjects"), "itemCount": Number(1)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: None, dry_run: false, steps: None }
+test job_wait_obeys_request_id_and_retains_document_revision ... FAILED
+test clipboard_set_validates_the_content_for_its_kind ... FAILED
+
+thread 'failed_batch_clipboard_emits_no_change_event' (980) panicked at crates\executor\tests\c12_r1_contracts.rs:96:5:
+rolled-back batch emitted [Event { name: "edit.clipboard.changed", payload: Object {"kind": String("elements"), "itemCount": Number(1)} }]
+test failed_batch_clipboard_emits_no_change_event ... FAILED
+
+thread 'renamed_builtin_workspace_can_still_be_restored' (9328) panicked at crates\executor\tests\c12_r1_contracts.rs:405:5:
+01 §5.5 built-in arrangements are always restorable: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "arg.invalid", message: "`Review default` is a user workspace and has no bundled arrangement", details: Object {"pointer": String("/name")}, hint: None }), dry_run: false, steps: None }
+
+thread 'setting_mode_activates_a_view_of_the_requested_type' (17864) panicked at crates\executor\tests\c12_r1_contracts.rs:534:5:
+assertion `left == right` failed: 01 4 derives mode from active view, not an unrelated flag: {"project":{"id":"pr_01K742SG00BK0VXTWDM5JRXV37","name":"Sample","path":null,"dirty":true,"globalLibraryDirty":false,"readOnly":false},"scene":{"id":"sc_01K742SG0YSRA1305J7887BDVZ","name":"Intro","frameCount":48},"frame":1,"element":{"id":"el_01K742SG0ZZYY8HE4MW501XMJV","name":"Camera","type":"camera"},"drawing":null,"mode":"drawing","activeView":{"viewId":"cameraView","panelId":"cameraView","type":"camera"},"focusedPanel":"cameraView","activeTool":null,"selection":{"context":"staging","ids":[],"kinds":[]},"workspace":{"name":"Default","modified":false},"playback":{"playing":false},"startScreenVisible":false,"modal":null,"agentSessions":[],"fullScreen":false}
+  left: String("camera")
+ right: "drawing"
+
+thread 'failed_atomic_batch_cannot_cancel_a_running_job' (29384) panicked at crates\executor\tests\c12_r1_contracts.rs:67:5:
+assertion `left == right` failed: 11 §7.3: all-or-nothing
+  left: Cancelled
+ right: Succeeded
+test renamed_builtin_workspace_can_still_be_restored ... FAILED
+test setting_mode_activates_a_view_of_the_requested_type ... FAILED
+test failed_atomic_batch_cannot_cancel_a_running_job ... FAILED
+
+thread 'tt-document' (19544) panicked at crates\executor\src\cx.rs:390:21:
+attempt to add with overflow
+
+thread 'revision_exhaustion_is_an_error_and_does_not_kill_the_document_thread' (22740) panicked at crates\executor\tests\c12_r1_contracts.rs:417:5:
+overflow killed the document thread: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: None, error: Some(CommandError { code: "internal", message: "the document thread has stopped", details: Object {}, hint: None }), dry_run: false, steps: None }
+test revision_exhaustion_is_an_error_and_does_not_kill_the_document_thread ... FAILED
+
+thread 'dry_run_cannot_cancel_a_running_job' (30932) panicked at crates\executor\tests\c12_r1_contracts.rs:50:5:
+assertion `left == right` failed: 11 §7.2: dryRun changes nothing
+  left: Cancelled
+ right: Succeeded
+test dry_run_cannot_cancel_a_running_job ... FAILED
+thread 'explicitly_saving_and_reselecting_current_workspace_keeps_layout' (
+29884) panicked at crates\executor\tests\c12_r1_contracts.rs:546:5:
+assertion `left == right` failed: 01 5.5 saves first, then applies the chosen workspace
+  left: Object {"centralPanel": String("cameraView"), "corners": String("sides"), "docks": Object {"left": Array [], "right": Array [Object {"tabs": Array [String("colour"), String("properties"), String("library")], "current": String("colour"), "size": Number(330)}, Object {"tabs": Array [String("pen"), String("text"), String("cells")], "current": String("pen")}], "top": Array [], "bottom": Array [Object {"tabs": Array [String("timeline"), String("xsheet"), String("functionEditor"), String("storyline")], "current": String("timeline"), "size": Number(190)}]}, "floating": Array [], "toolPalettes": Array [Object {"id": String("drawingTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(120)}}, Object {"id": String("animationTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(160)}}, Object {"id": String("boneTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(200)}}, Object {"id": String("effectTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(240)}}, Object {"id": String("soundTools"), "visible": Bool(false), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(280)}}], "mainToolbar": Object {"visible": Bool(true), "items": Array [String("drawAid.grid.set"), String("gridType"), String("gridOverlay"), String("separator"), String("drawAid.onionSkin.set"), String("onionSkinPrevious"), String("onionSkinNext"), String("drawAid.autoLightTable.set"), String("separator"), String("firstFrame"), String("playStop"), String("lastFrame"), String("playback.loop.set"), String("space"), String("lipsync.panel.open"), String("flexibleSpace"), String("cameraList"), String("sceneList"), String("workspaceList")]}, "fullScreen": Object {"centralPanel": String("cameraView"), "corners": String("sides"), "docks": Object {"left": Array [], "right": Array [], "top": Array [], "bottom": Array []}, "floating": Array [], "toolPalettes": Array [Object {"id": String("drawingTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(120)}}, Object {"id": String("animationTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(160)}}, Object {"id": String("boneTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(200)}}, Object {"id": String("effectTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(240)}}, Object {"id": String("soundTools"), "visible": Bool(false), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(280)}}], "mainToolbar": Object {"visible": Bool(true), "items": Array [String("drawAid.grid.set"), String("gridType"), String("gridOverlay"), String("separator"), String("drawAid.onionSkin.set"), String("onionSkinPrevious"), String("onionSkinNext"), String("drawAid.autoLightTable.set"), String("separator"), String("firstFrame"), String("playStop"), String("lastFrame"), String("playback.loop.set"), String("space"), String("lipsync.panel.open"), String("flexibleSpace"), String("cameraList"), String("sceneList"), String("workspaceList")]}}}
+ right: Object {"centralPanel": String("cameraView"), "corners": String("sides"), "docks": Object {"left": Array [], "right": Array [Object {"tabs": Array [String("colour"), String("properties"), String("library")], "current": String("colour"), "size": Number(330)}, Object {"tabs": Array [String("pen"), String("text"), String("cells")], "current": String("pen")}, Object {"tabs": Array [String("history")], "current": String("history")}], "top": Array [], "bottom": Array [Object {"tabs": Array [String("timeline"), String("xsheet"), String("functionEditor"), String("storyline")], "current": String("timeline"), "size": Number(190)}]}, "floating": Array [], "toolPalettes": Array [Object {"id": String("drawingTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(120)}}, Object {"id": String("animationTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(160)}}, Object {"id": String("boneTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(200)}}, Object {"id": String("effectTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(240)}}, Object {"id": String("soundTools"), "visible": Bool(false), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(280)}}], "mainToolbar": Object {"visible": Bool(true), "items": Array [String("drawAid.grid.set"), String("gridType"), String("gridOverlay"), String("separator"), String("drawAid.onionSkin.set"), String("onionSkinPrevious"), String("onionSkinNext"), String("drawAid.autoLightTable.set"), String("separator"), String("firstFrame"), String("playStop"), String("lastFrame"), String("playback.loop.set"), String("space"), String("lipsync.panel.open"), String("flexibleSpace"), String("cameraList"), String("sceneList"), String("workspaceList")]}, "fullScreen": Object {"centralPanel": String("cameraView"), "corners": String("sides"), "docks": Object {"left": Array [], "right": Array [], "top": Array [], "bottom": Array []}, "floating": Array [], "toolPalettes": Array [Object {"id": String("drawingTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(120)}}, Object {"id": String("animationTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(160)}}, Object {"id": String("boneTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(200)}}, Object {"id": String("effectTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(240)}}, Object {"id": String("soundTools"), "visible": Bool(false), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(280)}}], "mainToolbar": Object {"visible": Bool(true), "items": Array [String("drawAid.grid.set"), String("gridType"), String("gridOverlay"), String("separator"), String("drawAid.onionSkin.set"), String("onionSkinPrevious"), String("onionSkinNext"), String("drawAid.autoLightTable.set"), String("separator"), String("firstFrame"), String("playStop"), String("lastFrame"), String("playback.loop.set"), String("space"), String("lipsync.panel.open"), String("flexibleSpace"), String("cameraList"), String("sceneList"), String("workspaceList")]}}}
+test explicitly_saving_and_reselecting_current_workspace_keeps_layout ... FAILED
+
+thread 'dry_run_clipboard_emits_no_change_event' (26148) panicked at crates\executor\tests\c12_r1_contracts.rs:78:5:
+dry run emitted [Event { name: "edit.clipboard.changed", payload: Object {"kind": String("elements"), "itemCount": Number(1)} }]
+test dry_run_clipboard_emits_no_change_event ... FAILED
+
+thread 'doc_diff_sees_prior_uncommitted_atomic_steps' (23616) panicked at crates\executor\tests\c12_r1_contracts.rs:303:5:
+11 §7.3 queries see earlier staged state
+
+thread 'clipboard_get_returns_the_specified_clipboard_directly' (9000) panicked at crates\executor\tests\c12_r1_contracts.rs:471:5:
+assertion `left == right` failed: 01 12.1/12.4 return Clipboard, not a wrapper: {"clipboard":{"kind":"elements","sourceContext":null,"sourceProjectId":null,"itemCount":1,"items":[{"elementId":"e1"}],"options":null}}
+  left: Null
+ right: "elements"
+test doc_diff_sees_prior_uncommitted_atomic_steps ... FAILED
+test clipboard_get_returns_the_specified_clipboard_directly ... FAILED
+
+thread 'workspace_switch_defaults_to_autosaving_current_arrangement' (9108) panicked at crates\executor\tests\c12_r1_contracts.rs:330:5:
+assertion `left == right` failed: 01 §5.5 autoSave is ON by default
+  left: Object {"centralPanel": String("cameraView"), "corners": String("sides"), "docks": Object {"left": Array [], "right": Array [Object {"tabs": Array [String("colour"), String("properties"), String("library")], "current": String("colour"), "size": Number(330)}, Object {"tabs": Array [String("pen"), String("text"), String("cells")], "current": String("pen")}], "top": Array [], "bottom": Array [Object {"tabs": Array [String("timeline"), String("xsheet"), String("functionEditor"), String("storyline")], "current": String("timeline"), "size": Number(190)}]}, "floating": Array [], "toolPalettes": Array [Object {"id": String("drawingTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(120)}}, Object {"id": String("animationTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(160)}}, Object {"id": String("boneTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(200)}}, Object {"id": String("effectTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(240)}}, Object {"id": String("soundTools"), "visible": Bool(false), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(280)}}], "mainToolbar": Object {"visible": Bool(true), "items": Array [String("drawAid.grid.set"), String("gridType"), String("gridOverlay"), String("separator"), String("drawAid.onionSkin.set"), String("onionSkinPrevious"), String("onionSkinNext"), String("drawAid.autoLightTable.set"), String("separator"), String("firstFrame"), String("playStop"), String("lastFrame"), String("playback.loop.set"), String("space"), String("lipsync.panel.open"), String("flexibleSpace"), String("cameraList"), String("sceneList"), String("workspaceList")]}, "fullScreen": Object {"centralPanel": String("cameraView"), "corners": String("sides"), "docks": Object {"left": Array [], "right": Array [], "top": Array [], "bottom": Array []}, "floating": Array [], "toolPalettes": Array [Object {"id": String("drawingTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(120)}}, Object {"id": String("animationTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(160)}}, Object {"id": String("boneTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(200)}}, Object {"id": String("effectTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(240)}}, Object {"id": String("soundTools"), "visible": Bool(false), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(280)}}], "mainToolbar": Object {"visible": Bool(true), "items": Array [String("drawAid.grid.set"), String("gridType"), String("gridOverlay"), String("separator"), String("drawAid.onionSkin.set"), String("onionSkinPrevious"), String("onionSkinNext"), String("drawAid.autoLightTable.set"), String("separator"), String("firstFrame"), String("playStop"), String("lastFrame"), String("playback.loop.set"), String("space"), String("lipsync.panel.open"), String("flexibleSpace"), String("cameraList"), String("sceneList"), String("workspaceList")]}}}
+ right: Object {"centralPanel": String("cameraView"), "corners": String("sides"), "docks": Object {"left": Array [], "right": Array [Object {"tabs": Array [String("colour"), String("properties"), String("library")], "current": String("colour"), "size": Number(330)}, Object {"tabs": Array [String("pen"), String("text"), String("cells")], "current": String("pen")}, Object {"tabs": Array [String("history")], "current": String("history")}], "top": Array [], "bottom": Array [Object {"tabs": Array [String("timeline"), String("xsheet"), String("functionEditor"), String("storyline")], "current": String("timeline"), "size": Number(190)}]}, "floating": Array [], "toolPalettes": Array [Object {"id": String("drawingTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(120)}}, Object {"id": String("animationTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(160)}}, Object {"id": String("boneTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(200)}}, Object {"id": String("effectTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(240)}}, Object {"id": String("soundTools"), "visible": Bool(false), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(280)}}], "mainToolbar": Object {"visible": Bool(true), "items": Array [String("drawAid.grid.set"), String("gridType"), String("gridOverlay"), String("separator"), String("drawAid.onionSkin.set"), String("onionSkinPrevious"), String("onionSkinNext"), String("drawAid.autoLightTable.set"), String("separator"), String("firstFrame"), String("playStop"), String("lastFrame"), String("playback.loop.set"), String("space"), String("lipsync.panel.open"), String("flexibleSpace"), String("cameraList"), String("sceneList"), String("workspaceList")]}, "fullScreen": Object {"centralPanel": String("cameraView"), "corners": String("sides"), "docks": Object {"left": Array [], "right": Array [], "top": Array [], "bottom": Array []}, "floating": Array [], "toolPalettes": Array [Object {"id": String("drawingTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(120)}}, Object {"id": String("animationTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(160)}}, Object {"id": String("boneTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(200)}}, Object {"id": String("effectTools"), "visible": Bool(true), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(240)}}, Object {"id": String("soundTools"), "visible": Bool(false), "floating": Bool(false), "position": Object {"x": Number(10), "y": Number(280)}}], "mainToolbar": Object {"visible": Bool(true), "items": Array [String("drawAid.grid.set"), String("gridType"), String("gridOverlay"), String("separator"), String("drawAid.onionSkin.set"), String("onionSkinPrevious"), String("onionSkinNext"), String("drawAid.autoLightTable.set"), String("separator"), String("firstFrame"), String("playStop"), String("lastFrame"), String("playback.loop.set"), String("space"), String("lipsync.panel.open"), String("flexibleSpace"), String("cameraList"), String("sceneList"), String("workspaceList")]}}}
+
+thread 'expect_rev_error_reports_current_rev_and_small_current_object' (23584) panicked at crates\executor\tests\c12_r1_contracts.rs:226:5:
+assertion `left == right` failed: 10 REV-05 and 11 §10
+  left: Null
+ right: 1
+test workspace_switch_defaults_to_autosaving_current_arrangement ... FAILED
+test expect_rev_error_reports_current_rev_and_small_current_object ... FAILED
+
+thread 'fullscreen_state_and_active_view_agree_with_visible_central_panel' (14168) panicked at crates\executor\tests\c12_r1_contracts.rs:397:5:
+assertion `left == right` failed: 01 §5.6 / 11 §13: no hidden state traps
+  left: String("cameraView")
+ right: String("drawingView")
+test fullscreen_state_and_active_view_agree_with_visible_central_panel ... FAILED
+
+thread 'parameter_dry_run_is_honoured_inside_atomic_batch' (1180) panicked at crates\executor\tests\c12_r1_contracts.rs:110:5:
+assertion `left == right` failed: doc.object.patch dryRun is also a command parameter (10 AG-02)
+  left: 2
+ right: 1
+test parameter_dry_run_is_honoured_inside_atomic_batch ... FAILED
+
+thread 'external_safe_code_cannot_install_a_mutated_stale_snapshot' (27636) panicked at crates\executor\tests\c12_r1_contracts.rs:265:68:
+called `Result::unwrap()` on an `Err` value: [ModelError { code: "arg.invalid", message: "no container at `/meta/review`", details: Object {"pointer": String("/meta/review"), "op": String("add")} }]
+test external_safe_code_cannot_install_a_mutated_stale_snapshot ... FAILED
+
+thread 'expect_rev_map_checks_every_listed_object_not_only_patch_targets' (28200) panicked at crates\executor\tests\c12_r1_contracts.rs:244:5:
+10 REV-05: any listed mismatch must fail: Envelope { status: Ok, result: Some(Object {"changes": Array [Object {"id": String("sc_01K742SG0YSRA1305J7887BDVZ"), "type": String("scene"), "op": String("modified"), "rev": Number(2), "patch": Array [Object {"op": String("add"), "path": String("/meta"), "value": Object {"review": Number(9)}}]}], "documentRev": Number(2)}), targets: Some(Object {"ids": Array [String("sc_01K742SG0YSRA1305J7887BDVZ")]}), changes: [ChangeRecord { id: "sc_01K742SG0YSRA1305J7887BDVZ", ty: "scene", op: "modified", rev: 2, parent_id: None, index: None, patch: Some([Object {"op": String("add"), "path": String("/meta"), "value": Object {"review": Number(9)}}]) }], changes_truncated: false, changes_since: None, undo: Some(UndoRef { step_id: "u-1", label: "Set meta" }), warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: None }
+test expect_rev_map_checks_every_listed_object_not_only_patch_targets ... FAILED
+
+thread 'checkpoint_in_atomic_batch_has_the_committed_content_revision' (27744) panicked at crates\executor\tests\c12_r1_contracts.rs:288:5:
+assertion `left == right` failed: checkpoint contains changed content with the base revision
+  left: Number(1)
+ right: 2
+test idle_query_does_not_repair_context_after_atomic_current_element_change ... ok
+test checkpoint_in_atomic_batch_has_the_committed_content_revision ... FAILED
+
+thread 'changes_report_drawing_revision_when_a_stroke_changes' (31672) panicked at crates\executor\tests\c12_r1_contracts.rs:317:5:
+11 P6: every changed object's new revision, including REV-02 drawing; Envelope { status: Ok, result: Some(Object {"changes": Array [Object {"id": String("dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0QD1F2HFZSX8R4V7WP"), "type": String("stroke"), "op": String("modified"), "rev": Number(2), "patch": Array [Object {"op": String("add"), "path": String("/meta"), "value": Object {"review": Number(1)}}]}], "documentRev": Number(2)}), targets: Some(Object {"ids": Array [String("dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0QD1F2HFZSX8R4V7WP")]}), changes: [ChangeRecord { id: "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0QD1F2HFZSX8R4V7WP", ty: "stroke", op: "modified", rev: 2, parent_id: None, index: None, patch: Some([Object {"op": String("add"), "path": String("/meta"), "value": Object {"review": Number(1)}}]) }], changes_truncated: false, changes_since: None, undo: Some(UndoRef { step_id: "u-1", label: "Set meta" }), warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: None }
+test changes_report_drawing_revision_when_a_stroke_changes ... FAILED
+
+thread 'sequential_batch_dry_run_queries_see_previous_simulated_edits' (29456) panicked at crates\executor\tests\c12_r1_contracts.rs:129:5:
+assertion `left == right` failed: 11 §7.2–7.3: predict the actual sequence
+  left: Null
+ right: Object {"review": Number(73)}
+test sequential_batch_dry_run_queries_see_previous_simulated_edits ... FAILED
+
+thread 'diff_older_than_snapshot_window_replays_repeated_entry_batch' (30340) panicked at crates\executor\tests\c12_r1_contracts.rs:438:5:
+10 AG-09 retains at least 10,000 transactions; after only 258: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(259), error: Some(CommandError { code: "history.diverged", message: "the document is not in the state this history step was recorded against: the value differs at `/meta`", details: Object {"entry": String("Scene(Id(sc_01K742SG0YSRA1305J7887BDVZ))"), "pointer": String("/meta"), "op": String("remove")}, hint: None }), dry_run: false, steps: None }
+test diff_older_than_snapshot_window_replays_repeated_entry_batch ... FAILED
+test job_wait_timeout_policy_is_explicitly_measured ... ok
+
+thread 'historical_diff_reports_the_revision_of_its_requested_end_state' (14016) panicked at crates\executor\tests\c12_r1_contracts.rs:558:5:
+assertion `left == right` failed: 10 REV-02: old content must carry its actual old revision: {"fromRev":1,"toRev":2,"changes":[{"id":"sc_01K742SG0YSRA1305J7887BDVZ","type":"scene","op":"modified","rev":45,"patch":[{"op":"add","path":"/meta","value":{"review":0}}]}],"truncated":false}
+  left: Number(45)
+ right: 2
+test historical_diff_reports_the_revision_of_its_requested_end_state ... FAILED
+
+thread 'session_idempotency_survives_more_than_ten_thousand_other_requests' (3148) panicked at crates\executor\tests\c12_r1_contracts.rs:462:5:
+assertion `left == right` failed: 11 7.2 guarantees the original result within the session
+  left: Envelope { status: Ok, result: Some(Object {"changes": Array [Object {"id": String("sc_01K742SG0YSRA1305J7887BDVZ"), "type": String("scene"), "op": String("modified"), "rev": Number(4), "patch": Array [Object {"op": String("replace"), "path": String("/meta/review"), "value": Number(1), "oldValue": Number(2)}]}], "documentRev": Number(4)}), targets: Some(Object {"ids": Array [String("sc_01K742SG0YSRA1305J7887BDVZ")]}), changes: [ChangeRecord { id: "sc_01K742SG0YSRA1305J7887BDVZ", ty: "scene", op: "modified", rev: 4, parent_id: None, index: None, patch: Some([Object {"op": String("replace"), "path": String("/meta/review"), "value": Number(1), "oldValue": Number(2)}]) }], changes_truncated: false, changes_since: None, undo: Some(UndoRef { step_id: "u-3", label: "Set meta" }), warnings: [], document_rev: Some(4), error: None, dry_run: false, steps: None }
+ right: Envelope { status: Ok, result: Some(Object {"changes": Array [Object {"id": String("sc_01K742SG0YSRA1305J7887BDVZ"), "type": String("scene"), "op": String("modified"), "rev": Number(2), "patch": Array [Object {"op": String("add"), "path": String("/meta"), "value": Object {"review": Number(1)}}]}], "documentRev": Number(2)}), targets: Some(Object {"ids": Array [String("sc_01K742SG0YSRA1305J7887BDVZ")]}), changes: [ChangeRecord { id: "sc_01K742SG0YSRA1305J7887BDVZ", ty: "scene", op: "modified", rev: 2, parent_id: None, index: None, patch: Some([Object {"op": String("add"), "path": String("/meta"), "value": Object {"review": Number(1)}}]) }], changes_truncated: false, changes_since: None, undo: Some(UndoRef { step_id: "u-1", label: "Set meta" }), warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: None }
+test session_idempotency_survives_more_than_ten_thousand_other_requests ... FAILED
+
+thread 'diff_retains_the_last_save_even_after_ten_thousand_transactions' (6380) panicked at crates\executor\tests\c12_r1_contracts.rs:576:5:
+10 AG-09 retains at least to the last save AND the last 10000 transactions: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(10002), error: Some(CommandError { code: "doc.diffUnavailable", message: "revision 1 is outside the retained history (2–10002)", details: Object {"oldestRev": Number(2), "documentRev": Number(10002)}, hint: Some("re-read the objects instead") }), dry_run: false, steps: None }
+test diff_retains_the_last_save_even_after_ten_thousand_transactions ... FAILED
+
+failures:
+
+failures:
+    agent_cannot_cancel_another_sessions_job
+    agent_cannot_read_another_sessions_jobs_with_all_true
+    changes_report_drawing_revision_when_a_stroke_changes
+    checkpoint_in_atomic_batch_has_the_committed_content_revision
+    clipboard_get_returns_the_specified_clipboard_directly
+    clipboard_set_validates_the_content_for_its_kind
+    diff_older_than_snapshot_window_replays_repeated_entry_batch
+    diff_retains_the_last_save_even_after_ten_thousand_transactions
+    doc_diff_sees_prior_uncommitted_atomic_steps
+    dry_run_cannot_cancel_a_running_job
+    dry_run_clipboard_emits_no_change_event
+    edit_clipboard_is_disabled_without_a_project
+    edit_commands_promised_for_c12_are_implemented
+    every_registry_entry_has_a_gui_binding_or_agent_only_justification
+    expect_rev_error_reports_current_rev_and_small_current_object
+    expect_rev_map_checks_every_listed_object_not_only_patch_targets
+    explicitly_saving_and_reselecting_current_workspace_keeps_layout
+    external_safe_code_cannot_install_a_mutated_stale_snapshot
+    failed_atomic_batch_cannot_cancel_a_running_job
+    failed_batch_clipboard_emits_no_change_event
+    fullscreen_state_and_active_view_agree_with_visible_central_panel
+    historical_diff_reports_the_revision_of_its_requested_end_state
+    job_wait_obeys_request_id_and_retains_document_revision
+    parameter_dry_run_is_honoured_inside_atomic_batch
+    registry_file_and_network_commands_declare_required_scopes
+    registry_owners_follow_the_milestone_plan
+    registry_stubs_have_actual_parameter_constraints_and_examples
+    renamed_builtin_workspace_can_still_be_restored
+    revision_exhaustion_is_an_error_and_does_not_kill_the_document_thread
+    sequential_batch_dry_run_queries_see_previous_simulated_edits
+    session_idempotency_survives_more_than_ten_thousand_other_requests
+    setting_mode_activates_a_view_of_the_requested_type
+    workspace_switch_defaults_to_autosaving_current_arrangement
+
+test result: FAILED. 3 passed; 33 failed; 0 ignored; 0 measured; 0 filtered out; finished in 21.35s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r1_contracts`

@@ -1,0 +1,24 @@
+{
+  "inventory": 796,
+  "typed": 134,
+  "typedImplemented": 62,
+  "typedDeferred": 72,
+  "untyped": 662,
+  "events": 77,
+  "implementedEvents": 10,
+  "examples": 147,
+  "commandClassifications": {
+    "deferred-with-owner": 65,
+    "divergent": 686,
+    "implemented": 45
+  },
+  "requirementClassifications": {
+    "implemented": 36,
+    "divergent": 27,
+    "deferred-with-owner": 7,
+    "missing": 2
+  },
+  "untypedBoundInManifest": 3,
+  "unreachableUnannotatedEntries": 659,
+  "typedMissingTopLevelParameters": {}
+}

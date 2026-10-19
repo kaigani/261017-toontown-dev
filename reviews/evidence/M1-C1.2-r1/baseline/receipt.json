@@ -1,0 +1,42 @@
+{
+  "what": "Local gate logs recorded by scripts/record-gates.py.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked --no-fail-fast",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-lint.log": "pnpm lint",
+    "gates/pnpm-typecheck.log": "pnpm typecheck",
+    "gates/pnpm-test.log": "pnpm test",
+    "gates/pnpm-format.log": "pnpm format:check",
+    "gates/pnpm-licenses.log": "pnpm licenses:check",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless.log": "cargo build --release --locked -p tt-headless && \"C:\\Users\\kaiga\\work\\review\\m1-c12-r1\\target\\release\\toontown-headless.exe\" --version && \"C:\\Users\\kaiga\\work\\review\\m1-c12-r1\\target\\release\\toontown-headless.exe\" --selftest && \"C:\\Python313\\python.exe\" scripts/check-headless-deps.py \"C:\\Users\\kaiga\\work\\review\\m1-c12-r1\\target\\release\\toontown-headless.exe\"",
+    "gates/reviewer-python-suites.log": "\"C:\\Python313\\python.exe\" scripts/run-reviewer-python-suites.py"
+  },
+  "status": {
+    "gates/build.log": 0,
+    "gates/test.log": 0,
+    "gates/pnpm-test.log": 0,
+    "gates/reviewer-python-suites.log": 0
+  },
+  "recordedAt": "2026-10-19T05:08:03+00:00",
+  "baseCommit": "23ca3d5726ab65d639f1e145045dd30ba8f24351",
+  "dirtyFiles": [
+    "crates/executor/tests/c12_r1_contracts.rs",
+    "reviews/evidence/M1-C1.2-r1/"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "sha256": {
+    "gates/build.log": "4d005a9d9a6cad514072d6e12a38b26ef01e03b264cb9012f83f507e6cffe8fe",
+    "gates/pnpm-test.log": "6768dc5a2a4f74a5625db00f43df42916dfaacdcfaccae24167df7a7b791230c",
+    "gates/reviewer-python-suites.log": "40de911a05337503807e93e14f4ef7a72cc6f0629f51611c84058abd51e10836",
+    "gates/test.log": "c18588e25e2f74d6e3fc7a4e0d8dc918c617f1760a0df77cbb1c96d3d422c196"
+  }
+}

@@ -1,0 +1,578 @@
+[
+  {
+    "id": "R01",
+    "requirement": "Inventory IDs, namespace, kind and verbatim table columns (A)",
+    "status": "implemented",
+    "implementation": "crates/registry/src/inventory.rs:8",
+    "tests": "c12_registry; registry.json; this independent set comparison",
+    "note": "796 exact; no added/missing ID"
+  },
+  {
+    "id": "R02",
+    "requirement": "Every inventory entry has constrained parameter/result schemas (plan 3.2; 11 14.2)",
+    "status": "divergent",
+    "implementation": "crates/registry/src/lib.rs:464",
+    "tests": "registry_stubs_have_actual_parameter_constraints_and_examples",
+    "note": "C12-R1-12: 662 untyped placeholders"
+  },
+  {
+    "id": "R03",
+    "requirement": "Every command example executes and matches its result schema (11 14.2)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/job.rs:63",
+    "tests": "every_executable_typed_example_also_validates_its_result_schema",
+    "note": "147 typed examples; one result-schema violation; 662 entries lack examples; C12-R1-12,13"
+  },
+  {
+    "id": "R04",
+    "requirement": "Every stub names a correct owner (plan 4)",
+    "status": "divergent",
+    "implementation": "crates/registry/src/owners.rs:14",
+    "tests": "registry_owners_follow_the_milestone_plan",
+    "note": "C12-R1-21; typed deferred owners in command-register.json"
+  },
+  {
+    "id": "R05",
+    "requirement": "Registry version and generated frontend schema freshness",
+    "status": "implemented",
+    "implementation": "crates/registry/src/lib.rs:52",
+    "tests": "frontend_schemas; c12_registry",
+    "note": "0.1.0; generated snapshots remain current"
+  },
+  {
+    "id": "R06",
+    "requirement": "Attribute macro rejects missing example/duplicate ID/wrong kind",
+    "status": "implemented",
+    "implementation": "crates/registry-macros/src/lib.rs:176",
+    "tests": "c12_r1_macro",
+    "note": "Missing example compile error; duplicates/wrong kind assembly errors"
+  },
+  {
+    "id": "R07",
+    "requirement": "Exclusive mutation capability (plan 3.2; 11 P2)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/lib.rs:180",
+    "tests": "external_safe_code_cannot_install_a_mutated_stale_snapshot; compile_fail",
+    "note": "Private Cx fields enforced; safe snapshot/edit/open replacement bypass remains; C12-R1-01"
+  },
+  {
+    "id": "R08",
+    "requirement": "One serialized document queue (REV-06)",
+    "status": "implemented",
+    "implementation": "crates/executor/src/lib.rs:249",
+    "tests": "eight_clients_cas_commands_and_batches_have_no_lost_updates",
+    "note": "8 clients, 200 commits; every rev 2..201 once; no lost updates"
+  },
+  {
+    "id": "R09",
+    "requirement": "Staged full integrity gate and rollback of document edits",
+    "status": "implemented",
+    "implementation": "crates/executor/src/cx.rs:326",
+    "tests": "c12_transactions; staged_commit; c11_r4/r5/r6",
+    "note": "Multi-entry writes use checked staging; inherited structural bounds retained"
+  },
+  {
+    "id": "R10",
+    "requirement": "Atomic rollback covers every observable side effect (11 7.3)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:48",
+    "tests": "failed_atomic_batch_cannot_cancel_a_running_job; failed_batch_clipboard_emits_no_change_event",
+    "note": "C12-R1-02: shared jobs and pending events escape rollback"
+  },
+  {
+    "id": "R11",
+    "requirement": "Atomic batch one revision, undo step and label",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:512",
+    "tests": "c12_transactions",
+    "note": "One commit, batch label, rollback on model failure"
+  },
+  {
+    "id": "R12",
+    "requirement": "Query steps see prior staged changes (11 7.3)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/doc.rs:1215",
+    "tests": "doc_diff_sees_prior_uncommitted_atomic_steps",
+    "note": "Most queries do; doc.diff reads live project instead; C12-R1-09"
+  },
+  {
+    "id": "R13",
+    "requirement": "Numeric/named intermediate references",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:622",
+    "tests": "c12_transactions",
+    "note": "1-based SI-017 interpretation; missing/forward references rejected"
+  },
+  {
+    "id": "R14",
+    "requirement": "Long-running job-kind steps rejected in atomic batches",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:138",
+    "tests": "c12_transactions",
+    "note": "Kind=job rejected; job.cancel is kind=ui and still must roll back"
+  },
+  {
+    "id": "R15",
+    "requirement": "Ordinary edit dryRun changes/history/revisions",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:370",
+    "tests": "ordinary_dry_run_preserves_exact_history_and_matches_real_result",
+    "note": "Exact snapshot/history unchanged; result and changes match real call"
+  },
+  {
+    "id": "R16",
+    "requirement": "Dry run covers clipboard events and cancellation",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:48",
+    "tests": "dry_run_cannot_cancel_a_running_job; dry_run_clipboard_emits_no_change_event",
+    "note": "C12-R1-02"
+  },
+  {
+    "id": "R17",
+    "requirement": "Command-parameter dryRun in atomic batch",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:512",
+    "tests": "parameter_dry_run_is_honoured_inside_atomic_batch",
+    "note": "C12-R1-03"
+  },
+  {
+    "id": "R18",
+    "requirement": "Sequential dry-run batch simulates preceding edits",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:471",
+    "tests": "sequential_batch_dry_run_queries_see_previous_simulated_edits",
+    "note": "C12-R1-03"
+  },
+  {
+    "id": "R19",
+    "requirement": "Common run_command envelope including job.wait",
+    "status": "divergent",
+    "implementation": "crates/executor/src/lib.rs:218",
+    "tests": "job_wait_obeys_request_id_and_retains_document_revision",
+    "note": "job.wait bypasses queue/options/rev/cache; C12-R1-04"
+  },
+  {
+    "id": "R20",
+    "requirement": "Undo/redo canonical content and revision stamps",
+    "status": "implemented",
+    "implementation": "crates/executor/src/cx.rs:450",
+    "tests": "ten_thousand_history_operations_match_independent_content_oracle_and_replay; c11_r6",
+    "note": "Fresh seed; 10k operations + fresh 10k replay byte-identical"
+  },
+  {
+    "id": "R21",
+    "requirement": "Failed batch history, redo invalidation, grouped labels",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:231",
+    "tests": "c12_transactions; c12_r1_stress",
+    "note": "No failed-document batch step retained; new edits invalidate redo"
+  },
+  {
+    "id": "R22",
+    "requirement": "Checkpoint create/list/delete/restore and history independence",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/checkpoint.rs:1",
+    "tests": "c12_transactions; c12_r1_stress",
+    "note": "Normal checkpoints restore undoably; copy-on-write, no full serialized copy"
+  },
+  {
+    "id": "R23",
+    "requirement": "Checkpoint created from staged content has coherent rev",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/checkpoint.rs:60",
+    "tests": "checkpoint_in_atomic_batch_has_the_committed_content_revision",
+    "note": "C12-R1-10"
+  },
+  {
+    "id": "R24",
+    "requirement": "Checkpoint cost at 100k strokes/10k drawings",
+    "status": "implemented",
+    "implementation": "crates/model/src/document/mod.rs:159",
+    "tests": "c12_r1_scale; large-documents.json",
+    "note": "20 creates measured; per-entry Arc sharing, index sharing, map clone cost remains"
+  },
+  {
+    "id": "R25",
+    "requirement": "expectRev scalar and envelope guard",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:173",
+    "tests": "c12_transactions; eight_clients_cas_commands_and_batches_have_no_lost_updates",
+    "note": "Normal CAS conflicts prevent mutations"
+  },
+  {
+    "id": "R26",
+    "requirement": "expectRev map checks every listed object (REV-05)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/doc.rs:874",
+    "tests": "expect_rev_map_checks_every_listed_object_not_only_patch_targets",
+    "note": "C12-R1-07"
+  },
+  {
+    "id": "R27",
+    "requirement": "Conflict details.currentRev and current small JSON (REV-05)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:189",
+    "tests": "expect_rev_error_reports_current_rev_and_small_current_object",
+    "note": "C12-R1-07"
+  },
+  {
+    "id": "R28",
+    "requirement": "requestId retry same ID returns original without execution",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:22",
+    "tests": "session_idempotency_survives_more_than_ten_thousand_other_requests",
+    "note": "Eviction permits destructive retry in same session; job.wait bypass; C12-R1-04,06"
+  },
+  {
+    "id": "R29",
+    "requirement": "requestId different parameters same ID",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:356",
+    "tests": "request_id_collision_returns_original_result_per_literal_spec",
+    "note": "Literal 11 7.2 met; stricter review-charter rule conflicts/needs ruling; C12-R1-22 P2"
+  },
+  {
+    "id": "R30",
+    "requirement": "requestId persistence across process restart",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/run.rs:22",
+    "tests": "source audit",
+    "note": "Not required by 11 7.2 (within-session); durable session protocol is C1.4 decision, not a persistence defect"
+  },
+  {
+    "id": "R31",
+    "requirement": "documentRev exactly +1 per edit/undo/redo (REV-01/03)",
+    "status": "implemented",
+    "implementation": "crates/executor/src/cx.rs:388",
+    "tests": "c12_transactions; c12_r1_stress",
+    "note": "Normal revisions checked on every random operation"
+  },
+  {
+    "id": "R32",
+    "requirement": "Revision overflow is controlled error, not thread panic",
+    "status": "divergent",
+    "implementation": "crates/executor/src/cx.rs:388",
+    "tests": "revision_exhaustion_is_an_error_and_does_not_kill_the_document_thread",
+    "note": "C12-R1-19"
+  },
+  {
+    "id": "R33",
+    "requirement": "Drawing rev follows content edits (REV-02)",
+    "status": "implemented",
+    "implementation": "crates/model/src/document/stamp.rs:1",
+    "tests": "c12_transactions; changes_report_drawing_revision_when_a_stroke_changes",
+    "note": "Stamp correct; notification incomplete in next row"
+  },
+  {
+    "id": "R34",
+    "requirement": "Every changed revision returned to caller (11 P6)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/cx.rs:617",
+    "tests": "changes_report_drawing_revision_when_a_stroke_changes",
+    "note": "C12-R1-11: changed drawing omitted"
+  },
+  {
+    "id": "R35",
+    "requirement": "Persist revs through save/reopen (REV-04)",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/project.rs:1",
+    "tests": "typed declarations; handoff",
+    "note": "C1.3 persistence; cannot prove with C1.2 stubs"
+  },
+  {
+    "id": "R36",
+    "requirement": "Change sets oldValue/concrete paths/numeric opaque keys",
+    "status": "implemented",
+    "implementation": "crates/model/src/document/mod.rs:535",
+    "tests": "staged_commit; staged_inverse; c11_r6; c12_r1_stress",
+    "note": "Checked canonical before/after diffs; no stateless inversion resurrected"
+  },
+  {
+    "id": "R37",
+    "requirement": "Historical doc.diff within retained 10k window",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/doc.rs:1166",
+    "tests": "diff_older_than_snapshot_window_replays_repeated_entry_batch; historical_diff_reports_the_revision_of_its_requested_end_state",
+    "note": "C12-R1-08: repeated-entry reconstruction fails and old revs drift"
+  },
+  {
+    "id": "R38",
+    "requirement": "doc.diff retains last save even beyond 10k (AG-09)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/session.rs:104",
+    "tests": "diff_retains_the_last_save_even_after_ten_thousand_transactions",
+    "note": "C12-R1-08"
+  },
+  {
+    "id": "R39",
+    "requirement": "500-change envelope cap and oversized event elision",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:184",
+    "tests": "c12_transactions; c12_policy",
+    "note": "ChangesSince/truncated and >64 KiB elision; query for full values"
+  },
+  {
+    "id": "R40",
+    "requirement": "IDs/compound paths/special references/projections",
+    "status": "implemented",
+    "implementation": "crates/executor/src/cx.rs:1",
+    "tests": "c12_policy; c11_r1/r2/r3",
+    "note": "SI-018 current-element path choice qualified; known active-view defect C12-R1-15"
+  },
+  {
+    "id": "R41",
+    "requirement": "Derived fields already computable from model",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/derived.rs:1",
+    "tests": "c12_policy",
+    "note": "Exposures/frame counts/drawing content projections covered"
+  },
+  {
+    "id": "R42",
+    "requirement": "Geometry/render/media-derived fields not yet computable",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/derived.rs:1",
+    "tests": "c12_policy; doc.derivedUnavailable",
+    "note": "Explicit M2/M3/M7/M8 owners and warnings; no pretend complete renderer"
+  },
+  {
+    "id": "R43",
+    "requirement": "x-command / structural mutation routes and drawing aliases",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/doc.rs:837",
+    "tests": "c12_registry::drawing_command_delegation_ruling; c12_policy",
+    "note": "Aliases mapped; specialized handlers intentionally M2/M3 etc; no hidden generic mutation"
+  },
+  {
+    "id": "R44",
+    "requirement": "No-project enablement (01 1.3)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/edit.rs:635",
+    "tests": "edit_clipboard_is_disabled_without_a_project",
+    "note": "Clipboard get/set omit project requirement; C12-R1-20"
+  },
+  {
+    "id": "R45",
+    "requirement": "Dirty-project quit fail/discard/save policy",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/app.rs:481",
+    "tests": "c12_kernel_state",
+    "note": "Fail and discard implemented; save returns owned C1.3 stub; native quit routing later"
+  },
+  {
+    "id": "R46",
+    "requirement": "Fullscreen explicit enabled parameter",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/window.rs:31",
+    "tests": "c12_kernel_state; c12_r1_contracts",
+    "note": "Explicit setting/repeat idempotent; active context divergence next row"
+  },
+  {
+    "id": "R47",
+    "requirement": "Mode/current view/fullscreen readback agreement",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/app.rs:381",
+    "tests": "setting_mode_activates_a_view_of_the_requested_type; fullscreen_state_and_active_view_agree_with_visible_central_panel",
+    "note": "C12-R1-15"
+  },
+  {
+    "id": "R48",
+    "requirement": "Workspace autoSave/default/save/reset rules",
+    "status": "divergent",
+    "implementation": "crates/executor/src/ui.rs:917",
+    "tests": "workspace_switch_defaults_to_autosaving_current_arrangement; explicitly_saving_and_reselecting_current_workspace_keeps_layout; renamed_builtin_workspace_can_still_be_restored",
+    "note": "C12-R1-16"
+  },
+  {
+    "id": "R49",
+    "requirement": "Queryable panels/layout/toolbars",
+    "status": "implemented",
+    "implementation": "crates/executor/src/ui.rs:1",
+    "tests": "c12_kernel_state",
+    "note": "Kernel state only; no native rendering assertion"
+  },
+  {
+    "id": "R50",
+    "requirement": "All edit.* functionality due C1.2 (plan 4)",
+    "status": "missing",
+    "implementation": "crates/executor/src/commands/edit.rs:1",
+    "tests": "edit_commands_promised_for_c12_are_implemented",
+    "note": "Seven commands return M4 stubs without a plan exception; C12-R1-14"
+  },
+  {
+    "id": "R51",
+    "requirement": "Clipboard structured kind validation",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/edit.rs:608",
+    "tests": "clipboard_set_validates_the_content_for_its_kind",
+    "note": "C12-R1-17"
+  },
+  {
+    "id": "R52",
+    "requirement": "Clipboard return shape",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/edit.rs:630",
+    "tests": "clipboard_get_returns_the_specified_clipboard_directly",
+    "note": "C12-R1-18"
+  },
+  {
+    "id": "R53",
+    "requirement": "Manifest forward parity; declared typed reverse coverage",
+    "status": "implemented",
+    "implementation": "crates/executor/tests/c12_registry.rs:138",
+    "tests": "c12_registry::ui_binding_manifest_parity",
+    "note": "Existing menu IDs present; strings describe intended GUI locations"
+  },
+  {
+    "id": "R54",
+    "requirement": "Full-inventory reverse parity build gate (11 14.1)",
+    "status": "divergent",
+    "implementation": "crates/executor/tests/c12_registry.rs:166",
+    "tests": "every_registry_entry_has_a_gui_binding_or_agent_only_justification",
+    "note": "662 skipped; C12-R1-12"
+  },
+  {
+    "id": "R55",
+    "requirement": "Real native command dispatch/state parity",
+    "status": "deferred-with-owner",
+    "implementation": "desktop/src-tauri/src/menu.rs:1",
+    "tests": "handoff; source audit",
+    "note": "M4 C4.1 per accepted readiness split; native fullscreen still toggles directly"
+  },
+  {
+    "id": "R56",
+    "requirement": "Every registered command malformed inputs under watchdog",
+    "status": "implemented",
+    "implementation": "crates/executor/src/lib.rs:149",
+    "tests": "c12_r1_stress; c12_r1_scale",
+    "note": "2388 small +1592 >1MiB calls; no internal/panic on these fixtures"
+  },
+  {
+    "id": "R57",
+    "requirement": "Watchdog bounds caller vs actual execution",
+    "status": "implemented",
+    "implementation": "crates/executor/src/lib.rs:149",
+    "tests": "c12_kernel_state::the_watchdog_answers_within_its_budget; job_wait_timeout_policy_is_explicitly_measured",
+    "note": "Caller timeout only; no cancellation/loop recovery claim; job.wait uses own timeout"
+  },
+  {
+    "id": "R58",
+    "requirement": "Perpetually looping registered handler and modal interception proof",
+    "status": "missing",
+    "implementation": "crates/executor/src/lib.rs:249",
+    "tests": "source audit; no injectable Core/registry hook",
+    "note": "Cannot inject a handler through public API without product changes; no catch/unwind/interrupt; headless examples alone do not prove recovery"
+  },
+  {
+    "id": "R59",
+    "requirement": "Explicit scopes on implemented calls",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:114",
+    "tests": "c12_policy",
+    "note": "Agent read/edit/ui checks; confirmation engine still C1.4"
+  },
+  {
+    "id": "R60",
+    "requirement": "Job session isolation",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/job.rs:37",
+    "tests": "agent_cannot_read_another_sessions_jobs_with_all_true; agent_cannot_cancel_another_sessions_job",
+    "note": "C12-R1-05"
+  },
+  {
+    "id": "R61",
+    "requirement": "File/prefs/network scopes on inventory stubs",
+    "status": "divergent",
+    "implementation": "crates/registry/src/lib.rs:450",
+    "tests": "registry_file_and_network_commands_declare_required_scopes",
+    "note": "C12-R1-12"
+  },
+  {
+    "id": "R62",
+    "requirement": "Protocol initialize/tools/resources/subscriptions/prompts/events/audit/confirmation",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/agent.rs:1",
+    "tests": "agent.* typed declarations; bins/headless flags",
+    "note": "C1.4; no MCP inspector run possible at this checkpoint"
+  },
+  {
+    "id": "R63",
+    "requirement": "Job wait/status/cancel/progress table",
+    "status": "implemented",
+    "implementation": "crates/executor/src/jobs.rs:1",
+    "tests": "c12_kernel_state",
+    "note": "Background progress and cooperative cancellation exist; isolation/transaction exceptions above"
+  },
+  {
+    "id": "R64",
+    "requirement": "No new unsafe/product unwrap/expect/panic allowances",
+    "status": "implemented",
+    "implementation": "crates/executor/src/lib.rs:1",
+    "tests": "source audit; clippy; CI",
+    "note": "New unsafe absent; test/tool allowances scoped; overflow panic is separate finding"
+  },
+  {
+    "id": "R65",
+    "requirement": "Existing three-layer IPC gate / worker ban / diagnostics gate",
+    "status": "implemented",
+    "implementation": "desktop/eslint.config.js:1",
+    "tests": "baseline build; Vitest boundary 69+46; CI default/diagnostics builds",
+    "note": "No worker exception introduced; accepted runtime-string limitation unchanged"
+  },
+  {
+    "id": "R66",
+    "requirement": "Composite command-result boundary controls",
+    "status": "implemented",
+    "implementation": "desktop/src/ipc/commands.test.ts:1",
+    "tests": "7 command schema tests; frontend_schemas",
+    "note": "Wide ints, finite doubles, own keys, snapshots, depth, accessors/proxies retained"
+  },
+  {
+    "id": "R67",
+    "requirement": "Touched-object diff and 100k full-commit costs",
+    "status": "implemented",
+    "implementation": "crates/executor/src/cx.rs:617",
+    "tests": "commit-scale.log; large-documents.json",
+    "note": "Touched path implemented; whole-entry parse/diff/inverse integrity cost remains; M2 optimization"
+  },
+  {
+    "id": "R68",
+    "requirement": "10k-drawing query performance",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/doc.rs:485",
+    "tests": "c12_r1_scale; large-documents.json",
+    "note": "6.372 s release find100 on empty drawings; P2 C12-R1-23"
+  },
+  {
+    "id": "R69",
+    "requirement": "Dependency/licence and lockfile changes",
+    "status": "implemented",
+    "implementation": "Cargo.lock:1",
+    "tests": "cargo deny; CI; git diff",
+    "note": "Only local executor/registry plus trybuild support additions; no new unapproved licence found"
+  },
+  {
+    "id": "R70",
+    "requirement": "Reviewer test preservation and CI coverage accuracy",
+    "status": "implemented",
+    "implementation": ".github/workflows/ci.yml:1",
+    "tests": "ci-audit.json; both raw run logs; git diff",
+    "note": "Existing reviewer tests untouched; Windows/macOS check runs include suites"
+  },
+  {
+    "id": "R71",
+    "requirement": "Fresh-seed randomized coverage and shrinking",
+    "status": "implemented",
+    "implementation": "crates/executor/tests/c12_r1_stress.rs:1",
+    "tests": "random-history.json; existing proptest suites",
+    "note": "Fresh deterministic sequence recorded; new oracle reports operation but does not shrink; existing properties shrink"
+  },
+  {
+    "id": "R72",
+    "requirement": "Persistence unchecked assembly confinement",
+    "status": "deferred-with-owner",
+    "implementation": "crates/model/src/document/mod.rs:1",
+    "tests": "C1.1 closure carryover",
+    "note": "C1.3 load/repair; open capability must first close C12-R1-01"
+  }
+]

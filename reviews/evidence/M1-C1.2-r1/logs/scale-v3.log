@@ -1,0 +1,10 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r1\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 2.11s
+     Running tests\c12_r1_scale.rs (target\release\deps\c12_r1_scale-92c3818502fbb36d.exe)
+
+running 1 test
+{"profile":"release","cases":[{"fixture":"100000 strokes","objects":100092,"assembleSeconds":4.181439,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.4085592,"maximumCallSeconds":0.0025745,"create20CheckpointsSeconds":0.0009833,"find100Seconds":0.2000757,"documentRev":1},{"fixture":"10000 drawings","objects":10091,"assembleSeconds":0.1567332,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.7788348,"maximumCallSeconds":0.0029864,"create20CheckpointsSeconds":0.0623895,"find100Seconds":6.3722264,"documentRev":1}]}
+test every_command_rejects_huge_malformed_input_on_large_documents ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.17s
+
