@@ -1,0 +1,57 @@
+    Blocking waiting for file lock on build directory
+   Compiling proc-macro2 v1.0.107
+   Compiling serde_core v1.0.229
+   Compiling memchr v2.8.3
+   Compiling once_cell v1.21.4
+   Compiling serde_json v1.0.154
+   Compiling smallvec v1.16.3
+   Compiling serde v1.0.229
+   Compiling windows-sys v0.61.2
+   Compiling parking_lot_core v0.9.12
+   Compiling bitflags v2.13.2
+   Compiling aho-corasick v1.1.5
+   Compiling parking_lot v0.12.5
+   Compiling tempfile v3.27.0
+   Compiling rusty-fork v0.3.1
+   Compiling quote v1.0.47
+   Compiling regex-automata v0.4.18
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling proptest v1.12.0
+   Compiling indexmap v2.14.2
+   Compiling serde_derive_internals v0.30.0
+   Compiling fancy-regex v0.19.2
+   Compiling regex v1.13.1
+   Compiling strum_macros v0.28.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling schemars_derive v1.2.3
+   Compiling ref-cast v1.0.27
+   Compiling thiserror v2.0.21
+   Compiling strum v0.28.0
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r4\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 58.79s
+     Running tests\c11_r4_closure_probe.rs (target\debug\deps\c11_r4_closure_probe-28bb19cb4333b514.exe)
+
+running 7 tests
+test numeric_object_array_moves ... ok
+test empty_exposure_lists_are_canonical_and_invertible ... ok
+test exposure_counts_and_window_consistency ... ok
+test opaque_text_with_and_without_range ... ok
+scene-limit range 1..100001 ACCEPTED: {"exposure":[["dr_new",100001]]}
+scene-limit range 100001..100001 ACCEPTED: {"exposure":[["dr_review",4],[null,99996],["dr_new",1]]}
+test inspect_patch_scene_limit ... ok
+All 522 recursively discovered declarations carry x-since=1.0
+test property_discovery_and_anonymous_annotations ... ok
+test model_integrity_rejects_invalid_counts_and_excessive_totals ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+

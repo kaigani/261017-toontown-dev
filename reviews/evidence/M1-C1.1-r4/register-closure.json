@@ -1,0 +1,157 @@
+[
+  {
+    "citation": "10 §2.6 L248",
+    "requirement": "created/deleted/modified, parentId/index, oldValue, invertibility, array moves and range edits",
+    "status": "divergent",
+    "implementation": "crates/model/src/change.rs:377",
+    "note": "R3-02 removal and R3-03 zero-count checks verified. C11-R4-01: oversized totals/windows still accepted at the patch boundary; integrity rejects afterward. Row remains divergent.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-03/04; generated ordinary edits/inverses pass seeded property tests.",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 267,
+      "name": "array_append_patch_inverse_restores_input",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial array_append_patch_inverse_restores_input --locked -- --exact --nocapture"
+    },
+    "response_table_row": 28,
+    "row": 388,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-02/03/04; original overwrite/elision cases fixed, array inverse and malformed-operation gaps remain",
+    "r3_test": {
+      "name": "resolved_stateless_move_inverse_does_not_shift_numeric_object_keys",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:138",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial resolved_stateless_move_inverse_does_not_shift_numeric_object_keys --locked -- --exact --nocapture"
+    },
+    "r3_status": "divergent",
+    "r3_note": "Pre-state RFC property passes 10,000 cases, but C11-R3-02 corrupts numeric object keys via public stateless invert and C11-R3-03 accepts malformed exposure ranges. R3-01 breaks opaque diffs.",
+    "r4_test": {
+      "name": "exposure_range_rejects_total_above_scene_limit",
+      "location": "crates/model/tests/c11_r4_exposure_bounds.rs:20",
+      "command": "cargo test -p tt-model --test c11_r4_exposure_bounds exposure_range_rejects_total_above_scene_limit --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "citation": "10 §2.8 L281",
+    "requirement": "Property x-since and persisted immutable/readOnly annotations",
+    "status": "implemented",
+    "implementation": "crates/model/src/schema.rs:356",
+    "note": "R3-06 closed: all 522 recursively discovered real property declarations have x-since=1.0; named readOnly controls still pass.",
+    "r1_status": "missing",
+    "r1_note": "C11-R1-13: object-level x-since is not property-level x-since; type lacks readOnly.",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 800,
+      "name": "every_schema_property_has_since_and_envelope_type_is_readonly",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial every_schema_property_has_since_and_envelope_type_is_readonly --locked -- --exact --nocapture"
+    },
+    "response_table_row": 30,
+    "row": 392,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-11; MouthTrack.stale is added after annotation pass and lacks x-since; envelope type readOnly fixed",
+    "r3_test": {
+      "name": "anonymous_variant_property_declarations_have_since",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:193",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial anonymous_variant_property_declarations_have_since --locked -- --exact --nocapture"
+    },
+    "r3_status": "divergent",
+    "r3_note": "R2-11 fixes MouthTrack.stale and Stub; C11-R3-06: DynamicParam anonymous value/keyframes declarations still lack x-since.",
+    "r4_test": {
+      "name": "anonymous_variant_property_declarations_have_since",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:196",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial anonymous_variant_property_declarations_have_since --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "citation": "10 §10.2 L1131",
+    "requirement": "Property-schema lookup through child unions and numeric tuple indices",
+    "status": "implemented",
+    "implementation": "crates/model/src/schema.rs:649",
+    "note": "R3-04 closed: nullable and all enum alternatives, conditional paths, and reference annotations pass.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-19; implementation already published in model API; command registration itself remains C1.3.",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 458,
+      "name": "property_lookup_follows_effect_condition_without_discarding_it",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial property_lookup_follows_effect_condition_without_discarding_it --locked -- --exact --nocapture"
+    },
+    "response_table_row": 31,
+    "row": 394,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-06; conditional paths absent, ref siblings dropped; original tuple/child paths fixed",
+    "r3_test": {
+      "name": "property_schema_preserves_nullable_value_domains",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:158",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial property_schema_preserves_nullable_value_domains --locked -- --exact --nocapture"
+    },
+    "r3_status": "divergent",
+    "r3_note": "Nested traversal and ref annotations fixed; C11-R3-04: flat merge intersects alternatives, rejecting null and non-first enum values.",
+    "r4_test": {
+      "name": "property_schema_preserves_nullable_value_domains",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:161",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial property_schema_preserves_nullable_value_domains --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "citation": "10 §2.2, L137",
+    "requirement": "meta: object | Free-form metadata for users, agents and tools (tags, review status, notes). Never interpreted by the application; preserved on copy, duplicate, export and template creation. Default `{}`.",
+    "status": "implemented",
+    "implementation": "crates/model/src/change.rs:479",
+    "note": "R3-01 closed for meta: wholesale text diffs/replacements accepted, ranged edits rejected with typed arg.invalid; fresh escaped-key/Unicode controls pass.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-03",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 217,
+      "name": "opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved --locked -- --exact --nocapture"
+    },
+    "response_table_row": 8,
+    "row": 56,
+    "r2_status": "implemented",
+    "r2_note": "fixed; opaque model-like keys, arrays, nesting and diff/inverse preserved",
+    "r3_test": {
+      "name": "opaque_mouth_track_lookalikes_are_ordinary_json_changes",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:115",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial opaque_mouth_track_lookalikes_are_ordinary_json_changes --locked -- --exact --nocapture"
+    },
+    "r3_status": "divergent",
+    "r3_note": "Reopened C11-R3-01: diff applies mouth-letter semantics to opaque metadata lookalikes; valid pen edits cannot be applied.",
+    "r4_test": {
+      "name": "opaque_mouth_track_lookalikes_are_ordinary_json_changes",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:115",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial opaque_mouth_track_lookalikes_are_ordinary_json_changes --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "citation": "10 §2.2, L138",
+    "requirement": "ext: object | Extension data keyed by a reverse-DNS namespace (`\"com.example.tool\": {…}`). Unknown namespaces MUST be preserved verbatim through load, edit and save. Default `{}`.",
+    "status": "implemented",
+    "implementation": "crates/model/src/change.rs:479",
+    "note": "R3-01 closed for ext: namespace values remain opaque; wholesale text changes round-trip and ranged edits reject with typed arg.invalid.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-03",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 217,
+      "name": "opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved --locked -- --exact --nocapture"
+    },
+    "response_table_row": 9,
+    "row": 57,
+    "r2_status": "implemented",
+    "r2_note": "fixed; opaque values unchanged; integers lossless or typed error per ruling",
+    "r3_test": {
+      "name": "opaque_mouth_track_lookalikes_are_ordinary_json_changes",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:115",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial opaque_mouth_track_lookalikes_are_ordinary_json_changes --locked -- --exact --nocapture"
+    },
+    "r3_status": "divergent",
+    "r3_note": "Reopened C11-R3-01: same regression under reverse-DNS ext namespaces.",
+    "r4_test": {
+      "name": "opaque_mouth_track_lookalikes_are_ordinary_json_changes",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:115",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial opaque_mouth_track_lookalikes_are_ordinary_json_changes --locked -- --exact --nocapture"
+    }
+  }
+]

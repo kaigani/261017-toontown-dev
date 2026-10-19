@@ -1,0 +1,15 @@
+{
+  "added": [],
+  "removed": [
+    [
+      "crates/model/src/change.rs",
+      "pub fn invert(patch: &[PatchOp]) -> Vec<PatchOp> {"
+    ]
+  ],
+  "method": "Public source declarations across all tt-model src files; changed modules also inspected manually, including macro and re-export stability.",
+  "added_allow_unsafe_mut_lines": [
+    "+    fn walk(v: &mut Value, depth: usize) {",
+    "+        bad.check(\"\", &mut issues);"
+  ],
+  "interpretation": "No new allow or unsafe. Added mutable references are private schema traversal over caller-owned schemas; new Issues mutation is test-only. No Document accessor or public signature changed other than invert removal."
+}

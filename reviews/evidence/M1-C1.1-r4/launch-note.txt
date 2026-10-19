@@ -1,0 +1,5 @@
+The initial release-group runner completed the Tauri build, diagnostics gating and headless build successfully.
+Python subprocess then raised FileNotFoundError (WinError 2) for the relative executable argument
+target/release/toontown-headless.exe before starting selftest-1. The binary existed at the expected path.
+The evidence runner was corrected to use the absolute Windows path and resumed with group post-release.
+This was a reviewer harness launch error, not an application selftest failure. No product file was edited.
