@@ -1,5 +1,6 @@
-//! The front end's schemas and wire types are generated from the Rust types (C1.1 readiness bullet 1). This test
-//! regenerates `desktop/src/ipc/generated/{wire,model}.ts` and fails when the committed files differ.
+//! The front end's schemas and wire types are generated from the Rust types (C1.1 readiness bullet 1; C1.2 command
+//! schemas). This test regenerates `desktop/src/ipc/generated/{wire,model,commands}.ts` and fails when the committed
+//! files differ.
 //! `TT_UPDATE_GOLDEN=1 cargo test -p tt-engine --test frontend_schemas` rewrites them.
 #![allow(clippy::unwrap_used, reason = "test")]
 
@@ -44,4 +45,17 @@ fn model_module_is_current() {
         ("OBJECT_TYPE_DEFS", serde_json::Value::Object(types)),
     ];
     check("model.ts", &tt_model::schema_ts::module(HEADER, &consts, "MODEL_DEFS", tt_model::schema::definitions()));
+}
+
+#[test]
+fn commands_module_is_current() {
+    let (defs, index) = tt_engine::commands::command_definitions();
+    let consts = [
+        ("COMMANDS_REGISTRY_VERSION", json!(tt_registry::REGISTRY_VERSION)),
+        ("COMMAND_INDEX", serde_json::Value::Object(index)),
+    ];
+    let header = "GENERATED FILE: do not edit.
+Source: the command declarations (crates/executor/src/commands, crates/engine/src/commands.rs).
+Regenerate: TT_UPDATE_GOLDEN=1 cargo test -p tt-engine --test frontend_schemas";
+    check("commands.ts", &tt_model::schema_ts::module(header, &consts, "COMMAND_DEFS", &defs));
 }

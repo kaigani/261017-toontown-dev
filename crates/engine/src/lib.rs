@@ -14,6 +14,7 @@
 //! Spec sections it will implement: 00 §4 (reference architecture); 01 (app state, settings); 11 §2–§3 (run modes,
 //! virtual views); area command implementations of 01–09. Milestone: M1 onwards.
 
+pub mod commands;
 mod components;
 mod determinism;
 mod error;

@@ -5,7 +5,7 @@ import type { Schema } from '../schema';
 
 export const FORMAT_VERSION = "1.0";
 
-export const REGISTRY_VERSION = "0.0.0";
+export const REGISTRY_VERSION = "0.1.0";
 
 export const COMMAND_ID_PATTERN = "^[a-z][A-Za-z0-9]*(\\.[a-z][A-Za-z0-9]*)+$";
 
