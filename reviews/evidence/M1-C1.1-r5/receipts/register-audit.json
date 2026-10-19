@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.1-r5/conformance.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:41:22.822432+00:00",
+  "elapsed_seconds": 0.072,
+  "exit_code": 0,
+  "log": "logs/register-audit.log",
+  "sha256": "df2cfcb2cdedec41dea3a596b1480553db3dbc65faa316a84a39643be5e44a26",
+  "env": {}
+}

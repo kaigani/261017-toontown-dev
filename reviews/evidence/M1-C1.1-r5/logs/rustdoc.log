@@ -1,0 +1,44 @@
+    Checking memchr v2.8.3
+    Checking smallvec v1.16.3
+    Checking once_cell v1.21.4
+    Checking serde_core v1.0.229
+    Checking ref-cast v1.0.27
+    Checking strum v0.28.0
+    Checking thiserror v2.0.21
+    Checking parking_lot_core v0.9.12
+    Checking parking_lot v0.12.5
+    Checking aho-corasick v1.1.5
+    Checking regex-automata v0.4.18
+    Checking serde v1.0.229
+    Checking indexmap v2.14.2
+    Checking ahash v0.8.12
+    Checking fluent-uri v0.4.1
+    Checking email_address v0.2.9
+    Checking serde_json v1.0.154
+    Checking fancy-regex v0.19.2
+    Checking regex v1.13.1
+    Checking jsonschema-value v0.59.0
+    Checking referencing v0.59.0
+    Checking schemars v1.2.3
+    Checking jsonschema v0.59.0
+ Documenting tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r5\crates\model)
+warning: redundant explicit link target
+  --> crates\model\src\lib.rs:55:35
+   |
+55 | /// [`json_text::MAX_TEXT_DEPTH`](crate::json_text::MAX_TEXT_DEPTH), so everything written is readable).
+   |      ---------------------------  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ explicit target is redundant
+   |      |
+   |      because label contains path that resolves to same destination
+   |
+   = note: when a link's destination is not specified,
+           the label is used to resolve intra-doc links
+   = note: `#[warn(rustdoc::redundant_explicit_links)]` on by default
+help: remove explicit link target
+   |
+55 - /// [`json_text::MAX_TEXT_DEPTH`](crate::json_text::MAX_TEXT_DEPTH), so everything written is readable).
+55 + /// [`json_text::MAX_TEXT_DEPTH`], so everything written is readable).
+   |
+
+warning: `tt-model` (lib doc) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.74s
+   Generated C:\Users\kaiga\work\review\m1-c11-r5\target\doc\tt_model\index.html

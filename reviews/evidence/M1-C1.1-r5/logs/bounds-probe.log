@@ -1,0 +1,20 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r5\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.30s
+     Running tests\c11_r5_bounds_probe.rs (target\debug\deps\c11_r5_bounds_probe-a1ff386e9ab4eeaa.exe)
+
+running 6 tests
+OBSERVATION whole mouth string replace: ACCEPTED exposure_total=100000 mouth_len=100001
+OBSERVATION whole mouth string add: ACCEPTED exposure_total=100000 mouth_len=100001
+OBSERVATION nested exposure count: ACCEPTED exposure_total=100001 mouth_len=2
+OBSERVATION append exposure run: ACCEPTED exposure_total=100001 mouth_len=2
+OBSERVATION copy opaque runs into exposure: ACCEPTED exposure_total=100001 mouth_len=2
+OBSERVATION move opaque runs into exposure: ACCEPTED exposure_total=100001 mouth_len=2
+test opaque_namespaces_remain_uninterpreted ... ok
+test window_edges_and_integer_overflow_are_rejected_without_mutation ... ok
+test inspect_other_frame_bearing_write_paths ... ok
+test mouth_ranges_at_over_limit_and_cumulative_batch ... ok
+test split_run_totals_at_and_over_limit ... ok
+test result_length_and_cumulative_range_batches_are_bounded ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

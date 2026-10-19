@@ -1,0 +1,27 @@
+{
+  "command": [
+    "cargo",
+    "run",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-render",
+    "--example",
+    "c03_raster",
+    "--",
+    "--out",
+    "target/review-m1-c11-r5-raster",
+    "--report",
+    "reviews/evidence/M1-C1.1-r5/raster.json",
+    "--check",
+    "crates/render/examples/c03_raster/hashes.json"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:39:09.801221+00:00",
+  "elapsed_seconds": 35.87,
+  "exit_code": 0,
+  "log": "logs/raster.log",
+  "sha256": "69089b24c8b8a3d4b512a9f44b103721af031c51e2f981b981bbce56d0bf4fef",
+  "env": {}
+}

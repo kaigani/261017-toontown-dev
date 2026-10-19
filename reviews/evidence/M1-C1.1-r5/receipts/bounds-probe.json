@@ -1,0 +1,21 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r5_bounds_probe",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:42:03.160394+00:00",
+  "elapsed_seconds": 6.292,
+  "exit_code": 0,
+  "log": "logs/bounds-probe.log",
+  "sha256": "389bcd2590d8f0538cfc76cba8a0d7dfb3c8a8f46abc7a867ee905f80e68b440",
+  "env": {}
+}

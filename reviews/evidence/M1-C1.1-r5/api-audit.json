@@ -1,0 +1,11 @@
+{
+  "base": "3b6179f",
+  "head": "9c3f586",
+  "added": [],
+  "removed": [],
+  "changed_model_sources": [
+    "crates/model/src/change.rs"
+  ],
+  "added_allow_unsafe_mut_lines": [],
+  "method": "Compared all public source declarations, inspected complete changed module and verified re-exports, entity accessors, macros and Document are unchanged. No stateless invert reintroduced."
+}

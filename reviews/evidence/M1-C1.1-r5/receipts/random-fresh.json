@@ -1,0 +1,23 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r3_random",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:39:44.575009+00:00",
+  "elapsed_seconds": 4.19,
+  "exit_code": 0,
+  "log": "logs/random-fresh.log",
+  "sha256": "a7323c8196d16d2610ed9e47e978eb9f3eaf95b03d1fb6736bdaecb6e7e33f38",
+  "env": {
+    "PROPTEST_RNG_SEED": "280104956805984"
+  }
+}

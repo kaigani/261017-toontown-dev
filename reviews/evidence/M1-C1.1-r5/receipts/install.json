@@ -1,0 +1,17 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "install",
+    "--frozen-lockfile"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:34:06.922548+00:00",
+  "elapsed_seconds": 0.43,
+  "exit_code": 0,
+  "log": "logs/install.log",
+  "sha256": "2195e74720972c485c5bb2c16f66e9894c6b6c541bbab14df875c9a1ab96be95",
+  "env": {}
+}

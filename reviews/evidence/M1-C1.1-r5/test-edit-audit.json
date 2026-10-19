@@ -1,0 +1,11 @@
+{
+  "base": "ccdb9de",
+  "head": "9c3f586",
+  "paths": [
+    "crates/*/tests",
+    "desktop/src/ipc/c11-r*",
+    "desktop/src/test",
+    "tests/"
+  ],
+  "diff_bytes": 0
+}
