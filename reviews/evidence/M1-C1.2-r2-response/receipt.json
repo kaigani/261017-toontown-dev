@@ -1,0 +1,64 @@
+{
+  "what": "Local gate logs recorded by scripts/record-gates.py.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked --no-fail-fast",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-lint.log": "pnpm lint",
+    "gates/pnpm-typecheck.log": "pnpm typecheck",
+    "gates/pnpm-test.log": "pnpm test",
+    "gates/pnpm-format.log": "pnpm format:check",
+    "gates/pnpm-licenses.log": "pnpm licenses:check",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless.log": "cargo build --release --locked -p tt-headless && \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\" --version && \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\" --selftest && \"C:\\Python313\\python.exe\" scripts/check-headless-deps.py \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\"",
+    "gates/reviewer-python-suites.log": "\"C:\\Python313\\python.exe\" scripts/run-reviewer-python-suites.py"
+  },
+  "status": {
+    "gates/fmt.log": 0,
+    "gates/clippy.log": 0,
+    "gates/clippy-diag.log": 0,
+    "gates/test.log": 0,
+    "gates/test-diag.log": 0,
+    "gates/deny.log": 0,
+    "gates/pnpm-lint.log": 0,
+    "gates/pnpm-typecheck.log": 0,
+    "gates/pnpm-test.log": 0,
+    "gates/pnpm-format.log": 0,
+    "gates/pnpm-licenses.log": 0,
+    "gates/build.log": 0,
+    "gates/headless.log": 0,
+    "gates/reviewer-python-suites.log": 0
+  },
+  "recordedAt": "2026-10-19T10:19:28+00:00",
+  "baseCommit": "a0108b32a6c14ab45c69e3888a402f06f814b8bd",
+  "dirtyFiles": [
+    "reviews/evidence/M1-C1.2-r2-response/gates/"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "sha256": {
+    "gates/build.log": "5e68bbd9455d53d9fe32e648d21c7a0fe8896cb51cf93d561b72069ba9389590",
+    "gates/clippy-diag.log": "a64853d8c1f2b4e9f07bfbf078a2a8d7a36c074bd1e4a183037eb6f8d5b3d4b9",
+    "gates/clippy.log": "05366329e7d1943c0d5fdf626ea94925de81fd393822ed874cc8586d4c692f9a",
+    "gates/deny.log": "7249399b7d168f2a0a0534bb3810a3c3c42dd6cc4f67105e47257dff64491c17",
+    "gates/fmt.log": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
+    "gates/headless.log": "e077319fcb389043f7eabb1cbadfe5e6c6aae52d8f8014fce052edc22fb24e8c",
+    "gates/pnpm-format.log": "c99d0a6ae963d1c83b01deafa2e993d73d3bdceebbbde9508a83ba7d4b6e4829",
+    "gates/pnpm-licenses.log": "2d685b39a756468ae498f680b9e15748fc8f2db9913b72da6652d7317e37f6ca",
+    "gates/pnpm-lint.log": "27d1c9da90e3723e813f92352b6882884d1a51cd07b90368d3bef605ac09563b",
+    "gates/pnpm-test.log": "9d573e7acb12614af430b36d48ab971c58f1fcb0b4bd3ea93726e00f1e16c7e2",
+    "gates/pnpm-typecheck.log": "aa5a38955f949a6cba31ec0a0ec0aadfb5695da948defb8ab06d14ff2f0b9d24",
+    "gates/reviewer-python-suites.log": "cdeb214751097bf80fa735796f4e9727d4b32069d3b2b8266b237d2c09d85d2b",
+    "gates/selftest-1.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "gates/selftest-2.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "gates/selftest-compare.log": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46",
+    "gates/test-diag.log": "8628c78f5caf8339030e7562ba45c1ba5794e1c5e48c044995b288331d4a061c",
+    "gates/test.log": "4c1268589ce42362ebfef4e29e7422ff682b463fe888094cbf8ab6bef2086d5d"
+  }
+}
