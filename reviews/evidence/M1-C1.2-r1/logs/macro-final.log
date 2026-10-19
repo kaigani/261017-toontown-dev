@@ -1,0 +1,17 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r1\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.60s
+     Running tests\c12_r1_macro.rs (target\debug\deps\c12_r1_macro-046f96e41874c4b0.exe)
+
+running 2 tests
+test duplicate_ids_and_inventory_kind_drift_are_rejected ... ok
+    Checking tt-executor-tests v0.0.0 (C:\Users\kaiga\work\review\m1-c12-r1\target\tests\trybuild\tt-executor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.20s
+
+
+test tests\c12-r1-ui\missing_example.rs ... ok
+
+
+test missing_example_is_rejected_at_compile_time ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+

@@ -1,0 +1,30 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-executor",
+    "--test",
+    "c12_r1_stress",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r1",
+  "startedAt": "2026-10-19T05:09:41.034628+00:00",
+  "durationSeconds": 6.224,
+  "exitCode": 101,
+  "head": "23ca3d5726ab65d639f1e145045dd30ba8f24351",
+  "dirtyFiles": [
+    "?? crates/executor/tests/c12_r1_contracts.rs",
+    "?? crates/executor/tests/c12_r1_stress.rs",
+    "?? reviews/evidence/M1-C1.2-r1/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\stress-v2.log",
+  "sha256": "940fef4474ce5a4641bbec1e9f999f80260be031318fb89d7990c3ff2e97dd3c",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r1\\reviews\\evidence\\M1-C1.2-r1"
+  }
+}

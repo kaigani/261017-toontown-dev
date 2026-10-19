@@ -1,0 +1,27 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r1\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.69s
+     Running tests\c12_r1_stress.rs (target\debug\deps\c12_r1_stress-0b3ae87193b4a960.exe)
+
+running 5 tests
+test ordinary_dry_run_preserves_exact_history_and_matches_real_result ... ok
+796 entries, 2388 malformed invocations completed under watchdog
+test all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded ... ok
+8 clients, 200 commits, 700 correctly rejected conflicts, documentRev 201
+test eight_clients_cas_commands_and_batches_have_no_lost_updates ... ok
+147 typed examples executed and successful results validated
+
+thread 'every_executable_typed_example_also_validates_its_result_schema' (14828) panicked at crates\executor\tests\c12_r1_stress.rs:216:5:
+1 example result/envelope schema violations; first: [Object {"id": String("job.wait"), "example": String("Wait up to 5 s"), "where": String("result"), "errors": Array [String("\"timedOut\" is a required property")]}]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test every_executable_typed_example_also_validates_its_result_schema ... FAILED
+{"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11230,"durationSeconds":43.3830055,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+failures:
+
+failures:
+    every_executable_typed_example_also_validates_its_result_schema
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 43.50s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r1_stress`

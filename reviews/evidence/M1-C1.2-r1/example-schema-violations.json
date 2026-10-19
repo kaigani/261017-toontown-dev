@@ -1,0 +1,10 @@
+[
+  {
+    "id": "job.wait",
+    "example": "Wait up to 5 s",
+    "where": "result",
+    "errors": [
+      "\"timedOut\" is a required property"
+    ]
+  }
+]

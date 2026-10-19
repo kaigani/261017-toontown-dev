@@ -1,0 +1,33 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-executor",
+    "--test",
+    "c12_r1_contracts",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r1",
+  "startedAt": "2026-10-19T05:17:33.945118+00:00",
+  "durationSeconds": 26.508,
+  "exitCode": 101,
+  "head": "23ca3d5726ab65d639f1e145045dd30ba8f24351",
+  "dirtyFiles": [
+    "?? crates/executor/tests/c12-r1-ui/",
+    "?? crates/executor/tests/c12_r1_contracts.rs",
+    "?? crates/executor/tests/c12_r1_macro.rs",
+    "?? crates/executor/tests/c12_r1_scale.rs",
+    "?? crates/executor/tests/c12_r1_stress.rs",
+    "?? reviews/evidence/M1-C1.2-r1/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\contracts-final.log",
+  "sha256": "ef2e9a747bc9ace54b4ee29b7b74c56b731d0c933287e2d352fd378c0b2af5ff",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r1\\reviews\\evidence\\M1-C1.2-r1"
+  }
+}

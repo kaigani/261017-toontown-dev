@@ -1,0 +1,28 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r1\crates\executor)
+warning: unused import: `Value`
+ --> crates\executor\tests\c12_r1_scale.rs:5:18
+  |
+5 | use serde_json::{Value,json};
+  |                  ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `tt-executor` (test "c12_r1_scale") generated 1 warning (run `cargo fix --test "c12_r1_scale" -p tt-executor` to apply 1 suggestion)
+    Finished `release` profile [optimized + debuginfo] target(s) in 3.50s
+     Running tests\c12_r1_scale.rs (target\release\deps\c12_r1_scale-92c3818502fbb36d.exe)
+
+running 1 test
+
+thread 'every_command_rejects_huge_malformed_input_on_large_documents' (17612) panicked at crates\executor\tests\c12_r1_scale.rs:30:65:
+called `Result::unwrap()` on an `Err` value: [ModelError { code: "doc.schemaViolation", message: "{\"Ok\":\"dr_01K742SG004J2VH1PG5HSSG5DD\"} is not of type \"string\"", details: Object {"pointer": String("/id"), "schemaPath": String("/$defs/Id/type")} }]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test every_command_rejects_huge_malformed_input_on_large_documents ... FAILED
+
+failures:
+
+failures:
+    every_command_rejects_huge_malformed_input_on_large_documents
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.83s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r1_scale`
