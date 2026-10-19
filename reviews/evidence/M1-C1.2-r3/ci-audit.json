@@ -1,0 +1,1542 @@
+{
+  "run": "39236678120",
+  "head": "2e0e5dd5feaf47199f5c15595b187a34db3e5c5e",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "logLines": 696,
+      "rustTargets": [],
+      "rustTotals": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "suiteSummaries": [
+        "add-rust-environment-hash-key: true"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build, default (unsigned; no M0 diagnostics)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Default build registers no M0 diagnostic command and refuses the flags",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)",
+          "conclusion": "success"
+        },
+        {
+          "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+          "conclusion": "success"
+        },
+        {
+          "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Collect artifacts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "logLines": 407,
+      "rustTargets": [],
+      "rustTotals": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      "suiteSummaries": [
+        "add-rust-environment-hash-key: true",
+        "##[group]Run set +e",
+        "set +e",
+        "status=0",
+        "for run in 1 2; do",
+        "cargo run --release --locked -q -p tt-render --example c03_raster -- \\",
+        "--out \"c03-raster/run$run\" --report \"c03-raster/report-run$run.json\" \\",
+        "--check crates/render/examples/c03_raster/hashes.json || status=1",
+        "done",
+        "# Fixed scalar configurations against the committed hashes as a test (C03-R1-04; also run by cargo test in",
+        "# the Windows and macOS check jobs).",
+        "cargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1",
+        "# Host-raster fallback timing of the canvas-spike scenes (timing only; not hash-checked).",
+        "cargo run --release --locked -q -p tt-render --example c03_raster -- --repeat 1             --out c03-raster/bench --report c03-raster/canvas-bench.json --canvas-bench > /dev/null || status=1",
+        "exit $status",
+        "shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}",
+        "env:",
+        "CARGO_TERM_COLOR: always",
+        "CARGO_INCREMENTAL: 0",
+        "RUST_BACKTRACE: 1",
+        "CACHE_ON_FAILURE: false",
+        "##[endgroup]",
+        "\"linux\" \"x86_64\" (vello_cpu detected SIMD level \"Avx2(Avx2 { _private: () })\")",
+        "| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |",
+        "|---|---|---|---|---|---|---|---|",
+        "| cubic_blobs | 0.150 | 0.047 | 0.032 | 0.184 | 0.092 | 0.080 | 62 |",
+        "| thin_strokes | 0.083 | 0.075 | 0.051 | 0.203 | 0.118 | 0.096 | 1 |",
+        "| aa_edge_angles | 0.402 | 0.216 | 0.146 | 0.328 | 0.270 | 0.200 | 3 |",
+        "| translucent_overlap | 0.127 | 0.050 | 0.034 | 0.181 | 0.092 | 0.080 | 30 |",
+        "| alpha_stack | 0.523 | 0.103 | 0.074 | 0.213 | 0.152 | 0.130 | 1 |",
+        "| linear_gradient | 0.438 | 0.049 | 0.031 | 0.169 | 0.103 | 0.080 | 1 |",
+        "| radial_gradient | 0.422 | 0.069 | 0.043 | 0.174 | 0.123 | 0.090 | 48 |",
+        "| gradient_transformed | 0.256 | 0.047 | 0.030 | 0.163 | 0.094 | 0.078 | 2 |",
+        "| clip_circle | 0.179 | 0.129 | 0.088 | 0.270 | 0.176 | 0.134 | 43 |",
+        "| clip_nested | 0.214 | 0.077 | 0.054 | 0.213 | 0.127 | 0.106 | 68 |",
+        "| glyph_nonzero | 0.066 | 0.039 | 0.026 | 0.148 | 0.082 | 0.073 | 58 |",
+        "| glyph_evenodd | 0.085 | 0.048 | 0.026 | 0.155 | 0.087 | 0.073 | 58 |",
+        "| degenerate | 0.040 | 0.033 | 0.017 | 0.139 | 0.067 | 0.063 | 0 |",
+        "| star_nonzero | 0.070 | 0.035 | 0.024 | 0.137 | 0.080 | 0.071 | 1 |",
+        "| star_evenodd | 0.128 | 0.042 | 0.035 | 0.142 | 0.088 | 0.071 | 1 |",
+        "| coincident_edges | 0.062 | 0.037 | 0.028 | 0.148 | 0.080 | 0.072 | 2 |",
+        "| extreme_coordinates | 0.145 | 0.034 | 0.025 | 0.145 | 0.075 | 0.076 | 3 |",
+        "| subpixel_translation | 0.084 | 0.053 | 0.037 | 0.213 | 0.107 | 0.084 | 51 |",
+        "| non_integer_scales | 0.236 | 0.071 | 0.055 | 0.202 | 0.116 | 0.100 | 61 |",
+        "| stroked_curves | 0.242 | 0.063 | 0.045 | 0.195 | 0.116 | 0.101 | 132 |",
+        "| many_small_paths | 0.524 | 0.407 | 0.320 | 0.444 | 0.472 | 0.364 | 15 |",
+        "| hairline_grid | 0.134 | 0.146 | 0.104 | 0.278 | 0.195 | 0.153 | 1 |",
+        "| perf_2000_cubics_512 | 26.270 | 9.516 | 7.549 | 4.723 | 10.408 | 7.583 | 89 |",
+        "| stress_00 | 3.750 | 0.672 | 0.454 | 0.793 | 0.657 | 0.482 | 72 |",
+        "| stress_01 | 3.768 | 0.649 | 0.426 | 0.697 | 0.630 | 0.467 | 72 |",
+        "| stress_02 | 3.789 | 0.660 | 0.443 | 0.647 | 0.644 | 0.467 | 70 |",
+        "| stress_03 | 3.835 | 0.648 | 0.441 | 0.688 | 0.643 | 0.475 | 70 |",
+        "| stress_04 | 3.750 | 0.660 | 0.421 | 0.711 | 0.633 | 0.485 | 98 |",
+        "| stress_05 | 3.795 | 0.661 | 0.423 | 0.688 | 0.650 | 0.492 | 64 |",
+        "| stress_06 | 3.775 | 0.658 | 0.434 | 0.666 | 0.630 | 0.481 | 63 |",
+        "| stress_07 | 3.773 | 0.667 | 0.441 | 0.729 | 0.629 | 0.469 | 63 |",
+        "| stress_08 | 3.778 | 0.651 | 0.424 | 0.632 | 0.643 | 0.466 | 65 |",
+        "| stress_09 | 3.771 | 0.661 | 0.418 | 0.669 | 0.636 | 0.470 | 57 |",
+        "| stress_10 | 3.759 | 0.649 | 0.444 | 0.750 | 0.644 | 0.470 | 60 |",
+        "| stress_11 | 3.755 | 0.662 | 0.438 | 0.664 | 0.643 | 0.478 | 61 |",
+        "| stress_12 | 3.755 | 0.663 | 0.421 | 0.673 | 0.632 | 0.482 | 62 |",
+        "| stress_13 | 3.778 | 0.661 | 0.423 | 0.680 | 0.653 | 0.486 | 79 |",
+        "| stress_14 | 3.755 | 0.663 | 0.438 | 0.639 | 0.639 | 0.481 | 80 |",
+        "| stress_15 | 3.787 | 0.656 | 0.441 | 0.674 | 0.646 | 0.470 | 78 |",
+        "\"linux\" \"x86_64\" (vello_cpu detected SIMD level \"Avx2(Avx2 { _private: () })\")",
+        "| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |",
+        "|---|---|---|---|---|---|---|---|",
+        "| cubic_blobs | 0.149 | 0.067 | 0.033 | 0.172 | 0.091 | 0.080 | 62 |",
+        "| thin_strokes | 0.087 | 0.082 | 0.049 | 0.205 | 0.124 | 0.096 | 1 |",
+        "| aa_edge_angles | 0.404 | 0.208 | 0.151 | 0.325 | 0.265 | 0.194 | 3 |",
+        "| translucent_overlap | 0.127 | 0.049 | 0.034 | 0.157 | 0.101 | 0.080 | 30 |",
+        "| alpha_stack | 0.497 | 0.119 | 0.073 | 0.247 | 0.159 | 0.128 | 1 |",
+        "| linear_gradient | 0.435 | 0.049 | 0.030 | 0.156 | 0.099 | 0.079 | 1 |",
+        "| radial_gradient | 0.438 | 0.069 | 0.040 | 0.160 | 0.115 | 0.089 | 48 |",
+        "| gradient_transformed | 0.254 | 0.048 | 0.039 | 0.156 | 0.093 | 0.079 | 2 |",
+        "| clip_circle | 0.177 | 0.130 | 0.085 | 0.253 | 0.189 | 0.144 | 43 |",
+        "| clip_nested | 0.213 | 0.080 | 0.052 | 0.195 | 0.138 | 0.103 | 68 |",
+        "| glyph_nonzero | 0.065 | 0.040 | 0.024 | 0.141 | 0.088 | 0.079 | 58 |",
+        "| glyph_evenodd | 0.082 | 0.044 | 0.025 | 0.148 | 0.095 | 0.076 | 58 |",
+        "| degenerate | 0.040 | 0.026 | 0.016 | 0.138 | 0.067 | 0.062 | 0 |",
+        "| star_nonzero | 0.096 | 0.035 | 0.023 | 0.142 | 0.079 | 0.070 | 1 |",
+        "| star_evenodd | 0.102 | 0.043 | 0.023 | 0.175 | 0.088 | 0.068 | 1 |",
+        "| coincident_edges | 0.062 | 0.041 | 0.025 | 0.166 | 0.081 | 0.071 | 2 |",
+        "| extreme_coordinates | 0.129 | 0.030 | 0.021 | 0.139 | 0.075 | 0.073 | 3 |",
+        "| subpixel_translation | 0.084 | 0.053 | 0.037 | 0.181 | 0.100 | 0.084 | 51 |",
+        "| non_integer_scales | 0.239 | 0.071 | 0.053 | 0.227 | 0.115 | 0.099 | 61 |",
+        "| stroked_curves | 0.265 | 0.062 | 0.043 | 0.169 | 0.107 | 0.101 | 132 |",
+        "| many_small_paths | 0.545 | 0.425 | 0.320 | 0.425 | 0.472 | 0.371 | 15 |",
+        "| hairline_grid | 0.134 | 0.145 | 0.105 | 0.258 | 0.207 | 0.153 | 1 |",
+        "| perf_2000_cubics_512 | 26.434 | 9.597 | 6.810 | 4.617 | 10.461 | 7.486 | 89 |",
+        "| stress_00 | 3.743 | 0.673 | 0.429 | 0.720 | 0.658 | 0.478 | 72 |",
+        "| stress_01 | 3.732 | 0.663 | 0.441 | 0.684 | 0.633 | 0.501 | 72 |",
+        "| stress_02 | 3.762 | 0.649 | 0.419 | 0.700 | 0.647 | 0.466 | 70 |",
+        "| stress_03 | 3.783 | 0.662 | 0.440 | 0.702 | 0.634 | 0.463 | 70 |",
+        "| stress_04 | 3.748 | 0.652 | 0.419 | 0.680 | 0.651 | 0.463 | 98 |",
+        "| stress_05 | 3.730 | 0.659 | 0.417 | 0.594 | 0.641 | 0.489 | 64 |",
+        "| stress_06 | 3.755 | 0.658 | 0.430 | 0.643 | 0.628 | 0.484 | 63 |",
+        "| stress_07 | 3.733 | 0.661 | 0.435 | 0.661 | 0.645 | 0.483 | 63 |",
+        "| stress_08 | 3.768 | 0.663 | 0.417 | 0.705 | 0.639 | 0.465 | 65 |",
+        "| stress_09 | 3.741 | 0.651 | 0.419 | 0.679 | 0.630 | 0.475 | 57 |",
+        "| stress_10 | 3.729 | 0.657 | 0.439 | 0.622 | 0.643 | 0.475 | 60 |",
+        "| stress_11 | 3.731 | 0.645 | 0.417 | 0.708 | 0.644 | 0.479 | 61 |",
+        "| stress_12 | 3.735 | 0.664 | 0.421 | 0.706 | 0.636 | 0.481 | 62 |",
+        "| stress_13 | 3.748 | 0.660 | 0.437 | 0.667 | 0.641 | 0.480 | 79 |",
+        "| stress_14 | 3.721 | 0.654 | 0.434 | 0.640 | 0.666 | 0.484 | 80 |",
+        "| stress_15 | 3.726 | 0.665 | 0.417 | 0.625 | 0.641 | 0.480 | 78 |",
+        "",
+        "running 2 tests",
+        "..",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s",
+        ""
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "conclusion": "success"
+        },
+        {
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "logLines": 431,
+      "rustTargets": [],
+      "rustTotals": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      "suiteSummaries": [
+        "add-rust-environment-hash-key: true",
+        "##[group]Run set +e",
+        "set +e",
+        "status=0",
+        "for run in 1 2; do",
+        "cargo run --release --locked -q -p tt-render --example c03_raster -- \\",
+        "--out \"c03-raster/run$run\" --report \"c03-raster/report-run$run.json\" \\",
+        "--check crates/render/examples/c03_raster/hashes.json || status=1",
+        "done",
+        "# Fixed scalar configurations against the committed hashes as a test (C03-R1-04; also run by cargo test in",
+        "# the Windows and macOS check jobs).",
+        "cargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1",
+        "# Host-raster fallback timing of the canvas-spike scenes (timing only; not hash-checked).",
+        "cargo run --release --locked -q -p tt-render --example c03_raster -- --repeat 1             --out c03-raster/bench --report c03-raster/canvas-bench.json --canvas-bench > /dev/null || status=1",
+        "exit $status",
+        "shell: C:\\Program Files\\Git\\bin\\bash.EXE --noprofile --norc -e -o pipefail {0}",
+        "env:",
+        "CARGO_TERM_COLOR: always",
+        "CARGO_INCREMENTAL: 0",
+        "RUST_BACKTRACE: 1",
+        "CACHE_ON_FAILURE: false",
+        "##[endgroup]",
+        "\"windows\" \"x86_64\" (vello_cpu detected SIMD level \"Avx2(Avx2 { _private: () })\")",
+        "| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |",
+        "|---|---|---|---|---|---|---|---|",
+        "| cubic_blobs | 0.355 | 0.079 | 0.036 | 0.596 | 0.097 | 0.084 | 62 |",
+        "| thin_strokes | 0.124 | 0.110 | 0.058 | 0.502 | 0.126 | 0.119 | 1 |",
+        "| aa_edge_angles | 0.449 | 0.385 | 0.171 | 0.566 | 0.270 | 0.227 | 3 |",
+        "| translucent_overlap | 0.173 | 0.079 | 0.040 | 0.490 | 0.096 | 0.086 | 30 |",
+        "| alpha_stack | 0.546 | 0.150 | 0.093 | 0.467 | 0.176 | 0.138 | 1 |",
+        "| linear_gradient | 0.444 | 0.080 | 0.038 | 0.490 | 0.102 | 0.101 | 1 |",
+        "| radial_gradient | 0.452 | 0.103 | 0.054 | 0.498 | 0.128 | 0.097 | 48 |",
+        "| gradient_transformed | 0.273 | 0.079 | 0.035 | 0.524 | 0.100 | 0.084 | 2 |",
+        "| clip_circle | 0.206 | 0.182 | 0.100 | 0.553 | 0.207 | 0.152 | 43 |",
+        "| clip_nested | 0.310 | 0.109 | 0.058 | 0.459 | 0.137 | 0.111 | 68 |",
+        "| glyph_nonzero | 0.085 | 0.071 | 0.031 | 0.452 | 0.086 | 0.078 | 58 |",
+        "| glyph_evenodd | 0.117 | 0.073 | 0.029 | 0.521 | 0.089 | 0.087 | 58 |",
+        "| degenerate | 0.048 | 0.058 | 0.020 | 0.429 | 0.070 | 0.066 | 0 |",
+        "| star_nonzero | 0.076 | 0.081 | 0.028 | 0.421 | 0.083 | 0.076 | 1 |",
+        "| star_evenodd | 0.133 | 0.080 | 0.028 | 0.524 | 0.085 | 0.075 | 1 |",
+        "| coincident_edges | 0.070 | 0.069 | 0.030 | 0.421 | 0.085 | 0.077 | 2 |",
+        "| extreme_coordinates | 0.143 | 0.070 | 0.024 | 0.452 | 0.077 | 0.086 | 3 |",
+        "| subpixel_translation | 0.111 | 0.089 | 0.044 | 0.470 | 0.119 | 0.088 | 51 |",
+        "| non_integer_scales | 0.361 | 0.079 | 0.059 | 0.452 | 0.137 | 0.112 | 61 |",
+        "| stroked_curves | 0.310 | 0.072 | 0.050 | 0.467 | 0.111 | 0.099 | 132 |",
+        "| many_small_paths | 0.695 | 0.436 | 0.364 | 0.704 | 0.520 | 0.425 | 15 |",
+        "| hairline_grid | 0.183 | 0.201 | 0.108 | 0.507 | 0.206 | 0.151 | 1 |",
+        "| perf_2000_cubics_512 | 49.301 | 11.653 | 8.775 | 5.761 | 11.788 | 9.110 | 89 |",
+        "| stress_00 | 5.748 | 0.742 | 0.568 | 1.075 | 0.664 | 0.557 | 72 |",
+        "| stress_01 | 5.679 | 0.712 | 0.463 | 0.882 | 0.626 | 0.531 | 72 |",
+        "| stress_02 | 5.693 | 0.672 | 0.717 | 1.039 | 0.660 | 0.501 | 70 |",
+        "| stress_03 | 5.711 | 0.813 | 0.745 | 0.941 | 0.655 | 0.516 | 70 |",
+        "| stress_04 | 5.650 | 0.770 | 0.737 | 0.960 | 0.623 | 0.521 | 98 |",
+        "| stress_05 | 5.708 | 0.693 | 0.747 | 0.915 | 0.678 | 0.493 | 64 |",
+        "| stress_06 | 5.657 | 0.780 | 0.742 | 0.897 | 0.622 | 0.494 | 63 |",
+        "| stress_07 | 9.004 | 0.728 | 0.471 | 0.895 | 0.628 | 0.506 | 63 |",
+        "| stress_08 | 5.833 | 0.786 | 0.471 | 0.944 | 0.648 | 0.490 | 65 |",
+        "| stress_09 | 10.332 | 0.737 | 0.442 | 0.817 | 0.650 | 0.519 | 57 |",
+        "| stress_10 | 6.378 | 0.729 | 0.438 | 0.809 | 0.665 | 0.504 | 60 |",
+        "| stress_11 | 6.147 | 0.723 | 0.468 | 0.921 | 0.657 | 0.530 | 61 |",
+        "| stress_12 | 8.556 | 0.700 | 0.428 | 0.920 | 0.621 | 0.514 | 62 |",
+        "| stress_13 | 8.189 | 0.696 | 0.452 | 0.893 | 0.625 | 0.517 | 79 |",
+        "| stress_14 | 5.765 | 0.734 | 0.494 | 0.886 | 0.634 | 0.513 | 80 |",
+        "| stress_15 | 5.737 | 0.697 | 0.440 | 0.880 | 0.658 | 0.495 | 78 |",
+        "\"windows\" \"x86_64\" (vello_cpu detected SIMD level \"Avx2(Avx2 { _private: () })\")",
+        "| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |",
+        "|---|---|---|---|---|---|---|---|",
+        "| cubic_blobs | 0.206 | 0.081 | 0.034 | 0.599 | 0.095 | 0.083 | 62 |",
+        "| thin_strokes | 0.124 | 0.107 | 0.055 | 0.437 | 0.123 | 0.103 | 1 |",
+        "| aa_edge_angles | 0.495 | 0.256 | 0.153 | 0.534 | 0.284 | 0.202 | 3 |",
+        "| translucent_overlap | 0.221 | 0.098 | 0.051 | 0.507 | 0.095 | 0.084 | 30 |",
+        "| alpha_stack | 0.538 | 0.188 | 0.081 | 0.497 | 0.162 | 0.136 | 1 |",
+        "| linear_gradient | 0.447 | 0.082 | 0.036 | 0.477 | 0.101 | 0.123 | 1 |",
+        "| radial_gradient | 0.442 | 0.100 | 0.046 | 0.445 | 0.140 | 0.096 | 48 |",
+        "| gradient_transformed | 0.274 | 0.077 | 0.035 | 0.532 | 0.097 | 0.083 | 2 |",
+        "| clip_circle | 0.206 | 0.191 | 0.098 | 0.498 | 0.187 | 0.144 | 43 |",
+        "| clip_nested | 0.318 | 0.110 | 0.056 | 0.466 | 0.130 | 0.107 | 68 |",
+        "| glyph_nonzero | 0.105 | 0.073 | 0.029 | 0.492 | 0.085 | 0.077 | 58 |",
+        "| glyph_evenodd | 0.134 | 0.078 | 0.029 | 0.425 | 0.097 | 0.075 | 58 |",
+        "| degenerate | 0.055 | 0.054 | 0.019 | 0.428 | 0.070 | 0.066 | 0 |",
+        "| star_nonzero | 0.076 | 0.068 | 0.027 | 0.501 | 0.091 | 0.075 | 1 |",
+        "| star_evenodd | 0.132 | 0.069 | 0.026 | 0.481 | 0.086 | 0.074 | 1 |",
+        "| coincident_edges | 0.078 | 0.071 | 0.027 | 0.475 | 0.083 | 0.076 | 2 |",
+        "| extreme_coordinates | 0.136 | 0.086 | 0.027 | 0.466 | 0.078 | 0.072 | 3 |",
+        "| subpixel_translation | 0.207 | 0.148 | 0.042 | 0.452 | 0.118 | 0.089 | 51 |",
+        "| non_integer_scales | 0.674 | 0.151 | 0.075 | 0.481 | 0.118 | 0.106 | 61 |",
+        "| stroked_curves | 0.583 | 0.141 | 0.048 | 0.481 | 0.111 | 0.112 | 132 |",
+        "| many_small_paths | 1.125 | 0.795 | 0.423 | 0.748 | 0.489 | 0.394 | 15 |",
+        "| hairline_grid | 0.176 | 0.289 | 0.107 | 0.530 | 0.204 | 0.148 | 1 |",
+        "| perf_2000_cubics_512 | 35.167 | 11.484 | 8.558 | 5.627 | 12.093 | 9.379 | 89 |",
+        "| stress_00 | 5.756 | 0.855 | 0.521 | 1.032 | 0.753 | 0.746 | 72 |",
+        "| stress_01 | 5.710 | 0.729 | 0.542 | 0.947 | 0.654 | 0.533 | 72 |",
+        "| stress_02 | 5.688 | 0.724 | 0.477 | 0.885 | 0.632 | 0.532 | 70 |",
+        "| stress_03 | 5.734 | 0.756 | 0.430 | 0.874 | 0.617 | 0.527 | 70 |",
+        "| stress_04 | 8.119 | 0.735 | 0.447 | 0.899 | 0.648 | 0.499 | 98 |",
+        "| stress_05 | 5.675 | 0.673 | 0.429 | 0.877 | 0.658 | 0.553 | 64 |",
+        "| stress_06 | 5.686 | 0.782 | 0.456 | 0.882 | 0.648 | 0.546 | 63 |",
+        "| stress_07 | 5.812 | 0.688 | 0.429 | 0.851 | 0.647 | 0.611 | 63 |",
+        "| stress_08 | 5.681 | 0.688 | 0.454 | 0.889 | 0.619 | 0.576 | 65 |",
+        "| stress_09 | 5.707 | 0.735 | 0.426 | 0.849 | 0.620 | 0.605 | 57 |",
+        "| stress_10 | 5.695 | 0.757 | 0.456 | 0.982 | 0.650 | 0.782 | 60 |",
+        "| stress_11 | 5.705 | 0.774 | 0.519 | 0.901 | 0.697 | 0.839 | 61 |",
+        "| stress_12 | 5.648 | 0.703 | 0.452 | 0.816 | 0.652 | 0.534 | 62 |",
+        "| stress_13 | 5.691 | 0.692 | 0.424 | 0.839 | 0.649 | 0.495 | 79 |",
+        "| stress_14 | 5.671 | 0.735 | 0.456 | 0.875 | 0.622 | 0.529 | 80 |",
+        "| stress_15 | 5.711 | 0.688 | 0.424 | 0.876 | 0.620 | 0.516 | 78 |",
+        "",
+        "running 2 tests",
+        "..",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s",
+        ""
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "conclusion": "success"
+        },
+        {
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "logLines": 3999,
+      "rustTargets": [
+        "adversarial_c01",
+        "c03_fixed_configurations",
+        "c03_r1_stress",
+        "c03_r2_encoder",
+        "c03_r2_quality",
+        "c11_r1_adversarial",
+        "c11_r1_wire",
+        "c11_r2_adversarial",
+        "c11_r2_wire",
+        "c11_r3_adversarial",
+        "c11_r3_random",
+        "c11_r3_register",
+        "c11_r3_wire",
+        "c11_r4_exposure_bounds",
+        "c11_r5_write_bounds",
+        "c11_r6_staged_inverse",
+        "c12_edit_ops",
+        "c12_kernel_state",
+        "c12_kernel_support",
+        "c12_never_block",
+        "c12_policy",
+        "c12_r1_contracts",
+        "c12_r1_macro",
+        "c12_r1_scale",
+        "c12_r1_stress",
+        "c12_r2_contracts",
+        "c12_r2_registry",
+        "c12_r2_scale",
+        "c12_registry",
+        "c12_transactions",
+        "cli",
+        "compile_fail",
+        "conformance",
+        "declared",
+        "frontend_schemas",
+        "guard_fixtures",
+        "inventory",
+        "properties",
+        "staged_commit",
+        "staged_inverse",
+        "toontown",
+        "toontown_headless",
+        "tt_anim",
+        "tt_audio",
+        "tt_colour",
+        "tt_desktop",
+        "tt_engine",
+        "tt_executor",
+        "tt_fx",
+        "tt_io",
+        "tt_lipsync",
+        "tt_mcp",
+        "tt_model",
+        "tt_persist",
+        "tt_registry",
+        "tt_registry_macros",
+        "tt_render",
+        "tt_vector",
+        "wire_corpus"
+      ],
+      "rustTotals": {
+        "passed": 498,
+        "failed": 0,
+        "ignored": 1
+      },
+      "suiteSummaries": [
+        "Tests  5 passed (5)",
+        "11/11 reviewer Python suites passed",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.06s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s",
+        "test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.14s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.07s",
+        "test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.83s",
+        "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 51.45s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.14s",
+        "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.88s",
+        "test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 75.15s",
+        "Checking foldhash v0.2.0",
+        "Checking hashbrown v0.17.1",
+        "Checking ahash v0.8.12",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 39.14s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 47.06s",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 103.32s",
+        "test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.64s",
+        "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 67.18s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s",
+        "test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.93s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 43.68s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s",
+        "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.76s",
+        "test selftest_runs_with_display_environment_removed ... ok",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.37s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test value::tests::timestamp_display_matches_civil_conversion_for_many_days ... ok",
+        "test result: ok. 41 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s",
+        "test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.75s",
+        "test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.39s",
+        "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.31s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s",
+        "test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.85s",
+        "test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.50s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 67.06s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 41.54s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.38s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test fixed_scalar_configuration_hashes_identically_across_oses ... ok",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.20s",
+        "test extended_corpus_repeats_and_cross_os_hashes ... ok",
+        "test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 13.38s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.51s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.98s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "##[start-action display=Run bail() {;id=__taiki-e_install-action.__run]",
+        "##[start-action display=Run Set-StrictMode -Version Latest;id=__taiki-e_install-action.__run_2]",
+        "\u251c\u2500\u2500 ahash v0.8.12",
+        "warning[duplicate]: found 2 duplicate entries for crate 'hashbrown'",
+        "110 \u2502 \u256d hashbrown 0.12.3 registry+https://github.com/rust-lang/crates.io-index",
+        "111 \u2502 \u2502 hashbrown 0.17.1 registry+https://github.com/rust-lang/crates.io-index",
+        "\u251c hashbrown v0.12.3",
+        "\u251c hashbrown v0.17.1",
+        "\u251c\u2500\u2500 displaydoc v0.2.7",
+        "\u2502   \u2502   \u251c\u2500\u2500 ahash v0.8.12",
+        "##[group]Run cargo build --release --locked -p tt-headless",
+        "cargo build --release --locked -p tt-headless",
+        "exe=target/release/toontown-headless",
+        "PY=python3",
+        "if [ \"$RUNNER_OS\" = \"Windows\" ]; then exe=\"$exe.exe\"; PY=python; fi",
+        "\"$exe\" --version",
+        "env -u DISPLAY -u WAYLAND_DISPLAY \"$exe\" --selftest",
+        "\"$exe\" --selftest --json > selftest-1.json",
+        "\"$exe\" --selftest --json > selftest-2.json",
+        "# Everything except timing must be identical between runs (determinism, ADR-0004).",
+        "$PY -c \"import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)\"",
+        "$PY scripts/check-headless-deps.py \"$exe\"",
+        "mkdir -p out && cp \"$exe\" selftest-1.json out/",
+        "shell: /bin/bash --noprofile --norc -e -o pipefail {0}",
+        "env:",
+        "CARGO_TERM_COLOR: always",
+        "CARGO_INCREMENTAL: 0",
+        "RUST_BACKTRACE: 1",
+        "CACHE_ON_FAILURE: false",
+        "PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin",
+        "##[endgroup]",
+        "Compiling tt-registry-macros v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros)",
+        "Compiling tt-model v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)",
+        "Compiling tt-anim v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)",
+        "Compiling tt-colour v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)",
+        "Compiling tt-fx v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)",
+        "Compiling tt-vector v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)",
+        "Compiling tt-render v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)",
+        "Compiling tt-registry v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)",
+        "Compiling tt-persist v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)",
+        "Compiling tt-audio v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio)",
+        "Compiling tt-lipsync v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync)",
+        "Compiling tt-io v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)",
+        "Compiling tt-executor v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)",
+        "Compiling tt-engine v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine)",
+        "Compiling tt-mcp v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp)",
+        "Compiling tt-headless v0.0.1 (/Users/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless)",
+        "Finished `release` profile [optimized + debuginfo] target(s) in 1m 39s",
+        "toontown-headless 0.0.1 (Toontown 0.0.1; format 1.0; registry 0.1.0; macos-aarch64)",
+        "Toontown 0.0.1 self-test (macos-aarch64, run mode headless)",
+        "[ok] engine.components      13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine",
+        "[ok] engine.versions        formatVersion 1.0 (MAJOR.MINOR), registryVersion 0.1.0 (semver)",
+        "[ok] engine.ping            echoed seq and 1024 payload bytes in 84 ns",
+        "[ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden",
+        "[ok] kernel.executor        registry 796 entries (v0.1.0); patch rev Some(2), undo rev Some(3) from 1; stub answered Some(\"command.notImplemented\")",
+        "[ok] headless.mcpLinked     tt-mcp linked (M1 (C1.4))",
+        "self-test passed",
+        "[('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('kernel.executor', True), ('headless.mcpLinked', True)]",
+        "crate graph: 101 crates, forbidden: none",
+        "linked libraries (darwin): /usr/lib/libiconv.2.dylib, /usr/lib/libSystem.B.dylib",
+        "forbidden libraries: none",
+        "headless dependency check passed"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end \u2014 lint, type-check, test, format, licences",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reviewer Python suites (every tests/adversarial/*.py)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end \u2014 build, diagnostics variant then default (frontendDist is embedded by the Tauri host)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo fmt --all --check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generated command declarations are current (C12-R1-12)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo test --workspace --locked",
+          "conclusion": "success"
+        },
+        {
+          "name": "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run taiki-e/install-action@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo deny --locked check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Headless binary \u2014 build, self-test (twice, compared), linked-library proof",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "logLines": 812,
+      "rustTargets": [],
+      "rustTotals": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "suiteSummaries": [
+        "add-rust-environment-hash-key: true",
+        "Info validating hash",
+        "Info validating hash"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build, default (unsigned; no M0 diagnostics)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Default build registers no M0 diagnostic command and refuses the flags",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)",
+          "conclusion": "success"
+        },
+        {
+          "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+          "conclusion": "success"
+        },
+        {
+          "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+          "conclusion": "success"
+        },
+        {
+          "name": "C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Collect artifacts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "logLines": 297,
+      "rustTargets": [],
+      "rustTotals": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "suiteSummaries": [
+        "cache-targets: true",
+        "cache-all-crates: false",
+        "cache-workspace-crates: false",
+        "save-if: true",
+        "cache-provider: github",
+        "cache-bin: true",
+        "lookup-only: false",
+        "cmd-format: {0}",
+        "env:",
+        "CARGO_TERM_COLOR: always",
+        "CARGO_INCREMENTAL: 0",
+        "RUST_BACKTRACE: 1",
+        "##[endgroup]",
+        "##[group]Cache Configuration",
+        "Cache Provider:",
+        "github",
+        "Workspaces:",
+        "/home/runner/work/261017-toontown-dev/261017-toontown-dev",
+        "Cache Paths:",
+        "/home/runner/.cargo/bin",
+        "/home/runner/.cargo/.crates.toml",
+        "/home/runner/.cargo/.crates2.json",
+        "/home/runner/.cargo/registry",
+        "/home/runner/.cargo/git",
+        "/home/runner/work/261017-toontown-dev/261017-toontown-dev/target",
+        "Restore Key:",
+        "v0-rust-headless-headless-no-display-Linux-x64-811f1ad3",
+        "Cache Key:",
+        "v0-rust-headless-headless-no-display-Linux-x64-811f1ad3-32f83519",
+        ".. Prefix:",
+        "- v0-rust-headless-headless-no-display-Linux-x64",
+        ".. Environment considered:",
+        "- Rust Versions:",
+        "- 1.98.1 x86_64-unknown-linux-gnu 48a229ceaefd4985c50990b14116b6d856af0985",
+        "- 1.99.0 x86_64-unknown-linux-gnu b940084d7eb6a299eb4bfeb8e34901bc051e7ac4",
+        "- CARGO_INCREMENTAL",
+        "- CARGO_TERM_COLOR",
+        "- RUST_BACKTRACE",
+        ".. Lockfiles considered:",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/Cargo.lock",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/desktop/src-tauri/Cargo.toml",
+        "- /home/runner/work/261017-toontown-dev/261017-toontown-dev/rust-toolchain.toml",
+        "##[endgroup]",
+        "",
+        "... Restoring cache ...",
+        "Cache hit for: v0-rust-headless-headless-no-display-Linux-x64-811f1ad3-32f83519",
+        "Received 33554432 of 313040339 (10.7%), 32.0 MBs/sec",
+        "Received 171966464 of 313040339 (54.9%), 82.0 MBs/sec",
+        "Received 313040339 of 313040339 (100.0%), 102.7 MBs/sec",
+        "Cache Size: ~299 MB (313040339 B)",
+        "[command]/usr/bin/tar -xf /home/runner/work/_temp/d1c28f69-8041-4adf-b1ba-2f67dfe804db/cache.tzst -P -C /home/runner/work/261017-toontown-dev/261017-toontown-dev --use-compress-program unzstd",
+        "Cache restored successfully",
+        "Restored from cache key \"v0-rust-headless-headless-no-display-Linux-x64-811f1ad3-32f83519\" full match: true.",
+        "##[group]Run cargo build --release --locked -p tt-headless",
+        "cargo build --release --locked -p tt-headless",
+        "shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}",
+        "env:",
+        "CARGO_TERM_COLOR: always",
+        "CARGO_INCREMENTAL: 0",
+        "RUST_BACKTRACE: 1",
+        "CACHE_ON_FAILURE: false",
+        "##[endgroup]",
+        "Updating crates.io index",
+        "Compiling tt-registry-macros v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry-macros)",
+        "Compiling tt-model v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/model)",
+        "Compiling tt-anim v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/anim)",
+        "Compiling tt-vector v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/vector)",
+        "Compiling tt-colour v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/colour)",
+        "Compiling tt-fx v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/fx)",
+        "Compiling tt-persist v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)",
+        "Compiling tt-registry v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)",
+        "Compiling tt-render v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)",
+        "Compiling tt-audio v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio)",
+        "Compiling tt-io v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)",
+        "Compiling tt-lipsync v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync)",
+        "Compiling tt-executor v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)",
+        "Compiling tt-engine v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine)",
+        "Compiling tt-mcp v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp)",
+        "Compiling tt-headless v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless)",
+        "Finished `release` profile [optimized + debuginfo] target(s) in 1m 07s",
+        "##[group]Run test -z \"${DISPLAY:-}\" && test -z \"${WAYLAND_DISPLAY:-}\"",
+        "test -z \"${DISPLAY:-}\" && test -z \"${WAYLAND_DISPLAY:-}\"",
+        "! ls /tmp/.X11-unix/X* 2>/dev/null",
+        "env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-1.json",
+        "env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-2.json",
+        "python3 -c \"import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)\"",
+        "python3 scripts/check-headless-deps.py target/release/toontown-headless",
+        "shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}",
+        "env:",
+        "CARGO_TERM_COLOR: always",
+        "CARGO_INCREMENTAL: 0",
+        "RUST_BACKTRACE: 1",
+        "CACHE_ON_FAILURE: false",
+        "##[endgroup]",
+        "[('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('kernel.executor', True), ('headless.mcpLinked', True)]",
+        "crate graph: 101 crates, forbidden: none",
+        "linked libraries (linux): libgcc_s.so.1, libm.so.6, libc.so.6, ld-linux-x86-64.so.2",
+        "forbidden libraries: none",
+        "headless dependency check passed",
+        "Post job cleanup.",
+        "Cache up-to-date.",
+        "Post job cleanup.",
+        "[command]/usr/bin/git version",
+        "git version 2.55.0",
+        "Temporarily overriding HOME='/home/runner/work/_temp/5fdf90a8-727e-4648-bb85-8093f9f158dc' before making global git config changes",
+        "Adding repository directory to the temporary git global config as a safe directory",
+        "[command]/usr/bin/git config --global --add safe.directory /home/runner/work/261017-toontown-dev/261017-toontown-dev",
+        "Removing SSH command configuration",
+        "[command]/usr/bin/git config --local --name-only --get-regexp core\\.sshCommand",
+        "[command]/usr/bin/git submodule foreach --recursive sh -c \"git config --local --name-only --get-regexp 'core\\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\"",
+        "Removing HTTP extra header",
+        "[command]/usr/bin/git config --local --name-only --get-regexp http\\.https\\:\\/\\/github\\.com\\/\\.extraheader",
+        "[command]/usr/bin/git submodule foreach --recursive sh -c \"git config --local --name-only --get-regexp 'http\\.https\\:\\/\\/github\\.com\\/\\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\"",
+        "Removing includeIf entries pointing to credentials config files",
+        "[command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\\.gitdir:",
+        "includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path",
+        "includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path",
+        "includeif.gitdir:/github/workspace/.git.path",
+        "includeif.gitdir:/github/workspace/.git/worktrees/*.path",
+        "[command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path",
+        "/home/runner/work/_temp/git-credentials-227c070c-4c77-45f4-8abe-caf620dfc570.config",
+        "[command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path \\/home\\/runner\\/work\\/_temp\\/git\\-credentials\\-227c070c\\-4c77\\-45f4\\-8abe\\-caf620dfc570\\.config",
+        "[command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path",
+        "/home/runner/work/_temp/git-credentials-227c070c-4c77-45f4-8abe-caf620dfc570.config",
+        "[command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path \\/home\\/runner\\/work\\/_temp\\/git\\-credentials\\-227c070c\\-4c77\\-45f4\\-8abe\\-caf620dfc570\\.config",
+        "[command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path",
+        "/github/runner_temp/git-credentials-227c070c-4c77-45f4-8abe-caf620dfc570.config",
+        "[command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \\/github\\/runner_temp\\/git\\-credentials\\-227c070c\\-4c77\\-45f4\\-8abe\\-caf620dfc570\\.config",
+        "[command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path",
+        "/github/runner_temp/git-credentials-227c070c-4c77-45f4-8abe-caf620dfc570.config",
+        "[command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \\/github\\/runner_temp\\/git\\-credentials\\-227c070c\\-4c77\\-45f4\\-8abe\\-caf620dfc570\\.config",
+        "[command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url",
+        "Removing credentials config '/home/runner/work/_temp/git-credentials-227c070c-4c77-45f4-8abe-caf620dfc570.config'",
+        "Cleaning up orphan processes"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-headless",
+          "conclusion": "success"
+        },
+        {
+          "name": "Self-test with no display server",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "logLines": 434,
+      "rustTargets": [],
+      "rustTotals": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      "suiteSummaries": [
+        "add-rust-environment-hash-key: true",
+        "##[group]Run set +e",
+        "set +e",
+        "status=0",
+        "for run in 1 2; do",
+        "cargo run --release --locked -q -p tt-render --example c03_raster -- \\",
+        "--out \"c03-raster/run$run\" --report \"c03-raster/report-run$run.json\" \\",
+        "--check crates/render/examples/c03_raster/hashes.json || status=1",
+        "done",
+        "# Fixed scalar configurations against the committed hashes as a test (C03-R1-04; also run by cargo test in",
+        "# the Windows and macOS check jobs).",
+        "cargo test --release --locked -q -p tt-render --test c03_fixed_configurations || status=1",
+        "# Host-raster fallback timing of the canvas-spike scenes (timing only; not hash-checked).",
+        "cargo run --release --locked -q -p tt-render --example c03_raster -- --repeat 1             --out c03-raster/bench --report c03-raster/canvas-bench.json --canvas-bench > /dev/null || status=1",
+        "exit $status",
+        "shell: /bin/bash --noprofile --norc -e -o pipefail {0}",
+        "env:",
+        "CARGO_TERM_COLOR: always",
+        "CARGO_INCREMENTAL: 0",
+        "RUST_BACKTRACE: 1",
+        "CACHE_ON_FAILURE: false",
+        "##[endgroup]",
+        "\"macos\" \"aarch64\" (vello_cpu detected SIMD level \"Neon(Neon { _private: () })\")",
+        "| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |",
+        "|---|---|---|---|---|---|---|---|",
+        "| cubic_blobs | 0.156 | 0.059 | 0.022 | 0.554 | 0.078 | 0.071 | 62 |",
+        "| thin_strokes | 0.071 | 0.090 | 0.049 | 0.262 | 0.246 | 0.182 | 1 |",
+        "| aa_edge_angles | 0.302 | 0.171 | 0.126 | 0.430 | 0.208 | 0.217 | 3 |",
+        "| translucent_overlap | 0.109 | 0.041 | 0.023 | 0.283 | 0.070 | 0.061 | 30 |",
+        "| alpha_stack | 0.259 | 0.095 | 0.062 | 0.849 | 0.106 | 0.084 | 1 |",
+        "| linear_gradient | 0.220 | 0.030 | 0.027 | 0.343 | 0.062 | 0.052 | 1 |",
+        "| radial_gradient | 0.250 | 0.049 | 0.027 | 0.326 | 0.078 | 0.062 | 48 |",
+        "| gradient_transformed | 0.165 | 0.033 | 0.021 | 0.438 | 0.062 | 0.043 | 2 |",
+        "| clip_circle | 0.123 | 0.100 | 0.063 | 0.582 | 0.197 | 0.105 | 43 |",
+        "| clip_nested | 0.164 | 0.073 | 0.034 | 0.146 | 0.092 | 0.068 | 68 |",
+        "| glyph_nonzero | 0.067 | 0.032 | 0.029 | 0.239 | 0.055 | 0.056 | 58 |",
+        "| glyph_evenodd | 0.066 | 0.027 | 0.018 | 0.097 | 0.090 | 0.043 | 58 |",
+        "| degenerate | 0.041 | 0.020 | 0.011 | 0.143 | 0.037 | 0.030 | 0 |",
+        "| star_nonzero | 0.060 | 0.027 | 0.020 | 0.252 | 0.177 | 0.043 | 1 |",
+        "| star_evenodd | 0.057 | 0.026 | 0.018 | 0.316 | 0.137 | 0.046 | 1 |",
+        "| coincident_edges | 0.053 | 0.030 | 0.020 | 0.480 | 0.059 | 0.146 | 2 |",
+        "| extreme_coordinates | 0.087 | 0.030 | 0.017 | 0.143 | 0.042 | 0.049 | 3 |",
+        "| subpixel_translation | 0.091 | 0.043 | 0.029 | 0.215 | 0.106 | 0.176 | 51 |",
+        "| non_integer_scales | 0.285 | 0.046 | 0.043 | 0.128 | 0.077 | 0.192 | 61 |",
+        "| stroked_curves | 0.234 | 0.050 | 0.029 | 0.115 | 0.191 | 0.074 | 132 |",
+        "| many_small_paths | 0.468 | 0.326 | 0.210 | 0.510 | 0.324 | 0.399 | 15 |",
+        "| hairline_grid | 0.098 | 0.130 | 0.062 | 0.196 | 0.116 | 0.093 | 1 |",
+        "| perf_2000_cubics_512 | 19.657 | 9.463 | 8.658 | 4.683 | 9.584 | 6.789 | 89 |",
+        "| stress_00 | 3.919 | 0.479 | 0.281 | 1.338 | 0.566 | 2.256 | 72 |",
+        "| stress_01 | 4.727 | 0.372 | 0.276 | 0.843 | 0.408 | 0.545 | 72 |",
+        "| stress_02 | 7.966 | 0.407 | 0.348 | 1.104 | 0.405 | 0.401 | 70 |",
+        "| stress_03 | 3.795 | 0.364 | 0.338 | 0.502 | 1.044 | 0.324 | 70 |",
+        "| stress_04 | 3.662 | 0.400 | 0.329 | 0.397 | 0.504 | 0.904 | 98 |",
+        "| stress_05 | 3.659 | 0.376 | 0.277 | 0.419 | 0.421 | 0.961 | 64 |",
+        "| stress_06 | 3.454 | 0.371 | 0.324 | 0.496 | 0.477 | 0.394 | 63 |",
+        "| stress_07 | 3.735 | 0.496 | 0.333 | 0.432 | 0.473 | 0.390 | 63 |",
+        "| stress_08 | 5.516 | 0.467 | 0.300 | 0.890 | 0.704 | 0.325 | 65 |",
+        "| stress_09 | 5.928 | 0.623 | 0.283 | 1.056 | 0.500 | 0.365 | 57 |",
+        "| stress_10 | 3.975 | 0.610 | 0.294 | 0.832 | 0.473 | 0.349 | 60 |",
+        "| stress_11 | 4.131 | 1.213 | 0.413 | 1.027 | 0.454 | 0.359 | 61 |",
+        "| stress_12 | 4.839 | 1.149 | 0.278 | 0.968 | 0.512 | 0.354 | 62 |",
+        "| stress_13 | 3.628 | 0.468 | 0.285 | 0.569 | 0.413 | 0.357 | 79 |",
+        "| stress_14 | 3.769 | 0.419 | 0.440 | 0.781 | 0.486 | 0.592 | 80 |",
+        "| stress_15 | 3.566 | 0.445 | 0.283 | 0.850 | 0.435 | 0.419 | 78 |",
+        "\"macos\" \"aarch64\" (vello_cpu detected SIMD level \"Neon(Neon { _private: () })\")",
+        "| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |",
+        "|---|---|---|---|---|---|---|---|",
+        "| cubic_blobs | 0.108 | 0.052 | 0.022 | 0.086 | 0.055 | 0.045 | 62 |",
+        "| thin_strokes | 0.076 | 0.073 | 0.034 | 0.094 | 0.066 | 0.057 | 1 |",
+        "| aa_edge_angles | 0.338 | 0.203 | 0.099 | 0.190 | 0.179 | 0.131 | 3 |",
+        "| translucent_overlap | 0.115 | 0.040 | 0.022 | 0.077 | 0.057 | 0.039 | 30 |",
+        "| alpha_stack | 0.258 | 0.095 | 0.049 | 0.094 | 0.087 | 0.069 | 1 |",
+        "| linear_gradient | 0.204 | 0.031 | 0.028 | 0.077 | 0.050 | 0.043 | 1 |",
+        "| radial_gradient | 0.210 | 0.044 | 0.027 | 0.090 | 0.070 | 0.051 | 48 |",
+        "| gradient_transformed | 0.136 | 0.041 | 0.024 | 0.077 | 0.055 | 0.047 | 2 |",
+        "| clip_circle | 0.111 | 0.204 | 0.066 | 0.111 | 0.106 | 0.079 | 43 |",
+        "| clip_nested | 0.158 | 0.076 | 0.041 | 0.103 | 0.072 | 0.057 | 68 |",
+        "| glyph_nonzero | 0.067 | 0.029 | 0.019 | 0.082 | 0.040 | 0.038 | 58 |",
+        "| glyph_evenodd | 0.068 | 0.031 | 0.021 | 0.065 | 0.039 | 0.034 | 58 |",
+        "| degenerate | 0.040 | 0.017 | 0.017 | 0.066 | 0.030 | 0.036 | 0 |",
+        "| star_nonzero | 0.060 | 0.023 | 0.018 | 0.072 | 0.040 | 0.035 | 1 |",
+        "| star_evenodd | 0.054 | 0.027 | 0.018 | 0.074 | 0.042 | 0.034 | 1 |",
+        "| coincident_edges | 0.042 | 0.029 | 0.024 | 0.077 | 0.042 | 0.037 | 2 |",
+        "| extreme_coordinates | 0.082 | 0.025 | 0.017 | 0.071 | 0.039 | 0.034 | 3 |",
+        "| subpixel_translation | 0.091 | 0.041 | 0.028 | 0.077 | 0.052 | 0.041 | 51 |",
+        "| non_integer_scales | 0.342 | 0.057 | 0.041 | 0.108 | 0.062 | 0.051 | 61 |",
+        "| stroked_curves | 0.352 | 0.047 | 0.033 | 0.092 | 0.056 | 0.053 | 132 |",
+        "| many_small_paths | 0.711 | 0.505 | 0.232 | 0.205 | 0.333 | 0.239 | 15 |",
+        "| hairline_grid | 0.103 | 0.320 | 0.082 | 0.123 | 0.117 | 0.085 | 1 |",
+        "| perf_2000_cubics_512 | 23.389 | 9.286 | 5.064 | 3.032 | 7.119 | 5.188 | 89 |",
+        "| stress_00 | 3.758 | 0.619 | 0.346 | 0.453 | 0.438 | 0.325 | 72 |",
+        "| stress_01 | 4.475 | 0.527 | 0.308 | 0.421 | 0.391 | 0.319 | 72 |",
+        "| stress_02 | 3.635 | 0.483 | 0.348 | 0.418 | 0.397 | 0.289 | 70 |",
+        "| stress_03 | 3.752 | 0.587 | 0.350 | 0.462 | 0.378 | 0.295 | 70 |",
+        "| stress_04 | 3.695 | 0.394 | 0.332 | 0.454 | 0.437 | 0.289 | 98 |",
+        "| stress_05 | 3.729 | 0.471 | 0.322 | 0.432 | 0.496 | 0.332 | 64 |",
+        "| stress_06 | 20.548 | 0.574 | 0.631 | 0.444 | 0.426 | 0.289 | 63 |",
+        "| stress_07 | 5.934 | 0.391 | 0.302 | 0.466 | 0.394 | 0.346 | 63 |",
+        "| stress_08 | 3.427 | 0.443 | 0.732 | 0.378 | 0.380 | 0.331 | 65 |",
+        "| stress_09 | 3.834 | 0.394 | 0.344 | 0.427 | 0.402 | 0.362 | 57 |",
+        "| stress_10 | 3.621 | 0.417 | 0.264 | 0.438 | 0.384 | 0.336 | 60 |",
+        "| stress_11 | 3.961 | 0.368 | 0.273 | 0.465 | 0.361 | 0.430 | 61 |",
+        "| stress_12 | 7.938 | 0.383 | 0.318 | 0.433 | 0.410 | 0.338 | 62 |",
+        "| stress_13 | 7.194 | 0.451 | 0.260 | 0.372 | 0.363 | 0.331 | 79 |",
+        "| stress_14 | 5.859 | 0.369 | 0.247 | 0.718 | 0.355 | 0.386 | 80 |",
+        "| stress_15 | 3.401 | 0.417 | 0.262 | 0.688 | 0.396 | 0.337 | 78 |",
+        "",
+        "running 2 tests",
+        "..",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s",
+        ""
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "conclusion": "success"
+        },
+        {
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "logLines": 4048,
+      "rustTargets": [
+        "adversarial_c01",
+        "c03_fixed_configurations",
+        "c03_r1_stress",
+        "c03_r2_encoder",
+        "c03_r2_quality",
+        "c11_r1_adversarial",
+        "c11_r1_wire",
+        "c11_r2_adversarial",
+        "c11_r2_wire",
+        "c11_r3_adversarial",
+        "c11_r3_random",
+        "c11_r3_register",
+        "c11_r3_wire",
+        "c11_r4_exposure_bounds",
+        "c11_r5_write_bounds",
+        "c11_r6_staged_inverse",
+        "c12_edit_ops",
+        "c12_kernel_state",
+        "c12_kernel_support",
+        "c12_never_block",
+        "c12_policy",
+        "c12_r1_contracts",
+        "c12_r1_macro",
+        "c12_r1_scale",
+        "c12_r1_stress",
+        "c12_r2_contracts",
+        "c12_r2_registry",
+        "c12_r2_scale",
+        "c12_registry",
+        "c12_transactions",
+        "cli",
+        "compile_fail",
+        "conformance",
+        "declared",
+        "frontend_schemas",
+        "guard_fixtures",
+        "inventory",
+        "properties",
+        "staged_commit",
+        "staged_inverse",
+        "toontown",
+        "toontown_headless",
+        "tt_anim",
+        "tt_audio",
+        "tt_colour",
+        "tt_desktop",
+        "tt_engine",
+        "tt_executor",
+        "tt_fx",
+        "tt_io",
+        "tt_lipsync",
+        "tt_mcp",
+        "tt_model",
+        "tt_persist",
+        "tt_registry",
+        "tt_registry_macros",
+        "tt_render",
+        "tt_vector",
+        "wire_corpus"
+      ],
+      "rustTotals": {
+        "passed": 510,
+        "failed": 0,
+        "ignored": 1
+      },
+      "suiteSummaries": [
+        "Tests  5 passed (5)",
+        "11/11 reviewer Python suites passed",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s",
+        "test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s",
+        "test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s",
+        "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 51.33s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s",
+        "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.29s",
+        "test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 86.97s",
+        "Checking foldhash v0.2.0",
+        "Checking hashbrown v0.17.1",
+        "Checking ahash v0.8.12",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 58.43s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 55.39s",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 114.11s",
+        "test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.27s",
+        "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 96.38s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s",
+        "test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.79s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 68.27s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.75s",
+        "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.06s",
+        "test selftest_runs_with_display_environment_removed ... ok",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.84s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test value::tests::timestamp_display_matches_civil_conversion_for_many_days ... ok",
+        "test result: ok. 41 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s",
+        "test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.09s",
+        "test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.76s",
+        "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.26s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.70s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.93s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.03s",
+        "test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.27s",
+        "test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.32s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 84.30s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 54.76s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.34s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test fixed_scalar_configuration_hashes_identically_across_oses ... ok",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.10s",
+        "test extended_corpus_repeats_and_cross_os_hashes ... ok",
+        "test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 19.95s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.80s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.99s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.98s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "##[start-action display=Run bail() {;id=__taiki-e_install-action.__run]",
+        "##[start-action display=Run Set-StrictMode -Version Latest;id=__taiki-e_install-action.__run_2]",
+        "\u251c\u2500\u2500 ahash v0.8.12",
+        "warning[duplicate]: found 2 duplicate entries for crate 'hashbrown'",
+        "110 \u2502 \u256d hashbrown 0.12.3 registry+https://github.com/rust-lang/crates.io-index",
+        "111 \u2502 \u2502 hashbrown 0.17.1 registry+https://github.com/rust-lang/crates.io-index",
+        "\u251c hashbrown v0.12.3",
+        "\u251c hashbrown v0.17.1",
+        "\u251c\u2500\u2500 displaydoc v0.2.7",
+        "\u2502   \u2502   \u251c\u2500\u2500 ahash v0.8.12",
+        "##[group]Run cargo build --release --locked -p tt-headless",
+        "cargo build --release --locked -p tt-headless",
+        "exe=target/release/toontown-headless",
+        "PY=python3",
+        "if [ \"$RUNNER_OS\" = \"Windows\" ]; then exe=\"$exe.exe\"; PY=python; fi",
+        "\"$exe\" --version",
+        "env -u DISPLAY -u WAYLAND_DISPLAY \"$exe\" --selftest",
+        "\"$exe\" --selftest --json > selftest-1.json",
+        "\"$exe\" --selftest --json > selftest-2.json",
+        "# Everything except timing must be identical between runs (determinism, ADR-0004).",
+        "$PY -c \"import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)\"",
+        "$PY scripts/check-headless-deps.py \"$exe\"",
+        "mkdir -p out && cp \"$exe\" selftest-1.json out/",
+        "shell: C:\\Program Files\\Git\\bin\\bash.EXE --noprofile --norc -e -o pipefail {0}",
+        "env:",
+        "CARGO_TERM_COLOR: always",
+        "CARGO_INCREMENTAL: 0",
+        "RUST_BACKTRACE: 1",
+        "CACHE_ON_FAILURE: false",
+        "PNPM_HOME: C:\\Users\\runneradmin\\setup-pnpm\\node_modules\\.bin",
+        "##[endgroup]",
+        "Compiling tt-model v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\model)",
+        "Compiling tt-registry-macros v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\registry-macros)",
+        "Compiling tt-anim v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\anim)",
+        "Compiling tt-vector v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\vector)",
+        "Compiling tt-colour v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\colour)",
+        "Compiling tt-fx v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\fx)",
+        "Compiling tt-audio v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\audio)",
+        "Compiling tt-persist v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\persist)",
+        "Compiling tt-render v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\render)",
+        "Compiling tt-registry v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\registry)",
+        "Compiling tt-io v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\io)",
+        "Compiling tt-lipsync v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\lipsync)",
+        "Compiling tt-executor v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\executor)",
+        "Compiling tt-engine v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\engine)",
+        "Compiling tt-mcp v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\mcp)",
+        "Compiling tt-headless v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\bins\\headless)",
+        "Finished `release` profile [optimized + debuginfo] target(s) in 2m 38s",
+        "toontown-headless 0.0.1 (Toontown 0.0.1; format 1.0; registry 0.1.0; windows-x86_64)",
+        "Toontown 0.0.1 self-test (windows-x86_64, run mode headless)",
+        "[ok] engine.components      13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine",
+        "[ok] engine.versions        formatVersion 1.0 (MAJOR.MINOR), registryVersion 0.1.0 (semver)",
+        "[ok] engine.ping            echoed seq and 1024 payload bytes in 100 ns",
+        "[ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden",
+        "[ok] kernel.executor        registry 796 entries (v0.1.0); patch rev Some(2), undo rev Some(3) from 1; stub answered Some(\"command.notImplemented\")",
+        "[ok] headless.mcpLinked     tt-mcp linked (M1 (C1.4))",
+        "self-test passed",
+        "[('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('kernel.executor', True), ('headless.mcpLinked', True)]",
+        "crate graph: 101 crates, forbidden: none",
+        "linked libraries (win32): bcryptprimitives.dll, kernel32.dll, api-ms-win-core-synch-l1-2-0.dll, kernel32.dll, ntdll.dll, vcruntime140.dll, api-ms-win-crt-math-l1-1-0.dll, api-ms-win-crt-runtime-l1-1-0.dll, api-ms-win-crt-stdio-l1-1-0.dll, api-ms-win-crt-locale-l1-1-0.dll, api-ms-win-crt-heap-l1-1-0.dll",
+        "forbidden libraries: none",
+        "headless dependency check passed"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end \u2014 lint, type-check, test, format, licences",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reviewer Python suites (every tests/adversarial/*.py)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end \u2014 build, diagnostics variant then default (frontendDist is embedded by the Tauri host)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo fmt --all --check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generated command declarations are current (C12-R1-12)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo test --workspace --locked",
+          "conclusion": "success"
+        },
+        {
+          "name": "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run taiki-e/install-action@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo deny --locked check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Headless binary \u2014 build, self-test (twice, compared), linked-library proof",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

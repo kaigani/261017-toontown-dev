@@ -1,0 +1,467 @@
+[
+  {
+    "id": "anim.path.get",
+    "part": "result",
+    "value": {
+      "nodeId": "n42",
+      "lockDepth": false,
+      "length": 14.37,
+      "points": [
+        {
+          "id": "p1",
+          "kind": "key",
+          "frame": 1,
+          "x": -4,
+          "y": 0,
+          "z": 0,
+          "tension": 0,
+          "continuity": 0,
+          "bias": 0,
+          "constantSegment": false,
+          "lockDepth": false,
+          "arcLength": 0
+        },
+        {
+          "id": "p2",
+          "kind": "control",
+          "frame": 7.412,
+          "x": 0,
+          "y": 3,
+          "z": 0,
+          "tension": 0,
+          "continuity": 0,
+          "bias": 0,
+          "arcLength": 6.02
+        },
+        {
+          "id": "p3",
+          "kind": "key",
+          "frame": 24,
+          "x": 4,
+          "y": 0,
+          "z": 0,
+          "tension": 0,
+          "continuity": 0,
+          "bias": 0,
+          "constantSegment": false,
+          "lockDepth": false,
+          "arcLength": 14.37
+        }
+      ]
+    },
+    "source": "05 section 19.4 exact Path example",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "length"
+        ],
+        "message": "14.37 is not of type 'integer'"
+      },
+      {
+        "path": [
+          "points",
+          1,
+          "frame"
+        ],
+        "message": "7.412 is not of type 'integer'"
+      }
+    ]
+  },
+  {
+    "id": "anim.function.get",
+    "part": "result",
+    "value": {
+      "nodeId": "n42",
+      "channel": "velocity",
+      "curveType": "spline",
+      "keys": [
+        {
+          "frame": 1,
+          "value": 0,
+          "constantSegment": false,
+          "handleMode": "smooth",
+          "left": {
+            "dt": 0,
+            "dv": 0
+          },
+          "right": {
+            "dt": 3.67,
+            "dv": 0
+          },
+          "preset": null
+        },
+        {
+          "frame": 12,
+          "value": 45,
+          "constantSegment": false,
+          "handleMode": "smooth",
+          "left": {
+            "dt": -3.67,
+            "dv": 0
+          },
+          "right": {
+            "dt": 0,
+            "dv": 0
+          },
+          "preset": null
+        }
+      ],
+      "pins": [
+        {
+          "frame": 1,
+          "value": 0
+        },
+        {
+          "frame": 24,
+          "value": 14.37
+        }
+      ]
+    },
+    "source": "05 section 19.4 Function example and explicit velocity pins prose",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "pins",
+          0
+        ],
+        "message": "{'frame': 1, 'value': 0} is not of type 'string', 'number', 'boolean', 'null'"
+      },
+      {
+        "path": [
+          "pins",
+          1
+        ],
+        "message": "{'frame': 24, 'value': 14.37} is not of type 'string', 'number', 'boolean', 'null'"
+      }
+    ]
+  },
+  {
+    "id": "draw.pointSelection.set",
+    "part": "result",
+    "value": {
+      "selectedPoints": [
+        {
+          "strokeId": "stroke-r3",
+          "anchor": 2
+        }
+      ]
+    },
+    "source": "02 and A: anchor is integer index",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "selectedPoints",
+          0,
+          "anchor"
+        ],
+        "message": "2 is not of type 'object'"
+      }
+    ]
+  },
+  {
+    "id": "xsheet.panel.set",
+    "part": "result",
+    "value": {
+      "elementList": true,
+      "lightTable": false,
+      "toolbar": true
+    },
+    "source": "04 and A: three boolean panels",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "elementList"
+        ],
+        "message": "True is not of type 'array'"
+      }
+    ]
+  },
+  {
+    "id": "prefs.list",
+    "part": "result",
+    "value": [
+      {
+        "key": "general.workspace.autoSave",
+        "type": "bool",
+        "default": true,
+        "value": true,
+        "applies": "live",
+        "description": "Save workspace automatically"
+      }
+    ],
+    "source": "01 preference types include bool",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          0,
+          "value"
+        ],
+        "message": "True is not of type 'number'"
+      }
+    ]
+  },
+  {
+    "id": "keymap.list",
+    "part": "result",
+    "value": [
+      {
+        "commandId": "app.frame.set",
+        "params": {
+          "frame": 7
+        },
+        "keys": "Primary+7",
+        "context": "global",
+        "isDefault": false
+      }
+    ],
+    "source": "01 section 12.4: arbitrary command parameter object",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          0,
+          "params"
+        ],
+        "message": "Additional properties are not allowed ('frame' was unexpected)"
+      },
+      {
+        "path": [
+          0,
+          "params"
+        ],
+        "message": "'steps' is a required property"
+      }
+    ]
+  },
+  {
+    "id": "tool.polyline.options.set",
+    "part": "result",
+    "value": {
+      "options": {
+        "snap": true,
+        "snapRadius": 8
+      }
+    },
+    "source": "02 polyline options and A parameter fields",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "options"
+        ],
+        "message": "{'snap': True, 'snapRadius': 8} is not of type 'array'"
+      }
+    ]
+  },
+  {
+    "id": "print.settings.set",
+    "part": "params",
+    "value": {
+      "values": {
+        "copies": 2
+      }
+    },
+    "source": "09 PrintParams copies plus A values object",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "values"
+        ],
+        "message": "Additional properties are not allowed ('copies' was unexpected)"
+      }
+    ]
+  },
+  {
+    "id": "export.settings.get",
+    "part": "result",
+    "value": {
+      "preset": "default",
+      "settings": {}
+    },
+    "source": "09 settings are an object in paired export.settings.set",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "settings"
+        ],
+        "message": "{} is not of type 'array'"
+      }
+    ]
+  },
+  {
+    "id": "drawAid.staticLightTable.set",
+    "part": "result",
+    "value": {
+      "entries": [
+        {
+          "entryId": "r3-entry",
+          "sourceId": "r3-drawing",
+          "sourceKind": "drawing",
+          "visible": true,
+          "placement": "underlay"
+        }
+      ]
+    },
+    "source": "02 section 13.5 entries defined by staticLightTable.list",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "entries",
+          0
+        ],
+        "message": "Additional properties are not allowed ('entryId', 'placement', 'sourceId', 'sourceKind', 'visible' were unexpected)"
+      }
+    ]
+  },
+  {
+    "id": "tool.pen.set",
+    "part": "result",
+    "value": {
+      "pen": {
+        "id": "pen_r3",
+        "type": "pen",
+        "rev": 1,
+        "name": "Pen 1",
+        "kind": "brush",
+        "minSize": 0.5,
+        "maxSize": 2,
+        "smoothness": 3,
+        "tip": "round",
+        "tipAngle": 0,
+        "colourId": null
+      }
+    },
+    "source": "02 section 6.1 and 10 section 4.2: Pen is a model object; Rust regression uses valid sample_parts Pen",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "pen"
+        ],
+        "message": "{'id': 'pen_r3', 'type': 'pen', 'rev': 1, 'name': 'Pen 1', 'kind': 'brush', 'minSize': 0.5, 'maxSize': 2, 'smoothness': 3, 'tip': 'round', 'tipAngle': 0, 'colourId': None} is not of type 'string', 'number', 'boolean', 'null'"
+      }
+    ]
+  },
+  {
+    "id": "sound.envelope.set",
+    "part": "result",
+    "value": {
+      "points": [
+        {
+          "time": 0.25,
+          "left": 0.5,
+          "right": 0.75
+        }
+      ]
+    },
+    "source": "07 envelope points: time, left, right",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "points",
+          0
+        ],
+        "message": "'x' is a required property"
+      },
+      {
+        "path": [
+          "points",
+          0
+        ],
+        "message": "'y' is a required property"
+      },
+      {
+        "path": [
+          "points",
+          0
+        ],
+        "message": "Additional properties are not allowed ('left', 'right', 'time' were unexpected)"
+      }
+    ]
+  },
+  {
+    "id": "sound.envelope.point.move",
+    "part": "result",
+    "value": {
+      "points": [
+        {
+          "time": 0.25,
+          "left": 0.5,
+          "right": 0.75
+        }
+      ]
+    },
+    "source": "07 envelope points: time, left, right",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "points",
+          0
+        ],
+        "message": "'x' is a required property"
+      },
+      {
+        "path": [
+          "points",
+          0
+        ],
+        "message": "'y' is a required property"
+      },
+      {
+        "path": [
+          "points",
+          0
+        ],
+        "message": "Additional properties are not allowed ('left', 'right', 'time' were unexpected)"
+      }
+    ]
+  },
+  {
+    "id": "sound.envelope.point.remove",
+    "part": "result",
+    "value": {
+      "points": [
+        {
+          "time": 0.25,
+          "left": 0.5,
+          "right": 0.75
+        }
+      ]
+    },
+    "source": "07 envelope points: time, left, right",
+    "accepted": false,
+    "violations": [
+      {
+        "path": [
+          "points",
+          0
+        ],
+        "message": "'x' is a required property"
+      },
+      {
+        "path": [
+          "points",
+          0
+        ],
+        "message": "'y' is a required property"
+      },
+      {
+        "path": [
+          "points",
+          0
+        ],
+        "message": "Additional properties are not allowed ('left', 'right', 'time' were unexpected)"
+      }
+    ]
+  }
+]

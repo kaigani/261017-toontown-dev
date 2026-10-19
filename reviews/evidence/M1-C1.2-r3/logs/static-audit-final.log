@@ -1,0 +1,8 @@
+{
+  "priorReviewerTestEdits": 0,
+  "dependencyChanges": 0,
+  "sensitiveLinesForInspection": 48,
+  "publicSurfaceLines": 360,
+  "registryByteIdenticalToBuilder": true,
+  "currentRegistrySha256": "e7e49c726bf0d32a9bfdac9519607703000b550fde49941ee1804a1afbead994"
+}

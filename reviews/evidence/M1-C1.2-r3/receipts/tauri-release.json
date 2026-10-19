@@ -1,0 +1,32 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "--dir",
+    "desktop",
+    "tauri",
+    "build",
+    "--no-bundle",
+    "--",
+    "--locked"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r3",
+  "startedAt": "2026-10-19T10:57:40.077273+00:00",
+  "durationSeconds": 102.154,
+  "exitCode": 0,
+  "head": "2e0e5dd5feaf47199f5c15595b187a34db3e5c5e",
+  "dirtyFiles": [
+    "?? crates/executor/tests/c12_r3_contracts.rs",
+    "?? crates/executor/tests/c12_r3_registry.rs",
+    "?? crates/executor/tests/c12_r3_stress.rs",
+    "?? reviews/evidence/M1-C1.2-r3/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\tauri-release.log",
+  "sha256": "1b89b4c868478a6b4ac2e9b4a81d267d232cda2208c8c9fa2c95c3e5013343b5",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r3\\reviews\\evidence\\M1-C1.2-r3"
+  }
+}

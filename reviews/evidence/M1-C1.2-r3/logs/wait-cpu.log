@@ -1,0 +1,14 @@
+{
+  "command": [
+    "C:\\Users\\kaiga\\work\\review\\m1-c12-r3\\target\\debug\\deps\\c12_r3_contracts-d703beb9e6999d6c.exe",
+    "sequential_batch_wait_uses_elapsed_time_and_reaches_completion",
+    "--exact",
+    "--nocapture"
+  ],
+  "exitCode": 0,
+  "wallSeconds": 1.5178615999757312,
+  "cpuSeconds": 0.265625,
+  "oneCoreFraction": 0.1749994861219541,
+  "expectedHeldWaitMs": 1250,
+  "method": "GetProcessTimes of whole child, includes fixture/setup; no sampling loss"
+}

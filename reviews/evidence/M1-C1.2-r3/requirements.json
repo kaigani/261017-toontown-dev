@@ -1,0 +1,746 @@
+[
+  {
+    "id": "R01",
+    "requirement": "Inventory IDs, namespace, kind and verbatim table columns (A)",
+    "implementation": "crates/registry/src/inventory.rs:8",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_registry; registry.json; this independent set comparison; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R02",
+    "requirement": "Every inventory entry has constrained parameter/result schemas (plan 3.2; 11 14.2)",
+    "implementation": "scripts/gen-command-declarations.py:494",
+    "priorStatus": "divergent",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "tests": "c12_r3_registry; semantic-schema-cases.json",
+    "note": "Zero structural holes; fourteen spec-valid contracts rejected."
+  },
+  {
+    "id": "R03",
+    "requirement": "Every command example executes and matches its result schema (11 14.2)",
+    "implementation": "crates/registry/tests/declared.rs:25",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "independently_validate_every_declared_parameter_example; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R04",
+    "requirement": "Every stub names a correct owner (plan 4)",
+    "implementation": "crates/registry/src/owners.rs:15",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "registry_owners_follow_the_milestone_plan; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R05",
+    "requirement": "Registry version and generated frontend schema freshness",
+    "implementation": "crates/registry/src/lib.rs:57",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "frontend_schemas; c12_registry; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R06",
+    "requirement": "Attribute macro rejects missing example/duplicate ID/wrong kind",
+    "implementation": "crates/registry-macros/src/lib.rs:6",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_r1_macro; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R07",
+    "requirement": "Exclusive mutation capability (plan 3.2; 11 P2)",
+    "implementation": "crates/executor/src/run.rs:891",
+    "priorStatus": "divergent",
+    "status": "implemented",
+    "findings": [],
+    "tests": "safe_revision_reconstruction_cannot_install_future_object_revisions; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R08",
+    "requirement": "One serialized document queue (REV-06)",
+    "implementation": "crates/executor/src/lib.rs:273",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "eight_fresh_clients_mix_object_guards_and_atomic_batches; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R09",
+    "requirement": "Staged full integrity gate and rollback of document edits",
+    "implementation": "crates/model/src/document/mod.rs:674",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_transactions; staged_commit; c11_r4/r5/r6; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R10",
+    "requirement": "Atomic rollback covers every observable side effect (11 7.3)",
+    "implementation": "crates/executor/src/run.rs:169",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "failed_batch_rolls_back_all_five_effect_classes_together; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R11",
+    "requirement": "Atomic batch one revision, undo step and label",
+    "implementation": "crates/executor/src/run.rs:783",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_transactions; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R12",
+    "requirement": "Query steps see prior staged changes (11 7.3)",
+    "implementation": "crates/executor/src/commands/checkpoint.rs:111",
+    "priorStatus": "divergent",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-04"
+    ],
+    "tests": "staged_drawing_only_diff_keeps_content_invalidation",
+    "note": "Filtered query loses a prior staged stroke edit."
+  },
+  {
+    "id": "R13",
+    "requirement": "Numeric/named intermediate references",
+    "implementation": "crates/executor/src/run.rs:1048",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_transactions; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R14",
+    "requirement": "Long-running job-kind steps rejected in atomic batches",
+    "implementation": "crates/executor/src/run.rs:685",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_transactions; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R15",
+    "requirement": "Ordinary edit dryRun changes/history/revisions",
+    "implementation": "crates/executor/src/cx.rs:164",
+    "priorStatus": "divergent",
+    "status": "implemented",
+    "findings": [],
+    "tests": "paste_dry_run_predicts_created_ids_exactly; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R16",
+    "requirement": "Dry run covers clipboard events and cancellation",
+    "implementation": "crates/executor/src/run.rs:465",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "failed_batch_rolls_back_all_five_effect_classes_together; c12_r1_contracts; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R17",
+    "requirement": "Command-parameter dryRun in atomic batch",
+    "implementation": "crates/executor/src/run.rs:803",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "parameter_dry_run_is_honoured_inside_atomic_batch; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R18",
+    "requirement": "Sequential dry-run batch simulates preceding edits",
+    "implementation": "crates/executor/src/run.rs:658",
+    "priorStatus": "divergent",
+    "status": "implemented",
+    "findings": [],
+    "tests": "sequential_dry_run_simulates_checkpoints; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R19",
+    "requirement": "Common run_command envelope including job.wait",
+    "implementation": "crates/executor/src/run.rs:982",
+    "priorStatus": "divergent",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-03"
+    ],
+    "tests": "overlapping_identical_waits_retain_one_original_envelope",
+    "note": "Concurrent identical wait replies differ."
+  },
+  {
+    "id": "R20",
+    "requirement": "Undo/redo canonical content and revision stamps",
+    "implementation": "crates/executor/src/cx.rs:683",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "edit_object_kinds_clipboard_and_history_roundtrip; standalone_m1_element_types_roundtrip_undo_redo; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R21",
+    "requirement": "Failed batch history, redo invalidation, grouped labels",
+    "implementation": "crates/executor/src/run.rs:412",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_transactions; c12_r1_stress; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R22",
+    "requirement": "Checkpoint create/list/delete/restore and history independence",
+    "implementation": "crates/executor/src/commands/checkpoint.rs:48",
+    "priorStatus": "divergent",
+    "status": "implemented",
+    "findings": [],
+    "tests": "checkpoint_create_then_delete_in_atomic_batch_succeeds; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R23",
+    "requirement": "Checkpoint created from staged content has coherent rev",
+    "implementation": "crates/executor/src/run.rs:465",
+    "priorStatus": "divergent",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-02"
+    ],
+    "tests": "checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision",
+    "note": "Checkpoint predicted revision and contained stamps disagree."
+  },
+  {
+    "id": "R24",
+    "requirement": "Checkpoint cost at 100k strokes/10k drawings",
+    "implementation": "crates/model/src/document/mod.rs:104",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_r1_scale; large-documents.json; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R25",
+    "requirement": "expectRev scalar and envelope guard",
+    "implementation": "crates/executor/src/run.rs:324",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "mixed_expect_rev_guards_cover_paths_compound_ids_and_unmodified_project; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R26",
+    "requirement": "expectRev map checks every listed object (REV-05)",
+    "implementation": "crates/executor/src/commands/doc.rs:679",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "mixed_expect_rev_guards_cover_paths_compound_ids_and_unmodified_project; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R27",
+    "requirement": "Conflict details.currentRev and current small JSON (REV-05)",
+    "implementation": "crates/executor/src/run.rs:337",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "mixed_expect_rev_guards_cover_paths_compound_ids_and_unmodified_project; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R28",
+    "requirement": "requestId retry same ID returns original without execution",
+    "implementation": "crates/executor/src/run.rs:982",
+    "priorStatus": "divergent",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-03"
+    ],
+    "tests": "overlapping_identical_waits_retain_one_original_envelope",
+    "note": "Pending identical retries execute independent waits and overwrite cached reply."
+  },
+  {
+    "id": "R29",
+    "requirement": "requestId different parameters same ID",
+    "implementation": "crates/executor/src/run.rs:77",
+    "priorStatus": "divergent",
+    "status": "implemented",
+    "findings": [],
+    "tests": "pending_job_wait_reserves_request_id_against_other_commands; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R30",
+    "requirement": "requestId persistence across process restart",
+    "implementation": "crates/executor/src/run.rs:60",
+    "priorStatus": "deferred-with-owner",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "tests": "source audit",
+    "note": "Retained deferral: Not required by 11 7.2 (within-session); durable session protocol is C1.4 decision, not a persistence defect",
+    "owner": "M1 C1.4"
+  },
+  {
+    "id": "R31",
+    "requirement": "documentRev exactly +1 per edit/undo/redo (REV-01/03)",
+    "implementation": "crates/executor/src/cx.rs:516",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_transactions; c12_r1_stress; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R32",
+    "requirement": "Revision overflow is controlled error, not thread panic",
+    "implementation": "crates/executor/src/cx.rs:521",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "revision_max_blocks_fresh_paste_and_keeps_queries_alive; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R33",
+    "requirement": "Drawing rev follows content edits (REV-02)",
+    "implementation": "crates/model/src/document/stamp.rs:22",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_transactions; changes_report_drawing_revision_when_a_stroke_changes; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R34",
+    "requirement": "Every changed revision returned to caller (11 P6)",
+    "implementation": "crates/executor/src/commands/doc.rs:1298",
+    "priorStatus": "divergent",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-04"
+    ],
+    "tests": "staged_drawing_only_diff_keeps_content_invalidation",
+    "note": "Drawing-only staged diff omits a changed drawing revision."
+  },
+  {
+    "id": "R35",
+    "requirement": "Persist revs through save/reopen (REV-04)",
+    "implementation": "crates/executor/src/commands/project.rs:161",
+    "priorStatus": "deferred-with-owner",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "tests": "typed declarations; handoff",
+    "note": "Retained deferral: C1.3 persistence; cannot prove with C1.2 stubs",
+    "owner": "M1 C1.3"
+  },
+  {
+    "id": "R36",
+    "requirement": "Change sets oldValue/concrete paths/numeric opaque keys",
+    "implementation": "crates/model/src/change.rs:898",
+    "priorStatus": "divergent",
+    "status": "implemented",
+    "findings": [],
+    "tests": "json04_materialised_parent_is_removed_by_raw_patch_inverse; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R37",
+    "requirement": "Historical doc.diff within retained 10k window",
+    "implementation": "crates/executor/src/commands/doc.rs:1194",
+    "priorStatus": "divergent",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-02",
+      "C12-R3-04"
+    ],
+    "tests": "c12_r3_contracts",
+    "note": "Retained historical regressions pass; checkpoint and staged filtered diff counterexamples remain."
+  },
+  {
+    "id": "R38",
+    "requirement": "doc.diff retains last save even beyond 10k (AG-09)",
+    "implementation": "crates/executor/src/session.rs:92",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "fresh_historical_diff_replays_and_agrees_with_checkpoint_across_batch_steps; diff_retains_the_last_save_even_after_ten_thousand_transactions; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R39",
+    "requirement": "500-change envelope cap and oversized event elision",
+    "implementation": "crates/executor/src/run.rs:357",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_transactions; c12_policy; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R40",
+    "requirement": "IDs/compound paths/special references/projections",
+    "implementation": "crates/executor/src/cx.rs:369",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_policy; c11_r1/r2/r3; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R41",
+    "requirement": "Derived fields already computable from model",
+    "implementation": "crates/executor/src/commands/derived.rs:14",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_policy; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R42",
+    "requirement": "Geometry/render/media-derived fields not yet computable",
+    "implementation": "crates/executor/src/commands/derived.rs:5",
+    "priorStatus": "deferred-with-owner",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "tests": "c12_policy; doc.derivedUnavailable",
+    "note": "Retained deferral: Explicit M2/M3/M7/M8 owners and warnings; no pretend complete renderer",
+    "owner": "M2 C2.3; M3 C3.2/C3.3; M7 C7.2; M8 C8.1"
+  },
+  {
+    "id": "R43",
+    "requirement": "x-command / structural mutation routes and drawing aliases",
+    "implementation": "crates/executor/src/commands/doc.rs:737",
+    "priorStatus": "deferred-with-owner",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "tests": "c12_registry::drawing_command_delegation_ruling; c12_policy",
+    "note": "Retained deferral: Aliases mapped; specialized handlers intentionally M2/M3 etc; no hidden generic mutation",
+    "owner": "M2 C2.3; M3 C3.1/C3.2; owning specialty checkpoints"
+  },
+  {
+    "id": "R44",
+    "requirement": "No-project enablement (01 1.3)",
+    "implementation": "scripts/gen-command-declarations.py:188",
+    "priorStatus": "divergent",
+    "status": "implemented",
+    "findings": [],
+    "tests": "library_close_has_no_project_rule_from_01_1_3; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R45",
+    "requirement": "Dirty-project quit fail/discard/save policy",
+    "implementation": "crates/executor/src/commands/app.rs:479",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_kernel_state; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R46",
+    "requirement": "Fullscreen explicit enabled parameter",
+    "implementation": "crates/executor/src/commands/window.rs:29",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_kernel_state; c12_r1_contracts; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R47",
+    "requirement": "Mode/current view/fullscreen readback agreement",
+    "implementation": "crates/executor/src/commands/app.rs:380",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "fresh_mode_workspace_and_renamed_builtin_reset_are_coherent; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R48",
+    "requirement": "Workspace autoSave/default/save/reset rules",
+    "implementation": "crates/executor/src/ui.rs:922",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "fresh_mode_workspace_and_renamed_builtin_reset_are_coherent; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R49",
+    "requirement": "Queryable panels/layout/toolbars",
+    "implementation": "crates/executor/src/ui.rs:555",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_kernel_state; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R50",
+    "requirement": "All edit.* functionality due C1.2 (plan 4)",
+    "implementation": "crates/executor/src/commands/edit_ops.rs:1511",
+    "priorStatus": "divergent",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_r2_contracts; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R51",
+    "requirement": "Clipboard structured kind validation",
+    "implementation": "crates/executor/src/commands/edit.rs:705",
+    "priorStatus": "divergent",
+    "status": "implemented",
+    "findings": [],
+    "tests": "clipboard_element_properties_validates_values_not_only_names; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R52",
+    "requirement": "Clipboard return shape",
+    "implementation": "crates/executor/src/commands/edit.rs:841",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "clipboard_get_returns_the_specified_clipboard_directly; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R53",
+    "requirement": "Manifest forward parity; declared typed reverse coverage",
+    "implementation": "crates/executor/tests/c12_registry.rs:124",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_registry::ui_binding_manifest_parity; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R54",
+    "requirement": "Full-inventory reverse parity build gate (11 14.1)",
+    "implementation": "crates/executor/tests/c12_registry.rs:124",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "every_registry_entry_has_a_gui_binding_or_agent_only_justification; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R55",
+    "requirement": "Real native command dispatch/state parity",
+    "implementation": "desktop/src-tauri/src/menu.rs:35",
+    "priorStatus": "deferred-with-owner",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "tests": "handoff; source audit",
+    "note": "Retained deferral: M4 C4.1 per accepted readiness split; native fullscreen still toggles directly",
+    "owner": "M4 C4.1"
+  },
+  {
+    "id": "R56",
+    "requirement": "Every registered command malformed inputs under watchdog",
+    "implementation": "crates/executor/src/lib.rs:175",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_r1_stress; c12_r1_scale; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R57",
+    "requirement": "Watchdog bounds caller vs actual execution",
+    "implementation": "crates/executor/src/lib.rs:175",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_kernel_state::the_watchdog_answers_within_its_budget; job_wait_timeout_policy_is_explicitly_measured; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R58",
+    "requirement": "Perpetually looping registered handler and modal interception proof",
+    "implementation": "crates/executor/tests/c12_never_block.rs:33",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_never_block; ci-audit.json; baseline/gates/headless.log; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R59",
+    "requirement": "Explicit scopes on implemented calls",
+    "implementation": "crates/executor/src/run.rs:262",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_policy; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R60",
+    "requirement": "Job session isolation",
+    "implementation": "crates/executor/src/commands/job.rs:34",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "fresh_job_cross_session_list_wait_cancel_are_isolated; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R61",
+    "requirement": "File/prefs/network scopes on inventory stubs",
+    "implementation": "scripts/gen-command-declarations.py:224",
+    "priorStatus": "divergent",
+    "status": "implemented",
+    "findings": [],
+    "tests": "library_global_write_scope_is_declared; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R62",
+    "requirement": "Protocol initialize/tools/resources/subscriptions/prompts/events/audit/confirmation",
+    "implementation": "crates/executor/src/commands/agent.rs:64",
+    "priorStatus": "deferred-with-owner",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "tests": "agent.* typed declarations; bins/headless flags",
+    "note": "Retained deferral: C1.4; no MCP inspector run possible at this checkpoint",
+    "owner": "M1 C1.4"
+  },
+  {
+    "id": "R63",
+    "requirement": "Job wait/status/cancel/progress table",
+    "implementation": "crates/executor/src/commands/job.rs:119",
+    "priorStatus": "divergent",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-03"
+    ],
+    "tests": "overlapping_identical_waits_retain_one_original_envelope",
+    "note": "Real waiting and ownership fixed, duplicate request contract still broken."
+  },
+  {
+    "id": "R64",
+    "requirement": "No new unsafe/product unwrap/expect/panic allowances",
+    "implementation": "Cargo.toml:62",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "source audit; clippy; CI; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R65",
+    "requirement": "Existing three-layer IPC gate / worker ban / diagnostics gate",
+    "implementation": "desktop/eslint.config.js:10",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "baseline build; Vitest boundary 69+46; CI default/diagnostics builds; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R66",
+    "requirement": "Composite command-result boundary controls",
+    "implementation": "desktop/src/ipc/commands.test.ts:30",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "7 command schema tests; frontend_schemas; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R67",
+    "requirement": "Touched-object diff and 100k full-commit costs",
+    "implementation": "crates/executor/src/cx.rs:447",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "commit-scale.log; large-documents.json; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R68",
+    "requirement": "10k-drawing query performance",
+    "implementation": "crates/model/src/document/paths.rs:113",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "c12_r1_scale; logs/release-scale.log; large-documents.json; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R69",
+    "requirement": "Dependency/licence and lockfile changes",
+    "implementation": "Cargo.lock:3",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "cargo deny; CI; git diff; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R70",
+    "requirement": "Reviewer test preservation and CI coverage accuracy",
+    "implementation": ".github/workflows/ci.yml:88",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "ci-audit.json; static-audit.json; final/gates/test.log; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R71",
+    "requirement": "Fresh-seed randomized coverage and shrinking",
+    "implementation": "crates/executor/tests/c12_r2_contracts.rs:834",
+    "priorStatus": "implemented",
+    "status": "implemented",
+    "findings": [],
+    "tests": "eight_fresh_clients_mix_object_guards_and_atomic_batches; random-history.json; c11_r3_random; baseline/final full workspace logs",
+    "note": "Source rechecked at current commit; retained suites pass, with fresh closure/stress checks where applicable."
+  },
+  {
+    "id": "R72",
+    "requirement": "Persistence unchecked assembly confinement",
+    "implementation": "crates/model/src/document/mod.rs:232",
+    "priorStatus": "deferred-with-owner",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "tests": "C1.1 closure carryover",
+    "note": "Retained deferral: C1.3 load/repair; open capability must first close C12-R1-01",
+    "owner": "M1 C1.3"
+  }
+]

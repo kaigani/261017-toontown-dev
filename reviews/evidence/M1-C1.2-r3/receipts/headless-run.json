@@ -1,0 +1,26 @@
+{
+  "command": [
+    "C:\\Users\\kaiga\\work\\review\\m1-c12-r3\\target\\release\\toontown-headless.exe",
+    "--headless",
+    "--run",
+    "reviews/evidence/M1-C1.2-r3/random-history-commands.json"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r3",
+  "startedAt": "2026-10-19T11:07:11.544552+00:00",
+  "durationSeconds": 0.008,
+  "exitCode": 3,
+  "head": "2e0e5dd5feaf47199f5c15595b187a34db3e5c5e",
+  "dirtyFiles": [
+    "?? crates/executor/tests/c12_r3_contracts.rs",
+    "?? crates/executor/tests/c12_r3_registry.rs",
+    "?? crates/executor/tests/c12_r3_stress.rs",
+    "?? reviews/evidence/M1-C1.2-r3/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\headless-run.log",
+  "sha256": "d66dc9cb6a3a3d268542ca270a8c6a6006d03d9ac6975223b31c24fc5bcad11e",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r3\\reviews\\evidence\\M1-C1.2-r3"
+  }
+}

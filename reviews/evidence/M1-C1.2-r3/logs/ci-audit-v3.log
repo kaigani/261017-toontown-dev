@@ -1,0 +1,86 @@
+{
+  "run": "39236678120",
+  "head": "2e0e5dd5feaf47199f5c15595b187a34db3e5c5e",
+  "jobs": [
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "logLines": 696,
+      "rustTotals": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      }
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "logLines": 407,
+      "rustTotals": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      }
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "logLines": 431,
+      "rustTotals": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      }
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "logLines": 3999,
+      "rustTotals": {
+        "passed": 498,
+        "failed": 0,
+        "ignored": 1
+      }
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "logLines": 812,
+      "rustTotals": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      }
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "logLines": 297,
+      "rustTotals": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      }
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "logLines": 434,
+      "rustTotals": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      }
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "logLines": 4048,
+      "rustTotals": {
+        "passed": 510,
+        "failed": 0,
+        "ignored": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling serde_core v1.0.229
+   Compiling memchr v2.8.3
+   Compiling serde_json v1.0.154
+   Compiling once_cell v1.21.4
+   Compiling smallvec v1.16.3
+   Compiling serde v1.0.229
+   Compiling aho-corasick v1.1.5
+   Compiling windows-sys v0.61.2
+   Compiling parking_lot_core v0.9.12
+   Compiling getrandom v0.4.3
+   Compiling parking_lot v0.12.5
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling winapi-util v0.1.11
+   Compiling regex-automata v0.4.18
+   Compiling termcolor v1.4.1
+   Compiling serde_derive_internals v0.30.0
+   Compiling indexmap v2.14.2
+   Compiling serde_spanned v1.1.2
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling schemars_derive v1.2.3
+   Compiling ref-cast v1.0.27
+   Compiling regex v1.13.1
+   Compiling fancy-regex v0.19.2
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r3\crates\registry-macros)
+   Compiling thiserror v2.0.21
+   Compiling strum v0.28.0
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling trybuild v1.0.122
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r3\crates\model)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r3\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r3\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.99s
+     Running tests\c12_r3_contracts.rs (target\debug\deps\c12_r3_contracts-d703beb9e6999d6c.exe)
+
+running 8 tests
+
+thread 'checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision' (22516) panicked at crates\executor\tests\c12_r3_contracts.rs:92:5:
+assertion `left == right` failed: R2-03: checkpoint must carry the staged object's revision stamps
+  left: Array [Object {"id": String("dr_01K742SG0KZJY81XFP1PYP7NX1"), "type": String("drawing"), "op": String("modified"), "rev": Number(2), "patch": Array []}]
+ right: Array []
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'staged_drawing_only_diff_keeps_content_invalidation' (10744) panicked at crates\executor\tests\c12_r3_contracts.rs:77:5:
+REV-02 and R2-12: drawing filter must not erase staged content invalidation: []
+test checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision ... FAILED
+test staged_drawing_only_diff_keeps_content_invalidation ... FAILED
+test checkpoint_create_delete_and_failure_are_transactional_on_fresh_content ... ok
+test public_staging_rewind_and_serde_candidates_cannot_cross_load_integrity_gate ... ok
+
+thread 'dry_run_ids_match_for_all_implemented_paste_creation_routes' (24044) panicked at crates\executor\tests\common\mod.rs:30:5:
+assertion `left == right` failed: edit.copy {"context":"drawing","objectIds":["scene:#1/element:\"Bob\"/drawing:#1/node:#1"]}: Some(CommandError { code: "arg.invalid", message: "invalid path: unknown type `node`", details: Object {"offset": Number(34)}, hint: None })
+  left: Error
+ right: Ok
+test dry_run_ids_match_for_all_implemented_paste_creation_routes ... FAILED
+test malformed_paste_destination_variants_never_fall_back ... ok
+
+thread 'overlapping_identical_waits_retain_one_original_envelope' (5848) panicked at crates\executor\tests\c12_r3_contracts.rs:59:5:
+assertion `left == right` failed: 11 §7.2: overlapping identical retries must return the original envelope
+  left: Object {"status": String("ok"), "result": Object {"jobId": String("job-1"), "commandId": String("review.r3"), "state": String("succeeded"), "progress": Number(1.0), "message": String(""), "startedAt": String("2026-10-19T10:53:44.727Z"), "result": Object {"fresh": Number(49443)}, "session": String("user")}, "changes": Array [], "warnings": Array [], "documentRev": Number(1)}
+ right: Object {"status": String("ok"), "result": Object {"jobId": String("job-1"), "commandId": String("review.r3"), "state": String("running"), "progress": Number(0.0), "message": String(""), "startedAt": String("2026-10-19T10:53:44.727Z"), "session": String("user"), "timedOut": Bool(true)}, "changes": Array [], "warnings": Array [], "documentRev": Number(1)}
+test overlapping_identical_waits_retain_one_original_envelope ... FAILED
+
+thread 'sequential_batch_wait_uses_elapsed_time_and_reaches_completion' (33400) panicked at crates\executor\tests\c12_r3_contracts.rs:178:5:
+Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "batch.stepFailed", message: "step 2 (`app.frame.set`) failed: frame 73 is beyond the scene length 48", details: Object {"stepIndex": Number(2), "commandId": String("app.frame.set"), "error": Object {"code": String("arg.invalid"), "message": String("frame 73 is beyond the scene length 48"), "details": Object {"pointer": String("/frame"), "allowed": Object {"minimum": Number(1), "maximum": Number(48)}}}}, hint: None }), dry_run: false, steps: Some([Envelope { status: Ok, result: Some(Object {"jobId": String("job-1"), "commandId": String("review.r3"), "state": String("succeeded"), "progress": Number(1.0), "message": String(""), "startedAt": String("2026-10-19T10:53:44.724Z"), "result": Object {"fresh": Number(49443)}, "session": String("user")}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: None, dry_run: false, steps: None }, Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "arg.invalid", message: "frame 73 is beyond the scene length 48", details: Object {"pointer": String("/frame"), "allowed": Object {"minimum": Number(1), "maximum": Number(48)}}, hint: None }), dry_run: false, steps: None }]) }
+test sequential_batch_wait_uses_elapsed_time_and_reaches_completion ... FAILED
+
+failures:
+
+failures:
+    checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision
+    dry_run_ids_match_for_all_implemented_paste_creation_routes
+    overlapping_identical_waits_retain_one_original_envelope
+    sequential_batch_wait_uses_elapsed_time_and_reaches_completion
+    staged_drawing_only_diff_keeps_content_invalidation
+
+test result: FAILED. 3 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.51s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r3_contracts`

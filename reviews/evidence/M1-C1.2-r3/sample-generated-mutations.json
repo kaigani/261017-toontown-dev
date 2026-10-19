@@ -1,0 +1,5319 @@
+[
+  {
+    "id": "anim.bone.influence.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "boneId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "lengthRadius"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "widthRadius"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "regionPath",
+          0,
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "regionPath",
+          0,
+          "y"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.bone.influence.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "boneId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.display.smoothPaths.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "enabled"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.display.smoothPaths.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "enabled"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.function.get",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "channel"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.function.get",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "channel"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "curveType"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "frame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "constantSegment"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "handleMode"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "left",
+          "dt"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "left",
+          "dv"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "right",
+          "dt"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "right",
+          "dv"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "preset"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "pins",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.function.preset.apply",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "channel"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "preset"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "frame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "scope"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.function.preset.apply",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "segments"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.key.list",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "to"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "includeDescendants"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.key.list",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "keys",
+          0,
+          "frame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "channels",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "constant",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keys",
+          0,
+          "descendantKeyed"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.path.get",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.path.get",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "lockDepth"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "length"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "id"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "kind"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "frame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "z"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "tension"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "continuity"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "bias"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "constantSegment"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "lockDepth"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "arcLength"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.path.point.select",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "pointIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "relation"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "moveCurrentFrame"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.path.point.select",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "pointIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "frame"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.path.point.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "pointIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "z"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "frame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "lockInTime"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "tension"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "continuity"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "bias"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "constantSegment"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rotation"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "scale",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "scale",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "pivot",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "pivot",
+          "y"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.path.point.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "pointIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "warnings",
+          0,
+          "code"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "warnings",
+          0,
+          "message"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "warnings",
+          0,
+          "objectIds",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.record.completed",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "anim.record.completed",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "firstFrame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "lastFrame"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.record.run",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "kind"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "handle"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "startFrame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "samples",
+          0,
+          "t"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "samples",
+          0,
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "samples",
+          0,
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "captureSpeed"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "smoothness"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "autoExtendExposure"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.record.run",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "firstFrame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "lastFrame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keyCount"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "channels",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.segment.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "frame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "channels",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "constant"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.segment.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "channels",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.skeleton.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "skeletonId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "boneColour"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "showTrack"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "showRoot"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "showBones"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "showInfluence"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "vectorQuality"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "deformationEnabled"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.skeleton.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "skeletonId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "anim.tool.get",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "anim.tool.get",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "tool"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "capture.inputLock.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "enabled"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "capture.inputLock.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "enabled"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "capture.keying.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "sessionId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "keyColour"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "min"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "max"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "lumaCorrection"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "filter"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "intensity"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "capture.keying.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "keying",
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "keyColour"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "min"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "max"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "lumaCorrection"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "filter"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keying",
+          "intensity"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "cell.columnate.apply",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "elementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "frame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "firstDrawing"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "lastDrawing"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "exposeEach"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "exposeLast"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "loopMode"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "loops"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "totalFrames"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "placement"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dryRun"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "cell.columnate.apply",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "to"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "totalFrames"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "loops"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "sequence",
+          0,
+          "drawing"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "sequence",
+          0,
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "sequence",
+          0,
+          "to"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "cell.exposure.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "elementIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "to"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "length"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "cell.exposure.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "changed",
+          0,
+          "elementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "changed",
+          0,
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "changed",
+          0,
+          "to"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "cell.exposures.changed",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "cell.exposures.changed",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "sceneId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "elementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "to"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rev"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "cell.selection.changed",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "cell.selection.changed",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "elementIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "to"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "currentElementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "currentFrame"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "colour.gapClosing.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "mode"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "colour.gapClosing.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "mode"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.envelope.apply",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "ids",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "corners",
+          0,
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "corners",
+          0,
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "mapping"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.envelope.apply",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "ids",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rev"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.feather.apply",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "ids",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "stepWidth"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "steps"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "confirm"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.feather.apply",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "jobId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.feather.apply",
+    "part": "jobResult",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "layerIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "skippedTextured"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "warnings",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rev"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.lock.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "locked"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.lock.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "locked"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.object.delete",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "ids",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.object.delete",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "removedIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rev"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.pointSelection.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "strokeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "anchor"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rect",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rect",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rect",
+          "width"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rect",
+          "height"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "mode"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.pointSelection.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "selectedPoints",
+          0,
+          "strokeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "selectedPoints",
+          0,
+          "anchor",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "selectedPoints",
+          0,
+          "anchor",
+          "y"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.polyline.add",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "inHandle",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "inHandle",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "outHandle",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "outHandle",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "closed"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "snap"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "snapRadius"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "colourId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "thickness"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "penId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "layer"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "symmetry"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.polyline.add",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "strokeIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "zoneIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "layerId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rev"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.repositionAll.apply",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "elementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "translate",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "translate",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "scale",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "scale",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rotate"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "pivot",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "pivot",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "matrix",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "corners",
+          0,
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "corners",
+          0,
+          "y"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.repositionAll.apply",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingIds",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.selection.changed",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "draw.selection.changed",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "selectedIds",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.stroke.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "strokeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "bezier",
+          0,
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "bezier",
+          0,
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "closed"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "pressure",
+          0,
+          "t"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "pressure",
+          0,
+          "p"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "thickness"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "kind"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "expectRev"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.stroke.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "strokeIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "removedIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rev"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.transform.apply",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "ids",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "translate",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "translate",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "scale",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "scale",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rotate"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "skew",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "skew",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "pivot",
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "pivot",
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "matrix",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "copy"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "draw.transform.apply",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "ids",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "removedIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rev"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "drawAid.grid.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "visible"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "overlay"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "drawAid.grid.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "visible"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "overlay"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "drawAid.staticLightTable.list",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "sceneId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "drawAid.staticLightTable.list",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "entries",
+          0,
+          "entryId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "entries",
+          0,
+          "sourceId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "entries",
+          0,
+          "sourceKind"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "entries",
+          0,
+          "visible"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "entries",
+          0,
+          "placement"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "drawAid.staticLightTable.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "entryIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "all"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "visible"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "placement"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "onlyVisibleEntryId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "drawAid.staticLightTable.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "element.drawingLock.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "locked"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "element.drawingLock.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "drawingIds",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "element.hierarchy.select",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "relation"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "elementId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "element.hierarchy.select",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "selectedIds",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "element.mediaLength.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "elementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "length"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "element.mediaLength.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "elementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "to"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "export.settings.get",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "format"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "export.settings.get",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "preset"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "settings",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "fx.allEffects.changed",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "fx.allEffects.changed",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "enabled"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "fx.block.get",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "blockId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "effectId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "frame"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "fx.block.get",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "id"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "index"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "variant"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "presetId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "seed"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "spriteSetId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "background"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "simulationStart"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "firstFrame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "duration"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "maxParticles"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "lifetimeFrames"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "fade"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "areaWidth"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "areaHeight"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "areaDepth"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "static",
+          "floorLevel"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dynamic",
+          "intensity",
+          "keyframes",
+          0,
+          "frame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dynamic",
+          "intensity",
+          "keyframes",
+          0,
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dynamic",
+          "scale",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dynamic",
+          "bounciness",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dynamic",
+          "speedMin",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dynamic",
+          "speedMax",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dynamic",
+          "directionEW",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dynamic",
+          "directionNS",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dynamic",
+          "directionFB",
+          "value"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "fx.block.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "blockId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "clamp"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "fx.block.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "block",
+          "id"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "index"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "variant"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "presetId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "seed"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "spriteSetId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "background"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "simulationStart"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "firstFrame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "duration"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "maxParticles"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "lifetimeFrames"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "fade"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "areaWidth"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "areaHeight"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "areaDepth"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "static",
+          "floorLevel"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "dynamic",
+          "intensity",
+          "keyframes",
+          0,
+          "frame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "dynamic",
+          "intensity",
+          "keyframes",
+          0,
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "dynamic",
+          "scale",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "dynamic",
+          "bounciness",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "dynamic",
+          "speedMin",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "dynamic",
+          "speedMax",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "dynamic",
+          "directionEW",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "dynamic",
+          "directionNS",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "block",
+          "dynamic",
+          "directionFB",
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "clamped",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "fx.hitTest.run",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "viewId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "y"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "radius"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "fx.hitTest.run",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "hits",
+          0,
+          "objectId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "hits",
+          0,
+          "kind"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "hits",
+          0,
+          "elementId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "fx.paramElement.remove",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "effectId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "slot"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "elementIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "newParentId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "fx.paramElement.remove",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "detachedIds",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "import.options.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "fitToCamera"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "preserveImageLayers"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "preserveVectorLayers"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "movieOpacity"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "import.options.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "fitToCamera"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "preserveImageLayers"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "preserveVectorLayers"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "movieOpacity"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "lastFolder"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "keymap.list",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "context"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "commandId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "prefix"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "onlyModified"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "keymap.list",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          0,
+          "commandId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "params",
+          "steps"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "keys"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "context"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "isDefault"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.create",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "path"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "name"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.create",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "libraryId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.item.move",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "targetFolderId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "index"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "onConflict"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.item.move",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeIds",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.node.get",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.node.get",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "name"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "name"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "name"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "nodeId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "name"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "empty"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "empty"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "empty"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "empty"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "libraryName"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "path"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.starter.open",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "reinstall"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.starter.open",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "libraryId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.template.edit.get",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "library.template.edit.get",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "active"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "templateId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "editSceneId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "returnSceneId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.template.edit.start",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "templateId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.template.edit.start",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "editSceneId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "returnSceneId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.template.search",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "query"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "libraryIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "folderId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "recursive"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "types",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "elementTypes",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "hasSound"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "singleDrawing"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "artist"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "modifiedAfter"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "sort"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "limit"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "offset"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "includeThumbnails"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "thumbnailSize"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "library.template.search",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "total"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "itemId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "libraryId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "folderPath",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "name"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "artist"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "copyright"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "created"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "modified"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "sizeBytes"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "versionId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "frameCount"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "elementTypes",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "hasSound"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "singleDrawing"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "thumbnail",
+          "png"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "thumbnail",
+          "width"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "thumbnail",
+          "height"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "playback.range.get",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "sceneId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "playback.range.get",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "mode"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "start"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "end"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "sceneLength"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "prefs.list",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "prefix"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "prefs.list",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          0,
+          "key"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "default"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "value"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "min"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "max"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "values",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "applies"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          0,
+          "description"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "print.settings.get",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "print.settings.get",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "copies"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "collate"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "layout"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rows"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "columns"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "bindingMarginMm"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "elementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "range"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "to"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keyDrawingsOnly"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "individualDrawingsOnly"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "cameraFrame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "paperSize"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "orientation"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "print.settings.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "print.settings.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "copies"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "collate"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "layout"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "rows"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "columns"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "bindingMarginMm"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "elementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "range"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "to"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "keyDrawingsOnly"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "individualDrawingsOnly"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "cameraFrame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "paperSize"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "orientation"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "render.range.run",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "sceneId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "to"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "step"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "composition"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "elementIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "width"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "height"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "scale"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "quality"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "background"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "format"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "directory"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "namePattern"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "onConflict"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "createDirs"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "wait"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "render.range.run",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "jobId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "render.range.run",
+    "part": "jobResult",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "jobId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "status"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "format"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "outputPath"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "frameCount"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "fps"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "durationSec"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "width"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "height"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "range",
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "range",
+          "range"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "range",
+          "from"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "range",
+          "to"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "files",
+          0,
+          "role"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "files",
+          0,
+          "path"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "files",
+          0,
+          "bytes"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "files",
+          0,
+          "sha256"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "files",
+          0,
+          "width"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "files",
+          0,
+          "height"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "files",
+          0,
+          "durationSec"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "files",
+          0,
+          "audio",
+          "codec"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "files",
+          0,
+          "audio",
+          "sampleRate"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "files",
+          0,
+          "audio",
+          "channels"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "warnings",
+          0,
+          "code"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "warnings",
+          0,
+          "message"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "elapsedMs"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "sound.element.changed",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "sound.element.changed",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "elementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "placementIds",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "sound.envelope.point.move",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "placementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "index"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "time"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "level"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "left"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "right"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "sound.envelope.point.move",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "points",
+          0,
+          "x"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "points",
+          0,
+          "y"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "sound.placement.remove",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "placementId"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "sound.placement.remove",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "sound.range.select",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "placementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "mode"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "frame"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "sound.range.select",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "elementId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "startFrame"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "endFrame"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "sound.recent.list",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "limit"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "sound.recent.list",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "items",
+          0,
+          "path"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "assetId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "items",
+          0,
+          "name"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "storyline.transition.list",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "storyline.transition.list",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "transitions",
+          0,
+          "transitionId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "editPoint"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "afterSceneId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "beforeSceneId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "active"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "durationLeft"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "blankDuration"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "durationRight"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "colour"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "angle"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "direction"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "size"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "globalSpan",
+          "start"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "transitions",
+          0,
+          "globalSpan",
+          "end"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "storyline.transition.types.list",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "storyline.transition.types.list",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "types",
+          0,
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "types",
+          0,
+          "parameters",
+          0,
+          "name"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "types",
+          0,
+          "parameters",
+          0,
+          "type"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "types",
+          0,
+          "parameters",
+          0,
+          "min"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "types",
+          0,
+          "parameters",
+          0,
+          "max"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "types",
+          0,
+          "parameters",
+          0,
+          "step"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "types",
+          0,
+          "parameters",
+          0,
+          "default"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "types",
+          0,
+          "parameters",
+          0,
+          "values",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "storyline.warning.changed",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [],
+        "rejected": true,
+        "note": "no scalar leaf in sample; wrong-content mutation"
+      }
+    ]
+  },
+  {
+    "id": "storyline.warning.changed",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "sceneId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "warning",
+          "code"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "warning",
+          "message"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "warning",
+          "objectIds",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "paddingFrames"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "tool.pen.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "penId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "tipShape"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "minSize"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "maxSize"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "smoothness"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "tipAngle"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "tool.pen.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "pen"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "tool.polyline.options.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "snap"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "snapRadius"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "tool.polyline.options.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "options",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "ui.startScreen.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "visible"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "ui.startScreen.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "visible"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "xsheet.exposures.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "sceneId"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "createMissingDrawings"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "expectRev"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "dryRun"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "xsheet.exposures.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "rev"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "sceneLength"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "changed",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "createdDrawings",
+          0
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "xsheet.panel.set",
+    "part": "params",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "elementList"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "lightTable"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "toolbar"
+        ],
+        "rejected": true
+      }
+    ]
+  },
+  {
+    "id": "xsheet.panel.set",
+    "part": "result",
+    "valid": true,
+    "mutations": [
+      {
+        "path": [
+          "elementList",
+          0
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "lightTable"
+        ],
+        "rejected": true
+      },
+      {
+        "path": [
+          "toolbar"
+        ],
+        "rejected": true
+      }
+    ]
+  }
+]

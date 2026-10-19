@@ -1,0 +1,1454 @@
+{
+  "baseline": {
+    "status": {
+      "gates/fmt.log": 0,
+      "gates/clippy.log": 0,
+      "gates/test.log": 0,
+      "gates/clippy-diag.log": 0,
+      "gates/test-diag.log": 0,
+      "gates/deny.log": 0,
+      "gates/headless.log": 0
+    },
+    "rust": {
+      "totals": {
+        "passed": 461,
+        "failed": 0,
+        "ignored": 1
+      },
+      "suites": [
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 38,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "..\\..\\tests\\adversarial\\c03-r2-encoder.rs",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "..\\..\\tests\\adversarial\\c03-r2-encoder.rs",
+          "passed": 19,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r1_wire.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r2_wire.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_wire.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "frontend_schemas.rs",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "wire_corpus.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "wire_corpus.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_edit_ops.rs",
+          "passed": 16,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_kernel_state.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_never_block.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_policy.rs",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_contracts.rs",
+          "passed": 36,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_macro.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_scale.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_stress.rs",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r2_contracts.rs",
+          "passed": 40,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r2_registry.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r2_scale.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_registry.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_transactions.rs",
+          "passed": 14,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "compile_fail.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "compile_fail.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "compile_fail.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "..\\..\\tests\\adversarial\\c01.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "cli.rs",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 41,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r1_adversarial.rs",
+          "passed": 39,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r2_adversarial.rs",
+          "passed": 39,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_adversarial.rs",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_random.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_register.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r4_exposure_bounds.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r5_write_bounds.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r6_staged_inverse.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_kernel_support.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "conformance.rs",
+          "passed": 15,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "properties.rs",
+          "passed": 18,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_commit.rs",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_inverse.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_inverse.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_inverse.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "declared.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "inventory.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "inventory.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "inventory.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_fixed_configurations.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r1_stress.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 1
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        }
+      ]
+    }
+  },
+  "frontend": {
+    "status": {
+      "gates/pnpm-lint.log": 0,
+      "gates/pnpm-typecheck.log": 0,
+      "gates/pnpm-test.log": 0,
+      "gates/pnpm-format.log": 0,
+      "gates/pnpm-licenses.log": 0,
+      "gates/build.log": 0,
+      "gates/reviewer-python-suites.log": 0
+    }
+  },
+  "final": {
+    "status": {
+      "gates/fmt.log": 0,
+      "gates/clippy.log": 0,
+      "gates/test.log": 101,
+      "gates/clippy-diag.log": 0,
+      "gates/test-diag.log": 0,
+      "gates/deny.log": 0
+    },
+    "rust": {
+      "totals": {
+        "passed": 478,
+        "failed": 12,
+        "ignored": 1
+      },
+      "suites": [
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 38,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "..\\..\\tests\\adversarial\\c03-r2-encoder.rs",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "..\\..\\tests\\adversarial\\c03-r2-encoder.rs",
+          "passed": 19,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r1_wire.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r2_wire.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_wire.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "frontend_schemas.rs",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "wire_corpus.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "wire_corpus.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_edit_ops.rs",
+          "passed": 16,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_kernel_state.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_never_block.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_policy.rs",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_contracts.rs",
+          "passed": 36,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_macro.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_scale.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_stress.rs",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r2_contracts.rs",
+          "passed": 40,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r2_registry.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r2_scale.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r3_contracts.rs",
+          "passed": 12,
+          "failed": 3,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r3_registry.rs",
+          "passed": 0,
+          "failed": 9,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r3_stress.rs",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_registry.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_transactions.rs",
+          "passed": 14,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "compile_fail.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "compile_fail.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "compile_fail.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "..\\..\\tests\\adversarial\\c01.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "cli.rs",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 41,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r1_adversarial.rs",
+          "passed": 39,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r2_adversarial.rs",
+          "passed": 39,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_adversarial.rs",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_random.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_register.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r4_exposure_bounds.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r5_write_bounds.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r6_staged_inverse.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_kernel_support.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "conformance.rs",
+          "passed": 15,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "properties.rs",
+          "passed": 18,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_commit.rs",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_inverse.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_inverse.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_inverse.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "declared.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "inventory.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "inventory.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "inventory.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_fixed_configurations.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r1_stress.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 1
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        }
+      ]
+    }
+  },
+  "current": {
+    "status": {
+      "gates/fmt.log": 0,
+      "gates/clippy.log": 0,
+      "gates/test.log": 101
+    },
+    "rust": {
+      "totals": {
+        "passed": 478,
+        "failed": 15,
+        "ignored": 1
+      },
+      "suites": [
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 38,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "unit/doc",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "..\\..\\tests\\adversarial\\c03-r2-encoder.rs",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "..\\..\\tests\\adversarial\\c03-r2-encoder.rs",
+          "passed": 19,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r1_wire.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r2_wire.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_wire.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "frontend_schemas.rs",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "wire_corpus.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "wire_corpus.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_edit_ops.rs",
+          "passed": 16,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_kernel_state.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_never_block.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_policy.rs",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_contracts.rs",
+          "passed": 36,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_macro.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_scale.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r1_stress.rs",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r2_contracts.rs",
+          "passed": 40,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r2_registry.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r2_scale.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r3_contracts.rs",
+          "passed": 12,
+          "failed": 3,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r3_registry.rs",
+          "passed": 0,
+          "failed": 12,
+          "ignored": 0
+        },
+        {
+          "target": "c12_r3_stress.rs",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_registry.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_transactions.rs",
+          "passed": 14,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "compile_fail.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "compile_fail.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "compile_fail.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "..\\..\\tests\\adversarial\\c01.rs",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "cli.rs",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "guard_fixtures.rs",
+          "passed": 41,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r1_adversarial.rs",
+          "passed": 39,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r2_adversarial.rs",
+          "passed": 39,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_adversarial.rs",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_random.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r3_register.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r4_exposure_bounds.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r5_write_bounds.rs",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c11_r6_staged_inverse.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c12_kernel_support.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "conformance.rs",
+          "passed": 15,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "properties.rs",
+          "passed": 18,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_commit.rs",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_inverse.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_inverse.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "staged_inverse.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "declared.rs",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "inventory.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "inventory.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "inventory.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_fixed_configurations.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r1_stress.rs",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 1
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        },
+        {
+          "target": "c03_r2_quality.rs",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0
+        }
+      ]
+    }
+  }
+}

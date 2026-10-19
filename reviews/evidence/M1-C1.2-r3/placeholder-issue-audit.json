@@ -1,0 +1,928 @@
+{
+  "rows": [
+    {
+      "id": "view.list",
+      "placeholder": {
+        "pointer": "/result/*/transform",
+        "kind": "leaf `transform`",
+        "side": "result"
+      },
+      "issue": "SI-042"
+    },
+    {
+      "id": "prefs.get",
+      "placeholder": {
+        "pointer": "/result/values",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-036"
+    },
+    {
+      "id": "prefs.list",
+      "placeholder": {
+        "pointer": "/result/*/default",
+        "kind": "leaf `default`",
+        "side": "result"
+      },
+      "issue": "SI-036"
+    },
+    {
+      "id": "keymap.set",
+      "placeholder": {
+        "pointer": "/params/params",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-032"
+    },
+    {
+      "id": "ui.message.shown",
+      "placeholder": {
+        "pointer": "/result/details",
+        "kind": "leaf `details`",
+        "side": "result"
+      },
+      "issue": "SI-041"
+    },
+    {
+      "id": "ui.statusBar.get",
+      "placeholder": {
+        "pointer": "/result/pointer",
+        "kind": "leaf `pointer`",
+        "side": "result"
+      },
+      "issue": "SI-041"
+    },
+    {
+      "id": "draw.content.add",
+      "placeholder": {
+        "pointer": "/params/content",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-026"
+    },
+    {
+      "id": "draw.content.add",
+      "placeholder": {
+        "pointer": "/result/idMap",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-026"
+    },
+    {
+      "id": "draw.current.get",
+      "placeholder": {
+        "pointer": "/result/activeView",
+        "kind": "leaf `activeView`",
+        "side": "result"
+      },
+      "issue": "SI-026"
+    },
+    {
+      "id": "draw.erase.apply",
+      "placeholder": {
+        "pointer": "/params/pen",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-026"
+    },
+    {
+      "id": "draw.hitTest.get",
+      "placeholder": {
+        "pointer": "/result/hits/*",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-026"
+    },
+    {
+      "id": "draw.selection.changed",
+      "placeholder": {
+        "pointer": "/result/selectedPoints/*",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-026"
+    },
+    {
+      "id": "draw.text.add",
+      "placeholder": {
+        "pointer": "/params/format",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-026"
+    },
+    {
+      "id": "tool.list",
+      "placeholder": {
+        "pointer": "/result/tools/*/options",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-040"
+    },
+    {
+      "id": "tool.list",
+      "placeholder": {
+        "pointer": "/result/tools/*/optionSchema",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-040"
+    },
+    {
+      "id": "tool.options.get",
+      "placeholder": {
+        "pointer": "/result/options",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-040"
+    },
+    {
+      "id": "tool.options.set",
+      "placeholder": {
+        "pointer": "/params/options",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-040"
+    },
+    {
+      "id": "tool.pen.create",
+      "placeholder": {
+        "pointer": "/params/settings",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-040"
+    },
+    {
+      "id": "tool.pen.set",
+      "placeholder": {
+        "pointer": "/result/pen",
+        "kind": "leaf `pen`",
+        "side": "result"
+      },
+      "issue": "SI-040"
+    },
+    {
+      "id": "drawAid.changed",
+      "placeholder": {
+        "pointer": "/result/state",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-027"
+    },
+    {
+      "id": "drawAid.lightTableShade.set",
+      "placeholder": {
+        "pointer": "/result/auto",
+        "kind": "leaf `auto`",
+        "side": "result"
+      },
+      "issue": "SI-027"
+    },
+    {
+      "id": "drawAid.lightTableShade.set",
+      "placeholder": {
+        "pointer": "/result/static",
+        "kind": "leaf `static`",
+        "side": "result"
+      },
+      "issue": "SI-027"
+    },
+    {
+      "id": "drawAid.staticLightTable.set",
+      "placeholder": {
+        "pointer": "/result/entries/*",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-027"
+    },
+    {
+      "id": "colour.fillMapping.set",
+      "placeholder": {
+        "pointer": "/params/mapping",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-025"
+    },
+    {
+      "id": "colour.palette.create",
+      "placeholder": {
+        "pointer": "/params/swatches/*",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-025"
+    },
+    {
+      "id": "colour.palette.duplicate",
+      "placeholder": {
+        "pointer": "/result/idMap",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-025"
+    },
+    {
+      "id": "colour.palette.set",
+      "placeholder": {
+        "pointer": "/params/palette",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-025"
+    },
+    {
+      "id": "colour.swatch.create",
+      "placeholder": {
+        "pointer": "/params/value",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-025"
+    },
+    {
+      "id": "colour.swatch.create",
+      "placeholder": {
+        "pointer": "/params/values",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-025"
+    },
+    {
+      "id": "colour.swatch.set",
+      "placeholder": {
+        "pointer": "/params/values",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-025"
+    },
+    {
+      "id": "element.get",
+      "placeholder": {
+        "pointer": "/$defs/spec.ElementInfo/media",
+        "kind": "leaf `media`",
+        "side": "result"
+      },
+      "issue": "SI-028"
+    },
+    {
+      "id": "xsheet.exposures.set",
+      "placeholder": {
+        "pointer": "/params/columns/*",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-043"
+    },
+    {
+      "id": "xsheet.exposures.set",
+      "placeholder": {
+        "pointer": "/result/createdDrawings/*",
+        "kind": "leaf `createdDrawing`",
+        "side": "result"
+      },
+      "issue": "SI-043"
+    },
+    {
+      "id": "xsheet.lightTable.add",
+      "placeholder": {
+        "pointer": "/params/items/*",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-043"
+    },
+    {
+      "id": "xsheet.panel.set",
+      "placeholder": {
+        "pointer": "/result/lightTable",
+        "kind": "leaf `lightTable`",
+        "side": "result"
+      },
+      "issue": "SI-043"
+    },
+    {
+      "id": "xsheet.panel.set",
+      "placeholder": {
+        "pointer": "/result/toolbar",
+        "kind": "leaf `toolbar`",
+        "side": "result"
+      },
+      "issue": "SI-043"
+    },
+    {
+      "id": "anim.function.get",
+      "placeholder": {
+        "pointer": "/$defs/spec.Function/pins/*",
+        "kind": "leaf `pin`",
+        "side": "result"
+      },
+      "issue": "SI-023"
+    },
+    {
+      "id": "anim.function.preset.apply",
+      "placeholder": {
+        "pointer": "/result/segments",
+        "kind": "leaf `segments`",
+        "side": "result"
+      },
+      "issue": "SI-023"
+    },
+    {
+      "id": "anim.node.get",
+      "placeholder": {
+        "pointer": "/result/static",
+        "kind": "leaf `static`",
+        "side": "result"
+      },
+      "issue": "SI-023"
+    },
+    {
+      "id": "anim.prefs.set",
+      "placeholder": {
+        "pointer": "/result/prefs",
+        "kind": "leaf `prefs`",
+        "side": "result"
+      },
+      "issue": "SI-023"
+    },
+    {
+      "id": "anim.projection.get",
+      "placeholder": {
+        "pointer": "/params/points/*",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-023"
+    },
+    {
+      "id": "anim.view.coords.get",
+      "placeholder": {
+        "pointer": "/params/points/*",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-023"
+    },
+    {
+      "id": "anim.view.coords.get",
+      "placeholder": {
+        "pointer": "/result/points/*",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-023"
+    },
+    {
+      "id": "fx.block.list",
+      "placeholder": {
+        "pointer": "/result/blocks/*",
+        "kind": "named type `BlockSummary`",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.block.set",
+      "placeholder": {
+        "pointer": "/params/values",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.create",
+      "placeholder": {
+        "pointer": "/params/params",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.dropShadow.transform.set",
+      "placeholder": {
+        "pointer": "/result/transform",
+        "kind": "leaf `transform`",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.keyframe.add",
+      "placeholder": {
+        "pointer": "/params/values",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.params.get",
+      "placeholder": {
+        "pointer": "/result/values",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.params.get",
+      "placeholder": {
+        "pointer": "/result/derived",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.params.set",
+      "placeholder": {
+        "pointer": "/params/values",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.params.set",
+      "placeholder": {
+        "pointer": "/result/values",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.preset.apply",
+      "placeholder": {
+        "pointer": "/result/values",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.preset.create",
+      "placeholder": {
+        "pointer": "/$defs/spec.Preset/static",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.preset.create",
+      "placeholder": {
+        "pointer": "/$defs/spec.Preset/dynamic",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.preset.get",
+      "placeholder": {
+        "pointer": "/$defs/spec.Preset/static",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.preset.get",
+      "placeholder": {
+        "pointer": "/$defs/spec.Preset/dynamic",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.renderList.get",
+      "placeholder": {
+        "pointer": "/result/items/*",
+        "kind": "named type `RenderItem`",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.renderer.options.get",
+      "placeholder": {
+        "pointer": "/result/values",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.renderer.options.set",
+      "placeholder": {
+        "pointer": "/params/values",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.renderer.options.set",
+      "placeholder": {
+        "pointer": "/result/values",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.types.get",
+      "placeholder": {
+        "pointer": "/$defs/spec.TypeDescriptor/particleTypes",
+        "kind": "leaf `particleTypes`",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "fx.types.list",
+      "placeholder": {
+        "pointer": "/$defs/spec.TypeDescriptor/particleTypes",
+        "kind": "leaf `particleTypes`",
+        "side": "result"
+      },
+      "issue": "SI-030"
+    },
+    {
+      "id": "sound.scrubbing.set",
+      "placeholder": {
+        "pointer": "/result/effective",
+        "kind": "leaf `effective`",
+        "side": "result"
+      },
+      "issue": "SI-038"
+    },
+    {
+      "id": "lipsync.apply",
+      "placeholder": {
+        "pointer": "/params/mapping",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-034"
+    },
+    {
+      "id": "lipsync.apply",
+      "placeholder": {
+        "pointer": "/$defs/spec.ApplyResult/framesSkipped/*",
+        "kind": "leaf `framesSkipped`",
+        "side": "result"
+      },
+      "issue": "SI-034"
+    },
+    {
+      "id": "lipsync.apply",
+      "placeholder": {
+        "pointer": "/$defs/spec.ApplyResult/unmappedMouths/*",
+        "kind": "leaf `unmappedMouth`",
+        "side": "result"
+      },
+      "issue": "SI-034"
+    },
+    {
+      "id": "lipsync.detect",
+      "placeholder": {
+        "pointer": "/params/phonemeMap",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-034"
+    },
+    {
+      "id": "lipsync.mapping.set",
+      "placeholder": {
+        "pointer": "/result/mapping",
+        "kind": "leaf `mapping`",
+        "side": "result"
+      },
+      "issue": "SI-034"
+    },
+    {
+      "id": "lipsync.settings.get",
+      "placeholder": {
+        "pointer": "/result/phonemeMap",
+        "kind": "leaf `phonemeMap`",
+        "side": "result"
+      },
+      "issue": "SI-034"
+    },
+    {
+      "id": "lipsync.settings.set",
+      "placeholder": {
+        "pointer": "/params/phonemeMap",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-034"
+    },
+    {
+      "id": "lipsync.settings.set",
+      "placeholder": {
+        "pointer": "/result/phonemeMap",
+        "kind": "leaf `phonemeMap`",
+        "side": "result"
+      },
+      "issue": "SI-034"
+    },
+    {
+      "id": "lipsync.shapes.list",
+      "placeholder": {
+        "pointer": "/result/shapes/*/referenceImage",
+        "kind": "leaf `referenceImage`",
+        "side": "result"
+      },
+      "issue": "SI-034"
+    },
+    {
+      "id": "library.item.get",
+      "placeholder": {
+        "pointer": "/result",
+        "kind": "named type `ItemDetails`",
+        "side": "result"
+      },
+      "issue": "SI-033"
+    },
+    {
+      "id": "storyline.selection.set",
+      "placeholder": {
+        "pointer": "/result/selection",
+        "kind": "leaf `selection`",
+        "side": "result"
+      },
+      "issue": "SI-039"
+    },
+    {
+      "id": "storyline.transition.types.list",
+      "placeholder": {
+        "pointer": "/result/types/*/parameters/*/default",
+        "kind": "leaf `default`",
+        "side": "result"
+      },
+      "issue": "SI-039"
+    },
+    {
+      "id": "playback.player.get",
+      "placeholder": {
+        "pointer": "/result",
+        "kind": "named type `PlayerState`",
+        "side": "result"
+      },
+      "issue": "SI-035"
+    },
+    {
+      "id": "playback.player.set",
+      "placeholder": {
+        "pointer": "/result",
+        "kind": "named type `PlayerState`",
+        "side": "result"
+      },
+      "issue": "SI-035"
+    },
+    {
+      "id": "import.file.get",
+      "placeholder": {
+        "pointer": "/$defs/spec.ImportFileInfo/pages",
+        "kind": "leaf `pages`",
+        "side": "result"
+      },
+      "issue": "SI-031"
+    },
+    {
+      "id": "import.file.run",
+      "placeholder": {
+        "pointer": "/$defs/spec.ImportResult/errors/*",
+        "kind": "leaf `error`",
+        "side": "result"
+      },
+      "issue": "SI-031"
+    },
+    {
+      "id": "import.keyedImages.run",
+      "placeholder": {
+        "pointer": "/$defs/spec.ImportResult/errors/*",
+        "kind": "leaf `error`",
+        "side": "result"
+      },
+      "issue": "SI-031"
+    },
+    {
+      "id": "import.movie.run",
+      "placeholder": {
+        "pointer": "/$defs/spec.ImportResult/errors/*",
+        "kind": "leaf `error`",
+        "side": "result"
+      },
+      "issue": "SI-031"
+    },
+    {
+      "id": "export.formats.list",
+      "placeholder": {
+        "pointer": "/result/formats/*/video",
+        "kind": "leaf `video`",
+        "side": "result"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.formats.list",
+      "placeholder": {
+        "pointer": "/result/formats/*/audio",
+        "kind": "leaf `audio`",
+        "side": "result"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.formats.list",
+      "placeholder": {
+        "pointer": "/result/formats/*/settingsSchema",
+        "kind": "leaf `settingsSchema`",
+        "side": "result"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.movie.defaults.get",
+      "placeholder": {
+        "pointer": "/result",
+        "kind": "named type `ExportMovieParams`",
+        "side": "result"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.movie.defaults.set",
+      "placeholder": {
+        "pointer": "/params/values",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.movie.defaults.set",
+      "placeholder": {
+        "pointer": "/result",
+        "kind": "named type `ExportMovieParams`",
+        "side": "result"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.movie.run",
+      "placeholder": {
+        "pointer": "/params/settings",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.movie.validate",
+      "placeholder": {
+        "pointer": "/params/settings",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.publish.run",
+      "placeholder": {
+        "pointer": "/params/export",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.publish.validate",
+      "placeholder": {
+        "pointer": "/params/export",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.publish.validate",
+      "placeholder": {
+        "pointer": "/params/metadata",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.report.get",
+      "placeholder": {
+        "pointer": "/result/cameraSize",
+        "kind": "leaf `cameraSize`",
+        "side": "result"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "export.settings.set",
+      "placeholder": {
+        "pointer": "/params/settings",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-029"
+    },
+    {
+      "id": "capture.device.get",
+      "placeholder": {
+        "pointer": "/result/settingsSchema",
+        "kind": "leaf `settingsSchema`",
+        "side": "result"
+      },
+      "issue": "SI-024"
+    },
+    {
+      "id": "capture.device.settings.set",
+      "placeholder": {
+        "pointer": "/params/values",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-024"
+    },
+    {
+      "id": "capture.device.settings.set",
+      "placeholder": {
+        "pointer": "/result/applied",
+        "kind": "object without fields",
+        "side": "result"
+      },
+      "issue": "SI-024"
+    },
+    {
+      "id": "capture.preview.get",
+      "placeholder": {
+        "pointer": "/result/capturedAt",
+        "kind": "leaf `capturedAt`",
+        "side": "result"
+      },
+      "issue": "SI-024"
+    },
+    {
+      "id": "print.settings.set",
+      "placeholder": {
+        "pointer": "/params/values",
+        "kind": "object without fields",
+        "side": "params"
+      },
+      "issue": "SI-037"
+    }
+  ],
+  "families": [
+    "anim",
+    "capture",
+    "colour",
+    "draw",
+    "drawAid",
+    "element",
+    "export",
+    "fx",
+    "import",
+    "keymap",
+    "library",
+    "lipsync",
+    "playback",
+    "prefs",
+    "print",
+    "sound",
+    "storyline",
+    "tool",
+    "ui",
+    "view",
+    "xsheet"
+  ],
+  "qualification": "Issue presence is verified; it cannot justify placeholders for shapes actually defined by owning sections. See R3-01."
+}
