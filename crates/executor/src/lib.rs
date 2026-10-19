@@ -164,9 +164,10 @@ impl ExecutorHandle {
         let jobs = Arc::new(JobTable::with_notifier(Box::new(move |e| broadcast(&job_subs, std::slice::from_ref(&e)))));
         let session = session::Session { jobs: jobs.clone(), ..session::Session::default() };
         let subs = subscribers.clone();
+        let budget = config.budget;
         std::thread::Builder::new()
             .name("tt-document".to_owned())
-            .spawn(move || document_thread(run::Core::new(registry, session), &rx, &subs))
+            .spawn(move || document_thread(run::Core::new(registry, session, budget), &rx, &subs))
             .map_err(|e| CommandError::internal(format!("cannot start the document thread: {e}")))?;
         Ok(Self { tx, jobs, subscribers, config })
     }

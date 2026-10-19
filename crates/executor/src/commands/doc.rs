@@ -1340,6 +1340,41 @@ pub(crate) fn doc_diff(cx: &mut Cx, p: DiffParams) -> Result<DiffResult, Command
             patch,
         });
     }
+    // REV-02 invalidation (C12-R2-12): a drawing whose content changed carries a new revision even when its own
+    // properties did not change; report it as the command envelope and `doc.changed` do — the container of a changed
+    // drawing-local object, or a drawing whose revision moved.
+    let wanted = |key: &str| {
+        types.as_ref().is_none_or(|ts| ts.contains(&ObjectType::Drawing))
+            && within.as_ref().is_none_or(|w| key == w || is_within(&until_doc, key, w))
+    };
+    let mut invalidated: Vec<String> = changes
+        .iter()
+        .filter_map(|c| c.id.split_once('/').map(|(d, _)| d.to_owned()))
+        .filter(|d| until_doc.locate(d).is_some_and(|l| l.ty == ObjectType::Drawing))
+        .collect();
+    for d in until_doc.drawings() {
+        let id = d.id().as_str();
+        if from_doc.locate(id).is_some_and(|l| l.rev != *d.rev()) {
+            invalidated.push(id.to_owned());
+        }
+    }
+    invalidated.sort();
+    invalidated.dedup();
+    for d in invalidated {
+        if changes.iter().any(|c| c.id == d) || !wanted(&d) {
+            continue;
+        }
+        let rev = if staged_view { until } else { until_doc.locate(&d).map_or(until, |l| l.rev) };
+        changes.push(ChangeRecord {
+            id: d,
+            ty: ObjectType::Drawing.as_str().to_owned(),
+            op: "modified".to_owned(),
+            rev,
+            parent_id: None,
+            index: None,
+            patch: matches!(p.detail, Detail::Full).then(Vec::new),
+        });
+    }
     let truncated = changes.len() > p.limit;
     changes.truncate(p.limit);
     Ok(DiffResult { from_rev, to_rev: until, changes, truncated })

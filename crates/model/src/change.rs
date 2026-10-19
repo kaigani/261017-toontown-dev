@@ -849,13 +849,19 @@ fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<Ve
         return Ok(vec![new_op("replace", "", None, Some(old), Some(value))]);
     }
     let (parent, last) = parent_and_last(path)?;
-    materialize_omitted(root, &parent);
+    let materialized = materialize_omitted(root, &parent);
     match pointer::get_mut(root, &parent) {
         Some(Value::Object(m)) => {
             if op.old_value.is_some() && m.get(&last) != op.old_value.as_ref() {
                 return Err(patch_err(op, "oldValue does not match the overwritten member"));
             }
-            Ok(match m.insert(last, value.clone()) {
+            let inserted = m.insert(last.clone(), value.clone());
+            if materialized {
+                // The inverse removes the member that did not exist before (JSON-04; C12-R2-11).
+                let member = Value::Object(std::iter::once((last, value)).collect());
+                return Ok(vec![new_op("remove", &pointer::join(&parent), None, None, Some(member))]);
+            }
+            Ok(match inserted {
                 Some(old) => vec![new_op("replace", path, None, Some(old), Some(value))],
                 None => vec![new_op("remove", path, None, None, Some(value))],
             })
@@ -884,19 +890,25 @@ fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<Ve
 /// Members a writer omits while they hold their default `{}` (JSON-04: `meta`, `ext`).
 const OMITTED_OBJECTS: [&str; 2] = ["meta", "ext"];
 
-/// Restores an omitted `meta` / `ext` member on the way to `parent` (JSON-04 makes the omission a serialisation
-/// choice, so `/meta/x` is addressable on an object whose `meta` is empty). Nothing changes when the path exists or
-/// another member is missing.
-fn materialize_omitted(root: &mut Value, parent: &[String]) {
+/// Restores an omitted `meta` / `ext` member on the way to `parent` (JSON-04 makes the omission of an empty member a
+/// serialisation choice, so `/meta/x` is addressable on an object whose `meta` is empty). Only a model object's own
+/// member qualifies (C12-R2-11): the parent path ends in `meta`/`ext`, its holder is a model object (it has a string
+/// `type`), and no earlier token is inside opaque data (`meta`/`ext`). Returns whether the member was created; the
+/// caller's inverse then removes the whole member, so the raw input is restored byte-exact.
+fn materialize_omitted(root: &mut Value, parent: &[String]) -> bool {
     if pointer::get_mut(root, parent).is_some() {
-        return;
+        return false;
     }
-    let Some((last, above)) = parent.split_last() else { return };
-    if !OMITTED_OBJECTS.contains(&last.as_str()) {
-        return;
+    let Some((last, above)) = parent.split_last() else { return false };
+    if !OMITTED_OBJECTS.contains(&last.as_str()) || above.iter().any(|t| OMITTED_OBJECTS.contains(&t.as_str())) {
+        return false;
     }
-    if let Some(Value::Object(m)) = pointer::get_mut(root, above) {
-        m.insert(last.clone(), Value::Object(serde_json::Map::new()));
+    match pointer::get_mut(root, above) {
+        Some(Value::Object(m)) if m.get("type").is_some_and(Value::is_string) => {
+            m.insert(last.clone(), Value::Object(serde_json::Map::new()));
+            true
+        }
+        _ => false,
     }
 }
 

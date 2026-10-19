@@ -50,6 +50,9 @@ struct SessionRequests {
     bytes: usize,
     /// A hash of every request id the session used (8 bytes each): an evicted id is never executed again.
     seen: HashSet<u64>,
+    /// Ids of calls in flight (a `job.wait` waiting off the document thread; C12-R2-06): fingerprint, command and
+    /// the number of identical calls waiting.
+    pending: HashMap<String, (u64, String, usize)>,
 }
 
 /// `requestId` idempotency, scoped to the session (ADR-0013 §5; C12-R1-06/22).
@@ -80,6 +83,20 @@ fn fingerprint(inv: &Invocation) -> u64 {
 impl RequestCache {
     fn lookup(&self, session: &str, id: &str, fp: u64) -> Lookup {
         let Some(s) = self.sessions.get(session) else { return Lookup::Miss };
+        if let Some((pfp, command, _)) = s.pending.get(id) {
+            // In flight: the identical call may wait alongside (a wait is read-only); any other call is a conflict.
+            if *pfp == fp {
+                return Lookup::Miss;
+            }
+            return Lookup::Refused(
+                CommandError::with_details(
+                    "request.conflict",
+                    format!("requestId `{id}` is in use by a call in progress"),
+                    json!({ "requestId": id, "originalCommand": command, "inProgress": true }),
+                )
+                .hint("use a new requestId for a different call"),
+            );
+        }
         if let Some(c) = s.entries.get(id) {
             if c.fingerprint == fp {
                 return Lookup::Hit(Box::new(c.envelope.clone()));
@@ -104,6 +121,25 @@ impl RequestCache {
             );
         }
         Lookup::Miss
+    }
+
+    /// Reserves an id for a call in flight.
+    fn reserve(&mut self, session: &str, id: &str, fp: u64, command: &str) {
+        let s = self.sessions.entry(session.to_owned()).or_default();
+        s.seen.insert(hash64(id));
+        s.pending.entry(id.to_owned()).or_insert((fp, command.to_owned(), 0)).2 += 1;
+    }
+
+    /// Ends one in-flight call of an id.
+    fn release(&mut self, session: &str, id: &str) {
+        if let Some(s) = self.sessions.get_mut(session)
+            && let Some(p) = s.pending.get_mut(id)
+        {
+            p.2 = p.2.saturating_sub(1);
+            if p.2 == 0 {
+                s.pending.remove(id);
+            }
+        }
     }
 
     fn insert(&mut self, session: &str, id: &str, fp: u64, command: &str, envelope: Envelope) {
@@ -207,6 +243,8 @@ pub(crate) struct Core {
     registry: &'static Registry,
     /// Running a dry-run batch on a clone of the session: no effect leaves it, no request is remembered.
     simulating: bool,
+    /// The watchdog budget of one call (bounds waits on the document thread).
+    budget: Duration,
 }
 
 fn unknown(id: &str, registry: &Registry) -> CommandError {
@@ -423,31 +461,19 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<Und
     Ok(undo_ref)
 }
 
-/// Applies the deferred effects of a committed call; returns, for checkpoint steps of a batch, the revision the
-/// checkpoint holds. A simulation applies none.
-fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool) -> Vec<(usize, u64)> {
-    let mut fixes = Vec::new();
+/// Applies the deferred effects of a committed call. A simulation applies none.
+fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool) {
     if simulating {
-        return fixes;
+        return;
     }
     for e in effects {
         match e {
             Effect::CancelJob(id) => {
                 let _ = s.jobs.cancel(&id);
             }
-            Effect::CreateCheckpoint { name, origin, created_at, step } => {
-                if let Some(p) = s.project.as_mut() {
-                    let rev = p.doc.document_rev();
-                    p.checkpoints.push(Checkpoint { name, created_at, document_rev: rev, origin, doc: p.doc.clone() });
-                    if let Some(i) = step {
-                        fixes.push((i, rev));
-                    }
-                }
-            }
             Effect::Event(ev) => s.events.push(ev),
         }
     }
-    fixes
 }
 
 fn changed_fields(a: &Value, b: &Value) -> Vec<String> {
@@ -472,8 +498,8 @@ pub(crate) fn unsaved_changes(p: &OpenProject) -> CommandError {
 }
 
 impl Core {
-    pub(crate) fn new(registry: &'static Registry, session: Session) -> Self {
-        Self { session: Some(session), requests: RequestCache::default(), registry, simulating: false }
+    pub(crate) fn new(registry: &'static Registry, session: Session, budget: Duration) -> Self {
+        Self { session: Some(session), requests: RequestCache::default(), registry, simulating: false, budget }
     }
 
     fn take_session(&mut self) -> Session {
@@ -687,17 +713,22 @@ impl Core {
             }
             return env;
         }
+        let started = std::time::Instant::now();
         let mut steps: Vec<Envelope> = Vec::new();
         let mut names: BTreeMap<String, usize> = BTreeMap::new();
         let mut failed: Option<(usize, CommandError)> = None;
         for (i, step) in req.steps.iter().enumerate() {
             let env = match resolve_refs(&step.params, &steps, &names) {
-                Ok(params) => self.invoke(&Invocation {
-                    command: step.id.clone(),
-                    params,
-                    options: InvokeOptions::default(),
-                    origin: origin.clone(),
-                }),
+                Ok(params) => {
+                    let inv = Invocation {
+                        command: step.id.clone(),
+                        params,
+                        options: InvokeOptions::default(),
+                        origin: origin.clone(),
+                    };
+                    let env = self.invoke(&inv);
+                    self.finish_batched_wait(&inv, env, started)
+                }
                 Err(e) => Envelope::error(e, self.rev()),
             };
             if let Some(n) = &step.name {
@@ -719,6 +750,34 @@ impl Core {
         env.changes = steps.iter().flat_map(|s| s.changes.iter().cloned()).take(CHANGES_CAP).collect();
         env.steps = Some(steps);
         env
+    }
+
+    /// A `job.wait` step of a sequential batch waits like a direct call (C12-R2-07): on the job table's condition
+    /// variable for its `timeoutMs`, bounded by what remains of the watchdog budget of the batch call (minus a margin
+    /// for the rest of the batch), so the caller still gets an answer. Ownership and parameters were checked by the
+    /// invocation that returned the pending record.
+    fn finish_batched_wait(&mut self, inv: &Invocation, env: Envelope, started: std::time::Instant) -> Envelope {
+        let pending = env.result.as_ref().is_some_and(|r| r.get("timedOut") == Some(&Value::Bool(true)));
+        if inv.command != "job.wait" || !env.is_ok() || !pending {
+            return env;
+        }
+        let Ok(p) = tt_registry::decode_params::<crate::commands::job::WaitParams>(inv.params.clone()) else {
+            return env;
+        };
+        let margin = self.budget / 10;
+        let left = self.budget.saturating_sub(started.elapsed()).saturating_sub(margin);
+        let wait = Duration::from_millis(p.timeout_ms).min(left);
+        if wait.is_zero() {
+            return env;
+        }
+        let Some(jobs) = self.session.as_ref().map(|s| s.jobs.clone()) else { return env };
+        let outcome = jobs
+            .wait(&p.job_id, wait)
+            .and_then(|(record, timed_out)| crate::commands::job::wait_result(record, timed_out));
+        match outcome {
+            Ok(result) => Envelope::ok(result, self.rev()),
+            Err(e) => Envelope::error(e, self.rev()),
+        }
     }
 
     fn batch_atomic(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
@@ -808,13 +867,7 @@ impl Core {
                         Ok(u) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
-                            for (i, rev) in apply_effects(&mut session, effects, self.simulating) {
-                                if let Some(r) =
-                                    steps.get_mut(i).and_then(|s| s.result.as_mut()).and_then(Value::as_object_mut)
-                                {
-                                    r.insert("documentRev".into(), json!(rev));
-                                }
-                            }
+                            apply_effects(&mut session, effects, self.simulating);
                         }
                         Err(e) => {
                             rollback.apply(&mut session);
@@ -876,6 +929,29 @@ impl Core {
                 }
             }
         }
+        // The full integrity gate (C12-R2-01): whatever API produced the candidate, it is installed only when the
+        // model reports no error (schemas, references, REV-01/02, §5 limits, names, trees, exposures).
+        let errors: Vec<tt_model::document::Issue> =
+            doc.issues().into_iter().filter(|i| i.severity == tt_model::document::Severity::Error).collect();
+        if let Some(first) = errors.first() {
+            let listed: Vec<Value> = errors
+                .iter()
+                .take(50)
+                .map(|i| json!({ "code": i.code, "objectId": i.object_id, "pointer": i.pointer, "message": i.message }))
+                .collect();
+            return Envelope::error(
+                CommandError::with_details(
+                    first.code,
+                    format!(
+                        "the document is not installed: {} integrity error(s); first: {}",
+                        errors.len(),
+                        first.message
+                    ),
+                    json!({ "count": errors.len(), "issues": listed }),
+                ),
+                rev,
+            );
+        }
         self.install(LoadGrant { _private: () }, doc, opts, origin)
     }
 
@@ -918,6 +994,11 @@ impl Core {
             && let Ok(p) = tt_registry::decode_params::<crate::commands::job::WaitParams>(inv.params.clone())
             && p.timeout_ms > 0
         {
+            if let Some(id) = &inv.options.request_id
+                && !self.simulating
+            {
+                self.requests.reserve(&inv.origin.session_key(), id, fingerprint(inv), &inv.command);
+            }
             return WaitStart::Wait { job_id: p.job_id, timeout: Duration::from_millis(p.timeout_ms) };
         }
         self.remember(inv, &env);
@@ -930,6 +1011,11 @@ impl Core {
             Ok(result) => Envelope::ok(result, self.rev()),
             Err(e) => Envelope::error(e, self.rev()),
         };
+        if let Some(id) = &inv.options.request_id
+            && !self.simulating
+        {
+            self.requests.release(&inv.origin.session_key(), id);
+        }
         self.remember(inv, &env);
         env
     }
@@ -1035,7 +1121,7 @@ mod tests {
     fn core() -> Core {
         let doc = tt_model::fixture::sample_document(1).unwrap();
         let session = Session { project: Some(OpenProject::new(doc, None, false)), ..Session::default() };
-        Core::new(crate::registry().unwrap(), session)
+        Core::new(crate::registry().unwrap(), session, Duration::from_secs(30))
     }
 
     fn doc(core: &Core) -> Document {

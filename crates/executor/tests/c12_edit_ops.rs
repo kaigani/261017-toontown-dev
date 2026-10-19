@@ -66,24 +66,33 @@ fn copy_and_paste_elements_makes_renamed_clones_sharing_drawings() {
 }
 
 #[test]
-fn cut_element_reparents_children_and_paste_restores_it() {
+fn cut_takes_descendants_paste_restores_the_forest_and_delete_reattaches() {
+    // 05 §15: cut/copy/paste of nodes act on the nodes with all their descendants; 04 §8.3: delete re-attaches the
+    // children to the deleted element's parent.
     let h = fixture();
     let scene = get(&h, "scene:\"Intro\"");
     let peg = get(&h, BOB_P)["id"].clone();
     let count = names(&h).len();
     let r = ok(&h, "edit.cut", json!({ "context": "staging", "objectIds": [BOB_P] }));
-    assert_eq!(r["clipboard"]["itemCount"], 1);
+    let taken = r["clipboard"]["itemCount"].as_u64().unwrap() as usize;
+    assert!(taken >= 2, "the peg and its child Bob: {r}");
     assert!(run(&h, "doc.object.get", json!({ "ref": BOB_P })).is_error());
-    assert_eq!(names(&h).len(), count - 1, "children of the cut element stay (04 element.delete)");
-    let tree = get(&h, "scene:\"Intro\"")["tree"].to_string();
-    assert!(!tree.contains(peg.as_str().unwrap()), "{tree}");
+    assert!(run(&h, "doc.object.get", json!({ "ref": BOB })).is_error(), "descendants are cut too");
+    assert_eq!(names(&h).len(), count - taken);
     let r = ok(&h, "edit.paste", json!({ "context": "staging" }));
-    let pasted = get(&h, r["createdIds"][0].as_str().unwrap());
-    assert_eq!(pasted["name"], "Bob-P");
-    assert_eq!(pasted["elementType"], "peg");
+    assert_eq!(r["createdIds"].as_array().unwrap().len(), taken);
+    let pasted_peg = get(&h, BOB_P);
+    assert_eq!(pasted_peg["elementType"], "peg");
+    assert_ne!(pasted_peg["id"], peg, "a paste creates new objects");
+    let bob = ok(&h, "doc.object.get", json!({ "ref": BOB, "include": ["derived"] }))["object"].clone();
+    assert_eq!(bob["parentId"], pasted_peg["id"], "the copied forest keeps its parentage");
     ok(&h, "edit.undo", json!({}));
     ok(&h, "edit.undo", json!({}));
     assert_eq!(get(&h, "scene:\"Intro\"")["tree"], scene["tree"], "undo restores the tree");
+    // Delete: Bob stays and hangs where the peg was.
+    ok(&h, "edit.delete", json!({ "context": "staging", "objectIds": [BOB_P] }));
+    assert!(run(&h, "doc.object.get", json!({ "ref": BOB })).is_ok());
+    assert_eq!(names(&h).len(), count - 1);
 }
 
 #[test]

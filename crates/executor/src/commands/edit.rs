@@ -739,13 +739,31 @@ pub(crate) fn validate_clipboard(c: &Clipboard) -> Result<(), CommandError> {
                 if item.is_empty() {
                     return Err(clipboard_invalid(at, "an element property map is not empty"));
                 }
-                for k in item.keys() {
+                for (k, value) in item {
                     let pointer = format!("/{}", tt_model::pointer::escape(k));
-                    if tt_model::schema::property_schema(ObjectType::Element, &pointer).is_none() {
+                    let Some(Value::Object(mut schema)) =
+                        tt_model::schema::property_schema(ObjectType::Element, &pointer)
+                    else {
                         return Err(clipboard_invalid(
                             format!("{at}/{k}"),
                             format!("`{k}` is not an element property"),
                         ));
+                    };
+                    let flag = |f: &str| schema.get(f).and_then(Value::as_bool).unwrap_or(false);
+                    if k == "id" || k == "type" || flag("readOnly") || flag("x-derived") || flag("x-transient") {
+                        return Err(clipboard_invalid(
+                            format!("{at}/{k}"),
+                            format!("`{k}` is not a writable element property"),
+                        ));
+                    }
+                    // The value must satisfy the property's schema (C12-R2-10), with the model's definitions.
+                    schema.insert("$schema".into(), json!("https://json-schema.org/draft/2020-12/schema"));
+                    schema.insert("$defs".into(), Value::Object(tt_model::schema::definitions().clone()));
+                    if let Some(v) =
+                        tt_registry::schema_violations(&Value::Object(schema), value, 1)?.into_iter().next()
+                    {
+                        let message = v.get("message").and_then(Value::as_str).unwrap_or("invalid value").to_owned();
+                        return Err(clipboard_invalid(format!("{at}/{k}"), format!("`{k}`: {message}")));
                     }
                 }
             }

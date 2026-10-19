@@ -41,10 +41,24 @@ impl Document {
     /// revisions stamped afterwards); no drawing rule applies, the drawing's earlier revision is listed explicitly.
     ///
     /// # Errors
-    /// `arg.invalid` for a revision above `document_rev`.
+    /// `arg.invalid` for a revision above `document_rev`, and `internal` if a stamp is not carried by the returned
+    /// document (C12-R2-01: every stamp is checked against the object returned). A reconstruction whose other objects
+    /// are newer than `document_rev` (stamps that do not cover everything changed since) is returned as built; its
+    /// `issues()` report REV-01, so no installation path accepts it (the executor's load transaction runs the full
+    /// integrity gate).
     pub fn at_earlier_revision(&self, document_rev: u64, stamps: &[(String, u64)]) -> Result<Document, ModelError> {
         let present: Vec<(String, u64)> = stamps.iter().filter(|(k, _)| self.locate(k).is_some()).cloned().collect();
-        self.stamp_objects(document_rev, &present, true)
+        let earlier = self.stamp_objects(document_rev, &present, true)?;
+        for (key, rev) in &present {
+            if earlier.locate(key).map(|l| l.rev) != Some(*rev) {
+                return Err(ModelError::with_details(
+                    codes::INTERNAL,
+                    format!("`{key}` does not carry its earlier revision {rev} after the rewind"),
+                    serde_json::json!({ "ref": key, "rev": rev }),
+                ));
+            }
+        }
+        Ok(earlier)
     }
 
     fn stamp_objects(

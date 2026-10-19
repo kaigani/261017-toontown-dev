@@ -31,7 +31,7 @@ use tt_model::document::{Document, EntryKey, Target};
 use tt_model::entities::drawing::{Drawing, DrawingBank, DrawingNode, LayerHint};
 use tt_model::entities::element::{Element, ElementInit, ElementType};
 use tt_model::value::Timestamp;
-use tt_model::{Id, IdGenerator, ObjectType};
+use tt_model::{Id, ObjectType};
 use tt_registry::{CommandError, codes, command};
 
 use super::common::EditContext;
@@ -75,10 +75,6 @@ fn wrong(context: EditContext, what: &str, id: &str) -> CommandError {
         format!("a {what} cannot be edited in the {} context", context.as_str()),
         json!({ "id": id, "context": context.as_str() }),
     )
-}
-
-fn new_id(ty: ObjectType) -> Result<Id, CommandError> {
-    Ok(IdGenerator::system().next(ty)?)
 }
 
 /// JSON Pointer tokens with array indices compared as numbers (for removing from the end first).
@@ -327,6 +323,18 @@ fn pick(cx: &Cx, context: EditContext, object_ids: Option<Vec<String>>) -> Resul
     })
 }
 
+/// Reports what a cut, copy or delete acts on (11 P4, §7.2 `targets`; C12-R2-08): the context and the objects or
+/// cells, whether given or taken from the selection.
+fn report_picked(cx: &mut Cx, context: EditContext, picked: &Picked) {
+    let ids: Vec<String> = match picked {
+        Picked::Drawing(k) | Picked::Elements(k) | Picked::Keys(k) | Picked::Points(k) | Picked::Library(k) => {
+            k.clone()
+        }
+        Picked::Cells(c) => c.iter().map(|(e, f)| cell_ref(e, *f)).collect(),
+    };
+    cx.set_targets(json!({ "context": context.as_str(), "ids": ids }));
+}
+
 /// Drawing-object keys without those inside another selected node (cutting a layer cuts its strokes).
 fn top_level(doc: &Document, keys: &[String]) -> Vec<String> {
     let set: BTreeSet<&String> = keys.iter().collect();
@@ -384,7 +392,18 @@ fn copy_content(
         Picked::Drawing(keys) => {
             (ClipboardKind::DrawingObjects, top_level(doc, keys).iter().map(|k| raw(k)).collect::<Result<_, _>>()?)
         }
-        Picked::Elements(keys) => (ClipboardKind::Elements, keys.iter().map(|k| raw(k)).collect::<Result<_, _>>()?),
+        Picked::Elements(keys) => {
+            // 05 §15: the selected nodes with all their descendants; each item says where it hangs (`parentId`).
+            let mut items = Vec::new();
+            for (_, picked) in with_descendants(doc, keys)? {
+                for (id, parent) in picked {
+                    let mut m = raw(&id)?;
+                    m.insert("parentId".into(), json!(parent));
+                    items.push(m);
+                }
+            }
+            (ClipboardKind::Elements, items)
+        }
         Picked::Cells(cells) => {
             let first = cells.iter().map(|(_, f)| *f).min().unwrap_or(1);
             let mut items = Vec::with_capacity(cells.len());
@@ -503,12 +522,115 @@ fn tree_without(nodes: &Value, gone: &BTreeSet<String>) -> Value {
     Value::Array(out)
 }
 
-/// Pointers (in `v`) to the values equal to one of `ids`, with what to do there: references inside an object that is
-/// a list item remove the item, IDs listed directly remove the entry, other references become `null` (10 §7.2
-/// dangling-reference repair, applied when elements are deleted).
-fn reference_fixes(v: &Value, ids: &BTreeSet<String>, at: &str, in_item: Option<&str>, out: &mut Vec<PatchOp>) {
+/// The Timeline tree of a scene as `child → parent` (roots map to `None`) and its pre-order.
+fn tree_shape(nodes: &Value) -> (BTreeMap<String, Option<String>>, Vec<String>) {
+    fn walk(
+        nodes: &Value,
+        parent: Option<&str>,
+        parents: &mut BTreeMap<String, Option<String>>,
+        order: &mut Vec<String>,
+    ) {
+        for n in nodes.as_array().into_iter().flatten() {
+            let Some(id) = n.get("id").and_then(Value::as_str) else { continue };
+            parents.insert(id.to_owned(), parent.map(str::to_owned));
+            order.push(id.to_owned());
+            if let Some(c) = n.get("children") {
+                walk(c, Some(id), parents, order);
+            }
+        }
+    }
+    let (mut parents, mut order) = (BTreeMap::new(), Vec::new());
+    walk(nodes, None, &mut parents, &mut order);
+    (parents, order)
+}
+
+/// The selected elements and all their descendants (05 §15), per scene, in Timeline pre-order, each with its
+/// parent in the scene tree.
+fn with_descendants(
+    doc: &Document,
+    keys: &[String],
+) -> Result<Vec<(String, Vec<(String, Option<String>)>)>, CommandError> {
+    let mut by_scene: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+    for k in keys {
+        let id = Id::parse(k)?;
+        let scene = doc.scene_of(&id).ok_or_else(|| internal("element without scene"))?;
+        by_scene.entry(scene.as_str().to_owned()).or_default().insert(k.clone());
+    }
+    let mut out = Vec::new();
+    for (scene, roots) in by_scene {
+        let sj = doc.entry_raw_json(&EntryKey::Scene(Id::parse(&scene)?))?;
+        let (parents, order) = tree_shape(&sj["tree"]);
+        let inside = |id: &str| {
+            let mut cur = Some(id.to_owned());
+            while let Some(c) = cur {
+                if roots.contains(&c) {
+                    return true;
+                }
+                cur = parents.get(&c).cloned().flatten();
+            }
+            false
+        };
+        let picked: Vec<(String, Option<String>)> =
+            order.iter().filter(|id| inside(id)).map(|id| (id.clone(), parents.get(id).cloned().flatten())).collect();
+        out.push((scene, picked));
+    }
+    Ok(out)
+}
+
+/// Derived and transient element properties (AG-04): carried on the clipboard as information, never stored.
+const ELEMENT_DERIVED: [&str; 11] = [
+    "path",
+    "parentId",
+    "childIds",
+    "depth",
+    "timelineIndex",
+    "xsheetIndex",
+    "cloneGroupId",
+    "cloneIds",
+    "drawingCount",
+    "hiddenByParent",
+    "effectiveMarkerColour",
+];
+
+/// Rewrites element references (schema `x-ref: "element"` locations, never inside opaque data) through `map`.
+fn remap_element_refs(v: &mut Value, map: &BTreeMap<String, String>, at: &str) {
     match v {
-        Value::String(s) if ids.contains(s) => match in_item {
+        Value::String(s) => {
+            if let Some(new) = map.get(s.as_str())
+                && tt_model::schema::property_schema(ObjectType::Element, at)
+                    .is_some_and(|x| x.get("x-ref").and_then(Value::as_str) == Some("element"))
+            {
+                *s = new.clone();
+            }
+        }
+        Value::Object(m) => {
+            for (k, x) in m.iter_mut().filter(|(k, _)| !OPAQUE.contains(&k.as_str())) {
+                remap_element_refs(x, map, &format!("{at}/{}", tt_model::pointer::escape(k)));
+            }
+        }
+        Value::Array(a) => {
+            for (i, x) in a.iter_mut().enumerate() {
+                remap_element_refs(x, map, &format!("{at}/{i}"));
+            }
+        }
+        _ => {}
+    }
+}
+
+/// Opaque members (10 §2.2): never interpreted, never traversed.
+const OPAQUE: [&str; 2] = ["meta", "ext"];
+
+/// Fixes for references to deleted elements in an element's JSON (10 §7.2 dangling-reference repair, applied when
+/// elements are deleted; SI-022). Only locations the element schema declares as element references (`x-ref:
+/// "element"`) count, and opaque `meta`/`ext` data is never entered (C12-R2-05): a reference inside a list item
+/// removes the item, a listed ID removes the entry, any other reference becomes `null`.
+fn reference_fixes(v: &Value, ids: &BTreeSet<String>, at: &str, in_item: Option<&str>, out: &mut Vec<PatchOp>) {
+    let is_ref = |p: &str| {
+        tt_model::schema::property_schema(ObjectType::Element, p)
+            .is_some_and(|s| s.get("x-ref").and_then(Value::as_str) == Some("element"))
+    };
+    match v {
+        Value::String(s) if ids.contains(s) && is_ref(at) => match in_item {
             Some(item) => {
                 if !out.iter().any(|o| o.path == item) {
                     out.push(op("remove", item, None));
@@ -517,7 +639,7 @@ fn reference_fixes(v: &Value, ids: &BTreeSet<String>, at: &str, in_item: Option<
             None => out.push(op("replace", at, Some(Value::Null))),
         },
         Value::Object(m) => {
-            for (k, x) in m {
+            for (k, x) in m.iter().filter(|(k, _)| !OPAQUE.contains(&k.as_str())) {
                 reference_fixes(x, ids, &format!("{at}/{}", tt_model::pointer::escape(k)), in_item, out);
             }
         }
@@ -525,7 +647,7 @@ fn reference_fixes(v: &Value, ids: &BTreeSet<String>, at: &str, in_item: Option<
             for (i, x) in a.iter().enumerate() {
                 let here = format!("{at}/{i}");
                 match x {
-                    Value::String(s) if ids.contains(s) => out.push(op("remove", &here, None)),
+                    Value::String(s) if ids.contains(s) && is_ref(&here) => out.push(op("remove", &here, None)),
                     Value::Object(_) => reference_fixes(x, ids, &here, Some(&here), out),
                     _ => reference_fixes(x, ids, &here, in_item, out),
                 }
@@ -536,7 +658,9 @@ fn reference_fixes(v: &Value, ids: &BTreeSet<String>, at: &str, in_item: Option<
 }
 
 /// Deletes the picked objects (staged); returns the deleted keys (cells as cell references).
-fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool) -> Result<Vec<String>, CommandError> {
+/// `descendants`: a cut takes the selected nodes with their descendants (05 §15); a delete re-attaches the children
+/// to the deleted element's parent (04 §8.3).
+fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) -> Result<Vec<String>, CommandError> {
     let doc = cx.document()?.clone();
     match picked {
         Picked::Drawing(keys) => {
@@ -562,7 +686,12 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool) -> Result<Vec<Strin
             let mut changes: Vec<(EntryKey, Vec<PatchOp>)> = Vec::new();
             let mut deleted: BTreeSet<String> = BTreeSet::new();
             let mut scenes: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
-            for k in keys {
+            let all: Vec<String> = if descendants {
+                with_descendants(&doc, keys)?.into_iter().flat_map(|(_, p)| p.into_iter().map(|(id, _)| id)).collect()
+            } else {
+                keys.clone()
+            };
+            for k in &all {
                 let id = Id::parse(k)?;
                 if doc.element(&id).is_some_and(|e| *e.locked()) {
                     return Err(CommandError::with_details(
@@ -650,35 +779,49 @@ fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool) -> Result<Vec<Strin
 
 // ----- paste --------------------------------------------------------------------------------------------------------
 
-/// Gives every object of the given types inside `v` a new ID (container-local types get local IDs).
+/// The child slots of the model's containment tree (10 §3): the only places a copied object holds other objects.
+const CHILD_SLOTS: [&str; 9] =
+    ["children", "nodes", "strokes", "channels", "keys", "points", "blocks", "placements", "sequences"];
+
+/// Gives a copied model object, and the objects in its child slots, new IDs where their type is one of `types`
+/// (container-local types get local IDs). Only the containment slots are followed; opaque `meta`/`ext` and every
+/// other property are copied verbatim, whatever they look like (C12-R2-05).
 fn regenerate(
+    cx: &mut Cx,
+    v: &mut Value,
+    types: &[ObjectType],
+    created: &mut Vec<(ObjectType, String)>,
+) -> Result<(), CommandError> {
+    let Value::Object(m) = v else { return Ok(()) };
+    if let Some(ty) = m.get("type").and_then(Value::as_str).and_then(ObjectType::parse)
+        && types.contains(&ty)
+        && m.contains_key("id")
+    {
+        let id = cx.new_id(ty)?;
+        m.insert("id".into(), json!(id.as_str()));
+        m.insert("rev".into(), json!(0));
+        created.push((ty, id.as_str().to_owned()));
+    }
+    for slot in CHILD_SLOTS {
+        if let Some(x) = m.get_mut(slot) {
+            regenerate_slot(cx, x, types, created)?;
+        }
+    }
+    Ok(())
+}
+
+/// The objects of one child slot: a list, or a map of objects (`channels`).
+fn regenerate_slot(
+    cx: &mut Cx,
     v: &mut Value,
     types: &[ObjectType],
     created: &mut Vec<(ObjectType, String)>,
 ) -> Result<(), CommandError> {
     match v {
-        Value::Object(m) => {
-            if let Some(ty) = m.get("type").and_then(Value::as_str).and_then(ObjectType::parse)
-                && types.contains(&ty)
-                && m.contains_key("id")
-            {
-                let id = new_id(ty)?;
-                m.insert("id".into(), json!(id.as_str()));
-                m.insert("rev".into(), json!(0));
-                created.push((ty, id.as_str().to_owned()));
-            }
-            for x in m.values_mut() {
-                regenerate(x, types, created)?;
-            }
-        }
-        Value::Array(a) => {
-            for x in a {
-                regenerate(x, types, created)?;
-            }
-        }
-        _ => {}
+        Value::Array(a) => a.iter_mut().try_for_each(|x| regenerate(cx, x, types, created)),
+        Value::Object(m) => m.values_mut().try_for_each(|x| regenerate(cx, x, types, created)),
+        _ => Ok(()),
     }
-    Ok(())
 }
 
 /// `name`, or `name-2`, `name-3`, … — the first not in `taken`.
@@ -703,64 +846,35 @@ fn first_layer(nodes: &Value, at: &str) -> Option<String> {
     None
 }
 
-/// Paste destination (01 §12.1): `{drawingId}`, `{elementId, frame}`, `{catalogId}`, `{functionId, frame}` or
-/// `{objectIds}`.
-#[derive(Debug, Default)]
-struct Destination {
+/// Paste destination (01 §12.1): `{drawingId}`, `{elementId, frame}`, `{catalogId}`, `{functionId, frame}`,
+/// `{objectIds}` or `{sceneId}`. Typed and closed: a wrong-typed or unknown field is refused by the parameter schema
+/// before any default applies (C12-R2-09).
+#[derive(Debug, Default, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub(crate) struct Destination {
+    /// Drawing to paste drawing objects into (default: the current drawing).
+    #[serde(default, rename = "drawingId")]
     drawing: Option<String>,
+    /// Element (column) to paste cells into (default: the current element).
+    #[serde(default, rename = "elementId")]
     element: Option<String>,
+    /// First frame (default: the current frame).
+    #[serde(default)]
+    #[schemars(range(min = 1, max = 100_000))]
     frame: Option<u32>,
+    /// Library or folder to paste templates into (default: the project library).
+    #[serde(default, rename = "catalogId")]
     catalog: Option<String>,
+    /// Function (channel) to paste keys into (default: the same-named channel of the current element).
+    #[serde(default, rename = "functionId")]
     function: Option<String>,
+    /// Objects to paste onto (motion points, element properties; default: the selection).
+    #[serde(default, rename = "objectIds")]
+    #[schemars(length(max = 100_000))]
     objects: Option<Vec<String>>,
+    /// Scene to paste elements into (default: the current scene).
+    #[serde(default, rename = "sceneId")]
     scene: Option<String>,
-}
-
-fn destination(v: Option<&Map<String, Value>>) -> Result<Destination, CommandError> {
-    let Some(m) = v else { return Ok(Destination::default()) };
-    let s = |k: &str| m.get(k).and_then(Value::as_str).map(str::to_owned);
-    for k in m.keys() {
-        if !["drawingId", "elementId", "frame", "catalogId", "functionId", "objectIds", "sceneId"].contains(&k.as_str())
-        {
-            return Err(CommandError::with_details(
-                codes::ARG_UNKNOWN,
-                format!("unknown destination field `{k}`"),
-                json!({ "pointer": format!("/destination/{k}") }),
-            ));
-        }
-    }
-    let frame = match m.get("frame") {
-        None => None,
-        Some(f) => Some(
-            f.as_u64().and_then(|n| u32::try_from(n).ok()).filter(|n| (1..=100_000).contains(n)).ok_or_else(|| {
-                CommandError::with_details(
-                    codes::ARG_INVALID,
-                    "frame is 1–100000",
-                    json!({ "pointer": "/destination/frame" }),
-                )
-            })?,
-        ),
-    };
-    let objects = match m.get("objectIds") {
-        None => None,
-        Some(Value::Array(a)) => Some(a.iter().filter_map(Value::as_str).map(str::to_owned).collect()),
-        Some(_) => {
-            return Err(CommandError::with_details(
-                codes::ARG_INVALID,
-                "objectIds is a list",
-                json!({ "pointer": "/destination/objectIds" }),
-            ));
-        }
-    };
-    Ok(Destination {
-        drawing: s("drawingId"),
-        element: s("elementId"),
-        frame,
-        catalog: s("catalogId"),
-        function: s("functionId"),
-        objects,
-        scene: s("sceneId"),
-    })
 }
 
 /// What a paste created and modified.
@@ -796,6 +910,7 @@ fn current_scene(cx: &Cx, given: Option<&str>) -> Result<Id, CommandError> {
 
 /// Stages the copy of a drawing into a bank (new ID, unique name) and returns its ID.
 fn copy_drawing(
+    cx: &mut Cx,
     doc: &Document,
     source: &str,
     bank: &Id,
@@ -807,7 +922,7 @@ fn copy_drawing(
         Some(c) => c.clone(),
         None => doc.entry_raw_json(&EntryKey::Drawing(Id::parse(source)?))?,
     };
-    let id = new_id(ObjectType::Drawing)?;
+    let id = cx.new_id(ObjectType::Drawing)?;
     let name = unique(v.get("name").and_then(Value::as_str).unwrap_or("1"), taken);
     taken.insert(name.clone());
     v["id"] = json!(id.as_str());
@@ -864,12 +979,13 @@ fn paste(
                     .map_err(|_| not_allowed(clip.kind, context, "there is no current drawing"))?,
             };
             check_drawing_unlocked(&doc, &drawing)?;
+            cx.set_targets(json!({ "context": context.as_str(), "destination": { "drawingId": drawing } }));
             let dj = doc.entry_raw_json(&EntryKey::Drawing(Id::parse(&drawing)?))?;
             let mut ops = Vec::new();
             for item in items {
                 let mut v = Value::Object(item);
                 let mut created = Vec::new();
-                regenerate(&mut v, &[ObjectType::DrawingNode, ObjectType::Stroke], &mut created)?;
+                regenerate(cx, &mut v, &[ObjectType::DrawingNode, ObjectType::Stroke], &mut created)?;
                 let ty = v.get("type").and_then(Value::as_str).unwrap_or_default();
                 if let Some((_, id)) = created.first() {
                     out.created_ids.push(format!("{drawing}/{id}"));
@@ -889,21 +1005,44 @@ fn paste(
                 return Err(not_allowed(clip.kind, context, "elements paste into the Timeline or the camera view"));
             }
             let scene = current_scene(cx, dest.scene.as_deref())?;
+            cx.set_targets(json!({ "context": context.as_str(), "destination": { "sceneId": scene.as_str() } }));
             let sc = doc.scene(&scene).ok_or_else(|| internal("scene"))?;
             let mut taken: BTreeSet<String> =
                 sc.elements().ids().iter().filter_map(|e| doc.element(e)).map(|e| e.name().clone()).collect();
-            let mut scene_ops = Vec::new();
+            // Every copied element gets a new ID first, so references between copied elements (the scene tree,
+            // `x-ref: "element"` properties) are remapped onto the copies (05 §15: the copied forest is pasted whole).
+            let mut prepared: Vec<(String, Option<String>, Value)> = Vec::new();
             for item in items {
-                // A reference item (`{elementId}`) pastes a copy of that element of the project.
-                let mut v = match item.get("elementId").and_then(Value::as_str) {
+                // A reference item (`{elementId}`) pastes a copy of that element of the project (SI-021).
+                let (old, parent, v) = match item.get("elementId").and_then(Value::as_str) {
                     Some(r) => {
                         let key = cx
                             .resolve_as(r, ObjectType::Element)
                             .map_err(|_| not_allowed(clip.kind, context, "a copied element is not in this project"))?;
-                        doc.object_raw_json(&key)?.1
+                        (key.clone(), None, doc.object_raw_json(&key)?.1)
                     }
-                    None => Value::Object(item),
+                    None => {
+                        let old = item.get("id").and_then(Value::as_str).unwrap_or_default().to_owned();
+                        let parent = item.get("parentId").and_then(Value::as_str).map(str::to_owned);
+                        (old, parent, Value::Object(item))
+                    }
                 };
+                prepared.push((old, parent, v));
+            }
+            let mut map: BTreeMap<String, String> = BTreeMap::new();
+            for (old, _, _) in &prepared {
+                let id = cx.new_id(ObjectType::Element)?;
+                map.insert(old.clone(), id.as_str().to_owned());
+            }
+            let mut children: BTreeMap<String, Vec<String>> = BTreeMap::new();
+            let mut roots: Vec<String> = Vec::new();
+            let mut scene_ops = Vec::new();
+            for (old, parent, mut v) in prepared {
+                let id = map.get(&old).cloned().ok_or_else(|| internal("mapped id"))?;
+                match parent.as_ref().and_then(|p| map.get(p)) {
+                    Some(np) => children.entry(np.clone()).or_default().push(id.clone()),
+                    None => roots.push(id.clone()),
+                }
                 if let Some(bank) = v.get("drawingBankId").and_then(Value::as_str)
                     && !Id::parse(bank).ok().is_some_and(|b| doc.bank(&b).is_some())
                 {
@@ -913,11 +1052,16 @@ fn paste(
                         "the copied element's drawings are not in this project",
                     ));
                 }
-                let id = new_id(ObjectType::Element)?;
+                if let Some(m) = v.as_object_mut() {
+                    for k in ELEMENT_DERIVED {
+                        m.shift_remove(k);
+                    }
+                }
                 let mut nested = Vec::new();
                 for key in ["channels", "blocks", "placements", "sequences"] {
                     if let Some(x) = v.get_mut(key) {
-                        regenerate(
+                        regenerate_slot(
+                            cx,
                             x,
                             &[
                                 ObjectType::Channel,
@@ -929,22 +1073,29 @@ fn paste(
                         )?;
                     }
                 }
+                remap_element_refs(&mut v, &map, "");
                 let name = unique(v.get("name").and_then(Value::as_str).unwrap_or("Element"), &taken);
                 taken.insert(name.clone());
-                v["id"] = json!(id.as_str());
+                v["id"] = json!(id);
                 v["rev"] = json!(0);
                 v["name"] = json!(name);
                 let cell_based = v
                     .get("elementType")
                     .and_then(|t| serde_json::from_value::<ElementType>(t.clone()).ok())
                     .is_some_and(ElementType::is_cell_based);
-                scene_ops.push(op("add", "/elements/-", Some(json!({ "id": id.as_str(), "type": "element" }))));
-                scene_ops.push(op("add", "/tree/-", Some(json!({ "id": id.as_str(), "children": [] }))));
+                scene_ops.push(op("add", "/elements/-", Some(json!({ "id": id, "type": "element" }))));
                 if cell_based {
-                    scene_ops.push(op("add", "/columnOrder/-", Some(json!(id.as_str()))));
+                    scene_ops.push(op("add", "/columnOrder/-", Some(json!(id))));
                 }
-                changes.push((EntryKey::Element(id.clone()), vec![op("add", "", Some(v))]));
-                out.created_ids.push(id.as_str().to_owned());
+                changes.push((EntryKey::Element(Id::parse(&id)?), vec![op("add", "", Some(v))]));
+                out.created_ids.push(id);
+            }
+            fn node(id: &str, children: &BTreeMap<String, Vec<String>>) -> Value {
+                let kids: Vec<Value> = children.get(id).into_iter().flatten().map(|c| node(c, children)).collect();
+                json!({ "id": id, "children": kids })
+            }
+            for r in &roots {
+                scene_ops.push(op("add", "/tree/-", Some(node(r, &children))));
             }
             changes.push((EntryKey::Scene(scene), scene_ops));
         }
@@ -959,6 +1110,9 @@ fn paste(
                     .map_err(|_| not_allowed(clip.kind, context, "there is no current element"))?,
             };
             let start = dest.frame.unwrap_or(cx.app().frame).max(1);
+            cx.set_targets(
+                json!({ "context": context.as_str(), "destination": { "elementId": target, "frame": start } }),
+            );
             // Source columns in order of first appearance map onto the target column and the following ones.
             let mut sources: Vec<String> = Vec::new();
             for it in &items {
@@ -1027,6 +1181,8 @@ fn paste(
                                     });
                                     match same {
                                         Some(existing) if opts.overwrite_drawings || topts.is_none() => {
+                                            // Overwriting content of a locked drawing is refused (04 §13.16).
+                                            check_drawing_unlocked(&doc, existing.as_str())?;
                                             let nodes = to_json(src_drawing.nodes())?;
                                             changes.push((
                                                 EntryKey::Drawing(existing.clone()),
@@ -1036,7 +1192,7 @@ fn paste(
                                             existing.as_str().to_owned()
                                         }
                                         _ => {
-                                            let id = copy_drawing(&doc, d, &bank, &mut names, &mut changes, None)?;
+                                            let id = copy_drawing(cx, &doc, d, &bank, &mut names, &mut changes, None)?;
                                             out.created_ids.push(id.clone());
                                             id
                                         }
@@ -1095,6 +1251,9 @@ fn paste(
                 Some(f) => Some(cx.resolve_as(f, ObjectType::Channel)?),
                 None => None,
             };
+            cx.set_targets(
+                json!({ "context": context.as_str(), "destination": { "functionId": fixed, "frame": base } }),
+            );
             let mut per_channel: BTreeMap<String, Vec<Value>> = BTreeMap::new();
             for it in &items {
                 let name = it.get("channel").and_then(Value::as_str).unwrap_or_default();
@@ -1150,7 +1309,7 @@ fn paste(
                     .filter(|k| k.get("frame").and_then(Value::as_u64).is_none_or(|f| !frames.contains(&f)))
                     .collect();
                 for k in &mut keys {
-                    let id = new_id(ObjectType::Key)?;
+                    let id = cx.new_id(ObjectType::Key)?;
                     k["id"] = json!(id.as_str());
                     k["rev"] = json!(0);
                     out.created_ids.push(format!("{channel}/{}", id.as_str()));
@@ -1182,6 +1341,7 @@ fn paste(
             if points.is_empty() {
                 return Err(not_allowed(clip.kind, context, "select motion points to paste onto"));
             }
+            cx.set_targets(json!({ "context": context.as_str(), "destination": { "objectIds": points } }));
             let src = items.first().and_then(|it| it.get("point")).cloned().unwrap_or(Value::Null);
             let mut ops = Vec::new();
             for (flag, path) in [
@@ -1232,6 +1392,7 @@ fn paste(
                 },
                 None => doc.library().id().as_str().to_owned(),
             };
+            cx.set_targets(json!({ "context": context.as_str(), "destination": { "catalogId": container } }));
             let (entry, _, at) = doc.object_pointer(&container)?;
             let (_, cj) = doc.object_raw_json(&container)?;
             let mut taken: BTreeSet<String> = cj["children"]
@@ -1244,7 +1405,7 @@ fn paste(
             for item in items {
                 let mut v = Value::Object(item);
                 let mut created = Vec::new();
-                regenerate(&mut v, &[ObjectType::LibraryFolder, ObjectType::LibraryItem], &mut created)?;
+                regenerate(cx, &mut v, &[ObjectType::LibraryFolder, ObjectType::LibraryItem], &mut created)?;
                 let name = unique(v.get("name").and_then(Value::as_str).unwrap_or("Item"), &taken);
                 taken.insert(name.clone());
                 v["name"] = json!(name);
@@ -1268,6 +1429,7 @@ fn paste(
                 props.extend(item);
             }
             let modified = super::doc::stage_props(cx, &targets, &props)?;
+            cx.set_targets(json!({ "context": context.as_str(), "destination": { "objectIds": modified } }));
             out.modified_ids.extend(modified);
             return Ok(out);
         }
@@ -1331,8 +1493,9 @@ pub(crate) struct ClipResult {
 pub(crate) fn edit_cut(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, CommandError> {
     let context = resolve_context(cx, p.context);
     let picked = pick(cx, context, p.object_ids)?;
+    report_picked(cx, context, &picked);
     let clip = copy_content(cx, context, &picked, None)?;
-    delete(cx, &picked, false)?;
+    delete(cx, &picked, false, true)?;
     let clipboard = store(cx, &clip)?;
     Ok(ClipResult { clipboard })
 }
@@ -1348,6 +1511,7 @@ pub(crate) fn edit_cut(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, Comm
 pub(crate) fn edit_copy(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, CommandError> {
     let context = resolve_context(cx, p.context);
     let picked = pick(cx, context, p.object_ids)?;
+    report_picked(cx, context, &picked);
     let clip = copy_content(cx, context, &picked, None)?;
     let clipboard = store(cx, &clip)?;
     Ok(ClipResult { clipboard })
@@ -1373,7 +1537,8 @@ pub(crate) struct DeleteResult {
 pub(crate) fn edit_delete(cx: &mut Cx, p: ObjectsParams) -> Result<DeleteResult, CommandError> {
     let context = resolve_context(cx, p.context);
     let picked = pick(cx, context, p.object_ids)?;
-    let deleted_ids = delete(cx, &picked, false)?;
+    report_picked(cx, context, &picked);
+    let deleted_ids = delete(cx, &picked, false, false)?;
     Ok(DeleteResult { deleted_ids })
 }
 
@@ -1387,7 +1552,7 @@ pub(crate) struct PasteParams {
     /// Where to paste: `{drawingId}`, `{elementId, frame}`, `{catalogId}`, `{functionId, frame}`, `{objectIds}` or
     /// `{sceneId}`.
     #[serde(default)]
-    destination: Option<Map<String, Value>>,
+    destination: Option<Destination>,
 }
 
 #[command(
@@ -1402,7 +1567,7 @@ pub(crate) struct PasteParams {
 pub(crate) fn edit_paste(cx: &mut Cx, p: PasteParams) -> Result<PasteResult, CommandError> {
     let context = resolve_context(cx, p.context);
     let clip = clipboard(cx)?;
-    let dest = destination(p.destination.as_ref())?;
+    let dest = p.destination.unwrap_or_default();
     paste(cx, context, &clip, &dest, Special::None)
 }
 
@@ -1442,6 +1607,7 @@ pub(crate) fn edit_cut_special(cx: &mut Cx, p: CutSpecialParams) -> Result<ClipR
     let context = resolve_context(cx, p.context);
     let opts: TimelineEditOptions = merged(cx, "cutSpecial", p.options.as_ref())?;
     let picked = pick(cx, context, p.object_ids)?;
+    report_picked(cx, context, &picked);
     let clip = copy_content(cx, context, &picked, Some(&opts))?;
     let picked = match picked {
         // Only the keys the key-group options select are cut.
@@ -1455,7 +1621,7 @@ pub(crate) fn edit_cut_special(cx: &mut Cx, p: CutSpecialParams) -> Result<ClipR
         }
         other => other,
     };
-    delete(cx, &picked, opts.create_delete_exposure)?;
+    delete(cx, &picked, opts.create_delete_exposure, true)?;
     for name in opts.not_applied() {
         cx.warn("edit.optionNotApplied", format!("option {name} is not applied yet"), Vec::new());
     }
@@ -1475,7 +1641,7 @@ pub(crate) struct PasteSpecialParams {
     context: EditContext,
     /// Where to paste (as `edit.paste`).
     #[serde(default)]
-    destination: Option<Map<String, Value>>,
+    destination: Option<Destination>,
     /// `TimelineEditOptions` or `MotionPointPasteOptions` (01 §12.4), by clipboard content.
     #[serde(default)]
     options: Option<Map<String, Value>>,
@@ -1500,7 +1666,7 @@ pub(crate) struct PasteSpecialParams {
 pub(crate) fn edit_paste_special(cx: &mut Cx, p: PasteSpecialParams) -> Result<PasteResult, CommandError> {
     let context = resolve_context(cx, p.context);
     let clip = clipboard(cx)?;
-    let dest = destination(p.destination.as_ref())?;
+    let dest = p.destination.unwrap_or_default();
     let motion = clip.kind == ClipboardKind::MotionPoint;
     let operation = if motion { "pasteSpecialMotionPoint" } else { "pasteSpecial" };
     if p.use_last && !cx.session().edit_options.contains_key(operation) {
@@ -1561,11 +1727,12 @@ pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Resul
     let doc = cx.document()?.clone();
     let scene = current_scene(cx, p.scene_id.as_deref())?;
     let frame = p.frame.unwrap_or(cx.app().frame).max(1);
+    cx.set_targets(json!({ "destination": { "sceneId": scene.as_str(), "frame": frame } }));
     let items = clip.items.clone().unwrap_or_default();
     let sc = doc.scene(&scene).ok_or_else(|| internal("scene"))?;
     let taken: BTreeSet<String> =
         sc.elements().ids().iter().filter_map(|e| doc.element(e)).map(|e| e.name().clone()).collect();
-    let bank = new_id(ObjectType::DrawingBank)?;
+    let bank = cx.new_id(ObjectType::DrawingBank)?;
     let mut changes: Vec<(EntryKey, Vec<PatchOp>)> = Vec::new();
     let mut names = BTreeSet::new();
     let mut drawings: Vec<Value> = Vec::new();
@@ -1594,7 +1761,7 @@ pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Resul
                         let mut v = doc.entry_raw_json(&EntryKey::Drawing(Id::parse(d)?)).map_err(|_| {
                             not_allowed(clip.kind, EditContext::Xsheet, "a copied drawing is not in this project")
                         })?;
-                        let id = new_id(ObjectType::Drawing)?;
+                        let id = cx.new_id(ObjectType::Drawing)?;
                         let name = unique(v.get("name").and_then(Value::as_str).unwrap_or("1"), &names);
                         names.insert(name.clone());
                         v["id"] = json!(id.as_str());
@@ -1612,13 +1779,13 @@ pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Resul
             (ty, name, placed)
         }
         ClipboardKind::DrawingObjects => {
-            let id = new_id(ObjectType::Drawing)?;
+            let id = cx.new_id(ObjectType::Drawing)?;
             let mut d = to_json(&Drawing::empty(id.clone(), "1".to_owned(), Timestamp::now()))?;
             let mut nodes: Vec<Value> = Vec::new();
             let mut strokes: Vec<Value> = Vec::new();
             for item in items {
                 let mut v = Value::Object(item);
-                regenerate(&mut v, &[ObjectType::DrawingNode, ObjectType::Stroke], &mut Vec::new())?;
+                regenerate(cx, &mut v, &[ObjectType::DrawingNode, ObjectType::Stroke], &mut Vec::new())?;
                 if v.get("type").and_then(Value::as_str) == Some("stroke") {
                     strokes.push(v);
                 } else {
@@ -1631,7 +1798,7 @@ pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Resul
                 } else {
                     LayerHint::Brush
                 };
-                let mut layer = to_json(&DrawingNode::layer(new_id(ObjectType::DrawingNode)?, hint))?;
+                let mut layer = to_json(&DrawingNode::layer(cx.new_id(ObjectType::DrawingNode)?, hint))?;
                 layer["strokes"] = Value::Array(strokes);
                 nodes.insert(0, layer);
             }
@@ -1643,7 +1810,7 @@ pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Resul
             return Err(not_allowed(other, EditContext::Xsheet, "a new element is made from cells or drawing objects"));
         }
     };
-    let element = new_id(ObjectType::Element)?;
+    let element = cx.new_id(ObjectType::Element)?;
     let mut el = to_json(&Element::new(ElementInit {
         id: element.clone(),
         element_type,

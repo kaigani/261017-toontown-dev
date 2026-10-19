@@ -14,7 +14,7 @@ use tt_model::ModelError;
 use tt_model::change::{self, OwnChange, PatchOp};
 use tt_model::document::{Document, EntryCommit, EntryKey, Target};
 use tt_model::path::Ref;
-use tt_model::{ObjectType, codes as model_codes};
+use tt_model::{Id, ObjectType, codes as model_codes};
 use tt_registry::{CommandError, codes};
 
 use crate::align::prepare;
@@ -68,14 +68,6 @@ struct Staged {
 pub(crate) enum Effect {
     /// Request cancellation of a job.
     CancelJob(String),
-    /// Create a checkpoint of the committed document (inside an atomic batch: the state the batch commits).
-    CreateCheckpoint {
-        name: String,
-        origin: String,
-        created_at: String,
-        /// The batch step that asked for it (its result is completed with the committed revision).
-        step: Option<usize>,
-    },
     /// Deliver an event.
     Event(Event),
 }
@@ -85,6 +77,7 @@ pub(crate) struct Savepoint {
     staged: Option<Staged>,
     txns: usize,
     effects: usize,
+    ids_drawn: u64,
     app: AppContext,
     ui: UiState,
     clipboard: Option<Value>,
@@ -106,8 +99,14 @@ pub struct Cx {
     in_atomic_batch: bool,
     dry_run: bool,
     effects: Vec<Effect>,
+    /// IDs drawn so far from this transaction's ID stream (see [`Cx::new_id`]).
+    ids_drawn: u64,
     step: Option<usize>,
 }
+
+/// Millisecond base of the ULID time part of transaction IDs (2025-10-15T00:00:00Z); the time part is a logical
+/// clock, not the wall clock, so replays are identical.
+const ID_EPOCH_MS: u64 = 1_760_486_400_000;
 
 /// `documentRev` cannot grow further (REV-01; C12-R1-19): a typed error, never an overflow.
 pub(crate) fn revisions_exhausted() -> CommandError {
@@ -150,8 +149,30 @@ impl Cx {
             in_atomic_batch: false,
             dry_run,
             effects: Vec::new(),
+            ids_drawn: 0,
             step: None,
         }
+    }
+
+    /// The next ID of this transaction's ID stream (C12-R2-04). The stream is seeded from the project's ID and the
+    /// live `documentRev` and advanced per ID, so the same document and the same calls produce the same IDs (11 P7,
+    /// 10 AG-06), a dry run predicts exactly the IDs the real call creates, and a rolled-back step returns its IDs
+    /// to the stream. Seeds differ between projects and between revisions, so committed IDs are never reused.
+    ///
+    /// # Errors
+    /// `project.none`; `internal` if the ID cannot be formed.
+    pub fn new_id(&mut self, ty: ObjectType) -> Result<Id, CommandError> {
+        let p = self.project()?;
+        let mut h: u64 = 0xcbf2_9ce4_8422_2325;
+        for b in p.doc.project().id().as_str().bytes().chain(p.doc.document_rev().to_le_bytes()) {
+            h = (h ^ u64::from(b)).wrapping_mul(0x0000_0100_0000_01b3);
+        }
+        let n = self.ids_drawn;
+        self.ids_drawn = n.saturating_add(1);
+        // One seeded generator per ID: the n-th ID depends only on the seed and n.
+        let seed = h ^ n.wrapping_mul(0x9E37_79B9_7F4A_7C15);
+        let id = tt_model::IdGenerator::seeded(seed, ID_EPOCH_MS.saturating_add(n)).next(ty)?;
+        Ok(id)
     }
 
     pub(crate) fn set_step(&mut self, step: Option<usize>) {
@@ -168,17 +189,8 @@ impl Cx {
         self.effects.push(Effect::Event(Event { name: name.to_owned(), payload }));
     }
 
-    pub(crate) fn effects(&self) -> &[Effect] {
-        &self.effects
-    }
-
     pub(crate) fn take_effects(&mut self) -> Vec<Effect> {
         std::mem::take(&mut self.effects)
-    }
-
-    /// The batch step being run.
-    pub(crate) fn step(&self) -> Option<usize> {
-        self.step
     }
 
     pub(crate) fn savepoint(&self) -> Savepoint {
@@ -186,6 +198,7 @@ impl Cx {
             staged: self.staged.clone(),
             txns: self.txns.len(),
             effects: self.effects.len(),
+            ids_drawn: self.ids_drawn,
             app: self.session.app.clone(),
             ui: self.session.ui.clone(),
             clipboard: self.session.clipboard.clone(),
@@ -198,6 +211,7 @@ impl Cx {
         self.staged = sp.staged;
         self.txns.truncate(sp.txns);
         self.effects.truncate(sp.effects);
+        self.ids_drawn = sp.ids_drawn;
         self.session.app = sp.app;
         self.session.ui = sp.ui;
         self.session.clipboard = sp.clipboard;
