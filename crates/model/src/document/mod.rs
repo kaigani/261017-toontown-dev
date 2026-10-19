@@ -161,22 +161,23 @@ fn entry_after(
 ) -> Result<Option<serde_json::Value>, Vec<ModelError>> {
     let mut cur = before.cloned();
     let mut rest: Vec<crate::change::PatchOp> = Vec::new();
-    let flush = |cur: &mut Option<serde_json::Value>, rest: &mut Vec<crate::change::PatchOp>| -> Result<(), Vec<ModelError>> {
-        if rest.is_empty() {
-            return Ok(());
-        }
-        let Some(v) = cur.as_ref() else {
-            return Err(vec![ModelError::with_details(
-                codes::ARG_INVALID,
-                format!("the entry {key:?} does not exist"),
-                json!({ "pointer": rest[0].path }),
-            )]);
+    let flush =
+        |cur: &mut Option<serde_json::Value>, rest: &mut Vec<crate::change::PatchOp>| -> Result<(), Vec<ModelError>> {
+            if rest.is_empty() {
+                return Ok(());
+            }
+            let Some(v) = cur.as_ref() else {
+                return Err(vec![ModelError::with_details(
+                    codes::ARG_INVALID,
+                    format!("the entry {key:?} does not exist"),
+                    json!({ "pointer": rest[0].path }),
+                )]);
+            };
+            let (after, _) = crate::change::apply_with_inverse(v, rest).map_err(|e| vec![e])?;
+            *cur = Some(after);
+            rest.clear();
+            Ok(())
         };
-        let (after, _) = crate::change::apply_with_inverse(v, rest).map_err(|e| vec![e])?;
-        *cur = Some(after);
-        rest.clear();
-        Ok(())
-    };
     for op in patch {
         match (op.op, op.path.is_empty(), cur.is_some() || !rest.is_empty()) {
             ("add", true, false) => cur = op.value.clone(),
@@ -683,9 +684,18 @@ impl Document {
         // undone by adding it back (`add ""`), each carrying the canonical entry.
         let mut commits = Vec::with_capacity(befores.len());
         for (key, before) in befores {
-            let committed = if next.has_entry(&key) { Some(next.entry_raw_json(&key).map_err(|e| vec![e])?) } else { None };
+            let committed =
+                if next.has_entry(&key) { Some(next.entry_raw_json(&key).map_err(|e| vec![e])?) } else { None };
             let root = |op: &'static str, value: Option<serde_json::Value>, old: Option<serde_json::Value>| {
-                vec![crate::change::PatchOp { op, from: None, path: String::new(), range: None, value, old_value: old, elided: false }]
+                vec![crate::change::PatchOp {
+                    op,
+                    from: None,
+                    path: String::new(),
+                    range: None,
+                    value,
+                    old_value: old,
+                    elided: false,
+                }]
             };
             let (undo, redo) = match (&before, &committed) {
                 (Some(b), Some(c)) => {
@@ -698,8 +708,14 @@ impl Document {
                     let redo = if with_redo { verified_diff(b, c, ty) } else { Vec::new() };
                     (undo, redo)
                 }
-                (None, Some(c)) => (root("remove", None, Some(c.clone())), if with_redo { root("add", Some(c.clone()), None) } else { Vec::new() }),
-                (Some(b), None) => (root("add", Some(b.clone()), None), if with_redo { root("remove", None, Some(b.clone())) } else { Vec::new() }),
+                (None, Some(c)) => (
+                    root("remove", None, Some(c.clone())),
+                    if with_redo { root("add", Some(c.clone()), None) } else { Vec::new() },
+                ),
+                (Some(b), None) => (
+                    root("add", Some(b.clone()), None),
+                    if with_redo { root("remove", None, Some(b.clone())) } else { Vec::new() },
+                ),
                 (None, None) => (Vec::new(), Vec::new()),
             };
             commits.push(EntryCommit { key, undo, redo });

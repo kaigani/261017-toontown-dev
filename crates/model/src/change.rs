@@ -849,6 +849,7 @@ fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<Ve
         return Ok(vec![new_op("replace", "", None, Some(old), Some(value))]);
     }
     let (parent, last) = parent_and_last(path)?;
+    materialize_omitted(root, &parent);
     match pointer::get_mut(root, &parent) {
         Some(Value::Object(m)) => {
             if op.old_value.is_some() && m.get(&last) != op.old_value.as_ref() {
@@ -877,6 +878,25 @@ fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<Ve
             Ok(vec![new_op("remove", &pointer::join(&at), None, None, Some(value))])
         }
         _ => Err(patch_err(op, format!("no container at `{path}`"))),
+    }
+}
+
+/// Members a writer omits while they hold their default `{}` (JSON-04: `meta`, `ext`).
+const OMITTED_OBJECTS: [&str; 2] = ["meta", "ext"];
+
+/// Restores an omitted `meta` / `ext` member on the way to `parent` (JSON-04 makes the omission a serialisation
+/// choice, so `/meta/x` is addressable on an object whose `meta` is empty). Nothing changes when the path exists or
+/// another member is missing.
+fn materialize_omitted(root: &mut Value, parent: &[String]) {
+    if pointer::get_mut(root, parent).is_some() {
+        return;
+    }
+    let Some((last, above)) = parent.split_last() else { return };
+    if !OMITTED_OBJECTS.contains(&last.as_str()) {
+        return;
+    }
+    if let Some(Value::Object(m)) = pointer::get_mut(root, above) {
+        m.insert(last.clone(), Value::Object(serde_json::Map::new()));
     }
 }
 

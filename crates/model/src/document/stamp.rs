@@ -47,7 +47,12 @@ impl Document {
         self.stamp_objects(document_rev, &present, true)
     }
 
-    fn stamp_objects(&self, document_rev: u64, stamps: &[(String, u64)], restore: bool) -> Result<Document, ModelError> {
+    fn stamp_objects(
+        &self,
+        document_rev: u64,
+        stamps: &[(String, u64)],
+        restore: bool,
+    ) -> Result<Document, ModelError> {
         if !restore && document_rev <= self.document_rev {
             return Err(ModelError::with_details(
                 codes::ARG_INVALID,

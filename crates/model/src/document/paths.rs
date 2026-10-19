@@ -140,9 +140,7 @@ impl Document {
     #[must_use]
     pub fn canonical_paths<'a>(&self, keys: impl IntoIterator<Item = &'a str>) -> Vec<Option<String>> {
         let mut memo = PathMemo::default();
-        keys.into_iter()
-            .map(|k| self.locate(k).map(|loc| self.path_for(loc.ty, &loc.key, &mut memo)))
-            .collect()
+        keys.into_iter().map(|k| self.locate(k).map(|loc| self.path_for(loc.ty, &loc.key, &mut memo))).collect()
     }
 
     pub(super) fn canonical_path_of(&self, ty: ObjectType, key: &str) -> String {
@@ -186,7 +184,12 @@ impl Document {
                     pal.styles.iter().find(|s| s.id.as_str() == key).map(|s| s.name.as_str())
                 };
                 let unique = name.is_some_and(|n| exact_count(names, n) == 1);
-                format!("{}/{}:{}", self.path_for(ObjectType::Palette, pk, memo), ty.as_str(), sel_name(name, unique, key))
+                format!(
+                    "{}/{}:{}",
+                    self.path_for(ObjectType::Palette, pk, memo),
+                    ty.as_str(),
+                    sel_name(name, unique, key)
+                )
             }
             ObjectType::Pen | ObjectType::Asset => {
                 let names: Vec<&str> = if ty == ObjectType::Pen {
@@ -215,7 +218,9 @@ impl Document {
                     },
                 };
                 let unique = bank.as_ref().and_then(|b| self.banks.get(b)).is_some_and(|b| {
-                    let names = || b.drawings.ids().iter().filter_map(|x| self.drawings.get(x)).map(|d| d.name.clone()).collect();
+                    let names = || {
+                        b.drawings.ids().iter().filter_map(|x| self.drawings.get(x)).map(|d| d.name.clone()).collect()
+                    };
                     memo.count(&format!("bank:{}", b.id), &d.name, names) == 1
                 });
                 format!("{base}/drawing:{}", sel_name(Some(&d.name), unique, key))
@@ -246,7 +251,9 @@ impl Document {
                 format!("scene:{}", sel_name(name, unique, key))
             }
             ObjectType::Transition => match parent_key.as_deref() {
-                Some(p) if self.scenes.contains_key(p) => format!("{}/transition", self.path_for(ObjectType::Scene, p, memo)),
+                Some(p) if self.scenes.contains_key(p) => {
+                    format!("{}/transition", self.path_for(ObjectType::Scene, p, memo))
+                }
                 _ => "transition".to_owned(),
             },
             ObjectType::Element => {
@@ -254,7 +261,9 @@ impl Document {
                 let Some(e) = self.elements.get(&id) else { return fallback() };
                 let Some(scene_id) = self.scene_of(&id).cloned() else { return fallback() };
                 let unique = self.scenes.get(&scene_id).is_some_and(|s| {
-                    let names = || s.elements.ids().iter().filter_map(|x| self.elements.get(x)).map(|e| e.name.clone()).collect();
+                    let names = || {
+                        s.elements.ids().iter().filter_map(|x| self.elements.get(x)).map(|e| e.name.clone()).collect()
+                    };
                     memo.count(&format!("scene:{}", s.id), &e.name, names) == 1
                 });
                 format!(
