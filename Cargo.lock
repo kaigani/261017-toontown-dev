@@ -4551,6 +4551,13 @@ dependencies = [
 name = "tt-persist"
 version = "0.0.1"
 dependencies = [
+ "crc32fast",
+ "flate2",
+ "getrandom 0.4.3",
+ "proptest",
+ "serde",
+ "serde_json",
+ "sha2 0.11.1",
  "tt-model",
 ]
 

@@ -48,6 +48,10 @@ trybuild = "1.0"
 # `doc.object.find` regex predicates (10 §10.3); linear-time engine.
 regex = "1"
 sha2 = "0.11"
+# Package containers (10 §6.2): deflate for JSON entries, CRC-32 of zip entries. Our own zip reader/writer (tt-persist)
+# applies the hostile-input rules of ZIP-01/ZIP-06 itself; these crates only compress and checksum.
+flate2 = { version = "1.1", default-features = false, features = ["rust_backend"] }
+crc32fast = "1.5"
 thiserror = "2.0"
 tauri = { version = "2.12", features = [] }
 tauri-build = { version = "2.7", features = [] }

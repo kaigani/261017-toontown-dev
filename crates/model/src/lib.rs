@@ -14,6 +14,7 @@
 
 pub mod canonical;
 pub mod change;
+pub mod defaults;
 pub mod document;
 pub mod entities;
 pub mod error;
