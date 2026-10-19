@@ -1,0 +1,57 @@
+{
+  "what": "Closure check r6 response: local gate logs, recorded from the working tree described by baseCommit + dirtyFiles before the fix commit.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-*.log": "pnpm lint | typecheck | test | format:check | licenses:check",
+    "gates/node-test.log": "node --test scripts/check-npm-licenses.test.mjs",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless-*.log, selftest-*": "cargo build --release --locked -p tt-headless; --selftest --json twice, compared; scripts/check-headless-deps.py",
+    "gates/reviewer-python-suites.log": "python scripts/run-reviewer-python-suites.py",
+    "gates/staged-properties-nocapture.log": "cargo test --locked -p tt-model --test staged_inverse --test staged_commit -- --nocapture"
+  },
+  "recordedAt": "2026-10-19T01:53:52+00:00",
+  "baseCommit": "0090604773eb93610362e6ee79eb88020540ec31",
+  "dirtyFiles": [
+    "crates/model/src/change.rs",
+    "crates/model/src/document/mod.rs",
+    "crates/model/tests/staged_commit.rs",
+    "crates/model/tests/staged_inverse.rs",
+    "docs/decisions/ADR-0010-object-model-and-identifiers.md",
+    "docs/decisions/ADR-0011-canonical-json-and-schemas.md",
+    "plan/traceability.csv",
+    "reviews/M1-C1.1-handoff.md",
+    "reviews/evidence/M1-C1.1-r6-response/"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "sha256": {
+    "gates/build.log": "5350af61c2d3f4ff48fca6fa04c21f2e4a8e7a8578ebd4b305449e366edd430d",
+    "gates/clippy-diag.log": "7f4cfbe4de9334187480b0e5ddf43b94aecfe6e1d2d55c92a3e34df80a3d0f5f",
+    "gates/clippy.log": "5152948c51bf41879ac59d7d747c7d435dd5edb413e6039f46687b6615c24476",
+    "gates/deny.log": "69c387dc462b9c37f752f53d1c7a2a510e7bfc60550534035443e44d43c24a3d",
+    "gates/fmt.log": "e20fecd1b340974b1c268348f4daa9d31a5c67f6065c319097a12bbe3e21f962",
+    "gates/headless-build.log": "ebec40b23e48944dbce4ab0a96931e558aaf24c43e9157c1f3f2468fecd6d2c3",
+    "gates/headless-deps.log": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295",
+    "gates/node-test.log": "37f6ff2d2240014ecb2dd12b1b9cdde08a380f22973c143618cca2ffe2e7daa1",
+    "gates/pnpm-format.log": "3741b86ebc596c5914a8805d60966c473eb165aa935bad114c67be1d4b114bb1",
+    "gates/pnpm-licenses.log": "26eeca268a0c4bdfb47c1188020ecd167a2a1b3944c625ed7225fe0fb7f10535",
+    "gates/pnpm-lint.log": "9acfaa811763526641b9fd04d72d6150daffdae7aa0f42b3e1e1fe4afbbe7a21",
+    "gates/pnpm-test.log": "2e3505503b7adce33ccf6a9305eaebc0e3ebaf85bbf8b145657c8c75775675a6",
+    "gates/pnpm-typecheck.log": "de37029285525bc9cfc231919392594833e45e9f3c3c5f6c5a7925c99161762f",
+    "gates/reviewer-python-suites.log": "23574a0d3858cf69c1a6ec8af7a4c4a8509b06287b7ba2d5e6c9ddc465e3737e",
+    "gates/selftest-1.json": "d1431e77d647d689d9c526cc4c4ab2cc7ce8b6c76c205a120b12307aeb111c66",
+    "gates/selftest-2.json": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+    "gates/selftest-compare.log": "67bd29b3acc47c40247ef48e2155b582d8ac3af5ed0afd23947c089ed02d3e9c",
+    "gates/staged-properties-nocapture.log": "b52bd306433eaf76f582448e74dde8b81394e54bcefc2f6d1ec7b495170a60b0",
+    "gates/test-diag.log": "c040a6d0b0b1518888a9b8a956fd292315858bf7ebe7ec27304df689fbff4acb",
+    "gates/test.log": "a0e7c6f07cdeb94e52560d7bde6478679a90baf13f44e8cfd0314f5d621d9247"
+  }
+}

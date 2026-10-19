@@ -337,6 +337,12 @@ fn is_child_list(ty: ObjectType, path: &str) -> bool {
     })
 }
 
+/// Whether a value is a child stub: an object with a model `type` and nothing but `id`/`colourId`, `type`, `name`.
+fn is_stub(v: &Value) -> bool {
+    type_of(v).is_some()
+        && v.as_object().is_some_and(|m| m.keys().all(|k| matches!(k.as_str(), "id" | "colourId" | "type" | "name")))
+}
+
 fn stub_key(v: &Value) -> String {
     v.get("id").or_else(|| v.get("colourId")).map(Value::to_string).unwrap_or_default()
 }
@@ -555,10 +561,17 @@ fn diff_into(a: &Value, b: &Value, path: &str, ty: ObjectType, out: &mut Vec<Pat
                 }
             }
         }
-        (Value::Array(xa), Value::Array(xb))
-            if is_child_list(ty, path) && xa.iter().chain(xb).all(|v| type_of(v).is_some()) =>
-        {
+        // Membership and order of a child list are diffed by ID only when its items are `{id, type}` stubs (own
+        // views, split children): a stub carries nothing else that could change. A list of full inline children (an
+        // entry's JSON) is diffed item by item when its length is unchanged, otherwise replaced, so no content
+        // change inside an item with an unchanged ID is lost (C11-R6-01).
+        (Value::Array(xa), Value::Array(xb)) if is_child_list(ty, path) && xa.iter().chain(xb).all(is_stub) => {
             diff_collection(xa, xb, path, out);
+        }
+        (Value::Array(xa), Value::Array(xb)) if xa.len() == xb.len() && xa.iter().chain(xb).all(Value::is_object) => {
+            for (i, (x, y)) in xa.iter().zip(xb).enumerate() {
+                diff_into(x, y, &format!("{path}/{i}"), ty, out);
+            }
         }
         _ => out.push(PatchOp::replace(path.to_owned(), a.clone(), b.clone())),
     }

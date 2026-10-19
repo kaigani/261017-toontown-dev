@@ -161,8 +161,23 @@ fn case(seed: u64) -> bool {
         Ok((next, inverse)) => {
             let errors: Vec<_> = next.issues().into_iter().filter(|i| i.severity == Severity::Error).collect();
             assert!(errors.is_empty(), "committed a document with errors: {errors:?}\npatch {patch:?}");
-            // The returned inverse is concrete (computed against the staged pre-state).
+            // The returned inverse is concrete and undoes the committed canonical entry exactly; its own inverse
+            // redoes it exactly (C11-R6-01).
             assert!(inverse.iter().all(|o| !o.path.ends_with("/-")));
+            let (back, redo) = next.with_patched_entry(&key, &inverse).unwrap_or_else(|e| {
+                panic!(
+                    "undo: {e:?}
+patch {patch:?}"
+                )
+            });
+            assert_eq!(
+                snapshot_bytes(&back),
+                before,
+                "undo restores every entry byte for byte
+patch {patch:?}"
+            );
+            let (again, _) = back.with_patched_entry(&key, &redo).unwrap_or_else(|e| panic!("redo: {e:?}"));
+            assert_eq!(snapshot_bytes(&again), snapshot_bytes(&next), "redo restores the committed snapshot");
             true
         }
         Err(errors) => {

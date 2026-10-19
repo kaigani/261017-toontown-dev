@@ -477,7 +477,34 @@ impl Document {
         next.rebuild_derived();
         let errors: Vec<ModelError> =
             next.issues().into_iter().filter(|i| i.severity == Severity::Error).map(|i| i.to_error()).collect();
-        if errors.is_empty() { Ok((next, inverse)) } else { Err(errors) }
+        if !errors.is_empty() {
+            return Err(errors);
+        }
+        // The inverse undoes the **committed** entry (C11-R6-01). Revalidation canonicalises — exposure runs merge,
+        // keys reorder, strings normalise — so the raw-JSON inverse of the staged value may name positions that no
+        // longer exist or restore the wrong frames. It is therefore derived from the canonical committed entry back to
+        // the canonical pre-state and verified to restore it exactly; the raw inverse only proves the patch applied.
+        let _ = inverse;
+        let committed = next.entry_raw_json(key).map_err(|e| vec![e])?;
+        let ty = before
+            .get("type")
+            .and_then(serde_json::Value::as_str)
+            .and_then(crate::types::ObjectType::parse)
+            .unwrap_or(crate::types::ObjectType::Project);
+        let mut undo = crate::change::diff_json(&committed, &before, "", ty);
+        if crate::change::apply(&committed, &undo).ok().as_ref() != Some(&before) {
+            // Never return an inverse that does not restore the pre-state: fall back to replacing the whole entry.
+            undo = vec![crate::change::PatchOp {
+                op: "replace",
+                from: None,
+                path: String::new(),
+                range: None,
+                value: Some(before.clone()),
+                old_value: Some(committed),
+                elided: false,
+            }];
+        }
+        Ok((next, undo))
     }
 
     /// Where an object lives (by plain or compound ID string).

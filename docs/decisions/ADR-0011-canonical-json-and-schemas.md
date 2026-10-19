@@ -100,7 +100,12 @@ definitions the application validates with; 10 §2.6 for change sets that can be
    operation type or path shape; the first failure is that operation's typed error and the whole patch is refused.
    At the document level, `Document::with_patched_entry` stages the patched entry, revalidates it through the full
    input path, rebuilds the snapshot and returns it only if `issues()` has no error (every integrity rule and every
-   10 §5 limit); a property test drives random RFC 6902 sequences over sample documents through it. It supports RFC 6902 root `add`/`replace`;
+   10 §5 limit); a property test drives random RFC 6902 sequences over sample documents through it. Its inverse is
+   computed from the committed canonical entry back to the canonical pre-state (`diff_json`, then verified by
+   applying it; a whole-entry replace is the never-taken safety net), not from the raw staged value, whose positions
+   canonicalisation may have merged away (C11-R6-01). `diff_json` treats a child list as an ID collection only when
+   its items are `{id, type}` stubs; lists of full inline children are diffed item by item (same length) or
+   replaced, so a content change inside an item is never lost. It supports RFC 6902 root `add`/`replace`;
    whether `doc.object.patch` may replace a whole object is a command decision (C1.2). Exposure and mouth-track
    edits use one range
    operation: `{op: "replace", path, range: {from, to}, value, oldValue}` where frames from `from` covered by
