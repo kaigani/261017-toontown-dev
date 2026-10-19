@@ -1,0 +1,1914 @@
+{
+  "seed": "0xc12420261019",
+  "population": "662 generated declarations, excluding 14 previously divergent declarations",
+  "ids": [
+    "sound.asset.probe",
+    "playback.start",
+    "tool.placeBehind.set",
+    "fx.preview.open",
+    "colour.fillMapping.set",
+    "export.report.get",
+    "lipsync.track.get",
+    "library.closed",
+    "draw.polyline.add",
+    "anim.point.paste",
+    "anim.camera.current.get",
+    "anim.skeleton.skin.remove",
+    "draw.linesToBrush.apply",
+    "colour.style.duplicate",
+    "ui.tips.reset",
+    "draw.object.delete",
+    "tool.tablet.set",
+    "tool.active.set",
+    "keymap.remove",
+    "export.publish.service.list"
+  ],
+  "schemas": [
+    {
+      "id": "sound.asset.probe",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "sound.asset.probe parameters",
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "file-system path (11 \u00a76.2)"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false,
+        "x-spec": "`path: path`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "sound.asset.probe result",
+        "type": "object",
+        "properties": {
+          "decodable": {
+            "type": "boolean"
+          },
+          "format": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "channels": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 65536
+            },
+            "maxItems": 100000
+          },
+          "bitDepth": {
+            "type": "number"
+          },
+          "sampleRate": {
+            "type": "number"
+          },
+          "durationSec": {
+            "type": "number"
+          },
+          "fileSize": {
+            "type": "number"
+          },
+          "exceedsLimit": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "decodable",
+          "format",
+          "channels",
+          "bitDepth",
+          "sampleRate",
+          "durationSec",
+          "fileSize",
+          "exceedsLimit"
+        ],
+        "x-spec": "`{decodable, format, channels, bitDepth, sampleRate, durationSec, fileSize, exceedsLimit}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "path": "review/example.out"
+        },
+        "result": {
+          "decodable": true,
+          "format": "example",
+          "channels": [
+            "example"
+          ],
+          "bitDepth": 1,
+          "sampleRate": 1,
+          "durationSec": 1,
+          "fileSize": 1,
+          "exceedsLimit": true
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "playback.start",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "playback.start parameters",
+        "type": "object",
+        "properties": {
+          "sceneId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "fromFrame": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false,
+        "x-spec": "`sceneId?: id; fromFrame?: int`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "playback.start result",
+        "type": "object",
+        "properties": {
+          "playing": {
+            "const": true
+          },
+          "sceneId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "frame": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "playing",
+          "sceneId",
+          "frame"
+        ],
+        "x-spec": "`{playing: true, sceneId, frame}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "sceneId": "scene:#1",
+          "fromFrame": 1
+        },
+        "result": {
+          "playing": true,
+          "sceneId": "scene:#1",
+          "frame": 1
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "tool.placeBehind.set",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "tool.placeBehind.set parameters",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enabled"
+        ],
+        "additionalProperties": false,
+        "x-spec": "`enabled: bool`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "tool.placeBehind.set result",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enabled"
+        ],
+        "x-spec": "`{enabled}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "enabled": true
+        },
+        "result": {
+          "enabled": true
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "fx.preview.open",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "fx.preview.open parameters",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "x-spec": "\u2014"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "fx.preview.open result",
+        "type": "object",
+        "properties": {
+          "panelId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          }
+        },
+        "required": [
+          "panelId"
+        ],
+        "x-spec": "`{panelId}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {},
+        "result": {
+          "panelId": "scene:#1"
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "colour.fillMapping.set",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "colour.fillMapping.set parameters",
+        "type": "object",
+        "properties": {
+          "drawingId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "objectIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000
+          },
+          "mapping": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "default",
+                  "clipboard"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false,
+                "x-placeholder": true,
+                "description": "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+                "x-specIssue": "SI-025"
+              }
+            ]
+          }
+        },
+        "required": [
+          "objectIds",
+          "mapping"
+        ],
+        "additionalProperties": false,
+        "x-spec": "`drawingId?: id; objectIds: [id]; mapping: object|\"default\"|\"clipboard\"`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "colour.fillMapping.set result",
+        "type": "object",
+        "properties": {
+          "changed": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000
+          },
+          "skipped": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "objectId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096,
+                  "description": "object ID or path reference (10 \u00a73)"
+                },
+                "reason": {
+                  "type": "string",
+                  "maxLength": 65536
+                }
+              },
+              "required": [
+                "objectId",
+                "reason"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 100000
+          },
+          "rev": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "changed",
+          "skipped",
+          "rev"
+        ],
+        "x-spec": "`{changed: [id], skipped: [{objectId, reason}], rev}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "drawingId": "scene:#1",
+          "objectIds": [
+            "scene:#1"
+          ],
+          "mapping": "default"
+        },
+        "result": {
+          "changed": [
+            "scene:#1"
+          ],
+          "skipped": [
+            {
+              "objectId": "scene:#1",
+              "reason": "example"
+            }
+          ],
+          "rev": 1
+        }
+      },
+      "placeholders": [
+        {
+          "pointer": "/params/mapping",
+          "kind": "object without fields",
+          "side": "params",
+          "issue": "SI-025"
+        }
+      ],
+      "specExamples": []
+    },
+    {
+      "id": "export.report.get",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "export.report.get parameters",
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          }
+        },
+        "required": [
+          "jobId"
+        ],
+        "additionalProperties": false,
+        "x-spec": "`jobId: id`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "export.report.get result",
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "totalBytes": {
+            "type": "number"
+          },
+          "cameraSize": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "null"
+            ],
+            "x-placeholder": true,
+            "description": "type not stated by the owning section (spec issue); a scalar",
+            "x-specIssue": "SI-029"
+          },
+          "fps": {
+            "type": "number"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "maxLength": 65536
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "maxLength": 65536
+                      },
+                      "bytes": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "bytes"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 100000
+                }
+              },
+              "required": [
+                "kind",
+                "items"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 100000
+          }
+        },
+        "required": [
+          "file",
+          "totalBytes",
+          "cameraSize",
+          "fps",
+          "groups"
+        ],
+        "x-spec": "`{file, totalBytes, cameraSize, fps, groups: [{kind, items: [{name, bytes}]}]}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "jobId": "scene:#1"
+        },
+        "result": {
+          "file": "example",
+          "totalBytes": 1,
+          "cameraSize": "example",
+          "fps": 1,
+          "groups": [
+            {
+              "kind": "example",
+              "items": [
+                {
+                  "name": "example",
+                  "bytes": 1
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "placeholders": [
+        {
+          "pointer": "/result/cameraSize",
+          "kind": "leaf `cameraSize`",
+          "side": "result",
+          "issue": "SI-029"
+        }
+      ],
+      "specExamples": []
+    },
+    {
+      "id": "lipsync.track.get",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "lipsync.track.get parameters",
+        "type": "object",
+        "properties": {
+          "placementId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "elementId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "startFrame": {
+            "type": "integer"
+          },
+          "endFrame": {
+            "type": "integer"
+          },
+          "includeSegments": {
+            "type": "boolean",
+            "default": false
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "list",
+              "string"
+            ],
+            "default": "list"
+          }
+        },
+        "additionalProperties": false,
+        "x-spec": "`placementId?: id; elementId?: id; startFrame?: int; endFrame?: int; includeSegments?: bool = false; format?: enum \"list\"|\"string\" = \"list\"`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "lipsync.track.get result",
+        "type": "object",
+        "properties": {
+          "tracks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/spec.LipTrack"
+            },
+            "maxItems": 100000
+          }
+        },
+        "required": [
+          "tracks"
+        ],
+        "x-spec": "`{tracks: [LipTrack]}` (\u00a715.4)",
+        "additionalProperties": false,
+        "$defs": {
+          "spec.LipTrack": {
+            "type": "object",
+            "properties": {
+              "placementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 \u00a73)"
+              },
+              "fps": {
+                "type": "number"
+              },
+              "startFrame": {
+                "type": "integer"
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 65536
+              },
+              "stale": {
+                "type": "boolean"
+              },
+              "frames": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "frame": {
+                      "type": "integer"
+                    },
+                    "mouth": {
+                      "type": "string",
+                      "maxLength": 65536
+                    },
+                    "manual": {
+                      "type": "boolean"
+                    },
+                    "label": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "maxLength": 65536
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "frame",
+                    "mouth",
+                    "manual",
+                    "label"
+                  ]
+                },
+                "maxItems": 100000
+              },
+              "segments": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "start": {
+                      "type": "number"
+                    },
+                    "end": {
+                      "type": "number"
+                    },
+                    "mouth": {
+                      "type": "string",
+                      "maxLength": 65536
+                    },
+                    "phoneme": {
+                      "type": "string",
+                      "maxLength": 65536
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "start",
+                    "end",
+                    "mouth",
+                    "phoneme"
+                  ]
+                },
+                "maxItems": 100000
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "placementId",
+              "fps",
+              "startFrame",
+              "source",
+              "stale",
+              "frames",
+              "segments"
+            ],
+            "x-specSection": "07"
+          }
+        }
+      },
+      "samples": {
+        "params": {
+          "placementId": "scene:#1",
+          "elementId": "scene:#1",
+          "startFrame": 1,
+          "endFrame": 1,
+          "includeSegments": false,
+          "format": "list"
+        },
+        "result": {
+          "tracks": [
+            {
+              "placementId": "scene:#1",
+              "fps": 1,
+              "startFrame": 1,
+              "source": "example",
+              "stale": true,
+              "frames": [
+                {
+                  "frame": 1,
+                  "mouth": "example",
+                  "manual": true,
+                  "label": "example"
+                }
+              ],
+              "segments": [
+                {
+                  "start": 1,
+                  "end": 1,
+                  "mouth": "example",
+                  "phoneme": "example"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "placeholders": [],
+      "specExamples": [
+        {
+          "part": "result",
+          "type": "spec.LipTrack",
+          "section": "07",
+          "literal": true,
+          "value": {
+            "placementId": "p_19",
+            "fps": 24,
+            "startFrame": 25,
+            "source": "transcript",
+            "stale": false,
+            "frames": [
+              {
+                "frame": 25,
+                "mouth": "X",
+                "manual": false,
+                "label": null
+              },
+              {
+                "frame": 26,
+                "mouth": "A",
+                "manual": false,
+                "label": "A"
+              }
+            ],
+            "segments": [
+              {
+                "start": 0.0,
+                "end": 0.06,
+                "mouth": "X",
+                "phoneme": "sil"
+              },
+              {
+                "start": 0.06,
+                "end": 0.14,
+                "mouth": "A",
+                "phoneme": "M"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "library.closed",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "library.closed parameters",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "Events take no parameters; subscribe to them (11 \u00a79).",
+        "x-spec": "\u2014"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "library.closed result",
+        "type": "object",
+        "properties": {
+          "libraryId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          }
+        },
+        "required": [
+          "libraryId"
+        ],
+        "description": "Event payload (delivered to subscribers).",
+        "x-spec": "`{libraryId}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {},
+        "result": {
+          "libraryId": "scene:#1"
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "draw.polyline.add",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "draw.polyline.add parameters",
+        "type": "object",
+        "properties": {
+          "drawingId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "inHandle": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "additionalProperties": false
+                },
+                "outHandle": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "x",
+                "y"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 100000
+          },
+          "closed": {
+            "type": "boolean",
+            "default": false
+          },
+          "snap": {
+            "type": "boolean",
+            "default": true
+          },
+          "snapRadius": {
+            "type": "number",
+            "default": 8
+          },
+          "colourId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "thickness": {
+            "type": "number"
+          },
+          "penId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "layer": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73) or \"auto\" | \"new\" | \"top\" | \"behind\"",
+            "default": "auto"
+          },
+          "symmetry": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": [
+          "points"
+        ],
+        "additionalProperties": false,
+        "x-spec": "`drawingId?: id; points: [{x,y,inHandle?: point,outHandle?: point}]; closed: bool = false; snap: bool = true; snapRadius: number = 8 (view px); colourId?: id; thickness?: number; penId?: id; layer: enum \"auto\"|\"new\"|\"top\"|\"behind\" | id = \"auto\"; symmetry: bool = true`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "draw.polyline.add result",
+        "type": "object",
+        "properties": {
+          "strokeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000
+          },
+          "zoneIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000
+          },
+          "layerId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "rev": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "strokeIds",
+          "zoneIds",
+          "layerId",
+          "rev"
+        ],
+        "x-spec": "`{strokeIds: [id], zoneIds: [id], layerId, rev}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "drawingId": "scene:#1",
+          "points": [
+            {
+              "x": 1,
+              "y": 1,
+              "inHandle": {
+                "x": 1,
+                "y": 1
+              },
+              "outHandle": {
+                "x": 1,
+                "y": 1
+              }
+            }
+          ],
+          "closed": false,
+          "snap": true,
+          "snapRadius": 8,
+          "colourId": "scene:#1",
+          "thickness": 1,
+          "penId": "scene:#1",
+          "layer": "auto",
+          "symmetry": true
+        },
+        "result": {
+          "strokeIds": [
+            "scene:#1"
+          ],
+          "zoneIds": [
+            "scene:#1"
+          ],
+          "layerId": "scene:#1",
+          "rev": 1
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "anim.point.paste",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "anim.point.paste parameters",
+        "type": "object",
+        "properties": {
+          "targetPointIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000
+          },
+          "properties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "x",
+                "y",
+                "z",
+                "tension",
+                "continuity",
+                "bias",
+                "rotation",
+                "rotationPivot",
+                "scaleX",
+                "scaleY",
+                "scalePivot"
+              ]
+            },
+            "maxItems": 100000
+          },
+          "again": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "targetPointIds"
+        ],
+        "additionalProperties": false,
+        "x-spec": "`targetPointIds: [id]; properties?: [enum \"x\"|\"y\"|\"z\"|\"tension\"|\"continuity\"|\"bias\"|\"rotation\"|\"rotationPivot\"|\"scaleX\"|\"scaleY\"|\"scalePivot\"]; again: bool = false`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "anim.point.paste result",
+        "type": "object",
+        "properties": {
+          "applied": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            },
+            "maxItems": 100000
+          },
+          "skipped": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 \u00a73)"
+              },
+              "maxItems": 100000
+            },
+            "maxItems": 100000
+          }
+        },
+        "required": [
+          "applied",
+          "skipped"
+        ],
+        "x-spec": "`{applied[], skipped[]}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "targetPointIds": [
+            "scene:#1"
+          ],
+          "properties": [
+            "x"
+          ],
+          "again": false
+        },
+        "result": {
+          "applied": [
+            true
+          ],
+          "skipped": [
+            [
+              "scene:#1"
+            ]
+          ]
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "anim.camera.current.get",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "anim.camera.current.get parameters",
+        "type": "object",
+        "properties": {
+          "sceneId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          }
+        },
+        "additionalProperties": false,
+        "x-spec": "`sceneId?: id`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "anim.camera.current.get result",
+        "type": "object",
+        "properties": {
+          "cameraId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          }
+        },
+        "required": [
+          "cameraId"
+        ],
+        "x-spec": "`{cameraId}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "sceneId": "scene:#1"
+        },
+        "result": {
+          "cameraId": "scene:#1"
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "anim.skeleton.skin.remove",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "anim.skeleton.skin.remove parameters",
+        "type": "object",
+        "properties": {
+          "skeletonId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "elementIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000
+          }
+        },
+        "required": [
+          "skeletonId",
+          "elementIds"
+        ],
+        "additionalProperties": false,
+        "x-spec": "`skeletonId: id; elementIds: [id]`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "anim.skeleton.skin.remove result",
+        "type": "object",
+        "properties": {
+          "elementIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000
+          }
+        },
+        "required": [
+          "elementIds"
+        ],
+        "x-spec": "`{elementIds}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "skeletonId": "scene:#1",
+          "elementIds": [
+            "scene:#1"
+          ]
+        },
+        "result": {
+          "elementIds": [
+            "scene:#1"
+          ]
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "draw.linesToBrush.apply",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "draw.linesToBrush.apply parameters",
+        "type": "object",
+        "properties": {
+          "drawingId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000,
+            "description": "Default: selection."
+          },
+          "penId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73) Default: current brush pen."
+          }
+        },
+        "additionalProperties": false,
+        "x-spec": "`drawingId?: id; ids?: [id] = selection; penId?: id = current brush pen`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "draw.linesToBrush.apply result",
+        "type": "object",
+        "properties": {
+          "strokeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000
+          },
+          "rev": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "strokeIds",
+          "rev"
+        ],
+        "x-spec": "`{strokeIds: [id], rev}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "drawingId": "scene:#1",
+          "ids": [
+            "scene:#1"
+          ],
+          "penId": "scene:#1"
+        },
+        "result": {
+          "strokeIds": [
+            "scene:#1"
+          ],
+          "rev": 1
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "colour.style.duplicate",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "colour.style.duplicate parameters",
+        "type": "object",
+        "properties": {
+          "paletteId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "styleId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "selectForScene": {
+            "type": "boolean",
+            "default": true
+          },
+          "sceneId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          }
+        },
+        "required": [
+          "paletteId"
+        ],
+        "additionalProperties": false,
+        "x-spec": "`paletteId: id; styleId?: id; name?: string; selectForScene: bool = true; sceneId?: id`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "colour.style.duplicate result",
+        "type": "object",
+        "properties": {
+          "styleId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 65536
+          }
+        },
+        "required": [
+          "styleId",
+          "name"
+        ],
+        "x-spec": "`{styleId, name}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "paletteId": "scene:#1",
+          "styleId": "scene:#1",
+          "name": "example",
+          "selectForScene": true,
+          "sceneId": "scene:#1"
+        },
+        "result": {
+          "styleId": "scene:#1",
+          "name": "example"
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "ui.tips.reset",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ui.tips.reset parameters",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "x-spec": "\u2014"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ui.tips.reset result",
+        "type": "object",
+        "properties": {
+          "reenabled": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "reenabled"
+        ],
+        "x-spec": "`{reenabled: int}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {},
+        "result": {
+          "reenabled": 1
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "draw.object.delete",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "draw.object.delete parameters",
+        "type": "object",
+        "properties": {
+          "drawingId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "object ID or path reference (10 \u00a73)"
+          },
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000,
+            "description": "Default: selection."
+          }
+        },
+        "additionalProperties": false,
+        "x-spec": "`drawingId?: id; ids?: [id] = selection`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "draw.object.delete result",
+        "type": "object",
+        "properties": {
+          "removedIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "description": "object ID or path reference (10 \u00a73)"
+            },
+            "maxItems": 100000
+          },
+          "rev": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "removedIds",
+          "rev"
+        ],
+        "x-spec": "`{removedIds: [id], rev}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "drawingId": "scene:#1",
+          "ids": [
+            "scene:#1"
+          ]
+        },
+        "result": {
+          "removedIds": [
+            "scene:#1"
+          ],
+          "rev": 1
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "tool.tablet.set",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "tool.tablet.set parameters",
+        "type": "object",
+        "properties": {
+          "ignoreTablet": {
+            "type": "boolean",
+            "default": false
+          },
+          "portraitCorrection": {
+            "type": "boolean",
+            "default": false
+          },
+          "compatibilityMode": {
+            "type": "boolean",
+            "default": false
+          },
+          "inputInterface": {
+            "type": "string",
+            "maxLength": 65536
+          }
+        },
+        "additionalProperties": false,
+        "x-spec": "`ignoreTablet?: bool = false; portraitCorrection?: bool = false; compatibilityMode?: bool = false; inputInterface?: string`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "tool.tablet.set result",
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 65536
+            },
+            "maxItems": 100000
+          },
+          "restartRequired": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "settings",
+          "restartRequired"
+        ],
+        "x-spec": "`{settings, restartRequired: bool}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "ignoreTablet": false,
+          "portraitCorrection": false,
+          "compatibilityMode": false,
+          "inputInterface": "example"
+        },
+        "result": {
+          "settings": [
+            "example"
+          ],
+          "restartRequired": true
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "tool.active.set",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "tool.active.set parameters",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "type": "string",
+            "enum": [
+              "select",
+              "contourEditor",
+              "perspective",
+              "repositionAll",
+              "brush",
+              "pencil",
+              "rectangle",
+              "ellipse",
+              "polyline",
+              "line",
+              "paint",
+              "unpaint",
+              "paintUnpainted",
+              "dropper",
+              "closeGap",
+              "stroke",
+              "editTexture",
+              "eraser",
+              "cutter",
+              "scissor",
+              "zoom",
+              "grabber",
+              "text"
+            ]
+          }
+        },
+        "required": [
+          "toolId"
+        ],
+        "additionalProperties": false,
+        "x-spec": "`toolId: enum \"select\"|\"contourEditor\"|\"perspective\"|\"repositionAll\"|\"brush\"|\"pencil\"|\"rectangle\"|\"ellipse\"|\"polyline\"|\"line\"|\"paint\"|\"unpaint\"|\"paintUnpainted\"|\"dropper\"|\"closeGap\"|\"stroke\"|\"editTexture\"|\"eraser\"|\"cutter\"|\"scissor\"|\"zoom\"|\"grabber\"|\"text\"`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "tool.active.set result",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "type": "string",
+            "enum": [
+              "select",
+              "contourEditor",
+              "perspective",
+              "repositionAll",
+              "brush",
+              "pencil",
+              "rectangle",
+              "ellipse",
+              "polyline",
+              "line",
+              "paint",
+              "unpaint",
+              "paintUnpainted",
+              "dropper",
+              "closeGap",
+              "stroke",
+              "editTexture",
+              "eraser",
+              "cutter",
+              "scissor",
+              "zoom",
+              "grabber",
+              "text"
+            ]
+          }
+        },
+        "required": [
+          "toolId"
+        ],
+        "x-spec": "`{toolId}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {
+          "toolId": "select"
+        },
+        "result": {
+          "toolId": "select"
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    },
+    {
+      "id": "keymap.remove",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "keymap.remove parameters",
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "keys": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "context": {
+            "type": "string",
+            "enum": [
+              "global",
+              "drawing",
+              "staging"
+            ]
+          }
+        },
+        "required": [
+          "commandId"
+        ],
+        "additionalProperties": false,
+        "x-spec": "`commandId: string; keys?: string; context?: enum \"global\"|\"drawing\"|\"staging\"`"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "keymap.remove result",
+        "type": "object",
+        "properties": {
+          "removed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/spec.Binding"
+            },
+            "maxItems": 100000
+          }
+        },
+        "required": [
+          "removed"
+        ],
+        "x-spec": "`{removed: [Binding]}`",
+        "additionalProperties": false,
+        "$defs": {
+          "spec.Binding": {
+            "type": "object",
+            "properties": {
+              "commandId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "description": "object ID or path reference (10 \u00a73)"
+              },
+              "params": {
+                "type": "object",
+                "x-open": true,
+                "description": "the bound command's parameters, validated against that command's parameter schema (01 \u00a712.4)"
+              },
+              "keys": {
+                "type": "string",
+                "maxLength": 65536
+              },
+              "context": {
+                "type": "string",
+                "maxLength": 65536
+              },
+              "isDefault": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "commandId",
+              "params",
+              "keys",
+              "context",
+              "isDefault"
+            ],
+            "x-specSection": "01"
+          }
+        }
+      },
+      "samples": {
+        "params": {
+          "commandId": "example",
+          "keys": "example",
+          "context": "global"
+        },
+        "result": {
+          "removed": [
+            {
+              "commandId": "scene:#1",
+              "params": {
+                "x-open": true
+              },
+              "keys": "example",
+              "context": "example",
+              "isDefault": true
+            }
+          ]
+        }
+      },
+      "placeholders": [],
+      "specExamples": [
+        {
+          "part": "result",
+          "type": "spec.Binding",
+          "section": "01",
+          "literal": true,
+          "value": {
+            "commandId": "view.zoom.set",
+            "params": {
+              "steps": 1
+            },
+            "keys": "X",
+            "context": "global",
+            "isDefault": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "export.publish.service.list",
+      "params": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "export.publish.service.list parameters",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "x-spec": "\u2014"
+      },
+      "result": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "export.publish.service.list result",
+        "type": "object",
+        "properties": {
+          "services": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096,
+                  "description": "object ID or path reference (10 \u00a73)"
+                },
+                "name": {
+                  "type": "string",
+                  "maxLength": 65536
+                },
+                "formats": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 65536
+                  },
+                  "maxItems": 100000
+                },
+                "limits": {
+                  "type": "object",
+                  "properties": {
+                    "minSec": {
+                      "type": "number"
+                    },
+                    "maxSec": {
+                      "type": "number"
+                    },
+                    "maxBytes": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "minSec",
+                    "maxSec",
+                    "maxBytes"
+                  ],
+                  "additionalProperties": false
+                },
+                "fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "maxLength": 65536
+                      },
+                      "required": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "required"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 100000
+                },
+                "visibilities": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "public",
+                      "unlisted",
+                      "private"
+                    ],
+                    "default": "private"
+                  },
+                  "maxItems": 100000
+                },
+                "connected": {
+                  "const": false
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "formats",
+                "limits",
+                "fields",
+                "visibilities",
+                "connected"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 100000
+          }
+        },
+        "required": [
+          "services"
+        ],
+        "x-spec": "`{services: [{id, name, formats[], limits: {minSec, maxSec, maxBytes}, fields: [{name, required}], visibilities[], connected}]}`",
+        "additionalProperties": false
+      },
+      "samples": {
+        "params": {},
+        "result": {
+          "services": [
+            {
+              "id": "scene:#1",
+              "name": "example",
+              "formats": [
+                "example"
+              ],
+              "limits": {
+                "minSec": 1,
+                "maxSec": 1,
+                "maxBytes": 1
+              },
+              "fields": [
+                {
+                  "name": "example",
+                  "required": true
+                }
+              ],
+              "visibilities": [
+                "private"
+              ],
+              "connected": false
+            }
+          ]
+        }
+      },
+      "placeholders": [],
+      "specExamples": []
+    }
+  ]
+}

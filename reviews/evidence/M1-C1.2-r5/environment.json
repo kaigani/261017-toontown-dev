@@ -1,0 +1,14 @@
+{
+  "branch": "review/m1-c12-r5",
+  "baseCommit": "ec4329cb1abb47821ada701175730a3e691d41d7",
+  "platform": "Windows 11 MSVC",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "node": "v22.23.2",
+  "pnpm": "10.12.1",
+  "cargo-deny": "0.20.2",
+  "python": "3.13.1",
+  "initialCommand": "pnpm install --frozen-lockfile",
+  "initialExitCode": 0,
+  "initialOutput": "Lockfile is up to date, resolution step is skipped; Packages: +240; Done in 3s using pnpm v10.12.1",
+  "installationEvidence": "Captured from initial exec tool output before inspection; no lockfile changes."
+}

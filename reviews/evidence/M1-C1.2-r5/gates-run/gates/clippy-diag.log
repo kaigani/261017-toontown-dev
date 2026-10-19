@@ -1,0 +1,27 @@
+$ cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
+    Checking smallvec v1.16.3
+   Compiling getrandom v0.4.3
+    Checking parking_lot_core v0.9.12
+    Checking parking_lot v0.12.5
+   Compiling uuid v1.28.0
+    Checking referencing v0.59.0
+   Compiling cfb v0.14.0
+   Compiling crc32fast v1.5.2
+   Compiling crossbeam-utils v0.8.23
+    Checking icu_normalizer v2.3.0
+rustc-LLVM ERROR: IO failure on output stream: no space on device
+error: could not compile `cfb` (lib)
+
+Caused by:
+  process didn't exit successfully: `C:\Users\kaiga\.rustup\toolchains\1.98.1-x86_64-pc-windows-msvc\bin\rustc.exe --crate-name cfb --edition=2018 C:\Users\kaiga\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cfb-0.14.0\src\lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no --check-cfg cfg(docsrs,test) --check-cfg "cfg(feature, values())" -C metadata=704e49fd89008cdf -C extra-filename=-11c648fb3d937475 --out-dir C:\Users\kaiga\work\review\m1-c12-r5\target\debug\deps -L dependency=C:\Users\kaiga\work\review\m1-c12-r5\target\debug\deps --extern fnv=C:\Users\kaiga\work\review\m1-c12-r5\target\debug\deps\libfnv-7a4f942e9e4fae2e.rmeta --extern uuid=C:\Users\kaiga\work\review\m1-c12-r5\target\debug\deps\libuuid-8a55fc82aad990b6.rmeta --extern web_time=C:\Users\kaiga\work\review\m1-c12-r5\target\debug\deps\libweb_time-fb6b2b7aef66bced.rmeta --cap-lints allow` (exit code: 101)
+warning: build failed, waiting for other jobs to finish...
+error: linking with `link.exe` failed: exit code: 1318
+  |
+  = note: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\link.exe" "/NOLOGO" "C:\\Users\\kaiga\\work\\review\\m1-c12-r5\\target\\debug\\build\\crossbeam-utils-b99971373b6d1492\\rustcz7bfjM\\symbols.o" "<2 object files omitted>" "<sysroot>\\lib\\rustlib\\x86_64-pc-windows-msvc\\lib/{libstd-*,libpanic_unwind-*,libcfg_if-*,libwindows_link-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libunwind-*,librustc_std_workspace_core-*,liballoc-*,libcore-*,libcompiler_builtins-*}.rlib" "kernel32.lib" "kernel32.lib" "kernel32.lib" "ntdll.lib" "userenv.lib" "ws2_32.lib" "dbghelp.lib" "/defaultlib:msvcrt" "/NXCOMPAT" "/OUT:C:\\Users\\kaiga\\work\\review\\m1-c12-r5\\target\\debug\\build\\crossbeam-utils-b99971373b6d1492\\build_script_build-b99971373b6d1492.exe" "/OPT:REF,NOICF" "/DEBUG" "/PDBALTPATH:%_PDB%" "/NATVIS:<sysroot>\\lib\\rustlib\\etc\\intrinsic.natvis" "/NATVIS:<sysroot>\\lib\\rustlib\\etc\\liballoc.natvis" "/NATVIS:<sysroot>\\lib\\rustlib\\etc\\libcore.natvis" "/NATVIS:<sysroot>\\lib\\rustlib\\etc\\libstd.natvis"
+  = note: some arguments are omitted. use `--verbose` to show all linker arguments
+  = note: LINK : fatal error LNK1318: Unexpected PDB error; OK (0) ''
+          
+
+error: could not compile `crossbeam-utils` (build script) due to 1 previous error
+
+[exit 101]

@@ -1,0 +1,542 @@
+{
+  "base": "c25c9d8",
+  "reviewed": "ec4329c",
+  "commits": [
+    "ec4329c docs(c1.2): r4 closure local gate logs and receipt; handoff",
+    "a3c062f fix(registry): regenerate the front-end command schemas (C12-R4-02)",
+    "762c265 docs(c1.2): r4 closure response addendum, ADR-0013, traceability, evidence",
+    "efe47a9 fix(registry): context typing inherits type and structure, never sibling sets (C12-R4-02)",
+    "bde96f2 fix(executor): drawing invalidation follows content, not stamps (C12-R4-01)",
+    "77ce1a9 merge: Codex closure check r4 of C1.2"
+  ],
+  "changedFiles": [
+    "crates/executor/src/commands/doc.rs",
+    "crates/executor/tests/c12_invalidation_property.rs",
+    "crates/registry/src/declared.json",
+    "crates/registry/tests/declared.rs",
+    "desktop/src/ipc/generated/commands.ts",
+    "docs/decisions/ADR-0013-registry-and-executor.md",
+    "plan/traceability.csv",
+    "reviews/M1-C1.2-handoff.md",
+    "reviews/M1-C1.2-r3-response.md",
+    "reviews/evidence/M1-C1.2-r4-response/.gitattributes",
+    "reviews/evidence/M1-C1.2-r4-response/audit-schemas.py",
+    "reviews/evidence/M1-C1.2-r4-response/checkpoint-nested.json",
+    "reviews/evidence/M1-C1.2-r4-response/checkpoint-staged-immediate.json",
+    "reviews/evidence/M1-C1.2-r4-response/checkpoint-standalone-final.json",
+    "reviews/evidence/M1-C1.2-r4-response/closure-probe.rs",
+    "reviews/evidence/M1-C1.2-r4-response/closure-probes.log",
+    "reviews/evidence/M1-C1.2-r4-response/diff-filter-matrix.json",
+    "reviews/evidence/M1-C1.2-r4-response/gates/build.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/clippy-diag.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/clippy.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/deny.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/fmt.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/headless.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/pnpm-format.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/pnpm-licenses.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/pnpm-lint.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/pnpm-test.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/pnpm-typecheck.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/reviewer-python-suites.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/selftest-1.json",
+    "reviews/evidence/M1-C1.2-r4-response/gates/selftest-2.json",
+    "reviews/evidence/M1-C1.2-r4-response/gates/selftest-compare.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/test-diag.log",
+    "reviews/evidence/M1-C1.2-r4-response/gates/test.log",
+    "reviews/evidence/M1-C1.2-r4-response/receipt.json",
+    "reviews/evidence/M1-C1.2-r4-response/registry.json",
+    "reviews/evidence/M1-C1.2-r4-response/release-stress-scale.log",
+    "reviews/evidence/M1-C1.2-r4-response/run-probes.py",
+    "reviews/evidence/M1-C1.2-r4-response/sample20.json",
+    "reviews/evidence/M1-C1.2-r4-response/schema-closure.json",
+    "reviews/evidence/M1-C1.2-r4-response/schema-closure.log",
+    "reviews/evidence/M1-C1.2-r4-response/semantic-recheck.json",
+    "reviews/evidence/M1-C1.2-r4-response/semantic-recheck.log",
+    "reviews/evidence/M1-C1.2-r4-response/semantic-recheck.py",
+    "reviews/evidence/M1-C1.2-r4-response/set-origin-sweep.json",
+    "reviews/evidence/M1-C1.2-r4-response/set-origin-sweep.py",
+    "reviews/evidence/M1-C1.2-r4-response/wait16.json",
+    "scripts/command_schemas.py",
+    "scripts/gen-command-declarations.py"
+  ],
+  "changedTestFiles": [
+    "crates/executor/tests/c12_invalidation_property.rs",
+    "crates/registry/tests/declared.rs"
+  ],
+  "unchangedReviewerTests": [
+    {
+      "path": "crates/engine/tests/c11_r1_wire.rs",
+      "sha256": "dccecc0283ab15aa279ebabb833a701266993332a90c3b6b847f0ba72e3a8fdb",
+      "unchanged": true
+    },
+    {
+      "path": "crates/engine/tests/c11_r2_wire.rs",
+      "sha256": "4ebcbaf87eaab5ea23c80194b80a2968370b8379f804cc1fd1f0a1a1985e6046",
+      "unchanged": true
+    },
+    {
+      "path": "crates/engine/tests/c11_r3_wire.rs",
+      "sha256": "99a29148a09b1d66a349893ff71aff07b2cc1126f21c40609e2c32c80e43616a",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r1_contracts.rs",
+      "sha256": "e3f7078e158080c06cc379d0e4dbc745f9d015856cd0ce1cd67028034975cda5",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r1_macro.rs",
+      "sha256": "f398a693895f78ca17f32128075fdf4bc5a1b4c13f7d5546d820c71db3ff9dd0",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r1_scale.rs",
+      "sha256": "4a464ca27a3d1f8633bc6822d73f672788af33c6942a967a510bb2f0e2827075",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r1_stress.rs",
+      "sha256": "e52dfbc98be3cfd3fe30133b5941bc55b862ecf267c8ced5d4e358391c0581d6",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r2_contracts.rs",
+      "sha256": "8c049e9a96e47b54be4023a3d1a8c6c7cda54c70c874fbaaa2f6e25c8ccc033d",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r2_registry.rs",
+      "sha256": "6ad34e7911c7621c7a8b1dfff5454f4613f8ba84e0bd9d3a505cff620dea645a",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r2_scale.rs",
+      "sha256": "0242e50b63533e27e57a39dbc1f571e177afc3c3ad8e6c32dadda6de4fefe864",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r3_contracts.rs",
+      "sha256": "8287ccaee9fe8ae42f1d391516f7bc37211aaa60a3390ee27deef9d75b10d132",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r3_registry.rs",
+      "sha256": "c79f8868b34ff01b49e96f09cd670192c54e986607d727b0be865400147cee35",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r3_stress.rs",
+      "sha256": "9ff696571b5d9b798ba8a9142968fb4465f7c8afd74cb59d51a65c67e76af650",
+      "unchanged": true
+    },
+    {
+      "path": "crates/executor/tests/c12_r4_closure.rs",
+      "sha256": "1d3794d176eeda4acc76cb68882b30aa6e7c65230e72a5abea6f622c5d3664a7",
+      "unchanged": true
+    },
+    {
+      "path": "crates/model/tests/c11_r1_adversarial.rs",
+      "sha256": "c1b0741f57b21af17d13f07ba390e280ec6dd1844c3818171a72d072fa7c6f8e",
+      "unchanged": true
+    },
+    {
+      "path": "crates/model/tests/c11_r2_adversarial.rs",
+      "sha256": "28a1b4b048e5a333349e7842193637e9fdd8717d70380f8318dab08894e363b7",
+      "unchanged": true
+    },
+    {
+      "path": "crates/model/tests/c11_r3_adversarial.rs",
+      "sha256": "46e57e99337882a3f1f8ecf0e0e9819302cdbdbcd95e1bf1f44d7f657ab734d4",
+      "unchanged": true
+    },
+    {
+      "path": "crates/model/tests/c11_r3_random.rs",
+      "sha256": "09ff4a3b24d3b9ceea8d97ff1148a2a9bcd92ffd86f15209540e0e23dc5abfa2",
+      "unchanged": true
+    },
+    {
+      "path": "crates/model/tests/c11_r3_register.rs",
+      "sha256": "0196e5a3bd9e2f9b1e13f8c18dac50199413aba7687efb2c305c0fb4eb57710e",
+      "unchanged": true
+    },
+    {
+      "path": "crates/model/tests/c11_r4_exposure_bounds.rs",
+      "sha256": "844d0437c66a1d9517bdd27e9efd6c7ed4bb855760fc852e11bd539eb4067061",
+      "unchanged": true
+    },
+    {
+      "path": "crates/model/tests/c11_r5_write_bounds.rs",
+      "sha256": "15e836350cb2ab81ca00b2eabde06f2735ece6f7b06095d8f80bc4f37d75ce95",
+      "unchanged": true
+    },
+    {
+      "path": "crates/model/tests/c11_r6_staged_inverse.rs",
+      "sha256": "8b4bbd7883248cce1384b877d42c099962998ff2573935f3e69d4ebc067bb7a7",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/adversarial.test.ts",
+      "sha256": "1a0187e59e60eefc8e8870d3b80ef5afd71acb38e6b898d970ed5cdc402d849d",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c01-r2-node.test.ts",
+      "sha256": "5df600e0bd2d906cd19a7c8fb11b58913511b1c6dd5995e3e6e113fc24d2cbed",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c01-r2-schema.test.ts",
+      "sha256": "3d5c2505368b29af6d578f3688669f4127e464cfb7597d9e0c30c4d058f34a00",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c01-r3-node.test.ts",
+      "sha256": "b56ddf88049ae38e5cb26e68e60f8bc814b0c420b4688f4743404e2ccde20b4f",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c01-r3-schema.test.ts",
+      "sha256": "8f9c76db5f56892894b99a6873396cf9ee476f5eb8ad2cff04fde72685fb9170",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c01-r4-node.test.ts",
+      "sha256": "d228d03a8076aebb45830e19d5221a3fe18b7b20ce6fc2367fbe7c06167465be",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c02-r1-measurement.test.tsx",
+      "sha256": "d251075ab29e4ca2182d50aef4b0021eb8a0ab203527ef72cc269b5f3802038e",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c02-r1-tooling.test.ts",
+      "sha256": "0dfe4a395f74fded36619ed5e56517a2e258df146c1457c57f07f772ed5d30e7",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c02-r2-tooling.test.ts",
+      "sha256": "1e7c83b9fffb77670b72858f8c6f673800dc3ece6cb29904a56604a03964a41e",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c02-r3-tooling.test.ts",
+      "sha256": "9f707eaf5751d368e27f816f3e9bf8385016fd41dee8cd15f2549de3c56bb3e3",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c03-r1-binary.test.ts",
+      "sha256": "0a456961d02544164a44264a2feb627cb708cea3f4bfbebf0f38654ce41b75a9",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c03-r1-tooling.test.ts",
+      "sha256": "f457754c748694c6a16ad28fea2f6fd92e74f7ece51b3e4a589bf2f750d40442",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c03-r2-binary.test.ts",
+      "sha256": "46697866d2482bbf6865a59402c252d1f9904df0134b369de929c8d4c7d08aa4",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c03-r2-page.test.tsx",
+      "sha256": "ec7aa72c60d4bf20a701d7820b826393df29d26435cae5da1d97ce38be6aec2c",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c03-r2-tooling.test.ts",
+      "sha256": "acbf9594e163f2c012eec01ab02656f313a1d0e2cc28cf07de4a655447e5d49f",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/c03-r3-page.test.tsx",
+      "sha256": "2bd0a838f34701e9c0fdc5e0a02e519476307ea0d6e602e35940457890759027",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/decisionRules.test.ts",
+      "sha256": "f20d6ef3c6e7c1e69d789c96be03041fdf882234ec0f6259174e9636f4d50d9e",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/decisionTables.test.ts",
+      "sha256": "7ddf295a63489bffda9306ed80bd7200ec27bd494d5e97d9471f9085263d0200",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/platformFloor.test.ts",
+      "sha256": "f9b045b241c40d0ee15488afea14def8bb14546ba317c4e7cc387ba8b71cb4d0",
+      "unchanged": true
+    },
+    {
+      "path": "desktop/src/test/setup.ts",
+      "sha256": "f8c686c1b067894bee5173c70503e93baeec459bc43345fc1e2ef73bdc97ef6b",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/README.md",
+      "sha256": "7f3f02cedc2b82eede0d55aefb27469e9a5be64e492ff0109057789330d831e3",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c01-r2-boundary.test.mjs",
+      "sha256": "60ab9c570ac3e0f937ed9ffaf23f86c283c2925c313f08a786f3e276bd52a83f",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c01-r2-licenses.test.mjs",
+      "sha256": "fd4a2669f1e97b11251a0386b265118f88842cc87b24bcfe7e3b1ec2c858cc5f",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c01-r3-boundary.test.mjs",
+      "sha256": "73d6dd32ef7a2f1c01d2e5a622120841b14a0dafb39dd459a5693c77d617a46e",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c01-r4-boundary.test.mjs",
+      "sha256": "47c804dab15b7a44bb55f9c599e94c1b0d61158f8bafc07eb059ffb362971916",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c01.rs",
+      "sha256": "13ae3fb9f3e10573928efa8c6ff691a3d31daf0c34c8a7406805b273dc35561e",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c02-r1-macos-accessors.rs",
+      "sha256": "ea5e3ebd5165d523d7f47e698a65de7362f38589c2017190cd411750a276e981",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c02-r1-native-timestamps.rs",
+      "sha256": "0b3826fe2b80581708fd5017ac4b02c0312ffb591ba8b0fc13b480cc2edf010f",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c02-r1-tooling.py",
+      "sha256": "8a63e5638111890d90b0abf8e040ba3344aef3763d9406e13ca52faf465c11c4",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c02-r2-macos-accessors.rs",
+      "sha256": "d8e8836cc40f3f3c91038af88d404a415c245f41be072eec7a459638460b9885",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c02-r2-tooling.py",
+      "sha256": "935ee20c371d48a92fbfdb2b2ce1a7707e0f2a9642ae1b77cabe74e66fb15dd7",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c02-r3-tooling.py",
+      "sha256": "060aaafa2cb9249296a07f8f9146eef107ce9702f27c8963854ab20c49a87c1c",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c03-r1-real-transport.mjs",
+      "sha256": "1ac8c7055ec37e09883269db84a0404230e45a388bfadd42a809c91694b189a4",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c03-r1-tooling.py",
+      "sha256": "4f8313a976f4f5464199cfc1f8ff8eda8be3cc1f54a9e28d530484d13d8432b5",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c03-r2-encoder.rs",
+      "sha256": "e4f49cff898f8d770258b33ddf16935b959ff2a93f72dffd2b71c8cb7c2cc702",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c03-r2-tooling.py",
+      "sha256": "42a3290ae98519c89325762d3476c0602aada6c365e0bd6f2f71c0c88f79ee76",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c04-r2-decisions.py",
+      "sha256": "eae44d95082ca7d3f285c02bfb963be34a7775120166788353f196a489367945",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c04-r3-actions.tsx",
+      "sha256": "936baabc9d60158f1e628aeaa824372564e6aeb180827837cc1a2c236c9c3a4a",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c04-r3-decisions.py",
+      "sha256": "e7d7b1b8147f3c7dcd74bffa671cc36b8d5b7fd34a6bc3f41165c4786614725a",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c04-r3-page.py",
+      "sha256": "d4a08a6cb480296ee68fd5e06020958162c7eb948ba9e985a0a26bcc9da4eb00",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c04-r5-decisions.py",
+      "sha256": "fbd453c39f73e8bdd7b534a40e4bf3de1402e966fa840bde0516c2a80e864532",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/c11-r2-review-policy.py",
+      "sha256": "c4cc693f54ac054bfc8ce5664c06a179c8865360f03823eb414a1d97146c0c39",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/collect_runtime_evidence.py",
+      "sha256": "9995ffccce2d93f9d8c8f5fef3196b71cbc35426f9fccc5f26c0bf1c3e3877be",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/fixtures/c01-r2-outside.mts",
+      "sha256": "7fefe739484273e5081901d7fc474518db633cd0495018dbfa2bb24bb314a3c5",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/fixtures/c01-r3-plain.mjs",
+      "sha256": "b6e55ea59c2a13c278116cc7f81bf04e6e972c62e427e11f58a35ca36eb41040",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/fixtures/graphics_import.rs",
+      "sha256": "24d48a124ab4f44f2d5fc516e67d7fe23aef7eddeed32b8a4c9a135275b8f9fb",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/frontend-cases.ts",
+      "sha256": "b62b34a4ef6945ef47f910b95bc61f86af27f40a2c0b5df9f0fd3c5dfc12e15f",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/guards.mjs",
+      "sha256": "53317a590f1bb1041c42e37acfa512e525de794352ed3aa6155cdac209a5921e",
+      "unchanged": true
+    },
+    {
+      "path": "tests/adversarial/headless_guard.py",
+      "sha256": "c5472ece35dc46a1cdc06487c5a1b4a941eb29eed38a9e566397836dd4c0f26b",
+      "unchanged": true
+    }
+  ],
+  "dependencyChanges": [],
+  "sensitiveAddedLines": [
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 6,
+      "testOnly": true,
+      "text": "#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = \"test\")]"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 19,
+      "testOnly": true,
+      "text": "    fn next(&mut self) -> u64 {"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 27,
+      "testOnly": true,
+      "text": "    fn below(&mut self, n: u64) -> u64 {"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 46,
+      "testOnly": true,
+      "text": "            out.insert(s.split('/').next().unwrap().to_owned());"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 56,
+      "testOnly": true,
+      "text": "    diff[\"changes\"].as_array().unwrap().iter().map(|c| c[\"id\"].as_str().unwrap().to_owned()).collect()"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 91,
+      "testOnly": true,
+      "text": "            .unwrap()"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 100,
+      "testOnly": true,
+      "text": "    for item in found[\"items\"].as_array().unwrap() {"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 101,
+      "testOnly": true,
+      "text": "        let id = item[\"id\"].as_str().unwrap().to_owned();"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 102,
+      "testOnly": true,
+      "text": "        let d = id.split('/').next().unwrap().to_owned();"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 109,
+      "testOnly": true,
+      "text": "    let drawings: BTreeSet<String> = strokes.iter().map(|s| s.split('/').next().unwrap().to_owned()).collect();"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 124,
+      "testOnly": true,
+      "text": "    let pick_base = |rng: &mut Rng, cps: &BTreeMap<String, Model>, revs: &BTreeMap<u64, Model>| -> (Base, Model) {"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 126,
+      "testOnly": true,
+      "text": "            let (n, m) = cps.iter().nth(rng.below(cps.len() as u64) as usize).unwrap();"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 129,
+      "testOnly": true,
+      "text": "            let (r, m) = revs.iter().nth(rng.below(revs.len() as u64) as usize).unwrap();"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 151,
+      "testOnly": true,
+      "text": "                    let (base, then) = pick_base(&mut rng, &at_checkpoint, &at_rev);"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 181,
+      "testOnly": true,
+      "text": "                    let (base, then) = pick_base(&mut rng, &cps_here, &at_rev);"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 200,
+      "testOnly": true,
+      "text": "        let results = env.steps.unwrap();"
+    },
+    {
+      "path": "crates/executor/tests/c12_invalidation_property.rs",
+      "line": 202,
+      "testOnly": true,
+      "text": "            let d = results[i].result.as_ref().unwrap();"
+    },
+    {
+      "path": "crates/registry/tests/declared.rs",
+      "line": 276,
+      "testOnly": true,
+      "text": "    fn walk(v: &Value, spec: &str, at: &str, out: &mut Vec<String>) {"
+    },
+    {
+      "path": "crates/registry/tests/declared.rs",
+      "line": 302,
+      "testOnly": true,
+      "text": "            walk(&s, &spec, if result { \"result\" } else { \"params\" }, &mut out);"
+    }
+  ],
+  "inspection": "Product diff removes stamp-only invalidation, strips inherited enum/const sets, regenerates schemas. No new product allow, unsafe, mutable-reference interface or dependency/spec changes. Two builder test additions; reviewer tests untouched."
+}

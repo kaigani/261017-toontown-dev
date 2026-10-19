@@ -1,0 +1,38 @@
+$ cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
+    Checking smallvec v1.16.3
+    Checking getrandom v0.4.3
+   Compiling crossbeam-utils v0.8.23
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\desktop\src-tauri)
+    Checking parking_lot_core v0.9.12
+    Checking icu_normalizer v2.3.0
+    Checking parking_lot v0.12.5
+    Checking idna_adapter v1.2.2
+    Checking referencing v0.59.0
+    Checking idna v1.1.0
+    Checking url v2.5.8
+    Checking crossbeam-channel v0.5.17
+    Checking jsonschema v0.59.0
+    Checking urlpattern v0.6.0
+    Checking tao v0.37.1
+    Checking muda v0.20.0
+    Checking tauri-utils v2.10.2
+    Checking octotablet v0.1.0
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\model)
+    Checking tauri-runtime v2.12.2
+    Checking tauri-runtime-wry v2.12.2
+    Checking tauri v2.12.4
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\anim)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\colour)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\vector)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\persist)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\fx)
+    Checking tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\audio)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\registry)
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\render)
+    Checking tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\lipsync)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\io)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\executor)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r5\crates\engine)
+    Finished `dev` profile [unoptimized] target(s) in 10.80s
+
+[exit 0]

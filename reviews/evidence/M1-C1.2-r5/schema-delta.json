@@ -1,0 +1,1302 @@
+{
+  "onlyRemovedSetsAndAddedTypes": true,
+  "schemaLeafChanges": 71,
+  "changes": [
+    {
+      "path": [
+        "view.type.set",
+        "result",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "drawing",
+        "camera",
+        "top",
+        "side",
+        "previous"
+      ]
+    },
+    {
+      "path": [
+        "tool.active.changed",
+        "result",
+        "properties",
+        "toolId",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "select",
+        "contourEditor",
+        "perspective",
+        "repositionAll",
+        "brush",
+        "pencil",
+        "rectangle",
+        "ellipse",
+        "polyline",
+        "line",
+        "paint",
+        "unpaint",
+        "paintUnpainted",
+        "dropper",
+        "closeGap",
+        "stroke",
+        "editTexture",
+        "eraser",
+        "cutter",
+        "scissor",
+        "zoom",
+        "grabber",
+        "text"
+      ]
+    },
+    {
+      "path": [
+        "tool.active.get",
+        "result",
+        "properties",
+        "toolId",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "select",
+        "contourEditor",
+        "perspective",
+        "repositionAll",
+        "brush",
+        "pencil",
+        "rectangle",
+        "ellipse",
+        "polyline",
+        "line",
+        "paint",
+        "unpaint",
+        "paintUnpainted",
+        "dropper",
+        "closeGap",
+        "stroke",
+        "editTexture",
+        "eraser",
+        "cutter",
+        "scissor",
+        "zoom",
+        "grabber",
+        "text"
+      ]
+    },
+    {
+      "path": [
+        "tool.active.set",
+        "result",
+        "properties",
+        "toolId",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "select",
+        "contourEditor",
+        "perspective",
+        "repositionAll",
+        "brush",
+        "pencil",
+        "rectangle",
+        "ellipse",
+        "polyline",
+        "line",
+        "paint",
+        "unpaint",
+        "paintUnpainted",
+        "dropper",
+        "closeGap",
+        "stroke",
+        "editTexture",
+        "eraser",
+        "cutter",
+        "scissor",
+        "zoom",
+        "grabber",
+        "text"
+      ]
+    },
+    {
+      "path": [
+        "tool.pen.list",
+        "result",
+        "properties",
+        "pens",
+        "items",
+        "properties",
+        "tipShape",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "round",
+        "oval",
+        "square",
+        "flat"
+      ]
+    },
+    {
+      "path": [
+        "tool.pen.list",
+        "result",
+        "properties",
+        "pens",
+        "items",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "brush",
+        "eraser"
+      ]
+    },
+    {
+      "path": [
+        "tool.pen.select",
+        "result",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "brush",
+        "eraser"
+      ]
+    },
+    {
+      "path": [
+        "tool.symmetry.set",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "none",
+        "mirror",
+        "kaleidoscope"
+      ]
+    },
+    {
+      "path": [
+        "drawAid.grid.set",
+        "result",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "normal",
+        "field12",
+        "field16"
+      ]
+    },
+    {
+      "path": [
+        "drawAid.staticLightTable.list",
+        "result",
+        "properties",
+        "entries",
+        "items",
+        "properties",
+        "placement",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "overlay",
+        "underlay"
+      ]
+    },
+    {
+      "path": [
+        "drawAid.staticLightTable.set",
+        "result",
+        "properties",
+        "entries",
+        "items",
+        "properties",
+        "placement",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "overlay",
+        "underlay"
+      ]
+    },
+    {
+      "path": [
+        "colour.gapClosing.get",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "off",
+        "small",
+        "medium",
+        "large"
+      ]
+    },
+    {
+      "path": [
+        "colour.gapClosing.set",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "off",
+        "small",
+        "medium",
+        "large"
+      ]
+    },
+    {
+      "path": [
+        "colour.swatch.list",
+        "result",
+        "properties",
+        "swatches",
+        "items",
+        "properties",
+        "kind",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "solid",
+        "linearGradient",
+        "radialGradient",
+        "texture"
+      ]
+    },
+    {
+      "path": [
+        "element.typeColour.set",
+        "result",
+        "properties",
+        "category",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "drawings",
+        "images",
+        "sounds",
+        "pegs",
+        "skeletons",
+        "media",
+        "cameras",
+        "effects",
+        "effectParameters"
+      ]
+    },
+    {
+      "path": [
+        "timeline.playbackRange.changed",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "auto",
+        "free"
+      ]
+    },
+    {
+      "path": [
+        "timeline.playbackRange.get",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "auto",
+        "free"
+      ]
+    },
+    {
+      "path": [
+        "timeline.playbackRange.set",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "auto",
+        "free"
+      ]
+    },
+    {
+      "path": [
+        "timeline.timeDisplay.set",
+        "result",
+        "properties",
+        "unit",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "frames",
+        "feetFrames"
+      ]
+    },
+    {
+      "path": [
+        "timeline.transferOptions.set",
+        "result",
+        "properties",
+        "operation",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "paste",
+        "cut",
+        "dragDrop"
+      ]
+    },
+    {
+      "path": [
+        "xsheet.lightTable.add",
+        "params",
+        "properties",
+        "items",
+        "items",
+        "properties",
+        "placement",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "over",
+        "under"
+      ]
+    },
+    {
+      "path": [
+        "xsheet.lightTable.list",
+        "result",
+        "properties",
+        "items",
+        "items",
+        "properties",
+        "placement",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "over",
+        "under"
+      ]
+    },
+    {
+      "path": [
+        "anim.camera.get",
+        "result",
+        "properties",
+        "fovMode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "static",
+        "dynamic"
+      ]
+    },
+    {
+      "path": [
+        "anim.function.curveType.set",
+        "result",
+        "properties",
+        "curveType",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "spline",
+        "interpolation",
+        "velocityBased"
+      ]
+    },
+    {
+      "path": [
+        "anim.function.list",
+        "result",
+        "properties",
+        "channels",
+        "items",
+        "properties",
+        "curveType",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "spline",
+        "interpolation",
+        "velocityBased"
+      ]
+    },
+    {
+      "path": [
+        "anim.function.set",
+        "params",
+        "properties",
+        "keys",
+        "items",
+        "properties",
+        "handleMode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "smooth",
+        "broken"
+      ]
+    },
+    {
+      "path": [
+        "anim.function.set",
+        "params",
+        "properties",
+        "keys",
+        "items",
+        "properties",
+        "preset",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "constant",
+        "linear",
+        "easeInOut",
+        "fastInOut",
+        "extremeEaseInOut",
+        "extremeFastInOut",
+        "slowAcceleration",
+        "slowDeceleration"
+      ]
+    },
+    {
+      "path": [
+        "anim.functionEditor.get",
+        "result",
+        "properties",
+        "projection",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "x",
+        "y",
+        "z"
+      ]
+    },
+    {
+      "path": [
+        "anim.path.set",
+        "params",
+        "properties",
+        "points",
+        "items",
+        "properties",
+        "kind",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "key",
+        "control"
+      ]
+    },
+    {
+      "path": [
+        "anim.prefs.get",
+        "result",
+        "properties",
+        "units",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "fields",
+        "inches",
+        "centimetres"
+      ]
+    },
+    {
+      "path": [
+        "anim.tool.changed",
+        "result",
+        "properties",
+        "tool",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "select",
+        "transform",
+        "record",
+        "rotate",
+        "skew",
+        "scale",
+        "motion",
+        "boneCreate",
+        "boneSetup",
+        "boneManipulate",
+        "boneInverse",
+        "boneForward",
+        "boneInfluence",
+        "boneParent"
+      ]
+    },
+    {
+      "path": [
+        "anim.tool.get",
+        "result",
+        "properties",
+        "tool",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "select",
+        "transform",
+        "record",
+        "rotate",
+        "skew",
+        "scale",
+        "motion",
+        "boneCreate",
+        "boneSetup",
+        "boneManipulate",
+        "boneInverse",
+        "boneForward",
+        "boneInfluence",
+        "boneParent"
+      ]
+    },
+    {
+      "path": [
+        "anim.tool.set",
+        "result",
+        "properties",
+        "tool",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "select",
+        "transform",
+        "record",
+        "rotate",
+        "skew",
+        "scale",
+        "motion",
+        "boneCreate",
+        "boneSetup",
+        "boneManipulate",
+        "boneInverse",
+        "boneForward",
+        "boneInfluence",
+        "boneParent"
+      ]
+    },
+    {
+      "path": [
+        "anim.view.get",
+        "result",
+        "properties",
+        "slot",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "A",
+        "B",
+        "other"
+      ]
+    },
+    {
+      "path": [
+        "anim.view.get",
+        "result",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "drawing",
+        "camera",
+        "top",
+        "side"
+      ]
+    },
+    {
+      "path": [
+        "anim.view.slot.select",
+        "result",
+        "properties",
+        "slot",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "A",
+        "B",
+        "other"
+      ]
+    },
+    {
+      "path": [
+        "anim.view.type.set",
+        "result",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "drawing",
+        "camera",
+        "top",
+        "side"
+      ]
+    },
+    {
+      "path": [
+        "fx.paramElement.list",
+        "result",
+        "properties",
+        "slots",
+        "items",
+        "properties",
+        "slot",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "mask",
+        "sprites",
+        "bones",
+        "skin"
+      ]
+    },
+    {
+      "path": [
+        "fx.preset.list",
+        "result",
+        "properties",
+        "presets",
+        "items",
+        "properties",
+        "source",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "builtin",
+        "user",
+        "all"
+      ]
+    },
+    {
+      "path": [
+        "fx.preview.frameRendered",
+        "result",
+        "properties",
+        "size",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "quarter",
+        "half",
+        "full"
+      ]
+    },
+    {
+      "path": [
+        "fx.preview.options.get",
+        "result",
+        "properties",
+        "defaultRange",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "single",
+        "playbackRange",
+        "fromCurrent"
+      ]
+    },
+    {
+      "path": [
+        "fx.preview.options.get",
+        "result",
+        "properties",
+        "size",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "quarter",
+        "half",
+        "full"
+      ]
+    },
+    {
+      "path": [
+        "fx.preview.options.set",
+        "result",
+        "properties",
+        "defaultRange",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "single",
+        "playbackRange",
+        "fromCurrent"
+      ]
+    },
+    {
+      "path": [
+        "fx.preview.options.set",
+        "result",
+        "properties",
+        "size",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "quarter",
+        "half",
+        "full"
+      ]
+    },
+    {
+      "path": [
+        "fx.preview.status.get",
+        "result",
+        "properties",
+        "cachedFrames",
+        "items",
+        "properties",
+        "size",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "quarter",
+        "half",
+        "full"
+      ]
+    },
+    {
+      "path": [
+        "sound.placement.add",
+        "result",
+        "properties",
+        "stopFrame",
+        "anyOf",
+        0,
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "natural"
+      ]
+    },
+    {
+      "path": [
+        "sound.placement.move",
+        "result",
+        "properties",
+        "stopFrame",
+        "anyOf",
+        0,
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "natural"
+      ]
+    },
+    {
+      "path": [
+        "sound.placement.trim",
+        "result",
+        "properties",
+        "stopFrame",
+        "anyOf",
+        0,
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "natural"
+      ]
+    },
+    {
+      "path": [
+        "lipsync.mapping.mouth.set",
+        "result",
+        "properties",
+        "mouth",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "X"
+      ]
+    },
+    {
+      "path": [
+        "lipsync.mapping.set",
+        "result",
+        "properties",
+        "mapping",
+        "properties",
+        "A..X",
+        "properties",
+        "rule",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "stored",
+        "name",
+        "property",
+        "order",
+        "none"
+      ]
+    },
+    {
+      "path": [
+        "library.view.get",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "thumbnails",
+        "list",
+        "details"
+      ]
+    },
+    {
+      "path": [
+        "library.view.set",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "thumbnails",
+        "list",
+        "details"
+      ]
+    },
+    {
+      "path": [
+        "storyline.play.changed",
+        "result",
+        "properties",
+        "playing",
+        "const"
+      ],
+      "kind": "removed",
+      "old": true
+    },
+    {
+      "path": [
+        "storyline.play.changed",
+        "result",
+        "properties",
+        "playing",
+        "type"
+      ],
+      "kind": "added",
+      "new": "boolean"
+    },
+    {
+      "path": [
+        "storyline.selection.changed",
+        "result",
+        "properties",
+        "kind",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "none",
+        "scene",
+        "transition"
+      ]
+    },
+    {
+      "path": [
+        "storyline.transition.types.list",
+        "result",
+        "properties",
+        "types",
+        "items",
+        "properties",
+        "parameters",
+        "items",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "none",
+        "fade",
+        "crossDissolve",
+        "wipe",
+        "slide",
+        "clockWipe",
+        "checker"
+      ]
+    },
+    {
+      "path": [
+        "storyline.transition.types.list",
+        "result",
+        "properties",
+        "types",
+        "items",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "none",
+        "fade",
+        "crossDissolve",
+        "wipe",
+        "slide",
+        "clockWipe",
+        "checker"
+      ]
+    },
+    {
+      "path": [
+        "playback.range.changed",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "auto",
+        "free"
+      ]
+    },
+    {
+      "path": [
+        "playback.range.mode.set",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "auto",
+        "free"
+      ]
+    },
+    {
+      "path": [
+        "playback.range.set",
+        "result",
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "auto",
+        "free"
+      ]
+    },
+    {
+      "path": [
+        "playback.rate.set",
+        "result",
+        "properties",
+        "fps",
+        "anyOf",
+        0,
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "project"
+      ]
+    },
+    {
+      "path": [
+        "export.formats.list",
+        "result",
+        "properties",
+        "formats",
+        "items",
+        "properties",
+        "kind",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "movie",
+        "sequence",
+        "still",
+        "vector",
+        "document"
+      ]
+    },
+    {
+      "path": [
+        "export.publish.service.list",
+        "result",
+        "properties",
+        "services",
+        "items",
+        "properties",
+        "connected",
+        "const"
+      ],
+      "kind": "removed",
+      "old": false
+    },
+    {
+      "path": [
+        "export.publish.service.list",
+        "result",
+        "properties",
+        "services",
+        "items",
+        "properties",
+        "connected",
+        "type"
+      ],
+      "kind": "added",
+      "new": "boolean"
+    },
+    {
+      "path": [
+        "export.publish.service.list",
+        "result",
+        "properties",
+        "services",
+        "items",
+        "properties",
+        "visibilities",
+        "items",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "public",
+        "unlisted",
+        "private"
+      ]
+    },
+    {
+      "path": [
+        "export.settings.get",
+        "result",
+        "properties",
+        "preset",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "default",
+        "custom"
+      ]
+    },
+    {
+      "path": [
+        "export.settings.set",
+        "result",
+        "properties",
+        "preset",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "default",
+        "custom"
+      ]
+    },
+    {
+      "path": [
+        "capture.lightTable.set",
+        "result",
+        "properties",
+        "aspectRatio",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "fit",
+        "fill",
+        "stretch"
+      ]
+    },
+    {
+      "path": [
+        "capture.target.set",
+        "result",
+        "properties",
+        "insertMode",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "insert",
+        "overwrite"
+      ]
+    },
+    {
+      "path": [
+        "print.pageSetup.get",
+        "result",
+        "properties",
+        "orientation",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "portrait",
+        "landscape"
+      ]
+    },
+    {
+      "path": [
+        "print.pageSetup.set",
+        "result",
+        "properties",
+        "orientation",
+        "enum"
+      ],
+      "kind": "removed",
+      "old": [
+        "portrait",
+        "landscape"
+      ]
+    }
+  ],
+  "regeneratedSampleRows": [
+    "view.type.set",
+    "tool.active.changed",
+    "tool.active.get",
+    "tool.active.set",
+    "tool.pen.list",
+    "drawAid.grid.set",
+    "drawAid.staticLightTable.set",
+    "colour.gapClosing.get",
+    "colour.gapClosing.set",
+    "colour.swatch.list",
+    "element.typeColour.set",
+    "timeline.playbackRange.changed",
+    "timeline.playbackRange.get",
+    "timeline.playbackRange.set",
+    "timeline.timeDisplay.set",
+    "timeline.transferOptions.set",
+    "xsheet.lightTable.add",
+    "xsheet.lightTable.list",
+    "anim.camera.get",
+    "anim.function.curveType.set",
+    "anim.function.list",
+    "anim.function.set",
+    "anim.functionEditor.get",
+    "anim.path.set",
+    "anim.prefs.get",
+    "anim.tool.changed",
+    "anim.tool.get",
+    "anim.tool.set",
+    "anim.view.get",
+    "anim.view.type.set",
+    "fx.paramElement.list",
+    "fx.preview.frameRendered",
+    "fx.preview.options.get",
+    "fx.preview.options.set",
+    "fx.preview.status.get",
+    "sound.placement.add",
+    "sound.placement.move",
+    "sound.placement.trim",
+    "lipsync.mapping.mouth.set",
+    "lipsync.mapping.set",
+    "library.view.get",
+    "library.view.set",
+    "storyline.selection.changed",
+    "storyline.transition.types.list",
+    "playback.range.changed",
+    "playback.range.mode.set",
+    "playback.range.set",
+    "export.formats.list",
+    "export.publish.service.list",
+    "export.settings.get",
+    "export.settings.set",
+    "capture.lightTable.set",
+    "print.pageSetup.get",
+    "print.pageSetup.set"
+  ],
+  "validSamples": 1322,
+  "unchangedUnsampleableSentinels": [
+    {
+      "id": "tool.pen.set",
+      "part": "result",
+      "sentinelAndSchemaUnchanged": true
+    },
+    {
+      "id": "fx.get",
+      "part": "result",
+      "sentinelAndSchemaUnchanged": true
+    }
+  ],
+  "otherDeclarationMetadataUnchanged": true
+}

@@ -1,0 +1,22 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r5/audit-ci.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r5",
+  "startedAt": "2026-10-19T14:06:41.616756+00:00",
+  "durationSeconds": 0.177,
+  "exitCode": 0,
+  "head": "ec4329cb1abb47821ada701175730a3e691d41d7",
+  "dirtyFiles": [
+    "?? reviews/M1-C1.2-r5-closure.md",
+    "?? reviews/evidence/M1-C1.2-r5/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\ci-audit.log",
+  "sha256": "cd51bd91724a70c71e7e6db87042f45fa55eebf701927146639a417331afe140",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r5\\reviews\\evidence\\M1-C1.2-r5"
+  }
+}

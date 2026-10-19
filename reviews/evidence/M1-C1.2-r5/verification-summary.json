@@ -1,0 +1,130 @@
+{
+  "verdict": "pass",
+  "openP0": 0,
+  "openP1": 0,
+  "newFindings": [],
+  "reviewedHead": "ec4329cb1abb47821ada701175730a3e691d41d7",
+  "registers": {
+    "requirements": {
+      "implemented": 65,
+      "divergent": 0,
+      "missing": 0,
+      "deferred-with-owner": 7
+    },
+    "commands": {
+      "implemented": 69,
+      "divergent": 0,
+      "missing": 0,
+      "deferred-with-owner": 727
+    },
+    "totalRequirements": 72,
+    "totalCommands": 796,
+    "declaredRuntime": {
+      "notImplemented": 727,
+      "implemented": 69
+    },
+    "previousDivergentCommands": {
+      "closed": 3,
+      "stillDivergent": 0
+    },
+    "previousDivergentRequirements": {
+      "closed": 3,
+      "stillDivergent": 0
+    },
+    "newDivergentCommandRows": [],
+    "schemas": {
+      "generated": 662,
+      "generatedHoleRows": 0,
+      "unresolvedRefs": 0,
+      "examples": 809
+    },
+    "qualification": "Scoped reconciliation of accepted R4 register and fix-induced regressions, not a fourth exhaustive review or a proof of all possible values."
+  },
+  "workspace": {
+    "passed": 502,
+    "failed": 0,
+    "ignored": 1
+  },
+  "diagnostics": {
+    "passed": 49,
+    "failed": 0,
+    "ignored": 0
+  },
+  "scopedProbes": {
+    "passed": 7,
+    "failed": 0,
+    "ignored": 0
+  },
+  "freshProperty": {
+    "seed": "0xc125a570261019",
+    "source": "crates\\executor\\tests\\c12_invalidation_property.rs",
+    "sourceSha256": "4bcf33ec9d468380e1948644599eee075b8b864ad7b1cece1c3b9a443e6ca9b1",
+    "evidenceCopy": "fresh-invalidation-property.rs",
+    "permanentTestUnmodified": true,
+    "edits": [
+      "fresh seed",
+      "success-only coverage counter print"
+    ],
+    "exitCode": 0
+  },
+  "releaseStressScale": {
+    "passed": 12,
+    "failed": 0,
+    "ignored": 0
+  },
+  "retainedReviewerSuiteTargets": [
+    "c11_r1_adversarial",
+    "c11_r1_wire",
+    "c11_r2_adversarial",
+    "c11_r2_wire",
+    "c11_r3_adversarial",
+    "c11_r3_random",
+    "c11_r3_register",
+    "c11_r3_wire",
+    "c11_r4_exposure_bounds",
+    "c11_r5_write_bounds",
+    "c11_r6_staged_inverse",
+    "c12_r1_contracts",
+    "c12_r1_macro",
+    "c12_r1_scale",
+    "c12_r1_stress",
+    "c12_r2_contracts",
+    "c12_r2_registry",
+    "c12_r2_scale",
+    "c12_r3_contracts",
+    "c12_r3_registry",
+    "c12_r3_stress",
+    "c12_r4_closure"
+  ],
+  "fourR4Regressions": [
+    "immediately_querying_a_staged_checkpoint_is_empty",
+    "nested_checkpoints_do_not_reinvalidate_unchanged_drawing_content",
+    "configured_publishing_services_can_be_connected",
+    "storyline_playback_changed_can_announce_a_stop"
+  ],
+  "registrySha256": "89755b94d5a2b6d0d221bcfd93ecf17c3b8fef30195e0b6e0d929a4f3efe4fff",
+  "frontendCommandsSha256": "c309f92dad164a3fadeab002344acd6fd089acb980a073558509c7aa2fc80ba3",
+  "ci": {
+    "run": 39258912422,
+    "head": "ec4329cb1abb47821ada701175730a3e691d41d7",
+    "jobs": 8
+  },
+  "raster": {
+    "hashes": 234,
+    "checkMismatches": 0,
+    "repeatFailures": 0
+  },
+  "testEdits": "No inherited or permanent test edits. Two temporary evidence-only integration targets removed after execution.",
+  "environmentQualification": {
+    "firstRun": "gates-run/gates",
+    "failure": "MSVC LNK1180 insufficient disk space; volume free bytes 0; recorder failed flushing log",
+    "recovery": "cargo clean --profile dev inside validated review root; removed 14537 disposable build files (9.7 GiB); 10011365376 free bytes afterward",
+    "env": {
+      "CARGO_PROFILE_DEV_DEBUG": "0",
+      "CARGO_PROFILE_TEST_DEBUG": "0",
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_BUILD_JOBS": "4"
+    },
+    "qualification": "Only debug symbols/incremental cache/build parallelism changed. Debug assertions and product sources remain unchanged. Initial successful frontend/fmt/clippy logs retained; all Rust gates rerun."
+  }
+}

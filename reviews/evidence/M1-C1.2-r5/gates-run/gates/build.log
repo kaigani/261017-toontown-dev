@@ -1,0 +1,50 @@
+$ pnpm --dir desktop build:diagnostics
+
+> @toontown/desktop@0.0.1 build:diagnostics C:\Users\kaiga\work\review\m1-c12-r5\desktop
+> vite build --config vite.config.ts --mode diagnostics && node boundary/check-dist.mjs dist
+
+vite v8.3.4 building client environment for diagnostics...
+transforming...
+✓ 59 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                            0.47 kB │ gzip:   0.29 kB
+dist/assets/index-B2rIT20y.css           137.08 kB │ gzip:  11.42 kB
+dist/assets/tauri-transport-CqPEAjyd.js    3.35 kB │ gzip:   1.45 kB │ map:    36.54 kB
+dist/assets/TabletSpike-BylTc5LY.js       25.01 kB │ gzip:   8.57 kB │ map:    95.10 kB
+dist/assets/CanvasSpike-B4GpwOmh.js       33.25 kB │ gzip:  12.58 kB │ map:   148.64 kB
+dist/assets/index-hYdkgbDA.js            641.30 kB │ gzip: 169.27 kB │ map: 2,510.03 kB
+
+✓ built in 1.12s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)
+
+[exit 0]
+$ pnpm --dir desktop build
+
+> @toontown/desktop@0.0.1 build C:\Users\kaiga\work\review\m1-c12-r5\desktop
+> vite build --config vite.config.ts && node boundary/check-dist.mjs dist
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 49 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                            0.47 kB │ gzip:   0.29 kB
+dist/assets/index-B2rIT20y.css           137.08 kB │ gzip:  11.42 kB
+dist/assets/tauri-transport-CqPEAjyd.js    3.35 kB │ gzip:   1.45 kB │ map:    36.54 kB
+dist/assets/index-DqcFgMN1.js            632.42 kB │ gzip: 165.97 kB │ map: 2,489.83 kB
+
+✓ built in 842ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)
+
+[exit 0]

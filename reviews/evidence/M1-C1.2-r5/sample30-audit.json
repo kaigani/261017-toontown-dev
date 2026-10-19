@@ -1,0 +1,1859 @@
+{
+  "summary": {
+    "seed": "0xc12520261019",
+    "sampleSize": 30,
+    "contextDeclarationsAudited": 662,
+    "foreignSetsRemoved": 69,
+    "affectedDeclarations": 62,
+    "newOrModifiedSets": 0,
+    "sampleDirectOwnSets": 13,
+    "allNamedDefinitionsUnchanged": true,
+    "controls": [
+      {
+        "id": "export.publish.account.close",
+        "field": "connected",
+        "constRetained": false,
+        "oppositeRejected": true,
+        "source": "spec/A_command_registry.md:938"
+      },
+      {
+        "id": "storyline.play.start",
+        "field": "playing",
+        "constRetained": true,
+        "oppositeRejected": true,
+        "source": "spec/A_command_registry.md:849"
+      },
+      {
+        "id": "storyline.play.stop",
+        "field": "playing",
+        "constRetained": false,
+        "oppositeRejected": true,
+        "source": "spec/A_command_registry.md:850"
+      }
+    ],
+    "syntheticContext": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string"
+          },
+          "connected": {
+            "type": "boolean"
+          },
+          "numeric": {
+            "type": "number"
+          },
+          "mixed": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      }
+    },
+    "qualification": "Scope is fix-induced narrowing and preservation of accepted owning domains, not reopening prior schema rulings."
+  },
+  "rows": [
+    {
+      "id": "keymap.remove",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "context",
+            "enum"
+          ],
+          "set": [
+            "global",
+            "drawing",
+            "staging"
+          ],
+          "source": "spec/A_command_registry.md:198"
+        }
+      ],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "anim.changed",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "colour.current.get",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "draw.optimize.apply",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "anim.path.get",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "element.parent.set",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "colour.palette.changed",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [
+        {
+          "part": "result",
+          "path": [
+            "properties",
+            "change",
+            "enum"
+          ],
+          "set": [
+            "created",
+            "deleted",
+            "renamed",
+            "imported",
+            "edited"
+          ],
+          "source": "spec/A_command_registry.md:358"
+        }
+      ],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "fx.block.get",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "anim.function.key.set",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "handleMode",
+            "enum"
+          ],
+          "set": [
+            "smooth",
+            "broken"
+          ],
+          "source": "spec/A_command_registry.md:555"
+        }
+      ],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "import.vectorize.settings.get",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "anim.functionEditor.view.set",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "panelSide",
+            "enum"
+          ],
+          "set": [
+            "left",
+            "right",
+            "top",
+            "bottom"
+          ],
+          "source": "spec/A_command_registry.md:563"
+        }
+      ],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "library.template.insert",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "target",
+            "enum"
+          ],
+          "set": [
+            "timeline",
+            "xsheet",
+            "camera",
+            "drawing"
+          ],
+          "source": "spec/A_command_registry.md:826"
+        },
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "mode",
+            "enum"
+          ],
+          "set": [
+            "copy",
+            "link"
+          ],
+          "source": "spec/A_command_registry.md:826"
+        }
+      ],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "anim.stretch.apply",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "anim.camera.current.get",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "sound.placement.list",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "sound.waveform.get",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "channels",
+            "enum"
+          ],
+          "set": [
+            "mix",
+            "separate"
+          ],
+          "source": "spec/A_command_registry.md:730"
+        }
+      ],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "timeline.frameLabel.get",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "drawAid.onionSkin.set",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "draw.lock.set",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "ui.tips.set",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "colour.tintDialog.open",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "mode",
+            "enum"
+          ],
+          "set": [
+            "offset",
+            "blend"
+          ],
+          "source": "spec/A_command_registry.md:391"
+        }
+      ],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "sound.silence.list",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "draw.content.add",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "layer",
+            "enum"
+          ],
+          "set": [
+            "top",
+            "behind"
+          ],
+          "source": "spec/A_command_registry.md:231"
+        }
+      ],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "anim.bone.parent.set",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "playback.started",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "library.template.changed",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "xsheet.lightTable.add",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": [
+        {
+          "id": "xsheet.lightTable.add",
+          "part": "params",
+          "path": [
+            "properties",
+            "items",
+            "items",
+            "properties",
+            "placement",
+            "enum"
+          ],
+          "before": [
+            "over",
+            "under"
+          ],
+          "after": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    {
+      "id": "import.file.run",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "mode",
+            "enum"
+          ],
+          "set": [
+            "copy",
+            "link",
+            "move"
+          ],
+          "source": "spec/A_command_registry.md:915"
+        },
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "vectorAnimationTarget",
+            "enum"
+          ],
+          "set": [
+            "newScene",
+            "currentScene"
+          ],
+          "source": "spec/A_command_registry.md:915"
+        },
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "onNameConflict",
+            "enum"
+          ],
+          "set": [
+            "rename",
+            "error"
+          ],
+          "source": "spec/A_command_registry.md:915"
+        }
+      ],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "capture.device.settings.set",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    },
+    {
+      "id": "sound.import",
+      "contextObserved": true,
+      "contextHasNoSets": true,
+      "ownSets": [
+        {
+          "part": "params",
+          "path": [
+            "properties",
+            "onOverlap",
+            "enum"
+          ],
+          "set": [
+            "insertShift",
+            "reject",
+            "nextFree"
+          ],
+          "source": "spec/A_command_registry.md:712"
+        }
+      ],
+      "namedDefinitionsUnchanged": true,
+      "removedForeignSets": []
+    }
+  ],
+  "removedSets": [
+    {
+      "id": "view.type.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "type",
+        "enum"
+      ],
+      "before": [
+        "drawing",
+        "camera",
+        "top",
+        "side",
+        "previous"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "tool.active.changed",
+      "part": "result",
+      "path": [
+        "properties",
+        "toolId",
+        "enum"
+      ],
+      "before": [
+        "select",
+        "contourEditor",
+        "perspective",
+        "repositionAll",
+        "brush",
+        "pencil",
+        "rectangle",
+        "ellipse",
+        "polyline",
+        "line",
+        "paint",
+        "unpaint",
+        "paintUnpainted",
+        "dropper",
+        "closeGap",
+        "stroke",
+        "editTexture",
+        "eraser",
+        "cutter",
+        "scissor",
+        "zoom",
+        "grabber",
+        "text"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "tool.active.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "toolId",
+        "enum"
+      ],
+      "before": [
+        "select",
+        "contourEditor",
+        "perspective",
+        "repositionAll",
+        "brush",
+        "pencil",
+        "rectangle",
+        "ellipse",
+        "polyline",
+        "line",
+        "paint",
+        "unpaint",
+        "paintUnpainted",
+        "dropper",
+        "closeGap",
+        "stroke",
+        "editTexture",
+        "eraser",
+        "cutter",
+        "scissor",
+        "zoom",
+        "grabber",
+        "text"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "tool.active.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "toolId",
+        "enum"
+      ],
+      "before": [
+        "select",
+        "contourEditor",
+        "perspective",
+        "repositionAll",
+        "brush",
+        "pencil",
+        "rectangle",
+        "ellipse",
+        "polyline",
+        "line",
+        "paint",
+        "unpaint",
+        "paintUnpainted",
+        "dropper",
+        "closeGap",
+        "stroke",
+        "editTexture",
+        "eraser",
+        "cutter",
+        "scissor",
+        "zoom",
+        "grabber",
+        "text"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "tool.pen.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "pens",
+        "items",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "before": [
+        "brush",
+        "eraser"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "tool.pen.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "pens",
+        "items",
+        "properties",
+        "tipShape",
+        "enum"
+      ],
+      "before": [
+        "round",
+        "oval",
+        "square",
+        "flat"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "tool.pen.select",
+      "part": "result",
+      "path": [
+        "properties",
+        "type",
+        "enum"
+      ],
+      "before": [
+        "brush",
+        "eraser"
+      ],
+      "after": {
+        "type": "string",
+        "default": "brush"
+      }
+    },
+    {
+      "id": "tool.symmetry.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "none",
+        "mirror",
+        "kaleidoscope"
+      ],
+      "after": {
+        "type": "string",
+        "default": "none"
+      }
+    },
+    {
+      "id": "drawAid.grid.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "type",
+        "enum"
+      ],
+      "before": [
+        "normal",
+        "field12",
+        "field16"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "drawAid.staticLightTable.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "entries",
+        "items",
+        "properties",
+        "placement",
+        "enum"
+      ],
+      "before": [
+        "overlay",
+        "underlay"
+      ],
+      "after": {
+        "type": "string",
+        "default": "underlay"
+      }
+    },
+    {
+      "id": "drawAid.staticLightTable.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "entries",
+        "items",
+        "properties",
+        "placement",
+        "enum"
+      ],
+      "before": [
+        "overlay",
+        "underlay"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "colour.gapClosing.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "off",
+        "small",
+        "medium",
+        "large"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "colour.gapClosing.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "off",
+        "small",
+        "medium",
+        "large"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "colour.swatch.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "swatches",
+        "items",
+        "properties",
+        "kind",
+        "enum"
+      ],
+      "before": [
+        "solid",
+        "linearGradient",
+        "radialGradient",
+        "texture"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "element.typeColour.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "category",
+        "enum"
+      ],
+      "before": [
+        "drawings",
+        "images",
+        "sounds",
+        "pegs",
+        "skeletons",
+        "media",
+        "cameras",
+        "effects",
+        "effectParameters"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "timeline.playbackRange.changed",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "auto",
+        "free"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "timeline.playbackRange.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "auto",
+        "free"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "timeline.playbackRange.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "auto",
+        "free"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "timeline.timeDisplay.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "unit",
+        "enum"
+      ],
+      "before": [
+        "frames",
+        "feetFrames"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "timeline.transferOptions.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "operation",
+        "enum"
+      ],
+      "before": [
+        "paste",
+        "cut",
+        "dragDrop"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "xsheet.lightTable.add",
+      "part": "params",
+      "path": [
+        "properties",
+        "items",
+        "items",
+        "properties",
+        "placement",
+        "enum"
+      ],
+      "before": [
+        "over",
+        "under"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "xsheet.lightTable.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "items",
+        "items",
+        "properties",
+        "placement",
+        "enum"
+      ],
+      "before": [
+        "over",
+        "under"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.camera.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "fovMode",
+        "enum"
+      ],
+      "before": [
+        "static",
+        "dynamic"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.function.curveType.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "curveType",
+        "enum"
+      ],
+      "before": [
+        "spline",
+        "interpolation",
+        "velocityBased"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.function.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "channels",
+        "items",
+        "properties",
+        "curveType",
+        "enum"
+      ],
+      "before": [
+        "spline",
+        "interpolation",
+        "velocityBased"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.function.set",
+      "part": "params",
+      "path": [
+        "properties",
+        "keys",
+        "items",
+        "properties",
+        "handleMode",
+        "enum"
+      ],
+      "before": [
+        "smooth",
+        "broken"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.function.set",
+      "part": "params",
+      "path": [
+        "properties",
+        "keys",
+        "items",
+        "properties",
+        "preset",
+        "enum"
+      ],
+      "before": [
+        "constant",
+        "linear",
+        "easeInOut",
+        "fastInOut",
+        "extremeEaseInOut",
+        "extremeFastInOut",
+        "slowAcceleration",
+        "slowDeceleration"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.functionEditor.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "projection",
+        "enum"
+      ],
+      "before": [
+        "x",
+        "y",
+        "z"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.path.set",
+      "part": "params",
+      "path": [
+        "properties",
+        "points",
+        "items",
+        "properties",
+        "kind",
+        "enum"
+      ],
+      "before": [
+        "key",
+        "control"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.prefs.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "units",
+        "enum"
+      ],
+      "before": [
+        "fields",
+        "inches",
+        "centimetres"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.tool.changed",
+      "part": "result",
+      "path": [
+        "properties",
+        "tool",
+        "enum"
+      ],
+      "before": [
+        "select",
+        "transform",
+        "record",
+        "rotate",
+        "skew",
+        "scale",
+        "motion",
+        "boneCreate",
+        "boneSetup",
+        "boneManipulate",
+        "boneInverse",
+        "boneForward",
+        "boneInfluence",
+        "boneParent"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.tool.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "tool",
+        "enum"
+      ],
+      "before": [
+        "select",
+        "transform",
+        "record",
+        "rotate",
+        "skew",
+        "scale",
+        "motion",
+        "boneCreate",
+        "boneSetup",
+        "boneManipulate",
+        "boneInverse",
+        "boneForward",
+        "boneInfluence",
+        "boneParent"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.tool.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "tool",
+        "enum"
+      ],
+      "before": [
+        "select",
+        "transform",
+        "record",
+        "rotate",
+        "skew",
+        "scale",
+        "motion",
+        "boneCreate",
+        "boneSetup",
+        "boneManipulate",
+        "boneInverse",
+        "boneForward",
+        "boneInfluence",
+        "boneParent"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.view.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "type",
+        "enum"
+      ],
+      "before": [
+        "drawing",
+        "camera",
+        "top",
+        "side"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "anim.view.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "slot",
+        "enum"
+      ],
+      "before": [
+        "A",
+        "B",
+        "other"
+      ],
+      "after": {
+        "type": "string",
+        "default": "other"
+      }
+    },
+    {
+      "id": "anim.view.slot.select",
+      "part": "result",
+      "path": [
+        "properties",
+        "slot",
+        "enum"
+      ],
+      "before": [
+        "A",
+        "B",
+        "other"
+      ],
+      "after": {
+        "type": "string",
+        "default": "other"
+      }
+    },
+    {
+      "id": "anim.view.type.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "type",
+        "enum"
+      ],
+      "before": [
+        "drawing",
+        "camera",
+        "top",
+        "side"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "fx.paramElement.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "slots",
+        "items",
+        "properties",
+        "slot",
+        "enum"
+      ],
+      "before": [
+        "mask",
+        "sprites",
+        "bones",
+        "skin"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "fx.preset.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "presets",
+        "items",
+        "properties",
+        "source",
+        "enum"
+      ],
+      "before": [
+        "builtin",
+        "user",
+        "all"
+      ],
+      "after": {
+        "type": "string",
+        "default": "all"
+      }
+    },
+    {
+      "id": "fx.preview.frameRendered",
+      "part": "result",
+      "path": [
+        "properties",
+        "size",
+        "enum"
+      ],
+      "before": [
+        "quarter",
+        "half",
+        "full"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "fx.preview.options.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "size",
+        "enum"
+      ],
+      "before": [
+        "quarter",
+        "half",
+        "full"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "fx.preview.options.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "defaultRange",
+        "enum"
+      ],
+      "before": [
+        "single",
+        "playbackRange",
+        "fromCurrent"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "fx.preview.options.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "size",
+        "enum"
+      ],
+      "before": [
+        "quarter",
+        "half",
+        "full"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "fx.preview.options.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "defaultRange",
+        "enum"
+      ],
+      "before": [
+        "single",
+        "playbackRange",
+        "fromCurrent"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "fx.preview.status.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "cachedFrames",
+        "items",
+        "properties",
+        "size",
+        "enum"
+      ],
+      "before": [
+        "quarter",
+        "half",
+        "full"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "sound.placement.add",
+      "part": "result",
+      "path": [
+        "properties",
+        "stopFrame",
+        "anyOf",
+        0,
+        "enum"
+      ],
+      "before": [
+        "natural"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "sound.placement.move",
+      "part": "result",
+      "path": [
+        "properties",
+        "stopFrame",
+        "anyOf",
+        0,
+        "enum"
+      ],
+      "before": [
+        "natural"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "sound.placement.trim",
+      "part": "result",
+      "path": [
+        "properties",
+        "stopFrame",
+        "anyOf",
+        0,
+        "enum"
+      ],
+      "before": [
+        "natural"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "lipsync.mapping.mouth.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "mouth",
+        "enum"
+      ],
+      "before": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "X"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "lipsync.mapping.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "mapping",
+        "properties",
+        "A..X",
+        "properties",
+        "rule",
+        "enum"
+      ],
+      "before": [
+        "stored",
+        "name",
+        "property",
+        "order",
+        "none"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "library.view.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "thumbnails",
+        "list",
+        "details"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "library.view.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "thumbnails",
+        "list",
+        "details"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "storyline.play.changed",
+      "part": "result",
+      "path": [
+        "properties",
+        "playing",
+        "const"
+      ],
+      "before": true,
+      "after": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "storyline.selection.changed",
+      "part": "result",
+      "path": [
+        "properties",
+        "kind",
+        "enum"
+      ],
+      "before": [
+        "none",
+        "scene",
+        "transition"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "storyline.transition.types.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "types",
+        "items",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "before": [
+        "none",
+        "fade",
+        "crossDissolve",
+        "wipe",
+        "slide",
+        "clockWipe",
+        "checker"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "storyline.transition.types.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "types",
+        "items",
+        "properties",
+        "parameters",
+        "items",
+        "properties",
+        "type",
+        "enum"
+      ],
+      "before": [
+        "none",
+        "fade",
+        "crossDissolve",
+        "wipe",
+        "slide",
+        "clockWipe",
+        "checker"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "playback.range.changed",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "auto",
+        "free"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "playback.range.mode.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "auto",
+        "free"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "playback.range.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "mode",
+        "enum"
+      ],
+      "before": [
+        "auto",
+        "free"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "playback.rate.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "fps",
+        "anyOf",
+        0,
+        "enum"
+      ],
+      "before": [
+        "project"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "export.formats.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "formats",
+        "items",
+        "properties",
+        "kind",
+        "enum"
+      ],
+      "before": [
+        "movie",
+        "sequence",
+        "still",
+        "vector",
+        "document"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "export.publish.service.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "services",
+        "items",
+        "properties",
+        "visibilities",
+        "items",
+        "enum"
+      ],
+      "before": [
+        "public",
+        "unlisted",
+        "private"
+      ],
+      "after": {
+        "type": "string",
+        "default": "private"
+      }
+    },
+    {
+      "id": "export.publish.service.list",
+      "part": "result",
+      "path": [
+        "properties",
+        "services",
+        "items",
+        "properties",
+        "connected",
+        "const"
+      ],
+      "before": false,
+      "after": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "export.settings.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "preset",
+        "enum"
+      ],
+      "before": [
+        "default",
+        "custom"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "export.settings.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "preset",
+        "enum"
+      ],
+      "before": [
+        "default",
+        "custom"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "capture.lightTable.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "aspectRatio",
+        "enum"
+      ],
+      "before": [
+        "fit",
+        "fill",
+        "stretch"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "capture.target.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "insertMode",
+        "enum"
+      ],
+      "before": [
+        "insert",
+        "overwrite"
+      ],
+      "after": {
+        "type": "string",
+        "default": "insert"
+      }
+    },
+    {
+      "id": "print.pageSetup.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "orientation",
+        "enum"
+      ],
+      "before": [
+        "portrait",
+        "landscape"
+      ],
+      "after": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "print.pageSetup.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "orientation",
+        "enum"
+      ],
+      "before": [
+        "portrait",
+        "landscape"
+      ],
+      "after": {
+        "type": "string"
+      }
+    }
+  ]
+}
