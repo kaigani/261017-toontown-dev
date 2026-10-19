@@ -1346,20 +1346,16 @@ pub(crate) fn doc_diff(cx: &mut Cx, p: DiffParams) -> Result<DiffResult, Command
         });
     }
     // REV-02 invalidation (C12-R2-12): a drawing whose content changed carries a new revision even when its own
-    // properties did not change; report it as the command envelope and `doc.changed` do — the container of a changed
-    // drawing-local object, or a drawing whose revision moved.
+    // properties did not change; report it as the command envelope and `doc.changed` do. Content, not stamps, decides
+    // (C12-R4-01): the drawings reported are the containers of the drawing-local objects whose own views differ
+    // between the two states, so revision stamps (a staged checkpoint's predicted ones, a replay's new ones) never
+    // invalidate unchanged content.
     let wanted = |key: &str| {
         types.as_ref().is_none_or(|ts| ts.contains(&ObjectType::Drawing))
             && within.as_ref().is_none_or(|w| key == w || is_within(&until_doc, key, w))
     };
     let mut invalidated: Vec<String> =
         containers.into_iter().filter(|d| until_doc.locate(d).is_some_and(|l| l.ty == ObjectType::Drawing)).collect();
-    for d in until_doc.drawings() {
-        let id = d.id().as_str();
-        if from_doc.locate(id).is_some_and(|l| l.rev != *d.rev()) {
-            invalidated.push(id.to_owned());
-        }
-    }
     invalidated.sort();
     invalidated.dedup();
     for d in invalidated {
