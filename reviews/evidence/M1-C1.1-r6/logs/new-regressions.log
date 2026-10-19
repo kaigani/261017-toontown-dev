@@ -1,0 +1,25 @@
+    Blocking waiting for file lock on build directory
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r6\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.20s
+     Running tests\c11_r6_staged_inverse.rs (target\debug\deps\c11_r6_staged_inverse-fc8bd78e9908598e.exe)
+
+running 2 tests
+Error: "C11-R6-01: inverse must target the canonical committed runs; inverse=[PatchOp { op: \"remove\", from: None, path: \"/exposure/4\", range: None, value: None, old_value: Some(Array [String(\"dr_01K742SG0KKMCAP9X1E6Z5P4SW\"), Number(1)]), elided: false }]; errors=[ModelError { code: \"arg.invalid\", message: \"array index out of range\", details: Object {\"pointer\": String(\"/exposure/4\"), \"op\": String(\"remove\")} }]"
+test staged_append_inverse_survives_run_merging ... FAILED
+
+thread 'staged_inverse_restores_frames_after_runs_merge' (13088) panicked at crates\model\tests\c11_r6_staged_inverse.rs:60:5:
+assertion `left == right` failed: C11-R6-01: undo must restore both original drawings and counts
+  left: Array [Array [String("dr_01K742SG0KKMCAP9X1E6Z5P4SW"), Number(5)]]
+ right: Array [Array [String("dr_01K742SG0KKMCAP9X1E6Z5P4SW"), Number(2)], Array [String("dr_01K742SG0M5J3BAJSW8241WA87"), Number(3)]]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test staged_inverse_restores_frames_after_runs_merge ... FAILED
+
+failures:
+
+failures:
+    staged_append_inverse_survives_run_merging
+    staged_inverse_restores_frames_after_runs_merge
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r6_staged_inverse`

@@ -1,0 +1,24 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r6_closure_probe",
+    "--locked",
+    "--",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:32:17.070597+00:00",
+  "elapsed_seconds": 42.341,
+  "exit_code": 101,
+  "log": "logs/closure-probe-initial.log",
+  "sha256": "d71a6a17c018221c89ac62b88d26f9fcd14d141efd668171794528490b8376a7",
+  "env": {
+    "C11_R6_SNAPSHOTS": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6\\target\\review-m1-c11-r6-snapshots"
+  }
+}

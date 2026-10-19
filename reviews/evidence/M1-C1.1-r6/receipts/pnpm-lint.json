@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "lint"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:28:51.835669+00:00",
+  "elapsed_seconds": 8.158,
+  "exit_code": 0,
+  "log": "logs/pnpm-lint.log",
+  "sha256": "c5ac4de7d0a536b42566c904c8dd3c28e1affa9524c25fa60ff9d2424f1961f1",
+  "env": {}
+}

@@ -1,0 +1,20 @@
+{
+  "command": [
+    "cargo",
+    "clippy",
+    "--workspace",
+    "--all-targets",
+    "--locked",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:30:49.957772+00:00",
+  "elapsed_seconds": 53.603,
+  "exit_code": 0,
+  "log": "logs/clippy.log",
+  "sha256": "ca0ed9f90c1369bdffe5cfc9ae25b964cfc99ae97c449a2817702aa54313fb98",
+  "env": {}
+}

@@ -1,0 +1,4 @@
+fb31cfe docs(c1.1): record the r5 CI run
+ed6e4b2 docs(c1.1): final closure check r5 addendum and handoff
+a448459 fix(model): frame limits as a staged post-condition; staged document commit
+4bb343e merge: Codex final closure check r5 of C1.1 (block; 1 P1)

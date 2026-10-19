@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "tests/adversarial/c11-r2-review-policy.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:30:13.409509+00:00",
+  "elapsed_seconds": 0.126,
+  "exit_code": 0,
+  "log": "logs/review-policy.log",
+  "sha256": "b9b4896ab610f1b5204d384a71a67b2d06019bf05b06b38a6ff3d87cf8094303",
+  "env": {}
+}

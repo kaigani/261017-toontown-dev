@@ -1,0 +1,389 @@
+{
+  "reviewed_commit": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "verdict": "block",
+  "open_p0": 0,
+  "open_p1": 1,
+  "new_p2": 0,
+  "closed": [
+    "C11-R5-01"
+  ],
+  "new_findings": [
+    "C11-R6-01"
+  ],
+  "baseline_rust": [
+    288,
+    0,
+    1
+  ],
+  "final_rust": [
+    288,
+    2,
+    1
+  ],
+  "rollback_hash_pairs": 24,
+  "staged_property": {
+    "seed": "404401471746785596",
+    "cases": 10000,
+    "builder_source_sha256": "750cdd4446768487f9d95bb7e5a45b84c2b72096a1f58654ced545b084fd3b53",
+    "expanded_source_sha256": "06b1f1eb111ab30d439cc77f42deab2c9629b19e917ef929582b7054f6b07cf2",
+    "modification": "Only cases: 256 -> cases: 10_000 in a temporary test target; builder file unchanged"
+  },
+  "gates": [
+    {
+      "name": "ci-full",
+      "exit_code": 0,
+      "seconds": 4.125
+    },
+    {
+      "name": "ci-metadata",
+      "exit_code": 0,
+      "seconds": 1.003
+    },
+    {
+      "name": "clippy-diagnostics",
+      "exit_code": 0,
+      "seconds": 14.561
+    },
+    {
+      "name": "clippy",
+      "exit_code": 0,
+      "seconds": 53.603
+    },
+    {
+      "name": "closure-probe-initial",
+      "exit_code": 101,
+      "seconds": 42.341
+    },
+    {
+      "name": "closure-probe-second",
+      "exit_code": 101,
+      "seconds": 2.023
+    },
+    {
+      "name": "closure-probe",
+      "exit_code": 0,
+      "seconds": 2.088
+    },
+    {
+      "name": "deny",
+      "exit_code": 0,
+      "seconds": 8.46
+    },
+    {
+      "name": "diagnostics-gate",
+      "exit_code": 0,
+      "seconds": 0.069
+    },
+    {
+      "name": "final-clippy",
+      "exit_code": 0,
+      "seconds": 1.562
+    },
+    {
+      "name": "final-fmt",
+      "exit_code": 0,
+      "seconds": 0.416
+    },
+    {
+      "name": "final-workspace",
+      "exit_code": 101,
+      "seconds": 67.297
+    },
+    {
+      "name": "fmt",
+      "exit_code": 0,
+      "seconds": 0.762
+    },
+    {
+      "name": "frontend-build-diagnostics",
+      "exit_code": 0,
+      "seconds": 1.888
+    },
+    {
+      "name": "frontend-build",
+      "exit_code": 0,
+      "seconds": 1.602
+    },
+    {
+      "name": "headless-build",
+      "exit_code": 0,
+      "seconds": 28.494
+    },
+    {
+      "name": "headless-guard",
+      "exit_code": 0,
+      "seconds": 0.188
+    },
+    {
+      "name": "install",
+      "exit_code": 0,
+      "seconds": 0.414
+    },
+    {
+      "name": "issue-state",
+      "exit_code": 0,
+      "seconds": 0.49
+    },
+    {
+      "name": "new-regressions-final",
+      "exit_code": 101,
+      "seconds": 0.513
+    },
+    {
+      "name": "new-regressions",
+      "exit_code": 101,
+      "seconds": 1.862
+    },
+    {
+      "name": "node-guards-allowlist",
+      "exit_code": 0,
+      "seconds": 0.128
+    },
+    {
+      "name": "node-guards-imports",
+      "exit_code": 0,
+      "seconds": 2.199
+    },
+    {
+      "name": "node-guards-licensing",
+      "exit_code": 0,
+      "seconds": 0.138
+    },
+    {
+      "name": "pnpm-format-check",
+      "exit_code": 0,
+      "seconds": 1.555
+    },
+    {
+      "name": "pnpm-licenses-check",
+      "exit_code": 0,
+      "seconds": 0.84
+    },
+    {
+      "name": "pnpm-lint",
+      "exit_code": 0,
+      "seconds": 8.158
+    },
+    {
+      "name": "pnpm-test",
+      "exit_code": 0,
+      "seconds": 64.64
+    },
+    {
+      "name": "pnpm-typecheck",
+      "exit_code": 0,
+      "seconds": 2.888
+    },
+    {
+      "name": "r4-regressions",
+      "exit_code": 0,
+      "seconds": 1.007
+    },
+    {
+      "name": "r5-regressions",
+      "exit_code": 0,
+      "seconds": 18.047
+    },
+    {
+      "name": "random-fresh",
+      "exit_code": 0,
+      "seconds": 2.89
+    },
+    {
+      "name": "random-r5-recorded",
+      "exit_code": 0,
+      "seconds": 2.985
+    },
+    {
+      "name": "random-recorded",
+      "exit_code": 0,
+      "seconds": 4.657
+    },
+    {
+      "name": "raster",
+      "exit_code": 0,
+      "seconds": 30.939
+    },
+    {
+      "name": "review-policy",
+      "exit_code": 0,
+      "seconds": 0.126
+    },
+    {
+      "name": "reviewed-diff",
+      "exit_code": 0,
+      "seconds": 0.038
+    },
+    {
+      "name": "reviewed-history",
+      "exit_code": 0,
+      "seconds": 0.023
+    },
+    {
+      "name": "reviewer-python",
+      "exit_code": 0,
+      "seconds": 5.468
+    },
+    {
+      "name": "rustdoc",
+      "exit_code": 0,
+      "seconds": 6.129
+    },
+    {
+      "name": "selftest-1",
+      "exit_code": 0,
+      "seconds": 0.084
+    },
+    {
+      "name": "selftest-2",
+      "exit_code": 0,
+      "seconds": 0.005
+    },
+    {
+      "name": "staged-property-10000",
+      "exit_code": 0,
+      "seconds": 235.067
+    },
+    {
+      "name": "tauri-release",
+      "exit_code": 0,
+      "seconds": 65.352
+    },
+    {
+      "name": "test-diagnostics",
+      "exit_code": 0,
+      "seconds": 21.724
+    },
+    {
+      "name": "test-edit-diff",
+      "exit_code": 0,
+      "seconds": 0.018
+    },
+    {
+      "name": "workspace",
+      "exit_code": 0,
+      "seconds": 156.028
+    }
+  ],
+  "changed_files": [
+    "?? crates/model/tests/c11_r6_staged_inverse.rs",
+    "?? reviews/M1-C1.1-r6-closure.md",
+    "?? reviews/evidence/M1-C1.1-r6/.gitattributes",
+    "?? reviews/evidence/M1-C1.1-r6/api-audit.json",
+    "?? reviews/evidence/M1-C1.1-r6/audit.json",
+    "?? reviews/evidence/M1-C1.1-r6/audit_ci.py",
+    "?? reviews/evidence/M1-C1.1-r6/audit_final.py",
+    "?? reviews/evidence/M1-C1.1-r6/audit_static.py",
+    "?? reviews/evidence/M1-C1.1-r6/ci-audit.json",
+    "?? reviews/evidence/M1-C1.1-r6/ci-linux-raster-audit.json",
+    "?? reviews/evidence/M1-C1.1-r6/closure_probe.rs",
+    "?? reviews/evidence/M1-C1.1-r6/conformance.json",
+    "?? reviews/evidence/M1-C1.1-r6/conformance.py",
+    "?? reviews/evidence/M1-C1.1-r6/environment.json",
+    "?? reviews/evidence/M1-C1.1-r6/fresh-seed.txt",
+    "?? reviews/evidence/M1-C1.1-r6/launch-note.txt",
+    "?? reviews/evidence/M1-C1.1-r6/logs/ci-full.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/ci-metadata.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/clippy-diagnostics.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/clippy.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/closure-probe-initial.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/closure-probe-second.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/closure-probe.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/deny.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/diagnostics-gate.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/final-clippy.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/final-fmt.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/final-workspace.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/fmt.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/frontend-build-diagnostics.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/frontend-build.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/headless-build.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/headless-guard.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/install.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/issue-state.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/new-regressions-final.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/new-regressions.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/node-guards-allowlist.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/node-guards-imports.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/node-guards-licensing.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/pnpm-format-check.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/pnpm-licenses-check.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/pnpm-lint.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/pnpm-test.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/pnpm-typecheck.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/r4-regressions.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/r5-regressions.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/random-fresh.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/random-r5-recorded.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/random-recorded.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/raster.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/review-policy.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/reviewed-diff.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/reviewed-history.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/reviewer-python.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/rustdoc.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/selftest-1.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/selftest-2.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/staged-property-10000.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/tauri-release.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/test-diagnostics.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/test-edit-diff.log",
+    "?? reviews/evidence/M1-C1.1-r6/logs/workspace.log",
+    "?? reviews/evidence/M1-C1.1-r6/raster.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/ci-full.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/ci-metadata.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/clippy-diagnostics.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/clippy.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/closure-probe-initial.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/closure-probe-second.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/closure-probe.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/deny.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/diagnostics-gate.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/final-clippy.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/final-fmt.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/final-workspace.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/fmt.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/frontend-build-diagnostics.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/frontend-build.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/headless-build.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/headless-guard.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/install.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/issue-state.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/new-regressions-final.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/new-regressions.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/node-guards-allowlist.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/node-guards-imports.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/node-guards-licensing.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/pnpm-format-check.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/pnpm-licenses-check.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/pnpm-lint.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/pnpm-test.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/pnpm-typecheck.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/r4-regressions.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/r5-regressions.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/random-fresh.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/random-r5-recorded.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/random-recorded.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/raster.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/review-policy.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/reviewed-diff.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/reviewed-history.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/reviewer-python.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/rustdoc.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/selftest-1.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/selftest-2.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/staged-property-10000.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/tauri-release.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/test-diagnostics.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/test-edit-diff.json",
+    "?? reviews/evidence/M1-C1.1-r6/receipts/workspace.json",
+    "?? reviews/evidence/M1-C1.1-r6/register-closure.json",
+    "?? reviews/evidence/M1-C1.1-r6/rollback-hashes.json",
+    "?? reviews/evidence/M1-C1.1-r6/run_gates.py",
+    "?? reviews/evidence/M1-C1.1-r6/run_probe.py",
+    "?? reviews/evidence/M1-C1.1-r6/run_staged_property.py",
+    "?? reviews/evidence/M1-C1.1-r6/selftest-comparison.json",
+    "?? reviews/evidence/M1-C1.1-r6/staged-property.json",
+    "?? reviews/evidence/M1-C1.1-r6/test-edit-audit.json"
+  ]
+}

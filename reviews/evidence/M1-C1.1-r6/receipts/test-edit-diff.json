@@ -1,0 +1,20 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "bd5ec34..fb31cfe",
+    "--",
+    "crates/*/tests/c11_r*",
+    "desktop/src/ipc/c11-r*",
+    "desktop/src/test",
+    "tests/"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:29:07.267904+00:00",
+  "elapsed_seconds": 0.018,
+  "exit_code": 0,
+  "log": "logs/test-edit-diff.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "env": {}
+}

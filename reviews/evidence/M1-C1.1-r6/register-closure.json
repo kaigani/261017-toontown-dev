@@ -1,0 +1,47 @@
+[
+  {
+    "citation": "10 §2.6 L248",
+    "requirement": "created/deleted/modified, parentId/index, oldValue, invertibility, array moves and range edits",
+    "status": "divergent",
+    "implementation": "crates/model/src/document/mod.rs:456-480; crates/model/src/change.rs:589-674",
+    "note": "C11-R5-01 closed: staged frame post-conditions and full Document::issues() gate verified. C11-R6-01 is a new fix regression: with_patched_entry returns the pre-canonicalization inverse. Exposure run merging makes it fail or silently restore wrong frames. One open P1; accepted earlier rulings remain closed.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-03/04; generated ordinary edits/inverses pass seeded property tests.",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 267,
+      "name": "array_append_patch_inverse_restores_input",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial array_append_patch_inverse_restores_input --locked -- --exact --nocapture"
+    },
+    "response_table_row": 28,
+    "row": 388,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-02/03/04; original overwrite/elision cases fixed, array inverse and malformed-operation gaps remain",
+    "r3_test": {
+      "name": "resolved_stateless_move_inverse_does_not_shift_numeric_object_keys",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:138",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial resolved_stateless_move_inverse_does_not_shift_numeric_object_keys --locked -- --exact --nocapture"
+    },
+    "r3_status": "divergent",
+    "r3_note": "Pre-state RFC property passes 10,000 cases, but C11-R3-02 corrupts numeric object keys via public stateless invert and C11-R3-03 accepts malformed exposure ranges. R3-01 breaks opaque diffs.",
+    "r4_test": {
+      "name": "exposure_range_rejects_total_above_scene_limit",
+      "location": "crates/model/tests/c11_r4_exposure_bounds.rs:20",
+      "command": "cargo test -p tt-model --test c11_r4_exposure_bounds exposure_range_rejects_total_above_scene_limit --locked -- --exact --nocapture"
+    },
+    "r4_status": "divergent",
+    "r4_note": "R3-02 removal and R3-03 zero-count checks verified. C11-R4-01: oversized totals/windows still accepted at the patch boundary; integrity rejects afterward. Row remains divergent.",
+    "r5_test": {
+      "file": "crates/model/tests/c11_r5_write_bounds.rs",
+      "command": "cargo test -p tt-model --test c11_r5_write_bounds --locked -- --nocapture",
+      "result": "0 passed / 4 failed; no ignore or expected-fail"
+    },
+    "r5_status": "divergent",
+    "r5_note": "R4 range totals/windows and whole exposure add/replace checks are fixed; both R4 regressions pass. C11-R5-01 continues C11-R4-01: whole mouth strings, nested exposure counts, append batches and copy/move destinations still bypass the 100,000-frame patch-boundary limit. One P1, not double-counted.",
+    "r6_tests": {
+      "file": "crates/model/tests/c11_r6_staged_inverse.rs",
+      "command": "cargo test -p tt-model --test c11_r6_staged_inverse --locked -- --nocapture",
+      "result": "0 passed / 2 failed; no ignore or expected-fail"
+    }
+  }
+]

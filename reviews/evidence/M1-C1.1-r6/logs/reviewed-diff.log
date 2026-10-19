@@ -1,0 +1,3783 @@
+diff --git a/crates/model/src/change.rs b/crates/model/src/change.rs
+index 90cf819..01e1688 100644
+--- a/crates/model/src/change.rs
++++ b/crates/model/src/change.rs
+@@ -589,10 +589,92 @@ pub fn apply_with_inverse(value: &Value, patch: &[PatchOp]) -> Result<(Value, Ve
+     let mut steps: Vec<Vec<PatchOp>> = Vec::with_capacity(patch.len());
+     for op in patch {
+         steps.push(apply_op(&mut v, op)?);
++        // The post-condition on the staged value is the guarantee, whatever the operation or path shape (C11-R5-01).
++        check_frame_fields(&v, op)?;
+     }
+     Ok((v, steps.into_iter().rev().flatten().collect()))
+ }
+ 
++/// Post-condition of one applied operation on the staged value (C11-R5-01): every declared frame-bearing field the
++/// operation can have changed — one containing a written path (a run count written below `exposure`, an append to
++/// it), the written path itself (a whole mouth string, a copy or move into `exposure`), or one inside the written
++/// value (a whole placement or element replaced) — satisfies its invariants: exposure runs with counts ≥ 1 and at
++/// most a scene's frames, mouth strings of at most a scene's frames (10 §4.7, §4.14, §5). A failure is the typed
++/// error of the operation (`doc.limitExceeded` or `arg.invalid` with `details.pointer`), and because the patch is
++/// applied to a staged copy, nothing of it is applied. Fields inside opaque `meta`/`ext` are not declared fields.
++fn check_frame_fields(v: &Value, op: &PatchOp) -> Result<(), ModelError> {
++    for written in std::iter::once(&op.path).chain(op.from.as_ref()) {
++        let tokens = pointer::parse(written)?;
++        // A trailing `-` names the element an append created; its container is what changed.
++        let concrete = match tokens.split_last() {
++            Some((last, parent)) if last == "-" => parent,
++            _ => tokens.as_slice(),
++        };
++        for depth in 0..=concrete.len() {
++            let prefix = concrete.get(..depth).unwrap_or_default();
++            if let Some(field) = declared_frame_field(prefix)
++                && let Some(value) = pointer::get(v, prefix)
++            {
++                check_frame_field(field, value, op)?;
++            }
++        }
++        if let Some(value) = pointer::get(v, concrete) {
++            scan_frame_fields(value, &mut concrete.to_vec(), op, 0)?;
++        }
++    }
++    Ok(())
++}
++
++fn scan_frame_fields(v: &Value, at: &mut Vec<String>, op: &PatchOp, depth: usize) -> Result<(), ModelError> {
++    if depth > crate::MAX_JSON_DEPTH || at.iter().any(|t| t == "meta" || t == "ext") {
++        return Ok(());
++    }
++    if let Some(field) = declared_frame_field(at) {
++        check_frame_field(field, v, op)?;
++    }
++    match v {
++        Value::Object(m) => {
++            for (k, x) in m {
++                if matches!(x, Value::Object(_) | Value::Array(_) | Value::String(_)) {
++                    at.push(k.clone());
++                    let r = scan_frame_fields(x, at, op, depth + 1);
++                    at.pop();
++                    r?;
++                }
++            }
++        }
++        // Exposure tuples and other arrays of scalars hold no further declared fields.
++        Value::Array(items) => {
++            for (i, x) in items.iter().enumerate() {
++                if matches!(x, Value::Object(_)) {
++                    at.push(i.to_string());
++                    let r = scan_frame_fields(x, at, op, depth + 1);
++                    at.pop();
++                    r?;
++                }
++            }
++        }
++        _ => {}
++    }
++    Ok(())
++}
++
++fn check_frame_field(field: &str, v: &Value, op: &PatchOp) -> Result<(), ModelError> {
++    match (field, v) {
++        ("exposure", Value::Array(_)) => runs_total(v, "the exposure", op).map(drop),
++        ("mouths", Value::String(s)) => {
++            // Byte length bounds the letter count from above; count only when it could exceed the limit.
++            if s.len() as u64 > MAX_FRAMES && s.chars().count() as u64 > MAX_FRAMES {
++                Err(limit_err(op, format!("the mouth track would exceed {MAX_FRAMES} frames (10 §5)")))
++            } else {
++                Ok(())
++            }
++        }
++        // Other shapes are the schema's to reject when the object is validated.
++        _ => Ok(()),
++    }
++}
++
+ fn patch_err(op: &PatchOp, msg: impl Into<String>) -> ModelError {
+     ModelError::with_details(codes::ARG_INVALID, msg, json!({ "pointer": op.path, "op": op.op }))
+ }
+diff --git a/crates/model/src/document/mod.rs b/crates/model/src/document/mod.rs
+index 2543cfd..8048269 100644
+--- a/crates/model/src/document/mod.rs
++++ b/crates/model/src/document/mod.rs
+@@ -405,6 +405,81 @@ impl Document {
+         self.entry_raw(key)
+     }
+ 
++    /// Applies a patch to one entry as a **staged commit** (10 §2.6, §5; C11-R5-01) and returns the next snapshot
++    /// with the patch's inverse.
++    ///
++    /// The patch is applied to a copy of the entry's JSON (`change::apply_with_inverse`, which already checks every
++    /// frame-bearing field an operation touched). The staged entry then goes through the full input path again
++    /// (`object::from_json`: depth limit, normalisation, schema, canonical form, object-local rules, including the
++    /// exposure and scene limits), replaces the entry in a copy-on-write clone, and the clone's complete `issues()` —
++    /// every integrity rule and every 10 §5 limit — must have no error. Only then is the staged snapshot returned;
++    /// `self` is immutable and is never changed. This post-condition is the guarantee, whatever operations or paths
++    /// the patch uses; the cheap per-operation checks are fast paths.
++    ///
++    /// # Errors
++    /// The first failing stage's errors: the patch's typed error (e.g. `doc.limitExceeded`, `arg.invalid`,
++    /// `doc.patchTestFailed`, with `details.pointer`), the entry's input errors (`doc.schemaViolation`,
++    /// `arg.invalid`, `doc.limitExceeded`; `details.objectId`), an attempt to change the entry's ID (`arg.invalid`,
++    /// ID-01), or the integrity errors of the staged document (codes of 10 §9 with `details.objectId` and
++    /// `details.pointer`).
++    pub fn with_patched_entry(
++        &self,
++        key: &EntryKey,
++        patch: &[crate::change::PatchOp],
++    ) -> Result<(Document, Vec<crate::change::PatchOp>), Vec<ModelError>> {
++        fn staged<T: crate::entities::ModelObject + Check>(
++            v: &serde_json::Value,
++            id: &Id,
++        ) -> Result<T, Vec<ModelError>> {
++            let parsed: T = crate::object::from_json(v).map_err(|errors| {
++                errors
++                    .into_iter()
++                    .map(|e| {
++                        let mut details = e.details().clone();
++                        if let Some(m) = details.as_object_mut() {
++                            m.insert("objectId".into(), json!(id.as_str()));
++                        }
++                        ModelError::with_details(e.code(), e.message().to_owned(), details)
++                    })
++                    .collect::<Vec<_>>()
++            })?;
++            if parsed.object_id() != id {
++                return Err(vec![ModelError::with_details(
++                    codes::ARG_INVALID,
++                    format!("the id of `{id}` is immutable (10 ID-01)"),
++                    json!({ "objectId": id.as_str(), "pointer": format!("/{}", T::TYPE.id_field()) }),
++                )]);
++            }
++            Ok(parsed)
++        }
++        let before = self.entry_raw_json(key).map_err(|e| vec![e])?;
++        let (after, inverse) = crate::change::apply_with_inverse(&before, patch).map_err(|e| vec![e])?;
++        let mut next = self.clone();
++        match key {
++            EntryKey::Project => next.project = Arc::new(staged(&after, &self.project.id)?),
++            EntryKey::Library => next.library = Arc::new(staged(&after, &self.library.id)?),
++            EntryKey::Palette(id) => {
++                next.palettes.insert(id.clone(), Arc::new(staged(&after, id)?));
++            }
++            EntryKey::Bank(id) => {
++                next.banks.insert(id.clone(), Arc::new(staged(&after, id)?));
++            }
++            EntryKey::Drawing(id) => {
++                next.drawings.insert(id.clone(), Arc::new(staged(&after, id)?));
++            }
++            EntryKey::Scene(id) => {
++                next.scenes.insert(id.clone(), Arc::new(staged(&after, id)?));
++            }
++            EntryKey::Element(id) => {
++                next.elements.insert(id.clone(), Arc::new(staged(&after, id)?));
++            }
++        }
++        next.rebuild_derived();
++        let errors: Vec<ModelError> =
++            next.issues().into_iter().filter(|i| i.severity == Severity::Error).map(|i| i.to_error()).collect();
++        if errors.is_empty() { Ok((next, inverse)) } else { Err(errors) }
++    }
++
+     /// Where an object lives (by plain or compound ID string).
+     #[must_use]
+     pub fn locate(&self, id: &str) -> Option<&Location> {
+diff --git a/crates/model/tests/staged_commit.rs b/crates/model/tests/staged_commit.rs
+new file mode 100644
+index 0000000..79f73ed
+--- /dev/null
++++ b/crates/model/tests/staged_commit.rs
+@@ -0,0 +1,247 @@
++//! C11-R5-01: a patch is committed only through a staged copy whose full integrity check passes.
++//!
++//! Random RFC 6902 sequences (add with overwrite or `-` append, remove, replace, move, copy, test) are applied to a
++//! random entry of a seeded sample document through `Document::with_patched_entry`. Values are drawn from a pool
++//! that includes frame-limit edge cases (100 000 / 100 001 frames, huge counts, zero counts, long mouth strings),
++//! invalid names, wrong types and ID changes. Whatever the outcome, the original document stays byte-identical, and
++//! a committed document never has an error-severity issue.
++#![allow(clippy::unwrap_used, clippy::panic, reason = "test helpers")]
++
++use proptest::prelude::*;
++use serde_json::{Value, json};
++use tt_model::change::{self, PatchOp};
++use tt_model::document::{Document, EntryKey, Severity};
++use tt_model::{fixture, pointer};
++
++struct Rng(u64);
++
++impl Rng {
++    fn next(&mut self) -> u64 {
++        self.0 ^= self.0 << 13;
++        self.0 ^= self.0 >> 7;
++        self.0 ^= self.0 << 17;
++        self.0
++    }
++
++    fn below(&mut self, n: usize) -> usize {
++        (self.next() % n.max(1) as u64) as usize
++    }
++}
++
++fn all_pointers(v: &Value, at: &mut Vec<String>, out: &mut Vec<Vec<String>>) {
++    out.push(at.clone());
++    match v {
++        Value::Array(a) => {
++            for (i, x) in a.iter().enumerate() {
++                at.push(i.to_string());
++                all_pointers(x, at, out);
++                at.pop();
++            }
++        }
++        Value::Object(m) => {
++            for (k, x) in m {
++                at.push(k.clone());
++                all_pointers(x, at, out);
++                at.pop();
++            }
++        }
++        _ => {}
++    }
++}
++
++fn value(rng: &mut Rng, current: Option<&Value>) -> Value {
++    match rng.below(16) {
++        0 => json!(100_000),
++        1 => json!(100_001),
++        2 => json!(50_001),
++        3 => json!(0),
++        4 => json!(2_147_483_648u64),
++        5 => json!([["dr_staged", 100_001]]),
++        6 => json!([[null, 1]]),
++        7 => json!(["dr_staged", 1]),
++        8 => json!("G".repeat(if rng.below(4) == 0 { 100_001 } else { 3 })),
++        9 => json!("  Renamed  "),
++        10 => json!("bad/name"),
++        11 => Value::Null,
++        12 => json!({"k": 1}),
++        13 => json!(true),
++        // Small perturbations of the current value keep many patches valid.
++        14 => match current {
++            Some(Value::Number(n)) if n.is_u64() => json!(n.as_u64().unwrap_or(0) + 1),
++            Some(Value::String(s)) => json!(format!("{s}x")),
++            Some(v) => v.clone(),
++            None => json!(1),
++        },
++        _ => json!(rng.below(10)),
++    }
++}
++
++/// A random patch of up to `n` operations that applies to `doc` as JSON (operations that do not apply are skipped).
++fn random_patch(doc: &Value, rng: &mut Rng, n: usize) -> Vec<PatchOp> {
++    let op = |kind: &'static str, path: String, from: Option<String>, value: Option<Value>, old: Option<Value>| {
++        PatchOp { op: kind, path, from, value, old_value: old, range: None, elided: false }
++    };
++    let mut state = doc.clone();
++    let mut patch = Vec::new();
++    for _ in 0..n * 4 {
++        if patch.len() == n {
++            break;
++        }
++        let mut ptrs = Vec::new();
++        all_pointers(&state, &mut Vec::new(), &mut ptrs);
++        let p = ptrs[rng.below(ptrs.len())].clone();
++        let current = pointer::get(&state, &p).cloned();
++        let candidate = match rng.below(7) {
++            // Replace (the most common edit), also the root's members.
++            0 | 1 => Some(op("replace", pointer::join(&p), None, Some(value(rng, current.as_ref())), current.clone())),
++            2 => match &current {
++                Some(Value::Array(a)) => {
++                    let mut q = p.clone();
++                    q.push(if rng.below(2) == 0 { "-".into() } else { rng.below(a.len() + 1).to_string() });
++                    Some(op("add", pointer::join(&q), None, Some(value(rng, None)), None))
++                }
++                Some(Value::Object(m)) => {
++                    let mut q = p.clone();
++                    let key = m.keys().nth(rng.below(m.len() + 1)).cloned().unwrap_or_else(|| "extra".into());
++                    let old = m.get(&key).cloned();
++                    q.push(key);
++                    Some(op("add", pointer::join(&q), None, Some(value(rng, None)), old))
++                }
++                _ => None,
++            },
++            3 if !p.is_empty() => Some(op("remove", pointer::join(&p), None, None, current.clone())),
++            4 if !p.is_empty() => {
++                let to = ptrs[rng.below(ptrs.len())].clone();
++                (!to.is_empty()).then(|| {
++                    op("move", pointer::join(&to), Some(pointer::join(&p)), None, pointer::get(&state, &to).cloned())
++                })
++            }
++            5 => {
++                let to = ptrs[rng.below(ptrs.len())].clone();
++                (!to.is_empty()).then(|| {
++                    op("copy", pointer::join(&to), Some(pointer::join(&p)), None, pointer::get(&state, &to).cloned())
++                })
++            }
++            _ => Some(op("test", pointer::join(&p), None, current.clone(), None)),
++        };
++        if let Some(o) = candidate
++            && let Ok(s) = change::apply(&state, std::slice::from_ref(&o))
++        {
++            state = s;
++            patch.push(o);
++        }
++    }
++    patch
++}
++
++/// Every entry's raw JSON, as bytes.
++fn snapshot_bytes(doc: &Document) -> Vec<(EntryKey, Vec<u8>)> {
++    doc.entry_keys()
++        .into_iter()
++        .map(|k| {
++            let bytes = serde_json::to_vec(&doc.entry_raw_json(&k).unwrap()).unwrap();
++            (k, bytes)
++        })
++        .collect()
++}
++
++/// Runs one random case; returns whether the patch was committed.
++fn case(seed: u64) -> bool {
++    let mut rng = Rng(seed | 1);
++    let doc = fixture::sample_document(1 + rng.next() % 4).unwrap();
++    let keys = doc.entry_keys();
++    let key = keys[rng.below(keys.len())].clone();
++    let entry = doc.entry_raw_json(&key).unwrap();
++    let n = 1 + rng.below(6);
++    let patch = random_patch(&entry, &mut rng, n);
++    let before = snapshot_bytes(&doc);
++    let result = doc.with_patched_entry(&key, &patch);
++    assert_eq!(snapshot_bytes(&doc), before, "the original document must stay byte-identical");
++    match result {
++        Ok((next, inverse)) => {
++            let errors: Vec<_> = next.issues().into_iter().filter(|i| i.severity == Severity::Error).collect();
++            assert!(errors.is_empty(), "committed a document with errors: {errors:?}\npatch {patch:?}");
++            // The returned inverse is concrete (computed against the staged pre-state).
++            assert!(inverse.iter().all(|o| !o.path.ends_with("/-")));
++            true
++        }
++        Err(errors) => {
++            assert!(!errors.is_empty());
++            for e in &errors {
++                assert!(e.details().get("pointer").is_some(), "error without details.pointer: {e:?}");
++            }
++            false
++        }
++    }
++}
++
++proptest! {
++    #![proptest_config(ProptestConfig { cases: 256, failure_persistence: None, ..ProptestConfig::default() })]
++
++    #[test]
++    fn random_patches_never_commit_a_document_with_integrity_errors(seed in any::<u64>()) {
++        case(seed);
++    }
++}
++
++/// The deterministic sweep shows both outcomes occur: random patches are committed and refused.
++#[test]
++fn staged_commit_sweep_commits_and_refuses() {
++    let (mut committed, mut refused) = (0, 0);
++    for seed in 0..1500u64 {
++        if case(seed.wrapping_mul(0x9E37_79B9_7F4A_7C15)) {
++            committed += 1;
++        } else {
++            refused += 1;
++        }
++    }
++    println!("staged commit sweep: {committed} committed, {refused} refused");
++    assert!(committed > 50 && refused > 50, "{committed} committed, {refused} refused");
++}
++
++/// The four reviewer shapes also hold at the document level: an element's exposure, a placement's mouth string.
++#[test]
++fn document_level_frame_writes_are_refused_and_leave_the_document_unchanged() {
++    let doc = fixture::sample_document(1).unwrap();
++    let mut checked = std::collections::BTreeSet::new();
++    for key in doc.entry_keys() {
++        let EntryKey::Element(_) = &key else { continue };
++        let v = doc.entry_raw_json(&key).unwrap();
++        let before = snapshot_bytes(&doc);
++        let mut patches = Vec::new();
++        if v.get("exposure").and_then(Value::as_array).is_some_and(|a| !a.is_empty()) {
++            patches.push(PatchOp {
++                op: "replace",
++                path: "/exposure/0/1".into(),
++                from: None,
++                value: Some(json!(100_001)),
++                old_value: None,
++                range: None,
++                elided: false,
++            });
++        }
++        if let Some(placements) = v.get("placements").and_then(Value::as_array) {
++            for (i, placement) in placements.iter().enumerate() {
++                if placement.get("mouthTrack").is_some_and(Value::is_object) {
++                    patches.push(PatchOp {
++                        op: "replace",
++                        path: format!("/placements/{i}/mouthTrack/mouths"),
++                        from: None,
++                        value: Some(json!("G".repeat(100_001))),
++                        old_value: None,
++                        range: None,
++                        elided: false,
++                    });
++                }
++            }
++        }
++        for p in patches {
++            let errors = doc.with_patched_entry(&key, std::slice::from_ref(&p)).unwrap_err();
++            assert_eq!(errors[0].code(), "doc.limitExceeded", "{errors:?}");
++            assert_eq!(errors[0].details()["pointer"], json!(p.path));
++            assert_eq!(snapshot_bytes(&doc), before);
++            checked.insert(if p.path.ends_with("mouths") { "mouths" } else { "exposure" });
++        }
++    }
++    assert_eq!(checked.len(), 2, "the fixture must exercise both fields: {checked:?}");
++}
+diff --git a/docs/decisions/ADR-0010-object-model-and-identifiers.md b/docs/decisions/ADR-0010-object-model-and-identifiers.md
+index b1f311c..d9d7618 100644
+--- a/docs/decisions/ADR-0010-object-model-and-identifiers.md
++++ b/docs/decisions/ADR-0010-object-model-and-identifiers.md
+@@ -38,7 +38,10 @@ written. Everything later (executor, persistence, MCP, every area's commands) bu
+    costs a full validation of every entry (1.7–2.4 s for the 121 092-object scale document), so the executor must
+    derive snapshots by revalidating only the entries a transaction touched (C1.2). Undo and redo invert a
+    transaction's patches with `change::apply_with_inverse` / `invert_against`, against the state they applied to;
+-   there is no stateless inversion (C11-R3-02, ADR-0011 §7).
++   there is no stateless inversion (C11-R3-02, ADR-0011 §7). A patch reaches a snapshot only as a **staged commit**
++   (`Document::with_patched_entry`, C11-R5-01): applied to a copy of the entry, revalidated, assembled into a
++   copy-on-write clone whose complete `issues()` must be free of errors; otherwise the errors are returned and the
++   current snapshot is unchanged. The C1.2 executor commits through this primitive (batching several entries).
+ 5. **One struct per object type, strict.** Serde with `deny_unknown_fields`; field declaration order is schema order
+    (JSON-02). Type-specific element blocks (10 §4.6) are optional fields that are **absent** when they do not apply
+    (never `null`); nullable properties are written explicitly as `null` (JSON-04). Unknown properties of newer minor
+diff --git a/docs/decisions/ADR-0011-canonical-json-and-schemas.md b/docs/decisions/ADR-0011-canonical-json-and-schemas.md
+index e9250ba..47324a0 100644
+--- a/docs/decisions/ADR-0011-canonical-json-and-schemas.md
++++ b/docs/decisions/ADR-0011-canonical-json-and-schemas.md
+@@ -93,7 +93,14 @@ definitions the application validates with; 10 §2.6 for change sets that can be
+    run totals of the target, `value` and `oldValue`, the window's last frame and the resulting length are checked
+    arithmetically **before** anything is expanded or resized, and so are whole-value writes of an element's
+    `exposure`; a breach is `doc.limitExceeded` with `details.pointer` and nothing is applied. Exactly 100 000 frames
+-   is valid. It supports RFC 6902 root `add`/`replace`;
++   is valid. Those checks are fast paths; **the guarantee is a post-condition on the staged result** (C11-R5-01):
++   `apply_with_inverse` works on a copy and, after every operation, re-checks every declared frame-bearing field the
++   operation can have changed — one containing a written path (a count below `exposure`, an append), the written
++   path itself (a whole mouth string, a `copy`/`move` destination), and any inside the written value — whatever the
++   operation type or path shape; the first failure is that operation's typed error and the whole patch is refused.
++   At the document level, `Document::with_patched_entry` stages the patched entry, revalidates it through the full
++   input path, rebuilds the snapshot and returns it only if `issues()` has no error (every integrity rule and every
++   10 §5 limit); a property test drives random RFC 6902 sequences over sample documents through it. It supports RFC 6902 root `add`/`replace`;
+    whether `doc.object.patch` may replace a whole object is a command decision (C1.2). Exposure and mouth-track
+    edits use one range
+    operation: `{op: "replace", path, range: {from, to}, value, oldValue}` where frames from `from` covered by
+diff --git a/plan/traceability.csv b/plan/traceability.csv
+index 75efa3a..09aaf04 100644
+--- a/plan/traceability.csv
++++ b/plan/traceability.csv
+@@ -104,3 +104,5 @@ ADR-0012; 10 §2.8,branch probing coerces under each alternative (mixed double a
+ 10 §2.8,x-since on anonymous declarations (DynamicParam alternatives) (C11-R3-06),M1,C1.1,done,crates/model/tests/c11_r3_adversarial.rs::anonymous_variant_property_declarations_have_since
+ 10 §5; §4.7; §2.6,"exposure and mouth-track writes bounded by the 100 000-frame scene limit at the patch boundary, before expansion (C11-R4-01)",M1,C1.1,done (change::parse_runs / apply_range / apply_op),crates/model/tests/c11_r4_exposure_bounds.rs::exposure_range_rejects_total_above_scene_limit; crates/model/tests/c11_r4_exposure_bounds.rs::exposure_range_rejects_window_past_scene_limit; crates/model/src/change.rs::frame_bearing_writes_are_bounded_at_the_scene_limit
+ review process,"every reviewer suite runs in CI, including tests/adversarial/*.py (C1.1 closure CI ruling)",M1,C1.1,"done: check jobs (Windows, macOS) step ""Reviewer Python suites""",scripts/run-reviewer-python-suites.py; .github/workflows/ci.yml
++10 §5; §2.6; §4.7; §4.14,"every write to a declared frame-bearing field is bounded by a post-condition on the staged value, whatever the operation or path (C11-R5-01)",M1,C1.1,done (change::apply_with_inverse + check_frame_fields),crates/model/tests/c11_r5_write_bounds.rs::whole_mouth_string_writes_obey_scene_limit; ::nested_exposure_count_write_obeys_total_limit; ::exposure_append_batch_cannot_cross_limit; ::copy_and_move_into_exposure_obey_scene_limit
++10 §5; §7.2; §2.6,patches commit only through a staged copy whose full integrity check passes (C11-R5-01),M1,C1.1,done (Document::with_patched_entry),crates/model/tests/staged_commit.rs::random_patches_never_commit_a_document_with_integrity_errors; ::staged_commit_sweep_commits_and_refuses; ::document_level_frame_writes_are_refused_and_leave_the_document_unchanged
+diff --git a/reviews/M1-C1.1-handoff.md b/reviews/M1-C1.1-handoff.md
+index 133b941..49205c8 100644
+--- a/reviews/M1-C1.1-handoff.md
++++ b/reviews/M1-C1.1-handoff.md
+@@ -52,7 +52,7 @@ Every suite runs in the `check (windows-latest)` and `check (macos-latest)` jobs
+ 
+ | Reviewer suite | CI step (check jobs, both OSes) |
+ |---|---|
+-| Rust: `crates/model/tests/c11_r1_adversarial.rs`, `c11_r2_adversarial.rs`, `c11_r3_adversarial.rs`, `c11_r3_random.rs`, `c11_r3_register.rs`, `c11_r4_exposure_bounds.rs`; `crates/engine/tests/c11_r1_wire.rs`, `c11_r2_wire.rs`, `c11_r3_wire.rs`; `tests/adversarial/c01.rs` (target `adversarial_c01`, `bins/headless`), `tests/adversarial/c03-r2-encoder.rs` (`desktop/src-tauri`) | `cargo test --workspace --locked` |
++| Rust: `crates/model/tests/c11_r1_adversarial.rs`, `c11_r2_adversarial.rs`, `c11_r3_adversarial.rs`, `c11_r3_random.rs`, `c11_r3_register.rs`, `c11_r4_exposure_bounds.rs`, `c11_r5_write_bounds.rs`; `crates/engine/tests/c11_r1_wire.rs`, `c11_r2_wire.rs`, `c11_r3_wire.rs`; `tests/adversarial/c01.rs` (target `adversarial_c01`, `bins/headless`), `tests/adversarial/c03-r2-encoder.rs` (`desktop/src-tauri`) | `cargo test --workspace --locked` |
+ | Vitest: `desktop/src/ipc/c11-r1-adversarial.test.ts`, `c11-r2-adversarial.test.ts`, `c11-r3-adversarial.test.ts`, `desktop/src/test/*` (incl. `tests/adversarial/frontend-cases.ts` via `adversarial.test.ts`, the `c01-r*` `.mjs` suites via `c01-r*-node.test.ts`, `c03-r1-real-transport.mjs` via `c03-r1-binary.test.ts`) | "Front end — lint, type-check, test, format, licences" (`pnpm test`) |
+ | Python: every `tests/adversarial/*.py`, i.e. `c02-r1/r2/r3-tooling.py`, `c03-r1/r2-tooling.py`, `c04-r2-decisions.py`, `c04-r3-decisions.py`, `c04-r3-page.py`, `c04-r5-decisions.py`, `c11-r2-review-policy.py`, `headless_guard.py` | **"Reviewer Python suites (every tests/adversarial/*.py)"** — `scripts/run-reviewer-python-suites.py`, which discovers new files automatically. The checkout uses `fetch-depth: 0` for the policy suite. `collect_runtime_evidence.py` is excluded by name because it is an M0 evidence collector, not a test. |
+ | `tests/adversarial/guards.mjs` (licensing, allowlist, imports) | `cargo test --workspace --locked` (invoked by `adversarial_c01`) |
+@@ -63,6 +63,17 @@ Some suites run twice: the c02/c03 tooling suites also run through their Vitest
+ 
+ CI run 39179514794 on `07f992d`: all 8 jobs green; "Reviewer Python suites" 11/11 on both check jobs.
+ 
++**Final closure check r5 (2026-10-18).** `reviews/M1-C1.1-r5-closure.md` (1 P1, C11-R5-01) was merged as `4bb343e`. The
++frame limit is now enforced structurally rather than per operation type:
++- `change::apply_with_inverse` re-checks, after every operation, every declared frame-bearing field the operation
++  can have changed, on its staged copy.
++- `Document::with_patched_entry` commits a patch only after the staged entry is revalidated and the staged
++  snapshot's complete `issues()` is free of errors.
++
++The property test is `crates/model/tests/staged_commit.rs`. See the addendum in `reviews/M1-C1.1-r3-response.md`.
++
++CI run 39183445143 on `ed6e4b2`: all 8 jobs green.
++
+ ## What was built
+ 
+ ### `tt-model` (crates/model)
+@@ -75,8 +86,8 @@ CI run 39179514794 on `07f992d`: all 8 jobs green; "Reviewer Python suites" 11/1
+ | `entities/*` | 10 §2.2, §4.1–§4.17 | Every entity with the envelope `{id, type, rev, name, meta, ext}`: project, pens, palettes/styles/swatches, assets, transitions, drawing banks, drawings, drawing nodes (layer/group/text/bitmap), strokes (spine, sides, line style), scenes and tree nodes, elements (all 17 element types with their type-specific blocks: exposure runs, cell notes, transform with per-type pivots, camera, skeleton, bone, slot, typed effect params, particle blocks, sound placements and mouth tracks, lip-sync mappings, media sequences), channels, keys, motion points, libraries/folders/items; defaults (constructors) and constraints. Fields are crate-private with read accessors only. |
+ | `object`, `input`, `validate` | 10 §1.1, §1.3, §2.2, §4, §5 | The one input path: depth limit (100) → number normalisation → schema-directed input pass (`input`: NFC on declared strings, trimmed names, swatch `id` alias, canonical key order; opaque `meta`/`ext`/`importOptions` never interpreted) → schema validation → strict typed parse → canonical form (exposure runs, spline handle clamping) → object-local semantic rules (ranges across fields, presence by kind, uniqueness inside objects, sorted keys/stops, consecutive blocks, non-overlapping placements, ID-03 uniqueness, entry-path safety, closed brush outlines, fixed-text width, link locators, texture paths, manual mouth ranges). |
+ | `path` | 10 §2.4, 11 §5.1 | The path grammar (quoted names with escapes, `#n`, `@id`, `local`/`global`, singletons, `cell:#n`, `camera`, special references), printing, and `Ref` (ID, compound ID or path). |
+-| `document` | 10 §3, §5, §2.7, DM-1 | `from_parts` revalidates every entry through the input path and reports entries given twice (`id.duplicate`). Immutable `Document` snapshot with `Arc`-shared entries (copy-on-write, D15; clone of a 121 000-object document 0.4 ms), ID index (including compound local IDs and ambiguity detection), integrity checks (membership, ID-01 uniqueness, no `rev` newer than `documentRev`, at least one visible palette, a `local` project library, one bitmap per image drawing, names per scope, banks, tree, column order, current camera, palette styles, references, colour references as warnings, scene length), JSON rendering with `depth` and stubs plus the transient `path`, persisted entry JSON (DM-1), canonical paths, reference resolution with `ref.notFound` / `ref.ambiguous` (candidates with canonical paths) / `ref.wrongType`. |
+-| `change` | 10 §2.6, §10.4 | Own-view diffs (child objects reduced to `{id, type}`, `rev` excluded; collections only at declared child slots) → `created`/`modified`/`deleted` changes; RFC 6902 operations with `oldValue` (also for overwritten members); exposure and mouth-track range operations; `apply` (refuses elided or incomplete operations and range operations outside `exposure`/`mouthTrack/mouths`; root add), `apply_with_inverse` / `invert_against` (inversion against the pre-state; no stateless inversion since round 3), `elide` (> 64 KiB). |
++| `document` | 10 §3, §5, §2.7, DM-1 | `with_patched_entry`: staged commit of a patch to one entry (revalidated, full `issues()` must be error-free, else refused with the snapshot unchanged). `from_parts` revalidates every entry through the input path and reports entries given twice (`id.duplicate`). Immutable `Document` snapshot with `Arc`-shared entries (copy-on-write, D15; clone of a 121 000-object document 0.4 ms), ID index (including compound local IDs and ambiguity detection), integrity checks (membership, ID-01 uniqueness, no `rev` newer than `documentRev`, at least one visible palette, a `local` project library, one bitmap per image drawing, names per scope, banks, tree, column order, current camera, palette styles, references, colour references as warnings, scene length), JSON rendering with `depth` and stubs plus the transient `path`, persisted entry JSON (DM-1), canonical paths, reference resolution with `ref.notFound` / `ref.ambiguous` (candidates with canonical paths) / `ref.wrongType`. |
++| `change` | 10 §2.6, §10.4 | Own-view diffs (child objects reduced to `{id, type}`, `rev` excluded; collections only at declared child slots) → `created`/`modified`/`deleted` changes; RFC 6902 operations with `oldValue` (also for overwritten members); exposure and mouth-track range operations; `apply` (refuses elided or incomplete operations and range operations outside `exposure`/`mouthTrack/mouths`; root add), `apply_with_inverse` / `invert_against` (inversion against the pre-state; no stateless inversion since round 3; post-condition on every declared frame-bearing field after each operation since r5), `elide` (> 64 KiB). |
+ | `canonical`, `json_text` | 10 §1.1, §6.5 | Canonical writer (JSON-01…03) with ECMAScript number formatting (exact digits for integral doubles 2^53…1e21), `to_value` rejecting NaN/±∞ on every serialisation path; compact writer for the wire. `json_text`: the strict text reader shared with the front end (duplicate keys, unpaired surrogates, depth > 128, inexact integer literals rejected). |
+ | `schema`, `schema_ts` | 10 §2.8 | `schemars` draft 2020-12 generation plus post-processing (full-or-stub object schemas, presence rules per kind, `int` = signed 32-bit with the stated 64-bit/seed exceptions, name patterns, derived/transient markers, `x-since` on every property, read-only `type`); validation with `jsonschema` 0.59; `doc.schema.get` helpers (`object_schema`, `property_schema` through unions, branches, tuples and maps); TypeScript publication with `X | XStub` types. |
+ | `overlay` | 10 VER-02, JSON-02 | Unknown properties of newer minor versions moved aside before strict parsing and merged back last, sorted (used by the C1.3 load path). |
+diff --git a/reviews/M1-C1.1-r3-response.md b/reviews/M1-C1.1-r3-response.md
+index 346d05d..e31b1e8 100644
+--- a/reviews/M1-C1.1-r3-response.md
++++ b/reviews/M1-C1.1-r3-response.md
+@@ -190,3 +190,70 @@ Raw logs are in `reviews/evidence/M1-C1.1-r4-response/gates/`, with hashes in `r
+ 
+ CI: run **39179514794** on `07f992d`, all 8 jobs green; its "Reviewer Python suites" step passed 11/11 on both Windows
+ and macOS.
++
++## Addendum — final closure check r5 (`reviews/M1-C1.1-r5-closure.md`, merged as `4bb343e`)
++
++Fixes: `a448459`. **No reviewer-owned test file was edited.** `git diff` of every reviewer test location against
++the merge is empty. All four regressions in `crates/model/tests/c11_r5_write_bounds.rs` pass unchanged, as do every
++earlier review suite and both R4 regressions.
++
++### C11-R5-01 — the frame limit is now a structural post-condition — **fixed** (`a448459`)
++
++Per the ruling, the bound no longer depends on operation type or path shape. It holds at two layers; the per-operation
++pre-checks from R4 remain as fast paths.
++
++1. **Patch application** — `change.rs:593`, `:605`. `apply_with_inverse` (and therefore `apply` and
++   `invert_against`) applies the patch to a staged copy. After **every** operation, `check_frame_fields` re-checks
++   every declared frame-bearing field (an element's `exposure`, a placement's `mouthTrack/mouths`; never inside
++   `meta`/`ext`) that the operation can have changed, at both its `path` and its `from`:
++   - every field on the way to the written location: a count written at `/exposure/0/1`, an append at `/exposure/-`;
++   - the written location itself: a whole mouth string, a `copy`/`move` destination;
++   - every field inside the written value (`scan_frame_fields`, `:628`): a whole placement or element replaced.
++
++   Each field must satisfy its invariants (`check_frame_field`, `:662`): runs with counts ≥ 1 and at most 100 000
++   frames (arithmetic, before any expansion), and mouth strings of at most 100 000 letters. The first failure
++   returns that operation's `doc.limitExceeded` (or `arg.invalid` for a malformed run) with `details.pointer` and
++   `details.maxFrames`. The input is never modified, and a refused batch returns no value, so earlier operations of
++   the batch are not applied either. The four reviewer shapes pass: whole mouth `add`/`replace`, a nested count, an
++   append batch with a preceding marker write, and `copy`/`move` from opaque `meta` into `exposure`.
++2. **Document commit** — `document/mod.rs:425`, `Document::with_patched_entry(key, patch)`. The patch is applied to
++   a copy of the entry's JSON (layer 1). The staged entry is revalidated through the full input path
++   (`object::from_json`: schema, canonical form, object rules including exposure totals); its ID must be unchanged
++   (ID-01). The entry then replaces the old one in a copy-on-write clone, and the clone's complete `issues()` —
++   every integrity rule and every 10 §5 limit, including scene length — must contain no error. Only then are the
++   staged snapshot and the patch's concrete inverse returned. On any failure the errors are returned with
++   `details.pointer`; `self` is immutable and stays byte-identical. ADR-0010 §4 records that the C1.2 executor
++   commits through this primitive.
++
++**Property test** (`crates/model/tests/staged_commit.rs`):
++- `random_patches_never_commit_a_document_with_integrity_errors` (proptest, 256 cases): random RFC 6902 sequences —
++  add with overwrite or `-` append, remove, replace, move, copy, test — on a random entry of a seeded sample
++  document. The value pool includes 100 000 / 100 001 frames, 50 001 counts, zero, 2^31, oversized runs, 100 001-
++  letter mouth strings, invalid names, wrong types and nulls. It asserts that the original document stays
++  byte-identical, that a committed document has no error-severity issue, that every refusal carries
++  `details.pointer`, and that the returned inverse is concrete.
++- `staged_commit_sweep_commits_and_refuses` (1 500 fixed seeds): both outcomes occur; this run committed 92 and
++  refused 1 408 (`gates/staged-commit-nocapture.log`).
++- `document_level_frame_writes_are_refused_and_leave_the_document_unchanged`: a 100 001-frame exposure count and a
++  100 001-letter mouth string, written through `with_patched_entry` on real fixture elements, give
++  `doc.limitExceeded` at the operation's pointer, and the document is unchanged.
++
++**Register row 388**: implemented. Sources: `change.rs:593`, `:605`, `:628`, `:662`; `document/mod.rs:425`; the R4
++fast paths `change.rs:387`, `:682`. Tests: `c11_r5_write_bounds.rs` (4), `staged_commit.rs` (3),
++`c11_r4_exposure_bounds.rs` (2) and the round-3 inversion and zero-count tests.
++
++### Gates
++
++Raw logs are in `reviews/evidence/M1-C1.1-r5-response/gates/`, with hashes in `receipt.json`:
++- fmt; clippy and the diagnostics clippy;
++- `cargo test --workspace --locked`: **288 passed**, 1 standing ignore;
++- diagnostics tests: passed on the second run. In the first run the `rustc` process aborted with an allocation
++  failure while compiling `tt-desktop`'s test binary. No test ran; its log was overwritten by the rerun, which the
++  receipt records.
++- `cargo deny`;
++- `pnpm` lint, typecheck, test (**Vitest 39 files / 326 passed; Node 9**), format and licences;
++- both front-end builds (dist check ok);
++- headless build, selftest ×2 and the dependency guard;
++- reviewer Python suites **11/11**.
++
++CI: run **39183445143** on `ed6e4b2`, all 8 jobs green.
+diff --git a/reviews/evidence/M1-C1.1-r5-response/.gitattributes b/reviews/evidence/M1-C1.1-r5-response/.gitattributes
+new file mode 100644
+index 0000000..e9a4a28
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/.gitattributes
+@@ -0,0 +1,3 @@
++# Raw evidence must retain its original bytes across Windows/macOS checkouts.
++*.log -text
++*.json -text
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/build.log b/reviews/evidence/M1-C1.1-r5-response/gates/build.log
+new file mode 100644
+index 0000000..e328700
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/build.log
+@@ -0,0 +1,39 @@
++
++> @toontown/desktop@0.0.1 build:diagnostics C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop
++> vite build --config vite.config.ts --mode diagnostics && node boundary/check-dist.mjs dist
++
++[36mvite v8.3.4 [32mbuilding client environment for diagnostics...[36m[39m
++transforming...
++✓ 59 modules transformed.
++rendering chunks...
++computing gzip size...
++dist/index.html                            0.47 kB │ gzip:   0.29 kB
++dist/assets/index-B2rIT20y.css           137.08 kB │ gzip:  11.42 kB
++dist/assets/tauri-transport-CqPEAjyd.js    3.35 kB │ gzip:   1.45 kB │ map:    36.54 kB
++dist/assets/TabletSpike-JZ68VHsa.js       25.01 kB │ gzip:   8.57 kB │ map:    95.10 kB
++dist/assets/CanvasSpike-DHCOd7l6.js       33.25 kB │ gzip:  12.58 kB │ map:   148.64 kB
++dist/assets/index-TE6ALQVu.js            641.30 kB │ gzip: 169.27 kB │ map: 2,510.03 kB
++
++[32m✓ built in 1.09s[39m
++IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)
++
++> @toontown/desktop@0.0.1 build C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop
++> vite build --config vite.config.ts && node boundary/check-dist.mjs dist
++
++[36mvite v8.3.4 [32mbuilding client environment for production...[36m[39m
++transforming...
++✓ 49 modules transformed.
++rendering chunks...
++computing gzip size...
++dist/index.html                            0.47 kB │ gzip:   0.29 kB
++dist/assets/index-B2rIT20y.css           137.08 kB │ gzip:  11.42 kB
++dist/assets/tauri-transport-CqPEAjyd.js    3.35 kB │ gzip:   1.45 kB │ map:    36.54 kB
++dist/assets/index-BpIRx0L-.js            632.42 kB │ gzip: 165.97 kB │ map: 2,489.83 kB
++
++[32m✓ built in 870ms[39m
++[33m[plugin builtin:vite-reporter] 
++(!) Some chunks are larger than 500 kB after minification. Consider:
++- Using dynamic import() to code-split the application
++- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
++- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
++IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/clippy-diag.log b/reviews/evidence/M1-C1.1-r5-response/gates/clippy-diag.log
+new file mode 100644
+index 0000000..6f1af01
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/clippy-diag.log
+@@ -0,0 +1,15 @@
++    Checking tt-model v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\model)
++    Checking tt-anim v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\anim)
++    Checking tt-colour v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\colour)
++    Checking tt-vector v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\vector)
++    Checking tt-registry v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\registry)
++    Checking tt-persist v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\persist)
++    Checking tt-audio v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\audio)
++    Checking tt-fx v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\fx)
++    Checking tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
++    Checking tt-lipsync v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\lipsync)
++    Checking tt-render v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\render)
++    Checking tt-io v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\io)
++    Checking tt-engine v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\engine)
++    Checking tt-desktop v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop\src-tauri)
++    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.19s
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/clippy.log b/reviews/evidence/M1-C1.1-r5-response/gates/clippy.log
+new file mode 100644
+index 0000000..cb07469
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/clippy.log
+@@ -0,0 +1,6 @@
++    Checking tt-mcp v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\mcp)
++    Checking tt-engine v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\engine)
++    Checking tt-model v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\model)
++    Checking tt-desktop v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop\src-tauri)
++    Checking tt-headless v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\bins\headless)
++    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.67s
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/deny.log b/reviews/evidence/M1-C1.1-r5-response/gates/deny.log
+new file mode 100644
+index 0000000..df3ddeb
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/deny.log
+@@ -0,0 +1,1838 @@
++warning[duplicate]: found 2 duplicate entries for crate 'base64'
++   ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:11:1
++   │  
++11 │ ╭ base64 0.21.7 registry+https://github.com/rust-lang/crates.io-index
++12 │ │ base64 0.23.1 registry+https://github.com/rust-lang/crates.io-index
++   │ ╰───────────────────────────────────────────────────────────────────┘ lock entries
++   │  
++   ├ base64 v0.21.7
++     └── swift-rs v1.0.9
++         └── tauri-utils v2.10.2
++             ├── tauri v2.12.4
++             │   └── tt-desktop v0.0.1
++             ├── tauri-build v2.7.3
++             │   ├── (build) tauri v2.12.4 (*)
++             │   └── (build) tt-desktop v0.0.1 (*)
++             ├── tauri-codegen v2.7.3
++             │   └── tauri-macros v2.7.3
++             │       └── tauri v2.12.4 (*)
++             ├── tauri-macros v2.7.3 (*)
++             ├── tauri-runtime v2.12.2
++             │   ├── tauri v2.12.4 (*)
++             │   └── tauri-runtime-wry v2.12.2
++             │       └── tauri v2.12.4 (*)
++             └── tauri-runtime-wry v2.12.2 (*)
++   ├ base64 v0.23.1
++     ├── plist v1.10.1
++     │   ├── tauri v2.12.4
++     │   │   └── tt-desktop v0.0.1
++     │   ├── tauri-codegen v2.7.3
++     │   │   └── tauri-macros v2.7.3
++     │   │       └── tauri v2.12.4 (*)
++     │   └── tauri-utils v2.10.2
++     │       ├── tauri v2.12.4 (*)
++     │       ├── tauri-build v2.7.3
++     │       │   ├── (build) tauri v2.12.4 (*)
++     │       │   └── (build) tt-desktop v0.0.1 (*)
++     │       ├── tauri-codegen v2.7.3 (*)
++     │       ├── tauri-macros v2.7.3 (*)
++     │       ├── tauri-runtime v2.12.2
++     │       │   ├── tauri v2.12.4 (*)
++     │       │   └── tauri-runtime-wry v2.12.2
++     │       │       └── tauri v2.12.4 (*)
++     │       └── tauri-runtime-wry v2.12.2 (*)
++     └── tauri-codegen v2.7.3 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'bitflags'
++   ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:17:1
++   │  
++17 │ ╭ bitflags 1.3.2 registry+https://github.com/rust-lang/crates.io-index
++18 │ │ bitflags 2.13.2 registry+https://github.com/rust-lang/crates.io-index
++   │ ╰─────────────────────────────────────────────────────────────────────┘ lock entries
++   │  
++   ├ bitflags v1.3.2
++     └── png v0.17.16
++         └── ico v0.5.0
++             └── tauri-codegen v2.7.3
++                 └── tauri-macros v2.7.3
++                     └── tauri v2.12.4
++                         └── tt-desktop v0.0.1
++   ├ bitflags v2.13.2
++     ├── core-graphics v0.25.0
++     │   └── tao v0.37.1
++     │       └── tauri-runtime-wry v2.12.2
++     │           └── tauri v2.12.4
++     │               └── tt-desktop v0.0.1
++     ├── core-graphics-types v0.2.0
++     │   └── core-graphics v0.25.0 (*)
++     ├── dispatch2 v0.3.1
++     │   └── tao v0.37.1 (*)
++     ├── keyboard-types v0.8.3
++     │   └── muda v0.20.0
++     │       └── tauri v2.12.4 (*)
++     ├── objc2-app-kit v0.3.2
++     │   ├── muda v0.20.0 (*)
++     │   ├── objc2-web-kit v0.3.2
++     │   │   ├── tauri v2.12.4 (*)
++     │   │   ├── tauri-runtime v2.12.2
++     │   │   │   ├── tauri v2.12.4 (*)
++     │   │   │   └── tauri-runtime-wry v2.12.2 (*)
++     │   │   └── wry v0.57.0
++     │   │       └── tauri-runtime-wry v2.12.2 (*)
++     │   ├── tao v0.37.1 (*)
++     │   ├── tauri v2.12.4 (*)
++     │   ├── tauri-runtime-wry v2.12.2 (*)
++     │   ├── tt-desktop v0.0.1 (*)
++     │   ├── window-vibrancy v0.8.1
++     │   │   └── tauri v2.12.4 (*)
++     │   └── wry v0.57.0 (*)
++     ├── objc2-core-foundation v0.3.2
++     │   ├── muda v0.20.0 (*)
++     │   ├── objc2-app-kit v0.3.2 (*)
++     │   ├── objc2-core-graphics v0.3.2
++     │   │   └── softbuffer v0.4.8
++     │   │       └── tauri-runtime-wry v2.12.2 (*)
++     │   ├── objc2-foundation v0.3.2
++     │   │   ├── muda v0.20.0 (*)
++     │   │   ├── objc2-app-kit v0.3.2 (*)
++     │   │   ├── objc2-quartz-core v0.3.2
++     │   │   │   ├── objc2-app-kit v0.3.2 (*)
++     │   │   │   ├── softbuffer v0.4.8 (*)
++     │   │   │   └── window-vibrancy v0.8.1 (*)
++     │   │   ├── objc2-web-kit v0.3.2 (*)
++     │   │   ├── softbuffer v0.4.8 (*)
++     │   │   ├── tao v0.37.1 (*)
++     │   │   ├── tauri v2.12.4 (*)
++     │   │   ├── window-vibrancy v0.8.1 (*)
++     │   │   └── (build) wry v0.57.0 (*)
++     │   ├── objc2-quartz-core v0.3.2 (*)
++     │   ├── objc2-web-kit v0.3.2 (*)
++     │   ├── softbuffer v0.4.8 (*)
++     │   ├── window-vibrancy v0.8.1 (*)
++     │   └── wry v0.57.0 (*)
++     ├── objc2-core-graphics v0.3.2 (*)
++     ├── objc2-foundation v0.3.2 (*)
++     ├── objc2-quartz-core v0.3.2 (*)
++     ├── objc2-web-kit v0.3.2 (*)
++     ├── octotablet v0.1.0
++     │   └── tt-desktop v0.0.1 (*)
++     ├── png v0.18.1
++     │   ├── muda v0.20.0 (*)
++     │   ├── tauri-codegen v2.7.3
++     │   │   └── tauri-macros v2.7.3
++     │   │       └── tauri v2.12.4 (*)
++     │   └── (dev) tt-render v0.0.1
++     │       ├── tt-engine v0.0.1
++     │       │   ├── tt-desktop v0.0.1 (*)
++     │       │   ├── tt-headless v0.0.1
++     │       │   └── tt-mcp v0.0.1
++     │       │       └── tt-headless v0.0.1 (*)
++     │       └── tt-io v0.0.1
++     │           └── tt-engine v0.0.1 (*)
++     ├── proptest v1.12.0
++     │   └── (dev) tt-model v0.0.1
++     │       ├── tt-anim v0.0.1
++     │       │   ├── tt-engine v0.0.1 (*)
++     │       │   ├── tt-fx v0.0.1
++     │       │   │   ├── tt-engine v0.0.1 (*)
++     │       │   │   └── tt-render v0.0.1 (*)
++     │       │   └── tt-render v0.0.1 (*)
++     │       ├── tt-audio v0.0.1
++     │       │   ├── tt-engine v0.0.1 (*)
++     │       │   └── tt-lipsync v0.0.1
++     │       │       └── tt-engine v0.0.1 (*)
++     │       ├── tt-colour v0.0.1
++     │       │   ├── tt-engine v0.0.1 (*)
++     │       │   └── tt-render v0.0.1 (*)
++     │       ├── tt-engine v0.0.1 (*)
++     │       ├── tt-executor v0.0.1
++     │       │   └── tt-engine v0.0.1 (*)
++     │       ├── tt-fx v0.0.1 (*)
++     │       ├── tt-io v0.0.1 (*)
++     │       ├── tt-lipsync v0.0.1 (*)
++     │       ├── tt-persist v0.0.1
++     │       │   ├── tt-engine v0.0.1 (*)
++     │       │   └── tt-io v0.0.1 (*)
++     │       ├── tt-registry v0.0.1
++     │       │   ├── tt-engine v0.0.1 (*)
++     │       │   └── tt-executor v0.0.1 (*)
++     │       ├── tt-render v0.0.1 (*)
++     │       └── tt-vector v0.0.1
++     │           ├── tt-engine v0.0.1 (*)
++     │           └── tt-render v0.0.1 (*)
++     ├── rustix v1.1.5
++     │   └── tempfile v3.27.0
++     │       ├── proptest v1.12.0 (*)
++     │       └── rusty-fork v0.3.1
++     │           └── proptest v1.12.0 (*)
++     ├── selectors v0.38.0
++     │   └── dom_query v0.28.0
++     │       └── tauri-utils v2.10.2
++     │           ├── tauri v2.12.4 (*)
++     │           ├── tauri-build v2.7.3
++     │           │   ├── (build) tauri v2.12.4 (*)
++     │           │   └── (build) tt-desktop v0.0.1 (*)
++     │           ├── tauri-codegen v2.7.3 (*)
++     │           ├── tauri-macros v2.7.3 (*)
++     │           ├── tauri-runtime v2.12.2 (*)
++     │           └── tauri-runtime-wry v2.12.2 (*)
++     └── tao v0.37.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'block-buffer'
++   ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:19:1
++   │  
++19 │ ╭ block-buffer 0.10.4 registry+https://github.com/rust-lang/crates.io-index
++20 │ │ block-buffer 0.12.1 registry+https://github.com/rust-lang/crates.io-index
++   │ ╰─────────────────────────────────────────────────────────────────────────┘ lock entries
++   │  
++   ├ block-buffer v0.10.4
++     └── digest v0.10.7
++         └── sha2 v0.10.9
++             └── tauri-codegen v2.7.3
++                 └── tauri-macros v2.7.3
++                     └── tauri v2.12.4
++                         └── tt-desktop v0.0.1
++   ├ block-buffer v0.12.1
++     └── digest v0.11.3
++         └── sha2 v0.11.1
++             ├── tt-engine v0.0.1
++             │   ├── tt-desktop v0.0.1
++             │   ├── tt-headless v0.0.1
++             │   └── tt-mcp v0.0.1
++             │       └── tt-headless v0.0.1 (*)
++             └── (dev) tt-render v0.0.1
++                 ├── tt-engine v0.0.1 (*)
++                 └── tt-io v0.0.1
++                     └── tt-engine v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'cpufeatures'
++   ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:51:1
++   │  
++51 │ ╭ cpufeatures 0.2.17 registry+https://github.com/rust-lang/crates.io-index
++52 │ │ cpufeatures 0.3.1 registry+https://github.com/rust-lang/crates.io-index
++   │ ╰───────────────────────────────────────────────────────────────────────┘ lock entries
++   │  
++   ├ cpufeatures v0.2.17
++     └── sha2 v0.10.9
++         └── tauri-codegen v2.7.3
++             └── tauri-macros v2.7.3
++                 └── tauri v2.12.4
++                     └── tt-desktop v0.0.1
++   ├ cpufeatures v0.3.1
++     ├── chacha20 v0.10.2
++     │   └── proptest v1.12.0
++     │       └── (dev) tt-model v0.0.1
++     │           ├── tt-anim v0.0.1
++     │           │   ├── tt-engine v0.0.1
++     │           │   │   ├── tt-desktop v0.0.1
++     │           │   │   ├── tt-headless v0.0.1
++     │           │   │   └── tt-mcp v0.0.1
++     │           │   │       └── tt-headless v0.0.1 (*)
++     │           │   ├── tt-fx v0.0.1
++     │           │   │   ├── tt-engine v0.0.1 (*)
++     │           │   │   └── tt-render v0.0.1
++     │           │   │       ├── tt-engine v0.0.1 (*)
++     │           │   │       └── tt-io v0.0.1
++     │           │   │           └── tt-engine v0.0.1 (*)
++     │           │   └── tt-render v0.0.1 (*)
++     │           ├── tt-audio v0.0.1
++     │           │   ├── tt-engine v0.0.1 (*)
++     │           │   └── tt-lipsync v0.0.1
++     │           │       └── tt-engine v0.0.1 (*)
++     │           ├── tt-colour v0.0.1
++     │           │   ├── tt-engine v0.0.1 (*)
++     │           │   └── tt-render v0.0.1 (*)
++     │           ├── tt-engine v0.0.1 (*)
++     │           ├── tt-executor v0.0.1
++     │           │   └── tt-engine v0.0.1 (*)
++     │           ├── tt-fx v0.0.1 (*)
++     │           ├── tt-io v0.0.1 (*)
++     │           ├── tt-lipsync v0.0.1 (*)
++     │           ├── tt-persist v0.0.1
++     │           │   ├── tt-engine v0.0.1 (*)
++     │           │   └── tt-io v0.0.1 (*)
++     │           ├── tt-registry v0.0.1
++     │           │   ├── tt-engine v0.0.1 (*)
++     │           │   └── tt-executor v0.0.1 (*)
++     │           ├── tt-render v0.0.1 (*)
++     │           └── tt-vector v0.0.1
++     │               ├── tt-engine v0.0.1 (*)
++     │               └── tt-render v0.0.1 (*)
++     └── sha2 v0.11.1
++         ├── tt-engine v0.0.1 (*)
++         └── (dev) tt-render v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'crypto-common'
++   ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:58:1
++   │  
++58 │ ╭ crypto-common 0.1.7 registry+https://github.com/rust-lang/crates.io-index
++59 │ │ crypto-common 0.2.2 registry+https://github.com/rust-lang/crates.io-index
++   │ ╰─────────────────────────────────────────────────────────────────────────┘ lock entries
++   │  
++   ├ crypto-common v0.1.7
++     └── digest v0.10.7
++         └── sha2 v0.10.9
++             └── tauri-codegen v2.7.3
++                 └── tauri-macros v2.7.3
++                     └── tauri v2.12.4
++                         └── tt-desktop v0.0.1
++   ├ crypto-common v0.2.2
++     └── digest v0.11.3
++         └── sha2 v0.11.1
++             ├── tt-engine v0.0.1
++             │   ├── tt-desktop v0.0.1
++             │   ├── tt-headless v0.0.1
++             │   └── tt-mcp v0.0.1
++             │       └── tt-headless v0.0.1 (*)
++             └── (dev) tt-render v0.0.1
++                 ├── tt-engine v0.0.1 (*)
++                 └── tt-io v0.0.1
++                     └── tt-engine v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'digest'
++   ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:70:1
++   │  
++70 │ ╭ digest 0.10.7 registry+https://github.com/rust-lang/crates.io-index
++71 │ │ digest 0.11.3 registry+https://github.com/rust-lang/crates.io-index
++   │ ╰───────────────────────────────────────────────────────────────────┘ lock entries
++   │  
++   ├ digest v0.10.7
++     └── sha2 v0.10.9
++         └── tauri-codegen v2.7.3
++             └── tauri-macros v2.7.3
++                 └── tauri v2.12.4
++                     └── tt-desktop v0.0.1
++   ├ digest v0.11.3
++     └── sha2 v0.11.1
++         ├── tt-engine v0.0.1
++         │   ├── tt-desktop v0.0.1
++         │   ├── tt-headless v0.0.1
++         │   └── tt-mcp v0.0.1
++         │       └── tt-headless v0.0.1 (*)
++         └── (dev) tt-render v0.0.1
++             ├── tt-engine v0.0.1 (*)
++             └── tt-io v0.0.1
++                 └── tt-engine v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'getrandom'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:106:1
++    │  
++106 │ ╭ getrandom 0.3.4 registry+https://github.com/rust-lang/crates.io-index
++107 │ │ getrandom 0.4.3 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰─────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ getrandom v0.3.4
++      ├── ahash v0.8.12
++      │   ├── jsonschema v0.59.0
++      │   │   └── tt-model v0.0.1
++      │   │       ├── tt-anim v0.0.1
++      │   │       │   ├── tt-engine v0.0.1
++      │   │       │   │   ├── tt-desktop v0.0.1
++      │   │       │   │   ├── tt-headless v0.0.1
++      │   │       │   │   └── tt-mcp v0.0.1
++      │   │       │   │       └── tt-headless v0.0.1 (*)
++      │   │       │   ├── tt-fx v0.0.1
++      │   │       │   │   ├── tt-engine v0.0.1 (*)
++      │   │       │   │   └── tt-render v0.0.1
++      │   │       │   │       ├── tt-engine v0.0.1 (*)
++      │   │       │   │       └── tt-io v0.0.1
++      │   │       │   │           └── tt-engine v0.0.1 (*)
++      │   │       │   └── tt-render v0.0.1 (*)
++      │   │       ├── tt-audio v0.0.1
++      │   │       │   ├── tt-engine v0.0.1 (*)
++      │   │       │   └── tt-lipsync v0.0.1
++      │   │       │       └── tt-engine v0.0.1 (*)
++      │   │       ├── tt-colour v0.0.1
++      │   │       │   ├── tt-engine v0.0.1 (*)
++      │   │       │   └── tt-render v0.0.1 (*)
++      │   │       ├── tt-engine v0.0.1 (*)
++      │   │       ├── tt-executor v0.0.1
++      │   │       │   └── tt-engine v0.0.1 (*)
++      │   │       ├── tt-fx v0.0.1 (*)
++      │   │       ├── tt-io v0.0.1 (*)
++      │   │       ├── tt-lipsync v0.0.1 (*)
++      │   │       ├── tt-persist v0.0.1
++      │   │       │   ├── tt-engine v0.0.1 (*)
++      │   │       │   └── tt-io v0.0.1 (*)
++      │   │       ├── tt-registry v0.0.1
++      │   │       │   ├── tt-engine v0.0.1 (*)
++      │   │       │   └── tt-executor v0.0.1 (*)
++      │   │       ├── tt-render v0.0.1 (*)
++      │   │       └── tt-vector v0.0.1
++      │   │           ├── tt-engine v0.0.1 (*)
++      │   │           └── tt-render v0.0.1 (*)
++      │   ├── jsonschema-value v0.59.0
++      │   │   └── jsonschema v0.59.0 (*)
++      │   └── referencing v0.59.0
++      │       └── jsonschema v0.59.0 (*)
++      └── tauri v2.12.4
++          └── tt-desktop v0.0.1 (*)
++    ├ getrandom v0.4.3
++      ├── rand v0.10.3
++      │   └── proptest v1.12.0
++      │       └── (dev) tt-model v0.0.1
++      │           ├── tt-anim v0.0.1
++      │           │   ├── tt-engine v0.0.1
++      │           │   │   ├── tt-desktop v0.0.1
++      │           │   │   ├── tt-headless v0.0.1
++      │           │   │   └── tt-mcp v0.0.1
++      │           │   │       └── tt-headless v0.0.1 (*)
++      │           │   ├── tt-fx v0.0.1
++      │           │   │   ├── tt-engine v0.0.1 (*)
++      │           │   │   └── tt-render v0.0.1
++      │           │   │       ├── tt-engine v0.0.1 (*)
++      │           │   │       └── tt-io v0.0.1
++      │           │   │           └── tt-engine v0.0.1 (*)
++      │           │   └── tt-render v0.0.1 (*)
++      │           ├── tt-audio v0.0.1
++      │           │   ├── tt-engine v0.0.1 (*)
++      │           │   └── tt-lipsync v0.0.1
++      │           │       └── tt-engine v0.0.1 (*)
++      │           ├── tt-colour v0.0.1
++      │           │   ├── tt-engine v0.0.1 (*)
++      │           │   └── tt-render v0.0.1 (*)
++      │           ├── tt-engine v0.0.1 (*)
++      │           ├── tt-executor v0.0.1
++      │           │   └── tt-engine v0.0.1 (*)
++      │           ├── tt-fx v0.0.1 (*)
++      │           ├── tt-io v0.0.1 (*)
++      │           ├── tt-lipsync v0.0.1 (*)
++      │           ├── tt-persist v0.0.1
++      │           │   ├── tt-engine v0.0.1 (*)
++      │           │   └── tt-io v0.0.1 (*)
++      │           ├── tt-registry v0.0.1
++      │           │   ├── tt-engine v0.0.1 (*)
++      │           │   └── tt-executor v0.0.1 (*)
++      │           ├── tt-render v0.0.1 (*)
++      │           └── tt-vector v0.0.1
++      │               ├── tt-engine v0.0.1 (*)
++      │               └── tt-render v0.0.1 (*)
++      ├── tempfile v3.27.0
++      │   ├── proptest v1.12.0 (*)
++      │   └── rusty-fork v0.3.1
++      │       └── proptest v1.12.0 (*)
++      ├── tt-model v0.0.1 (*)
++      └── uuid v1.28.0
++          ├── cfb v0.14.0
++          │   └── infer v0.22.0
++          │       └── tauri-utils v2.10.2
++          │           ├── tauri v2.12.4
++          │           │   └── tt-desktop v0.0.1 (*)
++          │           ├── tauri-build v2.7.3
++          │           │   ├── (build) tauri v2.12.4 (*)
++          │           │   └── (build) tt-desktop v0.0.1 (*)
++          │           ├── tauri-codegen v2.7.3
++          │           │   └── tauri-macros v2.7.3
++          │           │       └── tauri v2.12.4 (*)
++          │           ├── tauri-macros v2.7.3 (*)
++          │           ├── tauri-runtime v2.12.2
++          │           │   ├── tauri v2.12.4 (*)
++          │           │   └── tauri-runtime-wry v2.12.2
++          │           │       └── tauri v2.12.4 (*)
++          │           └── tauri-runtime-wry v2.12.2 (*)
++          ├── schemars v0.8.22
++          │   ├── tauri-build v2.7.3 (*)
++          │   └── tauri-utils v2.10.2 (*)
++          ├── tauri-codegen v2.7.3 (*)
++          └── tauri-utils v2.10.2 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'hashbrown'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:110:1
++    │  
++110 │ ╭ hashbrown 0.12.3 registry+https://github.com/rust-lang/crates.io-index
++111 │ │ hashbrown 0.17.1 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰──────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ hashbrown v0.12.3
++      └── indexmap v1.9.3
++          └── schemars v0.8.22
++              ├── tauri-build v2.7.3
++              │   ├── (build) tauri v2.12.4
++              │   │   └── tt-desktop v0.0.1
++              │   └── (build) tt-desktop v0.0.1 (*)
++              └── tauri-utils v2.10.2
++                  ├── tauri v2.12.4 (*)
++                  ├── tauri-build v2.7.3 (*)
++                  ├── tauri-codegen v2.7.3
++                  │   └── tauri-macros v2.7.3
++                  │       └── tauri v2.12.4 (*)
++                  ├── tauri-macros v2.7.3 (*)
++                  ├── tauri-runtime v2.12.2
++                  │   ├── tauri v2.12.4 (*)
++                  │   └── tauri-runtime-wry v2.12.2
++                  │       └── tauri v2.12.4 (*)
++                  └── tauri-runtime-wry v2.12.2 (*)
++    ├ hashbrown v0.17.1
++      ├── indexmap v2.14.2
++      │   ├── plist v1.10.1
++      │   │   ├── tauri v2.12.4
++      │   │   │   └── tt-desktop v0.0.1
++      │   │   ├── tauri-codegen v2.7.3
++      │   │   │   └── tauri-macros v2.7.3
++      │   │   │       └── tauri v2.12.4 (*)
++      │   │   └── tauri-utils v2.10.2
++      │   │       ├── tauri v2.12.4 (*)
++      │   │       ├── tauri-build v2.7.3
++      │   │       │   ├── (build) tauri v2.12.4 (*)
++      │   │       │   └── (build) tt-desktop v0.0.1 (*)
++      │   │       ├── tauri-codegen v2.7.3 (*)
++      │   │       ├── tauri-macros v2.7.3 (*)
++      │   │       ├── tauri-runtime v2.12.2
++      │   │       │   ├── tauri v2.12.4 (*)
++      │   │       │   └── tauri-runtime-wry v2.12.2
++      │   │       │       └── tauri v2.12.4 (*)
++      │   │       └── tauri-runtime-wry v2.12.2 (*)
++      │   ├── schemars v1.2.3
++      │   │   ├── tt-engine v0.0.1
++      │   │   │   ├── tt-desktop v0.0.1 (*)
++      │   │   │   ├── tt-headless v0.0.1
++      │   │   │   └── tt-mcp v0.0.1
++      │   │   │       └── tt-headless v0.0.1 (*)
++      │   │   └── tt-model v0.0.1
++      │   │       ├── tt-anim v0.0.1
++      │   │       │   ├── tt-engine v0.0.1 (*)
++      │   │       │   ├── tt-fx v0.0.1
++      │   │       │   │   ├── tt-engine v0.0.1 (*)
++      │   │       │   │   └── tt-render v0.0.1
++      │   │       │   │       ├── tt-engine v0.0.1 (*)
++      │   │       │   │       └── tt-io v0.0.1
++      │   │       │   │           └── tt-engine v0.0.1 (*)
++      │   │       │   └── tt-render v0.0.1 (*)
++      │   │       ├── tt-audio v0.0.1
++      │   │       │   ├── tt-engine v0.0.1 (*)
++      │   │       │   └── tt-lipsync v0.0.1
++      │   │       │       └── tt-engine v0.0.1 (*)
++      │   │       ├── tt-colour v0.0.1
++      │   │       │   ├── tt-engine v0.0.1 (*)
++      │   │       │   └── tt-render v0.0.1 (*)
++      │   │       ├── tt-engine v0.0.1 (*)
++      │   │       ├── tt-executor v0.0.1
++      │   │       │   └── tt-engine v0.0.1 (*)
++      │   │       ├── tt-fx v0.0.1 (*)
++      │   │       ├── tt-io v0.0.1 (*)
++      │   │       ├── tt-lipsync v0.0.1 (*)
++      │   │       ├── tt-persist v0.0.1
++      │   │       │   ├── tt-engine v0.0.1 (*)
++      │   │       │   └── tt-io v0.0.1 (*)
++      │   │       ├── tt-registry v0.0.1
++      │   │       │   ├── tt-engine v0.0.1 (*)
++      │   │       │   └── tt-executor v0.0.1 (*)
++      │   │       ├── tt-render v0.0.1 (*)
++      │   │       └── tt-vector v0.0.1
++      │   │           ├── tt-engine v0.0.1 (*)
++      │   │           └── tt-render v0.0.1 (*)
++      │   ├── serde_json v1.0.154
++      │   │   ├── cargo_metadata v0.19.2
++      │   │   │   └── tauri-utils v2.10.2 (*)
++      │   │   ├── json-patch v4.2.0
++      │   │   │   ├── tauri-build v2.7.3 (*)
++      │   │   │   ├── tauri-codegen v2.7.3 (*)
++      │   │   │   └── tauri-utils v2.10.2 (*)
++      │   │   ├── jsonptr v0.7.1
++      │   │   │   └── json-patch v4.2.0 (*)
++      │   │   ├── jsonschema v0.59.0
++      │   │   │   └── tt-model v0.0.1 (*)
++      │   │   ├── jsonschema-value v0.59.0
++      │   │   │   └── jsonschema v0.59.0 (*)
++      │   │   ├── referencing v0.59.0
++      │   │   │   └── jsonschema v0.59.0 (*)
++      │   │   ├── schemars v0.8.22
++      │   │   │   ├── tauri-build v2.7.3 (*)
++      │   │   │   └── tauri-utils v2.10.2 (*)
++      │   │   ├── schemars v1.2.3 (*)
++      │   │   ├── serialize-to-javascript v0.1.2
++      │   │   │   └── tauri v2.12.4 (*)
++      │   │   ├── swift-rs v1.0.9
++      │   │   │   └── tauri-utils v2.10.2 (*)
++      │   │   ├── tauri v2.12.4 (*)
++      │   │   ├── tauri-build v2.7.3 (*)
++      │   │   ├── tauri-codegen v2.7.3 (*)
++      │   │   ├── tauri-runtime v2.12.2 (*)
++      │   │   ├── tauri-utils v2.10.2 (*)
++      │   │   ├── tt-desktop v0.0.1 (*)
++      │   │   ├── tt-engine v0.0.1 (*)
++      │   │   ├── tt-headless v0.0.1 (*)
++      │   │   ├── tt-model v0.0.1 (*)
++      │   │   └── (dev) tt-render v0.0.1 (*)
++      │   └── tt-model v0.0.1 (*)
++      ├── referencing v0.59.0 (*)
++      └── vello_cpu v0.3.0
++          └── (dev) tt-render v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'indexmap'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:127:1
++    │  
++127 │ ╭ indexmap 1.9.3 registry+https://github.com/rust-lang/crates.io-index
++128 │ │ indexmap 2.14.2 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰─────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ indexmap v1.9.3
++      └── schemars v0.8.22
++          ├── tauri-build v2.7.3
++          │   ├── (build) tauri v2.12.4
++          │   │   └── tt-desktop v0.0.1
++          │   └── (build) tt-desktop v0.0.1 (*)
++          └── tauri-utils v2.10.2
++              ├── tauri v2.12.4 (*)
++              ├── tauri-build v2.7.3 (*)
++              ├── tauri-codegen v2.7.3
++              │   └── tauri-macros v2.7.3
++              │       └── tauri v2.12.4 (*)
++              ├── tauri-macros v2.7.3 (*)
++              ├── tauri-runtime v2.12.2
++              │   ├── tauri v2.12.4 (*)
++              │   └── tauri-runtime-wry v2.12.2
++              │       └── tauri v2.12.4 (*)
++              └── tauri-runtime-wry v2.12.2 (*)
++    ├ indexmap v2.14.2
++      ├── plist v1.10.1
++      │   ├── tauri v2.12.4
++      │   │   └── tt-desktop v0.0.1
++      │   ├── tauri-codegen v2.7.3
++      │   │   └── tauri-macros v2.7.3
++      │   │       └── tauri v2.12.4 (*)
++      │   └── tauri-utils v2.10.2
++      │       ├── tauri v2.12.4 (*)
++      │       ├── tauri-build v2.7.3
++      │       │   ├── (build) tauri v2.12.4 (*)
++      │       │   └── (build) tt-desktop v0.0.1 (*)
++      │       ├── tauri-codegen v2.7.3 (*)
++      │       ├── tauri-macros v2.7.3 (*)
++      │       ├── tauri-runtime v2.12.2
++      │       │   ├── tauri v2.12.4 (*)
++      │       │   └── tauri-runtime-wry v2.12.2
++      │       │       └── tauri v2.12.4 (*)
++      │       └── tauri-runtime-wry v2.12.2 (*)
++      ├── schemars v1.2.3
++      │   ├── tt-engine v0.0.1
++      │   │   ├── tt-desktop v0.0.1 (*)
++      │   │   ├── tt-headless v0.0.1
++      │   │   └── tt-mcp v0.0.1
++      │   │       └── tt-headless v0.0.1 (*)
++      │   └── tt-model v0.0.1
++      │       ├── tt-anim v0.0.1
++      │       │   ├── tt-engine v0.0.1 (*)
++      │       │   ├── tt-fx v0.0.1
++      │       │   │   ├── tt-engine v0.0.1 (*)
++      │       │   │   └── tt-render v0.0.1
++      │       │   │       ├── tt-engine v0.0.1 (*)
++      │       │   │       └── tt-io v0.0.1
++      │       │   │           └── tt-engine v0.0.1 (*)
++      │       │   └── tt-render v0.0.1 (*)
++      │       ├── tt-audio v0.0.1
++      │       │   ├── tt-engine v0.0.1 (*)
++      │       │   └── tt-lipsync v0.0.1
++      │       │       └── tt-engine v0.0.1 (*)
++      │       ├── tt-colour v0.0.1
++      │       │   ├── tt-engine v0.0.1 (*)
++      │       │   └── tt-render v0.0.1 (*)
++      │       ├── tt-engine v0.0.1 (*)
++      │       ├── tt-executor v0.0.1
++      │       │   └── tt-engine v0.0.1 (*)
++      │       ├── tt-fx v0.0.1 (*)
++      │       ├── tt-io v0.0.1 (*)
++      │       ├── tt-lipsync v0.0.1 (*)
++      │       ├── tt-persist v0.0.1
++      │       │   ├── tt-engine v0.0.1 (*)
++      │       │   └── tt-io v0.0.1 (*)
++      │       ├── tt-registry v0.0.1
++      │       │   ├── tt-engine v0.0.1 (*)
++      │       │   └── tt-executor v0.0.1 (*)
++      │       ├── tt-render v0.0.1 (*)
++      │       └── tt-vector v0.0.1
++      │           ├── tt-engine v0.0.1 (*)
++      │           └── tt-render v0.0.1 (*)
++      ├── serde_json v1.0.154
++      │   ├── cargo_metadata v0.19.2
++      │   │   └── tauri-utils v2.10.2 (*)
++      │   ├── json-patch v4.2.0
++      │   │   ├── tauri-build v2.7.3 (*)
++      │   │   ├── tauri-codegen v2.7.3 (*)
++      │   │   └── tauri-utils v2.10.2 (*)
++      │   ├── jsonptr v0.7.1
++      │   │   └── json-patch v4.2.0 (*)
++      │   ├── jsonschema v0.59.0
++      │   │   └── tt-model v0.0.1 (*)
++      │   ├── jsonschema-value v0.59.0
++      │   │   └── jsonschema v0.59.0 (*)
++      │   ├── referencing v0.59.0
++      │   │   └── jsonschema v0.59.0 (*)
++      │   ├── schemars v0.8.22
++      │   │   ├── tauri-build v2.7.3 (*)
++      │   │   └── tauri-utils v2.10.2 (*)
++      │   ├── schemars v1.2.3 (*)
++      │   ├── serialize-to-javascript v0.1.2
++      │   │   └── tauri v2.12.4 (*)
++      │   ├── swift-rs v1.0.9
++      │   │   └── tauri-utils v2.10.2 (*)
++      │   ├── tauri v2.12.4 (*)
++      │   ├── tauri-build v2.7.3 (*)
++      │   ├── tauri-codegen v2.7.3 (*)
++      │   ├── tauri-runtime v2.12.2 (*)
++      │   ├── tauri-utils v2.10.2 (*)
++      │   ├── tt-desktop v0.0.1 (*)
++      │   ├── tt-engine v0.0.1 (*)
++      │   ├── tt-headless v0.0.1 (*)
++      │   ├── tt-model v0.0.1 (*)
++      │   └── (dev) tt-render v0.0.1 (*)
++      └── tt-model v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'miniz_oxide'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:147:1
++    │  
++147 │ ╭ miniz_oxide 0.8.9 registry+https://github.com/rust-lang/crates.io-index
++148 │ │ miniz_oxide 0.9.1 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰───────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ miniz_oxide v0.8.9
++      ├── png v0.17.16
++      │   └── ico v0.5.0
++      │       └── tauri-codegen v2.7.3
++      │           └── tauri-macros v2.7.3
++      │               └── tauri v2.12.4
++      │                   └── tt-desktop v0.0.1
++      └── png v0.18.1
++          ├── muda v0.20.0
++          │   └── tauri v2.12.4 (*)
++          ├── tauri-codegen v2.7.3 (*)
++          └── (dev) tt-render v0.0.1
++              ├── tt-engine v0.0.1
++              │   ├── tt-desktop v0.0.1 (*)
++              │   ├── tt-headless v0.0.1
++              │   └── tt-mcp v0.0.1
++              │       └── tt-headless v0.0.1 (*)
++              └── tt-io v0.0.1
++                  └── tt-engine v0.0.1 (*)
++    ├ miniz_oxide v0.9.1
++      └── flate2 v1.1.10
++          ├── png v0.17.16
++          │   └── ico v0.5.0
++          │       └── tauri-codegen v2.7.3
++          │           └── tauri-macros v2.7.3
++          │               └── tauri v2.12.4
++          │                   └── tt-desktop v0.0.1
++          └── png v0.18.1
++              ├── muda v0.20.0
++              │   └── tauri v2.12.4 (*)
++              ├── tauri-codegen v2.7.3 (*)
++              └── (dev) tt-render v0.0.1
++                  ├── tt-engine v0.0.1
++                  │   ├── tt-desktop v0.0.1 (*)
++                  │   ├── tt-headless v0.0.1
++                  │   └── tt-mcp v0.0.1
++                  │       └── tt-headless v0.0.1 (*)
++                  └── tt-io v0.0.1
++                      └── tt-engine v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'png'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:185:1
++    │  
++185 │ ╭ png 0.17.16 registry+https://github.com/rust-lang/crates.io-index
++186 │ │ png 0.18.1 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ png v0.17.16
++      └── ico v0.5.0
++          └── tauri-codegen v2.7.3
++              └── tauri-macros v2.7.3
++                  └── tauri v2.12.4
++                      └── tt-desktop v0.0.1
++    ├ png v0.18.1
++      ├── muda v0.20.0
++      │   └── tauri v2.12.4
++      │       └── tt-desktop v0.0.1
++      ├── tauri-codegen v2.7.3
++      │   └── tauri-macros v2.7.3
++      │       └── tauri v2.12.4 (*)
++      └── (dev) tt-render v0.0.1
++          ├── tt-engine v0.0.1
++          │   ├── tt-desktop v0.0.1 (*)
++          │   ├── tt-headless v0.0.1
++          │   └── tt-mcp v0.0.1
++          │       └── tt-headless v0.0.1 (*)
++          └── tt-io v0.0.1
++              └── tt-engine v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'schemars'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:215:1
++    │  
++215 │ ╭ schemars 0.8.22 registry+https://github.com/rust-lang/crates.io-index
++216 │ │ schemars 1.2.3 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ schemars v0.8.22
++      ├── tauri-build v2.7.3
++      │   ├── (build) tauri v2.12.4
++      │   │   └── tt-desktop v0.0.1
++      │   └── (build) tt-desktop v0.0.1 (*)
++      └── tauri-utils v2.10.2
++          ├── tauri v2.12.4 (*)
++          ├── tauri-build v2.7.3 (*)
++          ├── tauri-codegen v2.7.3
++          │   └── tauri-macros v2.7.3
++          │       └── tauri v2.12.4 (*)
++          ├── tauri-macros v2.7.3 (*)
++          ├── tauri-runtime v2.12.2
++          │   ├── tauri v2.12.4 (*)
++          │   └── tauri-runtime-wry v2.12.2
++          │       └── tauri v2.12.4 (*)
++          └── tauri-runtime-wry v2.12.2 (*)
++    ├ schemars v1.2.3
++      ├── tt-engine v0.0.1
++      │   ├── tt-desktop v0.0.1
++      │   ├── tt-headless v0.0.1
++      │   └── tt-mcp v0.0.1
++      │       └── tt-headless v0.0.1 (*)
++      └── tt-model v0.0.1
++          ├── tt-anim v0.0.1
++          │   ├── tt-engine v0.0.1 (*)
++          │   ├── tt-fx v0.0.1
++          │   │   ├── tt-engine v0.0.1 (*)
++          │   │   └── tt-render v0.0.1
++          │   │       ├── tt-engine v0.0.1 (*)
++          │   │       └── tt-io v0.0.1
++          │   │           └── tt-engine v0.0.1 (*)
++          │   └── tt-render v0.0.1 (*)
++          ├── tt-audio v0.0.1
++          │   ├── tt-engine v0.0.1 (*)
++          │   └── tt-lipsync v0.0.1
++          │       └── tt-engine v0.0.1 (*)
++          ├── tt-colour v0.0.1
++          │   ├── tt-engine v0.0.1 (*)
++          │   └── tt-render v0.0.1 (*)
++          ├── tt-engine v0.0.1 (*)
++          ├── tt-executor v0.0.1
++          │   └── tt-engine v0.0.1 (*)
++          ├── tt-fx v0.0.1 (*)
++          ├── tt-io v0.0.1 (*)
++          ├── tt-lipsync v0.0.1 (*)
++          ├── tt-persist v0.0.1
++          │   ├── tt-engine v0.0.1 (*)
++          │   └── tt-io v0.0.1 (*)
++          ├── tt-registry v0.0.1
++          │   ├── tt-engine v0.0.1 (*)
++          │   └── tt-executor v0.0.1 (*)
++          ├── tt-render v0.0.1 (*)
++          └── tt-vector v0.0.1
++              ├── tt-engine v0.0.1 (*)
++              └── tt-render v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'schemars_derive'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:217:1
++    │  
++217 │ ╭ schemars_derive 0.8.22 registry+https://github.com/rust-lang/crates.io-index
++218 │ │ schemars_derive 1.2.3 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰───────────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ schemars_derive v0.8.22
++      └── schemars v0.8.22
++          ├── tauri-build v2.7.3
++          │   ├── (build) tauri v2.12.4
++          │   │   └── tt-desktop v0.0.1
++          │   └── (build) tt-desktop v0.0.1 (*)
++          └── tauri-utils v2.10.2
++              ├── tauri v2.12.4 (*)
++              ├── tauri-build v2.7.3 (*)
++              ├── tauri-codegen v2.7.3
++              │   └── tauri-macros v2.7.3
++              │       └── tauri v2.12.4 (*)
++              ├── tauri-macros v2.7.3 (*)
++              ├── tauri-runtime v2.12.2
++              │   ├── tauri v2.12.4 (*)
++              │   └── tauri-runtime-wry v2.12.2
++              │       └── tauri v2.12.4 (*)
++              └── tauri-runtime-wry v2.12.2 (*)
++    ├ schemars_derive v1.2.3
++      └── schemars v1.2.3
++          ├── tt-engine v0.0.1
++          │   ├── tt-desktop v0.0.1
++          │   ├── tt-headless v0.0.1
++          │   └── tt-mcp v0.0.1
++          │       └── tt-headless v0.0.1 (*)
++          └── tt-model v0.0.1
++              ├── tt-anim v0.0.1
++              │   ├── tt-engine v0.0.1 (*)
++              │   ├── tt-fx v0.0.1
++              │   │   ├── tt-engine v0.0.1 (*)
++              │   │   └── tt-render v0.0.1
++              │   │       ├── tt-engine v0.0.1 (*)
++              │   │       └── tt-io v0.0.1
++              │   │           └── tt-engine v0.0.1 (*)
++              │   └── tt-render v0.0.1 (*)
++              ├── tt-audio v0.0.1
++              │   ├── tt-engine v0.0.1 (*)
++              │   └── tt-lipsync v0.0.1
++              │       └── tt-engine v0.0.1 (*)
++              ├── tt-colour v0.0.1
++              │   ├── tt-engine v0.0.1 (*)
++              │   └── tt-render v0.0.1 (*)
++              ├── tt-engine v0.0.1 (*)
++              ├── tt-executor v0.0.1
++              │   └── tt-engine v0.0.1 (*)
++              ├── tt-fx v0.0.1 (*)
++              ├── tt-io v0.0.1 (*)
++              ├── tt-lipsync v0.0.1 (*)
++              ├── tt-persist v0.0.1
++              │   ├── tt-engine v0.0.1 (*)
++              │   └── tt-io v0.0.1 (*)
++              ├── tt-registry v0.0.1
++              │   ├── tt-engine v0.0.1 (*)
++              │   └── tt-executor v0.0.1 (*)
++              ├── tt-render v0.0.1 (*)
++              └── tt-vector v0.0.1
++                  ├── tt-engine v0.0.1 (*)
++                  └── tt-render v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'serde_derive_internals'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:226:1
++    │  
++226 │ ╭ serde_derive_internals 0.29.1 registry+https://github.com/rust-lang/crates.io-index
++227 │ │ serde_derive_internals 0.30.0 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰───────────────────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ serde_derive_internals v0.29.1
++      └── schemars_derive v0.8.22
++          └── schemars v0.8.22
++              ├── tauri-build v2.7.3
++              │   ├── (build) tauri v2.12.4
++              │   │   └── tt-desktop v0.0.1
++              │   └── (build) tt-desktop v0.0.1 (*)
++              └── tauri-utils v2.10.2
++                  ├── tauri v2.12.4 (*)
++                  ├── tauri-build v2.7.3 (*)
++                  ├── tauri-codegen v2.7.3
++                  │   └── tauri-macros v2.7.3
++                  │       └── tauri v2.12.4 (*)
++                  ├── tauri-macros v2.7.3 (*)
++                  ├── tauri-runtime v2.12.2
++                  │   ├── tauri v2.12.4 (*)
++                  │   └── tauri-runtime-wry v2.12.2
++                  │       └── tauri v2.12.4 (*)
++                  └── tauri-runtime-wry v2.12.2 (*)
++    ├ serde_derive_internals v0.30.0
++      └── schemars_derive v1.2.3
++          └── schemars v1.2.3
++              ├── tt-engine v0.0.1
++              │   ├── tt-desktop v0.0.1
++              │   ├── tt-headless v0.0.1
++              │   └── tt-mcp v0.0.1
++              │       └── tt-headless v0.0.1 (*)
++              └── tt-model v0.0.1
++                  ├── tt-anim v0.0.1
++                  │   ├── tt-engine v0.0.1 (*)
++                  │   ├── tt-fx v0.0.1
++                  │   │   ├── tt-engine v0.0.1 (*)
++                  │   │   └── tt-render v0.0.1
++                  │   │       ├── tt-engine v0.0.1 (*)
++                  │   │       └── tt-io v0.0.1
++                  │   │           └── tt-engine v0.0.1 (*)
++                  │   └── tt-render v0.0.1 (*)
++                  ├── tt-audio v0.0.1
++                  │   ├── tt-engine v0.0.1 (*)
++                  │   └── tt-lipsync v0.0.1
++                  │       └── tt-engine v0.0.1 (*)
++                  ├── tt-colour v0.0.1
++                  │   ├── tt-engine v0.0.1 (*)
++                  │   └── tt-render v0.0.1 (*)
++                  ├── tt-engine v0.0.1 (*)
++                  ├── tt-executor v0.0.1
++                  │   └── tt-engine v0.0.1 (*)
++                  ├── tt-fx v0.0.1 (*)
++                  ├── tt-io v0.0.1 (*)
++                  ├── tt-lipsync v0.0.1 (*)
++                  ├── tt-persist v0.0.1
++                  │   ├── tt-engine v0.0.1 (*)
++                  │   └── tt-io v0.0.1 (*)
++                  ├── tt-registry v0.0.1
++                  │   ├── tt-engine v0.0.1 (*)
++                  │   └── tt-executor v0.0.1 (*)
++                  ├── tt-render v0.0.1 (*)
++                  └── tt-vector v0.0.1
++                      ├── tt-engine v0.0.1 (*)
++                      └── tt-render v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'sha2'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:236:1
++    │  
++236 │ ╭ sha2 0.10.9 registry+https://github.com/rust-lang/crates.io-index
++237 │ │ sha2 0.11.1 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰─────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ sha2 v0.10.9
++      └── tauri-codegen v2.7.3
++          └── tauri-macros v2.7.3
++              └── tauri v2.12.4
++                  └── tt-desktop v0.0.1
++    ├ sha2 v0.11.1
++      ├── tt-engine v0.0.1
++      │   ├── tt-desktop v0.0.1
++      │   ├── tt-headless v0.0.1
++      │   └── tt-mcp v0.0.1
++      │       └── tt-headless v0.0.1 (*)
++      └── (dev) tt-render v0.0.1
++          ├── tt-engine v0.0.1 (*)
++          └── tt-io v0.0.1
++              └── tt-engine v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'strum'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:248:1
++    │  
++248 │ ╭ strum 0.26.3 registry+https://github.com/rust-lang/crates.io-index
++249 │ │ strum 0.28.0 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰──────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ strum v0.26.3
++      └── octotablet v0.1.0
++          └── tt-desktop v0.0.1
++    ├ strum v0.28.0
++      └── jsonschema v0.59.0
++          └── tt-model v0.0.1
++              ├── tt-anim v0.0.1
++              │   ├── tt-engine v0.0.1
++              │   │   ├── tt-desktop v0.0.1
++              │   │   ├── tt-headless v0.0.1
++              │   │   └── tt-mcp v0.0.1
++              │   │       └── tt-headless v0.0.1 (*)
++              │   ├── tt-fx v0.0.1
++              │   │   ├── tt-engine v0.0.1 (*)
++              │   │   └── tt-render v0.0.1
++              │   │       ├── tt-engine v0.0.1 (*)
++              │   │       └── tt-io v0.0.1
++              │   │           └── tt-engine v0.0.1 (*)
++              │   └── tt-render v0.0.1 (*)
++              ├── tt-audio v0.0.1
++              │   ├── tt-engine v0.0.1 (*)
++              │   └── tt-lipsync v0.0.1
++              │       └── tt-engine v0.0.1 (*)
++              ├── tt-colour v0.0.1
++              │   ├── tt-engine v0.0.1 (*)
++              │   └── tt-render v0.0.1 (*)
++              ├── tt-engine v0.0.1 (*)
++              ├── tt-executor v0.0.1
++              │   └── tt-engine v0.0.1 (*)
++              ├── tt-fx v0.0.1 (*)
++              ├── tt-io v0.0.1 (*)
++              ├── tt-lipsync v0.0.1 (*)
++              ├── tt-persist v0.0.1
++              │   ├── tt-engine v0.0.1 (*)
++              │   └── tt-io v0.0.1 (*)
++              ├── tt-registry v0.0.1
++              │   ├── tt-engine v0.0.1 (*)
++              │   └── tt-executor v0.0.1 (*)
++              ├── tt-render v0.0.1 (*)
++              └── tt-vector v0.0.1
++                  ├── tt-engine v0.0.1 (*)
++                  └── tt-render v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'strum_macros'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:250:1
++    │  
++250 │ ╭ strum_macros 0.26.4 registry+https://github.com/rust-lang/crates.io-index
++251 │ │ strum_macros 0.28.0 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰─────────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ strum_macros v0.26.4
++      └── strum v0.26.3
++          └── octotablet v0.1.0
++              └── tt-desktop v0.0.1
++    ├ strum_macros v0.28.0
++      └── strum v0.28.0
++          └── jsonschema v0.59.0
++              └── tt-model v0.0.1
++                  ├── tt-anim v0.0.1
++                  │   ├── tt-engine v0.0.1
++                  │   │   ├── tt-desktop v0.0.1
++                  │   │   ├── tt-headless v0.0.1
++                  │   │   └── tt-mcp v0.0.1
++                  │   │       └── tt-headless v0.0.1 (*)
++                  │   ├── tt-fx v0.0.1
++                  │   │   ├── tt-engine v0.0.1 (*)
++                  │   │   └── tt-render v0.0.1
++                  │   │       ├── tt-engine v0.0.1 (*)
++                  │   │       └── tt-io v0.0.1
++                  │   │           └── tt-engine v0.0.1 (*)
++                  │   └── tt-render v0.0.1 (*)
++                  ├── tt-audio v0.0.1
++                  │   ├── tt-engine v0.0.1 (*)
++                  │   └── tt-lipsync v0.0.1
++                  │       └── tt-engine v0.0.1 (*)
++                  ├── tt-colour v0.0.1
++                  │   ├── tt-engine v0.0.1 (*)
++                  │   └── tt-render v0.0.1 (*)
++                  ├── tt-engine v0.0.1 (*)
++                  ├── tt-executor v0.0.1
++                  │   └── tt-engine v0.0.1 (*)
++                  ├── tt-fx v0.0.1 (*)
++                  ├── tt-io v0.0.1 (*)
++                  ├── tt-lipsync v0.0.1 (*)
++                  ├── tt-persist v0.0.1
++                  │   ├── tt-engine v0.0.1 (*)
++                  │   └── tt-io v0.0.1 (*)
++                  ├── tt-registry v0.0.1
++                  │   ├── tt-engine v0.0.1 (*)
++                  │   └── tt-executor v0.0.1 (*)
++                  ├── tt-render v0.0.1 (*)
++                  └── tt-vector v0.0.1
++                      ├── tt-engine v0.0.1 (*)
++                      └── tt-render v0.0.1 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'syn'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:253:1
++    │  
++253 │ ╭ syn 2.0.119 registry+https://github.com/rust-lang/crates.io-index
++254 │ │ syn 3.0.9 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰───────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ syn v2.0.119
++      ├── derive_more-impl v2.1.1
++      │   └── derive_more v2.1.1
++      │       └── selectors v0.38.0
++      │           └── dom_query v0.28.0
++      │               └── tauri-utils v2.10.2
++      │                   ├── tauri v2.12.4
++      │                   │   └── tt-desktop v0.0.1
++      │                   ├── tauri-build v2.7.3
++      │                   │   ├── (build) tauri v2.12.4 (*)
++      │                   │   └── (build) tt-desktop v0.0.1 (*)
++      │                   ├── tauri-codegen v2.7.3
++      │                   │   └── tauri-macros v2.7.3
++      │                   │       └── tauri v2.12.4 (*)
++      │                   ├── tauri-macros v2.7.3 (*)
++      │                   ├── tauri-runtime v2.12.2
++      │                   │   ├── tauri v2.12.4 (*)
++      │                   │   └── tauri-runtime-wry v2.12.2
++      │                   │       └── tauri v2.12.4 (*)
++      │                   └── tauri-runtime-wry v2.12.2 (*)
++      ├── enum_dispatch v0.3.13
++      │   └── octotablet v0.1.0
++      │       └── tt-desktop v0.0.1 (*)
++      ├── phf_macros v0.13.1
++      │   └── phf v0.13.1
++      │       ├── cssparser v0.37.0
++      │       │   ├── dom_query v0.28.0 (*)
++      │       │   └── selectors v0.38.0 (*)
++      │       ├── selectors v0.38.0 (*)
++      │       ├── tauri-utils v2.10.2 (*)
++      │       └── web_atoms v0.2.6
++      │           └── markup5ever v0.39.0
++      │               └── html5ever v0.39.0
++      │                   └── dom_query v0.28.0 (*)
++      ├── schemars_derive v0.8.22
++      │   └── schemars v0.8.22
++      │       ├── tauri-build v2.7.3 (*)
++      │       └── tauri-utils v2.10.2 (*)
++      ├── serde_derive_internals v0.29.1
++      │   └── schemars_derive v0.8.22 (*)
++      ├── serialize-to-javascript-impl v0.1.2
++      │   └── serialize-to-javascript v0.1.2
++      │       └── tauri v2.12.4 (*)
++      ├── strum_macros v0.26.4
++      │   └── strum v0.26.3
++      │       └── octotablet v0.1.0 (*)
++      ├── strum_macros v0.28.0
++      │   └── strum v0.28.0
++      │       └── jsonschema v0.59.0
++      │           └── tt-model v0.0.1
++      │               ├── tt-anim v0.0.1
++      │               │   ├── tt-engine v0.0.1
++      │               │   │   ├── tt-desktop v0.0.1 (*)
++      │               │   │   ├── tt-headless v0.0.1
++      │               │   │   └── tt-mcp v0.0.1
++      │               │   │       └── tt-headless v0.0.1 (*)
++      │               │   ├── tt-fx v0.0.1
++      │               │   │   ├── tt-engine v0.0.1 (*)
++      │               │   │   └── tt-render v0.0.1
++      │               │   │       ├── tt-engine v0.0.1 (*)
++      │               │   │       └── tt-io v0.0.1
++      │               │   │           └── tt-engine v0.0.1 (*)
++      │               │   └── tt-render v0.0.1 (*)
++      │               ├── tt-audio v0.0.1
++      │               │   ├── tt-engine v0.0.1 (*)
++      │               │   └── tt-lipsync v0.0.1
++      │               │       └── tt-engine v0.0.1 (*)
++      │               ├── tt-colour v0.0.1
++      │               │   ├── tt-engine v0.0.1 (*)
++      │               │   └── tt-render v0.0.1 (*)
++      │               ├── tt-engine v0.0.1 (*)
++      │               ├── tt-executor v0.0.1
++      │               │   └── tt-engine v0.0.1 (*)
++      │               ├── tt-fx v0.0.1 (*)
++      │               ├── tt-io v0.0.1 (*)
++      │               ├── tt-lipsync v0.0.1 (*)
++      │               ├── tt-persist v0.0.1
++      │               │   ├── tt-engine v0.0.1 (*)
++      │               │   └── tt-io v0.0.1 (*)
++      │               ├── tt-registry v0.0.1
++      │               │   ├── tt-engine v0.0.1 (*)
++      │               │   └── tt-executor v0.0.1 (*)
++      │               ├── tt-render v0.0.1 (*)
++      │               └── tt-vector v0.0.1
++      │                   ├── tt-engine v0.0.1 (*)
++      │                   └── tt-render v0.0.1 (*)
++      ├── tauri-codegen v2.7.3 (*)
++      ├── tauri-macros v2.7.3 (*)
++      ├── thiserror-impl v1.0.69
++      │   └── thiserror v1.0.69
++      │       └── octotablet v0.1.0 (*)
++      ├── webview2-com-macros v0.8.1
++      │   └── webview2-com v0.39.1
++      │       ├── tauri v2.12.4 (*)
++      │       ├── tauri-runtime v2.12.2 (*)
++      │       ├── tauri-runtime-wry v2.12.2 (*)
++      │       └── wry v0.57.0
++      │           └── tauri-runtime-wry v2.12.2 (*)
++      ├── windows-implement v0.53.0
++      │   └── windows v0.54.0
++      │       └── octotablet v0.1.0 (*)
++      ├── windows-implement v0.60.2
++      │   └── windows-core v0.62.2
++      │       ├── tao v0.37.1
++      │       │   └── tauri-runtime-wry v2.12.2 (*)
++      │       ├── webview2-com v0.39.1 (*)
++      │       ├── webview2-com-sys v0.39.1
++      │       │   └── webview2-com v0.39.1 (*)
++      │       ├── windows v0.62.2
++      │       │   ├── tao v0.37.1 (*)
++      │       │   ├── tauri v2.12.4 (*)
++      │       │   ├── tauri-runtime v2.12.2 (*)
++      │       │   ├── tauri-runtime-wry v2.12.2 (*)
++      │       │   ├── tt-desktop v0.0.1 (*)
++      │       │   ├── webview2-com v0.39.1 (*)
++      │       │   ├── webview2-com-sys v0.39.1 (*)
++      │       │   └── wry v0.57.0 (*)
++      │       ├── windows-collections v0.3.2
++      │       │   └── windows v0.62.2 (*)
++      │       ├── windows-future v0.3.2
++      │       │   └── windows v0.62.2 (*)
++      │       ├── windows-numerics v0.3.1
++      │       │   └── windows v0.62.2 (*)
++      │       └── wry v0.57.0 (*)
++      ├── windows-interface v0.53.0
++      │   └── windows v0.54.0 (*)
++      └── windows-interface v0.59.3
++          └── windows-core v0.62.2 (*)
++    ├ syn v3.0.9
++      ├── bytemuck_derive v1.12.1
++      │   └── bytemuck v1.25.2
++      │       ├── color v0.3.3
++      │       │   └── peniko v0.6.1
++      │       │       └── vello_common v0.3.0
++      │       │           └── vello_cpu v0.3.0
++      │       │               └── (dev) tt-render v0.0.1
++      │       │                   ├── tt-engine v0.0.1
++      │       │                   │   ├── tt-desktop v0.0.1
++      │       │                   │   ├── tt-headless v0.0.1
++      │       │                   │   └── tt-mcp v0.0.1
++      │       │                   │       └── tt-headless v0.0.1 (*)
++      │       │                   └── tt-io v0.0.1
++      │       │                       └── tt-engine v0.0.1 (*)
++      │       ├── peniko v0.6.1 (*)
++      │       ├── vello_common v0.3.0 (*)
++      │       └── vello_cpu v0.3.0 (*)
++      ├── clap_derive v4.6.7
++      │   └── clap v4.6.7
++      │       └── tt-headless v0.0.1 (*)
++      ├── cssparser-macros v0.7.1
++      │   └── cssparser v0.37.0
++      │       ├── dom_query v0.28.0
++      │       │   └── tauri-utils v2.10.2
++      │       │       ├── tauri v2.12.4
++      │       │       │   └── tt-desktop v0.0.1 (*)
++      │       │       ├── tauri-build v2.7.3
++      │       │       │   ├── (build) tauri v2.12.4 (*)
++      │       │       │   └── (build) tt-desktop v0.0.1 (*)
++      │       │       ├── tauri-codegen v2.7.3
++      │       │       │   └── tauri-macros v2.7.3
++      │       │       │       └── tauri v2.12.4 (*)
++      │       │       ├── tauri-macros v2.7.3 (*)
++      │       │       ├── tauri-runtime v2.12.2
++      │       │       │   ├── tauri v2.12.4 (*)
++      │       │       │   └── tauri-runtime-wry v2.12.2
++      │       │       │       └── tauri v2.12.4 (*)
++      │       │       └── tauri-runtime-wry v2.12.2 (*)
++      │       └── selectors v0.38.0
++      │           └── dom_query v0.28.0 (*)
++      ├── darling_core v0.24.1
++      │   ├── darling v0.24.1
++      │   │   └── serde_with_macros v3.24.0
++      │   │       └── serde_with v3.24.0
++      │   │           └── tauri-utils v2.10.2 (*)
++      │   └── darling_macro v0.24.1
++      │       └── darling v0.24.1 (*)
++      ├── darling_macro v0.24.1 (*)
++      ├── displaydoc v0.2.7
++      │   ├── icu_collections v2.3.0
++      │   │   ├── icu_normalizer v2.3.0
++      │   │   │   └── idna_adapter v1.2.2
++      │   │   │       └── idna v1.1.0
++      │   │   │           └── url v2.5.8
++      │   │   │               ├── schemars v0.8.22
++      │   │   │               │   ├── tauri-build v2.7.3 (*)
++      │   │   │               │   └── tauri-utils v2.10.2 (*)
++      │   │   │               ├── tao v0.37.1
++      │   │   │               │   └── tauri-runtime-wry v2.12.2 (*)
++      │   │   │               ├── tauri v2.12.4 (*)
++      │   │   │               ├── tauri-codegen v2.7.3 (*)
++      │   │   │               ├── tauri-runtime v2.12.2 (*)
++      │   │   │               ├── tauri-runtime-wry v2.12.2 (*)
++      │   │   │               ├── tauri-utils v2.10.2 (*)
++      │   │   │               ├── urlpattern v0.6.0
++      │   │   │               │   └── tauri-utils v2.10.2 (*)
++      │   │   │               └── wry v0.57.0
++      │   │   │                   └── tauri-runtime-wry v2.12.2 (*)
++      │   │   └── icu_properties v2.3.0
++      │   │       ├── idna_adapter v1.2.2 (*)
++      │   │       └── urlpattern v0.6.0 (*)
++      │   ├── icu_locale_core v2.3.0
++      │   │   ├── icu_properties v2.3.0 (*)
++      │   │   └── icu_provider v2.3.1
++      │   │       ├── icu_normalizer v2.3.0 (*)
++      │   │       └── icu_properties v2.3.0 (*)
++      │   ├── icu_properties v2.3.0 (*)
++      │   ├── icu_provider v2.3.1 (*)
++      │   ├── tinystr v0.8.4
++      │   │   └── icu_locale_core v2.3.0 (*)
++      │   └── zerotrie v0.2.5
++      │       ├── icu_properties v2.3.0 (*)
++      │       └── icu_provider v2.3.1 (*)
++      ├── foreign-types-macros v0.2.4
++      │   └── foreign-types v0.5.0
++      │       └── core-graphics v0.25.0
++      │           └── tao v0.37.1 (*)
++      ├── ref-cast-impl v1.0.27
++      │   └── ref-cast v1.0.27
++      │       ├── fluent-uri v0.4.1
++      │       │   └── referencing v0.59.0
++      │       │       └── jsonschema v0.59.0
++      │       │           └── tt-model v0.0.1
++      │       │               ├── tt-anim v0.0.1
++      │       │               │   ├── tt-engine v0.0.1 (*)
++      │       │               │   ├── tt-fx v0.0.1
++      │       │               │   │   ├── tt-engine v0.0.1 (*)
++      │       │               │   │   └── tt-render v0.0.1 (*)
++      │       │               │   └── tt-render v0.0.1 (*)
++      │       │               ├── tt-audio v0.0.1
++      │       │               │   ├── tt-engine v0.0.1 (*)
++      │       │               │   └── tt-lipsync v0.0.1
++      │       │               │       └── tt-engine v0.0.1 (*)
++      │       │               ├── tt-colour v0.0.1
++      │       │               │   ├── tt-engine v0.0.1 (*)
++      │       │               │   └── tt-render v0.0.1 (*)
++      │       │               ├── tt-engine v0.0.1 (*)
++      │       │               ├── tt-executor v0.0.1
++      │       │               │   └── tt-engine v0.0.1 (*)
++      │       │               ├── tt-fx v0.0.1 (*)
++      │       │               ├── tt-io v0.0.1 (*)
++      │       │               ├── tt-lipsync v0.0.1 (*)
++      │       │               ├── tt-persist v0.0.1
++      │       │               │   ├── tt-engine v0.0.1 (*)
++      │       │               │   └── tt-io v0.0.1 (*)
++      │       │               ├── tt-registry v0.0.1
++      │       │               │   ├── tt-engine v0.0.1 (*)
++      │       │               │   └── tt-executor v0.0.1 (*)
++      │       │               ├── tt-render v0.0.1 (*)
++      │       │               └── tt-vector v0.0.1
++      │       │                   ├── tt-engine v0.0.1 (*)
++      │       │                   └── tt-render v0.0.1 (*)
++      │       └── schemars v1.2.3
++      │           ├── tt-engine v0.0.1 (*)
++      │           └── tt-model v0.0.1 (*)
++      ├── schemars_derive v1.2.3
++      │   └── schemars v1.2.3 (*)
++      ├── serde_derive v1.0.229
++      │   ├── serde v1.0.229
++      │   │   ├── ahash v0.8.12
++      │   │   │   ├── jsonschema v0.59.0 (*)
++      │   │   │   ├── jsonschema-value v0.59.0
++      │   │   │   │   └── jsonschema v0.59.0 (*)
++      │   │   │   └── referencing v0.59.0 (*)
++      │   │   ├── cargo-platform v0.1.9
++      │   │   │   └── cargo_metadata v0.19.2
++      │   │   │       └── tauri-utils v2.10.2 (*)
++      │   │   ├── cargo_metadata v0.19.2 (*)
++      │   │   ├── cargo_toml v1.0.1
++      │   │   │   └── tauri-build v2.7.3 (*)
++      │   │   ├── dpi v0.1.2
++      │   │   │   ├── muda v0.20.0
++      │   │   │   │   └── tauri v2.12.4 (*)
++      │   │   │   ├── tao v0.37.1 (*)
++      │   │   │   ├── tauri-runtime v2.12.2 (*)
++      │   │   │   └── wry v0.57.0 (*)
++      │   │   ├── email_address v0.2.9
++      │   │   │   └── jsonschema v0.59.0 (*)
++      │   │   ├── fluent-uri v0.4.1 (*)
++      │   │   ├── indexmap v1.9.3
++      │   │   │   └── schemars v0.8.22 (*)
++      │   │   ├── json-patch v4.2.0
++      │   │   │   ├── tauri-build v2.7.3 (*)
++      │   │   │   ├── tauri-codegen v2.7.3 (*)
++      │   │   │   └── tauri-utils v2.10.2 (*)
++      │   │   ├── jsonptr v0.7.1
++      │   │   │   └── json-patch v4.2.0 (*)
++      │   │   ├── jsonschema v0.59.0 (*)
++      │   │   ├── keyboard-types v0.8.3
++      │   │   │   └── muda v0.20.0 (*)
++      │   │   ├── muda v0.20.0 (*)
++      │   │   ├── plist v1.10.1
++      │   │   │   ├── tauri v2.12.4 (*)
++      │   │   │   ├── tauri-codegen v2.7.3 (*)
++      │   │   │   └── tauri-utils v2.10.2 (*)
++      │   │   ├── schemars v0.8.22 (*)
++      │   │   ├── schemars v1.2.3 (*)
++      │   │   ├── serialize-to-javascript v0.1.2
++      │   │   │   └── tauri v2.12.4 (*)
++      │   │   ├── swift-rs v1.0.9
++      │   │   │   └── tauri-utils v2.10.2 (*)
++      │   │   ├── tauri v2.12.4 (*)
++      │   │   ├── tauri-build v2.7.3 (*)
++      │   │   ├── tauri-codegen v2.7.3 (*)
++      │   │   ├── tauri-runtime v2.12.2 (*)
++      │   │   ├── tauri-utils v2.10.2 (*)
++      │   │   ├── tt-desktop v0.0.1 (*)
++      │   │   ├── tt-engine v0.0.1 (*)
++      │   │   ├── tt-headless v0.0.1 (*)
++      │   │   ├── tt-model v0.0.1 (*)
++      │   │   ├── url v2.5.8 (*)
++      │   │   └── urlpattern v0.6.0 (*)
++      │   └── url v2.5.8 (*)
++      ├── serde_derive_internals v0.30.0
++      │   └── schemars_derive v1.2.3 (*)
++      ├── serde_repr v0.1.21
++      │   └── tauri v2.12.4 (*)
++      ├── serde_with_macros v3.24.0 (*)
++      ├── synstructure v0.14.0
++      │   ├── yoke-derive v0.8.4
++      │   │   └── yoke v0.8.3
++      │   │       ├── icu_collections v2.3.0 (*)
++      │   │       ├── icu_provider v2.3.1 (*)
++      │   │       ├── zerotrie v0.2.5 (*)
++      │   │       └── zerovec v0.11.8
++      │   │           ├── icu_collections v2.3.0 (*)
++      │   │           ├── icu_locale_core v2.3.0 (*)
++      │   │           ├── icu_normalizer v2.3.0 (*)
++      │   │           ├── icu_properties v2.3.0 (*)
++      │   │           ├── icu_provider v2.3.1 (*)
++      │   │           ├── potential_utf v0.1.6
++      │   │           │   └── icu_collections v2.3.0 (*)
++      │   │           └── tinystr v0.8.4 (*)
++      │   └── zerofrom-derive v0.1.8
++      │       └── zerofrom v0.1.8
++      │           ├── icu_collections v2.3.0 (*)
++      │           ├── icu_provider v2.3.1 (*)
++      │           ├── yoke v0.8.3 (*)
++      │           ├── zerotrie v0.2.5 (*)
++      │           └── zerovec v0.11.8 (*)
++      ├── thiserror-impl v2.0.21
++      │   └── thiserror v2.0.21
++      │       ├── cargo_metadata v0.19.2 (*)
++      │       ├── json-patch v4.2.0 (*)
++      │       ├── muda v0.20.0 (*)
++      │       ├── tauri v2.12.4 (*)
++      │       ├── tauri-codegen v2.7.3 (*)
++      │       ├── tauri-runtime v2.12.2 (*)
++      │       ├── tauri-utils v2.10.2 (*)
++      │       ├── tt-desktop v0.0.1 (*)
++      │       ├── tt-engine v0.0.1 (*)
++      │       ├── tt-headless v0.0.1 (*)
++      │       ├── tt-model v0.0.1 (*)
++      │       ├── vello_common v0.3.0 (*)
++      │       ├── (build) webview2-com-sys v0.39.1
++      │       │   └── webview2-com v0.39.1
++      │       │       ├── tauri v2.12.4 (*)
++      │       │       ├── tauri-runtime v2.12.2 (*)
++      │       │       ├── tauri-runtime-wry v2.12.2 (*)
++      │       │       └── wry v0.57.0 (*)
++      │       └── wry v0.57.0 (*)
++      ├── yoke-derive v0.8.4 (*)
++      ├── zerofrom-derive v0.1.8 (*)
++      └── zerovec-derive v0.11.6
++          └── zerovec v0.11.8 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'thiserror'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:267:1
++    │  
++267 │ ╭ thiserror 1.0.69 registry+https://github.com/rust-lang/crates.io-index
++268 │ │ thiserror 2.0.21 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰──────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ thiserror v1.0.69
++      └── octotablet v0.1.0
++          └── tt-desktop v0.0.1
++    ├ thiserror v2.0.21
++      ├── cargo_metadata v0.19.2
++      │   └── tauri-utils v2.10.2
++      │       ├── tauri v2.12.4
++      │       │   └── tt-desktop v0.0.1
++      │       ├── tauri-build v2.7.3
++      │       │   ├── (build) tauri v2.12.4 (*)
++      │       │   └── (build) tt-desktop v0.0.1 (*)
++      │       ├── tauri-codegen v2.7.3
++      │       │   └── tauri-macros v2.7.3
++      │       │       └── tauri v2.12.4 (*)
++      │       ├── tauri-macros v2.7.3 (*)
++      │       ├── tauri-runtime v2.12.2
++      │       │   ├── tauri v2.12.4 (*)
++      │       │   └── tauri-runtime-wry v2.12.2
++      │       │       └── tauri v2.12.4 (*)
++      │       └── tauri-runtime-wry v2.12.2 (*)
++      ├── json-patch v4.2.0
++      │   ├── tauri-build v2.7.3 (*)
++      │   ├── tauri-codegen v2.7.3 (*)
++      │   └── tauri-utils v2.10.2 (*)
++      ├── muda v0.20.0
++      │   └── tauri v2.12.4 (*)
++      ├── tauri v2.12.4 (*)
++      ├── tauri-codegen v2.7.3 (*)
++      ├── tauri-runtime v2.12.2 (*)
++      ├── tauri-utils v2.10.2 (*)
++      ├── tt-desktop v0.0.1 (*)
++      ├── tt-engine v0.0.1
++      │   ├── tt-desktop v0.0.1 (*)
++      │   ├── tt-headless v0.0.1
++      │   └── tt-mcp v0.0.1
++      │       └── tt-headless v0.0.1 (*)
++      ├── tt-headless v0.0.1 (*)
++      ├── tt-model v0.0.1
++      │   ├── tt-anim v0.0.1
++      │   │   ├── tt-engine v0.0.1 (*)
++      │   │   ├── tt-fx v0.0.1
++      │   │   │   ├── tt-engine v0.0.1 (*)
++      │   │   │   └── tt-render v0.0.1
++      │   │   │       ├── tt-engine v0.0.1 (*)
++      │   │   │       └── tt-io v0.0.1
++      │   │   │           └── tt-engine v0.0.1 (*)
++      │   │   └── tt-render v0.0.1 (*)
++      │   ├── tt-audio v0.0.1
++      │   │   ├── tt-engine v0.0.1 (*)
++      │   │   └── tt-lipsync v0.0.1
++      │   │       └── tt-engine v0.0.1 (*)
++      │   ├── tt-colour v0.0.1
++      │   │   ├── tt-engine v0.0.1 (*)
++      │   │   └── tt-render v0.0.1 (*)
++      │   ├── tt-engine v0.0.1 (*)
++      │   ├── tt-executor v0.0.1
++      │   │   └── tt-engine v0.0.1 (*)
++      │   ├── tt-fx v0.0.1 (*)
++      │   ├── tt-io v0.0.1 (*)
++      │   ├── tt-lipsync v0.0.1 (*)
++      │   ├── tt-persist v0.0.1
++      │   │   ├── tt-engine v0.0.1 (*)
++      │   │   └── tt-io v0.0.1 (*)
++      │   ├── tt-registry v0.0.1
++      │   │   ├── tt-engine v0.0.1 (*)
++      │   │   └── tt-executor v0.0.1 (*)
++      │   ├── tt-render v0.0.1 (*)
++      │   └── tt-vector v0.0.1
++      │       ├── tt-engine v0.0.1 (*)
++      │       └── tt-render v0.0.1 (*)
++      ├── vello_common v0.3.0
++      │   └── vello_cpu v0.3.0
++      │       └── (dev) tt-render v0.0.1 (*)
++      ├── (build) webview2-com-sys v0.39.1
++      │   └── webview2-com v0.39.1
++      │       ├── tauri v2.12.4 (*)
++      │       ├── tauri-runtime v2.12.2 (*)
++      │       ├── tauri-runtime-wry v2.12.2 (*)
++      │       └── wry v0.57.0
++      │           └── tauri-runtime-wry v2.12.2 (*)
++      └── wry v0.57.0 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'thiserror-impl'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:269:1
++    │  
++269 │ ╭ thiserror-impl 1.0.69 registry+https://github.com/rust-lang/crates.io-index
++270 │ │ thiserror-impl 2.0.21 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰───────────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ thiserror-impl v1.0.69
++      └── thiserror v1.0.69
++          └── octotablet v0.1.0
++              └── tt-desktop v0.0.1
++    ├ thiserror-impl v2.0.21
++      └── thiserror v2.0.21
++          ├── cargo_metadata v0.19.2
++          │   └── tauri-utils v2.10.2
++          │       ├── tauri v2.12.4
++          │       │   └── tt-desktop v0.0.1
++          │       ├── tauri-build v2.7.3
++          │       │   ├── (build) tauri v2.12.4 (*)
++          │       │   └── (build) tt-desktop v0.0.1 (*)
++          │       ├── tauri-codegen v2.7.3
++          │       │   └── tauri-macros v2.7.3
++          │       │       └── tauri v2.12.4 (*)
++          │       ├── tauri-macros v2.7.3 (*)
++          │       ├── tauri-runtime v2.12.2
++          │       │   ├── tauri v2.12.4 (*)
++          │       │   └── tauri-runtime-wry v2.12.2
++          │       │       └── tauri v2.12.4 (*)
++          │       └── tauri-runtime-wry v2.12.2 (*)
++          ├── json-patch v4.2.0
++          │   ├── tauri-build v2.7.3 (*)
++          │   ├── tauri-codegen v2.7.3 (*)
++          │   └── tauri-utils v2.10.2 (*)
++          ├── muda v0.20.0
++          │   └── tauri v2.12.4 (*)
++          ├── tauri v2.12.4 (*)
++          ├── tauri-codegen v2.7.3 (*)
++          ├── tauri-runtime v2.12.2 (*)
++          ├── tauri-utils v2.10.2 (*)
++          ├── tt-desktop v0.0.1 (*)
++          ├── tt-engine v0.0.1
++          │   ├── tt-desktop v0.0.1 (*)
++          │   ├── tt-headless v0.0.1
++          │   └── tt-mcp v0.0.1
++          │       └── tt-headless v0.0.1 (*)
++          ├── tt-headless v0.0.1 (*)
++          ├── tt-model v0.0.1
++          │   ├── tt-anim v0.0.1
++          │   │   ├── tt-engine v0.0.1 (*)
++          │   │   ├── tt-fx v0.0.1
++          │   │   │   ├── tt-engine v0.0.1 (*)
++          │   │   │   └── tt-render v0.0.1
++          │   │   │       ├── tt-engine v0.0.1 (*)
++          │   │   │       └── tt-io v0.0.1
++          │   │   │           └── tt-engine v0.0.1 (*)
++          │   │   └── tt-render v0.0.1 (*)
++          │   ├── tt-audio v0.0.1
++          │   │   ├── tt-engine v0.0.1 (*)
++          │   │   └── tt-lipsync v0.0.1
++          │   │       └── tt-engine v0.0.1 (*)
++          │   ├── tt-colour v0.0.1
++          │   │   ├── tt-engine v0.0.1 (*)
++          │   │   └── tt-render v0.0.1 (*)
++          │   ├── tt-engine v0.0.1 (*)
++          │   ├── tt-executor v0.0.1
++          │   │   └── tt-engine v0.0.1 (*)
++          │   ├── tt-fx v0.0.1 (*)
++          │   ├── tt-io v0.0.1 (*)
++          │   ├── tt-lipsync v0.0.1 (*)
++          │   ├── tt-persist v0.0.1
++          │   │   ├── tt-engine v0.0.1 (*)
++          │   │   └── tt-io v0.0.1 (*)
++          │   ├── tt-registry v0.0.1
++          │   │   ├── tt-engine v0.0.1 (*)
++          │   │   └── tt-executor v0.0.1 (*)
++          │   ├── tt-render v0.0.1 (*)
++          │   └── tt-vector v0.0.1
++          │       ├── tt-engine v0.0.1 (*)
++          │       └── tt-render v0.0.1 (*)
++          ├── vello_common v0.3.0
++          │   └── vello_cpu v0.3.0
++          │       └── (dev) tt-render v0.0.1 (*)
++          ├── (build) webview2-com-sys v0.39.1
++          │   └── webview2-com v0.39.1
++          │       ├── tauri v2.12.4 (*)
++          │       ├── tauri-runtime v2.12.2 (*)
++          │       ├── tauri-runtime-wry v2.12.2 (*)
++          │       └── wry v0.57.0
++          │           └── tauri-runtime-wry v2.12.2 (*)
++          └── wry v0.57.0 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'windows'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:327:1
++    │  
++327 │ ╭ windows 0.54.0 registry+https://github.com/rust-lang/crates.io-index
++328 │ │ windows 0.62.2 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ windows v0.54.0
++      └── octotablet v0.1.0
++          └── tt-desktop v0.0.1
++    ├ windows v0.62.2
++      ├── tao v0.37.1
++      │   └── tauri-runtime-wry v2.12.2
++      │       └── tauri v2.12.4
++      │           └── tt-desktop v0.0.1
++      ├── tauri v2.12.4 (*)
++      ├── tauri-runtime v2.12.2
++      │   ├── tauri v2.12.4 (*)
++      │   └── tauri-runtime-wry v2.12.2 (*)
++      ├── tauri-runtime-wry v2.12.2 (*)
++      ├── tt-desktop v0.0.1 (*)
++      ├── webview2-com v0.39.1
++      │   ├── tauri v2.12.4 (*)
++      │   ├── tauri-runtime v2.12.2 (*)
++      │   ├── tauri-runtime-wry v2.12.2 (*)
++      │   └── wry v0.57.0
++      │       └── tauri-runtime-wry v2.12.2 (*)
++      ├── webview2-com-sys v0.39.1
++      │   └── webview2-com v0.39.1 (*)
++      └── wry v0.57.0 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'windows-core'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:330:1
++    │  
++330 │ ╭ windows-core 0.54.0 registry+https://github.com/rust-lang/crates.io-index
++331 │ │ windows-core 0.62.2 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰─────────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ windows-core v0.54.0
++      └── windows v0.54.0
++          └── octotablet v0.1.0
++              └── tt-desktop v0.0.1
++    ├ windows-core v0.62.2
++      ├── tao v0.37.1
++      │   └── tauri-runtime-wry v2.12.2
++      │       └── tauri v2.12.4
++      │           └── tt-desktop v0.0.1
++      ├── webview2-com v0.39.1
++      │   ├── tauri v2.12.4 (*)
++      │   ├── tauri-runtime v2.12.2
++      │   │   ├── tauri v2.12.4 (*)
++      │   │   └── tauri-runtime-wry v2.12.2 (*)
++      │   ├── tauri-runtime-wry v2.12.2 (*)
++      │   └── wry v0.57.0
++      │       └── tauri-runtime-wry v2.12.2 (*)
++      ├── webview2-com-sys v0.39.1
++      │   └── webview2-com v0.39.1 (*)
++      ├── windows v0.62.2
++      │   ├── tao v0.37.1 (*)
++      │   ├── tauri v2.12.4 (*)
++      │   ├── tauri-runtime v2.12.2 (*)
++      │   ├── tauri-runtime-wry v2.12.2 (*)
++      │   ├── tt-desktop v0.0.1 (*)
++      │   ├── webview2-com v0.39.1 (*)
++      │   ├── webview2-com-sys v0.39.1 (*)
++      │   └── wry v0.57.0 (*)
++      ├── windows-collections v0.3.2
++      │   └── windows v0.62.2 (*)
++      ├── windows-future v0.3.2
++      │   └── windows v0.62.2 (*)
++      ├── windows-numerics v0.3.1
++      │   └── windows v0.62.2 (*)
++      └── wry v0.57.0 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'windows-implement'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:333:1
++    │  
++333 │ ╭ windows-implement 0.53.0 registry+https://github.com/rust-lang/crates.io-index
++334 │ │ windows-implement 0.60.2 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰──────────────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ windows-implement v0.53.0
++      └── windows v0.54.0
++          └── octotablet v0.1.0
++              └── tt-desktop v0.0.1
++    ├ windows-implement v0.60.2
++      └── windows-core v0.62.2
++          ├── tao v0.37.1
++          │   └── tauri-runtime-wry v2.12.2
++          │       └── tauri v2.12.4
++          │           └── tt-desktop v0.0.1
++          ├── webview2-com v0.39.1
++          │   ├── tauri v2.12.4 (*)
++          │   ├── tauri-runtime v2.12.2
++          │   │   ├── tauri v2.12.4 (*)
++          │   │   └── tauri-runtime-wry v2.12.2 (*)
++          │   ├── tauri-runtime-wry v2.12.2 (*)
++          │   └── wry v0.57.0
++          │       └── tauri-runtime-wry v2.12.2 (*)
++          ├── webview2-com-sys v0.39.1
++          │   └── webview2-com v0.39.1 (*)
++          ├── windows v0.62.2
++          │   ├── tao v0.37.1 (*)
++          │   ├── tauri v2.12.4 (*)
++          │   ├── tauri-runtime v2.12.2 (*)
++          │   ├── tauri-runtime-wry v2.12.2 (*)
++          │   ├── tt-desktop v0.0.1 (*)
++          │   ├── webview2-com v0.39.1 (*)
++          │   ├── webview2-com-sys v0.39.1 (*)
++          │   └── wry v0.57.0 (*)
++          ├── windows-collections v0.3.2
++          │   └── windows v0.62.2 (*)
++          ├── windows-future v0.3.2
++          │   └── windows v0.62.2 (*)
++          ├── windows-numerics v0.3.1
++          │   └── windows v0.62.2 (*)
++          └── wry v0.57.0 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'windows-interface'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:335:1
++    │  
++335 │ ╭ windows-interface 0.53.0 registry+https://github.com/rust-lang/crates.io-index
++336 │ │ windows-interface 0.59.3 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰──────────────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ windows-interface v0.53.0
++      └── windows v0.54.0
++          └── octotablet v0.1.0
++              └── tt-desktop v0.0.1
++    ├ windows-interface v0.59.3
++      └── windows-core v0.62.2
++          ├── tao v0.37.1
++          │   └── tauri-runtime-wry v2.12.2
++          │       └── tauri v2.12.4
++          │           └── tt-desktop v0.0.1
++          ├── webview2-com v0.39.1
++          │   ├── tauri v2.12.4 (*)
++          │   ├── tauri-runtime v2.12.2
++          │   │   ├── tauri v2.12.4 (*)
++          │   │   └── tauri-runtime-wry v2.12.2 (*)
++          │   ├── tauri-runtime-wry v2.12.2 (*)
++          │   └── wry v0.57.0
++          │       └── tauri-runtime-wry v2.12.2 (*)
++          ├── webview2-com-sys v0.39.1
++          │   └── webview2-com v0.39.1 (*)
++          ├── windows v0.62.2
++          │   ├── tao v0.37.1 (*)
++          │   ├── tauri v2.12.4 (*)
++          │   ├── tauri-runtime v2.12.2 (*)
++          │   ├── tauri-runtime-wry v2.12.2 (*)
++          │   ├── tt-desktop v0.0.1 (*)
++          │   ├── webview2-com v0.39.1 (*)
++          │   ├── webview2-com-sys v0.39.1 (*)
++          │   └── wry v0.57.0 (*)
++          ├── windows-collections v0.3.2
++          │   └── windows v0.62.2 (*)
++          ├── windows-future v0.3.2
++          │   └── windows v0.62.2 (*)
++          ├── windows-numerics v0.3.1
++          │   └── windows v0.62.2 (*)
++          └── wry v0.57.0 (*)
++
++warning[duplicate]: found 2 duplicate entries for crate 'windows-result'
++    ┌─ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel/Cargo.lock:339:1
++    │  
++339 │ ╭ windows-result 0.1.2 registry+https://github.com/rust-lang/crates.io-index
++340 │ │ windows-result 0.4.1 registry+https://github.com/rust-lang/crates.io-index
++    │ ╰──────────────────────────────────────────────────────────────────────────┘ lock entries
++    │  
++    ├ windows-result v0.1.2
++      └── windows-core v0.54.0
++          └── windows v0.54.0
++              └── octotablet v0.1.0
++                  └── tt-desktop v0.0.1
++    ├ windows-result v0.4.1
++      └── windows-core v0.62.2
++          ├── tao v0.37.1
++          │   └── tauri-runtime-wry v2.12.2
++          │       └── tauri v2.12.4
++          │           └── tt-desktop v0.0.1
++          ├── webview2-com v0.39.1
++          │   ├── tauri v2.12.4 (*)
++          │   ├── tauri-runtime v2.12.2
++          │   │   ├── tauri v2.12.4 (*)
++          │   │   └── tauri-runtime-wry v2.12.2 (*)
++          │   ├── tauri-runtime-wry v2.12.2 (*)
++          │   └── wry v0.57.0
++          │       └── tauri-runtime-wry v2.12.2 (*)
++          ├── webview2-com-sys v0.39.1
++          │   └── webview2-com v0.39.1 (*)
++          ├── windows v0.62.2
++          │   ├── tao v0.37.1 (*)
++          │   ├── tauri v2.12.4 (*)
++          │   ├── tauri-runtime v2.12.2 (*)
++          │   ├── tauri-runtime-wry v2.12.2 (*)
++          │   ├── tt-desktop v0.0.1 (*)
++          │   ├── webview2-com v0.39.1 (*)
++          │   ├── webview2-com-sys v0.39.1 (*)
++          │   └── wry v0.57.0 (*)
++          ├── windows-collections v0.3.2
++          │   └── windows v0.62.2 (*)
++          ├── windows-future v0.3.2
++          │   └── windows v0.62.2 (*)
++          ├── windows-numerics v0.3.1
++          │   └── windows v0.62.2 (*)
++          └── wry v0.57.0 (*)
++
++advisories ok, bans ok, licenses ok, sources ok
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/fmt.log b/reviews/evidence/M1-C1.1-r5-response/gates/fmt.log
+new file mode 100644
+index 0000000..bb8334d
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/fmt.log
+@@ -0,0 +1 @@
++FMT_OK
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/headless-build.log b/reviews/evidence/M1-C1.1-r5-response/gates/headless-build.log
+new file mode 100644
+index 0000000..d618d11
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/headless-build.log
+@@ -0,0 +1,16 @@
++   Compiling tt-model v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\model)
++   Compiling tt-anim v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\anim)
++   Compiling tt-vector v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\vector)
++   Compiling tt-colour v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\colour)
++   Compiling tt-audio v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\audio)
++   Compiling tt-registry v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\registry)
++   Compiling tt-persist v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\persist)
++   Compiling tt-fx v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\fx)
++   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\lipsync)
++   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
++   Compiling tt-render v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\render)
++   Compiling tt-io v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\io)
++   Compiling tt-engine v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\engine)
++   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\mcp)
++   Compiling tt-headless v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\bins\headless)
++    Finished `release` profile [optimized + debuginfo] target(s) in 26.31s
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/headless-deps.log b/reviews/evidence/M1-C1.1-r5-response/gates/headless-deps.log
+new file mode 100644
+index 0000000..61bf8b4
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/headless-deps.log
+@@ -0,0 +1,4 @@
++crate graph: 100 crates, forbidden: none
++linked libraries (win32): kernel32.dll, api-ms-win-core-synch-l1-2-0.dll, kernel32.dll, ntdll.dll, vcruntime140.dll, api-ms-win-crt-math-l1-1-0.dll, api-ms-win-crt-runtime-l1-1-0.dll, api-ms-win-crt-stdio-l1-1-0.dll, api-ms-win-crt-locale-l1-1-0.dll, api-ms-win-crt-heap-l1-1-0.dll
++forbidden libraries: none
++headless dependency check passed
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/node-test.log b/reviews/evidence/M1-C1.1-r5-response/gates/node-test.log
+new file mode 100644
+index 0000000..2faad41
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/node-test.log
+@@ -0,0 +1,64 @@
++TAP version 13
++# Subtest: single identifiers
++ok 1 - single identifiers
++  ---
++  duration_ms: 0.8456
++  type: 'test'
++  ...
++# Subtest: OR needs one allowed alternative, AND needs all
++ok 2 - OR needs one allowed alternative, AND needs all
++  ---
++  duration_ms: 0.2041
++  type: 'test'
++  ...
++# Subtest: precedence: AND binds tighter than OR
++ok 3 - precedence: AND binds tighter than OR
++  ---
++  duration_ms: 0.1123
++  type: 'test'
++  ...
++# Subtest: nested groups (C01-R1-01)
++ok 4 - nested groups (C01-R1-01)
++  ---
++  duration_ms: 0.5472
++  type: 'test'
++  ...
++# Subtest: WITH exceptions must be allowed as a whole
++ok 5 - WITH exceptions must be allowed as a whole
++  ---
++  duration_ms: 0.1627
++  type: 'test'
++  ...
++# Subtest: or-later suffix
++ok 6 - or-later suffix
++  ---
++  duration_ms: 0.0665
++  type: 'test'
++  ...
++# Subtest: malformed and non-SPDX strings fail closed
++ok 7 - malformed and non-SPDX strings fail closed
++  ---
++  duration_ms: 0.1069
++  type: 'test'
++  ...
++# Subtest: every operand is validated, even behind an allowed OR branch (C01-R2-03)
++ok 8 - every operand is validated, even behind an allowed OR branch (C01-R2-03)
++  ---
++  duration_ms: 0.4587
++  type: 'test'
++  ...
++# Subtest: allow-list is read from deny.toml
++ok 9 - allow-list is read from deny.toml
++  ---
++  duration_ms: 0.3882
++  type: 'test'
++  ...
++1..9
++# tests 9
++# suites 0
++# pass 9
++# fail 0
++# cancelled 0
++# skipped 0
++# todo 0
++# duration_ms 64.927
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-format.log b/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-format.log
+new file mode 100644
+index 0000000..857ebab
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-format.log
+@@ -0,0 +1,10 @@
++
++> toontown-workspace@ format:check C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel
++> pnpm -r format:check
++
++
++> @toontown/desktop@0.0.1 format:check C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop
++> prettier --check .
++
++Checking formatting...
++All matched files use Prettier code style!
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-licenses.log b/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-licenses.log
+new file mode 100644
+index 0000000..a52af4b
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-licenses.log
+@@ -0,0 +1,8 @@
++
++> toontown-workspace@ licenses:check C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel
++> node scripts/check-npm-licenses.mjs
++
++allow-list (from deny.toml): MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, Zlib, MPL-2.0, Unicode-3.0, 0BSD, MIT-0
++production packages checked: 8
++development packages (not shipped, informational): MIT (176), MIT-0 (2), Apache-2.0 (17), CC0-1.0 (3), Apache-2.0 OR MIT (1), BSD-3-Clause (4), CC-BY-4.0 (1), ISC (10), BSD-2-Clause (8), MPL-2.0 (1), BlueOak-1.0.0 (2), CC-BY-3.0 (1)
++licences ok
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-lint.log b/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-lint.log
+new file mode 100644
+index 0000000..5efcf68
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-lint.log
+@@ -0,0 +1,8 @@
++
++> toontown-workspace@ lint C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel
++> pnpm -r --workspace-concurrency=1 lint
++
++
++> @toontown/desktop@0.0.1 lint C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop
++> eslint . --max-warnings 0
++
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-test.log b/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-test.log
+new file mode 100644
+index 0000000..fdfd85e
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-test.log
+@@ -0,0 +1,84 @@
++
++> toontown-workspace@ test C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel
++> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
++
++
++> @toontown/desktop@0.0.1 test C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop
++> vitest run --config vite.config.ts
++
++
++ RUN  v5.0.5 C:/Users/kaiga/.t3/worktrees/261017-toontown-dev/m1-core-kernel/desktop
++
++
++ Test Files  39 passed (39)
++      Tests  326 passed (326)
++   Start at  17:58:36
++   Duration  68.50s (tests 75%, environment 15%, setup 7%, import 2%, transform 1%)
++
++    Isolate  39 workers spawned · ~331ms startup each (spawn + environment, per file)
++             at least ~12.59s faster with isolate: false — reuses workers across files instead of one per file
++
++TAP version 13
++# Subtest: single identifiers
++ok 1 - single identifiers
++  ---
++  duration_ms: 0.808
++  type: 'test'
++  ...
++# Subtest: OR needs one allowed alternative, AND needs all
++ok 2 - OR needs one allowed alternative, AND needs all
++  ---
++  duration_ms: 0.222
++  type: 'test'
++  ...
++# Subtest: precedence: AND binds tighter than OR
++ok 3 - precedence: AND binds tighter than OR
++  ---
++  duration_ms: 0.1096
++  type: 'test'
++  ...
++# Subtest: nested groups (C01-R1-01)
++ok 4 - nested groups (C01-R1-01)
++  ---
++  duration_ms: 1.1306
++  type: 'test'
++  ...
++# Subtest: WITH exceptions must be allowed as a whole
++ok 5 - WITH exceptions must be allowed as a whole
++  ---
++  duration_ms: 0.1551
++  type: 'test'
++  ...
++# Subtest: or-later suffix
++ok 6 - or-later suffix
++  ---
++  duration_ms: 0.063
++  type: 'test'
++  ...
++# Subtest: malformed and non-SPDX strings fail closed
++ok 7 - malformed and non-SPDX strings fail closed
++  ---
++  duration_ms: 0.1049
++  type: 'test'
++  ...
++# Subtest: every operand is validated, even behind an allowed OR branch (C01-R2-03)
++ok 8 - every operand is validated, even behind an allowed OR branch (C01-R2-03)
++  ---
++  duration_ms: 0.1404
++  type: 'test'
++  ...
++# Subtest: allow-list is read from deny.toml
++ok 9 - allow-list is read from deny.toml
++  ---
++  duration_ms: 0.3593
++  type: 'test'
++  ...
++1..9
++# tests 9
++# suites 0
++# pass 9
++# fail 0
++# cancelled 0
++# skipped 0
++# todo 0
++# duration_ms 67.0809
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-typecheck.log b/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-typecheck.log
+new file mode 100644
+index 0000000..40092a3
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/pnpm-typecheck.log
+@@ -0,0 +1,8 @@
++
++> toontown-workspace@ typecheck C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel
++> pnpm -r typecheck
++
++
++> @toontown/desktop@0.0.1 typecheck C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop
++> tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json
++
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/review-policy-at-a448459.log b/reviews/evidence/M1-C1.1-r5-response/gates/review-policy-at-a448459.log
+new file mode 100644
+index 0000000..15a5a7b
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/review-policy-at-a448459.log
+@@ -0,0 +1,5 @@
++..
++----------------------------------------------------------------------
++Ran 2 tests in 0.040s
++
++OK
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/reviewer-python-suites.log b/reviews/evidence/M1-C1.1-r5-response/gates/reviewer-python-suites.log
+new file mode 100644
+index 0000000..5c093d8
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/reviewer-python-suites.log
+@@ -0,0 +1,105 @@
++=== c02-r1-tooling.py
++test_C02_R1_02_native_timestamp_association (__main__.ToolingTests.test_C02_R1_02_native_timestamp_association) ... ok
++test_C02_R1_03_native_pose_only_contact_boundaries (__main__.ToolingTests.test_C02_R1_03_native_pose_only_contact_boundaries) ... ok
++test_C02_R1_07_nearest_rank_percentile_matches_frontend (__main__.ToolingTests.test_C02_R1_07_nearest_rank_percentile_matches_frontend) ... ok
++test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts) ... ok
++
++----------------------------------------------------------------------
++Ran 4 tests in 0.853s
++
++OK
++=== c02-r2-tooling.py
++test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success (__main__.AnalyzerAttacks.test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success) ... ok
++test_C02_R2_01_explicit_v1_is_rejected (__main__.AnalyzerAttacks.test_C02_R2_01_explicit_v1_is_rejected) ... ok
++test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) ... ok
++test_C02_R2_02_achieved_rate_is_recomputed_or_rejected (__main__.AnalyzerAttacks.test_C02_R2_02_achieved_rate_is_recomputed_or_rejected) ... ok
++test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) ... ok
++test_explicit_failure_without_report_remains_analyzable (__main__.AnalyzerAttacks.test_explicit_failure_without_report_remains_analyzable) ... ok
++test_lossless_stationary_including_down_has_zero_missing (__main__.AnalyzerAttacks.test_lossless_stationary_including_down_has_zero_missing) ... ok
++test_macos_extended_accessor_contracts (__main__.AnalyzerAttacks.test_macos_extended_accessor_contracts) ... ok
++test_pause_segmentation_and_pose_only_native_reference_unknown (__main__.AnalyzerAttacks.test_pause_segmentation_and_pose_only_native_reference_unknown) ... ok
++
++----------------------------------------------------------------------
++Ran 9 tests in 0.694s
++
++OK
++=== c02-r3-tooling.py
++test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs (__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) ... ok
++
++----------------------------------------------------------------------
++Ran 1 test in 0.277s
++
++OK
++=== c03-r1-tooling.py
++............
++----------------------------------------------------------------------
++Ran 12 tests in 1.287s
++
++OK
++=== c03-r2-tooling.py
++.........
++----------------------------------------------------------------------
++Ran 9 tests in 0.598s
++
++OK
++=== c04-r2-decisions.py
++test_C04_R2_01_rate_intervals_cover_fractional_hz (__main__.DecisionContracts.test_C04_R2_01_rate_intervals_cover_fractional_hz) ... ok
++test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row (__main__.DecisionContracts.test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row) ... ok
++test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes (__main__.DecisionContracts.test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes) ... ok
++
++----------------------------------------------------------------------
++Ran 3 tests in 0.044s
++
++OK
++=== c04-r3-decisions.py
++test_C04_R3_01_outside_contact_must_not_flip_candidate (__main__.Regressions.test_C04_R3_01_outside_contact_must_not_flip_candidate) ... ok
++test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected (__main__.Regressions.test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected) ... ok
++test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter (__main__.Regressions.test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter) ... ok
++
++----------------------------------------------------------------------
++Ran 3 tests in 0.084s
++
++OK
++=== c04-r3-page.py
++
++ RUN  v5.0.5 C:/Users/kaiga/.t3/worktrees/261017-toontown-dev/m1-core-kernel/desktop
++
++
++ Test Files  1 passed (1)
++      Tests  5 passed (5)
++   Start at  18:00:25
++   Duration  1.86s (environment 64%, transform 17%, setup 9%, tests 7%, import 3%)
++
++=== c04-r5-decisions.py
++test_outside_packets_cannot_change_action_rate_or_platform_decision (__main__.OutsideNativeClock.test_outside_packets_cannot_change_action_rate_or_platform_decision) ... ok
++
++----------------------------------------------------------------------
++Ran 1 test in 0.054s
++
++OK
++=== c11-r2-review-policy.py
++..
++----------------------------------------------------------------------
++Ran 2 tests in 0.094s
++
++OK
++skip collect_runtime_evidence.py: M0 evidence collector, not a test: needs a release build and writes reviews/evidence/M0-C0.1-r1/
++=== headless_guard.py
++...
++----------------------------------------------------------------------
++Ran 3 tests in 0.000s
++
++OK
++=== summary
++ok   c02-r1-tooling.py (1.0 s)
++ok   c02-r2-tooling.py (0.8 s)
++ok   c02-r3-tooling.py (0.4 s)
++ok   c03-r1-tooling.py (1.4 s)
++ok   c03-r2-tooling.py (0.7 s)
++ok   c04-r2-decisions.py (0.1 s)
++ok   c04-r3-decisions.py (0.2 s)
++ok   c04-r3-page.py (3.5 s)
++ok   c04-r5-decisions.py (0.1 s)
++ok   c11-r2-review-policy.py (0.2 s)
++ok   headless_guard.py (0.2 s)
++11/11 reviewer Python suites passed
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/selftest-1.json b/reviews/evidence/M1-C1.1-r5-response/gates/selftest-1.json
+new file mode 100644
+index 0000000..ef0da82
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/selftest-1.json
+@@ -0,0 +1,39 @@
++{
++  "ok": true,
++  "engine": {
++    "name": "Toontown",
++    "version": "0.0.1",
++    "platform": "windows",
++    "arch": "x86_64",
++    "formatVersion": "1.0",
++    "registryVersion": "0.0.0",
++    "runMode": "headless"
++  },
++  "checks": [
++    {
++      "id": "engine.components",
++      "ok": true,
++      "detail": "13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine"
++    },
++    {
++      "id": "engine.versions",
++      "ok": true,
++      "detail": "formatVersion 1.0 (MAJOR.MINOR), registryVersion 0.0.0 (semver)"
++    },
++    {
++      "id": "engine.ping",
++      "ok": true,
++      "detail": "echoed seq and 1024 payload bytes in 100 ns"
++    },
++    {
++      "id": "determinism.ieee754",
++      "ok": true,
++      "detail": "sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden"
++    },
++    {
++      "id": "headless.mcpLinked",
++      "ok": true,
++      "detail": "tt-mcp linked (M1 (C1.4))"
++    }
++  ]
++}
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/selftest-2.json b/reviews/evidence/M1-C1.1-r5-response/gates/selftest-2.json
+new file mode 100644
+index 0000000..ef0da82
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/selftest-2.json
+@@ -0,0 +1,39 @@
++{
++  "ok": true,
++  "engine": {
++    "name": "Toontown",
++    "version": "0.0.1",
++    "platform": "windows",
++    "arch": "x86_64",
++    "formatVersion": "1.0",
++    "registryVersion": "0.0.0",
++    "runMode": "headless"
++  },
++  "checks": [
++    {
++      "id": "engine.components",
++      "ok": true,
++      "detail": "13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine"
++    },
++    {
++      "id": "engine.versions",
++      "ok": true,
++      "detail": "formatVersion 1.0 (MAJOR.MINOR), registryVersion 0.0.0 (semver)"
++    },
++    {
++      "id": "engine.ping",
++      "ok": true,
++      "detail": "echoed seq and 1024 payload bytes in 100 ns"
++    },
++    {
++      "id": "determinism.ieee754",
++      "ok": true,
++      "detail": "sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden"
++    },
++    {
++      "id": "headless.mcpLinked",
++      "ok": true,
++      "detail": "tt-mcp linked (M1 (C1.4))"
++    }
++  ]
++}
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/selftest-compare.log b/reviews/evidence/M1-C1.1-r5-response/gates/selftest-compare.log
+new file mode 100644
+index 0000000..54f4c28
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/selftest-compare.log
+@@ -0,0 +1 @@
++[('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('headless.mcpLinked', True)]
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/staged-commit-nocapture.log b/reviews/evidence/M1-C1.1-r5-response/gates/staged-commit-nocapture.log
+new file mode 100644
+index 0000000..9741283
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/staged-commit-nocapture.log
+@@ -0,0 +1,6 @@
++
++running 3 tests
++..staged commit sweep: 92 committed, 1408 refused
++.
++test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.64s
++
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/test-diag.log b/reviews/evidence/M1-C1.1-r5-response/gates/test-diag.log
+new file mode 100644
+index 0000000..c131ff8
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/test-diag.log
+@@ -0,0 +1,75 @@
++   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop\src-tauri)
++    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.67s
++     Running unittests src\lib.rs (target\debug\deps\tt_desktop-881443744b4ff0e1.exe)
++
++running 38 tests
++test bindings::tests::command_id_syntax ... ok
++test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
++test bindings::tests::per_platform_accelerators ... ok
++test bindings::tests::embedded_manifest_is_valid ... ok
++test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
++test diagnostics::tests::bench_with_count ... ok
++test diagnostics::tests::no_arguments_is_interactive ... ok
++test diagnostics::tests::requested_diagnostic_names_the_flag ... ok
++test spikes::tablet::simulate_windows::tests::sine_repeats_pixels_where_the_review_found_missing_frames ... ok
++test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
++test bindings::tests::quit_is_bound_on_every_platform ... ok
++test diagnostics::tests::spike_flags ... ok
++test menu::tests::pending_command_carries_milestone ... ok
++test spikes::canvas::renderlist::tests::encoder_refuses_invalid_geometry ... ok
++test menu::tests::event_serializes_camel_case ... ok
++test bindings::tests::platform_specific_duplicates_are_allowed ... ok
++test spikes::tablet::simulate_windows::tests::positions_stay_inside_the_rectangle ... ok
++test spikes::tablet::simulate_windows::tests::pressure_steps_through_every_level ... ok
++test spikes::canvas::renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
++test spikes::tablet::simulate_windows::tests::tilt_and_rotation_stay_in_range ... ok
++test spikes::tablet::tests::packet_serializes_camel_case ... ok
++test spikes::tablet::simulate_windows::tests::pressure_only_holds_tilt_and_rotation_and_position ... ok
++test diagnostics::tests::errors ... ok
++test spikes::tablet::tests::disabled_unless_tablet ... ok
++test menu::tests::frontend_command_carries_params ... ok
++test spikes::tablet::simulate_windows::tests::zigzag_never_repeats_a_pixel_in_adjacent_frames_and_stationary_always_does ... ok
++test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
++test spikes::tablet::tests::sequencer_is_gap_free_and_wire_packets_flatten ... ok
++test spikes::tablet::tests::validates_simulation_requests ... ok
++test tests::diagnostics_build_registers_the_m0_commands ... ok
++test spikes::tablet::tests::request_rejects_unknown_fields ... ok
++test menu::tests::host_commands ... ok
++test tests::diagnostics_overlay_config_enables_both_halves ... ok
++test tests::tauri_config_matches_workspace_and_plan ... ok
++test spikes::canvas::renderlist::tests::encoding_has_the_documented_layout ... ok
++test spikes::canvas::renderlist::tests::scenes_have_the_specified_sizes ... ok
++test spikes::canvas::renderlist::tests::generation_is_reproducible ... ok
++test spikes::canvas::renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
++
++test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
++
++     Running unittests src\main.rs (target\debug\deps\toontown-04a57cdc640b863d.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running ..\..\tests\adversarial\c03-r2-encoder.rs (target\debug\deps\c03_r2_encoder-a811fbf6e520a2e9.exe)
++
++running 11 tests
++test c03_r2_03_unpaired_coordinate_must_be_refused ... ok
++test c03_r2_03_unknown_style_must_be_refused ... ok
++test adjacent_out_of_bounds_and_negative_width_are_refused ... ok
++test nonfinite_points_and_bounds_return_typed_errors ... ok
++test renderlist::tests::encoder_refuses_invalid_geometry ... ok
++test renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
++test subnormal_and_empty_path_are_valid ... ok
++test renderlist::tests::encoding_has_the_documented_layout ... ok
++test renderlist::tests::scenes_have_the_specified_sizes ... ok
++test renderlist::tests::generation_is_reproducible ... ok
++test renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
++
++test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
++
++   Doc-tests tt_desktop
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
+diff --git a/reviews/evidence/M1-C1.1-r5-response/gates/test.log b/reviews/evidence/M1-C1.1-r5-response/gates/test.log
+new file mode 100644
+index 0000000..4286fd9
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/gates/test.log
+@@ -0,0 +1,616 @@
++   Compiling tt-model v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\model)
++   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop\src-tauri)
++    Finished `test` profile [unoptimized + debuginfo] target(s) in 18.80s
++     Running unittests src\lib.rs (target\debug\deps\tt_anim-59cc3b5d1f3661d4.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_audio-7d1399d1685c21cf.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_colour-3faeb162ca5dab59.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_desktop-7e9b33dc8d096008.exe)
++
++running 38 tests
++test bindings::tests::command_id_syntax ... ok
++test spikes::canvas::renderlist::tests::encoder_refuses_invalid_geometry ... ok
++test spikes::tablet::simulate_windows::tests::pressure_steps_through_every_level ... ok
++test diagnostics::tests::bench_with_count ... ok
++test spikes::tablet::tests::packet_serializes_camel_case ... ok
++test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
++test diagnostics::tests::requested_diagnostic_names_the_flag ... ok
++test bindings::tests::embedded_manifest_is_valid ... ok
++test bindings::tests::per_platform_accelerators ... ok
++test menu::tests::pending_command_carries_milestone ... ok
++test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
++test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
++test bindings::tests::quit_is_bound_on_every_platform ... ok
++test menu::tests::frontend_command_carries_params ... ok
++test spikes::tablet::simulate_windows::tests::positions_stay_inside_the_rectangle ... ok
++test spikes::tablet::tests::sequencer_is_gap_free_and_wire_packets_flatten ... ok
++test diagnostics::tests::errors ... ok
++test spikes::tablet::simulate_windows::tests::zigzag_never_repeats_a_pixel_in_adjacent_frames_and_stationary_always_does ... ok
++test spikes::tablet::tests::disabled_unless_tablet ... ok
++test spikes::tablet::simulate_windows::tests::pressure_only_holds_tilt_and_rotation_and_position ... ok
++test diagnostics::tests::spike_flags ... ok
++test menu::tests::event_serializes_camel_case ... ok
++test spikes::tablet::tests::request_rejects_unknown_fields ... ok
++test bindings::tests::platform_specific_duplicates_are_allowed ... ok
++test spikes::tablet::simulate_windows::tests::sine_repeats_pixels_where_the_review_found_missing_frames ... ok
++test diagnostics::tests::no_arguments_is_interactive ... ok
++test spikes::canvas::renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
++test spikes::tablet::simulate_windows::tests::tilt_and_rotation_stay_in_range ... ok
++test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
++test spikes::tablet::tests::validates_simulation_requests ... ok
++test tests::diagnostics_overlay_config_enables_both_halves ... ok
++test tests::default_build_registers_no_diagnostic_commands ... ok
++test menu::tests::host_commands ... ok
++test tests::tauri_config_matches_workspace_and_plan ... ok
++test spikes::canvas::renderlist::tests::encoding_has_the_documented_layout ... ok
++test spikes::canvas::renderlist::tests::scenes_have_the_specified_sizes ... ok
++test spikes::canvas::renderlist::tests::generation_is_reproducible ... ok
++test spikes::canvas::renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
++
++test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
++
++     Running unittests src\main.rs (target\debug\deps\toontown-fed8639d8909cbb8.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running ..\..\tests\adversarial\c03-r2-encoder.rs (target\debug\deps\c03_r2_encoder-4e8918fa1f849afd.exe)
++
++running 11 tests
++test adjacent_out_of_bounds_and_negative_width_are_refused ... ok
++test nonfinite_points_and_bounds_return_typed_errors ... ok
++test c03_r2_03_unknown_style_must_be_refused ... ok
++test c03_r2_03_unpaired_coordinate_must_be_refused ... ok
++test renderlist::tests::encoder_refuses_invalid_geometry ... ok
++test renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
++test subnormal_and_empty_path_are_valid ... ok
++test renderlist::tests::encoding_has_the_documented_layout ... ok
++test renderlist::tests::scenes_have_the_specified_sizes ... ok
++test renderlist::tests::generation_is_reproducible ... ok
++test renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
++
++test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_engine-05ca9a6fef10f8b5.exe)
++
++running 19 tests
++test components::tests::every_component_cites_spec_sections ... ok
++test selftest::tests::dotted_version_parser ... ok
++test tests::info_serializes_camel_case ... ok
++test ping::tests::echoes_seq_and_payload ... ok
++test wire::tests::u64_values_are_exact_on_the_wire ... ok
++test determinism::tests::hex_encodes_lowercase ... ok
++test tests::info_reports_versions_and_mode ... ok
++test ping::tests::request_rejects_unknown_fields ... ok
++test wire::tests::requests_reject_unknown_fields_and_bad_json ... ok
++test tests::engine_is_send_and_sync ... ok
++test error::tests::limit_exceeded_wire_form ... ok
++test components::tests::lists_every_plan_crate_once ... ok
++test wire::tests::definitions_cover_every_wire_type ... ok
++test ping::tests::payload_limit_is_inclusive ... ok
++test determinism::tests::workload_has_expected_shape ... ok
++test determinism::tests::probe_matches_golden ... ok
++test selftest::tests::push_keeps_ok_consistent ... ok
++test selftest::tests::selftest_passes ... ok
++test determinism::tests::probe_is_stable_within_a_run ... ok
++
++test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running tests\c11_r1_wire.rs (target\debug\deps\c11_r1_wire-863c5460ea9d4fed.exe)
++
++running 4 tests
++test typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null ... ok
++test opaque_json_integer_outside_u64_is_not_silently_rounded ... ok
++test nested_duplicate_keys_are_rejected_in_requests ... ok
++test supported_integer_boundaries_and_utf8_controls ... ok
++
++test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
++
++     Running tests\c11_r2_wire.rs (target\debug\deps\c11_r2_wire-2520aebe1d4329da.exe)
++
++running 6 tests
++test nested_nonfinite_f32_f64_maps_and_sequences_are_errors ... ok
++test cross_language_exchange ... ok
++test fresh_hostile_text_cases_reject_and_escaped_unicode_roundtrips ... ok
++test integer_edges_are_lossless_or_typed_errors ... ok
++test wire_depth_one_under_and_one_over ... ok
++test writer_never_emits_text_its_reader_rejects_at_depth_boundary ... ok
++
++test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running tests\c11_r3_wire.rs (target\debug\deps\c11_r3_wire-b6667611d02511f9.exe)
++
++running 2 tests
++test negative_and_noninteger_range_frames_are_typed_wire_errors ... ok
++test mixed_depth_boundary_writer_output_is_readable ... ok
++
++test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
++
++     Running tests\frontend_schemas.rs (target\debug\deps\frontend_schemas-53bca6ddefd92452.exe)
++
++running 2 tests
++test wire_module_is_current ... ok
++test model_module_is_current ... ok
++
++test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
++
++     Running tests\wire_corpus.rs (target\debug\deps\wire_corpus-f3d17f095e2a6924.exe)
++
++running 4 tests
++test invalid_utf8_bodies_are_rejected ... ok
++test the_corpus_depth_is_the_engine_limit ... ok
++test every_valid_text_is_accepted_and_written_canonically ... ok
++test every_hostile_text_is_rejected_with_a_typed_error ... ok
++
++test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_executor-0453a2419ccf5504.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_fx-b4be6f856c108bdf.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running unittests src\main.rs (target\debug\deps\toontown_headless-5e7395b5b21d67ac.exe)
++
++running 7 tests
++test cli::tests::actions_are_exclusive ... ok
++test cli::tests::future_modes_are_typed_errors ... ok
++test cli::tests::an_action_is_required ... ok
++test cli::tests::version_line ... ok
++test cli::tests::option_combinations ... ok
++test cli::tests::selftest_human_passes ... ok
++test cli::tests::selftest_json_passes ... ok
++
++test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running ..\..\tests\adversarial\c01.rs (target\debug\deps\adversarial_c01-d0c3577bdbb2e31e.exe)
++
++running 7 tests
++test wire_engine_info_field_names_match_typescript ... ok
++test c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get ... ok
++test c01_r1_05_rust_control_rejects_multibyte_over_limit ... ok
++test c01_r1_06_dependency_proof_rejects_graphics_dependencies ... ok
++test c01_r1_01_license_grouping_preserves_mandatory_copyleft ... ok
++test c01_r1_01_license_allowlist_stays_within_user_policy ... ok
++test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... ok
++
++test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.73s
++
++     Running tests\cli.rs (target\debug\deps\cli-9a9dfa98ad0e0733.exe)
++
++running 5 tests
++test mcp_stdio_not_yet_available_exits_three ... ok
++test selftest_exits_zero_with_json_report ... ok
++test usage_error_exits_two ... ok
++test version_exits_zero ... ok
++test selftest_runs_with_display_environment_removed ... ok
++
++test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
++
++     Running tests\guard_fixtures.rs (target\debug\deps\guard_fixtures-e37a5e286b27fa3e.exe)
++
++running 1 test
++test rejects_a_real_direct_composition_import ... ok
++
++test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.76s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_io-fa8dd6720c72901c.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_lipsync-45fdf97f24c598a0.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_mcp-3ffeea313697a020.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_model-bc40083439292256.exe)
++
++running 41 tests
++test canonical::tests::large_integers_are_exact ... ok
++test canonical::tests::integral_doubles_normalise_to_integers ... ok
++test id::tests::ulid_encoding_is_26_crockford_chars_and_ordered ... ok
++test id::tests::compound_form ... ok
++test canonical::tests::numbers_match_ecmascript ... ok
++test canonical::tests::layout_is_two_space_with_tuples_on_one_line ... ok
++test input::tests::opaque_values_are_untouched_but_ordered ... ok
++test error::tests::wire_form_has_three_fields ... ok
++test entities::tests::stubs_reject_full_objects_and_foreign_types ... ok
++test id::tests::seeded_generators_are_reproducible ... ok
++test id::tests::validates_character_set_and_length ... ok
++test pointer::tests::indexes_are_strict ... ok
++test entities::tests::ext_keys_are_reverse_dns ... ok
++test name::tests::next_free_uses_smallest_unused ... ok
++test change::tests::inverse_against_pre_state_is_concrete ... ok
++test name::tests::normalises_nfc_and_trims ... ok
++test name::tests::per_entity_rules ... ok
++test change::tests::range_operations_apply_only_to_declared_fields ... ok
++test path::tests::quoted_names_escape ... ok
++test path::tests::refs_classify ... ok
++test path::tests::rejects_malformed_paths ... ok
++test change::tests::range_replace_checks_types_window_and_bounds ... ok
++test input::tests::depth_counts_containers ... ok
++test path::tests::spec_examples_parse_and_print ... ok
++test json_text::tests::rules ... ok
++test object::tests::runs_are_merged_and_trailing_blanks_dropped ... ok
++test change::tests::move_and_copy_need_from ... ok
++test pointer::tests::round_trip_escapes ... ok
++test types::tests::names_round_trip_and_aliases_resolve ... ok
++test id::tests::clones_share_one_sequence ... ok
++test types::tests::tags_reject_other_types ... ok
++test types::tests::prefixes_are_unique_and_valid ... ok
++test value::tests::colours_normalise_to_upper_rgba ... ok
++test schema_ts::tests::types_and_bigint_bounds ... ok
++test value::tests::timestamps_round_trip_and_reject_impossible_dates ... ok
++test id::tests::generated_ids_are_valid_prefixed_and_increasing ... ok
++test canonical::tests::non_finite_values_are_errors_not_null ... ok
++test value::tests::timestamp_display_matches_civil_conversion_for_many_days ... ok
++test change::tests::frame_bearing_writes_are_bounded_at_the_scene_limit ... ok
++test validate::tests::zero_count_exposure_runs_are_reported_by_the_model_check ... ok
++test overlay::tests::newer_minor_properties_survive_a_parse_and_write_in_lexicographic_order ... ok
++
++test result: ok. 41 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
++
++     Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-fbab84c0e66509f0.exe)
++
++running 39 tests
++test add_over_existing_object_property_is_invertible ... ok
++test canonical_serialization_rejects_nonfinite_values ... ok
++test elided_patch_must_not_write_null ... ok
++test diff_does_not_treat_opaque_arrays_as_child_collections ... ok
++test move_over_existing_object_property_is_invertible ... ok
++test root_add_is_rfc6902_replacement ... ok
++test hostile_path_and_id_controls ... ok
++test cloning_a_system_generator_cannot_duplicate_ids ... ok
++test jsonschema_integer_multiple_of_does_not_round_before_testing ... ok
++test property_schema_resolves_nested_child_and_tuple_fields ... ok
++test schema_properties_have_format_introduction_annotations ... ok
++test nfc_applies_to_persisted_strings_beyond_names ... ok
++test canonical_scene_map_order_is_not_document_state ... ok
++test depth_zero_results_validate_against_their_object_schema ... ok
++test canonical_map_order_does_not_depend_on_insertion_order ... ok
++test project_library_must_have_local_kind ... ok
++test project_requires_a_visible_palette ... ok
++test linked_file_asset_requires_paths ... ok
++test brush_outline_must_be_closed ... ok
++test image_element_bank_requires_exactly_one_bitmap_per_drawing ... ok
++test int_means_signed_32_bit_unless_spec_states_otherwise ... ok
++test document_assembly_rechecks_schema_ranges_after_public_deserialize ... ok
++test duplicate_entry_ids_must_not_silently_overwrite_content ... ok
++test child_stub_type_must_agree_with_the_containment_slot ... ok
++test mouth_track_manual_ranges_stay_within_the_placement ... ok
++test texture_paths_must_be_under_textures ... ok
++test extension_and_metadata_names_are_never_interpreted ... ok
++test spline_handle_offsets_are_clamped_to_adjacent_key_times ... ok
++test swatch_id_alias_is_accepted_by_the_validated_input_path ... ok
++test fixed_text_requires_width ... ok
++test metadata_depth_is_enforced_at_model_input ... ok
++test schema_integer_boundary_does_not_round_u64_max_up ... ok
++test every_valid_deep_library_object_has_a_resolvable_canonical_path ... ok
++test containment_and_scene_limit_controls ... ok
++test nested_closed_value_objects_reject_unknown_fields ... ok
++test schema_mutations_cover_all_object_types_and_root_properties ... ok
++test derived_properties_are_output_only_on_validated_entity_input ... ok
++test million_system_ids_unique_ordered_and_correctly_prefixed ... ok
++test ten_megabyte_drawing_validation_measurement ... ok
++
++test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.00s
++
++     Running tests\c11_r2_adversarial.rs (target\debug\deps\c11_r2_adversarial-0edf6f222258b96d.exe)
++
++running 39 tests
++test missing_copy_source_is_not_implicitly_the_document_root ... ok
++test array_append_patch_inverse_restores_input ... ok
++test nested_array_move_with_overwrite_inverse_restores_input ... ok
++test elided_and_incomplete_operations_fail_without_mutating_input ... ok
++test nonfinite_nested_structs_maps_and_model_constructors_are_rejected ... ok
++test ordinary_move_copy_test_and_array_index_shifts_invert ... ok
++test range_patch_rejects_nonstring_mouth_value_without_deleting_text ... ok
++test canonical_writer_limits_are_explicit ... ok
++test multiple_of_is_exact_near_u64_and_signed_limits ... ok
++test property_lookup_preserves_ref_property_annotations ... ok
++test property_lookup_follows_effect_condition_without_discarding_it ... ok
++test every_envelope_type_is_readonly ... ok
++test every_schema_property_has_since_and_envelope_type_is_readonly ... ok
++test all_public_entity_constructors_are_checked_before_document_use ... ok
++test image_import_options_are_opaque ... ok
++test cell_note_frame_map_keys_obey_signed_int_bounds ... ok
++test nfc_is_applied_to_declared_non_name_strings_without_touching_opaque_values ... ok
++test spline_clamps_both_sides_for_irregular_key_spacing ... ok
++test fixed_text_width_and_texture_paths_reject_new_invalid_cases ... ok
++test opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved ... ok
++test duplicate_keys_are_rejected_even_at_distinct_frames ... ok
++test mouth_label_frame_map_keys_are_positive_and_within_int ... ok
++test duplicate_local_ids_across_nested_nodes_share_drawing_scope ... ok
++test swatch_alias_equal_conflicting_and_nested_forms ... ok
++test signed_int_boundaries_and_seed_exception ... ok
++test model_depth_99_100_101_is_enforced_before_parsing ... ok
++test public_serde_entries_cannot_evade_revalidation ... ok
++test randomized_insertion_and_post_patch_revalidation_write_identical_bytes ... ok
++test duplicate_inline_collections_and_cross_entry_global_ids_are_rejected ... ok
++test all_entity_serde_entry_points_reject_unknown_fields_and_revalidate ... ok
++test duplicate_placement_sequence_block_and_channel_ids_are_rejected ... ok
++test every_model_stub_and_full_result_validates_at_depth_zero_one_two_all ... ok
++test duplicate_split_entries_all_five_maps_are_rejected ... ok
++test deeper_library_paths_near_model_limit_resolve ... ok
++test new_entity_semantic_boundary_controls ... ok
++test duplicate_ids_across_split_types_and_inline_levels_are_rejected ... ok
++test every_document_entry_kind_revalidates_deserialized_fields ... ok
++test forty_previously_implemented_register_rows_retain_constraints ... ok
++test cloned_generator_eight_threads_100k_each_are_unique ... ok
++
++test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.75s
++
++     Running tests\c11_r3_adversarial.rs (target\debug\deps\c11_r3_adversarial-1a0dbcebd5aad757.exe)
++
++running 11 tests
++test zero_length_exposure_runs_are_invalid_range_payloads ... ok
++test malformed_mouth_ranges_return_typed_errors ... ok
++test moving_into_own_subtree_fails_atomically_and_copying_parent_succeeds ... ok
++test resolved_stateless_move_inverse_does_not_shift_numeric_object_keys ... ok
++test append_move_remove_sequences_restore_nested_arrays ... ok
++test anonymous_variant_property_declarations_have_since ... ok
++test property_schema_nested_conditionals_and_ref_annotations_survive ... ok
++test property_schema_preserves_every_enum_alternative ... ok
++test property_schema_preserves_nullable_value_domains ... ok
++test opaque_mouth_track_lookalikes_are_ordinary_json_changes ... ok
++test frame_map_keys_and_nfc_values_at_fresh_boundaries ... ok
++
++test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
++
++     Running tests\c11_r3_random.rs (target\debug\deps\c11_r3_random-173bfabd37f1d116.exe)
++
++running 1 test
++test ten_thousand_rfc6902_sequences_apply_and_invert ... ok
++
++test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.81s
++
++     Running tests\c11_r3_register.rs (target\debug\deps\c11_r3_register-817fbad50014b531.exe)
++
++running 4 tests
++test rows_146_and_148_drawing_pivot_and_ordered_nodes ... ok
++test rows_128_to_137_transform_constraints_and_pivots ... ok
++test rows_138_to_141_camera_export_skeleton_and_bone_blocks ... ok
++test rows_111_to_124_element_variant_blocks_are_required_and_typed ... ok
++
++test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
++
++     Running tests\c11_r4_exposure_bounds.rs (target\debug\deps\c11_r4_exposure_bounds-480767c0ecad5649.exe)
++
++running 2 tests
++test exposure_range_rejects_window_past_scene_limit ... ok
++test exposure_range_rejects_total_above_scene_limit ... ok
++
++test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
++
++     Running tests\c11_r5_write_bounds.rs (target\debug\deps\c11_r5_write_bounds-68c05f2e64670e1a.exe)
++
++running 4 tests
++test nested_exposure_count_write_obeys_total_limit ... ok
++test exposure_append_batch_cannot_cross_limit ... ok
++test copy_and_move_into_exposure_obey_scene_limit ... ok
++test whole_mouth_string_writes_obey_scene_limit ... ok
++
++test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running tests\conformance.rs (target\debug\deps\conformance-2321258859c70a82.exe)
++
++running 15 tests
++test x_command_annotations_name_registered_commands ... ok
++test published_schema_bundle_is_current ... ok
++test schemas_are_valid_draft_2020_12 ... ok
++test reference_errors_carry_the_spec_codes ... ok
++test spec_example_paths_resolve ... ok
++test persisted_json_equals_query_json_minus_transient ... ok
++test ambiguous_names_list_candidates ... ok
++test every_entry_validates_and_has_no_query_only_properties ... ok
++test revisions_newer_than_the_document_are_integrity_errors ... ok
++test fixture_covers_every_object_and_element_type ... ok
++test change_sets_describe_and_invert_edits ... ok
++test canonical_paths_resolve_to_their_objects ... ok
++test golden_canonical_entries ... ok
++test every_object_validates_at_every_depth ... ok
++test canonical_round_trip_is_byte_identical ... ok
++
++test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
++
++     Running tests\properties.rs (target\debug\deps\properties-9a8adbecdf3b72d0.exe)
++
++running 18 tests
++test timestamps_round_trip ... ok
++test numbers_round_trip_through_canonical_text ... ok
++test json_parsing_of_doubles_is_correctly_rounded ... ok
++test names_normalise_idempotently ... ok
++test id_parsing_never_panics_and_matches_the_grammar ... ok
++test generated_paths_print_and_parse_identically ... ok
++test path_parsing_never_panics ... ok
++test number_vectors_for_the_front_end ... ok
++test canonical_json_is_stable ... ok
++test child_collection_patches_apply_and_invert ... ok
++test exposure_range_patches_apply_and_invert ... ok
++test random_rfc6902_sequences_invert_against_their_pre_state ... ok
++test patches_apply_and_invert ... ok
++test every_object_type_has_a_schema_that_rejects_unknown_properties ... ok
++test pens_round_trip ... ok
++test palettes_round_trip ... ok
++test elements_of_every_type_round_trip ... ok
++test strokes_round_trip ... ok
++
++test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
++
++     Running tests\staged_commit.rs (target\debug\deps\staged_commit-9c39a63c6c4161b2.exe)
++
++running 3 tests
++test document_level_frame_writes_are_refused_and_leave_the_document_unchanged ... ok
++test random_patches_never_commit_a_document_with_integrity_errors ... ok
++test staged_commit_sweep_commits_and_refuses ... ok
++
++test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.60s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_persist-1e98e5a5b94939d0.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_registry-761d00a7a68be838.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_render-7545749cb0f57bcf.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++     Running tests\c03_fixed_configurations.rs (target\debug\deps\c03_fixed_configurations-ff6ecec6fc16b6bb.exe)
++
++running 2 tests
++test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
++test fixed_scalar_configuration_hashes_identically_across_oses ... ok
++
++test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.82s
++
++     Running tests\c03_r1_stress.rs (target\debug\deps\c03_r1_stress-ee5b53f219c5152a.exe)
++
++running 3 tests
++test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
++test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
++test extended_corpus_repeats_and_cross_os_hashes ... ok
++
++test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 8.43s
++
++     Running tests\c03_r2_quality.rs (target\debug\deps\c03_r2_quality-86fa414d83e6b616.exe)
++
++running 1 test
++test quality_pipeline_opacity_full_corpus ... ok
++
++test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.87s
++
++     Running unittests src\lib.rs (target\debug\deps\tt_vector-1fe1809a0160d24a.exe)
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_anim
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_audio
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_colour
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_desktop
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_engine
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_executor
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_fx
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_io
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_lipsync
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_mcp
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_model
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_persist
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_registry
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_render
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
++   Doc-tests tt_vector
++
++running 0 tests
++
++test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
++
+diff --git a/reviews/evidence/M1-C1.1-r5-response/receipt.json b/reviews/evidence/M1-C1.1-r5-response/receipt.json
+new file mode 100644
+index 0000000..787e1a4
+--- /dev/null
++++ b/reviews/evidence/M1-C1.1-r5-response/receipt.json
+@@ -0,0 +1,56 @@
++{
++  "what": "Final closure check r5 response: local gate logs, recorded from the working tree described by baseCommit + dirtyFiles before the fix commit.",
++  "commands": {
++    "gates/fmt.log": "cargo fmt --all --check",
++    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
++    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
++    "gates/test.log": "cargo test --workspace --locked",
++    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics (second run; the first run's rustc process aborted with an allocation failure while compiling, and its log was overwritten)",
++    "gates/deny.log": "cargo deny --locked check",
++    "gates/pnpm-*.log": "pnpm lint | typecheck | test | format:check | licenses:check",
++    "gates/node-test.log": "node --test scripts/check-npm-licenses.test.mjs",
++    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
++    "gates/headless-*.log, selftest-*": "cargo build --release --locked -p tt-headless; --selftest --json twice, compared; scripts/check-headless-deps.py",
++    "gates/reviewer-python-suites.log": "python scripts/run-reviewer-python-suites.py",
++    "gates/staged-commit-nocapture.log": "cargo test --locked -p tt-model --test staged_commit -- --nocapture"
++  },
++  "recordedAt": "2026-10-19T01:00:41+00:00",
++  "baseCommit": "4bb343ed386cfcd17e8248d3c7fc93b359790e3d",
++  "dirtyFiles": [
++    "crates/model/src/change.rs",
++    "crates/model/src/document/mod.rs",
++    "crates/model/tests/staged_commit.rs",
++    "docs/decisions/ADR-0010-object-model-and-identifiers.md",
++    "docs/decisions/ADR-0011-canonical-json-and-schemas.md",
++    "plan/traceability.csv",
++    "reviews/M1-C1.1-handoff.md",
++    "reviews/evidence/M1-C1.1-r5-response/"
++  ],
++  "machine": {
++    "os": "Windows-11-10.0.26200-SP0",
++    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
++    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
++  },
++  "sha256": {
++    "gates/build.log": "d88f3d56110269a16e56dce0966b966c22f9681ef8be132a7505d6724dd73b2b",
++    "gates/clippy-diag.log": "2e3afc12a9eb082f081210858f52b38b50a010e65bdf43737a2ff6ff504161fb",
++    "gates/clippy.log": "90e7053d6837e3c7038316de38c42528f46b478a55a93c60a23c603f095cc51b",
++    "gates/deny.log": "69c387dc462b9c37f752f53d1c7a2a510e7bfc60550534035443e44d43c24a3d",
++    "gates/fmt.log": "e20fecd1b340974b1c268348f4daa9d31a5c67f6065c319097a12bbe3e21f962",
++    "gates/headless-build.log": "673599c5cb684c6257754f3e626a4f9faca61e90732f194e405fe7f649d0a8d6",
++    "gates/headless-deps.log": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295",
++    "gates/node-test.log": "e62175021431801c333d75be8eb9f1ed35b0401f7812396291093b6f18d9f8d2",
++    "gates/pnpm-format.log": "3741b86ebc596c5914a8805d60966c473eb165aa935bad114c67be1d4b114bb1",
++    "gates/pnpm-licenses.log": "26eeca268a0c4bdfb47c1188020ecd167a2a1b3944c625ed7225fe0fb7f10535",
++    "gates/pnpm-lint.log": "9acfaa811763526641b9fd04d72d6150daffdae7aa0f42b3e1e1fe4afbbe7a21",
++    "gates/pnpm-test.log": "4e4c42e0ea0cae068cb239a6db21f952a87258c5c2705c43bbd7edf7cf436d62",
++    "gates/pnpm-typecheck.log": "de37029285525bc9cfc231919392594833e45e9f3c3c5f6c5a7925c99161762f",
++    "gates/reviewer-python-suites.log": "b6271a2ceedc38631f7134cc751366289e691d1f571585908c3b587b807369ab",
++    "gates/selftest-1.json": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
++    "gates/selftest-2.json": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
++    "gates/selftest-compare.log": "67bd29b3acc47c40247ef48e2155b582d8ac3af5ed0afd23947c089ed02d3e9c",
++    "gates/test-diag.log": "a4e60e9fb2f8d424520ed01807d2fff9411a38f6dea6a8d023fa89d137d64c36",
++    "gates/test.log": "b5443564d34a88c13c8f4eb79cdb24cb2c2275eaf0f53535387c492f3adb17a1",
++    "gates/staged-commit-nocapture.log": "231a2394fc75c5139317056a5bca7f3abd733c5bd38aba1bb5fce5eba1aa1146"
++  }
++}
