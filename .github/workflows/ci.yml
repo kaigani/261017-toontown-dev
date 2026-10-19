@@ -31,6 +31,10 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Full history: the reviewer policy suite (tests/adversarial/c11-r2-review-policy.py) diffs against the
+          # round-1 review commit.
+          fetch-depth: 0
 
       - name: Rust toolchain (pinned in rust-toolchain.toml)
         run: |
@@ -58,6 +62,12 @@ jobs:
           pnpm test
           pnpm format:check
           pnpm licenses:check
+
+      - name: Reviewer Python suites (every tests/adversarial/*.py)
+        run: |
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+          $PY scripts/run-reviewer-python-suites.py
 
       - name: Front end — build, diagnostics variant then default (frontendDist is embedded by the Tauri host)
         run: |

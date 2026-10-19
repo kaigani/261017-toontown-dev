@@ -88,7 +88,12 @@ definitions the application validates with; 10 §2.6 for change sets that can be
    Range semantics belong only to the declared fields — an element's `exposure`, a sound placement's
    `mouthTrack/mouths` — so `diff_json` emits range operations only there, and `apply` refuses a range operation on
    any other path or inside `meta`/`ext`; opaque text that looks like a mouth track is replaced wholesale as an
-   ordinary value (C11-R3-01). The object rules also report a zero-count exposure run (`runCount`). It supports RFC 6902 root `add`/`replace`;
+   ordinary value (C11-R3-01). The object rules also report a zero-count exposure run (`runCount`). Every
+   frame-bearing write is bounded by the scene-length limit at the patch boundary (10 §5, C11-R4-01): run counts,
+   run totals of the target, `value` and `oldValue`, the window's last frame and the resulting length are checked
+   arithmetically **before** anything is expanded or resized, and so are whole-value writes of an element's
+   `exposure`; a breach is `doc.limitExceeded` with `details.pointer` and nothing is applied. Exactly 100 000 frames
+   is valid. It supports RFC 6902 root `add`/`replace`;
    whether `doc.object.patch` may replace a whole object is a command decision (C1.2). Exposure and mouth-track
    edits use one range
    operation: `{op: "replace", path, range: {from, to}, value, oldValue}` where frames from `from` covered by

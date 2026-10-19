@@ -371,25 +371,81 @@ fn diff_collection(a: &[Value], b: &[Value], path: &str, out: &mut Vec<PatchOp>)
     }
 }
 
-/// Exposure runs expanded to one entry per frame.
-/// Exposure runs expanded to frames; `None` unless every run has a count ≥ 1 (10 §4.7, C11-R3-03) and the total is
-/// bounded.
-fn expand_runs(v: &Value) -> Option<Vec<Value>> {
-    let runs: Vec<ExposureRun> = serde_json::from_value(v.clone()).ok()?;
-    if runs.iter().any(|(_, c)| *c == 0) {
-        return None;
+/// The scene-length limit (10 §5) as a frame count.
+const MAX_FRAMES: u64 = crate::document::MAX_SCENE_LENGTH;
+
+/// Why a value is not acceptable exposure runs.
+enum RunsError {
+    /// Not `[[drawingId | null, count], …]`, or a count of 0 (10 §4.7, C11-R3-03).
+    Malformed,
+    /// More frames than a scene may have (10 §5, C11-R4-01).
+    TooLong(u64),
+}
+
+/// Parses exposure runs and their frame total **without expanding them**: every count ≥ 1 and the total at most
+/// [`MAX_FRAMES`], computed with checked arithmetic.
+fn parse_runs(v: &Value) -> Result<(Vec<ExposureRun>, u64), RunsError> {
+    let runs: Vec<ExposureRun> = serde_json::from_value(v.clone()).map_err(|_| RunsError::Malformed)?;
+    let mut total = 0u64;
+    for (_, c) in &runs {
+        if *c == 0 {
+            return Err(RunsError::Malformed);
+        }
+        total = total.saturating_add(u64::from(*c));
     }
-    let mut out = Vec::new();
+    if total > MAX_FRAMES {
+        return Err(RunsError::TooLong(total));
+    }
+    Ok((runs, total))
+}
+
+/// Exposure runs expanded to one entry per frame; `None` unless [`parse_runs`] accepts them, so nothing larger than
+/// a scene is ever allocated.
+fn expand_runs(v: &Value) -> Option<Vec<Value>> {
+    let (runs, total) = parse_runs(v).ok()?;
+    let mut out = Vec::with_capacity(usize::try_from(total).unwrap_or(0));
     for (d, c) in runs {
         let cell = d.map_or(Value::Null, |d| Value::String(d.as_str().to_owned()));
         for _ in 0..c {
             out.push(cell.clone());
         }
-        if out.len() > crate::document::MAX_SCENE_LENGTH as usize * 2 {
-            return None;
-        }
     }
     Some(out)
+}
+
+fn limit_err(op: &PatchOp, msg: impl Into<String>) -> ModelError {
+    ModelError::with_details(
+        codes::LIMIT_EXCEEDED,
+        msg,
+        json!({ "pointer": op.path, "op": op.op, "maxFrames": MAX_FRAMES }),
+    )
+}
+
+/// The frame total of exposure runs carried by an operation, as a typed error when they are malformed or longer
+/// than a scene.
+fn runs_total(v: &Value, what: &str, op: &PatchOp) -> Result<u64, ModelError> {
+    match parse_runs(v) {
+        Ok((_, total)) => Ok(total),
+        Err(RunsError::Malformed) => {
+            Err(patch_err(op, format!("{what} is not exposure runs (each `[drawingId | null, count ≥ 1]`)")))
+        }
+        Err(RunsError::TooLong(total)) => {
+            Err(limit_err(op, format!("{what} covers {total} frames; a scene has at most {MAX_FRAMES} (10 §5)")))
+        }
+    }
+}
+
+/// Whether a pointer addresses a declared run- or frame-bearing field (an element's `exposure`, a placement's
+/// `mouthTrack/mouths`), never a lookalike inside opaque `meta`/`ext` data (C11-R3-01).
+fn declared_frame_field(tokens: &[String]) -> Option<&'static str> {
+    if tokens.iter().any(|t| t == "meta" || t == "ext") {
+        return None;
+    }
+    match tokens {
+        [.., e] if e == "exposure" => Some("exposure"),
+        [.., t, m] if t == "mouthTrack" && m == "mouths" => Some("mouths"),
+        _ => None,
+    }
 }
 
 /// Frames back to explicit runs (blanks kept, no canonicalisation: windows must invert exactly).
@@ -612,9 +668,7 @@ fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
     // Range semantics belong to the declared fields only (C11-R3-01): an element's `exposure` and a placement's
     // `mouthTrack/mouths`, never anything inside opaque `meta`/`ext` values (those are replaced wholesale).
     let tokens = pointer::parse(&op.path)?;
-    let declared = matches!(tokens.as_slice(), [.., e] if e == "exposure")
-        || matches!(tokens.as_slice(), [.., t, m] if t == "mouthTrack" && m == "mouths");
-    if !declared || tokens.iter().any(|t| t == "meta" || t == "ext") {
+    if declared_frame_field(&tokens).is_none() {
         return Err(patch_err(op, "range operations apply only to `exposure` and `mouthTrack/mouths`"));
     }
     let (Some(value), Some(old)) = (op.value.as_ref(), op.old_value.as_ref()) else {
@@ -623,6 +677,17 @@ fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
     if r.from < 1 {
         return Err(patch_err(op, "range.from is a frame (≥ 1)"));
     }
+    // 10 §5 (C11-R4-01): the window ends at frame `to`, which a scene of at most MAX_FRAMES frames bounds. Checked
+    // before anything is expanded or resized.
+    if u64::from(r.to) > MAX_FRAMES || u64::from(r.from) > MAX_FRAMES {
+        return Err(limit_err(op, format!("the range ends after frame {MAX_FRAMES}, the scene-length limit (10 §5)")));
+    }
+    // The length of the result: the target (or the window, if it reaches past the end) with the old window
+    // replaced by the new one.
+    let result_len = |target_len: u64, old_len: u64, new_len: u64| {
+        let from = u64::from(r.from) - 1;
+        target_len.max(from + old_len) - old_len + new_len
+    };
     let start = (r.from as usize) - 1;
     let check_to = |old_len: usize, new_len: usize| {
         let len = old_len.max(new_len).max(1);
@@ -643,6 +708,10 @@ fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
                 return Err(patch_err(op, "a mouth-string value holds only the mouth letters A–G and X (10 §4.14)"));
             }
             check_to(old.len(), new.len())?;
+            let len = s.chars().count() as u64;
+            if result_len(len, old.len() as u64, new.len() as u64) > MAX_FRAMES {
+                return Err(limit_err(op, format!("the mouth track would exceed {MAX_FRAMES} frames (10 §5)")));
+            }
             let mut chars: Vec<char> = s.chars().collect();
             if chars.get(start..start + old.len()) != Some(old.as_slice()) {
                 return Err(patch_err(op, "oldValue is not the current content of the range"));
@@ -652,12 +721,21 @@ fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
             Ok(())
         }
         Value::Array(_) => {
+            // Counts, totals, window and result length are all checked before expansion (C11-R4-01).
+            let target_len = runs_total(target, "the target", op)?;
+            let new_len = runs_total(value, "value", op)?;
+            let old_len = runs_total(old, "oldValue", op)?;
+            check_to(usize::try_from(old_len).unwrap_or(usize::MAX), usize::try_from(new_len).unwrap_or(usize::MAX))?;
+            let total = result_len(target_len, old_len, new_len);
+            if total > MAX_FRAMES {
+                return Err(limit_err(
+                    op,
+                    format!("the exposure would cover {total} frames; at most {MAX_FRAMES} (10 §5)"),
+                ));
+            }
             let mut frames = expand_runs(target).ok_or_else(|| patch_err(op, "not exposure runs"))?;
-            let new = expand_runs(value)
-                .ok_or_else(|| patch_err(op, "value is not exposure runs (each `[drawingId | null, count ≥ 1]`)"))?;
-            let old = expand_runs(old)
-                .ok_or_else(|| patch_err(op, "oldValue is not exposure runs (each `[drawingId | null, count ≥ 1]`)"))?;
-            check_to(old.len(), new.len())?;
+            let new = expand_runs(value).ok_or_else(|| patch_err(op, "value is not exposure runs"))?;
+            let old = expand_runs(old).ok_or_else(|| patch_err(op, "oldValue is not exposure runs"))?;
             // Frames past the end are blank (10 §4.7).
             if frames.len() < start + old.len() {
                 frames.resize(start + old.len(), Value::Null);
@@ -685,6 +763,15 @@ fn apply_op(v: &mut Value, op: &PatchOp) -> Result<Vec<PatchOp>, ModelError> {
     let value = || op.value.clone().ok_or_else(|| patch_err(op, format!("`{}` needs a value", op.op)));
     // RFC 6902 §4.4/§4.5: `move` and `copy` name their source; a missing `from` is an error, not the root.
     let from = || op.from.clone().ok_or_else(|| patch_err(op, format!("`{}` needs `from`", op.op)));
+    // Whole-value writes of a declared exposure carry the same run limits as range replaces (C11-R4-01): counts
+    // ≥ 1 and at most a scene's frames, as a typed error before anything is applied.
+    if matches!(op.op, "add" | "replace")
+        && op.range.is_none()
+        && let Some(runs @ Value::Array(_)) = &op.value
+        && declared_frame_field(&pointer::parse(&op.path)?) == Some("exposure")
+    {
+        runs_total(runs, "value", op)?;
+    }
     match op.op {
         "add" => insert(v, &op.path, value()?, op),
         "remove" => {
@@ -851,6 +938,53 @@ mod tests {
         let patch = diff_json(&doc, &after, "", ObjectType::SoundPlacement);
         assert!(patch.iter().all(|o| o.range.is_none()), "{patch:?}");
         assert_eq!(apply(&doc, &patch).unwrap(), after);
+    }
+
+    /// C11-R4-01: every frame-bearing write is bounded by the scene-length limit (10 §5) at the patch boundary, with a
+    /// typed error and nothing applied — exactly at the limit is valid, one frame over is not.
+    #[test]
+    fn frame_bearing_writes_are_bounded_at_the_scene_limit() {
+        let max = u32::try_from(MAX_FRAMES).unwrap();
+        let limited = |r: Result<Value, ModelError>, path: &str| {
+            let e = r.unwrap_err();
+            assert_eq!(e.code(), codes::LIMIT_EXCEEDED, "{e:?}");
+            assert_eq!(e.details()["pointer"], path);
+        };
+        let doc = json!({"exposure": [["a", 4]], "mouthTrack": {"mouths": "AB"}});
+        // Exposure range: the replacement's own total.
+        assert!(apply(&doc, &[exposure(json!([["b", max]]), json!([["a", 4]]), 1, max)]).is_ok());
+        limited(apply(&doc, &[exposure(json!([["b", max + 1]]), json!([["a", 4]]), 1, max + 1)]), "/exposure");
+        // Exposure range: a one-frame window at / past the last frame.
+        assert!(apply(&doc, &[exposure(json!([["b", 1]]), json!([[null, 1]]), max, max)]).is_ok());
+        limited(apply(&doc, &[exposure(json!([["b", 1]]), json!([[null, 1]]), max + 1, max + 1)]), "/exposure");
+        // Exposure range: a short window that lengthens a full exposure past the limit.
+        let full = json!({"exposure": [["a", max]]});
+        assert!(apply(&full, &[exposure(json!([["b", 1]]), json!([["a", 1]]), max, max)]).is_ok());
+        limited(apply(&full, &[exposure(json!([["b", 2]]), json!([["a", 1]]), max, max + 1)]), "/exposure");
+        // Exposure range: an oversized oldValue or target is refused before expansion.
+        limited(apply(&doc, &[exposure(json!([["b", 1]]), json!([["a", max + 1]]), 1, max + 1)]), "/exposure");
+        let huge = json!({"exposure": [["a", u32::MAX]]});
+        limited(apply(&huge, &[exposure(json!([["b", 1]]), json!([["a", 1]]), 1, 1)]), "/exposure");
+        // Whole-value writes of the exposure.
+        for kind in ["replace", "add"] {
+            assert!(apply(&doc, &[op(kind, "/exposure", None, Some(json!([["b", max]])), None)]).is_ok(), "{kind}");
+            limited(
+                apply(&doc, &[op(kind, "/exposure", None, Some(json!([["b", max], [null, 1]])), None)]),
+                "/exposure",
+            );
+            assert!(apply(&doc, &[op(kind, "/exposure", None, Some(json!([["b", 0]])), None)]).is_err(), "{kind}");
+        }
+        // Opaque lookalikes are not run-bearing fields.
+        let opaque = op("replace", "/meta/exposure", None, Some(json!([["b", u32::MAX]])), None);
+        assert!(apply(&json!({"meta": {"exposure": 1}}), &[opaque]).is_ok());
+        // Mouth track: window and resulting length.
+        let x = |n: u32| "X".repeat(n as usize);
+        let at_limit = json!({"mouthTrack": {"mouths": x(max)}});
+        assert!(apply(&doc, &[mouths(json!(x(max)), json!("AB"), 1, max)]).is_ok());
+        limited(apply(&doc, &[mouths(json!(x(max + 1)), json!("AB"), 1, max + 1)]), "/mouthTrack/mouths");
+        assert!(apply(&at_limit, &[mouths(json!("A"), json!("X"), max, max)]).is_ok());
+        limited(apply(&at_limit, &[mouths(json!("AA"), json!("X"), max, max + 1)]), "/mouthTrack/mouths");
+        limited(apply(&doc, &[mouths(json!("A"), json!(""), max + 1, max + 1)]), "/mouthTrack/mouths");
     }
 
     #[test]
