@@ -544,12 +544,12 @@ fn tree_shape(nodes: &Value) -> (BTreeMap<String, Option<String>>, Vec<String>) 
     (parents, order)
 }
 
+/// Elements of one scene in Timeline pre-order, each with its parent in the scene tree.
+type Forest = Vec<(String, Option<String>)>;
+
 /// The selected elements and all their descendants (05 §15), per scene, in Timeline pre-order, each with its
 /// parent in the scene tree.
-fn with_descendants(
-    doc: &Document,
-    keys: &[String],
-) -> Result<Vec<(String, Vec<(String, Option<String>)>)>, CommandError> {
+fn with_descendants(doc: &Document, keys: &[String]) -> Result<Vec<(String, Forest)>, CommandError> {
     let mut by_scene: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
     for k in keys {
         let id = Id::parse(k)?;
