@@ -1,0 +1,84 @@
+[
+  {
+    "run": 39215102172,
+    "head": "1d0624d44bd6295ba0d05c5d6bb2cc4064cde272",
+    "conclusion": "failure",
+    "jobs": [
+      {
+        "name": "raster determinism (windows-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "raster determinism (macos-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "bundle (windows-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "check (macos-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "raster determinism (ubuntu-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "check (windows-latest)",
+        "conclusion": "failure"
+      },
+      {
+        "name": "bundle (macos-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "headless without a display (ubuntu)",
+        "conclusion": "success"
+      }
+    ],
+    "rawLogBytes": 1200279,
+    "rawLogSha256": "45fb8142d43c2230b1e19c256b65cd1235d8e920d80748c90ae5835ffd29edc8"
+  },
+  {
+    "run": 39217799686,
+    "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "bundle (macos-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "raster determinism (macos-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "check (windows-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "headless without a display (ubuntu)",
+        "conclusion": "success"
+      },
+      {
+        "name": "check (macos-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "bundle (windows-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "raster determinism (ubuntu-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "raster determinism (windows-latest)",
+        "conclusion": "success"
+      }
+    ],
+    "rawLogBytes": 1605060,
+    "rawLogSha256": "55ecf33d0e94741a130c5bd5a3761ee3e46464f6e505686f3660801fa677ba25"
+  }
+]

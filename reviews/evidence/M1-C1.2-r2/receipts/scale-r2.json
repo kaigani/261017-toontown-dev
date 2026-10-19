@@ -1,0 +1,26 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-executor",
+    "--test",
+    "c12_r2_scale",
+    "--",
+    "--nocapture"
+  ],
+  "exit": 101,
+  "started": "2026-10-19T08:23:16.681221+00:00",
+  "seconds": 13.481829700001981,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? crates/executor/tests/c12_r2_registry.rs",
+    "?? crates/executor/tests/c12_r2_scale.rs",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\scale-r2.log",
+  "sha256": "39efd42b49210d64d5f6a015b719a705bfd6fd1940481b90c4d912d7c222723c"
+}

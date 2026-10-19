@@ -1,0 +1,25 @@
+{
+  "fullWorkspace": {
+    "passed": 430,
+    "failed": 29,
+    "ignored": 1
+  },
+  "newReview": {
+    "passed": 19,
+    "failed": 29,
+    "tests": 48
+  },
+  "originalR1": {
+    "passed": 44,
+    "failed": 0
+  },
+  "originalC11": {
+    "suites": 11,
+    "passed": 114
+  },
+  "findings": {
+    "P0": 0,
+    "P1": 13,
+    "P2": 1
+  }
+}

@@ -1,0 +1,19 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 2.00s
+     Running tests\c12_r2_scale.rs (target\release\deps\c12_r2_scale-4d7833ba5ebbd26c.exe)
+
+running 1 test
+
+thread 'hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff' (18116) panicked at crates\executor\tests\c12_r2_scale.rs:40:5:
+doc.diff must carry the drawing invalidation already present in envelope and event
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff ... FAILED
+
+failures:
+
+failures:
+    hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.05s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r2_scale`

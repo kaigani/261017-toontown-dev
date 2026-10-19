@@ -1,0 +1,29 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-executor",
+    "--test",
+    "c12_r1_contracts",
+    "--test",
+    "c12_r1_stress",
+    "--test",
+    "c12_r1_macro",
+    "--locked",
+    "--",
+    "--test-threads=1"
+  ],
+  "exit": 0,
+  "started": "2026-10-19T08:30:33.951077+00:00",
+  "seconds": 105.67857319995528,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? crates/executor/tests/c12_r2_registry.rs",
+    "?? crates/executor/tests/c12_r2_scale.rs",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\r1-regressions.log",
+  "sha256": "22b3633159afdd5e5e8fd61fb5f00ff6c9806f88459538a0fe9c8f992def4e04"
+}

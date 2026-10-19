@@ -1,0 +1,2 @@
+[('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('kernel.executor', True), ('headless.mcpLinked', True)]
+identical and all ok: True

@@ -1,0 +1,148 @@
+anim.bone.create ['edit'] True Create a bone
+  spec/05_scene_planning.md:1295 ### 19.3 Command table | `anim.bone.create` | action | Create a bone (chained to a parent bone, or freestanding) | `skeletonId: id; parentBoneId?: id; root?: point; tip: point; name?: string` | `{boneId}` | yes |
+anim.camera.delete ['edit'] True Delete a camera
+  spec/05_scene_planning.md:1278 ### 19.3 Command table | `anim.camera.delete` | action | Delete a camera (not the last one) | `cameraId: id` | `{currentCameraId}` | yes |
+anim.function.key.set ['edit'] True Edit a key point: move in time, value, handles, handle mode,
+  spec/05_scene_planning.md:1176 ### 19.1 Agent-specific requirements    editing in the function editor (`anim.function.key.set`), FOV wedge dragging (`anim.camera.set`), bone posing
+  spec/05_scene_planning.md:1267 ### 19.3 Command table | `anim.function.key.set` | action | Edit a key point: move in time, value, handles, handle mode, constant flag, lock in time | `nodeId: id; channel: string; frame: number; newFrame?: number; value?: number; left?: object {dt,dv}; right?: object {dt,dv}; handleMode?: enum "smooth"\|"broken"; constantSegment?: bool; lockInTime?: bool` | `{frame, value}` | yes |
+anim.function.sample ['read'] True None
+  spec/05_scene_planning.md:1192 ### 19.1 Agent-specific requirements    `anim.path.sample`, `anim.function.get`, `anim.function.sample`, `anim.key.list`, `anim.skeleton.get`,
+  spec/05_scene_planning.md:1272 ### 19.3 Command table | `anim.function.sample` | query | Evaluate a channel over a frame range | `nodeId: id; channel: string; from: number; to: number; step: number = 1` | `{samples: [{frame, value}]}` | n/a |
+anim.functionEditor.get ['read'] True None
+  spec/05_scene_planning.md:1276 ### 19.3 Command table | `anim.functionEditor.get` | query | Function-editor state | — | `{nodeId, channel, projection, selectedFrames[], syncFrame, view}` | n/a |
+anim.path.sample ['read'] True None
+  spec/05_scene_planning.md:1192 ### 19.1 Agent-specific requirements    `anim.path.sample`, `anim.function.get`, `anim.function.sample`, `anim.key.list`, `anim.skeleton.get`,
+  spec/05_scene_planning.md:1255 ### 19.3 Command table | `anim.path.sample` | query | Positions per frame (frame markers, ghosts, pivot path) | `nodeId: id; from?: int; to?: int; step: number = 1; what: enum "origin"\|"pivot" = "origin"; space: enum "parent"\|"world" = "world"` | `{samples: [{frame, x, y, z}]}` | n/a |
+anim.pegOnlyMode.set ['ui'] True None
+  spec/05_scene_planning.md:1219 ### 19.3 Command table | `anim.pegOnlyMode.set` | toggle | Peg-only mode on/off (§6.1) | `enabled: bool` | `{enabled}` | no |
+anim.point.paste ['edit'] True Paste a copied point
+  spec/05_scene_planning.md:1306 ### 19.3 Command table | `anim.point.paste` | action | Paste a copied point (all properties, or chosen ones = paste special; `again` repeats the last choice) | `targetPointIds: [id]; properties?: [enum "x"\|"y"\|"z"\|"tension"\|"continuity"\|"bias"\|"rotation"\|"rotationPivot"\|"scaleX"\|"scaleY"\|"scalePivot"]; again: bool = false` | `{applied[], skipped[]}` | yes |
+anim.skeleton.deform.get ['read'] True None
+  spec/05_scene_planning.md:1193 ### 19.1 Agent-specific requirements    `anim.skeleton.deform.get`, `anim.camera.get` and `anim.projection.get` expose every other model; `render_frame`
+  spec/05_scene_planning.md:1294 ### 19.3 Command table | `anim.skeleton.deform.get` | query | Deformed positions and weights of given rest-space points | `skeletonId: id; frame?: int; points: [point]` | `{points: [{x, y, weights: [{boneId, w}]}]}` | n/a |
+anim.skeleton.set ['edit'] True Skeleton display and quality options
+  spec/05_scene_planning.md:1289 ### 19.3 Command table | `anim.skeleton.set` | action | Skeleton display and quality options | `skeletonId: id; boneColour?: colour; showTrack?: bool; showRoot?: bool; showBones?: bool; showInfluence?: bool; vectorQuality?: enum "low"\|"medium"\|"high"\|"highest"; deformationEnabled?: bool` | `{skeletonId}` | yes |
+capture.auto.start ['edit'] True Start auto capture
+  spec/09_playback_export.md:1062 ### 11.2 Command table | `capture.auto.start` | job | Start auto capture (each capture is its own undo step) | `sessionId?: id; interval: int = 1 (1–999); unit: "ms"\|"s"\|"min"\|"h"\|"day" = "s"; maxCount?: int; lockInput: bool = false` | `{jobId}` → `{captures: int, cellIds[]}` | yes |
+capture.device.get ['read'] True None
+  spec/09_playback_export.md:1045 ### 11.2 Command table | `capture.device.get` | query | Device descriptor, current settings and settings schema | `deviceId: id` | `Device & {settings, settingsSchema}` | n/a |
+capture.lightTable.references.list ['read'] True None
+  spec/09_playback_export.md:1056 ### 11.2 Command table | `capture.lightTable.references.list` | query | Available light-table references for the current target frame | `sessionId?: id` | `{references: [{refId, label, elementId?, drawingId?, frame?}]}` | n/a |
+cell.cycle.create ['edit'] True Repeat the range so that it appears N times in total
+  spec/04_timeline_xsheet.md:1434 ### 17.4 Command table | `cell.cycle.create` | action | Repeat the range so that it appears N times in total; following cells shift | `elementId?: id; from?: int; to?: int; cycles: int (1–999)` | `{from, to}` | yes |
+cell.range.delete ['edit'] True Delete cells: clear
+  spec/04_timeline_xsheet.md:1428 ### 17.4 Command table | `cell.range.delete` | action | Delete cells: clear (leave blanks) or remove and shift earlier | `elementIds?: [id]; from?: int; to?: int; shift: bool = false` | `{changed: [{elementId, from, to}]}` | yes |
+cell.selection.get ['read'] True None
+  spec/04_timeline_xsheet.md:1299 ### 17.1 Agent-specific requirements    `cell.selection.get`, `xsheet.lightTable.list`; visual verification through `render_frame` / `screenshot` (11).
+  spec/04_timeline_xsheet.md:1420 ### 17.4 Command table | `cell.selection.get` | query | Current cell/row selection and current position | — | `{elementIds[], from, to, rowsSelected, currentElementId, currentFrame}` | n/a |
+checkpoint.list ['read'] True None
+  spec/11_agent_interface_mcp.md:634 ### 15.2 Inspection, checkpoint and job commands (namespaces `inspect`, `checkpoint`, `job`) | `checkpoint.list` | query | List checkpoints | — | `[{name, createdAt, documentRev, origin}]` | n/a |
+checkpoint.restore ['edit'] True Restore checkpoint
+  spec/11_agent_interface_mcp.md:633 ### 15.2 Inspection, checkpoint and job commands (namespaces `inspect`, `checkpoint`, `job`) | `checkpoint.restore` | action | Restore a checkpoint (one undo step "Restore checkpoint") | `name: string` | `{name, documentRev}` | yes |
+colour.style.select ['edit'] True Style Change
+  spec/03_colour.md:1042 ### 16.3 Command table | `colour.style.select` | action | Set the style of a palette for a scene ("Style Change") | `paletteId: id; styleId: id; sceneId?: id` | `{sceneId, paletteId, styleId}` | yes |
+colour.swatch.list ['read'] True None
+  spec/03_colour.md:1047 ### 16.3 Command table | `colour.swatch.list` | query | List swatches of a palette with values for a style | `paletteId?: id; styleId?: id; sceneId?: id; kind?: enum "solid"\|"linearGradient"\|"radialGradient"\|"texture"; includeUsage: bool = false` | `{paletteId, styleId, swatches: [{colourId, name, kind, index, deformable, value, usageCount?}]}` | n/a |
+doc.package.get ['read', 'files.read'] False None
+  spec/10_data_model_project_format.md:1147 ### 10.2 Command table | `doc.package.get` | query | Inspect a package, folder, template or palette file on disk without opening it | `path: path; validate: bool = false` | `{kind: enum "project"\|"template"\|"palette"\|"library", form, formatVersion, minReaderVersion, readable, projectId?, name, savedAt, entryCount, issues[]}` | n/a |
+doc.state.get ['read'] True None
+  spec/10_data_model_project_format.md:213 ### 2.5 Revisions and optimistic concurrency   written by the last save) is reported by `doc.state.get`.
+  spec/10_data_model_project_format.md:1133 ### 10.2 Command table | `doc.state.get` | query | Document state | — | `{projectId, path, form, formatVersion, migratedFrom, documentRev, savedRev, dirty, readOnly, lock, historyFromRev}` | n/a |
+doc.validate ['read'] True None
+  spec/10_data_model_project_format.md:826 ### 6.7 Media storage   and `doc.validate` report them.
+  spec/10_data_model_project_format.md:904 ### 6.11 Library folders - Items whose file is missing or unreadable load as `broken` (08 §1.1) and are reported by `doc.validate`.
+  spec/10_data_model_project_format.md:932 ### 7.1 Load sequence   exactly as if they were loaded; `doc.validate` and `doc.object.find` with content predicates force loading.
+  spec/10_data_model_project_format.md:1113 ### 10.1 Agent-specific requirements - **AG-08 Verification loop.** `doc.validate` returns issues with machine-applicable `fixes` (a command id and params);
+  spec/10_data_model_project_format.md:1135 ### 10.2 Command table | `doc.validate` | query | Lint the project or a subtree (§10.3) | `within?: id; checks?: [string] (default all); minSeverity: enum "info"\|"warning"\|"error" = "info"; limit: int = 500` | `{documentRev, issues: [issue], counts: {error, warning, info}, truncated}` | n/a |
+  spec/10_data_model_project_format.md:1165 ### 10.3 Queries and events **Lint checks** (`doc.validate`; each issue carries `fixes` where an automatic or suggested fix exists):
+draw.breakApart.apply ['edit'] True Break Text Apart
+  spec/02_drawing.md:1352 ### 13.5 Command table | `draw.breakApart.apply` | action | Convert text to per-character vector groups ("Break Text Apart") | `drawingId?: id; textIds?: [id] = selected text` | `{groupIds: [id], rev}` | yes |
+draw.segment.move ['edit'] True Contour Editing
+  spec/02_drawing.md:1226 ### 13.3 Gesture equivalence | Contour Editor | point drag / segment drag / add point / reset or break handles / delete | `draw.point.move` / `draw.segment.move` / `draw.point.add` / `draw.point.set {handleMode}` / `draw.point.delete` |
+  spec/02_drawing.md:1341 ### 13.5 Command table | `draw.segment.move` | action | Reshape a segment so its point at t moves by delta ("Contour Editing") | `strokeId: id; segment: int; t: number = 0.5 (0–1); delta: point` | `{strokeId, rev}` | yes |
+drawAid.state.get ['read'] True None
+  spec/02_drawing.md:1387 ### 13.5 Command table | `drawAid.state.get` | query | State of all drawing aids | — | `{grid, onionSkin, onionSkinStyle, autoLightTable, staticLightTable, lightTableShade, strokes, currentOnTop, selectionDisplay, background}` | n/a |
+edit.history.move ['edit'] True None
+  spec/01_application_shell.md:1093 ### 12.2 Command table | `edit.history.move` | action | Undo/redo to just after a given history entry (History panel click) | `position: int (0–entry count)` | `{position}` | n/a |
+  spec/01_application_shell.md:1314 ## 13. Design decisions / open questions 12. **History jumps.** **Recommended:** `edit.history.move` and History-panel clicks perform one combined jump without
+element.get ['read'] True None
+  spec/04_timeline_xsheet.md:1298 ### 17.1 Agent-specific requirements    `element.list` / `element.get`, `element.drawing.list` (with optional thumbnails), `element.unusedDrawing.list`,
+  spec/04_timeline_xsheet.md:1384 ### 17.4 Command table | `element.get` | query | Full state of one element (17.5) | `elementId: id` | element object | n/a |
+  spec/04_timeline_xsheet.md:1477 ### 17.5 Queries and events `element.get` returns:
+element.parentPeg.create ['edit'] True Create a peg and attach the given elements to it
+  spec/04_timeline_xsheet.md:1382 ### 17.4 Command table | `element.parentPeg.create` | action | Create a peg and attach the given elements to it | `elementIds?: [id]; name?: string` | `{pegId, name}` | yes |
+export.publish.run ['read', 'files.read', 'files.write', 'network'] True None
+  spec/09_playback_export.md:966 ### 11.1 Agent-specific requirements 8. **Outward actions require confirmation.** `export.publish.run` (upload to a service) requires the session to hold
+  spec/09_playback_export.md:1031 ### 11.2 Command table | `export.publish.run` | job | Upload a movie to a service (outward action; needs scope and confirm) | `serviceId: id; path?: path; export?: object; metadata: {title: string; description?: string; tags?: [string]; category?: string; visibility?: "public"\|"unlisted"\|"private" = "private"}; confirm?: bool; confirmToken?: string` | `{jobId}` or `needs_confirmation` → `{remoteId, url?, manifest}` | n/a |
+export.publish.validate ['read', 'files.read'] True None
+  spec/09_playback_export.md:1030 ### 11.2 Command table | `export.publish.validate` | query | Check a file or export parameters against a service's limits and required metadata | `serviceId: id; path?: path; export?: object; metadata?: object` | `{ok: bool, problems: [{code, limit?, actual?}]}` | n/a |
+  spec/09_playback_export.md:1089 ### 11.3 Queries and events - `export.movie.validate`, `export.publish.validate` and `import.file.get` let an agent check before acting.
+fx.allEffects.get ['read'] True None
+  spec/06_effects.md:1018 ### 8.2 Command table | `fx.allEffects.get` | query | Current all-effects display state | — | `{enabled}` | n/a |
+fx.block.add ['edit'] True Add Particle Block
+  spec/06_effects.md:1027 ### 8.2 Command table | `fx.block.add` | action | Add a block at a frame (split or append) ("Add Particle Block") | `effectId: id; frame?: int = current; type?: string; variant?: string; presetId?: id; seed?: int` | `{blockId, startFrame, duration}` | yes |
+fx.changed ['read'] False None
+  spec/06_effects.md:1059 ### 8.2 Command table | `fx.changed` | event | An effect's parameters, keyframes, timing or slots changed | — | `{effectId, blockId?, what: enum "params"\|"keyframes"\|"timing"\|"slots"\|"blocks"}` | n/a |
+inspect.frame.describe ['read'] True None
+  spec/11_agent_interface_mcp.md:392 ### 7.8 Generic tools and area commands | `describe_frame` / `hit_test` / `convert_coordinates` / `render_contact_sheet` | `inspect.frame.describe` / `inspect.hitTest` / `inspect.coordinates.convert` / `inspect.contactSheet.render` (§15.2) | |
+  spec/11_agent_interface_mcp.md:628 ### 15.2 Inspection, checkpoint and job commands (namespaces `inspect`, `checkpoint`, `job`) | `inspect.frame.describe` | query | Structured description of what is visible and audible at a frame (same as `describe_frame`) | `sceneId?: id; frame?: int; cameraId?: id; detail?: enum "summary"\|"full" = "summary"` | `{elements: [{elementId, name, drawingId?, worldTransform, cameraBounds, opacity, effects[]}], sounds: [{elementId, level}], mouthShape?, warnings[]}` | n/a |
+job.wait ['read'] False None
+  spec/11_agent_interface_mcp.md:394 ### 7.8 Generic tools and area commands | `job_status` / `job_wait` / `job_cancel` | `job.list` / `job.wait` / `job.cancel` (§15.2) | |
+  spec/11_agent_interface_mcp.md:637 ### 15.2 Inspection, checkpoint and job commands (namespaces `inspect`, `checkpoint`, `job`) | `job.wait` | query | Wait for a job to finish or a timeout | `jobId: string; timeoutMs?: int = 60000` | Job record, `timedOut?: bool` | n/a |
+library.close ['ui'] False None
+  spec/08_library_storyline.md:640 ### 19.1 Agent-specific requirements   `library.close` / `library.writeAccess.set` (`discardChanges`), `library.folder.delete` (`confirm`), `library.save`
+  spec/08_library_storyline.md:666 ### 19.2 Command table | `library.close` | action | Close a library (not the project-local one) | `libraryId: id; discardChanges: bool = false` | `{closed}` or `needs_confirmation` | no |
+library.item.delete ['edit'] True Delete items
+  spec/08_library_storyline.md:679 ### 19.2 Command table | `library.item.delete` | action | Delete items | `itemIds: [id]` | `{deletedIds: [id]}` | yes |
+library.tree.get ['read'] False None
+  spec/08_library_storyline.md:671 ### 19.2 Command table | `library.tree.get` | query | Get the folder/item hierarchy | `libraryId?: id; folderId?: id; depth: int = -1; includeItems: bool = true` | `{nodes: [LibraryNode]}` (nested) | n/a |
+lipsync.mapping.mouth.set ['edit'] True Map one shape to a drawing, or step to the previous/next dra
+  spec/07_sound_lipsync.md:938 ### 15.2 Command table | `lipsync.mapping.mouth.set` | action | Map one shape to a drawing, or step to the previous/next drawing | `soundElementId: id; drawingElementId: id; mouth: enum "A"\|"B"\|"C"\|"D"\|"E"\|"F"\|"G"\|"X"; drawing?: id \| string \| null; step?: enum "next"\|"previous"` | `{mouth, drawingId, drawingName}` | yes |
+lipsync.panel.state.set ['ui'] True None
+  spec/07_sound_lipsync.md:944 ### 15.2 Command table | `lipsync.panel.state.set` | ui | Set the panel's selected sound, mouth element and advanced-area visibility | `soundElementId?: id; drawingElementId?: id; showAdvanced?: bool` | `{soundElementId, drawingElementId, showAdvanced}` | no |
+media.sequence.remove ['edit'] True Remove a sequence
+  spec/07_sound_lipsync.md:950 ### 15.2 Command table | `media.sequence.remove` | action | Remove a sequence | `sequenceId: id; closeGap?: bool = false` | `{}` | yes |
+playback.preview.run ['read'] True None
+  spec/09_playback_export.md:1004 ### 11.2 Command table | `playback.preview.run` | job | Render a preview (movie / scene / exposure sheet / selection / quick) and optionally open the player | `type: "movie"\|"scene"\|"xsheet"\|"xsheetSelection"\|"quick"; openPlayer: bool = true; wait: bool = false` | `{jobId}` → `{previewId, manifest}` | n/a |
+project.recovery.open ['edit'] False None
+  spec/01_application_shell.md:990 ### 12.1 Agent-specific requirements    `project.close`, `project.recovery.open`, `project.backup.open`, `app.quit`) take `onUnsaved`:
+  spec/01_application_shell.md:1029 ### 12.1 Agent-specific requirements 11. **Long-running work.** `project.open`, `project.save`, `project.saveAs` and `project.recovery.open` are jobs: they
+  spec/01_application_shell.md:1081 ### 12.2 Command table | `project.recovery.open` | job | Open recovery data as a modified project targeting its original path | `recoveryId: id; onUnsaved: enum "fail"\|"save"\|"discard" = "fail"` | `{jobId}` → `{projectId, warnings[]}` | n/a |
+sound.asset.import ['edit', 'files.read'] True Add an audio file to the project's sound assets without plac
+  spec/07_sound_lipsync.md:889 ### 15.2 Command table | `sound.asset.import` | action | Add an audio file to the project's sound assets without placing it | `path: path; allowLarge?: bool = false` | `{assetId, reusedAsset, durationSec}` | yes |
+sound.editor.state.set ['ui'] True None
+  spec/07_sound_lipsync.md:865 ### 15.1 Agent-specific requirements   opened, driven (`sound.editor.state.set`) and closed by commands for UI-level automation; while it is open, `sound.*`
+  spec/07_sound_lipsync.md:923 ### 15.2 Command table | `sound.editor.state.set` | ui | Set editor current frame, selection, zoom, scrubbing, loop | `currentFrame?: int; selectedPlacementId?: id; zoom?: int (0–100); scrubbing?: bool; loop?: bool` | editor state | no |
+sound.scrubbing.set ['ui'] True None
+  spec/07_sound_lipsync.md:917 ### 15.2 Command table | `sound.scrubbing.set` | toggle | Enable/disable Timeline sound scrubbing (per user) | `enabled: bool` | `{enabled, effective}` | no |
+storyline.currentScene.get ['read'] True None
+  spec/08_library_storyline.md:719 ### 19.2 Command table | `storyline.currentScene.get` | query | Get the current scene | — | `{sceneId, index, name}` | n/a |
+storyline.frame.render ['read'] True None
+  spec/08_library_storyline.md:649 ### 19.1 Agent-specific requirements   `storyline.frame.render` of a given global frame is deterministic (progress formula §16.3).
+  spec/08_library_storyline.md:728 ### 19.2 Command table | `storyline.frame.render` | query | Render a global storyline frame including transitions | `globalFrame: int; width?: int; height?: int` | `{png, width, height}` | n/a |
+timeline.currentFrame.set ['ui'] True None
+  spec/04_timeline_xsheet.md:1280 ### 17.1 Agent-specific requirements    `timeline.currentFrame.set`, `timeline.playbackRange.set`; notes → `element.note.set`, `cell.note.set`; colour
+  spec/04_timeline_xsheet.md:1438 ### 17.4 Command table | `timeline.currentFrame.set` | ui | Set the current frame (clamped to 1..scene length) | `frame: int (≥1); sceneId?: id` | `{frame, clamped: bool}` | no |
+timeline.singleCellSelection.set ['ui'] True None
+  spec/04_timeline_xsheet.md:1447 ### 17.4 Command table | `timeline.singleCellSelection.set` | toggle | Single cell selection preference | `enabled: bool` | `{enabled}` | no |
+tool.active.changed ['read'] False None
+  spec/02_drawing.md:1384 ### 13.5 Command table | `tool.active.changed` | event | Active tool changed (including temporary overrides) | — | `{toolId, temporary: bool}` | n/a |
+  spec/02_drawing.md:1415 ### 13.6 Queries and events   `draw.selection.changed`, `tool.active.changed`, `tool.options.changed`, `tool.pen.changed`, `drawAid.changed`;
+tool.settings.get ['read'] True None
+  spec/02_drawing.md:1383 ### 13.5 Command table | `tool.settings.get` | query | All global drawing-tool settings | — | `{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}` | n/a |
+tool.text.options.set ['ui'] True None
+  spec/02_drawing.md:1184 ### 13.2 Dialogs and panels as commands | Text panel | `tool.text.options.set` (defaults for new text), `draw.textFormat.set` (existing text) |
+  spec/02_drawing.md:1371 ### 13.5 Command table | `tool.text.options.set` | ui | Text panel defaults for new text | `font?: string; size?: number (1–512) = 36; bold?: bool = false; italic?: bool = false; baseline?: enum "normal"\|"subscript"\|"superscript" = "normal"; kerning?: int (−60–60) = 0; autoKern?: bool = true; align?: enum "left"\|"centre"\|"right"\|"justify" = "left"; leftMargin?: number = 0; rightMargin?: number = 0; indent?: number = 0; lineSpacing?: number = 0; outlineColourId?: id\|null` | `{options}` | no |
+ui.help.open ['ui'] False None
+  spec/01_application_shell.md:1167 ### 12.2 Command table | `ui.help.open` | ui | Open the documentation, optionally at a topic | `topic?: string` | `{}` | no |
+ui.preferences.open ['ui'] False None
+  spec/01_application_shell.md:1168 ### 12.2 Command table | `ui.preferences.open` | ui | Open the preferences window at a category (GUI convenience) | `category?: string` | `{}` | no |
+view.coordinates.convert ['read'] True None
+  spec/01_application_shell.md:1039 ### 12.1 Agent-specific requirements     `view.coordinates.convert` converts between them for a given view; `view.zoom.set` anchors and `view.pan.set`
+  spec/01_application_shell.md:1118 ### 12.2 Command table | `view.coordinates.convert` | query | Convert a point between view pixels, drawing space and scene space for a view | `viewId: id; point: point; from: enum "view"\|"drawing"\|"scene"; to: enum "view"\|"drawing"\|"scene"` | `{point}` | n/a |
+workspace.rename ['ui'] False None
+  spec/01_application_shell.md:1138 ### 12.2 Command table | `workspace.rename` | ui | Rename a workspace | `name: string; newName: string` | `{name}` | no |
+xsheet.columnWidth.set ['ui'] True None
+  spec/04_timeline_xsheet.md:1455 ### 17.4 Command table | `xsheet.columnWidth.set` | ui | Set one column's width, or reset all widths | `elementId?: id; width?: int (20–1000); reset: bool = false` | `{widths: object}` | no |
+xsheet.lightTable.remove ['ui'] True None
+  spec/04_timeline_xsheet.md:1458 ### 17.4 Command table | `xsheet.lightTable.remove` | ui | Remove light-table items, or all | `itemIds?: [id]; all: bool = false` | `{removedIds[]}` | no |

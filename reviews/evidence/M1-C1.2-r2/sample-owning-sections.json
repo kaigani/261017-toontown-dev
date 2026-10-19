@@ -1,0 +1,742 @@
+[
+  {
+    "id": "anim.bone.create",
+    "matches": [
+      {
+        "source": "spec/05_scene_planning.md:1295",
+        "heading": "### 19.3 Command table",
+        "text": "| `anim.bone.create` | action | Create a bone (chained to a parent bone, or freestanding) | `skeletonId: id; parentBoneId?: id; root?: point; tip: point; name?: string` | `{boneId}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "anim.camera.delete",
+    "matches": [
+      {
+        "source": "spec/05_scene_planning.md:1278",
+        "heading": "### 19.3 Command table",
+        "text": "| `anim.camera.delete` | action | Delete a camera (not the last one) | `cameraId: id` | `{currentCameraId}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "anim.function.key.set",
+    "matches": [
+      {
+        "source": "spec/05_scene_planning.md:1176",
+        "heading": "### 19.1 Agent-specific requirements",
+        "text": "   editing in the function editor (`anim.function.key.set`), FOV wedge dragging (`anim.camera.set`), bone posing"
+      },
+      {
+        "source": "spec/05_scene_planning.md:1267",
+        "heading": "### 19.3 Command table",
+        "text": "| `anim.function.key.set` | action | Edit a key point: move in time, value, handles, handle mode, constant flag, lock in time | `nodeId: id; channel: string; frame: number; newFrame?: number; value?: number; left?: object {dt,dv}; right?: object {dt,dv}; handleMode?: enum \"smooth\"\\|\"broken\"; constantSegment?: bool; lockInTime?: bool` | `{frame, value}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "anim.function.sample",
+    "matches": [
+      {
+        "source": "spec/05_scene_planning.md:1192",
+        "heading": "### 19.1 Agent-specific requirements",
+        "text": "   `anim.path.sample`, `anim.function.get`, `anim.function.sample`, `anim.key.list`, `anim.skeleton.get`,"
+      },
+      {
+        "source": "spec/05_scene_planning.md:1272",
+        "heading": "### 19.3 Command table",
+        "text": "| `anim.function.sample` | query | Evaluate a channel over a frame range | `nodeId: id; channel: string; from: number; to: number; step: number = 1` | `{samples: [{frame, value}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "anim.functionEditor.get",
+    "matches": [
+      {
+        "source": "spec/05_scene_planning.md:1276",
+        "heading": "### 19.3 Command table",
+        "text": "| `anim.functionEditor.get` | query | Function-editor state | — | `{nodeId, channel, projection, selectedFrames[], syncFrame, view}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "anim.path.sample",
+    "matches": [
+      {
+        "source": "spec/05_scene_planning.md:1192",
+        "heading": "### 19.1 Agent-specific requirements",
+        "text": "   `anim.path.sample`, `anim.function.get`, `anim.function.sample`, `anim.key.list`, `anim.skeleton.get`,"
+      },
+      {
+        "source": "spec/05_scene_planning.md:1255",
+        "heading": "### 19.3 Command table",
+        "text": "| `anim.path.sample` | query | Positions per frame (frame markers, ghosts, pivot path) | `nodeId: id; from?: int; to?: int; step: number = 1; what: enum \"origin\"\\|\"pivot\" = \"origin\"; space: enum \"parent\"\\|\"world\" = \"world\"` | `{samples: [{frame, x, y, z}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "anim.pegOnlyMode.set",
+    "matches": [
+      {
+        "source": "spec/05_scene_planning.md:1219",
+        "heading": "### 19.3 Command table",
+        "text": "| `anim.pegOnlyMode.set` | toggle | Peg-only mode on/off (§6.1) | `enabled: bool` | `{enabled}` | no |"
+      }
+    ]
+  },
+  {
+    "id": "anim.point.paste",
+    "matches": [
+      {
+        "source": "spec/05_scene_planning.md:1306",
+        "heading": "### 19.3 Command table",
+        "text": "| `anim.point.paste` | action | Paste a copied point (all properties, or chosen ones = paste special; `again` repeats the last choice) | `targetPointIds: [id]; properties?: [enum \"x\"\\|\"y\"\\|\"z\"\\|\"tension\"\\|\"continuity\"\\|\"bias\"\\|\"rotation\"\\|\"rotationPivot\"\\|\"scaleX\"\\|\"scaleY\"\\|\"scalePivot\"]; again: bool = false` | `{applied[], skipped[]}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "anim.skeleton.deform.get",
+    "matches": [
+      {
+        "source": "spec/05_scene_planning.md:1193",
+        "heading": "### 19.1 Agent-specific requirements",
+        "text": "   `anim.skeleton.deform.get`, `anim.camera.get` and `anim.projection.get` expose every other model; `render_frame`"
+      },
+      {
+        "source": "spec/05_scene_planning.md:1294",
+        "heading": "### 19.3 Command table",
+        "text": "| `anim.skeleton.deform.get` | query | Deformed positions and weights of given rest-space points | `skeletonId: id; frame?: int; points: [point]` | `{points: [{x, y, weights: [{boneId, w}]}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "anim.skeleton.set",
+    "matches": [
+      {
+        "source": "spec/05_scene_planning.md:1289",
+        "heading": "### 19.3 Command table",
+        "text": "| `anim.skeleton.set` | action | Skeleton display and quality options | `skeletonId: id; boneColour?: colour; showTrack?: bool; showRoot?: bool; showBones?: bool; showInfluence?: bool; vectorQuality?: enum \"low\"\\|\"medium\"\\|\"high\"\\|\"highest\"; deformationEnabled?: bool` | `{skeletonId}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "capture.auto.start",
+    "matches": [
+      {
+        "source": "spec/09_playback_export.md:1062",
+        "heading": "### 11.2 Command table",
+        "text": "| `capture.auto.start` | job | Start auto capture (each capture is its own undo step) | `sessionId?: id; interval: int = 1 (1–999); unit: \"ms\"\\|\"s\"\\|\"min\"\\|\"h\"\\|\"day\" = \"s\"; maxCount?: int; lockInput: bool = false` | `{jobId}` → `{captures: int, cellIds[]}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "capture.device.get",
+    "matches": [
+      {
+        "source": "spec/09_playback_export.md:1045",
+        "heading": "### 11.2 Command table",
+        "text": "| `capture.device.get` | query | Device descriptor, current settings and settings schema | `deviceId: id` | `Device & {settings, settingsSchema}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "capture.lightTable.references.list",
+    "matches": [
+      {
+        "source": "spec/09_playback_export.md:1056",
+        "heading": "### 11.2 Command table",
+        "text": "| `capture.lightTable.references.list` | query | Available light-table references for the current target frame | `sessionId?: id` | `{references: [{refId, label, elementId?, drawingId?, frame?}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "cell.cycle.create",
+    "matches": [
+      {
+        "source": "spec/04_timeline_xsheet.md:1434",
+        "heading": "### 17.4 Command table",
+        "text": "| `cell.cycle.create` | action | Repeat the range so that it appears N times in total; following cells shift | `elementId?: id; from?: int; to?: int; cycles: int (1–999)` | `{from, to}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "cell.range.delete",
+    "matches": [
+      {
+        "source": "spec/04_timeline_xsheet.md:1428",
+        "heading": "### 17.4 Command table",
+        "text": "| `cell.range.delete` | action | Delete cells: clear (leave blanks) or remove and shift earlier | `elementIds?: [id]; from?: int; to?: int; shift: bool = false` | `{changed: [{elementId, from, to}]}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "cell.selection.get",
+    "matches": [
+      {
+        "source": "spec/04_timeline_xsheet.md:1299",
+        "heading": "### 17.1 Agent-specific requirements",
+        "text": "   `cell.selection.get`, `xsheet.lightTable.list`; visual verification through `render_frame` / `screenshot` (11)."
+      },
+      {
+        "source": "spec/04_timeline_xsheet.md:1420",
+        "heading": "### 17.4 Command table",
+        "text": "| `cell.selection.get` | query | Current cell/row selection and current position | — | `{elementIds[], from, to, rowsSelected, currentElementId, currentFrame}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "checkpoint.list",
+    "matches": [
+      {
+        "source": "spec/11_agent_interface_mcp.md:634",
+        "heading": "### 15.2 Inspection, checkpoint and job commands (namespaces `inspect`, `checkpoint`, `job`)",
+        "text": "| `checkpoint.list` | query | List checkpoints | — | `[{name, createdAt, documentRev, origin}]` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "checkpoint.restore",
+    "matches": [
+      {
+        "source": "spec/11_agent_interface_mcp.md:633",
+        "heading": "### 15.2 Inspection, checkpoint and job commands (namespaces `inspect`, `checkpoint`, `job`)",
+        "text": "| `checkpoint.restore` | action | Restore a checkpoint (one undo step \"Restore checkpoint\") | `name: string` | `{name, documentRev}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "colour.style.select",
+    "matches": [
+      {
+        "source": "spec/03_colour.md:1042",
+        "heading": "### 16.3 Command table",
+        "text": "| `colour.style.select` | action | Set the style of a palette for a scene (\"Style Change\") | `paletteId: id; styleId: id; sceneId?: id` | `{sceneId, paletteId, styleId}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "colour.swatch.list",
+    "matches": [
+      {
+        "source": "spec/03_colour.md:1047",
+        "heading": "### 16.3 Command table",
+        "text": "| `colour.swatch.list` | query | List swatches of a palette with values for a style | `paletteId?: id; styleId?: id; sceneId?: id; kind?: enum \"solid\"\\|\"linearGradient\"\\|\"radialGradient\"\\|\"texture\"; includeUsage: bool = false` | `{paletteId, styleId, swatches: [{colourId, name, kind, index, deformable, value, usageCount?}]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "doc.package.get",
+    "matches": [
+      {
+        "source": "spec/10_data_model_project_format.md:1147",
+        "heading": "### 10.2 Command table",
+        "text": "| `doc.package.get` | query | Inspect a package, folder, template or palette file on disk without opening it | `path: path; validate: bool = false` | `{kind: enum \"project\"\\|\"template\"\\|\"palette\"\\|\"library\", form, formatVersion, minReaderVersion, readable, projectId?, name, savedAt, entryCount, issues[]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "doc.state.get",
+    "matches": [
+      {
+        "source": "spec/10_data_model_project_format.md:213",
+        "heading": "### 2.5 Revisions and optimistic concurrency",
+        "text": "  written by the last save) is reported by `doc.state.get`."
+      },
+      {
+        "source": "spec/10_data_model_project_format.md:1133",
+        "heading": "### 10.2 Command table",
+        "text": "| `doc.state.get` | query | Document state | — | `{projectId, path, form, formatVersion, migratedFrom, documentRev, savedRev, dirty, readOnly, lock, historyFromRev}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "doc.validate",
+    "matches": [
+      {
+        "source": "spec/10_data_model_project_format.md:826",
+        "heading": "### 6.7 Media storage",
+        "text": "  and `doc.validate` report them."
+      },
+      {
+        "source": "spec/10_data_model_project_format.md:904",
+        "heading": "### 6.11 Library folders",
+        "text": "- Items whose file is missing or unreadable load as `broken` (08 §1.1) and are reported by `doc.validate`."
+      },
+      {
+        "source": "spec/10_data_model_project_format.md:932",
+        "heading": "### 7.1 Load sequence",
+        "text": "  exactly as if they were loaded; `doc.validate` and `doc.object.find` with content predicates force loading."
+      },
+      {
+        "source": "spec/10_data_model_project_format.md:1113",
+        "heading": "### 10.1 Agent-specific requirements",
+        "text": "- **AG-08 Verification loop.** `doc.validate` returns issues with machine-applicable `fixes` (a command id and params);"
+      },
+      {
+        "source": "spec/10_data_model_project_format.md:1135",
+        "heading": "### 10.2 Command table",
+        "text": "| `doc.validate` | query | Lint the project or a subtree (§10.3) | `within?: id; checks?: [string] (default all); minSeverity: enum \"info\"\\|\"warning\"\\|\"error\" = \"info\"; limit: int = 500` | `{documentRev, issues: [issue], counts: {error, warning, info}, truncated}` | n/a |"
+      },
+      {
+        "source": "spec/10_data_model_project_format.md:1165",
+        "heading": "### 10.3 Queries and events",
+        "text": "**Lint checks** (`doc.validate`; each issue carries `fixes` where an automatic or suggested fix exists):"
+      }
+    ]
+  },
+  {
+    "id": "draw.breakApart.apply",
+    "matches": [
+      {
+        "source": "spec/02_drawing.md:1352",
+        "heading": "### 13.5 Command table",
+        "text": "| `draw.breakApart.apply` | action | Convert text to per-character vector groups (\"Break Text Apart\") | `drawingId?: id; textIds?: [id] = selected text` | `{groupIds: [id], rev}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "draw.segment.move",
+    "matches": [
+      {
+        "source": "spec/02_drawing.md:1226",
+        "heading": "### 13.3 Gesture equivalence",
+        "text": "| Contour Editor | point drag / segment drag / add point / reset or break handles / delete | `draw.point.move` / `draw.segment.move` / `draw.point.add` / `draw.point.set {handleMode}` / `draw.point.delete` |"
+      },
+      {
+        "source": "spec/02_drawing.md:1341",
+        "heading": "### 13.5 Command table",
+        "text": "| `draw.segment.move` | action | Reshape a segment so its point at t moves by delta (\"Contour Editing\") | `strokeId: id; segment: int; t: number = 0.5 (0–1); delta: point` | `{strokeId, rev}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "drawAid.state.get",
+    "matches": [
+      {
+        "source": "spec/02_drawing.md:1387",
+        "heading": "### 13.5 Command table",
+        "text": "| `drawAid.state.get` | query | State of all drawing aids | — | `{grid, onionSkin, onionSkinStyle, autoLightTable, staticLightTable, lightTableShade, strokes, currentOnTop, selectionDisplay, background}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "edit.history.move",
+    "matches": [
+      {
+        "source": "spec/01_application_shell.md:1093",
+        "heading": "### 12.2 Command table",
+        "text": "| `edit.history.move` | action | Undo/redo to just after a given history entry (History panel click) | `position: int (0–entry count)` | `{position}` | n/a |"
+      },
+      {
+        "source": "spec/01_application_shell.md:1314",
+        "heading": "## 13. Design decisions / open questions",
+        "text": "12. **History jumps.** **Recommended:** `edit.history.move` and History-panel clicks perform one combined jump without"
+      }
+    ]
+  },
+  {
+    "id": "element.get",
+    "matches": [
+      {
+        "source": "spec/04_timeline_xsheet.md:1298",
+        "heading": "### 17.1 Agent-specific requirements",
+        "text": "   `element.list` / `element.get`, `element.drawing.list` (with optional thumbnails), `element.unusedDrawing.list`,"
+      },
+      {
+        "source": "spec/04_timeline_xsheet.md:1384",
+        "heading": "### 17.4 Command table",
+        "text": "| `element.get` | query | Full state of one element (17.5) | `elementId: id` | element object | n/a |"
+      },
+      {
+        "source": "spec/04_timeline_xsheet.md:1477",
+        "heading": "### 17.5 Queries and events",
+        "text": "`element.get` returns:"
+      }
+    ]
+  },
+  {
+    "id": "element.parentPeg.create",
+    "matches": [
+      {
+        "source": "spec/04_timeline_xsheet.md:1382",
+        "heading": "### 17.4 Command table",
+        "text": "| `element.parentPeg.create` | action | Create a peg and attach the given elements to it | `elementIds?: [id]; name?: string` | `{pegId, name}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "export.publish.run",
+    "matches": [
+      {
+        "source": "spec/09_playback_export.md:966",
+        "heading": "### 11.1 Agent-specific requirements",
+        "text": "8. **Outward actions require confirmation.** `export.publish.run` (upload to a service) requires the session to hold"
+      },
+      {
+        "source": "spec/09_playback_export.md:1031",
+        "heading": "### 11.2 Command table",
+        "text": "| `export.publish.run` | job | Upload a movie to a service (outward action; needs scope and confirm) | `serviceId: id; path?: path; export?: object; metadata: {title: string; description?: string; tags?: [string]; category?: string; visibility?: \"public\"\\|\"unlisted\"\\|\"private\" = \"private\"}; confirm?: bool; confirmToken?: string` | `{jobId}` or `needs_confirmation` → `{remoteId, url?, manifest}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "export.publish.validate",
+    "matches": [
+      {
+        "source": "spec/09_playback_export.md:1030",
+        "heading": "### 11.2 Command table",
+        "text": "| `export.publish.validate` | query | Check a file or export parameters against a service's limits and required metadata | `serviceId: id; path?: path; export?: object; metadata?: object` | `{ok: bool, problems: [{code, limit?, actual?}]}` | n/a |"
+      },
+      {
+        "source": "spec/09_playback_export.md:1089",
+        "heading": "### 11.3 Queries and events",
+        "text": "- `export.movie.validate`, `export.publish.validate` and `import.file.get` let an agent check before acting."
+      }
+    ]
+  },
+  {
+    "id": "fx.allEffects.get",
+    "matches": [
+      {
+        "source": "spec/06_effects.md:1018",
+        "heading": "### 8.2 Command table",
+        "text": "| `fx.allEffects.get` | query | Current all-effects display state | — | `{enabled}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "fx.block.add",
+    "matches": [
+      {
+        "source": "spec/06_effects.md:1027",
+        "heading": "### 8.2 Command table",
+        "text": "| `fx.block.add` | action | Add a block at a frame (split or append) (\"Add Particle Block\") | `effectId: id; frame?: int = current; type?: string; variant?: string; presetId?: id; seed?: int` | `{blockId, startFrame, duration}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "fx.changed",
+    "matches": [
+      {
+        "source": "spec/06_effects.md:1059",
+        "heading": "### 8.2 Command table",
+        "text": "| `fx.changed` | event | An effect's parameters, keyframes, timing or slots changed | — | `{effectId, blockId?, what: enum \"params\"\\|\"keyframes\"\\|\"timing\"\\|\"slots\"\\|\"blocks\"}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "inspect.frame.describe",
+    "matches": [
+      {
+        "source": "spec/11_agent_interface_mcp.md:392",
+        "heading": "### 7.8 Generic tools and area commands",
+        "text": "| `describe_frame` / `hit_test` / `convert_coordinates` / `render_contact_sheet` | `inspect.frame.describe` / `inspect.hitTest` / `inspect.coordinates.convert` / `inspect.contactSheet.render` (§15.2) | |"
+      },
+      {
+        "source": "spec/11_agent_interface_mcp.md:628",
+        "heading": "### 15.2 Inspection, checkpoint and job commands (namespaces `inspect`, `checkpoint`, `job`)",
+        "text": "| `inspect.frame.describe` | query | Structured description of what is visible and audible at a frame (same as `describe_frame`) | `sceneId?: id; frame?: int; cameraId?: id; detail?: enum \"summary\"\\|\"full\" = \"summary\"` | `{elements: [{elementId, name, drawingId?, worldTransform, cameraBounds, opacity, effects[]}], sounds: [{elementId, level}], mouthShape?, warnings[]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "job.wait",
+    "matches": [
+      {
+        "source": "spec/11_agent_interface_mcp.md:394",
+        "heading": "### 7.8 Generic tools and area commands",
+        "text": "| `job_status` / `job_wait` / `job_cancel` | `job.list` / `job.wait` / `job.cancel` (§15.2) | |"
+      },
+      {
+        "source": "spec/11_agent_interface_mcp.md:637",
+        "heading": "### 15.2 Inspection, checkpoint and job commands (namespaces `inspect`, `checkpoint`, `job`)",
+        "text": "| `job.wait` | query | Wait for a job to finish or a timeout | `jobId: string; timeoutMs?: int = 60000` | Job record, `timedOut?: bool` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "library.close",
+    "matches": [
+      {
+        "source": "spec/08_library_storyline.md:640",
+        "heading": "### 19.1 Agent-specific requirements",
+        "text": "  `library.close` / `library.writeAccess.set` (`discardChanges`), `library.folder.delete` (`confirm`), `library.save`"
+      },
+      {
+        "source": "spec/08_library_storyline.md:666",
+        "heading": "### 19.2 Command table",
+        "text": "| `library.close` | action | Close a library (not the project-local one) | `libraryId: id; discardChanges: bool = false` | `{closed}` or `needs_confirmation` | no |"
+      }
+    ]
+  },
+  {
+    "id": "library.item.delete",
+    "matches": [
+      {
+        "source": "spec/08_library_storyline.md:679",
+        "heading": "### 19.2 Command table",
+        "text": "| `library.item.delete` | action | Delete items | `itemIds: [id]` | `{deletedIds: [id]}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "library.tree.get",
+    "matches": [
+      {
+        "source": "spec/08_library_storyline.md:671",
+        "heading": "### 19.2 Command table",
+        "text": "| `library.tree.get` | query | Get the folder/item hierarchy | `libraryId?: id; folderId?: id; depth: int = -1; includeItems: bool = true` | `{nodes: [LibraryNode]}` (nested) | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "lipsync.mapping.mouth.set",
+    "matches": [
+      {
+        "source": "spec/07_sound_lipsync.md:938",
+        "heading": "### 15.2 Command table",
+        "text": "| `lipsync.mapping.mouth.set` | action | Map one shape to a drawing, or step to the previous/next drawing | `soundElementId: id; drawingElementId: id; mouth: enum \"A\"\\|\"B\"\\|\"C\"\\|\"D\"\\|\"E\"\\|\"F\"\\|\"G\"\\|\"X\"; drawing?: id \\| string \\| null; step?: enum \"next\"\\|\"previous\"` | `{mouth, drawingId, drawingName}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "lipsync.panel.state.set",
+    "matches": [
+      {
+        "source": "spec/07_sound_lipsync.md:944",
+        "heading": "### 15.2 Command table",
+        "text": "| `lipsync.panel.state.set` | ui | Set the panel's selected sound, mouth element and advanced-area visibility | `soundElementId?: id; drawingElementId?: id; showAdvanced?: bool` | `{soundElementId, drawingElementId, showAdvanced}` | no |"
+      }
+    ]
+  },
+  {
+    "id": "media.sequence.remove",
+    "matches": [
+      {
+        "source": "spec/07_sound_lipsync.md:950",
+        "heading": "### 15.2 Command table",
+        "text": "| `media.sequence.remove` | action | Remove a sequence | `sequenceId: id; closeGap?: bool = false` | `{}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "playback.preview.run",
+    "matches": [
+      {
+        "source": "spec/09_playback_export.md:1004",
+        "heading": "### 11.2 Command table",
+        "text": "| `playback.preview.run` | job | Render a preview (movie / scene / exposure sheet / selection / quick) and optionally open the player | `type: \"movie\"\\|\"scene\"\\|\"xsheet\"\\|\"xsheetSelection\"\\|\"quick\"; openPlayer: bool = true; wait: bool = false` | `{jobId}` → `{previewId, manifest}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "project.recovery.open",
+    "matches": [
+      {
+        "source": "spec/01_application_shell.md:990",
+        "heading": "### 12.1 Agent-specific requirements",
+        "text": "   `project.close`, `project.recovery.open`, `project.backup.open`, `app.quit`) take `onUnsaved`:"
+      },
+      {
+        "source": "spec/01_application_shell.md:1029",
+        "heading": "### 12.1 Agent-specific requirements",
+        "text": "11. **Long-running work.** `project.open`, `project.save`, `project.saveAs` and `project.recovery.open` are jobs: they"
+      },
+      {
+        "source": "spec/01_application_shell.md:1081",
+        "heading": "### 12.2 Command table",
+        "text": "| `project.recovery.open` | job | Open recovery data as a modified project targeting its original path | `recoveryId: id; onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"` | `{jobId}` → `{projectId, warnings[]}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "sound.asset.import",
+    "matches": [
+      {
+        "source": "spec/07_sound_lipsync.md:889",
+        "heading": "### 15.2 Command table",
+        "text": "| `sound.asset.import` | action | Add an audio file to the project's sound assets without placing it | `path: path; allowLarge?: bool = false` | `{assetId, reusedAsset, durationSec}` | yes |"
+      }
+    ]
+  },
+  {
+    "id": "sound.editor.state.set",
+    "matches": [
+      {
+        "source": "spec/07_sound_lipsync.md:865",
+        "heading": "### 15.1 Agent-specific requirements",
+        "text": "  opened, driven (`sound.editor.state.set`) and closed by commands for UI-level automation; while it is open, `sound.*`"
+      },
+      {
+        "source": "spec/07_sound_lipsync.md:923",
+        "heading": "### 15.2 Command table",
+        "text": "| `sound.editor.state.set` | ui | Set editor current frame, selection, zoom, scrubbing, loop | `currentFrame?: int; selectedPlacementId?: id; zoom?: int (0–100); scrubbing?: bool; loop?: bool` | editor state | no |"
+      }
+    ]
+  },
+  {
+    "id": "sound.scrubbing.set",
+    "matches": [
+      {
+        "source": "spec/07_sound_lipsync.md:917",
+        "heading": "### 15.2 Command table",
+        "text": "| `sound.scrubbing.set` | toggle | Enable/disable Timeline sound scrubbing (per user) | `enabled: bool` | `{enabled, effective}` | no |"
+      }
+    ]
+  },
+  {
+    "id": "storyline.currentScene.get",
+    "matches": [
+      {
+        "source": "spec/08_library_storyline.md:719",
+        "heading": "### 19.2 Command table",
+        "text": "| `storyline.currentScene.get` | query | Get the current scene | — | `{sceneId, index, name}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "storyline.frame.render",
+    "matches": [
+      {
+        "source": "spec/08_library_storyline.md:649",
+        "heading": "### 19.1 Agent-specific requirements",
+        "text": "  `storyline.frame.render` of a given global frame is deterministic (progress formula §16.3)."
+      },
+      {
+        "source": "spec/08_library_storyline.md:728",
+        "heading": "### 19.2 Command table",
+        "text": "| `storyline.frame.render` | query | Render a global storyline frame including transitions | `globalFrame: int; width?: int; height?: int` | `{png, width, height}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "timeline.currentFrame.set",
+    "matches": [
+      {
+        "source": "spec/04_timeline_xsheet.md:1280",
+        "heading": "### 17.1 Agent-specific requirements",
+        "text": "   `timeline.currentFrame.set`, `timeline.playbackRange.set`; notes → `element.note.set`, `cell.note.set`; colour"
+      },
+      {
+        "source": "spec/04_timeline_xsheet.md:1438",
+        "heading": "### 17.4 Command table",
+        "text": "| `timeline.currentFrame.set` | ui | Set the current frame (clamped to 1..scene length) | `frame: int (≥1); sceneId?: id` | `{frame, clamped: bool}` | no |"
+      }
+    ]
+  },
+  {
+    "id": "timeline.singleCellSelection.set",
+    "matches": [
+      {
+        "source": "spec/04_timeline_xsheet.md:1447",
+        "heading": "### 17.4 Command table",
+        "text": "| `timeline.singleCellSelection.set` | toggle | Single cell selection preference | `enabled: bool` | `{enabled}` | no |"
+      }
+    ]
+  },
+  {
+    "id": "tool.active.changed",
+    "matches": [
+      {
+        "source": "spec/02_drawing.md:1384",
+        "heading": "### 13.5 Command table",
+        "text": "| `tool.active.changed` | event | Active tool changed (including temporary overrides) | — | `{toolId, temporary: bool}` | n/a |"
+      },
+      {
+        "source": "spec/02_drawing.md:1415",
+        "heading": "### 13.6 Queries and events",
+        "text": "  `draw.selection.changed`, `tool.active.changed`, `tool.options.changed`, `tool.pen.changed`, `drawAid.changed`;"
+      }
+    ]
+  },
+  {
+    "id": "tool.settings.get",
+    "matches": [
+      {
+        "source": "spec/02_drawing.md:1383",
+        "heading": "### 13.5 Command table",
+        "text": "| `tool.settings.get` | query | All global drawing-tool settings | — | `{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "tool.text.options.set",
+    "matches": [
+      {
+        "source": "spec/02_drawing.md:1184",
+        "heading": "### 13.2 Dialogs and panels as commands",
+        "text": "| Text panel | `tool.text.options.set` (defaults for new text), `draw.textFormat.set` (existing text) |"
+      },
+      {
+        "source": "spec/02_drawing.md:1371",
+        "heading": "### 13.5 Command table",
+        "text": "| `tool.text.options.set` | ui | Text panel defaults for new text | `font?: string; size?: number (1–512) = 36; bold?: bool = false; italic?: bool = false; baseline?: enum \"normal\"\\|\"subscript\"\\|\"superscript\" = \"normal\"; kerning?: int (−60–60) = 0; autoKern?: bool = true; align?: enum \"left\"\\|\"centre\"\\|\"right\"\\|\"justify\" = \"left\"; leftMargin?: number = 0; rightMargin?: number = 0; indent?: number = 0; lineSpacing?: number = 0; outlineColourId?: id\\|null` | `{options}` | no |"
+      }
+    ]
+  },
+  {
+    "id": "ui.help.open",
+    "matches": [
+      {
+        "source": "spec/01_application_shell.md:1167",
+        "heading": "### 12.2 Command table",
+        "text": "| `ui.help.open` | ui | Open the documentation, optionally at a topic | `topic?: string` | `{}` | no |"
+      }
+    ]
+  },
+  {
+    "id": "ui.preferences.open",
+    "matches": [
+      {
+        "source": "spec/01_application_shell.md:1168",
+        "heading": "### 12.2 Command table",
+        "text": "| `ui.preferences.open` | ui | Open the preferences window at a category (GUI convenience) | `category?: string` | `{}` | no |"
+      }
+    ]
+  },
+  {
+    "id": "view.coordinates.convert",
+    "matches": [
+      {
+        "source": "spec/01_application_shell.md:1039",
+        "heading": "### 12.1 Agent-specific requirements",
+        "text": "    `view.coordinates.convert` converts between them for a given view; `view.zoom.set` anchors and `view.pan.set`"
+      },
+      {
+        "source": "spec/01_application_shell.md:1118",
+        "heading": "### 12.2 Command table",
+        "text": "| `view.coordinates.convert` | query | Convert a point between view pixels, drawing space and scene space for a view | `viewId: id; point: point; from: enum \"view\"\\|\"drawing\"\\|\"scene\"; to: enum \"view\"\\|\"drawing\"\\|\"scene\"` | `{point}` | n/a |"
+      }
+    ]
+  },
+  {
+    "id": "workspace.rename",
+    "matches": [
+      {
+        "source": "spec/01_application_shell.md:1138",
+        "heading": "### 12.2 Command table",
+        "text": "| `workspace.rename` | ui | Rename a workspace | `name: string; newName: string` | `{name}` | no |"
+      }
+    ]
+  },
+  {
+    "id": "xsheet.columnWidth.set",
+    "matches": [
+      {
+        "source": "spec/04_timeline_xsheet.md:1455",
+        "heading": "### 17.4 Command table",
+        "text": "| `xsheet.columnWidth.set` | ui | Set one column's width, or reset all widths | `elementId?: id; width?: int (20–1000); reset: bool = false` | `{widths: object}` | no |"
+      }
+    ]
+  },
+  {
+    "id": "xsheet.lightTable.remove",
+    "matches": [
+      {
+        "source": "spec/04_timeline_xsheet.md:1458",
+        "heading": "### 17.4 Command table",
+        "text": "| `xsheet.lightTable.remove` | ui | Remove light-table items, or all | `itemIds?: [id]; all: bool = false` | `{removedIds[]}` | no |"
+      }
+    ]
+  }
+]

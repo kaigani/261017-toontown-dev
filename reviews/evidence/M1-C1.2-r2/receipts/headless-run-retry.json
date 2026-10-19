@@ -1,0 +1,19 @@
+{
+  "command": [
+    "C:\\Users\\kaiga\\work\\review\\m1-c12-r2\\target\\release\\toontown-headless.exe",
+    "--run",
+    "reviews/evidence/M1-C1.2-r2/headless-probe.json"
+  ],
+  "exit": 3,
+  "started": "2026-10-19T08:41:55.346864+00:00",
+  "seconds": 0.0060551000060513616,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? crates/executor/tests/c12_r2_registry.rs",
+    "?? crates/executor/tests/c12_r2_scale.rs",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\headless-run-retry.log",
+  "sha256": "d66dc9cb6a3a3d268542ca270a8c6a6006d03d9ac6975223b31c24fc5bcad11e"
+}

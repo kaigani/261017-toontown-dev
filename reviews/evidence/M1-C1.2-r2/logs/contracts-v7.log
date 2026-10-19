@@ -1,0 +1,208 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.45s
+     Running tests\c12_r2_contracts.rs (target\debug\deps\c12_r2_contracts-27ec0f4f412d609a.exe)
+
+running 37 tests
+test all_edit_commands_require_project ... ok
+test checkpoint_before_edit_predicts_same_result_in_dry_run ... FAILED
+test checkpoint_between_edits_captures_its_staged_content ... FAILED
+test checkpoint_create_then_delete_in_atomic_batch_succeeds ... FAILED
+test checkpoint_is_visible_to_later_atomic_query ... FAILED
+test clipboard_element_properties_validates_values_not_only_names ... FAILED
+test copying_a_peg_includes_descendants_per_scene_edit_rules ... FAILED
+test copying_complete_scene_forest_preserves_effect_parentage_on_paste ... FAILED
+test cross_bank_cell_paste_cannot_overwrite_a_locked_drawing ... FAILED
+test cutting_a_peg_removes_descendants_per_scene_edit_rules ... FAILED
+test diff_reports_drawing_content_revision_invalidation ... FAILED
+test drawing_copy_preserves_object_shaped_opaque_metadata ... FAILED
+test edit_envelopes_report_explicit_or_selection_targets ... FAILED
+test edit_object_kinds_clipboard_and_history_roundtrip ... ok
+test element_delete_preserves_opaque_metadata_and_extension_strings ... FAILED
+test eviction_at_byte_limit_never_reexecutes_oldest_request ... ok
+test explicit_key_edit_on_locked_element_is_allowed_per_05_6_6 ... ok
+test export_registry_for_independent_audit ... ok
+test external_snapshot_staging_and_revision_rewind_cannot_replace_dirty_live_document ... ok
+test failed_batch_rolls_back_all_five_effect_classes_together ... ok
+test fresh_job_cross_session_list_wait_cancel_are_isolated ... ok
+test fresh_mode_workspace_and_renamed_builtin_reset_are_coherent ... ok
+test identical_document_and_paste_sequence_produce_identical_ids ... FAILED
+test json04_materialisation_does_not_invent_opaque_nested_containers ... FAILED
+test json04_materialised_parent_is_removed_by_raw_patch_inverse ... FAILED
+test locked_elements_still_allow_exposure_edits_per_04_10_4 ... ok
+test malformed_paste_destination_is_rejected_without_fallback ... FAILED
+test mixed_expect_rev_guards_cover_paths_compound_ids_and_unmodified_project ... ok
+test omitted_meta_materialisation_keeps_canonical_undo_exact ... ok
+test paste_dry_run_predicts_created_ids_exactly ... FAILED
+test pending_job_wait_reserves_request_id_against_other_commands ... FAILED
+test request_ids_are_session_scoped_and_survive_undo ... ok
+test revision_max_blocks_fresh_paste_and_keeps_queries_alive ... ok
+test safe_revision_reconstruction_cannot_install_future_object_revisions ... FAILED
+test sequential_batch_job_wait_honours_wait_timeout_contract ... FAILED
+test sequential_dry_run_simulates_checkpoints ... FAILED
+test standalone_m1_element_types_roundtrip_undo_redo ... ok
+
+failures:
+
+---- checkpoint_before_edit_predicts_same_result_in_dry_run stdout ----
+
+thread 'checkpoint_before_edit_predicts_same_result_in_dry_run' (32508) panicked at crates\executor\tests\c12_r2_contracts.rs:152:5:
+assertion `left == right` failed: checkpoint result revision is not an envelope dry-run field
+  left: Some(Object {"name": String("r2-first"), "documentRev": Number(1)})
+ right: Some(Object {"name": String("r2-first"), "documentRev": Number(2)})
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- checkpoint_between_edits_captures_its_staged_content stdout ----
+
+thread 'checkpoint_between_edits_captures_its_staged_content' (27832) panicked at crates\executor\tests\c12_r2_contracts.rs:611:5:
+assertion `left == right` failed: R1-10 binding: checkpoint stores staged content at its step
+  left: Number(461)
+ right: 460
+
+---- checkpoint_create_then_delete_in_atomic_batch_succeeds stdout ----
+
+thread 'checkpoint_create_then_delete_in_atomic_batch_succeeds' (32256) panicked at crates\executor\tests\c12_r2_contracts.rs:118:5:
+11 §7.3: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "batch.stepFailed", message: "step 2 (`checkpoint.delete`) failed: no checkpoint `r2-temporary`", details: Object {"stepIndex": Number(2), "commandId": String("checkpoint.delete"), "error": Object {"code": String("checkpoint.notFound"), "message": String("no checkpoint `r2-temporary`"), "details": Object {"name": String("r2-temporary")}}}, hint: None }), dry_run: false, steps: Some([Envelope { status: Ok, result: Some(Object {"name": String("r2-temporary"), "documentRev": Number(1)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: None, dry_run: false, steps: None }, Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "checkpoint.notFound", message: "no checkpoint `r2-temporary`", details: Object {"name": String("r2-temporary")}, hint: None }), dry_run: false, steps: None }]) }
+
+---- checkpoint_is_visible_to_later_atomic_query stdout ----
+
+thread 'checkpoint_is_visible_to_later_atomic_query' (29680) panicked at crates\executor\tests\c12_r2_contracts.rs:105:5:
+assertion `left == right` failed: 11 §7.3 later queries see staged state
+  left: Null
+ right: "r2-visible"
+
+---- clipboard_element_properties_validates_values_not_only_names stdout ----
+
+thread 'clipboard_element_properties_validates_values_not_only_names' (32048) panicked at crates\executor\tests\c12_r2_contracts.rs:237:5:
+01 §12.1 clipboard kind schema must validate values: Envelope { status: Ok, result: Some(Object {"kind": String("elementProperties"), "itemCount": Number(1)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: None, dry_run: false, steps: None }
+
+---- copying_a_peg_includes_descendants_per_scene_edit_rules stdout ----
+
+thread 'copying_a_peg_includes_descendants_per_scene_edit_rules' (33452) panicked at crates\executor\tests\c12_r2_contracts.rs:564:5:
+05 section 15: {"kind":"elements","sourceContext":"staging","sourceProjectId":"pr_01K742SG00BK0VXTWDM5JRXV37","itemCount":1,"items":[{"id":"el_01K742SG101DH4FAEWCWWK4QXC","type":"element","rev":1,"name":"Bob-P","elementType":"peg","start":1,"duration":48,"loops":1,"loopType":"count","positionLoop":"cycle","role":"normal","deformable":false,"visibleInScene":true,"locked":false,"collapsed":false,"markerColour":null,"backgroundColour":null,"columnWidth":80,"transform":{"offset":{"x":0.0,"y":0.0,"z":0.0},"rotation":0.0,"skew":0.0,"scale":{"x":1.0,"y":1.0},"keepProportions":false,"pivot":{"x":0.25,"y":-1.5},"applyPivotTo":"both","useChildDrawingPivot":false,"lockDepth":false,"orientToPath":false},"exportGroup":{"groupOnVectorExport":false,"addComposite":true},"channels":{"skew":{"id":"ch_01K742SG233AAGQYCZWV5XVRPP","type":"channel","rev":1,"name":"skew","curveType":"spline","keys":[{"id":"ky_01K742SG245790JGK2KWB7Z8RK","type":"key","rev":1,"frame":1,"value":0.0,"constantSegment":false,"handles":{"left":{"dt":-4.0,"dv":0.0},"right":{"dt":4.0,"dv":0.0},"mode":"smooth"},"easing":null},{"id":"ky_01K742SG25VVP67AJQQCV1HDFJ","type":"key","rev":1,"frame":48,"value":5.0,"constantSegment":false,"handles":{"left":{"dt":-4.0,"dv":0.0},"right":{"dt":4.0,"dv":0.0},"mode":"smooth"},"easing":null}]}},"createdAt":"2026-10-17T09:30:12.345Z"}],"options":null}
+
+---- copying_complete_scene_forest_preserves_effect_parentage_on_paste stdout ----
+
+thread 'copying_complete_scene_forest_preserves_effect_parentage_on_paste' (28228) panicked at crates\executor\tests\c12_r2_contracts.rs:581:5:
+05 section 15: selected forest already contains every required effect parent: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "tree.invalid", message: "a parameter element stays directly under its effect", details: Object {"objectId": String("sc_01K742SG0YSRA1305J7887BDVZ"), "pointer": String("/tree/18"), "severity": String("error"), "errors": Array [Object {"code": String("tree.invalid"), "message": String("a parameter element stays directly under its effect"), "details": Object {"objectId": String("sc_01K742SG0YSRA1305J7887BDVZ"), "pointer": String("/tree/18"), "severity": String("error")}}, Object {"code": String("tree.invalid"), "message": String("a parameter element stays directly under its effect"), "details": Object {"objectId": String("sc_01K742SG0YSRA1305J7887BDVZ"), "pointer": String("/tree/25"), "severity": String("error")}}, Object {"code": String("tree.invalid"), "message": String("a parameter element stays directly under its effect"), "details": Object {"objectId": String("sc_01K742SG0YSRA1305J7887BDVZ"), "pointer": String("/tree/26"), "severity": String("error")}}, Object {"code": String("tree.invalid"), "message": String("a parameter element stays directly under its effect"), "details": Object {"objectId": String("sc_01K742SG0YSRA1305J7887BDVZ"), "pointer": String("/tree/29"), "severity": String("error")}}]}, hint: None }), dry_run: false, steps: None }
+
+---- cross_bank_cell_paste_cannot_overwrite_a_locked_drawing stdout ----
+
+thread 'cross_bank_cell_paste_cannot_overwrite_a_locked_drawing' (14300) panicked at crates\executor\tests\c12_r2_contracts.rs:631:5:
+assertion `left == right` failed: 04 section 13.16: Envelope { status: Ok, result: Some(Object {"createdIds": Array [], "modifiedIds": Array [String("dr_01K742SG0KKMCAP9X1E6Z5P4SW"), String("el_01K742SG11W3SGB8Q1H50W74VB")], "warnings": Array []}), targets: None, changes: [ChangeRecord { id: "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0QD1F2HFZSX8R4V7WP", ty: "stroke", op: "modified", rev: 4, parent_id: None, index: None, patch: Some([Object {"op": String("remove"), "path": String("/meta"), "oldValue": Object {"keepLocked": Number(987)}}]) }, ChangeRecord { id: "dr_01K742SG0KKMCAP9X1E6Z5P4SW", ty: "drawing", op: "modified", rev: 4, parent_id: None, index: None, patch: Some([]) }], changes_truncated: false, changes_since: None, undo: Some(UndoRef { step_id: "u-1", label: "Paste" }), warnings: [], document_rev: Some(4), error: None, dry_run: false, steps: None }
+  left: None
+ right: Some("drawing.locked")
+
+---- cutting_a_peg_removes_descendants_per_scene_edit_rules stdout ----
+
+thread 'cutting_a_peg_removes_descendants_per_scene_edit_rules' (2748) panicked at crates\executor\tests\c12_r2_contracts.rs:571:5:
+05 section 15: descendants are cut too
+
+---- diff_reports_drawing_content_revision_invalidation stdout ----
+
+thread 'diff_reports_drawing_content_revision_invalidation' (17012) panicked at crates\executor\tests\c12_r2_contracts.rs:272:5:
+10 REV-02 / AG-09 catch-up omits changed drawing revision: {"fromRev":1,"toRev":2,"changes":[{"id":"dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0QD1F2HFZSX8R4V7WP","type":"stroke","op":"modified","rev":2,"patch":[{"op":"add","path":"/meta","value":{"r2":726}}]}],"truncated":false}
+
+---- drawing_copy_preserves_object_shaped_opaque_metadata stdout ----
+
+thread 'drawing_copy_preserves_object_shaped_opaque_metadata' (31780) panicked at crates\executor\tests\c12_r2_contracts.rs:204:5:
+assertion `left == right` failed: 10 §2.2 opaque data cannot be traversed as model objects
+  left: Object {"shape": Object {"id": String("st_01M59N0TPRDFQG4STPP431MQDX"), "rev": Number(0), "text": String("keep"), "type": String("stroke")}}
+ right: Object {"shape": Object {"id": String("opaque-literal"), "type": String("stroke"), "rev": Number(432), "text": String("keep")}}
+
+---- edit_envelopes_report_explicit_or_selection_targets stdout ----
+
+thread 'edit_envelopes_report_explicit_or_selection_targets' (31228) panicked at crates\executor\tests\c12_r2_contracts.rs:374:5:
+11 P4: selection-derived actual targets missing from envelope
+
+---- element_delete_preserves_opaque_metadata_and_extension_strings stdout ----
+
+thread 'element_delete_preserves_opaque_metadata_and_extension_strings' (30444) panicked at crates\executor\tests\c12_r2_contracts.rs:191:5:
+assertion `left == right` failed: 10 §2.2 metadata is never interpreted
+  left: Object {"list": Array [], "literal": Null, "nested": Object {"id": Null}}
+ right: Object {"list": Array [Object {"text": String("el_01K742SG101DH4FAEWCWWK4QXC")}], "literal": String("el_01K742SG101DH4FAEWCWWK4QXC"), "nested": Object {"id": String("el_01K742SG101DH4FAEWCWWK4QXC")}}
+
+---- identical_document_and_paste_sequence_produce_identical_ids stdout ----
+
+thread 'identical_document_and_paste_sequence_produce_identical_ids' (30100) panicked at crates\executor\tests\c12_r2_contracts.rs:179:5:
+assertion `left == right` failed: 11 P7 / 10 AG-06 deterministic ID allocation
+  left: Object {"createdIds": Array [String("el_01M59N0XDFW6FJA28WN6CT20WE")], "modifiedIds": Array [], "warnings": Array []}
+ right: Object {"createdIds": Array [String("el_01M59N0XDKJDW9AMMFCV9GW47S")], "modifiedIds": Array [], "warnings": Array []}
+
+---- json04_materialisation_does_not_invent_opaque_nested_containers stdout ----
+
+thread 'json04_materialisation_does_not_invent_opaque_nested_containers' (16256) panicked at crates\executor\tests\c12_r2_contracts.rs:250:5:
+RFC6902 missing parent is not an omitted model member: Envelope { status: Ok, result: Some(Object {"changes": Array [Object {"id": String("el_01K742SG11W3SGB8Q1H50W74VB"), "type": String("element"), "op": String("modified"), "rev": Number(3), "patch": Array [Object {"op": String("add"), "path": String("/meta/custom/ext"), "value": Object {"literal": Number(751)}}]}], "documentRev": Number(3)}), targets: Some(Object {"ids": Array [String("el_01K742SG11W3SGB8Q1H50W74VB")]}), changes: [ChangeRecord { id: "el_01K742SG11W3SGB8Q1H50W74VB", ty: "element", op: "modified", rev: 3, parent_id: None, index: None, patch: Some([Object {"op": String("add"), "path": String("/meta/custom/ext"), "value": Object {"literal": Number(751)}}]) }], changes_truncated: false, changes_since: None, undo: Some(UndoRef { step_id: "u-2", label: "Set meta" }), warnings: [], document_rev: Some(3), error: None, dry_run: false, steps: None }
+
+---- json04_materialised_parent_is_removed_by_raw_patch_inverse stdout ----
+
+thread 'json04_materialised_parent_is_removed_by_raw_patch_inverse' (33392) panicked at crates\executor\tests\c12_r2_contracts.rs:641:5:
+assertion `left == right` failed: C1.1: raw apply_with_inverse restores exactly
+  left: Object {"id": String("el_01K742SG11W3SGB8Q1H50W74VB"), "type": String("element"), "rev": Number(1), "name": String("Bob"), "path": String("scene:\"Intro\"/element:\"Bob\""), "elementType": String("drawing"), "loops": Number(1), "loopType": String("count"), "positionLoop": String("cycle"), "role": String("normal"), "deformable": Bool(false), "visibleInScene": Bool(true), "visibleInXsheet": Bool(true), "locked": Bool(false), "collapsed": Bool(false), "markerColour": String("#9DC3E6FF"), "backgroundColour": Null, "note": String("main character"), "columnWidth": Number(80), "drawingBankId": String("db_01K742SG0JW3TVZ32SQC03AMY1"), "exposure": Array [Array [String("dr_01K742SG0KKMCAP9X1E6Z5P4SW"), Number(6)], Array [Null, Number(2)], Array [String("dr_01K742SG0M5J3BAJSW8241WA87"), Number(12)], Array [String("dr_01K742SG0KKMCAP9X1E6Z5P4SW"), Number(24)]], "cellNotes": Object {"3": String("fix hand"), "12": String("hold")}, "transform": Object {"offset": Object {"x": Number(0.0), "y": Number(0.0), "z": Number(0.0)}, "rotation": Number(0.0), "skew": Number(0.0), "scale": Object {"x": Number(1.0), "y": Number(1.0)}, "keepProportions": Bool(false), "rotationPivot": Object {"x": Number(0.0), "y": Number(0.0)}, "scalePivot": Object {"x": Number(0.0), "y": Number(0.0)}, "rotateAboutPivot": Bool(false), "lockDepth": Bool(false), "orientToPath": Bool(false)}, "channels": Object {"position": Object {"id": String("ch_01K742SG1XFEFQMBCSQ7D6AX3G"), "type": String("channel"), "name": String("position")}, "rotation": Object {"id": String("ch_01K742SG1QFHD2CCT6MTEX2H16"), "type": String("channel"), "name": String("rotation")}, "scale.x": Object {"id": String("ch_01K742SG1VM41901DYSMMVJQDV"), "type": String("channel"), "name": String("scale.x")}, "velocity": Object {"id": String("ch_01K742SG21WVPRAB3YJD7ZJTMP"), "type": String("channel"), "name": String("velocity")}}, "createdAt": String("2026-10-17T09:30:12.345Z"), "meta": Object {}}
+ right: Object {"id": String("el_01K742SG11W3SGB8Q1H50W74VB"), "type": String("element"), "rev": Number(1), "name": String("Bob"), "path": String("scene:\"Intro\"/element:\"Bob\""), "elementType": String("drawing"), "loops": Number(1), "loopType": String("count"), "positionLoop": String("cycle"), "role": String("normal"), "deformable": Bool(false), "visibleInScene": Bool(true), "visibleInXsheet": Bool(true), "locked": Bool(false), "collapsed": Bool(false), "markerColour": String("#9DC3E6FF"), "backgroundColour": Null, "note": String("main character"), "columnWidth": Number(80), "drawingBankId": String("db_01K742SG0JW3TVZ32SQC03AMY1"), "exposure": Array [Array [String("dr_01K742SG0KKMCAP9X1E6Z5P4SW"), Number(6)], Array [Null, Number(2)], Array [String("dr_01K742SG0M5J3BAJSW8241WA87"), Number(12)], Array [String("dr_01K742SG0KKMCAP9X1E6Z5P4SW"), Number(24)]], "cellNotes": Object {"3": String("fix hand"), "12": String("hold")}, "transform": Object {"offset": Object {"x": Number(0.0), "y": Number(0.0), "z": Number(0.0)}, "rotation": Number(0.0), "skew": Number(0.0), "scale": Object {"x": Number(1.0), "y": Number(1.0)}, "keepProportions": Bool(false), "rotationPivot": Object {"x": Number(0.0), "y": Number(0.0)}, "scalePivot": Object {"x": Number(0.0), "y": Number(0.0)}, "rotateAboutPivot": Bool(false), "lockDepth": Bool(false), "orientToPath": Bool(false)}, "channels": Object {"position": Object {"id": String("ch_01K742SG1XFEFQMBCSQ7D6AX3G"), "type": String("channel"), "name": String("position")}, "rotation": Object {"id": String("ch_01K742SG1QFHD2CCT6MTEX2H16"), "type": String("channel"), "name": String("rotation")}, "scale.x": Object {"id": String("ch_01K742SG1VM41901DYSMMVJQDV"), "type": String("channel"), "name": String("scale.x")}, "velocity": Object {"id": String("ch_01K742SG21WVPRAB3YJD7ZJTMP"), "type": String("channel"), "name": String("velocity")}}, "createdAt": String("2026-10-17T09:30:12.345Z")}
+
+---- malformed_paste_destination_is_rejected_without_fallback stdout ----
+
+thread 'malformed_paste_destination_is_rejected_without_fallback' (8060) panicked at crates\executor\tests\c12_r2_contracts.rs:365:5:
+11 §8 wrong-typed explicit target silently fell back to current scene: Envelope { status: Ok, result: Some(Object {"createdIds": Array [String("el_01M59N0XG6C9CH2RTAKCQDWP70")], "modifiedIds": Array [], "warnings": Array []}), targets: None, changes: [ChangeRecord { id: "sc_01K742SG0YSRA1305J7887BDVZ", ty: "scene", op: "modified", rev: 2, parent_id: None, index: None, patch: Some([Object {"op": String("add"), "path": String("/tree/11"), "value": Object {"id": String("el_01M59N0XG6C9CH2RTAKCQDWP70"), "children": Array []}}, Object {"op": String("add"), "path": String("/elements/20"), "value": Object {"id": String("el_01M59N0XG6C9CH2RTAKCQDWP70"), "type": String("element")}}]) }, ChangeRecord { id: "ch_01M59N0XG6EB1D4CE0CHC3ATT7/ky_01K742SG245790JGK2KWB7Z8RK", ty: "key", op: "created", rev: 2, parent_id: Some("ch_01M59N0XG6EB1D4CE0CHC3ATT7"), index: Some(0), patch: None }, ChangeRecord { id: "ch_01M59N0XG6EB1D4CE0CHC3ATT7/ky_01K742SG25VVP67AJQQCV1HDFJ", ty: "key", op: "created", rev: 2, parent_id: Some("ch_01M59N0XG6EB1D4CE0CHC3ATT7"), index: Some(1), patch: None }, ChangeRecord { id: "ch_01M59N0XG6EB1D4CE0CHC3ATT7", ty: "channel", op: "created", rev: 2, parent_id: Some("el_01M59N0XG6C9CH2RTAKCQDWP70"), index: Some(0), patch: None }, ChangeRecord { id: "el_01M59N0XG6C9CH2RTAKCQDWP70", ty: "element", op: "created", rev: 2, parent_id: Some("sc_01K742SG0YSRA1305J7887BDVZ"), index: Some(20), patch: None }], changes_truncated: false, changes_since: None, undo: Some(UndoRef { step_id: "u-1", label: "Paste" }), warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: None }
+
+---- paste_dry_run_predicts_created_ids_exactly stdout ----
+
+thread 'paste_dry_run_predicts_created_ids_exactly' (28344) panicked at crates\executor\tests\c12_r2_contracts.rs:167:5:
+assertion `left == right` failed: R1-02/03: predicted IDs must match the real result
+  left: Some(Object {"createdIds": Array [String("el_01M59N0XJ7D2H416CAPCGSC2TY")], "modifiedIds": Array [], "warnings": Array []})
+ right: Some(Object {"createdIds": Array [String("el_01M59N0XJA008YZGCQ83PY10N2")], "modifiedIds": Array [], "warnings": Array []})
+
+---- pending_job_wait_reserves_request_id_against_other_commands stdout ----
+
+thread 'pending_job_wait_reserves_request_id_against_other_commands' (30796) panicked at crates\executor\tests\c12_r2_contracts.rs:392:5:
+assertion `left == right` failed: pending request ID executed another command: Envelope { status: Ok, result: Some(Object {"frame": Number(37)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: None, dry_run: false, steps: None }
+  left: None
+ right: Some("request.conflict")
+
+---- safe_revision_reconstruction_cannot_install_future_object_revisions stdout ----
+
+thread 'safe_revision_reconstruction_cannot_install_future_object_revisions' (27948) panicked at crates\executor\tests\c12_r2_contracts.rs:654:5:
+safe public composition installed object rev=1 above documentRev=0
+
+---- sequential_batch_job_wait_honours_wait_timeout_contract stdout ----
+
+thread 'sequential_batch_job_wait_honours_wait_timeout_contract' (7268) panicked at crates\executor\tests\c12_r2_contracts.rs:597:5:
+assertion `left == right` failed: a batched wait must wait too
+  left: String("running")
+ right: "succeeded"
+
+---- sequential_dry_run_simulates_checkpoints stdout ----
+
+thread 'sequential_dry_run_simulates_checkpoints' (15448) panicked at crates\executor\tests\c12_r2_contracts.rs:134:5:
+assertion `left == right` failed: 11 §7.2 prediction
+  left: Object {"status": String("ok"), "result": Object {"stepCount": Number(2)}, "changes": Array [], "warnings": Array [], "steps": Array [Object {"status": String("ok"), "result": Object {"name": String("r2-sequential")}, "changes": Array [], "warnings": Array []}, Object {"status": String("ok"), "result": Array [], "changes": Array [], "warnings": Array []}]}
+ right: Object {"status": String("ok"), "result": Object {"stepCount": Number(2)}, "changes": Array [], "warnings": Array [], "steps": Array [Object {"status": String("ok"), "result": Object {"name": String("r2-sequential")}, "changes": Array [], "warnings": Array []}, Object {"status": String("ok"), "result": Array [Object {"name": String("r2-sequential"), "origin": String("user")}], "changes": Array [], "warnings": Array []}]}
+
+
+failures:
+    checkpoint_before_edit_predicts_same_result_in_dry_run
+    checkpoint_between_edits_captures_its_staged_content
+    checkpoint_create_then_delete_in_atomic_batch_succeeds
+    checkpoint_is_visible_to_later_atomic_query
+    clipboard_element_properties_validates_values_not_only_names
+    copying_a_peg_includes_descendants_per_scene_edit_rules
+    copying_complete_scene_forest_preserves_effect_parentage_on_paste
+    cross_bank_cell_paste_cannot_overwrite_a_locked_drawing
+    cutting_a_peg_removes_descendants_per_scene_edit_rules
+    diff_reports_drawing_content_revision_invalidation
+    drawing_copy_preserves_object_shaped_opaque_metadata
+    edit_envelopes_report_explicit_or_selection_targets
+    element_delete_preserves_opaque_metadata_and_extension_strings
+    identical_document_and_paste_sequence_produce_identical_ids
+    json04_materialisation_does_not_invent_opaque_nested_containers
+    json04_materialised_parent_is_removed_by_raw_patch_inverse
+    malformed_paste_destination_is_rejected_without_fallback
+    paste_dry_run_predicts_created_ids_exactly
+    pending_job_wait_reserves_request_id_against_other_commands
+    safe_revision_reconstruction_cannot_install_future_object_revisions
+    sequential_batch_job_wait_honours_wait_timeout_contract
+    sequential_dry_run_simulates_checkpoints
+
+test result: FAILED. 15 passed; 22 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.71s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r2_contracts`

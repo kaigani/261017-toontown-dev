@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r2\reviews\evidence\M1-C1.2-r2\prepare-audit.py", line 33, in <module>
+    print(r['id'], '| A:', r['specParameters'], '| result:',r['specResult'])
+                           ~^^^^^^^^^^^^^^^^^^
+KeyError: 'specParameters'

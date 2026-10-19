@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r2/prepare-audit.py"
+  ],
+  "exit": 1,
+  "started": "2026-10-19T08:16:53.936644+00:00",
+  "seconds": 0.07747260003816336,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\sample-audit.log",
+  "sha256": "fb4b2d9f144fbae15c2c72152d74ade9072a7b8d6da28050f060508722ff4eb2"
+}

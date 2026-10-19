@@ -1,0 +1,6 @@
+windows-latest 460 Rust passes 1 ignored; 11 C1.1 suites; 7 selected C1.2 suites
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r2\reviews\evidence\M1-C1.2-r2\audit-ci.py", line 40, in <module>
+    assert matches and all(m['status']=='ok' for m in matches), (os,suite,matches)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('macos-latest', 'c11_r2_wire', [])
