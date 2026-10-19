@@ -1,0 +1,9 @@
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.14s
+     Running tests\c12_r1_scale.rs (target\release\deps\c12_r1_scale-92c3818502fbb36d.exe)
+
+running 1 test
+{"profile":"release","cases":[{"fixture":"100000 strokes","objects":100092,"assembleSeconds":4.2182572,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.4245434,"maximumCallSeconds":0.0037221,"create20CheckpointsSeconds":0.0009049,"find100Seconds":0.1159049,"documentRev":1},{"fixture":"10000 drawings","objects":10091,"assembleSeconds":0.1512978,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.5803129,"maximumCallSeconds":0.0027569,"create20CheckpointsSeconds":0.0580282,"find100Seconds":0.0206654,"documentRev":1}]}
+test every_command_rejects_huge_malformed_input_on_large_documents ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.58s
+
