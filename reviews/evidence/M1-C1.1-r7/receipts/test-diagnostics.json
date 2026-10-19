@@ -1,0 +1,19 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-desktop",
+    "--locked",
+    "--features",
+    "m0-diagnostics"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:25:34.209981+00:00",
+  "elapsed_seconds": 22.492,
+  "exit_code": 0,
+  "log": "logs/test-diagnostics.log",
+  "sha256": "e1b8f4bfa49e22dbe31551b045a474e592d8fe6071424f667486672500a6f9e0",
+  "env": {}
+}

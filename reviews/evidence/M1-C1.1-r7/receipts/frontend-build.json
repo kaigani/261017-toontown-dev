@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "--dir",
+    "desktop",
+    "build"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:21:04.773034+00:00",
+  "elapsed_seconds": 1.61,
+  "exit_code": 0,
+  "log": "logs/frontend-build.log",
+  "sha256": "5329d10009bad9450c33ca75821d7e30b49bf7925e1651b487951b60d632c0c5",
+  "env": {}
+}

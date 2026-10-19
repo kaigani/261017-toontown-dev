@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "scripts/run-reviewer-python-suites.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:21:06.507151+00:00",
+  "elapsed_seconds": 5.613,
+  "exit_code": 0,
+  "log": "logs/reviewer-python.log",
+  "sha256": "3b5693f23967d1a1f92307c9d5b1f524a8083e84c871975a9be0c59ba01a11e9",
+  "env": {}
+}

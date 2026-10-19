@@ -1,0 +1,24 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r7_staged_inverse_10000",
+    "--locked",
+    "staged_exposure_and_mouth_edits_undo_and_redo_exactly",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:30:11.955804+00:00",
+  "elapsed_seconds": 223.964,
+  "exit_code": 0,
+  "log": "logs/c11_r7_staged_inverse_10000.log",
+  "sha256": "9abc8e6b984126516dd225f8067f8e7aaacdd250744dd9560c98ce142e49b391",
+  "env": {
+    "PROPTEST_RNG_SEED": "12915398304474523881"
+  }
+}

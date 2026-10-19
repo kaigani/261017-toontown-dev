@@ -1,0 +1,10 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r7\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.24s
+     Running tests\c11_r7_staged_inverse_10000.rs (target\debug\deps\c11_r7_staged_inverse_10000-8fe34aa8f48d9893.exe)
+
+running 1 test
+test staged_exposure_and_mouth_edits_undo_and_redo_exactly has been running for over 60 seconds
+test staged_exposure_and_mouth_edits_undo_and_redo_exactly ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 211.18s
+
