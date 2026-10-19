@@ -10117,10 +10117,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       fovMode: {
         type: "string",
-        enum: [
-          "static",
-          "dynamic",
-        ],
       },
       fov: {
         type: "number",
@@ -11538,11 +11534,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       curveType: {
         type: "string",
-        enum: [
-          "spline",
-          "interpolation",
-          "velocityBased",
-        ],
       },
     },
     required: [
@@ -11971,11 +11962,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             curveType: {
               type: "string",
-              enum: [
-                "spline",
-                "interpolation",
-                "velocityBased",
-              ],
             },
             keyCount: {
               type: "number",
@@ -12178,10 +12164,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             handleMode: {
               type: "string",
-              enum: [
-                "smooth",
-                "broken",
-              ],
             },
             left: {
               type: "object",
@@ -12217,16 +12199,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             preset: {
               type: "string",
-              enum: [
-                "constant",
-                "linear",
-                "easeInOut",
-                "fastInOut",
-                "extremeEaseInOut",
-                "extremeFastInOut",
-                "slowAcceleration",
-                "slowDeceleration",
-              ],
             },
           },
           required: [
@@ -12295,11 +12267,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       projection: {
         type: "string",
-        enum: [
-          "x",
-          "y",
-          "z",
-        ],
       },
       selectedFrames: {
         type: "array",
@@ -13899,10 +13866,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           properties: {
             kind: {
               type: "string",
-              enum: [
-                "key",
-                "control",
-              ],
             },
             frame: {
               type: "integer",
@@ -14243,11 +14206,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       units: {
         type: "string",
-        enum: [
-          "fields",
-          "inches",
-          "centimetres",
-        ],
       },
       displayUnits: {
         type: "boolean",
@@ -15621,22 +15579,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       tool: {
         type: "string",
-        enum: [
-          "select",
-          "transform",
-          "record",
-          "rotate",
-          "skew",
-          "scale",
-          "motion",
-          "boneCreate",
-          "boneSetup",
-          "boneManipulate",
-          "boneInverse",
-          "boneForward",
-          "boneInfluence",
-          "boneParent",
-        ],
       },
     },
     required: [
@@ -15659,22 +15601,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       tool: {
         type: "string",
-        enum: [
-          "select",
-          "transform",
-          "record",
-          "rotate",
-          "skew",
-          "scale",
-          "motion",
-          "boneCreate",
-          "boneSetup",
-          "boneManipulate",
-          "boneInverse",
-          "boneForward",
-          "boneInfluence",
-          "boneParent",
-        ],
       },
     },
     required: [
@@ -15723,22 +15649,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       tool: {
         type: "string",
-        enum: [
-          "select",
-          "transform",
-          "record",
-          "rotate",
-          "skew",
-          "scale",
-          "motion",
-          "boneCreate",
-          "boneSetup",
-          "boneManipulate",
-          "boneInverse",
-          "boneForward",
-          "boneInfluence",
-          "boneParent",
-        ],
       },
     },
     required: [
@@ -16031,12 +15941,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       type: {
         type: "string",
-        enum: [
-          "drawing",
-          "camera",
-          "top",
-          "side",
-        ],
       },
       zoom: {
         type: "number",
@@ -16086,11 +15990,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       slot: {
         type: "string",
-        enum: [
-          "A",
-          "B",
-          "other",
-        ],
         default: "other",
       },
     },
@@ -16143,11 +16042,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       slot: {
         type: "string",
-        enum: [
-          "A",
-          "B",
-          "other",
-        ],
         default: "other",
       },
       state: {
@@ -16202,12 +16096,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       type: {
         type: "string",
-        enum: [
-          "drawing",
-          "camera",
-          "top",
-          "side",
-        ],
       },
     },
     required: [
@@ -19080,11 +18968,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       aspectRatio: {
         type: "string",
-        enum: [
-          "fit",
-          "fill",
-          "stretch",
-        ],
       },
     },
     required: [
@@ -19822,10 +19705,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       insertMode: {
         type: "string",
-        enum: [
-          "insert",
-          "overwrite",
-        ],
         default: "insert",
       },
       advance: {
@@ -21948,12 +21827,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        enum: [
-          "off",
-          "small",
-          "medium",
-          "large",
-        ],
       },
       tolerancesPx: {
         type: "object",
@@ -22012,12 +21885,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        enum: [
-          "off",
-          "small",
-          "medium",
-          "large",
-        ],
       },
     },
     required: [
@@ -24742,12 +24609,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             kind: {
               type: "string",
-              enum: [
-                "solid",
-                "linearGradient",
-                "radialGradient",
-                "texture",
-              ],
             },
             index: {
               type: "integer",
@@ -32851,11 +32712,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       type: {
         type: "string",
-        enum: [
-          "normal",
-          "field12",
-          "field16",
-        ],
       },
       overlay: {
         type: "boolean",
@@ -33220,10 +33076,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             placement: {
               type: "string",
-              enum: [
-                "overlay",
-                "underlay",
-              ],
               default: "underlay",
             },
           },
@@ -33356,10 +33208,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             placement: {
               type: "string",
-              enum: [
-                "overlay",
-                "underlay",
-              ],
             },
           },
           required: [
@@ -37677,17 +37525,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       category: {
         type: "string",
-        enum: [
-          "drawings",
-          "images",
-          "sounds",
-          "pegs",
-          "skeletons",
-          "media",
-          "cameras",
-          "effects",
-          "effectParameters",
-        ],
       },
       colour: {
         type: "string",
@@ -38129,13 +37966,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             kind: {
               type: "string",
-              enum: [
-                "movie",
-                "sequence",
-                "still",
-                "vector",
-                "document",
-              ],
             },
             video: {
               type: [
@@ -39387,17 +39217,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               type: "array",
               items: {
                 type: "string",
-                enum: [
-                  "public",
-                  "unlisted",
-                  "private",
-                ],
                 default: "private",
               },
               maxItems: 100000,
             },
             connected: {
-              const: false,
+              type: "boolean",
             },
           },
           required: [
@@ -39611,10 +39436,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       preset: {
         type: "string",
-        enum: [
-          "default",
-          "custom",
-        ],
       },
       settings: {
         type: "object",
@@ -39668,10 +39489,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       preset: {
         type: "string",
-        enum: [
-          "default",
-          "custom",
-        ],
       },
       settings: {
         type: "object",
@@ -46243,12 +46060,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           properties: {
             slot: {
               type: "string",
-              enum: [
-                "mask",
-                "sprites",
-                "bones",
-                "skin",
-              ],
             },
             elementId: {
               type: "string",
@@ -47330,11 +47141,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             source: {
               type: "string",
-              enum: [
-                "builtin",
-                "user",
-                "all",
-              ],
               default: "all",
             },
             effectType: {
@@ -47522,11 +47328,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       size: {
         type: "string",
-        enum: [
-          "quarter",
-          "half",
-          "full",
-        ],
       },
       jobId: {
         type: "string",
@@ -47618,22 +47419,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       size: {
         type: "string",
-        enum: [
-          "quarter",
-          "half",
-          "full",
-        ],
       },
       followCurrentFrame: {
         type: "boolean",
       },
       defaultRange: {
         type: "string",
-        enum: [
-          "single",
-          "playbackRange",
-          "fromCurrent",
-        ],
       },
     },
     required: [
@@ -47677,22 +47468,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       size: {
         type: "string",
-        enum: [
-          "quarter",
-          "half",
-          "full",
-        ],
       },
       followCurrentFrame: {
         type: "boolean",
       },
       defaultRange: {
         type: "string",
-        enum: [
-          "single",
-          "playbackRange",
-          "fromCurrent",
-        ],
       },
     },
     required: [
@@ -47804,11 +47585,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             size: {
               type: "string",
-              enum: [
-                "quarter",
-                "half",
-                "full",
-              ],
             },
           },
           required: [
@@ -54987,11 +54763,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        enum: [
-          "thumbnails",
-          "list",
-          "details",
-        ],
       },
       currentNodeId: {
         type: "string",
@@ -55048,11 +54819,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        enum: [
-          "thumbnails",
-          "list",
-          "details",
-        ],
       },
     },
     required: [
@@ -55736,16 +55502,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mouth: {
         type: "string",
-        enum: [
-          "A",
-          "B",
-          "C",
-          "D",
-          "E",
-          "F",
-          "G",
-          "X",
-        ],
       },
       drawingId: {
         type: "string",
@@ -55842,13 +55598,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
               },
               rule: {
                 type: "string",
-                enum: [
-                  "stored",
-                  "name",
-                  "property",
-                  "order",
-                  "none",
-                ],
               },
             },
             required: [
@@ -58152,10 +57901,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       mode: {
         type: "string",
-        enum: [
-          "auto",
-          "free",
-        ],
       },
       start: {
         type: "integer",
@@ -58248,10 +57993,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        enum: [
-          "auto",
-          "free",
-        ],
       },
       start: {
         type: "integer",
@@ -58294,10 +58035,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        enum: [
-          "auto",
-          "free",
-        ],
       },
       start: {
         type: "integer",
@@ -58350,9 +58087,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         anyOf: [
           {
             type: "string",
-            enum: [
-              "project",
-            ],
           },
           {
             type: "number",
@@ -58906,10 +58640,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       orientation: {
         type: "string",
-        enum: [
-          "portrait",
-          "landscape",
-        ],
       },
       printableArea: {
         type: "object",
@@ -58979,10 +58709,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       orientation: {
         type: "string",
-        enum: [
-          "portrait",
-          "landscape",
-        ],
       },
     },
     required: [
@@ -62443,9 +62169,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         anyOf: [
           {
             type: "string",
-            enum: [
-              "natural",
-            ],
           },
           {
             type: "integer",
@@ -62772,9 +62495,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         anyOf: [
           {
             type: "string",
-            enum: [
-              "natural",
-            ],
           },
           {
             type: "integer",
@@ -63073,9 +62793,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         anyOf: [
           {
             type: "string",
-            enum: [
-              "natural",
-            ],
           },
           {
             type: "integer",
@@ -64264,7 +63981,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       playing: {
-        const: true,
+        type: "boolean",
       },
       globalFrame: {
         type: "number",
@@ -65170,11 +64887,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       kind: {
         type: "string",
-        enum: [
-          "none",
-          "scene",
-          "transition",
-        ],
       },
       sceneId: {
         type: "string",
@@ -65827,15 +65539,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           properties: {
             type: {
               type: "string",
-              enum: [
-                "none",
-                "fade",
-                "crossDissolve",
-                "wipe",
-                "slide",
-                "clockWipe",
-                "checker",
-              ],
             },
             parameters: {
               type: "array",
@@ -65848,15 +65551,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
                   },
                   type: {
                     type: "string",
-                    enum: [
-                      "none",
-                      "fade",
-                      "crossDissolve",
-                      "wipe",
-                      "slide",
-                      "clockWipe",
-                      "checker",
-                    ],
                   },
                   min: {
                     type: "number",
@@ -66291,10 +65985,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        enum: [
-          "auto",
-          "free",
-        ],
       },
       start: {
         type: "integer",
@@ -66325,10 +66015,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        enum: [
-          "auto",
-          "free",
-        ],
       },
       start: {
         type: "integer",
@@ -66372,10 +66058,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        enum: [
-          "auto",
-          "free",
-        ],
       },
       start: {
         type: "integer",
@@ -66702,10 +66384,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       unit: {
         type: "string",
-        enum: [
-          "frames",
-          "feetFrames",
-        ],
       },
     },
     required: [
@@ -66908,11 +66586,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       operation: {
         type: "string",
-        enum: [
-          "paste",
-          "cut",
-          "dragDrop",
-        ],
       },
       options: {
         $ref: "#/$defs/timeline.transferOptions.set.spec.TransferOptions",
@@ -66981,31 +66654,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       toolId: {
         type: "string",
-        enum: [
-          "select",
-          "contourEditor",
-          "perspective",
-          "repositionAll",
-          "brush",
-          "pencil",
-          "rectangle",
-          "ellipse",
-          "polyline",
-          "line",
-          "paint",
-          "unpaint",
-          "paintUnpainted",
-          "dropper",
-          "closeGap",
-          "stroke",
-          "editTexture",
-          "eraser",
-          "cutter",
-          "scissor",
-          "zoom",
-          "grabber",
-          "text",
-        ],
       },
       temporary: {
         type: "boolean",
@@ -67032,31 +66680,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       toolId: {
         type: "string",
-        enum: [
-          "select",
-          "contourEditor",
-          "perspective",
-          "repositionAll",
-          "brush",
-          "pencil",
-          "rectangle",
-          "ellipse",
-          "polyline",
-          "line",
-          "paint",
-          "unpaint",
-          "paintUnpainted",
-          "dropper",
-          "closeGap",
-          "stroke",
-          "editTexture",
-          "eraser",
-          "cutter",
-          "scissor",
-          "zoom",
-          "grabber",
-          "text",
-        ],
       },
       temporaryToolId: {
         anyOf: [
@@ -67129,31 +66752,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       toolId: {
         type: "string",
-        enum: [
-          "select",
-          "contourEditor",
-          "perspective",
-          "repositionAll",
-          "brush",
-          "pencil",
-          "rectangle",
-          "ellipse",
-          "polyline",
-          "line",
-          "paint",
-          "unpaint",
-          "paintUnpainted",
-          "dropper",
-          "closeGap",
-          "stroke",
-          "editTexture",
-          "eraser",
-          "cutter",
-          "scissor",
-          "zoom",
-          "grabber",
-          "text",
-        ],
       },
     },
     required: [
@@ -67675,19 +67273,9 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             type: {
               type: "string",
-              enum: [
-                "brush",
-                "eraser",
-              ],
             },
             tipShape: {
               type: "string",
-              enum: [
-                "round",
-                "oval",
-                "square",
-                "flat",
-              ],
             },
             minSize: {
               type: "number",
@@ -67818,10 +67406,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       type: {
         type: "string",
-        enum: [
-          "brush",
-          "eraser",
-        ],
         default: "brush",
       },
     },
@@ -68370,11 +67954,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         type: "string",
-        enum: [
-          "none",
-          "mirror",
-          "kaleidoscope",
-        ],
         default: "none",
       },
       angle: {
@@ -69534,13 +69113,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       type: {
         type: "string",
-        enum: [
-          "drawing",
-          "camera",
-          "top",
-          "side",
-          "previous",
-        ],
       },
     },
     required: [
@@ -73048,10 +72620,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             placement: {
               type: "string",
-              enum: [
-                "over",
-                "under",
-              ],
             },
           },
           required: [
@@ -73164,10 +72732,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             },
             placement: {
               type: "string",
-              enum: [
-                "over",
-                "under",
-              ],
             },
           },
           required: [
@@ -73848,7 +73412,7 @@ export interface anim_camera_get_result {
     z: number;
   };
   roll: number;
-  fovMode: 'static' | 'dynamic';
+  fovMode: string;
   fov: number;
   effectiveFov: number;
   worldPosition: {
@@ -74185,7 +73749,7 @@ export interface anim_function_curveType_set_params {
 
 export interface anim_function_curveType_set_result {
   channel: string;
-  curveType: 'spline' | 'interpolation' | 'velocityBased';
+  curveType: string;
 }
 
 export interface anim_function_get_params {
@@ -74291,7 +73855,7 @@ export interface anim_function_list_params {
 export interface anim_function_list_result {
   channels: ({
     channel: string;
-    curveType: 'spline' | 'interpolation' | 'velocityBased';
+    curveType: string;
     keyCount: number;
     allowedCurveTypes: string[];
   })[];
@@ -74336,7 +73900,7 @@ export interface anim_function_set_params {
     frame: number;
     value: number;
     constantSegment?: boolean;
-    handleMode?: 'smooth' | 'broken';
+    handleMode?: string;
     left?: {
       dt: number;
       dv: number;
@@ -74345,7 +73909,7 @@ export interface anim_function_set_params {
       dt: number;
       dv: number;
     };
-    preset?: 'constant' | 'linear' | 'easeInOut' | 'fastInOut' | 'extremeEaseInOut' | 'extremeFastInOut' | 'slowAcceleration' | 'slowDeceleration';
+    preset?: string;
   })[];
 }
 
@@ -74362,7 +73926,7 @@ export interface anim_functionEditor_get_result {
   /** object ID or path reference (10 §3) */
   nodeId: string;
   channel: string;
-  projection: 'x' | 'y' | 'z';
+  projection: string;
   selectedFrames: number[];
   syncFrame: number;
   view: string;
@@ -74731,7 +74295,7 @@ export interface anim_path_set_params {
   /** object ID or path reference (10 §3) */
   nodeId: string;
   points: ({
-    kind: 'key' | 'control';
+    kind: string;
     frame?: number | bigint;
     x: number;
     y: number;
@@ -74806,7 +74370,7 @@ export interface anim_prefs_get_result {
   defaultTension: number;
   defaultContinuity: number;
   defaultBias: number;
-  units: 'fields' | 'inches' | 'centimetres';
+  units: string;
   displayUnits: boolean;
   boxHighlighting: boolean;
   keepSelectionVisible: boolean;
@@ -75133,13 +74697,13 @@ export type anim_tool_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface anim_tool_changed_result {
-  tool: 'select' | 'transform' | 'record' | 'rotate' | 'skew' | 'scale' | 'motion' | 'boneCreate' | 'boneSetup' | 'boneManipulate' | 'boneInverse' | 'boneForward' | 'boneInfluence' | 'boneParent';
+  tool: string;
 }
 
 export type anim_tool_get_params = Record<string, unknown>;
 
 export interface anim_tool_get_result {
-  tool: 'select' | 'transform' | 'record' | 'rotate' | 'skew' | 'scale' | 'motion' | 'boneCreate' | 'boneSetup' | 'boneManipulate' | 'boneInverse' | 'boneForward' | 'boneInfluence' | 'boneParent';
+  tool: string;
 }
 
 export interface anim_tool_set_params {
@@ -75148,7 +74712,7 @@ export interface anim_tool_set_params {
 }
 
 export interface anim_tool_set_result {
-  tool: 'select' | 'transform' | 'record' | 'rotate' | 'skew' | 'scale' | 'motion' | 'boneCreate' | 'boneSetup' | 'boneManipulate' | 'boneInverse' | 'boneForward' | 'boneInfluence' | 'boneParent';
+  tool: string;
 }
 
 export interface anim_transform_set_params {
@@ -75210,7 +74774,7 @@ export interface anim_view_get_params {
 }
 
 export interface anim_view_get_result {
-  type: 'drawing' | 'camera' | 'top' | 'side';
+  type: string;
   zoom: number;
   pan: {
     x: number;
@@ -75223,7 +74787,7 @@ export interface anim_view_get_result {
     maxX: number;
     maxY: number;
   };
-  slot: 'A' | 'B' | 'other';
+  slot: string;
 }
 
 export interface anim_view_slot_select_params {
@@ -75235,7 +74799,7 @@ export interface anim_view_slot_select_params {
 export interface anim_view_slot_select_result {
   /** object ID or path reference (10 §3) */
   viewId: string;
-  slot: 'A' | 'B' | 'other';
+  slot: string;
   state: string;
 }
 
@@ -75248,7 +74812,7 @@ export interface anim_view_type_set_params {
 export interface anim_view_type_set_result {
   /** object ID or path reference (10 §3) */
   viewId: string;
-  type: 'drawing' | 'camera' | 'top' | 'side';
+  type: string;
 }
 
 /** `app.context.set` parameters. */
@@ -76126,7 +75690,7 @@ export interface capture_lightTable_set_result {
   /** object ID or path reference (10 §3) or "none" | "previousCapture" */
   reference: string;
   opacity: number;
-  aspectRatio: 'fit' | 'fill' | 'stretch';
+  aspectRatio: string;
 }
 
 export interface capture_preview_get_params {
@@ -76317,7 +75881,7 @@ export interface capture_target_set_result {
   /** object ID or path reference (10 §3) or "new" */
   elementId: string;
   frame: number | bigint;
-  insertMode: 'insert' | 'overwrite';
+  insertMode: string;
   advance: boolean;
 }
 
@@ -76852,7 +76416,7 @@ export interface colour_gap_close_result {
 export type colour_gapClosing_get_params = Record<string, unknown>;
 
 export interface colour_gapClosing_get_result {
-  mode: 'off' | 'small' | 'medium' | 'large';
+  mode: string;
   tolerancesPx: {
     small: string;
     medium: string;
@@ -76865,7 +76429,7 @@ export interface colour_gapClosing_set_params {
 }
 
 export interface colour_gapClosing_set_result {
-  mode: 'off' | 'small' | 'medium' | 'large';
+  mode: string;
 }
 
 export interface colour_missing_list_params {
@@ -77504,7 +77068,7 @@ export interface colour_swatch_list_result {
     /** object ID or path reference (10 §3) */
     colourId: string;
     name: string;
-    kind: 'solid' | 'linearGradient' | 'radialGradient' | 'texture';
+    kind: string;
     index: number | bigint;
     deformable: boolean;
     /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
@@ -79524,7 +79088,7 @@ export interface drawAid_grid_set_params {
 
 export interface drawAid_grid_set_result {
   visible: boolean;
-  type: 'normal' | 'field12' | 'field16';
+  type: string;
   overlay: boolean;
 }
 
@@ -79626,7 +79190,7 @@ export interface drawAid_staticLightTable_list_result {
     sourceId: string;
     sourceKind: string;
     visible: boolean;
-    placement: 'overlay' | 'underlay';
+    placement: string;
   })[];
 }
 
@@ -79656,7 +79220,7 @@ export interface drawAid_staticLightTable_set_result {
     sourceId: string;
     sourceKind: string;
     visible: boolean;
-    placement: 'overlay' | 'underlay';
+    placement: string;
   })[];
 }
 
@@ -80666,7 +80230,7 @@ export interface element_typeColour_set_params {
 }
 
 export interface element_typeColour_set_result {
-  category: 'drawings' | 'images' | 'sounds' | 'pegs' | 'skeletons' | 'media' | 'cameras' | 'effects' | 'effectParameters';
+  category: string;
   /** #RRGGBB or #RRGGBBAA */
   colour: string;
 }
@@ -80768,7 +80332,7 @@ export interface export_formats_list_result {
     id: string;
     name: string;
     extensions: string[];
-    kind: 'movie' | 'sequence' | 'still' | 'vector' | 'document';
+    kind: string;
     /** type not stated by the owning section (spec issue); a scalar */
     video: string | number | boolean | null;
     /** type not stated by the owning section (spec issue); a scalar */
@@ -81053,8 +80617,8 @@ export interface export_publish_service_list_result {
       name: string;
       required: boolean;
     })[];
-    visibilities: ('public' | 'unlisted' | 'private')[];
-    connected: false;
+    visibilities: string[];
+    connected: boolean;
   })[];
 }
 
@@ -81103,7 +80667,7 @@ export interface export_settings_get_params {
 }
 
 export interface export_settings_get_result {
-  preset: 'default' | 'custom';
+  preset: string;
   /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
   settings: Record<string, unknown>;
 }
@@ -81116,7 +80680,7 @@ export interface export_settings_set_params {
 }
 
 export interface export_settings_set_result {
-  preset: 'default' | 'custom';
+  preset: string;
   /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
   settings: Record<string, unknown>;
 }
@@ -82498,7 +82062,7 @@ export interface fx_paramElement_list_params {
 
 export interface fx_paramElement_list_result {
   slots: ({
-    slot: 'mask' | 'sprites' | 'bones' | 'skin';
+    slot: string;
     /** object ID or path reference (10 §3) */
     elementId: string;
     attachedIds: string[];
@@ -82764,7 +82328,7 @@ export interface fx_preset_list_result {
     id: string;
     /** (1–60) */
     name: string;
-    source: 'builtin' | 'user' | 'all';
+    source: string;
     /** one of the values the owning section lists (effect type) */
     effectType: string;
     particleType: string;
@@ -82814,7 +82378,7 @@ export type fx_preview_frameRendered_params = Record<string, unknown>;
 export interface fx_preview_frameRendered_result {
   /** Default: current. */
   frame: number | bigint;
-  size: 'quarter' | 'half' | 'full';
+  size: string;
   /** object ID or path reference (10 §3) */
   jobId: string;
 }
@@ -82837,9 +82401,9 @@ export interface fx_preview_open_result {
 export type fx_preview_options_get_params = Record<string, unknown>;
 
 export interface fx_preview_options_get_result {
-  size: 'quarter' | 'half' | 'full';
+  size: string;
   followCurrentFrame: boolean;
-  defaultRange: 'single' | 'playbackRange' | 'fromCurrent';
+  defaultRange: string;
 }
 
 export interface fx_preview_options_set_params {
@@ -82849,9 +82413,9 @@ export interface fx_preview_options_set_params {
 }
 
 export interface fx_preview_options_set_result {
-  size: 'quarter' | 'half' | 'full';
+  size: string;
   followCurrentFrame: boolean;
-  defaultRange: 'single' | 'playbackRange' | 'fromCurrent';
+  defaultRange: string;
 }
 
 export interface fx_preview_render_params {
@@ -82879,7 +82443,7 @@ export interface fx_preview_status_get_result {
   cachedFrames: ({
     /** Default: current. */
     frame: number | bigint;
-    size: 'quarter' | 'half' | 'full';
+    size: string;
   })[];
 }
 
@@ -84642,7 +84206,7 @@ export interface library_tree_get_result {
 export type library_view_get_params = Record<string, unknown>;
 
 export interface library_view_get_result {
-  mode: 'thumbnails' | 'list' | 'details';
+  mode: string;
   /** object ID or path reference (10 §3) */
   currentNodeId: string;
   selectedNodeIds: string[];
@@ -84654,7 +84218,7 @@ export interface library_view_set_params {
 }
 
 export interface library_view_set_result {
-  mode: 'thumbnails' | 'list' | 'details';
+  mode: string;
 }
 
 export interface library_writeAccess_set_params {
@@ -84801,7 +84365,7 @@ export interface lipsync_mapping_mouth_set_params {
 }
 
 export interface lipsync_mapping_mouth_set_result {
-  mouth: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'X';
+  mouth: string;
   /** object ID or path reference (10 §3) */
   drawingId: string;
   drawingName: string;
@@ -84824,7 +84388,7 @@ export interface lipsync_mapping_set_result {
       /** object ID or path reference (10 §3) */
       drawingId?: string;
       drawingName?: string;
-      rule: 'stored' | 'name' | 'property' | 'order' | 'none';
+      rule: string;
     };
   };
   complete: boolean;
@@ -85406,7 +84970,7 @@ export type playback_range_changed_params = Record<string, unknown>;
 export interface playback_range_changed_result {
   /** object ID or path reference (10 §3) */
   sceneId: string;
-  mode: 'auto' | 'free';
+  mode: string;
   start: number | bigint;
   end: number | bigint;
 }
@@ -85430,7 +84994,7 @@ export interface playback_range_mode_set_params {
 }
 
 export interface playback_range_mode_set_result {
-  mode: 'auto' | 'free';
+  mode: string;
   start: number | bigint;
   end: number | bigint;
 }
@@ -85443,7 +85007,7 @@ export interface playback_range_set_params {
 }
 
 export interface playback_range_set_result {
-  mode: 'auto' | 'free';
+  mode: string;
   start: number | bigint;
   end: number | bigint;
   adjusted: boolean;
@@ -85454,7 +85018,7 @@ export interface playback_rate_set_params {
 }
 
 export interface playback_rate_set_result {
-  fps: 'project' | number;
+  fps: string | number;
   effectiveFps: number;
 }
 
@@ -85589,7 +85153,7 @@ export interface print_pageSetup_get_params {
 
 export interface print_pageSetup_get_result {
   paperSize: string;
-  orientation: 'portrait' | 'landscape';
+  orientation: string;
   printableArea: {
     x: number;
     y: number;
@@ -85607,7 +85171,7 @@ export interface print_pageSetup_set_params {
 
 export interface print_pageSetup_set_result {
   paperSize: string;
-  orientation: 'portrait' | 'landscape';
+  orientation: string;
 }
 
 export interface print_preview_get_params {
@@ -86513,7 +86077,7 @@ export interface sound_placement_add_result {
   /** object ID or path reference (10 §3) */
   placementId: string;
   startFrame: number | bigint;
-  stopFrame: 'natural' | number | bigint;
+  stopFrame: string | number | bigint;
 }
 
 export interface sound_placement_get_params {
@@ -86595,7 +86159,7 @@ export interface sound_placement_move_params {
 
 export interface sound_placement_move_result {
   startFrame: number | bigint;
-  stopFrame: 'natural' | number | bigint;
+  stopFrame: string | number | bigint;
 }
 
 export interface sound_placement_remove_params {
@@ -86671,7 +86235,7 @@ export interface sound_placement_trim_result {
   /** (≤ duration) */
   outPoint: number;
   startFrame: number | bigint;
-  stopFrame: 'natural' | number | bigint;
+  stopFrame: string | number | bigint;
   naturalEndFrame: number;
   clamped: boolean;
 }
@@ -86989,7 +86553,7 @@ export type storyline_play_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface storyline_play_changed_result {
-  playing: true;
+  playing: boolean;
   globalFrame: number;
   /** object ID or path reference (10 §3) */
   sceneId: string;
@@ -87234,7 +86798,7 @@ export type storyline_selection_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface storyline_selection_changed_result {
-  kind: 'none' | 'scene' | 'transition';
+  kind: string;
   /** object ID or path reference (10 §3) */
   sceneId?: string;
   editPoint?: number | bigint;
@@ -87403,10 +86967,10 @@ export type storyline_transition_types_list_params = Record<string, unknown>;
 
 export interface storyline_transition_types_list_result {
   types: ({
-    type: 'none' | 'fade' | 'crossDissolve' | 'wipe' | 'slide' | 'clockWipe' | 'checker';
+    type: string;
     parameters: ({
       name: string;
-      type: 'none' | 'fade' | 'crossDissolve' | 'wipe' | 'slide' | 'clockWipe' | 'checker';
+      type: string;
       min?: number;
       max?: number;
       step?: number;
@@ -87518,7 +87082,7 @@ export type timeline_playbackRange_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface timeline_playbackRange_changed_result {
-  mode: 'auto' | 'free';
+  mode: string;
   start: number | bigint;
   end: number | bigint;
 }
@@ -87526,7 +87090,7 @@ export interface timeline_playbackRange_changed_result {
 export type timeline_playbackRange_get_params = Record<string, unknown>;
 
 export interface timeline_playbackRange_get_result {
-  mode: 'auto' | 'free';
+  mode: string;
   start: number | bigint;
   end: number | bigint;
 }
@@ -87538,7 +87102,7 @@ export interface timeline_playbackRange_set_params {
 }
 
 export interface timeline_playbackRange_set_result {
-  mode: 'auto' | 'free';
+  mode: string;
   start: number | bigint;
   end: number | bigint;
 }
@@ -87618,7 +87182,7 @@ export interface timeline_timeDisplay_set_params {
 }
 
 export interface timeline_timeDisplay_set_result {
-  unit: 'frames' | 'feetFrames';
+  unit: string;
 }
 
 export interface timeline_transferOptions_get_params {
@@ -87669,7 +87233,7 @@ export interface timeline_transferOptions_set_params {
 }
 
 export interface timeline_transferOptions_set_result {
-  operation: 'paste' | 'cut' | 'dragDrop';
+  operation: string;
   options: timeline_transferOptions_set_spec_TransferOptions;
 }
 
@@ -87691,14 +87255,14 @@ export type tool_active_changed_params = Record<string, unknown>;
 
 /** Event payload (delivered to subscribers). */
 export interface tool_active_changed_result {
-  toolId: 'select' | 'contourEditor' | 'perspective' | 'repositionAll' | 'brush' | 'pencil' | 'rectangle' | 'ellipse' | 'polyline' | 'line' | 'paint' | 'unpaint' | 'paintUnpainted' | 'dropper' | 'closeGap' | 'stroke' | 'editTexture' | 'eraser' | 'cutter' | 'scissor' | 'zoom' | 'grabber' | 'text';
+  toolId: string;
   temporary: boolean;
 }
 
 export type tool_active_get_params = Record<string, unknown>;
 
 export interface tool_active_get_result {
-  toolId: 'select' | 'contourEditor' | 'perspective' | 'repositionAll' | 'brush' | 'pencil' | 'rectangle' | 'ellipse' | 'polyline' | 'line' | 'paint' | 'unpaint' | 'paintUnpainted' | 'dropper' | 'closeGap' | 'stroke' | 'editTexture' | 'eraser' | 'cutter' | 'scissor' | 'zoom' | 'grabber' | 'text';
+  toolId: string;
   temporaryToolId: string | null;
   group: string;
 }
@@ -87708,7 +87272,7 @@ export interface tool_active_set_params {
 }
 
 export interface tool_active_set_result {
-  toolId: 'select' | 'contourEditor' | 'perspective' | 'repositionAll' | 'brush' | 'pencil' | 'rectangle' | 'ellipse' | 'polyline' | 'line' | 'paint' | 'unpaint' | 'paintUnpainted' | 'dropper' | 'closeGap' | 'stroke' | 'editTexture' | 'eraser' | 'cutter' | 'scissor' | 'zoom' | 'grabber' | 'text';
+  toolId: string;
 }
 
 export interface tool_brush_options_set_params {
@@ -87847,8 +87411,8 @@ export interface tool_pen_list_result {
     /** object ID or path reference (10 §3) */
     penId: string;
     name: string;
-    type: 'brush' | 'eraser';
-    tipShape: 'round' | 'oval' | 'square' | 'flat';
+    type: string;
+    tipShape: string;
     minSize: number;
     maxSize: number;
     smoothness: number;
@@ -87880,7 +87444,7 @@ export interface tool_pen_select_params {
 export interface tool_pen_select_result {
   /** object ID or path reference (10 §3) */
   penId: string;
-  type: 'brush' | 'eraser';
+  type: string;
 }
 
 export interface tool_pen_set_params {
@@ -88015,7 +87579,7 @@ export interface tool_symmetry_set_params {
 }
 
 export interface tool_symmetry_set_result {
-  mode: 'none' | 'mirror' | 'kaleidoscope';
+  mode: string;
   angle: number;
   mirrors: number;
 }
@@ -88299,7 +87863,7 @@ export interface view_type_set_params {
 export interface view_type_set_result {
   /** object ID or path reference (10 §3) */
   viewId: string;
-  type: 'drawing' | 'camera' | 'top' | 'side' | 'previous';
+  type: string;
 }
 
 export interface view_zoom_set_params {
@@ -89418,7 +88982,7 @@ export interface xsheet_lightTable_add_params {
     drawingId: string;
     label: string;
     visible: boolean;
-    placement: 'over' | 'under';
+    placement: string;
   })[];
 }
 
@@ -89446,7 +89010,7 @@ export interface xsheet_lightTable_list_result {
     drawingId: string;
     label: string;
     visible: boolean;
-    placement: 'over' | 'under';
+    placement: string;
   })[];
 }
 
