@@ -127,8 +127,9 @@ impl JobTable {
             f(r);
             r.clone()
         });
-        drop(t);
-        self.changed.notify_all();
+        // The event is broadcast before the table lock is released, so whoever observes the new state (a waiter,
+        // `job.list`) can rely on its `job.progress`/`job.finished` event having been sent already. The notifier only
+        // sends to subscriber channels; it never touches the table.
         if let (Some(notify), Some(r)) = (&self.notify, record) {
             let name = if r.state.is_final() { "job.finished" } else { "job.progress" };
             notify(crate::session::Event {
@@ -136,6 +137,8 @@ impl JobTable {
                 payload: serde_json::to_value(&r).unwrap_or(Value::Null),
             });
         }
+        drop(t);
+        self.changed.notify_all();
     }
 
     /// Starts a job on its own thread and returns its id at once.
