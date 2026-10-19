@@ -1,0 +1,29 @@
+{
+  "command": [
+    "python",
+    "-u",
+    "scripts/record-gates.py",
+    "reviews/evidence/M1-C1.2-r4/rust",
+    "clippy",
+    "test",
+    "clippy-diag",
+    "test-diag",
+    "headless"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r4",
+  "startedAt": "2026-10-19T12:25:28.230323+00:00",
+  "durationSeconds": 740.238,
+  "exitCode": 0,
+  "head": "f2100570e636292028e70bc6a32ab444c37547ae",
+  "dirtyFiles": [
+    "?? crates/executor/tests/c12_r4_closure.rs",
+    "?? reviews/evidence/M1-C1.2-r4/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\rust-full.log",
+  "sha256": "3af280b4b063cc58be963e6903a6828ef75ff9778186755fd74d84908ba17105",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r4\\reviews\\evidence\\M1-C1.2-r4"
+  }
+}

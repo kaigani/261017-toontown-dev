@@ -1,0 +1,9 @@
+{
+  "unchangedReviewerTests": 70,
+  "testChanges": [
+    "crates/executor/tests/c12_checkpoint_property.rs",
+    "crates/registry/tests/declared.rs"
+  ],
+  "sensitiveLines": 19,
+  "dependencyChanges": []
+}

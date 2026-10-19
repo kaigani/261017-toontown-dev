@@ -1,0 +1,21 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r4/run-probes.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r4",
+  "startedAt": "2026-10-19T12:30:52.427865+00:00",
+  "durationSeconds": 29.078,
+  "exitCode": 101,
+  "head": "f2100570e636292028e70bc6a32ab444c37547ae",
+  "dirtyFiles": [
+    "?? reviews/evidence/M1-C1.2-r4/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\closure-probes.log",
+  "sha256": "b2d55db02e88562bade17a57783d7624cfd96649d1e30715eaf7bc2cac8c040e",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r4\\reviews\\evidence\\M1-C1.2-r4"
+  }
+}

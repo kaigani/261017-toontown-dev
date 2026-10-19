@@ -1,0 +1,7141 @@
+[
+  {
+    "id": "agent.activity.export",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.activity.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.activity.persist.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.confirmation.requested",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.confirmation.respond",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.policy.defaults.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.server.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.server.status",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.session.connected",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.session.disconnect",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.session.disconnected",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.session.grant",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.session.pause",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.session.resume",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.token.regenerate",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "agent.typedTools.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.bone.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.bone.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.bone.influence.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.bone.parent.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.bone.pose.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.bone.reach.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.bone.rest.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.camera.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.camera.current.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.camera.current.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.camera.currentChanged",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.camera.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.camera.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.camera.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.camera.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.camera.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.channel.copy",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.channel.cut",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.channel.paste",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.depth.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.display.allPegs.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.display.antialiasToolOverlays.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.display.arms.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.display.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.display.envelopes.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.display.frameMarkers.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.display.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.display.pegGhosts.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.display.pivotPath.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.display.smoothPaths.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.evaluate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.flip.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.function.curveType.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.function.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.function.key.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.function.key.duplicate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.function.key.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.function.key.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.function.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.function.preset.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.function.sample",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.function.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.functionEditor.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.functionEditor.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.functionEditor.syncFrame.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.functionEditor.view.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.hierarchy.attach",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.hierarchy.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.hierarchy.detach",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.hierarchy.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.hierarchy.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.key.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.key.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.key.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.key.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.loop.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.node.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.node.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.node.pathDisplay.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.path.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.path.lockDepth.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.path.point.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.path.point.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.path.point.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.path.point.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.path.sample",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.path.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.peg.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.pegOnlyMode.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.point.copy",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.point.paste",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.prefs.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.prefs.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.projection.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.record.completed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.record.options.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.record.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.record.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.reset.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.segment.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.segment.uniform.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.skeleton.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.skeleton.deform.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.skeleton.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.skeleton.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.skeleton.restPose.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.skeleton.root.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.skeleton.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.skeleton.skin.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.skeleton.skin.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.snapLastKey.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.stretch.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.tool.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.tool.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.tool.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.transform.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.view.coords.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.view.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.view.slot.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "anim.view.type.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "app.context.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ProjectRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/SceneRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ElementRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/DrawingRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ActiveView",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ActiveTool",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/SelectionState",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/WorkspaceState",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/PlaybackState",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/Modal",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/AgentSessionState",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 2
+  },
+  {
+    "id": "app.currentElement.move",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "app.currentElement.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "app.frame.move",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 2
+  },
+  {
+    "id": "app.frame.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "app.info.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "app.mode.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "app.quit",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "app.state.changed",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/AppState",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ProjectRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/SceneRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ElementRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/DrawingRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ActiveView",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ActiveTool",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/SelectionState",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/WorkspaceState",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/PlaybackState",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/Modal",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/AgentSessionState",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "app.state.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ProjectRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/SceneRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ElementRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/DrawingRef",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ActiveView",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ActiveTool",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/SelectionState",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/WorkspaceState",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/PlaybackState",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/Modal",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/AgentSessionState",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.auto.start",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.auto.stop",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.device.added",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.device.dialog.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.device.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.device.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.device.removed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.device.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.device.settings.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.display.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.frame.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.frame.addFromFile",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.frame.captured",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.inputLock.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.keyColour.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.keying.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.lightTable.references.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.lightTable.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.preview.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.session.close",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.session.error",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.session.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.session.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.source.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "capture.target.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.blank.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.blank.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.clipboard.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.clipboard.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.columnate.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.cycle.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.drawing.duplicate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.exposure.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.exposure.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.exposure.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.exposures.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.fill.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.label.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.note.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.range.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.range.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.range.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.selection.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "cell.selection.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "checkpoint.create",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "checkpoint.delete",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "checkpoint.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/CheckpointEntry",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "checkpoint.restore",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.autoColourUpdate.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.current.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.current.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.current.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.editor.close",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.editor.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.fillMapping.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.fillMapping.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.gap.close",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.gapClosing.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.gapClosing.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.missing.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.paint.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.paint.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.paintUnpainted.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.duplicate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.export",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.import",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.rename",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.palette.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.pick",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.recolour.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.recovery.performed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.recovery.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.sceneStyle.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.sceneStyles.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.selection.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.style.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.style.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.style.duplicate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.style.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.style.rename",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.style.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.swatch.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.swatch.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.swatch.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.swatch.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.swatch.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.swatch.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.swatch.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.swatchNames.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.tintBlend.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.tintDialog.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.tintOffset.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "colour.usage.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.asset.embed",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.asset.export",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.asset.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.asset.relink",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.asset.remove",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.asset.status.changed",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.blob.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.changed",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ChangeRecord",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.diff",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ChangeRecord",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.export.json",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.import.json",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.loadReport.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.object.find",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 3
+  },
+  {
+    "id": "doc.object.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/PageInfo",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 3
+  },
+  {
+    "id": "doc.object.patch",
+    "generated": false,
+    "holes": [
+      "params/$defs/OpParam/properties/value"
+    ],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ChangeRecord",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 4
+  },
+  {
+    "id": "doc.object.refs",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.object.resolve",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.package.changedOnDisk",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.package.export",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.package.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.repair",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ChangeRecord",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.schema.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 2
+  },
+  {
+    "id": "doc.schema.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/TypeInfo",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.schema.validate",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.state.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "doc.validate",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.arrange.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.bounds.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.breakApart.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.centreLine.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.content.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.current.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.cut.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.drawing.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.drawing.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.drawing.rename",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.drawing.render",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.ellipse.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.envelope.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.erase.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.feather.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.flatten.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.flip.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.group.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.group.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.hitTest.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.inspectorPreview.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.line.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.linesToBrush.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.lock.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.object.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.optimize.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.pivot.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.point.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.point.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.point.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.point.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.pointSelection.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.polyline.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.rectangle.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.repositionAll.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.rotate.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.segment.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.selection.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.selection.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.selection.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.smooth.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.stroke.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.stroke.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.text.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.text.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.textFormat.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.transform.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.vectorFile.import",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.vectorize.preview",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.vectorize.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "draw.viewMapping.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.autoLightTable.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.background.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.currentOnTop.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.grid.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.lightTableShade.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.onionSkin.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.onionSkinCycle.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.onionSkinStyle.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.selectionDisplay.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.state.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.staticLightTable.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.staticLightTable.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.staticLightTable.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.staticLightTable.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.staticLightTablePanel.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "drawAid.strokes.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.clipboard.changed",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.clipboard.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.clipboard.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.copy",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ClipboardSummary",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.cut",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ClipboardSummary",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.cutSpecial",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/ClipboardSummary",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.delete",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.deselectAll",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.history.changed",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.history.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/HistoryEntry",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.history.move",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.paste",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/Warning",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.pasteAsNewElement",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.pasteSpecial",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/Warning",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.redo",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.selectAll",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.selection.changed",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.selection.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.selection.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "edit.undo",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "element.annotation.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.childExposure.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.clone",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.collapsed.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.colour.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.current.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.current.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.drawing.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.drawing.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.drawing.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.drawing.duplicate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.drawing.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.drawing.rename",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.drawingContent.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.drawingLock.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.duplicate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.hierarchy.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.hierarchy.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.lock.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.mediaLength.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.note.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.order.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.order.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.parent.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.parent.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.parentPeg.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.properties.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.rename",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.solo.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.state.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.timing.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.typeColour.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.typeColour.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.unusedDrawing.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "element.visibility.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.drawingPdf.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.formats.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.job.finished",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.movie.defaults.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.movie.defaults.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.movie.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.movie.validate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.publish.account.close",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.publish.account.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.publish.account.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.publish.categories.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.publish.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.publish.service.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.publish.validate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.report.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.settings.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.settings.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "export.snapshot.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.allEffects.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.allEffects.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.allEffects.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.block.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.block.defaults.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.block.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.block.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.block.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.block.seed.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.block.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.block.type.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.curve.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.dropShadow.transform.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/DynamicParam/anyOf/0",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/DynamicParam/anyOf/1",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/Ext",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.hitTest.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.keyframe.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.keyframe.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.keyframe.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.paramElement.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.paramElement.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.paramElement.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.paramRows.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.paramRows.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.params.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.params.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.particles.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preset.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preset.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preset.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preset.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preset.export",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preset.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preset.import",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preset.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preset.rename",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.cache.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.close",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.frame.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.frameRendered",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.invalidated",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.options.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.render",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.status.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.preview.stop",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.renderList.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.renderer.capabilities.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.renderer.options.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.renderer.options.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.renderer.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.shake.displacement.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.simulation.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.spriteSet.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.spriteSet.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.timing.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.types.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "fx.types.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.completed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.file.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.file.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.formats.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.keyedImage.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.keyedImages.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.movie.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.options.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.vectorize.settings.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "import.vectorize.settings.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "inspect.contactSheet.render",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "params/$defs/FrameSelection/anyOf/1",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "inspect.coordinates.convert",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "inspect.frame.describe",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "inspect.hitTest",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "inspect.screenshot",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "inspect.ui.tree",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "job.cancel",
+    "generated": false,
+    "holes": [
+      "result/properties/result",
+      "result/$defs/CommandError/properties/details"
+    ],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/CommandError",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "job.finished",
+    "generated": false,
+    "holes": [
+      "result/properties/result",
+      "result/$defs/CommandError/properties/details"
+    ],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/CommandError",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "job.list",
+    "generated": false,
+    "holes": [
+      "result/$defs/JobRecord/properties/result",
+      "result/$defs/CommandError/properties/details"
+    ],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/JobRecord",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/CommandError",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "job.progress",
+    "generated": false,
+    "holes": [
+      "result/properties/result",
+      "result/$defs/CommandError/properties/details"
+    ],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/CommandError",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "job.wait",
+    "generated": false,
+    "holes": [
+      "result/properties/result",
+      "result/$defs/CommandError/properties/details"
+    ],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/CommandError",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "keymap.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "keymap.export",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "keymap.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/spec.Binding/properties/params",
+        "explicitOpenBinding": true
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "keymap.import",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/spec.Binding/properties/params",
+        "explicitOpenBinding": true
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "keymap.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/spec.Binding/properties/params",
+        "explicitOpenBinding": true
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "keymap.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/spec.Binding/properties/params",
+        "explicitOpenBinding": true
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "keymap.reset",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "keymap.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "params/properties/params",
+        "explicitOpenBinding": true
+      },
+      {
+        "path": "result/$defs/spec.Binding/properties/params",
+        "explicitOpenBinding": true
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "library.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.close",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.closed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.drawing.insert",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.element.duplicate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.folder.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.folder.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.folder.rename",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.item.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.item.duplicate",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.item.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.item.import",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.item.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.item.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.item.rename",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.item.thumbnail.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.node.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.opened",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.preview.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.preview.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.project.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.refresh.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.save",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.selection.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.selection.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.starter.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.edit.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.edit.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.edit.start",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.edit.stop",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.export",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.frame.render",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.insert",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.template.search",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.templateUpdate.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.templateUpdate.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.tree.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.view.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.view.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "library.writeAccess.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.detect",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.display.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.mapping.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.mapping.mouth.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.mapping.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.mouth.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.panel.close",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.panel.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.panel.state.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.settings.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.settings.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.shapes.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.template.import",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.template.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.track.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.track.clear",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.track.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.track.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "lipsync.track.stale",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.movie.import",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.movie.probe",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.object.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.object.relink",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.sequence.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.sequence.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.sequence.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.sequence.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.sequence.naturalTiming.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.sequence.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.sequence.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.sound.play",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.sound.stop",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "media.source.missing",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.forceRate.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.loop.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.player.close",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.player.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.player.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.player.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.preview.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.range.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.range.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.range.mode.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.range.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.rate.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.start",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.started",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.state.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.stop",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "playback.stopped",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "prefs.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "prefs.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "prefs.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "prefs.reset",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "prefs.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "print.pageSetup.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "print.pageSetup.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "print.preview.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "print.printer.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "print.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "print.settings.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "print.settings.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "project.autosaved",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "project.backup.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "project.backup.open",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.close",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.closed",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.create",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.dirty.changed",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.info.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "project.open",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.opened",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.presets.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "project.properties.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.properties.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.recent.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "project.recent.remove",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.recovery.delete",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.recovery.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "project.recovery.open",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.save",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.saveAs",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "project.saved",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "render.frame.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "render.limits.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "render.range.run",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.asset.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.asset.import",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.asset.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.asset.missing",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.asset.probe",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.asset.relink",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.editor.close",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.editor.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.editor.state.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.editor.state.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.element.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.element.streamed.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.envelope.clear",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.envelope.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.envelope.point.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.envelope.point.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.envelope.point.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.envelope.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.fade.apply",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.import",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.placement.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.placement.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.placement.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.placement.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.placement.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.placement.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.placement.split",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.placement.trim",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.play",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.playback.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.range.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.range.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.recent.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.scrubbing.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.settings.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.silence.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.stop",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.waveform.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.waveform.ready",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "sound.waveforms.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.currentScene.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.currentScene.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.currentScene.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.frame.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.frame.render",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.play.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.play.start",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.play.stop",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.playhead.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.playhead.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.scene.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.scene.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.scene.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.scene.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.scene.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.scene.rename",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.scene.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.scene.visible.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.selection.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.selection.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.selection.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.transition.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.transition.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.transition.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.transition.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.transition.types.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.view.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.view.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "storyline.warning.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.backgroundColour.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.currentFrame.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.currentFrame.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.currentFrame.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.effectParameterRows.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.frameLabel.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.playbackRange.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.playbackRange.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.playbackRange.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.rows.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.singleCellSelection.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.soundWaveforms.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.timeDisplay.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.transferOptions.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.transferOptions.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "timeline.view.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.active.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.active.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.active.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.brush.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.drawTopLayer.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.eraser.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.group.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.options.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.options.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.pen.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.pen.create",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.pen.delete",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.pen.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.pen.rename",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.pen.select",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.pen.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/Ext",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.pencil.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.placeBehind.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.polyline.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.select.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.settings.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.snapToContour.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.symmetry.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.tablet.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "tool.text.options.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.contextHelpMode.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.help.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.help.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.message.shown",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.preferences.open",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.startScreen.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.statusBar.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.statusBar.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.theme.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.tips.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.tips.reset",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "ui.tips.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "view.active.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "view.coordinates.convert",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "view.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "view.pan.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "view.rotation.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "view.transform.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "view.transform.reset",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "view.type.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "view.zoom.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "window.floatingPanels.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "window.fullScreen.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 2
+  },
+  {
+    "id": "window.geometry.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/Screen",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "window.geometry.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      },
+      {
+        "path": "result/$defs/Screen",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "window.minimized.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "window.panel.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/PanelEntry",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "window.panel.move",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "window.panel.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 2
+  },
+  {
+    "id": "window.raiseAll.run",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "window.sidePanelsExtended.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "window.toolbar.items.reset",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "window.toolbar.items.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "window.toolbar.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/ToolbarEntry",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "window.toolbar.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.changed",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.create",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.delete",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.export",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.get",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 2
+  },
+  {
+    "id": "workspace.import",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.layout.set",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.list",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result/$defs/WorkspaceEntry",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.rename",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.reset",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.save",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "workspace.select",
+    "generated": false,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [
+      {
+        "path": "result",
+        "explicitOpenBinding": false
+      }
+    ],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.columnWidth.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.currentCell.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.display.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.exposures.get",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.exposures.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.lightTable.add",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.lightTable.changed",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.lightTable.list",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.lightTable.move",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.lightTable.remove",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.lightTable.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  },
+  {
+    "id": "xsheet.panel.set",
+    "generated": true,
+    "holes": [],
+    "unresolvedRefs": [],
+    "openObjects": [],
+    "validExamples": 1
+  }
+]

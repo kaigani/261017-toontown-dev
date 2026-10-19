@@ -1,0 +1,23 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r4/reconcile-registers.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r4",
+  "startedAt": "2026-10-19T12:34:33.847041+00:00",
+  "durationSeconds": 3.744,
+  "exitCode": 0,
+  "head": "f2100570e636292028e70bc6a32ab444c37547ae",
+  "dirtyFiles": [
+    "?? crates/executor/tests/c12_r4_closure.rs",
+    "?? desktop/src/review-boundary-probe.ts",
+    "?? reviews/evidence/M1-C1.2-r4/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\reconcile-registers-v2.log",
+  "sha256": "874828f61f79f8aad97cdff48eca60078620a83fd5b356c9d76073d2ffaa5cc8",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r4\\reviews\\evidence\\M1-C1.2-r4"
+  }
+}

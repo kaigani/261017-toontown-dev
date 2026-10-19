@@ -1,0 +1,1433 @@
+{
+  "run": 39247718490,
+  "head": "f2100570e636292028e70bc6a32ab444c37547ae",
+  "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39247718490",
+  "jobs": [
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "logLines": 296,
+      "targets": [],
+      "rustTotals": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-headless",
+          "conclusion": "success"
+        },
+        {
+          "name": "Self-test with no display server",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "proofExcerpts": [
+        "2026-10-19T11:52:20.9237360Z    Compiling tt-persist v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/persist)",
+        "2026-10-19T11:52:20.9267067Z    Compiling tt-audio v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/audio)",
+        "2026-10-19T11:52:20.9544981Z    Compiling tt-render v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/render)",
+        "2026-10-19T11:52:20.9677843Z    Compiling tt-registry v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/registry)",
+        "2026-10-19T11:52:20.9732791Z    Compiling tt-lipsync v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/lipsync)",
+        "2026-10-19T11:52:20.9942497Z    Compiling tt-io v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/io)",
+        "2026-10-19T11:52:24.0751012Z    Compiling tt-executor v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/executor)",
+        "2026-10-19T11:52:38.1452540Z    Compiling tt-engine v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/engine)",
+        "2026-10-19T11:52:44.3452593Z    Compiling tt-mcp v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/crates/mcp)",
+        "2026-10-19T11:53:23.5062860Z    Compiling tt-headless v0.0.1 (/home/runner/work/261017-toontown-dev/261017-toontown-dev/bins/headless)",
+        "2026-10-19T11:53:24.3644749Z     Finished `release` profile [optimized + debuginfo] target(s) in 1m 10s",
+        "\ufeff2026-10-19T11:53:24.3849605Z ##[group]Run test -z \"${DISPLAY:-}\" && test -z \"${WAYLAND_DISPLAY:-}\"",
+        "2026-10-19T11:53:24.3850161Z test -z \"${DISPLAY:-}\" && test -z \"${WAYLAND_DISPLAY:-}\"",
+        "2026-10-19T11:53:24.3850541Z ! ls /tmp/.X11-unix/X* 2>/dev/null",
+        "2026-10-19T11:53:24.3851397Z env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-1.json",
+        "2026-10-19T11:53:24.3852172Z env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-2.json",
+        "2026-10-19T11:53:24.3853254Z python3 -c \"import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)\"",
+        "2026-10-19T11:53:24.3854441Z python3 scripts/check-headless-deps.py target/release/toontown-headless",
+        "2026-10-19T11:53:24.3917675Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}",
+        "2026-10-19T11:53:24.3918040Z env:",
+        "2026-10-19T11:53:24.3918282Z   CARGO_TERM_COLOR: always",
+        "2026-10-19T11:53:24.3918521Z   CARGO_INCREMENTAL: 0",
+        "2026-10-19T11:53:24.3918738Z   RUST_BACKTRACE: 1",
+        "2026-10-19T11:53:24.3918949Z   CACHE_ON_FAILURE: false",
+        "2026-10-19T11:53:24.3919180Z ##[endgroup]",
+        "2026-10-19T11:53:24.6226596Z [('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('kernel.executor', True), ('headless.mcpLinked', True)]",
+        "2026-10-19T11:53:24.8641834Z crate graph: 101 crates, forbidden: none",
+        "2026-10-19T11:53:24.8642892Z linked libraries (linux): libgcc_s.so.1, libm.so.6, libc.so.6, ld-linux-x86-64.so.2",
+        "2026-10-19T11:53:24.8643694Z forbidden libraries: none",
+        "2026-10-19T11:53:24.8644122Z headless dependency check passed",
+        "\ufeff2026-10-19T11:53:24.8823826Z Post job cleanup.",
+        "2026-10-19T11:53:25.0103670Z Cache up-to-date.",
+        "\ufeff2026-10-19T11:53:25.0306107Z Post job cleanup.",
+        "2026-10-19T11:53:25.1298702Z [command]/usr/bin/git version",
+        "2026-10-19T11:53:25.1346053Z git version 2.55.0",
+        "2026-10-19T11:53:25.1396799Z Temporarily overriding HOME='/home/runner/work/_temp/662fc371-b7db-47e4-af7d-738282ecd202' before making global git config changes",
+        "2026-10-19T11:53:25.1398602Z Adding repository directory to the temporary git global config as a safe directory",
+        "2026-10-19T11:53:25.1403934Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/261017-toontown-dev/261017-toontown-dev",
+        "2026-10-19T11:53:25.1442622Z Removing SSH command configuration",
+        "2026-10-19T11:53:25.1450826Z [command]/usr/bin/git config --local --name-only --get-regexp core\\.sshCommand",
+        "2026-10-19T11:53:25.1497282Z [command]/usr/bin/git submodule foreach --recursive sh -c \"git config --local --name-only --get-regexp 'core\\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\"",
+        "2026-10-19T11:53:25.1762902Z Removing HTTP extra header",
+        "2026-10-19T11:53:25.1769840Z [command]/usr/bin/git config --local --name-only --get-regexp http\\.https\\:\\/\\/github\\.com\\/\\.extraheader",
+        "2026-10-19T11:53:25.1837819Z [command]/usr/bin/git submodule foreach --recursive sh -c \"git config --local --name-only --get-regexp 'http\\.https\\:\\/\\/github\\.com\\/\\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\"",
+        "2026-10-19T11:53:25.2089294Z Removing includeIf entries pointing to credentials config files",
+        "2026-10-19T11:53:25.2096594Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\\.gitdir:",
+        "2026-10-19T11:53:25.2134136Z includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path",
+        "2026-10-19T11:53:25.2135488Z includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path",
+        "2026-10-19T11:53:25.2136627Z includeif.gitdir:/github/workspace/.git.path",
+        "2026-10-19T11:53:25.2137494Z includeif.gitdir:/github/workspace/.git/worktrees/*.path",
+        "2026-10-19T11:53:25.2145009Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path",
+        "2026-10-19T11:53:25.2174913Z /home/runner/work/_temp/git-credentials-b135cf15-6ccb-4cc3-9189-7bb2786391b6.config",
+        "2026-10-19T11:53:25.2186182Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git.path \\/home\\/runner\\/work\\/_temp\\/git\\-credentials\\-b135cf15\\-6ccb\\-4cc3\\-9189\\-7bb2786391b6\\.config",
+        "2026-10-19T11:53:25.2246845Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path",
+        "2026-10-19T11:53:25.2279721Z /home/runner/work/_temp/git-credentials-b135cf15-6ccb-4cc3-9189-7bb2786391b6.config",
+        "2026-10-19T11:53:25.2291510Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/261017-toontown-dev/261017-toontown-dev/.git/worktrees/*.path \\/home\\/runner\\/work\\/_temp\\/git\\-credentials\\-b135cf15\\-6ccb\\-4cc3\\-9189\\-7bb2786391b6\\.config",
+        "2026-10-19T11:53:25.2347226Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path",
+        "2026-10-19T11:53:25.2383285Z /github/runner_temp/git-credentials-b135cf15-6ccb-4cc3-9189-7bb2786391b6.config",
+        "2026-10-19T11:53:25.2395309Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \\/github\\/runner_temp\\/git\\-credentials\\-b135cf15\\-6ccb\\-4cc3\\-9189\\-7bb2786391b6\\.config",
+        "2026-10-19T11:53:25.2433802Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path",
+        "2026-10-19T11:53:25.2460324Z /github/runner_temp/git-credentials-b135cf15-6ccb-4cc3-9189-7bb2786391b6.config",
+        "2026-10-19T11:53:25.2469944Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \\/github\\/runner_temp\\/git\\-credentials\\-b135cf15\\-6ccb\\-4cc3\\-9189\\-7bb2786391b6\\.config",
+        "2026-10-19T11:53:25.2509101Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url",
+        "2026-10-19T11:53:25.2754393Z Removing credentials config '/home/runner/work/_temp/git-credentials-b135cf15-6ccb-4cc3-9189-7bb2786391b6.config'",
+        "\ufeff2026-10-19T11:53:25.2898019Z Cleaning up orphan processes"
+      ]
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "logLines": 437,
+      "targets": [],
+      "rustTotals": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "conclusion": "success"
+        },
+        {
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "proofExcerpts": [
+        "2026-10-19T11:54:09.6865607Z | perf_2000_cubics_512 | 36.541 | 11.651 | 8.215 | 5.299 | 11.629 | 8.820 | 89 |",
+        "2026-10-19T11:54:09.6866278Z | stress_00 | 5.834 | 0.760 | 0.588 | 1.063 | 0.677 | 0.512 | 72 |",
+        "2026-10-19T11:54:09.6866878Z | stress_01 | 5.686 | 0.704 | 0.461 | 0.891 | 0.755 | 0.553 | 72 |",
+        "2026-10-19T11:54:09.6867450Z | stress_02 | 5.685 | 0.756 | 0.444 | 0.860 | 0.648 | 0.518 | 70 |",
+        "2026-10-19T11:54:09.6868016Z | stress_03 | 5.690 | 0.717 | 0.473 | 0.814 | 0.618 | 0.494 | 70 |",
+        "2026-10-19T11:54:09.6868576Z | stress_04 | 5.681 | 0.750 | 0.426 | 0.872 | 0.625 | 0.490 | 98 |",
+        "2026-10-19T11:54:09.6869154Z | stress_05 | 5.674 | 0.693 | 0.462 | 0.898 | 0.656 | 0.513 | 64 |",
+        "2026-10-19T11:54:09.6869724Z | stress_06 | 5.695 | 0.686 | 0.430 | 0.902 | 1.034 | 0.482 | 63 |",
+        "2026-10-19T11:54:09.6870301Z | stress_07 | 5.674 | 0.721 | 0.460 | 0.853 | 0.625 | 0.523 | 63 |",
+        "2026-10-19T11:54:09.6870858Z | stress_08 | 5.682 | 0.686 | 0.437 | 0.920 | 0.626 | 0.483 | 65 |",
+        "2026-10-19T11:54:09.6871448Z | stress_09 | 5.679 | 0.783 | 0.470 | 0.826 | 0.645 | 0.492 | 57 |",
+        "2026-10-19T11:54:09.6872034Z | stress_10 | 5.688 | 0.679 | 0.467 | 0.924 | 0.670 | 0.512 | 60 |",
+        "2026-10-19T11:54:09.6872598Z | stress_11 | 5.694 | 0.681 | 0.433 | 0.907 | 0.647 | 0.490 | 61 |",
+        "2026-10-19T11:54:09.6873175Z | stress_12 | 5.692 | 0.700 | 0.456 | 0.855 | 0.622 | 0.508 | 62 |",
+        "2026-10-19T11:54:09.6873776Z | stress_13 | 11.565 | 0.682 | 0.451 | 0.880 | 0.645 | 0.480 | 79 |",
+        "2026-10-19T11:54:09.6874412Z | stress_14 | 9.746 | 0.711 | 0.430 | 0.920 | 0.662 | 0.486 | 80 |",
+        "2026-10-19T11:54:09.6874978Z | stress_15 | 6.346 | 0.652 | 0.449 | 0.874 | 0.643 | 0.506 | 78 |",
+        "2026-10-19T11:54:11.6294517Z \"windows\" \"x86_64\" (vello_cpu detected SIMD level \"Avx2(Avx2 { _private: () })\")",
+        "2026-10-19T11:54:11.6296085Z | scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |",
+        "2026-10-19T11:54:11.6297234Z |---|---|---|---|---|---|---|---|",
+        "2026-10-19T11:54:11.6321382Z | cubic_blobs | 0.235 | 0.080 | 0.033 | 0.529 | 0.093 | 0.106 | 62 |",
+        "2026-10-19T11:54:11.6322077Z | thin_strokes | 0.129 | 0.109 | 0.054 | 0.495 | 0.123 | 0.130 | 1 |",
+        "2026-10-19T11:54:11.6322734Z | aa_edge_angles | 0.508 | 0.246 | 0.168 | 0.512 | 0.263 | 0.204 | 3 |",
+        "2026-10-19T11:54:11.6323450Z | translucent_overlap | 0.171 | 0.079 | 0.034 | 0.443 | 0.096 | 0.083 | 30 |",
+        "2026-10-19T11:54:11.6324167Z | alpha_stack | 0.536 | 0.139 | 0.079 | 0.496 | 0.160 | 0.134 | 1 |",
+        "2026-10-19T11:54:11.6324817Z | linear_gradient | 0.451 | 0.116 | 0.034 | 0.430 | 0.101 | 0.083 | 1 |",
+        "2026-10-19T11:54:11.6325509Z | radial_gradient | 0.442 | 0.106 | 0.044 | 0.401 | 0.123 | 0.100 | 48 |",
+        "2026-10-19T11:54:11.6326268Z | gradient_transformed | 0.274 | 0.079 | 0.031 | 0.446 | 0.096 | 0.083 | 2 |",
+        "2026-10-19T11:54:11.6326982Z | clip_circle | 0.205 | 0.172 | 0.096 | 0.491 | 0.182 | 0.144 | 43 |",
+        "2026-10-19T11:54:11.6327626Z | clip_nested | 0.307 | 0.119 | 0.056 | 0.473 | 0.132 | 0.203 | 68 |",
+        "2026-10-19T11:54:11.6328273Z | glyph_nonzero | 0.106 | 0.110 | 0.028 | 0.413 | 0.088 | 0.081 | 58 |",
+        "2026-10-19T11:54:11.6328941Z | glyph_evenodd | 0.123 | 0.074 | 0.028 | 0.405 | 0.087 | 0.076 | 58 |",
+        "2026-10-19T11:54:11.6329583Z | degenerate | 0.057 | 0.068 | 0.018 | 0.455 | 0.071 | 0.065 | 0 |",
+        "2026-10-19T11:54:11.6330247Z | star_nonzero | 0.105 | 0.069 | 0.026 | 0.468 | 0.083 | 0.074 | 1 |",
+        "2026-10-19T11:54:11.6330881Z | star_evenodd | 0.143 | 0.071 | 0.035 | 0.436 | 0.086 | 0.074 | 1 |",
+        "2026-10-19T11:54:11.6331581Z | coincident_edges | 0.075 | 0.067 | 0.056 | 0.432 | 0.083 | 0.076 | 2 |",
+        "2026-10-19T11:54:11.6332314Z | extreme_coordinates | 0.168 | 0.061 | 0.036 | 0.469 | 0.080 | 0.072 | 3 |",
+        "2026-10-19T11:54:11.6333425Z | subpixel_translation | 0.111 | 0.109 | 0.081 | 0.532 | 0.102 | 0.088 | 51 |",
+        "2026-10-19T11:54:11.6335217Z | non_integer_scales | 0.365 | 0.104 | 0.088 | 0.478 | 0.117 | 0.106 | 61 |",
+        "2026-10-19T11:54:11.6335915Z | stroked_curves | 0.317 | 0.098 | 0.075 | 0.471 | 0.110 | 0.095 | 132 |",
+        "2026-10-19T11:54:11.6336624Z | many_small_paths | 0.666 | 0.487 | 0.632 | 0.685 | 0.553 | 0.427 | 15 |",
+        "2026-10-19T11:54:11.6337299Z | hairline_grid | 0.158 | 0.182 | 0.182 | 0.534 | 0.203 | 0.148 | 1 |",
+        "2026-10-19T11:54:11.6338032Z | perf_2000_cubics_512 | 33.839 | 10.962 | 8.054 | 5.426 | 11.421 | 9.125 | 89 |",
+        "2026-10-19T11:54:11.6338739Z | stress_00 | 6.154 | 0.755 | 0.588 | 1.028 | 1.162 | 0.664 | 72 |",
+        "2026-10-19T11:54:11.6339373Z | stress_01 | 5.872 | 0.679 | 0.476 | 0.797 | 1.159 | 0.516 | 72 |",
+        "2026-10-19T11:54:11.6340253Z | stress_02 | 5.728 | 0.751 | 0.429 | 0.914 | 1.120 | 0.480 | 70 |",
+        "2026-10-19T11:54:11.6340868Z | stress_03 | 5.912 | 0.709 | 0.534 | 0.938 | 1.076 | 0.508 | 70 |",
+        "2026-10-19T11:54:11.6341472Z | stress_04 | 8.108 | 0.710 | 0.434 | 0.848 | 0.640 | 0.480 | 98 |",
+        "2026-10-19T11:54:11.6342069Z | stress_05 | 5.716 | 0.721 | 0.551 | 0.824 | 0.617 | 0.504 | 64 |",
+        "2026-10-19T11:54:11.6342683Z | stress_06 | 5.702 | 0.693 | 0.451 | 0.852 | 0.646 | 0.491 | 63 |",
+        "2026-10-19T11:54:11.6343282Z | stress_07 | 5.700 | 0.714 | 0.452 | 0.799 | 0.647 | 0.511 | 63 |",
+        "2026-10-19T11:54:11.6343860Z | stress_08 | 5.687 | 0.718 | 0.458 | 0.888 | 0.651 | 0.513 | 65 |",
+        "2026-10-19T11:54:11.6344479Z | stress_09 | 5.684 | 0.686 | 0.432 | 0.898 | 0.641 | 0.481 | 57 |",
+        "2026-10-19T11:54:11.6345073Z | stress_10 | 5.682 | 0.701 | 0.425 | 0.811 | 0.642 | 0.506 | 60 |",
+        "2026-10-19T11:54:11.6345660Z | stress_11 | 5.740 | 0.747 | 0.454 | 0.840 | 0.648 | 0.648 | 61 |",
+        "2026-10-19T11:54:11.6346257Z | stress_12 | 5.711 | 0.808 | 0.434 | 0.971 | 0.636 | 0.486 | 62 |",
+        "2026-10-19T11:54:11.6346805Z | stress_13 | 5.714 | 0.657 | 0.421 | 0.898 | 0.666 | 0.482 | 79 |",
+        "2026-10-19T11:54:11.6347378Z | stress_14 | 5.740 | 0.783 | 0.460 | 0.782 | 0.641 | 0.481 | 80 |",
+        "2026-10-19T11:54:11.6347991Z | stress_15 | 5.700 | 0.740 | 0.432 | 0.775 | 0.615 | 0.511 | 78 |",
+        "2026-10-19T11:54:14.1810071Z ",
+        "2026-10-19T11:54:14.1810732Z running 2 tests",
+        "2026-10-19T11:54:14.3832987Z ..",
+        "2026-10-19T11:54:14.3833925Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s",
+        "2026-10-19T11:54:14.3834769Z ",
+        "2026-10-19T11:54:30.3344367Z SHA256 digest of uploaded artifact is 75234a15eee20f6aa57b10c76bc507431f30f6787bd282c57ece72eec295ba9a"
+      ]
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "logLines": 4113,
+      "targets": [
+        "adversarial_c01",
+        "c03_fixed_configurations",
+        "c03_r1_stress",
+        "c03_r2_encoder",
+        "c03_r2_quality",
+        "c11_r1_adversarial",
+        "c11_r1_wire",
+        "c11_r2_adversarial",
+        "c11_r2_wire",
+        "c11_r3_adversarial",
+        "c11_r3_random",
+        "c11_r3_register",
+        "c11_r3_wire",
+        "c11_r4_exposure_bounds",
+        "c11_r5_write_bounds",
+        "c11_r6_staged_inverse",
+        "c12_checkpoint_property",
+        "c12_edit_ops",
+        "c12_kernel_state",
+        "c12_kernel_support",
+        "c12_never_block",
+        "c12_policy",
+        "c12_r1_contracts",
+        "c12_r1_macro",
+        "c12_r1_scale",
+        "c12_r1_stress",
+        "c12_r2_contracts",
+        "c12_r2_registry",
+        "c12_r2_scale",
+        "c12_r3_contracts",
+        "c12_r3_registry",
+        "c12_r3_stress",
+        "c12_registry",
+        "c12_transactions",
+        "cli",
+        "compile_fail",
+        "conformance",
+        "declared",
+        "frontend_schemas",
+        "guard_fixtures",
+        "inventory",
+        "properties",
+        "staged_commit",
+        "staged_inverse",
+        "toontown",
+        "toontown_headless",
+        "tt_anim",
+        "tt_audio",
+        "tt_colour",
+        "tt_desktop",
+        "tt_engine",
+        "tt_executor",
+        "tt_fx",
+        "tt_io",
+        "tt_lipsync",
+        "tt_mcp",
+        "tt_model",
+        "tt_persist",
+        "tt_registry",
+        "tt_registry_macros",
+        "tt_render",
+        "tt_vector",
+        "wire_corpus"
+      ],
+      "rustTotals": {
+        "passed": 545,
+        "failed": 0,
+        "ignored": 1
+      },
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end \u2014 lint, type-check, test, format, licences",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reviewer Python suites (every tests/adversarial/*.py)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end \u2014 build, diagnostics variant then default (frontendDist is embedded by the Tauri host)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo fmt --all --check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generated command declarations are current (C12-R1-12)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo test --workspace --locked",
+          "conclusion": "success"
+        },
+        {
+          "name": "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run taiki-e/install-action@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo deny --locked check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Headless binary \u2014 build, self-test (twice, compared), linked-library proof",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "missingRequiredTargets": [],
+      "r3TestsPassed": [
+        "overlapping_identical_waits_retain_one_original_envelope",
+        "staged_drawing_only_diff_keeps_content_invalidation",
+        "checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision",
+        "checkpoint_create_delete_and_failure_are_transactional_on_fresh_content",
+        "public_staging_rewind_and_serde_candidates_cannot_cross_load_integrity_gate",
+        "malformed_paste_destination_variants_never_fall_back",
+        "dry_run_ids_match_for_all_implemented_paste_creation_routes",
+        "sequential_batch_wait_uses_elapsed_time_and_reaches_completion",
+        "opaque_payloads_survive_every_edit_handler_and_property_patch",
+        "json04_multi_operation_inverse_restores_raw_bytes_and_opaque_boundaries",
+        "fresh_clipboard_property_values_are_checked_before_storage",
+        "fresh_complete_forest_paste_preserves_derived_parent_links",
+        "key_and_template_creation_predict_ids_and_stay_opaque",
+        "maximum_revision_rolls_back_checkpoints_and_keeps_executor_alive",
+        "fresh_cell_paste_checks_target_type_and_locked_drawing_before_commit",
+        "path_result_accepts_exact_05_section_19_4_example",
+        "velocity_function_pins_accept_the_explicit_frame_value_shape",
+        "selected_point_anchor_is_the_integer_index_from_02",
+        "xsheet_panel_result_preserves_boolean_fields_from_parameters",
+        "envelope_point_results_use_time_and_gains_from_07",
+        "preference_listing_can_return_a_boolean_preference",
+        "binding_params_support_commands_other_than_undo",
+        "polyline_options_result_is_the_option_object",
+        "print_settings_accepts_a_defined_print_parameter",
+        "export_settings_returns_an_object_as_its_setter_accepts",
+        "light_table_set_returns_the_entries_that_list_defines",
+        "pen_set_returns_a_model_pen_instead_of_a_scalar",
+        "eight_clients_cas_commands_and_batches_have_no_lost_updates",
+        "ten_thousand_history_operations_match_independent_content_oracle_and_replay",
+        "all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded",
+        "every_executable_typed_example_also_validates_its_result_schema",
+        "ordinary_dry_run_preserves_exact_history_and_matches_real_result"
+      ],
+      "frontend333": true,
+      "node9": true,
+      "python11": true,
+      "pythonSuiteLines": [
+        "\ufeff2026-10-19T11:57:11.6730457Z ##[group]Run PY=python3",
+        "2026-10-19T11:57:11.6730833Z PY=python3",
+        "2026-10-19T11:57:11.6731112Z if [ \"$RUNNER_OS\" = \"Windows\" ]; then PY=python; fi",
+        "2026-10-19T11:57:11.6731489Z $PY scripts/run-reviewer-python-suites.py",
+        "2026-10-19T11:57:11.6751323Z shell: C:\\Program Files\\Git\\bin\\bash.EXE --noprofile --norc -e -o pipefail {0}",
+        "2026-10-19T11:57:11.6751724Z env:",
+        "2026-10-19T11:57:11.6751922Z   CARGO_TERM_COLOR: always",
+        "2026-10-19T11:57:11.6752161Z   CARGO_INCREMENTAL: 0",
+        "2026-10-19T11:57:11.6752361Z   RUST_BACKTRACE: 1",
+        "2026-10-19T11:57:11.6752566Z   CACHE_ON_FAILURE: false",
+        "2026-10-19T11:57:11.6752866Z   PNPM_HOME: C:\\Users\\runneradmin\\setup-pnpm\\node_modules\\.bin",
+        "2026-10-19T11:57:11.6753197Z ##[endgroup]",
+        "2026-10-19T11:57:11.7888478Z === c02-r1-tooling.py",
+        "2026-10-19T11:57:12.2439682Z test_C02_R1_02_native_timestamp_association (__main__.ToolingTests.test_C02_R1_02_native_timestamp_association) ... ok",
+        "2026-10-19T11:57:12.3104777Z test_C02_R1_03_native_pose_only_contact_boundaries (__main__.ToolingTests.test_C02_R1_03_native_pose_only_contact_boundaries) ... ok",
+        "2026-10-19T11:57:12.3106936Z test_C02_R1_07_nearest_rank_percentile_matches_frontend (__main__.ToolingTests.test_C02_R1_07_nearest_rank_percentile_matches_frontend) ... ok",
+        "2026-10-19T11:57:12.6021778Z test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts) ... ok",
+        "2026-10-19T11:57:12.6022606Z ",
+        "2026-10-19T11:57:12.6022971Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:12.6023562Z Ran 4 tests in 0.734s",
+        "2026-10-19T11:57:12.6023798Z ",
+        "2026-10-19T11:57:12.6023916Z OK",
+        "2026-10-19T11:57:12.6131091Z === c02-r2-tooling.py",
+        "2026-10-19T11:57:12.7675608Z test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success (__main__.AnalyzerAttacks.test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success) ... ok",
+        "2026-10-19T11:57:12.8433732Z test_C02_R2_01_explicit_v1_is_rejected (__main__.AnalyzerAttacks.test_C02_R2_01_explicit_v1_is_rejected) ... ok",
+        "2026-10-19T11:57:12.9851380Z test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) ... ok",
+        "2026-10-19T11:57:12.9878595Z test_C02_R2_02_achieved_rate_is_recomputed_or_rejected (__main__.AnalyzerAttacks.test_C02_R2_02_achieved_rate_is_recomputed_or_rejected) ... ok",
+        "2026-10-19T11:57:12.9945694Z test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) ... ok",
+        "2026-10-19T11:57:13.0679343Z test_explicit_failure_without_report_remains_analyzable (__main__.AnalyzerAttacks.test_explicit_failure_without_report_remains_analyzable) ... ok",
+        "2026-10-19T11:57:13.0736698Z test_lossless_stationary_including_down_has_zero_missing (__main__.AnalyzerAttacks.test_lossless_stationary_including_down_has_zero_missing) ... ok",
+        "2026-10-19T11:57:13.4091049Z test_macos_extended_accessor_contracts (__main__.AnalyzerAttacks.test_macos_extended_accessor_contracts) ... ok",
+        "2026-10-19T11:57:13.4176178Z test_pause_segmentation_and_pose_only_native_reference_unknown (__main__.AnalyzerAttacks.test_pause_segmentation_and_pose_only_native_reference_unknown) ... ok",
+        "2026-10-19T11:57:13.4177316Z ",
+        "2026-10-19T11:57:13.4177660Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:13.4178260Z Ran 9 tests in 0.724s",
+        "2026-10-19T11:57:13.4178454Z ",
+        "2026-10-19T11:57:13.4178562Z OK",
+        "2026-10-19T11:57:13.4284038Z === c02-r3-tooling.py",
+        "2026-10-19T11:57:13.9997662Z test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs (__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) ... ok",
+        "2026-10-19T11:57:13.9998536Z ",
+        "2026-10-19T11:57:13.9998781Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:13.9999186Z Ran 1 test in 0.496s",
+        "2026-10-19T11:57:13.9999338Z ",
+        "2026-10-19T11:57:13.9999426Z OK",
+        "2026-10-19T11:57:14.0105751Z === c03-r1-tooling.py",
+        "2026-10-19T11:57:15.4816743Z ............",
+        "2026-10-19T11:57:15.4817285Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:15.4817666Z Ran 12 tests in 1.369s",
+        "2026-10-19T11:57:15.4817819Z ",
+        "2026-10-19T11:57:15.4818212Z OK",
+        "2026-10-19T11:57:15.4943109Z === c03-r2-tooling.py",
+        "2026-10-19T11:57:16.3792539Z .........",
+        "2026-10-19T11:57:16.3793195Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:16.3793816Z Ran 9 tests in 0.785s",
+        "2026-10-19T11:57:16.3794059Z ",
+        "2026-10-19T11:57:16.3794202Z OK",
+        "2026-10-19T11:57:16.3908625Z === c04-r2-decisions.py",
+        "2026-10-19T11:57:16.4711797Z test_C04_R2_01_rate_intervals_cover_fractional_hz (__main__.DecisionContracts.test_C04_R2_01_rate_intervals_cover_fractional_hz) ... ok",
+        "2026-10-19T11:57:16.5347163Z test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row (__main__.DecisionContracts.test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row) ... ok",
+        "2026-10-19T11:57:16.5373039Z test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes (__main__.DecisionContracts.test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes) ... ok",
+        "2026-10-19T11:57:16.5373986Z ",
+        "2026-10-19T11:57:16.5374304Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:16.5374767Z Ran 3 tests in 0.068s",
+        "2026-10-19T11:57:16.5374938Z ",
+        "2026-10-19T11:57:16.5375041Z OK",
+        "2026-10-19T11:57:16.5476909Z === c04-r3-decisions.py",
+        "2026-10-19T11:57:16.7374916Z test_C04_R3_01_outside_contact_must_not_flip_candidate (__main__.Regressions.test_C04_R3_01_outside_contact_must_not_flip_candidate) ... ok",
+        "2026-10-19T11:57:16.7698802Z test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected (__main__.Regressions.test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected) ... ok",
+        "2026-10-19T11:57:16.7701338Z test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter (__main__.Regressions.test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter) ... ok",
+        "2026-10-19T11:57:16.7702323Z ",
+        "2026-10-19T11:57:16.7702677Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:16.7703224Z Ran 3 tests in 0.150s",
+        "2026-10-19T11:57:16.7703586Z ",
+        "2026-10-19T11:57:16.7703761Z OK",
+        "2026-10-19T11:57:16.7811166Z === c04-r3-page.py",
+        "2026-10-19T11:57:17.7772677Z ",
+        "2026-10-19T11:57:17.7776949Z  RUN  v5.0.5 D:/a/261017-toontown-dev/261017-toontown-dev/desktop",
+        "2026-10-19T11:57:17.7777695Z ",
+        "2026-10-19T11:57:19.8785163Z  \u2713 src/test/c04-r3-actions.test.tsx (5 tests) 297ms",
+        "2026-10-19T11:57:19.8849101Z ",
+        "2026-10-19T11:57:19.8857100Z  Test Files  1 passed (1)",
+        "2026-10-19T11:57:19.8858551Z       Tests  5 passed (5)",
+        "2026-10-19T11:57:19.8859220Z    Start at  11:57:17",
+        "2026-10-19T11:57:19.8866607Z    Duration  2.10s (environment 57%, tests 16%, transform 13%, setup 10%, import 3%, worker 1%)",
+        "2026-10-19T11:57:19.8891062Z ",
+        "2026-10-19T11:57:19.9650068Z === c04-r5-decisions.py",
+        "2026-10-19T11:57:20.1659067Z test_outside_packets_cannot_change_action_rate_or_platform_decision (__main__.OutsideNativeClock.test_outside_packets_cannot_change_action_rate_or_platform_decision) ... ok",
+        "2026-10-19T11:57:20.1660150Z ",
+        "2026-10-19T11:57:20.1660451Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:20.1660955Z Ran 1 test in 0.116s",
+        "2026-10-19T11:57:20.1661211Z ",
+        "2026-10-19T11:57:20.1661395Z OK",
+        "2026-10-19T11:57:20.1770877Z === c11-r2-review-policy.py",
+        "2026-10-19T11:57:20.3078436Z ..",
+        "2026-10-19T11:57:20.3078911Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:20.3079292Z Ran 2 tests in 0.065s",
+        "2026-10-19T11:57:20.3079439Z ",
+        "2026-10-19T11:57:20.3079517Z OK",
+        "2026-10-19T11:57:20.3174304Z skip collect_runtime_evidence.py: M0 evidence collector, not a test: needs a release build and writes reviews/evidence/M0-C0.1-r1/",
+        "2026-10-19T11:57:20.3176030Z === headless_guard.py",
+        "2026-10-19T11:57:20.7722713Z ...",
+        "2026-10-19T11:57:20.7723490Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:20.7724412Z Ran 3 tests in 0.000s",
+        "2026-10-19T11:57:20.7724620Z ",
+        "2026-10-19T11:57:20.7724730Z OK",
+        "2026-10-19T11:57:20.7866164Z === summary",
+        "2026-10-19T11:57:20.7866559Z ok   c02-r1-tooling.py (0.8 s)",
+        "2026-10-19T11:57:20.7866902Z ok   c02-r2-tooling.py (0.8 s)",
+        "2026-10-19T11:57:20.7867407Z ok   c02-r3-tooling.py (0.6 s)",
+        "2026-10-19T11:57:20.7867751Z ok   c03-r1-tooling.py (1.5 s)",
+        "2026-10-19T11:57:20.7868038Z ok   c03-r2-tooling.py (0.9 s)",
+        "2026-10-19T11:57:20.7868323Z ok   c04-r2-decisions.py (0.2 s)",
+        "2026-10-19T11:57:20.7868623Z ok   c04-r3-decisions.py (0.2 s)",
+        "2026-10-19T11:57:20.7868936Z ok   c04-r3-page.py (3.2 s)",
+        "2026-10-19T11:57:20.7869224Z ok   c04-r5-decisions.py (0.2 s)",
+        "2026-10-19T11:57:20.7869523Z ok   c11-r2-review-policy.py (0.1 s)",
+        "2026-10-19T11:57:20.7869867Z ok   headless_guard.py (0.5 s)",
+        "2026-10-19T11:57:20.7870164Z 11/11 reviewer Python suites passed",
+        "2026-10-19T12:00:04.8736823Z      Running ..\\..\\tests\\adversarial\\c03-r2-encoder.rs (target\\debug\\deps\\c03_r2_encoder-dd2b8cfbfd5fb860.exe)",
+        "2026-10-19T12:11:37.4955735Z      Running ..\\..\\tests\\adversarial\\c01.rs (target\\debug\\deps\\adversarial_c01-9306689bb3b4f589.exe)",
+        "2026-10-19T12:17:15.5251393Z      Running ..\\..\\tests\\adversarial\\c03-r2-encoder.rs (target\\debug\\deps\\c03_r2_encoder-11314c38e6868b0a.exe)"
+      ],
+      "proofExcerpts": [
+        "2026-10-19T11:51:56.7608234Z Region: eastus",
+        "2026-10-19T11:52:06.6892344Z  * [new branch]      main             -> origin/main",
+        "2026-10-19T11:53:14.6234279Z Cache restored successfully",
+        "2026-10-19T11:53:47.7762343Z Done in 2.5s using pnpm v10.12.1",
+        "2026-10-19T11:57:20.7723490Z ----------------------------------------------------------------------",
+        "2026-10-19T11:57:21.4234422Z > @toontown/desktop@0.0.1 build:diagnostics D:\\a\\261017-toontown-dev\\261017-toontown-dev\\desktop",
+        "2026-10-19T11:57:24.8256642Z IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)",
+        "2026-10-19T11:57:27.8193087Z IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)",
+        "2026-10-19T12:00:05.6789038Z test selftest::tests::dotted_version_parser ... ok",
+        "2026-10-19T12:00:06.4738842Z test selftest::tests::push_keeps_ok_consistent ... ok",
+        "2026-10-19T12:00:06.4739966Z test selftest::tests::selftest_passes ... ok",
+        "2026-10-19T12:11:37.4888158Z test cli::tests::selftest_human_passes ... ok",
+        "2026-10-19T12:11:37.4889315Z test cli::tests::selftest_json_passes ... ok",
+        "2026-10-19T12:11:47.2139285Z test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... ok",
+        "2026-10-19T12:11:48.0716495Z test selftest_runs_with_display_environment_removed ... ok",
+        "2026-10-19T12:11:48.0943688Z test selftest_exits_zero_with_json_report ... ok",
+        "2026-10-19T12:11:58.5302825Z test value::tests::timestamp_display_matches_civil_conversion_for_many_days ... ok",
+        "2026-10-19T12:14:59.3398921Z      Running unittests src\\lib.rs (target\\debug\\deps\\tt_persist-c30502a0326ac234.exe)",
+        "2026-10-19T12:17:16.8066177Z ##[start-action display=Run bail() {;id=__taiki-e_install-action.__run]",
+        "2026-10-19T12:17:16.8087211Z ##[start-action display=Run Set-StrictMode -Version Latest;id=__taiki-e_install-action.__run_2]",
+        "2026-10-19T12:17:16.8290234Z     Remove-Item \"$env:USERPROFILE\\.install-action\\init\" -Force",
+        "2026-10-19T12:17:38.7112343Z       \u2502           \u2502   \u251c\u2500\u2500 tt-engine v0.0.1 (*)",
+        "2026-10-19T12:17:38.7234797Z 127 \u2502 \u256d indexmap 1.9.3 registry+https://github.com/rust-lang/crates.io-index",
+        "2026-10-19T12:17:38.7293234Z       \u2502   \u2502   \u2514\u2500\u2500 tauri-utils v2.10.2 (*)",
+        "2026-10-19T12:17:38.7412347Z           \u2502       \u2514\u2500\u2500 tt-headless v0.0.1 (*)",
+        "2026-10-19T12:17:38.7502347Z           \u2502   \u2514\u2500\u2500 tt-mcp v0.0.1",
+        "2026-10-19T12:17:38.7523496Z ",
+        "2026-10-19T12:17:38.7751234Z     \u2502  ",
+        "2026-10-19T12:17:38.7822348Z       \u2502       \u2514\u2500\u2500 vello_cpu v0.3.0 (*)",
+        "2026-10-19T12:17:38.7823482Z       \u2502   \u2514\u2500\u2500 cssparser v0.37.0",
+        "2026-10-19T12:17:38.7830586Z       \u251c\u2500\u2500 displaydoc v0.2.7",
+        "2026-10-19T12:17:38.7866234Z       \u2502   \u2502   \u251c\u2500\u2500 plist v1.10.1",
+        "2026-10-19T12:17:38.8234244Z           \u2502       \u2502   \u2514\u2500\u2500 tauri-macros v2.7.3",
+        "2026-10-19T12:17:38.8234643Z           \u2502       \u2502       \u2514\u2500\u2500 tauri v2.12.4 (*)",
+        "2026-10-19T12:17:38.8322341Z     \u2502 \u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 lock entries",
+        "2026-10-19T12:17:38.9055384Z env -u DISPLAY -u WAYLAND_DISPLAY \"$exe\" --selftest",
+        "2026-10-19T12:17:38.9055513Z \"$exe\" --selftest --json > selftest-1.json",
+        "2026-10-19T12:17:38.9055633Z \"$exe\" --selftest --json > selftest-2.json",
+        "2026-10-19T12:17:38.9056721Z $PY -c \"import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)\"",
+        "2026-10-19T12:17:38.9056889Z $PY scripts/check-headless-deps.py \"$exe\"",
+        "2026-10-19T12:17:38.9057029Z mkdir -p out && cp \"$exe\" selftest-1.json out/"
+      ]
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "logLines": 689,
+      "targets": [],
+      "rustTotals": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build, default (unsigned; no M0 diagnostics)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Default build registers no M0 diagnostic command and refuses the flags",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)",
+          "conclusion": "success"
+        },
+        {
+          "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+          "conclusion": "success"
+        },
+        {
+          "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Collect artifacts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "proofExcerpts": [
+        "2026-10-19T11:52:04.1234550Z   token: ***",
+        "2026-10-19T11:52:44.3122810Z IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)",
+        "2026-10-19T11:54:41.8300840Z IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)",
+        "2026-10-19T11:55:49.8997130Z $PY -c \"import json,sys; r=json.load(open('ipc-bench.json')); sys.exit(0 if r.get('frontend',{}).get('ok') else 1)\"",
+        "2026-10-19T11:56:03.2375300Z     \"ok\": true,"
+      ]
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "logLines": 4101,
+      "targets": [
+        "adversarial_c01",
+        "c03_fixed_configurations",
+        "c03_r1_stress",
+        "c03_r2_encoder",
+        "c03_r2_quality",
+        "c11_r1_adversarial",
+        "c11_r1_wire",
+        "c11_r2_adversarial",
+        "c11_r2_wire",
+        "c11_r3_adversarial",
+        "c11_r3_random",
+        "c11_r3_register",
+        "c11_r3_wire",
+        "c11_r4_exposure_bounds",
+        "c11_r5_write_bounds",
+        "c11_r6_staged_inverse",
+        "c12_checkpoint_property",
+        "c12_edit_ops",
+        "c12_kernel_state",
+        "c12_kernel_support",
+        "c12_never_block",
+        "c12_policy",
+        "c12_r1_contracts",
+        "c12_r1_macro",
+        "c12_r1_scale",
+        "c12_r1_stress",
+        "c12_r2_contracts",
+        "c12_r2_registry",
+        "c12_r2_scale",
+        "c12_r3_contracts",
+        "c12_r3_registry",
+        "c12_r3_stress",
+        "c12_registry",
+        "c12_transactions",
+        "cli",
+        "compile_fail",
+        "conformance",
+        "declared",
+        "frontend_schemas",
+        "guard_fixtures",
+        "inventory",
+        "properties",
+        "staged_commit",
+        "staged_inverse",
+        "toontown",
+        "toontown_headless",
+        "tt_anim",
+        "tt_audio",
+        "tt_colour",
+        "tt_desktop",
+        "tt_engine",
+        "tt_executor",
+        "tt_fx",
+        "tt_io",
+        "tt_lipsync",
+        "tt_mcp",
+        "tt_model",
+        "tt_persist",
+        "tt_registry",
+        "tt_registry_macros",
+        "tt_render",
+        "tt_vector",
+        "wire_corpus"
+      ],
+      "rustTotals": {
+        "passed": 533,
+        "failed": 0,
+        "ignored": 1
+      },
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end \u2014 lint, type-check, test, format, licences",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reviewer Python suites (every tests/adversarial/*.py)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end \u2014 build, diagnostics variant then default (frontendDist is embedded by the Tauri host)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo fmt --all --check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generated command declarations are current (C12-R1-12)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo test --workspace --locked",
+          "conclusion": "success"
+        },
+        {
+          "name": "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run taiki-e/install-action@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo deny --locked check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Headless binary \u2014 build, self-test (twice, compared), linked-library proof",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "missingRequiredTargets": [],
+      "r3TestsPassed": [
+        "overlapping_identical_waits_retain_one_original_envelope",
+        "staged_drawing_only_diff_keeps_content_invalidation",
+        "checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision",
+        "checkpoint_create_delete_and_failure_are_transactional_on_fresh_content",
+        "public_staging_rewind_and_serde_candidates_cannot_cross_load_integrity_gate",
+        "malformed_paste_destination_variants_never_fall_back",
+        "dry_run_ids_match_for_all_implemented_paste_creation_routes",
+        "sequential_batch_wait_uses_elapsed_time_and_reaches_completion",
+        "opaque_payloads_survive_every_edit_handler_and_property_patch",
+        "json04_multi_operation_inverse_restores_raw_bytes_and_opaque_boundaries",
+        "fresh_clipboard_property_values_are_checked_before_storage",
+        "fresh_complete_forest_paste_preserves_derived_parent_links",
+        "key_and_template_creation_predict_ids_and_stay_opaque",
+        "maximum_revision_rolls_back_checkpoints_and_keeps_executor_alive",
+        "fresh_cell_paste_checks_target_type_and_locked_drawing_before_commit",
+        "path_result_accepts_exact_05_section_19_4_example",
+        "velocity_function_pins_accept_the_explicit_frame_value_shape",
+        "selected_point_anchor_is_the_integer_index_from_02",
+        "xsheet_panel_result_preserves_boolean_fields_from_parameters",
+        "envelope_point_results_use_time_and_gains_from_07",
+        "preference_listing_can_return_a_boolean_preference",
+        "binding_params_support_commands_other_than_undo",
+        "polyline_options_result_is_the_option_object",
+        "print_settings_accepts_a_defined_print_parameter",
+        "export_settings_returns_an_object_as_its_setter_accepts",
+        "light_table_set_returns_the_entries_that_list_defines",
+        "pen_set_returns_a_model_pen_instead_of_a_scalar",
+        "eight_clients_cas_commands_and_batches_have_no_lost_updates",
+        "ten_thousand_history_operations_match_independent_content_oracle_and_replay",
+        "all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded",
+        "every_executable_typed_example_also_validates_its_result_schema",
+        "ordinary_dry_run_preserves_exact_history_and_matches_real_result"
+      ],
+      "frontend333": true,
+      "node9": true,
+      "python11": true,
+      "pythonSuiteLines": [
+        "\ufeff2026-10-19T11:55:35.0220100Z ##[group]Run PY=python3",
+        "2026-10-19T11:55:35.0220520Z PY=python3",
+        "2026-10-19T11:55:35.0222020Z if [ \"$RUNNER_OS\" = \"Windows\" ]; then PY=python; fi",
+        "2026-10-19T11:55:35.0223330Z $PY scripts/run-reviewer-python-suites.py",
+        "2026-10-19T11:55:35.1196120Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}",
+        "2026-10-19T11:55:35.1196970Z env:",
+        "2026-10-19T11:55:35.1197420Z   CARGO_TERM_COLOR: always",
+        "2026-10-19T11:55:35.1198000Z   CARGO_INCREMENTAL: 0",
+        "2026-10-19T11:55:35.1198570Z   RUST_BACKTRACE: 1",
+        "2026-10-19T11:55:35.1199190Z   CACHE_ON_FAILURE: false",
+        "2026-10-19T11:55:35.1199840Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin",
+        "2026-10-19T11:55:35.1200610Z ##[endgroup]",
+        "2026-10-19T11:55:35.3624570Z === c02-r1-tooling.py",
+        "2026-10-19T11:55:35.8150180Z test_C02_R1_02_native_timestamp_association (__main__.ToolingTests.test_C02_R1_02_native_timestamp_association) ... ok",
+        "2026-10-19T11:55:35.8675250Z test_C02_R1_03_native_pose_only_contact_boundaries (__main__.ToolingTests.test_C02_R1_03_native_pose_only_contact_boundaries) ... ok",
+        "2026-10-19T11:55:35.8677600Z test_C02_R1_07_nearest_rank_percentile_matches_frontend (__main__.ToolingTests.test_C02_R1_07_nearest_rank_percentile_matches_frontend) ... ok",
+        "2026-10-19T11:55:36.1047550Z test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts) ... ok",
+        "2026-10-19T11:55:36.1048730Z ",
+        "2026-10-19T11:55:36.1049480Z ----------------------------------------------------------------------",
+        "2026-10-19T11:55:36.1050500Z Ran 4 tests in 0.652s",
+        "2026-10-19T11:55:36.1050880Z ",
+        "2026-10-19T11:55:36.1051230Z OK",
+        "2026-10-19T11:55:36.1127030Z === c02-r2-tooling.py",
+        "2026-10-19T11:55:36.2341560Z test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success (__main__.AnalyzerAttacks.test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success) ... ok",
+        "2026-10-19T11:55:36.2866650Z test_C02_R2_01_explicit_v1_is_rejected (__main__.AnalyzerAttacks.test_C02_R2_01_explicit_v1_is_rejected) ... ok",
+        "2026-10-19T11:55:36.4090230Z test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) ... ok",
+        "2026-10-19T11:55:36.4109180Z test_C02_R2_02_achieved_rate_is_recomputed_or_rejected (__main__.AnalyzerAttacks.test_C02_R2_02_achieved_rate_is_recomputed_or_rejected) ... ok",
+        "2026-10-19T11:55:36.4154400Z test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) ... ok",
+        "2026-10-19T11:55:36.4812630Z test_explicit_failure_without_report_remains_analyzable (__main__.AnalyzerAttacks.test_explicit_failure_without_report_remains_analyzable) ... ok",
+        "2026-10-19T11:55:36.4871870Z test_lossless_stationary_including_down_has_zero_missing (__main__.AnalyzerAttacks.test_lossless_stationary_including_down_has_zero_missing) ... ok",
+        "2026-10-19T11:55:36.8272470Z test_macos_extended_accessor_contracts (__main__.AnalyzerAttacks.test_macos_extended_accessor_contracts) ... ok",
+        "2026-10-19T11:55:36.8314870Z test_pause_segmentation_and_pose_only_native_reference_unknown (__main__.AnalyzerAttacks.test_pause_segmentation_and_pose_only_native_reference_unknown) ... ok",
+        "2026-10-19T11:55:36.8395860Z ",
+        "2026-10-19T11:55:36.8405460Z ----------------------------------------------------------------------",
+        "2026-10-19T11:55:36.8431670Z Ran 9 tests in 0.648s",
+        "2026-10-19T11:55:36.8432170Z ",
+        "2026-10-19T11:55:36.8432520Z OK",
+        "2026-10-19T11:55:36.8433330Z === c02-r3-tooling.py",
+        "2026-10-19T11:55:37.3276020Z test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs (__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) ... ok",
+        "2026-10-19T11:55:37.3287900Z ",
+        "2026-10-19T11:55:37.3344940Z ----------------------------------------------------------------------",
+        "2026-10-19T11:55:37.3346420Z Ran 1 test in 0.344s",
+        "2026-10-19T11:55:37.3347130Z ",
+        "2026-10-19T11:55:37.3347610Z OK",
+        "2026-10-19T11:55:37.3393210Z === c03-r1-tooling.py",
+        "2026-10-19T11:55:39.4049000Z ............",
+        "2026-10-19T11:55:39.4054740Z ----------------------------------------------------------------------",
+        "2026-10-19T11:55:39.4057490Z Ran 12 tests in 1.910s",
+        "2026-10-19T11:55:39.4059700Z ",
+        "2026-10-19T11:55:39.4063840Z OK",
+        "2026-10-19T11:55:39.4196690Z === c03-r2-tooling.py",
+        "2026-10-19T11:55:40.3512530Z .........",
+        "2026-10-19T11:55:40.3514100Z ----------------------------------------------------------------------",
+        "2026-10-19T11:55:40.3515220Z Ran 9 tests in 0.809s",
+        "2026-10-19T11:55:40.3515680Z ",
+        "2026-10-19T11:55:40.3516000Z OK",
+        "2026-10-19T11:55:40.3602370Z === c04-r2-decisions.py",
+        "2026-10-19T11:55:40.4690020Z test_C04_R2_01_rate_intervals_cover_fractional_hz (__main__.DecisionContracts.test_C04_R2_01_rate_intervals_cover_fractional_hz) ... ok",
+        "2026-10-19T11:55:40.5303350Z test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row (__main__.DecisionContracts.test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row) ... ok",
+        "2026-10-19T11:55:40.5376180Z test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes (__main__.DecisionContracts.test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes) ... ok",
+        "2026-10-19T11:55:40.5377110Z ",
+        "2026-10-19T11:55:40.5381250Z ----------------------------------------------------------------------",
+        "2026-10-19T11:55:40.5382830Z Ran 3 tests in 0.071s",
+        "2026-10-19T11:55:40.5384870Z ",
+        "2026-10-19T11:55:40.5388080Z OK",
+        "2026-10-19T11:55:40.5580430Z === c04-r3-decisions.py",
+        "2026-10-19T11:55:40.7531510Z test_C04_R3_01_outside_contact_must_not_flip_candidate (__main__.Regressions.test_C04_R3_01_outside_contact_must_not_flip_candidate) ... ok",
+        "2026-10-19T11:55:40.7760850Z test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected (__main__.Regressions.test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected) ... ok",
+        "2026-10-19T11:55:40.7764370Z test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter (__main__.Regressions.test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter) ... ok",
+        "2026-10-19T11:55:40.7765760Z ",
+        "2026-10-19T11:55:40.7767050Z ----------------------------------------------------------------------",
+        "2026-10-19T11:55:40.7768400Z Ran 3 tests in 0.118s",
+        "2026-10-19T11:55:40.7769130Z ",
+        "2026-10-19T11:55:40.7769770Z OK",
+        "2026-10-19T11:55:40.7828890Z === c04-r3-page.py",
+        "2026-10-19T11:55:41.6470080Z ",
+        "2026-10-19T11:55:41.6473710Z  RUN  v5.0.5 /Users/runner/work/261017-toontown-dev/261017-toontown-dev/desktop",
+        "2026-10-19T11:55:41.6474470Z ",
+        "2026-10-19T11:55:43.1762470Z  \u2713 src/test/c04-r3-actions.test.tsx (5 tests) 209ms",
+        "2026-10-19T11:55:43.1822580Z ",
+        "2026-10-19T11:55:43.1859950Z  Test Files  1 passed (1)",
+        "2026-10-19T11:55:43.1860790Z       Tests  5 passed (5)",
+        "2026-10-19T11:55:43.1861540Z    Start at  11:55:41",
+        "2026-10-19T11:55:43.1862330Z    Duration  1.53s (environment 52%, transform 23%, tests 15%, setup 8%, import 2%)",
+        "2026-10-19T11:55:43.1862850Z ",
+        "2026-10-19T11:55:43.2135460Z === c04-r5-decisions.py",
+        "2026-10-19T11:55:43.4353010Z test_outside_packets_cannot_change_action_rate_or_platform_decision (__main__.OutsideNativeClock.test_outside_packets_cannot_change_action_rate_or_platform_decision) ... ok",
+        "2026-10-19T11:55:43.4355950Z ",
+        "2026-10-19T11:55:43.4356710Z ----------------------------------------------------------------------",
+        "2026-10-19T11:55:43.4358790Z Ran 1 test in 0.087s",
+        "2026-10-19T11:55:43.4360700Z ",
+        "2026-10-19T11:55:43.4363270Z OK",
+        "2026-10-19T11:55:43.4508580Z === c11-r2-review-policy.py",
+        "2026-10-19T11:55:43.5910730Z ..",
+        "2026-10-19T11:55:43.5912020Z ----------------------------------------------------------------------",
+        "2026-10-19T11:55:43.5913050Z Ran 2 tests in 0.051s",
+        "2026-10-19T11:55:43.5913510Z ",
+        "2026-10-19T11:55:43.5913850Z OK",
+        "2026-10-19T11:55:43.5992350Z skip collect_runtime_evidence.py: M0 evidence collector, not a test: needs a release build and writes reviews/evidence/M0-C0.1-r1/",
+        "2026-10-19T11:55:43.5993920Z === headless_guard.py",
+        "2026-10-19T11:55:43.7913620Z ...",
+        "2026-10-19T11:55:43.7914500Z ----------------------------------------------------------------------",
+        "2026-10-19T11:55:43.7914950Z Ran 3 tests in 0.000s",
+        "2026-10-19T11:55:43.7915170Z ",
+        "2026-10-19T11:55:43.7915230Z OK",
+        "2026-10-19T11:55:43.8054360Z === summary",
+        "2026-10-19T11:55:43.8055470Z ok   c02-r1-tooling.py (0.8 s)",
+        "2026-10-19T11:55:43.8056170Z ok   c02-r2-tooling.py (0.7 s)",
+        "2026-10-19T11:55:43.8056930Z ok   c02-r3-tooling.py (0.5 s)",
+        "2026-10-19T11:55:43.8057390Z ok   c03-r1-tooling.py (2.1 s)",
+        "2026-10-19T11:55:43.8058160Z ok   c03-r2-tooling.py (0.9 s)",
+        "2026-10-19T11:55:43.8059600Z ok   c04-r2-decisions.py (0.2 s)",
+        "2026-10-19T11:55:43.8060290Z ok   c04-r3-decisions.py (0.2 s)",
+        "2026-10-19T11:55:43.8061240Z ok   c04-r3-page.py (2.4 s)",
+        "2026-10-19T11:55:43.8062200Z ok   c04-r5-decisions.py (0.2 s)",
+        "2026-10-19T11:55:43.8063070Z ok   c11-r2-review-policy.py (0.1 s)",
+        "2026-10-19T11:55:43.8064200Z ok   headless_guard.py (0.2 s)",
+        "2026-10-19T11:55:43.8065860Z 11/11 reviewer Python suites passed",
+        "2026-10-19T11:57:28.0600260Z      Running ../../tests/adversarial/c03-r2-encoder.rs (target/debug/deps/c03_r2_encoder-638f2a5d7317a1c7)",
+        "2026-10-19T12:06:39.6806760Z      Running ../../tests/adversarial/c01.rs (target/debug/deps/adversarial_c01-d51362d141b38a43)",
+        "2026-10-19T12:10:06.0179370Z      Running ../../tests/adversarial/c03-r2-encoder.rs (target/debug/deps/c03_r2_encoder-2c8ab178ea3b6a48)"
+      ],
+      "proofExcerpts": [
+        "2026-10-19T11:52:09.8272340Z ##[group]Fetching the repository",
+        "2026-10-19T11:52:13.6892340Z f2100570e636292028e70bc6a32ab444c37547ae",
+        "2026-10-19T11:52:15.5582340Z Updating files:  95% (4470/4705)",
+        "2026-10-19T11:55:30.1938350Z   duration_ms: 1.023458",
+        "2026-10-19T11:55:36.2341560Z test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success (__main__.AnalyzerAttacks.test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success) ... ok",
+        "2026-10-19T11:55:47.2687510Z IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)",
+        "2026-10-19T11:55:49.9285480Z IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)",
+        "2026-10-19T11:57:28.7570830Z test selftest::tests::dotted_version_parser ... ok",
+        "2026-10-19T11:57:29.5627430Z test selftest::tests::push_keeps_ok_consistent ... ok",
+        "2026-10-19T11:57:29.5661270Z test selftest::tests::selftest_passes ... ok",
+        "2026-10-19T12:06:38.9323460Z test exclusive_mutation_capability ... ok",
+        "2026-10-19T12:06:39.6801420Z test cli::tests::selftest_human_passes ... ok",
+        "2026-10-19T12:06:39.6802090Z test cli::tests::selftest_json_passes ... ok",
+        "2026-10-19T12:06:44.3282580Z test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... ok",
+        "2026-10-19T12:06:45.1211490Z test selftest_runs_with_display_environment_removed ... ok",
+        "2026-10-19T12:06:45.1221920Z test selftest_exits_zero_with_json_report ... ok",
+        "2026-10-19T12:06:45.1223470Z ",
+        "2026-10-19T12:06:50.9617260Z test value::tests::timestamp_display_matches_civil_conversion_for_many_days ... ok",
+        "2026-10-19T12:08:52.4792340Z ",
+        "2026-10-19T12:10:06.7356120Z ##[start-action display=Run bail() {;id=__taiki-e_install-action.__run]",
+        "2026-10-19T12:10:07.4180340Z ##[start-action display=Run Set-StrictMode -Version Latest;id=__taiki-e_install-action.__run_2]",
+        "2026-10-19T12:10:11.7692340Z ",
+        "2026-10-19T12:10:11.7723400Z       \u2502           \u2502   \u2502       \u2514\u2500\u2500 tt-io v0.0.1",
+        "2026-10-19T12:10:11.8010720Z       \u251c\u2500\u2500 displaydoc v0.2.7",
+        "2026-10-19T12:10:11.8023470Z       \u2502       \u2502           \u2502   \u251c\u2500\u2500 tt-executor v0.0.1 (*)",
+        "2026-10-19T12:10:11.8122340Z           \u2502   \u2502   \u2514\u2500\u2500 tauri-runtime-wry v2.12.2 (*)",
+        "2026-10-19T12:10:11.8172670Z env -u DISPLAY -u WAYLAND_DISPLAY \"$exe\" --selftest",
+        "2026-10-19T12:10:11.8172770Z \"$exe\" --selftest --json > selftest-1.json",
+        "2026-10-19T12:10:11.8172870Z \"$exe\" --selftest --json > selftest-2.json",
+        "2026-10-19T12:10:11.8173610Z $PY -c \"import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)\"",
+        "2026-10-19T12:10:11.8173740Z $PY scripts/check-headless-deps.py \"$exe\"",
+        "2026-10-19T12:10:11.8173840Z mkdir -p out && cp \"$exe\" selftest-1.json out/"
+      ]
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "logLines": 813,
+      "targets": [],
+      "rustTotals": {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build, default (unsigned; no M0 diagnostics)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Default build registers no M0 diagnostic command and refuses the flags",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)",
+          "conclusion": "success"
+        },
+        {
+          "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+          "conclusion": "success"
+        },
+        {
+          "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+          "conclusion": "success"
+        },
+        {
+          "name": "C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Collect artifacts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "proofExcerpts": [
+        "2026-10-19T11:51:59.1234060Z env:",
+        "2026-10-19T11:52:29.1513234Z ... Restoring cache ...",
+        "2026-10-19T11:53:29.8503620Z IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)",
+        "2026-10-19T11:53:30.2346181Z     Updating crates.io index",
+        "2026-10-19T11:53:58.9023427Z    Compiling tt-registry v0.0.1 (D:\\a\\261017-toontown-dev\\261017-toontown-dev\\crates\\registry)",
+        "2026-10-19T11:57:27.6704158Z IPC boundary (dist check): ok (dist; Tauri code only in tauri-transport)",
+        "2026-10-19T11:58:54.6464928Z $PY -c \"import json,sys; r=json.load(open('ipc-bench.json')); sys.exit(0 if r.get('frontend',{}).get('ok') else 1)\"",
+        "2026-10-19T11:59:17.5697639Z     \"ok\": true,",
+        "2026-10-19T12:01:13.3036234Z | back end | paths100k | groups1k | brush10k | score (worst fps) |"
+      ]
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "logLines": 407,
+      "targets": [],
+      "rustTotals": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "conclusion": "success"
+        },
+        {
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "proofExcerpts": [
+        "2026-10-19T11:53:05.0217891Z | hairline_grid | 0.156 | 0.149 | 0.094 | 0.255 | 0.219 | 0.146 | 1 |",
+        "2026-10-19T11:53:05.0218383Z | perf_2000_cubics_512 | 27.209 | 10.410 | 6.875 | 5.242 | 11.167 | 7.948 | 89 |",
+        "2026-10-19T11:53:05.0218786Z | stress_00 | 3.561 | 0.693 | 0.430 | 0.746 | 0.675 | 0.553 | 72 |",
+        "2026-10-19T11:53:05.0219169Z | stress_01 | 3.539 | 0.699 | 0.409 | 0.634 | 0.652 | 0.463 | 72 |",
+        "2026-10-19T11:53:05.0219522Z | stress_02 | 3.560 | 0.686 | 0.409 | 0.712 | 0.657 | 0.483 | 70 |",
+        "2026-10-19T11:53:05.0219879Z | stress_03 | 3.566 | 0.681 | 0.409 | 0.653 | 0.664 | 0.505 | 70 |",
+        "2026-10-19T11:53:05.0220230Z | stress_04 | 3.531 | 0.686 | 0.414 | 0.677 | 0.660 | 0.514 | 98 |",
+        "2026-10-19T11:53:05.0220583Z | stress_05 | 3.470 | 0.691 | 0.431 | 0.656 | 0.670 | 0.487 | 64 |",
+        "2026-10-19T11:53:05.0220942Z | stress_06 | 3.519 | 0.688 | 0.409 | 0.642 | 0.663 | 0.466 | 63 |",
+        "2026-10-19T11:53:05.0221294Z | stress_07 | 3.482 | 0.686 | 0.423 | 0.640 | 0.659 | 0.480 | 63 |",
+        "2026-10-19T11:53:05.0221647Z | stress_08 | 3.538 | 0.708 | 0.415 | 0.712 | 0.652 | 0.482 | 65 |",
+        "2026-10-19T11:53:05.0221990Z | stress_09 | 3.553 | 0.690 | 0.425 | 0.627 | 0.662 | 0.507 | 57 |",
+        "2026-10-19T11:53:05.0222533Z | stress_10 | 3.606 | 0.684 | 0.435 | 0.662 | 0.657 | 0.469 | 60 |",
+        "2026-10-19T11:53:05.0222901Z | stress_11 | 3.476 | 0.692 | 0.458 | 0.659 | 0.660 | 0.478 | 61 |",
+        "2026-10-19T11:53:05.0223292Z | stress_12 | 3.474 | 0.687 | 0.437 | 0.705 | 0.673 | 0.465 | 62 |",
+        "2026-10-19T11:53:05.0223638Z | stress_13 | 3.473 | 0.702 | 0.420 | 0.717 | 0.663 | 0.493 | 79 |",
+        "2026-10-19T11:53:05.0223987Z | stress_14 | 3.516 | 0.711 | 0.413 | 0.674 | 0.685 | 0.473 | 80 |",
+        "2026-10-19T11:53:05.0224334Z | stress_15 | 3.482 | 0.696 | 0.408 | 0.622 | 0.669 | 0.480 | 78 |",
+        "2026-10-19T11:53:06.4887728Z \"linux\" \"x86_64\" (vello_cpu detected SIMD level \"Avx512(Avx512 { _private: () })\")",
+        "2026-10-19T11:53:06.4888939Z | scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |",
+        "2026-10-19T11:53:06.4890118Z |---|---|---|---|---|---|---|---|",
+        "2026-10-19T11:53:06.4890529Z | cubic_blobs | 0.165 | 0.046 | 0.034 | 0.238 | 0.101 | 0.096 | 62 |",
+        "2026-10-19T11:53:06.4891023Z | thin_strokes | 0.090 | 0.076 | 0.055 | 0.198 | 0.132 | 0.109 | 1 |",
+        "2026-10-19T11:53:06.4891590Z | aa_edge_angles | 0.422 | 0.232 | 0.152 | 0.400 | 0.313 | 0.211 | 3 |",
+        "2026-10-19T11:53:06.4892499Z | translucent_overlap | 0.141 | 0.049 | 0.036 | 0.171 | 0.112 | 0.094 | 30 |",
+        "2026-10-19T11:53:06.4893017Z | alpha_stack | 0.523 | 0.105 | 0.072 | 0.238 | 0.164 | 0.133 | 1 |",
+        "2026-10-19T11:53:06.4893545Z | linear_gradient | 0.426 | 0.057 | 0.032 | 0.161 | 0.110 | 0.088 | 1 |",
+        "2026-10-19T11:53:06.4894080Z | radial_gradient | 0.429 | 0.072 | 0.043 | 0.160 | 0.129 | 0.098 | 48 |",
+        "2026-10-19T11:53:06.4894690Z | gradient_transformed | 0.257 | 0.049 | 0.031 | 0.175 | 0.107 | 0.088 | 2 |",
+        "2026-10-19T11:53:06.4895322Z | clip_circle | 0.185 | 0.145 | 0.082 | 0.297 | 0.194 | 0.141 | 43 |",
+        "2026-10-19T11:53:06.4895859Z | clip_nested | 0.223 | 0.086 | 0.055 | 0.227 | 0.138 | 0.115 | 68 |",
+        "2026-10-19T11:53:06.4896385Z | glyph_nonzero | 0.071 | 0.039 | 0.027 | 0.152 | 0.091 | 0.086 | 58 |",
+        "2026-10-19T11:53:06.4896932Z | glyph_evenodd | 0.085 | 0.044 | 0.028 | 0.160 | 0.097 | 0.084 | 58 |",
+        "2026-10-19T11:53:06.4897519Z | degenerate | 0.044 | 0.025 | 0.019 | 0.153 | 0.076 | 0.075 | 0 |",
+        "2026-10-19T11:53:06.4898020Z | star_nonzero | 0.076 | 0.035 | 0.023 | 0.148 | 0.090 | 0.079 | 1 |",
+        "2026-10-19T11:53:06.4898483Z | star_evenodd | 0.100 | 0.043 | 0.025 | 0.149 | 0.099 | 0.081 | 1 |",
+        "2026-10-19T11:53:06.4898992Z | coincident_edges | 0.073 | 0.039 | 0.026 | 0.168 | 0.092 | 0.089 | 2 |",
+        "2026-10-19T11:53:06.4899567Z | extreme_coordinates | 0.140 | 0.029 | 0.023 | 0.139 | 0.088 | 0.082 | 3 |",
+        "2026-10-19T11:53:06.4900163Z | subpixel_translation | 0.093 | 0.055 | 0.044 | 0.184 | 0.111 | 0.096 | 51 |",
+        "2026-10-19T11:53:06.4900747Z | non_integer_scales | 0.235 | 0.070 | 0.052 | 0.189 | 0.127 | 0.116 | 61 |",
+        "2026-10-19T11:53:06.4901514Z | stroked_curves | 0.245 | 0.062 | 0.044 | 0.169 | 0.116 | 0.105 | 132 |",
+        "2026-10-19T11:53:06.4902055Z | many_small_paths | 0.555 | 0.437 | 0.300 | 0.492 | 0.486 | 0.378 | 15 |",
+        "2026-10-19T11:53:06.4902738Z | hairline_grid | 0.142 | 0.161 | 0.093 | 0.348 | 0.219 | 0.145 | 1 |",
+        "2026-10-19T11:53:06.4903285Z | perf_2000_cubics_512 | 26.721 | 10.148 | 7.023 | 5.172 | 11.173 | 7.972 | 89 |",
+        "2026-10-19T11:53:06.4903817Z | stress_00 | 3.482 | 0.690 | 0.458 | 0.792 | 0.661 | 0.510 | 72 |",
+        "2026-10-19T11:53:06.4904297Z | stress_01 | 3.480 | 0.709 | 0.444 | 0.594 | 0.682 | 0.481 | 72 |",
+        "2026-10-19T11:53:06.4904774Z | stress_02 | 3.484 | 0.714 | 0.428 | 0.649 | 0.676 | 0.498 | 70 |",
+        "2026-10-19T11:53:06.4905248Z | stress_03 | 3.490 | 0.717 | 0.460 | 0.680 | 0.663 | 0.485 | 70 |",
+        "2026-10-19T11:53:06.4905713Z | stress_04 | 3.503 | 0.687 | 0.434 | 0.657 | 0.680 | 0.481 | 98 |",
+        "2026-10-19T11:53:06.4906180Z | stress_05 | 3.508 | 0.686 | 0.428 | 0.757 | 0.683 | 0.471 | 64 |",
+        "2026-10-19T11:53:06.4906669Z | stress_06 | 3.472 | 0.682 | 0.452 | 0.702 | 0.655 | 0.494 | 63 |",
+        "2026-10-19T11:53:06.4907134Z | stress_07 | 3.579 | 0.697 | 0.443 | 0.653 | 0.665 | 0.470 | 63 |",
+        "2026-10-19T11:53:06.4907601Z | stress_08 | 3.485 | 0.703 | 0.436 | 0.654 | 0.660 | 0.492 | 65 |",
+        "2026-10-19T11:53:06.4908217Z | stress_09 | 3.531 | 0.703 | 0.449 | 0.714 | 0.658 | 0.477 | 57 |",
+        "2026-10-19T11:53:06.4908733Z | stress_10 | 3.515 | 0.707 | 0.434 | 0.663 | 0.670 | 0.474 | 60 |",
+        "2026-10-19T11:53:06.4909240Z | stress_11 | 3.462 | 0.714 | 0.459 | 0.670 | 0.672 | 0.479 | 61 |",
+        "2026-10-19T11:53:06.4909753Z | stress_12 | 3.493 | 0.708 | 0.464 | 0.683 | 0.682 | 0.471 | 62 |",
+        "2026-10-19T11:53:06.4910260Z | stress_13 | 3.536 | 0.717 | 0.433 | 0.723 | 0.675 | 0.484 | 79 |",
+        "2026-10-19T11:53:06.4910776Z | stress_14 | 3.488 | 0.738 | 0.449 | 0.685 | 0.665 | 0.512 | 80 |",
+        "2026-10-19T11:53:06.4911285Z | stress_15 | 3.566 | 0.707 | 0.436 | 0.661 | 0.691 | 0.472 | 78 |",
+        "2026-10-19T11:53:07.7642787Z ",
+        "2026-10-19T11:53:07.7644055Z running 2 tests",
+        "2026-10-19T11:53:07.9150317Z ..",
+        "2026-10-19T11:53:07.9151102Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s",
+        "2026-10-19T11:53:07.9151635Z "
+      ]
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "logLines": 422,
+      "targets": [],
+      "rustTotals": {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "conclusion": "success"
+        },
+        {
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "proofExcerpts": [
+        "2026-10-19T11:53:17.9854500Z | perf_2000_cubics_512 | 17.274 | 6.938 | 4.482 | 2.659 | 6.916 | 5.607 | 89 |",
+        "2026-10-19T11:53:17.9855050Z | stress_00 | 3.499 | 0.453 | 0.289 | 0.410 | 0.421 | 0.360 | 72 |",
+        "2026-10-19T11:53:17.9855450Z | stress_01 | 3.436 | 0.395 | 0.331 | 0.390 | 0.430 | 0.310 | 72 |",
+        "2026-10-19T11:53:17.9855960Z | stress_02 | 3.563 | 0.371 | 0.329 | 0.384 | 0.394 | 0.293 | 70 |",
+        "2026-10-19T11:53:17.9856330Z | stress_03 | 3.574 | 0.404 | 0.288 | 0.349 | 0.410 | 0.307 | 70 |",
+        "2026-10-19T11:53:17.9857090Z | stress_04 | 3.717 | 0.377 | 0.261 | 0.383 | 0.467 | 0.345 | 98 |",
+        "2026-10-19T11:53:17.9857480Z | stress_05 | 3.597 | 0.370 | 0.282 | 0.371 | 0.412 | 0.302 | 64 |",
+        "2026-10-19T11:53:17.9857840Z | stress_06 | 3.730 | 0.381 | 0.262 | 0.468 | 0.392 | 0.358 | 63 |",
+        "2026-10-19T11:53:17.9858380Z | stress_07 | 3.341 | 0.367 | 0.271 | 0.369 | 0.421 | 0.352 | 63 |",
+        "2026-10-19T11:53:17.9858820Z | stress_08 | 3.341 | 0.392 | 0.274 | 0.369 | 0.470 | 0.350 | 65 |",
+        "2026-10-19T11:53:17.9859190Z | stress_09 | 3.365 | 0.370 | 0.329 | 0.370 | 0.508 | 0.338 | 57 |",
+        "2026-10-19T11:53:17.9859620Z | stress_10 | 3.151 | 0.409 | 0.299 | 0.638 | 0.409 | 0.328 | 60 |",
+        "2026-10-19T11:53:17.9860340Z | stress_11 | 3.344 | 0.409 | 0.317 | 0.383 | 0.431 | 0.326 | 61 |",
+        "2026-10-19T11:53:17.9860710Z | stress_12 | 3.245 | 0.397 | 0.284 | 0.377 | 0.530 | 0.331 | 62 |",
+        "2026-10-19T11:53:17.9861490Z | stress_13 | 3.106 | 0.449 | 0.349 | 0.391 | 0.544 | 0.369 | 79 |",
+        "2026-10-19T11:53:17.9861960Z | stress_14 | 3.212 | 0.373 | 0.323 | 0.377 | 0.484 | 0.392 | 80 |",
+        "2026-10-19T11:53:17.9862400Z | stress_15 | 3.127 | 0.382 | 0.290 | 0.358 | 0.480 | 0.333 | 78 |",
+        "2026-10-19T11:53:19.1111950Z \"macos\" \"aarch64\" (vello_cpu detected SIMD level \"Neon(Neon { _private: () })\")",
+        "2026-10-19T11:53:19.1114010Z | scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |",
+        "2026-10-19T11:53:19.1115640Z |---|---|---|---|---|---|---|---|",
+        "2026-10-19T11:53:19.1116540Z | cubic_blobs | 0.112 | 0.033 | 0.022 | 0.099 | 0.055 | 0.045 | 62 |",
+        "2026-10-19T11:53:19.1117490Z | thin_strokes | 0.069 | 0.073 | 0.044 | 0.090 | 0.074 | 0.057 | 1 |",
+        "2026-10-19T11:53:19.1118510Z | aa_edge_angles | 0.293 | 0.172 | 0.100 | 0.184 | 0.159 | 0.119 | 3 |",
+        "2026-10-19T11:53:19.1119840Z | translucent_overlap | 0.109 | 0.042 | 0.028 | 0.084 | 0.050 | 0.057 | 30 |",
+        "2026-10-19T11:53:19.1121140Z | alpha_stack | 0.248 | 0.079 | 0.048 | 0.104 | 0.096 | 0.088 | 1 |",
+        "2026-10-19T11:53:19.1121860Z | linear_gradient | 0.220 | 0.026 | 0.022 | 0.076 | 0.050 | 0.043 | 1 |",
+        "2026-10-19T11:53:19.1122560Z | radial_gradient | 0.208 | 0.044 | 0.034 | 0.100 | 0.081 | 0.078 | 48 |",
+        "2026-10-19T11:53:19.1123000Z | gradient_transformed | 0.126 | 0.037 | 0.023 | 0.134 | 0.049 | 0.046 | 2 |",
+        "2026-10-19T11:53:19.1123490Z | clip_circle | 0.114 | 0.092 | 0.063 | 0.159 | 0.110 | 0.092 | 43 |",
+        "2026-10-19T11:53:19.1124040Z | clip_nested | 0.148 | 0.053 | 0.032 | 0.115 | 0.076 | 0.066 | 68 |",
+        "2026-10-19T11:53:19.1124580Z | glyph_nonzero | 0.061 | 0.025 | 0.017 | 0.091 | 0.048 | 0.035 | 58 |",
+        "2026-10-19T11:53:19.1125220Z | glyph_evenodd | 0.059 | 0.026 | 0.019 | 0.079 | 0.133 | 0.034 | 58 |",
+        "2026-10-19T11:53:19.1125610Z | degenerate | 0.035 | 0.017 | 0.013 | 0.084 | 0.038 | 0.032 | 0 |",
+        "2026-10-19T11:53:19.1126210Z | star_nonzero | 0.050 | 0.022 | 0.019 | 0.081 | 0.047 | 0.037 | 1 |",
+        "2026-10-19T11:53:19.1126730Z | star_evenodd | 0.052 | 0.025 | 0.017 | 0.081 | 0.041 | 0.033 | 1 |",
+        "2026-10-19T11:53:19.1127240Z | coincident_edges | 0.045 | 0.022 | 0.020 | 0.085 | 0.045 | 0.034 | 2 |",
+        "2026-10-19T11:53:19.1127780Z | extreme_coordinates | 0.085 | 0.024 | 0.016 | 0.079 | 0.041 | 0.042 | 3 |",
+        "2026-10-19T11:53:19.1128410Z | subpixel_translation | 0.090 | 0.037 | 0.032 | 0.095 | 0.063 | 0.047 | 51 |",
+        "2026-10-19T11:53:19.1128920Z | non_integer_scales | 0.306 | 0.046 | 0.034 | 0.085 | 0.066 | 0.059 | 61 |",
+        "2026-10-19T11:53:19.1129960Z | stroked_curves | 0.250 | 0.043 | 0.028 | 0.089 | 0.057 | 0.048 | 132 |",
+        "2026-10-19T11:53:19.1130330Z | many_small_paths | 0.498 | 0.304 | 0.204 | 0.201 | 0.366 | 0.247 | 15 |",
+        "2026-10-19T11:53:19.1131070Z | hairline_grid | 0.076 | 0.133 | 0.061 | 0.125 | 0.117 | 0.090 | 1 |",
+        "2026-10-19T11:53:19.1133040Z | perf_2000_cubics_512 | 18.965 | 7.527 | 4.808 | 2.793 | 7.319 | 5.620 | 89 |",
+        "2026-10-19T11:53:19.1133390Z | stress_00 | 3.209 | 0.391 | 0.265 | 0.419 | 0.430 | 0.387 | 72 |",
+        "2026-10-19T11:53:19.1133800Z | stress_01 | 3.029 | 0.386 | 0.253 | 0.418 | 0.425 | 0.344 | 72 |",
+        "2026-10-19T11:53:19.1134210Z | stress_02 | 3.059 | 0.413 | 0.251 | 0.376 | 0.402 | 0.336 | 70 |",
+        "2026-10-19T11:53:19.1134840Z | stress_03 | 3.030 | 0.368 | 0.250 | 0.378 | 0.385 | 0.308 | 70 |",
+        "2026-10-19T11:53:19.1135160Z | stress_04 | 3.020 | 0.376 | 0.263 | 0.422 | 0.422 | 0.326 | 98 |",
+        "2026-10-19T11:53:19.1135640Z | stress_05 | 3.014 | 0.368 | 0.262 | 0.427 | 0.422 | 0.320 | 64 |",
+        "2026-10-19T11:53:19.1136020Z | stress_06 | 3.010 | 0.376 | 0.292 | 0.389 | 0.420 | 0.335 | 63 |",
+        "2026-10-19T11:53:19.1136480Z | stress_07 | 3.109 | 0.382 | 0.280 | 0.358 | 0.388 | 0.301 | 63 |",
+        "2026-10-19T11:53:19.1136900Z | stress_08 | 3.031 | 0.365 | 0.275 | 0.375 | 0.403 | 0.323 | 65 |",
+        "2026-10-19T11:53:19.1137570Z | stress_09 | 3.079 | 0.366 | 0.333 | 0.361 | 0.423 | 0.317 | 57 |",
+        "2026-10-19T11:53:19.1138190Z | stress_10 | 3.158 | 0.356 | 0.278 | 0.749 | 0.452 | 0.301 | 60 |",
+        "2026-10-19T11:53:19.1138820Z | stress_11 | 2.991 | 0.367 | 0.261 | 0.650 | 0.490 | 0.327 | 61 |",
+        "2026-10-19T11:53:19.1140450Z | stress_12 | 3.142 | 0.356 | 0.260 | 0.751 | 0.409 | 0.361 | 62 |",
+        "2026-10-19T11:53:19.1140980Z | stress_13 | 3.076 | 0.374 | 0.269 | 0.491 | 0.391 | 0.316 | 79 |",
+        "2026-10-19T11:53:19.1141720Z | stress_14 | 3.088 | 0.404 | 0.275 | 0.460 | 0.453 | 0.302 | 80 |",
+        "2026-10-19T11:53:19.1143710Z | stress_15 | 3.217 | 0.406 | 0.261 | 0.458 | 0.400 | 0.312 | 78 |",
+        "2026-10-19T11:53:20.3273910Z ",
+        "2026-10-19T11:53:20.3274850Z running 2 tests",
+        "2026-10-19T11:53:20.4403840Z ..",
+        "2026-10-19T11:53:20.4404360Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s",
+        "2026-10-19T11:53:20.4404730Z ",
+        "2026-10-19T11:53:32.2344450Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path"
+      ]
+    }
+  ],
+  "scope": "Both product OS workspace/frontend/diagnostics/reviewer suites and bundles; Linux headless and raster only."
+}

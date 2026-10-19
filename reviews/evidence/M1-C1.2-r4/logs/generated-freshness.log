@@ -1,0 +1,18 @@
+662 declarations -> reviews\evidence\M1-C1.2-r4\generated-ehb67og0\declared.rs, reviews\evidence\M1-C1.2-r4\generated-ehb67og0\declared.json
+[
+  {
+    "path": "crates\\registry\\src\\declared.rs",
+    "equal": true,
+    "sha256": "5e2669d2c28dca6c8e826222f444e8497735ed9a2649d04e2be893f5674484d5"
+  },
+  {
+    "path": "crates\\registry\\src\\declared.json",
+    "equal": true,
+    "sha256": "23260f9c21ae51587eb0f08b1fc4fb0ec8716bbf635153d7b7a80e8f733beeef"
+  },
+  {
+    "path": "plan\\spec-issues.md",
+    "equal": true,
+    "sha256": "e10a843160e17af2e1d67fa66e8e76d0d4902d5e9ea6b44197cb8a4bd1ea7b9c"
+  }
+]

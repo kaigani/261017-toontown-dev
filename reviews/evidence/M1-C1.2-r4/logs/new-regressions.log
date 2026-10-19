@@ -1,0 +1,38 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.11s
+     Running tests\c12_r4_closure.rs (target\debug\deps\c12_r4_closure-4738478539cc99ab.exe)
+
+running 4 tests
+
+thread 'storyline_playback_changed_can_announce_a_stop' (2004) panicked at crates\executor\tests\c12_r4_closure.rs:61:5:
+C12-R4-02: storyline.play.changed rejects an owning-section value: [Object {"pointer": String("/playing"), "message": String("true was expected")}]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'configured_publishing_services_can_be_connected' (16816) panicked at crates\executor\tests\c12_r4_closure.rs:61:5:
+C12-R4-02: export.publish.service.list rejects an owning-section value: [Object {"pointer": String("/services/0/connected"), "message": String("false was expected")}]
+test storyline_playback_changed_can_announce_a_stop ... FAILED
+test configured_publishing_services_can_be_connected ... FAILED
+
+thread 'immediately_querying_a_staged_checkpoint_is_empty' (29084) panicked at crates\executor\tests\c12_r4_closure.rs:31:5:
+assertion `left == right` failed: C12-R4-01: no content changed after the checkpoint
+  left: Array [Object {"id": String("dr_01K742SG0K993ER8JBX6H5VJK6"), "type": String("drawing"), "op": String("modified"), "rev": Number(2), "patch": Array []}]
+ right: Array []
+test immediately_querying_a_staged_checkpoint_is_empty ... FAILED
+
+thread 'nested_checkpoints_do_not_reinvalidate_unchanged_drawing_content' (20236) panicked at crates\executor\tests\c12_r4_closure.rs:54:5:
+assertion `left == right` failed: C12-R4-01: only the scene changed
+  left: Array [Object {"id": String("dr_01K742SG0K993ER8JBX6H5VJK6"), "type": String("drawing"), "op": String("modified"), "rev": Number(2), "patch": Array []}]
+ right: Array []
+test nested_checkpoints_do_not_reinvalidate_unchanged_drawing_content ... FAILED
+
+failures:
+
+failures:
+    configured_publishing_services_can_be_connected
+    immediately_querying_a_staged_checkpoint_is_empty
+    nested_checkpoints_do_not_reinvalidate_unchanged_drawing_content
+    storyline_playback_changed_can_announce_a_stop
+
+test result: FAILED. 0 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r4_closure`

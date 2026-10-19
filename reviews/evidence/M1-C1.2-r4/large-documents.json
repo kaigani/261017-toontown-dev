@@ -1,0 +1,29 @@
+{
+  "profile": "release",
+  "cases": [
+    {
+      "fixture": "100000 strokes",
+      "objects": 100092,
+      "assembleSeconds": 4.0435881,
+      "malformedInvocations": 796,
+      "inputBytes": 1048599,
+      "sweepSeconds": 0.4085841,
+      "maximumCallSeconds": 0.0081286,
+      "create20CheckpointsSeconds": 0.0009089,
+      "find100Seconds": 0.1146013,
+      "documentRev": 1
+    },
+    {
+      "fixture": "10000 drawings",
+      "objects": 10091,
+      "assembleSeconds": 0.1512083,
+      "malformedInvocations": 796,
+      "inputBytes": 1048599,
+      "sweepSeconds": 0.5957539,
+      "maximumCallSeconds": 0.002537,
+      "create20CheckpointsSeconds": 0.0630553,
+      "find100Seconds": 0.0229359,
+      "documentRev": 1
+    }
+  ]
+}

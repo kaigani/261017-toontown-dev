@@ -1,0 +1,55 @@
+{
+  "groups": {
+    "constant-regression-sweep": {
+      "cases": 1,
+      "accepted": 0
+    },
+    "fresh14": {
+      "cases": 14,
+      "accepted": 13
+    },
+    "original14": {
+      "cases": 14,
+      "accepted": 14
+    },
+    "random20": {
+      "cases": 20,
+      "accepted": 19
+    }
+  },
+  "regressions": [
+    "export.publish.service.list"
+  ],
+  "examples": 85,
+  "literalOrigins": 50,
+  "unmatchedLiterals": [
+    {
+      "id": "draw.drawing.get",
+      "type": "spec.DrawingReadback",
+      "foundVerbatimParsedValue": false
+    },
+    {
+      "id": "library.list",
+      "type": "spec.LibraryInfo",
+      "foundVerbatimParsedValue": false
+    },
+    {
+      "id": "library.template.insert",
+      "type": "spec.InsertResult",
+      "foundVerbatimParsedValue": false
+    },
+    {
+      "id": "import.file.get",
+      "type": "spec.ImportFileInfo",
+      "foundVerbatimParsedValue": false
+    }
+  ],
+  "placeholders": 86,
+  "context": {
+    "foreignTwoSegmentFamilyIsolated": true,
+    "accountToServiceCollision": {
+      "const": false
+    },
+    "rootCause": "first two ID segments group distinct subfamilies; first typed field wins, including command-specific constants"
+  }
+}

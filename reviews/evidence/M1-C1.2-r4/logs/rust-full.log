@@ -1,0 +1,5 @@
+clippy: exit 0
+test: exit 0
+clippy-diag: exit 0
+test-diag: exit 0
+headless: exit 0
