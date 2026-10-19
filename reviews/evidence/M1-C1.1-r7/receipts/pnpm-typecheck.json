@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "typecheck"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:20:01.909726+00:00",
+  "elapsed_seconds": 2.872,
+  "exit_code": 0,
+  "log": "logs/pnpm-typecheck.log",
+  "sha256": "cc8e3504b5dcc8904506bb84483c0c03b2b5d39e4bd2cc39a819f3ad6316d705",
+  "env": {}
+}

@@ -1,0 +1,10 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r7\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.17s
+     Running tests\c11_r7_staged_commit_10000.rs (target\debug\deps\c11_r7_staged_commit_10000-e93177ff00f46a35.exe)
+
+running 1 test
+test random_patches_never_commit_a_document_with_integrity_errors has been running for over 60 seconds
+test random_patches_never_commit_a_document_with_integrity_errors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 246.41s
+

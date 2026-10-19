@@ -1,0 +1,21 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r6_staged_inverse",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:31:31.518006+00:00",
+  "elapsed_seconds": 10.009,
+  "exit_code": 0,
+  "log": "logs/r6-regressions-confirmed.log",
+  "sha256": "471efadf0afeca01110f171c051beb8f0d9a8711f97a4d1ca7c6d3fbcab4f445",
+  "env": {}
+}

@@ -1,0 +1,6 @@
+{
+  "source": "crates/model/src/document/mod.rs",
+  "block": "        if crate::change::apply(&committed, &undo).ok().as_ref() != Some(&before) {\n            // Never return an inverse that does not restore the pre-state: fall back to replacing the whole entry.\n            undo = vec![crate::change::PatchOp {\n                op: \"replace\",\n                from: None,\n                path: String::new(),\n                range: None,\n                value: Some(before.clone()),\n                old_value: Some(committed),\n                elided: false,\n            }];\n        }\n",
+  "sha256": "0803cf03516a3ff77e130cc860f4a3c944b81ed7427148b0d149cfba943f4e11",
+  "technique": "Test double supplies a bad diff candidate; exact production guard/body extracted without changing product files. Tests both Ok(wrong state) and Err(apply)."
+}

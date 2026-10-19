@@ -1,0 +1,12 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.79s
+     Running tests\c11_r6_staged_inverse.rs (target\debug\deps\c11_r6_staged_inverse-fc8bd78e9908598e.exe)
+
+running 2 tests
+test staged_append_inverse_survives_run_merging ... ok
+test staged_inverse_restores_frames_after_runs_merge ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+

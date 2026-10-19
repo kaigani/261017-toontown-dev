@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cargo",
+    "doc",
+    "-p",
+    "tt-model",
+    "--no-deps",
+    "--locked"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:26:12.521908+00:00",
+  "elapsed_seconds": 7.609,
+  "exit_code": 0,
+  "log": "logs/rustdoc.log",
+  "sha256": "c354461186821d5df12f7734cc646cc05cd54bb3c0dd44c9425f1ed44df390ec",
+  "env": {}
+}

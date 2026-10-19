@@ -1,0 +1,15 @@
+{
+  "command": [
+    "node",
+    "tests/adversarial/guards.mjs",
+    "imports"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:21:12.378996+00:00",
+  "elapsed_seconds": 2.211,
+  "exit_code": 0,
+  "log": "logs/node-guards-imports.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "env": {}
+}

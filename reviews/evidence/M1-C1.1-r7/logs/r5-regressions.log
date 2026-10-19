@@ -1,0 +1,12 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r7\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.80s
+     Running tests\c11_r5_write_bounds.rs (target\debug\deps\c11_r5_write_bounds-410a3ffcc70d9017.exe)
+
+running 4 tests
+test nested_exposure_count_write_obeys_total_limit ... ok
+test exposure_append_batch_cannot_cross_limit ... ok
+test copy_and_move_into_exposure_obey_scene_limit ... ok
+test whole_mouth_string_writes_obey_scene_limit ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

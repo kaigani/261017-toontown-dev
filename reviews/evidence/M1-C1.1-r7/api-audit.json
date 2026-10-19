@@ -1,0 +1,13 @@
+{
+  "base": "fb31cfe",
+  "head": "0159179",
+  "added": [],
+  "removed": [],
+  "added_allow_unsafe_mut_lines": [],
+  "changed_model_sources": [
+    "crates/model/src/change.rs",
+    "crates/model/src/document/mod.rs"
+  ],
+  "signature": "pub fn with_patched_entry(&self, key: &EntryKey, patch: &[crate::change::PatchOp]) -> Result<(Document, Vec<crate::change::PatchOp>), Vec<ModelError>>",
+  "inspection": "Full diff inspected: no new product allows/unsafe/public mutable reference; the new mutable output borrow is local to diff_json. Only new builder test staged_inverse.rs adds a test-helper unwrap_used/panic allowance. No stateless invert returns."
+}

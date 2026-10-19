@@ -1,0 +1,26 @@
+{
+  "compared": "check IDs and ok flags, excluding timing",
+  "identical": true,
+  "checks": [
+    [
+      "engine.components",
+      true
+    ],
+    [
+      "engine.versions",
+      true
+    ],
+    [
+      "engine.ping",
+      true
+    ],
+    [
+      "determinism.ieee754",
+      true
+    ],
+    [
+      "headless.mcpLinked",
+      true
+    ]
+  ]
+}

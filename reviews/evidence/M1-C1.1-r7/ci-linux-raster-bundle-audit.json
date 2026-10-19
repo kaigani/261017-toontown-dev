@@ -1,0 +1,60 @@
+[
+  {
+    "job": "raster determinism (windows-latest)",
+    "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39188315483/job/117855347037",
+    "verified": true,
+    "relevant_log_lines": [
+      "raster determinism (windows-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T02:07:46.1944282Z for run in 1 2; do",
+      "raster determinism (windows-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T02:07:46.1945763Z     --check crates/render/examples/c03_raster/hashes.json || status=1",
+      "raster determinism (windows-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T02:07:53.0378784Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+    ]
+  },
+  {
+    "job": "bundle (macos-latest)",
+    "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39188315483/job/117855347068",
+    "verified": true,
+    "relevant_log_lines": [
+      "bundle (macos-latest)\tDefault build registers no M0 diagnostic command and refuses the flags\t2026-10-19T02:07:22.0567690Z diagnostics gating: ok",
+      "bundle (macos-latest)\tTauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)\t2026-10-19T02:08:00.8216520Z diagnostics gating: ok"
+    ]
+  },
+  {
+    "job": "raster determinism (macos-latest)",
+    "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39188315483/job/117855347073",
+    "verified": true,
+    "relevant_log_lines": [
+      "raster determinism (macos-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T02:07:15.6944570Z for run in 1 2; do",
+      "raster determinism (macos-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T02:07:15.6947080Z     --check crates/render/examples/c03_raster/hashes.json || status=1",
+      "raster determinism (macos-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T02:07:21.2901310Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s"
+    ]
+  },
+  {
+    "job": "raster determinism (ubuntu-latest)",
+    "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39188315483/job/117855347100",
+    "verified": true,
+    "relevant_log_lines": [
+      "raster determinism (ubuntu-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T02:06:39.7034669Z for run in 1 2; do",
+      "raster determinism (ubuntu-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T02:06:39.7036148Z     --check crates/render/examples/c03_raster/hashes.json || status=1",
+      "raster determinism (ubuntu-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T02:06:44.1742872Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s"
+    ]
+  },
+  {
+    "job": "headless without a display (ubuntu)",
+    "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39188315483/job/117855347102",
+    "verified": true,
+    "relevant_log_lines": [
+      "headless without a display (ubuntu)\tSelf-test with no display server\t2026-10-19T02:06:35.6673259Z [('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('headless.mcpLinked', True)]",
+      "headless without a display (ubuntu)\tSelf-test with no display server\t2026-10-19T02:06:35.8929912Z linked libraries (linux): libgcc_s.so.1, libc.so.6, ld-linux-x86-64.so.2",
+      "headless without a display (ubuntu)\tSelf-test with no display server\t2026-10-19T02:06:35.8936357Z headless dependency check passed"
+    ]
+  },
+  {
+    "job": "bundle (windows-latest)",
+    "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39188315483/job/117855347425",
+    "verified": true,
+    "relevant_log_lines": [
+      "bundle (windows-latest)\tDefault build registers no M0 diagnostic command and refuses the flags\t2026-10-19T02:09:45.7663981Z diagnostics gating: ok",
+      "bundle (windows-latest)\tTauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)\t2026-10-19T02:11:17.4902898Z diagnostics gating: ok"
+    ]
+  }
+]
