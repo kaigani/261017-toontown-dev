@@ -59,14 +59,26 @@ describe('generated command schemas', () => {
 
   it('carry 64-bit revisions losslessly and only in one representation', () => {
     const result = ref('doc.state.get.result');
-    const wide = certifyWireText<{ documentRev: unknown }>(STATE.replace('DOCREV', '9007199254740993'), result, COMMAND_DEFS);
+    const wide = certifyWireText<{ documentRev: unknown }>(
+      STATE.replace('DOCREV', '9007199254740993'),
+      result,
+      COMMAND_DEFS,
+    );
     expect(wide?.documentRev).toBe(9007199254740993n);
-    const max = certifyWireText<{ documentRev: unknown }>(STATE.replace('DOCREV', '18446744073709551615'), result, COMMAND_DEFS);
+    const max = certifyWireText<{ documentRev: unknown }>(
+      STATE.replace('DOCREV', '18446744073709551615'),
+      result,
+      COMMAND_DEFS,
+    );
     expect(max?.documentRev).toBe(18446744073709551615n);
-    expect(certifyWireText(STATE.replace('DOCREV', '18446744073709551616'), result, COMMAND_DEFS)).toBeUndefined();
+    expect(
+      certifyWireText(STATE.replace('DOCREV', '18446744073709551616'), result, COMMAND_DEFS),
+    ).toBeUndefined();
     expect(certifyWireText(STATE.replace('DOCREV', '-1'), result, COMMAND_DEFS)).toBeUndefined();
     const parsed = JSON.parse(STATE.replace('DOCREV', '1')) as Record<string, unknown>;
-    expect(violations(result, { ...parsed, documentRev: 9007199254740992 }, '', COMMAND_DEFS)).not.toEqual([]);
+    expect(violations(result, { ...parsed, documentRev: 9007199254740992 }, '', COMMAND_DEFS)).not.toEqual(
+      [],
+    );
     expect(violations(result, { ...parsed, documentRev: 12 }, '', COMMAND_DEFS)).toEqual([]);
   });
 
@@ -77,7 +89,10 @@ describe('generated command schemas', () => {
       expect(certify(props, { frameRate: bad, cameraWidth: 1920, cameraHeight: 1080 })).toBeUndefined();
     }
     const text = '{"frameRate":24,"cameraWidth":1920,"cameraHeight":1080}';
-    expect(certifyWireText<{ frameRate: unknown }>(text, ref('project.properties.get.result'), COMMAND_DEFS)?.frameRate).toBe(24);
+    expect(
+      certifyWireText<{ frameRate: unknown }>(text, ref('project.properties.get.result'), COMMAND_DEFS)
+        ?.frameRate,
+    ).toBe(24);
   });
 
   it('validate free-form results by own properties, at bounded depth, as snapshots', () => {

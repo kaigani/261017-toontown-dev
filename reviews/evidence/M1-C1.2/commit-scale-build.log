@@ -1,0 +1,4 @@
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 12.47s
+     Running `target\release\examples\commit_scale.exe`

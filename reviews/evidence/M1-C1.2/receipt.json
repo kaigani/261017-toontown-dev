@@ -1,0 +1,73 @@
+{
+  "what": "C1.2 handoff: local gate logs (Windows 11), recorded with scripts/record-gates.py from the working tree described by baseCommit + dirtyFiles.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked --no-fail-fast",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-lint.log": "pnpm lint",
+    "gates/pnpm-typecheck.log": "pnpm typecheck",
+    "gates/pnpm-test.log": "pnpm test",
+    "gates/pnpm-format.log": "pnpm format:check",
+    "gates/pnpm-licenses.log": "pnpm licenses:check",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless.log": "cargo build --release --locked -p tt-headless && \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\" --version && \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\" --selftest && \"C:\\Python313\\python.exe\" scripts/check-headless-deps.py \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\"",
+    "gates/reviewer-python-suites.log": "\"C:\\Python313\\python.exe\" scripts/run-reviewer-python-suites.py",
+    "gates/vitest-verbose.log": "pnpm --dir desktop exec vitest run --config vite.config.ts --reporter=verbose (per-file counts for the handoff table)",
+    "gates/executor-counts-nocapture.log": "cargo test --locked -p tt-executor --test c12_kernel_state --test c12_registry -- --nocapture (typed declarations, examples run, stubs)",
+    "gates/selftest-*.json, gates/selftest-compare.log": "toontown-headless --selftest --json twice; (id, ok) lists compared"
+  },
+  "status": {
+    "gates/fmt.log": 0,
+    "gates/clippy.log": 0,
+    "gates/clippy-diag.log": 0,
+    "gates/deny.log": 0,
+    "gates/test.log": 0,
+    "gates/test-diag.log": 0,
+    "gates/pnpm-lint.log": 0,
+    "gates/pnpm-typecheck.log": 0,
+    "gates/pnpm-format.log": 0,
+    "gates/pnpm-licenses.log": 0,
+    "gates/pnpm-test.log": 0,
+    "gates/build.log": 0,
+    "gates/headless.log": 0,
+    "gates/reviewer-python-suites.log": 0,
+    "gates/vitest-verbose.log": 0,
+    "gates/executor-counts-nocapture.log": 0
+  },
+  "recordedAt": "2026-10-19T04:15:44+00:00",
+  "baseCommit": "4c0bf1a3e4b28d479498f7ffdde9c0cb57a5974a",
+  "dirtyFiles": [
+    "desktop/src/ipc/commands.test.ts",
+    "reviews/evidence/M1-C1.2/",
+    "scripts/record-gates.py"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "sha256": {
+    "gates/build.log": "8d152577153370d7ac0cd8c67f6f65dcbe5c3df49fedca8bfcac763d07733fba",
+    "gates/clippy-diag.log": "4f06c3f9a017b6b9db94496e0311f0ed04324f0fe1cbf15b5546876ea7708355",
+    "gates/clippy.log": "4a3040cdf9d37603366c1bfff137cf49db9a6eafee193e11730761e357c4aeef",
+    "gates/deny.log": "7249399b7d168f2a0a0534bb3810a3c3c42dd6cc4f67105e47257dff64491c17",
+    "gates/executor-counts-nocapture.log": "139dbe1bf69867f8eb9ecd90c60b7feed208ff4ac2371e51b0bc7c304b2e8ab8",
+    "gates/fmt.log": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
+    "gates/headless.log": "56b5b39347a0ea2d2af2e1b8e4a64bc7d3c71e41ec90a8a774159f5e5a79223b",
+    "gates/pnpm-format.log": "c99d0a6ae963d1c83b01deafa2e993d73d3bdceebbbde9508a83ba7d4b6e4829",
+    "gates/pnpm-licenses.log": "2d685b39a756468ae498f680b9e15748fc8f2db9913b72da6652d7317e37f6ca",
+    "gates/pnpm-lint.log": "27d1c9da90e3723e813f92352b6882884d1a51cd07b90368d3bef605ac09563b",
+    "gates/pnpm-test.log": "df354f142a98fd2161f6de3dccc4facdb42710e81d3dfd19b7c6fe4c897aa7d5",
+    "gates/pnpm-typecheck.log": "aa5a38955f949a6cba31ec0a0ec0aadfb5695da948defb8ab06d14ff2f0b9d24",
+    "gates/reviewer-python-suites.log": "29fa3fb639a155ebcb66f10ffd06eef83f0d9912e405e7cafb5fc4b23d72c49a",
+    "gates/selftest-1.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "gates/selftest-2.json": "fbeadf361843cb7f2588227a57efb06d55828a6a85eba4a5f4034be7a5c3f3e0",
+    "gates/selftest-compare.log": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46",
+    "gates/test-diag.log": "e56d2cdbe54b9373726f86dd02fc76f129da242f799099779c85c5d4865a11e1",
+    "gates/test.log": "a5aa08e324dcdf3f2c9d34e461a3e227f99c9c1bc4d04c69b6afed4840e9fbea",
+    "gates/vitest-verbose.log": "5fb3a241146a24083a5d74277d1d126d2702f3d6e81299657783fa00feb8448a"
+  }
+}
