@@ -2,7 +2,7 @@
 //! the objects it changed with it. Stamping walks the typed entries; it does not re-serialise or re-validate them
 //! (only `rev` values change, and they stay ≤ `documentRev`).
 
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 use std::sync::Arc;
 
 use super::{Document, EntryKey};
@@ -20,6 +20,18 @@ impl Document {
     /// `arg.invalid` if `document_rev` is not greater than the current `documentRev` (REV-01: revisions never
     /// decrease, every transaction increments by one); `ref.notFound` for a key that is not in the document.
     pub fn with_revisions(&self, document_rev: u64, keys: &[String]) -> Result<Document, ModelError> {
+        let stamps: Vec<(String, u64)> = keys.iter().map(|k| (k.clone(), document_rev)).collect();
+        self.with_object_revisions(document_rev, &stamps)
+    }
+
+    /// The snapshot with `documentRev = document_rev` and each listed object's `rev` set to the given value (at most
+    /// `document_rev`). Used when restoring a snapshot (checkpoints, history jumps): objects whose content changes get
+    /// the new revision, objects whose content does not change keep their current revision (never a lower one,
+    /// REV-03). A drawing-local object stamped with `document_rev` also stamps its drawing (REV-02).
+    ///
+    /// # Errors
+    /// As [`Document::with_revisions`]; `arg.invalid` for a revision above `document_rev`.
+    pub fn with_object_revisions(&self, document_rev: u64, stamps: &[(String, u64)]) -> Result<Document, ModelError> {
         if document_rev <= self.document_rev {
             return Err(ModelError::with_details(
                 codes::ARG_INVALID,
@@ -27,8 +39,15 @@ impl Document {
                 serde_json::json!({ "documentRev": self.document_rev }),
             ));
         }
-        let mut by_entry: BTreeMap<EntryKey, BTreeSet<String>> = BTreeMap::new();
-        for key in keys {
+        let mut by_entry: BTreeMap<EntryKey, BTreeMap<String, u64>> = BTreeMap::new();
+        for (key, rev) in stamps {
+            if *rev > document_rev {
+                return Err(ModelError::with_details(
+                    codes::ARG_INVALID,
+                    format!("rev {rev} of `{key}` is above documentRev {document_rev}"),
+                    serde_json::json!({ "ref": key }),
+                ));
+            }
             let loc = self.locate(key).ok_or_else(|| {
                 ModelError::with_details(
                     codes::REF_NOT_FOUND,
@@ -36,54 +55,55 @@ impl Document {
                     serde_json::json!({ "ref": key }),
                 )
             })?;
-            let set = by_entry.entry(loc.entry.clone()).or_default();
-            set.insert(loc.key.clone());
-            if let EntryKey::Drawing(d) = &loc.entry {
-                set.insert(d.as_str().to_owned());
+            let map = by_entry.entry(loc.entry.clone()).or_default();
+            map.insert(loc.key.clone(), *rev);
+            if let EntryKey::Drawing(d) = &loc.entry
+                && *rev == document_rev
+            {
+                map.insert(d.as_str().to_owned(), document_rev);
             }
         }
         let mut next = self.clone();
         next.document_rev = document_rev;
-        let rev = document_rev;
         for (entry, set) in by_entry {
-            let hit = |id: &Id| set.contains(id.as_str());
+            let get = |key: &str| set.get(key).copied();
             match &entry {
                 EntryKey::Project => {
                     let mut p = (*self.project).clone();
-                    if hit(&p.id) {
-                        p.rev = rev;
+                    if let Some(r) = get(p.id.as_str()) {
+                        p.rev = r;
                     }
-                    if hit(&p.start_transition.id) {
-                        p.start_transition.rev = rev;
+                    if let Some(r) = get(p.start_transition.id.as_str()) {
+                        p.start_transition.rev = r;
                     }
-                    p.pens.iter_mut().filter(|x| hit(&x.id)).for_each(|x| x.rev = rev);
-                    p.assets.iter_mut().filter(|x| hit(&x.id)).for_each(|x| x.rev = rev);
+                    p.pens.iter_mut().for_each(|x| x.rev = get(x.id.as_str()).unwrap_or(x.rev));
+                    p.assets.iter_mut().for_each(|x| x.rev = get(x.id.as_str()).unwrap_or(x.rev));
                     next.project = Arc::new(p);
                 }
                 EntryKey::Library => {
                     let mut l = (*self.library).clone();
-                    if hit(&l.id) {
-                        l.rev = rev;
+                    if let Some(r) = get(l.id.as_str()) {
+                        l.rev = r;
                     }
-                    stamp_library(&mut l.children, &set, rev);
+                    stamp_library(&mut l.children, &set);
                     next.library = Arc::new(l);
                 }
                 EntryKey::Palette(id) => {
                     if let Some(p) = self.palettes.get(id) {
                         let mut p = (**p).clone();
-                        if hit(&p.id) {
-                            p.rev = rev;
+                        if let Some(r) = get(p.id.as_str()) {
+                            p.rev = r;
                         }
-                        p.styles.iter_mut().filter(|x| hit(&x.id)).for_each(|x| x.rev = rev);
-                        p.swatches.iter_mut().filter(|x| hit(&x.colour_id)).for_each(|x| x.rev = rev);
+                        p.styles.iter_mut().for_each(|x| x.rev = get(x.id.as_str()).unwrap_or(x.rev));
+                        p.swatches.iter_mut().for_each(|x| x.rev = get(x.colour_id.as_str()).unwrap_or(x.rev));
                         next.palettes.insert(id.clone(), Arc::new(p));
                     }
                 }
                 EntryKey::Bank(id) => {
                     if let Some(b) = self.banks.get(id) {
                         let mut b = (**b).clone();
-                        if hit(&b.id) {
-                            b.rev = rev;
+                        if let Some(r) = get(b.id.as_str()) {
+                            b.rev = r;
                         }
                         next.banks.insert(id.clone(), Arc::new(b));
                     }
@@ -91,22 +111,22 @@ impl Document {
                 EntryKey::Drawing(id) => {
                     if let Some(d) = self.drawings.get(id) {
                         let mut d = (**d).clone();
-                        if hit(&d.id) {
-                            d.rev = rev;
+                        if let Some(r) = get(d.id.as_str()) {
+                            d.rev = r;
                         }
                         let prefix = format!("{}/", d.id);
-                        stamp_nodes(&mut d.nodes, &prefix, &set, rev);
+                        stamp_nodes(&mut d.nodes, &prefix, &set);
                         next.drawings.insert(id.clone(), Arc::new(d));
                     }
                 }
                 EntryKey::Scene(id) => {
                     if let Some(s) = self.scenes.get(id) {
                         let mut s = (**s).clone();
-                        if hit(&s.id) {
-                            s.rev = rev;
+                        if let Some(r) = get(s.id.as_str()) {
+                            s.rev = r;
                         }
-                        if hit(&s.out_transition.id) {
-                            s.out_transition.rev = rev;
+                        if let Some(r) = get(s.out_transition.id.as_str()) {
+                            s.out_transition.rev = r;
                         }
                         next.scenes.insert(id.clone(), Arc::new(s));
                     }
@@ -114,21 +134,21 @@ impl Document {
                 EntryKey::Element(id) => {
                     if let Some(e) = self.elements.get(id) {
                         let mut e = (**e).clone();
-                        if hit(&e.id) {
-                            e.rev = rev;
+                        if let Some(r) = get(e.id.as_str()) {
+                            e.rev = r;
                         }
                         for ch in e.channels.iter_mut().flat_map(|m| m.values_mut()) {
-                            if hit(&ch.id) {
-                                ch.rev = rev;
+                            if let Some(r) = get(ch.id.as_str()) {
+                                ch.rev = r;
                             }
                             let prefix = format!("{}/", ch.id);
-                            let local = |x: &Id| set.contains(&format!("{prefix}{x}"));
-                            ch.keys.iter_mut().flatten().filter(|k| local(&k.id)).for_each(|k| k.rev = rev);
-                            ch.points.iter_mut().flatten().filter(|p| local(&p.id)).for_each(|p| p.rev = rev);
+                            let local = |x: &Id| set.get(&format!("{prefix}{x}")).copied();
+                            ch.keys.iter_mut().flatten().for_each(|k| k.rev = local(&k.id).unwrap_or(k.rev));
+                            ch.points.iter_mut().flatten().for_each(|p| p.rev = local(&p.id).unwrap_or(p.rev));
                         }
-                        e.blocks.iter_mut().flatten().filter(|x| hit(&x.id)).for_each(|x| x.rev = rev);
-                        e.placements.iter_mut().flatten().filter(|x| hit(&x.id)).for_each(|x| x.rev = rev);
-                        e.sequences.iter_mut().flatten().filter(|x| hit(&x.id)).for_each(|x| x.rev = rev);
+                        e.blocks.iter_mut().flatten().for_each(|x| x.rev = get(x.id.as_str()).unwrap_or(x.rev));
+                        e.placements.iter_mut().flatten().for_each(|x| x.rev = get(x.id.as_str()).unwrap_or(x.rev));
+                        e.sequences.iter_mut().flatten().for_each(|x| x.rev = get(x.id.as_str()).unwrap_or(x.rev));
                         next.elements.insert(id.clone(), Arc::new(e));
                     }
                 }
@@ -141,34 +161,34 @@ impl Document {
     }
 }
 
-fn stamp_nodes(nodes: &mut [DrawingNode], prefix: &str, set: &BTreeSet<String>, rev: u64) {
+fn stamp_nodes(nodes: &mut [DrawingNode], prefix: &str, set: &BTreeMap<String, u64>) {
     for n in nodes {
-        if set.contains(&format!("{prefix}{}", n.id)) {
-            n.rev = rev;
+        if let Some(r) = set.get(&format!("{prefix}{}", n.id)) {
+            n.rev = *r;
         }
         for s in n.strokes.iter_mut().flatten() {
-            if set.contains(&format!("{prefix}{}", s.id)) {
-                s.rev = rev;
+            if let Some(r) = set.get(&format!("{prefix}{}", s.id)) {
+                s.rev = *r;
             }
         }
         if let Some(children) = n.children.as_mut() {
-            stamp_nodes(children, prefix, set, rev);
+            stamp_nodes(children, prefix, set);
         }
     }
 }
 
-fn stamp_library(children: &mut [LibraryNode], set: &BTreeSet<String>, rev: u64) {
+fn stamp_library(children: &mut [LibraryNode], set: &BTreeMap<String, u64>) {
     for c in children {
         match c {
             LibraryNode::Folder(f) => {
-                if set.contains(f.id.as_str()) {
-                    f.rev = rev;
+                if let Some(r) = set.get(f.id.as_str()) {
+                    f.rev = *r;
                 }
-                stamp_library(&mut f.children, set, rev);
+                stamp_library(&mut f.children, set);
             }
             LibraryNode::Item(i) => {
-                if set.contains(i.id.as_str()) {
-                    i.rev = rev;
+                if let Some(r) = set.get(i.id.as_str()) {
+                    i.rev = *r;
                 }
             }
         }

@@ -11,6 +11,7 @@
 //! (C1.2) derives each next snapshot from the previous one inside a transaction and is the only component that holds
 //! the open project's current snapshot.
 
+mod find;
 mod index;
 mod paths;
 mod render;
@@ -612,6 +613,11 @@ impl Document {
     #[must_use]
     pub fn locate(&self, id: &str) -> Option<&Location> {
         self.index.location_str(id)
+    }
+
+    /// Every addressable object's location, in no particular order (C1.2 queries, revision bookkeeping).
+    pub fn locations(&self) -> impl Iterator<Item = &Location> {
+        self.index.iter()
     }
 
     /// Element IDs of a scene in Timeline order (depth-first, parents before children).

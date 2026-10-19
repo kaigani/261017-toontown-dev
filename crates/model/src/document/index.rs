@@ -152,6 +152,10 @@ impl Index {
     pub(super) fn len(&self) -> usize {
         self.by_key.len()
     }
+
+    pub(super) fn iter(&self) -> impl Iterator<Item = &Location> {
+        self.by_key.values()
+    }
 }
 
 struct Builder {

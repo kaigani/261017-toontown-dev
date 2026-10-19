@@ -21,7 +21,8 @@
 //! (undo label of an undoable command); `confirm = ["condition", …]`; `enablement = PATH` (a `const`
 //! `tt_registry::Enablement`; default: always enabled); `needs_project`; `example(title, params)` (repeatable);
 //! `not_implemented = "M1 C1.3"` (declared now, implemented by the named checkpoint: the handler validates and decodes
-//! the parameters, then fails with `command.notImplemented`); `agent_only = "justification"` (11 §14.1).
+//! the parameters, then fails with `command.notImplemented`); `agent_only = "justification"` (11 §14.1); `gui = "…"`
+//! (the GUI locations that invoke the command besides the menu manifest, for the parity test).
 
 use proc_macro::TokenStream;
 use proc_macro2::{Span, TokenStream as TokenStream2};
@@ -52,6 +53,7 @@ struct Args {
     examples: Vec<(String, String)>,
     not_implemented: Option<String>,
     agent_only: Option<String>,
+    gui: Option<String>,
 }
 
 fn lit_str(e: &Expr) -> syn::Result<String> {
@@ -85,6 +87,7 @@ fn parse_args(attr: TokenStream2) -> syn::Result<Args> {
                     "undo" => a.undo = Some(lit_str(&nv.value)?),
                     "not_implemented" => a.not_implemented = Some(lit_str(&nv.value)?),
                     "agent_only" => a.agent_only = Some(lit_str(&nv.value)?),
+                    "gui" => a.gui = Some(lit_str(&nv.value)?),
                     "enablement" => match &nv.value {
                         Expr::Path(p) => a.enablement = Some(p.path.clone()),
                         other => return Err(syn::Error::new_spanned(other, "expected a path to an Enablement")),
@@ -216,6 +219,10 @@ fn expand(attr: TokenStream2, item: TokenStream2) -> syn::Result<TokenStream2> {
         Some(u) => quote!(::core::option::Option::Some(#u)),
         None => quote!(::core::option::Option::None),
     };
+    let gui = match &a.gui {
+        Some(u) => quote!(::core::option::Option::Some(#u)),
+        None => quote!(::core::option::Option::None),
+    };
     let confirm = &a.confirm;
     let enablement = match &a.enablement {
         Some(p) => quote!(#p),
@@ -265,6 +272,7 @@ fn expand(attr: TokenStream2, item: TokenStream2) -> syn::Result<TokenStream2> {
                 result_schema: ::tt_registry::schema_of::<#out_ty>,
                 status: #status,
                 agent_only: #agent_only,
+                gui: #gui,
             },
             handler: {
                 fn __handler(

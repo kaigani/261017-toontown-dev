@@ -43,6 +43,10 @@ unicode-normalization = "0.1"
 getrandom = "0.4"
 ryu = "1.0"
 proptest = "1.12"
+# Compile-fail tests of the executor's exclusive mutation capability (C1.2).
+trybuild = "1.0"
+# `doc.object.find` regex predicates (10 §10.3); linear-time engine.
+regex = "1"
 sha2 = "0.11"
 thiserror = "2.0"
 tauri = { version = "2.12", features = [] }

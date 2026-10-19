@@ -273,20 +273,14 @@ pub fn own_view_of(object: &Value) -> Value {
     own
 }
 
-/// The own view of the object with index key `key`, with its type and the pointer of the object in its entry.
+/// The own view of the object with index key `key`, with its type. Only that object is serialised (a stroke of a
+/// 100 000-stroke drawing costs one stroke), which is what makes touched-object change sets cheap (C1.2).
 ///
 /// # Errors
 /// `ref.notFound` if the document has no such object.
 pub fn own_view(doc: &Document, key: &str) -> Result<(ObjectType, Value), ModelError> {
-    let not_found = || {
-        ModelError::with_details(codes::REF_NOT_FOUND, format!("`{key}` is not in the document"), json!({ "ref": key }))
-    };
-    let loc = doc.locate(key).ok_or_else(not_found)?;
-    let entry = doc.entry_raw_json(&loc.entry)?;
-    let at = object_pointer(&entry, &loc.key).ok_or_else(not_found)?;
-    let tokens = pointer::parse(&at)?;
-    let object = pointer::get(&entry, &tokens).ok_or_else(not_found)?;
-    Ok((loc.ty, own_view_of(object)))
+    let (ty, object) = doc.object_raw_json(key)?;
+    Ok((ty, own_view_of(&object)))
 }
 
 /// The own views of all objects in one entry of a document.

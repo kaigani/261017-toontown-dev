@@ -21,6 +21,11 @@
 //! Spec sections implemented: 11 §2 (registry), §7.1–§7.2 (discovery), §8 (kinds, validation), §14.1–§14.2
 //! (parity, schemas, examples); spec A. Milestone: M1 (C1.2). Decisions: ADR-0013.
 
+#![allow(
+    clippy::result_large_err,
+    reason = "CommandError is the typed wire error {code, message, details, hint} every command returns (11 §10); boxing it would only move the allocation"
+)]
+
 pub mod inventory;
 mod owners;
 
@@ -50,6 +55,23 @@ pub const MILESTONE: &str = "M1 (C1.2)";
 /// Command-registry version (semver; minor = additive, major = breaking; 11 §4). Major 0 until the command surface
 /// is frozen for version 1 (ADR-0013); every checkpoint that adds commands raises the minor version.
 pub const REGISTRY_VERSION: &str = "0.1.0";
+
+/// Commands of one section that perform an operation another section's command owns (ADR-0013 §10). Both ids stay
+/// registered with their own parameters: the first defaults its target from the current context (02's drawing
+/// commands act on the current drawing) and runs the second, whose semantics — the ones the schema's `x-command`
+/// names — apply. Not aliases: their parameter shapes differ.
+pub const DELEGATES: &[(&str, &str, &str)] = &[
+    (
+        "draw.drawing.rename",
+        "element.drawing.rename",
+        "drawingId defaults to the current drawing; runs element.drawing.rename {drawingId, name}",
+    ),
+    (
+        "draw.lock.set",
+        "element.drawingLock.set",
+        "drawingId defaults to the current drawing; runs element.drawingLock.set {drawingIds: [drawingId], locked}",
+    ),
+];
 
 /// Command kind (11 §8).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, JsonSchema)]
@@ -316,6 +338,9 @@ impl Disabled {
     }
 }
 
+/// The check of an enablement rule: the executor's context as `&dyn Any` → enabled or why not.
+pub type EnablementCheck = fn(&dyn Any) -> Result<(), Disabled>;
+
 /// An enablement rule (11 §2, §8): the text shown to agents and the check. The check receives the executor's
 /// context as `&dyn Any` (the registry does not depend on the executor).
 #[derive(Clone, Copy)]
@@ -323,7 +348,7 @@ pub struct Enablement {
     /// Human-readable rule.
     pub rule: &'static str,
     /// The check; `None` = always enabled.
-    pub check: Option<fn(&dyn Any) -> Result<(), Disabled>>,
+    pub check: Option<EnablementCheck>,
 }
 
 impl std::fmt::Debug for Enablement {
@@ -386,6 +411,8 @@ pub struct Decl {
     pub status: Status,
     /// `Some(justification)` when no GUI location invokes the command (11 §14.1).
     pub agent_only: Option<&'static str>,
+    /// GUI locations (panels, context menus, toolbars) that invoke the command besides the menu manifest.
+    pub gui: Option<&'static str>,
 }
 
 /// A declared command with its handler.
@@ -481,10 +508,14 @@ impl Entry {
             }),
             "status": status,
             "agentOnly": self.command.and_then(|c| c.decl.agent_only),
+            "guiLocations": self.command.and_then(|c| c.decl.gui),
             "spec": { "params": self.spec.params, "result": self.spec.result, "undo": self.spec.undo },
         });
         if let (Some(owner), Some(m)) = (owner, v.as_object_mut()) {
             m.insert("milestone".into(), json!(owner));
+        }
+        if let (Some((_, to, how)), Some(m)) = (DELEGATES.iter().find(|d| d.0 == self.spec.id), v.as_object_mut()) {
+            m.insert("delegatesTo".into(), json!({ "commandId": to, "mapping": how }));
         }
         v
     }
