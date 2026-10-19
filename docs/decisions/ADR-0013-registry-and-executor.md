@@ -41,7 +41,19 @@ state commands (§5, §12).
    selection, and the section's own disablement rules with their codes (e.g. `anim.camera.delete`: the scene keeps
    at least one camera, 05 §12.1, `anim.lastCamera`). Each entry stores samples using every property;
    `crates/registry/tests/declared.rs` mutates every leaf of them and adds unknown members, and the schema must
-   reject each. The registry therefore has no untyped entries; CI regenerates the files and fails on drift. A declaration whose implementation belongs to a later checkpoint names it (`not_implemented = "M1 C1.3"`);
+   reject each. **Round 3 (C12-R3-01): types come from context before names.** An untyped field takes the type of
+   the same-named typed field in its family's results (`sound.envelope.get` for `sound.envelope.point.*`), then in
+   the command's own parameters, then in its family's parameters; only then a name rule, and a name never narrows a
+   number to an integer; a fraction in a section example makes a number. Shapes the sections define are used where
+   spec A only names them: 02's drawing read-back for `draw.drawing.get`, 03 §12.3's palette object (style-keyed
+   swatch values), 04 §17.2's exposure columns, 04 §17.3's transfer options, 04 §17.5's element `media`, 05
+   §19.4's velocity `pins`, 09's PrintParams for print settings, 01 §7's preference values, the model `Pen`, and a
+   tool's option object for `*.options.set`; a binding's `params` is open (`x-open`: the bound command's schema
+   applies). The **positive counterpart** of the mutation test: every example the owning sections give for a type
+   an entry uses, or for the command itself (04 §17.2's write-back), is stored with the entry and must validate
+   (literal examples as written; `jsonc` examples with their placeholders read as values). Every placeholder node
+   carries the id of the spec issue that justifies it (`x-specIssue`); the family-to-issue numbering is fixed, and a
+   family left without placeholders keeps its issue, marked resolved. The registry therefore has no untyped entries; CI regenerates the files and fails on drift. A declaration whose implementation belongs to a later checkpoint names it (`not_implemented = "M1 C1.3"`);
    it validates its parameters and fails with **`command.notImplemented`** `{commandId, milestone}`. Owners follow
    plan §4 checkpoint by checkpoint (C12-R1-21): e.g. `import.movie.run` and `media.*` → M8 C8.3; the `anim.*`
    transform, channel, key, path, segment, camera and projection commands and `anim.evaluate` → M3 C3.2; motion-path
@@ -77,7 +89,9 @@ state commands (§5, §12).
    termination), so recovery is an engine restart by the host (C1.4). `job.wait` runs through the common contract
    in two phases (C12-R1-04): the document thread checks scopes, parameters, `expectRev` and the request cache, the
    caller's thread waits on the job table, and the document thread finishes the envelope (revision, request cache).
-   While it waits, its `requestId` is reserved: another call with the same id is `request.conflict` (C12-R2-06). In
+   While it waits, its `requestId` is owned by it: another call with the same id is `request.conflict`
+   (C12-R2-06), and an identical retry attaches to it and receives exactly its envelope; the cache keeps the first
+   envelope of an id and is never overwritten (C12-R3-03). In
    a sequential batch a `job.wait` step waits on the job table's condition variable too, for its `timeoutMs` but
    never beyond the remaining watchdog budget of the batch call (C12-R2-07); in an atomic batch it only polls.
    Snapshots handed out are immutable `Document` values.
@@ -102,7 +116,8 @@ state commands (§5, §12).
    (AG-09), and inside an atomic batch `doc.diff` sees the staged state at its predicted revision (C12-R1-08/09). A
    change to drawing content (a stroke, a node) also reports the drawing in `changes` with its new revision (REV-02,
    11 P6; C12-R1-11) — in the envelope, in `doc.changed` and in `doc.diff`, which adds a drawing whose revision moved
-   or which holds a changed object (C12-R2-12). A revision that cannot grow is `doc.limitExceeded {limit: "documentRev"}`, never an overflow
+   or which holds a changed object (C12-R2-12); the containing drawings are found from every change before the
+   `types` and `within` filters apply, so a drawing-only or drawing-scoped diff keeps them (C12-R3-04). A revision that cannot grow is `doc.limitExceeded {limit: "documentRev"}`, never an overflow
    (C12-R1-19).
 
 5. **Envelope, dry runs, idempotency.** Every call returns the 11 §7.2 envelope; `changes` is capped at 500 with
@@ -197,7 +212,10 @@ state commands (§5, §12).
     staged with the document and committed only when the call or batch commits; a failed batch or a dry run leaves
     no trace. **Checkpoints are staged session state** (C12-R2-03): `checkpoint.create` captures the content staged
     so far at the revision it has at that step (the predicted revision when something is staged), later steps of a
-    batch see and can delete it, and it goes with the batch's rollback or the dry run's discarded copy.
+    batch see and can delete it, and it goes with the batch's rollback or the dry run's discarded copy. The captured
+    document is stamped as the staged changes will commit it (C12-R3-02): its `documentRev` and the touched objects'
+    revisions are the revision the checkpoint advertises, so `doc.diff {sinceCheckpoint}` right after it is empty
+    (`tests/c12_checkpoint_property.rs` checks random edit/checkpoint/diff sequences).
 
 18. **Jobs belong to their session (C12-R1-05/13).** An agent sees, waits for and cancels only its own session's
     jobs (`job.notFound` otherwise); `job.list {all: true}` is the GUI's (`permission.denied` for agents). A job's
