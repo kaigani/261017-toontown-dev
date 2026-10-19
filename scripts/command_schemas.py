@@ -277,6 +277,31 @@ def empty_list(s) -> bool:
     return not _typed(items) or bare_object(items)
 
 
+_JSON_TYPES = ((bool, "boolean"), (int, "integer"), (float, "number"), (str, "string"), (list, "array"),
+               (dict, "object"), (type(None), "null"))
+
+
+def _json_type(v) -> str:
+    return next(t for py, t in _JSON_TYPES if isinstance(v, py))
+
+
+def bare_type(s):
+    """`s` with its `enum`/`const` sets removed at every level, each replaced by the bare type of its values: what a
+    field inherits from a same-named typed field of its context (C12-R4-02). A sibling's set is that command's own
+    answer (`account.close` returns `connected: false`), not the field's domain; named types (`$ref`) are kept."""
+    if isinstance(s, list):
+        return [bare_type(x) for x in s]
+    if not isinstance(s, dict):
+        return s
+    out = {k: bare_type(v) for k, v in s.items() if k not in ("enum", "const")}
+    values = s["enum"] if "enum" in s else [s["const"]] if "const" in s else None
+    if values is not None and "type" not in out:
+        # A literal `3` says nothing of an integer domain: a value set gives `number`.
+        types = sorted({"number" if t == "integer" else t for t in map(_json_type, values)})
+        out["type"] = types[0] if len(types) == 1 else types
+    return out
+
+
 def _typed(s: dict) -> bool:
     return any(k in s for k in ("type", "$ref", "anyOf", "oneOf", "allOf", "const", "enum", "x-specType"))
 

@@ -267,3 +267,43 @@ fn placeholders_carry_their_spec_issue() {
     }
     println!("placeholders with their issue: {n}");
 }
+
+#[test]
+fn literal_constants_are_stated_by_their_own_entry() {
+    // A `const` outside the model's `$defs` comes from a literal the spec writes in a response (`account.close` returns
+    // `{connected: false}`). It is that command's answer, not the field's domain: context typing never carries it to a
+    // sibling (C12-R4-02), so every such literal is written in its own entry's spec column.
+    fn walk(v: &Value, spec: &str, at: &str, out: &mut Vec<String>) {
+        match v {
+            Value::Object(m) => {
+                if let Some(c) = m.get("const") {
+                    let text = c.as_str().map_or_else(|| c.to_string(), str::to_owned);
+                    if !spec.contains(&text) {
+                        out.push(format!("{at}: {c}"));
+                    }
+                }
+                for (k, x) in m {
+                    if k != "$defs" {
+                        walk(x, spec, &format!("{at}/{k}"), out);
+                    }
+                }
+            }
+            Value::Array(a) => a.iter().enumerate().for_each(|(i, x)| walk(x, spec, &format!("{at}/{i}"), out)),
+            _ => {}
+        }
+    }
+    let mut foreign = Vec::new();
+    let mut n = 0;
+    for (i, c) in DECLARED.iter().enumerate() {
+        for result in [false, true] {
+            let s = declared_schema(i, result);
+            let spec = s["x-spec"].as_str().unwrap_or("").to_owned();
+            let mut out = Vec::new();
+            walk(&s, &spec, if result { "result" } else { "params" }, &mut out);
+            n += 1;
+            foreign.extend(out.into_iter().map(|o| format!("{} {o}", c.decl.id)));
+        }
+    }
+    assert!(foreign.is_empty(), "constants not stated by their own entry: {foreign:#?}");
+    println!("schemas checked: {n}");
+}

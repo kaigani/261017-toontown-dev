@@ -940,7 +940,9 @@ def overrides(e: dict, ps: dict, rs: dict):
 
 def field_index(e: dict, raw: dict) -> dict:
     """Typed fields of the command's context, by name: its family's results (siblings sharing the id prefix), its own
-    parameters, then its family's parameters. Nested fields count too (`points: [{strokeId, anchor: int}]`)."""
+    parameters, then its family's parameters. Nested fields count too (`points: [{strokeId, anchor: int}]`). Only
+    type and structure are inherited, never a sibling's `enum`/`const` set (C12-R4-02): an untyped field is one whose
+    owning section states no set, so it is the bare type."""
     fam = ".".join(e["id"].split(".")[:2])  # `sound.envelope` holds `.get`, `.set` and `.point.*`
     out: dict = {}
 
@@ -949,7 +951,7 @@ def field_index(e: dict, raw: dict) -> dict:
             return
         for k, v in (schema.get("properties") or {}).items():
             if isinstance(v, dict) and cs._typed(v) and not cs.empty_list(v):
-                into.setdefault(k, v)
+                into.setdefault(k, cs.bare_type(v))
             collect(v, into)
         if isinstance(schema.get("items"), dict):
             collect(schema["items"], into)

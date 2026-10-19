@@ -649,14 +649,7 @@
      "description": "object ID or path reference (10 §3)"
     },
     "type": {
-     "type": "string",
-     "enum": [
-      "drawing",
-      "camera",
-      "top",
-      "side",
-      "previous"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -673,7 +666,7 @@
    },
    "result": {
     "viewId": "scene:#1",
-    "type": "drawing"
+    "type": "example"
    }
   },
   "placeholders": [],
@@ -9686,32 +9679,7 @@
    "type": "object",
    "properties": {
     "toolId": {
-     "type": "string",
-     "enum": [
-      "select",
-      "contourEditor",
-      "perspective",
-      "repositionAll",
-      "brush",
-      "pencil",
-      "rectangle",
-      "ellipse",
-      "polyline",
-      "line",
-      "paint",
-      "unpaint",
-      "paintUnpainted",
-      "dropper",
-      "closeGap",
-      "stroke",
-      "editTexture",
-      "eraser",
-      "cutter",
-      "scissor",
-      "zoom",
-      "grabber",
-      "text"
-     ]
+     "type": "string"
     },
     "temporary": {
      "type": "boolean"
@@ -9728,7 +9696,7 @@
   "samples": {
    "params": {},
    "result": {
-    "toolId": "select",
+    "toolId": "example",
     "temporary": true
    }
   },
@@ -9751,32 +9719,7 @@
    "type": "object",
    "properties": {
     "toolId": {
-     "type": "string",
-     "enum": [
-      "select",
-      "contourEditor",
-      "perspective",
-      "repositionAll",
-      "brush",
-      "pencil",
-      "rectangle",
-      "ellipse",
-      "polyline",
-      "line",
-      "paint",
-      "unpaint",
-      "paintUnpainted",
-      "dropper",
-      "closeGap",
-      "stroke",
-      "editTexture",
-      "eraser",
-      "cutter",
-      "scissor",
-      "zoom",
-      "grabber",
-      "text"
-     ]
+     "type": "string"
     },
     "temporaryToolId": {
      "anyOf": [
@@ -9807,7 +9750,7 @@
   "samples": {
    "params": {},
    "result": {
-    "toolId": "select",
+    "toolId": "example",
     "temporaryToolId": "scene:#1",
     "group": "example"
    }
@@ -9863,32 +9806,7 @@
    "type": "object",
    "properties": {
     "toolId": {
-     "type": "string",
-     "enum": [
-      "select",
-      "contourEditor",
-      "perspective",
-      "repositionAll",
-      "brush",
-      "pencil",
-      "rectangle",
-      "ellipse",
-      "polyline",
-      "line",
-      "paint",
-      "unpaint",
-      "paintUnpainted",
-      "dropper",
-      "closeGap",
-      "stroke",
-      "editTexture",
-      "eraser",
-      "cutter",
-      "scissor",
-      "zoom",
-      "grabber",
-      "text"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -9902,7 +9820,7 @@
     "toolId": "select"
    },
    "result": {
-    "toolId": "select"
+    "toolId": "example"
    }
   },
   "placeholders": [],
@@ -10653,20 +10571,10 @@
         "maxLength": 65536
        },
        "type": {
-        "type": "string",
-        "enum": [
-         "brush",
-         "eraser"
-        ]
+        "type": "string"
        },
        "tipShape": {
-        "type": "string",
-        "enum": [
-         "round",
-         "oval",
-         "square",
-         "flat"
-        ]
+        "type": "string"
        },
        "minSize": {
         "type": "number",
@@ -10733,8 +10641,8 @@
      {
       "penId": "scene:#1",
       "name": "example",
-      "type": "brush",
-      "tipShape": "round",
+      "type": "example",
+      "tipShape": "example",
       "minSize": 1,
       "maxSize": 1,
       "smoothness": 1,
@@ -10842,10 +10750,6 @@
     },
     "type": {
      "type": "string",
-     "enum": [
-      "brush",
-      "eraser"
-     ],
      "default": "brush"
     }
    },
@@ -11535,11 +11439,6 @@
    "properties": {
     "mode": {
      "type": "string",
-     "enum": [
-      "none",
-      "mirror",
-      "kaleidoscope"
-     ],
      "default": "none"
     },
     "angle": {
@@ -12106,12 +12005,7 @@
      "type": "boolean"
     },
     "type": {
-     "type": "string",
-     "enum": [
-      "normal",
-      "field12",
-      "field16"
-     ]
+     "type": "string"
     },
     "overlay": {
      "type": "boolean"
@@ -12133,7 +12027,7 @@
    },
    "result": {
     "visible": true,
-    "type": "normal",
+    "type": "example",
     "overlay": true
    }
   },
@@ -12626,10 +12520,6 @@
        },
        "placement": {
         "type": "string",
-        "enum": [
-         "overlay",
-         "underlay"
-        ],
         "default": "underlay"
        }
       },
@@ -12804,11 +12694,7 @@
         "type": "boolean"
        },
        "placement": {
-        "type": "string",
-        "enum": [
-         "overlay",
-         "underlay"
-        ]
+        "type": "string"
        }
       },
       "required": [
@@ -12846,7 +12732,7 @@
       "sourceId": "scene:#1",
       "sourceKind": "example",
       "visible": true,
-      "placement": "overlay"
+      "placement": "example"
      }
     ]
    }
@@ -13581,13 +13467,7 @@
    "type": "object",
    "properties": {
     "mode": {
-     "type": "string",
-     "enum": [
-      "off",
-      "small",
-      "medium",
-      "large"
-     ]
+     "type": "string"
     },
     "tolerancesPx": {
      "type": "object",
@@ -13623,7 +13503,7 @@
   "samples": {
    "params": {},
    "result": {
-    "mode": "off",
+    "mode": "example",
     "tolerancesPx": {
      "small": "example",
      "medium": "example",
@@ -13663,13 +13543,7 @@
    "type": "object",
    "properties": {
     "mode": {
-     "type": "string",
-     "enum": [
-      "off",
-      "small",
-      "medium",
-      "large"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -13683,7 +13557,7 @@
     "mode": "off"
    },
    "result": {
-    "mode": "off"
+    "mode": "example"
    }
   },
   "placeholders": [],
@@ -17272,13 +17146,7 @@
         "maxLength": 65536
        },
        "kind": {
-        "type": "string",
-        "enum": [
-         "solid",
-         "linearGradient",
-         "radialGradient",
-         "texture"
-        ]
+        "type": "string"
        },
        "index": {
         "type": "integer"
@@ -17335,7 +17203,7 @@
      {
       "colourId": "scene:#1",
       "name": "example",
-      "kind": "solid",
+      "kind": "example",
       "index": 1,
       "deformable": false,
       "value": {},
@@ -21223,18 +21091,7 @@
    "type": "object",
    "properties": {
     "category": {
-     "type": "string",
-     "enum": [
-      "drawings",
-      "images",
-      "sounds",
-      "pegs",
-      "skeletons",
-      "media",
-      "cameras",
-      "effects",
-      "effectParameters"
-     ]
+     "type": "string"
     },
     "colour": {
      "type": "string",
@@ -21255,7 +21112,7 @@
     "colour": "#FF8000FF"
    },
    "result": {
-    "category": "drawings",
+    "category": "example",
     "colour": "#FF8000FF"
    }
   },
@@ -23911,11 +23768,7 @@
    "type": "object",
    "properties": {
     "mode": {
-     "type": "string",
-     "enum": [
-      "auto",
-      "free"
-     ]
+     "type": "string"
     },
     "start": {
      "type": "integer"
@@ -23936,7 +23789,7 @@
   "samples": {
    "params": {},
    "result": {
-    "mode": "auto",
+    "mode": "example",
     "start": 1,
     "end": 1
    }
@@ -23960,11 +23813,7 @@
    "type": "object",
    "properties": {
     "mode": {
-     "type": "string",
-     "enum": [
-      "auto",
-      "free"
-     ]
+     "type": "string"
     },
     "start": {
      "type": "integer"
@@ -23984,7 +23833,7 @@
   "samples": {
    "params": {},
    "result": {
-    "mode": "auto",
+    "mode": "example",
     "start": 1,
     "end": 1
    }
@@ -24022,11 +23871,7 @@
    "type": "object",
    "properties": {
     "mode": {
-     "type": "string",
-     "enum": [
-      "auto",
-      "free"
-     ]
+     "type": "string"
     },
     "start": {
      "type": "integer"
@@ -24050,7 +23895,7 @@
     "end": 1
    },
    "result": {
-    "mode": "auto",
+    "mode": "example",
     "start": 1,
     "end": 1
    }
@@ -24465,11 +24310,7 @@
    "type": "object",
    "properties": {
     "unit": {
-     "type": "string",
-     "enum": [
-      "frames",
-      "feetFrames"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -24483,7 +24324,7 @@
     "unit": "frames"
    },
    "result": {
-    "unit": "frames"
+    "unit": "example"
    }
   },
   "placeholders": [],
@@ -24743,12 +24584,7 @@
    "type": "object",
    "properties": {
     "operation": {
-     "type": "string",
-     "enum": [
-      "paste",
-      "cut",
-      "dragDrop"
-     ]
+     "type": "string"
     },
     "options": {
      "$ref": "#/$defs/spec.TransferOptions"
@@ -24850,7 +24686,7 @@
     }
    },
    "result": {
-    "operation": "paste",
+    "operation": "example",
     "options": {
      "overwriteDrawings": true,
      "exposure": true,
@@ -25828,11 +25664,7 @@
         "type": "boolean"
        },
        "placement": {
-        "type": "string",
-        "enum": [
-         "over",
-         "under"
-        ]
+        "type": "string"
        }
       },
       "required": [
@@ -25882,7 +25714,7 @@
       "drawingId": "scene:#1",
       "label": "example",
       "visible": true,
-      "placement": "over"
+      "placement": "example"
      }
     ]
    },
@@ -25986,11 +25818,7 @@
         "type": "boolean"
        },
        "placement": {
-        "type": "string",
-        "enum": [
-         "over",
-         "under"
-        ]
+        "type": "string"
        }
       },
       "required": [
@@ -26022,7 +25850,7 @@
       "drawingId": "scene:#1",
       "label": "example",
       "visible": true,
-      "placement": "over"
+      "placement": "example"
      }
     ]
    }
@@ -27264,11 +27092,7 @@
      "type": "number"
     },
     "fovMode": {
-     "type": "string",
-     "enum": [
-      "static",
-      "dynamic"
-     ]
+     "type": "string"
     },
     "fov": {
      "type": "number",
@@ -27356,7 +27180,7 @@
      "z": 1
     },
     "roll": 1,
-    "fovMode": "static",
+    "fovMode": "example",
     "fov": 41.1121,
     "effectiveFov": 1,
     "worldPosition": {
@@ -29332,12 +29156,7 @@
      "maxLength": 65536
     },
     "curveType": {
-     "type": "string",
-     "enum": [
-      "spline",
-      "interpolation",
-      "velocityBased"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -29355,7 +29174,7 @@
    },
    "result": {
     "channel": "example",
-    "curveType": "spline"
+    "curveType": "example"
    }
   },
   "placeholders": [],
@@ -29960,12 +29779,7 @@
         "maxLength": 65536
        },
        "curveType": {
-        "type": "string",
-        "enum": [
-         "spline",
-         "interpolation",
-         "velocityBased"
-        ]
+        "type": "string"
        },
        "keyCount": {
         "type": "number"
@@ -30004,7 +29818,7 @@
     "channels": [
      {
       "channel": "example",
-      "curveType": "spline",
+      "curveType": "example",
       "keyCount": 1,
       "allowedCurveTypes": [
        "example"
@@ -30240,11 +30054,7 @@
         "type": "boolean"
        },
        "handleMode": {
-        "type": "string",
-        "enum": [
-         "smooth",
-         "broken"
-        ]
+        "type": "string"
        },
        "left": {
         "type": "object",
@@ -30279,17 +30089,7 @@
         "additionalProperties": false
        },
        "preset": {
-        "type": "string",
-        "enum": [
-         "constant",
-         "linear",
-         "easeInOut",
-         "fastInOut",
-         "extremeEaseInOut",
-         "extremeFastInOut",
-         "slowAcceleration",
-         "slowDeceleration"
-        ]
+        "type": "string"
        }
       },
       "required": [
@@ -30346,7 +30146,7 @@
       "frame": 1,
       "value": 1,
       "constantSegment": true,
-      "handleMode": "smooth",
+      "handleMode": "example",
       "left": {
        "dt": 1,
        "dv": 1
@@ -30355,7 +30155,7 @@
        "dt": 1,
        "dv": 1
       },
-      "preset": "constant"
+      "preset": "example"
      }
     ]
    },
@@ -30394,12 +30194,7 @@
      "maxLength": 65536
     },
     "projection": {
-     "type": "string",
-     "enum": [
-      "x",
-      "y",
-      "z"
-     ]
+     "type": "string"
     },
     "selectedFrames": {
      "type": "array",
@@ -30432,7 +30227,7 @@
    "result": {
     "nodeId": "scene:#1",
     "channel": "example",
-    "projection": "x",
+    "projection": "example",
     "selectedFrames": [
      1
     ],
@@ -32643,11 +32438,7 @@
       "type": "object",
       "properties": {
        "kind": {
-        "type": "string",
-        "enum": [
-         "key",
-         "control"
-        ]
+        "type": "string"
        },
        "frame": {
         "type": "integer"
@@ -32771,7 +32562,7 @@
     "nodeId": "scene:#1",
     "points": [
      {
-      "kind": "key",
+      "kind": "example",
       "frame": 1,
       "x": 1,
       "y": 1,
@@ -33109,12 +32900,7 @@
      "maximum": 1
     },
     "units": {
-     "type": "string",
-     "enum": [
-      "fields",
-      "inches",
-      "centimetres"
-     ]
+     "type": "string"
     },
     "displayUnits": {
      "type": "boolean"
@@ -33158,7 +32944,7 @@
     "defaultTension": 1,
     "defaultContinuity": 1,
     "defaultBias": 1,
-    "units": "fields",
+    "units": "example",
     "displayUnits": true,
     "boxHighlighting": true,
     "keepSelectionVisible": true,
@@ -35044,23 +34830,7 @@
    "type": "object",
    "properties": {
     "tool": {
-     "type": "string",
-     "enum": [
-      "select",
-      "transform",
-      "record",
-      "rotate",
-      "skew",
-      "scale",
-      "motion",
-      "boneCreate",
-      "boneSetup",
-      "boneManipulate",
-      "boneInverse",
-      "boneForward",
-      "boneInfluence",
-      "boneParent"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -35073,7 +34843,7 @@
   "samples": {
    "params": {},
    "result": {
-    "tool": "select"
+    "tool": "example"
    }
   },
   "placeholders": [],
@@ -35095,23 +34865,7 @@
    "type": "object",
    "properties": {
     "tool": {
-     "type": "string",
-     "enum": [
-      "select",
-      "transform",
-      "record",
-      "rotate",
-      "skew",
-      "scale",
-      "motion",
-      "boneCreate",
-      "boneSetup",
-      "boneManipulate",
-      "boneInverse",
-      "boneForward",
-      "boneInfluence",
-      "boneParent"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -35123,7 +34877,7 @@
   "samples": {
    "params": {},
    "result": {
-    "tool": "select"
+    "tool": "example"
    }
   },
   "placeholders": [],
@@ -35172,23 +34926,7 @@
    "type": "object",
    "properties": {
     "tool": {
-     "type": "string",
-     "enum": [
-      "select",
-      "transform",
-      "record",
-      "rotate",
-      "skew",
-      "scale",
-      "motion",
-      "boneCreate",
-      "boneSetup",
-      "boneManipulate",
-      "boneInverse",
-      "boneForward",
-      "boneInfluence",
-      "boneParent"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -35203,7 +34941,7 @@
     "cycleRotate": false
    },
    "result": {
-    "tool": "select"
+    "tool": "example"
    }
   },
   "placeholders": [],
@@ -35589,13 +35327,7 @@
    "type": "object",
    "properties": {
     "type": {
-     "type": "string",
-     "enum": [
-      "drawing",
-      "camera",
-      "top",
-      "side"
-     ]
+     "type": "string"
     },
     "zoom": {
      "type": "number"
@@ -35645,11 +35377,6 @@
     },
     "slot": {
      "type": "string",
-     "enum": [
-      "A",
-      "B",
-      "other"
-     ],
      "default": "other"
     }
    },
@@ -35669,7 +35396,7 @@
     "viewId": "scene:#1"
    },
    "result": {
-    "type": "drawing",
+    "type": "example",
     "zoom": 1,
     "pan": {
      "x": 1,
@@ -35730,11 +35457,6 @@
     },
     "slot": {
      "type": "string",
-     "enum": [
-      "A",
-      "B",
-      "other"
-     ],
      "default": "other"
     },
     "state": {
@@ -35806,13 +35528,7 @@
      "description": "object ID or path reference (10 §3)"
     },
     "type": {
-     "type": "string",
-     "enum": [
-      "drawing",
-      "camera",
-      "top",
-      "side"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -35829,7 +35545,7 @@
    },
    "result": {
     "viewId": "scene:#1",
-    "type": "drawing"
+    "type": "example"
    }
   },
   "placeholders": [],
@@ -43146,13 +42862,7 @@
       "type": "object",
       "properties": {
        "slot": {
-        "type": "string",
-        "enum": [
-         "mask",
-         "sprites",
-         "bones",
-         "skin"
-        ]
+        "type": "string"
        },
        "elementId": {
         "type": "string",
@@ -43194,7 +42904,7 @@
    "result": {
     "slots": [
      {
-      "slot": "mask",
+      "slot": "example",
       "elementId": "scene:#1",
       "attachedIds": [
        "scene:#1"
@@ -44634,11 +44344,6 @@
        },
        "source": {
         "type": "string",
-        "enum": [
-         "builtin",
-         "user",
-         "all"
-        ],
         "default": "all"
        },
        "effectType": {
@@ -44917,12 +44622,7 @@
      "description": "Default: current."
     },
     "size": {
-     "type": "string",
-     "enum": [
-      "quarter",
-      "half",
-      "full"
-     ]
+     "type": "string"
     },
     "jobId": {
      "type": "string",
@@ -44944,7 +44644,7 @@
    "params": {},
    "result": {
     "frame": 1,
-    "size": "quarter",
+    "size": "example",
     "jobId": "scene:#1"
    }
   },
@@ -45054,23 +44754,13 @@
    "type": "object",
    "properties": {
     "size": {
-     "type": "string",
-     "enum": [
-      "quarter",
-      "half",
-      "full"
-     ]
+     "type": "string"
     },
     "followCurrentFrame": {
      "type": "boolean"
     },
     "defaultRange": {
-     "type": "string",
-     "enum": [
-      "single",
-      "playbackRange",
-      "fromCurrent"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -45084,9 +44774,9 @@
   "samples": {
    "params": {},
    "result": {
-    "size": "quarter",
+    "size": "example",
     "followCurrentFrame": true,
-    "defaultRange": "single"
+    "defaultRange": "example"
    }
   },
   "placeholders": [],
@@ -45128,23 +44818,13 @@
    "type": "object",
    "properties": {
     "size": {
-     "type": "string",
-     "enum": [
-      "quarter",
-      "half",
-      "full"
-     ]
+     "type": "string"
     },
     "followCurrentFrame": {
      "type": "boolean"
     },
     "defaultRange": {
-     "type": "string",
-     "enum": [
-      "single",
-      "playbackRange",
-      "fromCurrent"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -45162,9 +44842,9 @@
     "defaultRange": "single"
    },
    "result": {
-    "size": "quarter",
+    "size": "example",
     "followCurrentFrame": true,
-    "defaultRange": "single"
+    "defaultRange": "example"
    }
   },
   "placeholders": [],
@@ -45295,12 +44975,7 @@
         "description": "Default: current."
        },
        "size": {
-        "type": "string",
-        "enum": [
-         "quarter",
-         "half",
-         "full"
-        ]
+        "type": "string"
        }
       },
       "required": [
@@ -45333,7 +45008,7 @@
     "cachedFrames": [
      {
       "frame": 1,
-      "size": "quarter"
+      "size": "example"
      }
     ]
    }
@@ -48604,10 +48279,7 @@
     "stopFrame": {
      "anyOf": [
       {
-       "type": "string",
-       "enum": [
-        "natural"
-       ]
+       "type": "string"
       },
       {
        "type": "integer"
@@ -48634,7 +48306,7 @@
    "result": {
     "placementId": "scene:#1",
     "startFrame": 1,
-    "stopFrame": "natural"
+    "stopFrame": "example"
    }
   },
   "placeholders": [],
@@ -49107,10 +48779,7 @@
     "stopFrame": {
      "anyOf": [
       {
-       "type": "string",
-       "enum": [
-        "natural"
-       ]
+       "type": "string"
       },
       {
        "type": "integer"
@@ -49133,7 +48802,7 @@
    },
    "result": {
     "startFrame": 1,
-    "stopFrame": "natural"
+    "stopFrame": "example"
    }
   },
   "placeholders": [],
@@ -49536,10 +49205,7 @@
     "stopFrame": {
      "anyOf": [
       {
-       "type": "string",
-       "enum": [
-        "natural"
-       ]
+       "type": "string"
       },
       {
        "type": "integer"
@@ -49575,7 +49241,7 @@
     "inPoint": 1,
     "outPoint": 1,
     "startFrame": 1,
-    "stopFrame": "natural",
+    "stopFrame": "example",
     "naturalEndFrame": 1,
     "clamped": true
    }
@@ -51417,17 +51083,7 @@
    "type": "object",
    "properties": {
     "mouth": {
-     "type": "string",
-     "enum": [
-      "A",
-      "B",
-      "C",
-      "D",
-      "E",
-      "F",
-      "G",
-      "X"
-     ]
+     "type": "string"
     },
     "drawingId": {
      "type": "string",
@@ -51457,7 +51113,7 @@
     "step": "next"
    },
    "result": {
-    "mouth": "A",
+    "mouth": "example",
     "drawingId": "scene:#1",
     "drawingName": "example"
    }
@@ -51544,14 +51200,7 @@
          "maxLength": 65536
         },
         "rule": {
-         "type": "string",
-         "enum": [
-          "stored",
-          "name",
-          "property",
-          "order",
-          "none"
-         ]
+         "type": "string"
         }
        },
        "required": [
@@ -51590,7 +51239,7 @@
      "A..X": {
       "drawingId": "scene:#1",
       "drawingName": "example",
-      "rule": "stored"
+      "rule": "example"
      }
     },
     "complete": true
@@ -58439,12 +58088,7 @@
    "type": "object",
    "properties": {
     "mode": {
-     "type": "string",
-     "enum": [
-      "thumbnails",
-      "list",
-      "details"
-     ]
+     "type": "string"
     },
     "currentNodeId": {
      "type": "string",
@@ -58479,7 +58123,7 @@
   "samples": {
    "params": {},
    "result": {
-    "mode": "thumbnails",
+    "mode": "example",
     "currentNodeId": "scene:#1",
     "selectedNodeIds": [
      "scene:#1"
@@ -58518,12 +58162,7 @@
    "type": "object",
    "properties": {
     "mode": {
-     "type": "string",
-     "enum": [
-      "thumbnails",
-      "list",
-      "details"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -58537,7 +58176,7 @@
     "mode": "thumbnails"
    },
    "result": {
-    "mode": "thumbnails"
+    "mode": "example"
    }
   },
   "placeholders": [],
@@ -59423,7 +59062,7 @@
    "type": "object",
    "properties": {
     "playing": {
-     "const": true
+     "type": "boolean"
     },
     "globalFrame": {
      "type": "number"
@@ -60823,12 +60462,7 @@
    "type": "object",
    "properties": {
     "kind": {
-     "type": "string",
-     "enum": [
-      "none",
-      "scene",
-      "transition"
-     ]
+     "type": "string"
     },
     "sceneId": {
      "type": "string",
@@ -60850,7 +60484,7 @@
   "samples": {
    "params": {},
    "result": {
-    "kind": "none",
+    "kind": "example",
     "sceneId": "scene:#1",
     "editPoint": 1
    }
@@ -61784,16 +61418,7 @@
       "type": "object",
       "properties": {
        "type": {
-        "type": "string",
-        "enum": [
-         "none",
-         "fade",
-         "crossDissolve",
-         "wipe",
-         "slide",
-         "clockWipe",
-         "checker"
-        ]
+        "type": "string"
        },
        "parameters": {
         "type": "array",
@@ -61805,16 +61430,7 @@
            "maxLength": 65536
           },
           "type": {
-           "type": "string",
-           "enum": [
-            "none",
-            "fade",
-            "crossDissolve",
-            "wipe",
-            "slide",
-            "clockWipe",
-            "checker"
-           ]
+           "type": "string"
           },
           "min": {
            "type": "number"
@@ -61874,11 +61490,11 @@
    "result": {
     "types": [
      {
-      "type": "none",
+      "type": "example",
       "parameters": [
        {
         "name": "example",
-        "type": "none",
+        "type": "example",
         "min": 1,
         "max": 1,
         "step": 1,
@@ -62768,11 +62384,7 @@
      "description": "object ID or path reference (10 §3)"
     },
     "mode": {
-     "type": "string",
-     "enum": [
-      "auto",
-      "free"
-     ]
+     "type": "string"
     },
     "start": {
      "type": "integer"
@@ -62795,7 +62407,7 @@
    "params": {},
    "result": {
     "sceneId": "scene:#1",
-    "mode": "auto",
+    "mode": "example",
     "start": 1,
     "end": 1
    }
@@ -62898,11 +62510,7 @@
    "type": "object",
    "properties": {
     "mode": {
-     "type": "string",
-     "enum": [
-      "auto",
-      "free"
-     ]
+     "type": "string"
     },
     "start": {
      "type": "integer"
@@ -62925,7 +62533,7 @@
     "mode": "auto"
    },
    "result": {
-    "mode": "auto",
+    "mode": "example",
     "start": 1,
     "end": 1
    }
@@ -62962,11 +62570,7 @@
    "type": "object",
    "properties": {
     "mode": {
-     "type": "string",
-     "enum": [
-      "auto",
-      "free"
-     ]
+     "type": "string"
     },
     "start": {
      "type": "integer"
@@ -62994,7 +62598,7 @@
     "end": 1
    },
    "result": {
-    "mode": "auto",
+    "mode": "example",
     "start": 1,
     "end": 1,
     "adjusted": true
@@ -63038,10 +62642,7 @@
     "fps": {
      "anyOf": [
       {
-       "type": "string",
-       "enum": [
-        "project"
-       ]
+       "type": "string"
       },
       {
        "type": "number",
@@ -66613,14 +66214,7 @@
         "maxItems": 100000
        },
        "kind": {
-        "type": "string",
-        "enum": [
-         "movie",
-         "sequence",
-         "still",
-         "vector",
-         "document"
-        ]
+        "type": "string"
        },
        "video": {
         "type": [
@@ -66705,7 +66299,7 @@
       "extensions": [
        "example"
       ],
-      "kind": "movie",
+      "kind": "example",
       "video": "example",
       "audio": "example",
       "alpha": true,
@@ -68403,17 +67997,12 @@
         "type": "array",
         "items": {
          "type": "string",
-         "enum": [
-          "public",
-          "unlisted",
-          "private"
-         ],
          "default": "private"
         },
         "maxItems": 100000
        },
        "connected": {
-        "const": false
+        "type": "boolean"
        }
       },
       "required": [
@@ -68460,7 +68049,7 @@
       "visibilities": [
        "private"
       ],
-      "connected": false
+      "connected": true
      }
     ]
    }
@@ -68736,11 +68325,7 @@
    "type": "object",
    "properties": {
     "preset": {
-     "type": "string",
-     "enum": [
-      "default",
-      "custom"
-     ]
+     "type": "string"
     },
     "settings": {
      "type": "object",
@@ -68763,7 +68348,7 @@
     "format": "example"
    },
    "result": {
-    "preset": "default",
+    "preset": "example",
     "settings": {}
    }
   },
@@ -68816,11 +68401,7 @@
    "type": "object",
    "properties": {
     "preset": {
-     "type": "string",
-     "enum": [
-      "default",
-      "custom"
-     ]
+     "type": "string"
     },
     "settings": {
      "type": "object",
@@ -68845,7 +68426,7 @@
     "settings": {}
    },
    "result": {
-    "preset": "default",
+    "preset": "example",
     "settings": {}
    }
   },
@@ -71066,12 +70647,7 @@
      "default": 50
     },
     "aspectRatio": {
-     "type": "string",
-     "enum": [
-      "fit",
-      "fill",
-      "stretch"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -71092,7 +70668,7 @@
    "result": {
     "reference": "scene:#1",
     "opacity": 50,
-    "aspectRatio": "fit"
+    "aspectRatio": "example"
    }
   },
   "placeholders": [],
@@ -72148,10 +71724,6 @@
     },
     "insertMode": {
      "type": "string",
-     "enum": [
-      "insert",
-      "overwrite"
-     ],
      "default": "insert"
     },
     "advance": {
@@ -72213,11 +71785,7 @@
      "maxLength": 65536
     },
     "orientation": {
-     "type": "string",
-     "enum": [
-      "portrait",
-      "landscape"
-     ]
+     "type": "string"
     },
     "printableArea": {
      "type": "object",
@@ -72258,7 +71826,7 @@
    },
    "result": {
     "paperSize": "example",
-    "orientation": "portrait",
+    "orientation": "example",
     "printableArea": {
      "x": 1,
      "y": 1,
@@ -72308,11 +71876,7 @@
      "maxLength": 65536
     },
     "orientation": {
-     "type": "string",
-     "enum": [
-      "portrait",
-      "landscape"
-     ]
+     "type": "string"
     }
    },
    "required": [
@@ -72330,7 +71894,7 @@
    },
    "result": {
     "paperSize": "example",
-    "orientation": "portrait"
+    "orientation": "example"
    }
   },
   "placeholders": [],
