@@ -1,0 +1,53 @@
+{
+  "what": "Local gate logs recorded by scripts/record-gates.py.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked --no-fail-fast",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-lint.log": "pnpm lint",
+    "gates/pnpm-typecheck.log": "pnpm typecheck",
+    "gates/pnpm-test.log": "pnpm test",
+    "gates/pnpm-format.log": "pnpm format:check",
+    "gates/pnpm-licenses.log": "pnpm licenses:check",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless.log": "cargo build --release --locked -p tt-headless && \"C:\\Users\\kaiga\\work\\review\\m1-c12-r3\\target\\release\\toontown-headless.exe\" --version && \"C:\\Users\\kaiga\\work\\review\\m1-c12-r3\\target\\release\\toontown-headless.exe\" --selftest && \"C:\\Python313\\python.exe\" scripts/check-headless-deps.py \"C:\\Users\\kaiga\\work\\review\\m1-c12-r3\\target\\release\\toontown-headless.exe\"",
+    "gates/reviewer-python-suites.log": "\"C:\\Python313\\python.exe\" scripts/run-reviewer-python-suites.py"
+  },
+  "status": {
+    "gates/fmt.log": 0,
+    "gates/clippy.log": 0,
+    "gates/test.log": 0,
+    "gates/clippy-diag.log": 0,
+    "gates/test-diag.log": 0,
+    "gates/deny.log": 0,
+    "gates/headless.log": 0
+  },
+  "recordedAt": "2026-10-19T10:59:53+00:00",
+  "baseCommit": "2e0e5dd5feaf47199f5c15595b187a34db3e5c5e",
+  "dirtyFiles": [
+    "crates/executor/tests/c12_r3_contracts.rs",
+    "crates/executor/tests/c12_r3_registry.rs",
+    "crates/executor/tests/c12_r3_stress.rs",
+    "reviews/evidence/M1-C1.2-r3/"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "sha256": {
+    "gates/clippy-diag.log": "ed9e3447448a95ce39ce66d0786aeb1b6774b61f3f965affb42c3d850bd8bcd2",
+    "gates/clippy.log": "4dd5dbfb63bf84ec0fcf9251bf52af6d8c80cc204464a42b4159674c5a41bde8",
+    "gates/deny.log": "847d456b5c15bbd8e92343dd43becdbc8a2041e328f2f4127459e53a9970ceed",
+    "gates/fmt.log": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
+    "gates/headless.log": "ff6d29e23a185d42b4c236021430bec5993a7a3bab8bc0fe11852a6b00059a74",
+    "gates/selftest-1.json": "fbeadf361843cb7f2588227a57efb06d55828a6a85eba4a5f4034be7a5c3f3e0",
+    "gates/selftest-2.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "gates/selftest-compare.log": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46",
+    "gates/test-diag.log": "54e87d38e5d8db183c6dd83ec1293caefc454bd85a8615ac0c6004edf3092006",
+    "gates/test.log": "dbc64ed6ce6b72c48c566ff089dda21b410a26add190a93c496c6eae9457f02b"
+  }
+}

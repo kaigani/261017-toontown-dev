@@ -1,0 +1,19 @@
+{
+  "rejectedSpecValidCases": 14,
+  "ids": [
+    "anim.path.get",
+    "anim.function.get",
+    "draw.pointSelection.set",
+    "xsheet.panel.set",
+    "prefs.list",
+    "keymap.list",
+    "tool.polyline.options.set",
+    "print.settings.set",
+    "export.settings.get",
+    "drawAid.staticLightTable.set",
+    "tool.pen.set",
+    "sound.envelope.set",
+    "sound.envelope.point.move",
+    "sound.envelope.point.remove"
+  ]
+}

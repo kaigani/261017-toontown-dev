@@ -1,0 +1,74 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r3\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.38s
+     Running tests\c12_r3_registry.rs (target\debug\deps\c12_r3_registry-f5fbe8ba30bfdac6.exe)
+
+running 12 tests
+
+thread 'print_settings_accepts_a_defined_print_parameter' (15596) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+print.settings.set: specification-valid value rejected: [Object {"pointer": String("/values"), "message": String("Additional properties are not allowed ('copies' was unexpected)")}]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'envelope_point_results_use_time_and_gains_from_07' (21468) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+sound.envelope.set: specification-valid value rejected: [Object {"pointer": String("/points/0"), "message": String("\"x\" is a required property")}, Object {"pointer": String("/points/0"), "message": String("\"y\" is a required property")}, Object {"pointer": String("/points/0"), "message": String("Additional properties are not allowed ('time', 'left', 'right' were unexpected)")}]
+
+thread 'export_settings_returns_an_object_as_its_setter_accepts' (29228) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+export.settings.get: specification-valid value rejected: [Object {"pointer": String("/settings"), "message": String("{} is not of type \"array\"")}]
+
+thread 'polyline_options_result_is_the_option_object' (31712) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+tool.polyline.options.set: specification-valid value rejected: [Object {"pointer": String("/options"), "message": String("{\"snap\":true,\"snapRadius\":8} is not of type \"array\"")}]
+
+thread 'light_table_set_returns_the_entries_that_list_defines' (1872) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+drawAid.staticLightTable.set: specification-valid value rejected: [Object {"pointer": String("/entries/0"), "message": String("Additional properties are not allowed ('entryId', 'sourceId', 'sourceKind', 'visible', 'placement' were unexpected)")}]
+
+thread 'xsheet_panel_result_preserves_boolean_fields_from_parameters' (23304) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+xsheet.panel.set: specification-valid value rejected: [Object {"pointer": String("/elementList"), "message": String("true is not of type \"array\"")}]
+
+thread 'binding_params_support_commands_other_than_undo' (23672) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+keymap.list: specification-valid value rejected: [Object {"pointer": String("/0/params"), "message": String("Additional properties are not allowed ('frame' was unexpected)")}, Object {"pointer": String("/0/params"), "message": String("\"steps\" is a required property")}]
+
+thread 'selected_point_anchor_is_the_integer_index_from_02' (24900) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+draw.pointSelection.set: specification-valid value rejected: [Object {"pointer": String("/selectedPoints/0/anchor"), "message": String("2 is not of type \"object\"")}]
+
+thread 'path_result_accepts_exact_05_section_19_4_example' (23520) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+anim.path.get: specification-valid value rejected: [Object {"pointer": String("/length"), "message": String("14.37 is not of type \"integer\"")}, Object {"pointer": String("/points/1/frame"), "message": String("7.412 is not of type \"integer\"")}]
+
+thread 'preference_listing_can_return_a_boolean_preference' (32980) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+prefs.list: specification-valid value rejected: [Object {"pointer": String("/0/value"), "message": String("true is not of type \"number\"")}]
+test light_table_set_returns_the_entries_that_list_defines ... FAILED
+test envelope_point_results_use_time_and_gains_from_07 ... FAILED
+test print_settings_accepts_a_defined_print_parameter ... FAILED
+test selected_point_anchor_is_the_integer_index_from_02 ... FAILED
+test xsheet_panel_result_preserves_boolean_fields_from_parameters ... FAILED
+test polyline_options_result_is_the_option_object ... FAILED
+test export_settings_returns_an_object_as_its_setter_accepts ... FAILED
+test binding_params_support_commands_other_than_undo ... FAILED
+test path_result_accepts_exact_05_section_19_4_example ... FAILED
+test preference_listing_can_return_a_boolean_preference ... FAILED
+
+thread 'velocity_function_pins_accept_the_explicit_frame_value_shape' (28984) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+anim.function.get: specification-valid value rejected: [Object {"pointer": String("/pins/0"), "message": String("{\"frame\":1,\"value\":0.0} is not of types \"null\", \"boolean\", \"number\", \"string\"")}, Object {"pointer": String("/pins/1"), "message": String("{\"frame\":24,\"value\":14.37} is not of types \"null\", \"boolean\", \"number\", \"string\"")}]
+test velocity_function_pins_accept_the_explicit_frame_value_shape ... FAILED
+
+thread 'pen_set_returns_a_model_pen_instead_of_a_scalar' (30520) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+tool.pen.set: specification-valid value rejected: [Object {"pointer": String("/pen"), "message": String("{\"id\":\"pen_01K742SG0DM96H44S6QF5Y2PWK\",\"type\":\"pen\",\"rev\":1,\"name\":\"Pen 1\",\"kind\":\"brush\",\"minSize\":0.5,\"maxSize\":2.0,\"smoothness\":3,\"tip\":\"round\",\"tipAngle\":0.0,\"colourId\":null} is not of types \"null\", \"boolean\", \"number\", \"string\"")}]
+test pen_set_returns_a_model_pen_instead_of_a_scalar ... FAILED
+
+failures:
+
+failures:
+    binding_params_support_commands_other_than_undo
+    envelope_point_results_use_time_and_gains_from_07
+    export_settings_returns_an_object_as_its_setter_accepts
+    light_table_set_returns_the_entries_that_list_defines
+    path_result_accepts_exact_05_section_19_4_example
+    pen_set_returns_a_model_pen_instead_of_a_scalar
+    polyline_options_result_is_the_option_object
+    preference_listing_can_return_a_boolean_preference
+    print_settings_accepts_a_defined_print_parameter
+    selected_point_anchor_is_the_integer_index_from_02
+    velocity_function_pins_accept_the_explicit_frame_value_shape
+    xsheet_panel_result_preserves_boolean_fields_from_parameters
+
+test result: FAILED. 0 passed; 12 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r3_registry`

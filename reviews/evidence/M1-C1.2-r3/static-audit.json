@@ -1,0 +1,1799 @@
+{
+  "base": "d7a8205",
+  "reviewed": "2e0e5dd",
+  "changedFiles": [
+    ".github/workflows/ci.yml",
+    "crates/executor/src/commands/checkpoint.rs",
+    "crates/executor/src/commands/doc.rs",
+    "crates/executor/src/commands/edit.rs",
+    "crates/executor/src/commands/edit_ops.rs",
+    "crates/executor/src/commands/inspect.rs",
+    "crates/executor/src/cx.rs",
+    "crates/executor/src/jobs.rs",
+    "crates/executor/src/lib.rs",
+    "crates/executor/src/run.rs",
+    "crates/executor/tests/c12_edit_ops.rs",
+    "crates/executor/tests/c12_transactions.rs",
+    "crates/model/src/change.rs",
+    "crates/model/src/document/stamp.rs",
+    "crates/model/src/schema_ts.rs",
+    "crates/registry/src/declared.json",
+    "crates/registry/src/declared.rs",
+    "crates/registry/src/lib.rs",
+    "crates/registry/tests/declared.rs",
+    "desktop/src/ipc/generated/commands.ts",
+    "docs/decisions/ADR-0013-registry-and-executor.md",
+    "plan/spec-issues.md",
+    "plan/traceability.csv",
+    "reviews/M1-C1.2-handoff.md",
+    "reviews/M1-C1.2-r2-response.md",
+    "reviews/evidence/M1-C1.2-r2-response/.gitattributes",
+    "reviews/evidence/M1-C1.2-r2-response/build-register.py",
+    "reviews/evidence/M1-C1.2-r2-response/command-register.json",
+    "reviews/evidence/M1-C1.2-r2-response/command-register.md",
+    "reviews/evidence/M1-C1.2-r2-response/gates/build.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/clippy-diag.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/clippy.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/deny.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/fmt.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/headless.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/pnpm-format.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/pnpm-licenses.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/pnpm-lint.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/pnpm-test.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/pnpm-typecheck.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/reviewer-python-suites.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/selftest-1.json",
+    "reviews/evidence/M1-C1.2-r2-response/gates/selftest-2.json",
+    "reviews/evidence/M1-C1.2-r2-response/gates/selftest-compare.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/test-diag.log",
+    "reviews/evidence/M1-C1.2-r2-response/gates/test.log",
+    "reviews/evidence/M1-C1.2-r2-response/receipt.json",
+    "reviews/evidence/M1-C1.2-r2-response/registry.json",
+    "reviews/evidence/M1-C1.2-r2-response/release-scale.log",
+    "scripts/command_schemas.py",
+    "scripts/command_types.py",
+    "scripts/gen-command-declarations.py"
+  ],
+  "priorReviewerTestEdits": [],
+  "manifestLicenseLockfileChanges": [],
+  "addedSensitivePatterns": [
+    {
+      "file": "crates/executor/src/commands/doc.rs",
+      "lineNumber": 1723,
+      "testOnly": false,
+      "line": "#[allow(dead_code, reason = \"decoded and validated now; read by the handler of the owning checkpoint\")]"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 328,
+      "testOnly": false,
+      "line": "fn report_picked(cx: &mut Cx, context: EditContext, picked: &Picked) {"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 530,
+      "testOnly": false,
+      "line": "        parents: &mut BTreeMap<String, Option<String>>,"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 531,
+      "testOnly": false,
+      "line": "        order: &mut Vec<String>,"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 543,
+      "testOnly": false,
+      "line": "    walk(nodes, None, &mut parents, &mut order);"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 596,
+      "testOnly": false,
+      "line": "fn remap_element_refs(v: &mut Value, map: &BTreeMap<String, String>, at: &str) {"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 663,
+      "testOnly": false,
+      "line": "fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) -> Result<Vec<String>, CommandError> {"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 790,
+      "testOnly": false,
+      "line": "    cx: &mut Cx,"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 815,
+      "testOnly": false,
+      "line": "    cx: &mut Cx,"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 816,
+      "testOnly": false,
+      "line": "    v: &mut Value,"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 818,
+      "testOnly": false,
+      "line": "    created: &mut Vec<(ObjectType, String)>,"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 913,
+      "testOnly": false,
+      "line": "    cx: &mut Cx,"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 988,
+      "testOnly": false,
+      "line": "                regenerate(cx, &mut v, &[ObjectType::DrawingNode, ObjectType::Stroke], &mut created)?;"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 1076,
+      "testOnly": false,
+      "line": "                remap_element_refs(&mut v, &map, \"\");"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 1195,
+      "testOnly": false,
+      "line": "                                            let id = copy_drawing(cx, &doc, d, &bank, &mut names, &mut changes, None)?;"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 1408,
+      "testOnly": false,
+      "line": "                regenerate(cx, &mut v, &[ObjectType::LibraryFolder, ObjectType::LibraryItem], &mut created)?;"
+    },
+    {
+      "file": "crates/executor/src/commands/edit_ops.rs",
+      "lineNumber": 1788,
+      "testOnly": false,
+      "line": "                regenerate(cx, &mut v, &[ObjectType::DrawingNode, ObjectType::Stroke], &mut Vec::new())?;"
+    },
+    {
+      "file": "crates/executor/src/commands/inspect.rs",
+      "lineNumber": 181,
+      "testOnly": false,
+      "line": "#[allow(dead_code, reason = \"decoded and validated now; read by the handler of M3 C3.3\")]"
+    },
+    {
+      "file": "crates/executor/src/cx.rs",
+      "lineNumber": 164,
+      "testOnly": false,
+      "line": "    pub fn new_id(&mut self, ty: ObjectType) -> Result<Id, CommandError> {"
+    },
+    {
+      "file": "crates/executor/src/lib.rs",
+      "lineNumber": 275,
+      "testOnly": false,
+      "line": "    let flush = |core: &mut run::Core| broadcast(subscribers, &core.take_events());"
+    },
+    {
+      "file": "crates/executor/src/lib.rs",
+      "lineNumber": 280,
+      "testOnly": false,
+      "line": "                flush(&mut core);"
+    },
+    {
+      "file": "crates/executor/src/lib.rs",
+      "lineNumber": 285,
+      "testOnly": false,
+      "line": "                flush(&mut core);"
+    },
+    {
+      "file": "crates/executor/src/lib.rs",
+      "lineNumber": 290,
+      "testOnly": false,
+      "line": "                flush(&mut core);"
+    },
+    {
+      "file": "crates/executor/src/lib.rs",
+      "lineNumber": 295,
+      "testOnly": false,
+      "line": "                flush(&mut core);"
+    },
+    {
+      "file": "crates/executor/src/lib.rs",
+      "lineNumber": 300,
+      "testOnly": false,
+      "line": "                flush(&mut core);"
+    },
+    {
+      "file": "crates/executor/src/lib.rs",
+      "lineNumber": 308,
+      "testOnly": false,
+      "line": "                let listed = list(&mut core, origin);"
+    },
+    {
+      "file": "crates/executor/src/lib.rs",
+      "lineNumber": 309,
+      "testOnly": false,
+      "line": "                flush(&mut core);"
+    },
+    {
+      "file": "crates/executor/src/lib.rs",
+      "lineNumber": 313,
+      "testOnly": false,
+      "line": "        flush(&mut core);"
+    },
+    {
+      "file": "crates/executor/src/run.rs",
+      "lineNumber": 127,
+      "testOnly": false,
+      "line": "    fn reserve(&mut self, session: &str, id: &str, fp: u64, command: &str) {"
+    },
+    {
+      "file": "crates/executor/src/run.rs",
+      "lineNumber": 134,
+      "testOnly": false,
+      "line": "    fn release(&mut self, session: &str, id: &str) {"
+    },
+    {
+      "file": "crates/executor/src/run.rs",
+      "lineNumber": 465,
+      "testOnly": false,
+      "line": "fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool) {"
+    },
+    {
+      "file": "crates/executor/src/run.rs",
+      "lineNumber": 759,
+      "testOnly": false,
+      "line": "    fn finish_batched_wait(&mut self, inv: &Invocation, env: Envelope, started: std::time::Instant) -> Envelope {"
+    },
+    {
+      "file": "crates/executor/src/run.rs",
+      "lineNumber": 870,
+      "testOnly": false,
+      "line": "                            apply_effects(&mut session, effects, self.simulating);"
+    },
+    {
+      "file": "crates/executor/src/run.rs",
+      "lineNumber": 1124,
+      "testOnly": true,
+      "line": "        Core::new(crate::registry().unwrap(), session, Duration::from_secs(30))"
+    },
+    {
+      "file": "crates/executor/tests/c12_edit_ops.rs",
+      "lineNumber": 77,
+      "testOnly": true,
+      "line": "    let taken = r[\"clipboard\"][\"itemCount\"].as_u64().unwrap() as usize;"
+    },
+    {
+      "file": "crates/executor/tests/c12_edit_ops.rs",
+      "lineNumber": 83,
+      "testOnly": true,
+      "line": "    assert_eq!(r[\"createdIds\"].as_array().unwrap().len(), taken);"
+    },
+    {
+      "file": "crates/executor/tests/c12_transactions.rs",
+      "lineNumber": 441,
+      "testOnly": true,
+      "line": "    let at = tt_registry::declared::DECLARED.iter().position(|c| c.decl.id == \"export.movie.run\").unwrap();"
+    },
+    {
+      "file": "crates/executor/tests/c12_transactions.rs",
+      "lineNumber": 443,
+      "testOnly": true,
+      "line": "    let incomplete = h.jobs().submit(\"export.movie.run\", \"user\", |_| Ok(json!({ \"files\": [] }))).unwrap();"
+    },
+    {
+      "file": "crates/executor/tests/c12_transactions.rs",
+      "lineNumber": 445,
+      "testOnly": true,
+      "line": "    let good = h.jobs().submit(\"export.movie.run\", \"user\", move |_| Ok(manifest)).unwrap();"
+    },
+    {
+      "file": "crates/model/src/change.rs",
+      "lineNumber": 898,
+      "testOnly": false,
+      "line": "fn materialize_omitted(root: &mut Value, parent: &[String]) -> bool {"
+    },
+    {
+      "file": "crates/registry/tests/declared.rs",
+      "lineNumber": 109,
+      "testOnly": true,
+      "line": "fn leaves(v: &Value, at: &str, out: &mut Vec<String>) {"
+    },
+    {
+      "file": "crates/registry/tests/declared.rs",
+      "lineNumber": 120,
+      "testOnly": true,
+      "line": "fn objects(v: &Value, at: &str, out: &mut Vec<String>) {"
+    },
+    {
+      "file": "crates/registry/tests/declared.rs",
+      "lineNumber": 150,
+      "testOnly": true,
+      "line": "            let rejects = |v: &Value| !tt_registry::schema_violations(&schema, v, 1).unwrap().is_empty();"
+    },
+    {
+      "file": "crates/registry/tests/declared.rs",
+      "lineNumber": 160,
+      "testOnly": true,
+      "line": "            leaves(&sample, \"\", &mut at);"
+    },
+    {
+      "file": "crates/registry/tests/declared.rs",
+      "lineNumber": 163,
+      "testOnly": true,
+      "line": "                *m.pointer_mut(&p).unwrap() = json!({ \"__mutated\": true });"
+    },
+    {
+      "file": "crates/registry/tests/declared.rs",
+      "lineNumber": 168,
+      "testOnly": true,
+      "line": "            objects(&sample, \"\", &mut at);"
+    },
+    {
+      "file": "crates/registry/tests/declared.rs",
+      "lineNumber": 189,
+      "testOnly": true,
+      "line": "            .unwrap();"
+    },
+    {
+      "file": "crates/registry/tests/declared.rs",
+      "lineNumber": 193,
+      "testOnly": true,
+      "line": "            families.insert(c.decl.id.split('.').next().unwrap().to_owned());"
+    }
+  ],
+  "publicSurface": [
+    {
+      "source": "crates/executor/src/app.rs:16",
+      "line": "pub fn mode_of_view(panel: &str) -> Mode {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:231",
+      "line": "pub fn cell_ref(element: &str, frame: u32) -> String {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:237",
+      "line": "pub fn parse_cell_ref(k: &str) -> Option<(String, u32)> {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:254",
+      "line": "pub fn selection_of(&self, context: &str) -> Vec<String> {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:259",
+      "line": "pub fn set_selection(&mut self, context: &str, ids: Vec<String>) {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:266",
+      "line": "pub fn for_document(doc: &Document) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:275",
+      "line": "pub fn repair(&mut self, doc: &Document) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:308",
+      "line": "pub fn exposed_drawing(doc: &Document, element: &Id, frame: u32) -> Option<Id> {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:323",
+      "line": "pub fn current_drawing(&self, doc: &Document) -> Option<Id> {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:333",
+      "line": "pub fn state(&self, project: Option<(&Document, ProjectRef)>, ui: &UiState) -> AppState {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:420",
+      "line": "pub fn current_of(&self, ty: ObjectType) -> Option<Target> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:164",
+      "line": "pub fn new_id(&mut self, ty: ObjectType) -> Result<Id, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:229",
+      "line": "pub fn predicted_rev(&mut self) -> Result<u64, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:256",
+      "line": "pub fn in_atomic_batch(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:262",
+      "line": "pub fn dry_run(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:268",
+      "line": "pub fn command(&self) -> &'static str {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:274",
+      "line": "pub fn origin(&self) -> &Origin {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:296",
+      "line": "pub fn has_project(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:305",
+      "line": "pub fn document(&self) -> Result<&Document, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:332",
+      "line": "pub fn warn(&mut self, code: &str, message: impl Into<String>, object_ids: Vec<String>) {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:341",
+      "line": "pub fn set_targets(&mut self, targets: Value) {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:350",
+      "line": "pub fn set_label(&mut self, label: impl Into<String>) {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:369",
+      "line": "pub fn resolve(&self, text: &str) -> Result<Target, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:379",
+      "line": "pub fn resolve_as(&self, text: &str, expected: ObjectType) -> Result<String, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:398",
+      "line": "pub fn resolve_objects(&self, refs: &[String]) -> Result<Vec<(ObjectType, String)>, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:477",
+      "line": "pub fn patch_objects(&mut self, edits: Vec<(String, Vec<PatchOp>)>) -> Result<(), CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:505",
+      "line": "pub fn patch_entries(&mut self, changes: Vec<(EntryKey, Vec<PatchOp>)>) -> Result<(), CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:511",
+      "line": "pub fn has_staged(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:557",
+      "line": "pub fn preview_changes(&mut self) -> Result<(Vec<ChangeRecord>, u64), CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:53",
+      "line": "pub fn clean() -> Self {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:58",
+      "line": "pub fn next_step_id(&mut self) -> String {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:64",
+      "line": "pub fn push(&mut self, step: Step) {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:81",
+      "line": "pub fn can_undo(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:85",
+      "line": "pub fn can_redo(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:90",
+      "line": "pub fn top(&self) -> Option<&Step> {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:94",
+      "line": "pub fn moved_back(&mut self) {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:98",
+      "line": "pub fn moved_forward(&mut self) {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:102",
+      "line": "pub fn position(&self) -> usize {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:106",
+      "line": "pub fn len(&self) -> usize {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:110",
+      "line": "pub fn clean_position(&self) -> Option<usize> {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:115",
+      "line": "pub fn dirty(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:121",
+      "line": "pub fn mark_clean(&mut self) {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:125",
+      "line": "pub fn steps(&self) -> &[Step] {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:130",
+      "line": "pub fn replace_edit(&mut self, index: usize, edit: StepEdit) {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:34",
+      "line": "pub fn is_final(self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:99",
+      "line": "pub fn report(&self, progress: f64, message: &str) {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:108",
+      "line": "pub fn cancelled(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:116",
+      "line": "pub fn with_notifier(notify: JobNotifier) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:148",
+      "line": "pub fn submit<F>(self: &Arc<Self>, command_id: &str, session: &str, work: F) -> Result<String, CommandError>"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:201",
+      "line": "pub fn list(&self, job_id: Option<&str>, session: Option<&str>) -> Vec<JobRecord> {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:214",
+      "line": "pub fn wait(&self, job_id: &str, timeout: Duration) -> Result<(JobRecord, bool), CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:234",
+      "line": "pub fn cancel(&self, job_id: &str) -> Result<JobRecord, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:86",
+      "line": "pub fn registry() -> Result<&'static Registry, AssemblyError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:149",
+      "line": "pub fn spawn(config: ExecutorConfig) -> Result<Self, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:160",
+      "line": "pub fn spawn_with_registry(config: ExecutorConfig, registry: &'static Registry) -> Result<Self, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:187",
+      "line": "pub fn invoke(&self, inv: Invocation) -> Envelope {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:197",
+      "line": "pub fn batch(&self, req: BatchRequest, origin: Origin) -> Envelope {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:204",
+      "line": "pub fn open_document(&self, doc: Document, path: Option<String>, read_only: bool) -> Envelope {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:212",
+      "line": "pub fn open_document_with(&self, doc: Document, options: OpenOptions, origin: Origin) -> Envelope {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:221",
+      "line": "pub fn snapshot(&self) -> Result<Option<Document>, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:227",
+      "line": "pub fn subscribe(&self) -> Receiver<Event> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:237",
+      "line": "pub fn list_commands(&self, origin: Origin) -> Result<Vec<Value>, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:243",
+      "line": "pub fn describe_command(&self, id: &str) -> Option<Value> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:249",
+      "line": "pub fn jobs(&self) -> &Arc<JobTable> {"
+    },
+    {
+      "source": "crates/executor/src/run.rs:1105",
+      "line": "pub fn is_error(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/session.rs:72",
+      "line": "pub fn new(doc: Document, path: Option<String>, read_only: bool) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/session.rs:86",
+      "line": "pub fn history_from_rev(&self) -> u64 {"
+    },
+    {
+      "source": "crates/executor/src/session.rs:92",
+      "line": "pub fn log_commit(&mut self, rev: u64, back: Back, before: Document, earlier_revs: Vec<(String, u64)>) {"
+    },
+    {
+      "source": "crates/executor/src/session.rs:107",
+      "line": "pub fn dirty(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/session.rs:137",
+      "line": "pub fn emit(&mut self, name: &str, payload: Value) {"
+    },
+    {
+      "source": "crates/executor/src/time.rs:8",
+      "line": "pub fn now_iso() -> String {"
+    },
+    {
+      "source": "crates/executor/src/time.rs:15",
+      "line": "pub fn iso_from_unix_ms(ms: i64) -> String {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:33",
+      "line": "pub fn label(&self) -> String {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:44",
+      "line": "pub fn session_key(&self) -> String {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:53",
+      "line": "pub fn has_scope(&self, scope: Scope) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:62",
+      "line": "pub fn source(&self) -> &'static str {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:97",
+      "line": "pub fn user(command: &str, params: Value) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:239",
+      "line": "pub fn error(error: CommandError, document_rev: Option<u64>) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:258",
+      "line": "pub fn ok(result: Value, document_rev: Option<u64>) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:269",
+      "line": "pub fn is_ok(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:509",
+      "line": "pub fn workspace_state(&self) -> (String, bool) {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:515",
+      "line": "pub fn full_screen(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:521",
+      "line": "pub fn focused(&self) -> Option<&str> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:527",
+      "line": "pub fn layout(&self) -> Layout {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:533",
+      "line": "pub fn central_panel(&self) -> &str {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:555",
+      "line": "pub fn panels(&self) -> Vec<PanelEntry> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:626",
+      "line": "pub fn set_panel("
+    },
+    {
+      "source": "crates/executor/src/ui.rs:709",
+      "line": "pub fn move_panel("
+    },
+    {
+      "source": "crates/executor/src/ui.rs:855",
+      "line": "pub fn set_full_screen(&mut self, enabled: bool) {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:860",
+      "line": "pub fn set_floating_visible(&mut self, visible: bool) {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:866",
+      "line": "pub fn floating_visible(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:871",
+      "line": "pub fn set_side_panels_extended(&mut self, enabled: bool) {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:877",
+      "line": "pub fn side_panels_extended(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:883",
+      "line": "pub fn workspaces(&self) -> Vec<WorkspaceEntry> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:906",
+      "line": "pub fn workspace_layout(&self, name: Option<&str>) -> Result<Layout, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:922",
+      "line": "pub fn select(&mut self, name: &str, save_current: bool) -> Result<(), CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:939",
+      "line": "pub fn save(&mut self, name: Option<&str>) -> Result<String, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:970",
+      "line": "pub fn create("
+    },
+    {
+      "source": "crates/executor/src/ui.rs:1001",
+      "line": "pub fn rename(&mut self, name: &str, new_name: &str) -> Result<String, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:1024",
+      "line": "pub fn delete(&mut self, name: &str) -> Result<String, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:1055",
+      "line": "pub fn reset(&mut self, name: Option<&str>, all: bool, select: bool) -> Result<Vec<String>, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:1089",
+      "line": "pub fn apply_layout(&mut self, layout: Layout) -> Result<Layout, CommandError> {"
+    },
+    {
+      "source": "crates/model/src/canonical.rs:34",
+      "line": "pub fn format_f64(x: f64) -> Result<String, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/canonical.rs:87",
+      "line": "pub fn format_number(n: &Number) -> Result<String, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/canonical.rs:180",
+      "line": "pub fn to_canonical_string(value: &Value) -> Result<String, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/canonical.rs:193",
+      "line": "pub fn to_canonical<T: Serialize + ?Sized>(value: &T) -> Result<String, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/canonical.rs:204",
+      "line": "pub fn to_value<T: Serialize + ?Sized>(value: &T) -> Result<Value, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/canonical.rs:213",
+      "line": "pub fn check_finite<T: Serialize + ?Sized>(value: &T) -> Result<(), ModelError> {"
+    },
+    {
+      "source": "crates/model/src/canonical.rs:462",
+      "line": "pub fn to_compact_string(value: &Value) -> Result<String, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/canonical.rs:508",
+      "line": "pub fn normalize_numbers(value: &mut Value) {"
+    },
+    {
+      "source": "crates/model/src/change.rs:201",
+      "line": "pub fn object_pointer(entry: &Value, key: &str) -> Option<String> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:253",
+      "line": "pub fn own_view_of(object: &Value) -> Value {"
+    },
+    {
+      "source": "crates/model/src/change.rs:281",
+      "line": "pub fn own_view(doc: &Document, key: &str) -> Result<(ObjectType, Value), ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:290",
+      "line": "pub fn own_objects(doc: &Document, entry: &EntryKey) -> Result<Vec<OwnObject>, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:324",
+      "line": "pub fn diff(before: &Document, after: &Document) -> Result<Vec<(OwnChange, OwnObject)>, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:384",
+      "line": "pub fn to_change(&self, o: &OwnObject, rev: u64) -> Change {"
+    },
+    {
+      "source": "crates/model/src/change.rs:611",
+      "line": "pub fn diff_json(a: &Value, b: &Value, path: &str, ty: ObjectType) -> Vec<PatchOp> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:731",
+      "line": "pub fn invert_against(before: &Value, patch: &[PatchOp]) -> Result<Vec<PatchOp>, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:739",
+      "line": "pub fn apply_with_inverse(value: &Value, patch: &[PatchOp]) -> Result<(Value, Vec<PatchOp>), ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:1108",
+      "line": "pub fn apply(value: &Value, patch: &[PatchOp]) -> Result<Value, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:1113",
+      "line": "pub fn elide(changes: &mut [Change]) {"
+    },
+    {
+      "source": "crates/model/src/change.rs:1130",
+      "line": "pub fn summary(changes: &[Change]) -> BTreeMap<String, usize> {"
+    },
+    {
+      "source": "crates/model/src/document/find.rs:95",
+      "line": "pub fn object_pointer(&self, key: &str) -> Result<(EntryKey, ObjectType, String), ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/find.rs:178",
+      "line": "pub fn object_raw_json(&self, key: &str) -> Result<(ObjectType, Value), ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:93",
+      "line": "pub fn to_error(&self) -> ModelError {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:232",
+      "line": "pub fn from_parts(parts: DocumentParts) -> Result<Self, Vec<ModelError>> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:280",
+      "line": "pub fn assemble(parts: DocumentParts) -> Self {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:395",
+      "line": "pub fn document_rev(&self) -> u64 {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:401",
+      "line": "pub fn project(&self) -> &Project {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:407",
+      "line": "pub fn palette(&self, id: &Id) -> Option<&Palette> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:412",
+      "line": "pub fn palettes(&self) -> impl Iterator<Item = &Palette> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:418",
+      "line": "pub fn bank(&self, id: &Id) -> Option<&DrawingBank> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:423",
+      "line": "pub fn banks(&self) -> impl Iterator<Item = &DrawingBank> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:429",
+      "line": "pub fn drawing(&self, id: &Id) -> Option<&Drawing> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:434",
+      "line": "pub fn drawings(&self) -> impl Iterator<Item = &Drawing> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:440",
+      "line": "pub fn scene(&self, id: &Id) -> Option<&Scene> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:445",
+      "line": "pub fn scenes(&self) -> impl Iterator<Item = &Scene> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:451",
+      "line": "pub fn element(&self, id: &Id) -> Option<&Element> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:456",
+      "line": "pub fn elements(&self) -> impl Iterator<Item = &Element> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:462",
+      "line": "pub fn scene_of(&self, element: &Id) -> Option<&Id> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:468",
+      "line": "pub fn bank_users(&self, bank: &Id) -> &[Id] {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:474",
+      "line": "pub fn bank_of(&self, drawing: &Id) -> Option<&Id> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:480",
+      "line": "pub fn object_count(&self) -> usize {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:486",
+      "line": "pub fn library(&self) -> &Library {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:492",
+      "line": "pub fn same_entry(&self, other: &Document, key: &EntryKey) -> bool {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:507",
+      "line": "pub fn entry_keys(&self) -> Vec<EntryKey> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:522",
+      "line": "pub fn entry_raw_json(&self, key: &EntryKey) -> Result<serde_json::Value, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:531",
+      "line": "pub fn with_patched_entry("
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:561",
+      "line": "pub fn with_patched_entries("
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:575",
+      "line": "pub fn with_patched_entries_undo_only("
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:728",
+      "line": "pub fn has_entry(&self, key: &EntryKey) -> bool {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:741",
+      "line": "pub fn locate(&self, id: &str) -> Option<&Location> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:746",
+      "line": "pub fn locations(&self) -> impl Iterator<Item = &Location> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:752",
+      "line": "pub fn tree_order(&self, scene: &Scene) -> Vec<Id> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:770",
+      "line": "pub fn scene_length(&self, scene: &Scene) -> u64 {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:800",
+      "line": "pub fn issues(&self) -> Vec<Issue> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:134",
+      "line": "pub fn canonical_path(&self, key: &str) -> Option<String> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:141",
+      "line": "pub fn canonical_paths<'a>(&self, keys: impl IntoIterator<Item = &'a str>) -> Vec<Option<String>> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:335",
+      "line": "pub fn resolve_str(&self, s: &str, ctx: &dyn ResolveContext) -> Result<Target, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:343",
+      "line": "pub fn resolve_as(&self, s: &str, expected: ObjectType, ctx: &dyn ResolveContext) -> Result<String, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:363",
+      "line": "pub fn resolve(&self, r: &Ref, text: &str, ctx: &dyn ResolveContext) -> Result<Target, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:702",
+      "line": "pub fn natural_cmp(a: &str, b: &str) -> std::cmp::Ordering {"
+    },
+    {
+      "source": "crates/model/src/document/render.rs:28",
+      "line": "pub fn slots(ty: ObjectType) -> &'static [(&'static str, Slot)] {"
+    },
+    {
+      "source": "crates/model/src/document/render.rs:179",
+      "line": "pub fn entry_json(&self, key: &EntryKey) -> Result<Value, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/render.rs:189",
+      "line": "pub fn entry_canonical(&self, key: &EntryKey) -> Result<String, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/render.rs:198",
+      "line": "pub fn object_json(&self, id: &str, opts: RenderOptions) -> Result<Value, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/stamp.rs:22",
+      "line": "pub fn with_revisions(&self, document_rev: u64, keys: &[String]) -> Result<Document, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/stamp.rs:34",
+      "line": "pub fn with_object_revisions(&self, document_rev: u64, stamps: &[(String, u64)]) -> Result<Document, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/stamp.rs:49",
+      "line": "pub fn at_earlier_revision(&self, document_rev: u64, stamps: &[(String, u64)]) -> Result<Document, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/entities/channel.rs:128",
+      "line": "pub fn new(id: Id, frame: u32, value: f64) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/channel.rs:239",
+      "line": "pub fn one_d(id: Id, name: String, curve_type: CurveType, keys: Vec<Key>) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/drawing.rs:364",
+      "line": "pub fn layer(id: Id, hint: LayerHint) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/drawing.rs:463",
+      "line": "pub fn empty(id: Id, name: String, created_at: Timestamp) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/drawing.rs:514",
+      "line": "pub fn new(id: Id, drawings: Vec<Id>) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/effect.rs:199",
+      "line": "pub fn animatable_params(element_type: &str) -> &'static [&'static str] {"
+    },
+    {
+      "source": "crates/model/src/entities/element.rs:163",
+      "line": "pub fn allowed_channels(self) -> &'static [&'static str] {"
+    },
+    {
+      "source": "crates/model/src/entities/element.rs:358",
+      "line": "pub fn default_for(set: PivotSet) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/element.rs:732",
+      "line": "pub fn new(init: ElementInit) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/library.rs:250",
+      "line": "pub fn local(id: Id, name: String) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:42",
+      "line": "pub fn $field(&self) -> &$ty {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:129",
+      "line": "pub fn is_ext_key(key: &str) -> bool {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:152",
+      "line": "pub fn as_map(&self) -> &Map<String, Value> {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:158",
+      "line": "pub fn is_empty(&self) -> bool {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:214",
+      "line": "pub fn new(id: Id, ty: ObjectType, name: Option<String>) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:220",
+      "line": "pub fn id(&self) -> &Id {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:226",
+      "line": "pub fn ty(&self) -> ObjectType {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:232",
+      "line": "pub fn name(&self) -> Option<&str> {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:238",
+      "line": "pub fn to_json(&self) -> Value {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:253",
+      "line": "pub fn from_json(v: &Value, expected: ObjectType) -> Result<Self, String> {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:279",
+      "line": "pub fn stub_schema() -> Value {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:307",
+      "line": "pub fn new(ids: Vec<Id>) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:313",
+      "line": "pub fn ids(&self) -> &[Id] {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:368",
+      "line": "pub fn new(id: Id) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/mod.rs:374",
+      "line": "pub fn id(&self) -> &Id {"
+    },
+    {
+      "source": "crates/model/src/entities/palette.rs:46",
+      "line": "pub fn new(id: Id, name: String) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/palette.rs:178",
+      "line": "pub fn solid(colour_id: Id, name: String, styles: &[Id], rgba: Colour) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/palette.rs:195",
+      "line": "pub fn value_matches_kind(kind: SwatchKind, value: &SwatchValue) -> bool {"
+    },
+    {
+      "source": "crates/model/src/entities/palette.rs:247",
+      "line": "pub fn new(id: Id, name: String, styles: Vec<PaletteStyle>, swatches: Vec<Swatch>) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/pen.rs:88",
+      "line": "pub fn new(id: Id, name: String, kind: PenKind, min_size: f64, max_size: f64, smoothness: u8) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/pen.rs:110",
+      "line": "pub fn default_set(mut ids: impl FnMut() -> Id) -> Vec<Pen> {"
+    },
+    {
+      "source": "crates/model/src/entities/project.rs:113",
+      "line": "pub fn new(init: ProjectInit) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/scene.rs:100",
+      "line": "pub fn new(init: SceneInit) -> Self {"
+    },
+    {
+      "source": "crates/model/src/entities/sound.rs:170",
+      "line": "pub fn get(&self, shape: MouthShape) -> Option<&Id> {"
+    },
+    {
+      "source": "crates/model/src/entities/transition.rs:102",
+      "line": "pub fn none(id: Id) -> Self {"
+    },
+    {
+      "source": "crates/model/src/error.rs:46",
+      "line": "pub fn new(code: &'static str, message: impl Into<String>) -> Self {"
+    },
+    {
+      "source": "crates/model/src/error.rs:52",
+      "line": "pub fn with_details(code: &'static str, message: impl Into<String>, details: Value) -> Self {"
+    },
+    {
+      "source": "crates/model/src/error.rs:58",
+      "line": "pub fn schema(pointer: &str, message: impl Into<String>) -> Self {"
+    },
+    {
+      "source": "crates/model/src/error.rs:64",
+      "line": "pub fn invalid(pointer: &str, message: impl Into<String>) -> Self {"
+    },
+    {
+      "source": "crates/model/src/error.rs:70",
+      "line": "pub fn code(&self) -> &'static str {"
+    },
+    {
+      "source": "crates/model/src/error.rs:76",
+      "line": "pub fn message(&self) -> &str {"
+    },
+    {
+      "source": "crates/model/src/error.rs:82",
+      "line": "pub fn details(&self) -> &Value {"
+    },
+    {
+      "source": "crates/model/src/error.rs:88",
+      "line": "pub fn to_wire(&self) -> Value {"
+    },
+    {
+      "source": "crates/model/src/error.rs:95",
+      "line": "pub fn at(mut self, prefix: &str) -> Self {"
+    },
+    {
+      "source": "crates/model/src/fixture.rs:135",
+      "line": "pub fn sample_parts(seed: u64) -> Result<DocumentParts, Vec<ModelError>> {"
+    },
+    {
+      "source": "crates/model/src/fixture.rs:555",
+      "line": "pub fn sample_document(seed: u64) -> Result<Document, Vec<ModelError>> {"
+    },
+    {
+      "source": "crates/model/src/id.rs:27",
+      "line": "pub fn is_valid_id(s: &str) -> bool {"
+    },
+    {
+      "source": "crates/model/src/id.rs:40",
+      "line": "pub fn parse(s: &str) -> Result<Self, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/id.rs:54",
+      "line": "pub fn as_str(&self) -> &str {"
+    },
+    {
+      "source": "crates/model/src/id.rs:127",
+      "line": "pub fn parse(s: &str) -> Result<Self, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/id.rs:137",
+      "line": "pub fn plain(id: Id) -> Self {"
+    },
+    {
+      "source": "crates/model/src/id.rs:143",
+      "line": "pub fn compound(container: Id, local: Id) -> Self {"
+    },
+    {
+      "source": "crates/model/src/id.rs:149",
+      "line": "pub fn container(&self) -> Option<&Id> {"
+    },
+    {
+      "source": "crates/model/src/id.rs:155",
+      "line": "pub fn local(&self) -> &Id {"
+    },
+    {
+      "source": "crates/model/src/id.rs:173",
+      "line": "pub fn encode_ulid(time_ms: u64, random: u128) -> String {"
+    },
+    {
+      "source": "crates/model/src/id.rs:217",
+      "line": "pub fn system() -> Self {"
+    },
+    {
+      "source": "crates/model/src/id.rs:224",
+      "line": "pub fn seeded(seed: u64, start_ms: u64) -> Self {"
+    },
+    {
+      "source": "crates/model/src/id.rs:232",
+      "line": "pub fn next(&mut self, ty: ObjectType) -> Result<Id, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/input.rs:33",
+      "line": "pub fn depth(v: &Value, limit: usize) -> usize {"
+    },
+    {
+      "source": "crates/model/src/input.rs:48",
+      "line": "pub fn prepare(ty: ObjectType, v: &mut Value) {"
+    },
+    {
+      "source": "crates/model/src/input.rs:58",
+      "line": "pub fn sort_keys(v: &mut Value, d: usize) {"
+    },
+    {
+      "source": "crates/model/src/json_text.rs:34",
+      "line": "pub fn parse<T: DeserializeOwned>(text: &str) -> Result<T, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/json_text.rs:53",
+      "line": "pub fn check(text: &str) -> Result<(), ModelError> {"
+    },
+    {
+      "source": "crates/model/src/name.rs:52",
+      "line": "pub fn pattern(&self) -> String {"
+    },
+    {
+      "source": "crates/model/src/name.rs:73",
+      "line": "pub fn normalize(input: &str) -> String {"
+    },
+    {
+      "source": "crates/model/src/name.rs:81",
+      "line": "pub fn check(rule: &NameRule, name: &str) -> Result<(), ModelError> {"
+    },
+    {
+      "source": "crates/model/src/name.rs:114",
+      "line": "pub fn normalize_and_check(ty: ObjectType, input: &str) -> Result<String, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/name.rs:122",
+      "line": "pub fn next_free<F: Fn(u32) -> String>(format: F, taken: &dyn Fn(&str) -> bool) -> String {"
+    },
+    {
+      "source": "crates/model/src/object.rs:24",
+      "line": "pub fn normalize_input(ty: crate::types::ObjectType, value: &mut Value) {"
+    },
+    {
+      "source": "crates/model/src/object.rs:35",
+      "line": "pub fn from_json<T: ModelObject + Check>(value: &Value) -> Result<T, Vec<ModelError>> {"
+    },
+    {
+      "source": "crates/model/src/object.rs:64",
+      "line": "pub fn revalidate<T: ModelObject + Check>(object: &T) -> Result<T, Vec<ModelError>> {"
+    },
+    {
+      "source": "crates/model/src/object.rs:73",
+      "line": "pub fn to_json<T: ModelObject>(object: &T) -> Result<Value, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/object.rs:81",
+      "line": "pub fn to_canonical<T: ModelObject>(object: &T) -> Result<String, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/object.rs:88",
+      "line": "pub fn canonical_runs(runs: &[ExposureRun]) -> Vec<ExposureRun> {"
+    },
+    {
+      "source": "crates/model/src/overlay.rs:26",
+      "line": "pub fn is_empty(&self) -> bool {"
+    },
+    {
+      "source": "crates/model/src/overlay.rs:32",
+      "line": "pub fn entries(&self) -> &BTreeMap<String, BTreeMap<String, Value>> {"
+    },
+    {
+      "source": "crates/model/src/overlay.rs:130",
+      "line": "pub fn split(ty: ObjectType, raw: &Value) -> (Value, Overlay) {"
+    },
+    {
+      "source": "crates/model/src/overlay.rs:166",
+      "line": "pub fn merge(mut value: Value, overlay: &Overlay) -> Value {"
+    },
+    {
+      "source": "crates/model/src/path.rs:90",
+      "line": "pub fn as_str(self) -> &'static str {"
+    },
+    {
+      "source": "crates/model/src/path.rs:133",
+      "line": "pub fn new(ty: SegmentType, selector: Selector) -> Self {"
+    },
+    {
+      "source": "crates/model/src/path.rs:139",
+      "line": "pub fn ty(&self) -> SegmentType {"
+    },
+    {
+      "source": "crates/model/src/path.rs:145",
+      "line": "pub fn selector(&self) -> &Selector {"
+    },
+    {
+      "source": "crates/model/src/path.rs:152",
+      "line": "pub fn quote(name: &str) -> String {"
+    },
+    {
+      "source": "crates/model/src/path.rs:189",
+      "line": "pub fn from_segments(segments: Vec<Segment>) -> Self {"
+    },
+    {
+      "source": "crates/model/src/path.rs:195",
+      "line": "pub fn special(&self) -> Option<SpecialRef> {"
+    },
+    {
+      "source": "crates/model/src/path.rs:201",
+      "line": "pub fn segments(&self) -> &[Segment] {"
+    },
+    {
+      "source": "crates/model/src/path.rs:209",
+      "line": "pub fn parse(input: &str) -> Result<Self, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/path.rs:407",
+      "line": "pub fn parse(s: &str) -> Result<Self, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/pointer.rs:9",
+      "line": "pub fn escape(token: &str) -> String {"
+    },
+    {
+      "source": "crates/model/src/pointer.rs:15",
+      "line": "pub fn join<I: IntoIterator<Item = S>, S: AsRef<str>>(tokens: I) -> String {"
+    },
+    {
+      "source": "crates/model/src/pointer.rs:27",
+      "line": "pub fn parse(pointer: &str) -> Result<Vec<String>, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/pointer.rs:56",
+      "line": "pub fn array_index(token: &str) -> Option<usize> {"
+    },
+    {
+      "source": "crates/model/src/pointer.rs:66",
+      "line": "pub fn get<'a>(root: &'a Value, tokens: &[String]) -> Option<&'a Value> {"
+    },
+    {
+      "source": "crates/model/src/pointer.rs:75",
+      "line": "pub fn get_mut<'a>(root: &'a mut Value, tokens: &[String]) -> Option<&'a mut Value> {"
+    },
+    {
+      "source": "crates/model/src/schema.rs:47",
+      "line": "pub fn def_name(ty: ObjectType) -> String {"
+    },
+    {
+      "source": "crates/model/src/schema.rs:139",
+      "line": "pub fn apply_integer_bounds(v: &mut Value) {"
+    },
+    {
+      "source": "crates/model/src/schema.rs:612",
+      "line": "pub fn struct_definitions(register: impl FnOnce(&mut SchemaGenerator)) -> Map<String, Value> {"
+    },
+    {
+      "source": "crates/model/src/schema.rs:626",
+      "line": "pub fn definitions() -> &'static Map<String, Value> {"
+    },
+    {
+      "source": "crates/model/src/schema.rs:633",
+      "line": "pub fn object_schema(ty: ObjectType) -> Value {"
+    },
+    {
+      "source": "crates/model/src/schema.rs:656",
+      "line": "pub fn property_schema(ty: ObjectType, pointer: &str) -> Option<Value> {"
+    },
+    {
+      "source": "crates/model/src/schema.rs:759",
+      "line": "pub fn bundle() -> Value {"
+    },
+    {
+      "source": "crates/model/src/schema.rs:786",
+      "line": "pub fn to_error(&self) -> ModelError {"
+    },
+    {
+      "source": "crates/model/src/schema.rs:823",
+      "line": "pub fn validate(ty: ObjectType, value: &Value, limit: usize) -> Result<Vec<Violation>, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/schema.rs:837",
+      "line": "pub fn is_valid(ty: ObjectType, value: &Value) -> bool {"
+    },
+    {
+      "source": "crates/model/src/schema_ts.rs:266",
+      "line": "pub fn module(header: &str, consts: &[(&str, Value)], defs_name: &str, defs: &Map<String, Value>) -> String {"
+    },
+    {
+      "source": "crates/model/src/types.rs:118",
+      "line": "pub fn parse(name: &str) -> Option<Self> {"
+    },
+    {
+      "source": "crates/model/src/validate.rs:38",
+      "line": "pub fn new(limit: usize) -> Self {"
+    },
+    {
+      "source": "crates/model/src/validate.rs:43",
+      "line": "pub fn push(&mut self, pointer: &str, rule: &str, message: impl Into<String>) {"
+    },
+    {
+      "source": "crates/model/src/validate.rs:54",
+      "line": "pub fn push_error(&mut self, e: ModelError) {"
+    },
+    {
+      "source": "crates/model/src/validate.rs:62",
+      "line": "pub fn is_empty(&self) -> bool {"
+    },
+    {
+      "source": "crates/model/src/validate.rs:68",
+      "line": "pub fn into_errors(self) -> Vec<ModelError> {"
+    },
+    {
+      "source": "crates/model/src/validate.rs:74",
+      "line": "pub fn full(&self) -> bool {"
+    },
+    {
+      "source": "crates/model/src/validate.rs:293",
+      "line": "pub fn check_entry_path(entry: &str, at: &str, out: &mut Issues) {"
+    },
+    {
+      "source": "crates/model/src/validate.rs:528",
+      "line": "pub fn is_channel_id(name: &str) -> bool {"
+    },
+    {
+      "source": "crates/model/src/validate.rs:1094",
+      "line": "pub fn exposure_usage(e: &Element) -> BTreeMap<String, u64> {"
+    },
+    {
+      "source": "crates/model/src/value.rs:39",
+      "line": "pub fn parse(s: &str) -> Result<Self, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/value.rs:142",
+      "line": "pub fn now() -> Self {"
+    },
+    {
+      "source": "crates/model/src/value.rs:157",
+      "line": "pub fn parse(s: &str) -> Result<Self, ModelError> {"
+    },
+    {
+      "source": "crates/engine/src/commands.rs:50",
+      "line": "pub fn command_definitions() -> (Map<String, Value>, Map<String, Value>) {"
+    },
+    {
+      "source": "crates/engine/src/components.rs:26",
+      "line": "pub fn components() -> Vec<Component> {"
+    },
+    {
+      "source": "crates/engine/src/error.rs:24",
+      "line": "pub fn code(&self) -> &'static str {"
+    },
+    {
+      "source": "crates/engine/src/error.rs:32",
+      "line": "pub fn to_info(&self) -> ErrorInfo {"
+    },
+    {
+      "source": "crates/engine/src/lib.rs:108",
+      "line": "pub fn new(config: EngineConfig) -> Result<Self, EngineError> {"
+    },
+    {
+      "source": "crates/engine/src/lib.rs:114",
+      "line": "pub fn info(&self) -> EngineInfo {"
+    },
+    {
+      "source": "crates/engine/src/lib.rs:128",
+      "line": "pub fn uptime_ns(&self) -> u64 {"
+    },
+    {
+      "source": "crates/engine/src/lib.rs:136",
+      "line": "pub fn ping(&self, request: PingRequest) -> Result<PingResponse, EngineError> {"
+    },
+    {
+      "source": "crates/engine/src/lib.rs:142",
+      "line": "pub fn selftest(&self) -> SelftestReport {"
+    },
+    {
+      "source": "crates/engine/src/selftest.rs:31",
+      "line": "pub fn push(&mut self, check: CheckResult) {"
+    },
+    {
+      "source": "crates/engine/src/wire.rs:46",
+      "line": "pub fn wire_definitions() -> Map<String, Value> {"
+    },
+    {
+      "source": "crates/engine/src/wire.rs:61",
+      "line": "pub fn to_wire_json<T: Serialize>(value: &T) -> Result<String, ErrorInfo> {"
+    },
+    {
+      "source": "crates/engine/src/wire.rs:72",
+      "line": "pub fn from_wire_json<T: DeserializeOwned>(text: &str) -> Result<T, ErrorInfo> {"
+    },
+    {
+      "source": "crates/engine/src/wire.rs:82",
+      "line": "pub fn error_json(e: &ErrorInfo) -> String {"
+    },
+    {
+      "source": "bins/headless/src/cli.rs:63",
+      "line": "pub fn exit_code(self) -> u8 {"
+    },
+    {
+      "source": "bins/headless/src/cli.rs:95",
+      "line": "pub fn exit_code(&self) -> u8 {"
+    },
+    {
+      "source": "bins/headless/src/cli.rs:105",
+      "line": "pub fn run(cli: &Cli, out: &mut impl Write) -> Result<Outcome, CliError> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/bindings.rs:36",
+      "line": "pub fn current() -> Self {"
+    },
+    {
+      "source": "desktop/src-tauri/src/bindings.rs:95",
+      "line": "pub fn for_platform(&self, platform: Platform) -> Option<&str> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/bindings.rs:169",
+      "line": "pub fn on(&self, platform: Platform) -> bool {"
+    },
+    {
+      "source": "desktop/src-tauri/src/bindings.rs:192",
+      "line": "pub fn on(&self, platform: Platform) -> bool {"
+    },
+    {
+      "source": "desktop/src-tauri/src/bindings.rs:215",
+      "line": "pub fn embedded() -> Result<Self, BindingsError> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/bindings.rs:223",
+      "line": "pub fn parse(json: &str) -> Result<Self, BindingsError> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/bindings.rs:230",
+      "line": "pub fn commands(&self, platform: Platform) -> impl Iterator<Item = &CommandItem> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/bindings.rs:241",
+      "line": "pub fn find(&self, platform: Platform, command: &str) -> Option<&CommandItem> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/bindings.rs:269",
+      "line": "pub fn is_command_id(id: &str) -> bool {"
+    },
+    {
+      "source": "desktop/src-tauri/src/diagnostics.rs:75",
+      "line": "pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptions, ArgsError> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/diagnostics.rs:156",
+      "line": "pub fn requested_diagnostic(&self) -> Option<&'static str> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/diagnostics.rs:188",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/diagnostics.rs:190",
+      "line": "pub fn bench_plan(diagnostics: State<'_, Diagnostics>) -> Option<BenchPlan> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/diagnostics.rs:200",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/diagnostics.rs:201",
+      "line": "pub fn bench_report("
+    },
+    {
+      "source": "desktop/src-tauri/src/diagnostics.rs:225",
+      "line": "pub fn arm_timeout(app: &AppHandle, settings: &BenchSettings) {"
+    },
+    {
+      "source": "desktop/src-tauri/src/ipc.rs:23",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/ipc.rs:24",
+      "line": "pub async fn ping(engine: State<'_, Engine>, json: String) -> Result<Response, String> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/ipc.rs:34",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/ipc.rs:35",
+      "line": "pub fn app_info(engine: State<'_, Engine>) -> Result<Response, String> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/lib.rs:84",
+      "line": "pub fn run() -> Result<(), DesktopError> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/menu.rs:35",
+      "line": "pub fn resolve(manifest: &Manifest, platform: Platform, id: &str) -> MenuAction {"
+    },
+    {
+      "source": "desktop/src-tauri/src/menu.rs:61",
+      "line": "pub fn build<R: Runtime>(app: &AppHandle<R>, manifest: &Manifest) -> tauri::Result<Menu<R>> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/menu.rs:105",
+      "line": "pub fn on_event<R: Runtime>(app: &AppHandle<R>, manifest: &Manifest, id: &str) {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/mod.rs:33",
+      "line": "pub fn new(settings: Option<SpikeSettings>) -> Self {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/mod.rs:58",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/mod.rs:59",
+      "line": "pub async fn spike_canvas_scene("
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/mod.rs:89",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/mod.rs:90",
+      "line": "pub async fn spike_canvas_pixels("
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/renderlist.rs:70",
+      "line": "pub fn parse(s: &str) -> Option<Self> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/renderlist.rs:78",
+      "line": "pub fn code(self) -> u32 {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/renderlist.rs:185",
+      "line": "pub fn group_transform(i: usize, frame: u32, base: &[f32; 6]) -> [f32; 6] {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/renderlist.rs:196",
+      "line": "pub fn generate(kind: Kind, seed: u32) -> Scene {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/renderlist.rs:332",
+      "line": "pub fn bounds_of(points: &[f32]) -> [f32; 4] {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/renderlist.rs:352",
+      "line": "pub fn validate(scene: &Scene) -> Result<(), EncodeError> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/renderlist.rs:402",
+      "line": "pub fn encoded_len(scene: &Scene) -> usize {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/canvas/renderlist.rs:414",
+      "line": "pub fn encode(kind: Kind, scene: &Scene, frame: u32, generate_ns: u64) -> Result<Vec<u8>, EncodeError> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:109",
+      "line": "pub fn wrap(&self, packet: NativePacket) -> WirePacket {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:302",
+      "line": "pub fn arm_auto_timeout(app: &AppHandle, settings: &SpikeSettings) {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:326",
+      "line": "pub fn new(launch: Option<SpikeSettings>) -> Self {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:401",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:402",
+      "line": "pub fn spike_environment(app: AppHandle, spike: State<'_, TabletSpike>) -> Result<SpikeEnvironment, ErrorInfo> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:415",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:417",
+      "line": "pub fn spike_mode(spike: State<'_, TabletSpike>) -> Option<SpikeMode> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:432",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:433",
+      "line": "pub fn spike_tablet_native_start("
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:476",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:477",
+      "line": "pub fn spike_tablet_native_stop(spike: State<'_, TabletSpike>) -> Result<(), ErrorInfo> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:490",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:491",
+      "line": "pub async fn spike_pen_simulate("
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:538",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:539",
+      "line": "pub async fn spike_probe_native_window("
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:567",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:568",
+      "line": "pub fn spike_raw_input_sink(spike: State<'_, TabletSpike>, start: bool) -> Result<serde_json::Value, ErrorInfo> {"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:587",
+      "line": "#[tauri::command]"
+    },
+    {
+      "source": "desktop/src-tauri/src/spikes/tablet/mod.rs:588",
+      "line": "pub fn spike_save_log("
+    }
+  ],
+  "interpretation": "New dead_code allowances are declaration structs; new &mut uses are private executor/context operations or owned candidate/staged values, not live-handle borrows. No newly added unsafe/unwrap()/expect()/panic! in product. Public candidate constructors cannot bypass load integrity/dirty guards.",
+  "reviewerOnlyCurrentChanges": [
+    "?? crates/executor/tests/c12_r3_contracts.rs",
+    "?? crates/executor/tests/c12_r3_registry.rs",
+    "?? crates/executor/tests/c12_r3_stress.rs",
+    "?? reviews/evidence/M1-C1.2-r3/"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "entries": 796,
+  "declaredStatus": {
+    "notImplemented": 727,
+    "implemented": 69
+  },
+  "generatedEntries": 662,
+  "generatedRowsWithR2Holes": 0,
+  "unresolvedReferences": 0,
+  "examples": 809,
+  "sampleMutations": 106,
+  "sampleAcceptedMutations": [],
+  "generatedSampleParts": 140,
+  "generatedUnsampleableModelParts": 0,
+  "generatedSampleMutations": 636,
+  "acceptedGeneratedSampleMutations": []
+}

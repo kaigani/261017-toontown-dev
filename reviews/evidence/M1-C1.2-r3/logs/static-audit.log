@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r3\reviews\evidence\M1-C1.2-r3\static-audit.py", line 36, in <module>
+    assert not re.search(r'\bunsafe\s*\{|\.unwrap\(|\.expect\(|\bpanic!',r['line']), r
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'file': 'crates/executor/src/run.rs', 'line': '        Core::new(crate::registry().unwrap(), session, Duration::from_secs(30))'}

@@ -1,0 +1,18 @@
+    Blocking waiting for file lock on build directory
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r3\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 30.13s
+     Running tests\c12_r1_scale.rs (target\release\deps\c12_r1_scale-92c3818502fbb36d.exe)
+
+running 1 test
+{"profile":"release","cases":[{"fixture":"100000 strokes","objects":100092,"assembleSeconds":4.2395363,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.4407927,"maximumCallSeconds":0.0079875,"create20CheckpointsSeconds":0.001287,"find100Seconds":0.1151005,"documentRev":1},{"fixture":"10000 drawings","objects":10091,"assembleSeconds":0.1473013,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.60036,"maximumCallSeconds":0.0026489,"create20CheckpointsSeconds":0.0594892,"find100Seconds":0.0203912,"documentRev":1}]}
+test every_command_rejects_huge_malformed_input_on_large_documents ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.67s
+
+     Running tests\c12_r2_scale.rs (target\release\deps\c12_r2_scale-4d7833ba5ebbd26c.exe)
+
+running 1 test
+test hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.23s
+

@@ -1,0 +1,826 @@
+[
+  {
+    "id": "agent.server.set",
+    "spec": "spec/A_command_registry.md:1041",
+    "source": "crates/executor/src/commands/agent.rs:64",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "agent.server.status",
+    "spec": "spec/A_command_registry.md:1042",
+    "source": "crates/executor/src/commands/agent.rs:77",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "agent.session.disconnect",
+    "spec": "spec/A_command_registry.md:1044",
+    "source": "crates/executor/src/commands/agent.rs:128",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "agent.typedTools.set",
+    "spec": "spec/A_command_registry.md:1050",
+    "source": "crates/executor/src/commands/agent.rs:280",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.bone.influence.set",
+    "spec": "spec/A_command_registry.md:519",
+    "source": "crates/registry/src/declared.rs:6157",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.display.smoothPaths.set",
+    "spec": "spec/A_command_registry.md:547",
+    "source": "crates/registry/src/declared.rs:6776",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.function.get",
+    "spec": "spec/A_command_registry.md:551",
+    "source": "crates/registry/src/declared.rs:6870",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "anim.function.preset.apply",
+    "spec": "spec/A_command_registry.md:557",
+    "source": "crates/registry/src/declared.rs:7020",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.key.list",
+    "spec": "spec/A_command_registry.md:570",
+    "source": "crates/registry/src/declared.rs:7318",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.path.get",
+    "spec": "spec/A_command_registry.md:577",
+    "source": "crates/registry/src/declared.rs:7484",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "anim.path.point.select",
+    "spec": "spec/A_command_registry.md:581",
+    "source": "crates/registry/src/declared.rs:7584",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.path.point.set",
+    "spec": "spec/A_command_registry.md:582",
+    "source": "crates/registry/src/declared.rs:7606",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.record.completed",
+    "spec": "spec/A_command_registry.md:592",
+    "source": "crates/registry/src/declared.rs:7835",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.record.run",
+    "spec": "spec/A_command_registry.md:595",
+    "source": "crates/registry/src/declared.rs:7895",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.segment.set",
+    "spec": "spec/A_command_registry.md:597",
+    "source": "crates/registry/src/declared.rs:7942",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.skeleton.set",
+    "spec": "spec/A_command_registry.md:605",
+    "source": "crates/registry/src/declared.rs:8133",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "anim.tool.get",
+    "spec": "spec/A_command_registry.md:611",
+    "source": "crates/registry/src/declared.rs:8274",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "app.currentElement.move",
+    "spec": "spec/A_command_registry.md:54",
+    "source": "crates/executor/src/commands/app.rs:178",
+    "status": "implemented",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "capture.inputLock.set",
+    "spec": "spec/A_command_registry.md:969",
+    "source": "crates/registry/src/declared.rs:14672",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "capture.keying.set",
+    "spec": "spec/A_command_registry.md:971",
+    "source": "crates/registry/src/declared.rs:14716",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "cell.columnate.apply",
+    "spec": "spec/A_command_registry.md:452",
+    "source": "crates/registry/src/declared.rs:5109",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "cell.exposure.set",
+    "spec": "spec/A_command_registry.md:457",
+    "source": "crates/registry/src/declared.rs:5228",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "cell.exposures.changed",
+    "spec": "spec/A_command_registry.md:458",
+    "source": "crates/registry/src/declared.rs:5250",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "cell.selection.changed",
+    "spec": "spec/A_command_registry.md:466",
+    "source": "crates/registry/src/declared.rs:5435",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "colour.gapClosing.set",
+    "spec": "spec/A_command_registry.md:353",
+    "source": "crates/registry/src/declared.rs:3128",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "doc.schema.list",
+    "spec": "spec/A_command_registry.md:1024",
+    "source": "crates/executor/src/commands/doc.rs:1016",
+    "status": "implemented",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "draw.envelope.apply",
+    "spec": "spec/A_command_registry.md:239",
+    "source": "crates/registry/src/declared.rs:1034",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "draw.feather.apply",
+    "spec": "spec/A_command_registry.md:241",
+    "source": "crates/registry/src/declared.rs:1084",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "draw.lock.set",
+    "spec": "spec/A_command_registry.md:250",
+    "source": "crates/registry/src/declared.rs:1303",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "draw.object.delete",
+    "spec": "spec/A_command_registry.md:251",
+    "source": "crates/registry/src/declared.rs:1328",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "draw.pointSelection.set",
+    "spec": "spec/A_command_registry.md:258",
+    "source": "crates/registry/src/declared.rs:1494",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "draw.polyline.add",
+    "spec": "spec/A_command_registry.md:259",
+    "source": "crates/registry/src/declared.rs:1519",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "draw.repositionAll.apply",
+    "spec": "spec/A_command_registry.md:261",
+    "source": "crates/registry/src/declared.rs:1569",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "draw.selection.changed",
+    "spec": "spec/A_command_registry.md:264",
+    "source": "crates/registry/src/declared.rs:1644",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "draw.stroke.set",
+    "spec": "spec/A_command_registry.md:269",
+    "source": "crates/registry/src/declared.rs:1760",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "draw.transform.apply",
+    "spec": "spec/A_command_registry.md:273",
+    "source": "crates/registry/src/declared.rs:1860",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "drawAid.grid.set",
+    "spec": "spec/A_command_registry.md:323",
+    "source": "crates/registry/src/declared.rs:2634",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "drawAid.staticLightTable.list",
+    "spec": "spec/A_command_registry.md:331",
+    "source": "crates/registry/src/declared.rs:2798",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "drawAid.staticLightTable.set",
+    "spec": "spec/A_command_registry.md:333",
+    "source": "crates/registry/src/declared.rs:2839",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "edit.clipboard.changed",
+    "spec": "spec/A_command_registry.md:98",
+    "source": "crates/executor/src/commands/edit.rs:898",
+    "status": "implemented",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "edit.history.changed",
+    "spec": "spec/A_command_registry.md:106",
+    "source": "crates/executor/src/commands/edit.rs:280",
+    "status": "implemented",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "element.drawingLock.set",
+    "spec": "spec/A_command_registry.md:417",
+    "source": "crates/registry/src/declared.rs:4463",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "element.hierarchy.select",
+    "spec": "spec/A_command_registry.md:421",
+    "source": "crates/registry/src/declared.rs:4557",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "element.mediaLength.set",
+    "spec": "spec/A_command_registry.md:424",
+    "source": "crates/registry/src/declared.rs:4629",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "export.settings.get",
+    "spec": "spec/A_command_registry.md:946",
+    "source": "crates/registry/src/declared.rs:14314",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "fx.allEffects.changed",
+    "spec": "spec/A_command_registry.md:625",
+    "source": "crates/registry/src/declared.rs:8437",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "fx.block.get",
+    "spec": "spec/A_command_registry.md:630",
+    "source": "crates/registry/src/declared.rs:8547",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "fx.block.set",
+    "spec": "spec/A_command_registry.md:634",
+    "source": "crates/registry/src/declared.rs:8641",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "fx.hitTest.run",
+    "spec": "spec/A_command_registry.md:641",
+    "source": "crates/registry/src/declared.rs:8810",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "fx.paramElement.remove",
+    "spec": "spec/A_command_registry.md:648",
+    "source": "crates/registry/src/declared.rs:8982",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "import.options.set",
+    "spec": "spec/A_command_registry.md:921",
+    "source": "crates/registry/src/declared.rs:13894",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "job.progress",
+    "spec": "spec/A_command_registry.md:1085",
+    "source": "crates/executor/src/commands/job.rs:152",
+    "status": "implemented",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "keymap.list",
+    "spec": "spec/A_command_registry.md:197",
+    "source": "crates/registry/src/declared.rs:400",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "library.create",
+    "spec": "spec/A_command_registry.md:791",
+    "source": "crates/registry/src/declared.rs:11608",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "library.item.move",
+    "spec": "spec/A_command_registry.md:802",
+    "source": "crates/registry/src/declared.rs:11877",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "library.node.get",
+    "spec": "spec/A_command_registry.md:806",
+    "source": "crates/registry/src/declared.rs:11971",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "library.starter.open",
+    "spec": "spec/A_command_registry.md:816",
+    "source": "crates/registry/src/declared.rs:12200",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "library.template.edit.get",
+    "spec": "spec/A_command_registry.md:820",
+    "source": "crates/registry/src/declared.rs:12285",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "library.template.edit.start",
+    "spec": "spec/A_command_registry.md:821",
+    "source": "crates/registry/src/declared.rs:12304",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "library.template.search",
+    "spec": "spec/A_command_registry.md:827",
+    "source": "crates/registry/src/declared.rs:12451",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "playback.range.get",
+    "spec": "spec/A_command_registry.md:887",
+    "source": "crates/registry/src/declared.rs:13448",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "prefs.list",
+    "spec": "spec/A_command_registry.md:183",
+    "source": "crates/registry/src/declared.rs:252",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "print.settings.get",
+    "spec": "spec/A_command_registry.md:993",
+    "source": "crates/registry/src/declared.rs:15043",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "print.settings.set",
+    "spec": "spec/A_command_registry.md:994",
+    "source": "crates/registry/src/declared.rs:15062",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "project.recovery.open",
+    "spec": "spec/A_command_registry.md:87",
+    "source": "crates/executor/src/commands/project.rs:362",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "render.range.run",
+    "spec": "spec/A_command_registry.md:905",
+    "source": "crates/registry/src/declared.rs:13693",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "sound.element.changed",
+    "spec": "spec/A_command_registry.md:703",
+    "source": "crates/registry/src/declared.rs:10041",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "sound.envelope.point.move",
+    "spec": "spec/A_command_registry.md:708",
+    "source": "crates/registry/src/declared.rs:10160",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "sound.placement.remove",
+    "spec": "spec/A_command_registry.md:717",
+    "source": "crates/registry/src/declared.rs:10382",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "sound.range.select",
+    "spec": "spec/A_command_registry.md:724",
+    "source": "crates/registry/src/declared.rs:10554",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "sound.recent.list",
+    "spec": "spec/A_command_registry.md:725",
+    "source": "crates/registry/src/declared.rs:10579",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "storyline.transition.list",
+    "spec": "spec/A_command_registry.md:865",
+    "source": "crates/registry/src/declared.rs:13130",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "storyline.transition.types.list",
+    "spec": "spec/A_command_registry.md:868",
+    "source": "crates/registry/src/declared.rs:13199",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "storyline.warning.changed",
+    "spec": "spec/A_command_registry.md:871",
+    "source": "crates/registry/src/declared.rs:13259",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "tool.pen.set",
+    "spec": "spec/A_command_registry.md:302",
+    "source": "crates/registry/src/declared.rs:2356",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "tool.polyline.options.set",
+    "spec": "spec/A_command_registry.md:305",
+    "source": "crates/registry/src/declared.rs:2419",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  },
+  {
+    "id": "ui.startScreen.set",
+    "spec": "spec/A_command_registry.md:213",
+    "source": "crates/registry/src/declared.rs:598",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "window.panel.set",
+    "spec": "spec/A_command_registry.md:148",
+    "source": "crates/executor/src/commands/window.rs:71",
+    "status": "implemented",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "xsheet.exposures.set",
+    "spec": "spec/A_command_registry.md:502",
+    "source": "crates/registry/src/declared.rs:5934",
+    "status": "deferred-with-owner",
+    "findings": [],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "No additional established semantic defect; not a proof of every possible value."
+  },
+  {
+    "id": "xsheet.panel.set",
+    "spec": "spec/A_command_registry.md:509",
+    "source": "crates/registry/src/declared.rs:6088",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-01"
+    ],
+    "schemaEvidence": "sample80-review.json; sample-generated-mutations.json",
+    "metadataReview": "Owning-section/01 project context, scopes, enablement predicates and GUI/agent declaration inspected.",
+    "semanticReview": "Known counterexample recorded in semantic-schema-cases.json"
+  }
+]

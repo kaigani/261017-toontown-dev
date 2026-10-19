@@ -1,0 +1,11 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r3\crates\executor)
+error[E0609]: no field `pens` on type `DocumentParts`
+  --> crates\executor\tests\c12_r3_registry.rs:95:55
+   |
+95 |     accepts("tool.pen.set", true, &json!({"pen":parts.pens[0]}));
+   |                                                       ^^^^ unknown field
+   |
+   = note: available fields are: `document_rev`, `project`, `palettes`, `banks`, `drawings` ... and 3 others
+
+For more information about this error, try `rustc --explain E0609`.
+error: could not compile `tt-executor` (test "c12_r3_registry") due to 1 previous error
