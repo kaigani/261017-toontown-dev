@@ -152,6 +152,45 @@ fn verified_diff(
     }]
 }
 
+/// An entry's JSON after a patch, where the entry may be created (`add ""` while absent) or removed (`remove ""`) by
+/// the patch; every other operation applies through `change::apply_with_inverse` (frame limits re-checked).
+fn entry_after(
+    before: Option<&serde_json::Value>,
+    patch: &[crate::change::PatchOp],
+    key: &EntryKey,
+) -> Result<Option<serde_json::Value>, Vec<ModelError>> {
+    let mut cur = before.cloned();
+    let mut rest: Vec<crate::change::PatchOp> = Vec::new();
+    let flush = |cur: &mut Option<serde_json::Value>, rest: &mut Vec<crate::change::PatchOp>| -> Result<(), Vec<ModelError>> {
+        if rest.is_empty() {
+            return Ok(());
+        }
+        let Some(v) = cur.as_ref() else {
+            return Err(vec![ModelError::with_details(
+                codes::ARG_INVALID,
+                format!("the entry {key:?} does not exist"),
+                json!({ "pointer": rest[0].path }),
+            )]);
+        };
+        let (after, _) = crate::change::apply_with_inverse(v, rest).map_err(|e| vec![e])?;
+        *cur = Some(after);
+        rest.clear();
+        Ok(())
+    };
+    for op in patch {
+        match (op.op, op.path.is_empty(), cur.is_some() || !rest.is_empty()) {
+            ("add", true, false) => cur = op.value.clone(),
+            ("remove", true, true) => {
+                flush(&mut cur, &mut rest)?;
+                cur = None;
+            }
+            _ => rest.push(op.clone()),
+        }
+    }
+    flush(&mut cur, &mut rest)?;
+    Ok(cur)
+}
+
 /// An immutable snapshot of a project.
 #[derive(Debug, Clone)]
 pub struct Document {
@@ -579,32 +618,56 @@ impl Document {
             grouped.entry(key.clone()).or_default().extend(patch.iter().cloned());
         }
         let mut next = self.clone();
-        let mut befores = Vec::with_capacity(order.len());
+        let mut befores: Vec<(EntryKey, Option<serde_json::Value>)> = Vec::with_capacity(order.len());
         for key in &order {
             let patch = grouped.get(key).map(Vec::as_slice).unwrap_or_default();
-            let before = self.entry_raw_json(key).map_err(|e| vec![e])?;
-            let (after, _raw_inverse) = crate::change::apply_with_inverse(&before, patch).map_err(|e| vec![e])?;
-            match key {
-                EntryKey::Project => next.project = Arc::new(staged(&after, &self.project.id)?),
-                EntryKey::Library => next.library = Arc::new(staged(&after, &self.library.id)?),
-                EntryKey::Palette(id) => {
-                    next.palettes.insert(id.clone(), Arc::new(staged(&after, id)?));
+            let before = if self.has_entry(key) { Some(self.entry_raw_json(key).map_err(|e| vec![e])?) } else { None };
+            let after = entry_after(before.as_ref(), patch, key)?;
+            match (&after, key) {
+                (None, EntryKey::Project | EntryKey::Library) => {
+                    return Err(vec![ModelError::with_details(
+                        codes::ARG_INVALID,
+                        "the project and library entries cannot be removed",
+                        json!({ "pointer": "" }),
+                    )]);
                 }
-                EntryKey::Bank(id) => {
-                    next.banks.insert(id.clone(), Arc::new(staged(&after, id)?));
+                (None, EntryKey::Palette(id)) => {
+                    next.palettes.remove(id);
                 }
-                EntryKey::Drawing(id) => {
-                    next.drawings.insert(id.clone(), Arc::new(staged(&after, id)?));
+                (None, EntryKey::Bank(id)) => {
+                    next.banks.remove(id);
                 }
-                EntryKey::Scene(id) => {
-                    next.scenes.insert(id.clone(), Arc::new(staged(&after, id)?));
+                (None, EntryKey::Drawing(id)) => {
+                    next.drawings.remove(id);
                 }
-                EntryKey::Element(id) => {
-                    next.elements.insert(id.clone(), Arc::new(staged(&after, id)?));
+                (None, EntryKey::Scene(id)) => {
+                    next.scenes.remove(id);
+                }
+                (None, EntryKey::Element(id)) => {
+                    next.elements.remove(id);
+                }
+                (Some(after), EntryKey::Project) => next.project = Arc::new(staged(after, &self.project.id)?),
+                (Some(after), EntryKey::Library) => next.library = Arc::new(staged(after, &self.library.id)?),
+                (Some(after), EntryKey::Palette(id)) => {
+                    next.palettes.insert(id.clone(), Arc::new(staged(after, id)?));
+                }
+                (Some(after), EntryKey::Bank(id)) => {
+                    next.banks.insert(id.clone(), Arc::new(staged(after, id)?));
+                }
+                (Some(after), EntryKey::Drawing(id)) => {
+                    next.drawings.insert(id.clone(), Arc::new(staged(after, id)?));
+                }
+                (Some(after), EntryKey::Scene(id)) => {
+                    next.scenes.insert(id.clone(), Arc::new(staged(after, id)?));
+                }
+                (Some(after), EntryKey::Element(id)) => {
+                    next.elements.insert(id.clone(), Arc::new(staged(after, id)?));
                 }
             }
-            // The staged entry passed the full object input path.
-            next.mark_validated(key);
+            if after.is_some() {
+                // The staged entry passed the full object input path.
+                next.mark_validated(key);
+            }
             befores.push((key.clone(), before));
         }
         next.rebuild_derived();
@@ -616,19 +679,45 @@ impl Document {
         // Undo and redo describe the **committed** canonical entry (C11-R6-01). Revalidation canonicalises — exposure
         // runs merge, keys reorder, strings normalise — so the raw-JSON inverse of the staged value may name positions
         // that no longer exist or restore the wrong frames. Both are derived from canonical snapshots and verified.
+        // An entry created by the commit is undone by removing it (`remove ""`) and one removed by the commit is
+        // undone by adding it back (`add ""`), each carrying the canonical entry.
         let mut commits = Vec::with_capacity(befores.len());
         for (key, before) in befores {
-            let committed = next.entry_raw_json(&key).map_err(|e| vec![e])?;
-            let ty = before
-                .get("type")
-                .and_then(serde_json::Value::as_str)
-                .and_then(crate::types::ObjectType::parse)
-                .unwrap_or(crate::types::ObjectType::Project);
-            let undo = verified_diff(&committed, &before, ty);
-            let redo = if with_redo { verified_diff(&before, &committed, ty) } else { Vec::new() };
+            let committed = if next.has_entry(&key) { Some(next.entry_raw_json(&key).map_err(|e| vec![e])?) } else { None };
+            let root = |op: &'static str, value: Option<serde_json::Value>, old: Option<serde_json::Value>| {
+                vec![crate::change::PatchOp { op, from: None, path: String::new(), range: None, value, old_value: old, elided: false }]
+            };
+            let (undo, redo) = match (&before, &committed) {
+                (Some(b), Some(c)) => {
+                    let ty = b
+                        .get("type")
+                        .and_then(serde_json::Value::as_str)
+                        .and_then(crate::types::ObjectType::parse)
+                        .unwrap_or(crate::types::ObjectType::Project);
+                    let undo = verified_diff(c, b, ty);
+                    let redo = if with_redo { verified_diff(b, c, ty) } else { Vec::new() };
+                    (undo, redo)
+                }
+                (None, Some(c)) => (root("remove", None, Some(c.clone())), if with_redo { root("add", Some(c.clone()), None) } else { Vec::new() }),
+                (Some(b), None) => (root("add", Some(b.clone()), None), if with_redo { root("remove", None, Some(b.clone())) } else { Vec::new() }),
+                (None, None) => (Vec::new(), Vec::new()),
+            };
             commits.push(EntryCommit { key, undo, redo });
         }
         Ok((next, commits))
+    }
+
+    /// Whether the document holds an entry.
+    #[must_use]
+    pub fn has_entry(&self, key: &EntryKey) -> bool {
+        match key {
+            EntryKey::Project | EntryKey::Library => true,
+            EntryKey::Palette(id) => self.palettes.contains_key(id),
+            EntryKey::Bank(id) => self.banks.contains_key(id),
+            EntryKey::Drawing(id) => self.drawings.contains_key(id),
+            EntryKey::Scene(id) => self.scenes.contains_key(id),
+            EntryKey::Element(id) => self.elements.contains_key(id),
+        }
     }
 
     /// Where an object lives (by plain or compound ID string).

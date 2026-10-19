@@ -32,7 +32,23 @@ impl Document {
     /// # Errors
     /// As [`Document::with_revisions`]; `arg.invalid` for a revision above `document_rev`.
     pub fn with_object_revisions(&self, document_rev: u64, stamps: &[(String, u64)]) -> Result<Document, ModelError> {
-        if document_rev <= self.document_rev {
+        self.stamp_objects(document_rev, stamps, false)
+    }
+
+    /// The snapshot as it was at an earlier `document_rev`: the listed objects get their earlier revisions (each at
+    /// most `document_rev`; keys that do not exist are skipped, they were created later). Only reconstructions of
+    /// history use it (`doc.diff` rebuilding an earlier revision from back-patches, which restore content but not the
+    /// revisions stamped afterwards); no drawing rule applies, the drawing's earlier revision is listed explicitly.
+    ///
+    /// # Errors
+    /// `arg.invalid` for a revision above `document_rev`.
+    pub fn at_earlier_revision(&self, document_rev: u64, stamps: &[(String, u64)]) -> Result<Document, ModelError> {
+        let present: Vec<(String, u64)> = stamps.iter().filter(|(k, _)| self.locate(k).is_some()).cloned().collect();
+        self.stamp_objects(document_rev, &present, true)
+    }
+
+    fn stamp_objects(&self, document_rev: u64, stamps: &[(String, u64)], restore: bool) -> Result<Document, ModelError> {
+        if !restore && document_rev <= self.document_rev {
             return Err(ModelError::with_details(
                 codes::ARG_INVALID,
                 format!("documentRev {document_rev} is not newer than {}", self.document_rev),
@@ -58,6 +74,7 @@ impl Document {
             let map = by_entry.entry(loc.entry.clone()).or_default();
             map.insert(loc.key.clone(), *rev);
             if let EntryKey::Drawing(d) = &loc.entry
+                && !restore
                 && *rev == document_rev
             {
                 map.insert(d.as_str().to_owned(), document_rev);

@@ -107,24 +107,62 @@ fn split_key(key: &str) -> (Option<&str>, &str) {
     }
 }
 
+/// Memo of one canonical-path computation: parent paths and per-container name counts, so computing the paths of
+/// many objects costs one pass instead of a sibling scan per object (C12-R1-23: 10 000 drawings in one bank).
+#[derive(Default)]
+struct PathMemo {
+    paths: std::collections::HashMap<String, String>,
+    counts: std::collections::HashMap<String, std::collections::HashMap<String, usize>>,
+}
+
+impl PathMemo {
+    fn count(&mut self, container: &str, name: &str, names: impl FnOnce() -> Vec<String>) -> usize {
+        let map = self.counts.entry(container.to_owned()).or_insert_with(|| {
+            let mut m = std::collections::HashMap::new();
+            for n in names() {
+                *m.entry(n).or_insert(0) += 1;
+            }
+            m
+        });
+        map.get(name).copied().unwrap_or(0)
+    }
+}
+
 impl Document {
     /// The canonical path of an object by index key (plain or compound ID).
     #[must_use]
     pub fn canonical_path(&self, key: &str) -> Option<String> {
         let loc = self.locate(key)?;
-        Some(self.path_for(loc.ty, &loc.key))
+        Some(self.path_for(loc.ty, &loc.key, &mut PathMemo::default()))
+    }
+
+    /// The canonical paths of many objects, computed in one pass (shared parents and sibling-name counts).
+    #[must_use]
+    pub fn canonical_paths<'a>(&self, keys: impl IntoIterator<Item = &'a str>) -> Vec<Option<String>> {
+        let mut memo = PathMemo::default();
+        keys.into_iter()
+            .map(|k| self.locate(k).map(|loc| self.path_for(loc.ty, &loc.key, &mut memo)))
+            .collect()
     }
 
     pub(super) fn canonical_path_of(&self, ty: ObjectType, key: &str) -> String {
-        self.path_for(ty, key)
+        self.path_for(ty, key, &mut PathMemo::default())
+    }
+
+    fn path_for(&self, ty: ObjectType, key: &str, memo: &mut PathMemo) -> String {
+        if let Some(p) = memo.paths.get(key) {
+            return p.clone();
+        }
+        let path = self.compute_path(ty, key, memo);
+        memo.paths.insert(key.to_owned(), path.clone());
+        path
     }
 
     #[allow(clippy::too_many_lines)]
-    fn path_for(&self, ty: ObjectType, key: &str) -> String {
+    fn compute_path(&self, ty: ObjectType, key: &str, memo: &mut PathMemo) -> String {
         let fallback = || format!("{}:@{}", ty.as_str(), split_key(key).1);
         let loc = self.locate(key);
         let parent_key = loc.and_then(|l| l.parent.clone());
-        let parent_path = |pty: ObjectType| parent_key.as_deref().map(|p| self.path_for(pty, p));
         let (_, local) = split_key(key);
         match ty {
             ObjectType::Project => "project".to_owned(),
@@ -148,7 +186,7 @@ impl Document {
                     pal.styles.iter().find(|s| s.id.as_str() == key).map(|s| s.name.as_str())
                 };
                 let unique = name.is_some_and(|n| exact_count(names, n) == 1);
-                format!("{}/{}:{}", self.path_for(ObjectType::Palette, pk), ty.as_str(), sel_name(name, unique, key))
+                format!("{}/{}:{}", self.path_for(ObjectType::Palette, pk, memo), ty.as_str(), sel_name(name, unique, key))
             }
             ObjectType::Pen | ObjectType::Asset => {
                 let names: Vec<&str> = if ty == ObjectType::Pen {
@@ -170,15 +208,15 @@ impl Document {
                 let Some(d) = self.drawings.get(&id) else { return fallback() };
                 let bank = self.bank_of(&id).cloned();
                 let base = match bank.as_ref().and_then(|b| self.bank_users(b).first()) {
-                    Some(el) => self.path_for(ObjectType::Element, el.as_str()),
+                    Some(el) => self.path_for(ObjectType::Element, el.as_str(), memo),
                     None => match &bank {
                         Some(b) => format!("drawingBank:@{b}"),
                         None => return fallback(),
                     },
                 };
                 let unique = bank.as_ref().and_then(|b| self.banks.get(b)).is_some_and(|b| {
-                    exact_count(b.drawings.ids().iter().map(|x| self.drawings.get(x).map(|d| d.name.as_str())), &d.name)
-                        == 1
+                    let names = || b.drawings.ids().iter().filter_map(|x| self.drawings.get(x)).map(|d| d.name.clone()).collect();
+                    memo.count(&format!("bank:{}", b.id), &d.name, names) == 1
                 });
                 format!("{base}/drawing:{}", sel_name(Some(&d.name), unique, key))
             }
@@ -187,9 +225,9 @@ impl Document {
                 let Some(drawing) = container.and_then(|c| self.drawings.get(c)) else { return fallback() };
                 let Some(pk) = parent_key.as_deref() else { return fallback() };
                 let parent = if pk.contains('/') {
-                    self.path_for(ObjectType::DrawingNode, pk)
+                    self.path_for(ObjectType::DrawingNode, pk, memo)
                 } else {
-                    self.path_for(ObjectType::Drawing, pk)
+                    self.path_for(ObjectType::Drawing, pk, memo)
                 };
                 if ty == ObjectType::Stroke {
                     return format!("{parent}/stroke:@{local}");
@@ -208,7 +246,7 @@ impl Document {
                 format!("scene:{}", sel_name(name, unique, key))
             }
             ObjectType::Transition => match parent_key.as_deref() {
-                Some(p) if self.scenes.contains_key(p) => format!("{}/transition", self.path_for(ObjectType::Scene, p)),
+                Some(p) if self.scenes.contains_key(p) => format!("{}/transition", self.path_for(ObjectType::Scene, p, memo)),
                 _ => "transition".to_owned(),
             },
             ObjectType::Element => {
@@ -216,12 +254,12 @@ impl Document {
                 let Some(e) = self.elements.get(&id) else { return fallback() };
                 let Some(scene_id) = self.scene_of(&id).cloned() else { return fallback() };
                 let unique = self.scenes.get(&scene_id).is_some_and(|s| {
-                    exact_count(s.elements.ids().iter().map(|x| self.elements.get(x).map(|e| e.name.as_str())), &e.name)
-                        == 1
+                    let names = || s.elements.ids().iter().filter_map(|x| self.elements.get(x)).map(|e| e.name.clone()).collect();
+                    memo.count(&format!("scene:{}", s.id), &e.name, names) == 1
                 });
                 format!(
                     "{}/element:{}",
-                    self.path_for(ObjectType::Scene, scene_id.as_str()),
+                    self.path_for(ObjectType::Scene, scene_id.as_str(), memo),
                     sel_name(Some(&e.name), unique, key)
                 )
             }
@@ -234,14 +272,14 @@ impl Document {
                     .and_then(|m| m.values().find(|c| c.id.as_str() == key))
                     .map(|c| c.name.clone());
                 match name {
-                    Some(n) => format!("{}/channel:{}", self.path_for(ObjectType::Element, el), quote(&n)),
+                    Some(n) => format!("{}/channel:{}", self.path_for(ObjectType::Element, el, memo), quote(&n)),
                     None => fallback(),
                 }
             }
             ObjectType::Key | ObjectType::MotionPoint => {
                 let Some(ch) = parent_key.as_deref() else { return fallback() };
                 let chan = self.channel(ch);
-                let base = self.path_for(ObjectType::Channel, ch);
+                let base = self.path_for(ObjectType::Channel, ch, memo);
                 if ty == ObjectType::Key {
                     match chan.and_then(|c| c.keys.as_ref()).and_then(|ks| ks.iter().find(|k| k.id.as_str() == local)) {
                         Some(k) => format!("{base}/key:{}", quote(&k.frame.to_string())),
@@ -252,7 +290,7 @@ impl Document {
                 }
             }
             ObjectType::ParticleBlock | ObjectType::SoundPlacement | ObjectType::MediaSequence => {
-                match parent_path(ObjectType::Element) {
+                match parent_key.as_deref().map(|p| self.path_for(ObjectType::Element, p, memo)) {
                     Some(p) => format!("{p}/{}:@{key}", ty.as_str()),
                     None => fallback(),
                 }
@@ -263,7 +301,7 @@ impl Document {
                 let parent = if pk == self.library.id.as_str() {
                     "library:local".to_owned()
                 } else {
-                    self.path_for(ObjectType::LibraryFolder, pk)
+                    self.path_for(ObjectType::LibraryFolder, pk, memo)
                 };
                 let Some((node, siblings)) = find_library(&self.library.children, key) else { return fallback() };
                 let name = library_name(node);
