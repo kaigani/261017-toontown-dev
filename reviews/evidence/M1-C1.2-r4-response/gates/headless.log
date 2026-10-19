@@ -1,0 +1,31 @@
+$ cargo build --release --locked -p tt-headless
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\bins\headless)
+    Finished `release` profile [optimized + debuginfo] target(s) in 14.70s
+
+[exit 0]
+$ "C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\target\release\toontown-headless.exe" --version
+toontown-headless 0.0.1 (Toontown 0.0.1; format 1.0; registry 0.1.0; windows-x86_64)
+
+[exit 0]
+$ "C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\target\release\toontown-headless.exe" --selftest
+Toontown 0.0.1 self-test (windows-x86_64, run mode headless)
+  [ok] engine.components      13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine
+  [ok] engine.versions        formatVersion 1.0 (MAJOR.MINOR), registryVersion 0.1.0 (semver)
+  [ok] engine.ping            echoed seq and 1024 payload bytes in 100 ns
+  [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+  [ok] kernel.executor        registry 796 entries (v0.1.0); patch rev Some(2), undo rev Some(3) from 1; stub answered Some("command.notImplemented")
+  [ok] headless.mcpLinked     tt-mcp linked (M1 (C1.4))
+self-test passed
+
+[exit 0]
+$ "C:\Python313\python.exe" scripts/check-headless-deps.py "C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\target\release\toontown-headless.exe"
+crate graph: 101 crates, forbidden: none
+linked libraries (win32): bcryptprimitives.dll, kernel32.dll, api-ms-win-core-synch-l1-2-0.dll, kernel32.dll, ntdll.dll, vcruntime140.dll, api-ms-win-crt-math-l1-1-0.dll, api-ms-win-crt-runtime-l1-1-0.dll, api-ms-win-crt-stdio-l1-1-0.dll, api-ms-win-crt-locale-l1-1-0.dll, api-ms-win-crt-heap-l1-1-0.dll
+forbidden libraries: none
+headless dependency check passed
+
+[exit 0]
