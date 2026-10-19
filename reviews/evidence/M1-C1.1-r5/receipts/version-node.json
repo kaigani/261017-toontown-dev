@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    "--version"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:44:54.484717+00:00",
+  "elapsed_seconds": 0.074,
+  "exit_code": 0,
+  "log": "logs/version-node.log",
+  "sha256": "ed7de8ea0cd4b667ff55ad318ae19bed3b87fd3e7f1027a7ce127bb04df124c4",
+  "env": {}
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "--version"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:44:54.960838+00:00",
+  "elapsed_seconds": 0.014,
+  "exit_code": 0,
+  "log": "logs/version-python.log",
+  "sha256": "6661d0c2df33bef5d9f73854a4077f010efb8264ecd67f29bb03271eca58b956",
+  "env": {}
+}

@@ -1,0 +1,4 @@
+9c3f586 docs(c1.1): record the closure-check CI run
+07f992d docs(c1.1): closure-check r4 addendum and handoff CI coverage table
+6c290ad fix(model): exposure and mouth-track writes bounded at the patch boundary; CI runs every reviewer suite
+7ba98f1 merge: Codex closure check r4 of C1.1 (block; 1 P1)

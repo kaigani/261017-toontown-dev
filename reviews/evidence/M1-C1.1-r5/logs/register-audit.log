@@ -1,0 +1,12 @@
+{
+  "requirements": 428,
+  "counts": {
+    "implemented": 234,
+    "deferred": 193,
+    "divergent": 1,
+    "missing": 0
+  },
+  "changed_rows": [
+    388
+  ]
+}

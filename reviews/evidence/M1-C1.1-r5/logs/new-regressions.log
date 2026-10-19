@@ -1,0 +1,34 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r5\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.29s
+     Running tests\c11_r5_write_bounds.rs (target\debug\deps\c11_r5_write_bounds-410a3ffcc70d9017.exe)
+
+running 4 tests
+
+thread 'nested_exposure_count_write_obeys_total_limit' (3856) panicked at crates\model\tests\c11_r5_write_bounds.rs:17:5:
+C11-R5-01: oversized frame-bearing write at /exposure/0/1 must return doc.limitExceeded; error=None
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'copy_and_move_into_exposure_obey_scene_limit' (31576) panicked at crates\model\tests\c11_r5_write_bounds.rs:17:5:
+C11-R5-01: oversized frame-bearing write at /exposure must return doc.limitExceeded; error=None
+
+thread 'exposure_append_batch_cannot_cross_limit' (16564) panicked at crates\model\tests\c11_r5_write_bounds.rs:17:5:
+C11-R5-01: oversized frame-bearing write at /exposure/- must return doc.limitExceeded; error=None
+
+thread 'whole_mouth_string_writes_obey_scene_limit' (23096) panicked at crates\model\tests\c11_r5_write_bounds.rs:17:5:
+C11-R5-01: oversized frame-bearing write at /mouthTrack/mouths must return doc.limitExceeded; error=None
+test nested_exposure_count_write_obeys_total_limit ... FAILED
+test whole_mouth_string_writes_obey_scene_limit ... FAILED
+test copy_and_move_into_exposure_obey_scene_limit ... FAILED
+test exposure_append_batch_cannot_cross_limit ... FAILED
+
+failures:
+
+failures:
+    copy_and_move_into_exposure_obey_scene_limit
+    exposure_append_batch_cannot_cross_limit
+    nested_exposure_count_write_obeys_total_limit
+    whole_mouth_string_writes_obey_scene_limit
+
+test result: FAILED. 0 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r5_write_bounds`

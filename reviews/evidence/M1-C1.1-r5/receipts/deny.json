@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cargo",
+    "deny",
+    "--locked",
+    "check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:39:15.081503+00:00",
+  "elapsed_seconds": 15.847,
+  "exit_code": 0,
+  "log": "logs/deny.log",
+  "sha256": "55f8a048b0083c980316a77a2547a345d054f973a50ee1af61b3d028d76cf325",
+  "env": {}
+}

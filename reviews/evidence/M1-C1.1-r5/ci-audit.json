@@ -1,0 +1,859 @@
+{
+  "head": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39180390724",
+  "jobs": [
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39180390724/job/117831697647",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build, default (unsigned; no M0 diagnostics)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Default build registers no M0 diagnostic command and refuses the flags",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)",
+          "conclusion": "success"
+        },
+        {
+          "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+          "conclusion": "success"
+        },
+        {
+          "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+          "conclusion": "success"
+        },
+        {
+          "name": "C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Collect artifacts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39180390724/job/117831697739",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end — lint, type-check, test, format, licences",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reviewer Python suites (every tests/adversarial/*.py)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end — build, diagnostics variant then default (frontendDist is embedded by the Tauri host)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo fmt --all --check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo test --workspace --locked",
+          "conclusion": "success"
+        },
+        {
+          "name": "Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run taiki-e/install-action@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo deny --locked check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Headless binary — build, self-test (twice, compared), linked-library proof",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "workspace_counts": [
+        281,
+        0,
+        1
+      ],
+      "diagnostics_counts": [
+        49,
+        0,
+        0
+      ],
+      "reviewer_rust_counts": {
+        "c11_r1_adversarial": [
+          39,
+          0,
+          0
+        ],
+        "c11_r2_adversarial": [
+          39,
+          0,
+          0
+        ],
+        "c11_r3_adversarial": [
+          11,
+          0,
+          0
+        ],
+        "c11_r3_register": [
+          4,
+          0,
+          0
+        ],
+        "c11_r3_random": [
+          1,
+          0,
+          0
+        ],
+        "c11_r4_exposure_bounds": [
+          2,
+          0,
+          0
+        ],
+        "c11_r1_wire": [
+          4,
+          0,
+          0
+        ],
+        "c11_r2_wire": [
+          6,
+          0,
+          0
+        ],
+        "c11_r3_wire": [
+          2,
+          0,
+          0
+        ],
+        "c03_r2_encoder": [
+          5,
+          0,
+          0
+        ],
+        "adversarial_c01": [
+          7,
+          0,
+          0
+        ],
+        "c03_fixed_configurations": [
+          2,
+          0,
+          0
+        ],
+        "c03_r1_stress": [
+          2,
+          0,
+          1
+        ],
+        "c03_r2_quality": [
+          1,
+          0,
+          0
+        ]
+      },
+      "reviewer_vitest_file_counts": {
+        "src/ipc/c11-r1-adversarial.test.ts": 6,
+        "src/ipc/c11-r2-adversarial.test.ts": 9,
+        "src/ipc/c11-r3-adversarial.test.ts": 4,
+        "src/test/adversarial.test.ts": 8,
+        "src/test/c01-r2-node.test.ts": 2,
+        "src/test/c01-r2-schema.test.ts": 12,
+        "src/test/c01-r3-node.test.ts": 1,
+        "src/test/c01-r3-schema.test.ts": 14,
+        "src/test/c01-r4-node.test.ts": 1,
+        "src/test/c02-r1-measurement.test.tsx": 5,
+        "src/test/c02-r1-tooling.test.ts": 1,
+        "src/test/c02-r2-tooling.test.ts": 2,
+        "src/test/c02-r3-tooling.test.ts": 1,
+        "src/test/c03-r1-binary.test.ts": 9,
+        "src/test/c03-r1-tooling.test.ts": 1,
+        "src/test/c03-r2-binary.test.ts": 9,
+        "src/test/c03-r2-page.test.tsx": 3,
+        "src/test/c03-r2-tooling.test.ts": 1,
+        "src/test/c03-r3-page.test.tsx": 2,
+        "src/test/decisionRules.test.ts": 1,
+        "src/test/decisionTables.test.ts": 2,
+        "src/test/platformFloor.test.ts": 5
+      },
+      "vitest_total": 326,
+      "node_license_tests": 9,
+      "python_suite_counts": {
+        "c02-r1-tooling.py": 4,
+        "c02-r2-tooling.py": 9,
+        "c02-r3-tooling.py": 1,
+        "c03-r1-tooling.py": 12,
+        "c03-r2-tooling.py": 9,
+        "c04-r2-decisions.py": 3,
+        "c04-r3-decisions.py": 3,
+        "c04-r3-page.py": 5,
+        "c04-r5-decisions.py": 1,
+        "c11-r2-review-policy.py": 2,
+        "headless_guard.py": 3
+      },
+      "nested_node_execution": {
+        "guards.mjs": {
+          "via": "adversarial_c01",
+          "cases": [
+            "c01_r1_01_license_grouping_preserves_mandatory_copyleft",
+            "c01_r1_01_license_allowlist_stays_within_user_policy",
+            "c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary"
+          ]
+        },
+        "c01-r2-boundary.test.mjs + c01-r2-licenses.test.mjs": {
+          "via": "src/test/c01-r2-node.test.ts",
+          "wrapper_tests": 2
+        },
+        "c01-r3-boundary.test.mjs": {
+          "via": "src/test/c01-r3-node.test.ts",
+          "wrapper_tests": 1
+        },
+        "c01-r4-boundary.test.mjs": {
+          "via": "src/test/c01-r4-node.test.ts",
+          "wrapper_tests": 1
+        },
+        "c03-r1-real-transport.mjs": {
+          "via": "src/test/c03-r1-binary.test.ts",
+          "wrapper_tests": 9
+        }
+      }
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39180390724/job/117831697746",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "conclusion": "success"
+        },
+        {
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39180390724/job/117831697778",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build, default (unsigned; no M0 diagnostics)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Default build registers no M0 diagnostic command and refuses the flags",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tauri build with M0 diagnostics (unsigned; for the measurements below and the manual tests)",
+          "conclusion": "success"
+        },
+        {
+          "name": "IPC benchmark in the real webview (toontown --ipc-bench)",
+          "conclusion": "success"
+        },
+        {
+          "name": "C0.2 tablet spike with synthetic pen input (Windows runner; non-blocking measurement)",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "C0.3 canvas spike (render list -> WebGPU/WebGL2; non-blocking measurement on the CI runner)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Collect artifacts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39180390724/job/117831697799",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "conclusion": "success"
+        },
+        {
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39180390724/job/117831697841",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-headless",
+          "conclusion": "success"
+        },
+        {
+          "name": "Self-test with no display server",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39180390724/job/117831697875",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo build --release --locked -p tt-render --example c03_raster",
+          "conclusion": "success"
+        },
+        {
+          "name": "Render fixtures and check committed hashes (two processes)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/kaigani/261017-toontown-dev/actions/runs/39180390724/job/117831697937",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust toolchain (pinned in rust-toolchain.toml)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end — lint, type-check, test, format, licences",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reviewer Python suites (every tests/adversarial/*.py)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Front end — build, diagnostics variant then default (frontendDist is embedded by the Tauri host)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo fmt --all --check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo test --workspace --locked",
+          "conclusion": "success"
+        },
+        {
+          "name": "Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run taiki-e/install-action@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run cargo deny --locked check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Headless binary — build, self-test (twice, compared), linked-library proof",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run Swatinem/rust-cache@v2",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "workspace_counts": [
+        275,
+        0,
+        1
+      ],
+      "diagnostics_counts": [
+        43,
+        0,
+        0
+      ],
+      "reviewer_rust_counts": {
+        "c11_r1_adversarial": [
+          39,
+          0,
+          0
+        ],
+        "c11_r2_adversarial": [
+          39,
+          0,
+          0
+        ],
+        "c11_r3_adversarial": [
+          11,
+          0,
+          0
+        ],
+        "c11_r3_register": [
+          4,
+          0,
+          0
+        ],
+        "c11_r3_random": [
+          1,
+          0,
+          0
+        ],
+        "c11_r4_exposure_bounds": [
+          2,
+          0,
+          0
+        ],
+        "c11_r1_wire": [
+          4,
+          0,
+          0
+        ],
+        "c11_r2_wire": [
+          6,
+          0,
+          0
+        ],
+        "c11_r3_wire": [
+          2,
+          0,
+          0
+        ],
+        "c03_r2_encoder": [
+          5,
+          0,
+          0
+        ],
+        "adversarial_c01": [
+          7,
+          0,
+          0
+        ],
+        "c03_fixed_configurations": [
+          2,
+          0,
+          0
+        ],
+        "c03_r1_stress": [
+          2,
+          0,
+          1
+        ],
+        "c03_r2_quality": [
+          1,
+          0,
+          0
+        ]
+      },
+      "reviewer_vitest_file_counts": {
+        "src/ipc/c11-r1-adversarial.test.ts": 6,
+        "src/ipc/c11-r2-adversarial.test.ts": 9,
+        "src/ipc/c11-r3-adversarial.test.ts": 4,
+        "src/test/adversarial.test.ts": 8,
+        "src/test/c01-r2-node.test.ts": 2,
+        "src/test/c01-r2-schema.test.ts": 12,
+        "src/test/c01-r3-node.test.ts": 1,
+        "src/test/c01-r3-schema.test.ts": 14,
+        "src/test/c01-r4-node.test.ts": 1,
+        "src/test/c02-r1-measurement.test.tsx": 5,
+        "src/test/c02-r1-tooling.test.ts": 1,
+        "src/test/c02-r2-tooling.test.ts": 2,
+        "src/test/c02-r3-tooling.test.ts": 1,
+        "src/test/c03-r1-binary.test.ts": 9,
+        "src/test/c03-r1-tooling.test.ts": 1,
+        "src/test/c03-r2-binary.test.ts": 9,
+        "src/test/c03-r2-page.test.tsx": 3,
+        "src/test/c03-r2-tooling.test.ts": 1,
+        "src/test/c03-r3-page.test.tsx": 2,
+        "src/test/decisionRules.test.ts": 1,
+        "src/test/decisionTables.test.ts": 2,
+        "src/test/platformFloor.test.ts": 5
+      },
+      "vitest_total": 326,
+      "node_license_tests": 9,
+      "python_suite_counts": {
+        "c02-r1-tooling.py": 4,
+        "c02-r2-tooling.py": 9,
+        "c02-r3-tooling.py": 1,
+        "c03-r1-tooling.py": 12,
+        "c03-r2-tooling.py": 9,
+        "c04-r2-decisions.py": 3,
+        "c04-r3-decisions.py": 3,
+        "c04-r3-page.py": 5,
+        "c04-r5-decisions.py": 1,
+        "c11-r2-review-policy.py": 2,
+        "headless_guard.py": 3
+      },
+      "nested_node_execution": {
+        "guards.mjs": {
+          "via": "adversarial_c01",
+          "cases": [
+            "c01_r1_01_license_grouping_preserves_mandatory_copyleft",
+            "c01_r1_01_license_allowlist_stays_within_user_policy",
+            "c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary"
+          ]
+        },
+        "c01-r2-boundary.test.mjs + c01-r2-licenses.test.mjs": {
+          "via": "src/test/c01-r2-node.test.ts",
+          "wrapper_tests": 2
+        },
+        "c01-r3-boundary.test.mjs": {
+          "via": "src/test/c01-r3-node.test.ts",
+          "wrapper_tests": 1
+        },
+        "c01-r4-boundary.test.mjs": {
+          "via": "src/test/c01-r4-node.test.ts",
+          "wrapper_tests": 1
+        },
+        "c03-r1-real-transport.mjs": {
+          "via": "src/test/c03-r1-binary.test.ts",
+          "wrapper_tests": 9
+        }
+      }
+    }
+  ],
+  "assessment": "All committed reviewer suites execute in both OS check jobs. Suite counts below are taken from logs. Nested Node stdout is piped by the existing wrappers: child TAP counts are not printed; wrapper counts and successful exit assertions are the evidence, not invented child counts.",
+  "other_rust_fixtures": "c02-r1-native-timestamps.rs, c02-r1-macos-accessors.rs and c02-r2-macos-accessors.rs are compiled/exercised by the c02 Python suites, on both hosts using doubles.",
+  "excluded": "collect_runtime_evidence.py is an evidence collector, not a suite."
+}
