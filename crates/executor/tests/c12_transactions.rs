@@ -426,3 +426,20 @@ fn a_batch_changing_one_property_twice_undoes_and_redoes_exactly() {
         assert_eq!(get(&h, &element)["role"], "background");
     }
 }
+
+#[test]
+fn job_results_must_satisfy_the_declared_final_result_schema() {
+    // export.movie.run declares its final result (`Manifest`, an object) under `x-jobResult` (C12-R1-13).
+    let h = fixture();
+    let wait = |id: &str| h.jobs().wait(id, std::time::Duration::from_secs(5)).unwrap().0;
+    let bad = h.jobs().submit("export.movie.run", "user", |_| Ok(json!("not a manifest"))).unwrap();
+    let record = wait(&bad);
+    assert_eq!(record.state, tt_executor::JobState::Failed);
+    assert_eq!(record.error.as_ref().map(|e| e.code.as_str()), Some("internal"));
+    assert_eq!(record.result, None, "a result that violates its schema is never handed out");
+    let good = h.jobs().submit("export.movie.run", "user", |_| Ok(json!({ "files": [] }))).unwrap();
+    assert_eq!(wait(&good).state, tt_executor::JobState::Succeeded);
+    // Jobs of commands without a declared final result are not checked.
+    let free = h.jobs().submit("review.free", "user", |_| Ok(json!(1))).unwrap();
+    assert_eq!(wait(&free).state, tt_executor::JobState::Succeeded);
+}
