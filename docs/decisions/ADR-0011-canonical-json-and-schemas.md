@@ -93,7 +93,14 @@ definitions the application validates with; 10 §2.6 for change sets that can be
    run totals of the target, `value` and `oldValue`, the window's last frame and the resulting length are checked
    arithmetically **before** anything is expanded or resized, and so are whole-value writes of an element's
    `exposure`; a breach is `doc.limitExceeded` with `details.pointer` and nothing is applied. Exactly 100 000 frames
-   is valid. It supports RFC 6902 root `add`/`replace`;
+   is valid. Those checks are fast paths; **the guarantee is a post-condition on the staged result** (C11-R5-01):
+   `apply_with_inverse` works on a copy and, after every operation, re-checks every declared frame-bearing field the
+   operation can have changed — one containing a written path (a count below `exposure`, an append), the written
+   path itself (a whole mouth string, a `copy`/`move` destination), and any inside the written value — whatever the
+   operation type or path shape; the first failure is that operation's typed error and the whole patch is refused.
+   At the document level, `Document::with_patched_entry` stages the patched entry, revalidates it through the full
+   input path, rebuilds the snapshot and returns it only if `issues()` has no error (every integrity rule and every
+   10 §5 limit); a property test drives random RFC 6902 sequences over sample documents through it. It supports RFC 6902 root `add`/`replace`;
    whether `doc.object.patch` may replace a whole object is a command decision (C1.2). Exposure and mouth-track
    edits use one range
    operation: `{op: "replace", path, range: {from, to}, value, oldValue}` where frames from `from` covered by

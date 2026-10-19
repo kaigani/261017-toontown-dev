@@ -38,7 +38,10 @@ written. Everything later (executor, persistence, MCP, every area's commands) bu
    costs a full validation of every entry (1.7–2.4 s for the 121 092-object scale document), so the executor must
    derive snapshots by revalidating only the entries a transaction touched (C1.2). Undo and redo invert a
    transaction's patches with `change::apply_with_inverse` / `invert_against`, against the state they applied to;
-   there is no stateless inversion (C11-R3-02, ADR-0011 §7).
+   there is no stateless inversion (C11-R3-02, ADR-0011 §7). A patch reaches a snapshot only as a **staged commit**
+   (`Document::with_patched_entry`, C11-R5-01): applied to a copy of the entry, revalidated, assembled into a
+   copy-on-write clone whose complete `issues()` must be free of errors; otherwise the errors are returned and the
+   current snapshot is unchanged. The C1.2 executor commits through this primitive (batching several entries).
 5. **One struct per object type, strict.** Serde with `deny_unknown_fields`; field declaration order is schema order
    (JSON-02). Type-specific element blocks (10 §4.6) are optional fields that are **absent** when they do not apply
    (never `null`); nullable properties are written explicitly as `null` (JSON-04). Unknown properties of newer minor

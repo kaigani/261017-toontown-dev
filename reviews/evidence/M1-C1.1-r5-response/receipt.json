@@ -1,0 +1,56 @@
+{
+  "what": "Final closure check r5 response: local gate logs, recorded from the working tree described by baseCommit + dirtyFiles before the fix commit.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics (second run; the first run's rustc process aborted with an allocation failure while compiling, and its log was overwritten)",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-*.log": "pnpm lint | typecheck | test | format:check | licenses:check",
+    "gates/node-test.log": "node --test scripts/check-npm-licenses.test.mjs",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless-*.log, selftest-*": "cargo build --release --locked -p tt-headless; --selftest --json twice, compared; scripts/check-headless-deps.py",
+    "gates/reviewer-python-suites.log": "python scripts/run-reviewer-python-suites.py",
+    "gates/staged-commit-nocapture.log": "cargo test --locked -p tt-model --test staged_commit -- --nocapture"
+  },
+  "recordedAt": "2026-10-19T01:00:41+00:00",
+  "baseCommit": "4bb343ed386cfcd17e8248d3c7fc93b359790e3d",
+  "dirtyFiles": [
+    "crates/model/src/change.rs",
+    "crates/model/src/document/mod.rs",
+    "crates/model/tests/staged_commit.rs",
+    "docs/decisions/ADR-0010-object-model-and-identifiers.md",
+    "docs/decisions/ADR-0011-canonical-json-and-schemas.md",
+    "plan/traceability.csv",
+    "reviews/M1-C1.1-handoff.md",
+    "reviews/evidence/M1-C1.1-r5-response/"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "sha256": {
+    "gates/build.log": "d88f3d56110269a16e56dce0966b966c22f9681ef8be132a7505d6724dd73b2b",
+    "gates/clippy-diag.log": "2e3afc12a9eb082f081210858f52b38b50a010e65bdf43737a2ff6ff504161fb",
+    "gates/clippy.log": "90e7053d6837e3c7038316de38c42528f46b478a55a93c60a23c603f095cc51b",
+    "gates/deny.log": "69c387dc462b9c37f752f53d1c7a2a510e7bfc60550534035443e44d43c24a3d",
+    "gates/fmt.log": "e20fecd1b340974b1c268348f4daa9d31a5c67f6065c319097a12bbe3e21f962",
+    "gates/headless-build.log": "673599c5cb684c6257754f3e626a4f9faca61e90732f194e405fe7f649d0a8d6",
+    "gates/headless-deps.log": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295",
+    "gates/node-test.log": "e62175021431801c333d75be8eb9f1ed35b0401f7812396291093b6f18d9f8d2",
+    "gates/pnpm-format.log": "3741b86ebc596c5914a8805d60966c473eb165aa935bad114c67be1d4b114bb1",
+    "gates/pnpm-licenses.log": "26eeca268a0c4bdfb47c1188020ecd167a2a1b3944c625ed7225fe0fb7f10535",
+    "gates/pnpm-lint.log": "9acfaa811763526641b9fd04d72d6150daffdae7aa0f42b3e1e1fe4afbbe7a21",
+    "gates/pnpm-test.log": "4e4c42e0ea0cae068cb239a6db21f952a87258c5c2705c43bbd7edf7cf436d62",
+    "gates/pnpm-typecheck.log": "de37029285525bc9cfc231919392594833e45e9f3c3c5f6c5a7925c99161762f",
+    "gates/reviewer-python-suites.log": "b6271a2ceedc38631f7134cc751366289e691d1f571585908c3b587b807369ab",
+    "gates/selftest-1.json": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+    "gates/selftest-2.json": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+    "gates/selftest-compare.log": "67bd29b3acc47c40247ef48e2155b582d8ac3af5ed0afd23947c089ed02d3e9c",
+    "gates/test-diag.log": "a4e60e9fb2f8d424520ed01807d2fff9411a38f6dea6a8d023fa89d137d64c36",
+    "gates/test.log": "b5443564d34a88c13c8f4eb79cdb24cb2c2275eaf0f53535387c492f3adb17a1",
+    "gates/staged-commit-nocapture.log": "231a2394fc75c5139317056a5bca7f3abd733c5bd38aba1bb5fce5eba1aa1146"
+  }
+}

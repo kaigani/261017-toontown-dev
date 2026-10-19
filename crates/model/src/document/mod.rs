@@ -405,6 +405,81 @@ impl Document {
         self.entry_raw(key)
     }
 
+    /// Applies a patch to one entry as a **staged commit** (10 §2.6, §5; C11-R5-01) and returns the next snapshot
+    /// with the patch's inverse.
+    ///
+    /// The patch is applied to a copy of the entry's JSON (`change::apply_with_inverse`, which already checks every
+    /// frame-bearing field an operation touched). The staged entry then goes through the full input path again
+    /// (`object::from_json`: depth limit, normalisation, schema, canonical form, object-local rules, including the
+    /// exposure and scene limits), replaces the entry in a copy-on-write clone, and the clone's complete `issues()` —
+    /// every integrity rule and every 10 §5 limit — must have no error. Only then is the staged snapshot returned;
+    /// `self` is immutable and is never changed. This post-condition is the guarantee, whatever operations or paths
+    /// the patch uses; the cheap per-operation checks are fast paths.
+    ///
+    /// # Errors
+    /// The first failing stage's errors: the patch's typed error (e.g. `doc.limitExceeded`, `arg.invalid`,
+    /// `doc.patchTestFailed`, with `details.pointer`), the entry's input errors (`doc.schemaViolation`,
+    /// `arg.invalid`, `doc.limitExceeded`; `details.objectId`), an attempt to change the entry's ID (`arg.invalid`,
+    /// ID-01), or the integrity errors of the staged document (codes of 10 §9 with `details.objectId` and
+    /// `details.pointer`).
+    pub fn with_patched_entry(
+        &self,
+        key: &EntryKey,
+        patch: &[crate::change::PatchOp],
+    ) -> Result<(Document, Vec<crate::change::PatchOp>), Vec<ModelError>> {
+        fn staged<T: crate::entities::ModelObject + Check>(
+            v: &serde_json::Value,
+            id: &Id,
+        ) -> Result<T, Vec<ModelError>> {
+            let parsed: T = crate::object::from_json(v).map_err(|errors| {
+                errors
+                    .into_iter()
+                    .map(|e| {
+                        let mut details = e.details().clone();
+                        if let Some(m) = details.as_object_mut() {
+                            m.insert("objectId".into(), json!(id.as_str()));
+                        }
+                        ModelError::with_details(e.code(), e.message().to_owned(), details)
+                    })
+                    .collect::<Vec<_>>()
+            })?;
+            if parsed.object_id() != id {
+                return Err(vec![ModelError::with_details(
+                    codes::ARG_INVALID,
+                    format!("the id of `{id}` is immutable (10 ID-01)"),
+                    json!({ "objectId": id.as_str(), "pointer": format!("/{}", T::TYPE.id_field()) }),
+                )]);
+            }
+            Ok(parsed)
+        }
+        let before = self.entry_raw_json(key).map_err(|e| vec![e])?;
+        let (after, inverse) = crate::change::apply_with_inverse(&before, patch).map_err(|e| vec![e])?;
+        let mut next = self.clone();
+        match key {
+            EntryKey::Project => next.project = Arc::new(staged(&after, &self.project.id)?),
+            EntryKey::Library => next.library = Arc::new(staged(&after, &self.library.id)?),
+            EntryKey::Palette(id) => {
+                next.palettes.insert(id.clone(), Arc::new(staged(&after, id)?));
+            }
+            EntryKey::Bank(id) => {
+                next.banks.insert(id.clone(), Arc::new(staged(&after, id)?));
+            }
+            EntryKey::Drawing(id) => {
+                next.drawings.insert(id.clone(), Arc::new(staged(&after, id)?));
+            }
+            EntryKey::Scene(id) => {
+                next.scenes.insert(id.clone(), Arc::new(staged(&after, id)?));
+            }
+            EntryKey::Element(id) => {
+                next.elements.insert(id.clone(), Arc::new(staged(&after, id)?));
+            }
+        }
+        next.rebuild_derived();
+        let errors: Vec<ModelError> =
+            next.issues().into_iter().filter(|i| i.severity == Severity::Error).map(|i| i.to_error()).collect();
+        if errors.is_empty() { Ok((next, inverse)) } else { Err(errors) }
+    }
+
     /// Where an object lives (by plain or compound ID string).
     #[must_use]
     pub fn locate(&self, id: &str) -> Option<&Location> {

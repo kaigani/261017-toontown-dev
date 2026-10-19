@@ -589,8 +589,90 @@ pub fn apply_with_inverse(value: &Value, patch: &[PatchOp]) -> Result<(Value, Ve
     let mut steps: Vec<Vec<PatchOp>> = Vec::with_capacity(patch.len());
     for op in patch {
         steps.push(apply_op(&mut v, op)?);
+        // The post-condition on the staged value is the guarantee, whatever the operation or path shape (C11-R5-01).
+        check_frame_fields(&v, op)?;
     }
     Ok((v, steps.into_iter().rev().flatten().collect()))
+}
+
+/// Post-condition of one applied operation on the staged value (C11-R5-01): every declared frame-bearing field the
+/// operation can have changed — one containing a written path (a run count written below `exposure`, an append to
+/// it), the written path itself (a whole mouth string, a copy or move into `exposure`), or one inside the written
+/// value (a whole placement or element replaced) — satisfies its invariants: exposure runs with counts ≥ 1 and at
+/// most a scene's frames, mouth strings of at most a scene's frames (10 §4.7, §4.14, §5). A failure is the typed
+/// error of the operation (`doc.limitExceeded` or `arg.invalid` with `details.pointer`), and because the patch is
+/// applied to a staged copy, nothing of it is applied. Fields inside opaque `meta`/`ext` are not declared fields.
+fn check_frame_fields(v: &Value, op: &PatchOp) -> Result<(), ModelError> {
+    for written in std::iter::once(&op.path).chain(op.from.as_ref()) {
+        let tokens = pointer::parse(written)?;
+        // A trailing `-` names the element an append created; its container is what changed.
+        let concrete = match tokens.split_last() {
+            Some((last, parent)) if last == "-" => parent,
+            _ => tokens.as_slice(),
+        };
+        for depth in 0..=concrete.len() {
+            let prefix = concrete.get(..depth).unwrap_or_default();
+            if let Some(field) = declared_frame_field(prefix)
+                && let Some(value) = pointer::get(v, prefix)
+            {
+                check_frame_field(field, value, op)?;
+            }
+        }
+        if let Some(value) = pointer::get(v, concrete) {
+            scan_frame_fields(value, &mut concrete.to_vec(), op, 0)?;
+        }
+    }
+    Ok(())
+}
+
+fn scan_frame_fields(v: &Value, at: &mut Vec<String>, op: &PatchOp, depth: usize) -> Result<(), ModelError> {
+    if depth > crate::MAX_JSON_DEPTH || at.iter().any(|t| t == "meta" || t == "ext") {
+        return Ok(());
+    }
+    if let Some(field) = declared_frame_field(at) {
+        check_frame_field(field, v, op)?;
+    }
+    match v {
+        Value::Object(m) => {
+            for (k, x) in m {
+                if matches!(x, Value::Object(_) | Value::Array(_) | Value::String(_)) {
+                    at.push(k.clone());
+                    let r = scan_frame_fields(x, at, op, depth + 1);
+                    at.pop();
+                    r?;
+                }
+            }
+        }
+        // Exposure tuples and other arrays of scalars hold no further declared fields.
+        Value::Array(items) => {
+            for (i, x) in items.iter().enumerate() {
+                if matches!(x, Value::Object(_)) {
+                    at.push(i.to_string());
+                    let r = scan_frame_fields(x, at, op, depth + 1);
+                    at.pop();
+                    r?;
+                }
+            }
+        }
+        _ => {}
+    }
+    Ok(())
+}
+
+fn check_frame_field(field: &str, v: &Value, op: &PatchOp) -> Result<(), ModelError> {
+    match (field, v) {
+        ("exposure", Value::Array(_)) => runs_total(v, "the exposure", op).map(drop),
+        ("mouths", Value::String(s)) => {
+            // Byte length bounds the letter count from above; count only when it could exceed the limit.
+            if s.len() as u64 > MAX_FRAMES && s.chars().count() as u64 > MAX_FRAMES {
+                Err(limit_err(op, format!("the mouth track would exceed {MAX_FRAMES} frames (10 §5)")))
+            } else {
+                Ok(())
+            }
+        }
+        // Other shapes are the schema's to reject when the object is validated.
+        _ => Ok(()),
+    }
 }
 
 fn patch_err(op: &PatchOp, msg: impl Into<String>) -> ModelError {
