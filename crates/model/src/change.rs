@@ -634,6 +634,18 @@ fn diff_into(a: &Value, b: &Value, path: &str, ty: ObjectType, out: &mut Vec<Pat
         out.push(op);
         return;
     }
+    // A list of full inline children whose length changed (objects created or deleted): diffed by ID when every
+    // item has a unique ID and the kept items keep their order — one `remove` per deleted item, the content diff of
+    // each kept item, one `add` per created item — so inserting a stroke into a 100 000-stroke layer is one
+    // operation, not a copy of the layer (C1.2). Anything else is replaced as before.
+    if let (Value::Array(xa), Value::Array(xb)) = (a, b)
+        && xa.len() != xb.len()
+        && !(is_child_list(ty, path) && xa.iter().chain(xb).all(is_stub))
+        && let Some(ops) = keyed_array_diff(xa, xb, path, ty)
+    {
+        out.extend(ops);
+        return;
+    }
     match (a, b) {
         (Value::Object(ma), Value::Object(mb)) => {
             for (k, va) in ma {
@@ -663,6 +675,45 @@ fn diff_into(a: &Value, b: &Value, path: &str, ty: ObjectType, out: &mut Vec<Pat
         }
         _ => out.push(PatchOp::replace(path.to_owned(), a.clone(), b.clone())),
     }
+}
+
+/// The ID of a list item (`id`, or `colourId` for swatches).
+fn item_key(v: &Value) -> Option<&str> {
+    let m = v.as_object()?;
+    m.get("id").or_else(|| m.get("colourId"))?.as_str()
+}
+
+/// The ID-keyed diff of two lists of objects (see `diff_into`); `None` when an item has no ID, IDs repeat, or the
+/// items present in both lists are in a different order.
+fn keyed_array_diff(xa: &[Value], xb: &[Value], path: &str, ty: ObjectType) -> Option<Vec<PatchOp>> {
+    use std::collections::HashSet;
+    let ka: Vec<&str> = xa.iter().map(item_key).collect::<Option<_>>()?;
+    let kb: Vec<&str> = xb.iter().map(item_key).collect::<Option<_>>()?;
+    let in_a: HashSet<&str> = ka.iter().copied().collect();
+    let in_b: HashSet<&str> = kb.iter().copied().collect();
+    if in_a.len() != ka.len() || in_b.len() != kb.len() {
+        return None;
+    }
+    let kept_a: Vec<usize> = (0..ka.len()).filter(|i| in_b.contains(ka[*i])).collect();
+    let kept_b: Vec<usize> = (0..kb.len()).filter(|i| in_a.contains(kb[*i])).collect();
+    if kept_a.len() != kept_b.len() || kept_a.iter().zip(&kept_b).any(|(i, j)| ka[*i] != kb[*j]) {
+        return None;
+    }
+    let mut out = Vec::new();
+    for i in (0..ka.len()).rev() {
+        if !in_b.contains(ka[i]) {
+            out.push(PatchOp::remove(format!("{path}/{i}"), xa[i].clone()));
+        }
+    }
+    for (pos, (i, j)) in kept_a.iter().zip(&kept_b).enumerate() {
+        diff_into(&xa[*i], &xb[*j], &format!("{path}/{pos}"), ty, &mut out);
+    }
+    for (j, k) in kb.iter().enumerate() {
+        if !in_a.contains(k) {
+            out.push(PatchOp::add(format!("{path}/{j}"), xb[j].clone()));
+        }
+    }
+    Some(out)
 }
 
 fn new_op(kind: &'static str, path: &str, from: Option<String>, value: Option<Value>, old: Option<Value>) -> PatchOp {

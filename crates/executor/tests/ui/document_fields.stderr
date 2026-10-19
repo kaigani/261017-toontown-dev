@@ -1,0 +1,5 @@
+error[E0616]: field `document_rev` of struct `Document` is private
+ --> tests/ui/document_fields.rs:4:9
+  |
+4 |     doc.document_rev = 99;
+  |         ^^^^^^^^^^^^ private field

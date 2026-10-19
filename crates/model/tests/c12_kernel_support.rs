@@ -109,3 +109,48 @@ fn validated_entry_cache_never_hides_object_issues() {
     let valid = fixture::sample_document(3).unwrap();
     assert_eq!(errors(&valid), 0);
 }
+
+#[test]
+fn typed_object_pointers_agree_with_the_entry_json() {
+    let doc = fixture::sample_document(1).unwrap();
+    let mut n = 0;
+    for loc in doc.locations() {
+        let (entry, ty, at) = doc.object_pointer(&loc.key).unwrap();
+        assert_eq!((entry.clone(), ty), (loc.entry.clone(), loc.ty), "{}", loc.key);
+        let json = doc.entry_raw_json(&entry).unwrap();
+        assert_eq!(change::object_pointer(&json, &loc.key).as_deref(), Some(at.as_str()), "{}", loc.key);
+        assert_eq!(json.pointer(&at), Some(&doc.object_raw_json(&loc.key).unwrap().1), "{}", loc.key);
+        n += 1;
+    }
+    assert_eq!(n, doc.object_count());
+    assert_eq!(doc.object_pointer("nope").unwrap_err().code(), "ref.notFound");
+}
+
+/// Inserting or removing one item of a list of full inline objects is one operation in the verified undo/redo, not a
+/// copy of the list; reorders still replace the list; every patch is verified against the canonical snapshots.
+#[test]
+fn list_insertions_and_removals_diff_by_id() {
+    let a = json!({ "items": [{ "id": "a", "v": 1 }, { "id": "b", "v": 2 }, { "id": "c", "v": 3 }] });
+    let b = json!({ "items": [{ "id": "a", "v": 1 }, { "id": "x", "v": 9 }, { "id": "c", "v": 4 }, { "id": "y", "v": 8 }] });
+    let p = change::diff_json(&a, &b, "", ObjectType::Drawing);
+    let ops: Vec<(&str, &str)> = p.iter().map(|o| (o.op, o.path.as_str())).collect();
+    assert_eq!(ops, [("remove", "/items/1"), ("replace", "/items/1/v"), ("add", "/items/1"), ("add", "/items/3")]);
+    assert_eq!(change::apply(&a, &p).unwrap(), b);
+    let back = change::diff_json(&b, &a, "", ObjectType::Drawing);
+    assert_eq!(change::apply(&b, &back).unwrap(), a);
+    // Reordered survivors: replaced whole.
+    let r = json!({ "items": [{ "id": "c", "v": 3 }, { "id": "a", "v": 1 }] });
+    let p = change::diff_json(&a, &r, "", ObjectType::Drawing);
+    assert_eq!((p.len(), p[0].op, p[0].path.as_str()), (1, "replace", "/items"));
+    // Through the staged commit: adding one stroke to a layer gives a one-operation undo and redo.
+    let doc = fixture::sample_document(1).unwrap();
+    let (drawing, key) = stroke_key(&doc);
+    let (entry, _, at) = doc.object_pointer(&key).unwrap();
+    let (_, mut s) = doc.object_raw_json(&key).unwrap();
+    s["id"] = json!("st_c12_extra");
+    let list = at.rsplit_once('/').unwrap().0;
+    let (next, commits) = doc.with_patched_entries(&[(entry, vec![op("add", &format!("{list}/-"), Some(s))])]).unwrap();
+    assert!(next.locate(&format!("{drawing}/st_c12_extra")).is_some());
+    assert_eq!((commits[0].undo.len(), commits[0].undo[0].op), (1, "remove"));
+    assert_eq!((commits[0].redo.len(), commits[0].redo[0].op), (1, "add"));
+}

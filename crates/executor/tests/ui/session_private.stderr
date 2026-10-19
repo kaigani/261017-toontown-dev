@@ -1,0 +1,11 @@
+error[E0603]: module `session` is private
+ --> tests/ui/session_private.rs:2:18
+  |
+2 | use tt_executor::session::Session;
+  |                  ^^^^^^^ private module
+  |
+note: the module `session` is defined here
+ --> src/lib.rs
+  |
+  | mod session;
+  | ^^^^^^^^^^^

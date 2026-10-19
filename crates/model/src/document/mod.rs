@@ -522,6 +522,28 @@ impl Document {
         &self,
         changes: &[(EntryKey, Vec<crate::change::PatchOp>)],
     ) -> Result<(Document, Vec<EntryCommit>), Vec<ModelError>> {
+        self.staged_commit(changes, true)
+    }
+
+    /// [`Document::with_patched_entries`] without deriving the redo patches: each [`EntryCommit::redo`] is empty.
+    /// For callers that obtain the redo when they undo (the executor: replaying a step's verified undo returns the
+    /// verified patch back, which becomes the step's redo; C1.1 ticket "use the redo returned by undo"). Saves one
+    /// verified whole-entry diff per commit (≈ 0.45 s for a 100 000-stroke drawing).
+    ///
+    /// # Errors
+    /// As [`Document::with_patched_entries`].
+    pub fn with_patched_entries_undo_only(
+        &self,
+        changes: &[(EntryKey, Vec<crate::change::PatchOp>)],
+    ) -> Result<(Document, Vec<EntryCommit>), Vec<ModelError>> {
+        self.staged_commit(changes, false)
+    }
+
+    fn staged_commit(
+        &self,
+        changes: &[(EntryKey, Vec<crate::change::PatchOp>)],
+        with_redo: bool,
+    ) -> Result<(Document, Vec<EntryCommit>), Vec<ModelError>> {
         fn staged<T: crate::entities::ModelObject + Check>(
             v: &serde_json::Value,
             id: &Id,
@@ -603,7 +625,7 @@ impl Document {
                 .and_then(crate::types::ObjectType::parse)
                 .unwrap_or(crate::types::ObjectType::Project);
             let undo = verified_diff(&committed, &before, ty);
-            let redo = verified_diff(&before, &committed, ty);
+            let redo = if with_redo { verified_diff(&before, &committed, ty) } else { Vec::new() };
             commits.push(EntryCommit { key, undo, redo });
         }
         Ok((next, commits))

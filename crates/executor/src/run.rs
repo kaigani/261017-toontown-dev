@@ -680,3 +680,130 @@ impl Envelope {
         self.status == EnvStatus::Error
     }
 }
+
+#[cfg(test)]
+mod tests {
+    #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, reason = "test")]
+
+    use serde_json::json;
+    use tt_model::change::PatchOp;
+    use tt_model::document::EntryKey;
+
+    use super::*;
+    use crate::types::Invocation;
+
+    fn core() -> Core {
+        let doc = tt_model::fixture::sample_document(1).unwrap();
+        let session = Session { project: Some(OpenProject::new(doc, None, false)), ..Session::default() };
+        Core::new(crate::registry().unwrap(), session)
+    }
+
+    fn doc(core: &Core) -> Document {
+        core.session().unwrap().project.as_ref().unwrap().doc.clone()
+    }
+
+    /// Stages raw entry patches as one new step (what an M2 area command will do through `Cx::patch_entries`).
+    fn structural(core: &mut Core, changes: Vec<(EntryKey, Vec<PatchOp>)>) -> Vec<ChangeRecord> {
+        let session = core.take_session();
+        let mut cx = Cx::new(session, Origin::User, "test.structural", false);
+        cx.patch_entries(changes).unwrap();
+        let txn = cx.finish_staged("Add Stroke".into()).unwrap().unwrap();
+        let changes = txn.changes.clone();
+        let mut session = cx.into_session();
+        commit(&mut session, vec![txn], &Origin::User).unwrap();
+        core.session = Some(session);
+        changes
+    }
+
+    fn d0_pointer(d: &Document, key: &str) -> String {
+        d.object_pointer(key).unwrap().2
+    }
+
+    fn op(op: &'static str, path: &str, value: Option<Value>) -> PatchOp {
+        PatchOp { op, from: None, path: path.into(), range: None, value, old_value: None, elided: false }
+    }
+
+    #[test]
+    fn created_objects_survive_undo_redo_cycles_with_rising_revisions() {
+        let mut core = core();
+        let d0 = doc(&core);
+        let mut strokes: Vec<String> = d0
+            .locations()
+            .filter(|l| l.ty == tt_model::ObjectType::Stroke)
+            .map(|l| l.key.clone())
+            .filter(|k| d0.object_raw_json(k).unwrap().1["kind"] == "pencil")
+            .collect();
+        strokes.sort();
+        let stroke_key = strokes[0].clone();
+        let (entry, _, at) = d0.object_pointer(&stroke_key).unwrap();
+        let EntryKey::Drawing(drawing) = entry.clone() else { panic!("stroke outside a drawing") };
+        let (_, mut stroke) = d0.object_raw_json(&stroke_key).unwrap();
+        stroke["id"] = json!("s_c12_new");
+        stroke["rev"] = json!(1);
+        let strokes = at.rsplit_once('/').unwrap().0.to_owned();
+        let changes =
+            structural(&mut core, vec![(entry.clone(), vec![op("add", &format!("{strokes}/-"), Some(stroke))])]);
+        let new_key = format!("{drawing}/s_c12_new");
+        assert!(changes.iter().any(|c| c.id == new_key && c.op == "created"), "{changes:?}");
+        let r1 = doc(&core).document_rev();
+        assert_eq!(doc(&core).locate(&new_key).unwrap().rev, r1, "a created object carries its transaction's rev");
+        // Edit it through the property path, then undo both and redo both, twice.
+        let mut swatches: Vec<String> =
+            d0.locations().filter(|l| l.ty == tt_model::ObjectType::Swatch).map(|l| l.key.clone()).collect();
+        swatches.sort();
+        let swatch = swatches[0].clone();
+        let env = core.invoke(&Invocation::user(
+            "doc.object.patch",
+            json!({ "targets": [new_key], "props": { "colourId": swatch } }),
+        ));
+        assert!(env.is_ok(), "{:?}", env.error);
+        // The creation step's undo is one operation, not a copy of the layer (ID-keyed list diff).
+        let p = core.session().unwrap().project.as_ref().unwrap();
+        let StepEdit::Patches(commits) = &p.history.steps()[0].edit else { panic!("patch step") };
+        assert_eq!(commits[0].undo.len(), 1, "{:?}", commits[0].undo);
+        assert_eq!(commits[0].undo[0].op, "remove");
+        // A step that replaces the whole stroke object (as a tool may) records the stroke's pre-stamp `rev` in its
+        // patches; once stamped, the stored undo names a revision the live stroke no longer has. Replays align it
+        // modulo rev (ADR-0013 §4; `align::tests` shows a checked precondition), and undo/redo work.
+        let new_at = d0_pointer(&doc(&core), &new_key);
+        let (_, mut replaced) = doc(&core).object_raw_json(&new_key).unwrap();
+        replaced["rev"] = json!(1);
+        replaced["meta"] = json!({ "replaced": true });
+        structural(&mut core, vec![(entry.clone(), vec![op("replace", &new_at, Some(replaced))])]);
+        let p = core.session().unwrap().project.as_ref().unwrap();
+        let StepEdit::Patches(commits) = &p.history.steps().last().unwrap().edit else { panic!("patch step") };
+        let undo = commits[0].undo.clone();
+        assert!(undo.iter().any(|o| o.path.ends_with("/rev")), "{undo:?}");
+        let aligned = crate::align::prepare(&doc(&core), &entry, &undo).unwrap();
+        assert!(doc(&core).with_patched_entries(&[(entry.clone(), aligned)]).is_ok(), "aligned replay applies");
+        let env = core.invoke(&Invocation::user("edit.undo", json!({})));
+        assert!(env.is_ok(), "{:?}", env.error);
+        assert!(doc(&core).object_raw_json(&new_key).unwrap().1.get("meta").is_none());
+        assert!(core.invoke(&Invocation::user("edit.redo", json!({}))).is_ok());
+        assert_eq!(doc(&core).object_raw_json(&new_key).unwrap().1["meta"]["replaced"], true);
+        assert!(core.invoke(&Invocation::user("edit.undo", json!({}))).is_ok());
+        let mut last = doc(&core).document_rev();
+        for _ in 0..2 {
+            for _ in 0..2 {
+                let env = core.invoke(&Invocation::user("edit.undo", json!({})));
+                assert!(env.is_ok(), "undo: {:?}", env.error);
+                assert_eq!(env.document_rev, Some(last + 1));
+                last += 1;
+            }
+            assert!(doc(&core).locate(&new_key).is_none(), "the created stroke is gone again");
+            for _ in 0..2 {
+                let env = core.invoke(&Invocation::user("edit.redo", json!({})));
+                assert!(env.is_ok(), "redo: {:?}", env.error);
+                last += 1;
+            }
+            let now = doc(&core);
+            let loc = now.locate(&new_key).unwrap();
+            assert_eq!(loc.rev, last, "redo re-creates and stamps it");
+            assert_eq!(now.object_raw_json(&new_key).unwrap().1["colourId"], json!(swatch));
+            assert_eq!(now.locate(drawing.as_str()).unwrap().rev, last, "and the drawing with it");
+        }
+        // doc.diff reconstructs earlier revisions through the same replay.
+        let env = core.invoke(&Invocation::user("doc.diff", json!({ "sinceRev": r1 - 1 })));
+        assert!(env.is_ok(), "{:?}", env.error);
+    }
+}

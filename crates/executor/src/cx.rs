@@ -17,7 +17,7 @@ use tt_model::path::Ref;
 use tt_model::{ObjectType, codes as model_codes};
 use tt_registry::{CommandError, codes};
 
-use crate::align::align;
+use crate::align::prepare;
 use crate::app::{AppContext, SpecialContext};
 use crate::history::StepEdit;
 use crate::session::{OpenProject, Session};
@@ -322,7 +322,8 @@ impl Cx {
         structural: bool,
     ) -> Result<(), CommandError> {
         let doc = self.staging_doc()?;
-        let (next, commits) = doc.with_patched_entries(changes).map_err(model_error)?;
+        // The redo of a new step is the verified patch its first undo returns (`replay`).
+        let (next, commits) = doc.with_patched_entries_undo_only(changes).map_err(model_error)?;
         let staged = self.staged.get_or_insert_with(|| Staged {
             doc: doc.clone(),
             commits: Vec::new(),
@@ -460,19 +461,37 @@ impl Cx {
         let kind = if undo { TxnKind::Undo(index) } else { TxnKind::Redo(index) };
         let (after, new_edit, changes, keys) = match edit {
             StepEdit::Patches(commits) => {
+                // The step's patches in replay order, merged per entry in order of first appearance (an atomic batch
+                // may have changed one entry several times); each merged patch is checked against the live entry.
                 let ordered: Vec<&EntryCommit> =
                     if undo { commits.iter().rev().collect() } else { commits.iter().collect() };
-                let mut patches = Vec::with_capacity(ordered.len());
+                let mut merged: Vec<(EntryKey, Vec<PatchOp>)> = Vec::new();
                 for c in ordered {
                     let p = if undo { &c.undo } else { &c.redo };
-                    patches.push((c.key.clone(), align(&before, &c.key, p)?));
+                    match merged.iter_mut().find(|(k, _)| *k == c.key) {
+                        Some((_, ops)) => ops.extend(p.iter().cloned()),
+                        None => merged.push((c.key.clone(), p.clone())),
+                    }
                 }
-                let (next, applied) = before.with_patched_entries(&patches).map_err(model_error)?;
-                // The replay's own verified patches become the step's patches (C1.1 ticket: use the redo returned
-                // by undo). `applied` is in replay order; re-orient to the step's commit order.
+                let mut patches = Vec::with_capacity(merged.len());
+                for (key, ops) in merged {
+                    let ready = prepare(&before, &key, &ops)?;
+                    patches.push((key, ready));
+                }
+                let (next, applied) = before.with_patched_entries_undo_only(&patches).map_err(model_error)?;
+                // The replay returns the verified patch back to the state before it (C1.1 ticket: use the redo
+                // returned by undo); the patch it applied — checked against the live entry by `prepare` — stays the
+                // step's patch for this direction. One commit per entry, in the step's commit order.
                 let mut replayed: Vec<EntryCommit> = applied
                     .into_iter()
-                    .map(|a| if undo { EntryCommit { key: a.key, undo: a.redo, redo: a.undo } } else { a })
+                    .zip(patches)
+                    .map(|(a, (key, used))| {
+                        if undo {
+                            EntryCommit { key, undo: used, redo: a.undo }
+                        } else {
+                            EntryCommit { key, undo: a.undo, redo: used }
+                        }
+                    })
                     .collect();
                 if undo {
                     replayed.reverse();

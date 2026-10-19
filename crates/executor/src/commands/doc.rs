@@ -1190,7 +1190,7 @@ fn doc_at(cx: &Cx, rev: u64) -> Result<Document, CommandError> {
             (None, Back::Patches(patches)) => {
                 let mut aligned = Vec::with_capacity(patches.len());
                 for (k, ps) in patches {
-                    aligned.push((k.clone(), crate::align::align(&doc, k, ps)?));
+                    aligned.push((k.clone(), crate::align::prepare(&doc, k, ps)?));
                 }
                 doc.with_patched_entries(&aligned).map_err(crate::cx::model_error)?.0
             }

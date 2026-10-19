@@ -396,3 +396,30 @@ fn events_follow_commits() {
     let state = events.iter().rev().find(|e| e.name == "app.state.changed").unwrap();
     assert!(state.payload["changed"].as_array().unwrap().contains(&json!("frame")));
 }
+
+#[test]
+fn a_batch_changing_one_property_twice_undoes_and_redoes_exactly() {
+    let h = fixture();
+    let scene = first(&h, "scene");
+    let element = first(&h, "element");
+    let env = batch(
+        &h,
+        json!({ "label": "twice", "steps": [
+        { "id": "doc.object.patch", "params": { "targets": [scene], "props": { "meta": { "v": 1 } } } },
+        { "id": "doc.object.patch", "params": { "targets": [element], "props": { "role": "background" } } },
+        { "id": "doc.object.patch", "params": { "targets": [scene], "props": { "meta": { "v": 2, "w": [1, 2] } } } },
+        { "id": "doc.object.patch", "params": { "targets": [scene], "props": { "meta": { "w": null } } } }
+    ] }),
+    );
+    assert!(env.is_ok(), "{:?}", env.error);
+    for _ in 0..3 {
+        let u = run(&h, "edit.undo", json!({}));
+        assert!(u.is_ok(), "{:?}", u.error);
+        assert!(get(&h, &scene)["meta"].get("v").is_none());
+        assert_eq!(get(&h, &element)["role"], "normal");
+        let r = run(&h, "edit.redo", json!({}));
+        assert!(r.is_ok(), "{:?}", r.error);
+        assert_eq!(get(&h, &scene)["meta"], json!({ "v": 2 }));
+        assert_eq!(get(&h, &element)["role"], "background");
+    }
+}

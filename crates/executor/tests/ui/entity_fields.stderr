@@ -1,0 +1,5 @@
+error[E0616]: field `name` of struct `tt_model::entities::scene::Scene` is private
+ --> tests/ui/entity_fields.rs:5:11
+  |
+5 |     scene.name = String::from("renamed");
+  |           ^^^^ private field
