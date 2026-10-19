@@ -32,7 +32,9 @@ WARNING = {"type": "object", "additionalProperties": False, "required": ["code",
 
 # Names the result columns use for model objects (prose or names) → model definition.
 MODEL_ALIASES = {
-    "element object": "Element",
+    "element object": "ElementInfo",
+    "exposure-sheet object": "ExposureSheet",
+    "timeline object": "TimelineModel",
     "drawing JSON": "Drawing",
     "Palette object": "Palette",
     "Effect": "Element",
@@ -79,7 +81,7 @@ class Closer:
         raw = SPEC_TYPES.get(base) or PARAM_GROUPS.get(base)
         if raw is None or "properties" not in raw:
             self.note(at, f"named type `{base}`")
-            return dict(STRICT_OBJECT, **{"x-specType": base})
+            return dict(STRICT_OBJECT, **{"x-undefinedType": base})
         merged = copy.deepcopy(raw)
         merged.pop("allOf", None)
         merged.pop("x-extends", None)
@@ -97,13 +99,16 @@ class Closer:
         if name in SPEC_TYPES:
             self.defs.add("spec." + name)
             return {"$ref": f"#/$defs/spec.{name}"}
-        model = MODEL_ALIASES.get(name, name if name in MODEL_DEFS and MODEL_DEFS[name].get("x-objectType") else None)
+        alias = MODEL_ALIASES.get(name)
+        if alias and (alias in SPEC_TYPES or alias in LOCAL_TYPES or alias in PARAM_GROUPS):
+            return self.named(alias, at)
+        model = alias or (name if name in MODEL_DEFS and MODEL_DEFS[name].get("x-objectType") else None)
         if model:
             self.defs.add(model)
             return {"$ref": f"#/$defs/{model}"}
         self.note(at, f"named type `{name}`")
         s = dict(STRICT_OBJECT)
-        s["x-specType"] = name
+        s["x-undefinedType"] = name
         return s
 
     def close(self, s, at: str = "", name: str = ""):
@@ -111,6 +116,10 @@ class Closer:
             return s
         if s and set(s) <= {"required", "not", "minProperties", "maxProperties"}:
             return dict(s)  # a constraint-only alternative (`anyOf: [{required: [...]}, ...]`)
+        if s.get("x-placeholder"):
+            # A strict placeholder from a section's example (a member whose example value is only `null`).
+            self.note(at, f"leaf `{name or '(value)'}`")
+            return dict(s)
         s = dict(s)
         meta = {k: s[k] for k in ("$schema", "title", "description", "x-spec", "x-jobResult") if k in s}
         if "x-specType" in s:

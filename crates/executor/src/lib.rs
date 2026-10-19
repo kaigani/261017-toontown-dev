@@ -271,36 +271,46 @@ impl ExecutorHandle {
 }
 
 fn document_thread(mut core: run::Core, rx: &Receiver<Request>, subscribers: &Mutex<Vec<Sender<Event>>>) {
+    // A call's events are broadcast before its reply is sent, so a subscriber has them when the caller has the result.
+    let flush = |core: &mut run::Core| broadcast(subscribers, &core.take_events());
     while let Ok(req) = rx.recv() {
         match req {
             Request::Invoke(inv, reply) => {
                 let env = core.invoke(&inv);
+                flush(&mut core);
                 let _ = reply.send(env);
             }
             Request::Batch(b, origin, reply) => {
                 let env = core.batch(&b, &origin);
+                flush(&mut core);
                 let _ = reply.send(env);
             }
             Request::Open(doc, options, origin, reply) => {
                 let env = core.load(*doc, &options, &origin);
+                flush(&mut core);
                 let _ = reply.send(env);
             }
             Request::WaitBegin(inv, reply) => {
-                let _ = reply.send(core.wait_begin(&inv));
+                let start = core.wait_begin(&inv);
+                flush(&mut core);
+                let _ = reply.send(start);
             }
             Request::WaitFinish(inv, outcome, reply) => {
-                let _ = reply.send(core.wait_finish(&inv, outcome));
+                let env = core.wait_finish(&inv, outcome);
+                flush(&mut core);
+                let _ = reply.send(env);
             }
             Request::Snapshot(reply) => {
                 let doc = core.session().and_then(|s| s.project.as_ref()).map(|p| p.doc.clone());
                 let _ = reply.send(doc);
             }
             Request::List(origin, reply) => {
-                let _ = reply.send(list(&mut core, origin));
+                let listed = list(&mut core, origin);
+                flush(&mut core);
+                let _ = reply.send(listed);
             }
         }
-        let events = core.take_events();
-        broadcast(subscribers, &events);
+        flush(&mut core);
     }
 }
 

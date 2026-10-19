@@ -177,6 +177,28 @@ pub(crate) fn inspect_coordinates_convert(_cx: &mut Cx, _p: ConvertParams) -> Re
 }
 
 /// `inspect.contactSheet.render` parameters.
+/// The frames of a contact sheet (spec A `inspect.contactSheet.render`): a list, or a stepped range.
+#[allow(dead_code, reason = "decoded and validated now; read by the handler of M3 C3.3")]
+#[derive(Debug, Deserialize, JsonSchema)]
+#[serde(untagged)]
+pub(crate) enum FrameSelection {
+    /// The frames listed.
+    List(#[schemars(length(min = 1, max = 1000), inner(range(min = 1, max = 100_000)))] Vec<u32>),
+    /// `from` to `to` every `step` frames.
+    Range {
+        /// First frame.
+        #[schemars(range(min = 1, max = 100_000))]
+        from: u32,
+        /// Last frame.
+        #[schemars(range(min = 1, max = 100_000))]
+        to: u32,
+        /// Step (default 1).
+        #[serde(default)]
+        #[schemars(range(min = 1, max = 100_000))]
+        step: Option<u32>,
+    },
+}
+
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ContactSheetParams {
@@ -184,7 +206,7 @@ pub(crate) struct ContactSheetParams {
     #[serde(default)]
     scene_id: Option<String>,
     /// Frames: a list, or `{from, to, step}`.
-    frames: Value,
+    frames: FrameSelection,
     /// Columns.
     #[serde(default)]
     #[schemars(range(min = 1, max = 64))]

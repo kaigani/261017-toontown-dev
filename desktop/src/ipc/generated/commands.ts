@@ -7578,7 +7578,22 @@ export const COMMAND_INDEX = {
     examples: [
       {
         operation: "paste",
-        options: {},
+        options: {
+          overwriteDrawings: true,
+          exposure: true,
+          autoExtend: true,
+          updateColours: true,
+          keyframeSubstitution: true,
+          boundaryKeys: true,
+          pegKeys: {
+            motion: true,
+            rotation: true,
+            scale: true,
+            pivot: true,
+            velocity: true,
+            skew: true,
+          },
+        },
       },
     ],
     milestone: "M5 C5.1",
@@ -19776,6 +19791,72 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{changed: [{elementId, from, to}]}`",
     additionalProperties: false,
   },
+  "cell.clipboard.apply.spec.TransferOptions": {
+    type: "object",
+    properties: {
+      overwriteDrawings: {
+        type: "boolean",
+      },
+      exposure: {
+        type: "boolean",
+      },
+      autoExtend: {
+        type: "boolean",
+      },
+      updateColours: {
+        type: "boolean",
+      },
+      keyframeSubstitution: {
+        type: "boolean",
+      },
+      boundaryKeys: {
+        type: "boolean",
+      },
+      pegKeys: {
+        type: "object",
+        properties: {
+          motion: {
+            type: "boolean",
+          },
+          rotation: {
+            type: "boolean",
+          },
+          scale: {
+            type: "boolean",
+          },
+          pivot: {
+            type: "boolean",
+          },
+          velocity: {
+            type: "boolean",
+          },
+          skew: {
+            type: "boolean",
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "motion",
+          "rotation",
+          "scale",
+          "pivot",
+          "velocity",
+          "skew",
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "overwriteDrawings",
+      "exposure",
+      "autoExtend",
+      "updateColours",
+      "keyframeSubstitution",
+      "boundaryKeys",
+      "pegKeys",
+    ],
+    "x-specSection": "04",
+  },
   "cell.clipboard.apply.params": {
     title: "cell.clipboard.apply parameters",
     type: "object",
@@ -19798,11 +19879,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: "paste",
       },
       options: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        $ref: "#/$defs/cell.clipboard.apply.spec.TransferOptions",
       },
     },
     additionalProperties: false,
@@ -19848,6 +19925,72 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{elementIds[], from, to, createdDrawingIds[]}`",
     additionalProperties: false,
   },
+  "cell.clipboard.set.spec.TransferOptions": {
+    type: "object",
+    properties: {
+      overwriteDrawings: {
+        type: "boolean",
+      },
+      exposure: {
+        type: "boolean",
+      },
+      autoExtend: {
+        type: "boolean",
+      },
+      updateColours: {
+        type: "boolean",
+      },
+      keyframeSubstitution: {
+        type: "boolean",
+      },
+      boundaryKeys: {
+        type: "boolean",
+      },
+      pegKeys: {
+        type: "object",
+        properties: {
+          motion: {
+            type: "boolean",
+          },
+          rotation: {
+            type: "boolean",
+          },
+          scale: {
+            type: "boolean",
+          },
+          pivot: {
+            type: "boolean",
+          },
+          velocity: {
+            type: "boolean",
+          },
+          skew: {
+            type: "boolean",
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "motion",
+          "rotation",
+          "scale",
+          "pivot",
+          "velocity",
+          "skew",
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "overwriteDrawings",
+      "exposure",
+      "autoExtend",
+      "updateColours",
+      "keyframeSubstitution",
+      "boundaryKeys",
+      "pegKeys",
+    ],
+    "x-specSection": "04",
+  },
   "cell.clipboard.set.params": {
     title: "cell.clipboard.set parameters",
     type: "object",
@@ -19877,11 +20020,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: false,
       },
       options: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        $ref: "#/$defs/cell.clipboard.set.spec.TransferOptions",
       },
     },
     additionalProperties: false,
@@ -20697,6 +20836,72 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{changed: [{elementId, from, to}]}`",
     additionalProperties: false,
   },
+  "cell.range.move.spec.TransferOptions": {
+    type: "object",
+    properties: {
+      overwriteDrawings: {
+        type: "boolean",
+      },
+      exposure: {
+        type: "boolean",
+      },
+      autoExtend: {
+        type: "boolean",
+      },
+      updateColours: {
+        type: "boolean",
+      },
+      keyframeSubstitution: {
+        type: "boolean",
+      },
+      boundaryKeys: {
+        type: "boolean",
+      },
+      pegKeys: {
+        type: "object",
+        properties: {
+          motion: {
+            type: "boolean",
+          },
+          rotation: {
+            type: "boolean",
+          },
+          scale: {
+            type: "boolean",
+          },
+          pivot: {
+            type: "boolean",
+          },
+          velocity: {
+            type: "boolean",
+          },
+          skew: {
+            type: "boolean",
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "motion",
+          "rotation",
+          "scale",
+          "pivot",
+          "velocity",
+          "skew",
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "overwriteDrawings",
+      "exposure",
+      "autoExtend",
+      "updateColours",
+      "keyframeSubstitution",
+      "boundaryKeys",
+      "pegKeys",
+    ],
+    "x-specSection": "04",
+  },
   "cell.range.move.params": {
     title: "cell.range.move parameters",
     type: "object",
@@ -20737,11 +20942,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: "move",
       },
       options: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        $ref: "#/$defs/cell.range.move.spec.TransferOptions",
       },
     },
     required: [
@@ -25996,6 +26197,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "objectCount",
     ],
   },
+  "doc.import.json.ImportSource": {
+    description: "What `doc.import.json` reads (spec A: `path | object`).",
+    anyOf: [
+      {
+        description: "A file path.",
+        type: "string",
+        minLength: 1,
+        maxLength: 4096,
+      },
+      {
+        description: "An inline bundle as `doc.export.json` writes it.",
+        type: "object",
+        additionalProperties: true,
+      },
+    ],
+  },
   "doc.import.json.IdPolicy": {
     description: "ID policy.",
     oneOf: [
@@ -26052,7 +26269,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       source: {
-        description: "A path or an inline bundle.",
+        description: "A path or an inline bundle (`doc.export.json` output).",
+        $ref: "#/$defs/doc.import.json.ImportSource",
       },
       target: {
         description: "Target scene (omit: new scenes).",
@@ -27249,7 +27467,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       lock: {
-        description: "Lock holder (C1.3).",
+        description: "Lock holder (10 §8 LOCK-01; C1.3), `null` while no lock is held.",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
       },
       historyFromRev: {
         description: "Oldest revision `doc.diff` accepts.",
@@ -37272,3876 +37495,197 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-spec": "`elementId: id`",
   },
-  "element.get.ApplyPivotTo": {
-    oneOf: [
-      {
-        type: "string",
-        const: "rotation",
-        description: "Rotation only (default).",
-      },
-      {
-        type: "string",
-        const: "scaling",
-        description: "Scaling only.",
-      },
-      {
-        type: "string",
-        const: "both",
-        description: "Both.",
-      },
-    ],
-    description: "Pivot application of pegs and skeletons (05 §2.3).",
-  },
-  "element.get.AxesTransform": {
+  "element.get.spec.ElementInfo": {
     type: "object",
-    additionalProperties: false,
-    properties: {
-      xAxis: {
-        $ref: "#/$defs/element.get.Point2",
-        description: "Image of the x axis.",
-        "x-since": "1.0",
-      },
-      yAxis: {
-        $ref: "#/$defs/element.get.Point2",
-        description: "Image of the y axis.",
-        "x-since": "1.0",
-      },
-      origin: {
-        $ref: "#/$defs/element.get.Point2",
-        description: "Origin (fields).",
-        "x-unit": "field",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "xAxis",
-      "yAxis",
-      "origin",
-    ],
-    description: "A 2-D affine transform as axes and origin (06 §3.4 shadow transform).",
-  },
-  "element.get.BlockStatic": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      background: {
-        $ref: "#/$defs/element.get.ParticleBackground",
-        description: "Background drawn behind the particles.",
-        "x-since": "1.0",
-      },
-      simulationStart: {
-        type: "integer",
-        maximum: 2147483647,
-        description: "First simulated frame (≤ firstFrame, ≥ firstFrame − 999; may be < 1 for pre-roll).",
-        "x-unit": "frame",
-        minimum: -2147483648,
-        "x-since": "1.0",
-      },
-      firstFrame: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "First displayed frame.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      duration: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Frames the block lasts, ≥ 1.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      maxParticles: {
-        type: "integer",
-        maximum: 3000,
-        minimum: 0,
-        description: "Particle cap (≤ 3000; 50 for fog and cloud).",
-        "x-since": "1.0",
-      },
-      lifetimeFrames: {
-        type: "integer",
-        "x-unit": "frame",
-        description: "Lifetime in frames: −1 (unlimited) or 0–512.",
-        minimum: -1,
-        maximum: 512,
-        "x-since": "1.0",
-      },
-      fade: {
-        type: "boolean",
-        description: "Fade particles out.",
-        "x-since": "1.0",
-      },
-      areaWidth: {
-        type: "number",
-        maximum: 1999,
-        description: "Region width 0–1999 particle units.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      areaHeight: {
-        type: "number",
-        maximum: 1999,
-        description: "Region height 0–1999.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      areaDepth: {
-        type: "number",
-        maximum: 1999,
-        description: "Region depth 0–1999.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      floorLevel: {
-        type: "number",
-        maximum: 1999,
-        description: "Floor height 0–1999.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "background",
-      "simulationStart",
-      "firstFrame",
-      "duration",
-      "maxParticles",
-      "lifetimeFrames",
-      "fade",
-      "areaWidth",
-      "areaHeight",
-      "areaDepth",
-      "floorLevel",
-    ],
-    description: "Static parameters of a particle block (06 §3.8.3). Frames are absolute scene frames.",
-  },
-  "element.get.BlurParams": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      radial: {
-        type: "boolean",
-        description: "Uniform (true) or directional (false) blur (static).",
-        "x-since": "1.0",
-      },
-      radius: {
-        type: "number",
-        "x-unit": "pixel",
-        description: "Radius 0–100 output pixels (animatable).",
-        minimum: 0,
-        maximum: 100,
-        "x-since": "1.0",
-      },
-      angle: {
-        type: "number",
-        "x-unit": "degree",
-        description: "Motion-blur direction 0–360 degrees (animatable).",
-        minimum: 0,
-        maximum: 360,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "radial",
-      "radius",
-      "angle",
-    ],
-    description: "Blur parameters (06 §3.5).",
-  },
-  "element.get.BoneBlock": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      rest: {
-        $ref: "#/$defs/element.get.BoneRest",
-        description: "Rest pose.",
-        "x-since": "1.0",
-      },
-      influence: {
-        $ref: "#/$defs/element.get.BoneInfluence",
-        description: "Zone of influence.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "rest",
-      "influence",
-    ],
-    description: "Bone block (10 §4.6, 05 §13.1–§13.3).",
-  },
-  "element.get.BoneInfluence": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      type: {
-        $ref: "#/$defs/element.get.InfluenceType",
-        description: "Infinite or elliptical.",
-        "x-since": "1.0",
-      },
-      lengthRadius: {
-        type: "number",
-        "x-unit": "field",
-        description: "Length radius (fields).",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      widthRadius: {
-        type: "number",
-        "x-unit": "field",
-        description: "Width radius (fields).",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      region: {
-        type: [
-          "array",
-          "null",
-        ],
-        items: {
-          $ref: "#/$defs/element.get.Point2",
-        },
-        description: "Explicit region polygon, or `null`.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "type",
-      "lengthRadius",
-      "widthRadius",
-      "region",
-    ],
-    description: "Zone of influence of a bone (05 §13.3).",
-  },
-  "element.get.BoneRest": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      x: {
-        type: "number",
-        "x-unit": "field",
-        description: "X (fields).",
-        "x-since": "1.0",
-      },
-      y: {
-        type: "number",
-        "x-unit": "field",
-        description: "Y (fields).",
-        "x-since": "1.0",
-      },
-      rotation: {
-        type: "number",
-        "x-unit": "degree",
-        description: "Rotation (degrees).",
-        "x-since": "1.0",
-      },
-      length: {
-        type: "number",
-        "x-unit": "field",
-        description: "Length (fields), > 0.01.",
-        minimum: 0.01,
-        exclusiveMinimum: 0.01,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "x",
-      "y",
-      "rotation",
-      "length",
-    ],
-    description: "Rest pose of a bone (05 §13.1).",
-  },
-  "element.get.CameraBlock": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      fovMode: {
-        $ref: "#/$defs/element.get.FovMode",
-        description: "Static or dynamic FOV.",
-        "x-command": "anim.camera.set",
-        "x-since": "1.0",
-      },
-      fov: {
-        type: "number",
-        "x-command": "anim.camera.set",
-        description: "FOV 1–179 degrees (default 41.1121).",
-        minimum: 1,
-        maximum: 179,
-        "x-unit": "degree",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "fovMode",
-      "fov",
-    ],
-    description: "Camera block (10 §4.6, 05 §12.3).",
-  },
-  "element.get.Channel": {
-    type: "object",
-    additionalProperties: false,
     properties: {
       id: {
-        $ref: "#/$defs/element.get.Id",
-        description: "Immutable ID.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
         type: "string",
-        const: "channel",
-        readOnly: true,
-        description: "Always `channel`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
+        minLength: 1,
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3)",
       },
       name: {
-        pattern: "^[a-z][A-Za-z]*(\\.[a-z][A-Za-z]*)?$",
-        description: "The channel id.",
-        readOnly: true,
-        minLength: 1,
-        maxLength: 64,
         type: "string",
-        "x-since": "1.0",
-      },
-      curveType: {
-        "x-kindSpecific": true,
-        description: "1-D channels: curve type.",
-        $ref: "#/$defs/element.get.CurveType",
-        "x-since": "1.0",
-      },
-      keys: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/element.get.Key",
-        },
-        description: "1-D channels: keys sorted by frame, at least one.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      points: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/element.get.MotionPoint",
-        },
-        description: "Motion path: points in path order; first and last are keyframes.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/element.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "An animation channel (10 §4.12). The `name` is the channel id (`rotation`, `scale.x`, …, or an effect\nparameter id) and equals its key in the element's `channels` map. A 1-D channel has `curveType` and `keys`;\nthe motion-path channel `position` has `points` instead.",
-    "x-objectType": "channel",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "name",
-      ],
-      allOf: [
-        {
-          if: {
-            properties: {
-              name: {
-                const: "position",
-              },
-            },
-            required: [
-              "name",
-            ],
-          },
-          then: {
-            required: [
-              "points",
-            ],
-            properties: {
-              curveType: false,
-              keys: false,
-              points: {
-                minItems: 1,
-              },
-            },
-          },
-          else: {
-            required: [
-              "curveType",
-              "keys",
-            ],
-            properties: {
-              points: false,
-              keys: {
-                minItems: 1,
-              },
-            },
-          },
-        },
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "element.get.ClippingParams": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      inverted: {
-        type: "boolean",
-        description: "Draw children outside the mask instead of inside.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "inverted",
-    ],
-    description: "Clipping parameters (06 §3.3).",
-  },
-  "element.get.Colour": {
-    type: "string",
-    pattern: "^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
-    description: "sRGB colour with straight alpha, #RRGGBBAA (written upper case; #RRGGBB accepted on input).",
-  },
-  "element.get.ColourTransformParams": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      multRed: {
-        type: "number",
-        maximum: 1,
-        description: "Red multiplier 0–1 (animatable).",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      multGreen: {
-        type: "number",
-        maximum: 1,
-        description: "Green multiplier 0–1 (animatable).",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      multBlue: {
-        type: "number",
-        maximum: 1,
-        description: "Blue multiplier 0–1 (animatable).",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      multAlpha: {
-        type: "number",
-        maximum: 1,
-        description: "Alpha multiplier 0–1 (animatable).",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      addRed: {
-        type: "integer",
-        maximum: 255,
-        description: "Red offset −255…255 (animatable).",
-        minimum: -255,
-        "x-since": "1.0",
-      },
-      addGreen: {
-        type: "integer",
-        maximum: 255,
-        description: "Green offset −255…255 (animatable).",
-        minimum: -255,
-        "x-since": "1.0",
-      },
-      addBlue: {
-        type: "integer",
-        maximum: 255,
-        description: "Blue offset −255…255 (animatable).",
-        minimum: -255,
-        "x-since": "1.0",
-      },
-      addAlpha: {
-        type: "integer",
-        maximum: 255,
-        description: "Alpha offset −255…255 (animatable).",
-        minimum: -255,
-        "x-since": "1.0",
-      },
-      flatten: {
-        type: "boolean",
-        description: "Composite the sub-tree first (static).",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "multRed",
-      "multGreen",
-      "multBlue",
-      "multAlpha",
-      "addRed",
-      "addGreen",
-      "addBlue",
-      "addAlpha",
-      "flatten",
-    ],
-    description: "Colour Transform parameters (06 §3.2).",
-  },
-  "element.get.CurveType": {
-    oneOf: [
-      {
-        type: "string",
-        const: "spline",
-        description: "Cubic Bézier with free handles.",
-      },
-      {
-        type: "string",
-        const: "interpolation",
-        description: "Bézier with an easing preset per segment.",
-      },
-      {
-        type: "string",
-        const: "velocityBased",
-        description: "Progress follows the velocity channel.",
-      },
-    ],
-    description: "Curve type of a 1-D channel (05 §10.3).",
-  },
-  "element.get.DropShadowParams": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      parentColourTransformMode: {
-        $ref: "#/$defs/element.get.ParentColourTransformMode",
-        description: "How a parent Colour Transform applies.",
-        "x-since": "1.0",
-      },
-      colour: {
-        $ref: "#/$defs/element.get.Colour",
-        description: "Shadow colour (alpha ignored).",
-        "x-since": "1.0",
-      },
-      opacity: {
-        type: "integer",
-        "x-unit": "percent",
-        minimum: 0,
-        description: "Opacity percent 0–100.",
-        maximum: 100,
-        "x-since": "1.0",
-      },
-      hideElements: {
-        type: "boolean",
-        description: "Draw only the shadow.",
-        "x-since": "1.0",
-      },
-      transform: {
-        $ref: "#/$defs/element.get.AxesTransform",
-        description: "Shadow transform in effect-local space.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "parentColourTransformMode",
-      "colour",
-      "opacity",
-      "hideElements",
-      "transform",
-    ],
-    description: "Drop Shadow parameters (06 §3.4; all static).",
-  },
-  "element.get.DynamicParam": {
-    anyOf: [
-      {
-        type: "object",
-        properties: {
-          value: {
-            type: "number",
-            description: "The value.",
-            "x-since": "1.0",
-          },
-        },
-        required: [
-          "value",
-        ],
-        description: "Constant value.",
-      },
-      {
-        type: "object",
-        properties: {
-          keyframes: {
-            type: "array",
-            items: {
-              $ref: "#/$defs/element.get.FrameValue",
-            },
-            description: "Keyframes sorted by frame, at least one.",
-            minItems: 1,
-            "x-since": "1.0",
-          },
-        },
-        required: [
-          "keyframes",
-        ],
-        description: "Keyframed value.",
-      },
-    ],
-    description: "A dynamic block parameter: a constant `{value}` or `{keyframes}` (06 §8.4).",
-  },
-  "element.get.Easing": {
-    oneOf: [
-      {
-        type: "string",
-        const: "constant",
-        description: "Hold, then step.",
-      },
-      {
-        type: "string",
-        const: "linear",
-        description: "Straight line.",
-      },
-      {
-        type: "string",
-        const: "easeInOut",
-        description: "Slow start, slow end.",
-      },
-      {
-        type: "string",
-        const: "fastInOut",
-        description: "Fast start, fast end.",
-      },
-      {
-        type: "string",
-        const: "extremeEaseInOut",
-        description: "Strong slow start and end.",
-      },
-      {
-        type: "string",
-        const: "extremeFastInOut",
-        description: "Strong fast start and end.",
-      },
-      {
-        type: "string",
-        const: "slowAcceleration",
-        description: "Ease in.",
-      },
-      {
-        type: "string",
-        const: "slowDeceleration",
-        description: "Ease out.",
-      },
-    ],
-    description: "Easing presets (05 §10.4).",
-  },
-  "element.get.Element": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/element.get.Id",
-        description: "Immutable ID.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "element",
-        readOnly: true,
-        description: "Always `element`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      name: {
-        pattern: "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|.\\s])$",
-        description: "Unique in the scene.",
-        "x-command": "element.rename",
-        minLength: 1,
-        maxLength: 64,
-        type: "string",
-        "x-since": "1.0",
+        maxLength: 65536,
       },
       elementType: {
-        $ref: "#/$defs/element.get.ElementType",
-        description: "Element type; read-only except through conversion commands.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      start: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Non-cell elements: first frame of the bar (persisted). Cell-based elements: derived from the exposure (query results only).",
-        "x-unit": "frame",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      duration: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 0,
-        description: "Non-cell elements: length of the bar (absent for cell-based elements: derived).",
-        "x-unit": "frame",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      loops: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Loop count ≥ 1; 1 = not looped.",
-        "x-since": "1.0",
-      },
-      loopType: {
-        $ref: "#/$defs/element.get.LoopType",
-        description: "Count or fill.",
-        "x-since": "1.0",
-      },
-      positionLoop: {
-        $ref: "#/$defs/element.get.PositionLoop",
-        description: "Cycle or offset.",
-        "x-since": "1.0",
-      },
-      role: {
-        $ref: "#/$defs/element.get.Role",
-        description: "Composite role.",
-        "x-since": "1.0",
-      },
-      deformable: {
-        type: "boolean",
-        description: "Deformable by a skeleton.",
-        "x-since": "1.0",
-      },
-      visibleInScene: {
-        type: "boolean",
-        description: "Shown in scene views, playback and export.",
-        "x-command": "element.visibility.set",
-        "x-since": "1.0",
-      },
-      visibleInXsheet: {
-        type: "boolean",
-        description: "Cell-based elements: shown in the Exposure Sheet and Drawing View.",
-        "x-command": "element.visibility.set",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      locked: {
-        type: "boolean",
-        description: "Locked in scene views.",
-        "x-command": "element.lock.set",
-        "x-since": "1.0",
-      },
-      collapsed: {
-        type: "boolean",
-        description: "Timeline display state of parents.",
-        "x-since": "1.0",
-      },
-      markerColour: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Colour",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Marker colour; `null` = category default.",
-        "x-command": "element.colour.set",
-        "x-since": "1.0",
-      },
-      backgroundColour: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Colour",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Background colour; `null` = category default.",
-        "x-command": "element.colour.set",
-        "x-since": "1.0",
-      },
-      note: {
         type: "string",
-        description: "Element note (≤ 10 000 characters).",
-        maxLength: 10000,
-        "x-omitDefault": true,
-        "x-command": "element.note.set",
-        "x-since": "1.0",
+        maxLength: 65536,
       },
-      columnWidth: {
-        type: "integer",
-        "x-unit": "pixel",
-        minimum: 20,
-        description: "Exposure Sheet column width, 20–1000 view pixels.",
-        maximum: 1000,
-        "x-since": "1.0",
-      },
-      drawingBankId: {
-        "x-kindSpecific": true,
-        description: "Cell-based: the drawing bank (shared by clones).",
-        "x-ref": "drawingBank",
-        readOnly: true,
-        $ref: "#/$defs/element.get.Id",
-        "x-since": "1.0",
-      },
-      exposure: {
-        type: "array",
-        items: {
-          type: "array",
-          prefixItems: [
-            {
-              anyOf: [
-                {
-                  $ref: "#/$defs/element.get.Id",
-                },
-                {
-                  type: "null",
-                },
-              ],
-            },
-            {
-              type: "integer",
-              maximum: 2147483647,
-              minimum: 1,
-            },
-          ],
-          minItems: 2,
-          maxItems: 2,
-        },
-        description: "Cell-based: canonical exposure runs from frame 1.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      cellNotes: {
-        type: "object",
-        additionalProperties: false,
-        patternProperties: {
-          "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$": {
-            type: "string",
-            maxLength: 10000,
-          },
-        },
-        description: "Cell-based: notes by frame.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      importOptions: {
-        type: "object",
-        additionalProperties: true,
-        description: "Image elements: import options (section 09; SI-008).",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      streamed: {
-        type: "boolean",
-        description: "Sound: streamed playback.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      showMouthShapes: {
-        type: "boolean",
-        description: "Sound: the Exposure Sheet shows mouths.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      placements: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/element.get.SoundPlacement",
-        },
-        description: "Sound: placements sorted by `startFrame`, non-overlapping.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      lipSyncMappings: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/element.get.LipSyncMapping",
-        },
-        description: "Sound: one mapping per mapped drawing element.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      sequences: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/element.get.MediaSequence",
-        },
-        description: "Media: sequences, non-overlapping.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      transform: {
-        "x-kindSpecific": true,
-        description: "Transformable elements: the static transform.",
-        $ref: "#/$defs/element.get.Transform",
-        "x-since": "1.0",
-      },
-      exportGroup: {
-        "x-kindSpecific": true,
-        description: "Pegs: export grouping.",
-        $ref: "#/$defs/element.get.ExportGroup",
-        "x-since": "1.0",
-      },
-      camera: {
-        "x-kindSpecific": true,
-        description: "Cameras: FOV settings.",
-        $ref: "#/$defs/element.get.CameraBlock",
-        "x-since": "1.0",
-      },
-      skeleton: {
-        "x-kindSpecific": true,
-        description: "Skeletons: display and deformation settings.",
-        $ref: "#/$defs/element.get.SkeletonBlock",
-        "x-since": "1.0",
-      },
-      bone: {
-        "x-kindSpecific": true,
-        description: "Bones: rest pose and influence.",
-        $ref: "#/$defs/element.get.BoneBlock",
-        "x-since": "1.0",
-      },
-      slot: {
-        readOnly: true,
-        description: "Effect parameter elements: the slot.",
-        "x-kindSpecific": true,
-        $ref: "#/$defs/element.get.ParamSlot",
-        "x-since": "1.0",
-      },
-      params: {
-        type: "object",
-        additionalProperties: true,
-        description: "Effects: static parameter values (exact shape per `elementType`).",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      blocks: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/element.get.ParticleBlock",
-        },
-        description: "Particle effects: blocks, consecutive.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      channels: {
-        type: "object",
-        additionalProperties: {
-          $ref: "#/$defs/element.get.Channel",
-        },
-        description: "Animated channels by channel id.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      createdAt: {
-        $ref: "#/$defs/element.get.Timestamp",
-        description: "Creation time.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/element.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
+      sceneId: {
         type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
+        minLength: 1,
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3)",
       },
       parentId: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
+        type: "string",
+        minLength: 1,
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3)",
       },
       childIds: {
         type: "array",
         items: {
-          $ref: "#/$defs/element.get.Id",
+          type: "string",
+          minLength: 1,
+          maxLength: 4096,
+          description: "object ID or path reference (10 §3)",
         },
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
+        maxItems: 100000,
       },
       depth: {
         type: "integer",
-        minimum: 0,
-        maximum: 2147483647,
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
       },
       timelineIndex: {
         type: "integer",
-        minimum: 0,
-        maximum: 2147483647,
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
       },
       xsheetIndex: {
+        type: "integer",
+      },
+      start: {
+        type: "integer",
+      },
+      duration: {
+        type: "number",
+      },
+      loops: {
+        type: "integer",
+      },
+      annotation: {
+        type: "boolean",
+      },
+      role: {
+        type: "string",
+        maxLength: 65536,
+      },
+      deformable: {
+        type: "boolean",
+      },
+      visibleInScene: {
+        type: "boolean",
+      },
+      hiddenByParent: {
+        type: "boolean",
+      },
+      visibleInXsheet: {
+        type: "boolean",
+      },
+      locked: {
+        type: "boolean",
+      },
+      collapsed: {
+        type: "boolean",
+      },
+      markerColour: {
         anyOf: [
           {
-            type: "integer",
-            minimum: 0,
-            maximum: 2147483647,
+            type: "string",
+            pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
+            description: "#RRGGBB or #RRGGBBAA",
           },
           {
             type: "null",
           },
         ],
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
+      },
+      backgroundColour: {
+        anyOf: [
+          {
+            type: "string",
+            pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
+            description: "#RRGGBB or #RRGGBBAA",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      effectiveMarkerColour: {
+        type: "string",
+        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
+        description: "#RRGGBB or #RRGGBBAA",
+      },
+      note: {
+        type: "string",
+        maxLength: 65536,
+      },
+      columnWidth: {
+        type: "integer",
       },
       cloneGroupId: {
         anyOf: [
           {
-            $ref: "#/$defs/element.get.Id",
+            type: "string",
+            minLength: 1,
+            maxLength: 4096,
+            description: "object ID or path reference (10 §3)",
           },
           {
             type: "null",
           },
         ],
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
       },
       cloneIds: {
         type: "array",
         items: {
-          $ref: "#/$defs/element.get.Id",
+          type: "string",
+          minLength: 1,
+          maxLength: 4096,
+          description: "object ID or path reference (10 §3)",
         },
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
+        maxItems: 100000,
       },
       drawingCount: {
         type: "integer",
-        minimum: 0,
-        maximum: 2147483647,
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
       },
-      hiddenByParent: {
-        type: "boolean",
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      effectiveMarkerColour: {
-        $ref: "#/$defs/element.get.Colour",
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "An element of a scene (10 §4.5–§4.7). Stored in `scenes/<sceneId>/elements/<elementId>.json`.",
-    "x-objectType": "element",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "name",
-        "elementType",
-        "loops",
-        "loopType",
-        "positionLoop",
-        "role",
-        "deformable",
-        "visibleInScene",
-        "locked",
-        "collapsed",
-        "markerColour",
-        "backgroundColour",
-        "columnWidth",
-        "createdAt",
-      ],
-      allOf: [
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "drawing",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "drawingBankId",
-              "exposure",
-              "transform",
-              "channels",
-              "visibleInXsheet",
-            ],
-            properties: {
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              params: false,
-              blocks: false,
-              transform: {
-                required: [
-                  "rotationPivot",
-                  "scalePivot",
-                  "rotateAboutPivot",
-                ],
-                properties: {
-                  pivot: false,
-                  applyPivotTo: false,
-                  useChildDrawingPivot: false,
-                },
-              },
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "position",
-                    "velocity",
-                    "pivot.x",
-                    "pivot.y",
-                    "rotation",
-                    "scale.x",
-                    "scale.y",
-                    "skew",
-                  ],
-                },
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "annotation",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "drawingBankId",
-              "exposure",
-              "transform",
-              "channels",
-              "visibleInXsheet",
-            ],
-            properties: {
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              params: false,
-              blocks: false,
-              transform: {
-                required: [
-                  "rotationPivot",
-                  "scalePivot",
-                  "rotateAboutPivot",
-                ],
-                properties: {
-                  pivot: false,
-                  applyPivotTo: false,
-                  useChildDrawingPivot: false,
-                },
-              },
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "position",
-                    "velocity",
-                    "pivot.x",
-                    "pivot.y",
-                    "rotation",
-                    "scale.x",
-                    "scale.y",
-                    "skew",
-                  ],
-                },
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "image",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "drawingBankId",
-              "exposure",
-              "importOptions",
-              "transform",
-              "channels",
-              "visibleInXsheet",
-            ],
-            properties: {
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              params: false,
-              blocks: false,
-              transform: {
-                required: [
-                  "rotationPivot",
-                  "scalePivot",
-                  "rotateAboutPivot",
-                ],
-                properties: {
-                  pivot: false,
-                  applyPivotTo: false,
-                  useChildDrawingPivot: false,
-                },
-              },
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "position",
-                    "velocity",
-                    "pivot.x",
-                    "pivot.y",
-                    "rotation",
-                    "scale.x",
-                    "scale.y",
-                    "skew",
-                  ],
-                },
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "sound",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "streamed",
-              "showMouthShapes",
-              "placements",
-              "lipSyncMappings",
-              "visibleInXsheet",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              sequences: false,
-              transform: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              params: false,
-              blocks: false,
-              channels: false,
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "media",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "sequences",
-              "transform",
-              "channels",
-              "visibleInXsheet",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              params: false,
-              blocks: false,
-              transform: {
-                required: [
-                  "rotationPivot",
-                  "scalePivot",
-                  "rotateAboutPivot",
-                ],
-                properties: {
-                  pivot: false,
-                  applyPivotTo: false,
-                  useChildDrawingPivot: false,
-                },
-              },
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "position",
-                    "velocity",
-                    "pivot.x",
-                    "pivot.y",
-                    "rotation",
-                    "scale.x",
-                    "scale.y",
-                    "skew",
-                  ],
-                },
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "peg",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "transform",
-              "exportGroup",
-              "channels",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              params: false,
-              blocks: false,
-              visibleInXsheet: false,
-              transform: {
-                required: [
-                  "pivot",
-                  "applyPivotTo",
-                  "useChildDrawingPivot",
-                ],
-                properties: {
-                  rotationPivot: false,
-                  scalePivot: false,
-                  rotateAboutPivot: false,
-                },
-              },
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "position",
-                    "velocity",
-                    "pivot.x",
-                    "pivot.y",
-                    "rotation",
-                    "scale.x",
-                    "scale.y",
-                    "skew",
-                  ],
-                },
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "camera",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "camera",
-              "transform",
-              "channels",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              exportGroup: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              params: false,
-              blocks: false,
-              visibleInXsheet: false,
-              transform: {
-                required: [],
-                properties: {
-                  rotationPivot: false,
-                  scalePivot: false,
-                  rotateAboutPivot: false,
-                  pivot: false,
-                  applyPivotTo: false,
-                  useChildDrawingPivot: false,
-                },
-              },
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "position",
-                    "velocity",
-                    "rotation",
-                    "fov",
-                  ],
-                },
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "skeleton",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "skeleton",
-              "transform",
-              "channels",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              exportGroup: false,
-              camera: false,
-              bone: false,
-              slot: false,
-              params: false,
-              blocks: false,
-              visibleInXsheet: false,
-              transform: {
-                required: [
-                  "pivot",
-                  "applyPivotTo",
-                ],
-                properties: {
-                  rotationPivot: false,
-                  scalePivot: false,
-                  rotateAboutPivot: false,
-                  useChildDrawingPivot: false,
-                },
-              },
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "position",
-                    "velocity",
-                    "pivot.x",
-                    "pivot.y",
-                    "rotation",
-                    "scale.x",
-                    "scale.y",
-                    "skew",
-                  ],
-                },
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "bone",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "bone",
-              "channels",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              transform: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              slot: false,
-              params: false,
-              blocks: false,
-              visibleInXsheet: false,
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "rotation",
-                    "bone.x",
-                    "bone.y",
-                    "bone.length",
-                  ],
-                },
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "effectParameter",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "slot",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              transform: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              params: false,
-              blocks: false,
-              channels: false,
-              visibleInXsheet: false,
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "colourTransform",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "params",
-              "channels",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              transform: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              blocks: false,
-              visibleInXsheet: false,
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "multRed",
-                    "multGreen",
-                    "multBlue",
-                    "multAlpha",
-                    "addRed",
-                    "addGreen",
-                    "addBlue",
-                    "addAlpha",
-                  ],
-                },
-              },
-              params: {
-                $ref: "#/$defs/element.get.ColourTransformParams",
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "clipping",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "params",
-              "channels",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              transform: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              blocks: false,
-              visibleInXsheet: false,
-              channels: {
-                propertyNames: {
-                  enum: [],
-                },
-              },
-              params: {
-                $ref: "#/$defs/element.get.ClippingParams",
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "dropShadow",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "params",
-              "channels",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              transform: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              blocks: false,
-              visibleInXsheet: false,
-              channels: {
-                propertyNames: {
-                  enum: [],
-                },
-              },
-              params: {
-                $ref: "#/$defs/element.get.DropShadowParams",
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "blur",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "params",
-              "channels",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              transform: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              blocks: false,
-              visibleInXsheet: false,
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "radius",
-                    "angle",
-                  ],
-                },
-              },
-              params: {
-                $ref: "#/$defs/element.get.BlurParams",
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "shake",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "params",
-              "channels",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              transform: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              blocks: false,
-              visibleInXsheet: false,
-              channels: {
-                propertyNames: {
-                  enum: [
-                    "amplitude",
-                  ],
-                },
-              },
-              params: {
-                $ref: "#/$defs/element.get.ShakeParams",
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "particleNature",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "params",
-              "blocks",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              transform: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              channels: false,
-              visibleInXsheet: false,
-              params: {
-                $ref: "#/$defs/element.get.ParticleParams",
-              },
-              blocks: {
-                items: {
-                  properties: {
-                    particleType: {
-                      enum: [
-                        "rain",
-                        "snow",
-                        "hail",
-                        "fog",
-                        "cloud",
-                        "eruption",
-                      ],
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-        {
-          if: {
-            properties: {
-              elementType: {
-                const: "particleImpact",
-              },
-            },
-            required: [
-              "elementType",
-            ],
-          },
-          then: {
-            required: [
-              "params",
-              "blocks",
-              "start",
-              "duration",
-            ],
-            properties: {
-              drawingBankId: false,
-              exposure: false,
-              cellNotes: false,
-              importOptions: false,
-              streamed: false,
-              showMouthShapes: false,
-              placements: false,
-              lipSyncMappings: false,
-              sequences: false,
-              transform: false,
-              exportGroup: false,
-              camera: false,
-              skeleton: false,
-              bone: false,
-              slot: false,
-              channels: false,
-              visibleInXsheet: false,
-              params: {
-                $ref: "#/$defs/element.get.ParticleParams",
-              },
-              blocks: {
-                items: {
-                  properties: {
-                    particleType: {
-                      enum: [
-                        "shatter",
-                        "magic",
-                        "explosion",
-                        "splash",
-                        "fire",
-                        "celestial",
-                      ],
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "element.get.ElementType": {
-    oneOf: [
-      {
-        type: "string",
-        const: "drawing",
-        description: "Vector drawing element.",
-      },
-      {
-        type: "string",
-        const: "annotation",
-        description: "Annotation (note drawing) element.",
-      },
-      {
-        type: "string",
-        const: "image",
-        description: "Bitmap image element.",
-      },
-      {
-        type: "string",
-        const: "sound",
-        description: "Sound element.",
-      },
-      {
-        type: "string",
-        const: "media",
-        description: "Media element (linked sources).",
-      },
-      {
-        type: "string",
-        const: "peg",
-        description: "Peg.",
-      },
-      {
-        type: "string",
-        const: "camera",
-        description: "Camera.",
-      },
-      {
-        type: "string",
-        const: "skeleton",
-        description: "Skeleton effect.",
-      },
-      {
-        type: "string",
-        const: "bone",
-        description: "Bone.",
-      },
-      {
-        type: "string",
-        const: "effectParameter",
-        description: "Effect parameter element (mask, sprites, bones, skin slot).",
-      },
-      {
-        type: "string",
-        const: "colourTransform",
-        description: "Colour transform effect.",
-      },
-      {
-        type: "string",
-        const: "clipping",
-        description: "Clipping effect.",
-      },
-      {
-        type: "string",
-        const: "dropShadow",
-        description: "Drop shadow effect.",
-      },
-      {
-        type: "string",
-        const: "blur",
-        description: "Blur effect.",
-      },
-      {
-        type: "string",
-        const: "shake",
-        description: "Shake effect.",
-      },
-      {
-        type: "string",
-        const: "particleNature",
-        description: "Natural-phenomena particle effect.",
-      },
-      {
-        type: "string",
-        const: "particleImpact",
-        description: "Action/impact particle effect.",
-      },
-    ],
-    description: "Element types (10 §4.5). The 04 read model reports this value as `type`; the object model uses `elementType`\n(design decision D6).",
-  },
-  "element.get.EnvelopePoint": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      time: {
-        type: "number",
-        "x-unit": "second",
-        description: "Time within the source (seconds).",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      left: {
-        type: "number",
-        maximum: 1,
-        description: "Left gain 0–1.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      right: {
-        type: "number",
-        maximum: 1,
-        description: "Right gain 0–1.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "time",
-      "left",
-      "right",
-    ],
-    description: "A gain point of a placement envelope (07 §9.5).",
-  },
-  "element.get.ExportGroup": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      groupOnVectorExport: {
-        type: "boolean",
-        description: "Group the subtree on vector export.",
-        "x-since": "1.0",
-      },
-      addComposite: {
-        type: "boolean",
-        description: "Add a composite for the export group.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "groupOnVectorExport",
-      "addComposite",
-    ],
-    description: "Export-group block of pegs (05 §8.2, 09).",
-  },
-  "element.get.Ext": {
-    type: "object",
-    propertyNames: {
-      pattern: "^[A-Za-z0-9][A-Za-z0-9-]*(\\.[A-Za-z0-9][A-Za-z0-9-]*)+$",
-    },
-    description: "Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim.",
-  },
-  "element.get.FovMode": {
-    oneOf: [
-      {
-        type: "string",
-        const: "static",
-        description: "A single FOV value.",
-      },
-      {
-        type: "string",
-        const: "dynamic",
-        description: "The `fov` channel.",
-      },
-    ],
-    description: "Camera FOV mode (05 §12.3).",
-  },
-  "element.get.FrameRange": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      from: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "First frame (1-based).",
-        "x-since": "1.0",
-      },
-      to: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Last frame (inclusive).",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "from",
-      "to",
-    ],
-    description: "An inclusive frame range `{from, to}` (10 §1.1).",
-  },
-  "element.get.FrameValue": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      frame: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Absolute scene frame.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      value: {
-        type: "number",
-        description: "Value.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "frame",
-      "value",
-    ],
-    description: "A `{frame, value}` keyframe of a dynamic block parameter.",
-  },
-  "element.get.HandleMode": {
-    oneOf: [
-      {
-        type: "string",
-        const: "smooth",
-        description: "Collinear handles (default).",
-      },
-      {
-        type: "string",
-        const: "broken",
-        description: "Independent handles.",
-      },
-    ],
-    description: "Handle mode.",
-  },
-  "element.get.HandleOffset": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      dt: {
-        type: "number",
-        "x-unit": "frame",
-        description: "Frame offset.",
-        "x-since": "1.0",
-      },
-      dv: {
-        type: "number",
-        description: "Value offset.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "dt",
-      "dv",
-    ],
-    description: "A handle offset `{dt, dv}` (05 §10.3).",
-  },
-  "element.get.Handles": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      left: {
-        $ref: "#/$defs/element.get.HandleOffset",
-        description: "Left handle.",
-        "x-since": "1.0",
-      },
-      right: {
-        $ref: "#/$defs/element.get.HandleOffset",
-        description: "Right handle.",
-        "x-since": "1.0",
-      },
-      mode: {
-        $ref: "#/$defs/element.get.HandleMode",
-        description: "Smooth or broken.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "left",
-      "right",
-      "mode",
-    ],
-    description: "Handles of a key.",
-  },
-  "element.get.Id": {
-    type: "string",
-    pattern: "^[A-Za-z0-9_-]{1,64}$",
-  },
-  "element.get.InfluenceType": {
-    oneOf: [
-      {
-        type: "string",
-        const: "infinite",
-        description: "Unlimited (default).",
-      },
-      {
-        type: "string",
-        const: "elliptical",
-        description: "Elliptical zone.",
-      },
-    ],
-    description: "Influence type of a bone.",
-  },
-  "element.get.Key": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/element.get.Id",
-        description: "ID, unique within the channel (ID-03).",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "key",
-        readOnly: true,
-        description: "Always `key`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      frame: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Integer frame, unique in the channel.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      value: {
-        type: "number",
-        description: "Value.",
-        "x-since": "1.0",
-      },
-      constantSegment: {
-        type: "boolean",
-        description: "The segment starting here holds the value.",
-        "x-since": "1.0",
-      },
-      handles: {
-        $ref: "#/$defs/element.get.Handles",
-        description: "Spline handles.",
-        "x-since": "1.0",
-      },
-      easing: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Easing",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Easing preset of the segment starting here (interpolation curves).",
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/element.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "A key of a 1-D channel (10 §4.12). Addressed as `key:\"<frame>\"` or `key:@<id>`.",
-    "x-objectType": "key",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "frame",
-        "value",
-        "constantSegment",
-        "handles",
-        "easing",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "element.get.LipSyncMapping": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      drawingElementId: {
-        $ref: "#/$defs/element.get.Id",
-        description: "The mapped drawing element.",
-        "x-ref": "element",
-        "x-since": "1.0",
-      },
-      mapping: {
-        $ref: "#/$defs/element.get.MouthMapping",
-        description: "Shape → drawing.",
-        "x-since": "1.0",
-      },
-      autoReapply: {
-        type: "boolean",
-        description: "Re-apply automatically when the track changes.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "drawingElementId",
-      "mapping",
-      "autoReapply",
-    ],
-    description: "A lip-sync mapping for one drawing element (10 §4.14).",
-  },
-  "element.get.LoopType": {
-    oneOf: [
-      {
-        type: "string",
-        const: "count",
-        description: "The duration becomes `loops × L`.",
-      },
-      {
-        type: "string",
-        const: "fill",
-        description: "The cycle length is kept; cycles follow the duration.",
-      },
-    ],
-    description: "Loop type (05 §8.4).",
-  },
-  "element.get.MediaSequence": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/element.get.Id",
-        description: "Immutable ID.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "mediaSequence",
-        readOnly: true,
-        description: "Always `mediaSequence`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      assetId: {
-        $ref: "#/$defs/element.get.Id",
-        description: "A `linked` asset.",
-        "x-ref": "asset",
-        "x-since": "1.0",
-      },
-      startFrame: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "First frame.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      stopFrame: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Last frame.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      linkOffset: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Frame of the source shown at `startFrame`, ≥ 1.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/element.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      sourceLength: {
-        type: "integer",
-        minimum: 0,
-        maximum: 2147483647,
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      missing: {
-        type: "boolean",
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "A run of frames of a media element showing one linked source (10 §4.15).",
-    "x-objectType": "mediaSequence",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "assetId",
-        "startFrame",
-        "stopFrame",
-        "linkOffset",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "element.get.MotionPoint": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/element.get.Id",
-        description: "ID, unique within the channel (ID-03).",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "motionPoint",
-        readOnly: true,
-        description: "Always `motionPoint`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      frame: {
-        type: [
-          "integer",
-          "null",
-        ],
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Keyframe frame (integer, unique); `null` = control point.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      position: {
-        $ref: "#/$defs/element.get.Point3",
-        description: "Position in parent space (fields).",
-        "x-unit": "field",
-        "x-since": "1.0",
-      },
-      tension: {
-        type: "number",
-        maximum: 1,
-        description: "TCB tension, −1…1.",
-        minimum: -1,
-        "x-since": "1.0",
-      },
-      continuity: {
-        type: "number",
-        maximum: 1,
-        description: "TCB continuity, −1…1.",
-        minimum: -1,
-        "x-since": "1.0",
-      },
-      bias: {
-        type: "number",
-        maximum: 1,
-        description: "TCB bias, −1…1.",
-        minimum: -1,
-        "x-since": "1.0",
-      },
-      constantSegment: {
-        type: "boolean",
-        description: "The segment starting at this keyframe holds the position.",
-        "x-since": "1.0",
-      },
-      lockDepth: {
-        type: "boolean",
-        description: "Constant Z for the segment starting here (05 §9.3).",
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/element.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "A point of a motion path (10 §4.12): a keyframe (`frame` set) or a control point (`frame: null`).",
-    "x-objectType": "motionPoint",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "frame",
-        "position",
-        "tension",
-        "continuity",
-        "bias",
-        "constantSegment",
-        "lockDepth",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "element.get.MouthMapping": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      A: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Drawing for A.",
-        "x-since": "1.0",
-      },
-      B: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Drawing for B.",
-        "x-since": "1.0",
-      },
-      C: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Drawing for C.",
-        "x-since": "1.0",
-      },
-      D: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Drawing for D.",
-        "x-since": "1.0",
-      },
-      E: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Drawing for E.",
-        "x-since": "1.0",
-      },
-      F: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Drawing for F.",
-        "x-since": "1.0",
-      },
-      G: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Drawing for G.",
-        "x-since": "1.0",
-      },
-      X: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Id",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Drawing for X.",
-        "x-since": "1.0",
-      },
-    },
-    description: "Which drawing represents each mouth shape (07 §10.8).",
-    required: [
-      "A",
-      "B",
-      "C",
-      "D",
-      "E",
-      "F",
-      "G",
-      "X",
-    ],
-  },
-  "element.get.MouthTrack": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      mouths: {
-        type: "string",
-        description: "One letter (`A`–`G`, `X`) per frame of the placement.",
-        pattern: "^[A-GX]*$",
-        "x-since": "1.0",
-      },
-      manual: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/element.get.FrameRange",
-        },
-        description: "Placement-relative frame ranges set by hand or explicitly.",
-        "x-since": "1.0",
-      },
-      labels: {
-        type: "object",
-        additionalProperties: false,
-        patternProperties: {
-          "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$": {
-            type: "string",
-          },
-        },
-        description: "Optional display labels, keyed by placement-relative frame.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      source: {
-        $ref: "#/$defs/element.get.MouthTrackSource",
-        description: "How the track was produced.",
-        "x-since": "1.0",
-      },
-      producedFor: {
-        $ref: "#/$defs/element.get.ProducedFor",
-        description: "Timing snapshot.",
-        "x-since": "1.0",
-      },
-      stale: {
-        type: "boolean",
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "mouths",
-      "manual",
-      "source",
-      "producedFor",
-    ],
-    description: "A placement's lip-sync track (10 §4.14, 07 §10.3).",
-  },
-  "element.get.MouthTrackSource": {
-    oneOf: [
-      {
-        type: "string",
-        const: "detected",
-        description: "Detected from audio.",
-      },
-      {
-        type: "string",
-        const: "transcript",
-        description: "Aligned to a transcript.",
-      },
-      {
-        type: "string",
-        const: "phonemes",
-        description: "From explicit phonemes.",
-      },
-      {
-        type: "string",
-        const: "explicit",
-        description: "Set explicitly.",
-      },
-    ],
-    description: "How a mouth track was produced (10 §4.14).",
-  },
-  "element.get.ParamSlot": {
-    oneOf: [
-      {
-        type: "string",
-        const: "mask",
-        description: "Clipping mask.",
-      },
-      {
-        type: "string",
-        const: "sprites",
-        description: "Particle sprites.",
-      },
-      {
-        type: "string",
-        const: "bones",
-        description: "Skeleton bones.",
-      },
-      {
-        type: "string",
-        const: "skin",
-        description: "Skeleton skin.",
-      },
-    ],
-    description: "Slot of an effect-parameter element (06 §2.3).",
-  },
-  "element.get.ParentColourTransformMode": {
-    oneOf: [
-      {
-        type: "string",
-        const: "drawingsOnly",
-        description: "To the original drawings only (default).",
-      },
-      {
-        type: "string",
-        const: "drawingsAndShadow",
-        description: "To drawings and shadow.",
-      },
-      {
-        type: "string",
-        const: "shadowOnly",
-        description: "To the shadow only.",
-      },
-    ],
-    description: "How an inherited Colour Transform applies to a Drop Shadow (06 §3.4).",
-  },
-  "element.get.ParticleBackground": {
-    oneOf: [
-      {
-        type: "string",
-        const: "transparent",
-        description: "None (default).",
-      },
-      {
-        type: "string",
-        const: "darkSkyGradient",
-        description: "Dark blue sky gradient.",
-      },
-      {
-        type: "string",
-        const: "lightSkyGradient",
-        description: "Light blue sky gradient.",
-      },
-    ],
-    description: "Background of a particle block (06 §3.8.3).",
-  },
-  "element.get.ParticleBlock": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/element.get.Id",
-        description: "Immutable ID.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "particleBlock",
-        readOnly: true,
-        description: "Always `particleBlock`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      particleType: {
-        $ref: "#/$defs/element.get.ParticleType",
-        description: "Particle type (06 Block `type`; SI-004).",
-        "x-since": "1.0",
-      },
-      variant: {
+      media: {
         type: [
           "string",
+          "number",
+          "boolean",
           "null",
         ],
-        description: "Sub-behaviour; `null` = type default.",
-        "x-since": "1.0",
-      },
-      presetId: {
-        type: [
-          "string",
-          "null",
-        ],
-        description: "Last applied preset (informational).",
-        "x-since": "1.0",
-      },
-      seed: {
-        type: "integer",
-        maximum: 4294967295,
-        minimum: 0,
-        description: "Seed of all random choices, 0–2³²−1 (06 §3.8.3, §4.6: a full unsigned 32-bit range, stated explicitly).",
-        "x-since": "1.0",
-      },
-      spriteSetId: {
-        type: [
-          "string",
-          "null",
-        ],
-        description: "Built-in sprite set.",
-        "x-since": "1.0",
-      },
-      static: {
-        $ref: "#/$defs/element.get.BlockStatic",
-        description: "Static parameters.",
-        "x-since": "1.0",
-      },
-      dynamic: {
-        type: "object",
-        additionalProperties: {
-          $ref: "#/$defs/element.get.DynamicParam",
-        },
-        description: "Dynamic parameters by id (exactly the ids of 06 §3.8.4).",
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/element.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      index: {
-        type: "integer",
-        minimum: 0,
-        maximum: 2147483647,
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
+        "x-placeholder": true,
+        description: "type not stated by the owning section (spec issue); a scalar",
       },
     },
-    "x-since": "1.0",
-    description: "A simulation block of a particle effect (10 §4.6, 06 §3.8.2, §8.4).",
-    "x-objectType": "particleBlock",
+    additionalProperties: false,
     required: [
       "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "particleType",
-        "variant",
-        "presetId",
-        "seed",
-        "spriteSetId",
-        "static",
-        "dynamic",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "element.get.ParticleParams": {
-    type: "object",
-    additionalProperties: false,
-    description: "Particle effects have no effect-level parameters; their content is in `blocks` (06 §3.8).",
-  },
-  "element.get.ParticleType": {
-    oneOf: [
-      {
-        type: "string",
-        const: "rain",
-        description: "Nature: rain.",
-      },
-      {
-        type: "string",
-        const: "snow",
-        description: "Nature: snow.",
-      },
-      {
-        type: "string",
-        const: "hail",
-        description: "Nature: hail.",
-      },
-      {
-        type: "string",
-        const: "fog",
-        description: "Nature: fog.",
-      },
-      {
-        type: "string",
-        const: "cloud",
-        description: "Nature: cloud.",
-      },
-      {
-        type: "string",
-        const: "eruption",
-        description: "Nature: eruption.",
-      },
-      {
-        type: "string",
-        const: "shatter",
-        description: "Action: shatter.",
-      },
-      {
-        type: "string",
-        const: "magic",
-        description: "Action: magic.",
-      },
-      {
-        type: "string",
-        const: "explosion",
-        description: "Action: explosion.",
-      },
-      {
-        type: "string",
-        const: "splash",
-        description: "Action: splash.",
-      },
-      {
-        type: "string",
-        const: "fire",
-        description: "Action: fire.",
-      },
-      {
-        type: "string",
-        const: "celestial",
-        description: "Action: celestial.",
-      },
-    ],
-    description: "Particle types (06 §3.8.1). Persisted as `particleType` because `type` is the envelope field (SI-004).",
-  },
-  "element.get.Point2": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      x: {
-        type: "number",
-        description: "X coordinate.",
-        "x-since": "1.0",
-      },
-      y: {
-        type: "number",
-        description: "Y coordinate.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "x",
-      "y",
-    ],
-    description: "A 2-D point `{x, y}` (10 §1.1).",
-  },
-  "element.get.Point3": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      x: {
-        type: "number",
-        description: "X coordinate.",
-        "x-since": "1.0",
-      },
-      y: {
-        type: "number",
-        description: "Y coordinate.",
-        "x-since": "1.0",
-      },
-      z: {
-        type: "number",
-        description: "Z coordinate.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "x",
-      "y",
-      "z",
-    ],
-    description: "A 3-D point `{x, y, z}` (10 §1.1).",
-  },
-  "element.get.PositionLoop": {
-    oneOf: [
-      {
-        type: "string",
-        const: "cycle",
-        description: "Every cycle restarts from the first position.",
-      },
-      {
-        type: "string",
-        const: "offset",
-        description: "Cycles advance by the first cycle's displacement.",
-      },
-    ],
-    description: "Position looping mode (05 §8.4).",
-  },
-  "element.get.ProducedFor": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      assetId: {
-        $ref: "#/$defs/element.get.Id",
-        description: "Asset.",
-        "x-ref": "asset",
-        "x-since": "1.0",
-      },
-      inPoint: {
-        type: "number",
-        "x-unit": "second",
-        description: "In-point (seconds).",
-        "x-since": "1.0",
-      },
-      outPoint: {
-        type: "number",
-        "x-unit": "second",
-        description: "Out-point (seconds).",
-        "x-since": "1.0",
-      },
-      loops: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 0,
-        description: "Loop count.",
-        "x-since": "1.0",
-      },
-      stopFrame: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 0,
-        description: "Stop frame.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      frameRate: {
-        type: "number",
-        description: "Project frame rate.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "assetId",
-      "inPoint",
-      "outPoint",
+      "name",
+      "elementType",
+      "sceneId",
+      "parentId",
+      "childIds",
+      "depth",
+      "timelineIndex",
+      "xsheetIndex",
+      "start",
+      "duration",
       "loops",
-      "stopFrame",
-      "frameRate",
+      "annotation",
+      "role",
+      "deformable",
+      "visibleInScene",
+      "hiddenByParent",
+      "visibleInXsheet",
+      "locked",
+      "collapsed",
+      "markerColour",
+      "backgroundColour",
+      "effectiveMarkerColour",
+      "note",
+      "columnWidth",
+      "cloneGroupId",
+      "cloneIds",
+      "drawingCount",
+      "media",
     ],
-    description: "The timing a mouth track was produced for (10 §4.14).",
-  },
-  "element.get.Role": {
-    oneOf: [
-      {
-        type: "string",
-        const: "normal",
-        description: "Normal compositing.",
-      },
-      {
-        type: "string",
-        const: "foreground",
-        description: "In front of all normal elements.",
-      },
-      {
-        type: "string",
-        const: "background",
-        description: "Behind all normal elements; auto-extends to the scene length.",
-      },
-      {
-        type: "string",
-        const: "envelope",
-        description: "Marks a bone-deformation skin.",
-      },
-    ],
-    description: "Composite role (04 §6.1, 05 §8.1; SI-003: the superset of 04/05 and 10 §4.5).",
-  },
-  "element.get.Scale2": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      x: {
-        type: "number",
-        not: {
-          exclusiveMinimum: -0.001,
-          exclusiveMaximum: 0.001,
-        },
-        description: "Horizontal factor.",
-        "x-since": "1.0",
-      },
-      y: {
-        type: "number",
-        not: {
-          exclusiveMinimum: -0.001,
-          exclusiveMaximum: 0.001,
-        },
-        description: "Vertical factor.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "x",
-      "y",
-    ],
-    description: "A 2-D scale `{x, y}`; `|s| ≥ 0.001`, negative values flip.",
-  },
-  "element.get.ShakeAxis": {
-    oneOf: [
-      {
-        type: "string",
-        const: "x",
-        description: "East–west.",
-      },
-      {
-        type: "string",
-        const: "y",
-        description: "North–south.",
-      },
-      {
-        type: "string",
-        const: "xy",
-        description: "Both in the plane (default).",
-      },
-      {
-        type: "string",
-        const: "z",
-        description: "Front–back.",
-      },
-      {
-        type: "string",
-        const: "xyz",
-        description: "All three.",
-      },
-    ],
-    description: "Shake axes (06 §3.6).",
-  },
-  "element.get.ShakeParams": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      axis: {
-        $ref: "#/$defs/element.get.ShakeAxis",
-        description: "Displacement axes (static).",
-        "x-since": "1.0",
-      },
-      waveTime: {
-        type: "integer",
-        "x-unit": "frame",
-        minimum: 1,
-        description: "Oscillation period 1–999 frames (static).",
-        maximum: 999,
-        "x-since": "1.0",
-      },
-      decayHalfLifeFrames: {
-        type: "number",
-        "x-unit": "frame",
-        description: "Half-life 0.1–999 frames (static).",
-        minimum: 0.1,
-        maximum: 999,
-        "x-since": "1.0",
-      },
-      amplitude: {
-        type: "number",
-        "x-unit": "field",
-        description: "Peak displacement 0–100 fields (animatable).",
-        minimum: 0,
-        maximum: 100,
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "axis",
-      "waveTime",
-      "decayHalfLifeFrames",
-      "amplitude",
-    ],
-    description: "Shake parameters (06 §3.6).",
-  },
-  "element.get.SkeletonBlock": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      boneColour: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.Colour",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "Bone colour; `null` = preference.",
-        "x-since": "1.0",
-      },
-      showTrack: {
-        type: "boolean",
-        description: "Show the track.",
-        "x-since": "1.0",
-      },
-      showRoot: {
-        type: "boolean",
-        description: "Show the root.",
-        "x-since": "1.0",
-      },
-      showBones: {
-        type: "boolean",
-        description: "Show bones.",
-        "x-since": "1.0",
-      },
-      showInfluence: {
-        type: "boolean",
-        description: "Show influence.",
-        "x-since": "1.0",
-      },
-      vectorQuality: {
-        $ref: "#/$defs/element.get.VectorQuality",
-        description: "Deformation quality.",
-        "x-since": "1.0",
-      },
-      deformationEnabled: {
-        type: "boolean",
-        description: "Deformation on.",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "boneColour",
-      "showTrack",
-      "showRoot",
-      "showBones",
-      "showInfluence",
-      "vectorQuality",
-      "deformationEnabled",
-    ],
-    description: "Skeleton block (05 §13.6).",
-  },
-  "element.get.SoundPlacement": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/element.get.Id",
-        description: "Immutable ID.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "soundPlacement",
-        readOnly: true,
-        description: "Always `soundPlacement`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      assetId: {
-        $ref: "#/$defs/element.get.Id",
-        description: "A `sound` asset, or a `movie` asset with audio.",
-        "x-ref": "asset",
-        "x-since": "1.0",
-      },
-      startFrame: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "First frame.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      stopFrame: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Last frame; `startFrame ≤ stopFrame ≤` natural end.",
-        "x-unit": "frame",
-        "x-since": "1.0",
-      },
-      inPoint: {
-        type: "number",
-        "x-unit": "second",
-        description: "In-point in the source (seconds).",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      outPoint: {
-        type: "number",
-        "x-unit": "second",
-        description: "Out-point in the source (seconds); `inPoint < outPoint`.",
-        minimum: 0,
-        "x-since": "1.0",
-      },
-      loops: {
-        type: "integer",
-        maximum: 2147483647,
-        minimum: 1,
-        description: "Repetitions of the trimmed segment.",
-        "x-since": "1.0",
-      },
-      volume: {
-        type: "integer",
-        maximum: 50,
-        description: "Global gain −50…+50.",
-        minimum: -50,
-        "x-since": "1.0",
-      },
-      envelope: {
-        type: "array",
-        items: {
-          $ref: "#/$defs/element.get.EnvelopePoint",
-        },
-        description: "Gain points, times ascending.",
-        "x-since": "1.0",
-      },
-      mouthTrack: {
-        anyOf: [
-          {
-            $ref: "#/$defs/element.get.MouthTrack",
-          },
-          {
-            type: "null",
-          },
-        ],
-        description: "The placement's lip-sync track.",
-        "x-since": "1.0",
-      },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/element.get.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
-        type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      naturalEndFrame: {
-        type: "integer",
-        minimum: 0,
-        maximum: 2147483647,
-        "x-derived": true,
-        readOnly: true,
-        "x-since": "1.0",
-      },
-    },
-    "x-since": "1.0",
-    description: "One use of a sound asset in a sound element (10 §4.14, 07 §1.2).",
-    "x-objectType": "soundPlacement",
-    required: [
-      "id",
-      "type",
-    ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "assetId",
-        "startFrame",
-        "stopFrame",
-        "inPoint",
-        "outPoint",
-        "loops",
-        "volume",
-        "envelope",
-        "mouthTrack",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
-        ],
-      },
-    },
-  },
-  "element.get.Timestamp": {
-    type: "string",
-    pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$",
-    description: "ISO-8601 UTC timestamp with milliseconds.",
-  },
-  "element.get.Transform": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      offset: {
-        $ref: "#/$defs/element.get.Point3",
-        description: "Static position (fields). Camera default (0, 0, 16).",
-        "x-unit": "field",
-        "x-command": "anim.transform.set",
-        "x-since": "1.0",
-      },
-      rotation: {
-        type: "number",
-        "x-command": "anim.transform.set",
-        description: "Static rotation (degrees; camera: roll).",
-        "x-unit": "degree",
-        "x-since": "1.0",
-      },
-      skew: {
-        type: "number",
-        "x-command": "anim.transform.set",
-        description: "Static skew, −89…89 degrees.",
-        minimum: -89,
-        maximum: 89,
-        "x-unit": "degree",
-        "x-since": "1.0",
-      },
-      scale: {
-        $ref: "#/$defs/element.get.Scale2",
-        description: "Static scale.",
-        "x-command": "anim.transform.set",
-        "x-since": "1.0",
-      },
-      keepProportions: {
-        type: "boolean",
-        description: "Keep the scale ratio when editing one value.",
-        "x-since": "1.0",
-      },
-      rotationPivot: {
-        "x-kindSpecific": true,
-        description: "Elements: rotation pivot (fields).",
-        "x-unit": "field",
-        $ref: "#/$defs/element.get.Point2",
-        "x-since": "1.0",
-      },
-      scalePivot: {
-        "x-kindSpecific": true,
-        description: "Elements: scale pivot (fields).",
-        "x-unit": "field",
-        $ref: "#/$defs/element.get.Point2",
-        "x-since": "1.0",
-      },
-      rotateAboutPivot: {
-        type: "boolean",
-        description: "Elements: rotate about the rotation pivot.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      pivot: {
-        "x-kindSpecific": true,
-        description: "Pegs and skeletons: pivot (fields).",
-        "x-unit": "field",
-        $ref: "#/$defs/element.get.Point2",
-        "x-since": "1.0",
-      },
-      applyPivotTo: {
-        "x-kindSpecific": true,
-        description: "Pegs and skeletons: what the pivot applies to.",
-        $ref: "#/$defs/element.get.ApplyPivotTo",
-        "x-since": "1.0",
-      },
-      useChildDrawingPivot: {
-        type: "boolean",
-        description: "Pegs: use the child drawing's pivot.",
-        "x-kindSpecific": true,
-        "x-since": "1.0",
-      },
-      lockDepth: {
-        type: "boolean",
-        description: "Constant Z for nodes with a motion path (05 §9.3).",
-        "x-since": "1.0",
-      },
-      orientToPath: {
-        type: "boolean",
-        description: "Rotation follows the motion-path tangent (05 §8.3).",
-        "x-since": "1.0",
-      },
-    },
-    required: [
-      "offset",
-      "rotation",
-      "skew",
-      "scale",
-      "keepProportions",
-      "lockDepth",
-      "orientToPath",
-    ],
-    description: "The static transform block (10 §4.6, 05 §1.5, §8). Pivot fields depend on the element type: drawing, annotation,\nimage and media elements have `rotationPivot`, `scalePivot`, `rotateAboutPivot`; pegs have `pivot`,\n`applyPivotTo`, `useChildDrawingPivot`; skeletons have `pivot`, `applyPivotTo`; cameras have none (ADR-0010).",
-  },
-  "element.get.VectorQuality": {
-    oneOf: [
-      {
-        type: "string",
-        const: "low",
-        description: "Low.",
-      },
-      {
-        type: "string",
-        const: "medium",
-        description: "Medium (default).",
-      },
-      {
-        type: "string",
-        const: "high",
-        description: "High.",
-      },
-      {
-        type: "string",
-        const: "highest",
-        description: "Highest.",
-      },
-    ],
-    description: "Skeleton rendering quality.",
+    "x-specSection": "04",
   },
   "element.get.result": {
-    $ref: "#/$defs/element.get.Element",
+    $ref: "#/$defs/element.get.spec.ElementInfo",
     title: "element.get result",
     "x-spec": "element object",
   },
@@ -42734,7 +39278,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-placeholder": true,
     description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-    "x-specType": "ExportMovieParams",
+    "x-undefinedType": "ExportMovieParams",
     title: "export.movie.defaults.get result",
     "x-spec": "`ExportMovieParams`",
   },
@@ -42762,7 +39306,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-placeholder": true,
     description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-    "x-specType": "ExportMovieParams",
+    "x-undefinedType": "ExportMovieParams",
     title: "export.movie.defaults.set result",
     "x-spec": "`ExportMovieParams`",
   },
@@ -45114,7 +41658,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           additionalProperties: false,
           "x-placeholder": true,
           description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-          "x-specType": "BlockSummary",
+          "x-undefinedType": "BlockSummary",
         },
         maxItems: 100000,
       },
@@ -52283,7 +48827,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           additionalProperties: false,
           "x-placeholder": true,
           description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-          "x-specType": "RenderItem",
+          "x-undefinedType": "RenderItem",
         },
         maxItems: 100000,
       },
@@ -54593,9 +51137,56 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     title: "import.vectorize.settings.set result",
     "x-spec": "`VectorizeSettings`",
   },
+  "inspect.contactSheet.render.FrameSelection": {
+    description: "`inspect.contactSheet.render` parameters.\nThe frames of a contact sheet (spec A `inspect.contactSheet.render`): a list, or a stepped range.",
+    anyOf: [
+      {
+        description: "The frames listed.",
+        type: "array",
+        items: {
+          type: "integer",
+          maximum: 100000,
+          minimum: 1,
+        },
+        minItems: 1,
+        maxItems: 1000,
+      },
+      {
+        description: "`from` to `to` every `step` frames.",
+        type: "object",
+        properties: {
+          from: {
+            description: "First frame.",
+            type: "integer",
+            maximum: 100000,
+            minimum: 1,
+          },
+          to: {
+            description: "Last frame.",
+            type: "integer",
+            maximum: 100000,
+            minimum: 1,
+          },
+          step: {
+            description: "Step (default 1).",
+            type: [
+              "integer",
+              "null",
+            ],
+            default: null,
+            minimum: 1,
+            maximum: 100000,
+          },
+        },
+        required: [
+          "from",
+          "to",
+        ],
+      },
+    ],
+  },
   "inspect.contactSheet.render.params": {
     title: "ContactSheetParams",
-    description: "`inspect.contactSheet.render` parameters.",
     type: "object",
     properties: {
       sceneId: {
@@ -54608,6 +51199,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       frames: {
         description: "Frames: a list, or `{from, to, step}`.",
+        $ref: "#/$defs/inspect.contactSheet.render.FrameSelection",
       },
       columns: {
         description: "Columns.",
@@ -56770,7 +53362,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-placeholder": true,
     description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-    "x-specType": "ItemDetails",
+    "x-undefinedType": "ItemDetails",
     title: "library.item.get result",
     "x-spec": "`ItemDetails`",
   },
@@ -62036,7 +58628,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-placeholder": true,
     description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-    "x-specType": "PlayerState",
+    "x-undefinedType": "PlayerState",
     title: "playback.player.get result",
     "x-spec": "`PlayerState`",
   },
@@ -62133,7 +58725,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-placeholder": true,
     description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-    "x-specType": "PlayerState",
+    "x-undefinedType": "PlayerState",
     title: "playback.player.set result",
     "x-spec": "`PlayerState`",
   },
@@ -70418,13 +67010,213 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-spec": "`sceneId?: id; from?: int; to?: int`",
   },
-  "timeline.rows.list.result": {
+  "timeline.rows.list.spec.TimelineModel": {
     type: "object",
-    properties: {},
+    properties: {
+      sceneId: {
+        type: "string",
+        minLength: 1,
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3)",
+      },
+      sceneLength: {
+        type: "integer",
+      },
+      currentFrame: {
+        type: "integer",
+      },
+      playbackRange: {
+        type: "object",
+        properties: {
+          mode: {
+            type: "string",
+            maxLength: 65536,
+          },
+          start: {
+            type: "integer",
+          },
+          end: {
+            type: "integer",
+          },
+        },
+        required: [
+          "mode",
+          "start",
+          "end",
+        ],
+        additionalProperties: false,
+      },
+      rows: {
+        type: "array",
+        items: {
+          $ref: "#/$defs/timeline.rows.list.spec.TimelineRow",
+        },
+        maxItems: 100000,
+      },
+    },
+    required: [
+      "sceneId",
+      "sceneLength",
+      "currentFrame",
+      "playbackRange",
+      "rows",
+    ],
     additionalProperties: false,
-    "x-placeholder": true,
-    description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-    "x-specType": "timeline object",
+  },
+  "timeline.rows.list.spec.TimelineRow": {
+    type: "object",
+    properties: {
+      elementId: {
+        type: "string",
+        minLength: 1,
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3)",
+      },
+      name: {
+        type: "string",
+        maxLength: 65536,
+      },
+      type: {
+        type: "string",
+        maxLength: 65536,
+      },
+      depth: {
+        type: "integer",
+      },
+      parentId: {
+        type: "string",
+        minLength: 1,
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3)",
+      },
+      collapsed: {
+        type: "boolean",
+      },
+      visibleInScene: {
+        type: "boolean",
+      },
+      hiddenByParent: {
+        type: "boolean",
+      },
+      locked: {
+        type: "boolean",
+      },
+      bar: {
+        type: "object",
+        properties: {
+          start: {
+            type: "integer",
+          },
+          end: {
+            type: "integer",
+          },
+          loops: {
+            type: "integer",
+          },
+        },
+        required: [
+          "start",
+          "end",
+          "loops",
+        ],
+        additionalProperties: false,
+      },
+      keyframes: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            frame: {
+              type: "integer",
+            },
+            channels: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "position",
+                  "scale",
+                  "rotation",
+                  "skew",
+                ],
+              },
+              maxItems: 100000,
+            },
+            segmentAfter: {
+              type: "string",
+              enum: [
+                "constant",
+                "interpolated",
+              ],
+            },
+          },
+          required: [
+            "frame",
+            "channels",
+            "segmentAfter",
+          ],
+          additionalProperties: false,
+        },
+        maxItems: 100000,
+      },
+      childKeyframeFrames: {
+        type: "array",
+        items: {
+          type: "integer",
+        },
+        maxItems: 100000,
+      },
+      clips: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            clipId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            file: {
+              type: "string",
+              maxLength: 65536,
+            },
+            from: {
+              type: "integer",
+            },
+            to: {
+              type: "integer",
+            },
+          },
+          required: [
+            "clipId",
+            "file",
+            "from",
+            "to",
+          ],
+          additionalProperties: false,
+        },
+        maxItems: 100000,
+      },
+    },
+    required: [
+      "elementId",
+      "name",
+      "type",
+      "depth",
+      "parentId",
+      "collapsed",
+      "visibleInScene",
+      "hiddenByParent",
+      "locked",
+      "bar",
+      "keyframes",
+      "childKeyframeFrames",
+    ],
+    additionalProperties: false,
+  },
+  "timeline.rows.list.result": {
+    $ref: "#/$defs/timeline.rows.list.spec.TimelineModel",
     title: "timeline.rows.list result",
     "x-spec": "timeline object",
   },
@@ -70555,6 +67347,72 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     "x-spec": "`{options}`",
     additionalProperties: false,
   },
+  "timeline.transferOptions.set.spec.TransferOptions": {
+    type: "object",
+    properties: {
+      overwriteDrawings: {
+        type: "boolean",
+      },
+      exposure: {
+        type: "boolean",
+      },
+      autoExtend: {
+        type: "boolean",
+      },
+      updateColours: {
+        type: "boolean",
+      },
+      keyframeSubstitution: {
+        type: "boolean",
+      },
+      boundaryKeys: {
+        type: "boolean",
+      },
+      pegKeys: {
+        type: "object",
+        properties: {
+          motion: {
+            type: "boolean",
+          },
+          rotation: {
+            type: "boolean",
+          },
+          scale: {
+            type: "boolean",
+          },
+          pivot: {
+            type: "boolean",
+          },
+          velocity: {
+            type: "boolean",
+          },
+          skew: {
+            type: "boolean",
+          },
+        },
+        additionalProperties: false,
+        required: [
+          "motion",
+          "rotation",
+          "scale",
+          "pivot",
+          "velocity",
+          "skew",
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "overwriteDrawings",
+      "exposure",
+      "autoExtend",
+      "updateColours",
+      "keyframeSubstitution",
+      "boundaryKeys",
+      "pegKeys",
+    ],
+    "x-specSection": "04",
+  },
   "timeline.transferOptions.set.params": {
     title: "timeline.transferOptions.set parameters",
     type: "object",
@@ -70568,11 +67426,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
       options: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
+        $ref: "#/$defs/timeline.transferOptions.set.spec.TransferOptions",
       },
     },
     required: [
@@ -75930,13 +72784,196 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
     "x-spec": "`sceneId?: id; elementIds?: [id]; from: int = 1; to?: int; include?: [string]`",
   },
-  "xsheet.exposures.get.result": {
+  "xsheet.exposures.get.spec.ExposureSheet": {
     type: "object",
-    properties: {},
+    properties: {
+      sceneId: {
+        type: "string",
+        minLength: 1,
+        maxLength: 4096,
+        description: "object ID or path reference (10 §3)",
+      },
+      rev: {
+        type: "integer",
+      },
+      sceneLength: {
+        type: "integer",
+      },
+      from: {
+        type: "integer",
+      },
+      to: {
+        type: "integer",
+      },
+      columns: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            elementId: {
+              type: "string",
+              minLength: 1,
+              maxLength: 4096,
+              description: "object ID or path reference (10 §3)",
+            },
+            name: {
+              type: "string",
+              maxLength: 65536,
+            },
+            elementType: {
+              type: "string",
+              maxLength: 65536,
+            },
+            visible: {
+              type: "boolean",
+            },
+            exposures: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  drawing: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                  drawingId: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4096,
+                    description: "object ID or path reference (10 §3)",
+                  },
+                  from: {
+                    type: "integer",
+                  },
+                  to: {
+                    type: "integer",
+                  },
+                  continues: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                },
+                additionalProperties: false,
+                required: [
+                  "drawing",
+                  "drawingId",
+                  "from",
+                  "to",
+                ],
+              },
+              maxItems: 100000,
+            },
+            notes: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  frame: {
+                    type: "integer",
+                  },
+                  text: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                },
+                additionalProperties: false,
+                required: [
+                  "frame",
+                  "text",
+                ],
+              },
+              maxItems: 100000,
+            },
+            type: {
+              type: "string",
+              maxLength: 65536,
+            },
+            clips: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  clipId: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4096,
+                    description: "object ID or path reference (10 §3)",
+                  },
+                  file: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                  from: {
+                    type: "integer",
+                  },
+                  to: {
+                    type: "integer",
+                  },
+                  continues: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                },
+                additionalProperties: false,
+                required: [
+                  "clipId",
+                  "file",
+                  "from",
+                  "to",
+                  "continues",
+                ],
+              },
+              maxItems: 100000,
+            },
+            mouths: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  mouth: {
+                    type: "string",
+                    maxLength: 65536,
+                  },
+                  from: {
+                    type: "integer",
+                  },
+                  to: {
+                    type: "integer",
+                  },
+                },
+                additionalProperties: false,
+                required: [
+                  "mouth",
+                  "from",
+                  "to",
+                ],
+              },
+              maxItems: 100000,
+            },
+          },
+          additionalProperties: false,
+          required: [
+            "elementId",
+            "name",
+            "visible",
+          ],
+        },
+        maxItems: 100000,
+      },
+    },
     additionalProperties: false,
-    "x-placeholder": true,
-    description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-    "x-specType": "exposure-sheet object",
+    required: [
+      "sceneId",
+      "rev",
+      "sceneLength",
+      "from",
+      "to",
+      "columns",
+    ],
+    "x-specSection": "04",
+  },
+  "xsheet.exposures.get.result": {
+    $ref: "#/$defs/xsheet.exposures.get.spec.ExposureSheet",
     title: "xsheet.exposures.get result",
     "x-spec": "exposure-sheet object",
   },
@@ -79325,13 +76362,29 @@ export interface cell_blank_remove_result {
   })[];
 }
 
+export interface cell_clipboard_apply_spec_TransferOptions {
+  overwriteDrawings: boolean;
+  exposure: boolean;
+  autoExtend: boolean;
+  updateColours: boolean;
+  keyframeSubstitution: boolean;
+  boundaryKeys: boolean;
+  pegKeys: {
+    motion: boolean;
+    rotation: boolean;
+    scale: boolean;
+    pivot: boolean;
+    velocity: boolean;
+    skew: boolean;
+  };
+}
+
 export interface cell_clipboard_apply_params {
   /** object ID or path reference (10 §3) */
   elementId?: string;
   frame?: number | bigint;
   mode?: 'paste' | 'newDrawings';
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  options?: Record<string, unknown>;
+  options?: cell_clipboard_apply_spec_TransferOptions;
 }
 
 export interface cell_clipboard_apply_result {
@@ -79341,14 +76394,30 @@ export interface cell_clipboard_apply_result {
   createdDrawingIds: string[];
 }
 
+export interface cell_clipboard_set_spec_TransferOptions {
+  overwriteDrawings: boolean;
+  exposure: boolean;
+  autoExtend: boolean;
+  updateColours: boolean;
+  keyframeSubstitution: boolean;
+  boundaryKeys: boolean;
+  pegKeys: {
+    motion: boolean;
+    rotation: boolean;
+    scale: boolean;
+    pivot: boolean;
+    velocity: boolean;
+    skew: boolean;
+  };
+}
+
 export interface cell_clipboard_set_params {
   elementIds?: string[];
   from?: number | bigint;
   to?: number | bigint;
   wholeElements?: boolean;
   cut?: boolean;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  options?: Record<string, unknown>;
+  options?: cell_clipboard_set_spec_TransferOptions;
 }
 
 export interface cell_clipboard_set_result {
@@ -79550,6 +76619,23 @@ export interface cell_range_delete_result {
   })[];
 }
 
+export interface cell_range_move_spec_TransferOptions {
+  overwriteDrawings: boolean;
+  exposure: boolean;
+  autoExtend: boolean;
+  updateColours: boolean;
+  keyframeSubstitution: boolean;
+  boundaryKeys: boolean;
+  pegKeys: {
+    motion: boolean;
+    rotation: boolean;
+    scale: boolean;
+    pivot: boolean;
+    velocity: boolean;
+    skew: boolean;
+  };
+}
+
 export interface cell_range_move_params {
   sourceElementIds: string[];
   from: number | bigint;
@@ -79558,8 +76644,7 @@ export interface cell_range_move_params {
   targetElementId?: string;
   targetFrame: number | bigint;
   mode?: 'move' | 'copy' | 'link' | 'copyNew';
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  options?: Record<string, unknown>;
+  options?: cell_range_move_spec_TransferOptions;
 }
 
 export interface cell_range_move_result {
@@ -80900,6 +77985,9 @@ export interface doc_export_json_result {
   objectCount: number | bigint;
 }
 
+/** What `doc.import.json` reads (spec A: `path | object`). */
+export type doc_import_json_ImportSource = string | Record<string, unknown>;
+
 /** ID policy. */
 export type doc_import_json_IdPolicy = 'new' | 'preserve';
 
@@ -80911,8 +77999,8 @@ export type doc_import_json_ColourPolicy = 'keepExisting' | 'updateExisting';
 
 /** `doc.import.json` parameters. */
 export interface doc_import_json_params {
-  /** A path or an inline bundle. */
-  source: unknown;
+  /** A path or an inline bundle (`doc.export.json` output). */
+  source: doc_import_json_ImportSource;
   /** Target scene (omit: new scenes). */
   target?: string | null;
   /** Scene position. */
@@ -81279,8 +78367,8 @@ export interface doc_state_get_result {
   dirty: boolean;
   /** Read-only. */
   readOnly: boolean;
-  /** Lock holder (C1.3). */
-  lock?: unknown;
+  /** Lock holder (10 §8 LOCK-01; C1.3), `null` while no lock is held. */
+  lock?: Record<string, unknown> | null;
   /** Oldest revision `doc.diff` accepts. */
   historyFromRev: number | bigint;
 }
@@ -83644,722 +80732,44 @@ export interface element_get_params {
   elementId: string;
 }
 
-/** Pivot application of pegs and skeletons (05 §2.3). */
-export type element_get_ApplyPivotTo = 'rotation' | 'scaling' | 'both';
-
-/** A 2-D affine transform as axes and origin (06 §3.4 shadow transform). */
-export interface element_get_AxesTransform {
-  /** Image of the x axis. */
-  xAxis: element_get_Point2;
-  /** Image of the y axis. */
-  yAxis: element_get_Point2;
-  /** Origin (fields). */
-  origin: element_get_Point2;
-}
-
-/** Static parameters of a particle block (06 §3.8.3). Frames are absolute scene frames. */
-export interface element_get_BlockStatic {
-  /** Background drawn behind the particles. */
-  background: element_get_ParticleBackground;
-  /** First simulated frame (≤ firstFrame, ≥ firstFrame − 999; may be < 1 for pre-roll). */
-  simulationStart: number;
-  /** First displayed frame. */
-  firstFrame: number;
-  /** Frames the block lasts, ≥ 1. */
+export interface element_get_spec_ElementInfo {
+  /** object ID or path reference (10 §3) */
+  id: string;
+  name: string;
+  elementType: string;
+  /** object ID or path reference (10 §3) */
+  sceneId: string;
+  /** object ID or path reference (10 §3) */
+  parentId: string;
+  childIds: string[];
+  depth: number | bigint;
+  timelineIndex: number | bigint;
+  xsheetIndex: number | bigint;
+  start: number | bigint;
   duration: number;
-  /** Particle cap (≤ 3000; 50 for fog and cloud). */
-  maxParticles: number;
-  /** Lifetime in frames: −1 (unlimited) or 0–512. */
-  lifetimeFrames: number;
-  /** Fade particles out. */
-  fade: boolean;
-  /** Region width 0–1999 particle units. */
-  areaWidth: number;
-  /** Region height 0–1999. */
-  areaHeight: number;
-  /** Region depth 0–1999. */
-  areaDepth: number;
-  /** Floor height 0–1999. */
-  floorLevel: number;
-}
-
-/** Blur parameters (06 §3.5). */
-export interface element_get_BlurParams {
-  /** Uniform (true) or directional (false) blur (static). */
-  radial: boolean;
-  /** Radius 0–100 output pixels (animatable). */
-  radius: number;
-  /** Motion-blur direction 0–360 degrees (animatable). */
-  angle: number;
-}
-
-/** Bone block (10 §4.6, 05 §13.1–§13.3). */
-export interface element_get_BoneBlock {
-  /** Rest pose. */
-  rest: element_get_BoneRest;
-  /** Zone of influence. */
-  influence: element_get_BoneInfluence;
-}
-
-/** Zone of influence of a bone (05 §13.3). */
-export interface element_get_BoneInfluence {
-  /** Infinite or elliptical. */
-  type: element_get_InfluenceType;
-  /** Length radius (fields). */
-  lengthRadius: number;
-  /** Width radius (fields). */
-  widthRadius: number;
-  /** Explicit region polygon, or `null`. */
-  region: element_get_Point2[] | null;
-}
-
-/** Rest pose of a bone (05 §13.1). */
-export interface element_get_BoneRest {
-  /** X (fields). */
-  x: number;
-  /** Y (fields). */
-  y: number;
-  /** Rotation (degrees). */
-  rotation: number;
-  /** Length (fields), > 0.01. */
-  length: number;
-}
-
-/** Camera block (10 §4.6, 05 §12.3). */
-export interface element_get_CameraBlock {
-  /** Static or dynamic FOV. */
-  fovMode: element_get_FovMode;
-  /** FOV 1–179 degrees (default 41.1121). */
-  fov: number;
-}
-
-/** An animation channel (10 §4.12). The `name` is the channel id (`rotation`, `scale.x`, …, or an effect parameter id) and equals its key in the element's `channels` map. A 1-D channel has `curveType` and `keys`; the motion-path channel `position` has `points` instead. */
-export interface element_get_Channel {
-  /** Immutable ID. */
-  id: element_get_Id;
-  /** Always `channel`. */
-  type: 'channel';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** The channel id. */
-  name: string;
-  /** 1-D channels: curve type. */
-  curveType?: element_get_CurveType;
-  /** 1-D channels: keys sorted by frame, at least one. */
-  keys?: (element_get_Key | element_get_KeyStub)[];
-  /** Motion path: points in path order; first and last are keyframes. */
-  points?: (element_get_MotionPoint | element_get_MotionPointStub)[];
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: element_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-}
-
-/** A `element_get_Channel` reduced to its stub (10 §2.2). */
-export interface element_get_ChannelStub {
-  id: element_get_Id;
-  type: 'channel';
-  name?: string;
-}
-
-/** Clipping parameters (06 §3.3). */
-export interface element_get_ClippingParams {
-  /** Draw children outside the mask instead of inside. */
-  inverted: boolean;
-}
-
-/** sRGB colour with straight alpha, #RRGGBBAA (written upper case; #RRGGBB accepted on input). */
-export type element_get_Colour = string;
-
-/** Colour Transform parameters (06 §3.2). */
-export interface element_get_ColourTransformParams {
-  /** Red multiplier 0–1 (animatable). */
-  multRed: number;
-  /** Green multiplier 0–1 (animatable). */
-  multGreen: number;
-  /** Blue multiplier 0–1 (animatable). */
-  multBlue: number;
-  /** Alpha multiplier 0–1 (animatable). */
-  multAlpha: number;
-  /** Red offset −255…255 (animatable). */
-  addRed: number;
-  /** Green offset −255…255 (animatable). */
-  addGreen: number;
-  /** Blue offset −255…255 (animatable). */
-  addBlue: number;
-  /** Alpha offset −255…255 (animatable). */
-  addAlpha: number;
-  /** Composite the sub-tree first (static). */
-  flatten: boolean;
-}
-
-/** Curve type of a 1-D channel (05 §10.3). */
-export type element_get_CurveType = 'spline' | 'interpolation' | 'velocityBased';
-
-/** Drop Shadow parameters (06 §3.4; all static). */
-export interface element_get_DropShadowParams {
-  /** How a parent Colour Transform applies. */
-  parentColourTransformMode: element_get_ParentColourTransformMode;
-  /** Shadow colour (alpha ignored). */
-  colour: element_get_Colour;
-  /** Opacity percent 0–100. */
-  opacity: number;
-  /** Draw only the shadow. */
-  hideElements: boolean;
-  /** Shadow transform in effect-local space. */
-  transform: element_get_AxesTransform;
-}
-
-/** A dynamic block parameter: a constant `{value}` or `{keyframes}` (06 §8.4). */
-export type element_get_DynamicParam = {
-  /** The value. */
-  value: number;
-} | {
-  /** Keyframes sorted by frame, at least one. */
-  keyframes: element_get_FrameValue[];
-};
-
-/** Easing presets (05 §10.4). */
-export type element_get_Easing = 'constant' | 'linear' | 'easeInOut' | 'fastInOut' | 'extremeEaseInOut' | 'extremeFastInOut' | 'slowAcceleration' | 'slowDeceleration';
-
-/** An element of a scene (10 §4.5–§4.7). Stored in `scenes/<sceneId>/elements/<elementId>.json`. */
-export interface element_get_Element {
-  /** Immutable ID. */
-  id: element_get_Id;
-  /** Always `element`. */
-  type: 'element';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** Unique in the scene. */
-  name: string;
-  /** Element type; read-only except through conversion commands. */
-  elementType: element_get_ElementType;
-  /** Non-cell elements: first frame of the bar (persisted). Cell-based elements: derived from the exposure (query results only). */
-  start?: number;
-  /** Non-cell elements: length of the bar (absent for cell-based elements: derived). */
-  duration?: number;
-  /** Loop count ≥ 1; 1 = not looped. */
-  loops: number;
-  /** Count or fill. */
-  loopType: element_get_LoopType;
-  /** Cycle or offset. */
-  positionLoop: element_get_PositionLoop;
-  /** Composite role. */
-  role: element_get_Role;
-  /** Deformable by a skeleton. */
+  loops: number | bigint;
+  annotation: boolean;
+  role: string;
   deformable: boolean;
-  /** Shown in scene views, playback and export. */
   visibleInScene: boolean;
-  /** Cell-based elements: shown in the Exposure Sheet and Drawing View. */
-  visibleInXsheet?: boolean;
-  /** Locked in scene views. */
+  hiddenByParent: boolean;
+  visibleInXsheet: boolean;
   locked: boolean;
-  /** Timeline display state of parents. */
   collapsed: boolean;
-  /** Marker colour; `null` = category default. */
-  markerColour: element_get_Colour | null;
-  /** Background colour; `null` = category default. */
-  backgroundColour: element_get_Colour | null;
-  /** Element note (≤ 10 000 characters). */
-  note?: string;
-  /** Exposure Sheet column width, 20–1000 view pixels. */
-  columnWidth: number;
-  /** Cell-based: the drawing bank (shared by clones). */
-  drawingBankId?: element_get_Id;
-  /** Cell-based: canonical exposure runs from frame 1. */
-  exposure?: ([element_get_Id | null, number])[];
-  /** Cell-based: notes by frame. */
-  cellNotes?: Record<string, string>;
-  /** Image elements: import options (section 09; SI-008). */
-  importOptions?: Record<string, unknown>;
-  /** Sound: streamed playback. */
-  streamed?: boolean;
-  /** Sound: the Exposure Sheet shows mouths. */
-  showMouthShapes?: boolean;
-  /** Sound: placements sorted by `startFrame`, non-overlapping. */
-  placements?: (element_get_SoundPlacement | element_get_SoundPlacementStub)[];
-  /** Sound: one mapping per mapped drawing element. */
-  lipSyncMappings?: element_get_LipSyncMapping[];
-  /** Media: sequences, non-overlapping. */
-  sequences?: (element_get_MediaSequence | element_get_MediaSequenceStub)[];
-  /** Transformable elements: the static transform. */
-  transform?: element_get_Transform;
-  /** Pegs: export grouping. */
-  exportGroup?: element_get_ExportGroup;
-  /** Cameras: FOV settings. */
-  camera?: element_get_CameraBlock;
-  /** Skeletons: display and deformation settings. */
-  skeleton?: element_get_SkeletonBlock;
-  /** Bones: rest pose and influence. */
-  bone?: element_get_BoneBlock;
-  /** Effect parameter elements: the slot. */
-  slot?: element_get_ParamSlot;
-  /** Effects: static parameter values (exact shape per `elementType`). */
-  params?: Record<string, unknown>;
-  /** Particle effects: blocks, consecutive. */
-  blocks?: (element_get_ParticleBlock | element_get_ParticleBlockStub)[];
-  /** Animated channels by channel id. */
-  channels?: Record<string, element_get_Channel | element_get_ChannelStub>;
-  /** Creation time. */
-  createdAt: element_get_Timestamp;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: element_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-  parentId?: element_get_Id | null;
-  childIds?: element_get_Id[];
-  depth?: number;
-  timelineIndex?: number;
-  xsheetIndex?: number | null;
-  cloneGroupId?: element_get_Id | null;
-  cloneIds?: element_get_Id[];
-  drawingCount?: number;
-  hiddenByParent?: boolean;
-  effectiveMarkerColour?: element_get_Colour;
+  markerColour: string | null;
+  backgroundColour: string | null;
+  /** #RRGGBB or #RRGGBBAA */
+  effectiveMarkerColour: string;
+  note: string;
+  columnWidth: number | bigint;
+  cloneGroupId: string | null;
+  cloneIds: string[];
+  drawingCount: number | bigint;
+  /** type not stated by the owning section (spec issue); a scalar */
+  media: string | number | boolean | null;
 }
 
-/** A `element_get_Element` reduced to its stub (10 §2.2). */
-export interface element_get_ElementStub {
-  id: element_get_Id;
-  type: 'element';
-  name?: string;
-}
-
-/** Element types (10 §4.5). The 04 read model reports this value as `type`; the object model uses `elementType` (design decision D6). */
-export type element_get_ElementType = 'drawing' | 'annotation' | 'image' | 'sound' | 'media' | 'peg' | 'camera' | 'skeleton' | 'bone' | 'effectParameter' | 'colourTransform' | 'clipping' | 'dropShadow' | 'blur' | 'shake' | 'particleNature' | 'particleImpact';
-
-/** A gain point of a placement envelope (07 §9.5). */
-export interface element_get_EnvelopePoint {
-  /** Time within the source (seconds). */
-  time: number;
-  /** Left gain 0–1. */
-  left: number;
-  /** Right gain 0–1. */
-  right: number;
-}
-
-/** Export-group block of pegs (05 §8.2, 09). */
-export interface element_get_ExportGroup {
-  /** Group the subtree on vector export. */
-  groupOnVectorExport: boolean;
-  /** Add a composite for the export group. */
-  addComposite: boolean;
-}
-
-/** Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim. */
-export type element_get_Ext = Record<string, unknown>;
-
-/** Camera FOV mode (05 §12.3). */
-export type element_get_FovMode = 'static' | 'dynamic';
-
-/** An inclusive frame range `{from, to}` (10 §1.1). */
-export interface element_get_FrameRange {
-  /** First frame (1-based). */
-  from: number;
-  /** Last frame (inclusive). */
-  to: number;
-}
-
-/** A `{frame, value}` keyframe of a dynamic block parameter. */
-export interface element_get_FrameValue {
-  /** Absolute scene frame. */
-  frame: number;
-  /** Value. */
-  value: number;
-}
-
-/** Handle mode. */
-export type element_get_HandleMode = 'smooth' | 'broken';
-
-/** A handle offset `{dt, dv}` (05 §10.3). */
-export interface element_get_HandleOffset {
-  /** Frame offset. */
-  dt: number;
-  /** Value offset. */
-  dv: number;
-}
-
-/** Handles of a key. */
-export interface element_get_Handles {
-  /** Left handle. */
-  left: element_get_HandleOffset;
-  /** Right handle. */
-  right: element_get_HandleOffset;
-  /** Smooth or broken. */
-  mode: element_get_HandleMode;
-}
-
-export type element_get_Id = string;
-
-/** Influence type of a bone. */
-export type element_get_InfluenceType = 'infinite' | 'elliptical';
-
-/** A key of a 1-D channel (10 §4.12). Addressed as `key:"<frame>"` or `key:@<id>`. */
-export interface element_get_Key {
-  /** ID, unique within the channel (ID-03). */
-  id: element_get_Id;
-  /** Always `key`. */
-  type: 'key';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** Integer frame, unique in the channel. */
-  frame: number;
-  /** Value. */
-  value: number;
-  /** The segment starting here holds the value. */
-  constantSegment: boolean;
-  /** Spline handles. */
-  handles: element_get_Handles;
-  /** Easing preset of the segment starting here (interpolation curves). */
-  easing: element_get_Easing | null;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: element_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-}
-
-/** A `element_get_Key` reduced to its stub (10 §2.2). */
-export interface element_get_KeyStub {
-  id: element_get_Id;
-  type: 'key';
-}
-
-/** A lip-sync mapping for one drawing element (10 §4.14). */
-export interface element_get_LipSyncMapping {
-  /** The mapped drawing element. */
-  drawingElementId: element_get_Id;
-  /** Shape → drawing. */
-  mapping: element_get_MouthMapping;
-  /** Re-apply automatically when the track changes. */
-  autoReapply: boolean;
-}
-
-/** Loop type (05 §8.4). */
-export type element_get_LoopType = 'count' | 'fill';
-
-/** A run of frames of a media element showing one linked source (10 §4.15). */
-export interface element_get_MediaSequence {
-  /** Immutable ID. */
-  id: element_get_Id;
-  /** Always `mediaSequence`. */
-  type: 'mediaSequence';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** A `linked` asset. */
-  assetId: element_get_Id;
-  /** First frame. */
-  startFrame: number;
-  /** Last frame. */
-  stopFrame: number;
-  /** Frame of the source shown at `startFrame`, ≥ 1. */
-  linkOffset: number;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: element_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-  sourceLength?: number;
-  missing?: boolean;
-}
-
-/** A `element_get_MediaSequence` reduced to its stub (10 §2.2). */
-export interface element_get_MediaSequenceStub {
-  id: element_get_Id;
-  type: 'mediaSequence';
-}
-
-/** A point of a motion path (10 §4.12): a keyframe (`frame` set) or a control point (`frame: null`). */
-export interface element_get_MotionPoint {
-  /** ID, unique within the channel (ID-03). */
-  id: element_get_Id;
-  /** Always `motionPoint`. */
-  type: 'motionPoint';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** Keyframe frame (integer, unique); `null` = control point. */
-  frame: number | null;
-  /** Position in parent space (fields). */
-  position: element_get_Point3;
-  /** TCB tension, −1…1. */
-  tension: number;
-  /** TCB continuity, −1…1. */
-  continuity: number;
-  /** TCB bias, −1…1. */
-  bias: number;
-  /** The segment starting at this keyframe holds the position. */
-  constantSegment: boolean;
-  /** Constant Z for the segment starting here (05 §9.3). */
-  lockDepth: boolean;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: element_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-}
-
-/** A `element_get_MotionPoint` reduced to its stub (10 §2.2). */
-export interface element_get_MotionPointStub {
-  id: element_get_Id;
-  type: 'motionPoint';
-}
-
-/** Which drawing represents each mouth shape (07 §10.8). */
-export interface element_get_MouthMapping {
-  /** Drawing for A. */
-  A: element_get_Id | null;
-  /** Drawing for B. */
-  B: element_get_Id | null;
-  /** Drawing for C. */
-  C: element_get_Id | null;
-  /** Drawing for D. */
-  D: element_get_Id | null;
-  /** Drawing for E. */
-  E: element_get_Id | null;
-  /** Drawing for F. */
-  F: element_get_Id | null;
-  /** Drawing for G. */
-  G: element_get_Id | null;
-  /** Drawing for X. */
-  X: element_get_Id | null;
-}
-
-/** A placement's lip-sync track (10 §4.14, 07 §10.3). */
-export interface element_get_MouthTrack {
-  /** One letter (`A`–`G`, `X`) per frame of the placement. */
-  mouths: string;
-  /** Placement-relative frame ranges set by hand or explicitly. */
-  manual: element_get_FrameRange[];
-  /** Optional display labels, keyed by placement-relative frame. */
-  labels?: Record<string, string>;
-  /** How the track was produced. */
-  source: element_get_MouthTrackSource;
-  /** Timing snapshot. */
-  producedFor: element_get_ProducedFor;
-  stale?: boolean;
-}
-
-/** How a mouth track was produced (10 §4.14). */
-export type element_get_MouthTrackSource = 'detected' | 'transcript' | 'phonemes' | 'explicit';
-
-/** Slot of an effect-parameter element (06 §2.3). */
-export type element_get_ParamSlot = 'mask' | 'sprites' | 'bones' | 'skin';
-
-/** How an inherited Colour Transform applies to a Drop Shadow (06 §3.4). */
-export type element_get_ParentColourTransformMode = 'drawingsOnly' | 'drawingsAndShadow' | 'shadowOnly';
-
-/** Background of a particle block (06 §3.8.3). */
-export type element_get_ParticleBackground = 'transparent' | 'darkSkyGradient' | 'lightSkyGradient';
-
-/** A simulation block of a particle effect (10 §4.6, 06 §3.8.2, §8.4). */
-export interface element_get_ParticleBlock {
-  /** Immutable ID. */
-  id: element_get_Id;
-  /** Always `particleBlock`. */
-  type: 'particleBlock';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** Particle type (06 Block `type`; SI-004). */
-  particleType: element_get_ParticleType;
-  /** Sub-behaviour; `null` = type default. */
-  variant: string | null;
-  /** Last applied preset (informational). */
-  presetId: string | null;
-  /** Seed of all random choices, 0–2³²−1 (06 §3.8.3, §4.6: a full unsigned 32-bit range, stated explicitly). */
-  seed: number;
-  /** Built-in sprite set. */
-  spriteSetId: string | null;
-  /** Static parameters. */
-  static: element_get_BlockStatic;
-  /** Dynamic parameters by id (exactly the ids of 06 §3.8.4). */
-  dynamic: Record<string, element_get_DynamicParam>;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: element_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-  index?: number;
-}
-
-/** A `element_get_ParticleBlock` reduced to its stub (10 §2.2). */
-export interface element_get_ParticleBlockStub {
-  id: element_get_Id;
-  type: 'particleBlock';
-}
-
-/** Particle effects have no effect-level parameters; their content is in `blocks` (06 §3.8). */
-export type element_get_ParticleParams = Record<string, unknown>;
-
-/** Particle types (06 §3.8.1). Persisted as `particleType` because `type` is the envelope field (SI-004). */
-export type element_get_ParticleType = 'rain' | 'snow' | 'hail' | 'fog' | 'cloud' | 'eruption' | 'shatter' | 'magic' | 'explosion' | 'splash' | 'fire' | 'celestial';
-
-/** A 2-D point `{x, y}` (10 §1.1). */
-export interface element_get_Point2 {
-  /** X coordinate. */
-  x: number;
-  /** Y coordinate. */
-  y: number;
-}
-
-/** A 3-D point `{x, y, z}` (10 §1.1). */
-export interface element_get_Point3 {
-  /** X coordinate. */
-  x: number;
-  /** Y coordinate. */
-  y: number;
-  /** Z coordinate. */
-  z: number;
-}
-
-/** Position looping mode (05 §8.4). */
-export type element_get_PositionLoop = 'cycle' | 'offset';
-
-/** The timing a mouth track was produced for (10 §4.14). */
-export interface element_get_ProducedFor {
-  /** Asset. */
-  assetId: element_get_Id;
-  /** In-point (seconds). */
-  inPoint: number;
-  /** Out-point (seconds). */
-  outPoint: number;
-  /** Loop count. */
-  loops: number;
-  /** Stop frame. */
-  stopFrame: number;
-  /** Project frame rate. */
-  frameRate: number;
-}
-
-/** Composite role (04 §6.1, 05 §8.1; SI-003: the superset of 04/05 and 10 §4.5). */
-export type element_get_Role = 'normal' | 'foreground' | 'background' | 'envelope';
-
-/** A 2-D scale `{x, y}`; `|s| ≥ 0.001`, negative values flip. */
-export interface element_get_Scale2 {
-  /** Horizontal factor. */
-  x: number;
-  /** Vertical factor. */
-  y: number;
-}
-
-/** Shake axes (06 §3.6). */
-export type element_get_ShakeAxis = 'x' | 'y' | 'xy' | 'z' | 'xyz';
-
-/** Shake parameters (06 §3.6). */
-export interface element_get_ShakeParams {
-  /** Displacement axes (static). */
-  axis: element_get_ShakeAxis;
-  /** Oscillation period 1–999 frames (static). */
-  waveTime: number;
-  /** Half-life 0.1–999 frames (static). */
-  decayHalfLifeFrames: number;
-  /** Peak displacement 0–100 fields (animatable). */
-  amplitude: number;
-}
-
-/** Skeleton block (05 §13.6). */
-export interface element_get_SkeletonBlock {
-  /** Bone colour; `null` = preference. */
-  boneColour: element_get_Colour | null;
-  /** Show the track. */
-  showTrack: boolean;
-  /** Show the root. */
-  showRoot: boolean;
-  /** Show bones. */
-  showBones: boolean;
-  /** Show influence. */
-  showInfluence: boolean;
-  /** Deformation quality. */
-  vectorQuality: element_get_VectorQuality;
-  /** Deformation on. */
-  deformationEnabled: boolean;
-}
-
-/** One use of a sound asset in a sound element (10 §4.14, 07 §1.2). */
-export interface element_get_SoundPlacement {
-  /** Immutable ID. */
-  id: element_get_Id;
-  /** Always `soundPlacement`. */
-  type: 'soundPlacement';
-  /** Revision of the last change. */
-  rev: number | bigint;
-  /** A `sound` asset, or a `movie` asset with audio. */
-  assetId: element_get_Id;
-  /** First frame. */
-  startFrame: number;
-  /** Last frame; `startFrame ≤ stopFrame ≤` natural end. */
-  stopFrame: number;
-  /** In-point in the source (seconds). */
-  inPoint: number;
-  /** Out-point in the source (seconds); `inPoint < outPoint`. */
-  outPoint: number;
-  /** Repetitions of the trimmed segment. */
-  loops: number;
-  /** Global gain −50…+50. */
-  volume: number;
-  /** Gain points, times ascending. */
-  envelope: element_get_EnvelopePoint[];
-  /** The placement's lip-sync track. */
-  mouthTrack: element_get_MouthTrack | null;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: element_get_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
-  naturalEndFrame?: number;
-}
-
-/** A `element_get_SoundPlacement` reduced to its stub (10 §2.2). */
-export interface element_get_SoundPlacementStub {
-  id: element_get_Id;
-  type: 'soundPlacement';
-}
-
-/** ISO-8601 UTC timestamp with milliseconds. */
-export type element_get_Timestamp = string;
-
-/** The static transform block (10 §4.6, 05 §1.5, §8). Pivot fields depend on the element type: drawing, annotation, image and media elements have `rotationPivot`, `scalePivot`, `rotateAboutPivot`; pegs have `pivot`, `applyPivotTo`, `useChildDrawingPivot`; skeletons have `pivot`, `applyPivotTo`; cameras have none (ADR-0010). */
-export interface element_get_Transform {
-  /** Static position (fields). Camera default (0, 0, 16). */
-  offset: element_get_Point3;
-  /** Static rotation (degrees; camera: roll). */
-  rotation: number;
-  /** Static skew, −89…89 degrees. */
-  skew: number;
-  /** Static scale. */
-  scale: element_get_Scale2;
-  /** Keep the scale ratio when editing one value. */
-  keepProportions: boolean;
-  /** Elements: rotation pivot (fields). */
-  rotationPivot?: element_get_Point2;
-  /** Elements: scale pivot (fields). */
-  scalePivot?: element_get_Point2;
-  /** Elements: rotate about the rotation pivot. */
-  rotateAboutPivot?: boolean;
-  /** Pegs and skeletons: pivot (fields). */
-  pivot?: element_get_Point2;
-  /** Pegs and skeletons: what the pivot applies to. */
-  applyPivotTo?: element_get_ApplyPivotTo;
-  /** Pegs: use the child drawing's pivot. */
-  useChildDrawingPivot?: boolean;
-  /** Constant Z for nodes with a motion path (05 §9.3). */
-  lockDepth: boolean;
-  /** Rotation follows the motion-path tangent (05 §8.3). */
-  orientToPath: boolean;
-}
-
-/** Skeleton rendering quality. */
-export type element_get_VectorQuality = 'low' | 'medium' | 'high' | 'highest';
-
-export type element_get_result = element_get_Element | element_get_ElementStub;
+export type element_get_result = element_get_spec_ElementInfo;
 
 export interface element_hierarchy_get_params {
   /** object ID or path reference (10 §3) */
@@ -87334,12 +83744,21 @@ export interface import_vectorize_settings_set_spec_VectorizeSettings {
 
 export type import_vectorize_settings_set_result = import_vectorize_settings_set_spec_VectorizeSettings;
 
-/** `inspect.contactSheet.render` parameters. */
+/** `inspect.contactSheet.render` parameters. The frames of a contact sheet (spec A `inspect.contactSheet.render`): a list, or a stepped range. */
+export type inspect_contactSheet_render_FrameSelection = number[] | {
+  /** First frame. */
+  from: number;
+  /** Last frame. */
+  to: number;
+  /** Step (default 1). */
+  step?: number | null;
+};
+
 export interface inspect_contactSheet_render_params {
   /** Scene. */
   sceneId?: string | null;
   /** Frames: a list, or `{from, to, step}`. */
-  frames: unknown;
+  frames: inspect_contactSheet_render_FrameSelection;
   /** Columns. */
   columns?: number | null;
   /** Cell width. */
@@ -91421,8 +87840,52 @@ export interface timeline_rows_list_params {
   to?: number | bigint;
 }
 
-/** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-export type timeline_rows_list_result = Record<string, unknown>;
+export interface timeline_rows_list_spec_TimelineModel {
+  /** object ID or path reference (10 §3) */
+  sceneId: string;
+  sceneLength: number | bigint;
+  currentFrame: number | bigint;
+  playbackRange: {
+    mode: string;
+    start: number | bigint;
+    end: number | bigint;
+  };
+  rows: timeline_rows_list_spec_TimelineRow[];
+}
+
+export interface timeline_rows_list_spec_TimelineRow {
+  /** object ID or path reference (10 §3) */
+  elementId: string;
+  name: string;
+  type: string;
+  depth: number | bigint;
+  /** object ID or path reference (10 §3) */
+  parentId: string;
+  collapsed: boolean;
+  visibleInScene: boolean;
+  hiddenByParent: boolean;
+  locked: boolean;
+  bar: {
+    start: number | bigint;
+    end: number | bigint;
+    loops: number | bigint;
+  };
+  keyframes: ({
+    frame: number | bigint;
+    channels: ('position' | 'scale' | 'rotation' | 'skew')[];
+    segmentAfter: 'constant' | 'interpolated';
+  })[];
+  childKeyframeFrames: (number | bigint)[];
+  clips?: ({
+    /** object ID or path reference (10 §3) */
+    clipId: string;
+    file: string;
+    from: number | bigint;
+    to: number | bigint;
+  })[];
+}
+
+export type timeline_rows_list_result = timeline_rows_list_spec_TimelineModel;
 
 export interface timeline_singleCellSelection_set_params {
   enabled: boolean;
@@ -91456,10 +87919,26 @@ export interface timeline_transferOptions_get_result {
   options: string[];
 }
 
+export interface timeline_transferOptions_set_spec_TransferOptions {
+  overwriteDrawings: boolean;
+  exposure: boolean;
+  autoExtend: boolean;
+  updateColours: boolean;
+  keyframeSubstitution: boolean;
+  boundaryKeys: boolean;
+  pegKeys: {
+    motion: boolean;
+    rotation: boolean;
+    scale: boolean;
+    pivot: boolean;
+    velocity: boolean;
+    skew: boolean;
+  };
+}
+
 export interface timeline_transferOptions_set_params {
   operation: 'paste' | 'cut' | 'dragDrop';
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  options: Record<string, unknown>;
+  options: timeline_transferOptions_set_spec_TransferOptions;
 }
 
 export interface timeline_transferOptions_set_result {
@@ -93052,8 +89531,49 @@ export interface xsheet_exposures_get_params {
   include?: string[];
 }
 
-/** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-export type xsheet_exposures_get_result = Record<string, unknown>;
+export interface xsheet_exposures_get_spec_ExposureSheet {
+  /** object ID or path reference (10 §3) */
+  sceneId: string;
+  rev: number | bigint;
+  sceneLength: number | bigint;
+  from: number | bigint;
+  to: number | bigint;
+  columns: ({
+    /** object ID or path reference (10 §3) */
+    elementId: string;
+    name: string;
+    elementType?: string;
+    visible: boolean;
+    exposures?: ({
+      drawing: string;
+      /** object ID or path reference (10 §3) */
+      drawingId: string;
+      from: number | bigint;
+      to: number | bigint;
+      continues?: string;
+    })[];
+    notes?: ({
+      frame: number | bigint;
+      text: string;
+    })[];
+    type?: string;
+    clips?: ({
+      /** object ID or path reference (10 §3) */
+      clipId: string;
+      file: string;
+      from: number | bigint;
+      to: number | bigint;
+      continues: string;
+    })[];
+    mouths?: ({
+      mouth: string;
+      from: number | bigint;
+      to: number | bigint;
+    })[];
+  })[];
+}
+
+export type xsheet_exposures_get_result = xsheet_exposures_get_spec_ExposureSheet;
 
 export interface xsheet_exposures_set_params {
   /** object ID or path reference (10 §3) */

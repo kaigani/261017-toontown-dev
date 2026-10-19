@@ -27,8 +27,21 @@ state commands (§5, §12).
    `x-jobResult` — the scopes (11 §6.1: kind, plus `files.read`/`files.write` for parameters of the file `path` type,
    `prefs` for user-wide settings, `network` for publishing, `print`, `library.global`), `needsProject` (01 §1.3),
    the undo label, confirmation conditions, one example that validates, a GUI location (events: agent-only) and the
-   owning checkpoint of plan §4. The registry therefore has no untyped entries; CI regenerates the files and fails on
-   drift. A declaration whose implementation belongs to a later checkpoint names it (`not_implemented = "M1 C1.3"`);
+   owning checkpoint of plan §4. **Round 2 (C12-R2-02): the generated schemas are closed and fully typed.** A
+   closing pass (`scripts/command_schemas.py`) closes every object level (`additionalProperties: false`, or a typed
+   map for `object (K → V)`), types every leaf (from the spec text, else from the field name), and resolves every
+   named type: to the owning section's shape (`scripts/command_types.py` reads the sections' JSON examples, `jsonc`
+   type markers, `Field | Type` tables, parameter groups such as `PrintParams` and 04 §17's exposure-sheet, transfer
+   options and timeline objects; embedded as `$defs/spec.<Name>`), or to the model schema (`$defs/<Name>`). A
+   position the section leaves undefined is a **strict placeholder** — an object accepts only `{}`, a member only a
+   scalar — recorded per entry in `declared.json` and, one per command family, as SI-023 onwards in
+   `plan/spec-issues.md` (written by the generator). `library.*` needs a project except `library.save` (01 §1.3);
+   every library write declares `library.global`. The enablement text is the predicate: the project rule, the
+   context a command defaults to (`a current drawing exists or drawingId is given`), required targets, the
+   selection, and the section's own disablement rules with their codes (e.g. `anim.camera.delete`: the scene keeps
+   at least one camera, 05 §12.1, `anim.lastCamera`). Each entry stores samples using every property;
+   `crates/registry/tests/declared.rs` mutates every leaf of them and adds unknown members, and the schema must
+   reject each. The registry therefore has no untyped entries; CI regenerates the files and fails on drift. A declaration whose implementation belongs to a later checkpoint names it (`not_implemented = "M1 C1.3"`);
    it validates its parameters and fails with **`command.notImplemented`** `{commandId, milestone}`. Owners follow
    plan §4 checkpoint by checkpoint (C12-R1-21): e.g. `import.movie.run` and `media.*` → M8 C8.3; the `anim.*`
    transform, channel, key, path, segment, camera and projection commands and `anim.evaluate` → M3 C3.2; motion-path
@@ -63,8 +76,11 @@ state commands (§5, §12).
    (`tests/c12_never_block.rs`); a handler that never returns cannot be preempted in-process (no safe thread
    termination), so recovery is an engine restart by the host (C1.4). `job.wait` runs through the common contract
    in two phases (C12-R1-04): the document thread checks scopes, parameters, `expectRev` and the request cache, the
-   caller's thread waits on the job table, and the document thread finishes the envelope (revision, request cache);
-   inside a batch it only polls. Snapshots handed out are immutable `Document` values.
+   caller's thread waits on the job table, and the document thread finishes the envelope (revision, request cache).
+   While it waits, its `requestId` is reserved: another call with the same id is `request.conflict` (C12-R2-06). In
+   a sequential batch a `job.wait` step waits on the job table's condition variable too, for its `timeoutMs` but
+   never beyond the remaining watchdog budget of the batch call (C12-R2-07); in an atomic batch it only polls.
+   Snapshots handed out are immutable `Document` values.
 
 4. **Transactions and revisions.** A handler stages changes through `Cx` (`patch_objects` for property edits,
    `patch_entries` for structural edits from M2 on); staging commits through `Document::with_patched_entries_undo_only`
@@ -85,7 +101,8 @@ state commands (§5, §12).
    restored; older bases are `doc.diffUnavailable {oldestRev}`); the record the last save needs is never dropped
    (AG-09), and inside an atomic batch `doc.diff` sees the staged state at its predicted revision (C12-R1-08/09). A
    change to drawing content (a stroke, a node) also reports the drawing in `changes` with its new revision (REV-02,
-   11 P6; C12-R1-11). A revision that cannot grow is `doc.limitExceeded {limit: "documentRev"}`, never an overflow
+   11 P6; C12-R1-11) — in the envelope, in `doc.changed` and in `doc.diff`, which adds a drawing whose revision moved
+   or which holds a changed object (C12-R2-12). A revision that cannot grow is `doc.limitExceeded {limit: "documentRev"}`, never an overflow
    (C12-R1-19).
 
 5. **Envelope, dry runs, idempotency.** Every call returns the 11 §7.2 envelope; `changes` is capped at 500 with
@@ -101,58 +118,6 @@ state commands (§5, §12).
    — without running again; the same id with anything different is **`request.conflict`** `{requestId,
    originalCommand}`; an id whose envelope was evicted is **`request.unknownId`** `{requestId, reason: "evicted"}` and
    never re-executes (the session keeps a hash of every id it has seen). Codes in SI-020.
-
-16. **The load transaction (C12-R1-01).** Installing a document into the live executor is itself a guarded
-    transaction: `ExecutorHandle::open_document` (and `open_document_with` with `OpenOptions {path, readOnly,
-    onUnsaved}`) sends the document to the document thread, which checks the caller's `project.open` scopes and the
-    unsaved-changes rule of 01 §11.2 (`fail` → `project.unsavedChanges`; `save` → `command.notImplemented` until
-    `project.save` in C1.3; `discard` needs the `app` scope, 11 §6.1, so agents cannot discard) and only then
-    installs it with a
-    `LoadGrant` — a token with a private field that only that check creates — emitting `project.closed` and
-    `project.opened` and starting a fresh history. No other path reaches the live document: the core, the request
-    type and the request channel are private (compile-fail cases in `tests/ui`).
-
-17. **Effects commit with the transaction (C12-R1-02/10).** Everything a command does outside the document — job
-    cancellation, checkpoints, events, the clipboard, remembered edit options, application and window state — is
-    staged with the document and committed only when the call or batch commits; a failed batch or a dry run leaves
-    no trace. A checkpoint created inside an atomic batch records the committed state at the batch's revision (its
-    step result reports that revision).
-
-18. **Jobs belong to their session (C12-R1-05/13).** An agent sees, waits for and cancels only its own session's
-    jobs (`job.notFound` otherwise); `job.list {all: true}` is the GUI's (`permission.denied` for agents). A job's
-    final result must satisfy its command's `x-jobResult` schema, or the job fails with `internal` and hands out no
-    result. `timedOut` is present only when true (A/11 §15.2).
-
-19. **Clipboard and the clipboard edits (C12-R1-14/17/18/20).** `edit.clipboard.get` returns the `Clipboard` itself
-    (`null` when empty) and needs a project like every edit command (01 §1.3); `edit.clipboard.set` validates the
-    items against their kind (`edit.clipboardInvalid`): `drawingObjects` are `stroke`/`drawingNode` objects,
-    `elements` are `element` objects or `{elementId}` references (SI-021), `elementProperties` are maps of element
-    properties, `cells` are `{elementId, frameOffset, drawingRef, drawingContent?}`, `keyframes`/`functionPoints`
-    `{channel, elementId?, key}`, `motionPoint` one `{channel, elementId?, point}`, `templates` library folders and
-    items, `image` `{mediaType, width, height, base64}`. `edit.cut/copy/paste/delete/cutSpecial/pasteSpecial/
-    pasteAsNewElement` act on the selection of the edit context (or `objectIds`; a selected column means its cells):
-    drawing objects (the layer of a stroke goes with it; locked drawings refuse), elements (delete re-attaches
-    children to the parent, 04 §8.3, and repairs references to the deleted elements as 10 §7.2 repairs dangling
-    references, SI-022; banks stay until save purges them), cells (delete blanks; cut special with create/delete
-    exposure removes frames; paste overwrites or, with create/delete exposure, inserts; drawings from another bank
-    replace same-name drawings or are copied; extend exposure fills the gap), keys (pasted relative to the paste
-    frame; key groups filter cut/paste special), motion points (paste special pastes the selected values), library
-    templates (copies into a catalog, unique names) and element properties. Copies get new IDs and unique names.
-    Paste-as-new-element makes a drawing element with a new bank from copied cells or drawing objects. Options are
-    remembered per operation in the session; `pasteSpecial {useLast}` repeats (`edit.noPreviousPasteSpecial`
-    otherwise). Options that need later work (`keyframeSubstitution`, `boundaryKeys` — M3 C3.2; motion-point
-    rotation/scale values without time-locked keys) are reported as `edit.optionNotApplied` warnings; pasting an
-    image is image import (M10). Area milestones refine these as additive behaviour.
-
-20. **Mode, views and workspaces (C12-R1-15/16).** The mode is derived from the active view — the central view of
-    the arrangement in use, the full-screen one while full screen is on (01 §4, §5.6); `app.mode.set` activates a view
-    of the requested type. Selecting a workspace saves the current arrangement first by default (`autoSave` is on by
-    default, 01 §7), then reads the target, so reselecting the current workspace keeps the layout; built-in
-    workspaces keep their bundled identity, so a renamed one can still be reset. Each edit context keeps its own
-    selection (01 §6.4).
-
-21. **Omitted members are addressable (JSON-04).** A patch to `/meta/x` or `/ext/x` of an object whose `meta`/`ext`
-    is empty (and therefore omitted in canonical JSON) materialises the member; the canonical form is unchanged.
 
 6. **Batches.** Atomic batches run every step in one context: queries see the uncommitted state, the batch commits as
    one transaction and one undo step named `label`, and any failure rolls back the document, the session state and
@@ -214,6 +179,79 @@ state commands (§5, §12).
     keep their order; anything else is replaced as before, and every diff is still verified against the canonical
     snapshots. Inserting a stroke into a 100 000-stroke layer stores a 361-byte undo instead of a copy of the layer.
 
+16. **The load transaction (C12-R1-01).** Installing a document into the live executor is itself a guarded
+    transaction: `ExecutorHandle::open_document` (and `open_document_with` with `OpenOptions {path, readOnly,
+    onUnsaved}`) sends the document to the document thread, which checks the caller's `project.open` scopes and the
+    unsaved-changes rule of 01 §11.2 (`fail` → `project.unsavedChanges`; `save` → `command.notImplemented` until
+    `project.save` in C1.3; `discard` needs the `app` scope, 11 §6.1, so agents cannot discard), then runs the
+    **full integrity gate** on the candidate — `issues()` with every error rule (schemas, references, REV-01/02,
+    §5 limits, names, trees, exposures) — whatever API produced it (C12-R2-01), and only then installs it with a
+    `LoadGrant` — a token with a private field that only that check creates — emitting `project.closed` and
+    `project.opened` and starting a fresh history. `Document::at_earlier_revision` checks every stamp against the
+    object it returns; a reconstruction whose other objects stay newer than its revision is reported by `issues()`
+    and never installed. No other path reaches the live document: the core, the request
+    type and the request channel are private (compile-fail cases in `tests/ui`).
+
+17. **Effects commit with the transaction (C12-R1-02/10).** Everything a command does outside the document — job
+    cancellation, checkpoints, events, the clipboard, remembered edit options, application and window state — is
+    staged with the document and committed only when the call or batch commits; a failed batch or a dry run leaves
+    no trace. **Checkpoints are staged session state** (C12-R2-03): `checkpoint.create` captures the content staged
+    so far at the revision it has at that step (the predicted revision when something is staged), later steps of a
+    batch see and can delete it, and it goes with the batch's rollback or the dry run's discarded copy.
+
+18. **Jobs belong to their session (C12-R1-05/13).** An agent sees, waits for and cancels only its own session's
+    jobs (`job.notFound` otherwise); `job.list {all: true}` is the GUI's (`permission.denied` for agents). A job's
+    final result must satisfy its command's `x-jobResult` schema, or the job fails with `internal` and hands out no
+    result. `timedOut` is present only when true (A/11 §15.2).
+
+19. **Clipboard and the clipboard edits (C12-R1-14/17/18/20).** `edit.clipboard.get` returns the `Clipboard` itself
+    (`null` when empty) and needs a project like every edit command (01 §1.3); `edit.clipboard.set` validates the
+    items against their kind (`edit.clipboardInvalid`): `drawingObjects` are `stroke`/`drawingNode` objects,
+    `elements` are `element` objects or `{elementId}` references (SI-021), `elementProperties` are maps of element
+    properties, `cells` are `{elementId, frameOffset, drawingRef, drawingContent?}`, `keyframes`/`functionPoints`
+    `{channel, elementId?, key}`, `motionPoint` one `{channel, elementId?, point}`, `templates` library folders and
+    items, `image` `{mediaType, width, height, base64}`. `edit.cut/copy/paste/delete/cutSpecial/pasteSpecial/
+    pasteAsNewElement` act on the selection of the edit context (or `objectIds`; a selected column means its cells):
+    drawing objects (the layer of a stroke goes with it; locked drawings refuse), elements (**cut, copy and paste
+    take the selected nodes with all their descendants and paste the copied forest whole**, remapping its internal
+    parentage and element references, 05 §15, C12-R2-13; delete re-attaches children to the parent, 04 §8.3, and
+    repairs references to the deleted elements as 10 §7.2 repairs dangling references, SI-022 — only at locations
+    the element schema declares as element references, `x-ref: "element"`; banks stay until save purges them), cells (delete blanks; cut special with create/delete
+    exposure removes frames; paste overwrites or, with create/delete exposure, inserts; drawings from another bank
+    replace same-name drawings or are copied; extend exposure fills the gap), keys (pasted relative to the paste
+    frame; key groups filter cut/paste special), motion points (paste special pastes the selected values), library
+    templates (copies into a catalog, unique names) and element properties (each value validated against its
+    property's schema on the clipboard, C12-R2-10). Copies get new IDs (§22) and unique names; new IDs are given only
+    in the model's containment slots, never inside opaque `meta`/`ext` data, which is copied verbatim (C12-R2-05).
+    The paste destination is a typed, closed parameter: a wrong-typed field is `arg.invalid`, never a fallback to the
+    current target (C12-R2-09). A cross-bank paste onto a same-name locked drawing is `drawing.locked` (04 §13.16;
+    C12-R2-14). Every edit envelope reports `targets`: the context and the objects or cells acted on, or the resolved
+    destination (C12-R2-08).
+    Paste-as-new-element makes a drawing element with a new bank from copied cells or drawing objects. Options are
+    remembered per operation in the session; `pasteSpecial {useLast}` repeats (`edit.noPreviousPasteSpecial`
+    otherwise). Options that need later work (`keyframeSubstitution`, `boundaryKeys` — M3 C3.2; motion-point
+    rotation/scale values without time-locked keys) are reported as `edit.optionNotApplied` warnings; pasting an
+    image is image import (M10). Area milestones refine these as additive behaviour.
+
+20. **Mode, views and workspaces (C12-R1-15/16).** The mode is derived from the active view — the central view of
+    the arrangement in use, the full-screen one while full screen is on (01 §4, §5.6); `app.mode.set` activates a view
+    of the requested type. Selecting a workspace saves the current arrangement first by default (`autoSave` is on by
+    default, 01 §7), then reads the target, so reselecting the current workspace keeps the layout; built-in
+    workspaces keep their bundled identity, so a renamed one can still be reset. Each edit context keeps its own
+    selection (01 §6.4).
+
+21. **Omitted members are addressable (JSON-04).** A patch to `/meta/x` or `/ext/x` of an object whose `meta`/`ext`
+    is empty (and therefore omitted in canonical JSON) materialises the member — only a model object's own member (its
+    holder has a string `type`, and no earlier token is inside opaque data), so `/meta/custom/ext/x` on an empty
+    `custom` is still "no container" (C12-R2-11). The inverse removes the materialised member, so the raw input is
+    restored byte-exact; the canonical form is unchanged.
+
+22. **IDs come from the transaction (C12-R2-04).** Commands that create objects draw IDs from `Cx::new_id`: a stream
+    seeded from the project's ID and the live `documentRev` and advanced per ID (the ULID time part is a logical
+    clock). The same document and the same calls produce the same IDs (11 P7, 10 AG-06), a dry run predicts exactly
+    the IDs the real call creates, and a step rolled back to its savepoint returns its IDs to the stream. Seeds
+    differ between projects and between revisions, so a committed ID is never produced again.
+
 ## Consequences
 
 - Area milestones add behaviour by replacing `not_implemented` declarations with handlers that stage through `Cx`;
@@ -226,6 +264,9 @@ state commands (§5, §12).
   7 ms against 1 045 ms for the whole-entry own-view diff. Interactive drawing at that size needs node-granular
   staging (validate and diff only the touched layer); that is drawing-engine work for M2 C2.1, which owns the
   stroke model in motion.
+- The generated declarations still hold strict placeholders where the owning sections leave shapes undefined
+  (SI-023 onwards); a placeholder accepts nothing undefined, and the implementing checkpoint replaces it with the
+  section's shape when the spec owner answers the issue.
 - New error codes: `command.notImplemented`, `command.timeout`, `history.diverged`, `checkpoint.exists`,
   `checkpoint.notFound`, `job.notFound`, `request.conflict`, `request.unknownId`; warning `edit.optionNotApplied`;
   11 §10 does not list them (SI-020).

@@ -5800,7 +5800,7 @@ pub static DECLARED: &[Command] = &[
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Store the paste-special, cut-special or drag-and-drop option set (17.3)",
-                params: "{\"operation\": \"paste\", \"options\": {}}",
+                params: "{\"operation\": \"paste\", \"options\": {\"overwriteDrawings\": true, \"exposure\": true, \"autoExtend\": true, \"updateColours\": true, \"keyframeSubstitution\": true, \"boundaryKeys\": true, \"pegKeys\": {\"motion\": true, \"rotation\": true, \"scale\": true, \"pivot\": true, \"velocity\": true, \"skew\": true}}}",
             }],
             params_schema: || crate::declared_schema(254, false),
             result_schema: || crate::declared_schema(254, true),

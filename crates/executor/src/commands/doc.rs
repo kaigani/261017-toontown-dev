@@ -1105,8 +1105,8 @@ pub(crate) struct StateResult {
     dirty: bool,
     /// Read-only.
     read_only: bool,
-    /// Lock holder (C1.3).
-    lock: Option<Value>,
+    /// Lock holder (10 §8 LOCK-01; C1.3), `null` while no lock is held.
+    lock: Option<Map<String, Value>>,
     /// Oldest revision `doc.diff` accepts.
     history_from_rev: u64,
 }
@@ -1719,13 +1719,24 @@ pub(crate) fn doc_export_json(_cx: &mut Cx, _p: ExportJsonParams) -> Result<Expo
     Err(CommandError::not_implemented("doc.export.json", C13))
 }
 
+/// What `doc.import.json` reads (spec A: `path | object`).
+#[allow(dead_code, reason = "decoded and validated now; read by the handler of the owning checkpoint")]
+#[derive(Debug, Deserialize, JsonSchema)]
+#[serde(untagged)]
+pub(crate) enum ImportSource {
+    /// A file path.
+    Path(#[schemars(length(min = 1, max = 4096))] String),
+    /// An inline bundle as `doc.export.json` writes it.
+    Bundle(Map<String, Value>),
+}
+
 /// `doc.import.json` parameters.
 #[allow(dead_code, reason = "decoded and validated now; read by the handler of the owning checkpoint")]
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ImportJsonParams {
-    /// A path or an inline bundle.
-    source: Value,
+    /// A path or an inline bundle (`doc.export.json` output).
+    source: ImportSource,
     /// Target scene (omit: new scenes).
     #[serde(default)]
     target: Option<String>,

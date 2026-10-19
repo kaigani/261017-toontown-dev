@@ -816,6 +816,29 @@ def register_section_types():
                                    "additionalProperties": False, "x-specSection": "06"}
 
 
+# Parameters typed by a section's named object (04 §17.3: the transfer options of these four commands).
+FIELD_TYPES_BY_COMMAND = {
+    ("timeline.transferOptions.set", "options"): "TransferOptions",
+    ("cell.range.move", "options"): "TransferOptions",
+    ("cell.clipboard.set", "options"): "TransferOptions",
+    ("cell.clipboard.apply", "options"): "TransferOptions",
+}
+
+
+def section_types_04():
+    """04 §17.5: `timeline.rows.list` returns `{…}` where each row is `{…}` (brace notation in prose)."""
+    text = (ROOT / "spec" / "04_timeline_xsheet.md").read_text(encoding="utf-8")
+    m = re.search(r"`timeline\.rows\.list` returns `\{(.*?)\}`\s*where each row is `\{(.*?)\}`", text, re.S)
+    if not m:
+        raise SystemExit("04 §17.5: timeline.rows.list shape not found")
+    outer = " ".join(m.group(1).split()).replace("rows: [...]", "rows: [TimelineRow]")
+    row = " ".join(m.group(2).split())
+    row = re.sub(r'\["(\w+)"(?:\|"\w+")+\]', lambda x: "[enum " + x.group(0)[1:-1] + "]", row)
+    row = re.sub(r':\s*"(\w+)"((?:\|"\w+")+)', lambda x: ': enum "' + x.group(1) + '"' + x.group(2), row)
+    cs.SPEC_TYPES["TimelineRow"] = parse_fields(row, "TimelineRow", params=False)
+    cs.SPEC_TYPES["TimelineModel"] = parse_fields(outer, "TimelineModel", params=False)
+
+
 def local_types(e: dict):
     """Types written inline in a result cell (`Range = {startFrame, endFrame, startTime, endTime}`)."""
     cs.LOCAL_TYPES.clear()
@@ -879,6 +902,7 @@ def main() -> int:
     typed = typed_ids()
     todo = [e for e in entries if e["id"] not in typed]
     register_section_types()
+    section_types_04()
     schemas, results, rows = [], {}, []
     deferred = lambda e: e["result"].strip().startswith("same as") or e["result"].strip() in ("settings", "editor state")
     for e in todo:
@@ -886,6 +910,9 @@ def main() -> int:
     for e in todo:
         local_types(e)
         ps = params_schema(e, by_id)
+        for (cid, field), tname in FIELD_TYPES_BY_COMMAND.items():
+            if cid == e["id"] and field in ps.get("properties", {}):
+                ps["properties"][field] = {"x-specType": tname}
         rs = results[e["id"]] or result_schema(e, results)
         results[e["id"]] = rs
         closer = cs.Closer(e["id"])

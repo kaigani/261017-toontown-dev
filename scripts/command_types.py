@@ -77,7 +77,7 @@ EXTRA_NUMBERS = re.compile(
     r"defaultTension|defaultContinuity|defaultBias|captureSpeed|total|lightTableShade|movieOpacity)$")
 EXTRA_INTEGERS = re.compile(r"^(sceneLength|cycleLength|bitDepth|fileSize|maxInlinePixels|maxTextureSize|rowsSelected)$")
 EXTRA_BOOLEANS = re.compile(
-    r"^(placeBehind|drawTopLayer|snapToContour|symmetry|approximated|reusedAsset|decodable|complete|optional|"
+    r"^(visibleInScene|visibleInXsheet|hiddenByParent|annotation|placeBehind|drawTopLayer|snapToContour|symmetry|approximated|reusedAsset|decodable|complete|optional|"
     r"fitToCamera|preserveImageLayers|preserveVectorLayers|dark|hidden|deformable|descendantKeyed|constant|"
     r"boxHighlighting|keepSelectionVisible|linearByDefault|constantKeysByDefault|autoExtendExposure|"
     r"gpuAccelerated|interactiveAntialiasingSupported|restartRequired|exceedsLimit|durationChanged|committed|"
@@ -285,7 +285,24 @@ def catalogue():
             heads = re.findall(r"\*\*`?([A-Z][A-Za-z]+)`?\*\*[^\n]*\n\s*$", before)
             if heads:
                 _add(types, unparsed, section, heads[-1], body)
+    # Untitled blocks named by their heading (04 §17).
+    for section, heading, name in ANCHORS:
+        text = next(SPEC.glob(f"{section}_*.md")).read_text(encoding="utf-8")
+        at = text.find(heading)
+        m = re.compile(r"```[a-zA-Z]*\n(.*?)```", re.S).search(text, at) if at >= 0 else None
+        if m is None:
+            unparsed.append(f"{section}:{name}")
+            continue
+        _add(types, unparsed, section, name, m.group(1))
     return types, unparsed
+
+
+# Untitled example blocks that define a shape: (section, heading the block follows, type name).
+ANCHORS = [
+    ("04", "### 17.2 Exposure sheet as JSON", "ExposureSheet"),
+    ("04", "### 17.3 Transfer options object", "TransferOptions"),
+    ("04", "`element.get` returns:", "ElementInfo"),
+]
 
 
 if __name__ == "__main__":
