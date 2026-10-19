@@ -1,0 +1,5 @@
+error[E0616]: field `tx` of struct `ExecutorHandle` is private
+ --> tests/ui/handle_channel.rs:5:16
+  |
+5 |     let _ = &h.tx;
+  |                ^^ private field

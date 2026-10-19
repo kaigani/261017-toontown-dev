@@ -1,0 +1,11 @@
+error[E0603]: enum `Request` is private
+ --> tests/ui/request_type.rs:2:18
+  |
+2 | use tt_executor::Request;
+  |                  ^^^^^^^ private enum
+  |
+note: the enum `Request` is defined here
+ --> src/lib.rs
+  |
+  | enum Request {
+  | ^^^^^^^^^^^^

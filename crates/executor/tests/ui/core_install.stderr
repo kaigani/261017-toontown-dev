@@ -1,0 +1,11 @@
+error[E0603]: module `run` is private
+ --> tests/ui/core_install.rs:3:18
+  |
+3 | use tt_executor::run::Core;
+  |                  ^^^ private module
+  |
+note: the module `run` is defined here
+ --> src/lib.rs
+  |
+  | mod run;
+  | ^^^^^^^
