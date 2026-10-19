@@ -1,0 +1,100 @@
+[
+  {
+    "id": "anim.path.get",
+    "part": "result",
+    "source": "05 section 19.4 exact Path example",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "anim.function.get",
+    "part": "result",
+    "source": "05 section 19.4 Function example and explicit velocity pins prose",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "draw.pointSelection.set",
+    "part": "result",
+    "source": "02 and A: anchor is integer index",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "xsheet.panel.set",
+    "part": "result",
+    "source": "04 and A: three boolean panels",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "prefs.list",
+    "part": "result",
+    "source": "01 preference types include bool",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "keymap.list",
+    "part": "result",
+    "source": "01 section 12.4: arbitrary command parameter object",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "tool.polyline.options.set",
+    "part": "result",
+    "source": "02 polyline options and A parameter fields",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "print.settings.set",
+    "part": "params",
+    "source": "09 PrintParams copies plus A values object",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "export.settings.get",
+    "part": "result",
+    "source": "09 settings are an object in paired export.settings.set",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "drawAid.staticLightTable.set",
+    "part": "result",
+    "source": "02 section 13.5 entries defined by staticLightTable.list",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "tool.pen.set",
+    "part": "result",
+    "source": "02 section 6.1 and 10 section 4.2: Pen is a model object",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "sound.envelope.set",
+    "part": "result",
+    "source": "07 envelope points: time, left, right",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "sound.envelope.point.move",
+    "part": "result",
+    "source": "07 envelope points: time, left, right",
+    "accepted": true,
+    "violations": []
+  },
+  {
+    "id": "sound.envelope.point.remove",
+    "part": "result",
+    "source": "07 envelope points: time, left, right",
+    "accepted": true,
+    "violations": []
+  }
+]

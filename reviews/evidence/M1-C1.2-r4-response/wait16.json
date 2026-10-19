@@ -1,0 +1,822 @@
+{
+  "owner": {
+    "status": "ok",
+    "result": {
+      "jobId": "job-1",
+      "commandId": "review.r4",
+      "state": "running",
+      "progress": 0.0,
+      "message": "",
+      "startedAt": "2026-10-19T12:59:11.346Z",
+      "session": "user",
+      "timedOut": true
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": 2
+  },
+  "followers": [
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    }
+  ],
+  "cached": [
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    },
+    {
+      "status": "ok",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "review.r4",
+        "state": "running",
+        "progress": 0.0,
+        "message": "",
+        "startedAt": "2026-10-19T12:59:11.346Z",
+        "session": "user",
+        "timedOut": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 2
+    }
+  ],
+  "differentParams": {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": 1,
+    "error": {
+      "code": "request.conflict",
+      "message": "requestId `closure-16-waiters` is in use by a call in progress",
+      "details": {
+        "requestId": "closure-16-waiters",
+        "originalCommand": "job.wait",
+        "inProgress": true
+      },
+      "hint": "use a new requestId for a different call"
+    }
+  },
+  "differentParamsAfter": {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": 2,
+    "error": {
+      "code": "request.conflict",
+      "message": "requestId `closure-16-waiters` was used for a different call",
+      "details": {
+        "requestId": "closure-16-waiters",
+        "originalCommand": "job.wait"
+      },
+      "hint": "use a new requestId for a different call"
+    }
+  },
+  "completedJob": {
+    "jobId": "job-1",
+    "commandId": "review.r4",
+    "state": "succeeded",
+    "progress": 1.0,
+    "message": "",
+    "startedAt": "2026-10-19T12:59:11.346Z",
+    "result": {
+      "closure": 124,
+      "payload": [
+        4,
+        9,
+        16
+      ]
+    },
+    "session": "user"
+  }
+}

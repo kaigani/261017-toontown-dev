@@ -44,7 +44,13 @@ state commands (§5, §12).
    reject each. **Round 3 (C12-R3-01): types come from context before names.** An untyped field takes the type of
    the same-named typed field in its family's results (`sound.envelope.get` for `sound.envelope.point.*`), then in
    the command's own parameters, then in its family's parameters; only then a name rule, and a name never narrows a
-   number to an integer; a fraction in a section example makes a number. Shapes the sections define are used where
+   number to an integer; a fraction in a section example makes a number. **Only type and structure are inherited
+   (C12-R4-02):** a sibling's `enum`/`const` set is that command's own answer (`account.close` returns
+   `connected: false`, `play.start` returns `playing: true`), not the field's domain, so the inherited schema has
+   every set replaced by the bare type of its values (a literal number gives `number`); an untyped field is one whose
+   own row states no set, so it is the bare type. Named types (`$ref`) and the sets an entry states itself — its
+   own columns, or a section type it names (09 PrintParams) — are kept; `declared.rs` checks that every literal
+   constant outside the model's `$defs` is written in its own entry's column. Shapes the sections define are used where
    spec A only names them: 02's drawing read-back for `draw.drawing.get`, 03 §12.3's palette object (style-keyed
    swatch values), 04 §17.2's exposure columns, 04 §17.3's transfer options, 04 §17.5's element `media`, 05
    §19.4's velocity `pins`, 09's PrintParams for print settings, 01 §7's preference values, the model `Pen`, and a
@@ -115,8 +121,12 @@ state commands (§5, §12).
    restored; older bases are `doc.diffUnavailable {oldestRev}`); the record the last save needs is never dropped
    (AG-09), and inside an atomic batch `doc.diff` sees the staged state at its predicted revision (C12-R1-08/09). A
    change to drawing content (a stroke, a node) also reports the drawing in `changes` with its new revision (REV-02,
-   11 P6; C12-R1-11) — in the envelope, in `doc.changed` and in `doc.diff`, which adds a drawing whose revision moved
-   or which holds a changed object (C12-R2-12); the containing drawings are found from every change before the
+   11 P6; C12-R1-11) — in the envelope, in `doc.changed` and in `doc.diff`, which adds a drawing holding a changed
+   object (C12-R2-12). Content decides, not revision stamps (C12-R4-01): the drawings reported are those whose
+   content differs between the two states compared — the containers of the drawing-local objects whose own views
+   (without `rev`) differ, or the drawing itself — so a staged checkpoint's predicted stamps, a rewrite of an
+   unchanged value or a replay's new revisions never report unchanged content (`tests/c12_invalidation_property.rs`
+   checks random staged and committed checkpoint/edit/diff sequences against a content oracle); the containing drawings are found from every change before the
    `types` and `within` filters apply, so a drawing-only or drawing-scoped diff keeps them (C12-R3-04). A revision that cannot grow is `doc.limitExceeded {limit: "documentRev"}`, never an overflow
    (C12-R1-19).
 

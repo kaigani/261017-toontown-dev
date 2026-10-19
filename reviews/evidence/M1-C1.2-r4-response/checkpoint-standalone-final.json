@@ -1,0 +1,75 @@
+[
+  {
+    "atomic": false,
+    "immediate": {
+      "fromRev": 2,
+      "toRev": 2,
+      "changes": [],
+      "truncated": false
+    },
+    "later": {
+      "fromRev": 2,
+      "toRev": 3,
+      "changes": [
+        {
+          "id": "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 3,
+          "patch": [
+            {
+              "op": "add",
+              "path": "/meta/later",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 3,
+          "patch": []
+        }
+      ],
+      "truncated": false
+    }
+  },
+  {
+    "atomic": true,
+    "immediate": {
+      "fromRev": 4,
+      "toRev": 4,
+      "changes": [],
+      "truncated": false
+    },
+    "later": {
+      "fromRev": 4,
+      "toRev": 5,
+      "changes": [
+        {
+          "id": "dr_01K742SG0K993ER8JBX6H5VJK6/st_01K742SG0QGG7BRCASTPEJ3MAD",
+          "type": "stroke",
+          "op": "modified",
+          "rev": 5,
+          "patch": [
+            {
+              "op": "replace",
+              "path": "/meta/later",
+              "value": true,
+              "oldValue": false
+            }
+          ]
+        },
+        {
+          "id": "dr_01K742SG0K993ER8JBX6H5VJK6",
+          "type": "drawing",
+          "op": "modified",
+          "rev": 5,
+          "patch": []
+        }
+      ],
+      "truncated": false
+    }
+  }
+]
