@@ -246,16 +246,17 @@ fn not_found(job_id: &str) -> CommandError {
 /// A job's final result must satisfy the `x-jobResult` schema its command declares (11 §15.2, §14.2; C12-R1-13); a
 /// result that does not fails the job with `internal` (a defect of the job, never handed to a client).
 fn check_final_result(command_id: &str, v: Value) -> Result<Value, CommandError> {
-    let Some(schema) = crate::registry()
-        .ok()
-        .and_then(|r| r.get(command_id))
-        .and_then(|e| e.result_schema().get("x-jobResult").cloned())
+    let Some(result) = crate::registry().ok().and_then(|r| r.get(command_id)).map(tt_registry::Entry::result_schema)
     else {
         return Ok(v);
     };
-    let mut schema = schema;
+    let Some(mut schema) = result.get("x-jobResult").cloned() else { return Ok(v) };
     if let Some(m) = schema.as_object_mut() {
         m.insert("$schema".into(), Value::String("https://json-schema.org/draft/2020-12/schema".into()));
+        // The final result's named types are defined beside the call result (`$defs`).
+        if let Some(defs) = result.get("$defs") {
+            m.insert("$defs".into(), defs.clone());
+        }
     }
     let violations = tt_registry::schema_violations(&schema, &v, 10)
         .map_err(|e| CommandError::internal(format!("final-result schema of `{command_id}`: {}", e.message)))?;

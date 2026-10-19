@@ -6,7 +6,7 @@
 use serde_json::{Value, json};
 use tt_registry::declared::DECLARED;
 use tt_registry::inventory::INVENTORY;
-use tt_registry::{Kind, Scope, Status, declared_schema, owner_of, validate_params};
+use tt_registry::{Kind, Scope, Status, declared_sample, declared_schema, owner_of, validate_params};
 
 #[test]
 fn declarations_follow_the_current_spec_columns() {
@@ -46,6 +46,9 @@ fn schemas_compile_reject_unknown_parameters_and_accept_the_examples() {
             assert_eq!(c.decl.kind, Kind::Job, "{id}");
             let mut s = job.clone();
             s["$schema"] = json!("https://json-schema.org/draft/2020-12/schema");
+            if let Some(defs) = result.get("$defs") {
+                s["$defs"] = defs.clone();
+            }
             tt_registry::schema_violations(&s, &Value::Null, 1).unwrap_or_else(|e| panic!("{id}: {e:?}"));
         }
     }
@@ -100,4 +103,93 @@ fn parameter_constraints_come_from_the_spec() {
     assert_eq!(p["properties"]["fov"]["minimum"], 1);
     assert_eq!(p["properties"]["fov"]["maximum"], 179);
     assert_eq!(p["properties"]["fov"]["default"], 41.1121);
+}
+
+/// Scalar leaves of a value, as JSON Pointers.
+fn leaves(v: &Value, at: &str, out: &mut Vec<String>) {
+    match v {
+        Value::Object(m) => m.iter().for_each(|(k, x)| leaves(x, &format!("{at}/{}", k.replace('~', "~0").replace('/', "~1")), out)),
+        Value::Array(a) => a.iter().enumerate().for_each(|(i, x)| leaves(x, &format!("{at}/{i}"), out)),
+        _ => out.push(at.to_owned()),
+    }
+}
+
+/// Object positions of a value, as JSON Pointers.
+fn objects(v: &Value, at: &str, out: &mut Vec<String>) {
+    match v {
+        Value::Object(m) => {
+            out.push(at.to_owned());
+            m.iter().for_each(|(k, x)| objects(x, &format!("{at}/{}", k.replace('~', "~0").replace('/', "~1")), out));
+        }
+        Value::Array(a) => a.iter().enumerate().for_each(|(i, x)| objects(x, &format!("{at}/{i}"), out)),
+        _ => {}
+    }
+}
+
+/// Every generated schema is closed and fully typed (C12-R2-02): its full sample validates; replacing any scalar leaf
+/// by an object, adding an unknown member at any object level, or giving `null` is rejected.
+#[test]
+fn generated_schemas_reject_every_mutated_leaf_and_unknown_member() {
+    let mut checked = (0usize, 0usize, 0usize);
+    for (i, c) in DECLARED.iter().enumerate() {
+        let id = c.decl.id;
+        let result = declared_schema(i, true);
+        let mut parts = vec![("params", declared_schema(i, false), declared_sample(i, "params"))];
+        parts.push(("result", result.clone(), declared_sample(i, "result")));
+        if let Some(job) = result.get("x-jobResult") {
+            let mut s = job.clone();
+            s["$schema"] = result["$schema"].clone();
+            if let Some(defs) = result.get("$defs") {
+                s["$defs"] = defs.clone();
+            }
+            parts.push(("jobResult", s, declared_sample(i, "jobResult")));
+        }
+        for (part, schema, sample) in parts {
+            let rejects = |v: &Value| !tt_registry::schema_violations(&schema, v, 1).unwrap().is_empty();
+            assert!(rejects(&Value::Null), "{id} {part}: accepts null");
+            if sample.get("x-unsampleable").is_some() {
+                // A required model object (Element, Drawing, Palette): the model schema is closed.
+                assert!(rejects(&json!({ "__unknown": 1 })), "{id} {part}: accepts an unknown member");
+                checked.2 += 1;
+                continue;
+            }
+            assert!(!rejects(&sample), "{id} {part}: its sample does not validate: {sample}");
+            let mut at = Vec::new();
+            leaves(&sample, "", &mut at);
+            for p in at {
+                let mut m = sample.clone();
+                *m.pointer_mut(&p).unwrap() = json!({ "__mutated": true });
+                assert!(rejects(&m), "{id} {part}: leaf {p} accepts an object");
+                checked.0 += 1;
+            }
+            let mut at = Vec::new();
+            objects(&sample, "", &mut at);
+            for p in at {
+                let mut m = sample.clone();
+                if let Some(o) = m.pointer_mut(&p).and_then(Value::as_object_mut) {
+                    // An object value: refused by a closed object, and by a map whose values are typed scalars.
+                    o.insert("__unknown".into(), json!({ "__mutated": true }));
+                }
+                assert!(rejects(&m), "{id} {part}: object {p} accepts an unknown member");
+                checked.1 += 1;
+            }
+        }
+    }
+    println!("mutated leaves {}, unknown members {}, model-typed parts {}", checked.0, checked.1, checked.2);
+    assert!(checked.0 > 2000 && checked.1 > 1000, "{checked:?}");
+}
+
+/// Every placeholder (a position the owning section leaves undefined) is strict and belongs to a recorded spec issue.
+#[test]
+fn placeholders_are_strict_and_recorded() {
+    let issues = std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../plan/spec-issues.md")).unwrap();
+    let mut families = std::collections::BTreeSet::new();
+    for (i, c) in DECLARED.iter().enumerate() {
+        if !tt_registry::declared_placeholders(i).is_empty() {
+            families.insert(c.decl.id.split('.').next().unwrap().to_owned());
+        }
+    }
+    for f in &families {
+        assert!(issues.contains(&format!("`{f}.*`")), "no spec issue records the placeholders of `{f}.*`");
+    }
 }

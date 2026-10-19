@@ -82,7 +82,7 @@ jobs:
           PY=python3
           if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
           PYTHONIOENCODING=utf-8 $PY scripts/gen-command-declarations.py
-          git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json
+          git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md
 
       - run: cargo clippy --workspace --all-targets --locked -- -D warnings
       - run: cargo test --workspace --locked

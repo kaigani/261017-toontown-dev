@@ -437,7 +437,12 @@ fn job_results_must_satisfy_the_declared_final_result_schema() {
     assert_eq!(record.state, tt_executor::JobState::Failed);
     assert_eq!(record.error.as_ref().map(|e| e.code.as_str()), Some("internal"));
     assert_eq!(record.result, None, "a result that violates its schema is never handed out");
-    let good = h.jobs().submit("export.movie.run", "user", |_| Ok(json!({ "files": [] }))).unwrap();
+    // A complete `Manifest` (09 §11.4): the generated declaration's stored sample.
+    let at = tt_registry::declared::DECLARED.iter().position(|c| c.decl.id == "export.movie.run").unwrap();
+    let manifest = tt_registry::declared_sample(at, "jobResult");
+    let incomplete = h.jobs().submit("export.movie.run", "user", |_| Ok(json!({ "files": [] }))).unwrap();
+    assert_eq!(wait(&incomplete).state, tt_executor::JobState::Failed, "a Manifest has its required members");
+    let good = h.jobs().submit("export.movie.run", "user", move |_| Ok(manifest)).unwrap();
     assert_eq!(wait(&good).state, tt_executor::JobState::Succeeded);
     // Jobs of commands without a declared final result are not checked.
     let free = h.jobs().submit("review.free", "user", |_| Ok(json!(1))).unwrap();

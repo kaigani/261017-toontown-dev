@@ -15,7 +15,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 01 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `viewId` names an existing view.",
                 check: None,
             },
             needs_project: true,
@@ -40,7 +40,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 01 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `viewId` names an existing view.",
                 check: None,
             },
             needs_project: true,
@@ -64,10 +64,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 01 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: View windows with type, focus, size and transform",
@@ -89,10 +86,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 01 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Pan: centre on a document point, by a pixel offset, or on the pointer (centre on",
@@ -114,10 +108,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 01 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Set view rotation absolutely or in 30° steps", params: "{}"
@@ -138,10 +129,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 01 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Zoom, rotation and centre of a view", params: "{}" }],
             params_schema: || crate::declared_schema(5, false),
@@ -160,10 +148,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 01 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Reset view / reset zoom / reset rotation / recentre",
@@ -185,10 +170,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 01 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Switch a view window's type; `\"previous\"` = switch active view",
@@ -210,10 +192,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 01 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Set zoom absolutely or by table steps (zoom in = +1, zoom out = −1)",
@@ -235,7 +214,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(9, false),
@@ -254,7 +233,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Values of preferences by key",
@@ -276,7 +255,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example { title: "No parameters: Preference schema and values", params: "{}" }],
             params_schema: || crate::declared_schema(11, false),
@@ -295,7 +274,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Prefs],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "No parameters: Reset preferences to defaults by key or prefix (`prefix: \"\"` = all)",
@@ -317,11 +296,11 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Prefs],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Set one or more preferences atomically",
-                params: "{\"values\": {}}",
+                params: "{\"values\": {\"key1\": 1}}",
             }],
             params_schema: || crate::declared_schema(13, false),
             result_schema: || crate::declared_schema(13, true),
@@ -339,7 +318,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(14, false),
@@ -358,7 +337,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui, Scope::FilesWrite],
             undo: None,
             confirm: &["overwriting an existing file"],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Write the keymap to a file",
@@ -380,7 +359,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "No parameters: Bindings of a command, or the command a key sequence runs in a context",
@@ -402,7 +381,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::FilesRead, Scope::Prefs],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Read a keymap file",
@@ -424,7 +403,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example { title: "No parameters: Bindings, filterable", params: "{}" }],
             params_schema: || crate::declared_schema(18, false),
@@ -443,7 +422,10 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Prefs],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement {
+                rule: "Enabled when always, also without a project (01 §1.3); `commandId` names an existing command.",
+                check: None,
+            },
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Remove bindings of a command",
@@ -465,7 +447,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Prefs],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "No parameters: Restore default bindings for one command or all",
@@ -487,7 +469,10 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Prefs],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement {
+                rule: "Enabled when always, also without a project (01 §1.3); `commandId` names an existing command.",
+                check: None,
+            },
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Bind a key sequence to a command (with optional fixed parameters)",
@@ -509,7 +494,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Enter/leave context-help mode",
@@ -531,7 +516,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "No parameters: Help text of a command, panel, preference or message",
@@ -553,7 +538,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "No parameters: Open the documentation, optionally at a topic",
@@ -575,7 +560,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(25, false),
@@ -594,7 +579,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "No parameters: Open the preferences window at a category (GUI convenience)",
@@ -616,7 +601,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Show/hide the start screen",
@@ -638,7 +623,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example { title: "No parameters: Status bar segment texts", params: "{}" }],
             params_schema: || crate::declared_schema(28, false),
@@ -657,7 +642,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Show/hide the status bar (same as `interface.statusBar.visible`)",
@@ -679,7 +664,10 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement {
+                rule: "Enabled when always, also without a project (01 §1.3); the context has a selection, or the objects are given.",
+                check: None,
+            },
             needs_project: false,
             examples: &[Example {
                 title: "No parameters: Available themes (selected via `interface.theme`)",
@@ -701,7 +689,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example { title: "No parameters: Suppressible messages and their state", params: "{}" }],
             params_schema: || crate::declared_schema(31, false),
@@ -720,7 +708,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement { rule: "Enabled when always, also without a project (01 §1.3).", check: None },
             needs_project: false,
             examples: &[Example { title: "No parameters: Show all tips again", params: "{}" }],
             params_schema: || crate::declared_schema(32, false),
@@ -739,7 +727,10 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 01 for the full rule", check: None },
+            enablement: Enablement {
+                rule: "Enabled when always, also without a project (01 §1.3); `messageId` names an existing message.",
+                check: None,
+            },
             needs_project: false,
             examples: &[Example {
                 title: "Required parameters only: Suppress or re-enable one message",
@@ -762,7 +753,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change stacking order"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -787,7 +778,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -812,7 +803,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Break Text Apart"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -837,7 +828,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Extract Centre Line"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -862,7 +853,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Paste"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -886,10 +877,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Current drawing target and context", params: "{}" }],
             params_schema: || crate::declared_schema(39, false),
@@ -909,7 +897,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Cut artwork along a polygon or rectangle"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -933,7 +921,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 02 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(41, false),
@@ -953,7 +941,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -975,7 +963,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Rename Drawing"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1000,7 +988,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1025,7 +1013,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Ellipse Tool"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1050,7 +1038,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Perspective Tool"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1075,7 +1063,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Eraser Tool"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1100,7 +1088,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Feather Edges"),
             confirm: &["a destructive change the owning section lists (returns needs_confirmation)"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1125,7 +1113,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Flatten Drawing"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1150,7 +1138,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Flip selection"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1175,7 +1163,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Group Selection"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -1197,7 +1185,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Ungroup Selection"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -1222,7 +1210,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1246,10 +1234,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show/hide the drawing thumbnail in the inspector",
@@ -1272,7 +1257,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Line Tool"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1297,7 +1282,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Convert Lines to Brush"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1322,7 +1307,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Lock or unlock a drawing"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1347,7 +1332,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Delete Object"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1369,7 +1354,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Optimize Drawing"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1394,7 +1379,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change Drawing Pivot"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1419,7 +1404,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Contour Editing"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `strokeId` names an existing stroke.",
                 check: None,
             },
             needs_project: true,
@@ -1443,10 +1428,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Contour Editing"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Delete anchors; strokes rebuilt or removed (\"Contour Editing\")",
@@ -1468,10 +1450,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Contour Editing"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Move anchors (shared junction anchors move together) (\"Contour Editing\")",
@@ -1494,7 +1473,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Contour Editing"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `strokeId` names an existing stroke.",
                 check: None,
             },
             needs_project: true,
@@ -1519,7 +1498,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -1544,7 +1523,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Polyline Tool"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1569,7 +1548,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Rectangle Tool"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1594,7 +1573,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Reposition All Drawings"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1619,7 +1598,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Rotate selection by a fixed step"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1644,7 +1623,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Contour Editing"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `strokeId` names an existing stroke.",
                 check: None,
             },
             needs_project: true,
@@ -1668,7 +1647,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 02 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(71, false),
@@ -1688,7 +1667,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -1710,7 +1689,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1735,7 +1714,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Smooth Selection"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1760,7 +1739,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Add a brush stroke, pencil line or invisible stroke"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1785,7 +1764,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Edit Stroke"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `strokeId` names an existing stroke.",
                 check: None,
             },
             needs_project: true,
@@ -1810,7 +1789,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("New Text Object"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1835,7 +1814,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Replace or edit text content, width mode or position"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `textId` names an existing text.",
                 check: None,
             },
             needs_project: true,
@@ -1860,7 +1839,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Text Property Modified"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `textId` names an existing text.",
                 check: None,
             },
             needs_project: true,
@@ -1885,7 +1864,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Move/scale/rotate/skew objects numerically, optionally as a "),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; there is something to act on (02 §8, `drawing.nothingToDo`).",
                 check: None,
             },
             needs_project: true,
@@ -1910,7 +1889,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Import Vector File"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -1934,10 +1913,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read, Scope::FilesRead],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Preview vectorization of one image as PNG", params: "{}" }],
             params_schema: || crate::declared_schema(82, false),
@@ -1956,10 +1932,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit, Scope::FilesRead],
             undo: Some("Import and Vectorize"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Import and vectorize image files, or convert an image element, into drawings (\"I",
@@ -1981,10 +1954,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Mapping between a view's pixels and drawing space",
@@ -2006,7 +1976,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 02 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(85, false),
@@ -2025,10 +1995,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Active tool (and temporary override, if any)", params: "{}" }],
             params_schema: || crate::declared_schema(86, false),
@@ -2048,7 +2015,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `toolId` names an existing tool.",
                 check: None,
             },
             needs_project: true,
@@ -2073,7 +2040,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `penId` names an existing pen.",
                 check: None,
             },
             needs_project: true,
@@ -2097,10 +2064,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Draw on Top Layer",
@@ -2123,7 +2087,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `penId` names an existing pen.",
                 check: None,
             },
             needs_project: true,
@@ -2147,10 +2111,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Select a tool group; advance within it if already active (group cycling)",
@@ -2172,10 +2133,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: All drawing tools with group, option schema and current options",
@@ -2197,7 +2155,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 02 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(93, false),
@@ -2217,7 +2175,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `toolId` names an existing tool.",
                 check: None,
             },
             needs_project: true,
@@ -2242,7 +2200,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `toolId` names an existing tool.",
                 check: None,
             },
             needs_project: true,
@@ -2266,7 +2224,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 02 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(96, false),
@@ -2285,10 +2243,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("New Pen"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: New pen from current or given pen (\"New Pen\")",
@@ -2311,7 +2266,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Delete Pen"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `penId` names an existing pen; the pen is not the last pen of its type (02 §6.1, `pen.lastPen`).",
                 check: None,
             },
             needs_project: true,
@@ -2335,10 +2290,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Pens of the project with all settings", params: "{}" }],
             params_schema: || crate::declared_schema(99, false),
@@ -2358,7 +2310,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Rename Pen"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `penId` names an existing pen.",
                 check: None,
             },
             needs_project: true,
@@ -2383,7 +2335,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `penId` names an existing pen.",
                 check: None,
             },
             needs_project: true,
@@ -2408,7 +2360,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set Pen Style"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `penId` names an existing pen.",
                 check: None,
             },
             needs_project: true,
@@ -2432,10 +2384,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Pencil and shape-tool line thickness source", params: "{}" }],
             params_schema: || crate::declared_schema(103, false),
@@ -2454,10 +2403,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "Required parameters only: Draw Behind", params: "{\"enabled\": true}" }],
             params_schema: || crate::declared_schema(104, false),
@@ -2476,10 +2422,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Polyline snapping", params: "{}" }],
             params_schema: || crate::declared_schema(105, false),
@@ -2498,10 +2441,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Select tool options", params: "{}" }],
             params_schema: || crate::declared_schema(106, false),
@@ -2520,10 +2460,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: All global drawing-tool settings", params: "{}" }],
             params_schema: || crate::declared_schema(107, false),
@@ -2542,10 +2479,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Snap to Contour (Contour Editor)",
@@ -2567,10 +2501,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Symmetry drawing mode", params: "{}" }],
             params_schema: || crate::declared_schema(109, false),
@@ -2589,10 +2520,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Tablet input settings", params: "{}" }],
             params_schema: || crate::declared_schema(110, false),
@@ -2611,10 +2539,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Text panel defaults for new text", params: "{}" }],
             params_schema: || crate::declared_schema(111, false),
@@ -2633,10 +2558,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "Required parameters only: Auto light table", params: "{\"enabled\": true}" }],
             params_schema: || crate::declared_schema(112, false),
@@ -2655,10 +2577,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Drawing View background", params: "{}" }],
             params_schema: || crate::declared_schema(113, false),
@@ -2677,7 +2596,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 02 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(114, false),
@@ -2696,10 +2615,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show current drawing on top in the Camera View",
@@ -2721,10 +2637,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Grid visibility, type and overlay", params: "{}" }],
             params_schema: || crate::declared_schema(116, false),
@@ -2743,10 +2656,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Shading of auto and static light tables", params: "{}" }],
             params_schema: || crate::declared_schema(117, false),
@@ -2765,10 +2675,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Onion skin on/off and counts", params: "{}" }],
             params_schema: || crate::declared_schema(118, false),
@@ -2787,10 +2694,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Cycle previous or next onion-skin count 0→1→2→3→0",
@@ -2812,10 +2716,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Onion-skin appearance", params: "{}" }],
             params_schema: || crate::declared_schema(120, false),
@@ -2835,7 +2736,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -2856,10 +2757,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: State of all drawing aids", params: "{}" }],
             params_schema: || crate::declared_schema(122, false),
@@ -2879,7 +2777,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -2904,7 +2802,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -2925,10 +2823,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Delete entries (sources untouched)", params: "{}" }],
             params_schema: || crate::declared_schema(125, false),
@@ -2947,10 +2842,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Show/hide, hide all others, overlay/underlay entries",
@@ -2972,10 +2864,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show/hide the static light-table panel",
@@ -2997,10 +2886,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 02 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show Strokes (invisible strokes and open ends)",
@@ -3022,10 +2908,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Project flag: template colours overwrite existing swatch val"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Project flag: template colours overwrite existing swatch values",
@@ -3047,7 +2930,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 03 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(130, false),
@@ -3066,10 +2949,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Current palette, swatch and style", params: "{}" }],
             params_schema: || crate::declared_schema(131, false),
@@ -3089,7 +2969,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `colourId` names an existing colour.",
                 check: None,
             },
             needs_project: true,
@@ -3113,10 +2993,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Close the editor, committing or discarding the pending edit",
@@ -3138,10 +3015,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Open the colour editor / texture properties for a swatch",
@@ -3164,7 +3038,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; `objectId` names an existing object.",
                 check: None,
             },
             needs_project: true,
@@ -3189,7 +3063,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Edit Fill Mapping"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; every `objectIds` entry names an existing object.",
                 check: None,
             },
             needs_project: true,
@@ -3214,7 +3088,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Close Gap"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -3238,10 +3112,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Current gap closing mode and tolerances", params: "{}" }],
             params_schema: || crate::declared_schema(138, false),
@@ -3260,10 +3131,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Set the automatic gap closing mode (persisted user setting)",
@@ -3286,7 +3154,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -3311,7 +3179,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Paint"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -3336,7 +3204,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Unpaint"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -3361,7 +3229,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Paint Unpainted"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -3385,7 +3253,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 03 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(144, false),
@@ -3404,10 +3272,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Add Palette"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Create a palette (\"Add Palette\")", params: "{}" }],
             params_schema: || crate::declared_schema(145, false),
@@ -3427,7 +3292,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Remove Palette"),
             confirm: &["a destructive change the owning section lists (returns needs_confirmation)"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette; the palette is not the last visible palette (03 §1.2).",
                 check: None,
             },
             needs_project: true,
@@ -3452,7 +3317,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Duplicate Palette"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
                 check: None,
             },
             needs_project: true,
@@ -3477,7 +3342,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &["overwriting an existing file"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `paletteIds` entry names an existing palette; at least one visible palette exists (03 §2.5).",
                 check: None,
             },
             needs_project: true,
@@ -3502,7 +3367,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
                 check: None,
             },
             needs_project: true,
@@ -3526,10 +3391,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit, Scope::FilesRead],
             undo: Some("Import Palette"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Import palettes from an `.animpal` file (\"Import Palette\")",
@@ -3551,10 +3413,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: List palettes in order", params: "{}" }],
             params_schema: || crate::declared_schema(151, false),
@@ -3574,7 +3433,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Rename Palette"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
                 check: None,
             },
             needs_project: true,
@@ -3599,7 +3458,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
                 check: None,
             },
             needs_project: true,
@@ -3624,7 +3483,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Replace or merge a palette's styles and swatches from a pale"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
                 check: None,
             },
             needs_project: true,
@@ -3649,7 +3508,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -3674,7 +3533,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Replace Colour"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -3698,7 +3557,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 03 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(157, false),
@@ -3717,10 +3576,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Colour Recovery"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Recreate missing swatches from recovery copies (\"Colour Recovery\")",
@@ -3742,7 +3598,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 03 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(159, false),
@@ -3762,7 +3618,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -3784,7 +3640,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set Colour"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -3808,7 +3664,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 03 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(162, false),
@@ -3828,7 +3684,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Delete Style"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette; `styleId` names an existing style.",
                 check: None,
             },
             needs_project: true,
@@ -3853,7 +3709,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Duplicate Style"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; `paletteId` names an existing palette.",
                 check: None,
             },
             needs_project: true,
@@ -3878,7 +3734,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette.",
                 check: None,
             },
             needs_project: true,
@@ -3903,7 +3759,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Rename Style"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `paletteId` names an existing palette; `styleId` names an existing style.",
                 check: None,
             },
             needs_project: true,
@@ -3928,7 +3784,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Style Change"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; `paletteId` names an existing palette; `styleId` names an existing style.",
                 check: None,
             },
             needs_project: true,
@@ -3952,7 +3808,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 03 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(168, false),
@@ -3971,10 +3827,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Add a colour or texture swatch"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Add a colour or texture swatch (\"Add Colour\" / \"Add Texture\")",
@@ -3997,7 +3850,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Remove Colour"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `colourId` names an existing colour.",
                 check: None,
             },
             needs_project: true,
@@ -4022,7 +3875,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; `colourId` names an existing colour.",
                 check: None,
             },
             needs_project: true,
@@ -4047,7 +3900,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -4072,7 +3925,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Move Colour"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `colourId` names an existing colour.",
                 check: None,
             },
             needs_project: true,
@@ -4097,7 +3950,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Edit Colour"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `colourId` names an existing colour.",
                 check: None,
             },
             needs_project: true,
@@ -4121,10 +3974,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show or hide swatch names in the palette view",
@@ -4146,10 +3996,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Blend Style"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Blend a colour into all colours of a style (\"Blend Style\")",
@@ -4171,10 +4018,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Open the tint offset or tint blend UI for a style",
@@ -4196,10 +4040,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Offset Style"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Offset all colours of a style (\"Offset Style\")",
@@ -4222,7 +4063,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 03 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -4247,7 +4088,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set a drawing element as annotation element, or back"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -4272,7 +4113,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Extend the exposure of a peg's children up to a frame"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `pegId` names an existing peg.",
                 check: None,
             },
             needs_project: true,
@@ -4297,7 +4138,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Clone a cell-based element"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -4321,10 +4162,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Collapse / expand parent rows in the Timeline (saved with the scene)",
@@ -4346,10 +4184,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Set marker and/or Timeline background colour"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Set marker and/or Timeline background colour; an empty string reverts to the cat",
@@ -4372,7 +4207,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Create one or more elements of a type"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -4396,10 +4231,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Previous / next element in Timeline or Exposure Sheet order",
@@ -4422,7 +4254,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -4446,10 +4278,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Delete elements"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Delete elements; children are re-attached to the deleted element's parent",
@@ -4471,7 +4300,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 04 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(189, false),
@@ -4491,7 +4320,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Create an empty drawing in the bank, optionally exposed over"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -4516,7 +4345,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Delete drawings from the bank"),
             confirm: &["a destructive change the owning section lists (returns needs_confirmation)"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `drawingIds` entry names an existing drawing.",
                 check: None,
             },
             needs_project: true,
@@ -4541,7 +4370,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Copy a drawing into a new bank entry without exposing it"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `drawingId` names an existing drawing.",
                 check: None,
             },
             needs_project: true,
@@ -4566,7 +4395,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -4591,7 +4420,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Rename a drawing"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `drawingId` names an existing drawing.",
                 check: None,
             },
             needs_project: true,
@@ -4615,10 +4444,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Clear drawing: delete content, keep the drawing and its labe"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Clear drawing: delete content, keep the drawing and its labels",
@@ -4640,10 +4466,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Lock / unlock drawings"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Lock / unlock drawings",
@@ -4665,10 +4488,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Independent copy of elements including copies of their drawi"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Independent copy of elements including copies of their drawings",
@@ -4691,7 +4511,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -4716,7 +4536,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -4741,7 +4561,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -4766,7 +4586,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -4790,10 +4610,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Lock / unlock in the scene-planning views: given, all, all o"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Lock / unlock in the scene-planning views: given, all, all others",
@@ -4816,7 +4633,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Reset a media element's exposure to the natural media length"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -4841,7 +4658,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set, update or remove"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -4865,10 +4682,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Bring to front / forward, send backward / to back within the"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Bring to front / forward, send backward / to back within the level (Timeline) or",
@@ -4891,7 +4705,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set the complete order of one Timeline level or of the Expos"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; every `elementIds` entry names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -4915,10 +4729,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Detach elements from their parent"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Detach elements from their parent (they move to the parent's level)",
@@ -4940,10 +4751,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Attach elements to a peg, effect, skeleton or camera, or to "),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Attach elements to a peg, effect, skeleton or camera, or to the nearest peg/effe",
@@ -4965,10 +4773,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Create a peg and attach the given elements to it"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Create a peg and attach the given elements to it",
@@ -4991,7 +4796,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set composite role and deformable flag"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -5016,7 +4821,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Rename an element"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -5041,7 +4846,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `elementIds` entry names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -5065,10 +4870,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Solo mode on/off (view state)",
@@ -5090,7 +4892,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 04 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(214, false),
@@ -5109,10 +4911,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Change start frame, duration and loops of bar elements"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Change start frame, duration and loops of bar elements; move or stretch bars",
@@ -5134,10 +4933,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Default colours of all categories", params: "{}" }],
             params_schema: || crate::declared_schema(216, false),
@@ -5156,10 +4952,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Set the default colour of an element category (preference)",
@@ -5182,7 +4975,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -5206,10 +4999,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Show/hide in the scene or the Exposure Sheet for the given e"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show/hide in the scene or the Exposure Sheet for the given elements, all, or all",
@@ -5231,10 +5021,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Insert blank cell"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Insert blank cell(s) at a frame; following cells shift later",
@@ -5256,10 +5043,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Delete blank cell"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Delete blank cell(s) at a frame; fails with `cell.notBlank` on a non-blank cell",
@@ -5282,7 +5066,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Paste the clipboard at a target, normally or as new drawings"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; the clipboard holds content of a compatible type (04 §12.8).",
                 check: None,
             },
             needs_project: true,
@@ -5306,10 +5090,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Copy"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Copy (or cut, undoable) an explicit range or whole elements to the clipboard",
@@ -5332,7 +5113,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Advanced cycle: write first..last drawings with exposure, lo"),
             confirm: &["overwriting an existing file"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -5357,7 +5138,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Repeat the range so that it appears N times in total"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -5382,7 +5163,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Duplicate drawing: copy the drawing at the range and expose "),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -5406,10 +5187,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Add exposure: hold longer by N frames, following cells shift"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Add exposure: hold longer by N frames, following cells shift later",
@@ -5431,10 +5209,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Remove exposure: shorten by N frames, following cells shift "),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Remove exposure: shorten by N frames, following cells shift earlier",
@@ -5456,10 +5231,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Set every exposure in the range to N frames"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Set every exposure in the range to N frames (ones / twos / threes / N)",
@@ -5481,7 +5253,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 04 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(230, false),
@@ -5500,10 +5272,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Extend exposure: expose the drawing at `frame` through `toFr"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Extend exposure: expose the drawing at `frame` through `toFrame`, overwriting",
@@ -5526,7 +5295,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change label / substitute the drawing in the range by name, "),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -5551,7 +5320,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set, update or remove"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -5575,10 +5344,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Insert cells"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Insert cells (blank or named; one element or all elements)",
@@ -5600,10 +5366,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Delete cells: clear"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Delete cells: clear (leave blanks) or remove and shift earlier",
@@ -5626,7 +5389,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Move / copy / link / copy-as-new-drawings a cell range to an"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `sourceElementIds` entry names an existing sourceElement.",
                 check: None,
             },
             needs_project: true,
@@ -5651,7 +5414,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `elementIds` entry names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -5675,7 +5438,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 04 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(238, false),
@@ -5695,7 +5458,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -5719,10 +5482,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Timeline background colour preference",
@@ -5744,7 +5504,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 04 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(241, false),
@@ -5764,7 +5524,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -5789,7 +5549,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -5814,7 +5574,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -5838,10 +5598,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Format frame numbers per the current time display",
@@ -5863,7 +5620,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 04 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(246, false),
@@ -5882,10 +5639,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Current playback range", params: "{}" }],
             params_schema: || crate::declared_schema(247, false),
@@ -5904,10 +5658,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Automatic or free playback range, start and end (clamped)",
@@ -5930,7 +5681,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -5955,7 +5706,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -5979,10 +5730,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show sound rows as waveforms or solid bars",
@@ -6004,10 +5752,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Display frames or feet and frames (preference)",
@@ -6029,10 +5774,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Read a stored option set",
@@ -6054,10 +5796,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Store the paste-special, cut-special or drag-and-drop option set (17.3)",
@@ -6080,7 +5819,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -6105,7 +5844,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -6127,7 +5866,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -6151,10 +5890,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Thumbnails, exposure text in held cells, element-name prefix, notes",
@@ -6177,7 +5913,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -6202,7 +5938,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Atomically replace exposures of one or more columns over fra"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -6227,7 +5963,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -6251,7 +5987,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 04 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(262, false),
@@ -6270,10 +6006,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Light-table items in stacking order", params: "{}" }],
             params_schema: || crate::declared_schema(263, false),
@@ -6293,7 +6026,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `itemId` names an existing item.",
                 check: None,
             },
             needs_project: true,
@@ -6317,10 +6050,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Remove light-table items, or all", params: "{}" }],
             params_schema: || crate::declared_schema(265, false),
@@ -6339,10 +6069,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Show/hide and over/under for given items, all, or all others",
@@ -6364,10 +6091,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 04 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Show/hide the element list panel, static light table panel and toolbar",
@@ -6390,7 +6114,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Create a bone"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `skeletonId` names an existing skeleton.",
                 check: None,
             },
             needs_project: true,
@@ -6415,7 +6139,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Delete bones"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `boneIds` entry names an existing bone.",
                 check: None,
             },
             needs_project: true,
@@ -6437,7 +6161,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Influence type and zone"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `boneId` names an existing bone.",
                 check: None,
             },
             needs_project: true,
@@ -6462,7 +6186,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Reparent a bone"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `boneId` names an existing bone; `parentBoneId` names an existing parentBone.",
                 check: None,
             },
             needs_project: true,
@@ -6486,10 +6210,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Pose bones by angles/lengths at a frame"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Pose bones by angles/lengths at a frame (keys)",
@@ -6512,7 +6233,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Natural movement: IK reach to a target, or FK rotation with "),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `boneId` names an existing bone.",
                 check: None,
             },
             needs_project: true,
@@ -6537,7 +6258,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set rest"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `boneId` names an existing bone.",
                 check: None,
             },
             needs_project: true,
@@ -6561,10 +6282,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Add a camera"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Add a camera", params: "{}" }],
             params_schema: || crate::declared_schema(275, false),
@@ -6584,7 +6302,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -6606,7 +6324,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Make a camera the scene's current camera"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `cameraId` names an existing camera.",
                 check: None,
             },
             needs_project: true,
@@ -6630,7 +6348,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 05 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(278, false),
@@ -6650,7 +6368,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Delete a camera"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `cameraId` names an existing camera; the scene keeps at least one camera (05 §12.1, `anim.lastCamera`).",
                 check: None,
             },
             needs_project: true,
@@ -6674,10 +6392,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Camera properties and evaluated view at a frame",
@@ -6700,7 +6415,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -6721,10 +6436,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Select the current camera", params: "{}" }],
             params_schema: || crate::declared_schema(282, false),
@@ -6744,7 +6456,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set camera position, roll, FOV mode and FOV"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `cameraId` names an existing camera.",
                 check: None,
             },
             needs_project: true,
@@ -6768,7 +6480,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 05 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(284, false),
@@ -6788,7 +6500,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -6812,10 +6524,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Cut special: copy then remove chosen channels' keys"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Cut special: copy then remove chosen channels' keys",
@@ -6838,7 +6547,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Paste copied channel keys at a frame"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `nodeIds` entry names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -6862,10 +6571,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Depth nudge forward/backward"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Depth nudge forward/backward",
@@ -6887,10 +6593,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show all pegs' paths",
@@ -6912,10 +6615,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Anti-alias tool furniture",
@@ -6937,10 +6637,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show element arms while rotating pegs",
@@ -6962,7 +6659,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 05 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(292, false),
@@ -6981,10 +6678,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show bone influence envelopes",
@@ -7006,10 +6700,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show frame markers on paths",
@@ -7031,10 +6722,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: All display options of §4", params: "{}" }],
             params_schema: || crate::declared_schema(295, false),
@@ -7053,10 +6741,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "Required parameters only: Show peg ghosts", params: "{\"enabled\": true}" }],
             params_schema: || crate::declared_schema(296, false),
@@ -7075,10 +6760,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "Required parameters only: Show pivot paths", params: "{\"enabled\": true}" }],
             params_schema: || crate::declared_schema(297, false),
@@ -7097,10 +6779,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Anti-alias motion paths",
@@ -7123,7 +6802,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `nodeIds` entry names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7147,10 +6826,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Flip nodes horizontally or vertically"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Flip nodes horizontally or vertically",
@@ -7173,7 +6849,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change a channel's curve type"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7198,7 +6874,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7223,7 +6899,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Add a key point"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7248,7 +6924,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Copy a key point to another frame"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7273,7 +6949,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Remove key points"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7298,7 +6974,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Edit a key point: move in time, value, handles, handle mode,"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7323,7 +6999,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7348,7 +7024,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Apply an easing preset to a segment or the whole curve"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node; the preset is allowed for the channel (05 §10.4, §11.2).",
                 check: None,
             },
             needs_project: true,
@@ -7373,7 +7049,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7398,7 +7074,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Replace a 1-D channel's key list and curve type"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7422,10 +7098,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Function-editor state", params: "{}" }],
             params_schema: || crate::declared_schema(311, false),
@@ -7444,10 +7117,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Open the function editor on a node/channel/projection",
@@ -7470,7 +7140,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -7494,10 +7164,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Function-editor view: fit, grid, zooms, panel and toolbar visibility, panel side",
@@ -7520,7 +7187,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Attach/reparent nodes under a parent"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `childIds` entry names an existing child; `parentId` names an existing parent.",
                 check: None,
             },
             needs_project: true,
@@ -7544,7 +7211,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 05 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(316, false),
@@ -7564,7 +7231,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Detach nodes from their parent"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `nodeIds` entry names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7589,7 +7256,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -7610,10 +7277,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Select parent / descendants / first child / previous or next sibling",
@@ -7635,10 +7299,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Add keyframes"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Add keyframes (full pose or chosen channels); optionally on a whole hierarchy or",
@@ -7661,7 +7322,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7686,7 +7347,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Move keys of a node to another frame"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7710,10 +7371,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Remove keyframes at a frame"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Remove keyframes at a frame (default channels position/rotation/scale/skew) or a",
@@ -7736,7 +7394,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set looping of a peg, effect, skeleton or bone"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7761,7 +7419,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7785,10 +7443,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Set non-transform node options"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Set non-transform node options", params: "{}" }],
             params_schema: || crate::declared_schema(326, false),
@@ -7808,7 +7463,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `nodeIds` entry names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7833,7 +7488,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7858,7 +7513,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Constant Z for the segment starting at a keyframe"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7883,7 +7538,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Add a keyframe or control point"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -7908,7 +7563,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Delete motion points"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `pointIds` entry names an existing point.",
                 check: None,
             },
             needs_project: true,
@@ -7932,10 +7587,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Select a motion point, or the previous/next one",
@@ -7958,7 +7610,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Edit a motion point"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `pointIds` entry names an existing point.",
                 check: None,
             },
             needs_project: true,
@@ -7983,7 +7635,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -8008,7 +7660,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Replace a node's whole motion path"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -8032,10 +7684,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Add a peg"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Add a peg; with `wrapIds`, add a parent peg around those nodes",
@@ -8057,10 +7706,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Peg-only mode on/off (§6.1)",
@@ -8083,7 +7729,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `pointId` names an existing point.",
                 check: None,
             },
             needs_project: true,
@@ -8108,7 +7754,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Paste a copied point"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `targetPointIds` entry names an existing targetPoint.",
                 check: None,
             },
             needs_project: true,
@@ -8132,10 +7778,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Scene-planning preferences (§16)", params: "{}" }],
             params_schema: || crate::declared_schema(340, false),
@@ -8154,10 +7797,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Prefs],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Set scene-planning preferences", params: "{}" }],
             params_schema: || crate::declared_schema(341, false),
@@ -8176,10 +7816,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Project world points or node bounds into output pixels",
@@ -8201,7 +7838,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 05 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(343, false),
@@ -8220,10 +7857,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Motion-recording options", params: "{}" }],
             params_schema: || crate::declared_schema(344, false),
@@ -8242,10 +7876,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Motion-recording options (persisted user settings)",
@@ -8268,7 +7899,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Record motion from a sample list"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -8292,10 +7923,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Reset nodes: remove keys and restore default static values"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Reset nodes: remove keys and restore default static values",
@@ -8317,10 +7945,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Make segments starting at a keyframe constant or tweened"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Make segments starting at a keyframe constant or tweened",
@@ -8343,7 +7968,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Make the segment left/right of a key uniform"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -8367,10 +7992,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Add a skeleton, optionally moving elements into its skin gro"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Add a skeleton, optionally moving elements into its skin group",
@@ -8393,7 +8015,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `skeletonId` names an existing skeleton.",
                 check: None,
             },
             needs_project: true,
@@ -8418,7 +8040,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Delete a skeleton"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `skeletonId` names an existing skeleton.",
                 check: None,
             },
             needs_project: true,
@@ -8443,7 +8065,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `skeletonId` names an existing skeleton.",
                 check: None,
             },
             needs_project: true,
@@ -8468,7 +8090,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Copy the rest pose to the current frame or to all keyframes"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `skeletonId` names an existing skeleton.",
                 check: None,
             },
             needs_project: true,
@@ -8492,10 +8114,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Select the skeleton root of the current bone/skin element",
@@ -8518,7 +8137,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Skeleton display and quality options"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `skeletonId` names an existing skeleton.",
                 check: None,
             },
             needs_project: true,
@@ -8543,7 +8162,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Put elements into the skin group"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `elementIds` entry names an existing element; `skeletonId` names an existing skeleton.",
                 check: None,
             },
             needs_project: true,
@@ -8568,7 +8187,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Take elements out of the skin group"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `elementIds` entry names an existing element; `skeletonId` names an existing skeleton.",
                 check: None,
             },
             needs_project: true,
@@ -8592,10 +8211,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Snap-last-keyframe on/off (§6.5)",
@@ -8618,7 +8234,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Re-time a node's channels proportionally to a new duration"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -8642,7 +8258,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 05 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(361, false),
@@ -8661,10 +8277,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Current scene-planning tool", params: "{}" }],
             params_schema: || crate::declared_schema(362, false),
@@ -8683,10 +8296,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Select the active scene-planning tool (independent of the drawing tool)",
@@ -8708,10 +8318,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Set static values or key animated values"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Set static values or key animated values (Select/Transform/Rotate/Scale/Skew too",
@@ -8734,7 +8341,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `viewId` names an existing view.",
                 check: None,
             },
             needs_project: true,
@@ -8759,7 +8366,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `viewId` names an existing view.",
                 check: None,
             },
             needs_project: true,
@@ -8784,7 +8391,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `viewId` names an existing view.",
                 check: None,
             },
             needs_project: true,
@@ -8809,7 +8416,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 05 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `viewId` names an existing view.",
                 check: None,
             },
             needs_project: true,
@@ -8833,7 +8440,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 06 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(369, false),
@@ -8852,10 +8459,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Current all-effects display state", params: "{}" }],
             params_schema: || crate::declared_schema(370, false),
@@ -8874,10 +8478,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Enable or disable effect display in interactive views",
@@ -8900,7 +8501,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Add Particle Block"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -8925,7 +8526,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Reset to Defaults"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `blockId` names an existing block.",
                 check: None,
             },
             needs_project: true,
@@ -8949,10 +8550,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Full block record (static values, dynamic curves/keyframes, seed, sprite set)",
@@ -8975,7 +8573,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -8999,10 +8597,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Remove Particle Block"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Remove a block; frames merge into a neighbour (\"Remove Particle Block\")",
@@ -9025,7 +8620,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set a block's seed, or draw a new random one"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `blockId` names an existing block.",
                 check: None,
             },
             needs_project: true,
@@ -9050,7 +8645,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change Particle Settings"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `blockId` names an existing block.",
                 check: None,
             },
             needs_project: true,
@@ -9075,7 +8670,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change Particle Type"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `blockId` names an existing block.",
                 check: None,
             },
             needs_project: true,
@@ -9099,7 +8694,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 06 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(380, false),
@@ -9119,7 +8714,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Create Effect"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -9144,7 +8739,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -9169,7 +8764,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change Drop Shadow"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -9194,7 +8789,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -9219,7 +8814,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `viewId` names an existing view.",
                 check: None,
             },
             needs_project: true,
@@ -9244,7 +8839,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Add Effect Keyframe"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -9269,7 +8864,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -9294,7 +8889,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Remove Effect Keyframe"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -9319,7 +8914,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -9341,7 +8936,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Attach elements to a parameter slot"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect; every `elementIds` entry names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -9366,7 +8961,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -9391,7 +8986,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Detach elements from a parameter slot"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect; every `elementIds` entry names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -9416,7 +9011,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -9438,7 +9033,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the selected effect has parameter elements (06 §2.8).",
                 check: None,
             },
             needs_project: true,
@@ -9463,7 +9058,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -9488,7 +9083,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change Effect Parameters"),
             confirm: &["a destructive change the owning section lists (returns needs_confirmation)"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -9513,7 +9108,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -9538,7 +9133,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Apply Preset"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect; `presetId` names an existing preset.",
                 check: None,
             },
             needs_project: true,
@@ -9562,7 +9157,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 06 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(399, false),
@@ -9581,10 +9176,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Prefs],
             undo: None,
             confirm: &["a destructive change the owning section lists (returns needs_confirmation)"],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Save an effect's or block's current parameters (or an explicit body) as a user p",
@@ -9607,7 +9199,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &["a destructive change the owning section lists (returns needs_confirmation)"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `presetId` names an existing preset.",
                 check: None,
             },
             needs_project: true,
@@ -9632,7 +9224,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &["overwriting an existing file"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `presetIds` entry names an existing preset.",
                 check: None,
             },
             needs_project: true,
@@ -9657,7 +9249,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `presetId` names an existing preset.",
                 check: None,
             },
             needs_project: true,
@@ -9681,10 +9273,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::FilesRead, Scope::Prefs],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Import user presets from a preset file",
@@ -9706,10 +9295,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: List presets", params: "{}" }],
             params_schema: || crate::declared_schema(405, false),
@@ -9729,7 +9315,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `presetId` names an existing preset.",
                 check: None,
             },
             needs_project: true,
@@ -9753,10 +9339,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Clear the rendered-frame cache", params: "{}" }],
             params_schema: || crate::declared_schema(407, false),
@@ -9775,10 +9358,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Close the effect preview panel", params: "{}" }],
             params_schema: || crate::declared_schema(408, false),
@@ -9797,10 +9377,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Cached preview render of a frame as PNG", params: "{}" }],
             params_schema: || crate::declared_schema(409, false),
@@ -9819,7 +9396,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 06 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(410, false),
@@ -9838,7 +9415,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 06 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(411, false),
@@ -9857,10 +9434,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Open (or focus) the effect preview panel", params: "{}" }],
             params_schema: || crate::declared_schema(412, false),
@@ -9879,10 +9453,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Effect preview settings", params: "{}" }],
             params_schema: || crate::declared_schema(413, false),
@@ -9901,10 +9472,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Change effect preview settings", params: "{}" }],
             params_schema: || crate::declared_schema(414, false),
@@ -9923,10 +9491,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Render frames into the effect preview cache", params: "{}" }],
             params_schema: || crate::declared_schema(415, false),
@@ -9945,10 +9510,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Rendering state and cache usage", params: "{}" }],
             params_schema: || crate::declared_schema(416, false),
@@ -9967,10 +9529,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Stop the running preview render (same as `job_cancel`)",
@@ -9993,7 +9552,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -10017,10 +9576,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Renderer capabilities and computed recommendations",
@@ -10042,7 +9598,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 06 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(420, false),
@@ -10061,10 +9617,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Display-quality and renderer options (§6.9)", params: "{}" }],
             params_schema: || crate::declared_schema(421, false),
@@ -10083,10 +9636,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Change display-quality and renderer options",
@@ -10109,7 +9659,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -10134,7 +9684,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -10159,7 +9709,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `spriteSetId` names an existing spriteSet.",
                 check: None,
             },
             needs_project: true,
@@ -10183,10 +9733,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: List built-in sprite sets", params: "{}" }],
             params_schema: || crate::declared_schema(426, false),
@@ -10206,7 +9753,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change Effect Timing"),
             confirm: &["a destructive change the owning section lists (returns needs_confirmation)"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `effectId` names an existing effect.",
                 check: None,
             },
             needs_project: true,
@@ -10230,10 +9777,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Descriptor of one effect type, optionally narrowed to one particle type",
@@ -10255,10 +9799,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 06 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: List all effect types with parameter JSON schemas, slots, flags, particle types,",
@@ -10281,7 +9822,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `assetId` names an existing asset.",
                 check: None,
             },
             needs_project: true,
@@ -10305,10 +9846,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit, Scope::FilesRead],
             undo: Some("Add an audio file to the project's sound assets without plac"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Add an audio file to the project's sound assets without placing it",
@@ -10330,10 +9868,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: List sound assets of the project", params: "{}" }],
             params_schema: || crate::declared_schema(432, false),
@@ -10352,7 +9887,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 07 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(433, false),
@@ -10371,10 +9906,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read, Scope::FilesRead],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Inspect an audio (or movie) file without importing it",
@@ -10397,7 +9929,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Point a"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `assetId` names an existing asset.",
                 check: None,
             },
             needs_project: true,
@@ -10421,10 +9953,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Close the editor, committing all its edits as one *Edit Soun"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Close the editor, committing all its edits as one *Edit Sound* step or discardin",
@@ -10447,7 +9976,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -10471,10 +10000,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Editor state", params: "{}" }],
             params_schema: || crate::declared_schema(438, false),
@@ -10494,7 +10020,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -10518,7 +10044,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 07 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(440, false),
@@ -10538,7 +10064,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Mark a sound element for streamed SWF export"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -10563,7 +10089,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Remove the envelope"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10588,7 +10114,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10613,7 +10139,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Add one envelope point"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10638,7 +10164,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Move/re-level one envelope point"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10663,7 +10189,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Remove one envelope point"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10688,7 +10214,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Replace the whole envelope"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10713,7 +10239,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Apply a fade preset"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10738,7 +10264,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Import an audio file and place it in a sound element"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -10763,7 +10289,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Place an existing asset or Library sound item in a sound ele"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -10788,7 +10314,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10813,7 +10339,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -10835,7 +10361,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Move a placement to a new start frame, keeping its length"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10860,7 +10386,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Remove a placement"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10885,7 +10411,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set loop count and/or volume"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10910,7 +10436,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Split a placement into two at a frame"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10935,7 +10461,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set in/out points"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -10960,7 +10486,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -10984,10 +10510,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Enable/disable sound during interactive playback (per user)",
@@ -11010,7 +10533,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Empty a frame range of a sound element, splitting and trimmi"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -11035,7 +10558,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -11059,10 +10582,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Recently imported sounds (for quick re-import)",
@@ -11085,7 +10605,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); sound playback is on to turn scrubbing on (07 §8.1, 09 §2.9).",
                 check: None,
             },
             needs_project: true,
@@ -11109,10 +10629,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Read sound playback/scrubbing/waveform settings and audio device status",
@@ -11135,7 +10652,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -11156,10 +10673,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Stop one-shot sound playback (one or all)", params: "{}" }],
             params_schema: || crate::declared_schema(466, false),
@@ -11179,7 +10693,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -11203,7 +10717,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 07 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(468, false),
@@ -11222,10 +10736,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Show waveforms or solid bars in Timeline/Exposure Sheet (per user)",
@@ -11248,7 +10759,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Write the drawing element's exposures from the mouth track"),
             confirm: &["overwriting an existing file"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `drawingElementId` names an existing drawingElement; a sound and a mouth element are chosen and every mouth shape is mapped or deliberately left empty (07 §10.7).",
                 check: None,
             },
             needs_project: true,
@@ -11273,7 +10784,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Detect the mouth track for a placement"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -11298,7 +10809,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Show/hide lip-sync mode for a sound column"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -11323,7 +10834,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `drawingElementId` names an existing drawingElement; `soundElementId` names an existing soundElement.",
                 check: None,
             },
             needs_project: true,
@@ -11348,7 +10859,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Map one shape to a drawing, or step to the previous/next dra"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `drawingElementId` names an existing drawingElement; `soundElementId` names an existing soundElement.",
                 check: None,
             },
             needs_project: true,
@@ -11373,7 +10884,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Store a full or partial mapping"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `drawingElementId` names an existing drawingElement; `soundElementId` names an existing soundElement.",
                 check: None,
             },
             needs_project: true,
@@ -11398,7 +10909,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set one mouth on a frame range and mark it manual"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -11422,10 +10933,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Close the lip-sync panel", params: "{}" }],
             params_schema: || crate::declared_schema(477, false),
@@ -11444,10 +10952,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Open/raise the lip-sync panel", params: "{}" }],
             params_schema: || crate::declared_schema(478, false),
@@ -11467,7 +10972,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -11491,10 +10996,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Project defaults for detection", params: "{}" }],
             params_schema: || crate::declared_schema(480, false),
@@ -11513,10 +11015,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Set project defaults for detection"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Set project defaults for detection (including the phoneme map)",
@@ -11538,10 +11037,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: The eight mouth shapes with descriptions, covered sounds and reference images",
@@ -11564,7 +11060,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Import a mouth template as a new drawing element"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; `libraryItemId` names an existing libraryItem.",
                 check: None,
             },
             needs_project: true,
@@ -11588,10 +11084,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Mouth templates available in the Library", params: "{}" }],
             params_schema: || crate::declared_schema(484, false),
@@ -11610,7 +11103,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 07 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(485, false),
@@ -11630,7 +11123,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Delete the lip-sync track of a placement or element"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -11655,7 +11148,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -11677,7 +11170,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Write a mouth track explicitly"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `placementId` names an existing placement.",
                 check: None,
             },
             needs_project: true,
@@ -11701,7 +11194,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 07 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(489, false),
@@ -11721,7 +11214,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Import a movie as an image sequence"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -11745,10 +11238,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read, Scope::FilesRead],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Inspect a movie file",
@@ -11770,10 +11260,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Project media registry (linked sources, location, missing state, usage)",
@@ -11796,7 +11283,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Point a media object at a new file or Library item"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `mediaObjectId` names an existing mediaObject.",
                 check: None,
             },
             needs_project: true,
@@ -11821,7 +11308,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Link a Library item or external file into a media element as"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -11846,7 +11333,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sequenceId` names an existing sequence.",
                 check: None,
             },
             needs_project: true,
@@ -11871,7 +11358,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -11896,7 +11383,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Move a sequence to a new start frame"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sequenceId` names an existing sequence.",
                 check: None,
             },
             needs_project: true,
@@ -11921,7 +11408,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Reset a sequence to one exposure per source frame from its l"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sequenceId` names an existing sequence; the sequence belongs to a media element (07 §11.4, Reset media timing).",
                 check: None,
             },
             needs_project: true,
@@ -11946,7 +11433,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Remove a sequence"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sequenceId` names an existing sequence.",
                 check: None,
             },
             needs_project: true,
@@ -11971,7 +11458,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change a sequence's stop frame or link offset"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sequenceId` names an existing sequence.",
                 check: None,
             },
             needs_project: true,
@@ -11996,7 +11483,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -12020,10 +11507,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 07 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Stop media sound playback", params: "{}" }],
             params_schema: || crate::declared_schema(502, false),
@@ -12042,7 +11526,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 07 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(503, false),
@@ -12061,7 +11545,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(504, false),
@@ -12083,8 +11567,11 @@ pub static DECLARED: &[Command] = &[
                 "a destructive change the owning section lists (returns needs_confirmation)",
                 "discarding unsaved changes",
             ],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
-            needs_project: false,
+            enablement: Enablement {
+                rule: "Enabled when a project is open (01 §1.3); `libraryId` names an existing library.",
+                check: None,
+            },
+            needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Close a library (not the project-local one)",
                 params: "{\"libraryId\": \"scene:#1\"}",
@@ -12105,7 +11592,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(506, false),
@@ -12121,11 +11608,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.create",
             kind: Kind::Action,
             label: "Create a new empty library in a folder and open it",
-            scopes: &[Scope::Ui, Scope::FilesWrite],
+            scopes: &[Scope::Ui, Scope::FilesWrite, Scope::LibraryGlobal],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
-            needs_project: false,
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
+            needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Create a new empty library in a folder and open it",
                 params: "{\"path\": \"review/example.out\"}",
@@ -12147,7 +11634,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Copy drawing"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; `drawingId` names an existing drawing.",
                 check: None,
             },
             needs_project: true,
@@ -12172,7 +11659,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Copy an element into another scene"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element; `targetSceneId` names an existing targetScene.",
                 check: None,
             },
             needs_project: true,
@@ -12193,11 +11680,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.folder.create",
             kind: Kind::Action,
             label: "New folder",
-            scopes: &[Scope::Edit],
+            scopes: &[Scope::Edit, Scope::LibraryGlobal],
             undo: Some("New folder"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `parentId` names an existing parent.",
                 check: None,
             },
             needs_project: true,
@@ -12218,11 +11705,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.folder.delete",
             kind: Kind::Action,
             label: "Delete a folder and its contents",
-            scopes: &[Scope::Edit],
+            scopes: &[Scope::Edit, Scope::LibraryGlobal],
             undo: Some("Delete a folder and its contents"),
             confirm: &["a destructive change the owning section lists (returns needs_confirmation)"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `folderId` names an existing folder.",
                 check: None,
             },
             needs_project: true,
@@ -12243,11 +11730,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.folder.rename",
             kind: Kind::Action,
             label: "Rename a folder",
-            scopes: &[Scope::Edit],
+            scopes: &[Scope::Edit, Scope::LibraryGlobal],
             undo: Some("Rename a folder"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `folderId` names an existing folder.",
                 check: None,
             },
             needs_project: true,
@@ -12268,11 +11755,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.item.delete",
             kind: Kind::Action,
             label: "Delete items",
-            scopes: &[Scope::Edit],
+            scopes: &[Scope::Edit, Scope::LibraryGlobal],
             undo: Some("Delete items"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `itemIds` entry names an existing item.",
                 check: None,
             },
             needs_project: true,
@@ -12290,11 +11777,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.item.duplicate",
             kind: Kind::Action,
             label: "Copy folders/items into a folder",
-            scopes: &[Scope::Edit],
+            scopes: &[Scope::Edit, Scope::LibraryGlobal],
             undo: Some("Copy folders/items into a folder"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `nodeIds` entry names an existing node; `targetFolderId` names an existing targetFolder.",
                 check: None,
             },
             needs_project: true,
@@ -12319,7 +11806,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `itemId` names an existing item.",
                 check: None,
             },
             needs_project: true,
@@ -12340,11 +11827,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.item.import",
             kind: Kind::Action,
             label: "Import media or template files into a folder",
-            scopes: &[Scope::Edit, Scope::FilesRead],
+            scopes: &[Scope::Edit, Scope::FilesRead, Scope::LibraryGlobal],
             undo: Some("Import media or template files into a folder"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `folderId` names an existing folder.",
                 check: None,
             },
             needs_project: true,
@@ -12369,7 +11856,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `folderId` names an existing folder.",
                 check: None,
             },
             needs_project: true,
@@ -12390,11 +11877,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.item.move",
             kind: Kind::Action,
             label: "Move folders/items to a folder",
-            scopes: &[Scope::Edit],
+            scopes: &[Scope::Edit, Scope::LibraryGlobal],
             undo: Some("Move folders/items to a folder"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `nodeIds` entry names an existing node; `targetFolderId` names an existing targetFolder.",
                 check: None,
             },
             needs_project: true,
@@ -12415,11 +11902,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.item.rename",
             kind: Kind::Action,
             label: "Rename an item",
-            scopes: &[Scope::Edit],
+            scopes: &[Scope::Edit, Scope::LibraryGlobal],
             undo: Some("Rename an item"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `itemId` names an existing item.",
                 check: None,
             },
             needs_project: true,
@@ -12444,7 +11931,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `itemId` names an existing item.",
                 check: None,
             },
             needs_project: true,
@@ -12468,8 +11955,8 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
-            needs_project: false,
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
+            needs_project: true,
             examples: &[Example { title: "No parameters: List open libraries", params: "{}" }],
             params_schema: || crate::declared_schema(521, false),
             result_schema: || crate::declared_schema(521, true),
@@ -12488,7 +11975,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `nodeId` names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -12512,8 +11999,8 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui, Scope::FilesRead],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
-            needs_project: false,
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
+            needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Open an existing library",
                 params: "{\"path\": \"review/example.out\"}",
@@ -12534,7 +12021,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(524, false),
@@ -12553,10 +12040,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Get preview state", params: "{}" }],
             params_schema: || crate::declared_schema(525, false),
@@ -12575,10 +12059,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Set preview item, frame, playing and enabled state",
@@ -12601,7 +12082,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -12622,11 +12103,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.refresh.run",
             kind: Kind::Action,
             label: "Re-read a library or folder from disk and regenerate missing thumbnails",
-            scopes: &[Scope::Ui],
+            scopes: &[Scope::Ui, Scope::LibraryGlobal],
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `libraryId` names an existing library.",
                 check: None,
             },
             needs_project: true,
@@ -12650,7 +12131,10 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui, Scope::FilesWrite, Scope::LibraryGlobal],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement {
+                rule: "Enabled when always, also without a project (01 §1.3); a global or opened library has unsaved changes (08 §11).",
+                check: None,
+            },
             needs_project: false,
             examples: &[Example {
                 title: "No parameters: Save modified libraries (project-local is saved with the project)",
@@ -12673,7 +12157,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -12695,7 +12179,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `nodeIds` entry names an existing node.",
                 check: None,
             },
             needs_project: true,
@@ -12716,13 +12200,10 @@ pub static DECLARED: &[Command] = &[
             id: "library.starter.open",
             kind: Kind::Action,
             label: "Restore the starter library",
-            scopes: &[Scope::Ui],
+            scopes: &[Scope::Ui, Scope::LibraryGlobal],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Restore the starter library (re-open; optionally reinstall its files)",
@@ -12744,7 +12225,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(533, false),
@@ -12760,11 +12241,11 @@ pub static DECLARED: &[Command] = &[
             id: "library.template.create",
             kind: Kind::Action,
             label: "Create a template from project objects",
-            scopes: &[Scope::Edit],
+            scopes: &[Scope::Edit, Scope::LibraryGlobal],
             undo: Some("Create a template from project objects"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `folderId` names an existing folder; every `objectIds` entry names an existing object.",
                 check: None,
             },
             needs_project: true,
@@ -12788,7 +12269,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(535, false),
@@ -12807,10 +12288,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Get template edit mode state", params: "{}" }],
             params_schema: || crate::declared_schema(536, false),
@@ -12830,7 +12308,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `templateId` names an existing template.",
                 check: None,
             },
             needs_project: true,
@@ -12851,13 +12329,10 @@ pub static DECLARED: &[Command] = &[
             id: "library.template.edit.stop",
             kind: Kind::Action,
             label: "Edit template",
-            scopes: &[Scope::Edit],
+            scopes: &[Scope::Edit, Scope::LibraryGlobal],
             undo: Some("Edit template"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Return to scene, committing edits into the template (\"Edit template\")",
@@ -12880,7 +12355,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &["overwriting an existing file"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `templateId` names an existing template.",
                 check: None,
             },
             needs_project: true,
@@ -12905,7 +12380,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `templateId` names an existing template.",
                 check: None,
             },
             needs_project: true,
@@ -12930,7 +12405,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `templateId` names an existing template.",
                 check: None,
             },
             needs_project: true,
@@ -12955,7 +12430,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Insert a template or media item into a scene by copy or link"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current scene exists or `sceneId` is given; `templateId` names an existing template.",
                 check: None,
             },
             needs_project: true,
@@ -12979,10 +12454,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Search templates and items across libraries with metadata",
@@ -13005,7 +12477,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Update chosen drawings from their template"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); every `drawingIds` entry names an existing drawing; `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -13030,7 +12502,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `elementId` names an existing element.",
                 check: None,
             },
             needs_project: true,
@@ -13054,8 +12526,8 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
-            needs_project: false,
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
+            needs_project: true,
             examples: &[Example { title: "No parameters: Get the folder/item hierarchy", params: "{}" }],
             params_schema: || crate::declared_schema(546, false),
             result_schema: || crate::declared_schema(546, true),
@@ -13073,10 +12545,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Get panel state", params: "{}" }],
             params_schema: || crate::declared_schema(547, false),
@@ -13095,10 +12564,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Set the item-list display mode",
@@ -13124,7 +12590,7 @@ pub static DECLARED: &[Command] = &[
                 "discarding unsaved changes",
             ],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `libraryId` names an existing library.",
                 check: None,
             },
             needs_project: true,
@@ -13148,7 +12614,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(550, false),
@@ -13167,7 +12633,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(551, false),
@@ -13186,10 +12652,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Get the current scene", params: "{}" }],
             params_schema: || crate::declared_schema(552, false),
@@ -13209,7 +12672,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sceneId` names an existing scene.",
                 check: None,
             },
             needs_project: true,
@@ -13233,10 +12696,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Map a global frame to scene(s), local frame(s) and transition",
@@ -13258,10 +12718,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Render a global storyline frame including transitions",
@@ -13283,10 +12740,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Get the full storyline model with computed global timing",
@@ -13308,7 +12762,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(557, false),
@@ -13327,10 +12781,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Start Play Storyline (whole movie with transitions)",
@@ -13352,10 +12803,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Stop Play Storyline", params: "{}" }],
             params_schema: || crate::declared_schema(559, false),
@@ -13374,10 +12822,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Get the storyline playhead", params: "{}" }],
             params_schema: || crate::declared_schema(560, false),
@@ -13396,10 +12841,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Move the storyline playhead (scrub)", params: "{}" }],
             params_schema: || crate::declared_schema(561, false),
@@ -13418,10 +12860,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Edit],
             undo: Some("Add scene"),
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Add a scene (\"Add scene\")", params: "{}" }],
             params_schema: || crate::declared_schema(562, false),
@@ -13441,7 +12880,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Delete scene"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sceneId` names an existing scene.",
                 check: None,
             },
             needs_project: true,
@@ -13466,7 +12905,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sceneId` names an existing scene.",
                 check: None,
             },
             needs_project: true,
@@ -13490,10 +12929,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: List scenes in order", params: "{}" }],
             params_schema: || crate::declared_schema(565, false),
@@ -13513,7 +12949,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Reorder scene"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sceneId` names an existing scene.",
                 check: None,
             },
             needs_project: true,
@@ -13538,7 +12974,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change scene name"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sceneId` names an existing scene.",
                 check: None,
             },
             needs_project: true,
@@ -13563,7 +12999,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Change scene properties"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sceneId` names an existing scene.",
                 check: None,
             },
             needs_project: true,
@@ -13588,7 +13024,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Show/Hide scene"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `sceneId` names an existing scene.",
                 check: None,
             },
             needs_project: true,
@@ -13612,7 +13048,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(570, false),
@@ -13632,7 +13068,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given.",
                 check: None,
             },
             needs_project: true,
@@ -13654,7 +13090,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -13678,10 +13114,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Get the transition at an edit point", params: "{}" }],
             params_schema: || crate::declared_schema(573, false),
@@ -13700,10 +13133,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: List all edit points with their transitions and computed spans",
@@ -13726,7 +13156,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set an edit point's transition to none"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the edit point exists between two visible scenes (08 §15).",
                 check: None,
             },
             needs_project: true,
@@ -13748,7 +13178,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Set transition type and parameters at an edit point"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the edit point exists between two visible scenes (08 §15).",
                 check: None,
             },
             needs_project: true,
@@ -13772,10 +13202,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: List transition types with their parameters, ranges, defaults and allowed direct",
@@ -13797,10 +13224,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Get storyline view state", params: "{}" }],
             params_schema: || crate::declared_schema(578, false),
@@ -13819,10 +13243,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 08 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Set storyline zoom or fit to view", params: "{}" }],
             params_schema: || crate::declared_schema(579, false),
@@ -13841,7 +13262,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 08 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(580, false),
@@ -13860,10 +13281,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Force frame rate (drop frames to keep real time)",
@@ -13885,10 +13303,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Loop playback on/off",
@@ -13910,10 +13325,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Close the player", params: "{}" }],
             params_schema: || crate::declared_schema(583, false),
@@ -13932,10 +13344,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Read player state", params: "{}" }],
             params_schema: || crate::declared_schema(584, false),
@@ -13954,10 +13363,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui, Scope::FilesRead],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Open the preview player on a preview or a movie file",
@@ -13979,10 +13385,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Control the player (play/pause, seek, loop, volume, mute, size report)",
@@ -14005,7 +13408,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); the context has a selection, or the objects are given; there is something to render: a non-empty project or scene, and a selection for a selection range (09 §3.2, §4.7).",
                 check: None,
             },
             needs_project: true,
@@ -14029,7 +13432,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 09 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(588, false),
@@ -14049,7 +13452,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -14071,7 +13474,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -14096,7 +13499,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -14120,10 +13523,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Interactive playback rate (does not change project fps)",
@@ -14146,7 +13546,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -14170,7 +13570,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 09 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(594, false),
@@ -14189,10 +13589,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Read playback state and options", params: "{}" }],
             params_schema: || crate::declared_schema(595, false),
@@ -14211,10 +13608,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Stop interactive playback (scene or storyline); current frame stays where stoppe",
@@ -14236,7 +13630,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 09 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(597, false),
@@ -14256,7 +13650,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &["overwriting an existing file"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -14280,10 +13674,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Inline size limits, max output size, supported render formats",
@@ -14306,7 +13697,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; there is something to render: a non-empty project or scene, and a selection for a selection range (09 §3.2, §4.7).",
                 check: None,
             },
             needs_project: true,
@@ -14330,7 +13721,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 09 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(601, false),
@@ -14349,10 +13740,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read, Scope::FilesRead],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Inspect a file before import",
@@ -14375,7 +13763,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Import files"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -14399,10 +13787,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Supported import formats by family", params: "{}" }],
             params_schema: || crate::declared_schema(604, false),
@@ -14421,14 +13806,11 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read, Scope::FilesRead],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Preview keying on one image (PNG)",
-                params: "{\"path\": \"review/example.out\", \"keying\": {}}",
+                params: "{\"path\": \"review/example.out\", \"keying\": {\"type\": \"none\", \"keyColour\": \"#FF8000FF\", \"min\": 1, \"max\": 1, \"lumaCorrection\": true, \"filter\": \"none\", \"intensity\": 1}}",
             }],
             params_schema: || crate::declared_schema(605, false),
             result_schema: || crate::declared_schema(605, true),
@@ -14447,13 +13829,13 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Import images with keying, one cell per file"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Import images with keying, one cell per file",
-                params: "{\"paths\": [], \"keying\": {}}",
+                params: "{\"paths\": [], \"keying\": {\"type\": \"none\", \"keyColour\": \"#FF8000FF\", \"min\": 1, \"max\": 1, \"lumaCorrection\": true, \"filter\": \"none\", \"intensity\": 1}}",
             }],
             params_schema: || crate::declared_schema(606, false),
             result_schema: || crate::declared_schema(606, true),
@@ -14472,7 +13854,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Import a movie as an image sequence"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -14496,10 +13878,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Read persisted import options", params: "{}" }],
             params_schema: || crate::declared_schema(608, false),
@@ -14518,10 +13897,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Write persisted import options", params: "{}" }],
             params_schema: || crate::declared_schema(609, false),
@@ -14540,10 +13916,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Read import-and-vectorize settings", params: "{}" }],
             params_schema: || crate::declared_schema(610, false),
@@ -14562,10 +13935,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Write the remembered import-and-vectorize settings (defaults for `draw.vectorize",
@@ -14588,7 +13958,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current drawing exists or `drawingId` is given; a current element exists or `elementId` is given; there is something to render: a non-empty project or scene, and a selection for a selection range (09 §3.2, §4.7).",
                 check: None,
             },
             needs_project: true,
@@ -14612,10 +13982,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: List export formats with capabilities and settings schemas",
@@ -14637,7 +14004,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 09 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(614, false),
@@ -14656,10 +14023,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Read persisted export-dialog values (path, format, type, range, publishing optio",
@@ -14681,10 +14045,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Prefs],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Write persisted export-dialog values",
@@ -14707,7 +14068,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given; there is something to render: a non-empty project or scene, and a selection for a selection range (09 §3.2, §4.7).",
                 check: None,
             },
             needs_project: true,
@@ -14732,7 +14093,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -14757,7 +14118,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `serviceId` names an existing service.",
                 check: None,
             },
             needs_project: true,
@@ -14782,7 +14143,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `serviceId` names an existing service.",
                 check: None,
             },
             needs_project: true,
@@ -14807,7 +14168,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &["an outward network action"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `serviceId` names an existing service.",
                 check: None,
             },
             needs_project: true,
@@ -14832,7 +14193,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `serviceId` names an existing service.",
                 check: None,
             },
             needs_project: true,
@@ -14860,7 +14221,7 @@ pub static DECLARED: &[Command] = &[
                 "an outward network action",
             ],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `serviceId` names an existing service.",
                 check: None,
             },
             needs_project: true,
@@ -14884,10 +14245,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Configured publishing services, limits and metadata requirements",
@@ -14910,7 +14268,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `serviceId` names an existing service.",
                 check: None,
             },
             needs_project: true,
@@ -14935,7 +14293,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `jobId` names an existing job.",
                 check: None,
             },
             needs_project: true,
@@ -14959,10 +14317,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Read stored settings of a format and active preset",
@@ -14984,10 +14339,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Store Custom settings for a format, or reset to Default",
@@ -15010,7 +14362,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given; there is something to render: a non-empty project or scene, and a selection for a selection range (09 §3.2, §4.7).",
                 check: None,
             },
             needs_project: true,
@@ -15035,7 +14387,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Start auto capture"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a capture session is open with a device and a target (09 §9).",
                 check: None,
             },
             needs_project: true,
@@ -15059,10 +14411,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Stop auto capture", params: "{}" }],
             params_schema: || crate::declared_schema(631, false),
@@ -15081,7 +14430,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 09 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(632, false),
@@ -15101,7 +14450,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `deviceId` names an existing device.",
                 check: None,
             },
             needs_project: true,
@@ -15126,7 +14475,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `deviceId` names an existing device.",
                 check: None,
             },
             needs_project: true,
@@ -15150,10 +14499,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: List connected capture devices and scanners", params: "{}" }],
             params_schema: || crate::declared_schema(635, false),
@@ -15172,7 +14518,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 09 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(636, false),
@@ -15192,7 +14538,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `deviceId` names an existing device.",
                 check: None,
             },
             needs_project: true,
@@ -15217,7 +14563,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); `deviceId` names an existing device.",
                 check: None,
             },
             needs_project: true,
@@ -15241,10 +14587,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Preview display aids", params: "{}" }],
             params_schema: || crate::declared_schema(639, false),
@@ -15264,7 +14607,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Capture from the session's device into the target"),
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a capture session is open with a device and a target (09 §9).",
                 check: None,
             },
             needs_project: true,
@@ -15289,7 +14632,7 @@ pub static DECLARED: &[Command] = &[
             undo: Some("Feed supplied image files through the capture pipeline"),
             confirm: &["overwriting an existing file"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -15313,7 +14656,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 09 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(642, false),
@@ -15332,10 +14675,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Ignore pointer input during auto capture",
@@ -15357,10 +14697,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Set key colour directly or by sampling the preview",
@@ -15382,14 +14719,11 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Set keying parameters of the session (persisted)",
-                params: "{\"keying\": {}}",
+                params: "{\"keying\": {\"type\": \"none\", \"keyColour\": \"#FF8000FF\", \"min\": 1, \"max\": 1, \"lumaCorrection\": true, \"filter\": \"none\", \"intensity\": 1}}",
             }],
             params_schema: || crate::declared_schema(645, false),
             result_schema: || crate::declared_schema(645, true),
@@ -15407,10 +14741,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Available light-table references for the current target frame",
@@ -15432,10 +14763,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Light-table reference, opacity and aspect-ratio mode",
@@ -15457,10 +14785,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Current processed preview as PNG (keying, display aids, light table)",
@@ -15482,10 +14807,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Close the session (stops auto capture)", params: "{}" }],
             params_schema: || crate::declared_schema(649, false),
@@ -15504,7 +14826,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement { rule: "see spec 09 for the full rule", check: None },
+            enablement: Enablement { rule: "Never invoked: an event delivered to subscribers (11 §9).", check: None },
             needs_project: false,
             examples: &[Example { title: "Subscribe (events take no parameters)", params: "{}" }],
             params_schema: || crate::declared_schema(650, false),
@@ -15523,10 +14845,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Read session state", params: "{}" }],
             params_schema: || crate::declared_schema(651, false),
@@ -15546,7 +14865,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; a current scene exists or `sceneId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -15570,10 +14889,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "No parameters: Set source, resolution / image size, noise reduction",
@@ -15596,7 +14912,7 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &["overwriting an existing file"],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
@@ -15620,10 +14936,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Read page setup", params: "{}" }],
             params_schema: || crate::declared_schema(655, false),
@@ -15642,10 +14955,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Set paper size and orientation", params: "{}" }],
             params_schema: || crate::declared_schema(656, false),
@@ -15665,13 +14975,13 @@ pub static DECLARED: &[Command] = &[
             undo: None,
             confirm: &[],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given.",
                 check: None,
             },
             needs_project: true,
             examples: &[Example {
-                title: "Required parameters only: Lay out pages and return page count and one page image",
-                params: "{\"PrintParams\": {}}",
+                title: "No parameters: Lay out pages and return page count and one page image",
+                params: "{}",
             }],
             params_schema: || crate::declared_schema(657, false),
             result_schema: || crate::declared_schema(657, true),
@@ -15689,10 +14999,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Installed printers and their capabilities", params: "{}" }],
             params_schema: || crate::declared_schema(658, false),
@@ -15715,13 +15022,13 @@ pub static DECLARED: &[Command] = &[
                 "printing to a physical printer",
             ],
             enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
+                rule: "Enabled when a project is open (01 §1.3); a current element exists or `elementId` is given; there is something to render: a non-empty project or scene, and a selection for a selection range (09 §3.2, §4.7).",
                 check: None,
             },
             needs_project: true,
             examples: &[Example {
-                title: "Required parameters only: Print to a printer (needs scope + confirm) or to a file/PDF",
-                params: "{\"PrintParams\": {}}",
+                title: "No parameters: Print to a printer (needs scope + confirm) or to a file/PDF",
+                params: "{}",
             }],
             params_schema: || crate::declared_schema(659, false),
             result_schema: || crate::declared_schema(659, true),
@@ -15739,10 +15046,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Read],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example { title: "No parameters: Read persisted print parameters", params: "{}" }],
             params_schema: || crate::declared_schema(660, false),
@@ -15761,10 +15065,7 @@ pub static DECLARED: &[Command] = &[
             scopes: &[Scope::Ui],
             undo: None,
             confirm: &[],
-            enablement: Enablement {
-                rule: "needs an open project (01 §1.3); see spec 09 for the full rule",
-                check: None,
-            },
+            enablement: Enablement { rule: "Enabled when a project is open (01 §1.3).", check: None },
             needs_project: true,
             examples: &[Example {
                 title: "Required parameters only: Write persisted print parameters",

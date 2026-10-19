@@ -230,12 +230,14 @@ fn object_type(m: &Map<String, Value>, defs: &Map<String, Value>, indent: usize)
 }
 
 /// The stub interface of a model object definition: its ID field, `type` and (for named types) an optional `name`.
-fn stub_type(def: &Value) -> Option<String> {
+fn stub_type(def: &Value, defs: &Map<String, Value>) -> Option<String> {
     def.get("x-objectType")?;
     let props = def.get("properties")?.as_object()?;
     let id_field = def.get("required")?.as_array()?.first()?.as_str()?;
     let ty = props.get("type")?.get("const")?;
-    let mut out = format!("{{\n  {}: Id;\n  type: {};\n", key(id_field), literal_type(ty));
+    // The ID's own type (`Id` in the model bundle, a prefixed copy where definitions are namespaced per command).
+    let id_type = props.get(id_field).map_or_else(|| "string".to_owned(), |s| ts_type(s, defs, 1));
+    let mut out = format!("{{\n  {}: {id_type};\n  type: {};\n", key(id_field), literal_type(ty));
     if props.contains_key("name") {
         out.push_str("  name?: string;\n");
     }
@@ -287,7 +289,7 @@ pub fn module(header: &str, consts: &[(&str, Value)], defs_name: &str, defs: &Ma
         } else {
             let _ = write!(out, "\n{doc}export type {} = {t};\n", type_name(name));
         }
-        if let Some(stub) = stub_type(def) {
+        if let Some(stub) = stub_type(def, defs) {
             let n = type_name(name);
             let _ = write!(out, "\n/** A `{n}` reduced to its stub (10 §2.2). */\nexport interface {n}Stub {stub}\n");
         }

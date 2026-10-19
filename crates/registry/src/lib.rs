@@ -521,15 +521,43 @@ impl Entry {
     }
 }
 
+/// The entries of `declared.json`, parsed once.
+fn declared_entries() -> &'static [Value] {
+    static ALL: OnceLock<Vec<Value>> = OnceLock::new();
+    ALL.get_or_init(|| match serde_json::from_str::<Value>(include_str!("declared.json")) {
+        Ok(Value::Array(a)) => a,
+        _ => Vec::new(),
+    })
+}
+
 /// The parameter (`result = false`) or result schema of the `index`-th generated declaration (`declared.json`).
 #[must_use]
 pub fn declared_schema(index: usize, result: bool) -> Value {
-    static SCHEMAS: OnceLock<Vec<Value>> = OnceLock::new();
-    let all = SCHEMAS.get_or_init(|| match serde_json::from_str::<Value>(include_str!("declared.json")) {
-        Ok(Value::Array(a)) => a,
-        _ => Vec::new(),
-    });
-    all.get(index).and_then(|e| e.get(if result { "result" } else { "params" })).cloned().unwrap_or(Value::Null)
+    declared_entries()
+        .get(index)
+        .and_then(|e| e.get(if result { "result" } else { "params" }))
+        .cloned()
+        .unwrap_or(Value::Null)
+}
+
+/// The stored sample of the `index`-th generated declaration (`part`: `params`, `result` or `jobResult`): an instance
+/// that uses every property of the schema, for the negative tests (C12-R2-02). `{"x-unsampleable": reason}` where a
+/// required model object cannot be sampled; `Null` when absent.
+#[must_use]
+pub fn declared_sample(index: usize, part: &str) -> Value {
+    declared_entries().get(index).and_then(|e| e.get("samples")).and_then(|s| s.get(part)).cloned().unwrap_or(Value::Null)
+}
+
+/// The placeholders of the `index`-th generated declaration: positions whose type or shape the owning section does
+/// not define (each family is a spec issue).
+#[must_use]
+pub fn declared_placeholders(index: usize) -> Vec<Value> {
+    declared_entries()
+        .get(index)
+        .and_then(|e| e.get("placeholders"))
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default()
 }
 
 /// The handler of a generated declaration. Never reached: the executor answers `command.notImplemented` for every
