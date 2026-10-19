@@ -195,6 +195,100 @@ fn collect(v: Value, ty: ObjectType, parent: Option<&str>, index: usize, ctx: (&
     out.push(OwnObject { key, ty, parent: parent.map(str::to_owned), index, json: own });
 }
 
+/// The JSON Pointer of the object with index key `key` (plain or compound ID, as in the document index) inside its
+/// entry's JSON, or `None` if the entry does not hold it.
+#[must_use]
+pub fn object_pointer(entry: &Value, key: &str) -> Option<String> {
+    let ty = type_of(entry)?;
+    find_pointer(entry, ty, ("", ""), "", key)
+}
+
+fn find_pointer(v: &Value, ty: ObjectType, ctx: (&str, &str), at: &str, target: &str) -> Option<String> {
+    let id = v.get(ty.id_field()).and_then(Value::as_str).unwrap_or_default();
+    let key = match ty.local_id_container() {
+        Some(ObjectType::Drawing) if !ctx.0.is_empty() => format!("{}/{id}", ctx.0),
+        Some(ObjectType::Channel) if !ctx.1.is_empty() => format!("{}/{id}", ctx.1),
+        _ => id.to_owned(),
+    };
+    if key == target {
+        return Some(at.to_owned());
+    }
+    let (drawing, channel) = match ty {
+        ObjectType::Drawing => (id, ""),
+        ObjectType::Channel => (ctx.0, id),
+        _ => ctx,
+    };
+    for (field, slot) in crate::document::slots_of(ty) {
+        if matches!(slot, crate::document::SlotKind::Split(_) | crate::document::SlotKind::SplitOne(_)) {
+            continue;
+        }
+        let Some(child) = v.get(*field) else { continue };
+        let base = format!("{at}/{}", pointer::escape(field));
+        let found = match child {
+            Value::Array(items) => items.iter().enumerate().find_map(|(i, item)| {
+                type_of(item)
+                    .and_then(|cty| find_pointer(item, cty, (drawing, channel), &format!("{base}/{i}"), target))
+            }),
+            Value::Object(m) if matches!(slot, crate::document::SlotKind::InlineMap) => {
+                m.iter().find_map(|(k, item)| {
+                    type_of(item).and_then(|cty| {
+                        find_pointer(item, cty, (drawing, channel), &format!("{base}/{}", pointer::escape(k)), target)
+                    })
+                })
+            }
+            item @ Value::Object(_) => {
+                type_of(item).and_then(|cty| find_pointer(item, cty, (drawing, channel), &base, target))
+            }
+            _ => None,
+        };
+        if found.is_some() {
+            return found;
+        }
+    }
+    None
+}
+
+/// The own view of one object's JSON (10 §2.6, REV-02): without `rev`, each child object reduced to `{id, type}`.
+#[must_use]
+pub fn own_view_of(object: &Value) -> Value {
+    let mut own = object.clone();
+    let Some(ty) = type_of(&own) else { return own };
+    if let Value::Object(m) = &mut own {
+        m.shift_remove("rev");
+    }
+    for (field, slot) in crate::document::slots_of(ty) {
+        let Some(child) = own.get_mut(*field) else { continue };
+        let stub = |item: &mut Value| {
+            if let Some(cty) = type_of(item) {
+                *item = child_stub(item, cty);
+            }
+        };
+        match child {
+            Value::Array(items) => items.iter_mut().for_each(stub),
+            Value::Object(m) if matches!(slot, crate::document::SlotKind::InlineMap) => m.values_mut().for_each(stub),
+            item @ Value::Object(_) => stub(item),
+            _ => {}
+        }
+    }
+    own
+}
+
+/// The own view of the object with index key `key`, with its type and the pointer of the object in its entry.
+///
+/// # Errors
+/// `ref.notFound` if the document has no such object.
+pub fn own_view(doc: &Document, key: &str) -> Result<(ObjectType, Value), ModelError> {
+    let not_found = || {
+        ModelError::with_details(codes::REF_NOT_FOUND, format!("`{key}` is not in the document"), json!({ "ref": key }))
+    };
+    let loc = doc.locate(key).ok_or_else(not_found)?;
+    let entry = doc.entry_raw_json(&loc.entry)?;
+    let at = object_pointer(&entry, &loc.key).ok_or_else(not_found)?;
+    let tokens = pointer::parse(&at)?;
+    let object = pointer::get(&entry, &tokens).ok_or_else(not_found)?;
+    Ok((loc.ty, own_view_of(object)))
+}
+
 /// The own views of all objects in one entry of a document.
 ///
 /// # Errors

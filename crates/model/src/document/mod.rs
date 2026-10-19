@@ -14,6 +14,7 @@
 mod index;
 mod paths;
 mod render;
+mod stamp;
 
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 use std::sync::Arc;
@@ -118,6 +119,38 @@ pub struct DocumentParts {
     pub library: Library,
 }
 
+/// The undo and redo patches of one entry changed by [`Document::with_patched_entries`].
+#[derive(Debug, Clone, PartialEq)]
+pub struct EntryCommit {
+    /// The entry.
+    pub key: EntryKey,
+    /// Turns the committed entry back into the pre-state (canonical, verified).
+    pub undo: Vec<crate::change::PatchOp>,
+    /// Turns the pre-state into the committed entry (canonical, verified).
+    pub redo: Vec<crate::change::PatchOp>,
+}
+
+/// A patch from `from` to `to`, verified to reproduce `to` exactly; a whole-entry `replace` otherwise.
+fn verified_diff(
+    from: &serde_json::Value,
+    to: &serde_json::Value,
+    ty: crate::types::ObjectType,
+) -> Vec<crate::change::PatchOp> {
+    let patch = crate::change::diff_json(from, to, "", ty);
+    if crate::change::apply(from, &patch).ok().as_ref() == Some(to) {
+        return patch;
+    }
+    vec![crate::change::PatchOp {
+        op: "replace",
+        from: None,
+        path: String::new(),
+        range: None,
+        value: Some(to.clone()),
+        old_value: Some(from.clone()),
+        elided: false,
+    }]
+}
+
 /// An immutable snapshot of a project.
 #[derive(Debug, Clone)]
 pub struct Document {
@@ -138,6 +171,10 @@ pub struct Document {
     drawing_bank: Arc<HashMap<Id, Id>>,
     /// Problems found while assembling the parts (entries given twice; C11-R1-01).
     assembly: Arc<Vec<Issue>>,
+    /// Entries known to satisfy every object-local rule: entry → address of the validated `Arc`. Entries are
+    /// immutable, so a validated entry stays valid; `issues()` skips its object-local re-check, and the result is
+    /// identical to checking it (C1.2 touched-entry validation).
+    validated: Arc<HashMap<EntryKey, usize>>,
 }
 
 impl Document {
@@ -153,7 +190,11 @@ impl Document {
     /// [`Document::issues`].
     pub fn from_parts(parts: DocumentParts) -> Result<Self, Vec<ModelError>> {
         let parts = Self::revalidate_parts(parts)?;
-        let doc = Self::assemble(parts);
+        let mut doc = Self::assemble(parts);
+        // Every entry just passed the full object input path.
+        for key in doc.entry_keys() {
+            doc.mark_validated(&key);
+        }
         let errors: Vec<ModelError> =
             doc.issues().into_iter().filter(|i| i.severity == Severity::Error).map(|i| i.to_error()).collect();
         if errors.is_empty() { Ok(doc) } else { Err(errors) }
@@ -239,9 +280,45 @@ impl Document {
             bank_users: Arc::new(HashMap::new()),
             drawing_bank: Arc::new(HashMap::new()),
             assembly: Arc::new(assembly),
+            validated: Arc::new(HashMap::new()),
         };
         doc.rebuild_derived();
         doc
+    }
+
+    /// The address of an entry's `Arc` (identity of the immutable entry value).
+    fn entry_ptr(&self, key: &EntryKey) -> Option<usize> {
+        fn ptr<T>(a: &Arc<T>) -> usize {
+            Arc::as_ptr(a).cast::<()>() as usize
+        }
+        match key {
+            EntryKey::Project => Some(ptr(&self.project)),
+            EntryKey::Library => Some(ptr(&self.library)),
+            EntryKey::Palette(id) => self.palettes.get(id).map(ptr),
+            EntryKey::Bank(id) => self.banks.get(id).map(ptr),
+            EntryKey::Drawing(id) => self.drawings.get(id).map(ptr),
+            EntryKey::Scene(id) => self.scenes.get(id).map(ptr),
+            EntryKey::Element(id) => self.elements.get(id).map(ptr),
+        }
+    }
+
+    /// Records that the entry's current value passed the full object input path.
+    fn mark_validated(&mut self, key: &EntryKey) {
+        if let Some(p) = self.entry_ptr(key) {
+            Arc::make_mut(&mut self.validated).insert(key.clone(), p);
+        }
+    }
+
+    /// Carries the validation of `from`'s entry over to this snapshot's entry of the same key (stamping changes only
+    /// `rev` values, which no object-local rule reads).
+    pub(super) fn carry_validation(&mut self, from: &Document, key: &EntryKey) {
+        if from.is_validated(key) {
+            self.mark_validated(key);
+        }
+    }
+
+    fn is_validated(&self, key: &EntryKey) -> bool {
+        self.entry_ptr(key).is_some_and(|p| self.validated.get(key) == Some(&p))
     }
 
     fn rebuild_derived(&mut self) {
@@ -406,27 +483,44 @@ impl Document {
     }
 
     /// Applies a patch to one entry as a **staged commit** (10 §2.6, §5; C11-R5-01) and returns the next snapshot
-    /// with the patch's inverse.
-    ///
-    /// The patch is applied to a copy of the entry's JSON (`change::apply_with_inverse`, which already checks every
-    /// frame-bearing field an operation touched). The staged entry then goes through the full input path again
-    /// (`object::from_json`: depth limit, normalisation, schema, canonical form, object-local rules, including the
-    /// exposure and scene limits), replaces the entry in a copy-on-write clone, and the clone's complete `issues()` —
-    /// every integrity rule and every 10 §5 limit — must have no error. Only then is the staged snapshot returned;
-    /// `self` is immutable and is never changed. This post-condition is the guarantee, whatever operations or paths
-    /// the patch uses; the cheap per-operation checks are fast paths.
+    /// with the patch's inverse: [`Document::with_patched_entries`] for a single entry.
     ///
     /// # Errors
-    /// The first failing stage's errors: the patch's typed error (e.g. `doc.limitExceeded`, `arg.invalid`,
-    /// `doc.patchTestFailed`, with `details.pointer`), the entry's input errors (`doc.schemaViolation`,
-    /// `arg.invalid`, `doc.limitExceeded`; `details.objectId`), an attempt to change the entry's ID (`arg.invalid`,
-    /// ID-01), or the integrity errors of the staged document (codes of 10 §9 with `details.objectId` and
-    /// `details.pointer`).
+    /// As [`Document::with_patched_entries`].
     pub fn with_patched_entry(
         &self,
         key: &EntryKey,
         patch: &[crate::change::PatchOp],
     ) -> Result<(Document, Vec<crate::change::PatchOp>), Vec<ModelError>> {
+        let (next, commits) = self.with_patched_entries(&[(key.clone(), patch.to_vec())])?;
+        let undo = commits.into_iter().next().map(|c| c.undo).unwrap_or_default();
+        Ok((next, undo))
+    }
+
+    /// Applies patches to several entries as **one staged commit** (10 §2.6, §5; C11-R5-01; atomic across entries).
+    ///
+    /// Each entry's patches are applied in order to a copy of the entry's JSON (`change::apply_with_inverse`, which
+    /// checks every frame-bearing field an operation touched). Each staged entry then goes through the full input path
+    /// again (`object::from_json`: depth limit, normalisation, schema, canonical form, object-local rules, including
+    /// the exposure and scene limits) and its ID must be unchanged (ID-01). The staged entries replace the old ones
+    /// in a copy-on-write clone, and the clone's complete `issues()` — every integrity rule and every 10 §5 limit —
+    /// must have no error; it is checked once, on the final state, so a change spanning entries is validated as a
+    /// whole. Only then is the staged snapshot returned; `self` is immutable and is never changed.
+    ///
+    /// For each entry the result carries the canonical **undo** and **redo** patches (C11-R6-01): the diff from the
+    /// committed canonical entry back to the canonical pre-state, and from the pre-state to the committed entry, each
+    /// verified to reproduce its target exactly (a whole-entry `replace` is the never-expected safety net).
+    ///
+    /// # Errors
+    /// The first failing stage's errors: a patch's typed error (e.g. `doc.limitExceeded`, `arg.invalid`,
+    /// `doc.patchTestFailed`, with `details.pointer`), an entry's input errors (`doc.schemaViolation`,
+    /// `arg.invalid`, `doc.limitExceeded`; `details.objectId`), an attempt to change an entry's ID (`arg.invalid`,
+    /// ID-01), or the integrity errors of the staged document (codes of 10 §9 with `details.objectId` and
+    /// `details.pointer`).
+    pub fn with_patched_entries(
+        &self,
+        changes: &[(EntryKey, Vec<crate::change::PatchOp>)],
+    ) -> Result<(Document, Vec<EntryCommit>), Vec<ModelError>> {
         fn staged<T: crate::entities::ModelObject + Check>(
             v: &serde_json::Value,
             id: &Id,
@@ -452,27 +546,43 @@ impl Document {
             }
             Ok(parsed)
         }
-        let before = self.entry_raw_json(key).map_err(|e| vec![e])?;
-        let (after, inverse) = crate::change::apply_with_inverse(&before, patch).map_err(|e| vec![e])?;
+        // Group the patches by entry, keeping their order.
+        let mut order: Vec<EntryKey> = Vec::new();
+        let mut grouped: BTreeMap<EntryKey, Vec<crate::change::PatchOp>> = BTreeMap::new();
+        for (key, patch) in changes {
+            if !grouped.contains_key(key) {
+                order.push(key.clone());
+            }
+            grouped.entry(key.clone()).or_default().extend(patch.iter().cloned());
+        }
         let mut next = self.clone();
-        match key {
-            EntryKey::Project => next.project = Arc::new(staged(&after, &self.project.id)?),
-            EntryKey::Library => next.library = Arc::new(staged(&after, &self.library.id)?),
-            EntryKey::Palette(id) => {
-                next.palettes.insert(id.clone(), Arc::new(staged(&after, id)?));
+        let mut befores = Vec::with_capacity(order.len());
+        for key in &order {
+            let patch = grouped.get(key).map(Vec::as_slice).unwrap_or_default();
+            let before = self.entry_raw_json(key).map_err(|e| vec![e])?;
+            let (after, _raw_inverse) = crate::change::apply_with_inverse(&before, patch).map_err(|e| vec![e])?;
+            match key {
+                EntryKey::Project => next.project = Arc::new(staged(&after, &self.project.id)?),
+                EntryKey::Library => next.library = Arc::new(staged(&after, &self.library.id)?),
+                EntryKey::Palette(id) => {
+                    next.palettes.insert(id.clone(), Arc::new(staged(&after, id)?));
+                }
+                EntryKey::Bank(id) => {
+                    next.banks.insert(id.clone(), Arc::new(staged(&after, id)?));
+                }
+                EntryKey::Drawing(id) => {
+                    next.drawings.insert(id.clone(), Arc::new(staged(&after, id)?));
+                }
+                EntryKey::Scene(id) => {
+                    next.scenes.insert(id.clone(), Arc::new(staged(&after, id)?));
+                }
+                EntryKey::Element(id) => {
+                    next.elements.insert(id.clone(), Arc::new(staged(&after, id)?));
+                }
             }
-            EntryKey::Bank(id) => {
-                next.banks.insert(id.clone(), Arc::new(staged(&after, id)?));
-            }
-            EntryKey::Drawing(id) => {
-                next.drawings.insert(id.clone(), Arc::new(staged(&after, id)?));
-            }
-            EntryKey::Scene(id) => {
-                next.scenes.insert(id.clone(), Arc::new(staged(&after, id)?));
-            }
-            EntryKey::Element(id) => {
-                next.elements.insert(id.clone(), Arc::new(staged(&after, id)?));
-            }
+            // The staged entry passed the full object input path.
+            next.mark_validated(key);
+            befores.push((key.clone(), before));
         }
         next.rebuild_derived();
         let errors: Vec<ModelError> =
@@ -480,31 +590,22 @@ impl Document {
         if !errors.is_empty() {
             return Err(errors);
         }
-        // The inverse undoes the **committed** entry (C11-R6-01). Revalidation canonicalises — exposure runs merge,
-        // keys reorder, strings normalise — so the raw-JSON inverse of the staged value may name positions that no
-        // longer exist or restore the wrong frames. It is therefore derived from the canonical committed entry back to
-        // the canonical pre-state and verified to restore it exactly; the raw inverse only proves the patch applied.
-        let _ = inverse;
-        let committed = next.entry_raw_json(key).map_err(|e| vec![e])?;
-        let ty = before
-            .get("type")
-            .and_then(serde_json::Value::as_str)
-            .and_then(crate::types::ObjectType::parse)
-            .unwrap_or(crate::types::ObjectType::Project);
-        let mut undo = crate::change::diff_json(&committed, &before, "", ty);
-        if crate::change::apply(&committed, &undo).ok().as_ref() != Some(&before) {
-            // Never return an inverse that does not restore the pre-state: fall back to replacing the whole entry.
-            undo = vec![crate::change::PatchOp {
-                op: "replace",
-                from: None,
-                path: String::new(),
-                range: None,
-                value: Some(before.clone()),
-                old_value: Some(committed),
-                elided: false,
-            }];
+        // Undo and redo describe the **committed** canonical entry (C11-R6-01). Revalidation canonicalises — exposure
+        // runs merge, keys reorder, strings normalise — so the raw-JSON inverse of the staged value may name positions
+        // that no longer exist or restore the wrong frames. Both are derived from canonical snapshots and verified.
+        let mut commits = Vec::with_capacity(befores.len());
+        for (key, before) in befores {
+            let committed = next.entry_raw_json(&key).map_err(|e| vec![e])?;
+            let ty = before
+                .get("type")
+                .and_then(serde_json::Value::as_str)
+                .and_then(crate::types::ObjectType::parse)
+                .unwrap_or(crate::types::ObjectType::Project);
+            let undo = verified_diff(&committed, &before, ty);
+            let redo = verified_diff(&before, &committed, ty);
+            commits.push(EntryCommit { key, undo, redo });
         }
-        Ok((next, undo))
+        Ok((next, commits))
     }
 
     /// Where an object lives (by plain or compound ID string).
@@ -582,23 +683,30 @@ impl Document {
             c(&mut i);
             i
         };
-        push(&self.project.id, check(&|i| self.project.check("", i)));
-        for p in self.palettes.values() {
+        // Entries that passed the full object input path have no object-local issue; skipping them gives the same
+        // result as checking them (see `validated`).
+        let skip = |key: EntryKey| self.is_validated(&key);
+        if !skip(EntryKey::Project) {
+            push(&self.project.id, check(&|i| self.project.check("", i)));
+        }
+        for p in self.palettes.values().filter(|p| !skip(EntryKey::Palette(p.id.clone()))) {
             push(&p.id, check(&|i| p.check("", i)));
         }
-        for b in self.banks.values() {
+        for b in self.banks.values().filter(|b| !skip(EntryKey::Bank(b.id.clone()))) {
             push(&b.id, check(&|i| b.check("", i)));
         }
-        for d in self.drawings.values() {
+        for d in self.drawings.values().filter(|d| !skip(EntryKey::Drawing(d.id.clone()))) {
             push(&d.id, check(&|i| d.check("", i)));
         }
-        for s in self.scenes.values() {
+        for s in self.scenes.values().filter(|s| !skip(EntryKey::Scene(s.id.clone()))) {
             push(&s.id, check(&|i| s.check("", i)));
         }
-        for e in self.elements.values() {
+        for e in self.elements.values().filter(|e| !skip(EntryKey::Element(e.id.clone()))) {
             push(&e.id, check(&|i| e.check("", i)));
         }
-        push(&self.library.id, check(&|i| self.library.check("", i)));
+        if !skip(EntryKey::Library) {
+            push(&self.library.id, check(&|i| self.library.check("", i)));
+        }
     }
 
     #[allow(clippy::too_many_lines)]

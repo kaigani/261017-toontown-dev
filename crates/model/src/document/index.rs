@@ -41,6 +41,8 @@ pub struct Location {
     pub key: String,
     /// The plain (local) ID.
     pub id: Id,
+    /// The object's `rev` (10 REV-02), for `expectRev` checks (REV-05).
+    pub rev: u64,
 }
 
 /// The index.
@@ -167,8 +169,14 @@ impl Builder {
     fn add(&mut self, ty: ObjectType, id: &Id, entry: EntryKey, parent: Option<&Id>, rev: u64) {
         let key = id.as_str().to_owned();
         self.note_rev(&key, rev);
-        let loc =
-            Location { ty, entry, parent: parent.map(|p| p.as_str().to_owned()), key: key.clone(), id: id.clone() };
+        let loc = Location {
+            ty,
+            entry,
+            parent: parent.map(|p| p.as_str().to_owned()),
+            key: key.clone(),
+            id: id.clone(),
+            rev,
+        };
         if self.index.by_key.insert(key, loc).is_some() {
             *self.index.duplicates.entry(id.clone()).or_insert(1) += 1;
         }
@@ -177,7 +185,7 @@ impl Builder {
     fn add_local(&mut self, ty: ObjectType, container: &Id, id: &Id, entry: EntryKey, parent: String, rev: u64) {
         let key = format!("{container}/{id}");
         self.note_rev(&key, rev);
-        let loc = Location { ty, entry, parent: Some(parent), key: key.clone(), id: id.clone() };
+        let loc = Location { ty, entry, parent: Some(parent), key: key.clone(), id: id.clone(), rev };
         if self.index.by_key.insert(key.clone(), loc).is_some() {
             *self.index.duplicates.entry(id.clone()).or_insert(1) += 1;
         } else {
