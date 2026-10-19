@@ -1,0 +1,2847 @@
+{
+  "seed": "0xc12220261019",
+  "rows": [
+    {
+      "id": "anim.bone.create",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:517",
+      "owningSectionSources": [
+        "spec/05_scene_planning.md:1295"
+      ],
+      "source": "crates/registry/src/declared.rs:6386",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 05 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Create a bone",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Create a bone (chained to a parent bone, or freestanding)",
+          "params": {
+            "skeletonId": "scene:#1",
+            "tip": {
+              "x": 1,
+              "y": 1
+            }
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Camera, Top and Side views, the Function editor and the Animation menu (05); wired in M6 C6.3",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/boneId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "anim.camera.delete",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:528",
+      "owningSectionSources": [
+        "spec/05_scene_planning.md:1278"
+      ],
+      "source": "crates/registry/src/declared.rs:6646",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 05 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Delete a camera",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Delete a camera (not the last one)",
+          "params": {
+            "cameraId": "scene:#1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Camera, Top and Side views, the Function editor and the Animation menu (05); wired in M3 C3.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/currentCameraId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "anim.function.key.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:555",
+      "owningSectionSources": [
+        "spec/05_scene_planning.md:1176",
+        "spec/05_scene_planning.md:1267"
+      ],
+      "source": "crates/registry/src/declared.rs:7294",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 05 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Edit a key point: move in time, value, handles, handle mode,",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Edit a key point: move in time, value, handles, handle mode, constant flag, lock",
+          "params": {
+            "nodeId": "scene:#1",
+            "channel": "example",
+            "frame": 1
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Camera, Top and Side views, the Function editor and the Animation menu (05); wired in M3 C3.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "params/properties/left/properties/dt",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "params/properties/left/properties/dv",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "params/properties/right/properties/dt",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "params/properties/right/properties/dv",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/frame",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/value",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "anim.function.sample",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:558",
+      "owningSectionSources": [
+        "spec/05_scene_planning.md:1192",
+        "spec/05_scene_planning.md:1272"
+      ],
+      "source": "crates/registry/src/declared.rs:7369",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 05 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Required parameters only: Evaluate a channel over a frame range",
+          "params": {
+            "nodeId": "scene:#1",
+            "channel": "example",
+            "from": 1,
+            "to": 1
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Camera, Top and Side views, the Function editor and the Animation menu (05); wired in M3 C3.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/samples/items/properties/frame",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/samples/items/properties/value",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "anim.functionEditor.get",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:560",
+      "owningSectionSources": [
+        "spec/05_scene_planning.md:1276"
+      ],
+      "source": "crates/registry/src/declared.rs:7419",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 05 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "No parameters: Function-editor state",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Camera, Top and Side views, the Function editor and the Animation menu (05); wired in M6 C6.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/nodeId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/channel",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/projection",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/selectedFrames/items",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/syncFrame",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/view",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "anim.path.sample",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:583",
+      "owningSectionSources": [
+        "spec/05_scene_planning.md:1192",
+        "spec/05_scene_planning.md:1255"
+      ],
+      "source": "crates/registry/src/declared.rs:7979",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 05 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Required parameters only: Positions per frame (frame markers, ghosts, pivot path)",
+          "params": {
+            "nodeId": "scene:#1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Camera, Top and Side views, the Function editor and the Animation menu (05); wired in M3 C3.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/samples/items/properties/frame",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "anim.pegOnlyMode.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:586",
+      "owningSectionSources": [
+        "spec/05_scene_planning.md:1219"
+      ],
+      "source": "crates/registry/src/declared.rs:8054",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 05 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "Required parameters only: Peg-only mode on/off (§6.1)",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Camera, Top and Side views, the Function editor and the Animation menu (05); wired in M6 C6.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/enabled",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "anim.point.paste",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:588",
+      "owningSectionSources": [
+        "spec/05_scene_planning.md:1306"
+      ],
+      "source": "crates/registry/src/declared.rs:8104",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 05 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Paste a copied point",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Paste a copied point (all properties, or chosen ones = paste special; `again` re",
+          "params": {
+            "targetPointIds": []
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Camera, Top and Side views, the Function editor and the Animation menu (05); wired in M6 C6.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/applied/items",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/skipped/items",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "anim.skeleton.deform.get",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:600",
+      "owningSectionSources": [
+        "spec/05_scene_planning.md:1193",
+        "spec/05_scene_planning.md:1294"
+      ],
+      "source": "crates/registry/src/declared.rs:8389",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 05 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Required parameters only: Deformed positions and weights of given rest-space points",
+          "params": {
+            "skeletonId": "scene:#1",
+            "points": []
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Camera, Top and Side views, the Function editor and the Animation menu (05); wired in M6 C6.3",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/points/items/properties/weights/items/properties/boneId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "anim.skeleton.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:605",
+      "owningSectionSources": [
+        "spec/05_scene_planning.md:1289"
+      ],
+      "source": "crates/registry/src/declared.rs:8514",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 05 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Skeleton display and quality options",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Skeleton display and quality options",
+          "params": {
+            "skeletonId": "scene:#1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Camera, Top and Side views, the Function editor and the Animation menu (05); wired in M6 C6.3",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/skeletonId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "capture.auto.start",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:956",
+      "owningSectionSources": [
+        "spec/09_playback_export.md:1062"
+      ],
+      "source": "crates/registry/src/declared.rs:15031",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 09 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Start auto capture",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "No parameters: Start auto capture (each capture is its own undo step)",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Capture window (09); wired in M10 C10.3",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/x-jobResult/properties/cellIds/items",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "capture.device.get",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:960",
+      "owningSectionSources": [
+        "spec/09_playback_export.md:1045"
+      ],
+      "source": "crates/registry/src/declared.rs:15122",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 09 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Required parameters only: Device descriptor, current settings and settings schema",
+          "params": {
+            "deviceId": "scene:#1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Capture window (09); wired in M10 C10.3",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "title": "capture.device.get result",
+            "description": "Device & {settings, settingsSchema}",
+            "x-spec": "`Device & {settings, settingsSchema}`"
+          }
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "capture.lightTable.references.list",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:972",
+      "owningSectionSources": [
+        "spec/09_playback_export.md:1056"
+      ],
+      "source": "crates/registry/src/declared.rs:15404",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 09 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "No parameters: Available light-table references for the current target frame",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Capture window (09); wired in M10 C10.3",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/references/items/properties/refId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/references/items/properties/label",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/references/items/properties/elementId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/references/items/properties/drawingId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/references/items/properties/frame",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "cell.cycle.create",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:453",
+      "owningSectionSources": [
+        "spec/04_timeline_xsheet.md:1434"
+      ],
+      "source": "crates/registry/src/declared.rs:5353",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 04 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Repeat the range so that it appears N times in total",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Repeat the range so that it appears N times in total; following cells shift",
+          "params": {
+            "cycles": 1
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Exposure Sheet and Timeline cell menus (04); wired in M3 C3.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/from",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/to",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "cell.range.delete",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:463",
+      "owningSectionSources": [
+        "spec/04_timeline_xsheet.md:1428"
+      ],
+      "source": "crates/registry/src/declared.rs:5597",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 04 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Delete cells: clear",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "No parameters: Delete cells: clear (leave blanks) or remove and shift earlier",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Exposure Sheet and Timeline cell menus (04); wired in M3 C3.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/changed/items/properties/elementId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/changed/items/properties/from",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/changed/items/properties/to",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "cell.selection.get",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:467",
+      "owningSectionSources": [
+        "spec/04_timeline_xsheet.md:1299",
+        "spec/04_timeline_xsheet.md:1420"
+      ],
+      "source": "crates/registry/src/declared.rs:5691",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 04 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "No parameters: Current cell/row selection and current position",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Exposure Sheet and Timeline cell menus (04); wired in M3 C3.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/elementIds/items",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/from",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/to",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/rowsSelected",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/currentElementId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/currentFrame",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "checkpoint.list",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:1073",
+      "owningSectionSources": [
+        "spec/11_agent_interface_mcp.md:634"
+      ],
+      "source": "crates/executor/src/commands/checkpoint.rs:105",
+      "needsProject": true,
+      "enablement": "always enabled",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "All checkpoints, oldest first",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": null,
+      "agentOnly": "agent safety net (11 §7.7)",
+      "schemaIssues": [],
+      "findings": [
+        "C12-R2-03"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "checkpoint.restore",
+      "status": "implemented",
+      "spec": "spec/A_command_registry.md:1074",
+      "owningSectionSources": [
+        "spec/11_agent_interface_mcp.md:633"
+      ],
+      "source": "crates/executor/src/commands/checkpoint.rs:128",
+      "needsProject": true,
+      "enablement": "a project is open with at least one checkpoint; not inside an atomic batch",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Restore checkpoint",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Restore a checkpoint",
+          "params": {
+            "name": "before-walk"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": null,
+      "agentOnly": "agent safety net (11 §7.7)",
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "colour.style.select",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:381",
+      "owningSectionSources": [
+        "spec/03_colour.md:1042"
+      ],
+      "source": "crates/registry/src/declared.rs:3924",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 03 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Style Change",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Set the style of a palette for a scene (\"Style Change\")",
+          "params": {
+            "paletteId": "scene:#1",
+            "styleId": "scene:#1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/sceneId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/paletteId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/styleId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "colour.swatch.list",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:386",
+      "owningSectionSources": [
+        "spec/03_colour.md:1047"
+      ],
+      "source": "crates/registry/src/declared.rs:4043",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 03 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "No parameters: List swatches of a palette with values for a style",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Palette panel and the colour editor (03); wired in M7 C7.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/paletteId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/styleId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/swatches/items/properties/colourId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/swatches/items/properties/name",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/swatches/items/properties/kind",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/swatches/items/properties/index",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/swatches/items/properties/deformable",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/swatches/items/properties/value",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/swatches/items/properties/usageCount",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "doc.package.get",
+      "status": "deferred-with-owner",
+      "spec": "spec/A_command_registry.md:1021",
+      "owningSectionSources": [
+        "spec/10_data_model_project_format.md:1147"
+      ],
+      "source": "crates/executor/src/commands/doc.rs:2038",
+      "needsProject": false,
+      "enablement": "always enabled",
+      "scopes": [
+        "read",
+        "files.read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Inspect a package without opening it",
+          "params": {
+            "path": "/tmp/Short.animpkg"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": null,
+      "agentOnly": "agents inspect packages before opening them",
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "doc.state.get",
+      "status": "implemented",
+      "spec": "spec/A_command_registry.md:1026",
+      "owningSectionSources": [
+        "spec/10_data_model_project_format.md:213",
+        "spec/10_data_model_project_format.md:1133"
+      ],
+      "source": "crates/executor/src/commands/doc.rs:1115",
+      "needsProject": true,
+      "enablement": "always enabled",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Revision, dirty flag and diff horizon",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": null,
+      "agentOnly": "agents track revisions (10 AG-09)",
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "doc.validate",
+      "status": "deferred-with-owner",
+      "spec": "spec/A_command_registry.md:1027",
+      "owningSectionSources": [
+        "spec/10_data_model_project_format.md:826",
+        "spec/10_data_model_project_format.md:904",
+        "spec/10_data_model_project_format.md:932",
+        "spec/10_data_model_project_format.md:1113",
+        "spec/10_data_model_project_format.md:1135",
+        "spec/10_data_model_project_format.md:1165"
+      ],
+      "source": "crates/executor/src/commands/doc.rs:1529",
+      "needsProject": true,
+      "enablement": "always enabled",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Errors only",
+          "params": {
+            "minSeverity": "error"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Project › Check Project (M4)",
+      "agentOnly": null,
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "draw.breakApart.apply",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:229",
+      "owningSectionSources": [
+        "spec/02_drawing.md:1352"
+      ],
+      "source": "crates/registry/src/declared.rs:808",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 02 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Break Text Apart",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "No parameters: Convert text to per-character vector groups (\"Break Text Apart\")",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Drawing view, the Drawing menu and tool properties (02); wired in M2 C2.3",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/rev",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "draw.segment.move",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:263",
+      "owningSectionSources": [
+        "spec/02_drawing.md:1226",
+        "spec/02_drawing.md:1341"
+      ],
+      "source": "crates/registry/src/declared.rs:1640",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 02 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Contour Editing",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Reshape a segment so its point at t moves by delta (\"Contour Editing\")",
+          "params": {
+            "strokeId": "scene:#1",
+            "segment": 1,
+            "delta": {
+              "x": 1,
+              "y": 1
+            }
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Drawing view, the Drawing menu and tool properties (02); wired in M2 C2.3",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/strokeId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/rev",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "drawAid.state.get",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:329",
+      "owningSectionSources": [
+        "spec/02_drawing.md:1387"
+      ],
+      "source": "crates/registry/src/declared.rs:2853",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 02 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "No parameters: State of all drawing aids",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Drawing view toolbar and the View menu (02); wired in M4 C4.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/grid",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/onionSkin",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/onionSkinStyle",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/autoLightTable",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/staticLightTable",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/lightTableShade",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/strokes",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/currentOnTop",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/selectionDisplay",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/background",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "edit.history.move",
+      "status": "implemented",
+      "spec": "spec/A_command_registry.md:108",
+      "owningSectionSources": [
+        "spec/01_application_shell.md:1093",
+        "spec/01_application_shell.md:1314"
+      ],
+      "source": "crates/executor/src/commands/edit.rs:235",
+      "needsProject": true,
+      "enablement": "a project is open; not inside an atomic batch",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Back to the opened state",
+          "params": {
+            "position": 0
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "History panel: click an entry (M4)",
+      "agentOnly": null,
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "element.get",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:419",
+      "owningSectionSources": [
+        "spec/04_timeline_xsheet.md:1298",
+        "spec/04_timeline_xsheet.md:1384",
+        "spec/04_timeline_xsheet.md:1477"
+      ],
+      "source": "crates/registry/src/declared.rs:4687",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 04 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Required parameters only: Full state of one element (17.5)",
+          "params": {
+            "elementId": "scene:#1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Timeline and Exposure Sheet layer menus and the Properties panel (04); wired in M3 C3.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "resultSchema",
+          "reason": "whole named result is only type:object; owning section declares fields"
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "element.parentPeg.create",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:430",
+      "owningSectionSources": [
+        "spec/04_timeline_xsheet.md:1382"
+      ],
+      "source": "crates/registry/src/declared.rs:4962",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 04 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Create a peg and attach the given elements to it",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "No parameters: Create a peg and attach the given elements to it",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Timeline and Exposure Sheet layer menus and the Properties panel (04); wired in M3 C3.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/pegId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/name",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "export.publish.run",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:942",
+      "owningSectionSources": [
+        "spec/09_playback_export.md:966",
+        "spec/09_playback_export.md:1031"
+      ],
+      "source": "crates/registry/src/declared.rs:14853",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 09 for the full rule",
+      "scopes": [
+        "read",
+        "files.read",
+        "files.write",
+        "network"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Required parameters only: Upload a movie to a service (outward action; needs scope and confirm)",
+          "params": {
+            "serviceId": "scene:#1",
+            "metadata": {
+              "title": "example"
+            }
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "File > Export dialogs (09); wired in M10 C10.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/x-jobResult/properties/remoteId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/x-jobResult/properties/url",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/x-jobResult/properties/manifest",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "export.publish.validate",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:944",
+      "owningSectionSources": [
+        "spec/09_playback_export.md:1030",
+        "spec/09_playback_export.md:1089"
+      ],
+      "source": "crates/registry/src/declared.rs:14906",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 09 for the full rule",
+      "scopes": [
+        "read",
+        "files.read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Required parameters only: Check a file or export parameters against a service's limits and required metada",
+          "params": {
+            "serviceId": "scene:#1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "File > Export dialogs (09); wired in M10 C10.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/problems/items/properties/code",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/problems/items/properties/limit",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/problems/items/properties/actual",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "fx.allEffects.get",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:626",
+      "owningSectionSources": [
+        "spec/06_effects.md:1018"
+      ],
+      "source": "crates/registry/src/declared.rs:8849",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 06 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "No parameters: Current all-effects display state",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "effect elements, their parameter rows and the Effect preview panel (06); wired in M7 C7.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/enabled",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "fx.block.add",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:628",
+      "owningSectionSources": [
+        "spec/06_effects.md:1027"
+      ],
+      "source": "crates/registry/src/declared.rs:8896",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 06 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Add Particle Block",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Add a block at a frame (split or append) (\"Add Particle Block\")",
+          "params": {
+            "effectId": "scene:#1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "effect elements, their parameter rows and the Effect preview panel (06); wired in M7 C7.3",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/blockId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/startFrame",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/duration",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "fx.changed",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:636",
+      "owningSectionSources": [
+        "spec/06_effects.md:1059"
+      ],
+      "source": "crates/registry/src/declared.rs:9096",
+      "needsProject": false,
+      "enablement": "see spec 06 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Subscribe (events take no parameters)",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": null,
+      "agentOnly": "an event delivered to subscribers",
+      "schemaIssues": [
+        {
+          "field": "result/properties/effectId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/blockId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "inspect.frame.describe",
+      "status": "deferred-with-owner",
+      "spec": "spec/A_command_registry.md:1060",
+      "owningSectionSources": [
+        "spec/11_agent_interface_mcp.md:392",
+        "spec/11_agent_interface_mcp.md:628"
+      ],
+      "source": "crates/executor/src/commands/inspect.rs:49",
+      "needsProject": true,
+      "enablement": "always enabled",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "What the current frame shows",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": null,
+      "agentOnly": "agents verify frames structurally (11 §7.5 describe_frame)",
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "job.wait",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:1086",
+      "owningSectionSources": [
+        "spec/11_agent_interface_mcp.md:394",
+        "spec/11_agent_interface_mcp.md:637"
+      ],
+      "source": "crates/executor/src/commands/job.rs:112",
+      "needsProject": false,
+      "enablement": "always enabled",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Wait up to 5 s",
+          "params": {
+            "jobId": "job-1",
+            "timeoutMs": 5000
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": null,
+      "agentOnly": "agents wait for jobs; the GUI shows progress",
+      "schemaIssues": [],
+      "findings": [
+        "C12-R2-06",
+        "C12-R2-07"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "library.close",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:789",
+      "owningSectionSources": [
+        "spec/08_library_storyline.md:640",
+        "spec/08_library_storyline.md:666"
+      ],
+      "source": "crates/registry/src/declared.rs:12077",
+      "needsProject": false,
+      "enablement": "see spec 08 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "Required parameters only: Close a library (not the project-local one)",
+          "params": {
+            "libraryId": "scene:#1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Library panel (08); wired in M9 C9.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/closed",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "needsProject",
+          "reason": "01 section 1.3 only exempts saving the global library"
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "library.item.delete",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:797",
+      "owningSectionSources": [
+        "spec/08_library_storyline.md:679"
+      ],
+      "source": "crates/registry/src/declared.rs:12268",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 08 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Delete items",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Delete items",
+          "params": {
+            "itemIds": []
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Library panel (08); wired in M9 C9.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "scopes",
+          "reason": "global-library writes lack library.global (11 section 6.1)"
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "library.tree.get",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:830",
+      "owningSectionSources": [
+        "spec/08_library_storyline.md:671"
+      ],
+      "source": "crates/registry/src/declared.rs:13051",
+      "needsProject": false,
+      "enablement": "see spec 08 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "No parameters: Get the folder/item hierarchy",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Library panel (08); wired in M9 C9.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/nodes/items",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {
+            "type": "object",
+            "description": "`LibraryNode` (owning section)",
+            "x-specType": "LibraryNode"
+          }
+        },
+        {
+          "field": "needsProject",
+          "reason": "01 section 1.3 only exempts saving the global library"
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "lipsync.mapping.mouth.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:744",
+      "owningSectionSources": [
+        "spec/07_sound_lipsync.md:938"
+      ],
+      "source": "crates/registry/src/declared.rs:11344",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 07 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Map one shape to a drawing, or step to the previous/next dra",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Map one shape to a drawing, or step to the previous/next drawing",
+          "params": {
+            "soundElementId": "scene:#1",
+            "drawingElementId": "scene:#1",
+            "mouth": "A"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Lip-sync panel (07); wired in M8 C8.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/mouth",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/drawingId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/drawingName",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "lipsync.panel.state.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:749",
+      "owningSectionSources": [
+        "spec/07_sound_lipsync.md:944"
+      ],
+      "source": "crates/registry/src/declared.rs:11463",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 07 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "No parameters: Set the panel's selected sound, mouth element and advanced-area visibility",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Lip-sync panel (07); wired in M8 C8.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/soundElementId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/drawingElementId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/showAdvanced",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "media.sequence.remove",
+      "status": "deferred-with-owner",
+      "spec": "spec/A_command_registry.md:776",
+      "owningSectionSources": [
+        "spec/07_sound_lipsync.md:950"
+      ],
+      "source": "crates/registry/src/declared.rs:11942",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 07 for the full rule",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Remove a sequence",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Remove a sequence",
+          "params": {
+            "sequenceId": "scene:#1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "media elements in the Timeline and File > Import (07, 09); wired in M8 C8.3",
+      "agentOnly": null,
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "playback.preview.run",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:885",
+      "owningSectionSources": [
+        "spec/09_playback_export.md:1004"
+      ],
+      "source": "crates/registry/src/declared.rs:14001",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 09 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Required parameters only: Render a preview (movie / scene / exposure sheet / selection / quick) and option",
+          "params": {
+            "type": "movie"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Playback toolbar and the Play menu (09); wired in M10 C10.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/x-jobResult/properties/previewId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/x-jobResult/properties/manifest",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "project.recovery.open",
+      "status": "deferred-with-owner",
+      "spec": "spec/A_command_registry.md:87",
+      "owningSectionSources": [
+        "spec/01_application_shell.md:990",
+        "spec/01_application_shell.md:1029",
+        "spec/01_application_shell.md:1081"
+      ],
+      "source": "crates/executor/src/commands/project.rs:362",
+      "needsProject": false,
+      "enablement": "always enabled",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Recover a session",
+          "params": {
+            "recoveryId": "rc_1"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Recovery dialog at launch (M4)",
+      "agentOnly": null,
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "sound.asset.import",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:694",
+      "owningSectionSources": [
+        "spec/07_sound_lipsync.md:889"
+      ],
+      "source": "crates/registry/src/declared.rs:10302",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 07 for the full rule",
+      "scopes": [
+        "edit",
+        "files.read"
+      ],
+      "undoable": true,
+      "undoLabel": "Add an audio file to the project's sound assets without plac",
+      "specUndo": "yes",
+      "examples": [
+        {
+          "title": "Required parameters only: Add an audio file to the project's sound assets without placing it",
+          "params": {
+            "path": "review/example.out"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Sound editor, Timeline sound layers and the Sound menu (07); wired in M8 C8.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/assetId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/reusedAsset",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/durationSec",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "sound.editor.state.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:702",
+      "owningSectionSources": [
+        "spec/07_sound_lipsync.md:865",
+        "spec/07_sound_lipsync.md:923"
+      ],
+      "source": "crates/registry/src/declared.rs:10490",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 07 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "No parameters: Set editor current frame, selection, zoom, scrubbing, loop",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Sound editor, Timeline sound layers and the Sound menu (07); wired in M8 C8.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "resultSchema",
+          "reason": "whole named result is only type:object; owning section declares fields"
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "sound.scrubbing.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:726",
+      "owningSectionSources": [
+        "spec/07_sound_lipsync.md:917"
+      ],
+      "source": "crates/registry/src/declared.rs:11081",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 07 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "Required parameters only: Enable/disable Timeline sound scrubbing (per user)",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Sound editor, Timeline sound layers and the Sound menu (07); wired in M8 C8.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/enabled",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/effective",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "storyline.currentScene.get",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:843",
+      "owningSectionSources": [
+        "spec/08_library_storyline.md:719"
+      ],
+      "source": "crates/registry/src/declared.rs:13183",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 08 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "No parameters: Get the current scene",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Storyline panel (08); wired in M9 C9.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/sceneId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/index",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/name",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "storyline.frame.render",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:846",
+      "owningSectionSources": [
+        "spec/08_library_storyline.md:649",
+        "spec/08_library_storyline.md:728"
+      ],
+      "source": "crates/registry/src/declared.rs:13255",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 08 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Required parameters only: Render a global storyline frame including transitions",
+          "params": {
+            "globalFrame": 1
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Storyline panel (08); wired in M9 C9.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/png",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "timeline.currentFrame.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:478",
+      "owningSectionSources": [
+        "spec/04_timeline_xsheet.md:1280",
+        "spec/04_timeline_xsheet.md:1438"
+      ],
+      "source": "crates/registry/src/declared.rs:5785",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 04 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "Required parameters only: Set the current frame (clamped to 1..scene length)",
+          "params": {
+            "frame": 1
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Timeline panel (04); wired in M5 C5.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/frame",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "timeline.singleCellSelection.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:485",
+      "owningSectionSources": [
+        "spec/04_timeline_xsheet.md:1447"
+      ],
+      "source": "crates/registry/src/declared.rs:5951",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 04 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "Required parameters only: Single cell selection preference",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Timeline panel (04); wired in M5 C5.1",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/enabled",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "tool.active.changed",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:285",
+      "owningSectionSources": [
+        "spec/02_drawing.md:1384",
+        "spec/02_drawing.md:1415"
+      ],
+      "source": "crates/registry/src/declared.rs:2003",
+      "needsProject": false,
+      "enablement": "see spec 02 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Subscribe (events take no parameters)",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": null,
+      "agentOnly": "an event delivered to subscribers",
+      "schemaIssues": [
+        {
+          "field": "result/properties/toolId",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "tool.settings.get",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:307",
+      "owningSectionSources": [
+        "spec/02_drawing.md:1383"
+      ],
+      "source": "crates/registry/src/declared.rs:2517",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 02 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "No parameters: All global drawing-tool settings",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Tools toolbar and tool properties (02, 05); wired in M4 C4.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/placeBehind",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/drawTopLayer",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/snapToContour",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/symmetry",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/tablet",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        },
+        {
+          "field": "result/properties/gapClosing",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "tool.text.options.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:311",
+      "owningSectionSources": [
+        "spec/02_drawing.md:1184",
+        "spec/02_drawing.md:1371"
+      ],
+      "source": "crates/registry/src/declared.rs:2608",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 02 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "No parameters: Text panel defaults for new text",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Tools toolbar and tool properties (02, 05); wired in M4 C4.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/options",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "ui.help.open",
+      "status": "deferred-with-owner",
+      "spec": "spec/A_command_registry.md:210",
+      "owningSectionSources": [
+        "spec/01_application_shell.md:1167"
+      ],
+      "source": "crates/registry/src/declared.rs:550",
+      "needsProject": false,
+      "enablement": "see spec 01 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "No parameters: Open the documentation, optionally at a topic",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Help menu, the status bar and Preferences (01); wired in M4 C4.1",
+      "agentOnly": null,
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "ui.preferences.open",
+      "status": "deferred-with-owner",
+      "spec": "spec/A_command_registry.md:212",
+      "owningSectionSources": [
+        "spec/01_application_shell.md:1168"
+      ],
+      "source": "crates/registry/src/declared.rs:591",
+      "needsProject": false,
+      "enablement": "see spec 01 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "No parameters: Open the preferences window at a category (GUI convenience)",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Help menu, the status bar and Preferences (01); wired in M4 C4.1",
+      "agentOnly": null,
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "view.coordinates.convert",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:126",
+      "owningSectionSources": [
+        "spec/01_application_shell.md:1039",
+        "spec/01_application_shell.md:1118"
+      ],
+      "source": "crates/registry/src/declared.rs:36",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 01 for the full rule",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "n/a",
+      "examples": [
+        {
+          "title": "Required parameters only: Convert a point between view pixels, drawing space and scene space for a view",
+          "params": {
+            "viewId": "scene:#1",
+            "point": {
+              "x": 1,
+              "y": 1
+            },
+            "from": "view",
+            "to": "view"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the View menu and view toolbars (01); wired in M4 C4.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/point",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "workspace.rename",
+      "status": "implemented",
+      "spec": "spec/A_command_registry.md:170",
+      "owningSectionSources": [
+        "spec/01_application_shell.md:1138"
+      ],
+      "source": "crates/executor/src/commands/workspace.rs:143",
+      "needsProject": false,
+      "enablement": "always enabled",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "Rename the Staging workspace",
+          "params": {
+            "name": "Staging",
+            "newName": "Layout"
+          }
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "Workspace Manager (M4)",
+      "agentOnly": null,
+      "schemaIssues": [],
+      "findings": [],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "xsheet.columnWidth.set",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:498",
+      "owningSectionSources": [
+        "spec/04_timeline_xsheet.md:1455"
+      ],
+      "source": "crates/registry/src/declared.rs:6101",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 04 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "No parameters: Set one column's width, or reset all widths",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Exposure Sheet panel (04); wired in M5 C5.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "resultSchema/properties/widths",
+          "reason": "column-width map has no value constraints (04 column widths 20..1000)"
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    },
+    {
+      "id": "xsheet.lightTable.remove",
+      "status": "divergent",
+      "spec": "spec/A_command_registry.md:507",
+      "owningSectionSources": [
+        "spec/04_timeline_xsheet.md:1458"
+      ],
+      "source": "crates/registry/src/declared.rs:6314",
+      "needsProject": true,
+      "enablement": "needs an open project (01 §1.3); see spec 04 for the full rule",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "specUndo": "no",
+      "examples": [
+        {
+          "title": "No parameters: Remove light-table items, or all",
+          "params": {}
+        }
+      ],
+      "examplesExecuted": 1,
+      "guiLocations": "the Exposure Sheet panel (04); wired in M5 C5.2",
+      "agentOnly": null,
+      "schemaIssues": [
+        {
+          "field": "result/properties/removedIds/items",
+          "reason": "unconstrained field/prose-only schema or unresolved named type",
+          "schema": {}
+        }
+      ],
+      "findings": [
+        "C12-R2-02"
+      ],
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4775395Z thread 'jobs_run_off_the_document_thread' (5848) panicked at crates\executor\tests\c12_kernel_state.rs:174:5:
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4776734Z assertion `left == right` failed: ["job.progress", "job.progress", "job.finished", "job.progress"]
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4777309Z   left: 1
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4777554Z  right: 2
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4777797Z stack backtrace:
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4778162Z    0: std::panicking::panic_handler
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4778721Z              at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\std\src\panicking.rs:679
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4779284Z    1: core::panicking::panic_fmt
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4779835Z              at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\core\src\panicking.rs:80
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4780402Z    2: core::panicking::assert_failed_inner
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4782191Z              at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\core\src\panicking.rs:434
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4783566Z    3: core::panicking::assert_failed<usize,usize>
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T07:27:25.4784587Z              at /rustc/48a229ceaefd4985c50990b14116b6d856af0985/library\core\src\panicking.rs:394

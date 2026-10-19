@@ -1,0 +1,19 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r2/audit-ci.py"
+  ],
+  "exit": 0,
+  "started": "2026-10-19T09:03:59.144379+00:00",
+  "seconds": 0.14104359998600557,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? crates/executor/tests/c12_r2_registry.rs",
+    "?? crates/executor/tests/c12_r2_scale.rs",
+    "?? reviews/M1-C1.2-r2.md",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\ci-audit-sealed.log",
+  "sha256": "eb205b1fea24144938f82f81557fc9a6b62f16012a9bf4da1df8d0308a94d832"
+}

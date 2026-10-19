@@ -1,0 +1,33 @@
+{
+  "inventory": 796,
+  "declared": 796,
+  "handwritten": 134,
+  "generated": 662,
+  "generatedWithSchemaHoles": 597,
+  "commandClassifications": {
+    "deferred-with-owner": 120,
+    "divergent": 621,
+    "implemented": 55
+  },
+  "requirementClassifications": {
+    "implemented": 47,
+    "divergent": 18,
+    "deferred-with-owner": 7
+  },
+  "random60": {
+    "divergent": 49,
+    "implemented": 4,
+    "deferred-with-owner": 7
+  },
+  "previousImplemented40": {
+    "implemented": 39,
+    "divergent": 1
+  },
+  "examplesExecuted": 809,
+  "exampleOutcomes": {
+    "command.notImplemented": 660,
+    "command.disabled": 77,
+    "ok": 69,
+    "edit.clipboardEmpty": 3
+  }
+}

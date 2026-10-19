@@ -1,0 +1,3 @@
+windows-latest 460 Rust passes 1 ignored; 11 C1.1 suites; 7 selected C1.2 suites
+macos-latest 448 Rust passes 1 ignored; 11 C1.1 suites; 7 selected C1.2 suites
+bfa828f: notifier send now precedes table unlock/condition notification; original assertion preserved.

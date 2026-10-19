@@ -1,0 +1,18 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r2/inspect-sample.py"
+  ],
+  "exit": 0,
+  "started": "2026-10-19T08:34:32.632707+00:00",
+  "seconds": 0.12177000002702698,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? crates/executor/tests/c12_r2_registry.rs",
+    "?? crates/executor/tests/c12_r2_scale.rs",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\sample-context.log",
+  "sha256": "760d3a1a8ecb376598289c21da89a3fa6440dd7536bf1bcae5bbd04cb443df5c"
+}

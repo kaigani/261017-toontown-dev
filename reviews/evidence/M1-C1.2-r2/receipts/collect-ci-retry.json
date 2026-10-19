@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r2/collect-ci.py"
+  ],
+  "exit": 0,
+  "started": "2026-10-19T08:16:54.105849+00:00",
+  "seconds": 2.2718809999641962,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\collect-ci-retry.log",
+  "sha256": "e16767597e9b31aef2e135a3a422f5ec35d0e584d91b295374bc4f2a9834a987"
+}

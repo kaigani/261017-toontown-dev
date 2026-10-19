@@ -1,0 +1,1049 @@
+{
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "diffSha256": "56b64672c2fea0c1b535330a0354a96dd6107f823be92ccca3e2d7a5506e178e",
+  "productFiles": [
+    "crates/executor/src/app.rs",
+    "crates/executor/src/commands/app.rs",
+    "crates/executor/src/commands/checkpoint.rs",
+    "crates/executor/src/commands/doc.rs",
+    "crates/executor/src/commands/edit.rs",
+    "crates/executor/src/commands/edit_ops.rs",
+    "crates/executor/src/commands/job.rs",
+    "crates/executor/src/commands/mod.rs",
+    "crates/executor/src/commands/workspace.rs",
+    "crates/executor/src/cx.rs",
+    "crates/executor/src/history.rs",
+    "crates/executor/src/jobs.rs",
+    "crates/executor/src/lib.rs",
+    "crates/executor/src/run.rs",
+    "crates/executor/src/session.rs",
+    "crates/executor/src/types.rs",
+    "crates/executor/src/ui.rs",
+    "crates/model/src/change.rs",
+    "crates/model/src/document/mod.rs",
+    "crates/model/src/document/paths.rs",
+    "crates/model/src/document/stamp.rs",
+    "crates/model/src/schema_ts.rs",
+    "crates/registry/src/lib.rs",
+    "crates/registry/src/owners.rs"
+  ],
+  "riskSensitiveAdditions": [
+    {
+      "path": "crates/executor/src/app.rs",
+      "added": "    pub fn set_selection(&mut self, context: &str, ids: Vec<String>) {"
+    },
+    {
+      "path": "crates/executor/src/app.rs",
+      "added": "        context.clone_into(&mut self.selection.context);"
+    },
+    {
+      "path": "crates/executor/src/commands/doc.rs",
+      "added": "    cx: &mut Cx,"
+    },
+    {
+      "path": "crates/executor/src/commands/doc.rs",
+      "added": "        merge_ops(&current, props, \"\", &mut ops);"
+    },
+    {
+      "path": "crates/executor/src/commands/edit.rs",
+      "added": "pub(crate) fn edit_clipboard_get(cx: &mut Cx, p: ClipboardGetParams) -> Result<Option<Clipboard>, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit.rs",
+      "added": "pub(crate) fn store_clipboard(cx: &mut Cx, clip: &Clipboard) -> Result<ClipboardSummary, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "fn store(cx: &mut Cx, clip: &Clipboard) -> Result<ClipboardSummary, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "fn reference_fixes(v: &Value, ids: &BTreeSet<String>, at: &str, in_item: Option<&str>, out: &mut Vec<PatchOp>) {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool) -> Result<Vec<String>, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "                    reference_fixes(&doc.entry_raw_json(&key)?, &gone, \"\", None, &mut fixes);"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "    v: &mut Value,"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "    created: &mut Vec<(ObjectType, String)>,"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "    taken: &mut BTreeSet<String>,"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "    changes: &mut Vec<(EntryKey, Vec<PatchOp>)>,"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "#[allow(clippy::too_many_lines)]"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "    cx: &mut Cx,"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "                regenerate(&mut v, &[ObjectType::DrawingNode, ObjectType::Stroke], &mut created)?;"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "                            &mut nested,"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "                                            let id = copy_drawing(&doc, d, &bank, &mut names, &mut changes, None)?;"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "                for k in &mut keys {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "                regenerate(&mut v, &[ObjectType::LibraryFolder, ObjectType::LibraryItem], &mut created)?;"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "pub(crate) fn edit_cut(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "pub(crate) fn edit_copy(cx: &mut Cx, p: ObjectsParams) -> Result<ClipResult, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "pub(crate) fn edit_delete(cx: &mut Cx, p: ObjectsParams) -> Result<DeleteResult, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "pub(crate) fn edit_paste(cx: &mut Cx, p: PasteParams) -> Result<PasteResult, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "pub(crate) fn edit_cut_special(cx: &mut Cx, p: CutSpecialParams) -> Result<ClipResult, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "pub(crate) fn edit_paste_special(cx: &mut Cx, p: PasteSpecialParams) -> Result<PasteResult, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "pub(crate) fn edit_paste_as_new_element(cx: &mut Cx, p: PasteNewParams) -> Result<NewElementResult, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/commands/edit_ops.rs",
+      "added": "                regenerate(&mut v, &[ObjectType::DrawingNode, ObjectType::Stroke], &mut Vec::new())?;"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "    pub(crate) fn set_step(&mut self, step: Option<usize>) {"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "    pub(crate) fn defer(&mut self, effect: Effect) {"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "    pub(crate) fn emit(&mut self, name: &str, payload: Value) {"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "    pub(crate) fn take_effects(&mut self) -> Vec<Effect> {"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "        std::mem::take(&mut self.effects)"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "    pub(crate) fn rollback_to(&mut self, sp: Savepoint) {"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "    pub fn predicted_rev(&mut self) -> Result<u64, CommandError> {"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "    add_drawing_records(target, &mut records, &mut keys, rev);"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "        add_drawing_records(after, &mut records, &mut keys, rev);"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "    add_drawing_records(after, &mut records, &mut keys, rev);"
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "added": "fn add_drawing_records(after: &Document, records: &mut Vec<ChangeRecord>, keys: &mut Vec<String>, rev: u64) {"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "    x.hash(&mut h);"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "    fn insert(&mut self, session: &str, id: &str, fp: u64, command: &str, envelope: Envelope) {"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool) -> Vec<(usize, u64)> {"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "                            apply_effects(&mut session, effects, self.simulating);"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "                            rollback.apply(&mut session);"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "    fn simulate<T>(&mut self, f: impl FnOnce(&mut Self) -> T) -> T {"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "                        run_step(&mut cx, entry, params, &opts)"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "                        Some(t) => commit(&mut session, vec![t], origin),"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "                            for (i, rev) in apply_effects(&mut session, effects, self.simulating) {"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "                            rollback.apply(&mut session);"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "    pub(crate) fn load(&mut self, doc: Document, opts: &OpenOptions, origin: &Origin) -> Envelope {"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "    fn install(&mut self, _grant: LoadGrant, doc: Document, opts: &OpenOptions, origin: &Origin) -> Envelope {"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "    pub(crate) fn wait_begin(&mut self, inv: &Invocation) -> WaitStart {"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "    pub(crate) fn wait_finish(&mut self, inv: &Invocation, outcome: Result<Value, CommandError>) -> Envelope {"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "    fn remember(&mut self, inv: &Invocation, env: &Envelope) {"
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "added": "    pub(crate) fn take_events(&mut self) -> Vec<Event> {"
+    },
+    {
+      "path": "crates/executor/src/session.rs",
+      "added": "    pub fn log_commit(&mut self, rev: u64, back: Back, before: Document, earlier_revs: Vec<(String, u64)>) {"
+    },
+    {
+      "path": "crates/model/src/change.rs",
+      "added": "fn materialize_omitted(root: &mut Value, parent: &[String]) {"
+    },
+    {
+      "path": "crates/model/src/document/mod.rs",
+      "added": "        |cur: &mut Option<serde_json::Value>, rest: &mut Vec<crate::change::PatchOp>| -> Result<(), Vec<ModelError>> {"
+    },
+    {
+      "path": "crates/model/src/document/mod.rs",
+      "added": "                flush(&mut cur, &mut rest)?;"
+    },
+    {
+      "path": "crates/model/src/document/mod.rs",
+      "added": "    flush(&mut cur, &mut rest)?;"
+    },
+    {
+      "path": "crates/model/src/document/paths.rs",
+      "added": "    fn count(&mut self, container: &str, name: &str, names: impl FnOnce() -> Vec<String>) -> usize {"
+    },
+    {
+      "path": "crates/model/src/document/paths.rs",
+      "added": "        Some(self.path_for(loc.ty, &loc.key, &mut PathMemo::default()))"
+    },
+    {
+      "path": "crates/model/src/document/paths.rs",
+      "added": "        keys.into_iter().map(|k| self.locate(k).map(|loc| self.path_for(loc.ty, &loc.key, &mut memo))).collect()"
+    },
+    {
+      "path": "crates/model/src/document/paths.rs",
+      "added": "        self.path_for(ty, key, &mut PathMemo::default())"
+    },
+    {
+      "path": "crates/model/src/document/paths.rs",
+      "added": "    fn path_for(&self, ty: ObjectType, key: &str, memo: &mut PathMemo) -> String {"
+    },
+    {
+      "path": "crates/model/src/document/paths.rs",
+      "added": "    fn compute_path(&self, ty: ObjectType, key: &str, memo: &mut PathMemo) -> String {"
+    },
+    {
+      "path": "crates/registry/src/lib.rs",
+      "added": "pub fn not_implemented_handler(_cx: &mut dyn Any, _params: Value) -> Result<Value, CommandError> {"
+    }
+  ],
+  "publicSurface": [
+    {
+      "source": "crates/executor/src/app.rs:16",
+      "line": "pub fn mode_of_view(panel: &str) -> Mode {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:231",
+      "line": "pub fn cell_ref(element: &str, frame: u32) -> String {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:237",
+      "line": "pub fn parse_cell_ref(k: &str) -> Option<(String, u32)> {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:254",
+      "line": "    pub fn selection_of(&self, context: &str) -> Vec<String> {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:259",
+      "line": "    pub fn set_selection(&mut self, context: &str, ids: Vec<String>) {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:266",
+      "line": "    pub fn for_document(doc: &Document) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:275",
+      "line": "    pub fn repair(&mut self, doc: &Document) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:308",
+      "line": "    pub fn exposed_drawing(doc: &Document, element: &Id, frame: u32) -> Option<Id> {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:323",
+      "line": "    pub fn current_drawing(&self, doc: &Document) -> Option<Id> {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:333",
+      "line": "    pub fn state(&self, project: Option<(&Document, ProjectRef)>, ui: &UiState) -> AppState {"
+    },
+    {
+      "source": "crates/executor/src/app.rs:420",
+      "line": "    pub fn current_of(&self, ty: ObjectType) -> Option<Target> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:215",
+      "line": "    pub fn predicted_rev(&mut self) -> Result<u64, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:242",
+      "line": "    pub fn in_atomic_batch(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:248",
+      "line": "    pub fn dry_run(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:254",
+      "line": "    pub fn command(&self) -> &'static str {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:260",
+      "line": "    pub fn origin(&self) -> &Origin {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:282",
+      "line": "    pub fn has_project(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:291",
+      "line": "    pub fn document(&self) -> Result<&Document, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:318",
+      "line": "    pub fn warn(&mut self, code: &str, message: impl Into<String>, object_ids: Vec<String>) {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:327",
+      "line": "    pub fn set_targets(&mut self, targets: Value) {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:336",
+      "line": "    pub fn set_label(&mut self, label: impl Into<String>) {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:355",
+      "line": "    pub fn resolve(&self, text: &str) -> Result<Target, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:365",
+      "line": "    pub fn resolve_as(&self, text: &str, expected: ObjectType) -> Result<String, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:384",
+      "line": "    pub fn resolve_objects(&self, refs: &[String]) -> Result<Vec<(ObjectType, String)>, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:463",
+      "line": "    pub fn patch_objects(&mut self, edits: Vec<(String, Vec<PatchOp>)>) -> Result<(), CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:491",
+      "line": "    pub fn patch_entries(&mut self, changes: Vec<(EntryKey, Vec<PatchOp>)>) -> Result<(), CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:497",
+      "line": "    pub fn has_staged(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/cx.rs:543",
+      "line": "    pub fn preview_changes(&mut self) -> Result<(Vec<ChangeRecord>, u64), CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:53",
+      "line": "    pub fn clean() -> Self {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:58",
+      "line": "    pub fn next_step_id(&mut self) -> String {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:64",
+      "line": "    pub fn push(&mut self, step: Step) {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:81",
+      "line": "    pub fn can_undo(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:85",
+      "line": "    pub fn can_redo(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:90",
+      "line": "    pub fn top(&self) -> Option<&Step> {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:94",
+      "line": "    pub fn moved_back(&mut self) {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:98",
+      "line": "    pub fn moved_forward(&mut self) {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:102",
+      "line": "    pub fn position(&self) -> usize {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:106",
+      "line": "    pub fn len(&self) -> usize {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:110",
+      "line": "    pub fn clean_position(&self) -> Option<usize> {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:115",
+      "line": "    pub fn dirty(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:121",
+      "line": "    pub fn mark_clean(&mut self) {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:125",
+      "line": "    pub fn steps(&self) -> &[Step] {"
+    },
+    {
+      "source": "crates/executor/src/history.rs:130",
+      "line": "    pub fn replace_edit(&mut self, index: usize, edit: StepEdit) {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:34",
+      "line": "    pub fn is_final(self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:99",
+      "line": "    pub fn report(&self, progress: f64, message: &str) {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:108",
+      "line": "    pub fn cancelled(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:116",
+      "line": "    pub fn with_notifier(notify: JobNotifier) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:148",
+      "line": "    pub fn submit<F>(self: &Arc<Self>, command_id: &str, session: &str, work: F) -> Result<String, CommandError>"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:201",
+      "line": "    pub fn list(&self, job_id: Option<&str>, session: Option<&str>) -> Vec<JobRecord> {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:214",
+      "line": "    pub fn wait(&self, job_id: &str, timeout: Duration) -> Result<(JobRecord, bool), CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/jobs.rs:234",
+      "line": "    pub fn cancel(&self, job_id: &str) -> Result<JobRecord, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:86",
+      "line": "pub fn registry() -> Result<&'static Registry, AssemblyError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:149",
+      "line": "    pub fn spawn(config: ExecutorConfig) -> Result<Self, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:160",
+      "line": "    pub fn spawn_with_registry(config: ExecutorConfig, registry: &'static Registry) -> Result<Self, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:186",
+      "line": "    pub fn invoke(&self, inv: Invocation) -> Envelope {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:196",
+      "line": "    pub fn batch(&self, req: BatchRequest, origin: Origin) -> Envelope {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:203",
+      "line": "    pub fn open_document(&self, doc: Document, path: Option<String>, read_only: bool) -> Envelope {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:211",
+      "line": "    pub fn open_document_with(&self, doc: Document, options: OpenOptions, origin: Origin) -> Envelope {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:220",
+      "line": "    pub fn snapshot(&self) -> Result<Option<Document>, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:226",
+      "line": "    pub fn subscribe(&self) -> Receiver<Event> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:236",
+      "line": "    pub fn list_commands(&self, origin: Origin) -> Result<Vec<Value>, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:242",
+      "line": "    pub fn describe_command(&self, id: &str) -> Option<Value> {"
+    },
+    {
+      "source": "crates/executor/src/lib.rs:248",
+      "line": "    pub fn jobs(&self) -> &Arc<JobTable> {"
+    },
+    {
+      "source": "crates/executor/src/run.rs:1019",
+      "line": "    pub fn is_error(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/session.rs:72",
+      "line": "    pub fn new(doc: Document, path: Option<String>, read_only: bool) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/session.rs:86",
+      "line": "    pub fn history_from_rev(&self) -> u64 {"
+    },
+    {
+      "source": "crates/executor/src/session.rs:92",
+      "line": "    pub fn log_commit(&mut self, rev: u64, back: Back, before: Document, earlier_revs: Vec<(String, u64)>) {"
+    },
+    {
+      "source": "crates/executor/src/session.rs:107",
+      "line": "    pub fn dirty(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/session.rs:137",
+      "line": "    pub fn emit(&mut self, name: &str, payload: Value) {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:33",
+      "line": "    pub fn label(&self) -> String {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:44",
+      "line": "    pub fn session_key(&self) -> String {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:53",
+      "line": "    pub fn has_scope(&self, scope: Scope) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:62",
+      "line": "    pub fn source(&self) -> &'static str {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:97",
+      "line": "    pub fn user(command: &str, params: Value) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:239",
+      "line": "    pub fn error(error: CommandError, document_rev: Option<u64>) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:258",
+      "line": "    pub fn ok(result: Value, document_rev: Option<u64>) -> Self {"
+    },
+    {
+      "source": "crates/executor/src/types.rs:269",
+      "line": "    pub fn is_ok(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:509",
+      "line": "    pub fn workspace_state(&self) -> (String, bool) {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:515",
+      "line": "    pub fn full_screen(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:521",
+      "line": "    pub fn focused(&self) -> Option<&str> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:527",
+      "line": "    pub fn layout(&self) -> Layout {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:533",
+      "line": "    pub fn central_panel(&self) -> &str {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:555",
+      "line": "    pub fn panels(&self) -> Vec<PanelEntry> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:626",
+      "line": "    pub fn set_panel("
+    },
+    {
+      "source": "crates/executor/src/ui.rs:709",
+      "line": "    pub fn move_panel("
+    },
+    {
+      "source": "crates/executor/src/ui.rs:855",
+      "line": "    pub fn set_full_screen(&mut self, enabled: bool) {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:860",
+      "line": "    pub fn set_floating_visible(&mut self, visible: bool) {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:866",
+      "line": "    pub fn floating_visible(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:871",
+      "line": "    pub fn set_side_panels_extended(&mut self, enabled: bool) {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:877",
+      "line": "    pub fn side_panels_extended(&self) -> bool {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:883",
+      "line": "    pub fn workspaces(&self) -> Vec<WorkspaceEntry> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:906",
+      "line": "    pub fn workspace_layout(&self, name: Option<&str>) -> Result<Layout, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:922",
+      "line": "    pub fn select(&mut self, name: &str, save_current: bool) -> Result<(), CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:939",
+      "line": "    pub fn save(&mut self, name: Option<&str>) -> Result<String, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:970",
+      "line": "    pub fn create("
+    },
+    {
+      "source": "crates/executor/src/ui.rs:1001",
+      "line": "    pub fn rename(&mut self, name: &str, new_name: &str) -> Result<String, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:1024",
+      "line": "    pub fn delete(&mut self, name: &str) -> Result<String, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:1055",
+      "line": "    pub fn reset(&mut self, name: Option<&str>, all: bool, select: bool) -> Result<Vec<String>, CommandError> {"
+    },
+    {
+      "source": "crates/executor/src/ui.rs:1089",
+      "line": "    pub fn apply_layout(&mut self, layout: Layout) -> Result<Layout, CommandError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:201",
+      "line": "pub fn object_pointer(entry: &Value, key: &str) -> Option<String> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:253",
+      "line": "pub fn own_view_of(object: &Value) -> Value {"
+    },
+    {
+      "source": "crates/model/src/change.rs:281",
+      "line": "pub fn own_view(doc: &Document, key: &str) -> Result<(ObjectType, Value), ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:290",
+      "line": "pub fn own_objects(doc: &Document, entry: &EntryKey) -> Result<Vec<OwnObject>, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:324",
+      "line": "pub fn diff(before: &Document, after: &Document) -> Result<Vec<(OwnChange, OwnObject)>, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:384",
+      "line": "    pub fn to_change(&self, o: &OwnObject, rev: u64) -> Change {"
+    },
+    {
+      "source": "crates/model/src/change.rs:611",
+      "line": "pub fn diff_json(a: &Value, b: &Value, path: &str, ty: ObjectType) -> Vec<PatchOp> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:731",
+      "line": "pub fn invert_against(before: &Value, patch: &[PatchOp]) -> Result<Vec<PatchOp>, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:739",
+      "line": "pub fn apply_with_inverse(value: &Value, patch: &[PatchOp]) -> Result<(Value, Vec<PatchOp>), ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:1096",
+      "line": "pub fn apply(value: &Value, patch: &[PatchOp]) -> Result<Value, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/change.rs:1101",
+      "line": "pub fn elide(changes: &mut [Change]) {"
+    },
+    {
+      "source": "crates/model/src/change.rs:1118",
+      "line": "pub fn summary(changes: &[Change]) -> BTreeMap<String, usize> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:93",
+      "line": "    pub fn to_error(&self) -> ModelError {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:232",
+      "line": "    pub fn from_parts(parts: DocumentParts) -> Result<Self, Vec<ModelError>> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:280",
+      "line": "    pub fn assemble(parts: DocumentParts) -> Self {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:395",
+      "line": "    pub fn document_rev(&self) -> u64 {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:401",
+      "line": "    pub fn project(&self) -> &Project {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:407",
+      "line": "    pub fn palette(&self, id: &Id) -> Option<&Palette> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:412",
+      "line": "    pub fn palettes(&self) -> impl Iterator<Item = &Palette> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:418",
+      "line": "    pub fn bank(&self, id: &Id) -> Option<&DrawingBank> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:423",
+      "line": "    pub fn banks(&self) -> impl Iterator<Item = &DrawingBank> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:429",
+      "line": "    pub fn drawing(&self, id: &Id) -> Option<&Drawing> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:434",
+      "line": "    pub fn drawings(&self) -> impl Iterator<Item = &Drawing> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:440",
+      "line": "    pub fn scene(&self, id: &Id) -> Option<&Scene> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:445",
+      "line": "    pub fn scenes(&self) -> impl Iterator<Item = &Scene> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:451",
+      "line": "    pub fn element(&self, id: &Id) -> Option<&Element> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:456",
+      "line": "    pub fn elements(&self) -> impl Iterator<Item = &Element> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:462",
+      "line": "    pub fn scene_of(&self, element: &Id) -> Option<&Id> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:468",
+      "line": "    pub fn bank_users(&self, bank: &Id) -> &[Id] {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:474",
+      "line": "    pub fn bank_of(&self, drawing: &Id) -> Option<&Id> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:480",
+      "line": "    pub fn object_count(&self) -> usize {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:486",
+      "line": "    pub fn library(&self) -> &Library {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:492",
+      "line": "    pub fn same_entry(&self, other: &Document, key: &EntryKey) -> bool {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:507",
+      "line": "    pub fn entry_keys(&self) -> Vec<EntryKey> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:522",
+      "line": "    pub fn entry_raw_json(&self, key: &EntryKey) -> Result<serde_json::Value, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:531",
+      "line": "    pub fn with_patched_entry("
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:561",
+      "line": "    pub fn with_patched_entries("
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:575",
+      "line": "    pub fn with_patched_entries_undo_only("
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:728",
+      "line": "    pub fn has_entry(&self, key: &EntryKey) -> bool {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:741",
+      "line": "    pub fn locate(&self, id: &str) -> Option<&Location> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:746",
+      "line": "    pub fn locations(&self) -> impl Iterator<Item = &Location> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:752",
+      "line": "    pub fn tree_order(&self, scene: &Scene) -> Vec<Id> {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:770",
+      "line": "    pub fn scene_length(&self, scene: &Scene) -> u64 {"
+    },
+    {
+      "source": "crates/model/src/document/mod.rs:800",
+      "line": "    pub fn issues(&self) -> Vec<Issue> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:134",
+      "line": "    pub fn canonical_path(&self, key: &str) -> Option<String> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:141",
+      "line": "    pub fn canonical_paths<'a>(&self, keys: impl IntoIterator<Item = &'a str>) -> Vec<Option<String>> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:335",
+      "line": "    pub fn resolve_str(&self, s: &str, ctx: &dyn ResolveContext) -> Result<Target, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:343",
+      "line": "    pub fn resolve_as(&self, s: &str, expected: ObjectType, ctx: &dyn ResolveContext) -> Result<String, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:363",
+      "line": "    pub fn resolve(&self, r: &Ref, text: &str, ctx: &dyn ResolveContext) -> Result<Target, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/paths.rs:702",
+      "line": "pub fn natural_cmp(a: &str, b: &str) -> std::cmp::Ordering {"
+    },
+    {
+      "source": "crates/model/src/document/stamp.rs:22",
+      "line": "    pub fn with_revisions(&self, document_rev: u64, keys: &[String]) -> Result<Document, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/stamp.rs:34",
+      "line": "    pub fn with_object_revisions(&self, document_rev: u64, stamps: &[(String, u64)]) -> Result<Document, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/document/stamp.rs:45",
+      "line": "    pub fn at_earlier_revision(&self, document_rev: u64, stamps: &[(String, u64)]) -> Result<Document, ModelError> {"
+    },
+    {
+      "source": "crates/model/src/schema_ts.rs:264",
+      "line": "pub fn module(header: &str, consts: &[(&str, Value)], defs_name: &str, defs: &Map<String, Value>) -> String {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:183",
+      "line": "    pub fn parse(s: &str) -> Option<Scope> {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:272",
+      "line": "    pub fn new(code: impl Into<String>, message: impl Into<String>) -> Self {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:277",
+      "line": "    pub fn with_details(code: impl Into<String>, message: impl Into<String>, details: Value) -> Self {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:283",
+      "line": "    pub fn hint(mut self, hint: impl Into<String>) -> Self {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:289",
+      "line": "    pub fn not_implemented(id: &str, owner: &str) -> Self {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:298",
+      "line": "    pub fn internal(message: impl Into<String>) -> Self {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:320",
+      "line": "    pub fn because(reason: impl Into<String>) -> Self {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:326",
+      "line": "    pub fn no_project() -> Self {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:332",
+      "line": "    pub fn to_error(&self, id: &str) -> CommandError {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:383",
+      "line": "pub type Handler = fn(&mut dyn Any, Value) -> Result<Value, CommandError>;"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:439",
+      "line": "    pub fn id(&self) -> &'static str {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:445",
+      "line": "    pub fn status(&self) -> Status {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:455",
+      "line": "    pub fn scopes(&self) -> Vec<Scope> {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:469",
+      "line": "    pub fn params_schema(&self) -> Value {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:478",
+      "line": "    pub fn result_schema(&self) -> Value {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:487",
+      "line": "    pub fn describe(&self) -> Value {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:526",
+      "line": "pub fn declared_schema(index: usize, result: bool) -> Value {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:540",
+      "line": "pub fn not_implemented_handler(_cx: &mut dyn Any, _params: Value) -> Result<Value, CommandError> {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:564",
+      "line": "    pub fn assemble(commands: &[&'static Command]) -> Result<Registry, AssemblyError> {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:592",
+      "line": "    pub fn get(&self, id: &str) -> Option<&Entry> {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:597",
+      "line": "    pub fn entries(&self) -> impl Iterator<Item = &Entry> {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:603",
+      "line": "    pub fn len(&self) -> usize {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:609",
+      "line": "    pub fn is_empty(&self) -> bool {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:617",
+      "line": "pub fn schema_of<T: JsonSchema>() -> Value {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:629",
+      "line": "pub fn decode_params<T: DeserializeOwned>(v: Value) -> Result<T, CommandError> {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:638",
+      "line": "pub fn encode_result<T: Serialize>(r: &T) -> Result<Value, CommandError> {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:646",
+      "line": "pub fn context<T: 'static>(cx: &mut dyn Any) -> Result<&mut T, CommandError> {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:656",
+      "line": "pub fn validate_params(id: &str, schema: &Value, params: &Value) -> Result<(), CommandError> {"
+    },
+    {
+      "source": "crates/registry/src/lib.rs:712",
+      "line": "pub fn schema_violations(schema: &Value, value: &Value, limit: usize) -> Result<Vec<Value>, CommandError> {"
+    },
+    {
+      "source": "crates/registry/src/owners.rs:15",
+      "line": "pub fn owner_of(id: &str) -> &'static str {"
+    }
+  ],
+  "licenseLockManifestChanges": [],
+  "reviewerEdit": "Only collision-test assertions and ruling comment; 5 additions / 3 deletions; exactly declared R1-22.",
+  "conclusions": [
+    "No new product unsafe / unwrap() / expect() / panic! allowance or call; product clippy -D warnings passes.",
+    "New Cx mutators are gated by unforgeable handler context; offline Document methods return copies. New at_earlier_revision can yield invalid revs and guarded load trusts it (C12-R2-01).",
+    "Core, Request and handle sender remain private. LoadGrant private field; 12 compile-fail cases and read-only snapshot pass fixture retained.",
+    "Engine facade and three-layer IPC routes unchanged. Headless --run exits 3 (C1.4 stub); no alternate live-document mutation route exposed there.",
+    "Generated frontend schemas preserve IPC validation machinery, but declaration holes weaken command payload contracts (C12-R2-02).",
+    "Stateless inversion not reintroduced. Staged commits still revalidate model integrity; JSON-04 breaks raw inverse exactness (C12-R2-11).",
+    "Job event fix bfa828f sends through unbounded subscriber channel under job lock before making final state visible. No test weakening."
+  ]
+}
