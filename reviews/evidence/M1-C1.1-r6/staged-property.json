@@ -1,0 +1,7 @@
+{
+  "seed": "404401471746785596",
+  "cases": 10000,
+  "builder_source_sha256": "750cdd4446768487f9d95bb7e5a45b84c2b72096a1f58654ced545b084fd3b53",
+  "expanded_source_sha256": "06b1f1eb111ab30d439cc77f42deab2c9629b19e917ef929582b7054f6b07cf2",
+  "modification": "Only cases: 256 -> cases: 10_000 in a temporary test target; builder file unchanged"
+}

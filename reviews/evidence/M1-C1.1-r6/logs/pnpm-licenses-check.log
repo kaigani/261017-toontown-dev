@@ -1,0 +1,8 @@
+
+> toontown-workspace@ licenses:check C:\Users\kaiga\work\review\m1-c11-r6
+> node scripts/check-npm-licenses.mjs
+
+allow-list (from deny.toml): MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, Zlib, MPL-2.0, Unicode-3.0, 0BSD, MIT-0
+production packages checked: 8
+development packages (not shipped, informational): MIT (176), MIT-0 (2), Apache-2.0 (17), CC0-1.0 (3), Apache-2.0 OR MIT (1), BSD-3-Clause (4), CC-BY-4.0 (1), ISC (10), BSD-2-Clause (8), MPL-2.0 (1), BlueOak-1.0.0 (2), CC-BY-3.0 (1)
+licences ok

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python",
+    "scripts/check-diagnostics-gating.py",
+    "target/release/toontown.exe",
+    "--expect",
+    "default"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:36:34.431807+00:00",
+  "elapsed_seconds": 0.069,
+  "exit_code": 0,
+  "log": "logs/diagnostics-gate.log",
+  "sha256": "5350d053a183faabf3c0ff5e28745fd962247adc20cf8537e03c9ecf06665e24",
+  "env": {}
+}

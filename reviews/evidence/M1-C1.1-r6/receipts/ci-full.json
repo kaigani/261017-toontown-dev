@@ -1,0 +1,17 @@
+{
+  "command": [
+    "gh",
+    "run",
+    "view",
+    "39184432825",
+    "--log"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:29:02.589116+00:00",
+  "elapsed_seconds": 4.125,
+  "exit_code": 0,
+  "log": "logs/ci-full.log",
+  "sha256": "24e7e15ca5bdc6b7f6d8c407362b8337f680da317519ec4a99356a7624b5cc37",
+  "env": {}
+}
