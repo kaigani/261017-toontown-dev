@@ -32,10 +32,11 @@
     "gates/headless.log": 0,
     "gates/reviewer-python-suites.log": 0
   },
-  "recordedAt": "2026-10-19T06:52:56+00:00",
-  "baseCommit": "4c7a235ceb414c391db18919d8d7694695c86310",
+  "recordedAt": "2026-10-19T07:42:59+00:00",
+  "baseCommit": "bfa828f2c2246e8ec7842357c88e943c76d1db84",
   "dirtyFiles": [
-    "reviews/evidence/M1-C1.2-r1-response/gates/"
+    "reviews/evidence/M1-C1.2-r1-response/gates/clippy.log",
+    "reviews/evidence/M1-C1.2-r1-response/gates/test.log"
   ],
   "machine": {
     "os": "Windows-11-10.0.26200-SP0",
@@ -45,7 +46,7 @@
   "sha256": {
     "gates/build.log": "8bc01d00fb53277ebac8e83e274719f52743d5783fdeefc1b7d91aee90748058",
     "gates/clippy-diag.log": "d414e358afce9836f7fde3d1b9ce8612f765821a595ec167c9bfc59242dfac4c",
-    "gates/clippy.log": "4add0e2bcb77f8789d9555d5d8bdc9064397f689e07377147f632845bb6b4635",
+    "gates/clippy.log": "cd44dfeb17a481f980a6c216cfd0b285f70c59c0aec1ee573056dfe300fb5cc3",
     "gates/deny.log": "7249399b7d168f2a0a0534bb3810a3c3c42dd6cc4f67105e47257dff64491c17",
     "gates/fmt.log": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
     "gates/headless.log": "8a353d159e44f846c614bc8153faed01d938aa49721c542dbe205bb623d97982",
@@ -59,6 +60,6 @@
     "gates/selftest-2.json": "fbeadf361843cb7f2588227a57efb06d55828a6a85eba4a5f4034be7a5c3f3e0",
     "gates/selftest-compare.log": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46",
     "gates/test-diag.log": "2f7ba6ecd4c27ad095de7f623fe86864fb32fcd8aa364ece0a0cb1df34f788d0",
-    "gates/test.log": "76ced34ccfe0567a33f7632ae8f2271c992195b11adb23bda4cd32d398c4dfd6"
+    "gates/test.log": "3797a71627ec0bdec883ca858932dc2a3414ddd821f095b9f5afb266899ba4d9"
   }
 }
