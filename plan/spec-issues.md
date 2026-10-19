@@ -161,7 +161,32 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Section:** 11 §10 (generic codes), 11 §7.7 (checkpoints, jobs), 11 §14.6 (never-block watchdog).
 - **Decision taken (ADR-0013):** `command.notImplemented` (registered command implemented by a later milestone;
-  `details.milestone`), `command.timeout` (watchdog budget exceeded; the call may still complete),
+  `details.milestone`), `command.timeout` (watchdog budget exceeded; the outcome is indeterminate: the call may still complete, nothing is rolled back or cancelled, and the caller reads `doc.state.get` before retrying),
   `history.diverged` (a replayed undo step does not match the document; nothing applied), `checkpoint.exists`,
-  `checkpoint.notFound`, `job.notFound`.
-- **Question:** add them to 11 §10.
+  `checkpoint.notFound`, `job.notFound`; round 1 (ruling R1-22): `request.conflict` (a `requestId` reused with a
+  different command, parameters or options; `{requestId, originalCommand}`; never executed) and `request.unknownId`
+  (an id whose remembered envelope was evicted from the bounded per-session cache; `{requestId, reason:
+  "evicted"}`; never re-executed); warning `edit.optionNotApplied` (a cut/paste-special option that does not apply
+  or needs a later milestone). 11 §7.2 says only that a repeated id returns the original result.
+- **Question:** add them to 11 §10, and state in 11 §7.2 what a reused id with other parameters and an id beyond the
+  remembered window return.
+
+## SI-021 — `elements` clipboard items by reference (found in C1.2 r1; decided)
+
+- **Section:** 01 §12.4 (`Clipboard`: "objects in the section-10 schema for this kind"), 01 §12.1
+  (`edit.clipboard.set` validates against the schema of its kind).
+- **Decision taken (ADR-0013 §19):** an `elements` item is either a full `element` object (what cut and copy put
+  there) or a reference `{elementId}` to an element of the open project, which pastes a copy of that element. Agents
+  can thus place elements on the clipboard without sending whole objects. Every other kind takes the section-10 (or
+  §12.4) shapes only.
+- **Question:** allow references for other kinds too, or forbid them for elements.
+
+## SI-022 — references to deleted elements (found in C1.2 r1; decided)
+
+- **Section:** 04 §8.3 (delete element: drawings and children), 10 §7.2 (dangling-reference repair on load).
+- **Decision taken (ADR-0013 §19):** deleting elements (`edit.delete`, `edit.cut`) repairs references other elements
+  of the scene hold to them as the load repair of 10 §7.2 does: a reference inside a list item (e.g. a lip-sync
+  mapping) removes the item, an ID listed directly is removed, any other reference becomes `null`; the repair is part
+  of the same undo step. Drawing banks stay in the document until save purges unused ones (04 §8.3, "purged when the
+  project is saved"), so a cut element pastes back with its drawings.
+- **Question:** confirm the repair rule for deletions, or name per-reference behaviour.

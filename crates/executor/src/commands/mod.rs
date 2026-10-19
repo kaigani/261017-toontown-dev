@@ -2,7 +2,7 @@
 //! `inspect`, `checkpoint`, `job` — and the kernel-level `window` and `workspace` state commands (01 §5; readiness
 //! bullet 4). Each handler is declared with `#[command]`; declarations whose implementation belongs to a later
 //! checkpoint name it (`not_implemented = "…"`) and fail with `command.notImplemented` after validating their
-//! parameters. Every other spec A entry is an inventory stub (`tt_registry::owner_of`).
+//! parameters. Every other spec A entry has a generated declaration (`tt_registry::declared`, ADR-0013 §1).
 
 pub(crate) mod agent;
 pub(crate) mod app;
