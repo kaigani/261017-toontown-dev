@@ -1675,7 +1675,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       details: {
-        description: "Structured details.",
+        description: "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small).",
       },
       hint: {
         description: "How to fix the call, where known.",
@@ -8584,7 +8584,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       details: {
-        description: "Structured details.",
+        description: "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small).",
       },
       hint: {
         description: "How to fix the call, where known.",
@@ -8707,7 +8707,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       details: {
-        description: "Structured details.",
+        description: "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small).",
       },
       hint: {
         description: "How to fix the call, where known.",
@@ -8902,7 +8902,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       details: {
-        description: "Structured details.",
+        description: "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small).",
       },
       hint: {
         description: "How to fix the call, where known.",
@@ -8974,7 +8974,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       details: {
-        description: "Structured details.",
+        description: "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small).",
       },
       hint: {
         description: "How to fix the call, where known.",
@@ -9113,7 +9113,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       details: {
-        description: "Structured details.",
+        description: "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small).",
       },
       hint: {
         description: "How to fix the call, where known.",
@@ -12892,7 +12892,7 @@ export interface envelope_CommandError {
   code: string;
   /** Human-readable message. */
   message: string;
-  /** Structured details. */
+  /** Structured details (boxed: the error travels in every `Result` of the command path, so it stays small). */
   details: unknown;
   /** How to fix the call, where known. */
   hint?: string | null;
@@ -14976,7 +14976,7 @@ export interface job_cancel_CommandError {
   code: string;
   /** Human-readable message. */
   message: string;
-  /** Structured details. */
+  /** Structured details (boxed: the error travels in every `Result` of the command path, so it stays small). */
   details: unknown;
   /** How to fix the call, where known. */
   hint?: string | null;
@@ -15016,7 +15016,7 @@ export interface job_finished_CommandError {
   code: string;
   /** Human-readable message. */
   message: string;
-  /** Structured details. */
+  /** Structured details (boxed: the error travels in every `Result` of the command path, so it stays small). */
   details: unknown;
   /** How to fix the call, where known. */
   hint?: string | null;
@@ -15083,7 +15083,7 @@ export interface job_list_CommandError {
   code: string;
   /** Human-readable message. */
   message: string;
-  /** Structured details. */
+  /** Structured details (boxed: the error travels in every `Result` of the command path, so it stays small). */
   details: unknown;
   /** How to fix the call, where known. */
   hint?: string | null;
@@ -15103,7 +15103,7 @@ export interface job_progress_CommandError {
   code: string;
   /** Human-readable message. */
   message: string;
-  /** Structured details. */
+  /** Structured details (boxed: the error travels in every `Result` of the command path, so it stays small). */
   details: unknown;
   /** How to fix the call, where known. */
   hint?: string | null;
@@ -15148,7 +15148,7 @@ export interface job_wait_CommandError {
   code: string;
   /** Human-readable message. */
   message: string;
-  /** Structured details. */
+  /** Structured details (boxed: the error travels in every `Result` of the command path, so it stays small). */
   details: unknown;
   /** How to fix the call, where known. */
   hint?: string | null;

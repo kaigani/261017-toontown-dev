@@ -19,11 +19,6 @@
 //! sets), AG-01…AG-09; 01 §5 (window, panels, workspaces: kernel state), §6.1 (undo/redo), §12.4. Milestone: M1
 //! (C1.2). Decisions: ADR-0013.
 
-#![allow(
-    clippy::result_large_err,
-    reason = "CommandError is the typed wire error {code, message, details, hint} every command returns (11 §10); boxing it would only move the allocation"
-)]
-
 mod align;
 mod app;
 pub mod commands;

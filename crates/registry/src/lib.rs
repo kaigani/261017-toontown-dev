@@ -21,11 +21,6 @@
 //! Spec sections implemented: 11 §2 (registry), §7.1–§7.2 (discovery), §8 (kinds, validation), §14.1–§14.2
 //! (parity, schemas, examples); spec A. Milestone: M1 (C1.2). Decisions: ADR-0013.
 
-#![allow(
-    clippy::result_large_err,
-    reason = "CommandError is the typed wire error {code, message, details, hint} every command returns (11 §10); boxing it would only move the allocation"
-)]
-
 pub mod inventory;
 mod owners;
 
@@ -214,8 +209,8 @@ pub struct CommandError {
     pub code: String,
     /// Human-readable message.
     pub message: String,
-    /// Structured details.
-    pub details: Value,
+    /// Structured details (boxed: the error travels in every `Result` of the command path, so it stays small).
+    pub details: Box<Value>,
     /// How to fix the call, where known.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub hint: Option<String>,
@@ -270,12 +265,12 @@ pub mod codes {
 impl CommandError {
     /// An error with empty details.
     pub fn new(code: impl Into<String>, message: impl Into<String>) -> Self {
-        Self { code: code.into(), message: message.into(), details: json!({}), hint: None }
+        Self { code: code.into(), message: message.into(), details: Box::new(json!({})), hint: None }
     }
 
     /// An error with details.
     pub fn with_details(code: impl Into<String>, message: impl Into<String>, details: Value) -> Self {
-        Self { code: code.into(), message: message.into(), details, hint: None }
+        Self { code: code.into(), message: message.into(), details: Box::new(details), hint: None }
     }
 
     /// Adds a hint.

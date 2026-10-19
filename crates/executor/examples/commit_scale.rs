@@ -1,6 +1,6 @@
 //! Measures the C1.2 commit path at the size 10 §5 says the model MUST handle — one drawing layer with 100 000
 //! strokes — and prints one JSON log (sizes, wall times in ms, patch sizes in bytes) to stdout.
-//! Run: `cargo run --release -p tt-executor --example scale > scale.json`.
+//! Run: `cargo run --release -p tt-executor --example commit_scale > commit-scale.json`.
 //!
 //! Measured (C1.1 ticket: "measure full staged commits, the added committed-entry diff/application check and inverse
 //! allocations", and isolate the touched-object diff from the whole-entry own-view diff):
@@ -90,7 +90,7 @@ fn main() {
         change::diff_json(&a.1, &b.1, "", a.0)
     });
     time(&mut log, "wholeEntryOwnViewDiffMs", || change::diff(&doc, &next).unwrap());
-    time(&mut log, "stampRevisionsMs", || next.with_revisions(doc.document_rev() + 1, &[stroke.clone()]).unwrap());
+    time(&mut log, "stampRevisionsMs", || next.with_revisions(doc.document_rev() + 1, std::slice::from_ref(&stroke)).unwrap());
     // The two parts of the full staged integrity guarantee kept by the C1.1 ruling: the entry's full input path
     // (depth, normalisation, schema, typed parse, object rules, frame limits) and the document-wide issues().
     time(&mut log, "stagedEntryInputPathMs", || from_json::<Drawing>(&after).unwrap());

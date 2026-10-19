@@ -371,7 +371,7 @@ fn history_keeps_at_least_200_steps() {
     }
     let hist = ok(&h, "edit.history.get", json!({ "limit": 1000 }));
     assert_eq!(hist["total"], 205);
-    assert!(tt_executor::MAX_UNDO_STEPS >= 200);
+    const { assert!(tt_executor::MAX_UNDO_STEPS >= 200) };
     let env = run(&h, "edit.undo", json!({ "steps": 205 }));
     assert!(env.is_ok());
     assert!(get(&h, &scene)["meta"].get("i").is_none());
