@@ -108,7 +108,9 @@ fn parameter_constraints_come_from_the_spec() {
 /// Scalar leaves of a value, as JSON Pointers.
 fn leaves(v: &Value, at: &str, out: &mut Vec<String>) {
     match v {
-        Value::Object(m) => m.iter().for_each(|(k, x)| leaves(x, &format!("{at}/{}", k.replace('~', "~0").replace('/', "~1")), out)),
+        Value::Object(m) => {
+            m.iter().for_each(|(k, x)| leaves(x, &format!("{at}/{}", k.replace('~', "~0").replace('/', "~1")), out))
+        }
         Value::Array(a) => a.iter().enumerate().for_each(|(i, x)| leaves(x, &format!("{at}/{i}"), out)),
         _ => out.push(at.to_owned()),
     }
@@ -182,7 +184,9 @@ fn generated_schemas_reject_every_mutated_leaf_and_unknown_member() {
 /// Every placeholder (a position the owning section leaves undefined) is strict and belongs to a recorded spec issue.
 #[test]
 fn placeholders_are_strict_and_recorded() {
-    let issues = std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../plan/spec-issues.md")).unwrap();
+    let issues =
+        std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../plan/spec-issues.md"))
+            .unwrap();
     let mut families = std::collections::BTreeSet::new();
     for (i, c) in DECLARED.iter().enumerate() {
         if !tt_registry::declared_placeholders(i).is_empty() {

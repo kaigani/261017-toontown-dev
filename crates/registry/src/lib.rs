@@ -545,7 +545,12 @@ pub fn declared_schema(index: usize, result: bool) -> Value {
 /// required model object cannot be sampled; `Null` when absent.
 #[must_use]
 pub fn declared_sample(index: usize, part: &str) -> Value {
-    declared_entries().get(index).and_then(|e| e.get("samples")).and_then(|s| s.get(part)).cloned().unwrap_or(Value::Null)
+    declared_entries()
+        .get(index)
+        .and_then(|e| e.get("samples"))
+        .and_then(|s| s.get(part))
+        .cloned()
+        .unwrap_or(Value::Null)
 }
 
 /// The placeholders of the `index`-th generated declaration: positions whose type or shape the owning section does
