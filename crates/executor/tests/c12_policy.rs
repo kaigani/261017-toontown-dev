@@ -349,3 +349,42 @@ fn batches_resolve_references_and_refuse_jobs_and_history() {
     assert_eq!(env.steps.as_ref().unwrap().len(), 3);
     assert_eq!(rev(&h), r + 2);
 }
+
+#[test]
+fn the_load_transaction_is_guarded() {
+    // ADR-0013 §16 (C12-R1-01): scopes of project.open, the unsaved-changes rule of 01 §11.2, the events.
+    use tt_executor::{OpenOptions, Origin, UnsavedPolicy};
+    let h = fixture();
+    let doc = || tt_model::fixture::sample_document(2).unwrap();
+    let opts = |on_unsaved| OpenOptions { path: None, read_only: false, on_unsaved };
+    let scene = first(&h, "scene");
+    ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "dirty": 1 } } }));
+    let before = rev(&h);
+    // An agent needs the scopes of project.open.
+    let e =
+        h.open_document_with(doc(), opts(UnsavedPolicy::Discard), agent(&[Scope::Read, Scope::Edit])).error.unwrap();
+    assert_eq!((e.code.as_str(), e.details["missingScopes"].clone()), ("permission.denied", json!(["files.read"])));
+    // Unsaved changes: fail by default; save arrives with project.save (C1.3); discarding needs the app scope.
+    let user = || Origin::User;
+    assert_eq!(
+        h.open_document_with(doc(), opts(UnsavedPolicy::Fail), user()).error.unwrap().code,
+        "project.unsavedChanges"
+    );
+    assert_eq!(
+        h.open_document_with(doc(), opts(UnsavedPolicy::Save), user()).error.unwrap().code,
+        "command.notImplemented"
+    );
+    let e = h
+        .open_document_with(doc(), opts(UnsavedPolicy::Discard), agent(&[Scope::Read, Scope::Edit, Scope::FilesRead]))
+        .error
+        .unwrap();
+    assert_eq!((e.code.as_str(), e.details["missingScopes"].clone()), ("permission.denied", json!(["app"])));
+    assert_eq!(rev(&h), before, "nothing replaced");
+    // The user may discard: the replacement is announced and history starts afresh.
+    let rx = h.subscribe();
+    assert!(h.open_document_with(doc(), opts(UnsavedPolicy::Discard), user()).is_ok());
+    h.snapshot().unwrap();
+    let names: Vec<String> = rx.try_iter().map(|e| e.name).collect();
+    assert!(names.contains(&"project.closed".to_owned()) && names.contains(&"project.opened".to_owned()), "{names:?}");
+    assert_eq!(ok(&h, "edit.history.get", json!({}))["entries"], json!([]));
+}

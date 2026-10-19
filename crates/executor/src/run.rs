@@ -859,7 +859,21 @@ impl Core {
                 UnsavedPolicy::Save => {
                     return Envelope::error(CommandError::not_implemented("project.save", "M1 C1.3"), rev);
                 }
-                UnsavedPolicy::Discard => {}
+                // Discarding unsaved work is the `app` scope's (11 §6.1), which is never an agent's by itself.
+                UnsavedPolicy::Discard => {
+                    if let Origin::Agent { scopes, .. } = origin
+                        && !scopes.contains(&tt_registry::Scope::App)
+                    {
+                        return Envelope::error(
+                            CommandError::with_details(
+                                codes::PERMISSION_DENIED,
+                                "discarding unsaved changes needs the scope app",
+                                json!({ "commandId": "project.open", "missingScopes": ["app"] }),
+                            ),
+                            rev,
+                        );
+                    }
+                }
             }
         }
         self.install(LoadGrant { _private: () }, doc, opts, origin)

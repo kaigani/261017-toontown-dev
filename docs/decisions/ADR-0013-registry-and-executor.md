@@ -20,12 +20,21 @@ state commands (§5, §12).
    requirement, examples (at least one), GUI location or `agentOnly` justification; the parameter and result schemas
    are derived from the handler's types (draft 2020-12, the model's integer bounds). Every command of the M1
    namespaces (`app`, `project`, `edit`, `doc`, `agent`, `inspect`, `checkpoint`, `job`) and the kernel-level
-   `window`/`workspace` commands has a typed declaration (134: 62 implemented, 72 declared for later checkpoints). The
-   remaining 662 entries of spec A are inventory
-   stubs generated from the spec (`scripts/gen-command-inventory.py`, kept equal by `crates/registry/tests/inventory.rs`).
-   A declaration whose implementation belongs to a later checkpoint names it (`not_implemented = "M1 C1.3"`); it
-   validates and decodes its parameters and fails with **`command.notImplemented`** `{commandId, milestone}`. Stubs
-   fail the same way with the owner from `owner_of` (plan §4: namespace default plus exact overrides). Events are
+   `window`/`workspace` commands has a hand-written declaration (134). **Every other entry of spec A (662) has a
+   generated declaration** (round 1, C12-R1-12): `scripts/gen-command-declarations.py` derives from spec A's columns
+   (inventory kept equal to the spec by `crates/registry/tests/inventory.rs`) the parameter and result schemas —
+   types, ranges, enums, defaults, required parameters, unknown parameters rejected, a job's final result under
+   `x-jobResult` — the scopes (11 §6.1: kind, plus `files.read`/`files.write` for parameters of the file `path` type,
+   `prefs` for user-wide settings, `network` for publishing, `print`, `library.global`), `needsProject` (01 §1.3),
+   the undo label, confirmation conditions, one example that validates, a GUI location (events: agent-only) and the
+   owning checkpoint of plan §4. The registry therefore has no untyped entries; CI regenerates the files and fails on
+   drift. A declaration whose implementation belongs to a later checkpoint names it (`not_implemented = "M1 C1.3"`);
+   it validates its parameters and fails with **`command.notImplemented`** `{commandId, milestone}`. Owners follow
+   plan §4 checkpoint by checkpoint (C12-R1-21): e.g. `import.movie.run` and `media.*` → M8 C8.3; the `anim.*`
+   transform, channel, key, path, segment, camera and projection commands and `anim.evaluate` → M3 C3.2; motion-path
+   and function-editor UI, motion recording → M6 C6.2; bones and skeletons → M6 C6.3; the other animation tools,
+   views and hierarchy commands → M6 C6.1; real-time `playback.*` → M5 C5.1, rendered preview and player → M10
+   C10.1 (the plan names no checkpoint for real-time playback; the Timeline playhead is C5.1's). Events are
    registered with their payload as the result schema (the spec's columns differ, SI-016); invoking one is
    `command.disabled` (reason `event`). **Registry version** `0.1.0` (semver: minor = additive; major 0 until the
    surface is frozen for version 1; every checkpoint that implements commands raises the minor version).
@@ -49,8 +58,13 @@ state commands (§5, §12).
    checkpoints, revision log, application context, window/workspace state, clipboard). Every call is a message;
    the caller waits at most the **watchdog budget** (default 30 s) and otherwise gets **`command.timeout`**
    `{commandId, budgetMs}` — the work may still complete, and the hint says to read `doc.state.get` before retrying.
-   Handlers never wait for input (P5). `job.wait` waits on the caller's thread against the job table, never on the
-   document thread; inside a batch it only polls. Snapshots handed out are immutable `Document` values.
+   Handlers never wait for input (P5). A handler that does not return cannot block callers: each call still answers
+   with `command.timeout` within the budget, and the executor serves again when the handler returns
+   (`tests/c12_never_block.rs`); a handler that never returns cannot be preempted in-process (no safe thread
+   termination), so recovery is an engine restart by the host (C1.4). `job.wait` runs through the common contract
+   in two phases (C12-R1-04): the document thread checks scopes, parameters, `expectRev` and the request cache, the
+   caller's thread waits on the job table, and the document thread finishes the envelope (revision, request cache);
+   inside a batch it only polls. Snapshots handed out are immutable `Document` values.
 
 4. **Transactions and revisions.** A handler stages changes through `Cx` (`patch_objects` for property edits,
    `patch_entries` for structural edits from M2 on); staging commits through `Document::with_patched_entries_undo_only`
@@ -67,17 +81,82 @@ state commands (§5, §12).
    objects with changed content get the new revision and whose content-equal objects keep the larger of their
    current and target revisions (no revision decreases). History keeps 1 000 steps (01 §6.1: at least 200) and a clean
    marker. `doc.diff` rebuilds earlier revisions from the revision log (the last 256 with their previous snapshot, the
-   last 10 000 from back-patches; older bases are `doc.diffUnavailable {oldestRev}`).
+   last 10 000 from back-patches merged per entry and aligned like a replay, with the objects' earlier revisions
+   restored; older bases are `doc.diffUnavailable {oldestRev}`); the record the last save needs is never dropped
+   (AG-09), and inside an atomic batch `doc.diff` sees the staged state at its predicted revision (C12-R1-08/09). A
+   change to drawing content (a stroke, a node) also reports the drawing in `changes` with its new revision (REV-02,
+   11 P6; C12-R1-11). A revision that cannot grow is `doc.limitExceeded {limit: "documentRev"}`, never an overflow
+   (C12-R1-19).
 
 5. **Envelope, dry runs, idempotency.** Every call returns the 11 §7.2 envelope; `changes` is capped at 500 with
-   `changesTruncated` and `changesSince`. A dry run runs the handler on the staged state and reports the changes and
-   the revisions they would get; the session's application, window and checkpoint state is restored afterwards.
-   `requestId` is idempotent per session (`agent:<session>`, `user`, …): the first envelope — success or error — is
-   returned again (10 000 remembered). A failing call restores the same session state.
+   `changesTruncated` and `changesSince`. **A dry run is the real call on a copy of the session** (C12-R1-02/03): it
+   predicts the result exactly — including what earlier steps of a sequential batch changed — and nothing of it
+   (document, history, clipboard, application, window and checkpoint state, events, job cancellation) reaches the
+   live session. Inside an atomic batch a step whose own parameter `dryRun` is true runs to a savepoint and is
+   rolled back. `expectRev` (options or the command's parameter; an integer guards every target, a map every listed
+   object, targets or not) fails with `rev.conflict {ref, id, expectedRev, currentRev, documentRev, current?}`, the
+   current object included when its JSON is under 64 KiB (REV-05; C12-R1-07). **`requestId`** (C12-R1-06/22): the
+   cache is per session (`agent:<session>`, `user`, …) and bounded (100 000 envelopes or 64 MiB per session, oldest
+   first); the same id with the same command, parameters and options returns the first envelope — success or error
+   — without running again; the same id with anything different is **`request.conflict`** `{requestId,
+   originalCommand}`; an id whose envelope was evicted is **`request.unknownId`** `{requestId, reason: "evicted"}` and
+   never re-executes (the session keeps a hash of every id it has seen). Codes in SI-020.
+
+16. **The load transaction (C12-R1-01).** Installing a document into the live executor is itself a guarded
+    transaction: `ExecutorHandle::open_document` (and `open_document_with` with `OpenOptions {path, readOnly,
+    onUnsaved}`) sends the document to the document thread, which checks the caller's `project.open` scopes and the
+    unsaved-changes rule of 01 §11.2 (`fail` → `project.unsavedChanges`; `save` → `command.notImplemented` until
+    `project.save` in C1.3; `discard` needs the `app` scope, 11 §6.1, so agents cannot discard) and only then
+    installs it with a
+    `LoadGrant` — a token with a private field that only that check creates — emitting `project.closed` and
+    `project.opened` and starting a fresh history. No other path reaches the live document: the core, the request
+    type and the request channel are private (compile-fail cases in `tests/ui`).
+
+17. **Effects commit with the transaction (C12-R1-02/10).** Everything a command does outside the document — job
+    cancellation, checkpoints, events, the clipboard, remembered edit options, application and window state — is
+    staged with the document and committed only when the call or batch commits; a failed batch or a dry run leaves
+    no trace. A checkpoint created inside an atomic batch records the committed state at the batch's revision (its
+    step result reports that revision).
+
+18. **Jobs belong to their session (C12-R1-05/13).** An agent sees, waits for and cancels only its own session's
+    jobs (`job.notFound` otherwise); `job.list {all: true}` is the GUI's (`permission.denied` for agents). A job's
+    final result must satisfy its command's `x-jobResult` schema, or the job fails with `internal` and hands out no
+    result. `timedOut` is present only when true (A/11 §15.2).
+
+19. **Clipboard and the clipboard edits (C12-R1-14/17/18/20).** `edit.clipboard.get` returns the `Clipboard` itself
+    (`null` when empty) and needs a project like every edit command (01 §1.3); `edit.clipboard.set` validates the
+    items against their kind (`edit.clipboardInvalid`): `drawingObjects` are `stroke`/`drawingNode` objects,
+    `elements` are `element` objects or `{elementId}` references (SI-021), `elementProperties` are maps of element
+    properties, `cells` are `{elementId, frameOffset, drawingRef, drawingContent?}`, `keyframes`/`functionPoints`
+    `{channel, elementId?, key}`, `motionPoint` one `{channel, elementId?, point}`, `templates` library folders and
+    items, `image` `{mediaType, width, height, base64}`. `edit.cut/copy/paste/delete/cutSpecial/pasteSpecial/
+    pasteAsNewElement` act on the selection of the edit context (or `objectIds`; a selected column means its cells):
+    drawing objects (the layer of a stroke goes with it; locked drawings refuse), elements (delete re-attaches
+    children to the parent, 04 §8.3, and repairs references to the deleted elements as 10 §7.2 repairs dangling
+    references, SI-022; banks stay until save purges them), cells (delete blanks; cut special with create/delete
+    exposure removes frames; paste overwrites or, with create/delete exposure, inserts; drawings from another bank
+    replace same-name drawings or are copied; extend exposure fills the gap), keys (pasted relative to the paste
+    frame; key groups filter cut/paste special), motion points (paste special pastes the selected values), library
+    templates (copies into a catalog, unique names) and element properties. Copies get new IDs and unique names.
+    Paste-as-new-element makes a drawing element with a new bank from copied cells or drawing objects. Options are
+    remembered per operation in the session; `pasteSpecial {useLast}` repeats (`edit.noPreviousPasteSpecial`
+    otherwise). Options that need later work (`keyframeSubstitution`, `boundaryKeys` — M3 C3.2; motion-point
+    rotation/scale values without time-locked keys) are reported as `edit.optionNotApplied` warnings; pasting an
+    image is image import (M10). Area milestones refine these as additive behaviour.
+
+20. **Mode, views and workspaces (C12-R1-15/16).** The mode is derived from the active view — the central view of
+    the arrangement in use, the full-screen one while full screen is on (01 §4, §5.6); `app.mode.set` activates a view
+    of the requested type. Selecting a workspace saves the current arrangement first by default (`autoSave` is on by
+    default, 01 §7), then reads the target, so reselecting the current workspace keeps the layout; built-in
+    workspaces keep their bundled identity, so a renamed one can still be reset. Each edit context keeps its own
+    selection (01 §6.4).
+
+21. **Omitted members are addressable (JSON-04).** A patch to `/meta/x` or `/ext/x` of an object whose `meta`/`ext`
+    is empty (and therefore omitted in canonical JSON) materialises the member; the canonical form is unchanged.
 
 6. **Batches.** Atomic batches run every step in one context: queries see the uncommitted state, the batch commits as
-   one transaction and one undo step named `label`, and any failure rolls back the document and the session state
-   (`batch.stepFailed {stepIndex, commandId, error}`). Job commands are `batch.jobNotAllowed`; history commands
+   one transaction and one undo step named `label`, and any failure rolls back the document, the session state and
+   every staged effect (`batch.stepFailed {stepIndex, commandId, error}`). Job commands are `batch.jobNotAllowed`; history commands
    (undo, redo, history moves, checkpoint restore) are disabled inside atomic batches. References in parameters are
    strings that are exactly `$<n>.<path>` (`n` 1-based) or `$<name>.<path>` (`as`), resolved against the earlier
    steps' envelopes along a dotted path (SI-017). Non-atomic batches run steps as separate invocations;
@@ -123,12 +202,11 @@ state commands (§5, §12).
 12. **Workers.** The engine's background work runs on Rust threads (jobs). The front end needs no web workers, so the
     worker ban of the IPC boundary stays in all three layers (C01-R4-02 unchanged).
 
-13. **Permissions.** Each declaration lists its scopes; stubs derive them from their kind (query → read, ui/toggle →
-    ui, action/job → edit). `permission.denied {missingScopes}` precedes parameter validation. The `app` scope is
-    never an agent's (11 §6.1).
+13. **Permissions.** Each declaration lists its scopes (hand-written, or generated per §1).
+    `permission.denied {missingScopes}` precedes parameter validation. The `app` scope is never an agent's (11 §6.1).
 
-14. **Front-end command schemas.** `tt_engine::commands::command_definitions` publishes every typed command's
-    parameter and result schemas and the envelope as `desktop/src/ipc/generated/commands.ts`, names collision-free
+14. **Front-end command schemas.** `tt_engine::commands::command_definitions` publishes every command's parameter
+    and result schemas and the envelope as `desktop/src/ipc/generated/commands.ts`, names collision-free
     (`<commandId>.<Name>`); the front end validates them with the existing validator and wire controls (ADR-0012).
 
 15. **List diffs by ID (model).** A list of full inline objects whose length changes is diffed by ID (one `remove`
@@ -139,8 +217,9 @@ state commands (§5, §12).
 ## Consequences
 
 - Area milestones add behaviour by replacing `not_implemented` declarations with handlers that stage through `Cx`;
-  the registry, envelope, history, events and conformance tests apply unchanged. The parity test covers the menu
-  manifest now and every typed declaration's GUI location or justification; the GUI half grows with M4.
+  the registry, envelope, history, events and conformance tests apply unchanged. A hand-written declaration replaces
+  a generated one by re-running the generator (the registry refuses an id declared twice). The parity test covers
+  the menu manifest and every entry's GUI location or justification, skipping nothing; the GUI half grows with M4.
 - At 100 000 strokes a one-property edit costs about 2.4–2.8 s end to end (release, Windows; `commit_scale`), almost
   all of it the full staged integrity check the C1.1 rulings require (the entry's input path ≈ 0.78 s, two entry
   serialisations ≈ 0.37 s, the verified undo diff ≈ 0.47 s, index rebuild). The touched-object change computation is
@@ -148,4 +227,5 @@ state commands (§5, §12).
   staging (validate and diff only the touched layer); that is drawing-engine work for M2 C2.1, which owns the
   stroke model in motion.
 - New error codes: `command.notImplemented`, `command.timeout`, `history.diverged`, `checkpoint.exists`,
-  `checkpoint.notFound`, `job.notFound`; 11 §10 does not list them (SI-020).
+  `checkpoint.notFound`, `job.notFound`, `request.conflict`, `request.unknownId`; warning `edit.optionNotApplied`;
+  11 §10 does not list them (SI-020).
