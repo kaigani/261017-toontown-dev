@@ -1,0 +1,20 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\model)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 25.50s
+     Running tests\c12_r1_scale.rs (target\release\deps\c12_r1_scale-92c3818502fbb36d.exe)
+
+running 1 test
+{"profile":"release","cases":[{"fixture":"100000 strokes","objects":100092,"assembleSeconds":4.0351568,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.4231524,"maximumCallSeconds":0.0077842,"create20CheckpointsSeconds":0.0009125,"find100Seconds":0.1105544,"documentRev":1},{"fixture":"10000 drawings","objects":10091,"assembleSeconds":0.1514844,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.5964821,"maximumCallSeconds":0.002919,"create20CheckpointsSeconds":0.0597633,"find100Seconds":0.0218871,"documentRev":1}]}
+test every_command_rejects_huge_malformed_input_on_large_documents ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.45s
+
+     Running tests\c12_r2_scale.rs (target\release\deps\c12_r2_scale-4d7833ba5ebbd26c.exe)
+
+running 1 test
+test hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.06s
+
+exit 0
