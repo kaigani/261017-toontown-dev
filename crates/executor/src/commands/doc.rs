@@ -492,11 +492,18 @@ pub(crate) fn doc_object_find(cx: &mut Cx, p: FindParams) -> Result<FindResult, 
         }
         found.push((loc.key.clone(), loc.ty, loc.rev, json));
     }
+    // Canonical paths of every match in one pass (C12-R1-23: no sibling scan per object).
+    let paths: Vec<Option<String>> = if p.sort == Sort::Path {
+        doc.canonical_paths(found.iter().map(|f| f.0.as_str()))
+    } else {
+        vec![None; found.len()]
+    };
     let mut keyed: Vec<(String, Found)> = found
         .into_iter()
-        .map(|f| {
+        .zip(paths)
+        .map(|(f, path)| {
             let sort_key = match p.sort {
-                Sort::Path => doc.canonical_path(&f.0).unwrap_or_default(),
+                Sort::Path => path.unwrap_or_default(),
                 Sort::Name => {
                     f.3.as_ref().and_then(|j| j.get("name")).and_then(Value::as_str).unwrap_or_default().to_owned()
                 }
@@ -512,7 +519,7 @@ pub(crate) fn doc_object_find(cx: &mut Cx, p: FindParams) -> Result<FindResult, 
     let total = keyed.len();
     let end = p.offset.saturating_add(p.limit).min(total);
     let mut items = Vec::new();
-    for (_, (key, ty, rev, json)) in keyed.into_iter().skip(p.offset).take(p.limit) {
+    for (sort_key, (key, ty, rev, json)) in keyed.into_iter().skip(p.offset).take(p.limit) {
         let mut m = Map::new();
         m.insert("id".into(), json!(key));
         m.insert("type".into(), json!(ty.as_str()));
@@ -522,7 +529,8 @@ pub(crate) fn doc_object_find(cx: &mut Cx, p: FindParams) -> Result<FindResult, 
             None => None,
         };
         m.insert("name".into(), name.unwrap_or(Value::Null));
-        m.insert("path".into(), json!(doc.canonical_path(&key)));
+        let path = if p.sort == Sort::Path { Some(sort_key) } else { doc.canonical_path(&key) };
+        m.insert("path".into(), json!(path));
         m.insert("rev".into(), json!(rev));
         if let (Some(fields), Some(j)) = (&p.fields, &json) {
             for f in fields {
@@ -871,24 +879,13 @@ pub(crate) fn doc_object_patch(cx: &mut Cx, p: PatchParams) -> Result<PatchResul
     }
     let targets = cx.resolve_objects(&p.targets)?;
     let doc = cx.document()?.clone();
+    // REV-05 (C12-R1-07): an integer guards every target; a map guards every object it lists, targets or not.
     if let Some(expect) = &p.expect_rev {
-        for (i, (_, key)) in targets.iter().enumerate() {
-            let want = match expect {
-                ExpectRev::All(r) => Some(*r),
-                ExpectRev::Each(m) => p.targets.get(i).and_then(|r| m.get(r)).or_else(|| m.get(key)).copied(),
-            };
-            let actual = doc.locate(key).map_or(0, |l| l.rev);
-            if let Some(w) = want
-                && w != actual
-            {
-                return Err(CommandError::with_details(
-                    codes::REV_CONFLICT,
-                    format!("`{key}` changed: rev {actual}, expected {w}"),
-                    json!({ "id": key, "expected": w, "actual": actual, "documentRev": doc.document_rev() }),
-                )
-                .hint("re-read the object and retry"));
-            }
-        }
+        let pairs: Vec<(String, u64)> = match expect {
+            ExpectRev::All(r) => targets.iter().map(|(_, k)| (k.clone(), *r)).collect(),
+            ExpectRev::Each(m) => m.iter().map(|(k, v)| (k.clone(), *v)).collect(),
+        };
+        crate::run::check_expect_rev(cx, &pairs)?;
     }
     let mut edits: Vec<(String, Vec<PatchOp>)> = Vec::with_capacity(targets.len());
     let mut first_property: Option<String> = None;
@@ -954,6 +951,36 @@ pub(crate) fn doc_object_patch(cx: &mut Cx, p: PatchParams) -> Result<PatchResul
     cx.set_targets(json!({ "ids": targets.iter().map(|(_, k)| k).collect::<Vec<_>>() }));
     let document_rev = if changes.is_empty() { doc.document_rev() } else { rev };
     Ok(PatchResult { changes, document_rev })
+}
+
+/// Stages a property merge onto elements (pasting element properties, `edit.paste`): the rules of
+/// `doc.object.patch` `props`. Returns the modified element keys.
+pub(crate) fn stage_props(
+    cx: &mut Cx,
+    refs: &[String],
+    props: &Map<String, Value>,
+) -> Result<Vec<String>, CommandError> {
+    let targets = cx.resolve_objects(refs)?;
+    let doc = cx.document()?.clone();
+    let mut edits = Vec::with_capacity(targets.len());
+    for (ty, key) in &targets {
+        if *ty != ObjectType::Element {
+            return Err(CommandError::with_details(
+                tt_model::codes::REF_WRONG_TYPE,
+                format!("element properties paste onto elements, not a {ty}"),
+                json!({ "id": key }),
+            ));
+        }
+        let (_, current) = doc.object_raw_json(key)?;
+        let mut ops = Vec::new();
+        merge_ops(&current, props, "", &mut ops);
+        for (i, op) in ops.iter().enumerate() {
+            classify(*ty, &op.path, &format!("/props/{i}"), false)?;
+        }
+        edits.push((key.clone(), ops));
+    }
+    cx.patch_objects(edits)?;
+    Ok(targets.into_iter().map(|(_, k)| k).collect())
 }
 
 // ----- schemas ----------------------------------------------------------------------------------------------------
@@ -1188,11 +1215,22 @@ fn doc_at(cx: &Cx, rev: u64) -> Result<Document, CommandError> {
             (Some(before), _) => before.clone(),
             (None, Back::Snapshot(d)) => d.clone(),
             (None, Back::Patches(patches)) => {
-                let mut aligned = Vec::with_capacity(patches.len());
+                // As an undo replay does (C12-R1-08): merge the patches per entry in order, check each merged patch
+                // against the entry it applies to, then restore the revisions the transaction stamped.
+                let mut merged: Vec<(tt_model::document::EntryKey, Vec<PatchOp>)> = Vec::new();
                 for (k, ps) in patches {
-                    aligned.push((k.clone(), crate::align::prepare(&doc, k, ps)?));
+                    match merged.iter_mut().find(|(e, _)| e == k) {
+                        Some((_, ops)) => ops.extend(ps.iter().cloned()),
+                        None => merged.push((k.clone(), ps.clone())),
+                    }
                 }
-                doc.with_patched_entries(&aligned).map_err(crate::cx::model_error)?.0
+                let mut ready = Vec::with_capacity(merged.len());
+                for (k, ops) in merged {
+                    let checked = crate::align::prepare(&doc, &k, &ops)?;
+                    ready.push((k, checked));
+                }
+                let content = doc.with_patched_entries_undo_only(&ready).map_err(crate::cx::model_error)?.0;
+                content.at_earlier_revision(rec.rev.saturating_sub(1), &rec.earlier_revs)?
             }
         };
     }
@@ -1209,10 +1247,17 @@ fn doc_at(cx: &Cx, rev: u64) -> Result<Document, CommandError> {
     agent_only = "agents catch up after reconnecting (10 AG-09)",
 )]
 pub(crate) fn doc_diff(cx: &mut Cx, p: DiffParams) -> Result<DiffResult, CommandError> {
-    let current = cx.project()?.doc.document_rev();
-    let until = p.until_rev.unwrap_or(current);
+    // Inside an atomic batch the latest state is the transaction's staged one, with the revision it will commit at
+    // (11 §7.3: queries see earlier uncommitted steps; C12-R1-09).
+    let live = cx.project()?.doc.document_rev();
+    let predicted = cx.predicted_rev()?;
+    let staged = predicted > live;
+    let state_at = |cx: &Cx, rev: u64| -> Result<Document, CommandError> {
+        if staged && rev == predicted { Ok(cx.document()?.clone()) } else { doc_at(cx, rev) }
+    };
+    let until = p.until_rev.unwrap_or(predicted);
     let (from_rev, from_doc) = match (&p.since_rev, &p.since_checkpoint) {
-        (Some(r), None) => (*r, doc_at(cx, *r)?),
+        (Some(r), None) => (*r, state_at(cx, *r)?),
         (None, Some(name)) => {
             let c = cx.project()?.checkpoints.iter().find(|c| &c.name == name).cloned().ok_or_else(|| {
                 CommandError::with_details(
@@ -1235,7 +1280,8 @@ pub(crate) fn doc_diff(cx: &mut Cx, p: DiffParams) -> Result<DiffResult, Command
     if until < from_rev {
         return Err(invalid("/untilRev", "untilRev is before the base revision"));
     }
-    let until_doc = doc_at(cx, until)?;
+    let until_doc = state_at(cx, until)?;
+    let staged_view = staged && until == predicted;
     let within = match &p.within {
         Some(w) => match cx.resolve(w)? {
             Target::Object { key, .. } => Some(key),
@@ -1259,7 +1305,7 @@ pub(crate) fn doc_diff(cx: &mut Cx, p: DiffParams) -> Result<DiffResult, Command
                 continue;
             }
         }
-        let rev = until_doc.locate(&o.key).map_or(until, |l| l.rev);
+        let rev = if staged_view { until } else { until_doc.locate(&o.key).map_or(until, |l| l.rev) };
         let patch = match (&c, p.detail) {
             (OwnChange::Modified(ops), Detail::Full) => {
                 let mut v = Vec::with_capacity(ops.len());

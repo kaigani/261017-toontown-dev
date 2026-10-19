@@ -219,8 +219,8 @@ fn expect_rev_conflicts_are_typed() {
     let env = with(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "x": 1 } } }), opts);
     let e = env.error.unwrap();
     assert_eq!(e.code, "rev.conflict");
-    assert_eq!(e.details["expected"], current + 7);
-    assert_eq!(e.details["actual"], current);
+    assert_eq!(e.details["expectedRev"], current + 7);
+    assert_eq!(e.details["currentRev"], current);
     let e =
         err(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "x": 1 } }, "expectRev": 999 }));
     assert_eq!(e.code, "rev.conflict");
@@ -281,8 +281,11 @@ fn request_ids_make_calls_idempotent_per_session() {
     let r0 = rev(&h);
     let opts = InvokeOptions { request_id: Some("req-1".into()), ..InvokeOptions::default() };
     let a = with(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 1 } } }), opts.clone());
-    let b = with(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 2 } } }), opts.clone());
+    let b = with(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 1 } } }), opts.clone());
     assert_eq!(a, b, "a repeated requestId returns the original result");
+    // The same id with other parameters is a conflict, never a re-execution (ADR-0013, SI-020; C12-R1-22).
+    let c = with(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 2 } } }), opts.clone());
+    assert_eq!(c.error.as_ref().map(|e| e.code.as_str()), Some("request.conflict"), "{c:?}");
     assert_eq!(rev(&h), r0 + 1);
     assert_eq!(get(&h, &scene)["meta"]["n"], 1);
     // Another session's identical id is another request.

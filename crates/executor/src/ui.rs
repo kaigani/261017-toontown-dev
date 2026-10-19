@@ -233,6 +233,8 @@ impl From<&Arrangements> for Layout {
 pub(crate) struct Workspace {
     pub name: String,
     pub built_in: bool,
+    /// The bundled workspace this one is (its name may have changed; C12-R1-16).
+    pub bundled: Option<String>,
     pub layout: Arrangements,
 }
 
@@ -414,6 +416,7 @@ pub(crate) fn built_in_workspaces() -> Vec<Workspace> {
         .map(|(name, a)| Workspace {
             name: name.to_owned(),
             built_in: true,
+            bundled: Some(name.to_owned()),
             layout: Arrangements { full_screen: full_screen_of(&a), normal: a },
         })
         .collect()
@@ -525,10 +528,11 @@ impl UiState {
         Layout::from(&self.live)
     }
 
-    /// The central view of the normal arrangement.
+    /// The central view (the active view) of the arrangement in use.
     #[must_use]
     pub fn central_panel(&self) -> &str {
-        &self.live.normal.central_panel
+        // The arrangement in use: the full-screen one while full screen is on (01 §5.6; C12-R1-15).
+        &self.active().central_panel
     }
 
     /// Where a panel is in an arrangement.
@@ -916,10 +920,13 @@ impl UiState {
     /// # Errors
     /// `workspace.notFound`.
     pub fn select(&mut self, name: &str, save_current: bool) -> Result<(), CommandError> {
-        let layout = self.workspace_layout(Some(name))?;
+        // Validate the target first, then save the current arrangement, then read the target (which may be the
+        // workspace just saved; C12-R1-16).
+        self.workspace_layout(Some(name))?;
         if save_current {
             self.save(None)?;
         }
+        let layout = self.workspace_layout(Some(name))?;
         self.current = name.to_owned();
         self.live = layout.into();
         Ok(())
@@ -983,7 +990,7 @@ impl UiState {
                 serde_json::json!({ "pointer": "/position" }),
             ));
         }
-        self.workspaces.insert(at - 1, Workspace { name: n.clone(), built_in: false, layout });
+        self.workspaces.insert(at - 1, Workspace { name: n.clone(), built_in: false, bundled: None, layout });
         Ok((n, at))
     }
 
@@ -1046,34 +1053,31 @@ impl UiState {
     /// `workspace.notFound`; `workspace.builtIn` is not an error here, but a user workspace has no bundled
     /// arrangement (`arg.invalid`).
     pub fn reset(&mut self, name: Option<&str>, all: bool, select: bool) -> Result<Vec<String>, CommandError> {
+        // Built-in workspaces are identified by their bundled identity, so a renamed one is still restorable (01 §5.5).
         let bundled = built_in_workspaces();
         let targets: Vec<String> = if all {
-            bundled.iter().map(|w| w.name.clone()).collect()
+            self.workspaces.iter().filter(|w| w.bundled.is_some()).map(|w| w.name.clone()).collect()
         } else {
             let n = name.unwrap_or(&self.current).to_owned();
-            if !bundled.iter().any(|w| w.name == n) {
-                return Err(if self.workspaces.iter().any(|w| w.name == n) {
-                    ui_error(
+            match self.workspaces.iter().find(|w| w.name == n) {
+                Some(w) if w.bundled.is_some() => vec![n],
+                Some(_) => {
+                    return Err(ui_error(
                         "arg.invalid",
                         format!("`{n}` is a user workspace and has no bundled arrangement"),
                         serde_json::json!({ "pointer": "/name" }),
-                    )
-                } else {
-                    Self::not_found(&n)
-                });
+                    ));
+                }
+                None => return Err(Self::not_found(&n)),
             }
-            vec![n]
         };
-        for b in bundled.into_iter().filter(|b| targets.contains(&b.name)) {
-            match self.workspaces.iter_mut().find(|w| w.name == b.name) {
-                Some(w) => w.layout = b.layout,
-                None => self.workspaces.push(b),
+        for w in self.workspaces.iter_mut().filter(|w| targets.contains(&w.name)) {
+            if let Some(b) = w.bundled.as_ref().and_then(|id| bundled.iter().find(|b| b.bundled.as_ref() == Some(id))) {
+                w.layout = b.layout.clone();
             }
         }
         if select && let Some(first) = targets.first() {
             self.select(first, false)?;
-        } else if targets.contains(&self.current) && !select {
-            // Restoring the current workspace's stored arrangement does not change the window until selected.
         }
         Ok(targets)
     }

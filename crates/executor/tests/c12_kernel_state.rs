@@ -209,6 +209,13 @@ fn prepared() -> ExecutorHandle {
     h
 }
 
+/// The clipboard a paste example expects (paste examples paste cells of `Bob`).
+fn clipboard_for(h: &ExecutorHandle, id: &str) {
+    if matches!(id, "edit.paste" | "edit.pasteSpecial" | "edit.pasteAsNewElement") {
+        ok(h, "edit.copy", json!({ "context": "xsheet", "objectIds": ["scene:#1/element:\"Bob\"/cell:#1"] }));
+    }
+}
+
 #[test]
 fn every_example_runs_on_the_fixture_under_the_watchdog() {
     let registry = tt_executor::registry().unwrap();
@@ -217,6 +224,7 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
         let Some(c) = e.command else { continue };
         for ex in c.decl.examples {
             let h = prepared();
+            clipboard_for(&h, e.id());
             let params: Value = serde_json::from_str(ex.params).unwrap();
             let t = Instant::now();
             let env = h.invoke(Invocation::user(e.id(), params));

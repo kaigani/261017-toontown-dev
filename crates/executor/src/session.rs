@@ -44,9 +44,12 @@ pub(crate) struct RevRecord {
     /// The document at `rev - 1`, kept for the most recent [`SNAPSHOT_WINDOW`] records (copy-on-write: unchanged
     /// entries are shared).
     pub before: Option<Document>,
+    /// The revisions the objects the transaction stamped had at `rev - 1` (back-patches restore content, these
+    /// restore the revisions; C12-R1-08).
+    pub earlier_revs: Vec<(String, u64)>,
 }
 
-/// Transactions kept for `doc.diff` (10 AG-09: at least the last 10 000).
+/// Transactions kept for `doc.diff` (10 AG-09 / D11: at least the last 10 000, and back to the last save).
 pub const REV_LOG_LEN: usize = 10_000;
 /// Records that keep their previous snapshot for fast diffs.
 pub const SNAPSHOT_WINDOW: usize = 256;
@@ -81,18 +84,21 @@ impl OpenProject {
 
     /// The oldest revision `doc.diff` can start from.
     pub fn history_from_rev(&self) -> u64 {
-        self.log.front().map_or(self.doc.document_rev(), |r| r.rev - 1)
+        self.log.front().map_or(self.doc.document_rev(), |r| r.rev.saturating_sub(1))
     }
 
-    /// Records a committed transaction.
-    pub fn log_commit(&mut self, rev: u64, back: Back, before: Document) {
-        self.log.push_back(RevRecord { rev, back, before: Some(before) });
+    /// Records a committed transaction. The log keeps at least the last [`REV_LOG_LEN`] transactions and never drops
+    /// a record the last save still needs (D11, AG-09; C12-R1-08).
+    pub fn log_commit(&mut self, rev: u64, back: Back, before: Document, earlier_revs: Vec<(String, u64)>) {
+        self.log.push_back(RevRecord { rev, back, before: Some(before), earlier_revs });
         if self.log.len() > SNAPSHOT_WINDOW
             && let Some(old) = self.log.get_mut(self.log.len() - SNAPSHOT_WINDOW - 1)
         {
             old.before = None;
         }
-        while self.log.len() > REV_LOG_LEN {
+        while self.log.len() > REV_LOG_LEN
+            && self.log.front().is_some_and(|r| self.saved_rev.is_none_or(|saved| r.rev.saturating_sub(1) < saved))
+        {
             self.log.pop_front();
         }
     }
@@ -112,8 +118,9 @@ pub struct Event {
     pub payload: Value,
 }
 
-/// Everything the document thread owns.
-#[derive(Debug, Default)]
+/// Everything the document thread owns (cloned to simulate a dry-run batch; the job table is shared, and simulations
+/// never apply effects to it).
+#[derive(Debug, Default, Clone)]
 pub(crate) struct Session {
     pub project: Option<OpenProject>,
     pub app: AppContext,
@@ -122,6 +129,8 @@ pub(crate) struct Session {
     pub events: Vec<Event>,
     /// The kernel clipboard (01 §12.4 `Clipboard`), `null` when empty.
     pub clipboard: Option<Value>,
+    /// The remembered options of cut special, paste special and motion-point paste special (01 §6.3).
+    pub edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
 }
 
 impl Session {

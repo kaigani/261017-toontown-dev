@@ -7,9 +7,8 @@ use serde_json::json;
 use tt_registry::{CommandError, command};
 
 use super::common::{Empty, NoParams};
-use crate::cx::Cx;
+use crate::cx::{Cx, Effect};
 use crate::rules;
-use crate::session::Checkpoint;
 
 /// Checkpoints kept per project (ADR-0013 §7).
 pub(crate) const MAX_CHECKPOINTS: usize = 100;
@@ -54,10 +53,20 @@ pub(crate) fn checkpoint_create(cx: &mut Cx, p: NameParams) -> Result<Checkpoint
             "a checkpoint name is 1–128 characters without control characters",
         ));
     }
-    let doc = cx.document()?.clone();
+    // Inside an atomic batch the checkpoint records the state the batch commits (an atomic batch has no committed
+    // intermediate revision), so it is created when the transaction commits, never by a dry run or a failed batch
+    // (ADR-0013 §7; C12-R1-10). Its result carries the committed revision.
     let origin = cx.origin().label();
-    let project = cx.project_mut()?;
-    if project.checkpoints.iter().any(|c| c.name == name) {
+    let pending: Vec<String> = cx
+        .effects()
+        .iter()
+        .filter_map(|e| match e {
+            Effect::CreateCheckpoint { name, .. } => Some(name.clone()),
+            _ => None,
+        })
+        .collect();
+    let project = cx.project()?;
+    if project.checkpoints.iter().any(|c| c.name == name) || pending.contains(&name) {
         return Err(CommandError::with_details(
             "checkpoint.exists",
             format!("a checkpoint named `{name}` exists"),
@@ -65,21 +74,16 @@ pub(crate) fn checkpoint_create(cx: &mut Cx, p: NameParams) -> Result<Checkpoint
         )
         .hint("delete it first or choose another name"));
     }
-    if project.checkpoints.len() >= MAX_CHECKPOINTS {
+    if project.checkpoints.len() + pending.len() >= MAX_CHECKPOINTS {
         return Err(CommandError::with_details(
             tt_registry::codes::LIMIT_EXCEEDED,
             format!("at most {MAX_CHECKPOINTS} checkpoints are kept"),
             json!({ "limit": MAX_CHECKPOINTS }),
         ));
     }
-    let rev = doc.document_rev();
-    project.checkpoints.push(Checkpoint {
-        name: name.clone(),
-        created_at: crate::time::now_iso(),
-        document_rev: rev,
-        origin,
-        doc,
-    });
+    let rev = cx.predicted_rev()?;
+    let step = cx.step();
+    cx.defer(Effect::CreateCheckpoint { name: name.clone(), origin, created_at: crate::time::now_iso(), step });
     Ok(CheckpointRef { name, document_rev: rev })
 }
 

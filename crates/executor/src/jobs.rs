@@ -149,7 +149,7 @@ impl JobTable {
         let cancel = Arc::new(AtomicBool::new(false));
         let job_id = {
             let mut t = self.lock();
-            t.next += 1;
+            t.next = t.next.saturating_add(1);
             let id = format!("job-{}", t.next);
             t.jobs.insert(
                 id.clone(),

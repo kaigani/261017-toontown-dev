@@ -44,9 +44,11 @@ pub use app::{AppState, Mode};
 pub use cx::Cx;
 pub use history::MAX_STEPS as MAX_UNDO_STEPS;
 pub use jobs::{JobNotifier, JobProgress, JobRecord, JobState, JobTable};
+pub use run::LoadGrant;
 pub use session::Event;
 pub use types::{
-    BatchRequest, BatchStep, ChangeRecord, Envelope, Invocation, InvokeOptions, Origin, Status, UndoRef, Warning,
+    BatchRequest, BatchStep, ChangeRecord, Envelope, Invocation, InvokeOptions, OpenOptions, Origin, Status, UndoRef,
+    UnsavedPolicy, Warning,
 };
 pub use ui::{Layout, PanelEntry, WorkspaceEntry};
 
@@ -89,7 +91,9 @@ pub fn registry() -> Result<&'static Registry, AssemblyError> {
 enum Request {
     Invoke(Invocation, Sender<Envelope>),
     Batch(BatchRequest, Origin, Sender<Envelope>),
-    Open(Box<Document>, Option<String>, bool, Sender<Envelope>),
+    Open(Box<Document>, OpenOptions, Origin, Sender<Envelope>),
+    WaitBegin(Invocation, Sender<run::WaitStart>),
+    WaitFinish(Invocation, Result<Value, CommandError>, Sender<Envelope>),
     Snapshot(Sender<Option<Document>>),
     List(Origin, Sender<Vec<Value>>),
 }
@@ -136,6 +140,16 @@ impl ExecutorHandle {
     /// `internal` if the registry does not assemble or the thread cannot start.
     pub fn spawn(config: ExecutorConfig) -> Result<Self, CommandError> {
         let registry = registry().map_err(|e| CommandError::internal(format!("registry assembly failed: {}", e.0)))?;
+        Self::spawn_with_registry(config, registry)
+    }
+
+    /// Starts a document thread over another registry (embedding hosts and the never-block tests, which declare a
+    /// handler that does not return). The executor's guarantees are the same: handlers still stage only through
+    /// their `Cx`, and the load transaction is still guarded.
+    ///
+    /// # Errors
+    /// `internal` if the thread cannot start.
+    pub fn spawn_with_registry(config: ExecutorConfig, registry: &'static Registry) -> Result<Self, CommandError> {
         let (tx, rx) = mpsc::channel::<Request>();
         let subscribers: Arc<Mutex<Vec<Sender<Event>>>> = Arc::new(Mutex::new(Vec::new()));
         let job_subs = subscribers.clone();
@@ -163,7 +177,7 @@ impl ExecutorHandle {
     #[must_use]
     pub fn invoke(&self, inv: Invocation) -> Envelope {
         if inv.command == "job.wait" {
-            return self.job_wait(&inv);
+            return self.job_wait(inv);
         }
         let what = inv.command.clone();
         self.call(&what, |r| Request::Invoke(inv, r)).unwrap_or_else(|e| Envelope::error(e, None))
@@ -175,10 +189,19 @@ impl ExecutorHandle {
         self.call("batch", |r| Request::Batch(req, origin, r)).unwrap_or_else(|e| Envelope::error(e, None))
     }
 
-    /// Makes a document the open project (the load path; C1.3's `project.open` reads packages into it).
+    /// Opens a document as the project, as the user, refusing to discard unsaved changes of an open project
+    /// ([`ExecutorHandle::open_document_with`] with [`UnsavedPolicy::Fail`]).
     #[must_use]
     pub fn open_document(&self, doc: Document, path: Option<String>, read_only: bool) -> Envelope {
-        self.call("project.open", |r| Request::Open(Box::new(doc), path, read_only, r))
+        self.open_document_with(doc, OpenOptions { path, read_only, on_unsaved: UnsavedPolicy::Fail }, Origin::User)
+    }
+
+    /// The guarded load transaction (ADR-0013 §16; C12-R1-01): the origin needs the scopes of `project.open`, and a
+    /// modified open project is only replaced as `on_unsaved` says (`project.unsavedChanges` by default). The
+    /// replacement is recorded (`project.closed`, `project.opened`). C1.3's `project.open` reads packages into it.
+    #[must_use]
+    pub fn open_document_with(&self, doc: Document, options: OpenOptions, origin: Origin) -> Envelope {
+        self.call("project.open", |r| Request::Open(Box::new(doc), options, origin, r))
             .unwrap_or_else(|e| Envelope::error(e, None))
     }
 
@@ -218,32 +241,23 @@ impl ExecutorHandle {
         &self.jobs
     }
 
-    /// `job.wait` on the caller's thread (11 P5: the document thread never waits).
-    fn job_wait(&self, inv: &Invocation) -> Envelope {
-        let check = || -> Result<Value, CommandError> {
-            let entry = registry()
-                .map_err(|e| CommandError::internal(e.0))?
-                .get("job.wait")
-                .ok_or_else(|| CommandError::internal("job.wait missing"))?;
-            let missing: Vec<&str> =
-                entry.scopes().into_iter().filter(|s| !inv.origin.has_scope(*s)).map(|s| s.as_str()).collect();
-            if !missing.is_empty() {
-                return Err(CommandError::with_details(
-                    codes::PERMISSION_DENIED,
-                    "`job.wait` needs the read scope",
-                    json!({ "commandId": "job.wait", "missingScopes": missing }),
-                ));
-            }
-            let params = if inv.params.is_null() { json!({}) } else { inv.params.clone() };
-            tt_registry::validate_params("job.wait", &entry.params_schema(), &params)?;
-            let p: commands::job::WaitParams = tt_registry::decode_params(params)?;
-            let (record, timed_out) = self.jobs.wait(&p.job_id, Duration::from_millis(p.timeout_ms))?;
-            commands::job::wait_result(record, timed_out)
+    /// `job.wait` (C12-R1-04): the invocation contract runs on the document thread (remembered requests, scopes,
+    /// parameters, `expectRev`, ownership); the wait itself happens on the caller's thread (11 P5), bounded by the
+    /// command's own `timeoutMs` (11 §15.2), and the envelope is completed and remembered on the document thread.
+    fn job_wait(&self, inv: Invocation) -> Envelope {
+        let start = match self.call("job.wait", |r| Request::WaitBegin(inv.clone(), r)) {
+            Ok(s) => s,
+            Err(e) => return Envelope::error(e, None),
         };
-        match check() {
-            Ok(v) => Envelope::ok(v, None),
-            Err(e) => Envelope::error(e, None),
-        }
+        let (job_id, timeout) = match start {
+            run::WaitStart::Done(env) => return *env,
+            run::WaitStart::Wait { job_id, timeout } => (job_id, timeout),
+        };
+        let outcome = self
+            .jobs
+            .wait(&job_id, timeout)
+            .and_then(|(record, timed_out)| commands::job::wait_result(record, timed_out));
+        self.call("job.wait", |r| Request::WaitFinish(inv, outcome, r)).unwrap_or_else(|e| Envelope::error(e, None))
     }
 }
 
@@ -258,9 +272,15 @@ fn document_thread(mut core: run::Core, rx: &Receiver<Request>, subscribers: &Mu
                 let env = core.batch(&b, &origin);
                 let _ = reply.send(env);
             }
-            Request::Open(doc, path, ro, reply) => {
-                let env = core.open(*doc, path, ro);
+            Request::Open(doc, options, origin, reply) => {
+                let env = core.load(*doc, &options, &origin);
                 let _ = reply.send(env);
+            }
+            Request::WaitBegin(inv, reply) => {
+                let _ = reply.send(core.wait_begin(&inv));
+            }
+            Request::WaitFinish(inv, outcome, reply) => {
+                let _ = reply.send(core.wait_finish(&inv, outcome));
             }
             Request::Snapshot(reply) => {
                 let doc = core.session().and_then(|s| s.project.as_ref()).map(|p| p.doc.clone());

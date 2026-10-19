@@ -11,6 +11,7 @@ pub(crate) mod common;
 pub(crate) mod derived;
 pub(crate) mod doc;
 pub(crate) mod edit;
+pub(crate) mod edit_ops;
 pub(crate) mod inspect;
 pub(crate) mod job;
 pub(crate) mod project;
@@ -68,13 +69,13 @@ pub(crate) static ALL: &[&Command] = &[
     &edit::EDIT_CLIPBOARD_GET,
     &edit::EDIT_CLIPBOARD_SET,
     &edit::EDIT_CLIPBOARD_CHANGED,
-    &edit::EDIT_CUT,
-    &edit::EDIT_COPY,
-    &edit::EDIT_PASTE,
-    &edit::EDIT_DELETE,
-    &edit::EDIT_CUT_SPECIAL,
-    &edit::EDIT_PASTE_SPECIAL,
-    &edit::EDIT_PASTE_AS_NEW_ELEMENT,
+    &edit_ops::EDIT_CUT,
+    &edit_ops::EDIT_COPY,
+    &edit_ops::EDIT_PASTE,
+    &edit_ops::EDIT_DELETE,
+    &edit_ops::EDIT_CUT_SPECIAL,
+    &edit_ops::EDIT_PASTE_SPECIAL,
+    &edit_ops::EDIT_PASTE_AS_NEW_ELEMENT,
     // doc
     &doc::DOC_OBJECT_GET,
     &doc::DOC_OBJECT_FIND,

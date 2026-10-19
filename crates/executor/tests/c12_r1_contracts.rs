@@ -210,10 +210,12 @@ fn request_id_collision_returns_original_result_per_literal_spec() {
     let options = InvokeOptions { request_id: Some("collision".into()), ..Default::default() };
     let original = with(&h, "app.frame.set", json!({"frame":1}), options.clone());
     assert!(original.is_ok());
+    // Builder edit under orchestrator ruling R1-22 (declared in reviews/M1-C1.2-r1-response.md): the same id with
+    // the same parameters returns the original result; with different parameters it is `request.conflict`.
+    assert_eq!(with(&h, "app.frame.set", json!({"frame":1}), options.clone()), original);
     let env = with(&h, "app.frame.set", json!({"frame":2}), options);
-    // The charter requests collision rejection, but 11 7.2 says a repeated ID returns
-    // the original result without qualifying the parameter values. Report that ambiguity.
-    assert_eq!(env, original);
+    assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("request.conflict"), "{env:?}");
+    assert_eq!(ok(&h, "app.state.get", json!({}))["frame"], 1, "never re-executed");
 }
 
 #[test]

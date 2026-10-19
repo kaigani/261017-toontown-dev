@@ -6,9 +6,10 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use tt_model::ObjectType;
+use tt_model::document::Target;
 use tt_registry::{CommandError, codes, command};
 
-use super::common::{EditContext, NoParams, event_not_invocable, invalid};
+use super::common::{EditContext, NoParams, event_not_invocable};
 use crate::cx::Cx;
 use crate::rules;
 
@@ -309,15 +310,14 @@ pub(crate) struct SelectionGetResult {
     kinds: Vec<String>,
 }
 
-fn resolve_context(cx: &Cx, c: EditContext) -> EditContext {
+pub(crate) fn resolve_context(cx: &Cx, c: EditContext) -> EditContext {
     let central = cx.ui().central_panel().to_owned();
     c.resolve(cx.ui().focused(), &central)
 }
 
-/// The selection of `context` (the kernel keeps one selection; another context's selection is empty).
-fn selection_in(cx: &Cx, context: EditContext) -> Vec<String> {
-    let sel = &cx.app().selection;
-    if sel.context == context.as_str() { sel.ids.clone() } else { Vec::new() }
+/// The selection of `context` (each context keeps its own, 01 §6.4).
+pub(crate) fn selection_in(cx: &Cx, context: EditContext) -> Vec<String> {
+    cx.app().selection_of(context.as_str())
 }
 
 #[command(
@@ -406,16 +406,32 @@ fn context_types(c: EditContext) -> &'static [ObjectType] {
 pub(crate) fn edit_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<SelectionResult, CommandError> {
     let context = resolve_context(cx, p.context);
     let allowed = context_types(context);
+    let cells = matches!(context, EditContext::Xsheet | EditContext::Timeline);
     let mut keys = Vec::new();
-    for (i, (ty, key)) in cx.resolve_objects(&p.ids)?.into_iter().enumerate() {
-        if !allowed.contains(&ty) {
-            return Err(CommandError::with_details(
+    for (i, r) in p.ids.iter().enumerate() {
+        let wrong = |what: &str, id: &str| {
+            CommandError::with_details(
                 tt_model::codes::REF_WRONG_TYPE,
-                format!("a {ty} cannot be selected in the {} context", context.as_str()),
-                json!({ "pointer": format!("/ids/{i}"), "id": key, "allowed": allowed.iter().map(|t| t.as_str()).collect::<Vec<_>>() }),
-            ));
+                format!("a {what} cannot be selected in the {} context", context.as_str()),
+                json!({ "pointer": format!("/ids/{i}"), "id": id, "allowed": allowed.iter().map(|t| t.as_str()).collect::<Vec<_>>() }),
+            )
+        };
+        if r == "@selection" {
+            for (ty, key) in cx.resolve_objects(std::slice::from_ref(r))? {
+                if !allowed.contains(&ty) {
+                    return Err(wrong(ty.as_str(), &key));
+                }
+                keys.push(key);
+            }
+            continue;
         }
-        keys.push(key);
+        match cx.resolve(r)? {
+            Target::Object { ty, key } if allowed.contains(&ty) => keys.push(key),
+            Target::Object { ty, key } => return Err(wrong(ty.as_str(), &key)),
+            // Cells are selected in the Exposure Sheet and the Timeline (01 §6.2, §6.4).
+            Target::Cell { element, frame } if cells => keys.push(crate::app::cell_ref(element.as_str(), frame)),
+            Target::Cell { element, .. } => return Err(wrong("cell", element.as_str())),
+        }
     }
     let mut cur = selection_in(cx, context);
     match p.mode {
@@ -436,18 +452,19 @@ pub(crate) fn edit_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<S
             }
         }
     }
-    let sel = &mut cx.app_mut().selection;
-    context.as_str().clone_into(&mut sel.context);
-    sel.ids.clone_from(&cur);
+    cx.app_mut().set_selection(context.as_str(), cur.clone());
     Ok(SelectionResult { context: context.as_str().to_owned(), ids: cur })
 }
 
 /// Every selectable object of a context in the current context (scene, drawing, element).
+/// Most cells one `edit.selectAll` selects.
+const ALL_CELLS_LIMIT: usize = 100_000;
+
 fn all_of(cx: &Cx, context: EditContext) -> Result<Vec<String>, CommandError> {
     let doc = cx.document()?;
     let app = cx.app();
     Ok(match context {
-        EditContext::Staging | EditContext::Timeline => app
+        EditContext::Staging => app
             .scene
             .as_ref()
             .and_then(|s| doc.scene(s))
@@ -456,12 +473,29 @@ fn all_of(cx: &Cx, context: EditContext) -> Result<Vec<String>, CommandError> {
             .iter()
             .map(|i| i.as_str().to_owned())
             .collect(),
-        EditContext::Xsheet => app
-            .scene
-            .as_ref()
-            .and_then(|s| doc.scene(s))
-            .map(|s| s.column_order().iter().map(|i| i.as_str().to_owned()).collect())
-            .unwrap_or_default(),
+        // All cells (01 §6.4): every frame of the scene in every cell-based column, Exposure Sheet order for the
+        // Exposure Sheet and Timeline order for the Timeline.
+        EditContext::Xsheet | EditContext::Timeline => {
+            let Some(scene) = app.scene.as_ref().and_then(|s| doc.scene(s)) else { return Ok(Vec::new()) };
+            let len = u32::try_from(doc.scene_length(scene)).unwrap_or(u32::MAX);
+            let columns: Vec<tt_model::Id> = if context == EditContext::Xsheet {
+                scene.column_order().clone()
+            } else {
+                doc.tree_order(scene)
+                    .into_iter()
+                    .filter(|e| doc.element(e).is_some_and(|x| x.element_type().is_cell_based()))
+                    .collect()
+            };
+            let total = columns.len().saturating_mul(len as usize);
+            if total > ALL_CELLS_LIMIT {
+                return Err(CommandError::with_details(
+                    codes::LIMIT_EXCEEDED,
+                    format!("selecting all {total} cells exceeds {ALL_CELLS_LIMIT}"),
+                    json!({ "limit": ALL_CELLS_LIMIT, "actual": total }),
+                ));
+            }
+            columns.iter().flat_map(|e| (1..=len).map(move |f| crate::app::cell_ref(e.as_str(), f))).collect()
+        }
         EditContext::Drawing => match app.current_drawing(doc).and_then(|d| doc.drawing(&d)) {
             Some(d) => {
                 let prefix = format!("{}/", d.id());
@@ -523,9 +557,7 @@ pub(crate) struct SelectAllResult {
 pub(crate) fn edit_select_all(cx: &mut Cx, p: ContextParams) -> Result<SelectAllResult, CommandError> {
     let context = resolve_context(cx, p.context);
     let ids = all_of(cx, context)?;
-    let sel = &mut cx.app_mut().selection;
-    context.as_str().clone_into(&mut sel.context);
-    sel.ids.clone_from(&ids);
+    cx.app_mut().set_selection(context.as_str(), ids.clone());
     Ok(SelectAllResult { context: context.as_str().to_owned(), ids })
 }
 
@@ -547,10 +579,7 @@ pub(crate) struct ContextResult {
 )]
 pub(crate) fn edit_deselect_all(cx: &mut Cx, p: ContextParams) -> Result<ContextResult, CommandError> {
     let context = resolve_context(cx, p.context);
-    let sel = &mut cx.app_mut().selection;
-    if sel.context == context.as_str() {
-        sel.ids.clear();
-    }
+    cx.app_mut().set_selection(context.as_str(), Vec::new());
     Ok(ContextResult { context: context.as_str().to_owned() })
 }
 
@@ -592,28 +621,184 @@ pub(crate) enum ClipboardKind {
     Image,
 }
 
+impl ClipboardKind {
+    pub(crate) fn as_str(self) -> &'static str {
+        match self {
+            Self::DrawingObjects => "drawingObjects",
+            Self::Elements => "elements",
+            Self::ElementProperties => "elementProperties",
+            Self::Cells => "cells",
+            Self::Keyframes => "keyframes",
+            Self::MotionPoint => "motionPoint",
+            Self::Templates => "templates",
+            Self::FunctionPoints => "functionPoints",
+            Self::Image => "image",
+        }
+    }
+}
+
 /// `Clipboard` (01 §12.4).
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct Clipboard {
     /// Content kind.
-    kind: ClipboardKind,
+    pub(crate) kind: ClipboardKind,
     /// Context it was copied from.
     #[serde(default)]
-    source_context: Option<String>,
+    pub(crate) source_context: Option<String>,
     /// Project it was copied from.
     #[serde(default)]
-    source_project_id: Option<String>,
+    pub(crate) source_project_id: Option<String>,
     /// Number of items.
     #[schemars(range(min = 0, max = 1_000_000))]
-    item_count: u32,
-    /// Items in the section-10 shape of the kind (present only with `includeData`).
+    pub(crate) item_count: u32,
+    /// Items in the shape of the kind (present only with `includeData`); see `validate_clipboard`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[schemars(length(max = 1_000_000))]
-    items: Option<Vec<serde_json::Map<String, Value>>>,
+    pub(crate) items: Option<Vec<serde_json::Map<String, Value>>>,
     /// Cut-special options.
     #[serde(default)]
-    options: Option<serde_json::Map<String, Value>>,
+    pub(crate) options: Option<serde_json::Map<String, Value>>,
+}
+
+fn clipboard_invalid(at: String, message: impl Into<String>) -> CommandError {
+    CommandError::with_details("edit.clipboardInvalid", message, json!({ "pointer": at }))
+}
+
+fn is_id(v: Option<&Value>) -> bool {
+    v.and_then(Value::as_str).is_some_and(|s| !s.is_empty())
+}
+
+/// Checks that an item has only the allowed fields.
+fn fields_in(item: &serde_json::Map<String, Value>, allowed: &[&str], at: &str) -> Result<(), CommandError> {
+    match item.keys().find(|k| !allowed.contains(&k.as_str())) {
+        Some(k) => Err(clipboard_invalid(
+            format!("{at}/{k}"),
+            format!("unknown field `{k}` (allowed: {})", allowed.join(", ")),
+        )),
+        None => Ok(()),
+    }
+}
+
+fn object_of(ty: ObjectType, v: Option<&Value>, at: String) -> Result<(), CommandError> {
+    let Some(v) = v else { return Err(clipboard_invalid(at, format!("missing {ty}"))) };
+    match tt_model::schema::validate(ty, v, 1)?.into_iter().next() {
+        Some(violation) => Err(clipboard_invalid(
+            format!("{at}{}", violation.pointer),
+            format!("not a valid {ty}: {}", violation.message),
+        )),
+        None => Ok(()),
+    }
+}
+
+/// Validates clipboard content against the schema of its kind (01 §12.1 `edit.clipboard.set`, §12.4; C12-R1-18).
+/// Items per kind:
+///
+/// * `drawingObjects`: `stroke` and `drawingNode` objects (section 10, the drawing read-back of 02);
+/// * `elements`: `element` objects, or `{elementId}` references to elements of the project;
+/// * `elementProperties`: maps of element property names to values;
+/// * `cells`: `{elementId, frameOffset, drawingRef, drawingContent?}`;
+/// * `keyframes`, `functionPoints`: `{channel, elementId?, key}` with `key` a `key` object;
+/// * `motionPoint`: one `{channel, elementId?, point}` with `point` a `motionPoint` object;
+/// * `templates`: `libraryFolder` and `libraryItem` objects;
+/// * `image`: `{mediaType, width, height, base64}`.
+pub(crate) fn validate_clipboard(c: &Clipboard) -> Result<(), CommandError> {
+    let Some(items) = &c.items else { return Ok(()) };
+    if items.len() != c.item_count as usize {
+        return Err(clipboard_invalid("/content/itemCount".into(), "itemCount must equal the number of items"));
+    }
+    if c.kind == ClipboardKind::MotionPoint && items.len() > 1 {
+        return Err(clipboard_invalid("/content/items".into(), "a motionPoint clipboard holds one point"));
+    }
+    for (i, item) in items.iter().enumerate() {
+        let at = format!("/content/items/{i}");
+        let ty_of = || item.get("type").and_then(Value::as_str).and_then(ObjectType::parse);
+        match c.kind {
+            ClipboardKind::DrawingObjects => match ty_of() {
+                Some(t @ (ObjectType::Stroke | ObjectType::DrawingNode)) => {
+                    object_of(t, Some(&Value::Object(item.clone())), at)?;
+                }
+                _ => {
+                    return Err(clipboard_invalid(
+                        format!("{at}/type"),
+                        "drawing objects are strokes and drawing nodes",
+                    ));
+                }
+            },
+            ClipboardKind::Elements => {
+                if item.contains_key("elementId") {
+                    fields_in(item, &["elementId"], &at)?;
+                    if !is_id(item.get("elementId")) {
+                        return Err(clipboard_invalid(format!("{at}/elementId"), "elementId is an ID"));
+                    }
+                } else {
+                    object_of(ObjectType::Element, Some(&Value::Object(item.clone())), at)?;
+                }
+            }
+            ClipboardKind::ElementProperties => {
+                if item.is_empty() {
+                    return Err(clipboard_invalid(at, "an element property map is not empty"));
+                }
+                for k in item.keys() {
+                    let pointer = format!("/{}", tt_model::pointer::escape(k));
+                    if tt_model::schema::property_schema(ObjectType::Element, &pointer).is_none() {
+                        return Err(clipboard_invalid(
+                            format!("{at}/{k}"),
+                            format!("`{k}` is not an element property"),
+                        ));
+                    }
+                }
+            }
+            ClipboardKind::Cells => {
+                fields_in(item, &["elementId", "frameOffset", "drawingRef", "drawingContent"], &at)?;
+                if !is_id(item.get("elementId")) {
+                    return Err(clipboard_invalid(format!("{at}/elementId"), "elementId is an ID"));
+                }
+                if item.get("frameOffset").and_then(Value::as_u64).is_none_or(|n| n >= 100_000) {
+                    return Err(clipboard_invalid(format!("{at}/frameOffset"), "frameOffset is an integer 0-99999"));
+                }
+                let d = item.get("drawingRef");
+                if !(d == Some(&Value::Null) || is_id(d)) {
+                    return Err(clipboard_invalid(format!("{at}/drawingRef"), "drawingRef is a drawing ID or null"));
+                }
+                if let Some(d) = item.get("drawingContent") {
+                    object_of(ObjectType::Drawing, Some(d), format!("{at}/drawingContent"))?;
+                }
+            }
+            ClipboardKind::Keyframes | ClipboardKind::FunctionPoints => {
+                fields_in(item, &["channel", "elementId", "key"], &at)?;
+                if !is_id(item.get("channel")) {
+                    return Err(clipboard_invalid(format!("{at}/channel"), "channel is a channel name"));
+                }
+                object_of(ObjectType::Key, item.get("key"), format!("{at}/key"))?;
+            }
+            ClipboardKind::MotionPoint => {
+                fields_in(item, &["channel", "elementId", "point"], &at)?;
+                if !is_id(item.get("channel")) {
+                    return Err(clipboard_invalid(format!("{at}/channel"), "channel is a channel name"));
+                }
+                object_of(ObjectType::MotionPoint, item.get("point"), format!("{at}/point"))?;
+            }
+            ClipboardKind::Templates => match ty_of() {
+                Some(t @ (ObjectType::LibraryFolder | ObjectType::LibraryItem)) => {
+                    object_of(t, Some(&Value::Object(item.clone())), at)?;
+                }
+                _ => return Err(clipboard_invalid(format!("{at}/type"), "templates are library folders and items")),
+            },
+            ClipboardKind::Image => {
+                fields_in(item, &["mediaType", "width", "height", "base64"], &at)?;
+                let dim = |k: &str| item.get(k).and_then(Value::as_u64).is_some_and(|n| (1..=65_535).contains(&n));
+                if !item.get("mediaType").and_then(Value::as_str).is_some_and(|m| m.starts_with("image/"))
+                    || !dim("width")
+                    || !dim("height")
+                    || !item.get("base64").is_some_and(Value::is_string)
+                {
+                    return Err(clipboard_invalid(at, "an image is {mediaType: image/*, width, height, base64}"));
+                }
+            }
+        }
+    }
+    Ok(())
 }
 
 /// `edit.clipboard.get` parameters.
@@ -625,34 +810,27 @@ pub(crate) struct ClipboardGetParams {
     include_data: bool,
 }
 
-/// `edit.clipboard.get` result: the clipboard, or `null` when it is empty.
-#[derive(Debug, Serialize, JsonSchema)]
-pub(crate) struct ClipboardGetResult {
-    /// Content.
-    clipboard: Option<Clipboard>,
-}
-
+/// Returns the `Clipboard` itself (01 §12.1; C12-R1-17), `null` when it is empty.
 #[command(
     id = "edit.clipboard.get",
     kind = query,
     label = "Get clipboard",
     scopes = [read],
+    needs_project,
     example(title = "Kind and item count", params = r#"{"includeData": false}"#),
     agent_only = "the GUI reads the clipboard implicitly when pasting",
 )]
-pub(crate) fn edit_clipboard_get(cx: &mut Cx, p: ClipboardGetParams) -> Result<ClipboardGetResult, CommandError> {
+pub(crate) fn edit_clipboard_get(cx: &mut Cx, p: ClipboardGetParams) -> Result<Option<Clipboard>, CommandError> {
     let clip: Option<Clipboard> = match &cx.session().clipboard {
         Some(v) => Some(serde_json::from_value(v.clone()).map_err(|e| CommandError::internal(e.to_string()))?),
         None => None,
     };
-    Ok(ClipboardGetResult {
-        clipboard: clip.map(|mut c| {
-            if !p.include_data {
-                c.items = None;
-            }
-            c
-        }),
-    })
+    Ok(clip.map(|mut c| {
+        if !p.include_data {
+            c.items = None;
+        }
+        c
+    }))
 }
 
 /// `edit.clipboard.set` parameters.
@@ -668,9 +846,18 @@ pub(crate) struct ClipboardSetParams {
 #[serde(rename_all = "camelCase")]
 pub(crate) struct ClipboardSummary {
     /// Kind.
-    kind: ClipboardKind,
+    pub(crate) kind: ClipboardKind,
     /// Items.
-    item_count: u32,
+    pub(crate) item_count: u32,
+}
+
+/// Puts content on the clipboard and announces it (the event is delivered when the transaction commits).
+pub(crate) fn store_clipboard(cx: &mut Cx, clip: &Clipboard) -> Result<ClipboardSummary, CommandError> {
+    validate_clipboard(clip)?;
+    let summary = ClipboardSummary { kind: clip.kind, item_count: clip.item_count };
+    cx.session_mut().clipboard = Some(serde_json::to_value(clip).map_err(|e| CommandError::internal(e.to_string()))?);
+    cx.emit("edit.clipboard.changed", json!({ "kind": summary.kind, "itemCount": summary.item_count }));
+    Ok(summary)
 }
 
 #[command(
@@ -678,23 +865,15 @@ pub(crate) struct ClipboardSummary {
     kind = ui,
     label = "Set clipboard",
     scopes = [ui],
+    needs_project,
     example(
-        title = "Put two element references on the clipboard",
-        params = r#"{"content": {"kind": "elements", "sourceContext": "staging", "itemCount": 2, "items": [{"elementId": "e1"}, {"elementId": "e2"}], "options": null}}"#
+        title = "Put an element reference on the clipboard",
+        params = r#"{"content": {"kind": "elements", "sourceContext": "staging", "itemCount": 1, "items": [{"elementId": "scene:#1/element:#1"}], "options": null}}"#
     ),
     agent_only = "agents place prepared content on the clipboard; the GUI fills it by cutting and copying",
 )]
 pub(crate) fn edit_clipboard_set(cx: &mut Cx, p: ClipboardSetParams) -> Result<ClipboardSummary, CommandError> {
-    if let Some(items) = &p.content.items
-        && items.len() != p.content.item_count as usize
-    {
-        return Err(invalid("/content/itemCount", "itemCount must equal the number of items"));
-    }
-    let summary = ClipboardSummary { kind: p.content.kind, item_count: p.content.item_count };
-    let v = serde_json::to_value(&p.content).map_err(|e| CommandError::internal(e.to_string()))?;
-    cx.session_mut().clipboard = Some(v);
-    cx.session_mut().emit("edit.clipboard.changed", json!({ "kind": summary.kind, "itemCount": summary.item_count }));
-    Ok(summary)
+    store_clipboard(cx, &p.content)
 }
 
 #[command(
@@ -707,221 +886,4 @@ pub(crate) fn edit_clipboard_set(cx: &mut Cx, p: ClipboardSetParams) -> Result<C
 )]
 pub(crate) fn edit_clipboard_changed(_cx: &mut Cx, _p: NoParams) -> Result<ClipboardSummary, CommandError> {
     Err(event_not_invocable("edit.clipboard.changed"))
-}
-
-/// `context` + `objectIds` parameters of cut, copy and delete.
-#[allow(dead_code, reason = "decoded and validated now; read by the handler of the owning checkpoint")]
-#[derive(Debug, Deserialize, JsonSchema)]
-#[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub(crate) struct ObjectsParams {
-    /// Context; `auto` follows the focused panel.
-    #[serde(default)]
-    context: EditContext,
-    /// Objects (default: the selection).
-    #[serde(default)]
-    #[schemars(length(max = 100_000))]
-    object_ids: Option<Vec<String>>,
-}
-
-/// `{clipboard: {kind, itemCount}}`.
-#[derive(Debug, Serialize, JsonSchema)]
-pub(crate) struct ClipResult {
-    /// What the clipboard holds now.
-    clipboard: ClipboardSummary,
-}
-
-const AREA_OWNER: &str = "M4 C4.1";
-
-#[command(
-    id = "edit.cut",
-    kind = action,
-    label = "Cut",
-    scopes = [edit],
-    undo = "Cut",
-    needs_project,
-    not_implemented = "M4 C4.1",
-    example(title = "Cut the selection of the focused context", params = "{}"),
-)]
-pub(crate) fn edit_cut(_cx: &mut Cx, _p: ObjectsParams) -> Result<ClipResult, CommandError> {
-    Err(CommandError::not_implemented("edit.cut", AREA_OWNER))
-}
-
-#[command(
-    id = "edit.copy",
-    kind = ui,
-    label = "Copy",
-    scopes = [ui],
-    needs_project,
-    not_implemented = "M4 C4.1",
-    example(title = "Copy the selection of the focused context", params = "{}"),
-)]
-pub(crate) fn edit_copy(_cx: &mut Cx, _p: ObjectsParams) -> Result<ClipResult, CommandError> {
-    Err(CommandError::not_implemented("edit.copy", AREA_OWNER))
-}
-
-/// `{deletedIds}`.
-#[derive(Debug, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub(crate) struct DeleteResult {
-    /// Deleted objects.
-    deleted_ids: Vec<String>,
-}
-
-#[command(
-    id = "edit.delete",
-    kind = action,
-    label = "Delete",
-    scopes = [edit],
-    undo = "Delete",
-    needs_project,
-    not_implemented = "M4 C4.1",
-    example(title = "Delete the selection of the focused context", params = "{}"),
-)]
-pub(crate) fn edit_delete(_cx: &mut Cx, _p: ObjectsParams) -> Result<DeleteResult, CommandError> {
-    Err(CommandError::not_implemented("edit.delete", AREA_OWNER))
-}
-
-/// `edit.paste` parameters.
-#[allow(dead_code, reason = "decoded and validated now; read by the handler of the owning checkpoint")]
-#[derive(Debug, Deserialize, JsonSchema)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct PasteParams {
-    /// Context; `auto` follows the focused panel.
-    #[serde(default)]
-    context: EditContext,
-    /// Where to paste: `{drawingId}`, `{elementId, frame}`, `{catalogId}`, `{functionId, frame}` or `{objectIds}`.
-    #[serde(default)]
-    destination: Option<serde_json::Map<String, Value>>,
-}
-
-/// Paste result.
-#[derive(Debug, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub(crate) struct PasteResult {
-    /// Created objects.
-    created_ids: Vec<String>,
-    /// Modified objects.
-    modified_ids: Vec<String>,
-    /// Warnings.
-    warnings: Vec<crate::types::Warning>,
-}
-
-#[command(
-    id = "edit.paste",
-    kind = action,
-    label = "Paste",
-    scopes = [edit],
-    undo = "Paste",
-    needs_project,
-    not_implemented = "M4 C4.1",
-    example(title = "Paste into the focused context", params = "{}"),
-)]
-pub(crate) fn edit_paste(_cx: &mut Cx, _p: PasteParams) -> Result<PasteResult, CommandError> {
-    Err(CommandError::not_implemented("edit.paste", AREA_OWNER))
-}
-
-fn yes() -> bool {
-    true
-}
-
-/// `edit.cutSpecial` parameters.
-#[allow(dead_code, reason = "decoded and validated now; read by the handler of the owning checkpoint")]
-#[derive(Debug, Deserialize, JsonSchema)]
-#[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub(crate) struct CutSpecialParams {
-    /// Objects (default: the selection).
-    #[serde(default)]
-    object_ids: Option<Vec<String>>,
-    /// `TimelineEditOptions` (01 §12.4); omitted fields take the remembered values.
-    #[serde(default)]
-    options: Option<serde_json::Map<String, Value>>,
-    /// Remember the options.
-    #[serde(default = "yes")]
-    remember: bool,
-}
-
-#[command(
-    id = "edit.cutSpecial",
-    kind = action,
-    label = "Cut Special",
-    scopes = [edit],
-    undo = "Cut Special",
-    needs_project,
-    not_implemented = "M4 C4.1",
-    example(title = "Cut the selected cells, keeping exposure", params = r#"{"options": {"createDeleteExposure": false}}"#),
-    gui = "Edit menu (M4)",
-)]
-pub(crate) fn edit_cut_special(_cx: &mut Cx, _p: CutSpecialParams) -> Result<ClipResult, CommandError> {
-    Err(CommandError::not_implemented("edit.cutSpecial", AREA_OWNER))
-}
-
-/// `edit.pasteSpecial` parameters.
-#[allow(dead_code, reason = "decoded and validated now; read by the handler of the owning checkpoint")]
-#[derive(Debug, Deserialize, JsonSchema)]
-#[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub(crate) struct PasteSpecialParams {
-    /// Where to paste.
-    #[serde(default)]
-    destination: Option<serde_json::Map<String, Value>>,
-    /// `TimelineEditOptions` or `MotionPointPasteOptions` (01 §12.4).
-    #[serde(default)]
-    options: Option<serde_json::Map<String, Value>>,
-    /// Use the last options.
-    #[serde(default)]
-    use_last: bool,
-    /// Remember the options.
-    #[serde(default = "yes")]
-    remember: bool,
-}
-
-#[command(
-    id = "edit.pasteSpecial",
-    kind = action,
-    label = "Paste Special",
-    scopes = [edit],
-    undo = "Paste Special",
-    needs_project,
-    not_implemented = "M4 C4.1",
-    example(title = "Paste with the last options", params = r#"{"useLast": true}"#),
-    gui = "Edit menu (M4)",
-)]
-pub(crate) fn edit_paste_special(_cx: &mut Cx, _p: PasteSpecialParams) -> Result<PasteResult, CommandError> {
-    Err(CommandError::not_implemented("edit.pasteSpecial", AREA_OWNER))
-}
-
-/// `edit.pasteAsNewElement` parameters.
-#[allow(dead_code, reason = "decoded and validated now; read by the handler of the owning checkpoint")]
-#[derive(Debug, Deserialize, JsonSchema)]
-#[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub(crate) struct PasteNewParams {
-    /// Scene (default current).
-    #[serde(default)]
-    scene_id: Option<String>,
-    /// Frame (default current).
-    #[serde(default)]
-    #[schemars(range(min = 1, max = 100_000))]
-    frame: Option<u32>,
-}
-
-/// `{elementId}`.
-#[derive(Debug, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub(crate) struct NewElementResult {
-    /// The new element.
-    element_id: String,
-}
-
-#[command(
-    id = "edit.pasteAsNewElement",
-    kind = action,
-    label = "Paste as New Element",
-    scopes = [edit],
-    undo = "Paste as New Element",
-    needs_project,
-    not_implemented = "M4 C4.1",
-    example(title = "Paste drawing objects as a new element at the current frame", params = "{}"),
-    gui = "Edit menu (M4)",
-)]
-pub(crate) fn edit_paste_as_new_element(_cx: &mut Cx, _p: PasteNewParams) -> Result<NewElementResult, CommandError> {
-    Err(CommandError::not_implemented("edit.pasteAsNewElement", AREA_OWNER))
 }

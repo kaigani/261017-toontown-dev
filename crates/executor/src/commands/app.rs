@@ -7,11 +7,10 @@ use tt_model::{Id, ObjectType};
 use tt_registry::{CommandError, codes, command};
 
 use super::common::{Direction, NoParams, OnUnsaved, event_not_invocable, invalid};
-use crate::app::{AppContext, AppState, Mode, ProjectRef};
+use crate::app::{AppContext, AppState, Mode, ProjectRef, mode_of_view};
 use crate::cx::Cx;
 use crate::rules;
 use crate::session::Session;
-use crate::ui::VIEW_PANELS;
 
 /// `AppState` of a session (also used to detect `app.state.changed`).
 pub(crate) fn app_state(s: &Session) -> AppState {
@@ -379,23 +378,35 @@ pub(crate) struct ModeResult {
     gui = "Mode switch of the view toolbar (M4)",
 )]
 pub(crate) fn app_mode_set(cx: &mut Cx, p: ModeSetParams) -> Result<ModeResult, CommandError> {
-    let view = match p.view_id {
-        Some(v) if VIEW_PANELS.contains(&v.as_str()) => v,
-        Some(v) => {
-            return Err(CommandError::with_details(
-                codes::ARG_INVALID,
-                format!("`{v}` is not a view"),
-                json!({ "pointer": "/viewId", "allowed": { "enum": VIEW_PANELS } }),
-            ));
-        }
-        None => cx.ui().central_panel().to_owned(),
-    };
+    // 01 §4: the mode follows the active view; setting it activates a view of the requested type (C12-R1-15).
     let mode = match p.mode {
         ModeParam::Drawing => Mode::Drawing,
         ModeParam::Staging => Mode::Staging,
     };
-    cx.app_mut().mode = mode;
-    Ok(ModeResult { mode, view_id: view })
+    let allowed: &[&str] = match mode {
+        Mode::Drawing => &["drawingView"],
+        Mode::Staging => &["cameraView", "topView", "sideView"],
+    };
+    let current = cx.ui().central_panel().to_owned();
+    let view = match p.view_id {
+        Some(v) if allowed.contains(&v.as_str()) => v,
+        Some(v) => {
+            return Err(CommandError::with_details(
+                codes::ARG_INVALID,
+                format!(
+                    "`{v}` is not a view of the {} mode",
+                    if mode == Mode::Drawing { "drawing" } else { "staging" }
+                ),
+                json!({ "pointer": "/viewId", "allowed": { "enum": allowed } }),
+            ));
+        }
+        None if allowed.contains(&current.as_str()) => current.clone(),
+        None => allowed[0].to_owned(),
+    };
+    if view != current {
+        cx.ui_mut().move_panel(&view, "central", None, "tab", None)?;
+    }
+    Ok(ModeResult { mode: mode_of_view(cx.ui().central_panel()), view_id: view })
 }
 
 /// `app.info.get` result.

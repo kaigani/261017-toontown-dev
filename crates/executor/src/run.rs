@@ -1,8 +1,17 @@
 //! The transaction pipeline on the document thread (11 §2): validate → enablement → permission → execute as a
-//! transaction → record the undo step → emit change events; plus `dryRun`, `expectRev`, `requestId` and batches
-//! (11 §7.2–§7.3).
+//! transaction → record the undo step → emit change events; plus `dryRun`, `expectRev`, `requestId`, batches
+//! (11 §7.2–§7.3), the guarded load transaction and the two halves of `job.wait`.
+//!
+//! **Effects.** Everything a command does outside the staged document — cancelling a job, creating a checkpoint,
+//! emitting an event — is deferred (`cx::Effect`) and applied only after its transaction commits; session state
+//! (context, window, clipboard, checkpoints) is restored when a call fails or is a dry run. A dry-run sequential batch
+//! runs the real batch on a clone of the session, so later steps see the simulated earlier ones, and then discards the
+//! clone (C12-R1-02/03).
 
-use std::collections::{BTreeMap, VecDeque};
+use std::collections::hash_map::DefaultHasher;
+use std::collections::{BTreeMap, HashMap, HashSet, VecDeque};
+use std::hash::{Hash, Hasher};
+use std::time::Duration;
 
 use serde_json::{Map, Value, json};
 use tt_model::change::ELIDE_BYTES;
@@ -10,48 +19,124 @@ use tt_model::document::Document;
 use tt_registry::{CommandError, Entry, Kind, Registry, Status, codes, validate_params};
 
 use crate::app::AppContext;
-use crate::cx::{Cx, Txn, TxnKind, no_project};
+use crate::cx::{Cx, Effect, Txn, TxnKind, no_project};
 use crate::history::{Step, StepEdit};
-use crate::session::{Back, Checkpoint, OpenProject, Session};
+use crate::session::{Back, Checkpoint, Event, OpenProject, Session};
 use crate::types::{
-    BatchRequest, ChangeRecord, Envelope, Invocation, InvokeOptions, Origin, Status as EnvStatus, UndoRef,
+    BatchRequest, ChangeRecord, Envelope, Invocation, InvokeOptions, OpenOptions, Origin, Status as EnvStatus, UndoRef,
+    UnsavedPolicy,
 };
 use crate::ui::UiState;
 use crate::{CHANGES_CAP, MAX_BATCH_STEPS};
 
-/// Remembered `requestId` results per session (11 §7.2).
-const REQUEST_CACHE_LEN: usize = 10_000;
+/// Results remembered per session for `requestId` (11 §7.2; ADR-0013 §5): at most this many …
+pub(crate) const REQUEST_CACHE_ENTRIES: usize = 100_000;
+/// … and at most this many bytes of envelopes. Evicted ids are still known (`request.unknownId`).
+pub(crate) const REQUEST_CACHE_BYTES: usize = 64 * 1024 * 1024;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Clone)]
+struct Cached {
+    fingerprint: u64,
+    command: String,
+    envelope: Envelope,
+    bytes: usize,
+}
+
+/// One session's remembered requests.
+#[derive(Debug, Default, Clone)]
+struct SessionRequests {
+    order: VecDeque<String>,
+    entries: HashMap<String, Cached>,
+    bytes: usize,
+    /// A hash of every request id the session used (8 bytes each): an evicted id is never executed again.
+    seen: HashSet<u64>,
+}
+
+/// `requestId` idempotency, scoped to the session (ADR-0013 §5; C12-R1-06/22).
+#[derive(Debug, Default, Clone)]
 struct RequestCache {
-    order: VecDeque<(String, String)>,
-    results: BTreeMap<(String, String), Envelope>,
+    sessions: HashMap<String, SessionRequests>,
+}
+
+enum Lookup {
+    Miss,
+    Hit(Box<Envelope>),
+    Refused(CommandError),
+}
+
+fn hash64(x: impl Hash) -> u64 {
+    let mut h = DefaultHasher::new();
+    x.hash(&mut h);
+    h.finish()
+}
+
+/// What makes two invocations "the same request": command, parameters (canonical text) and options.
+fn fingerprint(inv: &Invocation) -> u64 {
+    let params = tt_model::canonical::to_canonical_string(&inv.params).unwrap_or_else(|_| inv.params.to_string());
+    let expect: Vec<(&String, &u64)> = inv.options.expect_rev.iter().collect();
+    hash64((&inv.command, params, inv.options.dry_run, expect))
 }
 
 impl RequestCache {
-    fn get(&self, key: &(String, String)) -> Option<&Envelope> {
-        self.results.get(key)
+    fn lookup(&self, session: &str, id: &str, fp: u64) -> Lookup {
+        let Some(s) = self.sessions.get(session) else { return Lookup::Miss };
+        if let Some(c) = s.entries.get(id) {
+            if c.fingerprint == fp {
+                return Lookup::Hit(Box::new(c.envelope.clone()));
+            }
+            return Lookup::Refused(
+                CommandError::with_details(
+                    "request.conflict",
+                    format!("requestId `{id}` was used for a different call"),
+                    json!({ "requestId": id, "originalCommand": c.command }),
+                )
+                .hint("use a new requestId for a different call"),
+            );
+        }
+        if s.seen.contains(&hash64(id)) {
+            return Lookup::Refused(
+                CommandError::with_details(
+                    "request.unknownId",
+                    format!("the result of requestId `{id}` is no longer retained; the call is not executed again"),
+                    json!({ "requestId": id, "reason": "evicted" }),
+                )
+                .hint("read doc.state.get / doc.diff to learn the outcome, then retry with a new requestId"),
+            );
+        }
+        Lookup::Miss
     }
 
-    fn insert(&mut self, key: (String, String), env: Envelope) {
-        if self.results.insert(key.clone(), env).is_none() {
-            self.order.push_back(key);
+    fn insert(&mut self, session: &str, id: &str, fp: u64, command: &str, envelope: Envelope) {
+        let bytes = serde_json::to_vec(&envelope).map_or(0, |v| v.len());
+        let s = self.sessions.entry(session.to_owned()).or_default();
+        s.seen.insert(hash64(id));
+        if let Some(old) =
+            s.entries.insert(id.to_owned(), Cached { fingerprint: fp, command: command.to_owned(), envelope, bytes })
+        {
+            s.bytes = s.bytes.saturating_sub(old.bytes);
+        } else {
+            s.order.push_back(id.to_owned());
         }
-        while self.order.len() > REQUEST_CACHE_LEN {
-            if let Some(old) = self.order.pop_front() {
-                self.results.remove(&old);
+        s.bytes = s.bytes.saturating_add(bytes);
+        while (s.entries.len() > REQUEST_CACHE_ENTRIES || s.bytes > REQUEST_CACHE_BYTES) && s.order.len() > 1 {
+            if let Some(old) = s.order.pop_front()
+                && let Some(c) = s.entries.remove(&old)
+            {
+                s.bytes = s.bytes.saturating_sub(c.bytes);
             }
         }
     }
 }
 
 /// Session state restored when an invocation fails or is a dry run: everything a handler may change besides the
-/// staged document.
+/// staged document and its deferred effects.
 struct Rollback {
     app: AppContext,
     ui: UiState,
     checkpoints: Option<Vec<Checkpoint>>,
     clipboard: Option<Value>,
+    edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
+    events: usize,
 }
 
 impl Rollback {
@@ -61,6 +146,8 @@ impl Rollback {
             ui: s.ui.clone(),
             checkpoints: s.project.as_ref().map(|p| p.checkpoints.clone()),
             clipboard: s.clipboard.clone(),
+            edit_options: s.edit_options.clone(),
+            events: s.events.len(),
         }
     }
 
@@ -68,6 +155,8 @@ impl Rollback {
         s.app = self.app;
         s.ui = self.ui;
         s.clipboard = self.clipboard;
+        s.edit_options = self.edit_options;
+        s.events.truncate(self.events);
         if let (Some(p), Some(c)) = (s.project.as_mut(), self.checkpoints) {
             p.checkpoints = c;
         }
@@ -90,12 +179,34 @@ fn observe(s: &Session) -> Observed {
     }
 }
 
+/// Proof that the load guard passed (ADR-0013 §16; C12-R1-01). Only [`Core::load`] creates one, and only
+/// [`Core::install`] — the one place that replaces the open project — accepts it; neither is reachable from other
+/// crates, which can only ask for the guarded load through `ExecutorHandle::open_document`.
+pub struct LoadGrant {
+    _private: (),
+}
+
+/// The outcome of the first half of `job.wait`.
+pub(crate) enum WaitStart {
+    /// Answered on the document thread (final job, `timeoutMs: 0`, an error, or a remembered request).
+    Done(Box<Envelope>),
+    /// Wait on the caller's thread, then finish on the document thread.
+    Wait {
+        /// The job.
+        job_id: String,
+        /// How long.
+        timeout: Duration,
+    },
+}
+
 /// The core on the document thread.
 #[derive(Debug)]
 pub(crate) struct Core {
     session: Option<Session>,
     requests: RequestCache,
     registry: &'static Registry,
+    /// Running a dry-run batch on a clone of the session: no effect leaves it, no request is remembered.
+    simulating: bool,
 }
 
 fn unknown(id: &str, registry: &Registry) -> CommandError {
@@ -107,6 +218,16 @@ fn unknown(id: &str, registry: &Registry) -> CommandError {
         json!({ "commandId": id, "suggestions": suggestions }),
     )
     .hint("list_commands shows every registered command")
+}
+
+/// The scopes an origin lacks for an entry.
+fn missing_scopes(entry: &Entry, origin: &Origin) -> Vec<&'static str> {
+    entry.scopes().into_iter().filter(|s| !origin.has_scope(*s)).map(|s| s.as_str()).collect()
+}
+
+/// Whether a command declares its own `dryRun` parameter and the call sets it (10 AG-02).
+fn param_dry_run(entry: &Entry, params: &Value) -> bool {
+    params.get("dryRun") == Some(&Value::Bool(true)) && entry.params_schema().pointer("/properties/dryRun").is_some()
 }
 
 /// The validation and execution of one command inside a context (11 §8 order: existence, kind, permission,
@@ -121,8 +242,7 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
             json!({ "commandId": id, "reason": "event" }),
         ));
     }
-    let missing: Vec<&str> =
-        entry.scopes().into_iter().filter(|s| !cx.origin().has_scope(*s)).map(|s| s.as_str()).collect();
+    let missing = missing_scopes(entry, cx.origin());
     if !missing.is_empty() {
         return Err(CommandError::with_details(
             codes::PERMISSION_DENIED,
@@ -154,26 +274,41 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
         return Err(CommandError::not_implemented(id, owner));
     }
     if !opts.expect_rev.is_empty() {
-        check_expect_rev(cx, &opts.expect_rev)?;
+        let pairs: Vec<(String, u64)> = opts.expect_rev.iter().map(|(k, v)| (k.clone(), *v)).collect();
+        check_expect_rev(cx, &pairs)?;
     }
     let Some(command) = entry.command else { return Err(CommandError::internal("implemented entry without handler")) };
     (command.handler)(cx, params)
 }
 
-/// REV-05: every listed object must still have the expected `rev`.
-fn check_expect_rev(cx: &Cx, expect: &BTreeMap<String, u64>) -> Result<(), CommandError> {
+/// REV-05 (C12-R1-07): every listed object must still have the expected `rev`; a mismatch is `rev.conflict` with
+/// `details.currentRev` and, when its JSON is smaller than 64 KiB, the current object.
+pub(crate) fn check_expect_rev(cx: &Cx, expect: &[(String, u64)]) -> Result<(), CommandError> {
     let doc = cx.document()?;
     for (r, expected) in expect {
         let key = match cx.resolve(r)? {
             tt_model::document::Target::Object { key, .. } => key,
             tt_model::document::Target::Cell { element, .. } => element.as_str().to_owned(),
         };
-        let actual = doc.locate(&key).map_or(0, |l| l.rev);
-        if actual != *expected {
+        let current = doc.locate(&key).map_or(0, |l| l.rev);
+        if current != *expected {
+            let mut details = json!({
+                "ref": r,
+                "id": key,
+                "expectedRev": expected,
+                "currentRev": current,
+                "documentRev": doc.document_rev(),
+            });
+            if let Ok((_, object)) = doc.object_raw_json(&key)
+                && serde_json::to_vec(&object).is_ok_and(|b| b.len() < ELIDE_BYTES)
+                && let Some(m) = details.as_object_mut()
+            {
+                m.insert("current".into(), object);
+            }
             return Err(CommandError::with_details(
                 codes::REV_CONFLICT,
-                format!("`{r}` changed: rev {actual}, expected {expected}"),
-                json!({ "ref": r, "id": key, "expected": expected, "actual": actual, "documentRev": doc.document_rev() }),
+                format!("`{r}` changed: rev {current}, expected {expected}"),
+                details,
             )
             .hint("re-read the object and retry"));
         }
@@ -225,6 +360,15 @@ fn back_of(t: &Txn) -> Back {
     }
 }
 
+/// The revisions the objects a transaction stamped had before it (so `doc.diff` can rebuild them; C12-R1-08).
+fn earlier_revs(t: &Txn) -> Vec<(String, u64)> {
+    t.after
+        .locations()
+        .filter(|l| l.rev == t.rev)
+        .filter_map(|l| t.before.locate(&l.key).filter(|b| b.key == l.key).map(|b| (l.key.clone(), b.rev)))
+        .collect()
+}
+
 /// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
 /// the revision and emits `doc.changed`.
 fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<UndoRef>, CommandError> {
@@ -236,7 +380,7 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<Und
     {
         let p = s.project.as_mut().ok_or_else(no_project)?;
         for t in txns {
-            p.log_commit(t.rev, back_of(&t), t.before.clone());
+            p.log_commit(t.rev, back_of(&t), t.before.clone(), earlier_revs(&t));
             let step_id = match t.kind {
                 TxnKind::Step => {
                     let id = p.history.next_step_id();
@@ -279,14 +423,57 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<Und
     Ok(undo_ref)
 }
 
+/// Applies the deferred effects of a committed call; returns, for checkpoint steps of a batch, the revision the
+/// checkpoint holds. A simulation applies none.
+fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool) -> Vec<(usize, u64)> {
+    let mut fixes = Vec::new();
+    if simulating {
+        return fixes;
+    }
+    for e in effects {
+        match e {
+            Effect::CancelJob(id) => {
+                let _ = s.jobs.cancel(&id);
+            }
+            Effect::CreateCheckpoint { name, origin, created_at, step } => {
+                if let Some(p) = s.project.as_mut() {
+                    let rev = p.doc.document_rev();
+                    p.checkpoints.push(Checkpoint { name, created_at, document_rev: rev, origin, doc: p.doc.clone() });
+                    if let Some(i) = step {
+                        fixes.push((i, rev));
+                    }
+                }
+            }
+            Effect::Event(ev) => s.events.push(ev),
+        }
+    }
+    fixes
+}
+
 fn changed_fields(a: &Value, b: &Value) -> Vec<String> {
     let (Some(a), Some(b)) = (a.as_object(), b.as_object()) else { return Vec::new() };
     b.iter().filter(|(k, v)| a.get(*k) != Some(*v)).map(|(k, _)| k.clone()).collect()
 }
 
+/// `project.unsavedChanges` (01 §11.2 rule 3) for the open project of a session.
+pub(crate) fn unsaved_changes(p: &OpenProject) -> CommandError {
+    CommandError::with_details(
+        "project.unsavedChanges",
+        "the project has unsaved changes",
+        json!({
+            "projectId": p.doc.project().id().as_str(),
+            "name": p.doc.project().name(),
+            "path": p.path,
+            "projectDirty": true,
+            "globalLibraryDirty": false,
+        }),
+    )
+    .hint("pass onUnsaved: \"save\" or \"discard\"")
+}
+
 impl Core {
     pub(crate) fn new(registry: &'static Registry, session: Session) -> Self {
-        Self { session: Some(session), requests: RequestCache::default(), registry }
+        Self { session: Some(session), requests: RequestCache::default(), registry, simulating: false }
     }
 
     fn take_session(&mut self) -> Session {
@@ -351,19 +538,20 @@ impl Core {
         }
     }
 
-    /// One invocation, with `requestId` idempotency.
+    /// One invocation, with `requestId` idempotency (C12-R1-06/22).
     pub(crate) fn invoke(&mut self, inv: &Invocation) -> Envelope {
-        let key = inv.options.request_id.as_ref().map(|r| (inv.origin.session_key(), r.clone()));
-        if let Some(k) = &key
-            && let Some(env) = self.requests.get(k)
-        {
-            return env.clone();
+        let Some(id) = inv.options.request_id.clone().filter(|_| !self.simulating) else { return self.run(inv) };
+        let session = inv.origin.session_key();
+        let fp = fingerprint(inv);
+        match self.requests.lookup(&session, &id, fp) {
+            Lookup::Hit(env) => *env,
+            Lookup::Refused(e) => Envelope::error(e, self.rev()),
+            Lookup::Miss => {
+                let env = self.run(inv);
+                self.requests.insert(&session, &id, fp, &inv.command, env.clone());
+                env
+            }
         }
-        let env = self.run(inv);
-        if let Some(k) = key {
-            self.requests.insert(k, env.clone());
-        }
-        env
     }
 
     fn run(&mut self, inv: &Invocation) -> Envelope {
@@ -375,9 +563,7 @@ impl Core {
         let rollback = Rollback::take(&session);
         // A command that declares its own `dryRun` parameter (doc.object.patch, doc.import.json, doc.repair) is a dry
         // run when it is set, exactly as with the invocation option.
-        let dry = inv.options.dry_run
-            || (inv.params.get("dryRun") == Some(&Value::Bool(true))
-                && entry.params_schema().pointer("/properties/dryRun").is_some());
+        let dry = inv.options.dry_run || param_dry_run(&entry, &inv.params);
         let mut cx = Cx::new(session, inv.origin.clone(), entry.id(), dry);
         let outcome = run_step(&mut cx, &entry, inv.params.clone(), &inv.options).and_then(|result| {
             let label = cx
@@ -393,6 +579,7 @@ impl Core {
         });
         let warnings = cx.take_warnings();
         let targets = cx.take_targets();
+        let effects = cx.take_effects();
         let mut session = cx.into_session();
         let rev_before = session.project.as_ref().map(|p| p.doc.document_rev());
         let env = match outcome {
@@ -419,12 +606,13 @@ impl Core {
                     match commit(&mut session, txns, &inv.origin) {
                         Ok(u) => {
                             env.undo = u;
-                            env.document_rev = last_rev.or(rev_before).or(env.document_rev);
-                            if env.document_rev.is_none() {
-                                env.document_rev = session.project.as_ref().map(|p| p.doc.document_rev());
-                            }
+                            env.document_rev = last_rev.or(rev_before);
+                            apply_effects(&mut session, effects, self.simulating);
                         }
-                        Err(e) => env = Envelope::error(e, rev_before),
+                        Err(e) => {
+                            rollback.apply(&mut session);
+                            env = Envelope::error(e, rev_before);
+                        }
                     }
                 }
                 if env.document_rev.is_none() {
@@ -438,6 +626,17 @@ impl Core {
         }
         self.session = Some(session);
         env
+    }
+
+    /// Runs `f` on a clone of the session and discards everything it did (a dry-run sequential batch, C12-R1-03).
+    fn simulate<T>(&mut self, f: impl FnOnce(&mut Self) -> T) -> T {
+        let saved = self.session.clone();
+        let was = self.simulating;
+        self.simulating = true;
+        let out = f(self);
+        self.simulating = was;
+        self.session = saved;
+        out
     }
 
     /// A batch (11 §7.3).
@@ -472,6 +671,22 @@ impl Core {
     }
 
     fn batch_sequential(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
+        if req.dry_run && !self.simulating {
+            // Run the real sequence on a clone of the session: every step sees the simulated earlier steps, and
+            // nothing leaves the clone (C12-R1-03).
+            let mut real = req.clone();
+            real.dry_run = false;
+            let rev = self.rev();
+            let mut env = self.simulate(|core| core.batch_sequential(&real, origin));
+            env.dry_run = true;
+            env.undo = None;
+            env.document_rev = rev;
+            for s in env.steps.iter_mut().flatten() {
+                s.dry_run = true;
+                s.undo = None;
+            }
+            return env;
+        }
         let mut steps: Vec<Envelope> = Vec::new();
         let mut names: BTreeMap<String, usize> = BTreeMap::new();
         let mut failed: Option<(usize, CommandError)> = None;
@@ -480,7 +695,7 @@ impl Core {
                 Ok(params) => self.invoke(&Invocation {
                     command: step.id.clone(),
                     params,
-                    options: InvokeOptions { dry_run: req.dry_run, ..InvokeOptions::default() },
+                    options: InvokeOptions::default(),
                     origin: origin.clone(),
                 }),
                 Err(e) => Envelope::error(e, self.rev()),
@@ -502,7 +717,6 @@ impl Core {
             None => Envelope::ok(json!({ "stepCount": steps.len() }), self.rev()),
         };
         env.changes = steps.iter().flat_map(|s| s.changes.iter().cloned()).take(CHANGES_CAP).collect();
-        env.dry_run = req.dry_run;
         env.steps = Some(steps);
         env
     }
@@ -519,20 +733,35 @@ impl Core {
         let mut failed: Option<(usize, CommandError)> = None;
         let opts = InvokeOptions { dry_run: req.dry_run, ..InvokeOptions::default() };
         for (i, step) in req.steps.iter().enumerate() {
+            cx.set_step(Some(i));
+            let mut preview = false;
+            let mut savepoint = None;
             let outcome =
                 resolve_refs(&step.params, &steps, &names).and_then(|params| match self.registry.get(&step.id) {
-                    Some(entry) => run_step(&mut cx, entry, params, &opts),
+                    Some(entry) => {
+                        // A step that sets its own `dryRun` previews inside the batch and leaves no trace in it
+                        // (10 AG-02; C12-R1-03).
+                        preview = param_dry_run(entry, &params);
+                        if preview {
+                            savepoint = Some(cx.savepoint());
+                        }
+                        run_step(&mut cx, entry, params, &opts)
+                    }
                     None => Err(unknown(&step.id, self.registry)),
                 });
             if let Some(n) = &step.name {
                 names.insert(n.clone(), i);
             }
-            let rev_now = cx.document().ok().map(Document::document_rev).or(rev_before);
+            let rev_now = cx.predicted_rev().ok().or(rev_before);
+            if let Some(sp) = savepoint {
+                cx.rollback_to(sp);
+            }
             match outcome {
                 Ok(result) => {
                     let mut env = Envelope::ok(result, rev_now);
                     env.warnings = cx.take_warnings();
                     env.targets = cx.take_targets();
+                    env.dry_run = preview;
                     steps.push(env);
                 }
                 Err(e) => {
@@ -544,10 +773,12 @@ impl Core {
                 }
             }
         }
+        cx.set_step(None);
         let committed = match failed {
             Some((i, e)) => Err(step_failed(i, &req.steps[i].id, e)),
             None => cx.finish_staged(req.label.clone()),
         };
+        let effects = cx.take_effects();
         let mut session = cx.into_session();
         let env = match committed {
             Err(e) => {
@@ -565,19 +796,33 @@ impl Core {
                 env.changes = changes;
                 env.changes_truncated = truncated;
                 env.changes_since = since;
-                env.steps = Some(steps);
                 if req.dry_run {
                     rollback.apply(&mut session);
                     env.dry_run = true;
-                } else if let Some(t) = txn {
-                    match commit(&mut session, vec![t], origin) {
+                } else {
+                    let committed = match txn {
+                        Some(t) => commit(&mut session, vec![t], origin),
+                        None => Ok(None),
+                    };
+                    match committed {
                         Ok(u) => {
                             env.undo = u;
-                            env.document_rev = last_rev;
+                            env.document_rev = last_rev.or(rev_before);
+                            for (i, rev) in apply_effects(&mut session, effects, self.simulating) {
+                                if let Some(r) =
+                                    steps.get_mut(i).and_then(|s| s.result.as_mut()).and_then(Value::as_object_mut)
+                                {
+                                    r.insert("documentRev".into(), json!(rev));
+                                }
+                            }
                         }
-                        Err(e) => env.error = Some(e),
+                        Err(e) => {
+                            rollback.apply(&mut session);
+                            env = Envelope::error(e, rev_before);
+                        }
                     }
                 }
+                env.steps = Some(steps);
                 env
             }
         };
@@ -588,22 +833,103 @@ impl Core {
         env
     }
 
-    /// Opens a document as the current project (the load path: C1.3's `project.open` reads packages into it).
-    pub(crate) fn open(&mut self, doc: Document, path: Option<String>, read_only: bool) -> Envelope {
+    /// The guarded load transaction (ADR-0013 §16; C12-R1-01): the guards of the registered `project.open` — the
+    /// caller's scopes and the unsaved-changes rule of 01 §11.2 — then installation with a [`LoadGrant`].
+    pub(crate) fn load(&mut self, doc: Document, opts: &OpenOptions, origin: &Origin) -> Envelope {
+        let rev = self.rev();
+        let Some(entry) = self.registry.get("project.open").copied() else {
+            return Envelope::error(CommandError::internal("project.open is not registered"), rev);
+        };
+        let missing = missing_scopes(&entry, origin);
+        if !missing.is_empty() {
+            return Envelope::error(
+                CommandError::with_details(
+                    codes::PERMISSION_DENIED,
+                    format!("opening a project needs the scopes {missing:?}"),
+                    json!({ "commandId": "project.open", "missingScopes": missing }),
+                ),
+                rev,
+            );
+        }
+        if let Some(p) = self.session.as_ref().and_then(|s| s.project.as_ref())
+            && p.dirty()
+        {
+            match opts.on_unsaved {
+                UnsavedPolicy::Fail => return Envelope::error(unsaved_changes(p), rev),
+                UnsavedPolicy::Save => {
+                    return Envelope::error(CommandError::not_implemented("project.save", "M1 C1.3"), rev);
+                }
+                UnsavedPolicy::Discard => {}
+            }
+        }
+        self.install(LoadGrant { _private: () }, doc, opts, origin)
+    }
+
+    /// Replaces the open project — only with a [`LoadGrant`]. The replacement is recorded: `project.closed` for the
+    /// previous project, `project.opened` for the new one, whose history and revision log start at its revision.
+    fn install(&mut self, _grant: LoadGrant, doc: Document, opts: &OpenOptions, origin: &Origin) -> Envelope {
         let mut session = self.take_session();
         let before = observe(&session);
+        if let Some(old) = session.project.take() {
+            session.emit("project.closed", json!({ "projectId": old.doc.project().id().as_str() }));
+        }
         session.app = AppContext::for_document(&doc);
         let rev = doc.document_rev();
         let id = doc.project().id().as_str().to_owned();
-        session.project = Some(OpenProject::new(doc, path.clone(), read_only));
-        session.emit("project.opened", json!({ "projectId": id, "path": path, "readOnly": read_only }));
+        session.project = Some(OpenProject::new(doc, opts.path.clone(), opts.read_only));
+        session.emit(
+            "project.opened",
+            json!({ "projectId": id, "path": opts.path, "readOnly": opts.read_only, "origin": origin.label() }),
+        );
         Self::settle(&mut session, &before);
         self.session = Some(session);
-        Envelope::ok(json!({ "projectId": id, "readOnly": read_only }), Some(rev))
+        Envelope::ok(json!({ "projectId": id, "readOnly": opts.read_only }), Some(rev))
+    }
+
+    /// The first half of `job.wait` (C12-R1-04): the whole invocation contract on the document thread — remembered
+    /// requests, scopes, parameters, `expectRev`, ownership — answering at once when the job is final or the timeout
+    /// is zero.
+    pub(crate) fn wait_begin(&mut self, inv: &Invocation) -> WaitStart {
+        if let Some(id) = &inv.options.request_id {
+            match self.requests.lookup(&inv.origin.session_key(), id, fingerprint(inv)) {
+                Lookup::Hit(env) => return WaitStart::Done(env),
+                Lookup::Refused(e) => return WaitStart::Done(Box::new(Envelope::error(e, self.rev()))),
+                Lookup::Miss => {}
+            }
+        }
+        let env = self.run(inv);
+        let running = env.result.as_ref().is_some_and(|r| r.get("timedOut") == Some(&Value::Bool(true)));
+        if env.is_ok()
+            && running
+            && let Ok(p) = tt_registry::decode_params::<crate::commands::job::WaitParams>(inv.params.clone())
+            && p.timeout_ms > 0
+        {
+            return WaitStart::Wait { job_id: p.job_id, timeout: Duration::from_millis(p.timeout_ms) };
+        }
+        self.remember(inv, &env);
+        WaitStart::Done(Box::new(env))
+    }
+
+    /// The second half of `job.wait`: the envelope for the record the caller waited for.
+    pub(crate) fn wait_finish(&mut self, inv: &Invocation, outcome: Result<Value, CommandError>) -> Envelope {
+        let env = match outcome {
+            Ok(result) => Envelope::ok(result, self.rev()),
+            Err(e) => Envelope::error(e, self.rev()),
+        };
+        self.remember(inv, &env);
+        env
+    }
+
+    fn remember(&mut self, inv: &Invocation, env: &Envelope) {
+        if let Some(id) = &inv.options.request_id
+            && !self.simulating
+        {
+            self.requests.insert(&inv.origin.session_key(), id, fingerprint(inv), &inv.command, env.clone());
+        }
     }
 
     /// Drains pending events.
-    pub(crate) fn take_events(&mut self) -> Vec<crate::session::Event> {
+    pub(crate) fn take_events(&mut self) -> Vec<Event> {
         self.session.as_mut().map(|s| std::mem::take(&mut s.events)).unwrap_or_default()
     }
 }
@@ -618,7 +944,7 @@ fn step_failed(i: usize, id: &str, e: CommandError) -> CommandError {
 
 /// Replaces batch references in parameters: a string that is exactly `$<n>.<path>` (step `n`, 1-based) or
 /// `$<name>.<path>` (a step named with `as`) becomes the value at that dotted path of the step's envelope
-/// (11 §7.3; ADR-0013 §5).
+/// (11 §7.3; ADR-0013 §6).
 pub(crate) fn resolve_refs(
     params: &Value,
     done: &[Envelope],

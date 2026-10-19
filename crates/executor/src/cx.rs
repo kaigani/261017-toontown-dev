@@ -20,7 +20,7 @@ use tt_registry::{CommandError, codes};
 use crate::align::prepare;
 use crate::app::{AppContext, SpecialContext};
 use crate::history::StepEdit;
-use crate::session::{OpenProject, Session};
+use crate::session::{Checkpoint, Event, OpenProject, Session};
 use crate::types::{ChangeRecord, Origin, Warning};
 use crate::ui::UiState;
 
@@ -62,14 +62,42 @@ struct Staged {
     cached: Option<(Vec<ChangeRecord>, Vec<String>)>,
 }
 
+/// An effect a command has outside the document, applied only when its transaction commits (never for a dry run or
+/// a failed batch; 11 §7.2–§7.3, C12-R1-02/10).
+#[derive(Debug, Clone)]
+pub(crate) enum Effect {
+    /// Request cancellation of a job.
+    CancelJob(String),
+    /// Create a checkpoint of the committed document (inside an atomic batch: the state the batch commits).
+    CreateCheckpoint {
+        name: String,
+        origin: String,
+        created_at: String,
+        /// The batch step that asked for it (its result is completed with the committed revision).
+        step: Option<usize>,
+    },
+    /// Deliver an event.
+    Event(Event),
+}
+
+/// The state of a context a step can be rolled back to (a step with its own `dryRun` inside an atomic batch).
+pub(crate) struct Savepoint {
+    staged: Option<Staged>,
+    txns: usize,
+    effects: usize,
+    app: AppContext,
+    ui: UiState,
+    clipboard: Option<Value>,
+    edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
+    checkpoints: Option<Vec<Checkpoint>>,
+}
+
 /// The invocation context; see the module documentation.
 #[derive(Debug)]
 pub struct Cx {
     session: Session,
     origin: Origin,
     command: &'static str,
-    /// The live document when the transaction began.
-    base: Option<Document>,
     staged: Option<Staged>,
     txns: Vec<Txn>,
     warnings: Vec<Warning>,
@@ -77,6 +105,17 @@ pub struct Cx {
     label: Option<String>,
     in_atomic_batch: bool,
     dry_run: bool,
+    effects: Vec<Effect>,
+    step: Option<usize>,
+}
+
+/// `documentRev` cannot grow further (REV-01; C12-R1-19): a typed error, never an overflow.
+pub(crate) fn revisions_exhausted() -> CommandError {
+    CommandError::with_details(
+        "doc.limitExceeded",
+        "the document revision cannot grow beyond 18446744073709551615",
+        json!({ "limit": "documentRev", "maximum": u64::MAX }),
+    )
 }
 
 pub(crate) fn model_error(errors: Vec<ModelError>) -> CommandError {
@@ -99,12 +138,10 @@ pub(crate) fn no_project() -> CommandError {
 
 impl Cx {
     pub(crate) fn new(session: Session, origin: Origin, command: &'static str, dry_run: bool) -> Self {
-        let base = session.project.as_ref().map(|p| p.doc.clone());
         Self {
             session,
             origin,
             command,
-            base,
             staged: None,
             txns: Vec::new(),
             warnings: Vec::new(),
@@ -112,7 +149,80 @@ impl Cx {
             label: None,
             in_atomic_batch: false,
             dry_run,
+            effects: Vec::new(),
+            step: None,
         }
+    }
+
+    pub(crate) fn set_step(&mut self, step: Option<usize>) {
+        self.step = step;
+    }
+
+    /// Defers an effect to the commit of the transaction.
+    pub(crate) fn defer(&mut self, effect: Effect) {
+        self.effects.push(effect);
+    }
+
+    /// Emits an event when the transaction commits (never for a dry run or a failed batch).
+    pub(crate) fn emit(&mut self, name: &str, payload: Value) {
+        self.effects.push(Effect::Event(Event { name: name.to_owned(), payload }));
+    }
+
+    pub(crate) fn effects(&self) -> &[Effect] {
+        &self.effects
+    }
+
+    pub(crate) fn take_effects(&mut self) -> Vec<Effect> {
+        std::mem::take(&mut self.effects)
+    }
+
+    /// The batch step being run.
+    pub(crate) fn step(&self) -> Option<usize> {
+        self.step
+    }
+
+    pub(crate) fn savepoint(&self) -> Savepoint {
+        Savepoint {
+            staged: self.staged.clone(),
+            txns: self.txns.len(),
+            effects: self.effects.len(),
+            app: self.session.app.clone(),
+            ui: self.session.ui.clone(),
+            clipboard: self.session.clipboard.clone(),
+            edit_options: self.session.edit_options.clone(),
+            checkpoints: self.session.project.as_ref().map(|p| p.checkpoints.clone()),
+        }
+    }
+
+    pub(crate) fn rollback_to(&mut self, sp: Savepoint) {
+        self.staged = sp.staged;
+        self.txns.truncate(sp.txns);
+        self.effects.truncate(sp.effects);
+        self.session.app = sp.app;
+        self.session.ui = sp.ui;
+        self.session.clipboard = sp.clipboard;
+        self.session.edit_options = sp.edit_options;
+        if let (Some(p), Some(c)) = (self.session.project.as_mut(), sp.checkpoints) {
+            p.checkpoints = c;
+        }
+    }
+
+    /// The revision the document will have when this context's transactions commit (the live revision when nothing
+    /// is staged).
+    ///
+    /// # Errors
+    /// `project.none`; `doc.limitExceeded` when revisions are exhausted.
+    pub fn predicted_rev(&mut self) -> Result<u64, CommandError> {
+        if self.staged.is_some() {
+            let (changes, rev) = self.preview_changes()?;
+            if !changes.is_empty() {
+                return Ok(rev);
+            }
+        }
+        Ok(match self.txns.last() {
+            Some(t) => t.rev,
+            None => self.project()?.doc.document_rev(),
+        })
     }
 
     pub(crate) fn into_session(self) -> Session {
@@ -305,14 +415,19 @@ impl Cx {
 
     // ----- staging ---------------------------------------------------------------------------------------------
 
-    fn staging_doc(&self) -> Result<Document, CommandError> {
-        if !self.txns.is_empty() {
-            return Err(CommandError::internal("a transaction cannot stage changes after a history replay"));
-        }
-        Ok(match &self.staged {
-            Some(s) => s.doc.clone(),
+    /// The committed-or-replayed state new staging starts from.
+    fn base_doc(&self) -> Result<Document, CommandError> {
+        Ok(match self.txns.last() {
+            Some(t) => t.after.clone(),
             None => self.project()?.doc.clone(),
         })
+    }
+
+    fn staging_doc(&self) -> Result<Document, CommandError> {
+        match &self.staged {
+            Some(s) => Ok(s.doc.clone()),
+            None => self.base_doc(),
+        }
     }
 
     fn stage(
@@ -385,17 +500,18 @@ impl Cx {
 
     /// The revision the next transaction of this invocation gets.
     fn next_rev(&self) -> Result<u64, CommandError> {
-        Ok(match self.txns.last() {
-            Some(t) => t.rev + 1,
-            None => self.project()?.doc.document_rev() + 1,
-        })
+        let current = match self.txns.last() {
+            Some(t) => t.rev,
+            None => self.project()?.doc.document_rev(),
+        };
+        current.checked_add(1).ok_or_else(revisions_exhausted)
     }
 
     /// Turns the staged changes into a committed-ready transaction (stamped with the next revision); `None` when the
     /// staged changes change nothing.
     pub(crate) fn finish_staged(&mut self, label: String) -> Result<Option<Txn>, CommandError> {
         let Some(staged) = self.staged.take() else { return Ok(None) };
-        let before = self.base.clone().ok_or_else(no_project)?;
+        let before = self.base_doc()?;
         let rev = self.next_rev()?;
         let touched: Vec<String> = staged.touched.into_iter().collect();
         let (changes, keys) = match staged.cached {
@@ -430,7 +546,7 @@ impl Cx {
         if let Some((c, _)) = &staged.cached {
             return Ok((c.clone(), rev));
         }
-        let before = self.base.clone().ok_or_else(no_project)?;
+        let before = self.base_doc()?;
         let touched: Vec<String> = staged.touched.iter().cloned().collect();
         let (changes, keys) = changes_between(&before, &staged.doc, &touched, staged.structural, rev)?;
         if let Some(s) = self.staged.as_mut() {
@@ -558,10 +674,13 @@ fn restore_snapshot(
     let diff = change::diff(current, target)?;
     let mut changed: BTreeSet<String> = BTreeSet::new();
     let mut records = Vec::with_capacity(diff.len());
+    let mut keys: Vec<String> = Vec::new();
     for (c, o) in &diff {
         records.push(record(c, o.key.clone(), o.ty, o.parent.clone(), o.index, rev)?);
-        changed.insert(o.key.clone());
+        keys.push(o.key.clone());
     }
+    add_drawing_records(target, &mut records, &mut keys, rev);
+    changed.extend(keys);
     let mut stamps: Vec<(String, u64)> = Vec::new();
     for loc in target.locations() {
         if changed.contains(&loc.key) {
@@ -615,6 +734,7 @@ pub(crate) fn changes_between(
             keys.push(o.key.clone());
             records.push(record(&c, o.key.clone(), o.ty, o.parent.clone(), o.index, rev)?);
         }
+        add_drawing_records(after, &mut records, &mut keys, rev);
         return Ok((records, keys));
     }
     for key in touched {
@@ -643,5 +763,34 @@ pub(crate) fn changes_between(
             records.push(record(&c, key.clone(), ty, par, 0, rev)?);
         }
     }
+    add_drawing_records(after, &mut records, &mut keys, rev);
     Ok((records, keys))
+}
+
+/// REV-02 / 11 P6 (C12-R1-11): a change to the content of a drawing (a node or stroke) changes the revision of the
+/// drawing, so the drawing is reported too: `modified` with an empty own-view patch, because its own view (children
+/// as stubs) did not change.
+fn add_drawing_records(after: &Document, records: &mut Vec<ChangeRecord>, keys: &mut Vec<String>, rev: u64) {
+    let mut drawings: Vec<String> = Vec::new();
+    for k in keys.iter() {
+        if let Some((container, _)) = k.split_once('/')
+            && after.locate(container).is_some_and(|l| l.ty == ObjectType::Drawing)
+            && !drawings.iter().any(|d| d == container)
+            && !keys.iter().any(|x| x == container)
+        {
+            drawings.push(container.to_owned());
+        }
+    }
+    for d in drawings {
+        records.push(ChangeRecord {
+            id: d.clone(),
+            ty: ObjectType::Drawing.as_str().to_owned(),
+            op: "modified".to_owned(),
+            rev,
+            parent_id: None,
+            index: None,
+            patch: Some(Vec::new()),
+        });
+        keys.push(d);
+    }
 }

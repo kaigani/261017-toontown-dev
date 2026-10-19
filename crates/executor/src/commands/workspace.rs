@@ -10,6 +10,9 @@ use super::common::{NoParams, OnExists, event_not_invocable};
 use crate::cx::Cx;
 use crate::ui::{Layout, WorkspaceEntry};
 
+/// Default of the preference `general.workspace.autoSave` (01 §7; C12-R1-16), used until preferences exist (M4).
+const AUTO_SAVE_DEFAULT: bool = true;
+
 #[command(
     id = "workspace.list",
     kind = query,
@@ -57,8 +60,8 @@ pub(crate) struct NameResult {
 pub(crate) struct SelectParams {
     /// Workspace name.
     name: String,
-    /// Save the current arrangement into the current workspace first (default: `general.workspace.autoSave`,
-    /// which is off until preferences arrive in M4).
+    /// Save the current arrangement into the current workspace first (default: the preference
+    /// `general.workspace.autoSave`, whose default is on, 01 §7; preferences arrive in M4).
     #[serde(default)]
     save_current: Option<bool>,
 }
@@ -72,7 +75,7 @@ pub(crate) struct SelectParams {
     gui = "Windows › Workspace menu and the workspace drop-down (M4)",
 )]
 pub(crate) fn workspace_select(cx: &mut Cx, p: SelectParams) -> Result<NameResult, CommandError> {
-    cx.ui_mut().select(&p.name, p.save_current.unwrap_or(false))?;
+    cx.ui_mut().select(&p.name, p.save_current.unwrap_or(AUTO_SAVE_DEFAULT))?;
     Ok(NameResult { name: p.name })
 }
 

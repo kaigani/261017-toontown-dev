@@ -270,3 +270,26 @@ impl Envelope {
         self.status == Status::Ok
     }
 }
+
+/// What a load does with unsaved changes of the open project (01 §11.2 rule 3).
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum UnsavedPolicy {
+    /// Refuse with `project.unsavedChanges` when the open project is modified.
+    #[default]
+    Fail,
+    /// Save first (needs `project.save`, C1.3).
+    Save,
+    /// Discard the changes.
+    Discard,
+}
+
+/// How a document is opened (the load transaction, ADR-0013 §16).
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct OpenOptions {
+    /// The file it was read from (`None`: an untitled, unsaved project).
+    pub path: Option<String>,
+    /// Open read-only.
+    pub read_only: bool,
+    /// Unsaved changes of the project it replaces.
+    pub on_unsaved: UnsavedPolicy,
+}

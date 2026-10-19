@@ -11,6 +11,12 @@ use tt_model::{Id, ObjectType};
 
 use crate::ui::UiState;
 
+/// The mode a view type implies (01 §4): a drawing view is drawing mode; camera, top and side views are staging.
+#[must_use]
+pub fn mode_of_view(panel: &str) -> Mode {
+    if panel == "drawingView" { Mode::Drawing } else { Mode::Staging }
+}
+
 /// The working mode (01 §4.4).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -39,8 +45,10 @@ pub(crate) struct AppContext {
     /// A drawing made current explicitly (`app.context.set {drawingId}`); otherwise the current drawing is the one
     /// the current element exposes at the current frame.
     pub drawing: Option<Id>,
-    pub mode: Mode,
+    /// The selection of the context used last (reported by `AppState`).
     pub selection: Selection,
+    /// The selection of every context (01 §6.4: each context keeps its own; switching focus clears none).
+    pub selections: std::collections::BTreeMap<String, Vec<String>>,
 }
 
 impl Default for AppContext {
@@ -50,8 +58,8 @@ impl Default for AppContext {
             frame: 1,
             element: None,
             drawing: None,
-            mode: Mode::Staging,
             selection: Selection { context: "staging".to_owned(), ids: Vec::new() },
+            selections: std::collections::BTreeMap::new(),
         }
     }
 }
@@ -218,7 +226,42 @@ fn first_element(doc: &Document, scene: &Id) -> Option<Id> {
     doc.scene(scene).and_then(|s| doc.tree_order(s).into_iter().next())
 }
 
+/// A cell selection entry: `element:@<elementId>/cell:#<frame>` (a reference that resolves to the cell).
+#[must_use]
+pub fn cell_ref(element: &str, frame: u32) -> String {
+    format!("element:@{element}/cell:#{frame}")
+}
+
+/// The element and frame of a cell selection entry.
+#[must_use]
+pub fn parse_cell_ref(k: &str) -> Option<(String, u32)> {
+    let rest = k.strip_prefix("element:@")?;
+    let (element, frame) = rest.split_once("/cell:#")?;
+    Some((element.to_owned(), frame.parse().ok()?))
+}
+
+/// Whether a selection entry (an object key or a cell reference) still exists.
+fn selectable_exists(doc: &Document, k: &str) -> bool {
+    match parse_cell_ref(k) {
+        Some((element, _)) => doc.locate(&element).is_some(),
+        None => doc.locate(k).is_some(),
+    }
+}
+
 impl AppContext {
+    /// The selection of one context.
+    #[must_use]
+    pub fn selection_of(&self, context: &str) -> Vec<String> {
+        self.selections.get(context).cloned().unwrap_or_default()
+    }
+
+    /// Sets the selection of a context and makes it the reported one.
+    pub fn set_selection(&mut self, context: &str, ids: Vec<String>) {
+        context.clone_into(&mut self.selection.context);
+        self.selection.ids.clone_from(&ids);
+        self.selections.insert(context.to_owned(), ids);
+    }
+
     /// The context for a newly opened document: its first scene, frame 1, the scene's first element.
     pub fn for_document(doc: &Document) -> Self {
         let scene = doc.project().scenes().ids().first().cloned();
@@ -249,7 +292,10 @@ impl AppContext {
             self.drawing = None;
         }
         self.frame = self.frame.max(1);
-        self.selection.ids.retain(|k| doc.locate(k).is_some());
+        self.selection.ids.retain(|k| selectable_exists(doc, k));
+        for ids in self.selections.values_mut() {
+            ids.retain(|k| selectable_exists(doc, k));
+        }
         *self != before
     }
 
@@ -307,7 +353,8 @@ impl AppContext {
         };
         let Some((doc, info)) = project else { return st };
         st.project = Some(info);
-        st.mode = Some(self.mode);
+        // 01 §4: the mode is derived from the type of the active view (the central view of the arrangement in use).
+        st.mode = Some(mode_of_view(ui.central_panel()));
         let central = ui.central_panel().to_owned();
         st.active_view = Some(ActiveView {
             view_id: central.clone(),

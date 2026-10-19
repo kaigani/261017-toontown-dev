@@ -56,7 +56,7 @@ impl History {
 
     /// The id the next step will get.
     pub fn next_step_id(&mut self) -> String {
-        self.next_id += 1;
+        self.next_id = self.next_id.saturating_add(1);
         format!("u-{}", self.next_id)
     }
 
