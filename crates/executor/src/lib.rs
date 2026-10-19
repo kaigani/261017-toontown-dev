@@ -261,6 +261,13 @@ impl ExecutorHandle {
         let (job_id, timeout) = match start {
             run::WaitStart::Done(env) => return *env,
             run::WaitStart::Wait { job_id, timeout } => (job_id, timeout),
+            // An identical retry gets the envelope of the call in flight (C12-R3-03), at most the owner's wait plus
+            // one watchdog budget later.
+            run::WaitStart::Attached { envelope, timeout: owner_wait } => {
+                return envelope
+                    .recv_timeout(owner_wait.saturating_add(self.config.budget))
+                    .unwrap_or_else(|_| Envelope::error(timeout("job.wait", self.config.budget), None));
+            }
         };
         let outcome = self
             .jobs

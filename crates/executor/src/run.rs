@@ -50,9 +50,17 @@ struct SessionRequests {
     bytes: usize,
     /// A hash of every request id the session used (8 bytes each): an evicted id is never executed again.
     seen: HashSet<u64>,
-    /// Ids of calls in flight (a `job.wait` waiting off the document thread; C12-R2-06): fingerprint, command and
-    /// the number of identical calls waiting.
-    pending: HashMap<String, (u64, String, usize)>,
+    /// Ids of calls in flight (a `job.wait` waiting off the document thread; C12-R2-06, C12-R3-03).
+    pending: HashMap<String, InFlight>,
+}
+
+/// The call that owns an id while it is in flight, and the identical retries attached to it.
+#[derive(Debug, Clone)]
+struct InFlight {
+    fingerprint: u64,
+    command: String,
+    /// Identical retries waiting for the owner's envelope (each receives exactly that envelope).
+    attached: Vec<std::sync::mpsc::Sender<Envelope>>,
 }
 
 /// `requestId` idempotency, scoped to the session (ADR-0013 §5; C12-R1-06/22).
@@ -63,6 +71,8 @@ struct RequestCache {
 
 enum Lookup {
     Miss,
+    /// The identical call is in flight: attach to it.
+    InFlight,
     Hit(Box<Envelope>),
     Refused(CommandError),
 }
@@ -83,16 +93,16 @@ fn fingerprint(inv: &Invocation) -> u64 {
 impl RequestCache {
     fn lookup(&self, session: &str, id: &str, fp: u64) -> Lookup {
         let Some(s) = self.sessions.get(session) else { return Lookup::Miss };
-        if let Some((pfp, command, _)) = s.pending.get(id) {
-            // In flight: the identical call may wait alongside (a wait is read-only); any other call is a conflict.
-            if *pfp == fp {
-                return Lookup::Miss;
+        if let Some(p) = s.pending.get(id) {
+            // In flight: the first call owns the id; an identical retry attaches to it, any other call conflicts.
+            if p.fingerprint == fp {
+                return Lookup::InFlight;
             }
             return Lookup::Refused(
                 CommandError::with_details(
                     "request.conflict",
                     format!("requestId `{id}` is in use by a call in progress"),
-                    json!({ "requestId": id, "originalCommand": command, "inProgress": true }),
+                    json!({ "requestId": id, "originalCommand": p.command, "inProgress": true }),
                 )
                 .hint("use a new requestId for a different call"),
             );
@@ -123,21 +133,29 @@ impl RequestCache {
         Lookup::Miss
     }
 
-    /// Reserves an id for a call in flight.
+    /// Reserves an id for the call in flight that owns it.
     fn reserve(&mut self, session: &str, id: &str, fp: u64, command: &str) {
         let s = self.sessions.entry(session.to_owned()).or_default();
         s.seen.insert(hash64(id));
-        s.pending.entry(id.to_owned()).or_insert((fp, command.to_owned(), 0)).2 += 1;
+        s.pending
+            .insert(id.to_owned(), InFlight { fingerprint: fp, command: command.to_owned(), attached: Vec::new() });
     }
 
-    /// Ends one in-flight call of an id.
-    fn release(&mut self, session: &str, id: &str) {
+    /// Attaches an identical retry to the call in flight; it receives the owner's envelope.
+    fn attach(&mut self, session: &str, id: &str) -> Option<std::sync::mpsc::Receiver<Envelope>> {
+        let p = self.sessions.get_mut(session)?.pending.get_mut(id)?;
+        let (tx, rx) = std::sync::mpsc::channel();
+        p.attached.push(tx);
+        Some(rx)
+    }
+
+    /// Ends the call in flight: its envelope goes to every attached retry.
+    fn release(&mut self, session: &str, id: &str, envelope: &Envelope) {
         if let Some(s) = self.sessions.get_mut(session)
-            && let Some(p) = s.pending.get_mut(id)
+            && let Some(p) = s.pending.remove(id)
         {
-            p.2 = p.2.saturating_sub(1);
-            if p.2 == 0 {
-                s.pending.remove(id);
+            for tx in p.attached {
+                let _ = tx.send(envelope.clone());
             }
         }
     }
@@ -146,6 +164,9 @@ impl RequestCache {
         let bytes = serde_json::to_vec(&envelope).map_or(0, |v| v.len());
         let s = self.sessions.entry(session.to_owned()).or_default();
         s.seen.insert(hash64(id));
+        if s.entries.contains_key(id) {
+            return; // the first envelope of an id is the one remembered (C12-R3-03)
+        }
         if let Some(old) =
             s.entries.insert(id.to_owned(), Cached { fingerprint: fp, command: command.to_owned(), envelope, bytes })
         {
@@ -231,6 +252,13 @@ pub(crate) enum WaitStart {
         /// The job.
         job_id: String,
         /// How long.
+        timeout: Duration,
+    },
+    /// An identical retry of a call in flight: receive that call's envelope (C12-R3-03).
+    Attached {
+        /// Delivers the owner's envelope.
+        envelope: std::sync::mpsc::Receiver<Envelope>,
+        /// The owner's wait (the retry has the same parameters).
         timeout: Duration,
     },
 }
@@ -572,6 +600,16 @@ impl Core {
         match self.requests.lookup(&session, &id, fp) {
             Lookup::Hit(env) => *env,
             Lookup::Refused(e) => Envelope::error(e, self.rev()),
+            // Only `job.wait` is in flight across calls, and it is answered by `wait_begin`; an identical call that
+            // reaches this route while its twin is pending is told so rather than run twice.
+            Lookup::InFlight => Envelope::error(
+                CommandError::with_details(
+                    "request.conflict",
+                    format!("requestId `{id}` is in use by a call in progress"),
+                    json!({ "requestId": id, "originalCommand": inv.command, "inProgress": true }),
+                ),
+                self.rev(),
+            ),
             Lookup::Miss => {
                 let env = self.run(inv);
                 self.requests.insert(&session, &id, fp, &inv.command, env.clone());
@@ -984,6 +1022,13 @@ impl Core {
             match self.requests.lookup(&inv.origin.session_key(), id, fingerprint(inv)) {
                 Lookup::Hit(env) => return WaitStart::Done(env),
                 Lookup::Refused(e) => return WaitStart::Done(Box::new(Envelope::error(e, self.rev()))),
+                Lookup::InFlight => {
+                    let timeout = tt_registry::decode_params::<crate::commands::job::WaitParams>(inv.params.clone())
+                        .map_or(Duration::ZERO, |p| Duration::from_millis(p.timeout_ms));
+                    if let Some(envelope) = self.requests.attach(&inv.origin.session_key(), id) {
+                        return WaitStart::Attached { envelope, timeout };
+                    }
+                }
                 Lookup::Miss => {}
             }
         }
@@ -1011,12 +1056,12 @@ impl Core {
             Ok(result) => Envelope::ok(result, self.rev()),
             Err(e) => Envelope::error(e, self.rev()),
         };
+        self.remember(inv, &env);
         if let Some(id) = &inv.options.request_id
             && !self.simulating
         {
-            self.requests.release(&inv.origin.session_key(), id);
+            self.requests.release(&inv.origin.session_key(), id, &env);
         }
-        self.remember(inv, &env);
         env
     }
 

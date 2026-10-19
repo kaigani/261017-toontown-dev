@@ -73,8 +73,10 @@ pub(crate) fn checkpoint_create(cx: &mut Cx, p: NameParams) -> Result<Checkpoint
             json!({ "limit": MAX_CHECKPOINTS }),
         ));
     }
-    let rev = cx.predicted_rev()?;
-    let doc = cx.document()?.clone();
+    // The content staged so far, stamped as it will be committed: its `documentRev` and object revisions are the
+    // revision the checkpoint advertises (C12-R3-02).
+    let doc = cx.stamped_document()?;
+    let rev = doc.document_rev();
     cx.project_mut()?.checkpoints.push(crate::session::Checkpoint {
         name: name.clone(),
         created_at: crate::time::now_iso(),

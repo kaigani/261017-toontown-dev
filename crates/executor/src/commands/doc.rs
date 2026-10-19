@@ -1295,7 +1295,12 @@ pub(crate) fn doc_diff(cx: &mut Cx, p: DiffParams) -> Result<DiffResult, Command
         .map(|ts| ts.iter().enumerate().map(|(i, t)| parse_type(t, &format!("/types/{i}"))).collect())
         .transpose()?;
     let mut changes = Vec::new();
+    // Drawings holding a changed object, collected before any filter applies (C12-R3-04).
+    let mut containers: Vec<String> = Vec::new();
     for (c, o) in change::diff(&from_doc, &until_doc)? {
+        if let Some((d, _)) = o.key.split_once('/') {
+            containers.push(d.to_owned());
+        }
         if types.as_ref().is_some_and(|ts| !ts.contains(&o.ty)) {
             continue;
         }
@@ -1347,11 +1352,8 @@ pub(crate) fn doc_diff(cx: &mut Cx, p: DiffParams) -> Result<DiffResult, Command
         types.as_ref().is_none_or(|ts| ts.contains(&ObjectType::Drawing))
             && within.as_ref().is_none_or(|w| key == w || is_within(&until_doc, key, w))
     };
-    let mut invalidated: Vec<String> = changes
-        .iter()
-        .filter_map(|c| c.id.split_once('/').map(|(d, _)| d.to_owned()))
-        .filter(|d| until_doc.locate(d).is_some_and(|l| l.ty == ObjectType::Drawing))
-        .collect();
+    let mut invalidated: Vec<String> =
+        containers.into_iter().filter(|d| until_doc.locate(d).is_some_and(|l| l.ty == ObjectType::Drawing)).collect();
     for d in until_doc.drawings() {
         let id = d.id().as_str();
         if from_doc.locate(id).is_some_and(|l| l.rev != *d.rev()) {

@@ -569,6 +569,26 @@ impl Cx {
         Ok((changes, rev))
     }
 
+    /// The document as the staged changes will commit it: content staged so far, `documentRev` and the touched objects
+    /// stamped with the revision they will get (C12-R3-02). Without staged changes, the current document.
+    ///
+    /// # Errors
+    /// `project.none`; `doc.limitExceeded` when revisions are exhausted.
+    pub(crate) fn stamped_document(&mut self) -> Result<Document, CommandError> {
+        if self.staged.is_none() {
+            return Ok(self.document()?.clone());
+        }
+        let (changes, rev) = self.preview_changes()?;
+        if let Some(staged) = &self.staged
+            && !changes.is_empty()
+            && let Some((_, keys)) = &staged.cached
+        {
+            let stamps: Vec<String> = keys.iter().filter(|k| staged.doc.locate(k).is_some()).cloned().collect();
+            return Ok(staged.doc.with_revisions(rev, &stamps)?);
+        }
+        Ok(self.document()?.clone())
+    }
+
     pub(crate) fn take_txns(&mut self) -> Vec<Txn> {
         std::mem::take(&mut self.txns)
     }
