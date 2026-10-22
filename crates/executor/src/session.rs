@@ -66,6 +66,11 @@ pub(crate) struct OpenProject {
     pub path: Option<String>,
     pub form: Option<String>,
     pub read_only: bool,
+    /// Changes that cannot be undone but must be saved (01 §3.5): repairs on open, a recovered copy, an untitled
+    /// document opened without a location. The project is modified until the next save.
+    pub permanent_dirty: bool,
+    /// Persistence state (C1.3).
+    pub store: crate::store::Store,
 }
 
 impl OpenProject {
@@ -77,9 +82,16 @@ impl OpenProject {
             history: History::clean(),
             checkpoints: Vec::new(),
             log: VecDeque::new(),
+            permanent_dirty: path.is_none(),
             path,
             read_only,
+            store: crate::store::Store::default(),
         }
+    }
+
+    /// The form (`package` or `folder`) the project is saved in.
+    pub fn form_kind(&self) -> tt_persist::Form {
+        if self.form.as_deref() == Some("folder") { tt_persist::Form::Folder } else { tt_persist::Form::Package }
     }
 
     /// The oldest revision `doc.diff` can start from.
@@ -105,7 +117,7 @@ impl OpenProject {
 
     /// Whether the project differs from its saved state (01 §3.5): a new project is modified until saved.
     pub fn dirty(&self) -> bool {
-        self.path.is_none() || self.history.dirty()
+        self.permanent_dirty || self.history.dirty()
     }
 }
 
@@ -131,6 +143,8 @@ pub(crate) struct Session {
     pub clipboard: Option<Value>,
     /// The remembered options of cut special, paste special and motion-point paste special (01 §6.3).
     pub edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
+    /// The persistence environment (C1.3).
+    pub env: crate::store::Env,
 }
 
 impl Session {

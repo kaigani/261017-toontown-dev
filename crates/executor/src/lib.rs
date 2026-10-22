@@ -25,9 +25,12 @@ pub mod commands;
 mod cx;
 mod history;
 mod jobs;
+mod maintenance;
+mod persistence;
 mod rules;
 mod run;
 mod session;
+mod store;
 mod time;
 mod types;
 mod ui;
@@ -46,6 +49,8 @@ pub use history::MAX_STEPS as MAX_UNDO_STEPS;
 pub use jobs::{JobNotifier, JobProgress, JobRecord, JobState, JobTable};
 pub use run::LoadGrant;
 pub use session::Event;
+pub use store::{Maintenance, PersistOptions};
+pub use tt_persist::settings::UserDirs;
 pub use types::{
     BatchRequest, BatchStep, ChangeRecord, Envelope, Invocation, InvokeOptions, OpenOptions, Origin, Status, UndoRef,
     UnsavedPolicy, Warning,
@@ -104,6 +109,60 @@ enum Request {
     WaitFinish(Invocation, Result<Value, CommandError>, Sender<Envelope>),
     Snapshot(Sender<Option<Document>>),
     List(Origin, Sender<Vec<Value>>),
+    /// Work posted by a job thread (installing a loaded project, finishing a save; C1.3).
+    Run(Box<dyn FnOnce(&mut run::Core) + Send>),
+    /// Background maintenance: autosave, heartbeats, external-change detection.
+    Tick,
+    /// The last handle was dropped.
+    Shutdown,
+}
+
+/// Posts work to the document thread (job threads use it to install projects and finish saves).
+#[derive(Clone)]
+pub(crate) struct Poster(Sender<Request>);
+
+impl std::fmt::Debug for Poster {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Poster")
+    }
+}
+
+impl Poster {
+    /// Runs `f` on the document thread and returns its value, waiting at most `timeout`.
+    pub(crate) fn run<T: Send + 'static>(
+        &self,
+        timeout: Duration,
+        f: impl FnOnce(&mut run::Core) -> T + Send + 'static,
+    ) -> Result<T, CommandError> {
+        let (tx, rx) = mpsc::channel();
+        self.0
+            .send(Request::Run(Box::new(move |core| {
+                let _ = tx.send(f(core));
+            })))
+            .map_err(|_| stopped())?;
+        rx.recv_timeout(timeout).map_err(|e| match e {
+            RecvTimeoutError::Timeout => crate::timeout("document thread", timeout),
+            RecvTimeoutError::Disconnected => stopped(),
+        })
+    }
+}
+
+/// Stops the document thread when the last handle is dropped.
+struct ShutdownGuard(Sender<Request>);
+
+impl Drop for ShutdownGuard {
+    fn drop(&mut self) {
+        let _ = self.0.send(Request::Shutdown);
+    }
+}
+
+/// Executor options: the never-block budget and persistence (C1.3).
+#[derive(Debug, Clone, Default)]
+pub struct ExecutorOptions {
+    /// Never-block budget.
+    pub config: ExecutorConfig,
+    /// Persistence: user folders, maintenance schedule, migrations.
+    pub persist: PersistOptions,
 }
 
 /// Executor configuration.
@@ -120,12 +179,19 @@ impl Default for ExecutorConfig {
 }
 
 /// A handle to the document thread. Cloning shares the thread; the thread ends when the last handle is dropped.
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct ExecutorHandle {
     tx: Sender<Request>,
     jobs: Arc<JobTable>,
     subscribers: Arc<Mutex<Vec<Sender<Event>>>>,
     config: ExecutorConfig,
+    _guard: Arc<ShutdownGuard>,
+}
+
+impl std::fmt::Debug for ExecutorHandle {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ExecutorHandle").field("config", &self.config).finish_non_exhaustive()
+    }
 }
 
 fn timeout(what: &str, budget: Duration) -> CommandError {
@@ -158,18 +224,84 @@ impl ExecutorHandle {
     /// # Errors
     /// `internal` if the thread cannot start.
     pub fn spawn_with_registry(config: ExecutorConfig, registry: &'static Registry) -> Result<Self, CommandError> {
+        Self::spawn_full(ExecutorOptions { config, persist: PersistOptions::default() }, registry)
+    }
+
+    /// Starts the document thread with persistence options (user folders, maintenance; C1.3). Hosts pass the
+    /// platform's user folders ([`UserDirs::platform`]); without them the executor uses an isolated temporary folder.
+    ///
+    /// # Errors
+    /// `internal` if the registry does not assemble or the threads cannot start.
+    pub fn spawn_with_options(options: ExecutorOptions) -> Result<Self, CommandError> {
+        let registry = registry().map_err(|e| CommandError::internal(format!("registry assembly failed: {}", e.0)))?;
+        Self::spawn_full(options, registry)
+    }
+
+    fn spawn_full(options: ExecutorOptions, registry: &'static Registry) -> Result<Self, CommandError> {
+        let ExecutorOptions { config, persist } = options;
         let (tx, rx) = mpsc::channel::<Request>();
         let subscribers: Arc<Mutex<Vec<Sender<Event>>>> = Arc::new(Mutex::new(Vec::new()));
         let job_subs = subscribers.clone();
         let jobs = Arc::new(JobTable::with_notifier(Box::new(move |e| broadcast(&job_subs, std::slice::from_ref(&e)))));
-        let session = session::Session { jobs: jobs.clone(), ..session::Session::default() };
+        let mut env = store::Env::new(&persist);
+        env.poster = Some(Poster(tx.clone()));
+        let mut session = session::Session { jobs: jobs.clone(), env, ..session::Session::default() };
+        maintenance::start(&mut session);
         let subs = subscribers.clone();
         let budget = config.budget;
+        let tick = persist.maintenance.tick;
         std::thread::Builder::new()
             .name("tt-document".to_owned())
             .spawn(move || document_thread(run::Core::new(registry, session, budget), &rx, &subs))
             .map_err(|e| CommandError::internal(format!("cannot start the document thread: {e}")))?;
-        Ok(Self { tx, jobs, subscribers, config })
+        if !tick.is_zero() {
+            let ticker = tx.clone();
+            std::thread::Builder::new()
+                .name("tt-maintenance".to_owned())
+                .spawn(move || {
+                    loop {
+                        std::thread::sleep(tick);
+                        if ticker.send(Request::Tick).is_err() {
+                            break;
+                        }
+                    }
+                })
+                .map_err(|e| CommandError::internal(format!("cannot start the maintenance thread: {e}")))?;
+        }
+        let guard = Arc::new(ShutdownGuard(tx.clone()));
+        Ok(Self { tx, jobs, subscribers, config, _guard: guard })
+    }
+
+    /// Grants an agent session file-system roots (11 §6.2): paths given by that session must lie inside one of them
+    /// or inside the open project's folder (`fs.outsideRoots` otherwise). The MCP host (C1.4) grants the project
+    /// folder, `--allow-path` folders and the client's roots.
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal`.
+    pub fn grant_roots(&self, session: &str, roots: Vec<std::path::PathBuf>) -> Result<(), CommandError> {
+        let session = session.to_owned();
+        self.call("grant_roots", |r| {
+            Request::Run(Box::new(move |core| {
+                if let Some(s) = core.session_mut() {
+                    s.env.roots.insert(session, roots);
+                }
+                let _ = r.send(());
+            }))
+        })
+    }
+
+    /// Runs the background maintenance now (autosave, heartbeats, external-change detection), regardless of the
+    /// schedule. Hosts never need it; tests use it to make autosave deterministic.
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal`.
+    pub fn run_maintenance(&self, force_autosave: bool) -> Result<(), CommandError> {
+        self.call("maintenance", |r| {
+            Request::Run(Box::new(move |core| {
+                maintenance::tick(core, force_autosave);
+                let _ = r.send(());
+            }))
+        })
     }
 
     fn call<T>(&self, what: &str, make: impl FnOnce(Sender<T>) -> Request) -> Result<T, CommandError> {
@@ -316,9 +448,13 @@ fn document_thread(mut core: run::Core, rx: &Receiver<Request>, subscribers: &Mu
                 flush(&mut core);
                 let _ = reply.send(listed);
             }
+            Request::Run(f) => f(&mut core),
+            Request::Tick => maintenance::tick(&mut core, false),
+            Request::Shutdown => break,
         }
         flush(&mut core);
     }
+    maintenance::stop(&mut core);
 }
 
 /// Delivers events to every live subscriber (dropping closed ones).

@@ -3,7 +3,7 @@
 //! `job.wait` blocks the caller's thread, never the document thread (11 P5).
 
 use std::collections::BTreeMap;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicU8, Ordering};
 use std::sync::{Arc, Condvar, Mutex, PoisonError};
 use std::time::{Duration, Instant};
 
@@ -62,10 +62,17 @@ pub struct JobRecord {
     pub session: String,
 }
 
+/// A job is running and cancellable.
+const RUNNING: u8 = 0;
+/// Cancellation was requested before the job's commit point.
+const CANCEL_REQUESTED: u8 = 1;
+/// The job passed its commit point (an open installed, a save writing): it can no longer be cancelled.
+const COMMITTED: u8 = 2;
+
 #[derive(Debug, Default)]
 struct Table {
     jobs: BTreeMap<String, JobRecord>,
-    cancel: BTreeMap<String, Arc<AtomicBool>>,
+    cancel: BTreeMap<String, Arc<AtomicU8>>,
     next: u64,
 }
 
@@ -91,7 +98,7 @@ impl std::fmt::Debug for JobTable {
 pub struct JobProgress {
     table: Arc<JobTable>,
     job_id: String,
-    cancel: Arc<AtomicBool>,
+    cancel: Arc<AtomicU8>,
 }
 
 impl JobProgress {
@@ -103,10 +110,26 @@ impl JobProgress {
         });
     }
 
-    /// Whether cancellation was requested.
+    /// Whether cancellation was requested (before the commit point).
     #[must_use]
     pub fn cancelled(&self) -> bool {
-        self.cancel.load(Ordering::SeqCst)
+        self.cancel.load(Ordering::SeqCst) == CANCEL_REQUESTED
+    }
+
+    /// Passes the job's commit point (10 LOAD-02: an open installs its project; SAVE-03: a save starts writing): from
+    /// here on the job cannot be cancelled. Returns `false` when cancellation was requested first.
+    #[must_use]
+    pub fn commit(&self) -> bool {
+        match self.cancel.compare_exchange(RUNNING, COMMITTED, Ordering::SeqCst, Ordering::SeqCst) {
+            Ok(_) => true,
+            Err(state) => state == COMMITTED,
+        }
+    }
+
+    /// The job's ID.
+    #[must_use]
+    pub fn job_id(&self) -> &str {
+        &self.job_id
     }
 }
 
@@ -149,7 +172,7 @@ impl JobTable {
     where
         F: FnOnce(&JobProgress) -> Result<Value, CommandError> + Send + 'static,
     {
-        let cancel = Arc::new(AtomicBool::new(false));
+        let cancel = Arc::new(AtomicU8::new(RUNNING));
         let job_id = {
             let mut t = self.lock();
             t.next = t.next.saturating_add(1);
@@ -227,14 +250,14 @@ impl JobTable {
         }
     }
 
-    /// Requests cancellation; returns the record.
+    /// Requests cancellation; returns the record. A job past its commit point is not cancelled (it completes).
     ///
     /// # Errors
     /// `job.notFound` for an unknown job.
     pub fn cancel(&self, job_id: &str) -> Result<JobRecord, CommandError> {
         let t = self.lock();
         let Some(flag) = t.cancel.get(job_id) else { return Err(not_found(job_id)) };
-        flag.store(true, Ordering::SeqCst);
+        let _ = flag.compare_exchange(RUNNING, CANCEL_REQUESTED, Ordering::SeqCst, Ordering::SeqCst);
         t.jobs.get(job_id).cloned().ok_or_else(|| not_found(job_id))
     }
 }

@@ -478,12 +478,17 @@ pub(crate) fn unsaved(cx: &Cx) -> CommandError {
 )]
 pub(crate) fn app_quit(cx: &mut Cx, p: QuitParams) -> Result<QuitResult, CommandError> {
     let dirty = cx.session().project.as_ref().is_some_and(crate::session::OpenProject::dirty);
-    if dirty {
-        match p.on_unsaved {
-            OnUnsaved::Fail => return Err(unsaved(cx)),
-            OnUnsaved::Save => return Err(CommandError::not_implemented("project.save", "M1 C1.3")),
-            OnUnsaved::Discard => {}
-        }
+    if dirty && p.on_unsaved == OnUnsaved::Fail {
+        return Err(unsaved(cx));
+    }
+    crate::persistence::resolve_unsaved(cx, p.on_unsaved)?;
+    // 01 §1.2: on quit the current workspace is saved if it was modified and `general.workspace.autoSave` is on (the
+    // settings files are written after the command); the project closes and its recovery data goes (AUTO-04).
+    if !cx.dry_run() && cx.session().env.pref_bool("general.workspace.autoSave") && cx.ui().workspace_state().1 {
+        let _ = cx.ui_mut().save(None);
+    }
+    if cx.has_project() {
+        cx.defer(crate::cx::Effect::Close);
     }
     Ok(QuitResult { quitting: true })
 }

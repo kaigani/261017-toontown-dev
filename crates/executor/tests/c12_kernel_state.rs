@@ -124,8 +124,10 @@ fn the_application_context_follows_commands() {
     let e = err(&h, "app.quit", json!({}));
     assert_eq!(e.code, "project.unsavedChanges");
     assert_eq!(e.details["projectDirty"], true);
+    // `save` needs a location (01 §12.1 rule 3: `project.pathRequired`); a discarding quit closes the project.
+    assert_eq!(err(&h, "app.quit", json!({ "onUnsaved": "save" })).code, "project.pathRequired");
     assert_eq!(ok(&h, "app.quit", json!({ "onUnsaved": "discard" }))["quitting"], true);
-    assert_eq!(err(&h, "app.quit", json!({ "onUnsaved": "save" })).code, "command.notImplemented");
+    assert_eq!(err(&h, "doc.state.get", json!({})).code, "project.none");
 }
 
 #[test]

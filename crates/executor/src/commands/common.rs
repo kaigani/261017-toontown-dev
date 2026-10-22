@@ -130,3 +130,60 @@ pub(crate) fn event_not_invocable(id: &str) -> CommandError {
 pub(crate) fn invalid(pointer: &str, message: impl Into<String>) -> CommandError {
     CommandError::with_details(codes::ARG_INVALID, message, serde_json::json!({ "pointer": pointer }))
 }
+
+/// `{jobId}` of a job command, with the job's final result `R` declared under `x-jobResult` (11 §15.2; the job
+/// table checks every final result against it, C12-R1-13).
+#[derive(Debug, Clone)]
+pub(crate) struct Job<R> {
+    /// The job (`dryRun` for a dry run, which starts nothing).
+    pub job_id: String,
+    _result: std::marker::PhantomData<R>,
+}
+
+impl<R> Job<R> {
+    pub(crate) fn new(job_id: String) -> Self {
+        Self { job_id, _result: std::marker::PhantomData }
+    }
+
+    /// The answer of a dry run: the call was validated, nothing was started.
+    pub(crate) fn dry() -> Self {
+        Self::new("dryRun".to_owned())
+    }
+}
+
+impl<R> Serialize for Job<R> {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::SerializeMap;
+        let mut m = s.serialize_map(Some(1))?;
+        m.serialize_entry("jobId", &self.job_id)?;
+        m.end()
+    }
+}
+
+impl<R: JsonSchema> JsonSchema for Job<R> {
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        format!("Job_{}", R::schema_name()).into()
+    }
+
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        let result = generator.subschema_for::<R>();
+        schemars::json_schema!({
+            "type": "object",
+            "properties": { "jobId": { "type": "string", "minLength": 1, "description": "The job (11 §7.7)." } },
+            "required": ["jobId"],
+            "additionalProperties": false,
+            "x-jobResult": result,
+        })
+    }
+}
+
+/// A warning returned in a result (01 §12.1 rule 6).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
+pub(crate) struct ResultWarning {
+    /// Code.
+    pub id: String,
+    /// Message.
+    pub message: String,
+    /// Details.
+    pub details: serde_json::Value,
+}

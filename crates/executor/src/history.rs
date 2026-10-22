@@ -46,6 +46,8 @@ pub(crate) struct History {
     /// Position at the last save; `None` when it was discarded (the project cannot become clean by undo/redo).
     clean: Option<usize>,
     next_id: u64,
+    /// Steps below this position cannot be undone (the "Repair on Open" base step, 10 REP-01).
+    floor: usize,
 }
 
 impl History {
@@ -75,11 +77,29 @@ impl History {
                 Some(0) | None => None,
                 Some(c) => Some(c - 1),
             };
+            self.floor = self.floor.saturating_sub(1);
         }
     }
 
     pub fn can_undo(&self) -> bool {
-        self.position > 0
+        self.position > self.floor
+    }
+
+    /// A history starting with one step that cannot be undone and is not clean (10 REP-01: repairs on open).
+    pub fn with_base_step(step: Step) -> Self {
+        Self { steps: vec![step], position: 1, clean: None, next_id: 1, floor: 1 }
+    }
+
+    /// The ID of the step just before `position` (the step undo would reverse there).
+    pub fn step_id_before(&self, position: usize) -> Option<&str> {
+        position.checked_sub(1).and_then(|i| self.steps.get(i)).map(|s| s.id.as_str())
+    }
+
+    /// Marks `position` clean if the history still leads there through the step `top` (SAVE-04: the clean marker is
+    /// the saved snapshot's undo position); otherwise no position is clean.
+    pub fn mark_clean_at(&mut self, position: usize, top: Option<&str>) {
+        let same = position <= self.steps.len() && self.step_id_before(position) == top;
+        self.clean = if same { Some(position) } else { None };
     }
 
     pub fn can_redo(&self) -> bool {
@@ -114,12 +134,6 @@ impl History {
     /// The project is modified when the position differs from the clean marker (01 §3.5).
     pub fn dirty(&self) -> bool {
         self.clean != Some(self.position)
-    }
-
-    /// Marks the current position clean (a save, C1.3).
-    #[allow(dead_code, reason = "used by project.save in C1.3")]
-    pub fn mark_clean(&mut self) {
-        self.clean = Some(self.position);
     }
 
     pub fn steps(&self) -> &[Step] {

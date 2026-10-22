@@ -33,6 +33,8 @@ pub(crate) enum TxnKind {
     Undo(usize),
     /// Redo of the step at this index.
     Redo(usize),
+    /// A system change without an undo step (the `modifiedAt` stamp of a save; C1.3).
+    System,
 }
 
 /// One transaction ready to commit: the stamped document after it and its change records.
@@ -70,6 +72,12 @@ pub(crate) enum Effect {
     CancelJob(String),
     /// Deliver an event.
     Event(Event),
+    /// Close the open project, deleting its recovery data (01 §3.4; C1.3).
+    Close,
+    /// Install a project (a new project, a backup copy) through the guarded load (ADR-0013 §16; C1.3).
+    Install(Box<crate::run::Install>),
+    /// Merge preference values and write the preferences file (01 §11; C1.3).
+    Prefs(serde_json::Map<String, Value>),
 }
 
 /// The state of a context a step can be rolled back to (a step with its own `dryRun` inside an atomic batch).
@@ -523,6 +531,19 @@ impl Cx {
 
     /// Turns the staged changes into a committed-ready transaction (stamped with the next revision); `None` when the
     /// staged changes change nothing.
+    /// Seals the staged changes as a system transaction: committed with its own revision and `doc.changed`, without an
+    /// undo step (the `modifiedAt` stamp of a save, 10 §4.1).
+    ///
+    /// # Errors
+    /// As [`Cx::finish_staged`].
+    pub(crate) fn seal_system(&mut self, label: &str) -> Result<(), CommandError> {
+        if let Some(mut t) = self.finish_staged(label.to_owned())? {
+            t.kind = TxnKind::System;
+            self.txns.push(t);
+        }
+        Ok(())
+    }
+
     pub(crate) fn finish_staged(&mut self, label: String) -> Result<Option<Txn>, CommandError> {
         let Some(staged) = self.staged.take() else { return Ok(None) };
         let before = self.base_doc()?;

@@ -6,10 +6,13 @@
 
 pub(crate) mod agent;
 pub(crate) mod app;
+pub(crate) mod bundle;
 pub(crate) mod checkpoint;
 pub(crate) mod common;
 pub(crate) mod derived;
 pub(crate) mod doc;
+pub(crate) mod doc_io;
+pub(crate) mod doc_lint;
 pub(crate) mod edit;
 pub(crate) mod edit_ops;
 pub(crate) mod inspect;
@@ -81,28 +84,28 @@ pub(crate) static ALL: &[&Command] = &[
     &doc::DOC_OBJECT_FIND,
     &doc::DOC_OBJECT_RESOLVE,
     &doc::DOC_OBJECT_PATCH,
-    &doc::DOC_OBJECT_REFS,
+    &doc_lint::DOC_OBJECT_REFS,
     &doc::DOC_SCHEMA_LIST,
     &doc::DOC_SCHEMA_GET,
-    &doc::DOC_SCHEMA_VALIDATE,
+    &doc_lint::DOC_SCHEMA_VALIDATE,
     &doc::DOC_STATE_GET,
     &doc::DOC_DIFF,
-    &doc::DOC_VALIDATE,
-    &doc::DOC_REPAIR,
-    &doc::DOC_LOAD_REPORT_GET,
-    &doc::DOC_EXPORT_JSON,
-    &doc::DOC_IMPORT_JSON,
-    &doc::DOC_BLOB_GET,
-    &doc::DOC_ASSET_LIST,
-    &doc::DOC_ASSET_EMBED,
-    &doc::DOC_ASSET_EXPORT,
-    &doc::DOC_ASSET_RELINK,
-    &doc::DOC_ASSET_REMOVE,
-    &doc::DOC_PACKAGE_GET,
-    &doc::DOC_PACKAGE_EXPORT,
+    &doc_lint::DOC_VALIDATE,
+    &doc_lint::DOC_REPAIR,
+    &doc_io::DOC_LOAD_REPORT_GET,
+    &bundle::DOC_EXPORT_JSON,
+    &bundle::DOC_IMPORT_JSON,
+    &doc_io::DOC_BLOB_GET,
+    &doc_io::DOC_ASSET_LIST,
+    &doc_io::DOC_ASSET_EMBED,
+    &doc_io::DOC_ASSET_EXPORT,
+    &doc_io::DOC_ASSET_RELINK,
+    &doc_io::DOC_ASSET_REMOVE,
+    &doc_io::DOC_PACKAGE_GET,
+    &doc_io::DOC_PACKAGE_EXPORT,
     &doc::DOC_CHANGED,
-    &doc::DOC_ASSET_STATUS_CHANGED,
-    &doc::DOC_PACKAGE_CHANGED_ON_DISK,
+    &doc_io::DOC_ASSET_STATUS_CHANGED,
+    &doc_io::DOC_PACKAGE_CHANGED_ON_DISK,
     // agent
     &agent::AGENT_SERVER_SET,
     &agent::AGENT_SERVER_STATUS,

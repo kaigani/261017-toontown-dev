@@ -364,7 +364,8 @@ fn the_load_transaction_is_guarded() {
     let e =
         h.open_document_with(doc(), opts(UnsavedPolicy::Discard), agent(&[Scope::Read, Scope::Edit])).error.unwrap();
     assert_eq!((e.code.as_str(), e.details["missingScopes"].clone()), ("permission.denied", json!(["files.read"])));
-    // Unsaved changes: fail by default; save arrives with project.save (C1.3); discarding needs the app scope.
+    // Unsaved changes: fail by default; `save` saves first (C1.3), which needs a location; discarding needs the
+    // app scope.
     let user = || Origin::User;
     assert_eq!(
         h.open_document_with(doc(), opts(UnsavedPolicy::Fail), user()).error.unwrap().code,
@@ -372,7 +373,7 @@ fn the_load_transaction_is_guarded() {
     );
     assert_eq!(
         h.open_document_with(doc(), opts(UnsavedPolicy::Save), user()).error.unwrap().code,
-        "command.notImplemented"
+        "project.pathRequired"
     );
     let e = h
         .open_document_with(doc(), opts(UnsavedPolicy::Discard), agent(&[Scope::Read, Scope::Edit, Scope::FilesRead]))

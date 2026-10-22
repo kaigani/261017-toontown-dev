@@ -1092,6 +1092,75 @@ impl UiState {
         self.live = a;
         Ok(self.layout())
     }
+
+    /// The workspaces as persisted per user (01 §11: user workspaces, modified built-in workspaces, the workspace to
+    /// restore at launch).
+    #[must_use]
+    pub(crate) fn persisted(&self) -> serde_json::Value {
+        let list: Vec<serde_json::Value> = self
+            .workspaces
+            .iter()
+            .map(|w| {
+                serde_json::json!({
+                    "name": w.name,
+                    "builtIn": w.built_in,
+                    "bundled": w.bundled,
+                    "layout": Layout::from(&w.layout),
+                })
+            })
+            .collect();
+        serde_json::json!({ "workspaces": list, "current": self.current })
+    }
+
+    /// Restores persisted workspaces (invalid entries are skipped; bundled workspaces missing from the file are added
+    /// back). Returns whether anything was restored.
+    pub(crate) fn restore(&mut self, v: &serde_json::Value) -> bool {
+        let Some(list) = v.get("workspaces").and_then(serde_json::Value::as_array) else { return false };
+        let mut restored: Vec<Workspace> = Vec::new();
+        for w in list {
+            let (Some(name), Some(layout)) = (
+                w.get("name").and_then(serde_json::Value::as_str),
+                w.get("layout").and_then(|l| serde_json::from_value::<Layout>(l.clone()).ok()),
+            ) else {
+                continue;
+            };
+            let a = Arrangements::from(layout);
+            if validate_layout(&a).is_err() || name.trim().is_empty() || restored.iter().any(|x| x.name == name) {
+                continue;
+            }
+            restored.push(Workspace {
+                name: name.to_owned(),
+                built_in: w.get("builtIn").and_then(serde_json::Value::as_bool).unwrap_or(false),
+                bundled: w.get("bundled").and_then(serde_json::Value::as_str).map(str::to_owned),
+                layout: a,
+            });
+        }
+        if restored.is_empty() {
+            return false;
+        }
+        for b in built_in_workspaces() {
+            let bundled = b.bundled.clone().unwrap_or_else(|| b.name.clone());
+            let present = restored
+                .iter()
+                .any(|w| w.bundled.as_deref() == Some(bundled.as_str()) || (w.built_in && w.name == b.name));
+            if !present && !restored.iter().any(|w| w.name == b.name) {
+                restored.push(b);
+            }
+        }
+        let current = v
+            .get("current")
+            .and_then(serde_json::Value::as_str)
+            .filter(|c| restored.iter().any(|w| w.name == *c))
+            .map(str::to_owned)
+            .or_else(|| restored.first().map(|w| w.name.clone()))
+            .unwrap_or_default();
+        if let Some(w) = restored.iter().find(|w| w.name == current) {
+            self.live = w.layout.clone();
+        }
+        self.workspaces = restored;
+        self.current = current;
+        true
+    }
 }
 
 /// A layout names known panels and palettes, each at most once per arrangement, a view as the central panel, and

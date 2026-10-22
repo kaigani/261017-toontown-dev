@@ -226,6 +226,8 @@ struct Observed {
     state: Value,
     history: Option<(usize, usize)>,
     dirty: Option<bool>,
+    /// The persisted form of the workspaces (written to the settings when it changes; 01 §11).
+    workspaces: Value,
 }
 
 fn observe(s: &Session) -> Observed {
@@ -233,6 +235,7 @@ fn observe(s: &Session) -> Observed {
         state: serde_json::to_value(crate::commands::app::app_state(s)).unwrap_or(Value::Null),
         history: s.project.as_ref().map(|p| (p.history.position(), p.history.len())),
         dirty: s.project.as_ref().map(OpenProject::dirty),
+        workspaces: s.ui.persisted(),
     }
 }
 
@@ -417,7 +420,7 @@ fn elide(changes: &[ChangeRecord]) -> Vec<ChangeRecord> {
 fn back_of(t: &Txn) -> Back {
     match (&t.edit, t.kind) {
         (StepEdit::Snapshot { .. }, _) => Back::Snapshot(t.before.clone()),
-        (StepEdit::Patches(commits), TxnKind::Step | TxnKind::Redo(_)) => {
+        (StepEdit::Patches(commits), TxnKind::Step | TxnKind::Redo(_) | TxnKind::System) => {
             Back::Patches(commits.iter().rev().map(|c| (c.key.clone(), c.undo.clone())).collect())
         }
         (StepEdit::Patches(commits), TxnKind::Undo(_)) => {
@@ -472,13 +475,16 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<Und
                     p.history.moved_forward();
                     p.history.steps().get(i).map(|st| st.id.clone()).unwrap_or_default()
                 }
+                TxnKind::System => String::new(),
             };
             p.doc = t.after;
+            let step_value = if t.kind == TxnKind::System { Value::Null } else { Value::String(step_id) };
+            let origin_label = if t.kind == TxnKind::System { "system".to_owned() } else { origin.label() };
             events.push(json!({
-                "undoStepId": step_id,
+                "undoStepId": step_value,
                 "documentRev": t.rev,
                 "label": t.label,
-                "origin": origin.label(),
+                "origin": origin_label,
                 "changes": elide(&t.changes),
             }));
         }
@@ -490,7 +496,7 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<Und
 }
 
 /// Applies the deferred effects of a committed call. A simulation applies none.
-fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool) {
+fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin: &Origin) {
     if simulating {
         return;
     }
@@ -500,8 +506,75 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool) {
                 let _ = s.jobs.cancel(&id);
             }
             Effect::Event(ev) => s.events.push(ev),
+            Effect::Close => crate::persistence::close(s),
+            Effect::Install(i) => {
+                // The handler checked the candidate; the gate runs again here (ADR-0013 §16).
+                if gate(&i.project.doc).is_ok() {
+                    install_into(s, LoadGrant { _private: () }, *i, origin);
+                }
+            }
+            Effect::Prefs(values) => {
+                for (k, v) in values {
+                    s.env.settings.prefs.insert(k, v);
+                }
+                let _ = s.env.write("preferences");
+            }
         }
     }
+}
+
+/// A project to install (C1.3): the open project with its store, the `doc.changed` of its load repairs (REP-01) and
+/// its last-session UI state (10 §6.12).
+#[derive(Debug, Clone)]
+pub(crate) struct Install {
+    pub project: OpenProject,
+    pub repairs: Option<Value>,
+    pub restore: Option<Value>,
+}
+
+/// The integrity gate (C12-R2-01): a candidate is installed only when the model reports no error (schemas,
+/// references, REV-01/02, §5 limits, names, trees, exposures).
+fn gate(doc: &Document) -> Result<(), CommandError> {
+    let errors: Vec<tt_model::document::Issue> =
+        doc.issues().into_iter().filter(|i| i.severity == tt_model::document::Severity::Error).collect();
+    let Some(first) = errors.first() else { return Ok(()) };
+    let listed: Vec<Value> = errors
+        .iter()
+        .take(50)
+        .map(|i| json!({ "code": i.code, "objectId": i.object_id, "pointer": i.pointer, "message": i.message }))
+        .collect();
+    Err(CommandError::with_details(
+        first.code,
+        format!("the document is not installed: {} integrity error(s); first: {}", errors.len(), first.message),
+        json!({ "count": errors.len(), "issues": listed }),
+    ))
+}
+
+/// Replaces the open project — only with a [`LoadGrant`]. The replacement is recorded: `project.closed` for the
+/// previous project, `project.opened` for the new one, and the `doc.changed` of its load repairs (origin `load`).
+fn install_into(s: &mut Session, _grant: LoadGrant, inst: Install, origin: &Origin) -> Value {
+    if let Some(old) = s.project.take() {
+        s.emit("project.closed", json!({ "projectId": old.doc.project().id().as_str() }));
+    }
+    let Install { project, repairs, restore } = inst;
+    s.app = AppContext::for_document(&project.doc);
+    if let Some(v) = &restore {
+        crate::persistence::restore_session(&mut s.app, &project.doc, v);
+    }
+    let rev = project.doc.document_rev();
+    let id = project.doc.project().id().as_str().to_owned();
+    let path = project.path.clone();
+    let read_only = project.read_only;
+    let base = project.history.steps().first().map(|st| st.id.clone());
+    s.project = Some(project);
+    s.emit("project.opened", json!({ "projectId": id, "path": path, "readOnly": read_only, "origin": origin.label() }));
+    if let Some(changes) = repairs {
+        s.emit(
+            "doc.changed",
+            json!({ "undoStepId": base, "documentRev": rev, "label": "Repair on Open", "origin": "load", "changes": changes }),
+        );
+    }
+    json!({ "projectId": id, "readOnly": read_only, "documentRev": rev })
 }
 
 fn changed_fields(a: &Value, b: &Value) -> Vec<String> {
@@ -590,6 +663,9 @@ impl Core {
         {
             s.emit("project.dirty.changed", json!({ "projectDirty": d, "globalLibraryDirty": false }));
         }
+        if after.workspaces != before.workspaces {
+            let _ = tt_persist::settings::write(&s.env.dirs.settings, "workspaces", &after.workspaces);
+        }
     }
 
     /// One invocation, with `requestId` idempotency (C12-R1-06/22).
@@ -671,7 +747,7 @@ impl Core {
                         Ok(u) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
-                            apply_effects(&mut session, effects, self.simulating);
+                            apply_effects(&mut session, effects, self.simulating, &inv.origin);
                         }
                         Err(e) => {
                             rollback.apply(&mut session);
@@ -905,7 +981,7 @@ impl Core {
                         Ok(u) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
-                            apply_effects(&mut session, effects, self.simulating);
+                            apply_effects(&mut session, effects, self.simulating, origin);
                         }
                         Err(e) => {
                             rollback.apply(&mut session);
@@ -927,6 +1003,20 @@ impl Core {
     /// The guarded load transaction (ADR-0013 §16; C12-R1-01): the guards of the registered `project.open` — the
     /// caller's scopes and the unsaved-changes rule of 01 §11.2 — then installation with a [`LoadGrant`].
     pub(crate) fn load(&mut self, doc: Document, opts: &OpenOptions, origin: &Origin) -> Envelope {
+        let project = OpenProject::new(doc, opts.path.clone(), opts.read_only);
+        self.install_guarded(Install { project, repairs: None, restore: None }, opts.on_unsaved, origin, None)
+    }
+
+    /// Installs a candidate project after the guards: the scopes of `project.open`, the unsaved-changes policy of the
+    /// open project (`save` saves it now), the integrity gate, and — for an open job — the job's commit point, so a
+    /// cancelled open installs nothing (LOAD-02).
+    pub(crate) fn install_guarded(
+        &mut self,
+        inst: Install,
+        on_unsaved: UnsavedPolicy,
+        origin: &Origin,
+        commit: Option<&crate::jobs::JobProgress>,
+    ) -> Envelope {
         let rev = self.rev();
         let Some(entry) = self.registry.get("project.open").copied() else {
             return Envelope::error(CommandError::internal("project.open is not registered"), rev);
@@ -945,10 +1035,12 @@ impl Core {
         if let Some(p) = self.session.as_ref().and_then(|s| s.project.as_ref())
             && p.dirty()
         {
-            match opts.on_unsaved {
+            match on_unsaved {
                 UnsavedPolicy::Fail => return Envelope::error(unsaved_changes(p), rev),
                 UnsavedPolicy::Save => {
-                    return Envelope::error(CommandError::not_implemented("project.save", "M1 C1.3"), rev);
+                    if let Err(e) = self.save_open_project(origin) {
+                        return Envelope::error(e, self.rev());
+                    }
                 }
                 // Discarding unsaved work is the `app` scope's (11 §6.1), which is never an agent's by itself.
                 UnsavedPolicy::Discard => {
@@ -967,51 +1059,41 @@ impl Core {
                 }
             }
         }
-        // The full integrity gate (C12-R2-01): whatever API produced the candidate, it is installed only when the
-        // model reports no error (schemas, references, REV-01/02, §5 limits, names, trees, exposures).
-        let errors: Vec<tt_model::document::Issue> =
-            doc.issues().into_iter().filter(|i| i.severity == tt_model::document::Severity::Error).collect();
-        if let Some(first) = errors.first() {
-            let listed: Vec<Value> = errors
-                .iter()
-                .take(50)
-                .map(|i| json!({ "code": i.code, "objectId": i.object_id, "pointer": i.pointer, "message": i.message }))
-                .collect();
+        if let Err(e) = gate(&inst.project.doc) {
+            return Envelope::error(e, rev);
+        }
+        if let Some(c) = commit
+            && !c.commit()
+        {
             return Envelope::error(
-                CommandError::with_details(
-                    first.code,
-                    format!(
-                        "the document is not installed: {} integrity error(s); first: {}",
-                        errors.len(),
-                        first.message
-                    ),
-                    json!({ "count": errors.len(), "issues": listed }),
-                ),
+                CommandError::with_details("job.cancelled", "the open was cancelled", json!({})),
                 rev,
             );
         }
-        self.install(LoadGrant { _private: () }, doc, opts, origin)
-    }
-
-    /// Replaces the open project — only with a [`LoadGrant`]. The replacement is recorded: `project.closed` for the
-    /// previous project, `project.opened` for the new one, whose history and revision log start at its revision.
-    fn install(&mut self, _grant: LoadGrant, doc: Document, opts: &OpenOptions, origin: &Origin) -> Envelope {
         let mut session = self.take_session();
         let before = observe(&session);
-        if let Some(old) = session.project.take() {
-            session.emit("project.closed", json!({ "projectId": old.doc.project().id().as_str() }));
+        // The project being replaced is discarded (its unsaved changes were dealt with above).
+        if let Some(old) = session.project.as_ref() {
+            let _ = tt_persist::recovery::delete(&session.env.dirs.recovery, &old.store.recovery_id);
         }
-        session.app = AppContext::for_document(&doc);
-        let rev = doc.document_rev();
-        let id = doc.project().id().as_str().to_owned();
-        session.project = Some(OpenProject::new(doc, opts.path.clone(), opts.read_only));
-        session.emit(
-            "project.opened",
-            json!({ "projectId": id, "path": opts.path, "readOnly": opts.read_only, "origin": origin.label() }),
-        );
+        let result = install_into(&mut session, LoadGrant { _private: () }, inst, origin);
         Self::settle(&mut session, &before);
+        let rev = session.project.as_ref().map(|p| p.doc.document_rev());
         self.session = Some(session);
-        Envelope::ok(json!({ "projectId": id, "readOnly": opts.read_only }), Some(rev))
+        Envelope::ok(result, rev)
+    }
+
+    /// Saves the open project to its location (the `onUnsaved: "save"` of the load path), as an internal invocation
+    /// of `project.save`: its `modifiedAt` stamp commits like any transaction.
+    fn save_open_project(&mut self, origin: &Origin) -> Result<(), CommandError> {
+        let session = self.take_session();
+        let mut cx = Cx::new(session, origin.clone(), "project.save", false);
+        let outcome = crate::persistence::save_now(&mut cx, false);
+        let txns = cx.take_txns();
+        let mut session = cx.into_session();
+        let committed = outcome.and_then(|_| commit(&mut session, txns, origin).map(|_| ()));
+        self.session = Some(session);
+        committed
     }
 
     /// The first half of `job.wait` (C12-R1-04): the whole invocation contract on the document thread — remembered

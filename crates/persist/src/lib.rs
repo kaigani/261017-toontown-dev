@@ -15,6 +15,7 @@
 //! Spec sections implemented: 10 §6–§8; 01 §3 (projects, autosave, backups), §11 (persisted user settings).
 //! Milestone: M1 (C1.3). Decisions: ADR-0014.
 
+pub mod b64;
 pub mod backup;
 pub mod codes;
 pub mod container;
