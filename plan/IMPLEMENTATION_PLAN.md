@@ -185,8 +185,9 @@ updated, ADRs written for every design decision taken, no open P0/P1 review find
 ## 5. Build and review protocol (Opus 5.5 builds, Codex GPT-6-Astra reviews)
 
 Verified against the T3 catalog on this machine: builder = provider `claudeAgent`, model `claude-opus-5-5`,
-effort `high`; reviewer = provider `codex`, model `gpt-6-astra`, reasoning `high` (raise to `xhigh` for M1 and M3,
-which carry the determinism and command-layer guarantees everything else relies on).
+effort `high`; reviewer = provider `codex`, model `gpt-6.1-sol`, reasoning `medium` for full rounds and `low` for
+scoped closure checks (user decision 2026-10-22 to reduce quota use; M0 and M1 C1.1–C1.2 were reviewed by
+`gpt-6-astra` at high/xhigh). Raise the reasoning level only if finding quality visibly drops.
 
 ### 5.1 Mechanics
 
@@ -249,7 +250,7 @@ Codex is asked to break the checkpoint, not to approve it. Required activities a
    app.
 5. **Scope trims.** Omit SWF; publishing as framework only; scanners and tethered cameras as stretch; starter
    library as a separate content workstream.
-6. **Review budget.** Codex `gpt-6-astra` at `high` (`xhigh` for M1 and M3), at most three rounds per checkpoint.
+6. **Review budget.** Codex `gpt-6.1-sol` at `medium` (closure checks `low`) from 2026-10-22; at most three full rounds per checkpoint, then orchestrator ruling plus scoped closure checks.
 7. **Shell.** Tauri 2. **Electron is excluded outright**; Qt 6 is the only alternative, and only if the M0 spikes
    fail on both platforms.
 8. **Working name.** "Toontown" as the placeholder product name (crate prefix `tt`, bundle id `dev.toontown.app`);
