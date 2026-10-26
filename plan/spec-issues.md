@@ -409,3 +409,46 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Resolved in C1.2 r3 (C12-R3-01):** every position of `xsheet.*` is now typed from its owning section or its sibling commands; no placeholder remains.
 
 <!-- end of generated placeholder issues -->
+
+## SI-044 — "Repair on Open" cannot be undone into an invalid document (found in C1.3; decided)
+
+- **Section:** 10 §7.2 REP-01: "Repairs form one transaction with origin `load`, undoable as "Repair on Open"; the
+  project is then modified".
+- **Problem:** undoing the repairs would put back the document as read, which holds the errors the repairs removed
+  (dangling references, duplicate IDs, invalid trees). 11 P2 and the executor's integrity gate never install a
+  document with model errors, and 10 §5 makes those states invalid.
+- **Decision taken (ADR-0014 §4):** the repaired project opens modified. Its history starts with the step
+  "Repair on Open" (origin `load`, listed by `edit.history.get`, reported by `doc.changed`). That step is the base of
+  the history and cannot be undone (`edit.nothingToUndo`). The user keeps the repaired version by saving, or drops it
+  by closing without saving. Nothing is lost: every removed value is in the load report (REP-02).
+- **Question:** confirm, or define what undoing the repair step should produce.
+
+## SI-045 — the agent confirmation of RO-02 before the confirmation protocol exists (found in C1.3; decided)
+
+- **Section:** 10 §8.5 RO-02: "Agents receive the same choice as a `needs_confirmation` result on the next save";
+  11 §6.4 (the confirmation protocol, plan M1 C1.4).
+- **Problem:** the confirmation protocol is C1.4's. In C1.3 the executor has no `needs_confirmation` result to
+  return.
+- **Decision taken (ADR-0014 §12):** after an external change (`doc.package.changedOnDisk`), a plain `project.save`
+  fails with `project.changedOnDisk {path, detectedAt}`, with a hint naming both choices: reload (`project.open` with
+  `onUnsaved`) or keep mine (`project.saveAs {path, onExists: "overwrite"}`). C1.4 turns the error into the
+  `needs_confirmation` result.
+- **Question:** none for the spec; recorded so the C1.4 change is traceable.
+
+## SI-046 — codes C1.3 needs that the spec does not list (found in C1.3; decided)
+
+- **Sections:** 10 §7.2, §8, §10; 11 §10; spec A (`project.*`, `doc.*`).
+- **Decision taken (ADR-0014 §15):**
+  - `project.backupNotFound` and `project.recoveryNotFound`: an unknown `backupId` or `recoveryId`.
+  - `project.recoveryInUse`: recovery data whose owner still runs.
+  - `asset.inUse`: `doc.asset.remove` of an asset still used by placements or media sequences, without `force`.
+  - `fs.ioError`: an I/O failure outside a project save (settings, exports, cache).
+  - `colour.unresolved`: the load-report and lint code for a colour ID nothing defines, until colour recovery
+    (03 §11.2, M2 C2.2) replaces it with `colour.recovered` / `colour.placeholderCreated`.
+  - Result warnings: `project.migrated` (`project.open` of an older file, migrated in memory) and
+    `project.defaultsChanged` (`setAsDefault: true` of `project.properties.set`: the values become the defaults of new
+    projects).
+  - `project.invalidFormat` `details.reason` values beyond `unsafeEntry` and `sizeLimit` (ZIP-01, ZIP-06):
+    `corrupt`, `encrypted`, `notZip`, `noMimetype`, `wrongMimetype`, `duplicateEntry`, `noManifest`, `manifest`,
+    `project`, `library`, `palette`, `unrepairable`, `migration`, `wrongFormat`.
+- **Question:** add them to 11 §10 and the owning sections.

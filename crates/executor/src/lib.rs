@@ -15,9 +15,14 @@
 //! - Commands are declared next to their handlers with `#[tt_registry::command]` (`commands/*`); the registry holds
 //!   them together with the stubs of the full spec A inventory.
 //!
+//! - Persistence (C1.3): `project.*` and the file, media and validation commands of `doc.*` read and write through
+//!   `tt-persist` on job threads; a loaded candidate is installed only by the executor, after its integrity gate.
+//!   Saves serialise copy-on-write snapshots; background maintenance autosaves, refreshes locks and watches the
+//!   project file (`maintenance.rs`). User folders and settings come from [`PersistOptions`].
+//!
 //! Spec sections: 11 §2 (executor), §5.1 (special references), §7.1–§7.3, §7.7; 10 §2.5–§2.6 (REV-01…06, change
-//! sets), AG-01…AG-09; 01 §5 (window, panels, workspaces: kernel state), §6.1 (undo/redo), §12.4. Milestone: M1
-//! (C1.2). Decisions: ADR-0013.
+//! sets), AG-01…AG-09, §6–§8 and §10.2–§10.3 through the executor; 01 §3 (projects), §5 (window, panels, workspaces:
+//! kernel state), §6.1 (undo/redo), §11 (settings), §12.4. Milestone: M1 (C1.2, C1.3). Decisions: ADR-0013, ADR-0014.
 
 mod align;
 mod app;
@@ -70,10 +75,12 @@ pub const SPEC_SECTIONS: &[&str] = &[
     "10 §10.1 (AG-01…AG-09)",
     "01 §5 (window/workspace state)",
     "01 §6.1 (undo/redo)",
+    "10 §6–§8, §10.2–§10.3 (projects and doc.* through the executor)",
+    "01 §3 (projects), §11 (settings)",
 ];
 
 /// Milestone(s) in which this crate receives its implementation (plan §4).
-pub const MILESTONE: &str = "M1 (C1.2)";
+pub const MILESTONE: &str = "M1 (C1.2, C1.3)";
 
 /// Maximum change records in an envelope (11 §7.2); the rest is read with `doc.diff` from `changesSince`.
 pub const CHANGES_CAP: usize = 500;
@@ -336,7 +343,7 @@ impl ExecutorHandle {
 
     /// The guarded load transaction (ADR-0013 §16; C12-R1-01): the origin needs the scopes of `project.open`, and a
     /// modified open project is only replaced as `on_unsaved` says (`project.unsavedChanges` by default). The
-    /// replacement is recorded (`project.closed`, `project.opened`). C1.3's `project.open` reads packages into it.
+    /// replacement is recorded (`project.closed`, `project.opened`). `project.open` installs packages the same way.
     #[must_use]
     pub fn open_document_with(&self, doc: Document, options: OpenOptions, origin: Origin) -> Envelope {
         self.call("project.open", |r| Request::Open(Box::new(doc), options, origin, r))

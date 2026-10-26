@@ -277,7 +277,7 @@ pub enum UnsavedPolicy {
     /// Refuse with `project.unsavedChanges` when the open project is modified.
     #[default]
     Fail,
-    /// Save first (needs `project.save`, C1.3).
+    /// Save first (`project.save`; a project without a location fails with `project.pathRequired`).
     Save,
     /// Discard the changes.
     Discard,

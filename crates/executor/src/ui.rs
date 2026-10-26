@@ -4,7 +4,7 @@
 //! palettes, main toolbar, the separate full-screen arrangement and the full-screen flag — so that agents can read
 //! and set it through commands (`window.panel.list`, `workspace.get`, `window.fullScreen.set {enabled}`, …) and the
 //! desktop shell (M4) renders what this state says. Layout changes are not undoable and do not modify the project
-//! (01 §5.5). Persistence per user (01 §11) is part of the settings work in C1.3.
+//! (01 §5.5). The workspaces persist per user in the settings (01 §11; ADR-0014 §13).
 
 use std::collections::BTreeMap;
 
