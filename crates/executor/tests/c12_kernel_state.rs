@@ -233,7 +233,10 @@ fn prepared_with_files(id: &str, dir: &std::path::Path) -> ExecutorHandle {
     use tt_persist::container::{BlobData, Blobs};
     let doc = tt_model::fixture::sample_document(1).unwrap();
     let mut blobs = Blobs::default();
-    blobs.insert("media/as_01K742SG0G5HPQ0RBF5X4DSR0W.wav".into(), BlobData::Bytes(std::sync::Arc::new(vec![0; 352_844])));
+    blobs.insert(
+        "media/as_01K742SG0G5HPQ0RBF5X4DSR0W.wav".into(),
+        BlobData::Bytes(std::sync::Arc::new(vec![0; 352_844])),
+    );
     let preserved = tt_persist::load::Preserved::default();
     let input = tt_persist::save::SaveInput {
         doc: &doc,
@@ -276,7 +279,10 @@ fn prepared_with_files(id: &str, dir: &std::path::Path) -> ExecutorHandle {
     wait_job(&h, &ok(&h, "project.open", json!({ "path": sample.to_string_lossy() })));
     edits(&h);
     // Examples that replace the open project run on a saved one.
-    if matches!(id, "project.close" | "project.create" | "project.open" | "project.backup.open" | "project.recovery.open") {
+    if matches!(
+        id,
+        "project.close" | "project.create" | "project.open" | "project.backup.open" | "project.recovery.open"
+    ) {
         wait_job(&h, &ok(&h, "project.save", json!({})));
     }
     h
@@ -343,8 +349,14 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
             }
         }
     }
-    assert!(failures.is_empty(), "{}", failures.join("
-"));
+    assert!(
+        failures.is_empty(),
+        "{}",
+        failures.join(
+            "
+"
+        )
+    );
     println!("examples run: {ran}");
     assert!(ran >= 140, "examples: {ran}");
 }

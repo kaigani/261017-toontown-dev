@@ -77,6 +77,7 @@ pub(crate) struct RefsResult {
 /// string values of an object's own properties that name another object (child objects and the stubs of split
 /// children are containment, not references; `meta` and `ext` are opaque).
 fn references(doc: &Document) -> Vec<(String, String, String)> {
+    #[allow(clippy::too_many_arguments, reason = "a recursive walk carrying its context")]
     fn own(
         doc: &Document,
         v: &Value,
@@ -101,13 +102,13 @@ fn references(doc: &Document) -> Vec<(String, String, String)> {
                 Some(SlotKind::Split(_) | SlotKind::SplitOne(_)) => {}
                 Some(SlotKind::Inline) => {
                     for c in x.as_array().into_iter().flatten() {
-                        child(doc, c, key, container, ty, out, depth);
+                        child(doc, c, container, out, depth);
                     }
                 }
-                Some(SlotKind::InlineOne) => child(doc, x, key, container, ty, out, depth),
+                Some(SlotKind::InlineOne) => child(doc, x, container, out, depth),
                 Some(SlotKind::InlineMap) => {
                     for c in x.as_object().into_iter().flatten().map(|(_, c)| c) {
-                        child(doc, c, key, container, ty, out, depth);
+                        child(doc, c, container, out, depth);
                     }
                 }
                 None => strings(doc, x, key, container, &at, out, 0),
@@ -117,23 +118,20 @@ fn references(doc: &Document) -> Vec<(String, String, String)> {
     fn child(
         doc: &Document,
         c: &Value,
-        _parent: &str,
         container: Option<&str>,
-        parent_ty: ObjectType,
         out: &mut Vec<(String, String, String)>,
         depth: usize,
     ) {
         let Some(t) = c.get("type").and_then(Value::as_str).and_then(ObjectType::parse) else { return };
         let Some(id) = c.get(t.id_field()).and_then(Value::as_str) else { return };
-        let inner = if matches!(parent_ty, ObjectType::Drawing | ObjectType::Channel) { container } else { container };
         let key = match t.local_id_container() {
-            Some(_) => format!("{}/{id}", inner.unwrap_or_default()),
+            Some(_) => format!("{}/{id}", container.unwrap_or_default()),
             None => id.to_owned(),
         };
         let next = if matches!(t, ObjectType::Drawing | ObjectType::Channel) {
             Some(id.to_owned())
         } else {
-            inner.map(str::to_owned)
+            container.map(str::to_owned)
         };
         own(doc, c, t, &key, next.as_deref(), "", out, depth + 1);
     }

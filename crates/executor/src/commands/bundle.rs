@@ -827,10 +827,9 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
                             && let Some(slot) = list
                                 .iter_mut()
                                 .find(|x| x.get("colourId").and_then(Value::as_str) == Some(cid.as_str()))
+                            && let (Some(m), Some(v)) = (slot.as_object_mut(), s.get("values"))
                         {
-                            if let (Some(m), Some(v)) = (slot.as_object_mut(), s.get("values")) {
-                                m.insert("values".into(), v.clone());
-                            }
+                            m.insert("values".into(), v.clone());
                         }
                     }
                     Some(_) => {}

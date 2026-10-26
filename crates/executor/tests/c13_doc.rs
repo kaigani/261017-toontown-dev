@@ -3,16 +3,14 @@
 //! references, candidate validation, and the load report of a repaired project.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 
+mod c13_support;
 mod common;
-#[path = "c13_projects.rs"]
-#[allow(dead_code)]
-mod projects;
 
 use std::collections::BTreeMap;
 use std::path::Path;
 
+use c13_support::{job_ok, spawn, tmp};
 use common::*;
-use projects::{job_ok, spawn, tmp};
 use serde_json::{Value, json};
 use tt_model::ObjectType;
 
@@ -92,7 +90,26 @@ fn objects_created_by_import_survive_save_and_reopen_identically() {
         assert_eq!(scrub(&got), scrub(v), "{t} `{id}`");
         types.insert(t);
     }
-    for t in ["palette", "paletteStyle", "swatch", "pen", "asset", "drawingBank", "drawing", "drawingNode", "stroke", "scene", "transition", "element", "channel", "key", "motionPoint", "particleBlock", "soundPlacement", "mediaSequence"] {
+    for t in [
+        "palette",
+        "paletteStyle",
+        "swatch",
+        "pen",
+        "asset",
+        "drawingBank",
+        "drawing",
+        "drawingNode",
+        "stroke",
+        "scene",
+        "transition",
+        "element",
+        "channel",
+        "key",
+        "motionPoint",
+        "particleBlock",
+        "soundPlacement",
+        "mediaSequence",
+    ] {
         assert!(types.contains(t), "the round trip covers {t}: {types:?}");
     }
     // 11 §14.3: save → reopen → get_object returns identical JSON, for every object.
@@ -104,7 +121,9 @@ fn objects_created_by_import_survive_save_and_reopen_identically() {
     job_ok(&h, "project.open", json!({ "path": s(&target) }));
     let after = all_objects(&h);
     // modifiedAt of the project is volatile (set by the save).
-    let vol = |m: &BTreeMap<String, Value>| m.iter().map(|(k, v)| (k.clone(), without(v.clone(), &["modifiedAt"]))).collect::<BTreeMap<_, _>>();
+    let vol = |m: &BTreeMap<String, Value>| {
+        m.iter().map(|(k, v)| (k.clone(), without(v.clone(), &["modifiedAt"]))).collect::<BTreeMap<_, _>>()
+    };
     assert_eq!(after, saved, "reopened == saved, revisions included");
     assert_eq!(vol(&after).len(), vol(&before).len());
     // The folder form too.
@@ -121,13 +140,21 @@ fn bundles_import_into_a_scene_at_a_frame_with_fresh_ids_and_renames() {
     let dir = tmp();
     let h = spawn(&dir.join("u"));
     assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
-    let bob = ok(&h, "doc.object.resolve", json!({ "refs": ["scene:\"Intro\"/element:\"Bob\""] }))["items"][0]["id"].as_str().unwrap().to_owned();
-    let b = ok(&h, "doc.export.json", json!({ "scope": "elements", "refs": [bob], "binaries": "omit" }))["bundle"].clone();
+    let bob = ok(&h, "doc.object.resolve", json!({ "refs": ["scene:\"Intro\"/element:\"Bob\""] }))["items"][0]["id"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    let b =
+        ok(&h, "doc.export.json", json!({ "scope": "elements", "refs": [bob], "binaries": "omit" }))["bundle"].clone();
     assert_eq!(b["scope"]["kind"], "elements");
     let before = get(&h, &bob);
-    let scene2 = ok(&h, "doc.object.resolve", json!({ "refs": ["scene:\"Scene-2\""] }))["items"][0]["id"].as_str().unwrap().to_owned();
+    let scene2 = ok(&h, "doc.object.resolve", json!({ "refs": ["scene:\"Scene-2\""] }))["items"][0]["id"]
+        .as_str()
+        .unwrap()
+        .to_owned();
     let r = ok(&h, "doc.import.json", json!({ "source": b, "target": scene2, "atFrame": 11 }));
-    let new_ids: Vec<String> = r["created"]["elements"].as_array().unwrap().iter().map(|x| x.as_str().unwrap().to_owned()).collect();
+    let new_ids: Vec<String> =
+        r["created"]["elements"].as_array().unwrap().iter().map(|x| x.as_str().unwrap().to_owned()).collect();
     assert!(!new_ids.contains(&bob), "fresh IDs");
     let copy = new_ids.iter().map(|i| get(&h, i)).find(|e| e["elementType"] == "drawing").unwrap();
     assert_eq!(copy["exposure"][0], json!([null, 10]), "the copy starts at frame 11: {}", copy["exposure"]);
@@ -145,12 +172,18 @@ fn bundles_import_into_a_scene_at_a_frame_with_fresh_ids_and_renames() {
     assert!(d.is_ok());
     assert_eq!(rev(&h), rev0);
     ok(&h, "edit.undo", json!({}));
-    assert_eq!(ok(&h, "edit.history.get", json!({}))["position"].as_u64().unwrap() + 1, ok(&h, "edit.history.get", json!({}))["entries"].as_array().unwrap().len() as u64);
+    assert_eq!(
+        ok(&h, "edit.history.get", json!({}))["position"].as_u64().unwrap() + 1,
+        ok(&h, "edit.history.get", json!({}))["entries"].as_array().unwrap().len() as u64
+    );
     // Writing a bundle to a file and importing it from there.
     let file = dir.join("bob.animjson");
     let w = ok(&h, "doc.export.json", json!({ "scope": "elements", "refs": [bob], "path": s(&file) }));
     assert!(w["bytes"].as_u64().unwrap() > 0 && file.is_file());
-    assert_eq!(err(&h, "doc.export.json", json!({ "scope": "elements", "refs": [bob], "path": s(&file) })).code, "fs.exists");
+    assert_eq!(
+        err(&h, "doc.export.json", json!({ "scope": "elements", "refs": [bob], "path": s(&file) })).code,
+        "fs.exists"
+    );
     ok(&h, "doc.import.json", json!({ "source": s(&file), "target": scene2 }));
     let _ = std::fs::remove_dir_all(&dir);
 }
@@ -187,7 +220,10 @@ fn linked_media_relink_embed_blob_export_and_remove() {
     let blob = ok(&h, "doc.blob.get", json!({ "ref": "as_01K7AAAAAAAAAAAAAAAAAAAAAA" }));
     assert_eq!(tt_persist::b64::decode(blob["base64"].as_str().unwrap()).unwrap(), b"RIFF fake wave bytes");
     assert_eq!(blob["sha256"], sha);
-    assert_eq!(err(&h, "doc.blob.get", json!({ "ref": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "maxBytes": 4 })).code, "doc.blobTooLarge");
+    assert_eq!(
+        err(&h, "doc.blob.get", json!({ "ref": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "maxBytes": 4 })).code,
+        "doc.blobTooLarge"
+    );
     // The embedded file is in the saved package (MED-01) after the linked original is gone.
     std::fs::remove_file(&wav).unwrap();
     job_ok(&h, "project.save", json!({}));
@@ -220,7 +256,10 @@ fn packages_templates_palettes_and_libraries_are_inspected_without_opening() {
     let pkg = dir.join("I.animpkg");
     job_ok(&h, "project.saveAs", json!({ "path": s(&pkg) }));
     let info = ok(&h, "doc.package.get", json!({ "path": s(&pkg), "validate": true }));
-    assert_eq!((info["kind"].clone(), info["form"].clone(), info["readable"].clone()), (json!("project"), json!("package"), json!(true)));
+    assert_eq!(
+        (info["kind"].clone(), info["form"].clone(), info["readable"].clone()),
+        (json!("project"), json!("package"), json!(true))
+    );
     assert_eq!(info["name"], "Inspect");
     assert_eq!(info["projectId"], first(&h, "project"));
     let bad = dir.join("bad.animpkg");
@@ -229,11 +268,27 @@ fn packages_templates_palettes_and_libraries_are_inspected_without_opening() {
     assert_eq!(bi["readable"], false);
     assert_eq!(bi["issues"][0]["code"], "project.invalidFormat");
     let pal = dir.join("p.animpal");
-    tt_persist::library::write_palette_file(&pal, &json!({ "format": "animpal", "formatVersion": "1.0", "palettes": [{ "name": "Skin" }] }), &Default::default(), true).unwrap();
+    tt_persist::library::write_palette_file(
+        &pal,
+        &json!({ "format": "animpal", "formatVersion": "1.0", "palettes": [{ "name": "Skin" }] }),
+        &Default::default(),
+        true,
+    )
+    .unwrap();
     let pi = ok(&h, "doc.package.get", json!({ "path": s(&pal) }));
-    assert_eq!((pi["kind"].clone(), pi["readable"].clone(), pi["name"].clone()), (json!("palette"), json!(true), json!("Skin")));
+    assert_eq!(
+        (pi["kind"].clone(), pi["readable"].clone(), pi["name"].clone()),
+        (json!("palette"), json!(true), json!("Skin"))
+    );
     let tpl = dir.join("t.animtpl");
-    tt_persist::library::write_template(&tpl, &json!({ "id": "tp_1", "name": "Walk" }), &json!({ "format": "animjson" }), &Default::default(), None).unwrap();
+    tt_persist::library::write_template(
+        &tpl,
+        &json!({ "id": "tp_1", "name": "Walk" }),
+        &json!({ "format": "animjson" }),
+        &Default::default(),
+        None,
+    )
+    .unwrap();
     let ti = ok(&h, "doc.package.get", json!({ "path": s(&tpl) }));
     assert_eq!((ti["kind"].clone(), ti["name"].clone()), (json!("template"), json!("Walk")));
     let lib = dir.join("Lib");
@@ -253,22 +308,35 @@ fn packages_templates_palettes_and_libraries_are_inspected_without_opening() {
 fn validation_references_and_candidates() {
     let h = fixture();
     let v = ok(&h, "doc.validate", json!({}));
-    let unavailable: Vec<&str> = v["unavailable"].as_array().unwrap().iter().map(|u| u["check"].as_str().unwrap()).collect();
-    assert_eq!(unavailable, ["unpaintedZones", "staleLipSync", "transitionPadding", "missingFonts", "outdatedTemplateLinks"]);
+    let unavailable: Vec<&str> =
+        v["unavailable"].as_array().unwrap().iter().map(|u| u["check"].as_str().unwrap()).collect();
+    assert_eq!(
+        unavailable,
+        ["unpaintedZones", "staleLipSync", "transitionPadding", "missingFonts", "outdatedTemplateLinks"]
+    );
     assert!(v["issues"].as_array().unwrap().iter().all(|i| i["issueId"].as_str().unwrap().starts_with("is_")));
     assert_eq!(err(&h, "doc.validate", json!({ "checks": ["nope"] })).code, "arg.invalid");
     let errors = ok(&h, "doc.validate", json!({ "minSeverity": "error" }));
     assert!(errors["issues"].as_array().unwrap().iter().all(|i| i["severity"] == "error"));
     // References: the drawing element's bank is used by it.
-    let bob = ok(&h, "doc.object.resolve", json!({ "refs": ["scene:\"Intro\"/element:\"Bob\""] }))["items"][0]["id"].as_str().unwrap().to_owned();
+    let bob = ok(&h, "doc.object.resolve", json!({ "refs": ["scene:\"Intro\"/element:\"Bob\""] }))["items"][0]["id"]
+        .as_str()
+        .unwrap()
+        .to_owned();
     let bank = get(&h, &bob)["drawingBankId"].as_str().unwrap().to_owned();
     let incoming = ok(&h, "doc.object.refs", json!({ "ref": bank }));
-    assert!(incoming["refs"].as_array().unwrap().iter().any(|r| r["id"] == bob && r["property"] == "/drawingBankId"), "{incoming}");
+    assert!(
+        incoming["refs"].as_array().unwrap().iter().any(|r| r["id"] == bob && r["property"] == "/drawingBankId"),
+        "{incoming}"
+    );
     let outgoing = ok(&h, "doc.object.refs", json!({ "ref": bob, "direction": "outgoing" }));
     assert!(outgoing["refs"].as_array().unwrap().iter().any(|r| r["id"] == bank));
     // Candidates.
     let good = json!({ "name": "Ink", "kind": "brush", "minSize": 1, "maxSize": 4, "smoothness": 3, "tip": "round", "tipAngle": 0, "colourId": null });
-    assert_eq!(ok(&h, "doc.schema.validate", json!({ "type": "pen", "object": good, "mode": "create" }))["valid"], true);
+    assert_eq!(
+        ok(&h, "doc.schema.validate", json!({ "type": "pen", "object": good, "mode": "create" }))["valid"],
+        true
+    );
     let bad = json!({ "name": "Ink", "kind": "brush", "minSize": 9, "maxSize": 4, "smoothness": 3, "tip": "round", "tipAngle": 0, "colourId": null });
     let r = ok(&h, "doc.schema.validate", json!({ "type": "pen", "object": bad, "mode": "create" }));
     assert_eq!(r["valid"], false);
@@ -300,7 +368,10 @@ fn a_repaired_load_is_one_non_undoable_step_and_reported() {
     let r = job_ok(&h, "project.open", json!({ "path": s(&folder) }));
     assert!(r["warnings"].as_array().unwrap().iter().any(|w| w["id"] == "ref.dangling"), "{r}");
     let changed: Vec<_> = events.try_iter().filter(|e| e.name == "doc.changed").collect();
-    assert!(changed.iter().any(|e| e.payload["origin"] == "load" && e.payload["label"] == "Repair on Open"), "REP-01: {changed:?}");
+    assert!(
+        changed.iter().any(|e| e.payload["origin"] == "load" && e.payload["label"] == "Repair on Open"),
+        "REP-01: {changed:?}"
+    );
     let report = ok(&h, "doc.loadReport.get", json!({}));
     assert!(report["repairedCount"].as_u64().unwrap() >= 1);
     assert_eq!(report["issues"][0]["code"], "ref.dangling");
@@ -309,7 +380,11 @@ fn a_repaired_load_is_one_non_undoable_step_and_reported() {
     assert_eq!(st["documentRev"].as_u64().unwrap(), st["savedRev"].as_u64().unwrap() + 1);
     let hist = ok(&h, "edit.history.get", json!({}));
     assert_eq!(hist["entries"][0]["label"], "Repair on Open");
-    assert_eq!(err(&h, "edit.undo", json!({})).code, "edit.nothingToUndo", "the repair cannot be undone into an invalid document");
+    assert_eq!(
+        err(&h, "edit.undo", json!({})).code,
+        "edit.nothingToUndo",
+        "the repair cannot be undone into an invalid document"
+    );
     job_ok(&h, "project.save", json!({}));
     assert_eq!(ok(&h, "doc.state.get", json!({}))["dirty"], false);
     let _ = std::fs::remove_dir_all(&dir);

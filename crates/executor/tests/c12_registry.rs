@@ -93,7 +93,14 @@ fn stubs_and_declarations_name_their_owners() {
         }
     }
     assert_eq!(registry().get("app.info.get").unwrap().status(), Status::NotImplemented { owner: "M1 C1.4" });
-    assert_eq!(registry().get("doc.validate").unwrap().status(), Status::NotImplemented { owner: "M1 C1.3" });
+    // C1.3 implemented every command it owns.
+    assert_eq!(registry().get("doc.validate").unwrap().status(), Status::Implemented);
+    let c13: Vec<&str> = registry()
+        .entries()
+        .filter(|e| e.status() == Status::NotImplemented { owner: "M1 C1.3" })
+        .map(|e| e.id())
+        .collect();
+    assert!(c13.is_empty(), "C1.3 stubs left: {c13:?}");
     assert_eq!(
         registry().get("draw.stroke.add").map(|e| e.status()),
         Some(Status::NotImplemented { owner: "M2 C2.3" })

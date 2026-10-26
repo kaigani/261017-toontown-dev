@@ -2431,7 +2431,6 @@ export const COMMAND_INDEX = {
         all: true,
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.asset.export": {
     kind: "query",
@@ -2439,11 +2438,11 @@ export const COMMAND_INDEX = {
     result: "doc.asset.export.result",
     examples: [
       {
-        assetId: "as_1",
-        path: "/tmp/sound.wav",
+        assetId: "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+        path: "/tmp/line1.wav",
+        onExists: "overwrite",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.asset.list": {
     kind: "query",
@@ -2454,7 +2453,6 @@ export const COMMAND_INDEX = {
         status: "missing",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.asset.relink": {
     kind: "action",
@@ -2465,7 +2463,6 @@ export const COMMAND_INDEX = {
         searchFolder: "/tmp/media",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.asset.remove": {
     kind: "action",
@@ -2476,7 +2473,6 @@ export const COMMAND_INDEX = {
         unused: true,
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.asset.status.changed": {
     kind: "event",
@@ -2485,7 +2481,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
     event: true,
   },
   "doc.blob.get": {
@@ -2494,10 +2489,9 @@ export const COMMAND_INDEX = {
     result: "doc.blob.get.result",
     examples: [
       {
-        entry: "thumbnail.png",
+        ref: "as_01K742SG0G5HPQ0RBF5X4DSR0W",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.changed": {
     kind: "event",
@@ -2532,7 +2526,6 @@ export const COMMAND_INDEX = {
         binaries: "omit",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.import.json": {
     kind: "action",
@@ -2540,11 +2533,20 @@ export const COMMAND_INDEX = {
     result: "doc.import.json.result",
     examples: [
       {
-        source: "/tmp/bundle.json",
+        source: {
+          format: "animjson",
+          formatVersion: "1.0",
+          scenes: [],
+          elements: [],
+          drawingBanks: [],
+          palettes: [],
+          pens: [],
+          assets: [],
+          blobs: {},
+        },
         dryRun: true,
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.loadReport.get": {
     kind: "query",
@@ -2553,7 +2555,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
   },
   "doc.object.find": {
     kind: "query",
@@ -2666,7 +2667,6 @@ export const COMMAND_INDEX = {
         ref: "palette:#1",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.object.resolve": {
     kind: "query",
@@ -2688,7 +2688,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
     event: true,
   },
   "doc.package.export": {
@@ -2697,11 +2696,11 @@ export const COMMAND_INDEX = {
     result: "doc.package.export.result",
     examples: [
       {
-        path: "/tmp/Short",
+        path: "/tmp/Short-folder",
         form: "folder",
+        onExists: "overwrite",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.package.get": {
     kind: "query",
@@ -2710,9 +2709,9 @@ export const COMMAND_INDEX = {
     examples: [
       {
         path: "/tmp/Short.animpkg",
+        validate: true,
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.repair": {
     kind: "action",
@@ -2721,12 +2720,11 @@ export const COMMAND_INDEX = {
     examples: [
       {
         codes: [
-          "ref.dangling",
+          "unusedAssets",
         ],
         dryRun: true,
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.schema.get": {
     kind: "query",
@@ -2759,11 +2757,17 @@ export const COMMAND_INDEX = {
         type: "pen",
         object: {
           name: "Ink",
+          kind: "brush",
+          minSize: 1,
+          maxSize: 4,
+          smoothness: 3,
+          tip: "round",
+          tipAngle: 0,
+          colourId: null,
         },
         mode: "create",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "doc.state.get": {
     kind: "query",
@@ -2782,7 +2786,6 @@ export const COMMAND_INDEX = {
         minSeverity: "error",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "draw.arrange.apply": {
     kind: "action",
@@ -6458,7 +6461,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
     event: true,
   },
   "project.backup.list": {
@@ -6468,7 +6470,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
   },
   "project.backup.open": {
     kind: "action",
@@ -6476,10 +6477,9 @@ export const COMMAND_INDEX = {
     result: "project.backup.open.result",
     examples: [
       {
-        backupId: "bk_1",
+        backupId: "bk_1a2b3c4d",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "project.close": {
     kind: "action",
@@ -6488,7 +6488,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
   },
   "project.closed": {
     kind: "event",
@@ -6497,7 +6496,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
     event: true,
   },
   "project.create": {
@@ -6512,7 +6510,6 @@ export const COMMAND_INDEX = {
         cameraHeight: 1080,
       },
     ],
-    milestone: "M1 C1.3",
   },
   "project.dirty.changed": {
     kind: "event",
@@ -6530,7 +6527,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
   },
   "project.open": {
     kind: "job",
@@ -6541,7 +6537,6 @@ export const COMMAND_INDEX = {
         path: "/tmp/Short.animpkg",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "project.opened": {
     kind: "event",
@@ -6559,7 +6554,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
   },
   "project.properties.get": {
     kind: "query",
@@ -6568,7 +6562,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
   },
   "project.properties.set": {
     kind: "action",
@@ -6579,7 +6572,6 @@ export const COMMAND_INDEX = {
         frameRate: 25,
       },
     ],
-    milestone: "M1 C1.3",
   },
   "project.recent.list": {
     kind: "query",
@@ -6588,7 +6580,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
   },
   "project.recent.remove": {
     kind: "ui",
@@ -6599,7 +6590,6 @@ export const COMMAND_INDEX = {
         all: true,
       },
     ],
-    milestone: "M1 C1.3",
   },
   "project.recovery.delete": {
     kind: "ui",
@@ -6610,7 +6600,6 @@ export const COMMAND_INDEX = {
         all: true,
       },
     ],
-    milestone: "M1 C1.3",
   },
   "project.recovery.list": {
     kind: "query",
@@ -6619,7 +6608,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
   },
   "project.recovery.open": {
     kind: "job",
@@ -6627,10 +6615,9 @@ export const COMMAND_INDEX = {
     result: "project.recovery.open.result",
     examples: [
       {
-        recoveryId: "rc_1",
+        recoveryId: "rc_1a2b3c4d",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "project.save": {
     kind: "job",
@@ -6639,7 +6626,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
   },
   "project.saveAs": {
     kind: "job",
@@ -6650,7 +6636,6 @@ export const COMMAND_INDEX = {
         path: "/tmp/Copy.animpkg",
       },
     ],
-    milestone: "M1 C1.3",
   },
   "project.saved": {
     kind: "event",
@@ -6659,7 +6644,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.3",
     event: true,
   },
   "render.frame.run": {
@@ -25236,7 +25220,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       assetIds: {
-        description: "Assets.",
+        description: "Assets to embed.",
         type: [
           "array",
           "null",
@@ -25255,9 +25239,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "doc.asset.embed.result": {
-    title: "Map_of_AnyValue",
+    title: "EmbedResult",
+    description: "`doc.asset.embed` result.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      embedded: {
+        description: "Embedded assets.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      bytes: {
+        description: "Bytes added to the package.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "embedded",
+      "bytes",
+    ],
   },
   "doc.asset.export.OnExists": {
     description: "What to do when a target file exists (01 §11.2 rule 4).",
@@ -25280,11 +25283,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       assetId: {
-        description: "Asset.",
+        description: "The asset.",
         type: "string",
       },
       path: {
-        description: "Target path.",
+        description: "Absolute target file.",
         type: "string",
       },
       onExists: {
@@ -25299,12 +25302,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "doc.asset.export.result": {
-    title: "Map_of_AnyValue",
+    title: "PathBytes",
+    description: "`{path, bytes}`.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      path: {
+        description: "Written file.",
+        type: "string",
+      },
+      bytes: {
+        description: "Bytes written.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "path",
+      "bytes",
+    ],
   },
   "doc.asset.list.AssetKind": {
-    description: "Asset kind.",
+    description: "Asset kinds.",
     oneOf: [
       {
         description: "Sound.",
@@ -25329,35 +25348,35 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "doc.asset.list.AssetStatus": {
-    description: "Asset status filter.",
+    description: "Asset filter.",
     oneOf: [
       {
-        description: "All.",
+        description: "Every asset.",
         type: "string",
         const: "all",
       },
       {
-        description: "Missing.",
+        description: "Missing files.",
         type: "string",
         const: "missing",
       },
       {
-        description: "Changed.",
+        description: "Linked files whose content changed.",
         type: "string",
         const: "changed",
       },
       {
-        description: "Linked.",
+        description: "Linked assets.",
         type: "string",
         const: "linked",
       },
       {
-        description: "Embedded.",
+        description: "Embedded assets.",
         type: "string",
         const: "embedded",
       },
       {
-        description: "Unused.",
+        description: "Assets referenced by nothing.",
         type: "string",
         const: "unused",
       },
@@ -25369,7 +25388,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       kind: {
-        description: "Kind.",
+        description: "Kind filter.",
         anyOf: [
           {
             $ref: "#/$defs/doc.asset.list.AssetKind",
@@ -25380,11 +25399,65 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
       status: {
-        description: "Status.",
+        description: "Status filter.",
         $ref: "#/$defs/doc.asset.list.AssetStatus",
       },
     },
     additionalProperties: false,
+  },
+  "doc.asset.list.AssetEntry": {
+    description: "One asset (10 §10.2).",
+    type: "object",
+    properties: {
+      id: {
+        description: "Asset id.",
+        type: "string",
+      },
+      name: {
+        description: "Name.",
+        type: "string",
+      },
+      kind: {
+        description: "`sound`, `image`, `movie`, `vector`.",
+        type: "string",
+      },
+      storage: {
+        description: "`embedded`, `linked`.",
+        type: "string",
+      },
+      status: {
+        description: "`ok`, `missing`, `changed`.",
+        type: "string",
+      },
+      path: {
+        description: "The entry (embedded) or the resolved file (linked; the link path when missing).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      size: {
+        description: "Recorded size.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      refs: {
+        description: "Number of references (placements, sequences).",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "id",
+      "name",
+      "kind",
+      "storage",
+      "status",
+      "size",
+      "refs",
+    ],
   },
   "doc.asset.list.result": {
     title: "AssetsResult",
@@ -25392,11 +25465,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       assets: {
-        description: "`{id, name, kind, storage, status, path?, size, refs}`.",
+        description: "Assets.",
         type: "array",
         items: {
-          type: "object",
-          additionalProperties: true,
+          $ref: "#/$defs/doc.asset.list.AssetEntry",
         },
       },
     },
@@ -25405,20 +25477,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "doc.asset.relink.MatchBy": {
-    description: "Relink matching.",
+    description: "How a search candidate matches a missing asset.",
     oneOf: [
       {
-        description: "File name.",
+        description: "Same file name.",
         type: "string",
         const: "name",
       },
       {
-        description: "Name and size.",
+        description: "Same name and size.",
         type: "string",
         const: "nameAndSize",
       },
       {
-        description: "Content hash.",
+        description: "Same SHA-256.",
         type: "string",
         const: "hash",
       },
@@ -25430,7 +25502,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       assetId: {
-        description: "Asset.",
+        description: "One linked asset.",
         type: [
           "string",
           "null",
@@ -25438,7 +25510,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       path: {
-        description: "New path.",
+        description: "Its new file (absolute).",
         type: [
           "string",
           "null",
@@ -25446,7 +25518,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       searchFolder: {
-        description: "Folder to search.",
+        description: "A folder to search for missing linked assets (MED-02 step 4).",
         type: [
           "string",
           "null",
@@ -25459,16 +25531,54 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: true,
       },
       matchBy: {
-        description: "Matching.",
+        description: "How a candidate matches.",
         $ref: "#/$defs/doc.asset.relink.MatchBy",
       },
     },
     additionalProperties: false,
   },
-  "doc.asset.relink.result": {
-    title: "Map_of_AnyValue",
+  "doc.asset.relink.Relinked": {
+    description: "A relinked asset.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      assetId: {
+        description: "Asset id.",
+        type: "string",
+      },
+      path: {
+        description: "Its file.",
+        type: "string",
+      },
+    },
+    required: [
+      "assetId",
+      "path",
+    ],
+  },
+  "doc.asset.relink.result": {
+    title: "RelinkResult",
+    description: "`doc.asset.relink` result.",
+    type: "object",
+    properties: {
+      relinked: {
+        description: "Relinked assets.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/doc.asset.relink.Relinked",
+        },
+      },
+      stillMissing: {
+        description: "Linked assets still missing.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+    },
+    required: [
+      "relinked",
+      "stillMissing",
+    ],
   },
   "doc.asset.remove.params": {
     title: "AssetRemoveParams",
@@ -25476,7 +25586,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       assetIds: {
-        description: "Assets.",
+        description: "Assets to remove.",
         type: [
           "array",
           "null",
@@ -25487,12 +25597,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       unused: {
-        description: "Every unused asset.",
+        description: "Every asset referenced by nothing.",
         type: "boolean",
         default: false,
       },
       force: {
-        description: "Remove even if referenced.",
+        description: "Also remove referenced assets, detaching their references.",
         type: "boolean",
         default: false,
       },
@@ -25500,9 +25610,36 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "doc.asset.remove.result": {
-    title: "Map_of_AnyValue",
+    title: "RemoveResult",
+    description: "`doc.asset.remove` result.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      removed: {
+        description: "Removed assets.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      bytes: {
+        description: "Bytes no longer stored (embedded files leave the package at the next save, MED-04).",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      detachedRefs: {
+        description: "Placements and media sequences removed with them (`force`).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+    },
+    required: [
+      "removed",
+      "bytes",
+      "detachedRefs",
+    ],
   },
   "doc.asset.status.changed.params": {
     title: "NoParams",
@@ -25511,9 +25648,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "doc.asset.status.changed.result": {
-    title: "Map_of_AnyValue",
+    title: "AssetStatusChanged",
+    description: "`doc.asset.status.changed` payload.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      assets: {
+        description: "`[{assetId, status}]`.",
+        type: "array",
+        items: {
+          type: "object",
+          additionalProperties: true,
+        },
+      },
+    },
+    required: [
+      "assets",
+    ],
   },
   "doc.blob.get.params": {
     title: "BlobParams",
@@ -25521,7 +25671,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       ref: {
-        description: "An asset or object holding a blob.",
+        description: "An object holding a binary payload: an asset, a bitmap drawing node, a library item (its thumbnail, else its\nfile).",
         type: [
           "string",
           "null",
@@ -25537,7 +25687,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       maxBytes: {
-        description: "Size limit.",
+        description: "Largest payload returned.",
         type: "integer",
         default: 8388608,
         minimum: 1,
@@ -25548,25 +25698,25 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
   },
   "doc.blob.get.result": {
     title: "BlobResult",
-    description: "`doc.blob.get` result.",
+    description: "A binary payload.",
     type: "object",
     properties: {
       mediaType: {
-        description: "Media type.",
+        description: "IANA media type.",
         type: "string",
       },
       size: {
-        description: "Size.",
+        description: "Size in bytes.",
         type: "integer",
         maximum: 18446744073709551615n,
         minimum: 0,
       },
       sha256: {
-        description: "SHA-256.",
+        description: "SHA-256 (lower-case hex).",
         type: "string",
       },
       base64: {
-        description: "Content.",
+        description: "The bytes, base64.",
         type: "string",
       },
     },
@@ -25643,8 +25793,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       undoStepId: {
-        description: "The step created or replayed.",
-        type: "string",
+        description: "The step created or replayed (`null` for a system change without an undo step, e.g. the `modifiedAt` stamp of\na save).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       documentRev: {
         description: "The transaction's revision.",
@@ -25669,7 +25822,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     },
     required: [
-      "undoStepId",
       "documentRev",
       "label",
       "origin",
@@ -25857,19 +26009,19 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         const: "project",
       },
       {
-        description: "Scenes.",
+        description: "Scenes (`refs`).",
         type: "string",
         const: "scenes",
       },
       {
-        description: "Elements.",
+        description: "Elements with their descendants (`refs`).",
         type: "string",
         const: "elements",
       },
     ],
   },
   "doc.export.json.Binaries": {
-    description: "Binary handling.",
+    description: "What happens to binary entries.",
     oneOf: [
       {
         description: "Inline as base64.",
@@ -25877,7 +26029,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         const: "embed",
       },
       {
-        description: "As references.",
+        description: "Referenced by entry name (resolved against the bundle's folder or the source project).",
         type: "string",
         const: "reference",
       },
@@ -25909,11 +26061,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       scope: {
-        description: "What to export.",
+        description: "Scope.",
         $ref: "#/$defs/doc.export.json.ExportScope",
       },
       refs: {
-        description: "Scenes or elements.",
+        description: "Scenes or elements of the scope.",
         type: [
           "array",
           "null",
@@ -25924,7 +26076,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       path: {
-        description: "Target file (default: inline).",
+        description: "Write to this absolute file instead of returning the bundle.",
         type: [
           "string",
           "null",
@@ -25932,11 +26084,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       binaries: {
-        description: "Binary data.",
+        description: "Binary entries.",
         $ref: "#/$defs/doc.export.json.Binaries",
       },
       pretty: {
-        description: "Indented.",
+        description: "Canonical, indented JSON (else compact) when writing a file.",
         type: "boolean",
         default: true,
       },
@@ -25956,7 +26108,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       bundle: {
-        description: "Inline bundle.",
+        description: "The bundle (without `path`).",
         type: [
           "object",
           "null",
@@ -25964,20 +26116,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         additionalProperties: true,
       },
       path: {
-        description: "File written.",
+        description: "The written file.",
         type: [
           "string",
           "null",
         ],
       },
       bytes: {
-        description: "Size.",
+        description: "Size of the bundle text.",
         type: "integer",
         maximum: 18446744073709551615n,
         minimum: 0,
       },
       objectCount: {
-        description: "Objects.",
+        description: "Objects exported (scenes, elements, banks, drawings, palettes, pens, assets).",
         type: "integer",
         maximum: 18446744073709551615n,
         minimum: 0,
@@ -25989,16 +26141,16 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "doc.import.json.ImportSource": {
-    description: "What `doc.import.json` reads (spec A: `path | object`).",
+    description: "A bundle given inline or as a file.",
     anyOf: [
       {
-        description: "A file path.",
+        description: "Absolute path of a bundle file.",
         type: "string",
         minLength: 1,
         maxLength: 4096,
       },
       {
-        description: "An inline bundle as `doc.export.json` writes it.",
+        description: "The bundle.",
         type: "object",
         additionalProperties: true,
       },
@@ -26008,12 +26160,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     description: "ID policy.",
     oneOf: [
       {
-        description: "New IDs.",
+        description: "Fresh IDs.",
         type: "string",
         const: "new",
       },
       {
-        description: "Keep IDs.",
+        description: "Keep the bundle's IDs.",
         type: "string",
         const: "preserve",
       },
@@ -26023,17 +26175,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     description: "Conflict policy.",
     oneOf: [
       {
-        description: "Rename.",
+        description: "Rename the imported object.",
         type: "string",
         const: "rename",
       },
       {
-        description: "Replace.",
+        description: "Replace the existing object.",
         type: "string",
         const: "replace",
       },
       {
-        description: "Fail.",
+        description: "Fail with `doc.importConflict`.",
         type: "string",
         const: "fail",
       },
@@ -26043,12 +26195,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     description: "Colour policy.",
     oneOf: [
       {
-        description: "Keep existing colours.",
+        description: "Existing swatches keep their values.",
         type: "string",
         const: "keepExisting",
       },
       {
-        description: "Update existing colours.",
+        description: "Existing swatches of the same palette take the imported values.",
         type: "string",
         const: "updateExisting",
       },
@@ -26060,11 +26212,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       source: {
-        description: "A path or an inline bundle (`doc.export.json` output).",
+        description: "The bundle, or the path of a bundle file.",
         $ref: "#/$defs/doc.import.json.ImportSource",
       },
       target: {
-        description: "Target scene (omit: new scenes).",
+        description: "A scene to import the elements into (omit: the bundle's scenes become new scenes).",
         type: [
           "string",
           "null",
@@ -26072,7 +26224,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       index: {
-        description: "Scene position.",
+        description: "Position of new scenes in the storyline (default: the end).",
         type: [
           "integer",
           "null",
@@ -26082,26 +26234,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       atFrame: {
-        description: "First frame.",
+        description: "First frame of imported elements in the target scene.",
         type: "integer",
         default: 1,
         minimum: 1,
         maximum: 100000,
       },
       idPolicy: {
-        description: "ID policy.",
+        description: "IDs: fresh (`new`) or kept (`preserve`).",
         $ref: "#/$defs/doc.import.json.IdPolicy",
       },
       onConflict: {
-        description: "Conflict policy.",
+        description: "ID and name conflicts.",
         $ref: "#/$defs/doc.import.json.OnConflict",
       },
       colours: {
-        description: "Colour policy.",
+        description: "Colours whose ID already exists.",
         $ref: "#/$defs/doc.import.json.ColourPolicy",
       },
       dryRun: {
-        description: "Report only.",
+        description: "Report what would be imported; change nothing.",
         type: "boolean",
         default: false,
       },
@@ -26111,10 +26263,112 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "source",
     ],
   },
-  "doc.import.json.result": {
-    title: "Map_of_AnyValue",
+  "doc.import.json.Created": {
+    description: "Objects created.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      scenes: {
+        description: "Scenes.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      elements: {
+        description: "Elements.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      drawings: {
+        description: "Drawings.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      palettes: {
+        description: "Palettes.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      assets: {
+        description: "Assets.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+    },
+    required: [
+      "scenes",
+      "elements",
+      "drawings",
+      "palettes",
+      "assets",
+    ],
+  },
+  "doc.import.json.Renamed": {
+    description: "A renamed object.",
+    type: "object",
+    properties: {
+      id: {
+        description: "Object id.",
+        type: "string",
+      },
+      from: {
+        description: "Name in the bundle.",
+        type: "string",
+      },
+      to: {
+        description: "Name in the project.",
+        type: "string",
+      },
+    },
+    required: [
+      "id",
+      "from",
+      "to",
+    ],
+  },
+  "doc.import.json.result": {
+    title: "ImportResult",
+    description: "`doc.import.json` result.",
+    type: "object",
+    properties: {
+      created: {
+        description: "Objects created.",
+        $ref: "#/$defs/doc.import.json.Created",
+      },
+      renamed: {
+        description: "Objects renamed on import.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/doc.import.json.Renamed",
+        },
+      },
+      recoveredColourIds: {
+        description: "Colour IDs used by the bundle that neither the bundle nor the project defines (colour recovery, 03 §11.2, is\nM2 C2.2's; they stay unresolved).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      issues: {
+        description: "Issues met (unresolved binary entries, conflicts resolved).",
+        type: "array",
+        items: true,
+      },
+    },
+    required: [
+      "created",
+      "renamed",
+      "recoveredColourIds",
+      "issues",
+    ],
   },
   "doc.loadReport.get.params": {
     title: "NoParams",
@@ -26122,10 +26376,131 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     additionalProperties: false,
   },
-  "doc.loadReport.get.result": {
-    title: "Map_of_AnyValue",
+  "doc.loadReport.get.IssueOut": {
+    description: "An issue (10 §10.4).",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      issueId: {
+        description: "`is_<n>`.",
+        type: "string",
+      },
+      code: {
+        description: "Code.",
+        type: "string",
+      },
+      severity: {
+        description: "`info`, `warning`, `error`.",
+        type: "string",
+      },
+      objectId: {
+        description: "The object concerned.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      path: {
+        description: "Its canonical path.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      entry: {
+        description: "The package entry concerned (load issues).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      message: {
+        description: "Message.",
+        type: "string",
+      },
+      details: {
+        description: "Details.",
+      },
+      fixes: {
+        description: "Machine-applicable fixes.",
+        type: "array",
+        items: true,
+      },
+    },
+    required: [
+      "issueId",
+      "code",
+      "severity",
+      "message",
+      "details",
+      "fixes",
+    ],
+  },
+  "doc.loadReport.get.result": {
+    title: "LoadReportOut",
+    description: "`LoadReport` (10 §7.3, §10.4).",
+    type: "object",
+    properties: {
+      projectId: {
+        description: "Project id.",
+        type: "string",
+      },
+      path: {
+        description: "The path opened (`null` for a project that was not opened from a file).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      form: {
+        description: "`package` or `folder` (`null` likewise).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      formatVersion: {
+        description: "The file's format version.",
+        type: "string",
+      },
+      migratedFrom: {
+        description: "The version migrated from.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      readOnly: {
+        description: "Open read-only.",
+        type: "boolean",
+      },
+      durationMs: {
+        description: "Load time.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      issues: {
+        description: "Issues found and repaired.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/doc.loadReport.get.IssueOut",
+        },
+      },
+      repairedCount: {
+        description: "Repairs applied.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "projectId",
+      "formatVersion",
+      "readOnly",
+      "durationMs",
+      "issues",
+      "repairedCount",
+    ],
   },
   "doc.object.find.Sort": {
     description: "Sort order of `doc.object.find`.",
@@ -26697,11 +27072,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       direction: {
-        description: "Incoming or outgoing.",
+        description: "`incoming`: objects that reference it; `outgoing`: objects it references.",
         $ref: "#/$defs/doc.object.refs.RefDirection",
       },
       limit: {
-        description: "Maximum.",
+        description: "Largest number of references returned.",
         type: "integer",
         format: "uint",
         minimum: 1,
@@ -26714,21 +27089,50 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "ref",
     ],
   },
+  "doc.object.refs.RefEntry": {
+    description: "One reference.",
+    type: "object",
+    properties: {
+      id: {
+        description: "The other object.",
+        type: "string",
+      },
+      type: {
+        description: "Its type.",
+        type: "string",
+      },
+      path: {
+        description: "Its canonical path.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      property: {
+        description: "The referencing property (JSON Pointer into the referencing object).",
+        type: "string",
+      },
+    },
+    required: [
+      "id",
+      "type",
+      "property",
+    ],
+  },
   "doc.object.refs.result": {
     title: "RefsResult",
-    description: "`doc.object.refs` result.",
+    description: "`{refs, total}`.",
     type: "object",
     properties: {
       refs: {
-        description: "`{id, type, path, property}`.",
+        description: "References.",
         type: "array",
         items: {
-          type: "object",
-          additionalProperties: true,
+          $ref: "#/$defs/doc.object.refs.RefEntry",
         },
       },
       total: {
-        description: "Total.",
+        description: "Total before the limit.",
         type: "integer",
         format: "uint",
         minimum: 0,
@@ -26784,20 +27188,34 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "doc.package.changedOnDisk.result": {
-    title: "Map_of_AnyValue",
+    title: "ChangedOnDisk",
+    description: "`doc.package.changedOnDisk` payload.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      path: {
+        description: "The project file or folder.",
+        type: "string",
+      },
+      detectedAt: {
+        description: "When the change was noticed.",
+        type: "string",
+      },
+    },
+    required: [
+      "path",
+      "detectedAt",
+    ],
   },
-  "doc.package.export.Form": {
-    description: "Package form.",
+  "doc.package.export.FormParam": {
+    description: "Forms.",
     oneOf: [
       {
-        description: "Zip package.",
+        description: "One zip file.",
         type: "string",
         const: "package",
       },
       {
-        description: "Folder.",
+        description: "A folder.",
         type: "string",
         const: "folder",
       },
@@ -26824,12 +27242,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       path: {
-        description: "Target path.",
+        description: "Absolute target path.",
         type: "string",
       },
       form: {
-        description: "Form.",
-        $ref: "#/$defs/doc.package.export.Form",
+        description: "Form of the copy.",
+        $ref: "#/$defs/doc.package.export.FormParam",
       },
       onExists: {
         description: "Overwrite policy.",
@@ -26841,19 +27259,55 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "path",
     ],
   },
+  "doc.package.export.PackageExported": {
+    description: "The final result of `doc.package.export`.",
+    type: "object",
+    properties: {
+      path: {
+        description: "Where.",
+        type: "string",
+      },
+      form: {
+        description: "`package` or `folder`.",
+        type: "string",
+      },
+      bytes: {
+        description: "Bytes written.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      entries: {
+        description: "Entries written.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "path",
+      "form",
+      "bytes",
+      "entries",
+    ],
+  },
   "doc.package.export.result": {
-    title: "JobStarted",
-    description: "`{jobId}`.",
+    title: "Job_PackageExported",
     type: "object",
     properties: {
       jobId: {
-        description: "The job.",
+        description: "The job (11 §7.7).",
         type: "string",
+        minLength: 1,
       },
     },
     required: [
       "jobId",
     ],
+    additionalProperties: false,
+    "x-jobResult": {
+      $ref: "#/$defs/doc.package.export.PackageExported",
+    },
   },
   "doc.package.get.params": {
     title: "PackageGetParams",
@@ -26861,11 +27315,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       path: {
-        description: "Package path.",
+        description: "Absolute path of a package, folder, template, palette file or library folder.",
         type: "string",
       },
       validate: {
-        description: "Validate fully.",
+        description: "Load and validate it completely (10 §7) and report its issues.",
         type: "boolean",
         default: false,
       },
@@ -26876,9 +27330,76 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "doc.package.get.result": {
-    title: "Map_of_AnyValue",
+    title: "PackageInfo",
+    description: "What a file on disk is (10 §10.2 `doc.package.get`).",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      kind: {
+        description: "`project`, `template`, `palette`, `library`.",
+        type: "string",
+      },
+      form: {
+        description: "`package`, `folder` or `file`.",
+        type: "string",
+      },
+      formatVersion: {
+        description: "Format version.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      minReaderVersion: {
+        description: "Lowest reader version.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      readable: {
+        description: "Whether this version can read it.",
+        type: "boolean",
+      },
+      projectId: {
+        description: "Project id (projects).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      name: {
+        description: "Name.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      savedAt: {
+        description: "Save time.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      entryCount: {
+        description: "Number of entries.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      issues: {
+        description: "Issues found (with `validate`; container and version problems always).",
+        type: "array",
+        items: true,
+      },
+    },
+    required: [
+      "kind",
+      "form",
+      "readable",
+      "entryCount",
+      "issues",
+    ],
   },
   "doc.repair.params": {
     title: "RepairParams",
@@ -26886,7 +27407,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       issueIds: {
-        description: "Issues to fix.",
+        description: "Issues (from `doc.validate` of the same revision).",
         type: [
           "array",
           "null",
@@ -26897,7 +27418,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       codes: {
-        description: "Issue codes to fix.",
+        description: "Checks or issue codes.",
         type: [
           "array",
           "null",
@@ -26908,7 +27429,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       within: {
-        description: "Subtree.",
+        description: "Only this object and what it contains.",
         type: [
           "string",
           "null",
@@ -26916,17 +27437,35 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       all: {
-        description: "Every fixable issue.",
+        description: "Every issue with a default fix.",
         type: "boolean",
         default: false,
       },
       dryRun: {
-        description: "Report only.",
+        description: "Report what would be fixed; change nothing.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
+  },
+  "doc.repair.Skipped": {
+    description: "A skipped issue.",
+    type: "object",
+    properties: {
+      issueId: {
+        description: "The issue.",
+        type: "string",
+      },
+      reason: {
+        description: "Why.",
+        type: "string",
+      },
+    },
+    required: [
+      "issueId",
+      "reason",
+    ],
   },
   "doc.repair.ChangeRecord": {
     description: "One object change of a committed (or dry-run) transaction (10 §2.6, 11 §7.2).",
@@ -26988,22 +27527,21 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       fixed: {
-        description: "Fixed issues.",
+        description: "Issues fixed.",
         type: "array",
         items: {
           type: "string",
         },
       },
       skipped: {
-        description: "`{issueId, reason}`.",
+        description: "Issues not fixed, with the reason.",
         type: "array",
         items: {
-          type: "object",
-          additionalProperties: true,
+          $ref: "#/$defs/doc.repair.Skipped",
         },
       },
       changes: {
-        description: "Changes.",
+        description: "The changes made (the envelope carries them too).",
         type: "array",
         items: {
           $ref: "#/$defs/doc.repair.ChangeRecord",
@@ -27140,7 +27678,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         const: "create",
       },
       {
-        description: "A replacement.",
+        description: "A replacement of an existing object.",
         type: "string",
         const: "replace",
       },
@@ -27156,12 +27694,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       object: {
-        description: "Candidate object.",
+        description: "The candidate object.",
         type: "object",
         additionalProperties: true,
       },
       mode: {
-        description: "Create (id/rev may be absent) or replace.",
+        description: "`create`: a new object (ID and `rev` may be omitted); `replace`: the object with this ID, replaced.",
         $ref: "#/$defs/doc.schema.validate.ValidateMode",
       },
     },
@@ -27171,21 +27709,43 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "object",
     ],
   },
+  "doc.schema.validate.ValidationError": {
+    description: "One validation error.",
+    type: "object",
+    properties: {
+      pointer: {
+        description: "JSON Pointer into the candidate.",
+        type: "string",
+      },
+      code: {
+        description: "Code.",
+        type: "string",
+      },
+      message: {
+        description: "Message.",
+        type: "string",
+      },
+    },
+    required: [
+      "pointer",
+      "code",
+      "message",
+    ],
+  },
   "doc.schema.validate.result": {
     title: "ValidateResult",
-    description: "Validation result.",
+    description: "`{valid, errors}`.",
     type: "object",
     properties: {
       valid: {
-        description: "No errors.",
+        description: "Whether the candidate is valid.",
         type: "boolean",
       },
       errors: {
-        description: "`{pointer, code, message}`.",
+        description: "Errors.",
         type: "array",
         items: {
-          type: "object",
-          additionalProperties: true,
+          $ref: "#/$defs/doc.schema.validate.ValidationError",
         },
       },
     },
@@ -27258,7 +27818,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       lock: {
-        description: "Lock holder (10 §8 LOCK-01; C1.3), `null` while no lock is held.",
+        description: "The lock (10 §8 LOCK-01): `{held: true, …our lock}` while this session holds it, `{held: false, …holder}` when\nthe project opened read-only because someone else holds it, `null` otherwise.",
         type: [
           "object",
           "null",
@@ -27281,8 +27841,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "historyFromRev",
     ],
   },
-  "doc.validate.Severity": {
-    description: "Severity filter.",
+  "doc.validate.SeverityParam": {
+    description: "Minimum severity.",
     oneOf: [
       {
         description: "Everything.",
@@ -27295,7 +27855,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         const: "warning",
       },
       {
-        description: "Errors.",
+        description: "Errors only.",
         type: "string",
         const: "error",
       },
@@ -27307,7 +27867,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       within: {
-        description: "Subtree.",
+        description: "Only this object and what it contains.",
         type: [
           "string",
           "null",
@@ -27315,7 +27875,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       checks: {
-        description: "Checks (default all).",
+        description: "Checks to run (default: all; 10 §10.3).",
         type: [
           "array",
           "null",
@@ -27327,10 +27887,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       minSeverity: {
         description: "Minimum severity.",
-        $ref: "#/$defs/doc.validate.Severity",
+        $ref: "#/$defs/doc.validate.SeverityParam",
       },
       limit: {
-        description: "Maximum issues.",
+        description: "Largest number of issues.",
         type: "integer",
         format: "uint",
         minimum: 1,
@@ -27340,23 +27900,104 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     },
     additionalProperties: false,
   },
+  "doc.validate.IssueOut": {
+    description: "An issue (10 §10.4).",
+    type: "object",
+    properties: {
+      issueId: {
+        description: "`is_<n>`.",
+        type: "string",
+      },
+      code: {
+        description: "Code.",
+        type: "string",
+      },
+      severity: {
+        description: "`info`, `warning`, `error`.",
+        type: "string",
+      },
+      objectId: {
+        description: "The object concerned.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      path: {
+        description: "Its canonical path.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      entry: {
+        description: "The package entry concerned (load issues).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      message: {
+        description: "Message.",
+        type: "string",
+      },
+      details: {
+        description: "Details.",
+      },
+      fixes: {
+        description: "Machine-applicable fixes.",
+        type: "array",
+        items: true,
+      },
+    },
+    required: [
+      "issueId",
+      "code",
+      "severity",
+      "message",
+      "details",
+      "fixes",
+    ],
+  },
+  "doc.validate.Unavailable": {
+    description: "A check that needs a computation owned by a later milestone.",
+    type: "object",
+    properties: {
+      check: {
+        description: "The check.",
+        type: "string",
+      },
+      owner: {
+        description: "The owning checkpoint.",
+        type: "string",
+      },
+      reason: {
+        description: "Why.",
+        type: "string",
+      },
+    },
+    required: [
+      "check",
+      "owner",
+      "reason",
+    ],
+  },
   "doc.validate.result": {
     title: "LintResult",
     description: "`doc.validate` result.",
     type: "object",
     properties: {
       documentRev: {
-        description: "Revision checked.",
+        description: "The revision checked.",
         type: "integer",
         maximum: 18446744073709551615n,
         minimum: 0,
       },
       issues: {
-        description: "Issues (10 §10.4 `Issue`).",
+        description: "Issues (10 §10.4).",
         type: "array",
         items: {
-          type: "object",
-          additionalProperties: true,
+          $ref: "#/$defs/doc.validate.IssueOut",
         },
       },
       counts: {
@@ -27372,12 +28013,20 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "More issues than `limit`.",
         type: "boolean",
       },
+      unavailable: {
+        description: "Checks not run, with their owner.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/doc.validate.Unavailable",
+        },
+      },
     },
     required: [
       "documentRev",
       "issues",
       "counts",
       "truncated",
+      "unavailable",
     ],
   },
   "draw.arrange.apply.params": {
@@ -59605,9 +60254,28 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "project.autosaved.result": {
-    title: "Map_of_AnyValue",
+    title: "Autosaved",
+    description: "`project.autosaved` payload.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      projectId: {
+        description: "Project id.",
+        type: "string",
+      },
+      recoveryId: {
+        description: "Recovery id.",
+        type: "string",
+      },
+      savedAt: {
+        description: "When.",
+        type: "string",
+      },
+    },
+    required: [
+      "projectId",
+      "recoveryId",
+      "savedAt",
+    ],
   },
   "project.backup.list.params": {
     title: "BackupListParams",
@@ -59625,12 +60293,43 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     },
     additionalProperties: false,
   },
+  "project.backup.list.BackupEntry": {
+    description: "A backup (01 §3.7).",
+    type: "object",
+    properties: {
+      backupId: {
+        description: "Backup id.",
+        type: "string",
+      },
+      savedAt: {
+        description: "When the backed-up version was saved.",
+        type: "string",
+      },
+      sizeBytes: {
+        description: "Size.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      documentRev: {
+        description: "Its `documentRev`.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "backupId",
+      "savedAt",
+      "sizeBytes",
+      "documentRev",
+    ],
+  },
   "project.backup.list.result": {
-    title: "Array_of_Map_of_AnyValue",
+    title: "Array_of_BackupEntry",
     type: "array",
     items: {
-      type: "object",
-      additionalProperties: true,
+      $ref: "#/$defs/project.backup.list.BackupEntry",
     },
   },
   "project.backup.open.OnUnsaved": {
@@ -59793,13 +60492,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       name: {
-        description: "Project name.",
+        description: "Project name (01 §9.6 shared name rule).",
         type: "string",
         minLength: 1,
-        maxLength: 128,
+        maxLength: 100,
       },
       path: {
-        description: "Save immediately at this absolute path.",
+        description: "Save immediately at this absolute path (package; a path ending with a separator is the folder form).",
         type: [
           "string",
           "null",
@@ -59807,7 +60506,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       preset: {
-        description: "Format preset id.",
+        description: "Format preset id (`project.presets.list`).",
         type: [
           "string",
           "null",
@@ -59925,10 +60624,117 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     additionalProperties: false,
   },
-  "project.info.get.result": {
-    title: "Map_of_AnyValue",
+  "project.info.get.SceneInfo": {
+    description: "A scene in `ProjectInfo`.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      id: {
+        description: "Scene id.",
+        type: "string",
+      },
+      name: {
+        description: "Name.",
+        type: "string",
+      },
+      frameCount: {
+        description: "Scene length.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+    },
+    required: [
+      "id",
+      "name",
+      "frameCount",
+    ],
+  },
+  "project.info.get.result": {
+    title: "ProjectInfo",
+    description: "`ProjectInfo` (01 §12.4).",
+    type: "object",
+    properties: {
+      id: {
+        description: "Project id.",
+        type: "string",
+      },
+      name: {
+        description: "Name.",
+        type: "string",
+      },
+      path: {
+        description: "Location (`null` when never saved).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      readOnly: {
+        description: "Opened read-only.",
+        type: "boolean",
+      },
+      formatVersion: {
+        description: "Format version of the project (`MAJOR.MINOR`).",
+        type: "string",
+      },
+      dirty: {
+        description: "Modified.",
+        type: "boolean",
+      },
+      globalLibraryDirty: {
+        description: "The global library is modified (08; M9).",
+        type: "boolean",
+      },
+      lastSaved: {
+        description: "Last save (`null` when never saved).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      frameRate: {
+        description: "Frame rate.",
+        type: "number",
+      },
+      cameraWidth: {
+        description: "Camera width.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      cameraHeight: {
+        description: "Camera height.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      scenes: {
+        description: "Scenes in storyline order.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/project.info.get.SceneInfo",
+        },
+      },
+      currentSceneId: {
+        description: "The current scene.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "id",
+      "name",
+      "readOnly",
+      "formatVersion",
+      "dirty",
+      "globalLibraryDirty",
+      "frameRate",
+      "cameraWidth",
+      "cameraHeight",
+      "scenes",
+    ],
   },
   "project.open.OnUnsaved": {
     description: "What to do with unsaved changes (01 §11.2 rule 3).",
@@ -59956,7 +60762,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       path: {
-        description: "Absolute package path.",
+        description: "Absolute path of a package, or of a folder-form project.",
         type: "string",
       },
       readOnly: {
@@ -59974,19 +60780,76 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "path",
     ],
   },
+  "project.open.OpenResult": {
+    description: "The final result of `project.open`.",
+    type: "object",
+    properties: {
+      projectId: {
+        description: "Project id.",
+        type: "string",
+      },
+      readOnly: {
+        description: "Opened read-only.",
+        type: "boolean",
+      },
+      formatVersion: {
+        description: "The file's format version.",
+        type: "string",
+      },
+      warnings: {
+        description: "Warnings of the open (load report issues, locks; 01 §12.1 rule 6).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/project.open.ResultWarning",
+        },
+      },
+    },
+    required: [
+      "projectId",
+      "readOnly",
+      "formatVersion",
+      "warnings",
+    ],
+  },
+  "project.open.ResultWarning": {
+    description: "A warning returned in a result (01 §12.1 rule 6).",
+    type: "object",
+    properties: {
+      id: {
+        description: "Code.",
+        type: "string",
+      },
+      message: {
+        description: "Message.",
+        type: "string",
+      },
+      details: {
+        description: "Details.",
+      },
+    },
+    required: [
+      "id",
+      "message",
+      "details",
+    ],
+  },
   "project.open.result": {
-    title: "JobStarted",
-    description: "`{jobId}`.",
+    title: "Job_OpenResult",
     type: "object",
     properties: {
       jobId: {
-        description: "The job.",
+        description: "The job (11 §7.7).",
         type: "string",
+        minLength: 1,
       },
     },
     required: [
       "jobId",
     ],
+    additionalProperties: false,
+    "x-jobResult": {
+      $ref: "#/$defs/project.open.OpenResult",
+    },
   },
   "project.opened.params": {
     title: "NoParams",
@@ -60026,12 +60889,53 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     additionalProperties: false,
   },
+  "project.presets.list.Preset": {
+    description: "A preset (01 §3.1).",
+    type: "object",
+    properties: {
+      id: {
+        description: "Id: `mostRecent`, `default`, or a bundled preset id.",
+        type: "string",
+      },
+      name: {
+        description: "Display name.",
+        type: "string",
+      },
+      kind: {
+        description: "`mostRecent`, `default`, `bundled`.",
+        type: "string",
+      },
+      frameRate: {
+        description: "Frame rate.",
+        type: "number",
+      },
+      width: {
+        description: "Camera width.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      height: {
+        description: "Camera height.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+    },
+    required: [
+      "id",
+      "name",
+      "kind",
+      "frameRate",
+      "width",
+      "height",
+    ],
+  },
   "project.presets.list.result": {
-    title: "Array_of_Map_of_AnyValue",
+    title: "Array_of_Preset",
     type: "array",
     items: {
-      type: "object",
-      additionalProperties: true,
+      $ref: "#/$defs/project.presets.list.Preset",
     },
   },
   "project.properties.get.params": {
@@ -60104,7 +61008,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maximum: 8192,
       },
       setAsDefault: {
-        description: "Make these the defaults for new projects.",
+        description: "Make these the defaults for new projects (`project.defaults.*`).",
         type: "boolean",
         default: false,
       },
@@ -60145,12 +61049,39 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     additionalProperties: false,
   },
+  "project.recent.list.RecentEntry": {
+    description: "A recent project (01 §3.3).",
+    type: "object",
+    properties: {
+      path: {
+        description: "Path.",
+        type: "string",
+      },
+      name: {
+        description: "Project name.",
+        type: "string",
+      },
+      lastOpened: {
+        description: "When it was last opened or saved.",
+        type: "string",
+      },
+      exists: {
+        description: "Whether the project still exists.",
+        type: "boolean",
+      },
+    },
+    required: [
+      "path",
+      "name",
+      "lastOpened",
+      "exists",
+    ],
+  },
   "project.recent.list.result": {
-    title: "Array_of_Map_of_AnyValue",
+    title: "Array_of_RecentEntry",
     type: "array",
     items: {
-      type: "object",
-      additionalProperties: true,
+      $ref: "#/$defs/project.recent.list.RecentEntry",
     },
   },
   "project.recent.remove.params": {
@@ -60233,12 +61164,53 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     additionalProperties: false,
   },
+  "project.recovery.list.RecoveryEntry": {
+    description: "Recovery data at launch (REC-01).",
+    type: "object",
+    properties: {
+      recoveryId: {
+        description: "Recovery id.",
+        type: "string",
+      },
+      projectName: {
+        description: "Project name.",
+        type: "string",
+      },
+      originalPath: {
+        description: "The project's location (`null` for an untitled project).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      savedAt: {
+        description: "When the copy was written.",
+        type: "string",
+      },
+      usable: {
+        description: "Whether the copy loads (validated like a project, 10 §7).",
+        type: "boolean",
+      },
+      reason: {
+        description: "Why it is not usable.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "recoveryId",
+      "projectName",
+      "savedAt",
+      "usable",
+    ],
+  },
   "project.recovery.list.result": {
-    title: "Array_of_Map_of_AnyValue",
+    title: "Array_of_RecoveryEntry",
     type: "array",
     items: {
-      type: "object",
-      additionalProperties: true,
+      $ref: "#/$defs/project.recovery.list.RecoveryEntry",
     },
   },
   "project.recovery.open.OnUnsaved": {
@@ -60280,19 +61252,66 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "recoveryId",
     ],
   },
+  "project.recovery.open.RecoveryOpened": {
+    description: "The final result of `project.recovery.open`.",
+    type: "object",
+    properties: {
+      projectId: {
+        description: "Project id.",
+        type: "string",
+      },
+      warnings: {
+        description: "Warnings (load issues, `project.recoveryOlderThanFile`).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/project.recovery.open.ResultWarning",
+        },
+      },
+    },
+    required: [
+      "projectId",
+      "warnings",
+    ],
+  },
+  "project.recovery.open.ResultWarning": {
+    description: "A warning returned in a result (01 §12.1 rule 6).",
+    type: "object",
+    properties: {
+      id: {
+        description: "Code.",
+        type: "string",
+      },
+      message: {
+        description: "Message.",
+        type: "string",
+      },
+      details: {
+        description: "Details.",
+      },
+    },
+    required: [
+      "id",
+      "message",
+      "details",
+    ],
+  },
   "project.recovery.open.result": {
-    title: "JobStarted",
-    description: "`{jobId}`.",
+    title: "Job_RecoveryOpened",
     type: "object",
     properties: {
       jobId: {
-        description: "The job.",
+        description: "The job (11 §7.7).",
         type: "string",
+        minLength: 1,
       },
     },
     required: [
       "jobId",
     ],
+    additionalProperties: false,
+    "x-jobResult": {
+      $ref: "#/$defs/project.recovery.open.RecoveryOpened",
+    },
   },
   "project.save.params": {
     title: "SaveParams",
@@ -60300,31 +61319,65 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       includeGlobalLibrary: {
-        description: "Also save the global library.",
+        description: "Also save the global library (08; libraries arrive with M9: never modified before).",
         type: "boolean",
         default: true,
       },
       allowFormatUpgrade: {
-        description: "Allow writing a newer format version.",
+        description: "Allow writing a newer format version (VER-03).",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
   },
+  "project.save.SaveResult": {
+    description: "The final result of `project.save`.",
+    type: "object",
+    properties: {
+      path: {
+        description: "Where.",
+        type: "string",
+      },
+      projectSaved: {
+        description: "The project was saved.",
+        type: "boolean",
+      },
+      globalLibrarySaved: {
+        description: "The global library was saved.",
+        type: "boolean",
+      },
+      backupId: {
+        description: "The backup of the previous version (BAK-01).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "path",
+      "projectSaved",
+      "globalLibrarySaved",
+    ],
+  },
   "project.save.result": {
-    title: "JobStarted",
-    description: "`{jobId}`.",
+    title: "Job_SaveResult",
     type: "object",
     properties: {
       jobId: {
-        description: "The job.",
+        description: "The job (11 §7.7).",
         type: "string",
+        minLength: 1,
       },
     },
     required: [
       "jobId",
     ],
+    additionalProperties: false,
+    "x-jobResult": {
+      $ref: "#/$defs/project.save.SaveResult",
+    },
   },
   "project.saveAs.OnExists": {
     description: "What to do when a target file exists (01 §11.2 rule 4).",
@@ -60347,7 +61400,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       path: {
-        description: "Absolute target path.",
+        description: "Absolute target path (a path ending with a separator, or an existing folder, is the folder form).",
         type: "string",
       },
       onExists: {
@@ -60355,12 +61408,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         $ref: "#/$defs/project.saveAs.OnExists",
       },
       includeGlobalLibrary: {
-        description: "Also save the global library.",
+        description: "Also save the global library (08; M9).",
         type: "boolean",
         default: true,
       },
       allowFormatUpgrade: {
-        description: "Allow writing a newer format version.",
+        description: "Allow writing a newer format version (VER-03).",
         type: "boolean",
         default: false,
       },
@@ -60370,19 +61423,46 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "path",
     ],
   },
+  "project.saveAs.SaveAsResult": {
+    description: "The final result of `project.saveAs`.",
+    type: "object",
+    properties: {
+      path: {
+        description: "Where.",
+        type: "string",
+      },
+      projectSaved: {
+        description: "The project was saved.",
+        type: "boolean",
+      },
+      globalLibrarySaved: {
+        description: "The global library was saved.",
+        type: "boolean",
+      },
+    },
+    required: [
+      "path",
+      "projectSaved",
+      "globalLibrarySaved",
+    ],
+  },
   "project.saveAs.result": {
-    title: "JobStarted",
-    description: "`{jobId}`.",
+    title: "Job_SaveAsResult",
     type: "object",
     properties: {
       jobId: {
-        description: "The job.",
+        description: "The job (11 §7.7).",
         type: "string",
+        minLength: 1,
       },
     },
     required: [
       "jobId",
     ],
+    additionalProperties: false,
+    "x-jobResult": {
+      $ref: "#/$defs/project.saveAs.SaveAsResult",
+    },
   },
   "project.saved.params": {
     title: "NoParams",
@@ -60391,9 +61471,33 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "project.saved.result": {
-    title: "Map_of_AnyValue",
+    title: "SavedEvent",
+    description: "`project.saved` payload.",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      projectId: {
+        description: "Project id.",
+        type: "string",
+      },
+      path: {
+        description: "Where.",
+        type: "string",
+      },
+      projectSaved: {
+        description: "The project was saved.",
+        type: "boolean",
+      },
+      globalLibrarySaved: {
+        description: "The global library was saved.",
+        type: "boolean",
+      },
+    },
+    required: [
+      "projectId",
+      "path",
+      "projectSaved",
+      "globalLibrarySaved",
+    ],
   },
   "render.frame.run.params": {
     title: "render.frame.run parameters",
@@ -77219,104 +78323,162 @@ export interface colour_usage_list_result {
 
 /** `doc.asset.embed` parameters. */
 export interface doc_asset_embed_params {
-  /** Assets. */
+  /** Assets to embed. */
   assetIds?: string[] | null;
   /** Every linked asset. */
   all?: boolean;
 }
 
-export type doc_asset_embed_result = Record<string, unknown>;
+/** `doc.asset.embed` result. */
+export interface doc_asset_embed_result {
+  /** Embedded assets. */
+  embedded: string[];
+  /** Bytes added to the package. */
+  bytes: number | bigint;
+}
 
 /** What to do when a target file exists (01 §11.2 rule 4). */
 export type doc_asset_export_OnExists = 'fail' | 'overwrite';
 
 /** `doc.asset.export` parameters. */
 export interface doc_asset_export_params {
-  /** Asset. */
+  /** The asset. */
   assetId: string;
-  /** Target path. */
+  /** Absolute target file. */
   path: string;
   /** Overwrite policy. */
   onExists?: doc_asset_export_OnExists;
 }
 
-export type doc_asset_export_result = Record<string, unknown>;
+/** `{path, bytes}`. */
+export interface doc_asset_export_result {
+  /** Written file. */
+  path: string;
+  /** Bytes written. */
+  bytes: number | bigint;
+}
 
-/** Asset kind. */
+/** Asset kinds. */
 export type doc_asset_list_AssetKind = 'sound' | 'image' | 'movie' | 'vector';
 
-/** Asset status filter. */
+/** Asset filter. */
 export type doc_asset_list_AssetStatus = 'all' | 'missing' | 'changed' | 'linked' | 'embedded' | 'unused';
 
 /** `doc.asset.list` parameters. */
 export interface doc_asset_list_params {
-  /** Kind. */
+  /** Kind filter. */
   kind?: doc_asset_list_AssetKind | null;
-  /** Status. */
+  /** Status filter. */
   status?: doc_asset_list_AssetStatus;
+}
+
+/** One asset (10 §10.2). */
+export interface doc_asset_list_AssetEntry {
+  /** Asset id. */
+  id: string;
+  /** Name. */
+  name: string;
+  /** `sound`, `image`, `movie`, `vector`. */
+  kind: string;
+  /** `embedded`, `linked`. */
+  storage: string;
+  /** `ok`, `missing`, `changed`. */
+  status: string;
+  /** The entry (embedded) or the resolved file (linked; the link path when missing). */
+  path?: string | null;
+  /** Recorded size. */
+  size: number | bigint;
+  /** Number of references (placements, sequences). */
+  refs: number | bigint;
 }
 
 /** `{assets}`. */
 export interface doc_asset_list_result {
-  /** `{id, name, kind, storage, status, path?, size, refs}`. */
-  assets: (Record<string, unknown>)[];
+  /** Assets. */
+  assets: doc_asset_list_AssetEntry[];
 }
 
-/** Relink matching. */
+/** How a search candidate matches a missing asset. */
 export type doc_asset_relink_MatchBy = 'name' | 'nameAndSize' | 'hash';
 
 /** `doc.asset.relink` parameters. */
 export interface doc_asset_relink_params {
-  /** Asset. */
+  /** One linked asset. */
   assetId?: string | null;
-  /** New path. */
+  /** Its new file (absolute). */
   path?: string | null;
-  /** Folder to search. */
+  /** A folder to search for missing linked assets (MED-02 step 4). */
   searchFolder?: string | null;
   /** Search subfolders. */
   recursive?: boolean;
-  /** Matching. */
+  /** How a candidate matches. */
   matchBy?: doc_asset_relink_MatchBy;
 }
 
-export type doc_asset_relink_result = Record<string, unknown>;
+/** A relinked asset. */
+export interface doc_asset_relink_Relinked {
+  /** Asset id. */
+  assetId: string;
+  /** Its file. */
+  path: string;
+}
+
+/** `doc.asset.relink` result. */
+export interface doc_asset_relink_result {
+  /** Relinked assets. */
+  relinked: doc_asset_relink_Relinked[];
+  /** Linked assets still missing. */
+  stillMissing: string[];
+}
 
 /** `doc.asset.remove` parameters. */
 export interface doc_asset_remove_params {
-  /** Assets. */
+  /** Assets to remove. */
   assetIds?: string[] | null;
-  /** Every unused asset. */
+  /** Every asset referenced by nothing. */
   unused?: boolean;
-  /** Remove even if referenced. */
+  /** Also remove referenced assets, detaching their references. */
   force?: boolean;
 }
 
-export type doc_asset_remove_result = Record<string, unknown>;
+/** `doc.asset.remove` result. */
+export interface doc_asset_remove_result {
+  /** Removed assets. */
+  removed: string[];
+  /** Bytes no longer stored (embedded files leave the package at the next save, MED-04). */
+  bytes: number | bigint;
+  /** Placements and media sequences removed with them (`force`). */
+  detachedRefs: string[];
+}
 
 /** No parameters. */
 export type doc_asset_status_changed_params = Record<string, unknown>;
 
-export type doc_asset_status_changed_result = Record<string, unknown>;
+/** `doc.asset.status.changed` payload. */
+export interface doc_asset_status_changed_result {
+  /** `[{assetId, status}]`. */
+  assets: (Record<string, unknown>)[];
+}
 
 /** `doc.blob.get` parameters. */
 export interface doc_blob_get_params {
-  /** An asset or object holding a blob. */
+  /** An object holding a binary payload: an asset, a bitmap drawing node, a library item (its thumbnail, else its file). */
   ref?: string | null;
   /** A package entry. */
   entry?: string | null;
-  /** Size limit. */
+  /** Largest payload returned. */
   maxBytes?: number;
 }
 
-/** `doc.blob.get` result. */
+/** A binary payload. */
 export interface doc_blob_get_result {
-  /** Media type. */
+  /** IANA media type. */
   mediaType: string;
-  /** Size. */
+  /** Size in bytes. */
   size: number | bigint;
-  /** SHA-256. */
+  /** SHA-256 (lower-case hex). */
   sha256: string;
-  /** Content. */
+  /** The bytes, base64. */
   base64: string;
 }
 
@@ -77343,8 +78505,8 @@ export interface doc_changed_ChangeRecord {
 
 /** `doc.changed` payload (10 §2.6). */
 export interface doc_changed_result {
-  /** The step created or replayed. */
-  undoStepId: string;
+  /** The step created or replayed (`null` for a system change without an undo step, e.g. the `modifiedAt` stamp of a save). */
+  undoStepId?: string | null;
   /** The transaction's revision. */
   documentRev: number | bigint;
   /** Label. */
@@ -77409,7 +78571,7 @@ export interface doc_diff_result {
 /** Export scope. */
 export type doc_export_json_ExportScope = 'project' | 'scenes' | 'elements';
 
-/** Binary handling. */
+/** What happens to binary entries. */
 export type doc_export_json_Binaries = 'embed' | 'reference' | 'omit';
 
 /** What to do when a target file exists (01 §11.2 rule 4). */
@@ -77417,15 +78579,15 @@ export type doc_export_json_OnExists = 'fail' | 'overwrite';
 
 /** `doc.export.json` parameters. */
 export interface doc_export_json_params {
-  /** What to export. */
+  /** Scope. */
   scope: doc_export_json_ExportScope;
-  /** Scenes or elements. */
+  /** Scenes or elements of the scope. */
   refs?: string[] | null;
-  /** Target file (default: inline). */
+  /** Write to this absolute file instead of returning the bundle. */
   path?: string | null;
-  /** Binary data. */
+  /** Binary entries. */
   binaries?: doc_export_json_Binaries;
-  /** Indented. */
+  /** Canonical, indented JSON (else compact) when writing a file. */
   pretty?: boolean;
   /** Overwrite policy. */
   onExists?: doc_export_json_OnExists;
@@ -77433,17 +78595,17 @@ export interface doc_export_json_params {
 
 /** `doc.export.json` result. */
 export interface doc_export_json_result {
-  /** Inline bundle. */
+  /** The bundle (without `path`). */
   bundle?: Record<string, unknown> | null;
-  /** File written. */
+  /** The written file. */
   path?: string | null;
-  /** Size. */
+  /** Size of the bundle text. */
   bytes: number | bigint;
-  /** Objects. */
+  /** Objects exported (scenes, elements, banks, drawings, palettes, pens, assets). */
   objectCount: number | bigint;
 }
 
-/** What `doc.import.json` reads (spec A: `path | object`). */
+/** A bundle given inline or as a file. */
 export type doc_import_json_ImportSource = string | Record<string, unknown>;
 
 /** ID policy. */
@@ -77457,30 +78619,106 @@ export type doc_import_json_ColourPolicy = 'keepExisting' | 'updateExisting';
 
 /** `doc.import.json` parameters. */
 export interface doc_import_json_params {
-  /** A path or an inline bundle (`doc.export.json` output). */
+  /** The bundle, or the path of a bundle file. */
   source: doc_import_json_ImportSource;
-  /** Target scene (omit: new scenes). */
+  /** A scene to import the elements into (omit: the bundle's scenes become new scenes). */
   target?: string | null;
-  /** Scene position. */
+  /** Position of new scenes in the storyline (default: the end). */
   index?: number | null;
-  /** First frame. */
+  /** First frame of imported elements in the target scene. */
   atFrame?: number;
-  /** ID policy. */
+  /** IDs: fresh (`new`) or kept (`preserve`). */
   idPolicy?: doc_import_json_IdPolicy;
-  /** Conflict policy. */
+  /** ID and name conflicts. */
   onConflict?: doc_import_json_OnConflict;
-  /** Colour policy. */
+  /** Colours whose ID already exists. */
   colours?: doc_import_json_ColourPolicy;
-  /** Report only. */
+  /** Report what would be imported; change nothing. */
   dryRun?: boolean;
 }
 
-export type doc_import_json_result = Record<string, unknown>;
+/** Objects created. */
+export interface doc_import_json_Created {
+  /** Scenes. */
+  scenes: string[];
+  /** Elements. */
+  elements: string[];
+  /** Drawings. */
+  drawings: string[];
+  /** Palettes. */
+  palettes: string[];
+  /** Assets. */
+  assets: string[];
+}
+
+/** A renamed object. */
+export interface doc_import_json_Renamed {
+  /** Object id. */
+  id: string;
+  /** Name in the bundle. */
+  from: string;
+  /** Name in the project. */
+  to: string;
+}
+
+/** `doc.import.json` result. */
+export interface doc_import_json_result {
+  /** Objects created. */
+  created: doc_import_json_Created;
+  /** Objects renamed on import. */
+  renamed: doc_import_json_Renamed[];
+  /** Colour IDs used by the bundle that neither the bundle nor the project defines (colour recovery, 03 §11.2, is M2 C2.2's; they stay unresolved). */
+  recoveredColourIds: string[];
+  /** Issues met (unresolved binary entries, conflicts resolved). */
+  issues: unknown[];
+}
 
 /** No parameters. */
 export type doc_loadReport_get_params = Record<string, unknown>;
 
-export type doc_loadReport_get_result = Record<string, unknown>;
+/** An issue (10 §10.4). */
+export interface doc_loadReport_get_IssueOut {
+  /** `is_<n>`. */
+  issueId: string;
+  /** Code. */
+  code: string;
+  /** `info`, `warning`, `error`. */
+  severity: string;
+  /** The object concerned. */
+  objectId?: string | null;
+  /** Its canonical path. */
+  path?: string | null;
+  /** The package entry concerned (load issues). */
+  entry?: string | null;
+  /** Message. */
+  message: string;
+  /** Details. */
+  details: unknown;
+  /** Machine-applicable fixes. */
+  fixes: unknown[];
+}
+
+/** `LoadReport` (10 §7.3, §10.4). */
+export interface doc_loadReport_get_result {
+  /** Project id. */
+  projectId: string;
+  /** The path opened (`null` for a project that was not opened from a file). */
+  path?: string | null;
+  /** `package` or `folder` (`null` likewise). */
+  form?: string | null;
+  /** The file's format version. */
+  formatVersion: string;
+  /** The version migrated from. */
+  migratedFrom?: string | null;
+  /** Open read-only. */
+  readOnly: boolean;
+  /** Load time. */
+  durationMs: number | bigint;
+  /** Issues found and repaired. */
+  issues: doc_loadReport_get_IssueOut[];
+  /** Repairs applied. */
+  repairedCount: number | bigint;
+}
 
 /** Sort order of `doc.object.find`. */
 export type doc_object_find_Sort = 'path' | 'name' | 'rev' | 'createdAt';
@@ -77633,17 +78871,29 @@ export type doc_object_refs_RefDirection = 'incoming' | 'outgoing';
 export interface doc_object_refs_params {
   /** The object. */
   ref: string;
-  /** Incoming or outgoing. */
+  /** `incoming`: objects that reference it; `outgoing`: objects it references. */
   direction?: doc_object_refs_RefDirection;
-  /** Maximum. */
+  /** Largest number of references returned. */
   limit?: number;
 }
 
-/** `doc.object.refs` result. */
+/** One reference. */
+export interface doc_object_refs_RefEntry {
+  /** The other object. */
+  id: string;
+  /** Its type. */
+  type: string;
+  /** Its canonical path. */
+  path?: string | null;
+  /** The referencing property (JSON Pointer into the referencing object). */
+  property: string;
+}
+
+/** `{refs, total}`. */
 export interface doc_object_refs_result {
-  /** `{id, type, path, property}`. */
-  refs: (Record<string, unknown>)[];
-  /** Total. */
+  /** References. */
+  refs: doc_object_refs_RefEntry[];
+  /** Total before the limit. */
   total: number | bigint;
 }
 
@@ -77662,52 +78912,99 @@ export interface doc_object_resolve_result {
 /** No parameters. */
 export type doc_package_changedOnDisk_params = Record<string, unknown>;
 
-export type doc_package_changedOnDisk_result = Record<string, unknown>;
+/** `doc.package.changedOnDisk` payload. */
+export interface doc_package_changedOnDisk_result {
+  /** The project file or folder. */
+  path: string;
+  /** When the change was noticed. */
+  detectedAt: string;
+}
 
-/** Package form. */
-export type doc_package_export_Form = 'package' | 'folder';
+/** Forms. */
+export type doc_package_export_FormParam = 'package' | 'folder';
 
 /** What to do when a target file exists (01 §11.2 rule 4). */
 export type doc_package_export_OnExists = 'fail' | 'overwrite';
 
 /** `doc.package.export` parameters. */
 export interface doc_package_export_params {
-  /** Target path. */
+  /** Absolute target path. */
   path: string;
-  /** Form. */
-  form?: doc_package_export_Form;
+  /** Form of the copy. */
+  form?: doc_package_export_FormParam;
   /** Overwrite policy. */
   onExists?: doc_package_export_OnExists;
 }
 
-/** `{jobId}`. */
+/** The final result of `doc.package.export`. */
+export interface doc_package_export_PackageExported {
+  /** Where. */
+  path: string;
+  /** `package` or `folder`. */
+  form: string;
+  /** Bytes written. */
+  bytes: number | bigint;
+  /** Entries written. */
+  entries: number | bigint;
+}
+
 export interface doc_package_export_result {
-  /** The job. */
+  /** The job (11 §7.7). */
   jobId: string;
 }
 
 /** `doc.package.get` parameters. */
 export interface doc_package_get_params {
-  /** Package path. */
+  /** Absolute path of a package, folder, template, palette file or library folder. */
   path: string;
-  /** Validate fully. */
+  /** Load and validate it completely (10 §7) and report its issues. */
   validate?: boolean;
 }
 
-export type doc_package_get_result = Record<string, unknown>;
+/** What a file on disk is (10 §10.2 `doc.package.get`). */
+export interface doc_package_get_result {
+  /** `project`, `template`, `palette`, `library`. */
+  kind: string;
+  /** `package`, `folder` or `file`. */
+  form: string;
+  /** Format version. */
+  formatVersion?: string | null;
+  /** Lowest reader version. */
+  minReaderVersion?: string | null;
+  /** Whether this version can read it. */
+  readable: boolean;
+  /** Project id (projects). */
+  projectId?: string | null;
+  /** Name. */
+  name?: string | null;
+  /** Save time. */
+  savedAt?: string | null;
+  /** Number of entries. */
+  entryCount: number | bigint;
+  /** Issues found (with `validate`; container and version problems always). */
+  issues: unknown[];
+}
 
 /** `doc.repair` parameters. */
 export interface doc_repair_params {
-  /** Issues to fix. */
+  /** Issues (from `doc.validate` of the same revision). */
   issueIds?: string[] | null;
-  /** Issue codes to fix. */
+  /** Checks or issue codes. */
   codes?: string[] | null;
-  /** Subtree. */
+  /** Only this object and what it contains. */
   within?: string | null;
-  /** Every fixable issue. */
+  /** Every issue with a default fix. */
   all?: boolean;
-  /** Report only. */
+  /** Report what would be fixed; change nothing. */
   dryRun?: boolean;
+}
+
+/** A skipped issue. */
+export interface doc_repair_Skipped {
+  /** The issue. */
+  issueId: string;
+  /** Why. */
+  reason: string;
 }
 
 /** One object change of a committed (or dry-run) transaction (10 §2.6, 11 §7.2). */
@@ -77730,11 +79027,11 @@ export interface doc_repair_ChangeRecord {
 
 /** `doc.repair` result. */
 export interface doc_repair_result {
-  /** Fixed issues. */
+  /** Issues fixed. */
   fixed: string[];
-  /** `{issueId, reason}`. */
-  skipped: (Record<string, unknown>)[];
-  /** Changes. */
+  /** Issues not fixed, with the reason. */
+  skipped: doc_repair_Skipped[];
+  /** The changes made (the envelope carries them too). */
   changes: doc_repair_ChangeRecord[];
 }
 
@@ -77788,18 +79085,28 @@ export type doc_schema_validate_ValidateMode = 'create' | 'replace';
 export interface doc_schema_validate_params {
   /** Object type. */
   type: string;
-  /** Candidate object. */
+  /** The candidate object. */
   object: Record<string, unknown>;
-  /** Create (id/rev may be absent) or replace. */
+  /** `create`: a new object (ID and `rev` may be omitted); `replace`: the object with this ID, replaced. */
   mode?: doc_schema_validate_ValidateMode;
 }
 
-/** Validation result. */
+/** One validation error. */
+export interface doc_schema_validate_ValidationError {
+  /** JSON Pointer into the candidate. */
+  pointer: string;
+  /** Code. */
+  code: string;
+  /** Message. */
+  message: string;
+}
+
+/** `{valid, errors}`. */
 export interface doc_schema_validate_result {
-  /** No errors. */
+  /** Whether the candidate is valid. */
   valid: boolean;
-  /** `{pointer, code, message}`. */
-  errors: (Record<string, unknown>)[];
+  /** Errors. */
+  errors: doc_schema_validate_ValidationError[];
 }
 
 /** No parameters. */
@@ -77825,37 +79132,71 @@ export interface doc_state_get_result {
   dirty: boolean;
   /** Read-only. */
   readOnly: boolean;
-  /** Lock holder (10 §8 LOCK-01; C1.3), `null` while no lock is held. */
+  /** The lock (10 §8 LOCK-01): `{held: true, …our lock}` while this session holds it, `{held: false, …holder}` when the project opened read-only because someone else holds it, `null` otherwise. */
   lock?: Record<string, unknown> | null;
   /** Oldest revision `doc.diff` accepts. */
   historyFromRev: number | bigint;
 }
 
-/** Severity filter. */
-export type doc_validate_Severity = 'info' | 'warning' | 'error';
+/** Minimum severity. */
+export type doc_validate_SeverityParam = 'info' | 'warning' | 'error';
 
 /** `doc.validate` parameters. */
 export interface doc_validate_params {
-  /** Subtree. */
+  /** Only this object and what it contains. */
   within?: string | null;
-  /** Checks (default all). */
+  /** Checks to run (default: all; 10 §10.3). */
   checks?: string[] | null;
   /** Minimum severity. */
-  minSeverity?: doc_validate_Severity;
-  /** Maximum issues. */
+  minSeverity?: doc_validate_SeverityParam;
+  /** Largest number of issues. */
   limit?: number;
+}
+
+/** An issue (10 §10.4). */
+export interface doc_validate_IssueOut {
+  /** `is_<n>`. */
+  issueId: string;
+  /** Code. */
+  code: string;
+  /** `info`, `warning`, `error`. */
+  severity: string;
+  /** The object concerned. */
+  objectId?: string | null;
+  /** Its canonical path. */
+  path?: string | null;
+  /** The package entry concerned (load issues). */
+  entry?: string | null;
+  /** Message. */
+  message: string;
+  /** Details. */
+  details: unknown;
+  /** Machine-applicable fixes. */
+  fixes: unknown[];
+}
+
+/** A check that needs a computation owned by a later milestone. */
+export interface doc_validate_Unavailable {
+  /** The check. */
+  check: string;
+  /** The owning checkpoint. */
+  owner: string;
+  /** Why. */
+  reason: string;
 }
 
 /** `doc.validate` result. */
 export interface doc_validate_result {
-  /** Revision checked. */
+  /** The revision checked. */
   documentRev: number | bigint;
-  /** Issues (10 §10.4 `Issue`). */
-  issues: (Record<string, unknown>)[];
+  /** Issues (10 §10.4). */
+  issues: doc_validate_IssueOut[];
   /** Counts by severity. */
   counts: Record<string, number | bigint>;
   /** More issues than `limit`. */
   truncated: boolean;
+  /** Checks not run, with their owner. */
+  unavailable: doc_validate_Unavailable[];
 }
 
 export interface draw_arrange_apply_params {
@@ -85365,7 +86706,15 @@ export interface print_settings_set_result {
 /** No parameters. */
 export type project_autosaved_params = Record<string, unknown>;
 
-export type project_autosaved_result = Record<string, unknown>;
+/** `project.autosaved` payload. */
+export interface project_autosaved_result {
+  /** Project id. */
+  projectId: string;
+  /** Recovery id. */
+  recoveryId: string;
+  /** When. */
+  savedAt: string;
+}
 
 /** `project.backup.list` parameters. */
 export interface project_backup_list_params {
@@ -85373,7 +86722,19 @@ export interface project_backup_list_params {
   path?: string | null;
 }
 
-export type project_backup_list_result = (Record<string, unknown>)[];
+/** A backup (01 §3.7). */
+export interface project_backup_list_BackupEntry {
+  /** Backup id. */
+  backupId: string;
+  /** When the backed-up version was saved. */
+  savedAt: string;
+  /** Size. */
+  sizeBytes: number | bigint;
+  /** Its `documentRev`. */
+  documentRev: number | bigint;
+}
+
+export type project_backup_list_result = project_backup_list_BackupEntry[];
 
 /** What to do with unsaved changes (01 §11.2 rule 3). */
 export type project_backup_open_OnUnsaved = 'fail' | 'save' | 'discard';
@@ -85424,11 +86785,11 @@ export type project_create_OnExists = 'fail' | 'overwrite';
 
 /** `project.create` parameters. */
 export interface project_create_params {
-  /** Project name. */
+  /** Project name (01 §9.6 shared name rule). */
   name: string;
-  /** Save immediately at this absolute path. */
+  /** Save immediately at this absolute path (package; a path ending with a separator is the folder form). */
   path?: string | null;
-  /** Format preset id. */
+  /** Format preset id (`project.presets.list`). */
   preset?: string | null;
   /** Frame rate. */
   frameRate?: number | null;
@@ -85470,14 +86831,52 @@ export interface project_dirty_changed_result {
 /** No parameters. */
 export type project_info_get_params = Record<string, unknown>;
 
-export type project_info_get_result = Record<string, unknown>;
+/** A scene in `ProjectInfo`. */
+export interface project_info_get_SceneInfo {
+  /** Scene id. */
+  id: string;
+  /** Name. */
+  name: string;
+  /** Scene length. */
+  frameCount: number | bigint;
+}
+
+/** `ProjectInfo` (01 §12.4). */
+export interface project_info_get_result {
+  /** Project id. */
+  id: string;
+  /** Name. */
+  name: string;
+  /** Location (`null` when never saved). */
+  path?: string | null;
+  /** Opened read-only. */
+  readOnly: boolean;
+  /** Format version of the project (`MAJOR.MINOR`). */
+  formatVersion: string;
+  /** Modified. */
+  dirty: boolean;
+  /** The global library is modified (08; M9). */
+  globalLibraryDirty: boolean;
+  /** Last save (`null` when never saved). */
+  lastSaved?: string | null;
+  /** Frame rate. */
+  frameRate: number;
+  /** Camera width. */
+  cameraWidth: number;
+  /** Camera height. */
+  cameraHeight: number;
+  /** Scenes in storyline order. */
+  scenes: project_info_get_SceneInfo[];
+  /** The current scene. */
+  currentSceneId?: string | null;
+}
 
 /** What to do with unsaved changes (01 §11.2 rule 3). */
 export type project_open_OnUnsaved = 'fail' | 'save' | 'discard';
 
 /** `project.open` parameters. */
 export interface project_open_params {
-  /** Absolute package path. */
+  /** Absolute path of a package, or of a folder-form project. */
   path: string;
   /** Open read-only. */
   readOnly?: boolean;
@@ -85485,9 +86884,30 @@ export interface project_open_params {
   onUnsaved?: project_open_OnUnsaved;
 }
 
-/** `{jobId}`. */
+/** The final result of `project.open`. */
+export interface project_open_OpenResult {
+  /** Project id. */
+  projectId: string;
+  /** Opened read-only. */
+  readOnly: boolean;
+  /** The file's format version. */
+  formatVersion: string;
+  /** Warnings of the open (load report issues, locks; 01 §12.1 rule 6). */
+  warnings: project_open_ResultWarning[];
+}
+
+/** A warning returned in a result (01 §12.1 rule 6). */
+export interface project_open_ResultWarning {
+  /** Code. */
+  id: string;
+  /** Message. */
+  message: string;
+  /** Details. */
+  details: unknown;
+}
+
 export interface project_open_result {
-  /** The job. */
+  /** The job (11 §7.7). */
   jobId: string;
 }
 
@@ -85507,7 +86927,23 @@ export interface project_opened_result {
 /** No parameters. */
 export type project_presets_list_params = Record<string, unknown>;
 
-export type project_presets_list_result = (Record<string, unknown>)[];
+/** A preset (01 §3.1). */
+export interface project_presets_list_Preset {
+  /** Id: `mostRecent`, `default`, or a bundled preset id. */
+  id: string;
+  /** Display name. */
+  name: string;
+  /** `mostRecent`, `default`, `bundled`. */
+  kind: string;
+  /** Frame rate. */
+  frameRate: number;
+  /** Camera width. */
+  width: number;
+  /** Camera height. */
+  height: number;
+}
+
+export type project_presets_list_result = project_presets_list_Preset[];
 
 /** No parameters. */
 export type project_properties_get_params = Record<string, unknown>;
@@ -85530,7 +86966,7 @@ export interface project_properties_set_params {
   cameraWidth?: number | null;
   /** Camera height. */
   cameraHeight?: number | null;
-  /** Make these the defaults for new projects. */
+  /** Make these the defaults for new projects (`project.defaults.*`). */
   setAsDefault?: boolean;
 }
 
@@ -85547,7 +86983,19 @@ export interface project_properties_set_result {
 /** No parameters. */
 export type project_recent_list_params = Record<string, unknown>;
 
-export type project_recent_list_result = (Record<string, unknown>)[];
+/** A recent project (01 §3.3). */
+export interface project_recent_list_RecentEntry {
+  /** Path. */
+  path: string;
+  /** Project name. */
+  name: string;
+  /** When it was last opened or saved. */
+  lastOpened: string;
+  /** Whether the project still exists. */
+  exists: boolean;
+}
+
+export type project_recent_list_result = project_recent_list_RecentEntry[];
 
 /** `project.recent.remove` parameters. */
 export interface project_recent_remove_params {
@@ -85580,7 +87028,23 @@ export interface project_recovery_delete_result {
 /** No parameters. */
 export type project_recovery_list_params = Record<string, unknown>;
 
-export type project_recovery_list_result = (Record<string, unknown>)[];
+/** Recovery data at launch (REC-01). */
+export interface project_recovery_list_RecoveryEntry {
+  /** Recovery id. */
+  recoveryId: string;
+  /** Project name. */
+  projectName: string;
+  /** The project's location (`null` for an untitled project). */
+  originalPath?: string | null;
+  /** When the copy was written. */
+  savedAt: string;
+  /** Whether the copy loads (validated like a project, 10 §7). */
+  usable: boolean;
+  /** Why it is not usable. */
+  reason?: string | null;
+}
+
+export type project_recovery_list_result = project_recovery_list_RecoveryEntry[];
 
 /** What to do with unsaved changes (01 §11.2 rule 3). */
 export type project_recovery_open_OnUnsaved = 'fail' | 'save' | 'discard';
@@ -85593,23 +87057,51 @@ export interface project_recovery_open_params {
   onUnsaved?: project_recovery_open_OnUnsaved;
 }
 
-/** `{jobId}`. */
+/** The final result of `project.recovery.open`. */
+export interface project_recovery_open_RecoveryOpened {
+  /** Project id. */
+  projectId: string;
+  /** Warnings (load issues, `project.recoveryOlderThanFile`). */
+  warnings: project_recovery_open_ResultWarning[];
+}
+
+/** A warning returned in a result (01 §12.1 rule 6). */
+export interface project_recovery_open_ResultWarning {
+  /** Code. */
+  id: string;
+  /** Message. */
+  message: string;
+  /** Details. */
+  details: unknown;
+}
+
 export interface project_recovery_open_result {
-  /** The job. */
+  /** The job (11 §7.7). */
   jobId: string;
 }
 
 /** `project.save` parameters. */
 export interface project_save_params {
-  /** Also save the global library. */
+  /** Also save the global library (08; libraries arrive with M9: never modified before). */
   includeGlobalLibrary?: boolean;
-  /** Allow writing a newer format version. */
+  /** Allow writing a newer format version (VER-03). */
   allowFormatUpgrade?: boolean;
 }
 
-/** `{jobId}`. */
+/** The final result of `project.save`. */
+export interface project_save_SaveResult {
+  /** Where. */
+  path: string;
+  /** The project was saved. */
+  projectSaved: boolean;
+  /** The global library was saved. */
+  globalLibrarySaved: boolean;
+  /** The backup of the previous version (BAK-01). */
+  backupId?: string | null;
+}
+
 export interface project_save_result {
-  /** The job. */
+  /** The job (11 §7.7). */
   jobId: string;
 }
 
@@ -85618,26 +87110,45 @@ export type project_saveAs_OnExists = 'fail' | 'overwrite';
 
 /** `project.saveAs` parameters. */
 export interface project_saveAs_params {
-  /** Absolute target path. */
+  /** Absolute target path (a path ending with a separator, or an existing folder, is the folder form). */
   path: string;
   /** Overwrite policy. */
   onExists?: project_saveAs_OnExists;
-  /** Also save the global library. */
+  /** Also save the global library (08; M9). */
   includeGlobalLibrary?: boolean;
-  /** Allow writing a newer format version. */
+  /** Allow writing a newer format version (VER-03). */
   allowFormatUpgrade?: boolean;
 }
 
-/** `{jobId}`. */
+/** The final result of `project.saveAs`. */
+export interface project_saveAs_SaveAsResult {
+  /** Where. */
+  path: string;
+  /** The project was saved. */
+  projectSaved: boolean;
+  /** The global library was saved. */
+  globalLibrarySaved: boolean;
+}
+
 export interface project_saveAs_result {
-  /** The job. */
+  /** The job (11 §7.7). */
   jobId: string;
 }
 
 /** No parameters. */
 export type project_saved_params = Record<string, unknown>;
 
-export type project_saved_result = Record<string, unknown>;
+/** `project.saved` payload. */
+export interface project_saved_result {
+  /** Project id. */
+  projectId: string;
+  /** Where. */
+  path: string;
+  /** The project was saved. */
+  projectSaved: boolean;
+  /** The global library was saved. */
+  globalLibrarySaved: boolean;
+}
 
 export interface render_frame_run_params {
   /** object ID or path reference (10 §3) */

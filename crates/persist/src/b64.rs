@@ -23,7 +23,7 @@ pub fn encode(data: &[u8]) -> String {
 #[must_use]
 pub fn decode(text: &str) -> Option<Vec<u8>> {
     let b = text.as_bytes();
-    if b.len() % 4 != 0 {
+    if !b.len().is_multiple_of(4) {
         return None;
     }
     let val = |c: u8| -> Option<u32> {
