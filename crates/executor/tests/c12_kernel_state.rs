@@ -250,29 +250,38 @@ fn prepared_with_files(id: &str, dir: &std::path::Path) -> ExecutorHandle {
     std::fs::create_dir_all(dir.join("media")).unwrap();
     let user = tt_persist::settings::UserDirs::under(&dir.join("user"));
     let project_id = doc.project().id().to_string();
-    let backups = user.backups.join(&project_id);
-    std::fs::create_dir_all(&backups).unwrap();
-    std::fs::copy(&sample, backups.join("20261001T090000Z.animpkg")).unwrap();
-    let index = json!({ "format": "toontown-backups", "formatVersion": "1.0", "backups": [{
-        "backupId": "bk_1a2b3c4d", "originalPath": sample.to_string_lossy(), "projectName": "Sample",
-        "savedAt": "2026-10-01T09:00:00Z", "documentRev": 1, "sizeBytes": 1, "file": "20261001T090000Z.animpkg" }] });
-    std::fs::write(backups.join("backup.json"), serde_json::to_vec(&index).unwrap()).unwrap();
-    let info = tt_persist::recovery::RecoveryInfo {
-        recovery_id: "rc_1a2b3c4d".into(),
-        project_id,
-        project_name: "Sample".into(),
-        original_path: Some(sample.to_string_lossy().into_owned()),
-        saved_at: "2026-10-01T09:00:00Z".into(),
-        document_rev: 1,
-        app_version: "0.1.0".into(),
-        process_id: 0,
-        host: String::new(),
-        heartbeat_at: "2026-10-01T09:00:00Z".into(),
-    };
-    tt_persist::recovery::write(&user.recovery, &info, &input).unwrap();
+    // Only the files an example uses are made (file creation is slow on CI runners).
+    if id.starts_with("project.backup.") {
+        let backups = user.backups.join(&project_id);
+        std::fs::create_dir_all(&backups).unwrap();
+        std::fs::copy(&sample, backups.join("20261001T090000Z.animpkg")).unwrap();
+        let index = json!({ "format": "toontown-backups", "formatVersion": "1.0", "backups": [{
+            "backupId": "bk_1a2b3c4d", "originalPath": sample.to_string_lossy(), "projectName": "Sample",
+            "savedAt": "2026-10-01T09:00:00Z", "documentRev": 1, "sizeBytes": 1, "file": "20261001T090000Z.animpkg" }] });
+        std::fs::write(backups.join("backup.json"), serde_json::to_vec(&index).unwrap()).unwrap();
+    }
+    if id.starts_with("project.recovery.") {
+        let info = tt_persist::recovery::RecoveryInfo {
+            recovery_id: "rc_1a2b3c4d".into(),
+            project_id,
+            project_name: "Sample".into(),
+            original_path: Some(sample.to_string_lossy().into_owned()),
+            saved_at: "2026-10-01T09:00:00Z".into(),
+            document_rev: 1,
+            app_version: "0.1.0".into(),
+            process_id: 0,
+            host: String::new(),
+            heartbeat_at: "2026-10-01T09:00:00Z".into(),
+        };
+        tt_persist::recovery::write(&user.recovery, &info, &input).unwrap();
+    }
     let h = tt_executor::ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
         config: ExecutorConfig { budget: Duration::from_secs(60) },
-        persist: tt_executor::PersistOptions { user_dirs: Some(user), ..Default::default() },
+        persist: tt_executor::PersistOptions {
+            user_dirs: Some(user),
+            maintenance: tt_executor::Maintenance { tick: Duration::ZERO, ..Default::default() },
+            ..Default::default()
+        },
     })
     .unwrap();
     wait_job(&h, &ok(&h, "project.open", json!({ "path": sample.to_string_lossy() })));

@@ -28,7 +28,8 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+    # C1.3: the workspace tests took 17-20 min of the former 30-min budget on 2026-10-26 (run 40419016272).
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
         with:
