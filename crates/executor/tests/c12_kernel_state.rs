@@ -206,13 +206,12 @@ fn prepared() -> ExecutorHandle {
 }
 
 fn edits(h: &ExecutorHandle) {
-    let h = h.clone();
-    let scene = first(&h, "scene");
-    ok(&h, "checkpoint.create", json!({ "name": "before-walk" }));
-    ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "p": 1 } } }));
-    ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "p": 2 } } }));
-    ok(&h, "edit.undo", json!({}));
-    ok(&h, "workspace.create", json!({ "name": "Inking" }));
+    let scene = first(h, "scene");
+    ok(h, "checkpoint.create", json!({ "name": "before-walk" }));
+    ok(h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "p": 1 } } }));
+    ok(h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "p": 2 } } }));
+    ok(h, "edit.undo", json!({}));
+    ok(h, "workspace.create", json!({ "name": "Inking" }));
     h.jobs().submit("test.job", "user", |_| Ok(json!({}))).unwrap();
 }
 
