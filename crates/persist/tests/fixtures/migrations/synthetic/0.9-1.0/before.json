@@ -1,0 +1,16 @@
+{
+  "project.json": {
+    "id": "pr_01K742SG00BK0VXTWDM5JRXV37",
+    "type": "project",
+    "name": "Old",
+    "fps": 24,
+    "cameraWidth": 1920,
+    "cameraHeight": 1080,
+    "ext": { "com.example.tool": { "keep": true } }
+  },
+  "scenes/sc_01K742SG0000000000000000S1/scene.json": {
+    "id": "sc_01K742SG0000000000000000S1",
+    "type": "scene",
+    "name": "Scene-1"
+  }
+}
