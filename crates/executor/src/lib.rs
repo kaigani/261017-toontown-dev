@@ -113,6 +113,8 @@ enum Request {
     Run(Box<dyn FnOnce(&mut run::Core) + Send>),
     /// Background maintenance: autosave, heartbeats, external-change detection.
     Tick,
+    /// Maintenance now (forcing autosave or not), answered after its events are delivered.
+    Maintenance(bool, Sender<()>),
     /// The last handle was dropped.
     Shutdown,
 }
@@ -296,12 +298,7 @@ impl ExecutorHandle {
     /// # Errors
     /// `command.timeout`, `internal`.
     pub fn run_maintenance(&self, force_autosave: bool) -> Result<(), CommandError> {
-        self.call("maintenance", |r| {
-            Request::Run(Box::new(move |core| {
-                maintenance::tick(core, force_autosave);
-                let _ = r.send(());
-            }))
-        })
+        self.call("maintenance", |r| Request::Maintenance(force_autosave, r))
     }
 
     fn call<T>(&self, what: &str, make: impl FnOnce(Sender<T>) -> Request) -> Result<T, CommandError> {
@@ -450,6 +447,11 @@ fn document_thread(mut core: run::Core, rx: &Receiver<Request>, subscribers: &Mu
             }
             Request::Run(f) => f(&mut core),
             Request::Tick => maintenance::tick(&mut core, false),
+            Request::Maintenance(force, reply) => {
+                maintenance::tick(&mut core, force);
+                flush(&mut core);
+                let _ = reply.send(());
+            }
             Request::Shutdown => break,
         }
         flush(&mut core);

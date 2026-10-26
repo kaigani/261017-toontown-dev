@@ -65,6 +65,8 @@ fn objects_created_by_import_survive_save_and_reopen_identically() {
     assert!(src.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
     let bundle = ok(&src, "doc.export.json", json!({ "scope": "project", "binaries": "embed" }))["bundle"].clone();
     let source_objects = all_objects(&src);
+    // The project's start transition belongs to the project, which an import does not replace.
+    let start = ok(&src, "doc.object.get", json!({ "ref": "project" }))["object"]["startTransition"]["id"].clone();
     // The target: a new project; the bundle's scenes, banks, palettes, pens and assets are imported by command.
     let h = spawn(&dir.join("dst"));
     ok(&h, "project.create", json!({ "name": "Round trip" }));
@@ -75,12 +77,19 @@ fn objects_created_by_import_survive_save_and_reopen_identically() {
     let mut types = std::collections::BTreeSet::new();
     for (id, v) in &source_objects {
         let t = v["type"].as_str().unwrap().to_owned();
-        if matches!(t.as_str(), "project" | "library" | "libraryFolder" | "libraryItem") {
+        if matches!(t.as_str(), "project" | "library" | "libraryFolder" | "libraryItem") || v["id"] == start {
             continue;
         }
         let got = imported.get(id).unwrap_or_else(|| panic!("{t} `{id}` was not imported"));
+        // Imported scenes also hold a style entry for the target project's own palette (10 §4.3).
+        let mut got = got.clone();
+        if t == "scene" {
+            let src_ps = v["paletteStyles"].as_object().unwrap().clone();
+            let ps = got["paletteStyles"].as_object_mut().unwrap();
+            ps.retain(|k, _| src_ps.contains_key(k));
+        }
         let scrub = |x: &Value| without(x.clone(), &["rev", "path", "name"]);
-        assert_eq!(scrub(got), scrub(v), "{t} `{id}`");
+        assert_eq!(scrub(&got), scrub(v), "{t} `{id}`");
         types.insert(t);
     }
     for t in ["palette", "paletteStyle", "swatch", "pen", "asset", "drawingBank", "drawing", "drawingNode", "stroke", "scene", "transition", "element", "channel", "key", "motionPoint", "particleBlock", "soundPlacement", "mediaSequence"] {
@@ -122,7 +131,9 @@ fn bundles_import_into_a_scene_at_a_frame_with_fresh_ids_and_renames() {
     assert!(!new_ids.contains(&bob), "fresh IDs");
     let copy = new_ids.iter().map(|i| get(&h, i)).find(|e| e["elementType"] == "drawing").unwrap();
     assert_eq!(copy["exposure"][0], json!([null, 10]), "the copy starts at frame 11: {}", copy["exposure"]);
-    assert_eq!(copy["exposure"][1], before["exposure"][0]);
+    // The copy exposes the copies of Bob's drawings (fresh IDs) with the same timing.
+    assert_eq!(copy["exposure"][1][1], before["exposure"][0][1]);
+    assert_ne!(copy["exposure"][1][0], before["exposure"][0][0]);
     // Again: names conflict in the target scene and are renamed.
     let r2 = ok(&h, "doc.import.json", json!({ "source": b, "target": scene2 }));
     assert!(!r2["renamed"].as_array().unwrap().is_empty(), "{r2}");
@@ -161,7 +172,7 @@ fn linked_media_relink_embed_blob_export_and_remove() {
         "pens": [], "blobs": {},
         "assets": [{ "id": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "type": "asset", "rev": 1, "name": "line.wav", "kind": "sound",
             "mediaType": "audio/wav", "storage": "linked", "entry": null,
-            "link": { "kind": "file", "path": "elsewhere/line.wav", "absolutePath": null, "libraryId": null, "itemId": null, "versionId": null },
+            "link": { "kind": "file", "path": "elsewhere/line.wav", "absolutePath": "/nowhere/elsewhere/line.wav", "libraryId": null, "itemId": null, "versionId": null },
             "size": 20, "sha256": sha, "importedAt": "2026-10-19T00:00:00.000Z", "sourcePath": null }]
     });
     ok(&h, "doc.import.json", json!({ "source": bundle, "idPolicy": "preserve" }));
@@ -261,9 +272,10 @@ fn validation_references_and_candidates() {
     let bad = json!({ "name": "Ink", "kind": "brush", "minSize": 9, "maxSize": 4, "smoothness": 3, "tip": "round", "tipAngle": 0, "colourId": null });
     let r = ok(&h, "doc.schema.validate", json!({ "type": "pen", "object": bad, "mode": "create" }));
     assert_eq!(r["valid"], false);
-    let mut el = get(&h, &bob);
-    el.as_object_mut().unwrap().shift_remove("path");
-    assert_eq!(ok(&h, "doc.schema.validate", json!({ "type": "element", "object": el.clone() }))["valid"], true);
+    let el = ok(&h, "doc.object.get", json!({ "ref": bob, "depth": -1 }))["object"].clone();
+    let mut el = without(el, &["path"]);
+    let same = ok(&h, "doc.schema.validate", json!({ "type": "element", "object": el.clone() }));
+    assert_eq!(same["valid"], true, "{same}");
     el["drawingBankId"] = json!("db_01K7DDDDDDDDDDDDDDDDDDDDDD");
     let r = ok(&h, "doc.schema.validate", json!({ "type": "element", "object": el }));
     assert_eq!(r["valid"], false, "a replacement must keep the document's references valid: {r}");
