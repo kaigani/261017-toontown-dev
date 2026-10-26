@@ -201,6 +201,12 @@ fn the_watchdog_answers_within_its_budget() {
 /// The state every example expects: one checkpoint, a user workspace, a job, undo and redo steps.
 fn prepared() -> ExecutorHandle {
     let h = fixture();
+    edits(&h);
+    h
+}
+
+fn edits(h: &ExecutorHandle) {
+    let h = h.clone();
     let scene = first(&h, "scene");
     ok(&h, "checkpoint.create", json!({ "name": "before-walk" }));
     ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "p": 1 } } }));
@@ -208,7 +214,82 @@ fn prepared() -> ExecutorHandle {
     ok(&h, "edit.undo", json!({}));
     ok(&h, "workspace.create", json!({ "name": "Inking" }));
     h.jobs().submit("test.job", "user", |_| Ok(json!({}))).unwrap();
+}
+
+/// Commands whose examples work with files (C1.3): they run on the fixture saved as a package with its embedded sound,
+/// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
+/// that stands for the examples' `/tmp`.
+fn with_files(id: &str) -> bool {
+    ["project.", "doc.asset.", "doc.blob.", "doc.package."].iter().any(|p| id.starts_with(p))
+}
+
+fn wait_job(h: &ExecutorHandle, started: &Value) {
+    let r = ok(h, "job.wait", json!({ "jobId": started["jobId"], "timeoutMs": 60_000 }));
+    let rec = if r.get("record").is_some() { r["record"].clone() } else { r };
+    assert_eq!(rec["state"], "succeeded", "{rec}");
+}
+
+fn prepared_with_files(id: &str, dir: &std::path::Path) -> ExecutorHandle {
+    use tt_persist::container::{BlobData, Blobs};
+    let doc = tt_model::fixture::sample_document(1).unwrap();
+    let mut blobs = Blobs::default();
+    blobs.insert("media/as_01K742SG0G5HPQ0RBF5X4DSR0W.wav".into(), BlobData::Bytes(std::sync::Arc::new(vec![0; 352_844])));
+    let preserved = tt_persist::load::Preserved::default();
+    let input = tt_persist::save::SaveInput {
+        doc: &doc,
+        preserved: &preserved,
+        blobs: &blobs,
+        session: None,
+        saved_at: "2026-10-01T09:00:00Z".into(),
+    };
+    let sample = dir.join("Sample.animpkg");
+    tt_persist::save::save_package(&sample, &input, None).unwrap();
+    std::fs::copy(&sample, dir.join("Short.animpkg")).unwrap();
+    std::fs::create_dir_all(dir.join("media")).unwrap();
+    let user = tt_persist::settings::UserDirs::under(&dir.join("user"));
+    let project_id = doc.project().id().to_string();
+    let backups = user.backups.join(&project_id);
+    std::fs::create_dir_all(&backups).unwrap();
+    std::fs::copy(&sample, backups.join("20261001T090000Z.animpkg")).unwrap();
+    let index = json!({ "format": "toontown-backups", "formatVersion": "1.0", "backups": [{
+        "backupId": "bk_1a2b3c4d", "originalPath": sample.to_string_lossy(), "projectName": "Sample",
+        "savedAt": "2026-10-01T09:00:00Z", "documentRev": 1, "sizeBytes": 1, "file": "20261001T090000Z.animpkg" }] });
+    std::fs::write(backups.join("backup.json"), serde_json::to_vec(&index).unwrap()).unwrap();
+    let info = tt_persist::recovery::RecoveryInfo {
+        recovery_id: "rc_1a2b3c4d".into(),
+        project_id,
+        project_name: "Sample".into(),
+        original_path: Some(sample.to_string_lossy().into_owned()),
+        saved_at: "2026-10-01T09:00:00Z".into(),
+        document_rev: 1,
+        app_version: "0.1.0".into(),
+        process_id: 0,
+        host: String::new(),
+        heartbeat_at: "2026-10-01T09:00:00Z".into(),
+    };
+    tt_persist::recovery::write(&user.recovery, &info, &input).unwrap();
+    let h = tt_executor::ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
+        config: ExecutorConfig { budget: Duration::from_secs(60) },
+        persist: tt_executor::PersistOptions { user_dirs: Some(user), ..Default::default() },
+    })
+    .unwrap();
+    wait_job(&h, &ok(&h, "project.open", json!({ "path": sample.to_string_lossy() })));
+    edits(&h);
+    // Examples that replace the open project run on a saved one.
+    if matches!(id, "project.close" | "project.create" | "project.open" | "project.backup.open" | "project.recovery.open") {
+        wait_job(&h, &ok(&h, "project.save", json!({})));
+    }
     h
+}
+
+/// Maps the examples' `/tmp/…` paths into `dir`.
+fn map_tmp(v: &mut Value, dir: &std::path::Path) {
+    match v {
+        Value::String(s) if s.starts_with("/tmp/") => *s = dir.join(&s["/tmp/".len()..]).to_string_lossy().into_owned(),
+        Value::Array(a) => a.iter_mut().for_each(|x| map_tmp(x, dir)),
+        Value::Object(m) => m.values_mut().for_each(|x| map_tmp(x, dir)),
+        _ => {}
+    }
 }
 
 /// The clipboard a paste example expects (paste examples paste cells of `Bob`).
@@ -222,12 +303,23 @@ fn clipboard_for(h: &ExecutorHandle, id: &str) {
 fn every_example_runs_on_the_fixture_under_the_watchdog() {
     let registry = tt_executor::registry().unwrap();
     let mut ran = 0;
+    let mut failures = Vec::new();
     for e in registry.entries() {
         let Some(c) = e.command else { continue };
         for ex in c.decl.examples {
-            let h = prepared();
+            let dir = std::env::temp_dir().join(format!("tt-examples-{}", tt_persist::fsx::random_token(6)));
+            let files = with_files(e.id()) && !matches!(e.status(), tt_registry::Status::NotImplemented { .. });
+            let h = if files {
+                std::fs::create_dir_all(&dir).unwrap();
+                prepared_with_files(e.id(), &dir)
+            } else {
+                prepared()
+            };
             clipboard_for(&h, e.id());
-            let params: Value = serde_json::from_str(ex.params).unwrap();
+            let mut params: Value = serde_json::from_str(ex.params).unwrap();
+            if files {
+                map_tmp(&mut params, &dir);
+            }
             let t = Instant::now();
             let env = h.invoke(Invocation::user(e.id(), params));
             assert!(t.elapsed() < Duration::from_secs(30), "{}: `{}` took {:?}", e.id(), ex.title, t.elapsed());
@@ -238,11 +330,21 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
                     assert_eq!(code.as_deref(), Some("command.notImplemented"), "{}: {:?}", e.id(), env.error);
                     assert_eq!(env.error.unwrap().details["milestone"], owner);
                 }
-                _ => assert_eq!(env.status, Status::Ok, "{} example `{}` failed: {:?}", e.id(), ex.title, env.error),
+                _ => {
+                    if env.status != Status::Ok {
+                        failures.push(format!("{} example `{}` failed: {:?}", e.id(), ex.title, env.error));
+                    }
+                }
             }
             ran += 1;
+            if files {
+                drop(h);
+                let _ = std::fs::remove_dir_all(&dir);
+            }
         }
     }
+    assert!(failures.is_empty(), "{}", failures.join("
+"));
     println!("examples run: {ran}");
     assert!(ran >= 140, "examples: {ran}");
 }
