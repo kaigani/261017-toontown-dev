@@ -438,12 +438,48 @@ fn earlier_revs(t: &Txn) -> Vec<(String, u64)> {
         .collect()
 }
 
+/// VER-02: objects holding enum values of a newer minor version are read-only. A transaction that changes the entry
+/// of such an object (the object, or anything stored in its entry) fails with `doc.unknownValue`; the entry is written
+/// back as read on save. The `modifiedAt` stamp of a save (a system transaction) is exempt: a frozen `project.json` is
+/// written as read anyway.
+fn frozen_guard(s: &Session, txns: &[Txn]) -> Result<(), CommandError> {
+    let Some(p) = s.project.as_ref() else { return Ok(()) };
+    if p.store.preserved.frozen.is_empty() {
+        return Ok(());
+    }
+    for t in txns.iter().filter(|t| t.kind != TxnKind::System) {
+        for (key, f) in &p.store.preserved.frozen {
+            let same = match (t.before.entry_canonical(key), t.after.entry_canonical(key)) {
+                (Ok(a), Ok(b)) => a == b,
+                (Err(_), Err(_)) => true,
+                _ => false,
+            };
+            if !same {
+                let entry = tt_persist::layout::entry_path(&t.before, key);
+                let values: Vec<Value> =
+                    f.substitutes.iter().map(|(ptr, v, _)| json!({ "pointer": ptr, "value": v })).collect();
+                return Err(CommandError::with_details(
+                    tt_persist::codes::UNKNOWN_VALUE,
+                    format!(
+                        "`{}` holds values of a newer format version and is read-only",
+                        entry.as_deref().unwrap_or("an entry")
+                    ),
+                    json!({ "entry": entry, "unknownValues": values }),
+                )
+                .hint("open the project with a newer version of the application to edit it"));
+            }
+        }
+    }
+    Ok(())
+}
+
 /// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
 /// the revision and emits `doc.changed`.
 fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<UndoRef>, CommandError> {
     if txns.is_empty() {
         return Ok(None);
     }
+    frozen_guard(s, &txns)?;
     let mut undo_ref = None;
     let mut events = Vec::new();
     {
@@ -740,8 +776,12 @@ impl Core {
                 env.changes_truncated = truncated;
                 env.changes_since = since;
                 if dry {
+                    let refused = frozen_guard(&session, &txns);
                     rollback.apply(&mut session);
                     env.dry_run = true;
+                    if let Err(e) = refused {
+                        env = Envelope::error(e, rev_before);
+                    }
                 } else {
                     match commit(&mut session, txns, &inv.origin) {
                         Ok(u) => {
@@ -970,8 +1010,12 @@ impl Core {
                 env.changes_truncated = truncated;
                 env.changes_since = since;
                 if req.dry_run {
+                    let refused = txn.as_ref().map_or(Ok(()), |t| frozen_guard(&session, std::slice::from_ref(t)));
                     rollback.apply(&mut session);
                     env.dry_run = true;
+                    if let Err(e) = refused {
+                        env = Envelope::error(e, rev_before);
+                    }
                 } else {
                     let committed = match txn {
                         Some(t) => commit(&mut session, vec![t], origin),

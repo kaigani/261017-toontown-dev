@@ -384,3 +384,57 @@ fn workspaces_recent_projects_and_defaults_persist_per_user() {
     );
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn objects_with_unknown_values_of_a_newer_minor_version_are_read_only() {
+    let dir = tmp();
+    let h = spawn(&dir.join("user"));
+    ok(&h, "project.create", json!({ "name": "Newer" }));
+    let folder = dir.join("Newer.animpkg");
+    job_ok(&h, "project.saveAs", json!({ "path": format!("{}/", path(&folder)) }));
+    ok(&h, "project.close", json!({}));
+    // A file of format 1.3 whose drawing element uses a loop type this version does not know.
+    let mut m: Value = serde_json::from_slice(&std::fs::read(folder.join("manifest.json")).unwrap()).unwrap();
+    m["formatVersion"] = json!("1.3");
+    std::fs::write(folder.join("manifest.json"), serde_json::to_vec(&m).unwrap()).unwrap();
+    let el_file = walk(&folder).into_iter().find(|p| p.components().any(|c| c.as_os_str() == "elements")).unwrap();
+    let mut el: Value = serde_json::from_slice(&std::fs::read(&el_file).unwrap()).unwrap();
+    el["loopType"] = json!("pingPong");
+    std::fs::write(&el_file, serde_json::to_vec_pretty(&el).unwrap()).unwrap();
+    let r = job_ok(&h, "project.open", json!({ "path": path(&folder) }));
+    assert_eq!(r["warnings"][0]["id"], "project.newerMinorVersion", "{r}");
+    let report = ok(&h, "doc.loadReport.get", json!({}));
+    assert!(report["issues"].as_array().unwrap().iter().any(|i| i["code"] == "doc.unknownValue"), "{report}");
+    let eid = el["id"].as_str().unwrap().to_owned();
+    // Edits of the object are refused, dry runs included; other objects stay editable (VER-02).
+    for dry in [false, true] {
+        let env = with(
+            &h,
+            "doc.object.patch",
+            json!({ "targets": [eid], "props": { "meta": { "x": 1 } } }),
+            tt_executor::InvokeOptions { dry_run: dry, ..Default::default() },
+        );
+        let e = env.error.unwrap_or_else(|| panic!("dry {dry}: the edit was accepted"));
+        assert_eq!(e.code, "doc.unknownValue");
+        assert_eq!(e.details["unknownValues"][0]["value"], "pingPong", "{e:?}");
+    }
+    let scene = first(&h, "scene");
+    ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "edited": true } } }));
+    job_ok(&h, "project.save", json!({ "allowFormatUpgrade": true }));
+    let back: Value = serde_json::from_slice(&std::fs::read(&el_file).unwrap()).unwrap();
+    assert_eq!(back, el, "the read-only entry is written back as read (canonical form)");
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+fn walk(root: &Path) -> Vec<PathBuf> {
+    let mut out = Vec::new();
+    for e in std::fs::read_dir(root).unwrap().flatten() {
+        let p = e.path();
+        if p.is_dir() {
+            out.extend(walk(&p));
+        } else {
+            out.push(p);
+        }
+    }
+    out
+}
