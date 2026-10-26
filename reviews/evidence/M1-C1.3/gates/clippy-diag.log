@@ -1,0 +1,4 @@
+$ cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
+
+[exit 0]

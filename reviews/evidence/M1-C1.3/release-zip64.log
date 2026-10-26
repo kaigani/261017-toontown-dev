@@ -1,0 +1,11 @@
+$ cargo test -p tt-persist --release --locked --test zip64 -- --include-ignored
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.15s
+     Running tests\zip64.rs (target\release\deps\zip64-f914756406267e08.exe)
+
+running 2 tests
+test more_than_65535_entries_switch_to_zip64_records ... ok
+test an_entry_over_4_gib_round_trips_with_zip64_sizes ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.37s
+
+exit status: 0
