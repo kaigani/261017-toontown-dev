@@ -13,65 +13,65 @@ $ pnpm test
 
  Test Files  40 passed (40)
       Tests  333 passed (333)
-   Start at  16:18:28
-   Duration  63.55s (tests 76%, environment 14%, setup 7%, import 2%, transform 2%)
+   Start at  17:00:58
+   Duration  63.50s (tests 75%, environment 14%, setup 7%, import 2%, transform 2%)
 
     Isolate  40 workers spawned · ~288ms startup each (spawn + environment, per file)
-             at least ~11.22s faster with isolate: false — reuses workers across files instead of one per file
+             at least ~11.23s faster with isolate: false — reuses workers across files instead of one per file
 
 TAP version 13
 # Subtest: single identifiers
 ok 1 - single identifiers
   ---
-  duration_ms: 0.8077
+  duration_ms: 0.8024
   type: 'test'
   ...
 # Subtest: OR needs one allowed alternative, AND needs all
 ok 2 - OR needs one allowed alternative, AND needs all
   ---
-  duration_ms: 0.1922
+  duration_ms: 0.1914
   type: 'test'
   ...
 # Subtest: precedence: AND binds tighter than OR
 ok 3 - precedence: AND binds tighter than OR
   ---
-  duration_ms: 0.1066
+  duration_ms: 0.1063
   type: 'test'
   ...
 # Subtest: nested groups (C01-R1-01)
 ok 4 - nested groups (C01-R1-01)
   ---
-  duration_ms: 0.5233
+  duration_ms: 0.5194
   type: 'test'
   ...
 # Subtest: WITH exceptions must be allowed as a whole
 ok 5 - WITH exceptions must be allowed as a whole
   ---
-  duration_ms: 0.1522
+  duration_ms: 0.153
   type: 'test'
   ...
 # Subtest: or-later suffix
 ok 6 - or-later suffix
   ---
-  duration_ms: 0.063
+  duration_ms: 0.0624
   type: 'test'
   ...
 # Subtest: malformed and non-SPDX strings fail closed
 ok 7 - malformed and non-SPDX strings fail closed
   ---
-  duration_ms: 0.1019
+  duration_ms: 0.1159
   type: 'test'
   ...
 # Subtest: every operand is validated, even behind an allowed OR branch (C01-R2-03)
 ok 8 - every operand is validated, even behind an allowed OR branch (C01-R2-03)
   ---
-  duration_ms: 0.144
+  duration_ms: 0.1456
   type: 'test'
   ...
 # Subtest: allow-list is read from deny.toml
 ok 9 - allow-list is read from deny.toml
   ---
-  duration_ms: 0.4856
+  duration_ms: 0.3648
   type: 'test'
   ...
 1..9
@@ -82,6 +82,6 @@ ok 9 - allow-list is read from deny.toml
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 64.5016
+# duration_ms 63.2988
 
 [exit 0]

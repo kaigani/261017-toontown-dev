@@ -1,5 +1,5 @@
 $ cargo build --release --locked -p tt-headless
-    Finished `release` profile [optimized + debuginfo] target(s) in 0.15s
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.16s
 
 [exit 0]
 $ "C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\target\release\toontown-headless.exe" --version
