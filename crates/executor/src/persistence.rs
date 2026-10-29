@@ -338,6 +338,17 @@ pub(crate) fn check_saveable(p: &OpenProject, allow_upgrade: bool) -> Result<(Pa
         )
         .hint("save a copy with project.saveAs"));
     }
+    // The lock may have been taken over meanwhile (a stale heartbeat): never write over another owner (C13-R1-02).
+    if let Some(l) = &p.store.lock
+        && !l.held()
+    {
+        return Err(CommandError::with_details(
+            tt_persist::codes::SAVE_FAILED,
+            "this session no longer holds the project's lock; another session took it over",
+            json!({ "reason": "fileInUse", "path": path, "lock": tt_persist::lock::read(l.path()) }),
+        )
+        .hint("save a copy with project.saveAs"));
+    }
     check_upgrade(p, allow_upgrade)?;
     // Maintenance may not have looked since the last change: look again before replacing anything (C13-R1-06).
     let now = crate::time::now_iso();

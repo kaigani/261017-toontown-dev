@@ -438,3 +438,31 @@ fn walk(root: &Path) -> Vec<PathBuf> {
     }
     out
 }
+
+#[test]
+fn a_session_whose_lock_was_taken_over_cannot_save_over_the_new_owner() {
+    let dir = tmp();
+    let target = dir.join("Taken.animpkg");
+    let a = spawn(&dir.join("a"));
+    ok(&a, "project.create", json!({ "name": "Taken", "path": path(&target) }));
+    let scene = first(&a, "scene");
+    ok(&a, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "a": 1 } } }));
+    // Another session takes the lock over (as after a stale heartbeat).
+    let lock = tt_persist::lock::lock_path(&target);
+    let mut info: Value = serde_json::from_slice(&std::fs::read(&lock).unwrap()).unwrap();
+    info["lockId"] = json!("someone-else");
+    std::fs::write(&lock, serde_json::to_vec(&info).unwrap()).unwrap();
+    let before = std::fs::read(&target).unwrap();
+    for (id, params) in [("project.save", json!({})), ("project.close", json!({ "onUnsaved": "save" }))] {
+        let env = run(&a, id, params);
+        let failed = match &env.result {
+            Some(started) if env.error.is_none() && started.get("jobId").is_some() => {
+                wait(&a, started)["state"] == "failed"
+            }
+            _ => env.error.as_ref().is_some_and(|e| e.code == "project.saveFailed"),
+        };
+        assert!(failed, "{id}: {env:?}");
+    }
+    assert_eq!(std::fs::read(&target).unwrap(), before, "LOCK-02: nothing written over the new owner");
+    let _ = std::fs::remove_dir_all(&dir);
+}
