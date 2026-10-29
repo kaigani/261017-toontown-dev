@@ -660,6 +660,15 @@ fn reference_fixes(v: &Value, ids: &BTreeSet<String>, at: &str, in_item: Option<
 /// Deletes the picked objects (staged); returns the deleted keys (cells as cell references).
 /// `descendants`: a cut takes the selected nodes with their descendants (05 §15); a delete re-attaches the children
 /// to the deleted element's parent (04 §8.3).
+/// Deletes elements as `edit.delete` does (tree, column order, references; SI-022); used by `doc.import.json` with
+/// `onConflict: "replace"`.
+pub(crate) fn delete_elements(cx: &mut Cx, ids: Vec<String>) -> Result<(), CommandError> {
+    if ids.is_empty() {
+        return Ok(());
+    }
+    delete(cx, &Picked::Elements(ids), false, false).map(|_| ())
+}
+
 fn delete(cx: &mut Cx, picked: &Picked, remove_frames: bool, descendants: bool) -> Result<Vec<String>, CommandError> {
     let doc = cx.document()?.clone();
     match picked {

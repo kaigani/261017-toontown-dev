@@ -714,6 +714,101 @@ fn shift_element(e: &mut Value, offset: u32) {
     }
 }
 
+/// What `onConflict: "replace"` removes: entry removals and style-entry removals to apply with the import (one patch,
+/// so a project never passes through a state without scenes), the removed scene and palette IDs, and the position of
+/// the first replaced scene.
+#[derive(Debug, Default)]
+struct Replaced {
+    removals: Vec<(EntryKey, Vec<PatchOp>)>,
+    gone: BTreeSet<String>,
+    scene_index: Option<usize>,
+}
+
+/// The objects that the bundle's objects replace by name (10 §10.2 `onConflict: "replace"`; C13-R1-11):
+/// - without a target scene, the scenes named like a bundle scene (with their elements);
+/// - with a target scene, the elements of that scene named like a bundle element (as `edit.delete` removes them);
+/// - palettes named like a bundle palette, unless the bundle palette has the same ID (palettes merge by ID); their
+///   style entries in the scenes go with them.
+fn replace_conflicting(cx: &mut Cx, bundle: &Value, target: Option<&str>) -> Result<Replaced, CommandError> {
+    let doc = cx.document()?.clone();
+    let list = |k: &str| bundle.get(k).and_then(Value::as_array).cloned().unwrap_or_default();
+    let names_of = |v: &[Value]| -> BTreeSet<String> {
+        v.iter().filter_map(|x| x.get("name").and_then(Value::as_str).map(str::to_owned)).collect()
+    };
+    let op = |op: &'static str, path: String, value: Option<Value>| PatchOp {
+        op,
+        from: None,
+        path,
+        range: None,
+        value,
+        old_value: None,
+        elided: false,
+    };
+    let mut changes: Vec<(EntryKey, Vec<PatchOp>)> = Vec::new();
+    let mut gone: BTreeSet<String> = BTreeSet::new();
+    // Palettes.
+    let bundle_palettes = list("palettes");
+    let pal_names = names_of(&bundle_palettes);
+    let pal_ids: BTreeSet<&str> = bundle_palettes.iter().filter_map(|v| v.get("id").and_then(Value::as_str)).collect();
+    let palettes: Vec<String> = doc
+        .palettes()
+        .filter(|pl| pal_names.contains(pl.name().as_str()) && !pal_ids.contains(pl.id().as_str()))
+        .map(|pl| pl.id().as_str().to_owned())
+        .collect();
+    // Scenes.
+    let scenes: Vec<Id> = if target.is_none() {
+        let wanted = names_of(&list("scenes"));
+        doc.scenes().filter(|s| wanted.contains(s.name().as_str())).map(|s| s.id().clone()).collect()
+    } else {
+        Vec::new()
+    };
+    for sid in &scenes {
+        gone.insert(sid.as_str().to_owned());
+        for e in doc.scene(sid).map(|s| s.elements().ids().to_vec()).unwrap_or_default() {
+            changes.push((EntryKey::Element(e), vec![op("remove", String::new(), None)]));
+        }
+        changes.push((EntryKey::Scene(sid.clone()), vec![op("remove", String::new(), None)]));
+    }
+    for pid in &palettes {
+        gone.insert(pid.clone());
+        changes.push((
+            EntryKey::Palette(Id::parse(pid).map_err(CommandError::from)?),
+            vec![op("remove", String::new(), None)],
+        ));
+        for s in doc.scenes().filter(|s| !scenes.contains(s.id())) {
+            if s.palette_styles().contains_key(pid.as_str()) {
+                changes.push((
+                    EntryKey::Scene(s.id().clone()),
+                    vec![op("remove", format!("/paletteStyles/{}", tt_model::pointer::escape(pid)), None)],
+                ));
+            }
+        }
+    }
+    let scene_index = scenes.first().and_then(|first| doc.project().scenes().ids().iter().position(|s| s == first));
+    // Elements of the target scene.
+    if let Some(t) = target {
+        let sid = Id::parse(&cx.resolve_as(t, ObjectType::Scene)?).map_err(CommandError::from)?;
+        let doc = cx.document()?.clone();
+        let mut bundle_elements = list("elements");
+        for s in list("scenes") {
+            bundle_elements.extend(s.get("elements").and_then(Value::as_array).cloned().unwrap_or_default());
+        }
+        let wanted = names_of(&bundle_elements);
+        let ids: Vec<String> = doc
+            .scene(&sid)
+            .map(|s| s.elements().ids().to_vec())
+            .unwrap_or_default()
+            .into_iter()
+            .filter(|e| doc.element(e).is_some_and(|x| wanted.contains(x.name().as_str())))
+            .map(|e| e.as_str().to_owned())
+            .collect();
+        // Elements are removed as `edit.delete` removes them (tree, columns, references), before the import reads
+        // the scene.
+        super::edit_ops::delete_elements(cx, ids)?;
+    }
+    Ok(Replaced { removals: changes, gone, scene_index })
+}
+
 fn unique(base: &str, taken: &BTreeSet<String>, ty: ObjectType) -> String {
     tt_persist::repair::unique_name(ty, base, taken)
 }
@@ -754,6 +849,14 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
             json!({ "formatVersion": bundle.get("formatVersion") }),
         ));
     }
+    // `replace` (C13-R1-11): the existing objects the imported ones conflict with by name go first, in this same
+    // transaction; the import then meets no name conflict.
+    let replaced = if p.on_conflict == OnConflict::Replace {
+        replace_conflicting(cx, &bundle, p.target.as_deref())?
+    } else {
+        Replaced::default()
+    };
+    let gone = |id: &str| replaced.gone.contains(id);
     let doc = cx.document()?.clone();
     let mut result = ImportResult::default();
     let source_project = bundle.get("sourceProjectId").and_then(Value::as_str).map(str::to_owned);
@@ -795,14 +898,21 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
         }
     }
     remap(&mut bundle, &map, 0);
-    let mut changes: Vec<(EntryKey, Vec<PatchOp>)> = Vec::new();
+    let mut changes: Vec<(EntryKey, Vec<PatchOp>)> = replaced.removals.clone();
     let mut project = doc.entry_raw_json(&EntryKey::Project)?;
-    let mut project_changed = false;
+    let mut project_changed = !replaced.gone.is_empty();
+    for k in ["scenes", "palettes"] {
+        if let Some(stubs) = project.get_mut(k).and_then(Value::as_array_mut) {
+            stubs.retain(|s| s.get("id").and_then(Value::as_str).is_none_or(|id| !gone(id)));
+        }
+    }
     // Palettes.
     let mut palette_first_style: BTreeMap<String, String> = BTreeMap::new();
-    let mut palette_names: BTreeSet<String> = doc.palettes().map(|x| x.name().clone()).collect();
+    let mut palette_names: BTreeSet<String> =
+        doc.palettes().filter(|x| !gone(x.id().as_str())).map(|x| x.name().clone()).collect();
     let existing_colours: BTreeMap<String, String> = doc
         .palettes()
+        .filter(|x| !gone(x.id().as_str()))
         .flat_map(|pal| {
             pal.swatches().iter().map(move |s| (s.colour_id().as_str().to_owned(), pal.id().as_str().to_owned()))
         })
@@ -953,6 +1063,7 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
     // Palette styles of every scene cover every palette.
     let all_palettes: Vec<(String, String)> = doc
         .palettes()
+        .filter(|x| !gone(x.id().as_str()))
         .filter_map(|pal| pal.styles().first().map(|s| (pal.id().as_str().to_owned(), s.id().as_str().to_owned())))
         .chain(palette_first_style.iter().map(|(a, b)| (a.clone(), b.clone())))
         .collect();
@@ -961,6 +1072,9 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
         Some(t) => {
             let sid = cx.resolve_as(t, ObjectType::Scene)?;
             let mut scene = doc.entry_raw_json(&EntryKey::Scene(Id::parse(&sid).map_err(CommandError::from)?))?;
+            if let Some(ps) = scene.get_mut("paletteStyles").and_then(Value::as_object_mut) {
+                ps.retain(|pal, _| !gone(pal));
+            }
             let mut names: BTreeSet<String> = arr(&scene, "elements")
                 .iter()
                 .filter_map(|e| e.get("id").and_then(Value::as_str))
@@ -979,6 +1093,7 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
                 }
                 (e, tr, o)
             };
+            let mut cameras: Vec<String> = Vec::new();
             for mut e in elements {
                 let (mut own, _) = split_entry(&e);
                 shift_element(&mut own, offset);
@@ -1000,9 +1115,23 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
                 if let Some(list) = scene.get_mut("elements").and_then(Value::as_array_mut) {
                     list.push(json!({ "id": eid, "type": "element" }));
                 }
+                if own.get("elementType").and_then(Value::as_str) == Some("camera") {
+                    cameras.push(eid.clone());
+                }
                 e = own;
                 add_entry(&mut changes, EntryKey::Element(Id::parse(&eid).map_err(CommandError::from)?), e);
                 result.created.elements.push(eid);
+            }
+            // A scene without a current camera (its camera was replaced) takes the imported scene's, or the first
+            // imported camera (10 §5: a scene with cameras has a current camera).
+            if scene.get("currentCameraId").is_none_or(Value::is_null) {
+                let preferred = arr(&bundle, "scenes")
+                    .iter()
+                    .find_map(|s| s.get("currentCameraId").and_then(Value::as_str).map(str::to_owned))
+                    .filter(|c| cameras.contains(c));
+                if let (Some(c), Some(m)) = (preferred.or_else(|| cameras.first().cloned()), scene.as_object_mut()) {
+                    m.insert("currentCameraId".into(), json!(c));
+                }
             }
             if let Some(list) = scene.get_mut("tree").and_then(Value::as_array_mut) {
                 list.extend(trees);
@@ -1018,7 +1147,8 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
             changes.push((EntryKey::Scene(Id::parse(&sid).map_err(CommandError::from)?), vec![replace_op("", scene)]));
         }
         None => {
-            let mut scene_names: BTreeSet<String> = doc.scenes().map(|s| s.name().clone()).collect();
+            let mut scene_names: BTreeSet<String> =
+                doc.scenes().filter(|s| !gone(s.id().as_str())).map(|s| s.name().clone()).collect();
             let mut stubs = Vec::new();
             for s in arr(&bundle, "scenes") {
                 let (mut own, elements) = split_entry(&s);
@@ -1059,7 +1189,12 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
             if !stubs.is_empty()
                 && let Some(list) = project.get_mut("scenes").and_then(Value::as_array_mut)
             {
-                let at = p.index.map_or(list.len(), |i| usize::try_from(i).unwrap_or(usize::MAX).min(list.len()));
+                // A replaced scene's place goes to its replacement unless `index` says otherwise.
+                let at = p
+                    .index
+                    .map(|i| usize::try_from(i).unwrap_or(usize::MAX))
+                    .or(replaced.scene_index)
+                    .map_or(list.len(), |i| i.min(list.len()));
                 for (k, s) in stubs.into_iter().enumerate() {
                     list.insert(at + k, s);
                 }
@@ -1072,8 +1207,10 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
     }
     // New palettes get a style entry in every existing scene.
     if !palette_first_style.is_empty() {
-        for s in doc.scenes() {
-            if changes.iter().any(|(k, _)| *k == EntryKey::Scene(s.id().clone())) {
+        for s in doc.scenes().filter(|s| !gone(s.id().as_str())) {
+            let earlier = changes.iter().position(|(k, _)| *k == EntryKey::Scene(s.id().clone()));
+            // A scene this import rewrites whole already has its styles; one with style removals gets these too.
+            if earlier.is_some_and(|i| changes[i].1.iter().any(|o| o.path.is_empty())) {
                 continue;
             }
             let mut ops = Vec::new();
@@ -1088,7 +1225,10 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
                     elided: false,
                 });
             }
-            changes.push((EntryKey::Scene(s.id().clone()), ops));
+            match earlier {
+                Some(i) => changes[i].1.extend(ops),
+                None => changes.push((EntryKey::Scene(s.id().clone()), ops)),
+            }
         }
     }
     if project_changed {

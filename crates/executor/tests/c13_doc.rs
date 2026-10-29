@@ -389,3 +389,50 @@ fn a_repaired_load_is_one_non_undoable_step_and_reported() {
     assert_eq!(ok(&h, "doc.state.get", json!({}))["dirty"], false);
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn import_replace_replaces_elements_of_the_target_scene_and_palettes_by_name() {
+    let dir = tmp();
+    let src = spawn(&dir.join("src"));
+    ok(&src, "project.create", json!({ "name": "Source" }));
+    let whole = ok(&src, "doc.export.json", json!({ "scope": "project", "binaries": "omit" }))["bundle"].clone();
+    let scene = first(&src, "scene");
+    let one = ok(&src, "doc.export.json", json!({ "scope": "scenes", "refs": [scene], "binaries": "omit" }))["bundle"]
+        .clone();
+    let h = spawn(&dir.join("dst"));
+    ok(&h, "project.create", json!({ "name": "Target" }));
+    let target = first(&h, "scene");
+    let names = |h: &tt_executor::ExecutorHandle, ty: &str| -> Vec<(String, String)> {
+        let found = ok(h, "doc.object.find", json!({ "type": ty, "limit": 1000 }));
+        let mut v: Vec<(String, String)> = found["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|i| (i["name"].as_str().unwrap_or_default().to_owned(), i["id"].as_str().unwrap().to_owned()))
+            .collect();
+        v.sort();
+        v
+    };
+    let before = names(&h, "element");
+    // Into a scene: same-named elements are replaced, not renamed.
+    let r = ok(&h, "doc.import.json", json!({ "source": one, "target": target, "onConflict": "replace" }));
+    assert!(r["renamed"].as_array().unwrap().is_empty(), "{r}");
+    let after = names(&h, "element");
+    assert_eq!(after.iter().map(|x| &x.0).collect::<Vec<_>>(), before.iter().map(|x| &x.0).collect::<Vec<_>>());
+    assert!(after.iter().all(|a| !before.contains(a)), "every element is the imported one: {after:?}");
+    // As new scenes: the same-named scene and palette are replaced; the project keeps one of each.
+    let pal_before = names(&h, "palette");
+    let r = ok(&h, "doc.import.json", json!({ "source": whole, "onConflict": "replace" }));
+    assert!(r["renamed"].as_array().unwrap().is_empty(), "{r}");
+    let pals = names(&h, "palette");
+    assert_eq!(pals.len(), pal_before.len(), "{pals:?}");
+    assert!(pals.iter().all(|p| !pal_before.contains(p)), "the palette was replaced: {pals:?}");
+    let scenes = names(&h, "scene");
+    assert_eq!(scenes.len(), 1, "{scenes:?}");
+    assert_ne!(scenes[0].1, target);
+    // One undo step restores the previous scene and palette.
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(names(&h, "palette"), pal_before);
+    assert_eq!(names(&h, "scene")[0].1, target);
+    let _ = std::fs::remove_dir_all(&dir);
+}
