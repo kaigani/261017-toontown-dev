@@ -32,8 +32,8 @@
     "gates/headless.log": 0,
     "gates/reviewer-python-suites.log": 0
   },
-  "recordedAt": "2026-10-29T20:39:01+00:00",
-  "baseCommit": "d6cb25dcb8a322d7aca60ed826335154af11542c",
+  "recordedAt": "2026-10-29T22:38:41+00:00",
+  "baseCommit": "f500f733a7c773b9a7c956b207043c626ab06fd1",
   "dirtyFiles": [
     "reviews/evidence/M1-C1.3/gates/build.log",
     "reviews/evidence/M1-C1.3/gates/clippy-diag.log",
@@ -41,6 +41,8 @@
     "reviews/evidence/M1-C1.3/gates/headless.log",
     "reviews/evidence/M1-C1.3/gates/pnpm-test.log",
     "reviews/evidence/M1-C1.3/gates/reviewer-python-suites.log",
+    "reviews/evidence/M1-C1.3/gates/selftest-1.json",
+    "reviews/evidence/M1-C1.3/gates/selftest-2.json",
     "reviews/evidence/M1-C1.3/gates/test-diag.log",
     "reviews/evidence/M1-C1.3/gates/test.log",
     "reviews/evidence/M1-C1.3/receipt.json"
@@ -51,22 +53,22 @@
     "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
   },
   "sha256": {
-    "gates/build.log": "b886c80b22f947d151ddd8e9ae5e14b61173ff339a087cfe4ae4ba0c48b8d10f",
-    "gates/clippy-diag.log": "ac5261c80fc9c59b16b099e12dc679c1e7db2be1339858523daa1ae90dab6bcd",
-    "gates/clippy.log": "f56575da74da8428f12856893774cd1cf4559456cc3ea3f61ad776e74791c694",
+    "gates/build.log": "7030fb23306c01ea8cbd895e79e64608ac43576bd00e9ae33a020f6de2e94874",
+    "gates/clippy-diag.log": "abcdb5153067cb80bd4fa3521c7a7006c7a8441633ac536df3676ee3bde847f3",
+    "gates/clippy.log": "8f96438317c037c7dfd7612a6e4bc64df89d434adf731c6b5b2fd27a13570543",
     "gates/deny.log": "346a8d39d30039716c5223599f42e403e0a2d9d2870d3dc4eda66e9586c86586",
     "gates/fmt.log": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
-    "gates/headless.log": "b180c46d4dcabb8472065fbf3eab81898f8cdeb919c6edb9edc029c41630d069",
+    "gates/headless.log": "ecc61f890d2d4c81f4946ba39d5feed8eb3f7f0592f3216f4d8dae52a4afdc86",
     "gates/pnpm-format.log": "c99d0a6ae963d1c83b01deafa2e993d73d3bdceebbbde9508a83ba7d4b6e4829",
     "gates/pnpm-licenses.log": "2d685b39a756468ae498f680b9e15748fc8f2db9913b72da6652d7317e37f6ca",
     "gates/pnpm-lint.log": "27d1c9da90e3723e813f92352b6882884d1a51cd07b90368d3bef605ac09563b",
-    "gates/pnpm-test.log": "e2159be9dbc5c9af071adbeaf2bf3f6377d652e015a90d60d390f43b965889aa",
+    "gates/pnpm-test.log": "4f423488145f4e4a25ef394968e906db93f3e1bf33a62d14163d2df478bbffd0",
     "gates/pnpm-typecheck.log": "aa5a38955f949a6cba31ec0a0ec0aadfb5695da948defb8ab06d14ff2f0b9d24",
-    "gates/reviewer-python-suites.log": "a815b889784fde7efc791bef54ec7eed76978b5c2bbcadde00a020b89f89e1ae",
-    "gates/selftest-1.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
-    "gates/selftest-2.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "gates/reviewer-python-suites.log": "496a51e780ec82780a8627acd5a547f08a96ca4e4fb40b1449a97c9bbf87fa71",
+    "gates/selftest-1.json": "433705dbea267abd71ddd44b31a299129a17f208e5a01f141f5d2375464a52aa",
+    "gates/selftest-2.json": "433705dbea267abd71ddd44b31a299129a17f208e5a01f141f5d2375464a52aa",
     "gates/selftest-compare.log": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46",
-    "gates/test-diag.log": "c15f99d6e6c369446f7943a92975aa643cdcad3bf78b03f37b961cbaeb2c007f",
-    "gates/test.log": "80a17a119ef9010981c459676792e83cef6564a9c189c52750b3cddd97f1a3e3"
+    "gates/test-diag.log": "01e9bfdb2bd57fe54cb741e1a867ad78805a31a8d86e972f176886e221808ec8",
+    "gates/test.log": "8366e69c7d097f192ab1048d84fe8709fbebc2440473b5b5980d6ed18a554236"
   }
 }
