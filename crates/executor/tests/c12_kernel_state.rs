@@ -181,13 +181,18 @@ fn the_watchdog_answers_within_its_budget() {
     // A tiny budget and a slow query: the caller gets `command.timeout` in time; the document thread finishes the
     // query and answers the next call.
     // Opening the fixture is itself bound by the 1 ms budget; on a loaded machine it may time out (the document
-    // thread still completes it), so it is retried until it answers in time.
+    // thread still completes it), so it is retried until it answers in time or the earlier open is seen to be done.
     let h = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_millis(1) }).unwrap();
     let mut opened = false;
     for _ in 0..200 {
         let env = h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false);
         match env.error {
             None => {
+                opened = true;
+                break;
+            }
+            // A previous attempt that timed out has completed meanwhile: the untitled fixture is open (and modified).
+            Some(e) if e.code == "project.unsavedChanges" => {
                 opened = true;
                 break;
             }
