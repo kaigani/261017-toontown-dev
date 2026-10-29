@@ -183,6 +183,88 @@ pub fn info(root: &Path, recovery_id: &str) -> Option<RecoveryInfo> {
     read_info(&root.join(recovery_id).join("recovery.json"))
 }
 
+/// The outcome of claiming recovery data.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Claim {
+    /// The data is now this process's; the previous `recovery.json` is returned (to [`release`] on failure).
+    Claimed(RecoveryInfo),
+    /// Its owner still runs (or another session has just claimed it).
+    InUse(RecoveryInfo),
+    /// No such recovery data.
+    NotFound,
+}
+
+/// Claims orphaned recovery data for this process before it is recovered (REC-01/REC-02; C13-R1-08): under an
+/// exclusively created arbitration file (`<recoveryId>/.claim`), the data is re-read and, while still orphaned, its
+/// `recovery.json` gets this process as owner with a fresh heartbeat. A second session then sees a live owner and is
+/// refused (`project.recoveryInUse`). The new owner keeps the heartbeat fresh while the project is open; saving or
+/// closing deletes the data (AUTO-04).
+#[must_use]
+pub fn claim(root: &Path, recovery_id: &str) -> Claim {
+    if !valid_id(recovery_id) {
+        return Claim::NotFound;
+    }
+    let folder = root.join(recovery_id);
+    let info_path = folder.join("recovery.json");
+    let guard = folder.join(".claim");
+    for _ in 0..400 {
+        match fs::OpenOptions::new().write(true).create_new(true).open(&guard) {
+            Ok(g) => {
+                drop(g);
+                let outcome = match read_info(&info_path) {
+                    None => Claim::NotFound,
+                    Some(info) if !info.orphaned() => Claim::InUse(info),
+                    Some(info) => {
+                        let mut mine = info.clone();
+                        mine.process_id = host::pid();
+                        mine.host = host::host();
+                        mine.heartbeat_at = time::now_iso();
+                        match serde_json::to_vec_pretty(&mine) {
+                            Ok(text) if fsx::write_atomic(&info_path, &text, fsx::fs_error).is_ok() => {
+                                Claim::Claimed(info)
+                            }
+                            _ => Claim::InUse(info),
+                        }
+                    }
+                };
+                let _ = fs::remove_file(&guard);
+                return outcome;
+            }
+            Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {
+                let old = fs::metadata(&guard)
+                    .and_then(|m| m.modified())
+                    .ok()
+                    .and_then(|t| t.elapsed().ok())
+                    .is_some_and(|age| age > std::time::Duration::from_secs(10));
+                if old {
+                    let _ = fs::remove_file(&guard);
+                } else {
+                    std::thread::sleep(std::time::Duration::from_millis(5));
+                }
+            }
+            Err(_) => {
+                return if folder.is_dir() {
+                    read_info(&info_path).map_or(Claim::NotFound, Claim::InUse)
+                } else {
+                    Claim::NotFound
+                };
+            }
+        }
+    }
+    read_info(&info_path).map_or(Claim::NotFound, Claim::InUse)
+}
+
+/// Gives claimed recovery data back (a recovery that failed): `previous` is written back while the data is still this
+/// process's.
+pub fn release(root: &Path, previous: &RecoveryInfo) {
+    let p = root.join(&previous.recovery_id).join("recovery.json");
+    if read_info(&p).is_some_and(|i| i.process_id == host::pid() && i.host == host::host())
+        && let Ok(text) = serde_json::to_vec_pretty(previous)
+    {
+        let _ = fsx::write_atomic(&p, &text, fsx::fs_error);
+    }
+}
+
 /// The save time of a project file (manifest `savedAt`), to compare with a recovery copy (REC-02).
 #[must_use]
 pub fn file_saved_at(path: &Path) -> Option<String> {

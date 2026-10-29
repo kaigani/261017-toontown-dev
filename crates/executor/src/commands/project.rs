@@ -1168,6 +1168,18 @@ pub(crate) fn project_recovery_open(cx: &mut Cx, p: RecoveryOpenParams) -> Resul
         return Ok(Job::dry());
     }
     persistence::resolve_unsaved(cx, p.on_unsaved)?;
+    // Claim the data now, so that a second session is refused at once (C13-R1-08).
+    let previous = match recovery::claim(&root, &p.recovery_id) {
+        recovery::Claim::Claimed(prev) => prev,
+        recovery::Claim::InUse(info) => {
+            return Err(CommandError::with_details(
+                "project.recoveryInUse",
+                "the recovery data belongs to a running session",
+                json!({ "recoveryId": p.recovery_id, "processId": info.process_id }),
+            ));
+        }
+        recovery::Claim::NotFound => return Err(recovery_not_found(&p.recovery_id)),
+    };
     if cx.has_project() {
         cx.defer(Effect::Close);
     }
@@ -1175,8 +1187,29 @@ pub(crate) fn project_recovery_open(cx: &mut Cx, p: RecoveryOpenParams) -> Resul
     let origin = cx.origin().clone();
     let migrations = cx.session().env.migrations;
     let id = p.recovery_id;
+    let release_root = root.clone();
     let job = cx.session().jobs.submit("project.recovery.open", &origin.session_key(), move |progress| {
-        let folder = recovery::project_folder(&root, &id);
+        let outcome = recover_claimed(&root, &id, &info, migrations, &poster, &origin, progress);
+        if outcome.is_err() {
+            recovery::release(&release_root, &previous);
+        }
+        outcome
+    })?;
+    Ok(Job::new(job))
+}
+
+/// The job half of `project.recovery.open`, once the data is claimed.
+fn recover_claimed(
+    root: &Path,
+    id: &str,
+    info: &recovery::RecoveryInfo,
+    migrations: &'static [tt_persist::migrate::Migration],
+    poster: &crate::Poster,
+    origin: &crate::types::Origin,
+    progress: &crate::jobs::JobProgress,
+) -> Result<Value, CommandError> {
+    {
+        let folder = recovery::project_folder(root, id);
         let report = |f: f64, text: &str| {
             progress.report(f * 0.95, text);
             !progress.cancelled()
@@ -1209,13 +1242,14 @@ pub(crate) fn project_recovery_open(cx: &mut Cx, p: RecoveryOpenParams) -> Resul
         warnings.extend(lock_warnings);
         inst.project.form = original_form.map(|f| f.as_str().to_owned());
         inst.project.permanent_dirty = true;
-        inst.project.store.recovery_id = id.clone();
+        inst.project.store.recovery_id = id.to_owned();
         inst.project.store.autosaved_rev = Some(info.document_rev);
         inst.project.store.stamp = original
             .as_ref()
             .and_then(|o| crate::store::stamp_of(Path::new(o), original_form.unwrap_or(Form::Package)));
         // The blobs of the copy stay readable from the recovery folder; the original's location is the save target.
         let progress2 = progress.clone();
+        let origin = origin.clone();
         let env = poster.run(POST_TIMEOUT, move |core| {
             core.install_guarded(inst, UnsavedPolicy::Fail, &origin, Some(&progress2))
         })?;
@@ -1223,8 +1257,7 @@ pub(crate) fn project_recovery_open(cx: &mut Cx, p: RecoveryOpenParams) -> Resul
             return Err(job_failed(e));
         }
         Ok(serde_json::to_value(RecoveryOpened { project_id, warnings }).unwrap_or(Value::Null))
-    })?;
-    Ok(Job::new(job))
+    }
 }
 
 /// `project.recovery.delete` parameters.
