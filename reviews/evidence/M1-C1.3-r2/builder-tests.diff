@@ -1,0 +1,361 @@
+diff --git a/crates/executor/tests/c13_doc.rs b/crates/executor/tests/c13_doc.rs
+index 78721fc..a0203d3 100644
+--- a/crates/executor/tests/c13_doc.rs
++++ b/crates/executor/tests/c13_doc.rs
+@@ -224,11 +224,12 @@ fn linked_media_relink_embed_blob_export_and_remove() {
+         err(&h, "doc.blob.get", json!({ "ref": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "maxBytes": 4 })).code,
+         "doc.blobTooLarge"
+     );
+-    // The embedded file is in the saved package (MED-01) after the linked original is gone.
++    // The embedded bytes belong to the session once the linked original is gone (MED-01). Nothing uses the asset, so
++    // a save leaves its media out of the package (MED-04), while the session keeps them (undo, export).
+     std::fs::remove_file(&wav).unwrap();
+     job_ok(&h, "project.save", json!({}));
+-    ok(&h, "project.close", json!({}));
+-    job_ok(&h, "project.open", json!({ "path": s(&dir.join("M.animpkg")) }));
++    let z = tt_persist::zip::ZipArchive::open(&dir.join("M.animpkg"), None, Default::default()).unwrap();
++    assert!(z.entries().iter().all(|e| !e.name.starts_with("media/")), "MED-04: unused media are not saved");
+     let out = dir.join("out.wav");
+     ok(&h, "doc.asset.export", json!({ "assetId": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "path": s(&out) }));
+     assert_eq!(std::fs::read(&out).unwrap(), b"RIFF fake wave bytes");
+@@ -389,3 +390,50 @@ fn a_repaired_load_is_one_non_undoable_step_and_reported() {
+     assert_eq!(ok(&h, "doc.state.get", json!({}))["dirty"], false);
+     let _ = std::fs::remove_dir_all(&dir);
+ }
++
++#[test]
++fn import_replace_replaces_elements_of_the_target_scene_and_palettes_by_name() {
++    let dir = tmp();
++    let src = spawn(&dir.join("src"));
++    ok(&src, "project.create", json!({ "name": "Source" }));
++    let whole = ok(&src, "doc.export.json", json!({ "scope": "project", "binaries": "omit" }))["bundle"].clone();
++    let scene = first(&src, "scene");
++    let one = ok(&src, "doc.export.json", json!({ "scope": "scenes", "refs": [scene], "binaries": "omit" }))["bundle"]
++        .clone();
++    let h = spawn(&dir.join("dst"));
++    ok(&h, "project.create", json!({ "name": "Target" }));
++    let target = first(&h, "scene");
++    let names = |h: &tt_executor::ExecutorHandle, ty: &str| -> Vec<(String, String)> {
++        let found = ok(h, "doc.object.find", json!({ "type": ty, "limit": 1000 }));
++        let mut v: Vec<(String, String)> = found["items"]
++            .as_array()
++            .unwrap()
++            .iter()
++            .map(|i| (i["name"].as_str().unwrap_or_default().to_owned(), i["id"].as_str().unwrap().to_owned()))
++            .collect();
++        v.sort();
++        v
++    };
++    let before = names(&h, "element");
++    // Into a scene: same-named elements are replaced, not renamed.
++    let r = ok(&h, "doc.import.json", json!({ "source": one, "target": target, "onConflict": "replace" }));
++    assert!(r["renamed"].as_array().unwrap().is_empty(), "{r}");
++    let after = names(&h, "element");
++    assert_eq!(after.iter().map(|x| &x.0).collect::<Vec<_>>(), before.iter().map(|x| &x.0).collect::<Vec<_>>());
++    assert!(after.iter().all(|a| !before.contains(a)), "every element is the imported one: {after:?}");
++    // As new scenes: the same-named scene and palette are replaced; the project keeps one of each.
++    let pal_before = names(&h, "palette");
++    let r = ok(&h, "doc.import.json", json!({ "source": whole, "onConflict": "replace" }));
++    assert!(r["renamed"].as_array().unwrap().is_empty(), "{r}");
++    let pals = names(&h, "palette");
++    assert_eq!(pals.len(), pal_before.len(), "{pals:?}");
++    assert!(pals.iter().all(|p| !pal_before.contains(p)), "the palette was replaced: {pals:?}");
++    let scenes = names(&h, "scene");
++    assert_eq!(scenes.len(), 1, "{scenes:?}");
++    assert_ne!(scenes[0].1, target);
++    // One undo step restores the previous scene and palette.
++    ok(&h, "edit.undo", json!({}));
++    assert_eq!(names(&h, "palette"), pal_before);
++    assert_eq!(names(&h, "scene")[0].1, target);
++    let _ = std::fs::remove_dir_all(&dir);
++}
+diff --git a/crates/executor/tests/c13_projects.rs b/crates/executor/tests/c13_projects.rs
+index e4aa943..e74fea2 100644
+--- a/crates/executor/tests/c13_projects.rs
++++ b/crates/executor/tests/c13_projects.rs
+@@ -438,3 +438,31 @@ fn walk(root: &Path) -> Vec<PathBuf> {
+     }
+     out
+ }
++
++#[test]
++fn a_session_whose_lock_was_taken_over_cannot_save_over_the_new_owner() {
++    let dir = tmp();
++    let target = dir.join("Taken.animpkg");
++    let a = spawn(&dir.join("a"));
++    ok(&a, "project.create", json!({ "name": "Taken", "path": path(&target) }));
++    let scene = first(&a, "scene");
++    ok(&a, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "a": 1 } } }));
++    // Another session takes the lock over (as after a stale heartbeat).
++    let lock = tt_persist::lock::lock_path(&target);
++    let mut info: Value = serde_json::from_slice(&std::fs::read(&lock).unwrap()).unwrap();
++    info["lockId"] = json!("someone-else");
++    std::fs::write(&lock, serde_json::to_vec(&info).unwrap()).unwrap();
++    let before = std::fs::read(&target).unwrap();
++    for (id, params) in [("project.save", json!({})), ("project.close", json!({ "onUnsaved": "save" }))] {
++        let env = run(&a, id, params);
++        let failed = match &env.result {
++            Some(started) if env.error.is_none() && started.get("jobId").is_some() => {
++                wait(&a, started)["state"] == "failed"
++            }
++            _ => env.error.as_ref().is_some_and(|e| e.code == "project.saveFailed"),
++        };
++        assert!(failed, "{id}: {env:?}");
++    }
++    assert_eq!(std::fs::read(&target).unwrap(), before, "LOCK-02: nothing written over the new owner");
++    let _ = std::fs::remove_dir_all(&dir);
++}
+diff --git a/crates/persist/tests/hostile.rs b/crates/persist/tests/hostile.rs
+index c14809a..df5a1b5 100644
+--- a/crates/persist/tests/hostile.rs
++++ b/crates/persist/tests/hostile.rs
+@@ -591,7 +591,7 @@ fn interrupted_folder_saves_complete_or_roll_back_on_open() {
+         &folder,
+         &input(&changed, &pres, &blobs),
+         None,
+-        tt_persist::save::FolderOptions { git_files: false, crash_after_journal: true },
++        tt_persist::save::FolderOptions { crash_after_journal: true, ..Default::default() },
+     );
+     assert!(crash.is_err());
+     assert!(folder.join(".save-journal.json").is_file());
+@@ -619,10 +619,10 @@ fn interrupted_folder_saves_complete_or_roll_back_on_open() {
+         &folder,
+         &SaveInput { doc: &changed2, preserved: &l.preserved, blobs: &l.blobs, session: None, saved_at: "x".into() },
+         None,
+-        tt_persist::save::FolderOptions { git_files: false, crash_after_journal: true },
++        tt_persist::save::FolderOptions { crash_after_journal: true, ..Default::default() },
+     );
+     let journal: Value = serde_json::from_slice(&std::fs::read(folder.join(".save-journal.json")).unwrap()).unwrap();
+-    let tmp0 = journal["renames"][0]["tmp"].as_str().unwrap();
++    let tmp0 = journal["replace"][0]["new"]["file"].as_str().unwrap();
+     std::fs::write(tmp0.split('/').fold(folder.clone(), |p, s| p.join(s)), b"damaged").unwrap();
+     let l2 = load(&folder, &LoadOptions::default()).unwrap();
+     assert_eq!(l2.doc.element(&el).unwrap().note(), "after crash", "rolled back");
+diff --git a/crates/persist/tests/journal.rs b/crates/persist/tests/journal.rs
+new file mode 100644
+index 0000000..0d4c30f
+--- /dev/null
++++ b/crates/persist/tests/journal.rs
+@@ -0,0 +1,202 @@
++//! SAVE-02 fault injection (C13-R1-03/04): a folder save interrupted after any number of renames is recovered to
++//! exactly the new version when every new entry is present, and to exactly the previous version when a pending new
++//! entry was lost; a journal that names neither complete version changes nothing.
++#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
++
++use std::collections::BTreeMap;
++use std::path::{Path, PathBuf};
++
++use serde_json::{Value, json};
++use tt_model::document::{Document, EntryKey};
++use tt_persist::container::{Blobs, Form};
++use tt_persist::load::Preserved;
++use tt_persist::report::Issues;
++use tt_persist::save::{FolderOptions, SaveInput, save, save_folder};
++
++fn tmp() -> PathBuf {
++    let d = std::env::temp_dir().join(format!("tt-journal-{}", tt_persist::fsx::random_token(6)));
++    std::fs::create_dir_all(&d).unwrap();
++    d
++}
++
++fn input<'a>(d: &'a Document, p: &'a Preserved, b: &'a Blobs) -> SaveInput<'a> {
++    SaveInput { doc: d, preserved: p, blobs: b, session: None, saved_at: "2026-10-29T12:00:00.000Z".into() }
++}
++
++/// Every file of the folder except control files, by relative path.
++fn files(root: &Path) -> BTreeMap<String, Vec<u8>> {
++    fn walk(root: &Path, dir: &Path, out: &mut BTreeMap<String, Vec<u8>>) {
++        for e in std::fs::read_dir(dir).unwrap().flatten() {
++            let p = e.path();
++            let rel = p.strip_prefix(root).unwrap().to_string_lossy().replace('\\', "/");
++            if p.is_dir() {
++                walk(root, &p, out);
++            } else {
++                out.insert(rel, std::fs::read(&p).unwrap());
++            }
++        }
++    }
++    let mut out = BTreeMap::new();
++    walk(root, root, &mut out);
++    out
++}
++
++fn patch(doc: &Document, key: &EntryKey, path: &str, value: Value) -> Document {
++    doc.with_patched_entry(
++        key,
++        &[tt_model::change::PatchOp {
++            op: "add",
++            from: None,
++            path: path.into(),
++            range: None,
++            value: Some(value),
++            old_value: None,
++            elided: false,
++        }],
++    )
++    .unwrap()
++    .0
++}
++
++/// The previous version and the changed version (three entries changed).
++fn versions() -> (Document, Document) {
++    let doc = tt_model::fixture::sample_document(7).unwrap();
++    let mut next = doc.clone();
++    let mut changed = 0;
++    for key in doc.entry_keys() {
++        if matches!(key, EntryKey::Element(_) | EntryKey::Palette(_) | EntryKey::Project) && changed < 3 {
++            next = patch(&next, &key, "/meta/journalTest", json!(changed));
++            changed += 1;
++        }
++    }
++    (doc, next)
++}
++
++/// A palette entry no palette owns: the next save removes it (LAY-03), so the journal also has a removal.
++fn stray(folder: &Path) {
++    std::fs::write(
++        folder.join("palettes").join("pl_stray.json"),
++        b"{}
++",
++    )
++    .unwrap();
++}
++
++#[test]
++fn a_save_interrupted_after_any_rename_recovers_to_one_whole_version() {
++    let (old, new) = versions();
++    let (p, b) = (Preserved::default(), Blobs::default());
++    let reference = tmp();
++    save(&reference.join("old"), Form::Folder, &input(&old, &p, &b), None, false).unwrap();
++    stray(&reference.join("old"));
++    save(&reference.join("new"), Form::Folder, &input(&new, &p, &b), None, false).unwrap();
++    let (old_files, new_files) = (files(&reference.join("old")), files(&reference.join("new")));
++    assert_ne!(old_files, new_files);
++    let mut steps = 0;
++    loop {
++        for lose_pending in [false, true] {
++            let dir = tmp();
++            let folder = dir.join("F.animpkg");
++            save(&folder, Form::Folder, &input(&old, &p, &b), None, false).unwrap();
++            stray(&folder);
++            let r = save_folder(
++                &folder,
++                &input(&new, &p, &b),
++                None,
++                FolderOptions { crash_after_renames: Some(steps), ..Default::default() },
++            );
++            let journal_path = folder.join(".save-journal.json");
++            if r.is_ok() {
++                // No more steps to interrupt.
++                assert_eq!(files(&folder), new_files);
++                let _ = std::fs::remove_dir_all(&dir);
++                return assert!(steps >= 4, "three replacements and a removal: {steps}");
++            }
++            let journal: Value = serde_json::from_slice(&std::fs::read(&journal_path).unwrap()).unwrap();
++            let mut lost = false;
++            if lose_pending {
++                // A pending temporary is lost: the previous version must come back.
++                for r in journal["replace"].as_array().unwrap() {
++                    let t = tt_persist::journal::path(&folder, r["new"]["file"].as_str().unwrap());
++                    if t.is_file() {
++                        std::fs::remove_file(t).unwrap();
++                        lost = true;
++                        break;
++                    }
++                }
++            }
++            let mut issues = Issues::default();
++            tt_persist::save::recover_journal(&folder, false, &mut issues).unwrap();
++            assert!(!journal_path.exists());
++            let expected = if lost { &old_files } else { &new_files };
++            assert_eq!(&files(&folder), expected, "interrupted after {steps} renames, lost pending: {lost}");
++            let _ = std::fs::remove_dir_all(&dir);
++        }
++        steps += 1;
++    }
++}
++
++#[test]
++fn a_journal_whose_versions_are_both_incomplete_changes_nothing() {
++    let (old, new) = versions();
++    let (p, b) = (Preserved::default(), Blobs::default());
++    let dir = tmp();
++    let folder = dir.join("F.animpkg");
++    save(&folder, Form::Folder, &input(&old, &p, &b), None, false).unwrap();
++    let _ = save_folder(
++        &folder,
++        &input(&new, &p, &b),
++        None,
++        FolderOptions { crash_after_renames: Some(1), ..Default::default() },
++    );
++    let journal: Value = serde_json::from_slice(&std::fs::read(folder.join(".save-journal.json")).unwrap()).unwrap();
++    // Lose a pending temporary and the old copy of the entry already replaced.
++    let replace = journal["replace"].as_array().unwrap();
++    let done = &replace[0];
++    std::fs::remove_file(tt_persist::journal::path(&folder, done["old"]["file"].as_str().unwrap())).unwrap();
++    std::fs::remove_file(tt_persist::journal::path(&folder, replace[1]["new"]["file"].as_str().unwrap())).unwrap();
++    let before = files(&folder);
++    let mut issues = Issues::default();
++    let e = tt_persist::save::recover_journal(&folder, false, &mut issues).unwrap_err();
++    assert_eq!(e.details()["reason"], "unrecoverableSave", "{e:?}");
++    assert_eq!(files(&folder), before, "nothing changed");
++    // Loading fails the same way (fail closed), and still changes nothing.
++    let e = tt_persist::load(&folder, &Default::default()).unwrap_err();
++    assert_eq!(e.details()["reason"], "unrecoverableSave");
++    assert_eq!(files(&folder), before);
++    let _ = std::fs::remove_dir_all(&dir);
++}
++
++#[test]
++fn journals_are_validated_before_anything_changes() {
++    let dir = tmp();
++    std::fs::write(dir.join("project.json"), b"user content").unwrap();
++    let sha = "0".repeat(64);
++    let cases = [
++        json!({"format": "unrelated-format", "deletions": ["project.json"]}),
++        json!({"format": "animpkg-save-journal", "renames": [], "deletions": ["project.json"]}),
++        json!({"format": "animpkg-save-journal", "formatVersion": "2.0", "replace": [], "remove": [
++            {"target": "project.json", "old": {"file": "../.x.old", "size": 1, "sha256": sha}}]}),
++        json!({"format": "animpkg-save-journal", "formatVersion": "2.0", "replace": [], "remove": [
++            {"target": "project.json", "old": {"file": "palettes/.project.json.x.old", "size": 1, "sha256": sha}}]}),
++        json!({"format": "animpkg-save-journal", "formatVersion": "2.0", "replace": [
++            {"target": ".lock", "new": {"file": "..lock.x.tmp", "size": 1, "sha256": sha}, "old": null}], "remove": []}),
++        json!({"format": "animpkg-save-journal", "formatVersion": "2.0", "replace": [
++            {"target": "vendor/C:/x", "new": {"file": "vendor/C:/.x.a.tmp", "size": 1, "sha256": sha}, "old": null}], "remove": []}),
++        json!({"format": "animpkg-save-journal", "formatVersion": "2.0", "replace": [], "remove": [
++            {"target": "project.json", "old": {"file": ".project.json.a.old", "size": 1, "sha256": "XYZ"}}]}),
++        json!([1, 2, 3]),
++    ];
++    for c in cases {
++        std::fs::write(dir.join(".save-journal.json"), serde_json::to_vec(&c).unwrap()).unwrap();
++        let mut issues = Issues::default();
++        let e = tt_persist::save::recover_journal(&dir, false, &mut issues).unwrap_err();
++        assert_eq!(e.details()["reason"], "journal", "{c}");
++        assert_eq!(std::fs::read(dir.join("project.json")).unwrap(), b"user content", "{c}");
++        assert!(dir.join(".save-journal.json").is_file(), "the journal is kept: {c}");
++    }
++    std::fs::write(dir.join(".save-journal.json"), b"not json").unwrap();
++    let mut issues = Issues::default();
++    assert!(tt_persist::save::recover_journal(&dir, false, &mut issues).is_err());
++    let _ = std::fs::remove_dir_all(&dir);
++}
+diff --git a/crates/persist/tests/round_trip.rs b/crates/persist/tests/round_trip.rs
+index 2f92cf9..b30187c 100644
+--- a/crates/persist/tests/round_trip.rs
++++ b/crates/persist/tests/round_trip.rs
+@@ -82,13 +82,13 @@ fn both_forms_hold_identical_entry_bytes_and_saves_are_deterministic() {
+         .unwrap();
+     let in_folder = files(&folder);
+     for e in z.entries() {
+-        if e.name == "manifest.json" || e.name == "mimetype" {
++        if e.name == "manifest.json" {
+             continue;
+         }
+         assert_eq!(z.read(&e.name, 1 << 30).unwrap(), in_folder[&e.name], "FMT-01: `{}` differs between forms", e.name);
+     }
+     let names: Vec<&String> = in_folder.keys().filter(|k| k.as_str() != "manifest.json").collect();
+-    assert_eq!(names.len(), z.entries().len() - 2, "same entry trees");
++    assert_eq!(names.len(), z.entries().len() - 1, "same entry trees, `mimetype` included (C13-R1-12)");
+     // JSON-05: saving the same document twice produces byte-identical entries (and here, an identical package).
+     let pkg2 = dir.join("C.animpkg");
+     save(&pkg2, Form::Package, &input(&doc, &blobs, &preserved), None, true).unwrap();

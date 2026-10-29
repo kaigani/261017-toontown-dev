@@ -1,0 +1,40 @@
+cargo :    Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\persist)
+At line:17 char:1
++ cargo test -p tt-persist --test c13_r2_format --locked *> reviews/evi ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...crates\persist):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.51s
+     Running tests\c13_r2_format.rs (target\debug\deps\c13_r2_format-1fcc6f81da314318.exe)
+
+running 7 tests
+test portable_entry_names_reject_windows_special_forms ... ok
+test overlong_component_is_not_a_portable_folder_entry ... FAILED
+test actual_folder_writer_keeps_manifest_after_removal_renames ... FAILED
+test crash_before_journal_publication_leaves_old_document_loadable ... ok
+test recovery_claim_expires_when_actual_child_owner_exits_and_release_restores_metadata ... ok
+test frozen_entry_nested_unknown_data_survives_other_entry_edit_both_forms_and_reopen ... ok
+test document_revision_boundaries_with_and_without_repairs ... ok
+
+failures:
+
+---- overlong_component_is_not_a_portable_folder_entry stdout ----
+
+thread 'overlong_component_is_not_a_portable_folder_entry' (23056) panicked at crates\persist\tests\c13_r2_format.rs:47:5:
+a component beyond 255 characters cannot be written in the Windows folder form
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- actual_folder_writer_keeps_manifest_after_removal_renames stdout ----
+
+thread 'actual_folder_writer_keeps_manifest_after_removal_renames' (23920) panicked at crates\persist\tests\c13_r2_format.rs:222:5:
+SAVE-02: new manifest published before the pending entry removal
+
+
+failures:
+    actual_folder_writer_keeps_manifest_after_removal_renames
+    overlong_component_is_not_a_portable_folder_entry
+
+test result: FAILED. 5 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+
+error: test failed, to rerun pass `-p tt-persist --test c13_r2_format`

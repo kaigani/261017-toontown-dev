@@ -1,0 +1,85 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\executor)
+At line:2 char:259
++ ... istence.rs; cargo test -p tt-executor --test c13_r2_persistence --loc ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.74s
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 14 tests
+test gigabyte_package_inspection_is_bounded_with_and_without_validation ... ok
+test asset_name_conflict_replace_keeps_one_asset_and_undo_restores_original ... FAILED
+test failed_atomic_quit_save_leaves_disk_and_revision_unchanged ... ok
+test clean_project_atomic_close_saves_staged_edits ... FAILED
+test clean_project_atomic_quit_saves_staged_edits ... FAILED
+test folder_hidden_preserved_entry_change_blocks_save ... FAILED
+test successful_atomic_close_with_save_commits_and_emits_the_saved_revision ... FAILED
+test save_as_package_retains_removed_asset_bytes_for_undo ... FAILED
+test same_path_package_save_retains_removed_asset_bytes_for_undo ... ok
+test dry_run_persistence_paths_do_not_change_disk_state_or_clean_marker ... ok
+test save_as_folder_retains_removed_asset_bytes_for_undo ... FAILED
+test same_path_folder_save_retains_removed_asset_bytes_for_undo ... ok
+test folder_visible_mutations_are_detected_without_waiting_for_maintenance_and_own_save_is_clean ... ok
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+failures:
+
+---- asset_name_conflict_replace_keeps_one_asset_and_undo_restores_original stdout ----
+
+thread 'asset_name_conflict_replace_keeps_one_asset_and_undo_restores_original' (35420) panicked at crates\executor\tests\c13_r2_persistence.rs:25:5:
+assertion `left == right` failed: replace left duplicate assets: {"assets":[{"id":"as_01M64RYPPM2YJ08WKY17DZNSPA","name":"same.wav","kind":"sound","storage":"embedded","status":"ok","path":"media/as_01M64RYPPM2YJ08WKY17DZNSPA.wav","size":14,"refs":0},{"id":"as_01M64RYPPVAVEATWH262GKQGY9","name":"same.wav","kind":"sound","storage":"embedded","status":"ok","path":"media/as_01M64RYPPVAVEATWH262GKQGY9.wav","size":14,"refs":0}]}
+  left: 2
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- clean_project_atomic_close_saves_staged_edits stdout ----
+
+thread 'clean_project_atomic_close_saves_staged_edits' (16744) panicked at crates\executor\tests\c13_r2_persistence.rs:301:5:
+assertion `left == right` failed: project.close discarded the staged edit despite onUnsaved=save: Envelope { status: Ok, result: Some(Object {"stepCount": Number(2)}), targets: None, changes: [ChangeRecord { id: "sc_01M64RYPDX5EMCAWPG7M94GJD4", ty: "scene", op: "modified", rev: 2, parent_id: None, index: None, patch: Some([Object {"op": String("add"), "path": String("/meta"), "value": Object {"batch": Bool(true)}}]) }], changes_truncated: false, changes_since: None, undo: Some(UndoRef { step_id: "u-1", label: "Edit and save" }), warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: Some([Envelope { status: Ok, result: Some(Object {"changes": Array [Object {"id": String("sc_01M64RYPDX5EMCAWPG7M94GJD4"), "type": String("scene"), "op": String("modified"), "rev": Number(2), "patch": Array [Object {"op": String("add"), "path": String("/meta"), "value": Object {"batch": Bool(true)}}]}], "documentRev": Number(2)}), targets: Some(Object {"ids": Array [String("sc_01M64RYPDX5EMCAWPG7M94GJD4")]}), changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: None }, Envelope { status: Ok, result: Some(Object {"closed": Bool(true)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: None }]) }
+  left: Null
+ right: true
+
+---- clean_project_atomic_quit_saves_staged_edits stdout ----
+
+thread 'clean_project_atomic_quit_saves_staged_edits' (22116) panicked at crates\executor\tests\c13_r2_persistence.rs:301:5:
+assertion `left == right` failed: app.quit discarded the staged edit despite onUnsaved=save: Envelope { status: Ok, result: Some(Object {"stepCount": Number(2)}), targets: None, changes: [ChangeRecord { id: "sc_01M64RYPDX2TG6G2T9D9JXAEFF", ty: "scene", op: "modified", rev: 2, parent_id: None, index: None, patch: Some([Object {"op": String("add"), "path": String("/meta"), "value": Object {"batch": Bool(true)}}]) }], changes_truncated: false, changes_since: None, undo: Some(UndoRef { step_id: "u-1", label: "Edit and save" }), warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: Some([Envelope { status: Ok, result: Some(Object {"changes": Array [Object {"id": String("sc_01M64RYPDX2TG6G2T9D9JXAEFF"), "type": String("scene"), "op": String("modified"), "rev": Number(2), "patch": Array [Object {"op": String("add"), "path": String("/meta"), "value": Object {"batch": Bool(true)}}]}], "documentRev": Number(2)}), targets: Some(Object {"ids": Array [String("sc_01M64RYPDX2TG6G2T9D9JXAEFF")]}), changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: None }, Envelope { status: Ok, result: Some(Object {"quitting": Bool(true)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: None }]) }
+  left: Null
+ right: true
+
+---- folder_hidden_preserved_entry_change_blocks_save stdout ----
+
+thread 'folder_hidden_preserved_entry_change_blocks_save' (25864) panicked at crates\executor\tests\c13_r2_persistence.rs:89:5:
+assertion `left == right` failed: Envelope { status: Ok, result: Some(Object {"jobId": String("job-2")}), targets: None, changes: [ChangeRecord { id: "pr_01M64RYPDV2DZGWPTXVDZNDKPM", ty: "project", op: "modified", rev: 3, parent_id: None, index: None, patch: Some([Object {"op": String("replace"), "path": String("/modifiedAt"), "value": String("2026-10-29T21:27:16.028Z"), "oldValue": String("2026-10-29T21:27:15.643Z")}]) }], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(3), error: None, dry_run: false, steps: None }
+  left: None
+ right: Some("project.changedOnDisk")
+
+---- successful_atomic_close_with_save_commits_and_emits_the_saved_revision stdout ----
+
+thread 'successful_atomic_close_with_save_commits_and_emits_the_saved_revision' (14628) panicked at crates\executor\tests\c13_r2_persistence.rs:222:5:
+no successful commit event for written revision 3; before=2, envelope=Envelope { status: Ok, result: Some(Object {"stepCount": Number(2)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: Some([Envelope { status: Ok, result: Some(Object {"changes": Array [Object {"id": String("sc_01M64RYPDXWVG17S6JH0YP90RQ"), "type": String("scene"), "op": String("modified"), "rev": Number(3), "patch": Array [Object {"op": String("add"), "path": String("/meta/batch"), "value": Bool(true)}]}], "documentRev": Number(3)}), targets: Some(Object {"ids": Array [String("sc_01M64RYPDXWVG17S6JH0YP90RQ")]}), changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(3), error: None, dry_run: false, steps: None }, Envelope { status: Ok, result: Some(Object {"closed": Bool(true)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(3), error: None, dry_run: false, steps: None }]) }, events=[]
+
+---- save_as_package_retains_removed_asset_bytes_for_undo stdout ----
+
+thread 'save_as_package_retains_removed_asset_bytes_for_undo' (20676) panicked at crates\executor\tests\c13_r2_persistence.rs:130:5:
+MED-04 undo bytes lost: original=Package same=false: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(4), error: Some(CommandError { code: "project.mediaMissing", message: "entry `media/as_01K742SG0G5D0JQ9JHCCMM3WM0.wav` is missing", details: Object {"entry": String("media/as_01K742SG0G5D0JQ9JHCCMM3WM0.wav")}, hint: None }), dry_run: false, steps: None }
+
+---- save_as_folder_retains_removed_asset_bytes_for_undo stdout ----
+
+thread 'save_as_folder_retains_removed_asset_bytes_for_undo' (12120) panicked at crates\executor\tests\c13_r2_persistence.rs:130:5:
+MED-04 undo bytes lost: original=Folder same=false: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(4), error: Some(CommandError { code: "project.mediaMissing", message: "entry `media/as_01K742SG0G5D0JQ9JHCCMM3WM0.wav` is missing", details: Object {"entry": String("media/as_01K742SG0G5D0JQ9JHCCMM3WM0.wav")}, hint: None }), dry_run: false, steps: None }
+
+
+failures:
+    asset_name_conflict_replace_keeps_one_asset_and_undo_restores_original
+    clean_project_atomic_close_saves_staged_edits
+    clean_project_atomic_quit_saves_staged_edits
+    folder_hidden_preserved_entry_change_blocks_save
+    save_as_folder_retains_removed_asset_bytes_for_undo
+    save_as_package_retains_removed_asset_bytes_for_undo
+    successful_atomic_close_with_save_commits_and_emits_the_saved_revision
+
+test result: FAILED. 7 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.14s
+
+error: test failed, to rerun pass `-p tt-executor --test c13_r2_persistence`

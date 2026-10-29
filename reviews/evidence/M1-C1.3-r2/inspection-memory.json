@@ -1,0 +1,8 @@
+{
+  "command": "gigabyte_package_inspection_is_bounded_with_and_without_validation",
+  "fileBytes": 1073741824,
+  "peakWorkingSetBytes": 17436672,
+  "seconds": 0.04679950000718236,
+  "exitCode": 0,
+  "bounded": true
+}

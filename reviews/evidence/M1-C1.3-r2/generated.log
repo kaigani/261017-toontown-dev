@@ -1,0 +1,25 @@
+cargo :    Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\anim)
+At line:10 char:1
++ cargo test -p tt-engine --test frontend_schemas --locked *> reviews/e ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...r2\crates\anim):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\colour)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\audio)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\lipsync)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\io)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\engine)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.15s
+     Running tests\frontend_schemas.rs (target\debug\deps\frontend_schemas-cd77e3e27c9fe2bd.exe)
+
+running 3 tests
+test wire_module_is_current ... ok
+test model_module_is_current ... ok
+test commands_module_is_current ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+

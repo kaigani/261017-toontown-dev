@@ -1,0 +1,30 @@
+[
+  {
+    "id": "MED-01",
+    "status": "implemented",
+    "spec": "10 section 6.6",
+    "proof": "c13_r1_persistence::identical_embedded_asset_content_is_stored_once; c13_doc::linked_media_relink_embed_blob_export_and_remove",
+    "note": "Undo after container switching is separately divergent in MED-04 / C13-R2-02."
+  },
+  {
+    "id": "MED-02",
+    "status": "implemented",
+    "spec": "10 section 6.6",
+    "proof": "c13_doc::linked_media_relink_embed_blob_export_and_remove",
+    "note": "Linked original resolution and missing media handling; specialty relink UX remains deferred as before."
+  },
+  {
+    "id": "SAVE-01",
+    "status": "implemented",
+    "spec": "10 section 8.1",
+    "proof": "c13_r1_persistence::failed_package_export_overwrite_keeps_the_previous_destination; round_trip",
+    "note": "Subject to accepted ADR-0014 section 3 Windows write-through deviation; no new durability claim."
+  },
+  {
+    "id": "SAVE-02",
+    "status": "divergent",
+    "spec": "10 section 8.1",
+    "proof": "c13_r1_format::partial_folder_rollback_restores_every_already_replaced_entry; journal (3 pass); c13_r2_format::actual_folder_writer_keeps_manifest_after_removal_renames (FAIL)",
+    "note": "C13-R2-06: manifest rename precedes removal renames; recovery whole-version component fixed."
+  }
+]

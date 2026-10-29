@@ -1,0 +1,30 @@
+{
+  "headSha": "7a5f866794578a9c6de856e852dc719ae16a5dcf",
+  "conclusion": "success",
+  "checks": {
+    "windows-latest": {
+      "conclusion": "success",
+      "seconds": 2001.0,
+      "suites": {
+        "c13_r1_persistence": [
+          "test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.74s"
+        ],
+        "c13_r1_format": [
+          "test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.20s"
+        ]
+      }
+    },
+    "macos-latest": {
+      "conclusion": "success",
+      "seconds": 1551.0,
+      "suites": {
+        "c13_r1_persistence": [
+          "test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.99s"
+        ],
+        "c13_r1_format": [
+          "test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.13s"
+        ]
+      }
+    }
+  }
+}

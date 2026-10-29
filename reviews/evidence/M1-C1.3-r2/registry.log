@@ -1,0 +1,15 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\executor)
+At line:2 char:80
++ ... 3-r2).Path; cargo test -p tt-executor --test c13_r1_persistence persi ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.90s
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test persistence_registry_declarations_have_valid_examples_and_record_their_schemas ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.03s
+

@@ -1,0 +1,149 @@
+{
+  "reviewedCommit": "7a5f866794578a9c6de856e852dc719ae16a5dcf",
+  "branch": "review/m1-c13-r2",
+  "recordedAt": "2026-10-29T21:39:19.368895+00:00",
+  "verdict": "block",
+  "openFindings": {
+    "P0": 0,
+    "P1": 4,
+    "P2": 2
+  },
+  "round1Closure": {
+    "closed": 14,
+    "partiallyClosed": 4,
+    "notClosed": 0
+  },
+  "registerCounts": {
+    "requirements": {
+      "divergent": 8,
+      "implemented": 97,
+      "deferred-with-owner": 14
+    },
+    "declarations": {
+      "divergent": 7,
+      "implemented": 41
+    },
+    "requirementTotal": 119,
+    "declarationTotal": 48,
+    "supplementalNamedRequirements": {
+      "implemented": 3,
+      "divergent": 1,
+      "missing": 0,
+      "deferred-with-owner": 0,
+      "total": 4
+    }
+  },
+  "rustCounts": {
+    "workspace-baseline.log": {
+      "passed": 586,
+      "failed": 0,
+      "ignored": 3
+    },
+    "workspace-final.log": {
+      "passed": 599,
+      "failed": 8,
+      "ignored": 2
+    },
+    "variants.log": {
+      "passed": 7,
+      "failed": 7,
+      "ignored": 0
+    },
+    "format-final.log": {
+      "passed": 5,
+      "failed": 2,
+      "ignored": 0
+    },
+    "format-variants.log": {
+      "passed": 13,
+      "failed": 1,
+      "ignored": 0
+    },
+    "journal.log": {
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    "diagnostics.log": {
+      "passed": 49,
+      "failed": 0,
+      "ignored": 0
+    }
+  },
+  "workspaceFinal": {
+    "command": "cargo test --workspace --locked --no-fail-fast",
+    "exitCode": 101,
+    "seconds": 395.04722029995173
+  },
+  "newTests": {
+    "total": 21,
+    "passed": 12,
+    "failed": 9,
+    "ignored": 0
+  },
+  "fixtureReplacement": {
+    "test": "c13_r1_format::partial_folder_rollback_restores_every_already_replaced_entry",
+    "authorization": "Binding orchestrator ruling in round-2 task",
+    "cases": 12,
+    "passed": 12
+  },
+  "commands": {
+    "baseline": "cargo test --workspace --locked (compiled before fixture edit/new tests)",
+    "final": "cargo test --workspace --locked --no-fail-fast (compiled before the last manifest-order test was added)",
+    "finalFormat": "cargo test -p tt-persist --test c13_r2_format --locked",
+    "variants": "cargo test -p tt-executor --test c13_r2_persistence --locked",
+    "frontend": "pnpm test",
+    "python": "python scripts/run-reviewer-python-suites.py",
+    "generated": "cargo test -p tt-engine --test frontend_schemas --locked"
+  },
+  "notes": [
+    "Evidence text is decoded to UTF-8/LF from Windows redirection encoding; scoped .gitattributes disables newline conversion so recorded evidence SHA-256 values survive checkout. Raw log whitespace is retained.",
+    "Baseline PowerShell wrapper status 1 with native-stderr error records; all test summaries pass. Actual cargo exit recorded separately for final sweep.",
+    "Final workspace includes 20 then-present new tests (599/8/2); separate final format target includes the 21st test (5/2/0). Current new-suite total is 12 pass / 9 fail.",
+    "The only original reviewer test edit is the ruled v2 fixture replacement; no product/spec edits."
+  ],
+  "timing": {
+    "baselineObservedSpanBeforeLogEncodingNormalizationSeconds": 727.0862307548523,
+    "baselineStartToReceiptSeconds": 1365.484878063202,
+    "budgetSeconds": 2700,
+    "scope": "Filesystem spans approximate; exact final cargo duration is monotonic in workspaceFinal. Initial install/read precedes baseline by a few minutes. CI check job durations independently recorded in ci-reviewer-suites.json."
+  },
+  "sha256": {
+    ".gitattributes": "a045c6b033f02c3da33d9dee10cf83b0bec49dcf3b5eae149e606124c59c6e08",
+    "audit.json": "36b072fcd51258368a27a1639f7a0f6467baedd58197287bab0fd99ca3bf8b2b",
+    "builder-tests.diff": "722ca13453f01c1f5a5b2d70b772d242e7993f3cd29e8cabc262c8bb1aa3d5d8",
+    "ci-reviewer-suites.json": "eb8c3828170cac35cdf2a03d61e2760c86e8951977bd4e5b0fa46ddb68a6bd2e",
+    "ci-reviewer-suites.log": "a86c69977bb924b9daf98f125dac897f3f980731dd9f8f694572a0ffae54f82b",
+    "ci.json": "75a8fcbee688c784fda12fc74e679e3650bf9bcf0e53ab3304ce1f3040e07963",
+    "ci.log": "d4230322e101d07f944e0f7675d9b6d08252bc2f4c7a8336d61a8a07c9db2625",
+    "clippy-tests.log": "4a6e66bbe890656a5ca831a4dfbb7296d4ce7d22ce63363371d945097aa6611a",
+    "command-register.json": "af508a9d5984022f90d10c6098267368b3f1ad1020b1120aaa92d6cd5b058bad",
+    "conformance.md": "559847096a54dfaa250cde08358f60d5b99418af409a99a27fec0878aa56115e",
+    "diagnostics-status.json": "4a9ef83f912762bb88493b99bd73eb7bcba7942a39e1a2190434ff9c2ff7170d",
+    "diagnostics.log": "2d99d539e393ae3e3f50804665d21f2b04bf4fb82ad967534a8a580ea57bdc52",
+    "fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "format-final.log": "0aaef388fad59eb83f8ec313b48e874e64db0f0ae9553ee4ecd70a90c76ee50b",
+    "format-variants.log": "a4a1f1c0542d6b641095c562b8b17b2cba9a8a0e90239f037c77e32878e87a70",
+    "generated.log": "65506dadeec7f343296245a912a165b643f30ed1b79a7e4b800914b315fd3807",
+    "inspection-memory.json": "0d05e8e604a5871e905a4079a1fc991af443709585ebc0f48e038585e22e9bff",
+    "journal.log": "aba730237e90807f57f253707fcc39ccb52392f76a1a5fa39f195e31bb5f39b3",
+    "make-receipt.py": "db873a828fa24c129179d88370b13ca18cec3dad62aaaa6b6012dd33d77a11d5",
+    "memory-probe.py": "7ab63bd0e1f4d87e87c56afeb5e5a934e5981ba287d5a711711d7f864f817d1d",
+    "persistence-registry.json": "d4827d3f26b406665156118ea9ed7d31092b7bf70ea9cb2dd5d677e4d029790d",
+    "pnpm-test.log": "dfc886ab3d645fc8186a2903f7d1fce08603107506001d26e9d7fb912184af13",
+    "portability.json": "95178956cae2cde0eca4df3ada80dcff8d54aeae789cce315a0305044142bf7e",
+    "protected-before-review.diff": "3abdadeb96a0b0c420b716d4db87bbe60fa655fa3650129948494bee1e77684f",
+    "python.log": "eaf0f9c38e90eec6106577795962b0ca0fef3b53cfdd8b41611131c6ed68b5a2",
+    "register-counts.json": "dfc220c53f3eb959d18ce4f5d94a4b6533c306b49ca71f61490858f4cf9e32e0",
+    "registry.log": "9bf74ddb8ad8c49e16098e44a099dc754cd18bd57d52e6b2cfb5a2e2f6bd1072",
+    "requirements.json": "11a65825ad55499c548681cbb563f0c07a6b6d52978f979ee27f1c5eb75ed746",
+    "review-check-status.json": "4457439ce7bb985d1830f6e619efe7418b99574d22209518165367f922d1376a",
+    "supplemental-requirements.json": "bcd71d9b1288ed00f1069693cdd4fff46578922a95f04be474125c27ca3cf34c",
+    "update-register.py": "edb867be5ef97e9434f293aa904574b2f4c83c0a234b2a71be08f0736aa060d8",
+    "variants.log": "e8a5249fb714da3d102c599ceb9d398da300c109e90fbd846d1ce23edf219d36",
+    "workspace-baseline.log": "7368161f2d09638a885150ba0d46dc6a2bc26c491af4ecfd916378868b436a7b",
+    "workspace-final-status.json": "1921af6445cc0648a11e4e85ee44847b3c02697f6b660a0d6d219f0064ab76ad",
+    "workspace-final.log": "77726e076350592dbe380da7d764d94fcaabcbaf37d4c5f165dbf556a6d120a0"
+  },
+  "reportCanonicalLFSha256": "d20c43222b14e95e3ee7d240afe0b1114aaf73e0be5f23980ae18b74d8ffc7e1"
+}

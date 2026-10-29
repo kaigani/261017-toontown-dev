@@ -1,0 +1,16 @@
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.19s
+At line:2 char:248
++ ... r2/fmt.log; cargo test -p tt-persist --test journal --locked *> revie ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.19s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+     Running tests\journal.rs (target\debug\deps\journal-fde7539122be17c4.exe)
+
+running 3 tests
+test journals_are_validated_before_anything_changes ... ok
+test a_journal_whose_versions_are_both_incomplete_changes_nothing ... ok
+test a_save_interrupted_after_any_rename_recovers_to_one_whole_version ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.17s
+

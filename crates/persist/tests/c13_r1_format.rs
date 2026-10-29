@@ -12,29 +12,78 @@ fn tmp() -> std::path::PathBuf {
 }
 
 #[test]
-#[ignore = "C13-R1-03: fixture disputed in reviews/M1-C1.3-r1-response.md (no copy of the old bytes exists, so no implementation can return Ok with one whole version); ruling requested"]
 fn partial_folder_rollback_restores_every_already_replaced_entry() {
-    let root = tmp();
-    let entries = [("project.json", b"old-project".as_slice()), ("palettes/p.json", b"old-palette".as_slice())];
-    std::fs::create_dir_all(root.join("palettes")).unwrap();
-    for (name, bytes) in entries {
-        std::fs::write(root.join(name), bytes).unwrap();
+    // Round-2 orchestrator ruling: replace the unsatisfiable v1 fixture with v2 old copies.
+    use tt_persist::journal::{Journal, Replace, Version};
+    for done in 0..=3 {
+        for mode in ["complete", "rollback", "unrecoverable"] {
+            let root = tmp();
+            std::fs::create_dir_all(root.join("palettes")).unwrap();
+            let mut j = Journal::default();
+            let targets = ["project.json", "palettes/p.json", "manifest.json"];
+            for (i, target) in targets.iter().enumerate() {
+                let parent = std::path::Path::new(target).parent().unwrap();
+                let old = format!("old-{i}").into_bytes();
+                let new = format!("new-{i}").into_bytes();
+                let old_file = parent.join(format!(".entry{i}.old")).to_string_lossy().replace('\\', "/");
+                let new_file = parent.join(format!(".entry{i}.tmp")).to_string_lossy().replace('\\', "/");
+                std::fs::write(root.join(target), &old).unwrap();
+                std::fs::write(root.join(&old_file), &old).unwrap();
+                std::fs::write(root.join(&new_file), &new).unwrap();
+                j.replace.push(Replace {
+                    target: target.to_string(),
+                    old: Some(Version {
+                        file: old_file,
+                        size: old.len() as u64,
+                        sha256: tt_persist::fsx::sha256(&old),
+                    }),
+                    new: Version { file: new_file, size: new.len() as u64, sha256: tt_persist::fsx::sha256(&new) },
+                });
+            }
+            let jp = root.join(".save-journal.json");
+            std::fs::write(&jp, serde_json::to_vec(&j.to_json()).unwrap()).unwrap();
+            for r in j.replace.iter().take(done) {
+                std::fs::rename(root.join(&r.new.file), root.join(&r.target)).unwrap();
+            }
+            if mode != "complete" {
+                // Lose one new version even after all renames: rollback must remain possible.
+                let r = &j.replace[2];
+                let f = if done == 3 { &r.target } else { &r.new.file };
+                std::fs::remove_file(root.join(f)).unwrap();
+            }
+            if mode == "unrecoverable" {
+                let r = &j.replace[0];
+                std::fs::remove_file(root.join(&r.old.as_ref().unwrap().file)).unwrap();
+                std::fs::write(root.join(&r.target), b"neither version").unwrap();
+            }
+            let before: Vec<_> = j
+                .replace
+                .iter()
+                .flat_map(|r| [r.target.clone(), r.new.file.clone(), r.old.as_ref().unwrap().file.clone()])
+                .chain([".save-journal.json".to_owned()])
+                .map(|n| (n.clone(), std::fs::read(root.join(n)).ok()))
+                .collect();
+            let result = tt_persist::save::recover_journal(&root, false, &mut Default::default());
+            if mode == "unrecoverable" {
+                assert_eq!(result.unwrap_err().details()["reason"], "unrecoverableSave");
+                for (n, bytes) in before {
+                    assert_eq!(std::fs::read(root.join(n)).ok(), bytes);
+                }
+            } else {
+                result.unwrap();
+                for (i, target) in targets.iter().enumerate() {
+                    let prefix = if mode == "complete" { "new" } else { "old" };
+                    assert_eq!(
+                        std::fs::read(root.join(target)).unwrap(),
+                        format!("{prefix}-{i}").as_bytes(),
+                        "{done} {mode} {target}"
+                    );
+                }
+                assert!(!jp.exists());
+            }
+            std::fs::remove_dir_all(root).unwrap();
+        }
     }
-    // Crash after the first rename; a second temporary is missing/corrupt.
-    std::fs::write(root.join("project.json"), b"new-project").unwrap();
-    let journal = json!({"format":"animpkg-save-journal", "renames":[
-        {"tmp":".project.tmp", "target":"project.json", "size":11,"sha256":tt_persist::fsx::sha256(b"new-project")},
-        {"tmp":"palettes/.p.tmp", "target":"palettes/p.json", "size":11,"sha256":tt_persist::fsx::sha256(b"new-palette")}
-    ],"deletions":[]});
-    std::fs::write(root.join(".save-journal.json"), serde_json::to_vec(&journal).unwrap()).unwrap();
-    let mut issues = tt_persist::report::Issues::default();
-    tt_persist::save::recover_journal(&root, false, &mut issues).unwrap();
-    let actual: Vec<Vec<u8>> = entries.iter().map(|(n, _)| std::fs::read(root.join(n)).unwrap()).collect();
-    assert!(
-        actual == vec![b"old-project".to_vec(), b"old-palette".to_vec()]
-            || actual == vec![b"new-project".to_vec(), b"new-palette".to_vec()],
-        "SAVE-02: recovery left mixed old/new entries: {actual:?}"
-    );
 }
 
 #[test]
