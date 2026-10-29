@@ -317,7 +317,12 @@ impl Work {
         if errors.is_empty() || !errors.iter().all(unknown) {
             return false;
         }
-        let raw = item.value.clone();
+        // The entry as read: the unknown properties split off for the overlay go back in (C13-R1-05), so the frozen
+        // entry is written back with everything the newer version put in it.
+        let raw = match &item.overlay {
+            Some(o) => overlay::merge(item.value.clone(), o),
+            None => item.value.clone(),
+        };
         let mut v = item.value.clone();
         let mut subs = Vec::new();
         for e in errors {

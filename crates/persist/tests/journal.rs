@@ -74,8 +74,12 @@ fn versions() -> (Document, Document) {
 
 /// A palette entry no palette owns: the next save removes it (LAY-03), so the journal also has a removal.
 fn stray(folder: &Path) {
-    std::fs::write(folder.join("palettes").join("pl_stray.json"), b"{}
-").unwrap();
+    std::fs::write(
+        folder.join("palettes").join("pl_stray.json"),
+        b"{}
+",
+    )
+    .unwrap();
 }
 
 #[test]

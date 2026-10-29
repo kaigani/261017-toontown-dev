@@ -82,13 +82,13 @@ fn both_forms_hold_identical_entry_bytes_and_saves_are_deterministic() {
         .unwrap();
     let in_folder = files(&folder);
     for e in z.entries() {
-        if e.name == "manifest.json" || e.name == "mimetype" {
+        if e.name == "manifest.json" {
             continue;
         }
         assert_eq!(z.read(&e.name, 1 << 30).unwrap(), in_folder[&e.name], "FMT-01: `{}` differs between forms", e.name);
     }
     let names: Vec<&String> = in_folder.keys().filter(|k| k.as_str() != "manifest.json").collect();
-    assert_eq!(names.len(), z.entries().len() - 2, "same entry trees");
+    assert_eq!(names.len(), z.entries().len() - 1, "same entry trees, `mimetype` included (C13-R1-12)");
     // JSON-05: saving the same document twice produces byte-identical entries (and here, an identical package).
     let pkg2 = dir.join("C.animpkg");
     save(&pkg2, Form::Package, &input(&doc, &blobs, &preserved), None, true).unwrap();

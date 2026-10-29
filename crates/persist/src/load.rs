@@ -352,9 +352,18 @@ pub fn load(path: &Path, opts: &LoadOptions<'_>) -> Result<Loaded, ModelError> {
     let file_rev = manifest.as_ref().and_then(|m| m.document_rev).unwrap_or(0).max(work.max_rev()).max(1);
     let mut doc_rev = file_rev;
     let mut doc = None;
+    let mut repaired = false;
     for _ in 0..8 {
-        let repaired = work.any_touched();
-        doc_rev = if repaired { file_rev.saturating_add(1) } else { file_rev };
+        repaired = work.any_touched();
+        if repaired && file_rev == u64::MAX {
+            // REV-03 / C13-R1-09: a repair is a new revision, and there is none left; never install it unstamped.
+            return Err(ModelError::with_details(
+                codes::INVALID_FORMAT,
+                "the project needs repairs, but its document revision is exhausted (2^64 - 1)",
+                json!({ "reason": "revisionExhausted", "documentRev": file_rev }),
+            ));
+        }
+        doc_rev = if repaired { file_rev + 1 } else { file_rev };
         if repaired {
             work.stamp(doc_rev);
         }
@@ -406,7 +415,6 @@ pub fn load(path: &Path, opts: &LoadOptions<'_>) -> Result<Loaded, ModelError> {
         .and_then(|t| tt_model::json_text::parse::<Value>(&t).ok())
         .filter(Value::is_object);
     // 8. Report.
-    let repaired = doc_rev != file_rev;
     let mut list = work.issues.clone().into_list();
     for i in &mut list {
         if let Some(id) = &i.object_id

@@ -98,6 +98,14 @@ pub fn plan(input: &SaveInput<'_>) -> Result<Vec<Planned>, ModelError> {
             out.insert(entry.clone(), Planned { name: entry, content: Content::Blob { size } });
         }
     }
+    // The project thumbnail is derived (regenerated on save, 10 §6.3); until its generator exists (M3) the existing one
+    // is kept (C13-R1-13).
+    if input.blobs.contains(layout::THUMBNAIL) {
+        out.insert(
+            layout::THUMBNAIL.to_owned(),
+            Planned { name: layout::THUMBNAIL.to_owned(), content: Content::Blob { size: None } },
+        );
+    }
     for u in &input.preserved.unknown_entries {
         if input.blobs.contains(u) && !out.contains_key(u) {
             out.insert(u.clone(), Planned { name: u.clone(), content: Content::Blob { size: None } });
@@ -409,6 +417,8 @@ pub fn save_folder(
         }
     };
     let planned = plan(input)?;
+    let mimetype =
+        Planned { name: layout::MIMETYPE.to_owned(), content: Content::Bytes(PACKAGE_MIMETYPE.as_bytes().to_vec()) };
     let manifest = manifest_for(input, None);
     let manifest_text = manifest.to_canonical()?;
     let mut replaces: Vec<journal::Replace> = Vec::new();
@@ -416,9 +426,9 @@ pub fn save_folder(
     let mut total = 0u64;
     let mut temporaries: Vec<PathBuf> = Vec::new();
     let result = (|| -> Result<(), ModelError> {
-        let all: Vec<(String, Option<&Planned>)> = planned
-            .iter()
-            .map(|p| (p.name.clone(), Some(p)))
+        // FMT-01 (C13-R1-12): the folder holds the same entries as the package, `mimetype` included.
+        let all: Vec<(String, Option<&Planned>)> = std::iter::once((layout::MIMETYPE.to_owned(), Some(&mimetype)))
+            .chain(planned.iter().map(|p| (p.name.clone(), Some(p))))
             .chain(std::iter::once((layout::MANIFEST.to_owned(), None)))
             .collect();
         for (name, p) in all {
@@ -507,7 +517,8 @@ pub fn save_folder(
         return Err(e);
     }
     // Entries of deleted objects disappear (LAY-03); entries outside the reserved names stay (ZIP-04).
-    let keep: BTreeSet<&str> = planned.iter().map(|p| p.name.as_str()).collect();
+    let keep: BTreeSet<&str> =
+        planned.iter().map(|p| p.name.as_str()).chain(std::iter::once(layout::MIMETYPE)).collect();
     let deletions: Vec<String> = existing
         .as_ref()
         .map(|idx| {
