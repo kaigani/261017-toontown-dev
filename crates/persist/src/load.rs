@@ -350,7 +350,6 @@ pub fn load(path: &Path, opts: &LoadOptions<'_>) -> Result<Loaded, ModelError> {
     work.references();
     step(opts, 0.75, "Drawings")?;
     let file_rev = manifest.as_ref().and_then(|m| m.document_rev).unwrap_or(0).max(work.max_rev()).max(1);
-    let mut doc_rev = file_rev;
     let mut doc = None;
     let mut repaired = false;
     for _ in 0..8 {
@@ -363,7 +362,7 @@ pub fn load(path: &Path, opts: &LoadOptions<'_>) -> Result<Loaded, ModelError> {
                 json!({ "reason": "revisionExhausted", "documentRev": file_rev }),
             ));
         }
-        doc_rev = if repaired { file_rev + 1 } else { file_rev };
+        let doc_rev = if repaired { file_rev + 1 } else { file_rev };
         if repaired {
             work.stamp(doc_rev);
         }

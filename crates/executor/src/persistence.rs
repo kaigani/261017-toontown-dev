@@ -22,7 +22,7 @@ use tt_persist::{fsx, layout, recovery};
 use tt_registry::{CommandError, Scope, codes};
 
 use crate::app::AppContext;
-use crate::cx::Cx;
+use crate::cx::{Cx, Effect};
 use crate::session::{OpenProject, Session};
 use crate::store::{self, Env};
 use crate::types::Origin;
@@ -371,22 +371,50 @@ pub(crate) fn check_upgrade(p: &OpenProject, allow_upgrade: bool) -> Result<(), 
     Ok(())
 }
 
-/// Saves the open project to its location now, on the document thread (the `onUnsaved: "save"` paths). Returns the
-/// backup ID.
+/// A save requested inside an invocation (`onUnsaved: "save"`). Nothing is written while the invocation runs: the
+/// executor writes it once every step has succeeded and only for a real (not dry-run) invocation, and a failed write
+/// rolls the whole invocation back (11 §7.2–§7.3; C13-R1-01).
+#[derive(Debug, Clone)]
+pub(crate) struct PendingSave {
+    pub snap: Snapshot,
+    pub path: PathBuf,
+    pub form: Form,
+    pub backups: Backups,
+    /// The finished write, once the executor has performed it.
+    pub written: Option<Written>,
+}
+
+/// Saves the open project to its location as part of this invocation (the `onUnsaved: "save"` paths): the
+/// `modifiedAt` stamp is staged now, the write is deferred (see [`PendingSave`]).
 ///
 /// # Errors
-/// As [`check_saveable`] and [`write`].
-pub(crate) fn save_now(cx: &mut Cx, allow_upgrade: bool) -> Result<Option<String>, CommandError> {
+/// As [`check_saveable`].
+pub(crate) fn save_now(cx: &mut Cx, allow_upgrade: bool) -> Result<(), CommandError> {
     let (path, form) = check_saveable(cx.project()?, allow_upgrade)?;
     let now = crate::time::now_iso();
     if cx.project()?.dirty() {
         stamp_modified(cx, &now)?;
     }
     let snap = snapshot(cx, now)?;
-    let env = cx.session().env.clone();
-    let b = backups(&env, &snap.doc, &path);
-    let w = write(&snap, &path, form, Some(&b), &env.cache, form == Form::Folder)?;
-    Ok(finish_save(cx.session_mut(), &snap, &w, true, None))
+    let b = backups(&cx.session().env, &snap.doc, &path);
+    cx.defer(Effect::Save(Box::new(PendingSave { snap, path, form, backups: b, written: None })));
+    Ok(())
+}
+
+/// Writes the pending saves of an invocation that is about to commit.
+///
+/// # Errors
+/// The save errors of 10 SAVE-05 (the caller rolls the invocation back).
+pub(crate) fn write_pending(s: &Session, effects: &mut [Effect]) -> Result<(), CommandError> {
+    for e in effects.iter_mut() {
+        if let Effect::Save(p) = e
+            && p.written.is_none()
+        {
+            let git = p.form == Form::Folder;
+            p.written = Some(write(&p.snap, &p.path, p.form, Some(&p.backups), &s.env.cache, git)?);
+        }
+    }
+    Ok(())
 }
 
 /// Closes the open project: `project.closed`, the lock released, the recovery data deleted when the close discards

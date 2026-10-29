@@ -549,6 +549,11 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
                     install_into(s, LoadGrant { _private: () }, *i, origin);
                 }
             }
+            Effect::Save(p) => {
+                if let Some(w) = &p.written {
+                    crate::persistence::finish_save(s, &p.snap, w, true, None);
+                }
+            }
             Effect::Prefs(values) => {
                 for (k, v) in values {
                     s.env.settings.prefs.insert(k, v);
@@ -755,7 +760,7 @@ impl Core {
         });
         let warnings = cx.take_warnings();
         let targets = cx.take_targets();
-        let effects = cx.take_effects();
+        let mut effects = cx.take_effects();
         let mut session = cx.into_session();
         let rev_before = session.project.as_ref().map(|p| p.doc.document_rev());
         let env = match outcome {
@@ -783,7 +788,10 @@ impl Core {
                         env = Envelope::error(e, rev_before);
                     }
                 } else {
-                    match commit(&mut session, txns, &inv.origin) {
+                    // Pending saves are written only now that every step succeeded, and before anything commits; a
+                    // failed write rolls the invocation back (C13-R1-01).
+                    let pre = frozen_guard(&session, &txns).and_then(|()| self.write_pending(&session, &mut effects));
+                    match pre.and_then(|()| commit(&mut session, txns, &inv.origin)) {
                         Ok(u) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
@@ -991,7 +999,7 @@ impl Core {
             Some((i, e)) => Err(step_failed(i, &req.steps[i].id, e)),
             None => cx.finish_staged(req.label.clone()),
         };
-        let effects = cx.take_effects();
+        let mut effects = cx.take_effects();
         let mut session = cx.into_session();
         let env = match committed {
             Err(e) => {
@@ -1017,10 +1025,14 @@ impl Core {
                         env = Envelope::error(e, rev_before);
                     }
                 } else {
-                    let committed = match txn {
+                    let pre = txn
+                        .as_ref()
+                        .map_or(Ok(()), |t| frozen_guard(&session, std::slice::from_ref(t)))
+                        .and_then(|()| self.write_pending(&session, &mut effects));
+                    let committed = pre.and_then(|()| match txn {
                         Some(t) => commit(&mut session, vec![t], origin),
                         None => Ok(None),
-                    };
+                    });
                     match committed {
                         Ok(u) => {
                             env.undo = u;
@@ -1127,6 +1139,11 @@ impl Core {
         Envelope::ok(result, rev)
     }
 
+    /// Writes the pending saves of an invocation about to commit (none while simulating).
+    fn write_pending(&self, s: &Session, effects: &mut [Effect]) -> Result<(), CommandError> {
+        if self.simulating { Ok(()) } else { crate::persistence::write_pending(s, effects) }
+    }
+
     /// Saves the open project to its location (the `onUnsaved: "save"` of the load path), as an internal invocation
     /// of `project.save`: its `modifiedAt` stamp commits like any transaction.
     fn save_open_project(&mut self, origin: &Origin) -> Result<(), CommandError> {
@@ -1134,8 +1151,14 @@ impl Core {
         let mut cx = Cx::new(session, origin.clone(), "project.save", false);
         let outcome = crate::persistence::save_now(&mut cx, false);
         let txns = cx.take_txns();
+        let mut effects = cx.take_effects();
         let mut session = cx.into_session();
-        let committed = outcome.and_then(|_| commit(&mut session, txns, origin).map(|_| ()));
+        let committed = outcome
+            .and_then(|()| self.write_pending(&session, &mut effects))
+            .and_then(|()| commit(&mut session, txns, origin).map(|_| ()));
+        if committed.is_ok() {
+            apply_effects(&mut session, effects, self.simulating, origin);
+        }
         self.session = Some(session);
         committed
     }

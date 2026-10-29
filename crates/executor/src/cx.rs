@@ -78,6 +78,9 @@ pub(crate) enum Effect {
     Install(Box<crate::run::Install>),
     /// Merge preference values and write the preferences file (01 §11; C1.3).
     Prefs(serde_json::Map<String, Value>),
+    /// A save of the open project (`onUnsaved: "save"`): written after every step succeeded and before the commit,
+    /// applied to the project after it (C13-R1-01).
+    Save(Box<crate::persistence::PendingSave>),
 }
 
 /// The state of a context a step can be rolled back to (a step with its own `dryRun` inside an atomic batch).
