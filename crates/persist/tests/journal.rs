@@ -23,6 +23,11 @@ fn input<'a>(d: &'a Document, p: &'a Preserved, b: &'a Blobs) -> SaveInput<'a> {
     SaveInput { doc: d, preserved: p, blobs: b, session: None, saved_at: "2026-10-29T12:00:00.000Z".into() }
 }
 
+/// The input of the next version: a later save time, so `manifest.json` changes too.
+fn later<'a>(d: &'a Document, p: &'a Preserved, b: &'a Blobs) -> SaveInput<'a> {
+    SaveInput { saved_at: "2026-10-29T13:00:00.000Z".into(), ..input(d, p, b) }
+}
+
 /// Every file of the folder except control files, by relative path.
 fn files(root: &Path) -> BTreeMap<String, Vec<u8>> {
     fn walk(root: &Path, dir: &Path, out: &mut BTreeMap<String, Vec<u8>>) {
@@ -89,9 +94,11 @@ fn a_save_interrupted_after_any_rename_recovers_to_one_whole_version() {
     let reference = tmp();
     save(&reference.join("old"), Form::Folder, &input(&old, &p, &b), None, false).unwrap();
     stray(&reference.join("old"));
-    save(&reference.join("new"), Form::Folder, &input(&new, &p, &b), None, false).unwrap();
+    save(&reference.join("new"), Form::Folder, &later(&new, &p, &b), None, false).unwrap();
     let (old_files, new_files) = (files(&reference.join("old")), files(&reference.join("new")));
-    assert_ne!(old_files, new_files);
+    assert_ne!(old_files["manifest.json"], new_files["manifest.json"], "the manifest changes between the versions");
+    // Three replacements, the manifest and a removal: interrupted after 0…5 renames (5: every rename done, the
+    // journal not yet deleted), then the save completes.
     let mut steps = 0;
     loop {
         for lose_pending in [false, true] {
@@ -101,7 +108,7 @@ fn a_save_interrupted_after_any_rename_recovers_to_one_whole_version() {
             stray(&folder);
             let r = save_folder(
                 &folder,
-                &input(&new, &p, &b),
+                &later(&new, &p, &b),
                 None,
                 FolderOptions { crash_after_renames: Some(steps), ..Default::default() },
             );
@@ -110,7 +117,17 @@ fn a_save_interrupted_after_any_rename_recovers_to_one_whole_version() {
                 // No more steps to interrupt.
                 assert_eq!(files(&folder), new_files);
                 let _ = std::fs::remove_dir_all(&dir);
-                return assert!(steps >= 4, "three replacements and a removal: {steps}");
+                return assert_eq!(steps, 6, "interrupted at every boundary up to the journal deletion");
+            }
+            assert!(journal_path.is_file());
+            // SAVE-02 order (C13-R2-06): once the new manifest is in place, every other entry is new and the removed
+            // entry is gone.
+            let now = files(&folder);
+            if now["manifest.json"] == new_files["manifest.json"] {
+                for (k, v) in &new_files {
+                    assert_eq!(now.get(k), Some(v), "after {steps} renames the manifest is new but `{k}` is not");
+                }
+                assert!(!now.contains_key("palettes/pl_stray.json"), "after {steps} renames: removal pending");
             }
             let journal: Value = serde_json::from_slice(&std::fs::read(&journal_path).unwrap()).unwrap();
             let mut lost = false;

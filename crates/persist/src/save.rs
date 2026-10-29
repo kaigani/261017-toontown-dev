@@ -374,7 +374,8 @@ pub struct FolderOptions {
     pub git_files: bool,
     /// Stop after writing the temporaries and the journal (tests of SAVE-02 recovery).
     pub crash_after_journal: bool,
-    /// Stop after this many renames (tests of SAVE-02 recovery from every point).
+    /// Stop after this many renames (tests of SAVE-02 recovery from every point); equal to the number of renames,
+    /// stop after the last one, before the journal is deleted.
     pub crash_after_renames: Option<usize>,
 }
 
@@ -573,7 +574,10 @@ pub fn save_folder(
             ));
         }
         // From here on the journal guarantees completion or rollback on the next open (SAVE-02).
-        if !journal::apply(root, &plan, opts.crash_after_renames)? {
+        // `crash_after_renames` equal to the rename count stops after the last rename, before the journal goes.
+        if !journal::apply(root, &plan, opts.crash_after_renames)?
+            || opts.crash_after_renames == Some(journal::steps(&plan))
+        {
             return Err(ModelError::with_details(
                 codes::SAVE_FAILED,
                 "simulated crash during the renames",

@@ -83,7 +83,8 @@ pub fn invalid(reason: &str, message: impl Into<String>, entry: Option<&str>) ->
 /// no control characters, at most 1024 bytes and 64 segments, and every segment a portable file name, so that the folder
 /// form can hold the same entry on every platform (FMT-01) and no segment can leave its folder (C13-R1-10): no `:` in any
 /// segment (drive prefixes such as `C:` or `D:x`, NTFS streams), none of `*?"<>|`, no segment ending in `.` or a space,
-/// and no Windows device name (`CON`, `PRN`, `AUX`, `NUL`, `COM1`…`COM9`, `LPT1`…`LPT9`, with or without an extension).
+/// no Windows device name (`CON`, `PRN`, `AUX`, `NUL`, `COM1`…`COM9`, `LPT1`…`LPT9`, with or without an extension), and
+/// no component longer than [`MAX_COMPONENT_BYTES`].
 #[must_use]
 pub fn safe_name(name: &str) -> bool {
     !name.is_empty()
@@ -95,8 +96,13 @@ pub fn safe_name(name: &str) -> bool {
         && name.split('/').all(safe_segment)
 }
 
+/// The longest entry-name component, in UTF-8 bytes (C13-R2-05). File systems allow 255 per component (APFS: UTF-8
+/// bytes; NTFS: UTF-16 units, never more than the UTF-8 bytes), and a folder save writes hidden siblings of each
+/// entry (`.<name>.<12 hex digits>.tmp` / `.old`, 18 bytes longer); 200 leaves room for both.
+pub const MAX_COMPONENT_BYTES: usize = 200;
+
 fn safe_segment(s: &str) -> bool {
-    if s.is_empty() || s == "." || s == ".." || s.ends_with('.') || s.ends_with(' ') {
+    if s.is_empty() || s.len() > MAX_COMPONENT_BYTES || s == "." || s == ".." || s.ends_with('.') || s.ends_with(' ') {
         return false;
     }
     if s.chars().any(|c| matches!(c, ':' | '*' | '?' | '"' | '<' | '>' | '|')) {
@@ -966,6 +972,11 @@ mod tests {
         for n in ["a", "a/b.json", "media/as_1.wav", "x.y/z", "console.json", "COM0", "LPT10", ".lock"] {
             assert!(safe_name(n), "{n:?}");
         }
+        // Component length (C13-R2-05): bytes, not characters; the bound is per component.
+        assert!(safe_name(&format!("v/{}", "a".repeat(MAX_COMPONENT_BYTES))));
+        assert!(!safe_name(&format!("v/{}", "a".repeat(MAX_COMPONENT_BYTES + 1))));
+        assert!(!safe_name(&format!("v/{}", "é".repeat(MAX_COMPONENT_BYTES / 2 + 1))));
+        assert!(safe_name(&format!("{0}/{0}/{0}", "a".repeat(MAX_COMPONENT_BYTES))));
     }
 
     #[test]

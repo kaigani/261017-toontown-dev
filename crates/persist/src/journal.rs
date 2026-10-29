@@ -237,7 +237,8 @@ pub fn apply(root: &Path, j: &Journal, steps: Option<usize>) -> Result<bool, Mod
         done += 1;
         steps.is_some_and(|s| done > s)
     };
-    for r in &j.replace {
+    // Ordinary replacements, then removals, then `manifest.json` last (SAVE-02; C13-R2-06).
+    for r in j.replace.iter().filter(|r| r.target != layout::MANIFEST) {
         if path(root, &r.new.file).is_file() {
             if step() {
                 return Ok(false);
@@ -254,7 +255,21 @@ pub fn apply(root: &Path, j: &Journal, steps: Option<usize>) -> Result<bool, Mod
             prune(root, &r.target);
         }
     }
+    for r in j.replace.iter().filter(|r| r.target == layout::MANIFEST) {
+        if path(root, &r.new.file).is_file() {
+            if step() {
+                return Ok(false);
+            }
+            rename(root, &r.new.file, &r.target)?;
+        }
+    }
     Ok(true)
+}
+
+/// The number of renames [`apply`] performs on a fresh save.
+#[must_use]
+pub fn steps(j: &Journal) -> usize {
+    j.replace.len() + j.remove.len()
 }
 
 /// Deletes the old copies of a completed save.
@@ -324,18 +339,25 @@ pub fn recover(root: &Path, j: &Journal) -> Result<Outcome, ModelError> {
 
 /// Forward completion that tolerates temporaries already renamed.
 fn apply_pending(root: &Path, j: &Journal) -> Result<(), ModelError> {
-    for r in &j.replace {
+    let replace = |r: &Replace| -> Result<(), ModelError> {
         if holds(root, &r.new.file, &r.new) {
-            rename(root, &r.new.file, &r.target)?;
+            rename(root, &r.new.file, &r.target)
         } else {
-            remove_if_present(root, &r.new.file)?;
+            remove_if_present(root, &r.new.file)
         }
+    };
+    // The same order as a save: replacements, removals, the manifest last (C13-R2-06).
+    for r in j.replace.iter().filter(|r| r.target != layout::MANIFEST) {
+        replace(r)?;
     }
     for r in &j.remove {
         if path(root, &r.target).is_file() {
             rename(root, &r.target, &r.old.file)?;
             prune(root, &r.target);
         }
+    }
+    for r in j.replace.iter().filter(|r| r.target == layout::MANIFEST) {
+        replace(r)?;
     }
     Ok(())
 }
