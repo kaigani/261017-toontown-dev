@@ -591,6 +591,8 @@ fn submit_save(
     lock: bool,
 ) -> Result<String, CommandError> {
     let poster = poster(cx)?;
+    // The lock this session holds on its current location: a write there must still own it (C13-R1-02).
+    let held = if lock { None } else { cx.project()?.store.lock.clone() };
     let origin = cx.origin().clone();
     let cache = cx.session().env.cache.clone();
     if let Ok(p) = cx.project_mut() {
@@ -623,6 +625,20 @@ fn submit_save(
                 Locked::NotWritable(_) => None,
             }
         } else {
+            if let Some(h) = &held
+                && !h.held()
+            {
+                let _ = poster.run(POST_TIMEOUT, |core| {
+                    if let Some(p) = core.session_mut().and_then(|s| s.project.as_mut()) {
+                        p.store.saving = false;
+                    }
+                });
+                return Err(CommandError::with_details(
+                    tt_persist::codes::SAVE_FAILED,
+                    "this session no longer holds the project's lock; another session took it over",
+                    json!({ "reason": "fileInUse", "lock": lock::read(h.path()) }),
+                ));
+            }
             None
         };
         progress.report(0.1, "Write");
@@ -764,7 +780,10 @@ pub(crate) fn project_save_as(cx: &mut Cx, p: SaveAsParams) -> Result<Job<SaveAs
     }
     let snap = persistence::snapshot(cx, now)?;
     let backups = same.then(|| persistence::backups(&cx.session().env, &snap.doc, &target));
-    let job = submit_save(cx, "project.saveAs", snap, target, form, backups, !same)?;
+    // Saving over the current location needs this session's lock: a session that opened the project read-only (a live
+    // lock held by someone else, LOCK-02) must take the lock first, and fails while the owner holds it (C13-R1-02).
+    let owns_lock = cx.project()?.store.lock.is_some();
+    let job = submit_save(cx, "project.saveAs", snap, target, form, backups, !same || !owns_lock)?;
     Ok(Job::new(job))
 }
 
