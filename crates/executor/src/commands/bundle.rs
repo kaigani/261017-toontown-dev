@@ -830,7 +830,7 @@ fn replace_conflicting(
         by_id = doc
             .elements()
             .filter(|e| ids.contains(e.id().as_str()))
-            .filter(|e| doc.scene_of(e.id()).is_none_or(|s| !scenes.contains(&s)))
+            .filter(|e| doc.scene_of(e.id()).is_none_or(|s| !scenes.contains(s)))
             .map(|e| e.id().as_str().to_owned())
             .collect();
     }
@@ -877,11 +877,23 @@ fn substitute(v: &mut Value, map: &BTreeMap<String, String>, depth: usize) -> bo
             }
             None => false,
         },
-        Value::Array(a) => a.iter_mut().fold(false, |c, x| substitute(x, map, depth + 1) || c),
-        Value::Object(m) => m
-            .iter_mut()
-            .filter(|(k, _)| k.as_str() != "meta" && k.as_str() != "ext")
-            .fold(false, |c, (_, x)| substitute(x, map, depth + 1) || c),
+        // Every member is visited (no short-circuit).
+        Value::Array(a) => {
+            let mut changed = false;
+            for x in a {
+                changed |= substitute(x, map, depth + 1);
+            }
+            changed
+        }
+        Value::Object(m) => {
+            let mut changed = false;
+            for (k, x) in m.iter_mut() {
+                if k != "meta" && k != "ext" {
+                    changed |= substitute(x, map, depth + 1);
+                }
+            }
+            changed
+        }
         _ => false,
     }
 }

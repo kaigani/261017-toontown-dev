@@ -455,7 +455,7 @@ fn replacing_a_used_asset_repoints_its_placements_and_undo_restores_them() {
         let h = fixture();
         let sound = assets(&h).into_iter().find(|a| a["kind"] == "sound").unwrap();
         let old_id = sound["id"].as_str().unwrap().to_owned();
-        assert!(placements(&h).iter().any(|a| *a == old_id), "the fixture uses its sound");
+        assert!(placements(&h).contains(&old_id), "the fixture uses its sound");
         let mut asset = get(&h, &old_id);
         asset.as_object_mut().unwrap().shift_remove("path");
         let bundle = json!({ "format": "animjson", "formatVersion": "1.0", "scenes": [], "elements": [],
@@ -475,7 +475,7 @@ fn replacing_a_used_asset_repoints_its_placements_and_undo_restores_them() {
         assert!(now.iter().all(|a| a["id"] != old_id));
         // The placements follow the replacement; the document stays coherent.
         let refs = placements(&h);
-        assert!(refs.iter().all(|a| *a != old_id) && refs.iter().any(|a| *a == new_id), "{refs:?}");
+        assert!(!refs.contains(&old_id) && refs.contains(&new_id), "{refs:?}");
         // One undo step restores the asset and its references.
         ok(&h, "edit.undo", json!({}));
         assert_eq!(assets(&h), before_assets);
