@@ -722,6 +722,8 @@ struct Replaced {
     removals: Vec<(EntryKey, Vec<PatchOp>)>,
     gone: BTreeSet<String>,
     scene_index: Option<usize>,
+    /// Project-list items (assets, pens) replaced: existing ID → the replacing bundle object's ID (before the remap).
+    inline: BTreeMap<String, String>,
 }
 
 /// The objects that the bundle's objects replace by name (10 §10.2 `onConflict: "replace"`; C13-R1-11):
@@ -729,7 +731,12 @@ struct Replaced {
 /// - with a target scene, the elements of that scene named like a bundle element (as `edit.delete` removes them);
 /// - palettes named like a bundle palette, unless the bundle palette has the same ID (palettes merge by ID); their
 ///   style entries in the scenes go with them.
-fn replace_conflicting(cx: &mut Cx, bundle: &Value, target: Option<&str>) -> Result<Replaced, CommandError> {
+fn replace_conflicting(
+    cx: &mut Cx,
+    bundle: &Value,
+    target: Option<&str>,
+    preserve: bool,
+) -> Result<Replaced, CommandError> {
     let doc = cx.document()?.clone();
     let list = |k: &str| bundle.get(k).and_then(Value::as_array).cloned().unwrap_or_default();
     let names_of = |v: &[Value]| -> BTreeSet<String> {
@@ -756,9 +763,17 @@ fn replace_conflicting(cx: &mut Cx, bundle: &Value, target: Option<&str>) -> Res
         .map(|pl| pl.id().as_str().to_owned())
         .collect();
     // Scenes.
+    let ids_of = |v: &[Value]| -> BTreeSet<String> {
+        v.iter().filter_map(|x| x.get("id").and_then(Value::as_str).map(str::to_owned)).collect()
+    };
     let scenes: Vec<Id> = if target.is_none() {
         let wanted = names_of(&list("scenes"));
-        doc.scenes().filter(|s| wanted.contains(s.name().as_str())).map(|s| s.id().clone()).collect()
+        // With `idPolicy: "preserve"`, an ID conflict is replaced as well (C13-R2-03).
+        let same_ids = if preserve { ids_of(&list("scenes")) } else { BTreeSet::new() };
+        doc.scenes()
+            .filter(|s| wanted.contains(s.name().as_str()) || same_ids.contains(s.id().as_str()))
+            .map(|s| s.id().clone())
+            .collect()
     } else {
         Vec::new()
     };
@@ -785,6 +800,40 @@ fn replace_conflicting(cx: &mut Cx, bundle: &Value, target: Option<&str>) -> Res
         }
     }
     let scene_index = scenes.first().and_then(|first| doc.project().scenes().ids().iter().position(|s| s == first));
+    // Assets and pens (items of the project's lists), by name, or by ID when IDs are preserved (C13-R2-03).
+    let mut inline = BTreeMap::new();
+    let mut existing_items: Vec<(String, String, &'static str)> =
+        doc.project().assets().iter().map(|a| (a.id().as_str().to_owned(), a.name().clone(), "assets")).collect();
+    existing_items.extend(doc.project().pens().iter().map(|x| (x.id().as_str().to_owned(), x.name().clone(), "pens")));
+    for k in ["assets", "pens"] {
+        for item in list(k) {
+            let (Some(bid), Some(name)) =
+                (item.get("id").and_then(Value::as_str), item.get("name").and_then(Value::as_str))
+            else {
+                continue;
+            };
+            for (eid, ename, ek) in &existing_items {
+                if *ek == k && (ename == name || (preserve && eid == bid)) && !inline.contains_key(eid) {
+                    inline.insert(eid.clone(), bid.to_owned());
+                }
+            }
+        }
+    }
+    // Elements whose ID a preserved bundle element takes, wherever they are.
+    let mut by_id: Vec<String> = Vec::new();
+    if preserve {
+        let mut bundle_elements = list("elements");
+        for s in list("scenes") {
+            bundle_elements.extend(s.get("elements").and_then(Value::as_array).cloned().unwrap_or_default());
+        }
+        let ids = ids_of(&bundle_elements);
+        by_id = doc
+            .elements()
+            .filter(|e| ids.contains(e.id().as_str()))
+            .filter(|e| doc.scene_of(e.id()).is_none_or(|s| !scenes.contains(&s)))
+            .map(|e| e.id().as_str().to_owned())
+            .collect();
+    }
     // Elements of the target scene.
     if let Some(t) = target {
         let sid = Id::parse(&cx.resolve_as(t, ObjectType::Scene)?).map_err(CommandError::from)?;
@@ -801,12 +850,40 @@ fn replace_conflicting(cx: &mut Cx, bundle: &Value, target: Option<&str>) -> Res
             .into_iter()
             .filter(|e| doc.element(e).is_some_and(|x| wanted.contains(x.name().as_str())))
             .map(|e| e.as_str().to_owned())
+            .chain(by_id.iter().cloned())
+            .collect::<BTreeSet<_>>()
+            .into_iter()
             .collect();
         // Elements are removed as `edit.delete` removes them (tree, columns, references), before the import reads
         // the scene.
         super::edit_ops::delete_elements(cx, ids)?;
+    } else {
+        super::edit_ops::delete_elements(cx, by_id)?;
     }
-    Ok(Replaced { removals: changes, gone, scene_index })
+    Ok(Replaced { removals: changes, gone, scene_index, inline })
+}
+
+/// Replaces every string equal to a key of `map` (an object ID) by its value, outside the opaque `meta` and `ext`.
+/// Returns whether anything changed.
+fn substitute(v: &mut Value, map: &BTreeMap<String, String>, depth: usize) -> bool {
+    if depth > 200 {
+        return false;
+    }
+    match v {
+        Value::String(s) => match map.get(s.as_str()) {
+            Some(n) => {
+                *s = n.clone();
+                true
+            }
+            None => false,
+        },
+        Value::Array(a) => a.iter_mut().fold(false, |c, x| substitute(x, map, depth + 1) || c),
+        Value::Object(m) => m
+            .iter_mut()
+            .filter(|(k, _)| k.as_str() != "meta" && k.as_str() != "ext")
+            .fold(false, |c, (_, x)| substitute(x, map, depth + 1) || c),
+        _ => false,
+    }
 }
 
 fn unique(base: &str, taken: &BTreeSet<String>, ty: ObjectType) -> String {
@@ -852,7 +929,7 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
     // `replace` (C13-R1-11): the existing objects the imported ones conflict with by name go first, in this same
     // transaction; the import then meets no name conflict.
     let replaced = if p.on_conflict == OnConflict::Replace {
-        replace_conflicting(cx, &bundle, p.target.as_deref())?
+        replace_conflicting(cx, &bundle, p.target.as_deref(), p.id_policy == IdPolicy::Preserve)?
     } else {
         Replaced::default()
     };
@@ -876,7 +953,9 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
         let fresh = match p.id_policy {
             IdPolicy::New => ty.local_id_container().is_none(),
             IdPolicy::Preserve => {
-                if exists {
+                // An ID conflict fails only under `fail`; `rename` gives the import a fresh ID, `replace` also removes
+                // the existing object (C13-R2-03).
+                if exists && p.on_conflict == OnConflict::Fail {
                     conflicts.push(json!({ "kind": "id", "id": id, "type": ty.as_str() }));
                 }
                 exists && p.on_conflict != OnConflict::Fail
@@ -906,6 +985,21 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
             stubs.retain(|s| s.get("id").and_then(Value::as_str).is_none_or(|id| !gone(id)));
         }
     }
+    for k in ["assets", "pens"] {
+        if let Some(items) = project.get_mut(k).and_then(Value::as_array_mut) {
+            let before = items.len();
+            items.retain(|s| s.get("id").and_then(Value::as_str).is_none_or(|id| !replaced.inline.contains_key(id)));
+            project_changed |= items.len() != before;
+        }
+    }
+    // References to replaced assets and pens follow their replacements (fresh IDs: entry names embed asset IDs, and
+    // undo must find the old bytes under the old name).
+    let repoint: BTreeMap<String, String> = replaced
+        .inline
+        .iter()
+        .map(|(old, bid)| (old.clone(), map.get(bid).cloned().unwrap_or_else(|| bid.clone())))
+        .filter(|(old, new)| old != new)
+        .collect();
     // Palettes.
     let mut palette_first_style: BTreeMap<String, String> = BTreeMap::new();
     let mut palette_names: BTreeSet<String> =
@@ -993,13 +1087,26 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
         result.created.palettes.push(pid);
     }
     // Pens (project scope).
-    let mut pen_names: BTreeSet<String> = doc.project().pens().iter().map(|x| x.name().clone()).collect();
+    let mut pen_names: BTreeSet<String> = doc
+        .project()
+        .pens()
+        .iter()
+        .filter(|x| !replaced.inline.contains_key(x.id().as_str()))
+        .map(|x| x.name().clone())
+        .collect();
     for mut pen in arr(&bundle, "pens") {
         let name = pen.get("name").and_then(Value::as_str).unwrap_or("Pen").to_owned();
+        let pid = pen.get("id").and_then(Value::as_str).unwrap_or_default().to_owned();
         if pen_names.contains(&name) {
-            let to = unique(&name, &pen_names, ObjectType::Pen);
-            if let Some(m) = pen.as_object_mut() {
-                m.insert("name".into(), json!(to));
+            match p.on_conflict {
+                OnConflict::Fail => conflicts.push(json!({ "kind": "name", "type": "pen", "name": name })),
+                _ => {
+                    let to = unique(&name, &pen_names, ObjectType::Pen);
+                    result.renamed.push(Renamed { id: pid.clone(), from: name.clone(), to: to.clone() });
+                    if let Some(m) = pen.as_object_mut() {
+                        m.insert("name".into(), json!(to));
+                    }
+                }
             }
         }
         pen_names.insert(pen.get("name").and_then(Value::as_str).unwrap_or_default().to_owned());
@@ -1011,12 +1118,33 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
             project_changed = true;
         }
     }
-    // Assets and their binary entries.
+    // Assets and their binary entries. A name already used gets a unique name (07 §2.3), or fails, or replaces.
+    let mut asset_names: BTreeSet<String> = doc
+        .project()
+        .assets()
+        .iter()
+        .filter(|x| !replaced.inline.contains_key(x.id().as_str()))
+        .map(|x| x.name().clone())
+        .collect();
     for mut a in arr(&bundle, "assets") {
         if let Some(m) = a.as_object_mut() {
             m.shift_remove("path");
         }
         let id = a.get("id").and_then(Value::as_str).unwrap_or_default().to_owned();
+        let name = a.get("name").and_then(Value::as_str).unwrap_or("Asset").to_owned();
+        if asset_names.contains(&name) {
+            match p.on_conflict {
+                OnConflict::Fail => conflicts.push(json!({ "kind": "name", "type": "asset", "name": name })),
+                _ => {
+                    let to = unique(&name, &asset_names, ObjectType::Asset);
+                    result.renamed.push(Renamed { id: id.clone(), from: name.clone(), to: to.clone() });
+                    if let Some(m) = a.as_object_mut() {
+                        m.insert("name".into(), json!(to));
+                    }
+                }
+            }
+        }
+        asset_names.insert(a.get("name").and_then(Value::as_str).unwrap_or_default().to_owned());
         if let Some(list) = project.get_mut("assets").and_then(Value::as_array_mut) {
             list.push(a);
             project_changed = true;
@@ -1228,6 +1356,18 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
             match earlier {
                 Some(i) => changes[i].1.extend(ops),
                 None => changes.push((EntryKey::Scene(s.id().clone()), ops)),
+            }
+        }
+    }
+    if !repoint.is_empty() {
+        project_changed |= substitute(&mut project, &repoint, 0);
+        for key in doc.entry_keys() {
+            if key == EntryKey::Project || changes.iter().any(|(k, _)| *k == key) {
+                continue;
+            }
+            let mut v = doc.entry_raw_json(&key)?;
+            if substitute(&mut v, &repoint, 0) {
+                changes.push((key, vec![replace_op("", v)]));
             }
         }
     }

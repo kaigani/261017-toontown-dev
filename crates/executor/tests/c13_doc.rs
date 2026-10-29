@@ -437,3 +437,53 @@ fn import_replace_replaces_elements_of_the_target_scene_and_palettes_by_name() {
     assert_eq!(names(&h, "scene")[0].1, target);
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn replacing_a_used_asset_repoints_its_placements_and_undo_restores_them() {
+    // The fixture's sound is used by placements; a bundle brings an asset with the same name.
+    let placements = |h: &tt_executor::ExecutorHandle| -> Vec<String> {
+        let mut out = Vec::new();
+        let found = ok(h, "doc.object.find", json!({ "type": "soundPlacement", "limit": 1000 }));
+        for i in found["items"].as_array().unwrap() {
+            out.push(get(h, i["id"].as_str().unwrap())["assetId"].as_str().unwrap().to_owned());
+        }
+        out
+    };
+    let assets =
+        |h: &tt_executor::ExecutorHandle| ok(h, "doc.asset.list", json!({}))["assets"].as_array().unwrap().clone();
+    for preserve in [false, true] {
+        let h = fixture();
+        let sound = assets(&h).into_iter().find(|a| a["kind"] == "sound").unwrap();
+        let old_id = sound["id"].as_str().unwrap().to_owned();
+        assert!(placements(&h).iter().any(|a| *a == old_id), "the fixture uses its sound");
+        let mut asset = get(&h, &old_id);
+        asset.as_object_mut().unwrap().shift_remove("path");
+        let bundle = json!({ "format": "animjson", "formatVersion": "1.0", "scenes": [], "elements": [],
+            "drawingBanks": [], "palettes": [], "pens": [], "blobs": {}, "assets": [asset] });
+        let policy = if preserve { "preserve" } else { "new" };
+        // `fail` refuses the name conflict (and, preserved, the ID conflict); `rename` keeps both.
+        let e = err(&h, "doc.import.json", json!({ "source": bundle, "idPolicy": policy, "onConflict": "fail" }));
+        assert_eq!(e.code, "doc.importConflict");
+        let before_assets = assets(&h);
+        let before_refs = placements(&h);
+        let r = ok(&h, "doc.import.json", json!({ "source": bundle, "idPolicy": policy, "onConflict": "replace" }));
+        assert!(r["renamed"].as_array().unwrap().is_empty(), "{r}");
+        let now = assets(&h);
+        assert_eq!(now.len(), before_assets.len(), "replaced, not appended: {now:?}");
+        let new_id = r["created"]["assets"][0].as_str().unwrap().to_owned();
+        assert_ne!(new_id, old_id);
+        assert!(now.iter().all(|a| a["id"] != old_id));
+        // The placements follow the replacement; the document stays coherent.
+        let refs = placements(&h);
+        assert!(refs.iter().all(|a| *a != old_id) && refs.iter().any(|a| *a == new_id), "{refs:?}");
+        // One undo step restores the asset and its references.
+        ok(&h, "edit.undo", json!({}));
+        assert_eq!(assets(&h), before_assets);
+        assert_eq!(placements(&h), before_refs);
+        if !preserve {
+            let r = ok(&h, "doc.import.json", json!({ "source": bundle, "onConflict": "rename" }));
+            assert_eq!(r["renamed"].as_array().unwrap().len(), 1, "{r}");
+            assert_eq!(assets(&h).len(), before_assets.len() + 1);
+        }
+    }
+}
