@@ -1014,12 +1014,12 @@ fn inspect(path: &Path, validate: bool, migrations: &'static [tt_persist::migrat
         return info;
     }
     if path.is_file() {
-        let head =
-            std::fs::read(path).ok().map(|b| b.get(30..38).map(<[u8]>::to_vec).unwrap_or_default()).unwrap_or_default();
-        let mime_at = std::fs::read(path)
-            .ok()
-            .and_then(|b| b.get(38..70).map(|x| String::from_utf8_lossy(x).into_owned()))
-            .unwrap_or_default();
+        // The type is in the first entry (`mimetype`, ZIP-02): read a bounded header only (C13-R1-14).
+        let mut buf = [0u8; 70];
+        let n = std::fs::File::open(path).and_then(|mut f| read_up_to(&mut f, &mut buf)).unwrap_or(0);
+        let header = &buf[..n];
+        let head = header.get(30..38).map(<[u8]>::to_vec).unwrap_or_default();
+        let mime_at = header.get(38..).map(|x| String::from_utf8_lossy(x).into_owned()).unwrap_or_default();
         if head == b"mimetype" && mime_at.starts_with(tt_persist::manifest::TEMPLATE_MIMETYPE) {
             info.kind = "template".into();
             match tt_persist::library::read_template(path) {
@@ -1197,10 +1197,8 @@ pub(crate) fn doc_package_export(cx: &mut Cx, p: PackageExportParams) -> Result<
             return Err(CommandError::with_details("job.cancelled", "cancelled", json!({})));
         }
         progress.report(0.1, "Write");
-        if form == Form::Package && target.is_file() {
-            std::fs::remove_file(&target)
-                .map_err(|e| CommandError::from(fsx::save_error(&e, &target, "cannot replace")))?;
-        }
+        // The package writer replaces the destination only once the copy is written and verified (SAVE-01); the
+        // previous file stays until then (C13-R1-07).
         let w = persistence::write(&snap, &target, form, None, &cache, form == Form::Folder)?;
         let entries = w.container.as_ref().map_or(w.saved.written.len() as u64, |c| c.names().len() as u64);
         Ok(serde_json::to_value(PackageExported {
@@ -1212,6 +1210,18 @@ pub(crate) fn doc_package_export(cx: &mut Cx, p: PackageExportParams) -> Result<
         .unwrap_or(Value::Null))
     })?;
     Ok(Job::new(job))
+}
+
+/// Reads until `buf` is full or the end of the file; returns the bytes read.
+fn read_up_to(r: &mut impl std::io::Read, buf: &mut [u8]) -> std::io::Result<usize> {
+    let mut n = 0;
+    while n < buf.len() {
+        match r.read(&mut buf[n..])? {
+            0 => break,
+            k => n += k,
+        }
+    }
+    Ok(n)
 }
 
 // ----- events ------------------------------------------------------------------------------------------------------
