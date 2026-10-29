@@ -21,6 +21,7 @@ pub mod codes;
 pub mod container;
 pub mod fsx;
 pub mod host;
+pub mod journal;
 pub mod layout;
 pub mod library;
 pub mod load;

@@ -79,8 +79,11 @@ pub fn invalid(reason: &str, message: impl Into<String>, entry: Option<&str>) ->
     ModelError::with_details(codes::INVALID_FORMAT, message, details)
 }
 
-/// Whether an entry name is safe (ZIP-01): non-empty, relative, `/`-separated, no empty/`.`/`..` segments, no drive
-/// letter, no backslash, no control characters, at most 1024 bytes and 64 segments.
+/// Whether an entry name is safe (ZIP-01): non-empty, relative, `/`-separated, no empty/`.`/`..` segments, no backslash,
+/// no control characters, at most 1024 bytes and 64 segments, and every segment a portable file name, so that the folder
+/// form can hold the same entry on every platform (FMT-01) and no segment can leave its folder (C13-R1-10): no `:` in any
+/// segment (drive prefixes such as `C:` or `D:x`, NTFS streams), none of `*?"<>|`, no segment ending in `.` or a space,
+/// and no Windows device name (`CON`, `PRN`, `AUX`, `NUL`, `COM1`…`COM9`, `LPT1`…`LPT9`, with or without an extension).
 #[must_use]
 pub fn safe_name(name: &str) -> bool {
     !name.is_empty()
@@ -88,9 +91,24 @@ pub fn safe_name(name: &str) -> bool {
         && !name.starts_with('/')
         && !name.contains('\\')
         && !name.chars().any(|c| c.is_control())
-        && !(name.len() >= 2 && name.as_bytes()[1] == b':')
         && name.split('/').count() <= 64
-        && name.split('/').all(|s| !s.is_empty() && s != "." && s != "..")
+        && name.split('/').all(safe_segment)
+}
+
+fn safe_segment(s: &str) -> bool {
+    if s.is_empty() || s == "." || s == ".." || s.ends_with('.') || s.ends_with(' ') {
+        return false;
+    }
+    if s.chars().any(|c| matches!(c, ':' | '*' | '?' | '"' | '<' | '>' | '|')) {
+        return false;
+    }
+    let stem = s.split('.').next().unwrap_or(s).to_ascii_uppercase();
+    let device = matches!(stem.as_str(), "CON" | "PRN" | "AUX" | "NUL")
+        || ((stem.starts_with("COM") || stem.starts_with("LPT"))
+            && stem.len() == 4
+            && stem.as_bytes()[3].is_ascii_digit()
+            && stem.as_bytes()[3] != b'0');
+    !device
 }
 
 fn put16(out: &mut Vec<u8>, v: u16) {
@@ -922,10 +940,30 @@ mod tests {
 
     #[test]
     fn unsafe_names_are_refused() {
-        for n in ["../x", "/x", "a/../b", "C:/x", "a\\b", "a//b", "./a", "a/.", "", "a\u{1}b"] {
+        for n in [
+            "../x",
+            "/x",
+            "a/../b",
+            "C:/x",
+            "a\\b",
+            "a//b",
+            "./a",
+            "a/.",
+            "",
+            "a\u{1}b",
+            "vendor/C:/x",
+            "v/D:rel",
+            "a/b:stream",
+            "a/b.",
+            "a/b ",
+            "NUL",
+            "a/con.txt",
+            "LPT1.log",
+            "a/x?y",
+        ] {
             assert!(!safe_name(n), "{n:?}");
         }
-        for n in ["a", "a/b.json", "media/as_1.wav", "x.y/z"] {
+        for n in ["a", "a/b.json", "media/as_1.wav", "x.y/z", "console.json", "COM0", "LPT10", ".lock"] {
             assert!(safe_name(n), "{n:?}");
         }
     }

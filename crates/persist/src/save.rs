@@ -20,6 +20,7 @@ use tt_model::overlay;
 use crate::codes;
 use crate::container::{Blobs, Container, FolderIndex, Form};
 use crate::fsx::{self, sha256};
+use crate::journal;
 use crate::layout::{self, Kind};
 use crate::load::{self, Preserved};
 use crate::manifest::{Manifest, ManifestEntry, PACKAGE_MIMETYPE, Version};
@@ -341,23 +342,6 @@ pub fn save_package(
     }
 }
 
-/// A rename the folder save performs, recorded in the journal.
-#[derive(Debug, Clone, PartialEq, Eq)]
-struct Rename {
-    tmp: String,
-    target: String,
-    size: u64,
-    sha256: String,
-}
-
-fn journal_json(renames: &[Rename], deletions: &[String]) -> Value {
-    json!({
-        "format": "animpkg-save-journal",
-        "renames": renames.iter().map(|r| json!({ "tmp": r.tmp, "target": r.target, "size": r.size, "sha256": r.sha256 })).collect::<Vec<_>>(),
-        "deletions": deletions,
-    })
-}
-
 fn entry_file(root: &Path, name: &str) -> PathBuf {
     name.split('/').fold(root.to_path_buf(), |p, s| p.join(s))
 }
@@ -382,11 +366,14 @@ pub struct FolderOptions {
     pub git_files: bool,
     /// Stop after writing the temporaries and the journal (tests of SAVE-02 recovery).
     pub crash_after_journal: bool,
+    /// Stop after this many renames (tests of SAVE-02 recovery from every point).
+    pub crash_after_renames: Option<usize>,
 }
 
-/// Saves the folder form (SAVE-02): changed entries are written to temporary siblings and flushed, the journal is
-/// written, the temporaries are renamed over their targets, removed entries are deleted, `manifest.json` is written
-/// last and the journal is deleted. Unchanged entries are not rewritten (LAY-04).
+/// Saves the folder form (SAVE-02): changed entries are written to temporary siblings and flushed, entries about to be
+/// replaced get old copies, the journal is written (`journal.rs`), the temporaries are renamed over their targets,
+/// removed entries are moved to their old copies, `manifest.json` is written last, the journal is deleted, then the old
+/// copies. Unchanged entries are not rewritten (LAY-04).
 ///
 /// # Errors
 /// `project.saveFailed`, `project.permissionDenied`.
@@ -424,7 +411,7 @@ pub fn save_folder(
     let planned = plan(input)?;
     let manifest = manifest_for(input, None);
     let manifest_text = manifest.to_canonical()?;
-    let mut renames: Vec<Rename> = Vec::new();
+    let mut replaces: Vec<journal::Replace> = Vec::new();
     let mut written = Vec::new();
     let mut total = 0u64;
     let mut temporaries: Vec<PathBuf> = Vec::new();
@@ -497,12 +484,17 @@ pub fn save_folder(
                     p.components().map(|c| c.as_os_str().to_string_lossy().into_owned()).collect::<Vec<_>>().join("/")
                 })
                 .unwrap_or_default();
-            renames.push(Rename {
-                tmp: rel,
-                target: name.clone(),
-                size: fs::metadata(&tmp).map(|m| m.len()).unwrap_or(0),
-                sha256: sha,
-            });
+            let new =
+                journal::Version { file: rel, size: fs::metadata(&tmp).map(|m| m.len()).unwrap_or(0), sha256: sha };
+            // C13-R1-03: the previous content stays recoverable until the save is complete.
+            let old = if target.is_file() {
+                let v = journal::keep_old(root, &name)?;
+                temporaries.push(journal::path(root, &v.file));
+                Some(v)
+            } else {
+                None
+            };
+            replaces.push(journal::Replace { target: name.clone(), new, old });
             written.push(name);
         }
         Ok(())
@@ -531,10 +523,30 @@ pub fn save_folder(
         })
         .unwrap_or_default();
     // Manifest last.
-    renames.sort_by_key(|r| r.target == layout::MANIFEST);
+    replaces.sort_by_key(|r| r.target == layout::MANIFEST);
+    let mut removes = Vec::new();
+    for d in &deletions {
+        let p = entry_file(root, d);
+        match File::open(&p).and_then(fsx::sha256_reader) {
+            Ok((sha256, size)) => {
+                removes.push(journal::Remove {
+                    target: d.clone(),
+                    old: journal::Version { file: journal::old_name(d), size, sha256 },
+                });
+            }
+            Err(e) => {
+                for t in &temporaries {
+                    let _ = fs::remove_file(t);
+                }
+                discard(staged);
+                return Err(fsx::save_error(&e, &p, "cannot read"));
+            }
+        }
+    }
+    let plan = journal::Journal { replace: replaces, remove: removes };
     let journal = root.join(layout::JOURNAL);
-    if !renames.is_empty() || !deletions.is_empty() {
-        let text = tt_model::canonical::to_canonical_string(&journal_json(&renames, &deletions))?;
+    if !plan.replace.is_empty() || !plan.remove.is_empty() {
+        let text = tt_model::canonical::to_canonical_string(&plan.to_json())?;
         if let Err(e) = fsx::write_atomic(&journal, text.as_bytes(), fsx::save_error) {
             for t in &temporaries {
                 let _ = fs::remove_file(t);
@@ -549,10 +561,17 @@ pub fn save_folder(
                 json!({ "reason": "ioError" }),
             ));
         }
-        // From here on the journal guarantees completion on the next open (SAVE-02).
-        complete(root, &renames, &deletions)?;
+        // From here on the journal guarantees completion or rollback on the next open (SAVE-02).
+        if !journal::apply(root, &plan, opts.crash_after_renames)? {
+            return Err(ModelError::with_details(
+                codes::SAVE_FAILED,
+                "simulated crash during the renames",
+                json!({ "reason": "ioError" }),
+            ));
+        }
         fs::remove_file(&journal).map_err(|e| fsx::save_error(&e, &journal, "cannot remove the journal"))?;
         fsx::sync_dir(root);
+        journal::discard_old(root, &plan);
     }
     let backup_id = match (staged, backup) {
         (Some(st), Some(sink)) => sink.commit(st).ok(),
@@ -561,84 +580,25 @@ pub fn save_folder(
     Ok(Saved { manifest, written, removed: deletions, bytes: total, backup_id })
 }
 
-fn complete(root: &Path, renames: &[Rename], deletions: &[String]) -> Result<(), ModelError> {
-    for r in renames {
-        let from = entry_file(root, &r.tmp);
-        let to = entry_file(root, &r.target);
-        fs::rename(&from, &to).map_err(|e| fsx::save_error(&e, &to, "cannot replace"))?;
-        if let Some(dir) = to.parent() {
-            fsx::sync_dir(dir);
-        }
-    }
-    for d in deletions {
-        let p = entry_file(root, d);
-        match fs::remove_file(&p) {
-            Ok(()) => {}
-            Err(e) if e.kind() == io::ErrorKind::NotFound => {}
-            Err(e) => return Err(fsx::save_error(&e, &p, "cannot remove")),
-        }
-        // Empty folders of removed entries go too.
-        let mut dir = p.parent().map(Path::to_path_buf);
-        while let Some(d) = dir {
-            if d == root || fs::remove_dir(&d).is_err() {
-                break;
-            }
-            dir = d.parent().map(Path::to_path_buf);
-        }
-    }
-    Ok(())
-}
-
-/// SAVE-02 on open: a leftover journal means an interrupted save. When every temporary is present and valid the
-/// renames and deletions are completed; otherwise the temporaries are deleted (rollback). Either way the open reports
-/// `project.saveInterrupted`. A read-only open changes nothing and only reports it.
+/// SAVE-02 on open: a leftover journal means an interrupted save. It is validated before anything changes, then the
+/// save is completed or rolled back (`journal.rs`); the open reports `project.saveInterrupted`. A read-only open
+/// changes nothing and only reports it.
 ///
 /// # Errors
-/// I/O errors while completing or rolling back.
+/// `project.invalidFormat` (`reason`: `journal` for a malformed journal, `unrecoverableSave` when neither version is
+/// complete; nothing is changed in either case); I/O errors while completing or rolling back.
 pub fn recover_journal(root: &Path, read_only: bool, issues: &mut Issues) -> Result<(), ModelError> {
-    let journal = root.join(layout::JOURNAL);
-    if !journal.is_file() {
+    let path = root.join(layout::JOURNAL);
+    if !path.is_file() {
         return Ok(());
     }
-    let text = fs::read_to_string(&journal).unwrap_or_default();
-    let parsed: Option<Value> = tt_model::json_text::parse(&text).ok();
-    let mut renames = Vec::new();
-    let mut deletions = Vec::new();
-    let mut valid = parsed.is_some();
-    if let Some(v) = &parsed {
-        for r in v.get("renames").and_then(Value::as_array).into_iter().flatten() {
-            let (Some(tmp), Some(target), Some(size), Some(sha)) = (
-                r.get("tmp").and_then(Value::as_str),
-                r.get("target").and_then(Value::as_str),
-                r.get("size").and_then(Value::as_u64),
-                r.get("sha256").and_then(Value::as_str),
-            ) else {
-                valid = false;
-                continue;
-            };
-            if !crate::zip::safe_name(tmp) || !crate::zip::safe_name(target) {
-                valid = false;
-                continue;
-            }
-            renames.push(Rename { tmp: tmp.to_owned(), target: target.to_owned(), size, sha256: sha.to_owned() });
-        }
-        for d in v.get("deletions").and_then(Value::as_array).into_iter().flatten() {
-            match d.as_str() {
-                Some(s) if crate::zip::safe_name(s) => deletions.push(s.to_owned()),
-                _ => valid = false,
-            }
-        }
-    }
-    // Each rename is either still pending (its temporary exists with the recorded size and hash) or already done (no
-    // temporary, and the target has the recorded content). Only then can the save be completed.
-    let matches = |p: &Path, r: &Rename| {
-        File::open(p).ok().and_then(|f| fsx::sha256_reader(f).ok()).is_some_and(|(h, n)| h == r.sha256 && n == r.size)
-    };
-    let resumable = valid
-        && renames.iter().all(|r| {
-            let tmp = entry_file(root, &r.tmp);
-            if tmp.exists() { matches(&tmp, r) } else { matches(&entry_file(root, &r.target), r) }
-        });
+    let text = fsx::read_limited(&path, 64 << 20).map_err(|_| {
+        crate::zip::invalid("journal", "the save journal cannot be read; nothing was changed", Some(layout::JOURNAL))
+    })?;
+    let value = std::str::from_utf8(&text).ok().and_then(|t| tt_model::json_text::parse(t).ok()).ok_or_else(|| {
+        crate::zip::invalid("journal", "the save journal is not JSON; nothing was changed", Some(layout::JOURNAL))
+    })?;
+    let plan = journal::Journal::parse(&value)?;
     if read_only {
         issues.warning(
             codes::SAVE_INTERRUPTED,
@@ -649,17 +609,10 @@ pub fn recover_journal(root: &Path, read_only: bool, issues: &mut Issues) -> Res
         );
         return Ok(());
     }
-    let completed = if resumable {
-        let pending: Vec<Rename> = renames.into_iter().filter(|r| entry_file(root, &r.tmp).is_file()).collect();
-        complete(root, &pending, &deletions)?;
-        true
-    } else {
-        for r in &renames {
-            let _ = fs::remove_file(entry_file(root, &r.tmp));
-        }
-        false
-    };
-    fs::remove_file(&journal).map_err(|e| fsx::save_error(&e, &journal, "cannot remove the journal"))?;
+    let outcome = journal::recover(root, &plan)?;
+    fs::remove_file(&path).map_err(|e| fsx::save_error(&e, &path, "cannot remove the journal"))?;
+    fsx::sync_dir(root);
+    let completed = outcome == journal::Outcome::Completed;
     issues.warning(
         codes::SAVE_INTERRUPTED,
         None,
@@ -667,7 +620,7 @@ pub fn recover_journal(root: &Path, read_only: bool, issues: &mut Issues) -> Res
         if completed {
             "a previous save of this folder was interrupted; it was completed"
         } else {
-            "a previous save of this folder was interrupted; its partial changes were rolled back"
+            "a previous save of this folder was interrupted; the previous version was restored"
         },
         json!({ "completed": completed }),
     );
@@ -728,6 +681,6 @@ pub fn save(
 ) -> Result<Saved, ModelError> {
     match form {
         Form::Package => save_package(target, input, backup),
-        Form::Folder => save_folder(target, input, backup, FolderOptions { git_files, crash_after_journal: false }),
+        Form::Folder => save_folder(target, input, backup, FolderOptions { git_files, ..FolderOptions::default() }),
     }
 }

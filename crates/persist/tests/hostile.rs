@@ -591,7 +591,7 @@ fn interrupted_folder_saves_complete_or_roll_back_on_open() {
         &folder,
         &input(&changed, &pres, &blobs),
         None,
-        tt_persist::save::FolderOptions { git_files: false, crash_after_journal: true },
+        tt_persist::save::FolderOptions { crash_after_journal: true, ..Default::default() },
     );
     assert!(crash.is_err());
     assert!(folder.join(".save-journal.json").is_file());
@@ -619,10 +619,10 @@ fn interrupted_folder_saves_complete_or_roll_back_on_open() {
         &folder,
         &SaveInput { doc: &changed2, preserved: &l.preserved, blobs: &l.blobs, session: None, saved_at: "x".into() },
         None,
-        tt_persist::save::FolderOptions { git_files: false, crash_after_journal: true },
+        tt_persist::save::FolderOptions { crash_after_journal: true, ..Default::default() },
     );
     let journal: Value = serde_json::from_slice(&std::fs::read(folder.join(".save-journal.json")).unwrap()).unwrap();
-    let tmp0 = journal["renames"][0]["tmp"].as_str().unwrap();
+    let tmp0 = journal["replace"][0]["new"]["file"].as_str().unwrap();
     std::fs::write(tmp0.split('/').fold(folder.clone(), |p, s| p.join(s)), b"damaged").unwrap();
     let l2 = load(&folder, &LoadOptions::default()).unwrap();
     assert_eq!(l2.doc.element(&el).unwrap().note(), "after crash", "rolled back");
