@@ -248,7 +248,8 @@ pub(crate) fn normalize(p: &str) -> String {
 /// A project's identity for change detection (RO-02): the package file's size and modification time, or for the folder
 /// form those of `manifest.json` plus a fingerprint of every entry file's name, size and modification time
 /// (C13-R1-06: folder entries are edited directly by text tools and version control, and the folder manifest does not
-/// list them). Hidden files (control files, temporaries, old copies) and `session.json` are not project content.
+/// list them). Control files (first path segment starting with `.`) and `session.json` are not project content; hidden
+/// names deeper down are preserved entries and count (C13-R2-04).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct Stamp {
     pub len: u64,
@@ -279,7 +280,9 @@ fn walk(root: &Path, dir: &Path, depth: usize, out: &mut Vec<String>) {
     let Ok(rd) = std::fs::read_dir(dir) else { return };
     for e in rd.flatten() {
         let name = e.file_name().to_string_lossy().into_owned();
-        if name.starts_with('.') || (depth == 0 && name == tt_persist::layout::SESSION) {
+        // Exactly what the folder container leaves out (ADR-0014 §2; C13-R2-04): control files, whose first path
+        // segment starts with `.`, and `session.json`. Hidden names deeper down are preserved content (ZIP-04).
+        if depth == 0 && (name.starts_with('.') || name == tt_persist::layout::SESSION) {
             continue;
         }
         let Ok(ft) = e.file_type() else { continue };

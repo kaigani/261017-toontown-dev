@@ -178,8 +178,8 @@ pub(crate) fn backups(env: &Env, doc: &Document, original: &Path) -> Backups {
     }
 }
 
-/// Writes a snapshot at `target` in `form` (any thread). When the write replaces the container the project's binary
-/// entries come from, the entries the new container will not hold are first copied to the session cache.
+/// Writes a snapshot at `target` in `form` (any thread). The binary entries of the project's current source that the
+/// new container will not hold are first copied to the session cache, so undo can still reach them (C13-R2-02).
 ///
 /// # Errors
 /// The save errors of 10 SAVE-05.
@@ -191,10 +191,12 @@ pub(crate) fn write(
     cache: &Path,
     git_files: bool,
 ) -> Result<Written, CommandError> {
+    // The project's binary entries are about to come from the written container. Entries the old source holds and the
+    // new one will not (MED-04: media nothing uses now, still needed by undo) are copied to the session cache first,
+    // whatever the target: a same-path save replaces their source, and a Save As elsewhere or a recovered project's
+    // save switches away from it (C13-R2-02).
     let mut carried = Vec::new();
-    if let Some(base) = snap.blobs.base()
-        && store::normalize(&base.path().to_string_lossy()) == store::normalize(&target.to_string_lossy())
-    {
+    if let Some(base) = snap.blobs.base() {
         let keep: std::collections::BTreeSet<String> =
             tt_persist::save::plan(&snap.input())?.into_iter().map(|p| p.name).collect();
         for name in base.names() {
