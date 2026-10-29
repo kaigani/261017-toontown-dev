@@ -31,7 +31,9 @@ saved, reopened, read back identically.
    - **Entry names** are portable in every segment (C13-R1-10). Beyond ZIP-01's rules, no segment may:
      - contain `:` (drive prefixes such as `vendor/C:/x`, NTFS streams) or any of `*?"<>|`;
      - end in `.` or a space;
-     - be a Windows device name.
+     - be a Windows device name;
+     - be longer than 200 UTF-8 bytes (C13-R2-05). File systems allow 255 per component (APFS counts UTF-8 bytes;
+       NTFS counts UTF-16 units, never more), and the hidden siblings of a folder save add 18 bytes.
    - **Control files** are files whose first path segment starts with `.`: `.lock`, `.save-journal.json`, temporary
      files, and the `.git/`, `.gitignore` and `.gitattributes` of a version-controlled project folder. They belong to
      the folder, not to the project: they are never read as entries, preserved, listed or copied into a package.
@@ -42,8 +44,10 @@ saved, reopened, read back identically.
    - The save then:
      1. renames the temporaries over their entries;
      2. moves removed entries to their old copies;
-     3. writes `manifest.json` last;
+     3. renames `manifest.json` last, after the removals (C13-R2-06);
      4. deletes the journal, then the old copies.
+
+     Recovery completing a save follows the same order.
 
      Unchanged entries are not rewritten (LAY-04).
    - **On open, a leftover journal is validated completely before anything changes** (C13-R1-04): format, version,
@@ -115,7 +119,14 @@ saved, reopened, read back identically.
      - new scenes replace same-named scenes and their elements (the first one takes its place in the scene list);
      - elements imported into a scene replace that scene's same-named elements, removed as `edit.delete` removes
        them; a scene left without a current camera takes the imported one;
-     - palettes replace same-named palettes that have another ID, and their style entries go with them.
+     - palettes replace same-named palettes that have another ID, and their style entries go with them;
+     - assets and pens (items of the project's lists) replace same-named items (C13-R2-03). The replacement gets a
+       fresh ID, because media entry names embed the asset ID and undo must find the old bytes under the old name,
+       and every reference to the old ID follows (placements, media sequences, strokes' `penId`; outside the opaque
+       `meta`/`ext`);
+     - with `idPolicy: "preserve"`, an ID conflict is replaced too (scenes, elements, assets, pens). ID conflicts
+       fail only under `fail`; under `rename` the import gets fresh IDs. Assets and pens also follow `rename`
+       (07 §2.3) and `fail`.
    - Palettes merge by palette ID, with swatches handled by `keepExisting` or `updateExisting`.
    - A scene imported into a project also gets a style entry for each palette of that project (10 §4.3). This is why
      the round-trip test compares the source's own style keys.
@@ -129,11 +140,16 @@ saved, reopened, read back identically.
      the history still leads there.
    - A save cannot be cancelled once writing starts (SAVE-03).
    - **`onUnsaved: "save"`** (`project.close`, `project.create`, `app.quit`, and the open, backup and recovery paths)
-     stages the `modifiedAt` stamp and records a pending save (C13-R1-01):
-     - the executor writes it only once every step of the invocation or atomic batch has succeeded, before the
-       commit, and never for a dry run;
+     records a pending save (C13-R1-01, C13-R2-01):
+     - the project counts as unsaved when the live project is modified or the invocation has staged or sealed
+       changes, so an atomic batch's own edits are saved;
+     - the `modifiedAt` stamp is a system transaction of a single invocation; inside an atomic batch it is stamped
+       into the batch's own changes when the batch ends, so there is one transaction and one undo step;
+     - the executor writes the pending save once every step has succeeded, before the commit, and never for a dry
+       run; the snapshot is the document the commit installs, so the file holds exactly the committed revision;
      - a failed write rolls the whole invocation back;
-     - the clean marker, saved revision, location and recovery deletion are applied after the commit.
+     - the clean marker (at the history position the commit reached), saved revision, location and recovery
+       deletion are applied after the commit.
    - **Every write to the current location needs this session's lock** (C13-R1-02). A plain save checks that the
      lock is still held. A same-path Save As from a read-only session must take the lock first, and fails while the
      owner holds it.
@@ -142,7 +158,9 @@ saved, reopened, read back identically.
        their identity and share one stored copy;
      - a save writes only the media of assets that objects use (placements and media sequences; library usages
        arrive with M9);
-     - the bytes of unused assets stay in the session for undo.
+     - the bytes of unused assets stay in the session for undo. Whenever a write switches the project's binary source
+       (any save, Save As elsewhere, the save of a recovered project), the entries of the old source that the new one
+       will not hold are first copied to the session cache (C13-R2-02).
 
 9. **Backups (BAK-01…04).**
    - Backups live in `<user>/Backups/<projectId>/<savedAt>.animpkg`, indexed by `backup.json`.
@@ -174,7 +192,9 @@ saved, reopened, read back identically.
 12. **External changes (RO-02).**
     - For a package, maintenance compares the file's size and modification time.
     - For a folder, it compares those of `manifest.json` plus a fingerprint of every entry file's name, size and
-      modification time (C13-R1-06). Hidden files and `session.json` are left out of the fingerprint.
+      modification time (C13-R1-06). Exactly what the container leaves out is left out (C13-R2-04): control files,
+      whose first path segment starts with `.`, and `session.json`. Hidden names deeper down are preserved entries
+      and count.
     - Every save checks again before writing.
     - A change emits `doc.package.changedOnDisk` and marks the project.
     - The next plain `project.save` fails with `project.changedOnDisk`, carrying a hint naming both choices:
