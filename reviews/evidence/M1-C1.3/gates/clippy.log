@@ -1,5 +1,4 @@
 $ cargo clippy --workspace --all-targets --locked -- -D warnings
-    Checking tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.57s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.35s
 
 [exit 0]

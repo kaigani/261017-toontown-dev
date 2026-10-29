@@ -1,4 +1,9 @@
 $ cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.29s
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\persist)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\io)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\engine)
+    Checking tt-desktop v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop\src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.95s
 
 [exit 0]
