@@ -1,0 +1,77 @@
+{
+  "id": "el_01K742SG1J0P04YY53S9GPHJX3",
+  "type": "element",
+  "rev": 1,
+  "name": "Soft",
+  "elementType": "blur",
+  "start": 1,
+  "duration": 48,
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "params": {
+    "radial": false,
+    "radius": 4,
+    "angle": 30
+  },
+  "channels": {
+    "radius": {
+      "id": "ch_01K742SG2DTP5PACPTREGM1PNB",
+      "type": "channel",
+      "rev": 1,
+      "name": "radius",
+      "curveType": "spline",
+      "keys": [
+        {
+          "id": "ky_01K742SG2ET20KKTKB088JQ98A",
+          "type": "key",
+          "rev": 1,
+          "frame": 1,
+          "value": 0,
+          "constantSegment": false,
+          "handles": {
+            "left": {
+              "dt": -4,
+              "dv": 0
+            },
+            "right": {
+              "dt": 4,
+              "dv": 0
+            },
+            "mode": "smooth"
+          },
+          "easing": null
+        },
+        {
+          "id": "ky_01K742SG2F8YW83HYA83NH3MGE",
+          "type": "key",
+          "rev": 1,
+          "frame": 24,
+          "value": 8,
+          "constantSegment": false,
+          "handles": {
+            "left": {
+              "dt": -4,
+              "dv": 0
+            },
+            "right": {
+              "dt": 4,
+              "dv": 0
+            },
+            "mode": "smooth"
+          },
+          "easing": null
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

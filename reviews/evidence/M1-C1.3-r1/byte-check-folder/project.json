@@ -1,0 +1,155 @@
+{
+  "id": "pr_01K742SG00KCS2RFAC17SMYQ7P",
+  "type": "project",
+  "rev": 1,
+  "name": "Sample",
+  "createdAt": "2026-10-17T09:30:12.345Z",
+  "modifiedAt": "2026-10-17T09:30:12.345Z",
+  "frameRate": 23.976,
+  "cameraWidth": 1920,
+  "cameraHeight": 1080,
+  "autoColourUpdate": false,
+  "startTransition": {
+    "id": "tr_01K742SG2YZ69HB5FQHKGPCKBY",
+    "type": "transition",
+    "rev": 1,
+    "transitionType": "none",
+    "durationLeft": 12,
+    "blankDuration": 0,
+    "durationRight": 12,
+    "colour": "#000000FF",
+    "angle": 0,
+    "direction": null,
+    "size": 25
+  },
+  "palettes": [
+    {
+      "id": "pal_01K742SG02Y8CWP04S01A05VAM",
+      "type": "palette",
+      "name": "Main"
+    },
+    {
+      "id": "pal_01K742SG0A9HQZFCMWQQZV4Q9S",
+      "type": "palette",
+      "name": "Effects"
+    }
+  ],
+  "pens": [
+    {
+      "id": "pen_01K742SG0DRX7PTA1QPP3HCB3V",
+      "type": "pen",
+      "rev": 1,
+      "name": "Pen 1",
+      "kind": "brush",
+      "minSize": 0.5,
+      "maxSize": 2,
+      "smoothness": 3,
+      "tip": "round",
+      "tipAngle": 0,
+      "colourId": null
+    },
+    {
+      "id": "pen_01K742SG0EMJ55ATTP3NSQPR8F",
+      "type": "pen",
+      "rev": 1,
+      "name": "Pen 2",
+      "kind": "brush",
+      "minSize": 1,
+      "maxSize": 4,
+      "smoothness": 3,
+      "tip": "flat",
+      "tipAngle": 30,
+      "colourId": "col_01K742SG09FZ4KQP7GKNDQE46C"
+    },
+    {
+      "id": "pen_01K742SG0FRVW1FCXH6XR6VYHT",
+      "type": "pen",
+      "rev": 1,
+      "name": "Eraser 1",
+      "kind": "eraser",
+      "minSize": 10,
+      "maxSize": 10,
+      "smoothness": 3,
+      "tip": "round",
+      "tipAngle": 0,
+      "colourId": null
+    }
+  ],
+  "assets": [
+    {
+      "id": "as_01K742SG0GQFCVS62Q9GAKDA3P",
+      "type": "asset",
+      "rev": 1,
+      "name": "line1.wav",
+      "kind": "sound",
+      "mediaType": "audio/wav",
+      "storage": "embedded",
+      "entry": "media/as_01K742SG0GQFCVS62Q9GAKDA3P.wav",
+      "link": null,
+      "size": 352844,
+      "sha256": "abababababababababababababababababababababababababababababababab",
+      "importedAt": "2026-10-17T09:30:12.345Z",
+      "sourcePath": "C:/audio/line1.wav"
+    },
+    {
+      "id": "as_01K742SG0HXV0HW9X3RH78J0J4",
+      "type": "asset",
+      "rev": 1,
+      "name": "reference.mov",
+      "kind": "movie",
+      "mediaType": "video/quicktime",
+      "storage": "linked",
+      "entry": null,
+      "link": {
+        "kind": "file",
+        "path": "../ref/reference.mov",
+        "absolutePath": "C:/ref/reference.mov",
+        "libraryId": null,
+        "itemId": null,
+        "versionId": null
+      },
+      "size": 5000000000,
+      "sha256": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+      "importedAt": "2026-10-17T09:30:12.345Z",
+      "sourcePath": null
+    }
+  ],
+  "drawingBanks": [
+    {
+      "id": "db_01K742SG0J7F7Q6PFR14P6N3Q8",
+      "type": "drawingBank"
+    },
+    {
+      "id": "db_01K742SG139S0T51QJA8YD2T0B",
+      "type": "drawingBank"
+    },
+    {
+      "id": "db_01K742SG17PFQ9PFWWP89KK2Y4",
+      "type": "drawingBank"
+    },
+    {
+      "id": "db_01K742SG2QW1XFME43G0T94GSA",
+      "type": "drawingBank"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "sc_01K742SG0YBXYJ7NCPESX37AR7",
+      "type": "scene",
+      "name": "Intro"
+    },
+    {
+      "id": "sc_01K742SG2MX2BF0DMPV46E3VJP",
+      "type": "scene",
+      "name": "Scene-2"
+    }
+  ],
+  "library": {
+    "id": "lib_01K742SG01TFG1BKVEQNVFXK79",
+    "type": "library",
+    "name": "Local"
+  },
+  "meta": {
+    "client": "fixture"
+  }
+}

@@ -1,0 +1,204 @@
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\executor)
+    Finished `test` profile [unoptimized] target(s) in 7.43s
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-16af3732dfd72a72.exe)
+
+running 18 tests
+test concurrent_stale_lock_takeover_has_only_one_owner ... FAILED
+test persistence_registry_declarations_have_valid_examples_and_record_their_schemas ... ok
+test import_and_repair_undo_labels_match_the_command_table ... FAILED
+test default_preference_values_are_not_persisted_as_overrides ... FAILED
+test unreferenced_embedded_media_is_removed_from_the_saved_package ... FAILED
+test import_replace_replaces_a_same_named_scene_instead_of_renaming_it ... FAILED
+test bundle_binary_references_cannot_read_outside_agent_roots ... ok
+test package_inspection_reads_a_bounded_header ... FAILED
+test dry_run_close_with_save_does_not_write_the_project_or_backups ... FAILED
+test failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes ... FAILED
+test folder_entry_change_is_detected_even_when_manifest_is_unchanged ... FAILED
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... FAILED
+test identical_embedded_asset_content_is_stored_once ... FAILED
+test failed_package_export_overwrite_keeps_the_previous_destination ... FAILED
+test scheduled_autosave_of_untitled_work_preserves_history_and_location ... ok
+test external_change_reload_and_keep_mine_choices_work_on_owned_package ... ok
+test recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover ... FAILED
+test malformed_numeric_inputs_fail_closed_or_repair_deterministically_under_watchdog ... ok
+
+failures:
+
+---- concurrent_stale_lock_takeover_has_only_one_owner stdout ----
+
+thread 'concurrent_stale_lock_takeover_has_only_one_owner' (19888) panicked at crates\executor\tests\c13_r1_persistence.rs:249:9:
+assertion `left == right` failed: LOCK-02: trial 0, concurrent stale takeover returned 7 owners
+  left: 7
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- import_and_repair_undo_labels_match_the_command_table stdout ----
+
+thread 'import_and_repair_undo_labels_match_the_command_table' (27196) panicked at crates\executor\tests\c13_r1_persistence.rs:523:5:
+assertion `left == right` failed: 10 §10.2 command-table undo labels
+  left: ("Import", "Repair")
+ right: ("Import JSON", "Repair Project")
+
+---- default_preference_values_are_not_persisted_as_overrides stdout ----
+
+thread 'default_preference_values_are_not_persisted_as_overrides' (14048) panicked at crates\executor\tests\c13_r1_persistence.rs:314:9:
+01 §11: default preference project.defaults.frameRate was persisted as an override: {"format":"toontown-settings","kind":"preferences","formatVersion":"1.0","data":{"project.defaults.frameRate":24,"project.defaults.cameraWidth":1920,"project.defaults.cameraHeight":1080}}
+
+---- unreferenced_embedded_media_is_removed_from_the_saved_package stdout ----
+
+thread 'unreferenced_embedded_media_is_removed_from_the_saved_package' (33536) panicked at crates\executor\tests\c13_r1_persistence.rs:543:5:
+MED-04: package retained media with zero references
+
+---- import_replace_replaces_a_same_named_scene_instead_of_renaming_it stdout ----
+
+thread 'import_replace_replaces_a_same_named_scene_instead_of_renaming_it' (5856) panicked at crates\executor\tests\c13_r1_persistence.rs:191:5:
+assertion `left == right` failed: 10 §6.8 / ADR-0014 §7: replace must not append a renamed scene: {"items":[{"id":"sc_01M64JSZQ13P2RP2CJ35KZZHXP","type":"scene","name":"Scene-1","path":"scene:\"Scene-1\"","rev":1},{"id":"sc_01M64JSZQTC5WWXAY17C6P347Z","type":"scene","name":"Scene-1-2","path":"scene:\"Scene-1-2\"","rev":2}],"total":2,"nextOffset":null}
+  left: Number(2)
+ right: 1
+
+---- package_inspection_reads_a_bounded_header stdout ----
+
+thread 'package_inspection_reads_a_bounded_header' (5792) panicked at crates\executor\tests\c13_r1_persistence.rs:297:5:
+ZIP64 / never-block: inspection read the whole file to identify its header: 
+running 1 test
+test package_inspection_reads_a_bounded_header ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.22s
+
+
+{"command": "doc.package.get validate=false", "fileBytes": 268435456, "peakWorkingSetBytes": 285900800, "seconds": 0.23144689993932843, "exitCode": 0, "bounded": false}
+
+
+---- dry_run_close_with_save_does_not_write_the_project_or_backups stdout ----
+
+thread 'dry_run_close_with_save_does_not_write_the_project_or_backups' (31616) panicked at crates\executor\tests\c13_r1_persistence.rs:26:5:
+11 §7.2: dryRun wrote the project; state before={"projectId":"pr_01M64JSZFQEGNG8P5TFH81ZENZ","path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-6310d600ee76\\Dry.animpkg","form":"package","formatVersion":"1.0","migratedFrom":null,"documentRev":2,"savedRev":1,"dirty":true,"readOnly":false,"lock":{"user":"kaiga","host":"K-AI","processId":27204,"appVersion":"0.0.1","openedAt":"2026-10-29T19:39:49.860Z","heartbeatAt":"2026-10-29T19:39:49.860Z","lockId":"091374a1f642a954dce58a2edabce99a","held":true,"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-6310d600ee76\\Dry.animpkg.lock"},"historyFromRev":1}, after={"projectId":"pr_01M64JSZFQEGNG8P5TFH81ZENZ","path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-6310d600ee76\\Dry.animpkg","form":"package","formatVersion":"1.0","migratedFrom":null,"documentRev":2,"savedRev":3,"dirty":false,"readOnly":false,"lock":{"user":"kaiga","host":"K-AI","processId":27204,"appVersion":"0.0.1","openedAt":"2026-10-29T19:39:49.860Z","heartbeatAt":"2026-10-29T19:39:49.860Z","lockId":"091374a1f642a954dce58a2edabce99a","held":true,"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-6310d600ee76\\Dry.animpkg.lock"},"historyFromRev":1}
+
+---- failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes stdout ----
+
+thread 'failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes' (21148) panicked at crates\executor\tests\c13_r1_persistence.rs:171:5:
+11 §7.3: failed atomic batch wrote file; before={"projectId":"pr_01M64JSZFRS1S67FCVP59MPERR","path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-1af36bf59b9d\\Batch.animpkg","form":"package","formatVersion":"1.0","migratedFrom":null,"documentRev":2,"savedRev":1,"dirty":true,"readOnly":false,"lock":{"user":"kaiga","host":"K-AI","processId":27204,"appVersion":"0.0.1","openedAt":"2026-10-29T19:39:49.864Z","heartbeatAt":"2026-10-29T19:39:49.864Z","lockId":"c50a64ac5ff6dd3e37e4e86d5451e636","held":true,"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-1af36bf59b9d\\Batch.animpkg.lock"},"historyFromRev":1}, after={"projectId":"pr_01M64JSZFRS1S67FCVP59MPERR","path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-1af36bf59b9d\\Batch.animpkg","form":"package","formatVersion":"1.0","migratedFrom":null,"documentRev":2,"savedRev":3,"dirty":false,"readOnly":false,"lock":{"user":"kaiga","host":"K-AI","processId":27204,"appVersion":"0.0.1","openedAt":"2026-10-29T19:39:49.864Z","heartbeatAt":"2026-10-29T19:39:49.864Z","lockId":"c50a64ac5ff6dd3e37e4e86d5451e636","held":true,"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-1af36bf59b9d\\Batch.animpkg.lock"},"historyFromRev":1}
+
+---- folder_entry_change_is_detected_even_when_manifest_is_unchanged stdout ----
+
+thread 'folder_entry_change_is_detected_even_when_manifest_is_unchanged' (21572) panicked at crates\executor\tests\c13_r1_persistence.rs:71:5:
+assertion `left == right` failed: RO-02: external entry edit must block save: Envelope { status: Ok, result: Some(Object {"jobId": String("job-1")}), targets: None, changes: [ChangeRecord { id: "pr_01M64JSZFQJBEN5HNWPVTXT96P", ty: "project", op: "modified", rev: 3, parent_id: None, index: None, patch: Some([Object {"op": String("replace"), "path": String("/modifiedAt"), "value": String("2026-10-29T19:39:49.922Z"), "oldValue": String("2026-10-29T19:39:49.623Z")}]) }], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(3), error: None, dry_run: false, steps: None }
+  left: None
+ right: Some("project.changedOnDisk")
+
+---- save_as_current_path_does_not_overwrite_another_sessions_lock stdout ----
+
+thread 'save_as_current_path_does_not_overwrite_another_sessions_lock' (29652) panicked at crates\executor\tests\c13_r1_persistence.rs:49:9:
+assertion `left == right` failed: LOCK-02: same-path Save As must respect the owner's live lock: {"jobId":"job-2","commandId":"project.saveAs","state":"succeeded","progress":1.0,"message":"Replace","startedAt":"2026-10-29T19:39:49.922Z","result":{"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-e4cb045d33ae\\Locked.animpkg","projectSaved":true,"globalLibrarySaved":false,"backupId":"bk_a1f6906d57ed6836"},"session":"user"}
+  left: String("succeeded")
+ right: "failed"
+
+---- identical_embedded_asset_content_is_stored_once stdout ----
+
+thread 'identical_embedded_asset_content_is_stored_once' (9596) panicked at crates\executor\tests\c13_r1_persistence.rs:418:5:
+assertion `left == right` failed: MED-01: identical SHA-256 media was stored twice: ["media/as_01M64JSZR806VJ1QDQQF0W0NJD.bin", "media/as_01M64JSZR806VJ1QDQQF0W0NJF.bin"]
+  left: 2
+ right: 1
+
+---- failed_package_export_overwrite_keeps_the_previous_destination stdout ----
+
+thread 'failed_package_export_overwrite_keeps_the_previous_destination' (31180) panicked at crates\executor\tests\c13_r1_persistence.rs:145:5:
+assertion `left == right` failed: SAVE-01: failed export deleted its destination
+  left: None
+ right: Some([112, 114, 101, 118, 105, 111, 117, 115, 32, 99, 111, 109, 112, 108, 101, 116, 101, 32, 101, 120, 112, 111, 114, 116])
+
+---- recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover stdout ----
+
+thread 'recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover' (15444) panicked at crates\executor\tests\c13_r1_persistence.rs:115:9:
+assertion `left == right` failed: REC-01: two running sessions recovered the same copy: {"jobId":"job-1","commandId":"project.recovery.open","state":"succeeded","progress":1.0,"message":"Finalisation","startedAt":"2026-10-29T19:39:50.046Z","result":{"projectId":"pr_01K742SG00HBZN8973VTQKD83H","warnings":[{"id":"project.mediaMissing","message":"9 media file(s) referenced by the project are missing","details":{"missing":[{"objectId":"dr_01K742SG0MQPBGZNAXCQWA32RD","location":"banks/db_01K742SG0JWEXTGGRD25TBW335/dr_01K742SG0MQPBGZNAXCQWA32RD/nd_01K742SG0XW1BTEJ1ZMDNGJ9C4.png","kind":"pixels"},{"objectId":"dr_01K742SG1407TEBNQREMQBVVS5","location":"banks/db_01K742SG13M5NTAYVZ8NBWT71Y/dr_01K742SG1407TEBNQREMQBVVS5/nd_01K742SG15QA3E7PA0Z0VK5301.png","kind":"pixels"},{"objectId":"li_01K742SG2X75QWFF785114MVSF","location":"library/files/Sky.png","kind":"libraryFile"},{"objectId":"li_01K742SG2W4FDS50CF5ASJFAMB","location":"library/files/walk.animtpl","kind":"libraryFile"},{"objectId":"li_01K742SG2X75QWFF785114MVSF","location":"library/thumbnails/sky.png","kind":"libraryFile"},{"objectId":"as_01K742SG0G5D0JQ9JHCCMM3WM0","location":"media/as_01K742SG0G5D0JQ9JHCCMM3WM0.wav","kind":"embedded"},{"objectId":"pal_01K742SG02YXHNJWYGWWVNZNH4","location":"textures/fabric-day.png","kind":"texture"},{"objectId":"pal_01K742SG02YXHNJWYGWWVNZNH4","location":"textures/fabric-night.png","kind":"texture"},{"objectId":"as_01K742SG0HY4A0CE4K32QQG571","location":"../ref/reference.mov","kind":"linked"}]}}]},"session":"user"}
+  left: String("succeeded")
+ right: "failed"
+
+
+failures:
+    concurrent_stale_lock_takeover_has_only_one_owner
+    default_preference_values_are_not_persisted_as_overrides
+    dry_run_close_with_save_does_not_write_the_project_or_backups
+    failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes
+    failed_package_export_overwrite_keeps_the_previous_destination
+    folder_entry_change_is_detected_even_when_manifest_is_unchanged
+    identical_embedded_asset_content_is_stored_once
+    import_and_repair_undo_labels_match_the_command_table
+    import_replace_replaces_a_same_named_scene_instead_of_renaming_it
+    package_inspection_reads_a_bounded_header
+    recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover
+    save_as_current_path_does_not_overwrite_another_sessions_lock
+    unreferenced_embedded_media_is_removed_from_the_saved_package
+
+test result: FAILED. 5 passed; 13 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s
+
+error: test failed, to rerun pass `-p tt-executor --test c13_r1_persistence`
+     Running tests\c13_r1_format.rs (target\debug\deps\c13_r1_format-7137b9e1ee77aaad.exe)
+
+running 8 tests
+test zip_names_reject_drive_prefixes_in_every_path_component ... FAILED
+test malformed_journal_cannot_delete_an_arbitrary_project_entry ... FAILED
+test partial_folder_rollback_restores_every_already_replaced_entry ... FAILED
+test folder_has_the_same_mimetype_entry_as_package ... FAILED
+test package_and_folder_round_trip_all_fixture_entries_and_binary_bytes ... ok
+test repairs_at_exhausted_document_revision_fail_closed ... FAILED
+test existing_project_thumbnail_survives_save ... FAILED
+test newer_minor_unknown_properties_survive_on_the_same_frozen_entry ... FAILED
+
+failures:
+
+---- zip_names_reject_drive_prefixes_in_every_path_component stdout ----
+
+thread 'zip_names_reject_drive_prefixes_in_every_path_component' (30452) panicked at crates\persist\tests\c13_r1_format.rs:226:9:
+ZIP-01: nested drive prefix accepted: vendor/C:/escape.bin; joined path="C:escape.bin"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- malformed_journal_cannot_delete_an_arbitrary_project_entry stdout ----
+
+thread 'malformed_journal_cannot_delete_an_arbitrary_project_entry' (17984) panicked at crates\persist\tests\c13_r1_format.rs:84:50:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "The system cannot find the file specified." }
+
+---- partial_folder_rollback_restores_every_already_replaced_entry stdout ----
+
+thread 'partial_folder_rollback_restores_every_already_replaced_entry' (32748) panicked at crates\persist\tests\c13_r1_format.rs:32:5:
+SAVE-02: recovery left mixed old/new entries: [[110, 101, 119, 45, 112, 114, 111, 106, 101, 99, 116], [111, 108, 100, 45, 112, 97, 108, 101, 116, 116, 101]]
+
+---- folder_has_the_same_mimetype_entry_as_package stdout ----
+
+thread 'folder_has_the_same_mimetype_entry_as_package' (18664) panicked at crates\persist\tests\c13_r1_format.rs:69:46:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "The system cannot find the file specified." }
+
+---- repairs_at_exhausted_document_revision_fail_closed stdout ----
+
+thread 'repairs_at_exhausted_document_revision_fail_closed' (34132) panicked at crates\persist\tests\c13_r1_format.rs:179:5:
+REV-03: repair needs a new revision; must not saturate and report clean: Some((false, 18446744073709551615, 1))
+
+---- existing_project_thumbnail_survives_save stdout ----
+
+thread 'existing_project_thumbnail_survives_save' (14516) panicked at crates\persist\tests\c13_r1_format.rs:163:5:
+ADR-0014 §17: existing thumbnail must be preserved
+
+---- newer_minor_unknown_properties_survive_on_the_same_frozen_entry stdout ----
+
+thread 'newer_minor_unknown_properties_survive_on_the_same_frozen_entry' (24460) panicked at crates\persist\tests\c13_r1_format.rs:145:5:
+assertion `left == right` failed: VER-02: frozen entry lost its unknown properties
+  left: Null
+ right: Object {"content": Array [Number(1), Number(2), Number(3)]}
+
+
+failures:
+    existing_project_thumbnail_survives_save
+    folder_has_the_same_mimetype_entry_as_package
+    malformed_journal_cannot_delete_an_arbitrary_project_entry
+    newer_minor_unknown_properties_survive_on_the_same_frozen_entry
+    partial_folder_rollback_restores_every_already_replaced_entry
+    repairs_at_exhausted_document_revision_fail_closed
+    zip_names_reject_drive_prefixes_in_every_path_component
+
+test result: FAILED. 1 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+
+error: test failed, to rerun pass `-p tt-persist --test c13_r1_format`
+error: 2 targets failed:
+    `-p tt-executor --test c13_r1_persistence`
+    `-p tt-persist --test c13_r1_format`

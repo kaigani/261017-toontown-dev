@@ -1,0 +1,40 @@
+[
+  {
+    "ref": "67265b8",
+    "snapshot": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-lint-d519emt2",
+    "commandsTsBytes": 2093066,
+    "runs": [
+      {
+        "seconds": 9.05766970012337,
+        "exitCode": 0
+      },
+      {
+        "seconds": 9.133231000043452,
+        "exitCode": 0
+      },
+      {
+        "seconds": 9.111430099932477,
+        "exitCode": 0
+      }
+    ]
+  },
+  {
+    "ref": "f119948",
+    "snapshot": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-lint-_had3ctj",
+    "commandsTsBytes": 2131622,
+    "runs": [
+      {
+        "seconds": 9.193254499929026,
+        "exitCode": 0
+      },
+      {
+        "seconds": 9.036403799895197,
+        "exitCode": 0
+      },
+      {
+        "seconds": 9.04262370010838,
+        "exitCode": 0
+      }
+    ]
+  }
+]

@@ -1,0 +1,74 @@
+{
+  "base": "5791d58d207d339e01c6c0a08298ae75e67a24d7",
+  "files": {
+    "gates/build.log": {
+      "expected": "74398f31a936a6b321c5c08723db2c3b657112a2e5e9d3c098a58a9974633cdb",
+      "actual": "74398f31a936a6b321c5c08723db2c3b657112a2e5e9d3c098a58a9974633cdb"
+    },
+    "gates/clippy-diag.log": {
+      "expected": "999e3941d58cead237aa06708db68467c1e9719bc39df1cb3c331fb71b4f71bd",
+      "actual": "999e3941d58cead237aa06708db68467c1e9719bc39df1cb3c331fb71b4f71bd"
+    },
+    "gates/clippy.log": {
+      "expected": "7037d6fa22532fa8d0e6b6b649ad8654dac39545d22a91a420043565d1471162",
+      "actual": "7037d6fa22532fa8d0e6b6b649ad8654dac39545d22a91a420043565d1471162"
+    },
+    "gates/deny.log": {
+      "expected": "346a8d39d30039716c5223599f42e403e0a2d9d2870d3dc4eda66e9586c86586",
+      "actual": "346a8d39d30039716c5223599f42e403e0a2d9d2870d3dc4eda66e9586c86586"
+    },
+    "gates/fmt.log": {
+      "expected": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
+      "actual": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901"
+    },
+    "gates/headless.log": {
+      "expected": "326a84143813b5af6cfc1321ae29f201bc2d8004f4769c0e6d9d91d46450173a",
+      "actual": "326a84143813b5af6cfc1321ae29f201bc2d8004f4769c0e6d9d91d46450173a"
+    },
+    "gates/pnpm-format.log": {
+      "expected": "c99d0a6ae963d1c83b01deafa2e993d73d3bdceebbbde9508a83ba7d4b6e4829",
+      "actual": "c99d0a6ae963d1c83b01deafa2e993d73d3bdceebbbde9508a83ba7d4b6e4829"
+    },
+    "gates/pnpm-licenses.log": {
+      "expected": "2d685b39a756468ae498f680b9e15748fc8f2db9913b72da6652d7317e37f6ca",
+      "actual": "2d685b39a756468ae498f680b9e15748fc8f2db9913b72da6652d7317e37f6ca"
+    },
+    "gates/pnpm-lint.log": {
+      "expected": "27d1c9da90e3723e813f92352b6882884d1a51cd07b90368d3bef605ac09563b",
+      "actual": "27d1c9da90e3723e813f92352b6882884d1a51cd07b90368d3bef605ac09563b"
+    },
+    "gates/pnpm-test.log": {
+      "expected": "48ec013a893020cfc4d9fb26f668c257a7e3475fa009ab78fc5b5f423d7ef6f7",
+      "actual": "48ec013a893020cfc4d9fb26f668c257a7e3475fa009ab78fc5b5f423d7ef6f7"
+    },
+    "gates/pnpm-typecheck.log": {
+      "expected": "aa5a38955f949a6cba31ec0a0ec0aadfb5695da948defb8ab06d14ff2f0b9d24",
+      "actual": "aa5a38955f949a6cba31ec0a0ec0aadfb5695da948defb8ab06d14ff2f0b9d24"
+    },
+    "gates/reviewer-python-suites.log": {
+      "expected": "09070991b150886809d5bb04bc6815164c40d19875f9936e85d9f8b01ebdaa93",
+      "actual": "09070991b150886809d5bb04bc6815164c40d19875f9936e85d9f8b01ebdaa93"
+    },
+    "gates/selftest-1.json": {
+      "expected": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+      "actual": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4"
+    },
+    "gates/selftest-2.json": {
+      "expected": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+      "actual": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4"
+    },
+    "gates/selftest-compare.log": {
+      "expected": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46",
+      "actual": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46"
+    },
+    "gates/test-diag.log": {
+      "expected": "903b2b0bbc9d6bafeec6d9d9334c02f510ba0ca581c1575ed1626570f1b4f69c",
+      "actual": "903b2b0bbc9d6bafeec6d9d9334c02f510ba0ca581c1575ed1626570f1b4f69c"
+    },
+    "gates/test.log": {
+      "expected": "cb0c4fc64809cea3744b48ce3da7de261e34873e6dc31c5e18b2e8d79703352e",
+      "actual": "cb0c4fc64809cea3744b48ce3da7de261e34873e6dc31c5e18b2e8d79703352e"
+    }
+  },
+  "allMatch": true
+}

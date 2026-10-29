@@ -1,0 +1,19 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\executor)
+    Finished `test` profile [unoptimized] target(s) in 0.95s
+     Running tests\c13_r1_evidence_examples.rs (target\debug\deps\c13_r1_evidence_examples-0efcf113e77c7a46.exe)
+
+running 1 test
+
+thread 'every_example_runs_on_the_fixture_under_the_watchdog' (31544) panicked at crates\executor\tests\c13_r1_evidence_examples.rs:345:116:
+called `Result::unwrap()` on an `Err` value: ValidationError { repr: ValidationErrorRepr { instance: Null, kind: Referencing(PointerToNowhere { pointer: "/$defs/PackageExported" }), instance_path: Location(""), schema_path: Location(""), absolute_keyword_location: None, .. } }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test every_example_runs_on_the_fixture_under_the_watchdog ... FAILED
+
+failures:
+
+failures:
+    every_example_runs_on_the_fixture_under_the_watchdog
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 1.89s
+
+error: test failed, to rerun pass `-p tt-executor --test c13_r1_evidence_examples`

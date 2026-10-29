@@ -1,0 +1,53 @@
+{
+  "id": "el_01K742SG12VSAFJFC3DGD034AP",
+  "type": "element",
+  "rev": 1,
+  "name": "Background",
+  "elementType": "image",
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "background",
+  "deformable": false,
+  "visibleInScene": true,
+  "visibleInXsheet": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "drawingBankId": "db_01K742SG139S0T51QJA8YD2T0B",
+  "exposure": [
+    ["dr_01K742SG145MSZB6VBYDK97T2J", 48]
+  ],
+  "importOptions": {
+    "premultiplied": false
+  },
+  "transform": {
+    "offset": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": 0,
+    "skew": 0,
+    "scale": {
+      "x": 1,
+      "y": 1
+    },
+    "keepProportions": false,
+    "rotationPivot": {
+      "x": 0,
+      "y": 0
+    },
+    "scalePivot": {
+      "x": 0,
+      "y": 0
+    },
+    "rotateAboutPivot": false,
+    "lockDepth": false,
+    "orientToPath": false
+  },
+  "channels": {},
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

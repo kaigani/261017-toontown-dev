@@ -1,0 +1,33 @@
+{
+  "id": "pal_01K742SG0A9HQZFCMWQQZV4Q9S",
+  "type": "palette",
+  "rev": 1,
+  "name": "Effects",
+  "styles": [
+    {
+      "id": "sty_01K742SG0BKKZ7G5ZMSAXYBP8X",
+      "type": "paletteStyle",
+      "rev": 1,
+      "name": "Default"
+    }
+  ],
+  "swatches": [
+    {
+      "colourId": "col_01K742SG0C0E93FV6WJHFCNQ3K",
+      "type": "swatch",
+      "rev": 1,
+      "name": "White",
+      "kind": "solid",
+      "deformable": false,
+      "values": {
+        "sty_01K742SG0BKKZ7G5ZMSAXYBP8X": {
+          "rgba": "#FFFFFFFF"
+        }
+      }
+    }
+  ],
+  "hidden": false,
+  "meta": {
+    "tags": ["fx"]
+  }
+}

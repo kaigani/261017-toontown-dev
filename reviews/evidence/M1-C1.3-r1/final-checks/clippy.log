@@ -1,0 +1,7 @@
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\registry)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\executor)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\engine)
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\mcp)
+    Checking tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\desktop\src-tauri)
+    Checking tt-headless v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\bins\headless)
+    Finished `dev` profile [unoptimized] target(s) in 5.90s

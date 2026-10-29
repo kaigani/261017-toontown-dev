@@ -1,0 +1,22 @@
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\executor)
+    Finished `test` profile [unoptimized] target(s) in 6.96s
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-57cc5cd36c71182f.exe)
+
+running 1 test
+
+thread 'identical_embedded_asset_content_is_stored_once' (26004) panicked at crates\executor\tests\c13_r1_persistence.rs:418:5:
+assertion `left == right` failed: MED-01: identical SHA-256 media was stored twice: ["media/as_01M64JRAP45GX74J39VEZWF5ZP.bin", "media/as_01M64JRAP45GX74J39VEZWF5ZR.bin"]
+  left: 2
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test identical_embedded_asset_content_is_stored_once ... FAILED
+
+failures:
+
+failures:
+    identical_embedded_asset_content_is_stored_once
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.31s
+
+error: test failed, to rerun pass `-p tt-executor --test c13_r1_persistence`

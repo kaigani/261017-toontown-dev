@@ -1,0 +1,8 @@
+{
+  "command": "size_lies_and_decompression_bombs_abort_the_load",
+  "fileBytes": 67108864,
+  "peakWorkingSetBytes": 139243520,
+  "seconds": 0.8399076999630779,
+  "exitCode": 0,
+  "bounded": true
+}

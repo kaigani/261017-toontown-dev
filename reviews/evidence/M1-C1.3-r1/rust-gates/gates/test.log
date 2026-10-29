@@ -1,0 +1,1408 @@
+$ cargo test --workspace --locked --no-fail-fast
+   Compiling serde_core v1.0.229
+   Compiling smallvec v1.16.3
+   Compiling regex-automata v0.4.18
+   Compiling ref-cast v1.0.27
+   Compiling strum v0.28.0
+   Compiling parking_lot_core v0.9.12
+   Compiling windows-sys v0.61.2
+   Compiling parking_lot v0.12.5
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\registry-macros)
+   Compiling stable_deref_trait v1.2.1
+   Compiling yoke v0.8.3
+   Compiling crossbeam-utils v0.8.23
+   Compiling serde v1.0.229
+   Compiling indexmap v2.14.2
+   Compiling regex v1.13.1
+   Compiling serde_json v1.0.154
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling referencing v0.59.0
+   Compiling jsonschema-value v0.59.0
+   Compiling fancy-regex v0.19.2
+   Compiling schemars v1.2.3
+   Compiling bitflags v2.13.2
+   Compiling winapi-util v0.1.11
+   Compiling serde_spanned v1.1.2
+   Compiling jsonschema v0.59.0
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling termcolor v1.4.1
+   Compiling tempfile v3.27.0
+   Compiling rusty-fork v0.3.1
+   Compiling trybuild v1.0.122
+   Compiling proptest v1.12.0
+   Compiling zerovec v0.11.8
+   Compiling tinystr v0.8.4
+   Compiling icu_locale_core v2.3.0
+   Compiling potential_utf v0.1.6
+   Compiling crossbeam-channel v0.5.17
+   Compiling zerotrie v0.2.5
+   Compiling windows-result v0.4.1
+   Compiling windows-strings v0.5.1
+   Compiling windows-core v0.62.2
+   Compiling icu_provider v2.3.1
+   Compiling icu_collections v2.3.0
+   Compiling windows-threading v0.2.1
+   Compiling windows-numerics v0.3.1
+   Compiling windows-future v0.3.2
+   Compiling icu_properties v2.3.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\model)
+   Compiling icu_normalizer v2.3.0
+   Compiling idna_adapter v1.2.2
+   Compiling windows-collections v0.3.2
+   Compiling raw-window-handle v0.6.2
+   Compiling time v0.3.55
+   Compiling windows v0.62.2
+   Compiling idna v1.1.0
+   Compiling form_urlencoded v1.2.2
+   Compiling url v2.5.8
+   Compiling dpi v0.1.2
+   Compiling uuid v1.28.0
+   Compiling cfb v0.14.0
+   Compiling windows_x86_64_msvc v0.52.6
+   Compiling erased-serde v0.4.10
+   Compiling same-file v1.0.6
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\registry)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\anim)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\executor)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\fx)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\vector)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\render)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\audio)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\lipsync)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\io)
+   Compiling jsonptr v0.7.1
+   Compiling phf_shared v0.13.1
+   Compiling windows-version v0.1.7
+   Compiling arrayvec v0.7.8
+   Compiling pin-project-lite v0.2.17
+   Compiling polycool v0.4.0
+   Compiling bytemuck v1.25.2
+   Compiling phf v0.13.1
+   Compiling json-patch v4.2.0
+   Compiling walkdir v2.5.0
+   Compiling serde-untagged v0.1.9
+   Compiling infer v0.22.0
+   Compiling windows-targets v0.52.6
+   Compiling cookie v0.18.2
+   Compiling crossbeam-epoch v0.9.21
+   Compiling urlpattern v0.6.0
+   Compiling plist v1.10.1
+   Compiling serde_with v3.24.0
+   Compiling semver v1.0.28
+   Compiling tracing-core v0.1.36
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\engine)
+   Compiling tauri-utils v2.10.2
+   Compiling tracing v0.1.44
+   Compiling crossbeam-deque v0.8.8
+   Compiling windows-result v0.1.2
+   Compiling color v0.3.3
+   Compiling kurbo v0.13.1
+   Compiling euclid v0.22.14
+   Compiling linebender_resource_handle v0.1.1
+   Compiling unicode-segmentation v1.13.3
+   Compiling peniko v0.6.1
+   Compiling guillotiere v0.7.0
+   Compiling windows-core v0.54.0
+   Compiling rayon-core v1.13.0
+   Compiling softbuffer v0.4.8
+   Compiling dirs-sys v0.5.0
+   Compiling keyboard-types v0.8.3
+   Compiling webview2-com-sys v0.39.1
+   Compiling tao v0.37.1
+   Compiling fearless_simd v0.7.0
+   Compiling either v1.19.0
+   Compiling webview2-com v0.39.1
+   Compiling rayon v1.12.0
+   Compiling wry v0.57.0
+   Compiling tauri-runtime v2.12.2
+   Compiling vello_common v0.3.0
+   Compiling tauri-runtime-wry v2.12.2
+   Compiling serialize-to-javascript v0.1.2
+   Compiling windows v0.54.0
+   Compiling thiserror v1.0.69
+   Compiling muda v0.20.0
+   Compiling dirs v7.0.0
+   Compiling strum v0.26.3
+   Compiling tokio v1.53.3
+   Compiling window-vibrancy v0.8.1
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\desktop\src-tauri)
+   Compiling ordered-channel v1.2.0
+   Compiling thread_local v1.1.10
+   Compiling clap_lex v1.1.1
+   Compiling anstyle v1.0.14
+   Compiling mime v0.3.17
+   Compiling octotablet v0.1.0
+   Compiling tauri v2.12.4
+   Compiling clap_builder v4.6.7
+   Compiling vello_cpu v0.3.0
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\mcp)
+   Compiling png v0.18.1
+   Compiling clap v4.6.7
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\bins\headless)
+    Finished `test` profile [unoptimized] target(s) in 1m 09s
+     Running unittests src\lib.rs (target\debug\deps\tt_anim-86351e58a335b192.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_audio-2f1381a15b0888ae.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_colour-83f8147da891d44a.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_desktop-a4a9a4ff16c406d5.exe)
+
+running 38 tests
+test bindings::tests::command_id_syntax ... ok
+test diagnostics::tests::errors ... ok
+test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+test diagnostics::tests::no_arguments_is_interactive ... ok
+test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+test bindings::tests::embedded_manifest_is_valid ... ok
+test spikes::tablet::tests::request_rejects_unknown_fields ... ok
+test bindings::tests::quit_is_bound_on_every_platform ... ok
+test menu::tests::frontend_command_carries_params ... ok
+test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+test spikes::canvas::renderlist::tests::encoder_refuses_invalid_geometry ... ok
+test menu::tests::event_serializes_camel_case ... ok
+test bindings::tests::per_platform_accelerators ... ok
+test menu::tests::pending_command_carries_milestone ... ok
+test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+test spikes::tablet::simulate_windows::tests::pressure_steps_through_every_level ... ok
+test spikes::tablet::simulate_windows::tests::tilt_and_rotation_stay_in_range ... ok
+test spikes::tablet::simulate_windows::tests::pressure_only_holds_tilt_and_rotation_and_position ... ok
+test diagnostics::tests::spike_flags ... ok
+test spikes::tablet::tests::sequencer_is_gap_free_and_wire_packets_flatten ... ok
+test spikes::tablet::simulate_windows::tests::positions_stay_inside_the_rectangle ... ok
+test spikes::tablet::simulate_windows::tests::sine_repeats_pixels_where_the_review_found_missing_frames ... ok
+test spikes::tablet::tests::validates_simulation_requests ... ok
+test spikes::tablet::tests::disabled_unless_tablet ... ok
+test spikes::tablet::simulate_windows::tests::zigzag_never_repeats_a_pixel_in_adjacent_frames_and_stationary_always_does ... ok
+test tests::default_build_registers_no_diagnostic_commands ... ok
+test diagnostics::tests::requested_diagnostic_names_the_flag ... ok
+test diagnostics::tests::bench_with_count ... ok
+test spikes::tablet::tests::packet_serializes_camel_case ... ok
+test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+test tests::diagnostics_overlay_config_enables_both_halves ... ok
+test tests::tauri_config_matches_workspace_and_plan ... ok
+test menu::tests::host_commands ... ok
+test spikes::canvas::renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+test spikes::canvas::renderlist::tests::encoding_has_the_documented_layout ... ok
+test spikes::canvas::renderlist::tests::scenes_have_the_specified_sizes ... ok
+test spikes::canvas::renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+test spikes::canvas::renderlist::tests::generation_is_reproducible ... ok
+
+test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running unittests src\main.rs (target\debug\deps\toontown-3703dda43bfb187d.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running ..\..\tests\adversarial\c03-r2-encoder.rs (target\debug\deps\c03_r2_encoder-ed0ca691f15cb6c2.exe)
+
+running 11 tests
+test adjacent_out_of_bounds_and_negative_width_are_refused ... ok
+test c03_r2_03_unpaired_coordinate_must_be_refused ... ok
+test c03_r2_03_unknown_style_must_be_refused ... ok
+test renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+test renderlist::tests::encoder_refuses_invalid_geometry ... ok
+test subnormal_and_empty_path_are_valid ... ok
+test nonfinite_points_and_bounds_return_typed_errors ... ok
+test renderlist::tests::encoding_has_the_documented_layout ... ok
+test renderlist::tests::scenes_have_the_specified_sizes ... ok
+test renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+test renderlist::tests::generation_is_reproducible ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_engine-24d4825e92b77cef.exe)
+
+running 19 tests
+test components::tests::every_component_cites_spec_sections ... ok
+test determinism::tests::hex_encodes_lowercase ... ok
+test components::tests::lists_every_plan_crate_once ... ok
+test determinism::tests::workload_has_expected_shape ... ok
+test selftest::tests::dotted_version_parser ... ok
+test ping::tests::echoes_seq_and_payload ... ok
+test tests::info_reports_versions_and_mode ... ok
+test ping::tests::request_rejects_unknown_fields ... ok
+test tests::engine_is_send_and_sync ... ok
+test tests::info_serializes_camel_case ... ok
+test error::tests::limit_exceeded_wire_form ... ok
+test wire::tests::requests_reject_unknown_fields_and_bad_json ... ok
+test wire::tests::u64_values_are_exact_on_the_wire ... ok
+test determinism::tests::probe_matches_golden ... ok
+test ping::tests::payload_limit_is_inclusive ... ok
+test wire::tests::definitions_cover_every_wire_type ... ok
+test determinism::tests::probe_is_stable_within_a_run ... ok
+test selftest::tests::selftest_passes ... ok
+test selftest::tests::push_keeps_ok_consistent ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+     Running tests\c11_r1_wire.rs (target\debug\deps\c11_r1_wire-164e2a990935fbe2.exe)
+
+running 4 tests
+test typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null ... ok
+test opaque_json_integer_outside_u64_is_not_silently_rounded ... ok
+test nested_duplicate_keys_are_rejected_in_requests ... ok
+test supported_integer_boundaries_and_utf8_controls ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests\c11_r2_wire.rs (target\debug\deps\c11_r2_wire-4a90a9107d697ce1.exe)
+
+running 6 tests
+test nested_nonfinite_f32_f64_maps_and_sequences_are_errors ... ok
+test fresh_hostile_text_cases_reject_and_escaped_unicode_roundtrips ... ok
+test cross_language_exchange ... ok
+test integer_edges_are_lossless_or_typed_errors ... ok
+test wire_depth_one_under_and_one_over ... ok
+test writer_never_emits_text_its_reader_rejects_at_depth_boundary ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c11_r3_wire.rs (target\debug\deps\c11_r3_wire-1b18e9322936c218.exe)
+
+running 2 tests
+test negative_and_noninteger_range_frames_are_typed_wire_errors ... ok
+test mixed_depth_boundary_writer_output_is_readable ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\frontend_schemas.rs (target\debug\deps\frontend_schemas-3be086263e67d1b0.exe)
+
+running 3 tests
+test wire_module_is_current ... ok
+test model_module_is_current ... ok
+test commands_module_is_current ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests\wire_corpus.rs (target\debug\deps\wire_corpus-2ad965e758cdad0d.exe)
+
+running 4 tests
+test the_corpus_depth_is_the_engine_limit ... ok
+test invalid_utf8_bodies_are_rejected ... ok
+test every_hostile_text_is_rejected_with_a_typed_error ... ok
+test every_valid_text_is_accepted_and_written_canonically ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_executor-60786d73aee1bba9.exe)
+
+running 6 tests
+test time::tests::known_instants ... ok
+test align::tests::patches_without_preconditions_are_returned_unchanged ... ok
+test align::tests::content_differences_are_divergence ... ok
+test align::tests::shifting_patches_are_checked_in_order ... ok
+test align::tests::preconditions_hold_modulo_rev_and_are_rewritten ... ok
+test run::tests::created_objects_survive_undo_redo_cycles_with_rising_revisions ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running tests\c12_checkpoint_property.rs (target\debug\deps\c12_checkpoint_property-78d1486404af87f6.exe)
+
+running 1 test
+test random_edit_checkpoint_diff_sequences_stay_coherent ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.20s
+
+     Running tests\c12_edit_ops.rs (target\debug\deps\c12_edit_ops-c7ea50446044020b.exe)
+
+running 16 tests
+test paste_special_again_needs_an_earlier_paste_special ... ok
+test dry_run_cut_changes_nothing ... ok
+test motion_point_paste_special_pastes_selected_values ... ok
+test paste_errors ... ok
+test locked_drawings_refuse_cut_and_paste ... ok
+test selection_is_the_default_target ... ok
+test element_properties_paste_onto_elements ... ok
+test templates_copy_between_catalogs ... ok
+test keys_paste_at_a_frame_and_cut_special_filters_key_groups ... ok
+test delete_clears_cells_and_cut_special_removes_frames ... ok
+test drawing_objects_cut_copy_paste_and_new_element ... ok
+test paste_as_new_element_copies_the_cells_into_a_new_bank ... ok
+test paste_and_paste_special_cells ... ok
+test cut_and_paste_in_one_atomic_batch_is_one_undo_step ... ok
+test copy_and_paste_elements_makes_renamed_clones_sharing_drawings ... ok
+test cut_takes_descendants_paste_restores_the_forest_and_delete_reattaches ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+
+     Running tests\c12_invalidation_property.rs (target\debug\deps\c12_invalidation_property-2a4a0d5d6985c538.exe)
+
+running 1 test
+test drawing_invalidation_appears_exactly_when_drawing_content_differs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.60s
+
+     Running tests\c12_kernel_state.rs (target\debug\deps\c12_kernel_state-0e31cfacaa013349.exe)
+
+running 7 tests
+test the_watchdog_answers_within_its_budget ... ok
+test window_and_panel_state_is_queryable_and_settable ... ok
+test the_application_context_follows_commands ... ok
+test workspaces_are_kernel_state ... ok
+test jobs_run_off_the_document_thread ... ok
+test every_generated_declaration_answers_with_its_owner ... ok
+test every_example_runs_on_the_fixture_under_the_watchdog ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.15s
+
+     Running tests\c12_never_block.rs (target\debug\deps\c12_never_block-20f4a72da86134d6.exe)
+
+running 1 test
+test a_handler_that_does_not_return_never_blocks_callers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s
+
+     Running tests\c12_policy.rs (target\debug\deps\c12_policy-5b749b44695d7118.exe)
+
+running 11 tests
+test locked_drawings_refuse_content_patches ... ok
+test queries_find_resolve_and_page ... ok
+test batches_resolve_references_and_refuse_jobs_and_history ... ok
+test whole_object_and_structural_patches_are_refused ... ok
+test special_references_resolve_against_the_context ... ok
+test naming_rulings_hold_in_patches ... ok
+test derived_properties_are_projected_on_request ... ok
+test value_collections_are_patchable_and_validated ... ok
+test read_only_derived_transient_and_command_properties_are_refused ... ok
+test permissions_validation_and_availability ... ok
+test the_load_transaction_is_guarded ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running tests\c12_r1_contracts.rs (target\debug\deps\c12_r1_contracts-ee4b729329e8f9fa.exe)
+
+running 36 tests
+test registry_file_and_network_commands_declare_required_scopes ... ok
+test edit_commands_promised_for_c12_are_implemented ... ok
+test edit_clipboard_is_disabled_without_a_project ... ok
+test registry_owners_follow_the_milestone_plan ... ok
+test registry_stubs_have_actual_parameter_constraints_and_examples ... ok
+test every_registry_entry_has_a_gui_binding_or_agent_only_justification ... ok
+test clipboard_set_validates_the_content_for_its_kind ... ok
+test dry_run_cannot_cancel_a_running_job ... ok
+test failed_batch_clipboard_emits_no_change_event ... ok
+test agent_cannot_read_another_sessions_jobs_with_all_true ... ok
+test agent_cannot_cancel_another_sessions_job ... ok
+test job_wait_obeys_request_id_and_retains_document_revision ... ok
+test failed_atomic_batch_cannot_cancel_a_running_job ... ok
+test revision_exhaustion_is_an_error_and_does_not_kill_the_document_thread ... ok
+test request_id_collision_returns_original_result_per_literal_spec ... ok
+test setting_mode_activates_a_view_of_the_requested_type ... ok
+test clipboard_get_returns_the_specified_clipboard_directly ... ok
+test expect_rev_error_reports_current_rev_and_small_current_object ... ok
+test changes_report_drawing_revision_when_a_stroke_changes ... ok
+test expect_rev_map_checks_every_listed_object_not_only_patch_targets ... ok
+test checkpoint_in_atomic_batch_has_the_committed_content_revision ... ok
+test idle_query_does_not_repair_context_after_atomic_current_element_change ... ok
+test dry_run_clipboard_emits_no_change_event ... ok
+test external_safe_code_cannot_install_a_mutated_stale_snapshot ... ok
+test parameter_dry_run_is_honoured_inside_atomic_batch ... ok
+test renamed_builtin_workspace_can_still_be_restored ... ok
+test explicitly_saving_and_reselecting_current_workspace_keeps_layout ... ok
+test fullscreen_state_and_active_view_agree_with_visible_central_panel ... ok
+test doc_diff_sees_prior_uncommitted_atomic_steps ... ok
+test sequential_batch_dry_run_queries_see_previous_simulated_edits ... ok
+test workspace_switch_defaults_to_autosaving_current_arrangement ... ok
+test job_wait_timeout_policy_is_explicitly_measured ... ok
+test diff_older_than_snapshot_window_replays_repeated_entry_batch ... ok
+test historical_diff_reports_the_revision_of_its_requested_end_state ... ok
+test session_idempotency_survives_more_than_ten_thousand_other_requests ... ok
+test diff_retains_the_last_save_even_after_ten_thousand_transactions ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 40.28s
+
+     Running tests\c12_r1_macro.rs (target\debug\deps\c12_r1_macro-9059e77abcfa54a9.exe)
+
+running 2 tests
+test duplicate_ids_and_inventory_kind_drift_are_rejected ... ok
+    Checking tt-executor-tests v0.0.0 (C:\Users\kaiga\work\review\m1-c13-r1\target\tests\trybuild\tt-executor)
+    Finished `dev` profile [unoptimized] target(s) in 0.13s
+
+
+test tests\c12-r1-ui\missing_example.rs ... ok
+
+
+test missing_example_is_rejected_at_compile_time ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s
+
+     Running tests\c12_r1_scale.rs (target\debug\deps\c12_r1_scale-f836009855d90bfa.exe)
+
+running 1 test
+test every_command_rejects_huge_malformed_input_on_large_documents ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.54s
+
+     Running tests\c12_r1_stress.rs (target\debug\deps\c12_r1_stress-9fb75eb7bd2eb6a9.exe)
+
+running 5 tests
+test ordinary_dry_run_preserves_exact_history_and_matches_real_result ... ok
+test all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded ... ok
+test eight_clients_cas_commands_and_batches_have_no_lost_updates ... ok
+test every_executable_typed_example_also_validates_its_result_schema ... ok
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 58.10s
+
+     Running tests\c12_r2_contracts.rs (target\debug\deps\c12_r2_contracts-c2fd585cb1bf101d.exe)
+
+running 40 tests
+test export_registry_for_independent_audit ... ok
+test all_edit_commands_require_project ... ok
+test json04_materialised_parent_is_removed_by_raw_patch_inverse ... ok
+test checkpoint_is_visible_to_later_atomic_query ... ok
+test checkpoint_create_then_delete_in_atomic_batch_succeeds ... ok
+test edit_envelopes_report_explicit_or_selection_targets ... ok
+test fresh_job_cross_session_list_wait_cancel_are_isolated ... ok
+test locked_elements_still_allow_exposure_edits_per_04_10_4 ... ok
+test malformed_paste_destination_is_rejected_without_fallback ... ok
+test explicit_key_edit_on_locked_element_is_allowed_per_05_6_6 ... ok
+test copying_a_peg_includes_descendants_per_scene_edit_rules ... ok
+test diff_reports_drawing_content_revision_invalidation ... ok
+test checkpoint_before_edit_predicts_same_result_in_dry_run ... ok
+test clipboard_element_properties_validates_values_not_only_names ... ok
+test external_snapshot_staging_and_revision_rewind_cannot_replace_dirty_live_document ... ok
+test json04_materialisation_does_not_invent_opaque_nested_containers ... ok
+test cutting_a_peg_removes_descendants_per_scene_edit_rules ... ok
+test checkpoint_between_edits_captures_its_staged_content ... ok
+test paste_dry_run_predicts_created_ids_exactly ... ok
+test omitted_meta_materialisation_keeps_canonical_undo_exact ... ok
+test mixed_expect_rev_guards_cover_paths_compound_ids_and_unmodified_project ... ok
+test drawing_copy_preserves_object_shaped_opaque_metadata ... ok
+test element_delete_preserves_opaque_metadata_and_extension_strings ... ok
+test composite_failed_batch_preview_matches_real_envelope_and_commits_no_effects ... ok
+test failed_batch_rolls_back_all_five_effect_classes_together ... ok
+test cross_bank_cell_paste_cannot_overwrite_a_locked_drawing ... ok
+test safe_revision_reconstruction_cannot_install_future_object_revisions ... ok
+test fresh_mode_workspace_and_renamed_builtin_reset_are_coherent ... ok
+test copying_complete_scene_forest_preserves_effect_parentage_on_paste ... ok
+test sequential_dry_run_simulates_checkpoints ... ok
+test request_ids_are_session_scoped_and_survive_undo ... ok
+test revision_max_blocks_fresh_paste_and_keeps_queries_alive ... ok
+test identical_document_and_paste_sequence_produce_identical_ids ... ok
+test pending_job_wait_reserves_request_id_against_other_commands ... ok
+test sequential_batch_job_wait_honours_wait_timeout_contract ... ok
+test edit_object_kinds_clipboard_and_history_roundtrip ... ok
+test fresh_historical_diff_replays_and_agrees_with_checkpoint_across_batch_steps ... ok
+test standalone_m1_element_types_roundtrip_undo_redo ... ok
+test eviction_at_byte_limit_never_reexecutes_oldest_request ... ok
+test eight_fresh_clients_mix_object_guards_and_atomic_batches ... ok
+
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.35s
+
+     Running tests\c12_r2_registry.rs (target\debug\deps\c12_r2_registry-b92d3314a6cee869.exe)
+
+running 7 tests
+test library_close_has_no_project_rule_from_01_1_3 ... ok
+test library_global_write_scope_is_declared ... ok
+test generated_result_rejects_wrong_enabled_type ... ok
+test result_schema_catalogue_does_not_accept_null_for_device_record ... ok
+test generated_nested_parameters_reject_wrong_handle_type ... ok
+test generated_named_result_is_not_an_unconstrained_object ... ok
+test independently_validate_every_declared_parameter_example ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests\c12_r2_scale.rs (target\debug\deps\c12_r2_scale-e14482d7e4d79874.exe)
+
+running 1 test
+test hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 35.86s
+
+     Running tests\c12_r3_contracts.rs (target\debug\deps\c12_r3_contracts-2fab5fb6d6fd8d07.exe)
+
+running 15 tests
+test json04_multi_operation_inverse_restores_raw_bytes_and_opaque_boundaries ... ok
+test maximum_revision_rolls_back_checkpoints_and_keeps_executor_alive ... ok
+test checkpoint_create_delete_and_failure_are_transactional_on_fresh_content ... ok
+test staged_drawing_only_diff_keeps_content_invalidation ... ok
+test checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision ... ok
+test fresh_clipboard_property_values_are_checked_before_storage ... ok
+test public_staging_rewind_and_serde_candidates_cannot_cross_load_integrity_gate ... ok
+test fresh_cell_paste_checks_target_type_and_locked_drawing_before_commit ... ok
+test key_and_template_creation_predict_ids_and_stay_opaque ... ok
+test malformed_paste_destination_variants_never_fall_back ... ok
+test fresh_complete_forest_paste_preserves_derived_parent_links ... ok
+test dry_run_ids_match_for_all_implemented_paste_creation_routes ... ok
+test opaque_payloads_survive_every_edit_handler_and_property_patch ... ok
+test overlapping_identical_waits_retain_one_original_envelope ... ok
+test sequential_batch_wait_uses_elapsed_time_and_reaches_completion ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.49s
+
+     Running tests\c12_r3_registry.rs (target\debug\deps\c12_r3_registry-0ef1465d2d628768.exe)
+
+running 12 tests
+test selected_point_anchor_is_the_integer_index_from_02 ... ok
+test export_settings_returns_an_object_as_its_setter_accepts ... ok
+test binding_params_support_commands_other_than_undo ... ok
+test xsheet_panel_result_preserves_boolean_fields_from_parameters ... ok
+test light_table_set_returns_the_entries_that_list_defines ... ok
+test polyline_options_result_is_the_option_object ... ok
+test print_settings_accepts_a_defined_print_parameter ... ok
+test preference_listing_can_return_a_boolean_preference ... ok
+test velocity_function_pins_accept_the_explicit_frame_value_shape ... ok
+test path_result_accepts_exact_05_section_19_4_example ... ok
+test envelope_point_results_use_time_and_gains_from_07 ... ok
+test pen_set_returns_a_model_pen_instead_of_a_scalar ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests\c12_r3_stress.rs (target\debug\deps\c12_r3_stress-6cb100210f82ef66.exe)
+
+running 5 tests
+test ordinary_dry_run_preserves_exact_history_and_matches_real_result ... ok
+test all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded ... ok
+test eight_clients_cas_commands_and_batches_have_no_lost_updates ... ok
+test every_executable_typed_example_also_validates_its_result_schema ... ok
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay has been running for over 60 seconds
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 60.16s
+
+     Running tests\c12_r4_closure.rs (target\debug\deps\c12_r4_closure-9b7133c3881a624f.exe)
+
+running 4 tests
+test storyline_playback_changed_can_announce_a_stop ... ok
+test configured_publishing_services_can_be_connected ... ok
+test immediately_querying_a_staged_checkpoint_is_empty ... ok
+test nested_checkpoints_do_not_reinvalidate_unchanged_drawing_content ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests\c12_registry.rs (target\debug\deps\c12_registry-c6e06c373b3d6921.exe)
+
+running 6 tests
+test registry_covers_spec_a_and_types_every_m1_command ... ok
+test ui_binding_manifest_parity ... ok
+test describe_reports_declarations ... ok
+test drawing_command_delegation_ruling ... ok
+test stubs_and_declarations_name_their_owners ... ok
+test every_declaration_has_schemas_and_valid_examples ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests\c12_transactions.rs (target\debug\deps\c12_transactions-44bb9d303ce0036f.exe)
+
+running 14 tests
+test model_level_staged_commit_of_several_entries_is_atomic ... ok
+test events_follow_commits ... ok
+test a_patch_is_one_transaction_with_stamped_revisions_and_an_undo_step ... ok
+test expect_rev_conflicts_are_typed ... ok
+test drawing_content_edits_stamp_the_drawing ... ok
+test request_ids_make_calls_idempotent_per_session ... ok
+test dry_runs_report_changes_and_change_nothing ... ok
+test checkpoints_restore_as_one_undoable_step_without_lowering_revisions ... ok
+test doc_diff_reports_net_changes_since_a_revision_or_checkpoint ... ok
+test atomic_batches_commit_several_entries_as_one_step_or_roll_back_entirely ... ok
+test job_results_must_satisfy_the_declared_final_result_schema ... ok
+test a_batch_changing_one_property_twice_undoes_and_redoes_exactly ... ok
+test undo_and_redo_replay_verified_patches_and_keep_step_ids ... ok
+test history_keeps_at_least_200_steps ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.11s
+
+     Running tests\c13_doc.rs (target\debug\deps\c13_doc-2e71a396d60195b1.exe)
+
+running 6 tests
+test validation_references_and_candidates ... ok
+test bundles_import_into_a_scene_at_a_frame_with_fresh_ids_and_renames ... ok
+test packages_templates_palettes_and_libraries_are_inspected_without_opening ... ok
+test a_repaired_load_is_one_non_undoable_step_and_reported ... ok
+test linked_media_relink_embed_blob_export_and_remove ... ok
+test objects_created_by_import_survive_save_and_reopen_identically ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.46s
+
+     Running tests\c13_projects.rs (target\debug\deps\c13_projects-36803ea733dc90e2.exe)
+
+running 10 tests
+test opening_bad_files_fails_the_job_and_leaves_no_project_open ... ok
+test unsaved_changes_policies_and_quit ... ok
+test external_changes_are_detected_and_block_a_plain_save ... ok
+test older_files_are_migrated_in_memory_and_the_first_save_needs_the_upgrade ... ok
+test objects_with_unknown_values_of_a_newer_minor_version_are_read_only ... ok
+test create_save_close_open_round_trips_both_forms ... ok
+test saves_stamp_modified_at_keep_backups_and_clean_saves_rewrite_nothing ... ok
+test workspaces_recent_projects_and_defaults_persist_per_user ... ok
+test a_second_session_opens_a_locked_project_read_only ... ok
+test autosave_writes_recovery_copies_that_a_later_session_recovers ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s
+
+     Running tests\c13_r1_evidence_oracle1.rs (target\debug\deps\c13_r1_evidence_oracle1-1e9ee3e139ba5cf8.exe)
+
+running 5 tests
+test ordinary_dry_run_preserves_exact_history_and_matches_real_result ... ok
+test all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded ... ok
+test eight_clients_cas_commands_and_batches_have_no_lost_updates ... ok
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... FAILED
+test every_executable_typed_example_also_validates_its_result_schema has been running for over 60 seconds
+test every_executable_typed_example_also_validates_its_result_schema ... ok
+
+failures:
+
+---- ten_thousand_history_operations_match_independent_content_oracle_and_replay stdout ----
+
+thread 'ten_thousand_history_operations_match_independent_content_oracle_and_replay' (8440) panicked at crates\executor\tests\c13_r1_evidence_oracle1.rs:226:5:
+assertion `left == right` failed: fresh replay must be byte-identical including revisions
+  left: [(Project, "{\n  \"id\": \"pr_01K742SG00BK0VXTWDM5JRXV37\",\n  \"type\": \"project\",\n  \"rev\": 2,\n  \"name\": \"Sample\",\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\",\n  \"modifiedAt\": \"2026-10-29T19:13:59.976Z\",\n  \"frameRate\": 23.976,\n  \"cameraWidth\": 1920,\n  \"cameraHeight\": 1080,\n  \"autoColourUpdate\": false,\n  \"startTransition\": {\n    \"id\": \"tr_01K742SG2Y2YCH2P03RCF60Q20\",\n    \"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    \"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    \"direction\": null,\n    \"size\": 25\n  },\n  \"palettes\": [\n    {\n      \"id\": \"pal_01K742SG02PPWW6K8BZY81A0M0\",\n      \"type\": \"palette\"\n    },\n    {\n      \"id\": \"pal_01K742SG0AGX319NWQ7HE2MH4W\",\n      \"type\": \"palette\"\n    }\n  ],\n  \"pens\": [\n    {\n      \"id\": \"pen_01K742SG0DE4TVDEDEXW6JVXXB\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 1\",\n      \"kind\": \"brush\",\n      \"minSize\": 0.5,\n      \"maxSize\": 2,\n      \"smoothness\": 3,\n      \"tip\": \"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": \"pen_01K742SG0ESMKZYV37X0CGJXWA\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 2\",\n      \"kind\": \"brush\",\n      \"minSize\": 1,\n      \"maxSize\": 4,\n      \"smoothness\": 3,\n      \"tip\": \"flat\",\n      \"tipAngle\": 30,\n      \"colourId\": \"col_01K742SG09H7QE4RRR6XSYYS88\"\n    },\n    {\n      \"id\": \"pen_01K742SG0FT229CARSCZ4GF2DT\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Eraser 1\",\n      \"kind\": \"eraser\",\n      \"minSize\": 10,\n      \"maxSize\": 10,\n      \"smoothness\": 3,\n      \"tip\": \"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    }\n  ],\n  \"assets\": [\n    {\n      \"id\": \"as_01K742SG0G5HPQ0RBF5X4DSR0W\",\n      \"type\": \"asset\",\n      \"rev\": 1,\n      \"name\": \"line1.wav\",\n      \"kind\": \"sound\",\n      \"mediaType\": \"audio/wav\",\n      \"storage\": \"embedded\",\n      \"entry\": \"media/as_01K742SG0G5HPQ0RBF5X4DSR0W.wav\",\n      \"link\": null,\n      \"size\": 352844,\n      \"sha256\": \"abababababababababababababababababababababababababababababababab\",\n      \"importedAt\": \"2026-10-17T09:30:12.345Z\",\n      \"sourcePath\": \"C:/audio/line1.wav\"\n    },\n    {\n      \"id\": \"as_01K742SG0HZGBRF7HE49BFXZRC\",\n      \"type\": \"asset\",\n      \"rev\": 1,\n      \"name\": \"reference.mov\",\n      \"kind\": \"movie\",\n      \"mediaType\": \"video/quicktime\",\n      \"storage\": \"linked\",\n      \"entry\": null,\n      \"link\": {\n        \"kind\": \"file\",\n        \"path\": \"../ref/reference.mov\",\n        \"absolutePath\": \"C:/ref/reference.mov\",\n        \"libraryId\": null,\n        \"itemId\": null,\n        \"versionId\": null\n      },\n      \"size\": 5000000000,\n      \"sha256\": \"cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd\",\n      \"importedAt\": \"2026-10-17T09:30:12.345Z\",\n      \"sourcePath\": null\n    }\n  ],\n  \"drawingBanks\": [\n    {\n      \"id\": \"db_01K742SG0JW3TVZ32SQC03AMY1\",\n      \"type\": \"drawingBank\"\n    },\n    {\n      \"id\": \"db_01K742SG134NGX5HGYXCKT44C7\",\n      \"type\": \"drawingBank\"\n    },\n    {\n      \"id\": \"db_01K742SG17ZDAHQTMS9MQ7TXWX\",\n      \"type\": \"drawingBank\"\n    },\n    {\n      \"id\": \"db_01K742SG2QJBK0K2VMXAK7VG6V\",\n      \"type\": \"drawingBank\"\n    }\n  ],\n  \"scenes\": [\n    {\n      \"id\": \"sc_01K742SG0YSRA1305J7887BDVZ\",\n      \"type\": \"scene\"\n    },\n    {\n      \"id\": \"sc_01K742SG2M2H2H02X6D97DG7DN\",\n      \"type\": \"scene\"\n    }\n  ],\n  \"library\": {\n    \"id\": \"lib_01K742SG01ANF73GC6J3Q45J8B\",\n    \"type\": \"library\"\n  },\n  \"meta\": {\n    \"client\": \"fixture\"\n  }\n}\n"), (Palette(Id(pal_01K742SG02PPWW6K8BZY81A0M0)), "{\n  \"id\": \"pal_01K742SG02PPWW6K8BZY81A0M0\",\n  \"type\": \"palette\",\n  \"rev\": 1,\n  \"name\": \"Main\",\n  \"styles\": [\n    {\n      \"id\": \"sty_01K742SG037JJRBSXV1W92F1BN\",\n      \"type\": \"paletteStyle\",\n      \"rev\": 1,\n      \"name\": \"Day\"\n    },\n    {\n      \"id\": \"sty_01K742SG047PMCPGTWHST62SWP\",\n      \"type\": \"paletteStyle\",\n      \"rev\": 1,\n      \"name\": \"Night\"\n    }\n  ],\n  \"swatches\": [\n    {\n      \"colourId\": \"col_01K742SG059XGSNZ6M9MACZ2ZY\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Skin\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n          \"rgba\": \"#F2D3B4FF\"\n        },\n        \"sty_01K742SG047PMCPGTWHST62SWP\": {\n          \"rgba\": \"#8C7A8AFF\"\n        }\n      }\n    },\n    {\n      \"colourId\": \"col_01K742SG06BQ08FCT1TT8DF8MA\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Sky\",\n      \"kind\": \"linearGradient\",\n      \"deformable\": false,\n      \"values\": {\n        \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n          \"stops\": [\n            {\n              \"position\": 0,\n              \"rgba\": \"#70C8F0FF\"\n            },\n            {\n              \"position\": 1,\n              \"rgba\": \"#FFFFFFFF\"\n            }\n          ]\n        },\n        \"sty_01K742SG047PMCPGTWHST62SWP\": {\n          \"stops\": [\n            {\n              \"position\": 0,\n              \"rgba\": \"#10084AFF\"\n            },\n            {\n              \"position\": 1,\n              \"rgba\": \"#300448FF\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"colourId\": \"col_01K742SG07AYM2NGPE2YJQJJHV\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Glow\",\n      \"kind\": \"radialGradient\",\n      \"deformable\": true,\n      \"values\": {\n        \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n          \"stops\": [\n            {\n              \"position\": 0,\n              \"rgba\": \"#FFFFFFFF\"\n            },\n            {\n              \"position\": 0.5,\n              \"rgba\": \"#FFF0A0C0\"\n            },\n            {\n              \"position\": 1,\n              \"rgba\": \"#FFF0A000\"\n            }\n          ]\n        },\n        \"sty_01K742SG047PMCPGTWHST62SWP\": {\n          \"stops\": [\n            {\n              \"position\": 0,\n              \"rgba\": \"#A0A0FFFF\"\n            },\n            {\n              \"position\": 1,\n              \"rgba\": \"#2020A000\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"colourId\": \"col_01K742SG081DHX1EPGV9BJQAQH\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Fabric\",\n      \"kind\": \"texture\",\n      \"deformable\": true,\n      \"values\": {\n        \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n          \"image\": \"textures/fabric-day.png\",\n          \"tile\": true,\n          \"width\": 64,\n          \"height\": 64\n        },\n        \"sty_01K742SG047PMCPGTWHST62SWP\": {\n          \"image\": \"textures/fabric-night.png\",\n          \"tile\": false\n        }\n      }\n    },\n    {\n      \"colourId\": \"col_01K742SG09H7QE4RRR6XSYYS88\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Ink\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n          \"rgba\": \"#000000FF\"\n        },\n        \"sty_01K742SG047PMCPGTWHST62SWP\": {\n          \"rgba\": \"#101010FF\"\n        }\n      }\n    }\n  ],\n  \"hidden\": false\n}\n"), (Palette(Id(pal_01K742SG0AGX319NWQ7HE2MH4W)), "{\n  \"id\": \"pal_01K742SG0AGX319NWQ7HE2MH4W\",\n  \"type\": \"palette\",\n  \"rev\": 1,\n  \"name\": \"Effects\",\n  \"styles\": [\n    {\n      \"id\": \"sty_01K742SG0BHZ6HZ10GCCZF61NC\",\n      \"type\": \"paletteStyle\",\n      \"rev\": 1,\n      \"name\": \"Default\"\n    }\n  ],\n  \"swatches\": [\n    {\n      \"colourId\": \"col_01K742SG0CQ6FGRGT0FQ0QFDQQ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"White\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        \"sty_01K742SG0BHZ6HZ10GCCZF61NC\": {\n          \"rgba\": \"#FFFFFFFF\"\n        }\n      }\n    }\n  ],\n  \"hidden\": false,\n  \"meta\": {\n    \"tags\": [\"fx\"]\n  }\n}\n"), (Bank(Id(db_01K742SG0JW3TVZ32SQC03AMY1)), "{\n  \"id\": \"db_01K742SG0JW3TVZ32SQC03AMY1\",\n  \"type\": \"drawingBank\",\n  \"rev\": 1,\n  \"drawings\": [\n    {\n      \"id\": \"dr_01K742SG0KKMCAP9X1E6Z5P4SW\",\n      \"type\": \"drawing\"\n    },\n    {\n      \"id\": \"dr_01K742SG0M5J3BAJSW8241WA87\",\n      \"type\": \"drawing\"\n    },\n    {\n      \"id\": \"dr_01K742SG0NG5HTFZRD7238FZXJ\",\n      \"type\": \"drawing\"\n    }\n  ]\n}\n"), (Bank(Id(db_01K742SG134NGX5HGYXCKT44C7)), "{\n  \"id\": \"db_01K742SG134NGX5HGYXCKT44C7\",\n  \"type\": \"drawingBank\",\n  \"rev\": 1,\n  \"drawings\": [\n    {\n      \"id\": \"dr_01K742SG14TNTV1TR99SQHVKVK\",\n      \"type\": \"drawing\"\n    }\n  ]\n}\n"), (Bank(Id(db_01K742SG17ZDAHQTMS9MQ7TXWX)), "{\n  \"id\": \"db_01K742SG17ZDAHQTMS9MQ7TXWX\",\n  \"type\": \"drawingBank\",\n  \"rev\": 1,\n  \"drawings\": []\n}\n"), (Bank(Id(db_01K742SG2QJBK0K2VMXAK7VG6V)), "{\n  \"id\": \"db_01K742SG2QJBK0K2VMXAK7VG6V\",\n  \"type\": \"drawingBank\",\n  \"rev\": 1,\n  \"drawings\": []\n}\n"), (Drawing(Id(dr_01K742SG0KKMCAP9X1E6Z5P4SW)), "{\n  \"id\": \"dr_01K742SG0KKMCAP9X1E6Z5P4SW\",\n  \"type\": \"drawing\",\n  \"rev\": 1,\n  \"name\": \"1\",\n  \"locked\": false,\n  \"pivot\": {\n    \"x\": 0,\n    \"y\": -50\n  },\n  \"mouthShape\": null,\n  \"nodes\": [\n    {\n      \"id\": \"nd_01K742SG0PC20XDQKASM9CGZHR\",\n      \"type\": \"drawingNode\",\n      \"rev\": 1,\n      \"name\": \"Body\",\n      \"kind\": \"layer\",\n      \"hint\": \"brush\",\n      \"strokes\": [\n        {\n          \"id\": \"st_01K742SG0QD1F2HFZSX8R4V7WP\",\n          \"type\": \"stroke\",\n          \"rev\": 1,\n          \"kind\": \"brush\",\n          \"closed\": true,\n          \"points\": [\n            [0, 0, 0, 0, 10.5, 0],\n            [100, 0, -10, 0, 0, 10],\n            [100, 100, 0, -10, 0, 0],\n            [0, 100, 0, 0, 0, -10]\n          ],\n          \"colourId\": \"col_01K742SG059XGSNZ6M9MACZ2ZY\",\n          \"fillMatrix\": null,\n          \"lineStyle\": null,\n          \"spine\": {\n            \"points\": [\n              [10, 50, 0, 0, 20, 0],\n              [90, 50, -20, 0, 0, 0]\n            ],\n            \"pressure\": [\n              [0, 0.2],\n              [0.5, 1],\n              [1, 0.4]\n            ],\n            \"pen\": {\n              \"penId\": null,\n              \"tip\": \"round\",\n              \"minSize\": 0.5,\n              \"maxSize\": 2\n            }\n          },\n          \"sides\": {\n            \"left\": {\n              \"colourId\": \"col_01K742SG059XGSNZ6M9MACZ2ZY\",\n              \"matrix\": null\n            },\n            \"right\": null\n          }\n        },\n        {\n          \"id\": \"st_01K742SG0R61SYK9GG0HGYVNBT\",\n          \"type\": \"stroke\",\n          \"rev\": 1,\n          \"kind\": \"pencil\",\n          \"closed\": false,\n          \"points\": [\n            [-50, -50, 0, 0, 0, 0],\n            [50, 50, 0, 0, 0, 0]\n          ],\n          \"colourId\": \"col_01K742SG09H7QE4RRR6XSYYS88\",\n          \"fillMatrix\": null,\n          \"lineStyle\": {\n            \"thickness\": 1.5,\n            \"lineType\": \"solid\"\n          },\n          \"spine\": null,\n          \"sides\": {\n            \"left\": null,\n            \"right\": null\n          }\n        },\n        {\n          \"id\": \"st_01K742SG0S0NT23BWCZN64SFQ5\",\n          \"type\": \"stroke\",\n          \"rev\": 1,\n          \"kind\": \"invisible\",\n          \"closed\": false,\n          \"points\": [\n            [0, 0, 0, 0, 0, 0],\n            [0, 100, 0, 0, 0, 0]\n          ],\n          \"colourId\": null,\n          \"fillMatrix\": null,\n          \"lineStyle\": null,\n          \"spine\": null,\n          \"sides\": {\n            \"left\": {\n              \"colourId\": \"col_01K742SG06BQ08FCT1TT8DF8MA\",\n              \"matrix\": [1, 0, 0, 1, 0, 0]\n            },\n            \"right\": {\n              \"colourId\": null,\n              \"matrix\": null\n            }\n          },\n          \"meta\": {\n            \"note\": \"closes the sky zone\"\n          }\n        }\n      ]\n    },\n    {\n      \"id\": \"nd_01K742SG0TX3WF1BSWWGMWM5WG\",\n      \"type\": \"drawingNode\",\n      \"rev\": 1,\n      \"kind\": \"group\",\n      \"children\": [\n        {\n          \"id\": \"nd_01K742SG0V9A7HCXC74WKN3V5F\",\n          \"type\": \"drawingNode\",\n          \"rev\": 1,\n          \"kind\": \"layer\",\n          \"hint\": \"pencil\",\n          \"strokes\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"nd_01K742SG0WFAQJFKAZKV4CD56C\",\n      \"type\": \"drawingNode\",\n      \"rev\": 1,\n      \"name\": \"Caption\",\n      \"kind\": \"text\",\n      \"transform\": [1, 0, 0, 1, -100, 200],\n      \"widthMode\": \"fixed\",\n      \"width\": 400,\n      \"text\": \"Héllo\",\n      \"runs\": [\n        {\n          \"start\": 0,\n          \"length\": 5,\n          \"font\": \"Inter\",\n          \"size\": 24,\n          \"bold\": false,\n          \"italic\": true,\n          \"script\": \"normal\",\n          \"kerning\": 0,\n          \"autoKerning\": true,\n          \"colourId\": \"col_01K742SG09H7QE4RRR6XSYYS88\"\n        }\n      ],\n      \"paragraphs\": [\n        {\n          \"start\": 0,\n          \"length\": 5,\n          \"alignment\": \"centre\",\n          \"marginLeft\": 0,\n          \"marginRight\": 0,\n          \"indent\": 0,\n          \"lineSpacing\": 1.2\n        }\n      ]\n    }\n  ],\n  \"colourRecovery\": [\n    {\n      \"colourId\": \"col_01K742SG059XGSNZ6M9MACZ2ZY\",\n      \"paletteId\": \"pal_01K742SG02PPWW6K8BZY81A0M0\",\n      \"paletteName\": \"Main\",\n      \"styles\": [\n        {\n          \"styleId\": \"sty_01K742SG037JJRBSXV1W92F1BN\",\n          \"styleName\": \"Day\"\n        },\n        {\n          \"styleId\": \"sty_01K742SG047PMCPGTWHST62SWP\",\n          \"styleName\": \"Night\"\n        }\n      ],\n      \"swatch\": {\n        \"colourId\": \"col_01K742SG059XGSNZ6M9MACZ2ZY\",\n        \"type\": \"swatch\",\n        \"rev\": 1,\n        \"name\": \"Skin\",\n        \"kind\": \"solid\",\n        \"deformable\": false,\n        \"values\": {\n          \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n            \"rgba\": \"#F2D3B4FF\"\n          },\n          \"sty_01K742SG047PMCPGTWHST62SWP\": {\n            \"rgba\": \"#8C7A8AFF\"\n          }\n        }\n      }\n    }\n  ],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\",\n  \"ext\": {\n    \"com.example.tool\": {\n      \"pass\": 2,\n      \"stage\": \"clean-up\"\n    }\n  }\n}\n"), (Drawing(Id(dr_01K742SG0M5J3BAJSW8241WA87)), "{\n  \"id\": \"dr_01K742SG0M5J3BAJSW8241WA87\",\n  \"type\": \"drawing\",\n  \"rev\": 1,\n  \"name\": \"2\",\n  \"locked\": true,\n  \"pivot\": {\n    \"x\": 0,\n    \"y\": 0\n  },\n  \"mouthShape\": \"A\",\n  \"nodes\": [\n    {\n      \"id\": \"nd_01K742SG0XC99E0A2JJ9D4VJ2J\",\n      \"type\": \"drawingNode\",\n      \"rev\": 1,\n      \"kind\": \"bitmap\",\n      \"transform\": [2, 0, 0, 2, -32, 16],\n      \"width\": 32,\n      \"height\": 16,\n      \"image\": {\n        \"entry\": \"banks/db_01K742SG0JW3TVZ32SQC03AMY1/dr_01K742SG0M5J3BAJSW8241WA87/nd_01K742SG0XC99E0A2JJ9D4VJ2J.png\",\n        \"mediaType\": \"image/png\",\n        \"size\": 2048,\n        \"sha256\": \"1111111111111111111111111111111111111111111111111111111111111111\"\n      }\n    }\n  ],\n  \"colourRecovery\": [],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Drawing(Id(dr_01K742SG0NG5HTFZRD7238FZXJ)), "{\n  \"id\": \"dr_01K742SG0NG5HTFZRD7238FZXJ\",\n  \"type\": \"drawing\",\n  \"rev\": 1,\n  \"name\": \"10\",\n  \"locked\": false,\n  \"pivot\": {\n    \"x\": 0,\n    \"y\": 0\n  },\n  \"mouthShape\": \"X\",\n  \"nodes\": [],\n  \"colourRecovery\": [],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Drawing(Id(dr_01K742SG14TNTV1TR99SQHVKVK)), "{\n  \"id\": \"dr_01K742SG14TNTV1TR99SQHVKVK\",\n  \"type\": \"drawing\",\n  \"rev\": 1,\n  \"name\": \"1\",\n  \"locked\": false,\n  \"pivot\": {\n    \"x\": 0,\n    \"y\": 0\n  },\n  \"mouthShape\": null,\n  \"nodes\": [\n    {\n      \"id\": \"nd_01K742SG156C77GY438XM6D1T3\",\n      \"type\": \"drawingNode\",\n      \"rev\": 1,\n      \"kind\": \"bitmap\",\n      \"transform\": [1, 0, 0, 1, -960, 540],\n      \"width\": 1920,\n      \"height\": 1080,\n      \"image\": {\n        \"entry\": \"banks/db_01K742SG134NGX5HGYXCKT44C7/dr_01K742SG14TNTV1TR99SQHVKVK/nd_01K742SG156C77GY438XM6D1T3.png\",\n        \"mediaType\": \"image/png\",\n        \"size\": 4096,\n        \"sha256\": \"2222222222222222222222222222222222222222222222222222222222222222\"\n      }\n    }\n  ],\n  \"colourRecovery\": [],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Scene(Id(sc_01K742SG0YSRA1305J7887BDVZ)), "{\n  \"id\": \"sc_01K742SG0YSRA1305J7887BDVZ\",\n  \"type\": \"scene\",\n  \"rev\": 11231,\n  \"name\": \"Intro\",\n  \"visible\": true,\n  \"backgroundColour\": \"#FFFFFFFF\",\n  \"currentCameraId\": \"el_01K742SG0ZZYY8HE4MW501XMJV\",\n  \"paletteStyles\": {\n    \"pal_01K742SG02PPWW6K8BZY81A0M0\": \"sty_01K742SG047PMCPGTWHST62SWP\",\n    \"pal_01K742SG0AGX319NWQ7HE2MH4W\": \"sty_01K742SG0BHZ6HZ10GCCZF61NC\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01K742SG2KA0JQ0743D7J833ZK\",\n    \"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"clockWipe\",\n    \"durationLeft\": 12,\n    \"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 90,\n    \"direction\": \"counterclockwise\",\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01K742SG0ZZYY8HE4MW501XMJV\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG101DH4FAEWCWWK4QXC\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG11W3SGB8Q1H50W74VB\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG12CTMHXEB7TY99G4XV\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG16N99XRCS0QEBWMRXY\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG18FWWKH14N0RFB0V71\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG1997BY67AWW1M4Q0ZJ\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG1AC44Z1PPR4WQ603NH\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1BRDWJ0WNJDQZ83WKE\",\n          \"children\": [\n            {\n              \"id\": \"el_01K742SG1DA6M66PRBFSTF1J1Y\",\n              \"children\": []\n            }\n          ]\n        },\n        {\n          \"id\": \"el_01K742SG1C65EBSWTVDPTZ7EJ0\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1E231F7W54P5SD2AAB\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1FGTQ1G2HBTRT3T0FR\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1G9A0XG0WHZYSGT4WG\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1H4KS4Y1FG6WTW7EAH\",\n          \"children\": []\n        },\n        {\n          \"id\": \"el_01K742SG1J3M0SDFTX818N3V2K\",\n          \"children\": [\n            {\n              \"id\": \"el_01K742SG1KNSDQQH1EG9W2NJWJ\",\n              \"children\": []\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1M9CJZV12YYC0CWB8B\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1N7SQGF0AQF87N7SEP\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1PHXPEHSG259WYPMBV\",\n      \"children\": []\n    }\n  ],\n  \"columnOrder\": [\"el_01K742SG11W3SGB8Q1H50W74VB\", \"el_01K742SG12CTMHXEB7TY99G4XV\", \"el_01K742SG16N99XRCS0QEBWMRXY\", \"el_01K742SG18FWWKH14N0RFB0V71\", \"el_01K742SG1997BY67AWW1M4Q0ZJ\"],\n  \"elements\": [\n    {\n      \"id\": \"el_01K742SG0ZZYY8HE4MW501XMJV\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG101DH4FAEWCWWK4QXC\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG11W3SGB8Q1H50W74VB\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG12CTMHXEB7TY99G4XV\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG16N99XRCS0QEBWMRXY\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG18FWWKH14N0RFB0V71\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1997BY67AWW1M4Q0ZJ\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1AC44Z1PPR4WQ603NH\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1BRDWJ0WNJDQZ83WKE\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1C65EBSWTVDPTZ7EJ0\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1DA6M66PRBFSTF1J1Y\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1E231F7W54P5SD2AAB\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1FGTQ1G2HBTRT3T0FR\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1G9A0XG0WHZYSGT4WG\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1H4KS4Y1FG6WTW7EAH\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1J3M0SDFTX818N3V2K\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1KNSDQQH1EG9W2NJWJ\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1M9CJZV12YYC0CWB8B\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1N7SQGF0AQF87N7SEP\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1PHXPEHSG259WYPMBV\",\n      \"type\": \"element\"\n    }\n  ],\n  \"meta\": {\n    \"0\": {\n      \"name\": \"e\u{301}\",\n      \"rev\": 3,\n      \"type\": \"stroke\"\n    },\n    \"array\": [\n      10,\n      null,\n      {\n        \"value\": 9999\n      }\n    ],\n    \"review\": 5494840625905828130\n  }\n}\n"), (Scene(Id(sc_01K742SG2M2H2H02X6D97DG7DN)), "{\n  \"id\": \"sc_01K742SG2M2H2H02X6D97DG7DN\",\n  \"type\": \"scene\",\n  \"rev\": 1,\n  \"name\": \"Scene-2\",\n  \"visible\": false,\n  \"backgroundColour\": \"#202020FF\",\n  \"currentCameraId\": \"el_01K742SG2N1KWPRQ64SA20BQWW\",\n  \"paletteStyles\": {\n    \"pal_01K742SG02PPWW6K8BZY81A0M0\": \"sty_01K742SG037JJRBSXV1W92F1BN\",\n    \"pal_01K742SG0AGX319NWQ7HE2MH4W\": \"sty_01K742SG0BHZ6HZ10GCCZF61NC\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01K742SG2R85DNDRN0V96K9JB3\",\n    \"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    \"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    \"direction\": null,\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01K742SG2N1KWPRQ64SA20BQWW\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG2PA6VE2W9T5930NH2F\",\n      \"children\": []\n    }\n  ],\n  \"columnOrder\": [\"el_01K742SG2PA6VE2W9T5930NH2F\"],\n  \"elements\": [\n    {\n      \"id\": \"el_01K742SG2N1KWPRQ64SA20BQWW\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG2PA6VE2W9T5930NH2F\",\n      \"type\": \"element\"\n    }\n  ]\n}\n"), (Element(Id(el_01K742SG0ZZYY8HE4MW501XMJV)), "{\n  \"id\": \"el_01K742SG0ZZYY8HE4MW501XMJV\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Camera\",\n  \"elementType\": \"camera\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 16\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"camera\": {\n    \"fovMode\": \"static\",\n    \"fov\": 41.1121\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG101DH4FAEWCWWK4QXC)), "{\n  \"id\": \"el_01K742SG101DH4FAEWCWWK4QXC\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Bob-P\",\n  \"elementType\": \"peg\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"pivot\": {\n      \"x\": 0.25,\n      \"y\": -1.5\n    },\n    \"applyPivotTo\": \"both\",\n    \"useChildDrawingPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"exportGroup\": {\n    \"groupOnVectorExport\": false,\n    \"addComposite\": true\n  },\n  \"channels\": {\n    \"skew\": {\n      \"id\": \"ch_01K742SG233AAGQYCZWV5XVRPP\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"skew\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG245790JGK2KWB7Z8RK\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 0,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        },\n        {\n          \"id\": \"ky_01K742SG25VVP67AJQQCV1HDFJ\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 48,\n          \"value\": 5,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG11W3SGB8Q1H50W74VB)), "{\n  \"id\": \"el_01K742SG11W3SGB8Q1H50W74VB\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Bob\",\n  \"elementType\": \"drawing\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": \"#9DC3E6FF\",\n  \"backgroundColour\": null,\n  \"note\": \"main character\",\n  \"columnWidth\": 80,\n  \"drawingBankId\": \"db_01K742SG0JW3TVZ32SQC03AMY1\",\n  \"exposure\": [\n    [\"dr_01K742SG0KKMCAP9X1E6Z5P4SW\", 6],\n    [null, 2],\n    [\"dr_01K742SG0M5J3BAJSW8241WA87\", 12],\n    [\"dr_01K742SG0KKMCAP9X1E6Z5P4SW\", 24]\n  ],\n  \"cellNotes\": {\n    \"3\": \"fix hand\",\n    \"12\": \"hold\"\n  },\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {\n    \"position\": {\n      \"id\": \"ch_01K742SG1XFEFQMBCSQ7D6AX3G\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"position\",\n      \"points\": [\n        {\n          \"id\": \"mp_01K742SG1YDDR34S3G0DS5PVPK\",\n          \"type\": \"motionPoint\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"position\": {\n            \"x\": -4,\n            \"y\": 0,\n            \"z\": 0\n          },\n          \"tension\": 0,\n          \"continuity\": 0,\n          \"bias\": 0,\n          \"constantSegment\": false,\n          \"lockDepth\": false\n        },\n        {\n          \"id\": \"mp_01K742SG1Z9PEPA9753ZZ77JT4\",\n          \"type\": \"motionPoint\",\n          \"rev\": 1,\n          \"frame\": null,\n          \"position\": {\n            \"x\": 0,\n            \"y\": 0,\n            \"z\": 0\n          },\n          \"tension\": 0,\n          \"continuity\": 0,\n          \"bias\": 0,\n          \"constantSegment\": false,\n          \"lockDepth\": false\n        },\n        {\n          \"id\": \"mp_01K742SG20TE2N53WY0C9CNKZR\",\n          \"type\": \"motionPoint\",\n          \"rev\": 1,\n          \"frame\": 24,\n          \"position\": {\n            \"x\": 4,\n            \"y\": 0,\n            \"z\": 0\n          },\n          \"tension\": 0,\n          \"continuity\": 0,\n          \"bias\": 0,\n          \"constantSegment\": false,\n          \"lockDepth\": false\n        }\n      ]\n    },\n    \"rotation\": {\n      \"id\": \"ch_01K742SG1QFHD2CCT6MTEX2H16\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"rotation\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG1R4DF9HWRAYHFSFV52\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 0,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        },\n        {\n          \"id\": \"ky_01K742SG1SKWBHK8Y5J227CEGJ\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 12,\n          \"value\": 45,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        },\n        {\n          \"id\": \"ky_01K742SG1TD4QPFJQ4CNK9WK64\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 24,\n          \"value\": -10.5,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    },\n    \"scale.x\": {\n      \"id\": \"ch_01K742SG1VM41901DYSMMVJQDV\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"scale.x\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG1W88HBTZF8Y8YFYY6Y\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 1,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    },\n    \"velocity\": {\n      \"id\": \"ch_01K742SG21WVPRAB3YJD7ZJTMP\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"velocity\",\n      \"curveType\": \"interpolation\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG22N9R180HJWCAM4TT0\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 12,\n          \"value\": 0.5,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": \"easeInOut\"\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG12CTMHXEB7TY99G4XV)), "{\n  \"id\": \"el_01K742SG12CTMHXEB7TY99G4XV\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Background\",\n  \"elementType\": \"image\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"background\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"drawingBankId\": \"db_01K742SG134NGX5HGYXCKT44C7\",\n  \"exposure\": [\n    [\"dr_01K742SG14TNTV1TR99SQHVKVK\", 48]\n  ],\n  \"importOptions\": {\n    \"premultiplied\": false\n  },\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG16N99XRCS0QEBWMRXY)), "{\n  \"id\": \"el_01K742SG16N99XRCS0QEBWMRXY\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Notes\",\n  \"elementType\": \"annotation\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": false,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"drawingBankId\": \"db_01K742SG17ZDAHQTMS9MQ7TXWX\",\n  \"exposure\": [],\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG18FWWKH14N0RFB0V71)), "{\n  \"id\": \"el_01K742SG18FWWKH14N0RFB0V71\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Dialogue\",\n  \"elementType\": \"sound\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"streamed\": false,\n  \"showMouthShapes\": true,\n  \"placements\": [\n    {\n      \"id\": \"pl_01K742SG26M7NBT20KCAM2NWXK\",\n      \"type\": \"soundPlacement\",\n      \"rev\": 1,\n      \"assetId\": \"as_01K742SG0G5HPQ0RBF5X4DSR0W\",\n      \"startFrame\": 1,\n      \"stopFrame\": 8,\n      \"inPoint\": 0,\n      \"outPoint\": 2.5,\n      \"loops\": 1,\n      \"volume\": -3,\n      \"envelope\": [\n        {\n          \"time\": 0,\n          \"left\": 0,\n          \"right\": 0\n        },\n        {\n          \"time\": 0.5,\n          \"left\": 1,\n          \"right\": 1\n        }\n      ],\n      \"mouthTrack\": {\n        \"mouths\": \"XABBCDEX\",\n        \"manual\": [\n          {\n            \"from\": 3,\n            \"to\": 4\n          }\n        ],\n        \"labels\": {\n          \"1\": \"rest\"\n        },\n        \"source\": \"detected\",\n        \"producedFor\": {\n          \"assetId\": \"as_01K742SG0G5HPQ0RBF5X4DSR0W\",\n          \"inPoint\": 0,\n          \"outPoint\": 2.5,\n          \"loops\": 1,\n          \"stopFrame\": 8,\n          \"frameRate\": 23.976\n        }\n      }\n    }\n  ],\n  \"lipSyncMappings\": [\n    {\n      \"drawingElementId\": \"el_01K742SG11W3SGB8Q1H50W74VB\",\n      \"mapping\": {\n        \"A\": \"dr_01K742SG0M5J3BAJSW8241WA87\",\n        \"B\": null,\n        \"C\": null,\n        \"D\": null,\n        \"E\": null,\n        \"F\": null,\n        \"G\": null,\n        \"X\": \"dr_01K742SG0NG5HTFZRD7238FZXJ\"\n      },\n      \"autoReapply\": true\n    }\n  ],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1997BY67AWW1M4Q0ZJ)), "{\n  \"id\": \"el_01K742SG1997BY67AWW1M4Q0ZJ\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Reference\",\n  \"elementType\": \"media\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"sequences\": [\n    {\n      \"id\": \"ms_01K742SG27RRHRRZ5147YSZD8N\",\n      \"type\": \"mediaSequence\",\n      \"rev\": 1,\n      \"assetId\": \"as_01K742SG0HZGBRF7HE49BFXZRC\",\n      \"startFrame\": 1,\n      \"stopFrame\": 24,\n      \"linkOffset\": 1\n    }\n  ],\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1AC44Z1PPR4WQ603NH)), "{\n  \"id\": \"el_01K742SG1AC44Z1PPR4WQ603NH\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Rig\",\n  \"elementType\": \"skeleton\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"pivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"applyPivotTo\": \"rotation\",\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"skeleton\": {\n    \"boneColour\": null,\n    \"showTrack\": false,\n    \"showRoot\": true,\n    \"showBones\": true,\n    \"showInfluence\": false,\n    \"vectorQuality\": \"medium\",\n    \"deformationEnabled\": true\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1BRDWJ0WNJDQZ83WKE)), "{\n  \"id\": \"el_01K742SG1BRDWJ0WNJDQZ83WKE\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Rig-bones\",\n  \"elementType\": \"effectParameter\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"slot\": \"bones\",\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1C65EBSWTVDPTZ7EJ0)), "{\n  \"id\": \"el_01K742SG1C65EBSWTVDPTZ7EJ0\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Rig-skin\",\n  \"elementType\": \"effectParameter\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"slot\": \"skin\",\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1DA6M66PRBFSTF1J1Y)), "{\n  \"id\": \"el_01K742SG1DA6M66PRBFSTF1J1Y\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Arm\",\n  \"elementType\": \"bone\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"bone\": {\n    \"rest\": {\n      \"x\": 0,\n      \"y\": 1,\n      \"rotation\": 90,\n      \"length\": 1.5\n    },\n    \"influence\": {\n      \"type\": \"elliptical\",\n      \"lengthRadius\": 1.125,\n      \"widthRadius\": 0.525,\n      \"region\": [\n        {\n          \"x\": 0,\n          \"y\": 0\n        },\n        {\n          \"x\": 1,\n          \"y\": 0\n        },\n        {\n          \"x\": 1,\n          \"y\": 1\n        }\n      ]\n    }\n  },\n  \"channels\": {\n    \"rotation\": {\n      \"id\": \"ch_01K742SG28JT6KZZDQ7TWV0TF4\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"rotation\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG29KYYRPTXV1PA56RKZ\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 0,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1E231F7W54P5SD2AAB)), "{\n  \"id\": \"el_01K742SG1E231F7W54P5SD2AAB\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Clip\",\n  \"elementType\": \"clipping\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {\n    \"inverted\": true\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1FGTQ1G2HBTRT3T0FR)), "{\n  \"id\": \"el_01K742SG1FGTQ1G2HBTRT3T0FR\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Clip-mask\",\n  \"elementType\": \"effectParameter\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"slot\": \"mask\",\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1G9A0XG0WHZYSGT4WG)), "{\n  \"id\": \"el_01K742SG1G9A0XG0WHZYSGT4WG\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Fade\",\n  \"elementType\": \"colourTransform\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {\n    \"multRed\": 1,\n    \"multGreen\": 1,\n    \"multBlue\": 1,\n    \"multAlpha\": 0.5,\n    \"addRed\": 0,\n    \"addGreen\": 0,\n    \"addBlue\": 0,\n    \"addAlpha\": 0,\n    \"flatten\": true\n  },\n  \"channels\": {\n    \"multAlpha\": {\n      \"id\": \"ch_01K742SG2A902410YTC6YNB8CP\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"multAlpha\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG2B0EFR540R9PQNAKNH\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 0,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        },\n        {\n          \"id\": \"ky_01K742SG2CZK3CXVCMK8QF2AZC\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 12,\n          \"value\": 1,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1H4KS4Y1FG6WTW7EAH)), "{\n  \"id\": \"el_01K742SG1H4KS4Y1FG6WTW7EAH\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Shadow\",\n  \"elementType\": \"dropShadow\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {\n    \"parentColourTransformMode\": \"drawingsOnly\",\n    \"colour\": \"#000000FF\",\n    \"opacity\": 50,\n    \"hideElements\": false,\n    \"transform\": {\n      \"xAxis\": {\n        \"x\": 1,\n        \"y\": 0\n      },\n      \"yAxis\": {\n        \"x\": 0,\n        \"y\": 1\n      },\n      \"origin\": {\n        \"x\": 0.2,\n        \"y\": -0.2\n      }\n    }\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1J3M0SDFTX818N3V2K)), "{\n  \"id\": \"el_01K742SG1J3M0SDFTX818N3V2K\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Soft\",\n  \"elementType\": \"blur\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {\n    \"radial\": false,\n    \"radius\": 4,\n    \"angle\": 30\n  },\n  \"channels\": {\n    \"radius\": {\n      \"id\": \"ch_01K742SG2DZXM4KT9CZ6ANRKCP\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"radius\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG2E256MQK6T8DN2VPX9\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 0,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        },\n        {\n          \"id\": \"ky_01K742SG2F3QTEYV49GAK0E9H4\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 24,\n          \"value\": 8,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1KNSDQQH1EG9W2NJWJ)), "{\n  \"id\": \"el_01K742SG1KNSDQQH1EG9W2NJWJ\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Quake\",\n  \"elementType\": \"shake\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 2,\n  \"loopType\": \"fill\",\n  \"positionLoop\": \"offset\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {\n    \"axis\": \"xy\",\n    \"waveTime\": 4,\n    \"decayHalfLifeFrames\": 6,\n    \"amplitude\": 0.5\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1M9CJZV12YYC0CWB8B)), "{\n  \"id\": \"el_01K742SG1M9CJZV12YYC0CWB8B\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Snow\",\n  \"elementType\": \"particleNature\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {},\n  \"blocks\": [\n    {\n      \"id\": \"blk_01K742SG2GAF82J6A55D2DPMT0\",\n      \"type\": \"particleBlock\",\n      \"rev\": 1,\n      \"particleType\": \"snow\",\n      \"variant\": null,\n      \"presetId\": \"builtin.snow.normal\",\n      \"seed\": 184467,\n      \"spriteSetId\": null,\n      \"static\": {\n        \"background\": \"transparent\",\n        \"simulationStart\": -19,\n        \"firstFrame\": 1,\n        \"duration\": 24,\n        \"maxParticles\": 1500,\n        \"lifetimeFrames\": -1,\n        \"fade\": true,\n        \"areaWidth\": 1400,\n        \"areaHeight\": 1000,\n        \"areaDepth\": 600,\n        \"floorLevel\": 0\n      },\n      \"dynamic\": {\n        \"bounciness\": {\n          \"value\": 0\n        },\n        \"directionEW\": {\n          \"value\": 150\n        },\n        \"directionFB\": {\n          \"value\": 0\n        },\n        \"directionNS\": {\n          \"value\": -1000\n        },\n        \"intensity\": {\n          \"keyframes\": [\n            {\n              \"frame\": 1,\n              \"value\": 20\n            },\n            {\n              \"frame\": 24,\n              \"value\": 60\n            }\n          ]\n        },\n        \"scale\": {\n          \"value\": 100\n        },\n        \"speedMax\": {\n          \"value\": 5\n        },\n        \"speedMin\": {\n          \"value\": 2\n        }\n      }\n    },\n    {\n      \"id\": \"blk_01K742SG2HA6NWCNFE7TT60BEF\",\n      \"type\": \"particleBlock\",\n      \"rev\": 1,\n      \"particleType\": \"fog\",\n      \"variant\": null,\n      \"presetId\": \"builtin.fog.normal\",\n      \"seed\": 7,\n      \"spriteSetId\": null,\n      \"static\": {\n        \"background\": \"transparent\",\n        \"simulationStart\": 5,\n        \"firstFrame\": 25,\n        \"duration\": 24,\n        \"maxParticles\": 40,\n        \"lifetimeFrames\": -1,\n        \"fade\": true,\n        \"areaWidth\": 1400,\n        \"areaHeight\": 1000,\n        \"areaDepth\": 600,\n        \"floorLevel\": 0\n      },\n      \"dynamic\": {\n        \"bounciness\": {\n          \"value\": 0\n        },\n        \"directionEW\": {\n          \"value\": 150\n        },\n        \"directionFB\": {\n          \"value\": 0\n        },\n        \"directionNS\": {\n          \"value\": -1000\n        },\n        \"intensity\": {\n          \"keyframes\": [\n            {\n              \"frame\": 25,\n              \"value\": 20\n            },\n            {\n              \"frame\": 48,\n              \"value\": 60\n            }\n          ]\n        },\n        \"scale\": {\n          \"value\": 100\n        },\n        \"speedMax\": {\n          \"value\": 5\n        },\n        \"speedMin\": {\n          \"value\": 2\n        }\n      }\n    }\n  ],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1N7SQGF0AQF87N7SEP)), "{\n  \"id\": \"el_01K742SG1N7SQGF0AQF87N7SEP\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Snow-sprites\",\n  \"elementType\": \"effectParameter\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"slot\": \"sprites\",\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1PHXPEHSG259WYPMBV)), "{\n  \"id\": \"el_01K742SG1PHXPEHSG259WYPMBV\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Boom\",\n  \"elementType\": \"particleImpact\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {},\n  \"blocks\": [\n    {\n      \"id\": \"blk_01K742SG2JC5D5MT11TFA41DD7\",\n      \"type\": \"particleBlock\",\n      \"rev\": 1,\n      \"particleType\": \"explosion\",\n      \"variant\": null,\n      \"presetId\": \"builtin.explosion.normal\",\n      \"seed\": 99,\n      \"spriteSetId\": null,\n      \"static\": {\n        \"background\": \"transparent\",\n        \"simulationStart\": -19,\n        \"firstFrame\": 1,\n        \"duration\": 48,\n        \"maxParticles\": 3000,\n        \"lifetimeFrames\": -1,\n        \"fade\": true,\n        \"areaWidth\": 1400,\n        \"areaHeight\": 1000,\n        \"areaDepth\": 600,\n        \"floorLevel\": 0\n      },\n      \"dynamic\": {\n        \"bounciness\": {\n          \"value\": 0\n        },\n        \"directionEW\": {\n          \"value\": 150\n        },\n        \"directionFB\": {\n          \"value\": 0\n        },\n        \"directionNS\": {\n          \"value\": -1000\n        },\n        \"intensity\": {\n          \"keyframes\": [\n            {\n              \"frame\": 1,\n              \"value\": 20\n            },\n            {\n              \"frame\": 48,\n              \"value\": 60\n            }\n          ]\n        },\n        \"scale\": {\n          \"value\": 100\n        },\n        \"speedMax\": {\n          \"value\": 5\n        },\n        \"speedMin\": {\n          \"value\": 2\n        }\n      }\n    }\n  ],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG2N1KWPRQ64SA20BQWW)), "{\n  \"id\": \"el_01K742SG2N1KWPRQ64SA20BQWW\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Camera\",\n  \"elementType\": \"camera\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 16\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"camera\": {\n    \"fovMode\": \"dynamic\",\n    \"fov\": 60\n  },\n  \"channels\": {\n    \"fov\": {\n      \"id\": \"ch_01K742SG2S2FDCMX8612WVRZ7W\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"fov\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG2T4DDQ4EYH53HG6GBD\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 60,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG2PA6VE2W9T5930NH2F)), "{\n  \"id\": \"el_01K742SG2PA6VE2W9T5930NH2F\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Drawing\",\n  \"elementType\": \"drawing\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"drawingBankId\": \"db_01K742SG2QJBK0K2VMXAK7VG6V\",\n  \"exposure\": [],\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Library, "{\n  \"id\": \"lib_01K742SG01ANF73GC6J3Q45J8B\",\n  \"type\": \"library\",\n  \"rev\": 1,\n  \"name\": \"Local\",\n  \"kind\": \"local\",\n  \"formatVersion\": \"1.0\",\n  \"children\": [\n    {\n      \"id\": \"lf_01K742SG2V7TMPVXNS6995QNAP\",\n      \"type\": \"libraryFolder\",\n      \"rev\": 1,\n      \"name\": \"Props\",\n      \"children\": [\n        {\n          \"id\": \"li_01K742SG2WQ62N4J6MKNCBE3Z2\",\n          \"type\": \"libraryItem\",\n          \"rev\": 1,\n          \"name\": \"Walk\",\n          \"itemKind\": \"template\",\n          \"file\": \"walk.animtpl\",\n          \"thumbnail\": null,\n          \"versionId\": \"v-0001\",\n          \"artist\": \"Kai\",\n          \"copyright\": \"(c) 2026\",\n          \"createdAt\": \"2026-10-17T09:30:12.345Z\",\n          \"modifiedAt\": \"2026-10-17T09:30:12.345Z\",\n          \"sizeBytes\": 123456,\n          \"formatVersion\": \"1.0\",\n          \"summary\": [\n            {\n              \"elementType\": \"drawing\",\n              \"name\": \"Legs\",\n              \"frameCount\": 12,\n              \"children\": []\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": \"li_01K742SG2XSWWYNTT82JSTEA6Q\",\n      \"type\": \"libraryItem\",\n      \"rev\": 1,\n      \"name\": \"Sky.png\",\n      \"itemKind\": \"image\",\n      \"file\": \"Sky.png\",\n      \"thumbnail\": {\n        \"entry\": \"library/thumbnails/sky.png\",\n        \"mediaType\": \"image/png\",\n        \"size\": 100,\n        \"sha256\": \"3333333333333333333333333333333333333333333333333333333333333333\"\n      }\n    }\n  ]\n}\n")]
+ right: [(Project, "{\n  \"id\": \"pr_01K742SG00BK0VXTWDM5JRXV37\",\n  \"type\": \"project\",\n  \"rev\": 2,\n  \"name\": \"Sample\",\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\",\n  \"modifiedAt\": \"2026-10-29T19:14:29.585Z\",\n  \"frameRate\": 23.976,\n  \"cameraWidth\": 1920,\n  \"cameraHeight\": 1080,\n  \"autoColourUpdate\": false,\n  \"startTransition\": {\n    \"id\": \"tr_01K742SG2Y2YCH2P03RCF60Q20\",\n    \"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    \"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    \"direction\": null,\n    \"size\": 25\n  },\n  \"palettes\": [\n    {\n      \"id\": \"pal_01K742SG02PPWW6K8BZY81A0M0\",\n      \"type\": \"palette\"\n    },\n    {\n      \"id\": \"pal_01K742SG0AGX319NWQ7HE2MH4W\",\n      \"type\": \"palette\"\n    }\n  ],\n  \"pens\": [\n    {\n      \"id\": \"pen_01K742SG0DE4TVDEDEXW6JVXXB\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 1\",\n      \"kind\": \"brush\",\n      \"minSize\": 0.5,\n      \"maxSize\": 2,\n      \"smoothness\": 3,\n      \"tip\": \"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": \"pen_01K742SG0ESMKZYV37X0CGJXWA\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 2\",\n      \"kind\": \"brush\",\n      \"minSize\": 1,\n      \"maxSize\": 4,\n      \"smoothness\": 3,\n      \"tip\": \"flat\",\n      \"tipAngle\": 30,\n      \"colourId\": \"col_01K742SG09H7QE4RRR6XSYYS88\"\n    },\n    {\n      \"id\": \"pen_01K742SG0FT229CARSCZ4GF2DT\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Eraser 1\",\n      \"kind\": \"eraser\",\n      \"minSize\": 10,\n      \"maxSize\": 10,\n      \"smoothness\": 3,\n      \"tip\": \"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    }\n  ],\n  \"assets\": [\n    {\n      \"id\": \"as_01K742SG0G5HPQ0RBF5X4DSR0W\",\n      \"type\": \"asset\",\n      \"rev\": 1,\n      \"name\": \"line1.wav\",\n      \"kind\": \"sound\",\n      \"mediaType\": \"audio/wav\",\n      \"storage\": \"embedded\",\n      \"entry\": \"media/as_01K742SG0G5HPQ0RBF5X4DSR0W.wav\",\n      \"link\": null,\n      \"size\": 352844,\n      \"sha256\": \"abababababababababababababababababababababababababababababababab\",\n      \"importedAt\": \"2026-10-17T09:30:12.345Z\",\n      \"sourcePath\": \"C:/audio/line1.wav\"\n    },\n    {\n      \"id\": \"as_01K742SG0HZGBRF7HE49BFXZRC\",\n      \"type\": \"asset\",\n      \"rev\": 1,\n      \"name\": \"reference.mov\",\n      \"kind\": \"movie\",\n      \"mediaType\": \"video/quicktime\",\n      \"storage\": \"linked\",\n      \"entry\": null,\n      \"link\": {\n        \"kind\": \"file\",\n        \"path\": \"../ref/reference.mov\",\n        \"absolutePath\": \"C:/ref/reference.mov\",\n        \"libraryId\": null,\n        \"itemId\": null,\n        \"versionId\": null\n      },\n      \"size\": 5000000000,\n      \"sha256\": \"cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd\",\n      \"importedAt\": \"2026-10-17T09:30:12.345Z\",\n      \"sourcePath\": null\n    }\n  ],\n  \"drawingBanks\": [\n    {\n      \"id\": \"db_01K742SG0JW3TVZ32SQC03AMY1\",\n      \"type\": \"drawingBank\"\n    },\n    {\n      \"id\": \"db_01K742SG134NGX5HGYXCKT44C7\",\n      \"type\": \"drawingBank\"\n    },\n    {\n      \"id\": \"db_01K742SG17ZDAHQTMS9MQ7TXWX\",\n      \"type\": \"drawingBank\"\n    },\n    {\n      \"id\": \"db_01K742SG2QJBK0K2VMXAK7VG6V\",\n      \"type\": \"drawingBank\"\n    }\n  ],\n  \"scenes\": [\n    {\n      \"id\": \"sc_01K742SG0YSRA1305J7887BDVZ\",\n      \"type\": \"scene\"\n    },\n    {\n      \"id\": \"sc_01K742SG2M2H2H02X6D97DG7DN\",\n      \"type\": \"scene\"\n    }\n  ],\n  \"library\": {\n    \"id\": \"lib_01K742SG01ANF73GC6J3Q45J8B\",\n    \"type\": \"library\"\n  },\n  \"meta\": {\n    \"client\": \"fixture\"\n  }\n}\n"), (Palette(Id(pal_01K742SG02PPWW6K8BZY81A0M0)), "{\n  \"id\": \"pal_01K742SG02PPWW6K8BZY81A0M0\",\n  \"type\": \"palette\",\n  \"rev\": 1,\n  \"name\": \"Main\",\n  \"styles\": [\n    {\n      \"id\": \"sty_01K742SG037JJRBSXV1W92F1BN\",\n      \"type\": \"paletteStyle\",\n      \"rev\": 1,\n      \"name\": \"Day\"\n    },\n    {\n      \"id\": \"sty_01K742SG047PMCPGTWHST62SWP\",\n      \"type\": \"paletteStyle\",\n      \"rev\": 1,\n      \"name\": \"Night\"\n    }\n  ],\n  \"swatches\": [\n    {\n      \"colourId\": \"col_01K742SG059XGSNZ6M9MACZ2ZY\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Skin\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n          \"rgba\": \"#F2D3B4FF\"\n        },\n        \"sty_01K742SG047PMCPGTWHST62SWP\": {\n          \"rgba\": \"#8C7A8AFF\"\n        }\n      }\n    },\n    {\n      \"colourId\": \"col_01K742SG06BQ08FCT1TT8DF8MA\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Sky\",\n      \"kind\": \"linearGradient\",\n      \"deformable\": false,\n      \"values\": {\n        \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n          \"stops\": [\n            {\n              \"position\": 0,\n              \"rgba\": \"#70C8F0FF\"\n            },\n            {\n              \"position\": 1,\n              \"rgba\": \"#FFFFFFFF\"\n            }\n          ]\n        },\n        \"sty_01K742SG047PMCPGTWHST62SWP\": {\n          \"stops\": [\n            {\n              \"position\": 0,\n              \"rgba\": \"#10084AFF\"\n            },\n            {\n              \"position\": 1,\n              \"rgba\": \"#300448FF\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"colourId\": \"col_01K742SG07AYM2NGPE2YJQJJHV\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Glow\",\n      \"kind\": \"radialGradient\",\n      \"deformable\": true,\n      \"values\": {\n        \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n          \"stops\": [\n            {\n              \"position\": 0,\n              \"rgba\": \"#FFFFFFFF\"\n            },\n            {\n              \"position\": 0.5,\n              \"rgba\": \"#FFF0A0C0\"\n            },\n            {\n              \"position\": 1,\n              \"rgba\": \"#FFF0A000\"\n            }\n          ]\n        },\n        \"sty_01K742SG047PMCPGTWHST62SWP\": {\n          \"stops\": [\n            {\n              \"position\": 0,\n              \"rgba\": \"#A0A0FFFF\"\n            },\n            {\n              \"position\": 1,\n              \"rgba\": \"#2020A000\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"colourId\": \"col_01K742SG081DHX1EPGV9BJQAQH\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Fabric\",\n      \"kind\": \"texture\",\n      \"deformable\": true,\n      \"values\": {\n        \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n          \"image\": \"textures/fabric-day.png\",\n          \"tile\": true,\n          \"width\": 64,\n          \"height\": 64\n        },\n        \"sty_01K742SG047PMCPGTWHST62SWP\": {\n          \"image\": \"textures/fabric-night.png\",\n          \"tile\": false\n        }\n      }\n    },\n    {\n      \"colourId\": \"col_01K742SG09H7QE4RRR6XSYYS88\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Ink\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n          \"rgba\": \"#000000FF\"\n        },\n        \"sty_01K742SG047PMCPGTWHST62SWP\": {\n          \"rgba\": \"#101010FF\"\n        }\n      }\n    }\n  ],\n  \"hidden\": false\n}\n"), (Palette(Id(pal_01K742SG0AGX319NWQ7HE2MH4W)), "{\n  \"id\": \"pal_01K742SG0AGX319NWQ7HE2MH4W\",\n  \"type\": \"palette\",\n  \"rev\": 1,\n  \"name\": \"Effects\",\n  \"styles\": [\n    {\n      \"id\": \"sty_01K742SG0BHZ6HZ10GCCZF61NC\",\n      \"type\": \"paletteStyle\",\n      \"rev\": 1,\n      \"name\": \"Default\"\n    }\n  ],\n  \"swatches\": [\n    {\n      \"colourId\": \"col_01K742SG0CQ6FGRGT0FQ0QFDQQ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"White\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        \"sty_01K742SG0BHZ6HZ10GCCZF61NC\": {\n          \"rgba\": \"#FFFFFFFF\"\n        }\n      }\n    }\n  ],\n  \"hidden\": false,\n  \"meta\": {\n    \"tags\": [\"fx\"]\n  }\n}\n"), (Bank(Id(db_01K742SG0JW3TVZ32SQC03AMY1)), "{\n  \"id\": \"db_01K742SG0JW3TVZ32SQC03AMY1\",\n  \"type\": \"drawingBank\",\n  \"rev\": 1,\n  \"drawings\": [\n    {\n      \"id\": \"dr_01K742SG0KKMCAP9X1E6Z5P4SW\",\n      \"type\": \"drawing\"\n    },\n    {\n      \"id\": \"dr_01K742SG0M5J3BAJSW8241WA87\",\n      \"type\": \"drawing\"\n    },\n    {\n      \"id\": \"dr_01K742SG0NG5HTFZRD7238FZXJ\",\n      \"type\": \"drawing\"\n    }\n  ]\n}\n"), (Bank(Id(db_01K742SG134NGX5HGYXCKT44C7)), "{\n  \"id\": \"db_01K742SG134NGX5HGYXCKT44C7\",\n  \"type\": \"drawingBank\",\n  \"rev\": 1,\n  \"drawings\": [\n    {\n      \"id\": \"dr_01K742SG14TNTV1TR99SQHVKVK\",\n      \"type\": \"drawing\"\n    }\n  ]\n}\n"), (Bank(Id(db_01K742SG17ZDAHQTMS9MQ7TXWX)), "{\n  \"id\": \"db_01K742SG17ZDAHQTMS9MQ7TXWX\",\n  \"type\": \"drawingBank\",\n  \"rev\": 1,\n  \"drawings\": []\n}\n"), (Bank(Id(db_01K742SG2QJBK0K2VMXAK7VG6V)), "{\n  \"id\": \"db_01K742SG2QJBK0K2VMXAK7VG6V\",\n  \"type\": \"drawingBank\",\n  \"rev\": 1,\n  \"drawings\": []\n}\n"), (Drawing(Id(dr_01K742SG0KKMCAP9X1E6Z5P4SW)), "{\n  \"id\": \"dr_01K742SG0KKMCAP9X1E6Z5P4SW\",\n  \"type\": \"drawing\",\n  \"rev\": 1,\n  \"name\": \"1\",\n  \"locked\": false,\n  \"pivot\": {\n    \"x\": 0,\n    \"y\": -50\n  },\n  \"mouthShape\": null,\n  \"nodes\": [\n    {\n      \"id\": \"nd_01K742SG0PC20XDQKASM9CGZHR\",\n      \"type\": \"drawingNode\",\n      \"rev\": 1,\n      \"name\": \"Body\",\n      \"kind\": \"layer\",\n      \"hint\": \"brush\",\n      \"strokes\": [\n        {\n          \"id\": \"st_01K742SG0QD1F2HFZSX8R4V7WP\",\n          \"type\": \"stroke\",\n          \"rev\": 1,\n          \"kind\": \"brush\",\n          \"closed\": true,\n          \"points\": [\n            [0, 0, 0, 0, 10.5, 0],\n            [100, 0, -10, 0, 0, 10],\n            [100, 100, 0, -10, 0, 0],\n            [0, 100, 0, 0, 0, -10]\n          ],\n          \"colourId\": \"col_01K742SG059XGSNZ6M9MACZ2ZY\",\n          \"fillMatrix\": null,\n          \"lineStyle\": null,\n          \"spine\": {\n            \"points\": [\n              [10, 50, 0, 0, 20, 0],\n              [90, 50, -20, 0, 0, 0]\n            ],\n            \"pressure\": [\n              [0, 0.2],\n              [0.5, 1],\n              [1, 0.4]\n            ],\n            \"pen\": {\n              \"penId\": null,\n              \"tip\": \"round\",\n              \"minSize\": 0.5,\n              \"maxSize\": 2\n            }\n          },\n          \"sides\": {\n            \"left\": {\n              \"colourId\": \"col_01K742SG059XGSNZ6M9MACZ2ZY\",\n              \"matrix\": null\n            },\n            \"right\": null\n          }\n        },\n        {\n          \"id\": \"st_01K742SG0R61SYK9GG0HGYVNBT\",\n          \"type\": \"stroke\",\n          \"rev\": 1,\n          \"kind\": \"pencil\",\n          \"closed\": false,\n          \"points\": [\n            [-50, -50, 0, 0, 0, 0],\n            [50, 50, 0, 0, 0, 0]\n          ],\n          \"colourId\": \"col_01K742SG09H7QE4RRR6XSYYS88\",\n          \"fillMatrix\": null,\n          \"lineStyle\": {\n            \"thickness\": 1.5,\n            \"lineType\": \"solid\"\n          },\n          \"spine\": null,\n          \"sides\": {\n            \"left\": null,\n            \"right\": null\n          }\n        },\n        {\n          \"id\": \"st_01K742SG0S0NT23BWCZN64SFQ5\",\n          \"type\": \"stroke\",\n          \"rev\": 1,\n          \"kind\": \"invisible\",\n          \"closed\": false,\n          \"points\": [\n            [0, 0, 0, 0, 0, 0],\n            [0, 100, 0, 0, 0, 0]\n          ],\n          \"colourId\": null,\n          \"fillMatrix\": null,\n          \"lineStyle\": null,\n          \"spine\": null,\n          \"sides\": {\n            \"left\": {\n              \"colourId\": \"col_01K742SG06BQ08FCT1TT8DF8MA\",\n              \"matrix\": [1, 0, 0, 1, 0, 0]\n            },\n            \"right\": {\n              \"colourId\": null,\n              \"matrix\": null\n            }\n          },\n          \"meta\": {\n            \"note\": \"closes the sky zone\"\n          }\n        }\n      ]\n    },\n    {\n      \"id\": \"nd_01K742SG0TX3WF1BSWWGMWM5WG\",\n      \"type\": \"drawingNode\",\n      \"rev\": 1,\n      \"kind\": \"group\",\n      \"children\": [\n        {\n          \"id\": \"nd_01K742SG0V9A7HCXC74WKN3V5F\",\n          \"type\": \"drawingNode\",\n          \"rev\": 1,\n          \"kind\": \"layer\",\n          \"hint\": \"pencil\",\n          \"strokes\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"nd_01K742SG0WFAQJFKAZKV4CD56C\",\n      \"type\": \"drawingNode\",\n      \"rev\": 1,\n      \"name\": \"Caption\",\n      \"kind\": \"text\",\n      \"transform\": [1, 0, 0, 1, -100, 200],\n      \"widthMode\": \"fixed\",\n      \"width\": 400,\n      \"text\": \"Héllo\",\n      \"runs\": [\n        {\n          \"start\": 0,\n          \"length\": 5,\n          \"font\": \"Inter\",\n          \"size\": 24,\n          \"bold\": false,\n          \"italic\": true,\n          \"script\": \"normal\",\n          \"kerning\": 0,\n          \"autoKerning\": true,\n          \"colourId\": \"col_01K742SG09H7QE4RRR6XSYYS88\"\n        }\n      ],\n      \"paragraphs\": [\n        {\n          \"start\": 0,\n          \"length\": 5,\n          \"alignment\": \"centre\",\n          \"marginLeft\": 0,\n          \"marginRight\": 0,\n          \"indent\": 0,\n          \"lineSpacing\": 1.2\n        }\n      ]\n    }\n  ],\n  \"colourRecovery\": [\n    {\n      \"colourId\": \"col_01K742SG059XGSNZ6M9MACZ2ZY\",\n      \"paletteId\": \"pal_01K742SG02PPWW6K8BZY81A0M0\",\n      \"paletteName\": \"Main\",\n      \"styles\": [\n        {\n          \"styleId\": \"sty_01K742SG037JJRBSXV1W92F1BN\",\n          \"styleName\": \"Day\"\n        },\n        {\n          \"styleId\": \"sty_01K742SG047PMCPGTWHST62SWP\",\n          \"styleName\": \"Night\"\n        }\n      ],\n      \"swatch\": {\n        \"colourId\": \"col_01K742SG059XGSNZ6M9MACZ2ZY\",\n        \"type\": \"swatch\",\n        \"rev\": 1,\n        \"name\": \"Skin\",\n        \"kind\": \"solid\",\n        \"deformable\": false,\n        \"values\": {\n          \"sty_01K742SG037JJRBSXV1W92F1BN\": {\n            \"rgba\": \"#F2D3B4FF\"\n          },\n          \"sty_01K742SG047PMCPGTWHST62SWP\": {\n            \"rgba\": \"#8C7A8AFF\"\n          }\n        }\n      }\n    }\n  ],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\",\n  \"ext\": {\n    \"com.example.tool\": {\n      \"pass\": 2,\n      \"stage\": \"clean-up\"\n    }\n  }\n}\n"), (Drawing(Id(dr_01K742SG0M5J3BAJSW8241WA87)), "{\n  \"id\": \"dr_01K742SG0M5J3BAJSW8241WA87\",\n  \"type\": \"drawing\",\n  \"rev\": 1,\n  \"name\": \"2\",\n  \"locked\": true,\n  \"pivot\": {\n    \"x\": 0,\n    \"y\": 0\n  },\n  \"mouthShape\": \"A\",\n  \"nodes\": [\n    {\n      \"id\": \"nd_01K742SG0XC99E0A2JJ9D4VJ2J\",\n      \"type\": \"drawingNode\",\n      \"rev\": 1,\n      \"kind\": \"bitmap\",\n      \"transform\": [2, 0, 0, 2, -32, 16],\n      \"width\": 32,\n      \"height\": 16,\n      \"image\": {\n        \"entry\": \"banks/db_01K742SG0JW3TVZ32SQC03AMY1/dr_01K742SG0M5J3BAJSW8241WA87/nd_01K742SG0XC99E0A2JJ9D4VJ2J.png\",\n        \"mediaType\": \"image/png\",\n        \"size\": 2048,\n        \"sha256\": \"1111111111111111111111111111111111111111111111111111111111111111\"\n      }\n    }\n  ],\n  \"colourRecovery\": [],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Drawing(Id(dr_01K742SG0NG5HTFZRD7238FZXJ)), "{\n  \"id\": \"dr_01K742SG0NG5HTFZRD7238FZXJ\",\n  \"type\": \"drawing\",\n  \"rev\": 1,\n  \"name\": \"10\",\n  \"locked\": false,\n  \"pivot\": {\n    \"x\": 0,\n    \"y\": 0\n  },\n  \"mouthShape\": \"X\",\n  \"nodes\": [],\n  \"colourRecovery\": [],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Drawing(Id(dr_01K742SG14TNTV1TR99SQHVKVK)), "{\n  \"id\": \"dr_01K742SG14TNTV1TR99SQHVKVK\",\n  \"type\": \"drawing\",\n  \"rev\": 1,\n  \"name\": \"1\",\n  \"locked\": false,\n  \"pivot\": {\n    \"x\": 0,\n    \"y\": 0\n  },\n  \"mouthShape\": null,\n  \"nodes\": [\n    {\n      \"id\": \"nd_01K742SG156C77GY438XM6D1T3\",\n      \"type\": \"drawingNode\",\n      \"rev\": 1,\n      \"kind\": \"bitmap\",\n      \"transform\": [1, 0, 0, 1, -960, 540],\n      \"width\": 1920,\n      \"height\": 1080,\n      \"image\": {\n        \"entry\": \"banks/db_01K742SG134NGX5HGYXCKT44C7/dr_01K742SG14TNTV1TR99SQHVKVK/nd_01K742SG156C77GY438XM6D1T3.png\",\n        \"mediaType\": \"image/png\",\n        \"size\": 4096,\n        \"sha256\": \"2222222222222222222222222222222222222222222222222222222222222222\"\n      }\n    }\n  ],\n  \"colourRecovery\": [],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Scene(Id(sc_01K742SG0YSRA1305J7887BDVZ)), "{\n  \"id\": \"sc_01K742SG0YSRA1305J7887BDVZ\",\n  \"type\": \"scene\",\n  \"rev\": 11231,\n  \"name\": \"Intro\",\n  \"visible\": true,\n  \"backgroundColour\": \"#FFFFFFFF\",\n  \"currentCameraId\": \"el_01K742SG0ZZYY8HE4MW501XMJV\",\n  \"paletteStyles\": {\n    \"pal_01K742SG02PPWW6K8BZY81A0M0\": \"sty_01K742SG047PMCPGTWHST62SWP\",\n    \"pal_01K742SG0AGX319NWQ7HE2MH4W\": \"sty_01K742SG0BHZ6HZ10GCCZF61NC\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01K742SG2KA0JQ0743D7J833ZK\",\n    \"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"clockWipe\",\n    \"durationLeft\": 12,\n    \"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 90,\n    \"direction\": \"counterclockwise\",\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01K742SG0ZZYY8HE4MW501XMJV\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG101DH4FAEWCWWK4QXC\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG11W3SGB8Q1H50W74VB\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG12CTMHXEB7TY99G4XV\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG16N99XRCS0QEBWMRXY\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG18FWWKH14N0RFB0V71\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG1997BY67AWW1M4Q0ZJ\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG1AC44Z1PPR4WQ603NH\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1BRDWJ0WNJDQZ83WKE\",\n          \"children\": [\n            {\n              \"id\": \"el_01K742SG1DA6M66PRBFSTF1J1Y\",\n              \"children\": []\n            }\n          ]\n        },\n        {\n          \"id\": \"el_01K742SG1C65EBSWTVDPTZ7EJ0\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1E231F7W54P5SD2AAB\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1FGTQ1G2HBTRT3T0FR\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1G9A0XG0WHZYSGT4WG\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1H4KS4Y1FG6WTW7EAH\",\n          \"children\": []\n        },\n        {\n          \"id\": \"el_01K742SG1J3M0SDFTX818N3V2K\",\n          \"children\": [\n            {\n              \"id\": \"el_01K742SG1KNSDQQH1EG9W2NJWJ\",\n              \"children\": []\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1M9CJZV12YYC0CWB8B\",\n      \"children\": [\n        {\n          \"id\": \"el_01K742SG1N7SQGF0AQF87N7SEP\",\n          \"children\": []\n        }\n      ]\n    },\n    {\n      \"id\": \"el_01K742SG1PHXPEHSG259WYPMBV\",\n      \"children\": []\n    }\n  ],\n  \"columnOrder\": [\"el_01K742SG11W3SGB8Q1H50W74VB\", \"el_01K742SG12CTMHXEB7TY99G4XV\", \"el_01K742SG16N99XRCS0QEBWMRXY\", \"el_01K742SG18FWWKH14N0RFB0V71\", \"el_01K742SG1997BY67AWW1M4Q0ZJ\"],\n  \"elements\": [\n    {\n      \"id\": \"el_01K742SG0ZZYY8HE4MW501XMJV\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG101DH4FAEWCWWK4QXC\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG11W3SGB8Q1H50W74VB\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG12CTMHXEB7TY99G4XV\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG16N99XRCS0QEBWMRXY\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG18FWWKH14N0RFB0V71\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1997BY67AWW1M4Q0ZJ\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1AC44Z1PPR4WQ603NH\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1BRDWJ0WNJDQZ83WKE\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1C65EBSWTVDPTZ7EJ0\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1DA6M66PRBFSTF1J1Y\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1E231F7W54P5SD2AAB\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1FGTQ1G2HBTRT3T0FR\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1G9A0XG0WHZYSGT4WG\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1H4KS4Y1FG6WTW7EAH\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1J3M0SDFTX818N3V2K\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1KNSDQQH1EG9W2NJWJ\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1M9CJZV12YYC0CWB8B\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1N7SQGF0AQF87N7SEP\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG1PHXPEHSG259WYPMBV\",\n      \"type\": \"element\"\n    }\n  ],\n  \"meta\": {\n    \"0\": {\n      \"name\": \"e\u{301}\",\n      \"rev\": 3,\n      \"type\": \"stroke\"\n    },\n    \"array\": [\n      10,\n      null,\n      {\n        \"value\": 9999\n      }\n    ],\n    \"review\": 5494840625905828130\n  }\n}\n"), (Scene(Id(sc_01K742SG2M2H2H02X6D97DG7DN)), "{\n  \"id\": \"sc_01K742SG2M2H2H02X6D97DG7DN\",\n  \"type\": \"scene\",\n  \"rev\": 1,\n  \"name\": \"Scene-2\",\n  \"visible\": false,\n  \"backgroundColour\": \"#202020FF\",\n  \"currentCameraId\": \"el_01K742SG2N1KWPRQ64SA20BQWW\",\n  \"paletteStyles\": {\n    \"pal_01K742SG02PPWW6K8BZY81A0M0\": \"sty_01K742SG037JJRBSXV1W92F1BN\",\n    \"pal_01K742SG0AGX319NWQ7HE2MH4W\": \"sty_01K742SG0BHZ6HZ10GCCZF61NC\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01K742SG2R85DNDRN0V96K9JB3\",\n    \"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    \"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    \"direction\": null,\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01K742SG2N1KWPRQ64SA20BQWW\",\n      \"children\": []\n    },\n    {\n      \"id\": \"el_01K742SG2PA6VE2W9T5930NH2F\",\n      \"children\": []\n    }\n  ],\n  \"columnOrder\": [\"el_01K742SG2PA6VE2W9T5930NH2F\"],\n  \"elements\": [\n    {\n      \"id\": \"el_01K742SG2N1KWPRQ64SA20BQWW\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": \"el_01K742SG2PA6VE2W9T5930NH2F\",\n      \"type\": \"element\"\n    }\n  ]\n}\n"), (Element(Id(el_01K742SG0ZZYY8HE4MW501XMJV)), "{\n  \"id\": \"el_01K742SG0ZZYY8HE4MW501XMJV\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Camera\",\n  \"elementType\": \"camera\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 16\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"camera\": {\n    \"fovMode\": \"static\",\n    \"fov\": 41.1121\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG101DH4FAEWCWWK4QXC)), "{\n  \"id\": \"el_01K742SG101DH4FAEWCWWK4QXC\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Bob-P\",\n  \"elementType\": \"peg\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"pivot\": {\n      \"x\": 0.25,\n      \"y\": -1.5\n    },\n    \"applyPivotTo\": \"both\",\n    \"useChildDrawingPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"exportGroup\": {\n    \"groupOnVectorExport\": false,\n    \"addComposite\": true\n  },\n  \"channels\": {\n    \"skew\": {\n      \"id\": \"ch_01K742SG233AAGQYCZWV5XVRPP\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"skew\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG245790JGK2KWB7Z8RK\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 0,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        },\n        {\n          \"id\": \"ky_01K742SG25VVP67AJQQCV1HDFJ\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 48,\n          \"value\": 5,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG11W3SGB8Q1H50W74VB)), "{\n  \"id\": \"el_01K742SG11W3SGB8Q1H50W74VB\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Bob\",\n  \"elementType\": \"drawing\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": \"#9DC3E6FF\",\n  \"backgroundColour\": null,\n  \"note\": \"main character\",\n  \"columnWidth\": 80,\n  \"drawingBankId\": \"db_01K742SG0JW3TVZ32SQC03AMY1\",\n  \"exposure\": [\n    [\"dr_01K742SG0KKMCAP9X1E6Z5P4SW\", 6],\n    [null, 2],\n    [\"dr_01K742SG0M5J3BAJSW8241WA87\", 12],\n    [\"dr_01K742SG0KKMCAP9X1E6Z5P4SW\", 24]\n  ],\n  \"cellNotes\": {\n    \"3\": \"fix hand\",\n    \"12\": \"hold\"\n  },\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {\n    \"position\": {\n      \"id\": \"ch_01K742SG1XFEFQMBCSQ7D6AX3G\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"position\",\n      \"points\": [\n        {\n          \"id\": \"mp_01K742SG1YDDR34S3G0DS5PVPK\",\n          \"type\": \"motionPoint\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"position\": {\n            \"x\": -4,\n            \"y\": 0,\n            \"z\": 0\n          },\n          \"tension\": 0,\n          \"continuity\": 0,\n          \"bias\": 0,\n          \"constantSegment\": false,\n          \"lockDepth\": false\n        },\n        {\n          \"id\": \"mp_01K742SG1Z9PEPA9753ZZ77JT4\",\n          \"type\": \"motionPoint\",\n          \"rev\": 1,\n          \"frame\": null,\n          \"position\": {\n            \"x\": 0,\n            \"y\": 0,\n            \"z\": 0\n          },\n          \"tension\": 0,\n          \"continuity\": 0,\n          \"bias\": 0,\n          \"constantSegment\": false,\n          \"lockDepth\": false\n        },\n        {\n          \"id\": \"mp_01K742SG20TE2N53WY0C9CNKZR\",\n          \"type\": \"motionPoint\",\n          \"rev\": 1,\n          \"frame\": 24,\n          \"position\": {\n            \"x\": 4,\n            \"y\": 0,\n            \"z\": 0\n          },\n          \"tension\": 0,\n          \"continuity\": 0,\n          \"bias\": 0,\n          \"constantSegment\": false,\n          \"lockDepth\": false\n        }\n      ]\n    },\n    \"rotation\": {\n      \"id\": \"ch_01K742SG1QFHD2CCT6MTEX2H16\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"rotation\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG1R4DF9HWRAYHFSFV52\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 0,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        },\n        {\n          \"id\": \"ky_01K742SG1SKWBHK8Y5J227CEGJ\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 12,\n          \"value\": 45,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        },\n        {\n          \"id\": \"ky_01K742SG1TD4QPFJQ4CNK9WK64\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 24,\n          \"value\": -10.5,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    },\n    \"scale.x\": {\n      \"id\": \"ch_01K742SG1VM41901DYSMMVJQDV\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"scale.x\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG1W88HBTZF8Y8YFYY6Y\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 1,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    },\n    \"velocity\": {\n      \"id\": \"ch_01K742SG21WVPRAB3YJD7ZJTMP\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"velocity\",\n      \"curveType\": \"interpolation\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG22N9R180HJWCAM4TT0\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 12,\n          \"value\": 0.5,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": \"easeInOut\"\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG12CTMHXEB7TY99G4XV)), "{\n  \"id\": \"el_01K742SG12CTMHXEB7TY99G4XV\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Background\",\n  \"elementType\": \"image\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"background\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"drawingBankId\": \"db_01K742SG134NGX5HGYXCKT44C7\",\n  \"exposure\": [\n    [\"dr_01K742SG14TNTV1TR99SQHVKVK\", 48]\n  ],\n  \"importOptions\": {\n    \"premultiplied\": false\n  },\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG16N99XRCS0QEBWMRXY)), "{\n  \"id\": \"el_01K742SG16N99XRCS0QEBWMRXY\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Notes\",\n  \"elementType\": \"annotation\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": false,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"drawingBankId\": \"db_01K742SG17ZDAHQTMS9MQ7TXWX\",\n  \"exposure\": [],\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG18FWWKH14N0RFB0V71)), "{\n  \"id\": \"el_01K742SG18FWWKH14N0RFB0V71\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Dialogue\",\n  \"elementType\": \"sound\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"streamed\": false,\n  \"showMouthShapes\": true,\n  \"placements\": [\n    {\n      \"id\": \"pl_01K742SG26M7NBT20KCAM2NWXK\",\n      \"type\": \"soundPlacement\",\n      \"rev\": 1,\n      \"assetId\": \"as_01K742SG0G5HPQ0RBF5X4DSR0W\",\n      \"startFrame\": 1,\n      \"stopFrame\": 8,\n      \"inPoint\": 0,\n      \"outPoint\": 2.5,\n      \"loops\": 1,\n      \"volume\": -3,\n      \"envelope\": [\n        {\n          \"time\": 0,\n          \"left\": 0,\n          \"right\": 0\n        },\n        {\n          \"time\": 0.5,\n          \"left\": 1,\n          \"right\": 1\n        }\n      ],\n      \"mouthTrack\": {\n        \"mouths\": \"XABBCDEX\",\n        \"manual\": [\n          {\n            \"from\": 3,\n            \"to\": 4\n          }\n        ],\n        \"labels\": {\n          \"1\": \"rest\"\n        },\n        \"source\": \"detected\",\n        \"producedFor\": {\n          \"assetId\": \"as_01K742SG0G5HPQ0RBF5X4DSR0W\",\n          \"inPoint\": 0,\n          \"outPoint\": 2.5,\n          \"loops\": 1,\n          \"stopFrame\": 8,\n          \"frameRate\": 23.976\n        }\n      }\n    }\n  ],\n  \"lipSyncMappings\": [\n    {\n      \"drawingElementId\": \"el_01K742SG11W3SGB8Q1H50W74VB\",\n      \"mapping\": {\n        \"A\": \"dr_01K742SG0M5J3BAJSW8241WA87\",\n        \"B\": null,\n        \"C\": null,\n        \"D\": null,\n        \"E\": null,\n        \"F\": null,\n        \"G\": null,\n        \"X\": \"dr_01K742SG0NG5HTFZRD7238FZXJ\"\n      },\n      \"autoReapply\": true\n    }\n  ],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1997BY67AWW1M4Q0ZJ)), "{\n  \"id\": \"el_01K742SG1997BY67AWW1M4Q0ZJ\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Reference\",\n  \"elementType\": \"media\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"sequences\": [\n    {\n      \"id\": \"ms_01K742SG27RRHRRZ5147YSZD8N\",\n      \"type\": \"mediaSequence\",\n      \"rev\": 1,\n      \"assetId\": \"as_01K742SG0HZGBRF7HE49BFXZRC\",\n      \"startFrame\": 1,\n      \"stopFrame\": 24,\n      \"linkOffset\": 1\n    }\n  ],\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1AC44Z1PPR4WQ603NH)), "{\n  \"id\": \"el_01K742SG1AC44Z1PPR4WQ603NH\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Rig\",\n  \"elementType\": \"skeleton\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"pivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"applyPivotTo\": \"rotation\",\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"skeleton\": {\n    \"boneColour\": null,\n    \"showTrack\": false,\n    \"showRoot\": true,\n    \"showBones\": true,\n    \"showInfluence\": false,\n    \"vectorQuality\": \"medium\",\n    \"deformationEnabled\": true\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1BRDWJ0WNJDQZ83WKE)), "{\n  \"id\": \"el_01K742SG1BRDWJ0WNJDQZ83WKE\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Rig-bones\",\n  \"elementType\": \"effectParameter\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"slot\": \"bones\",\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1C65EBSWTVDPTZ7EJ0)), "{\n  \"id\": \"el_01K742SG1C65EBSWTVDPTZ7EJ0\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Rig-skin\",\n  \"elementType\": \"effectParameter\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"slot\": \"skin\",\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1DA6M66PRBFSTF1J1Y)), "{\n  \"id\": \"el_01K742SG1DA6M66PRBFSTF1J1Y\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Arm\",\n  \"elementType\": \"bone\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"bone\": {\n    \"rest\": {\n      \"x\": 0,\n      \"y\": 1,\n      \"rotation\": 90,\n      \"length\": 1.5\n    },\n    \"influence\": {\n      \"type\": \"elliptical\",\n      \"lengthRadius\": 1.125,\n      \"widthRadius\": 0.525,\n      \"region\": [\n        {\n          \"x\": 0,\n          \"y\": 0\n        },\n        {\n          \"x\": 1,\n          \"y\": 0\n        },\n        {\n          \"x\": 1,\n          \"y\": 1\n        }\n      ]\n    }\n  },\n  \"channels\": {\n    \"rotation\": {\n      \"id\": \"ch_01K742SG28JT6KZZDQ7TWV0TF4\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"rotation\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG29KYYRPTXV1PA56RKZ\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 0,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1E231F7W54P5SD2AAB)), "{\n  \"id\": \"el_01K742SG1E231F7W54P5SD2AAB\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Clip\",\n  \"elementType\": \"clipping\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {\n    \"inverted\": true\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1FGTQ1G2HBTRT3T0FR)), "{\n  \"id\": \"el_01K742SG1FGTQ1G2HBTRT3T0FR\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Clip-mask\",\n  \"elementType\": \"effectParameter\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"slot\": \"mask\",\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1G9A0XG0WHZYSGT4WG)), "{\n  \"id\": \"el_01K742SG1G9A0XG0WHZYSGT4WG\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Fade\",\n  \"elementType\": \"colourTransform\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {\n    \"multRed\": 1,\n    \"multGreen\": 1,\n    \"multBlue\": 1,\n    \"multAlpha\": 0.5,\n    \"addRed\": 0,\n    \"addGreen\": 0,\n    \"addBlue\": 0,\n    \"addAlpha\": 0,\n    \"flatten\": true\n  },\n  \"channels\": {\n    \"multAlpha\": {\n      \"id\": \"ch_01K742SG2A902410YTC6YNB8CP\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"multAlpha\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG2B0EFR540R9PQNAKNH\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 0,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        },\n        {\n          \"id\": \"ky_01K742SG2CZK3CXVCMK8QF2AZC\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 12,\n          \"value\": 1,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1H4KS4Y1FG6WTW7EAH)), "{\n  \"id\": \"el_01K742SG1H4KS4Y1FG6WTW7EAH\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Shadow\",\n  \"elementType\": \"dropShadow\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {\n    \"parentColourTransformMode\": \"drawingsOnly\",\n    \"colour\": \"#000000FF\",\n    \"opacity\": 50,\n    \"hideElements\": false,\n    \"transform\": {\n      \"xAxis\": {\n        \"x\": 1,\n        \"y\": 0\n      },\n      \"yAxis\": {\n        \"x\": 0,\n        \"y\": 1\n      },\n      \"origin\": {\n        \"x\": 0.2,\n        \"y\": -0.2\n      }\n    }\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1J3M0SDFTX818N3V2K)), "{\n  \"id\": \"el_01K742SG1J3M0SDFTX818N3V2K\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Soft\",\n  \"elementType\": \"blur\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {\n    \"radial\": false,\n    \"radius\": 4,\n    \"angle\": 30\n  },\n  \"channels\": {\n    \"radius\": {\n      \"id\": \"ch_01K742SG2DZXM4KT9CZ6ANRKCP\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"radius\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG2E256MQK6T8DN2VPX9\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 0,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        },\n        {\n          \"id\": \"ky_01K742SG2F3QTEYV49GAK0E9H4\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 24,\n          \"value\": 8,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1KNSDQQH1EG9W2NJWJ)), "{\n  \"id\": \"el_01K742SG1KNSDQQH1EG9W2NJWJ\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Quake\",\n  \"elementType\": \"shake\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 2,\n  \"loopType\": \"fill\",\n  \"positionLoop\": \"offset\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {\n    \"axis\": \"xy\",\n    \"waveTime\": 4,\n    \"decayHalfLifeFrames\": 6,\n    \"amplitude\": 0.5\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1M9CJZV12YYC0CWB8B)), "{\n  \"id\": \"el_01K742SG1M9CJZV12YYC0CWB8B\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Snow\",\n  \"elementType\": \"particleNature\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {},\n  \"blocks\": [\n    {\n      \"id\": \"blk_01K742SG2GAF82J6A55D2DPMT0\",\n      \"type\": \"particleBlock\",\n      \"rev\": 1,\n      \"particleType\": \"snow\",\n      \"variant\": null,\n      \"presetId\": \"builtin.snow.normal\",\n      \"seed\": 184467,\n      \"spriteSetId\": null,\n      \"static\": {\n        \"background\": \"transparent\",\n        \"simulationStart\": -19,\n        \"firstFrame\": 1,\n        \"duration\": 24,\n        \"maxParticles\": 1500,\n        \"lifetimeFrames\": -1,\n        \"fade\": true,\n        \"areaWidth\": 1400,\n        \"areaHeight\": 1000,\n        \"areaDepth\": 600,\n        \"floorLevel\": 0\n      },\n      \"dynamic\": {\n        \"bounciness\": {\n          \"value\": 0\n        },\n        \"directionEW\": {\n          \"value\": 150\n        },\n        \"directionFB\": {\n          \"value\": 0\n        },\n        \"directionNS\": {\n          \"value\": -1000\n        },\n        \"intensity\": {\n          \"keyframes\": [\n            {\n              \"frame\": 1,\n              \"value\": 20\n            },\n            {\n              \"frame\": 24,\n              \"value\": 60\n            }\n          ]\n        },\n        \"scale\": {\n          \"value\": 100\n        },\n        \"speedMax\": {\n          \"value\": 5\n        },\n        \"speedMin\": {\n          \"value\": 2\n        }\n      }\n    },\n    {\n      \"id\": \"blk_01K742SG2HA6NWCNFE7TT60BEF\",\n      \"type\": \"particleBlock\",\n      \"rev\": 1,\n      \"particleType\": \"fog\",\n      \"variant\": null,\n      \"presetId\": \"builtin.fog.normal\",\n      \"seed\": 7,\n      \"spriteSetId\": null,\n      \"static\": {\n        \"background\": \"transparent\",\n        \"simulationStart\": 5,\n        \"firstFrame\": 25,\n        \"duration\": 24,\n        \"maxParticles\": 40,\n        \"lifetimeFrames\": -1,\n        \"fade\": true,\n        \"areaWidth\": 1400,\n        \"areaHeight\": 1000,\n        \"areaDepth\": 600,\n        \"floorLevel\": 0\n      },\n      \"dynamic\": {\n        \"bounciness\": {\n          \"value\": 0\n        },\n        \"directionEW\": {\n          \"value\": 150\n        },\n        \"directionFB\": {\n          \"value\": 0\n        },\n        \"directionNS\": {\n          \"value\": -1000\n        },\n        \"intensity\": {\n          \"keyframes\": [\n            {\n              \"frame\": 25,\n              \"value\": 20\n            },\n            {\n              \"frame\": 48,\n              \"value\": 60\n            }\n          ]\n        },\n        \"scale\": {\n          \"value\": 100\n        },\n        \"speedMax\": {\n          \"value\": 5\n        },\n        \"speedMin\": {\n          \"value\": 2\n        }\n      }\n    }\n  ],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1N7SQGF0AQF87N7SEP)), "{\n  \"id\": \"el_01K742SG1N7SQGF0AQF87N7SEP\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Snow-sprites\",\n  \"elementType\": \"effectParameter\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"slot\": \"sprites\",\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG1PHXPEHSG259WYPMBV)), "{\n  \"id\": \"el_01K742SG1PHXPEHSG259WYPMBV\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Boom\",\n  \"elementType\": \"particleImpact\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"params\": {},\n  \"blocks\": [\n    {\n      \"id\": \"blk_01K742SG2JC5D5MT11TFA41DD7\",\n      \"type\": \"particleBlock\",\n      \"rev\": 1,\n      \"particleType\": \"explosion\",\n      \"variant\": null,\n      \"presetId\": \"builtin.explosion.normal\",\n      \"seed\": 99,\n      \"spriteSetId\": null,\n      \"static\": {\n        \"background\": \"transparent\",\n        \"simulationStart\": -19,\n        \"firstFrame\": 1,\n        \"duration\": 48,\n        \"maxParticles\": 3000,\n        \"lifetimeFrames\": -1,\n        \"fade\": true,\n        \"areaWidth\": 1400,\n        \"areaHeight\": 1000,\n        \"areaDepth\": 600,\n        \"floorLevel\": 0\n      },\n      \"dynamic\": {\n        \"bounciness\": {\n          \"value\": 0\n        },\n        \"directionEW\": {\n          \"value\": 150\n        },\n        \"directionFB\": {\n          \"value\": 0\n        },\n        \"directionNS\": {\n          \"value\": -1000\n        },\n        \"intensity\": {\n          \"keyframes\": [\n            {\n              \"frame\": 1,\n              \"value\": 20\n            },\n            {\n              \"frame\": 48,\n              \"value\": 60\n            }\n          ]\n        },\n        \"scale\": {\n          \"value\": 100\n        },\n        \"speedMax\": {\n          \"value\": 5\n        },\n        \"speedMin\": {\n          \"value\": 2\n        }\n      }\n    }\n  ],\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG2N1KWPRQ64SA20BQWW)), "{\n  \"id\": \"el_01K742SG2N1KWPRQ64SA20BQWW\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Camera\",\n  \"elementType\": \"camera\",\n  \"start\": 1,\n  \"duration\": 48,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 16\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"camera\": {\n    \"fovMode\": \"dynamic\",\n    \"fov\": 60\n  },\n  \"channels\": {\n    \"fov\": {\n      \"id\": \"ch_01K742SG2S2FDCMX8612WVRZ7W\",\n      \"type\": \"channel\",\n      \"rev\": 1,\n      \"name\": \"fov\",\n      \"curveType\": \"spline\",\n      \"keys\": [\n        {\n          \"id\": \"ky_01K742SG2T4DDQ4EYH53HG6GBD\",\n          \"type\": \"key\",\n          \"rev\": 1,\n          \"frame\": 1,\n          \"value\": 60,\n          \"constantSegment\": false,\n          \"handles\": {\n            \"left\": {\n              \"dt\": -4,\n              \"dv\": 0\n            },\n            \"right\": {\n              \"dt\": 4,\n              \"dv\": 0\n            },\n            \"mode\": \"smooth\"\n          },\n          \"easing\": null\n        }\n      ]\n    }\n  },\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Element(Id(el_01K742SG2PA6VE2W9T5930NH2F)), "{\n  \"id\": \"el_01K742SG2PA6VE2W9T5930NH2F\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Drawing\",\n  \"elementType\": \"drawing\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"drawingBankId\": \"db_01K742SG2QJBK0K2VMXAK7VG6V\",\n  \"exposure\": [],\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-17T09:30:12.345Z\"\n}\n"), (Library, "{\n  \"id\": \"lib_01K742SG01ANF73GC6J3Q45J8B\",\n  \"type\": \"library\",\n  \"rev\": 1,\n  \"name\": \"Local\",\n  \"kind\": \"local\",\n  \"formatVersion\": \"1.0\",\n  \"children\": [\n    {\n      \"id\": \"lf_01K742SG2V7TMPVXNS6995QNAP\",\n      \"type\": \"libraryFolder\",\n      \"rev\": 1,\n      \"name\": \"Props\",\n      \"children\": [\n        {\n          \"id\": \"li_01K742SG2WQ62N4J6MKNCBE3Z2\",\n          \"type\": \"libraryItem\",\n          \"rev\": 1,\n          \"name\": \"Walk\",\n          \"itemKind\": \"template\",\n          \"file\": \"walk.animtpl\",\n          \"thumbnail\": null,\n          \"versionId\": \"v-0001\",\n          \"artist\": \"Kai\",\n          \"copyright\": \"(c) 2026\",\n          \"createdAt\": \"2026-10-17T09:30:12.345Z\",\n          \"modifiedAt\": \"2026-10-17T09:30:12.345Z\",\n          \"sizeBytes\": 123456,\n          \"formatVersion\": \"1.0\",\n          \"summary\": [\n            {\n              \"elementType\": \"drawing\",\n              \"name\": \"Legs\",\n              \"frameCount\": 12,\n              \"children\": []\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": \"li_01K742SG2XSWWYNTT82JSTEA6Q\",\n      \"type\": \"libraryItem\",\n      \"rev\": 1,\n      \"name\": \"Sky.png\",\n      \"itemKind\": \"image\",\n      \"file\": \"Sky.png\",\n      \"thumbnail\": {\n        \"entry\": \"library/thumbnails/sky.png\",\n        \"mediaType\": \"image/png\",\n        \"size\": 100,\n        \"sha256\": \"3333333333333333333333333333333333333333333333333333333333333333\"\n      }\n    }\n  ]\n}\n")]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    ten_thousand_history_operations_match_independent_content_oracle_and_replay
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 81.10s
+
+error: test failed, to rerun pass `-p tt-executor --test c13_r1_evidence_oracle1`
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-325b16146220dfb0.exe)
+
+running 6 tests
+test folder_entry_change_is_detected_even_when_manifest_is_unchanged ... FAILED
+test dry_run_close_with_save_does_not_write_the_project_or_backups ... FAILED
+test failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes ... FAILED
+test failed_package_export_overwrite_keeps_the_previous_destination ... FAILED
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... FAILED
+test recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover ... FAILED
+
+failures:
+
+---- folder_entry_change_is_detected_even_when_manifest_is_unchanged stdout ----
+
+thread 'folder_entry_change_is_detected_even_when_manifest_is_unchanged' (17556) panicked at crates\executor\tests\c13_r1_persistence.rs:71:5:
+assertion `left == right` failed: RO-02: external entry edit must block save: Envelope { status: Ok, result: Some(Object {"jobId": String("job-1")}), targets: None, changes: [ChangeRecord { id: "pr_01M64HD5N5TSWYGCX8KW4E9VM3", ty: "project", op: "modified", rev: 3, parent_id: None, index: None, patch: Some([Object {"op": String("replace"), "path": String("/modifiedAt"), "value": String("2026-10-29T19:15:21.646Z"), "oldValue": String("2026-10-29T19:15:21.381Z")}]) }], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(3), error: None, dry_run: false, steps: None }
+  left: None
+ right: Some("project.changedOnDisk")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- dry_run_close_with_save_does_not_write_the_project_or_backups stdout ----
+
+thread 'dry_run_close_with_save_does_not_write_the_project_or_backups' (22064) panicked at crates\executor\tests\c13_r1_persistence.rs:26:5:
+11 §7.2: dryRun wrote the project; state before={"projectId":"pr_01M64HD5N5XB44RERRPVA60NH3","path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-582471bd26cf\\Dry.animpkg","form":"package","formatVersion":"1.0","migratedFrom":null,"documentRev":2,"savedRev":1,"dirty":true,"readOnly":false,"lock":{"user":"kaiga","host":"K-AI","processId":29684,"appVersion":"0.0.1","openedAt":"2026-10-29T19:15:21.608Z","heartbeatAt":"2026-10-29T19:15:21.608Z","lockId":"b85919f06886fa39211f2d27e1f63457","held":true,"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-582471bd26cf\\Dry.animpkg.lock"},"historyFromRev":1}, after={"projectId":"pr_01M64HD5N5XB44RERRPVA60NH3","path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-582471bd26cf\\Dry.animpkg","form":"package","formatVersion":"1.0","migratedFrom":null,"documentRev":2,"savedRev":3,"dirty":false,"readOnly":false,"lock":{"user":"kaiga","host":"K-AI","processId":29684,"appVersion":"0.0.1","openedAt":"2026-10-29T19:15:21.608Z","heartbeatAt":"2026-10-29T19:15:21.608Z","lockId":"b85919f06886fa39211f2d27e1f63457","held":true,"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-582471bd26cf\\Dry.animpkg.lock"},"historyFromRev":1}
+
+---- failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes stdout ----
+
+thread 'failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes' (23828) panicked at crates\executor\tests\c13_r1_persistence.rs:167:5:
+11 §7.3: failed atomic batch wrote file; before={"projectId":"pr_01M64HD5N5GGWD8PYFMAQTSG7A","path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-e68b53b16b0d\\Batch.animpkg","form":"package","formatVersion":"1.0","migratedFrom":null,"documentRev":2,"savedRev":1,"dirty":true,"readOnly":false,"lock":{"user":"kaiga","host":"K-AI","processId":29684,"appVersion":"0.0.1","openedAt":"2026-10-29T19:15:21.608Z","heartbeatAt":"2026-10-29T19:15:21.608Z","lockId":"b5f316496edeb1a4b40ba80c96e5421e","held":true,"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-e68b53b16b0d\\Batch.animpkg.lock"},"historyFromRev":1}, after={"projectId":"pr_01M64HD5N5GGWD8PYFMAQTSG7A","path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-e68b53b16b0d\\Batch.animpkg","form":"package","formatVersion":"1.0","migratedFrom":null,"documentRev":2,"savedRev":3,"dirty":false,"readOnly":false,"lock":{"user":"kaiga","host":"K-AI","processId":29684,"appVersion":"0.0.1","openedAt":"2026-10-29T19:15:21.608Z","heartbeatAt":"2026-10-29T19:15:21.608Z","lockId":"b5f316496edeb1a4b40ba80c96e5421e","held":true,"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-e68b53b16b0d\\Batch.animpkg.lock"},"historyFromRev":1}
+
+---- failed_package_export_overwrite_keeps_the_previous_destination stdout ----
+
+thread 'failed_package_export_overwrite_keeps_the_previous_destination' (35464) panicked at crates\executor\tests\c13_r1_persistence.rs:141:5:
+assertion `left == right` failed: SAVE-01: failed export deleted its destination
+  left: None
+ right: Some([112, 114, 101, 118, 105, 111, 117, 115, 32, 99, 111, 109, 112, 108, 101, 116, 101, 32, 101, 120, 112, 111, 114, 116])
+
+---- save_as_current_path_does_not_overwrite_another_sessions_lock stdout ----
+
+thread 'save_as_current_path_does_not_overwrite_another_sessions_lock' (24728) panicked at crates\executor\tests\c13_r1_persistence.rs:49:9:
+assertion `left == right` failed: LOCK-02: same-path Save As must respect the owner's live lock: {"jobId":"job-2","commandId":"project.saveAs","state":"succeeded","progress":1.0,"message":"Replace","startedAt":"2026-10-29T19:15:21.664Z","result":{"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c13-21fe25cf8965\\Locked.animpkg","projectSaved":true,"globalLibrarySaved":false,"backupId":"bk_dc778f0726f8a51d"},"session":"user"}
+  left: String("succeeded")
+ right: "failed"
+
+---- recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover stdout ----
+
+thread 'recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover' (19936) panicked at crates\executor\tests\c13_r1_persistence.rs:113:5:
+assertion `left == right` failed: REC-01: recovered work must immediately belong to the running session: Envelope { status: Ok, result: Some(Object {"jobId": String("job-1")}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: None, error: None, dry_run: false, steps: None }
+  left: None
+ right: Some("project.recoveryInUse")
+
+
+failures:
+    dry_run_close_with_save_does_not_write_the_project_or_backups
+    failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes
+    failed_package_export_overwrite_keeps_the_previous_destination
+    folder_entry_change_is_detected_even_when_manifest_is_unchanged
+    recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover
+    save_as_current_path_does_not_overwrite_another_sessions_lock
+
+test result: FAILED. 0 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+error: test failed, to rerun pass `-p tt-executor --test c13_r1_persistence`
+     Running tests\compile_fail.rs (target\debug\deps\compile_fail-d5b8f3de6ad3817a.exe)
+
+running 1 test
+   Compiling tt-executor-tests v0.0.0 (C:\Users\kaiga\work\review\m1-c13-r1\target\tests\trybuild\tt-executor)
+    Finished `dev` profile [unoptimized] target(s) in 0.28s
+
+
+test tests\ui\core_install.rs [should fail to compile] ... ok
+test tests\ui\cx_clone_default.rs [should fail to compile] ... ok
+test tests\ui\cx_constructor.rs [should fail to compile] ... ok
+test tests\ui\cx_struct_literal.rs [should fail to compile] ... ok
+test tests\ui\document_fields.rs [should fail to compile] ... ok
+test tests\ui\enablement_read_only.rs [should fail to compile] ... ok
+test tests\ui\entity_fields.rs [should fail to compile] ... ok
+test tests\ui\handle_channel.rs [should fail to compile] ... ok
+test tests\ui\job_keeps_context.rs [should fail to compile] ... ok
+test tests\ui\load_grant_forged.rs [should fail to compile] ... ok
+test tests\ui\request_type.rs [should fail to compile] ... ok
+test tests\ui\session_private.rs [should fail to compile] ... ok
+test tests\ui-pass\read_snapshots.rs [should pass] ... ok
+
+
+test exclusive_mutation_capability ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.80s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_fx-487405f5032325cc.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\main.rs (target\debug\deps\toontown_headless-969b011a1cc56dbd.exe)
+
+running 7 tests
+test cli::tests::actions_are_exclusive ... ok
+test cli::tests::future_modes_are_typed_errors ... ok
+test cli::tests::an_action_is_required ... ok
+test cli::tests::version_line ... ok
+test cli::tests::option_combinations ... ok
+test cli::tests::selftest_human_passes ... ok
+test cli::tests::selftest_json_passes ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+     Running ..\..\tests\adversarial\c01.rs (target\debug\deps\adversarial_c01-706822338d577a39.exe)
+
+running 7 tests
+test c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get ... ok
+test wire_engine_info_field_names_match_typescript ... ok
+test c01_r1_05_rust_control_rejects_multibyte_over_limit ... ok
+test c01_r1_01_license_allowlist_stays_within_user_policy ... ok
+test c01_r1_01_license_grouping_preserves_mandatory_copyleft ... ok
+test c01_r1_06_dependency_proof_rejects_graphics_dependencies ... ok
+test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.38s
+
+     Running tests\cli.rs (target\debug\deps\cli-770dbb55897c69cc.exe)
+
+running 5 tests
+test mcp_stdio_not_yet_available_exits_three ... ok
+test usage_error_exits_two ... ok
+test version_exits_zero ... ok
+test selftest_exits_zero_with_json_report ... ok
+test selftest_runs_with_display_environment_removed ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.88s
+
+     Running tests\guard_fixtures.rs (target\debug\deps\guard_fixtures-c2e200cd1837d257.exe)
+
+running 1 test
+test rejects_a_real_direct_composition_import ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_io-c3e00618f19594fd.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_lipsync-d5e45d34894d6713.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_mcp-2e64a90dac0c6503.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_model-58dbd11fd7a07932.exe)
+
+running 43 tests
+test name::tests::next_free_uses_smallest_unused ... ok
+test entities::tests::ext_keys_are_reverse_dns ... ok
+test id::tests::seeded_generators_are_reproducible ... ok
+test error::tests::wire_form_has_three_fields ... ok
+test canonical::tests::integral_doubles_normalise_to_integers ... ok
+test canonical::tests::layout_is_two_space_with_tuples_on_one_line ... ok
+test id::tests::compound_form ... ok
+test defaults::tests::default_palette_meets_its_coverage_rules ... ok
+test entities::tests::stubs_reject_full_objects_and_foreign_types ... ok
+test canonical::tests::large_integers_are_exact ... ok
+test input::tests::depth_counts_containers ... ok
+test id::tests::ulid_encoding_is_26_crockford_chars_and_ordered ... ok
+test input::tests::opaque_values_are_untouched_but_ordered ... ok
+test path::tests::spec_examples_parse_and_print ... ok
+test change::tests::move_and_copy_need_from ... ok
+test id::tests::validates_character_set_and_length ... ok
+test name::tests::normalises_nfc_and_trims ... ok
+test object::tests::runs_are_merged_and_trailing_blanks_dropped ... ok
+test change::tests::range_operations_apply_only_to_declared_fields ... ok
+test change::tests::inverse_against_pre_state_is_concrete ... ok
+test path::tests::quoted_names_escape ... ok
+test path::tests::refs_classify ... ok
+test name::tests::per_entity_rules ... ok
+test path::tests::rejects_malformed_paths ... ok
+test change::tests::range_replace_checks_types_window_and_bounds ... ok
+test canonical::tests::numbers_match_ecmascript ... ok
+test id::tests::clones_share_one_sequence ... ok
+test pointer::tests::indexes_are_strict ... ok
+test json_text::tests::rules ... ok
+test pointer::tests::round_trip_escapes ... ok
+test types::tests::names_round_trip_and_aliases_resolve ... ok
+test types::tests::tags_reject_other_types ... ok
+test types::tests::prefixes_are_unique_and_valid ... ok
+test id::tests::generated_ids_are_valid_prefixed_and_increasing ... ok
+test schema_ts::tests::types_and_bigint_bounds ... ok
+test value::tests::colours_normalise_to_upper_rgba ... ok
+test value::tests::timestamps_round_trip_and_reject_impossible_dates ... ok
+test canonical::tests::non_finite_values_are_errors_not_null ... ok
+test value::tests::timestamp_display_matches_civil_conversion_for_many_days ... ok
+test change::tests::frame_bearing_writes_are_bounded_at_the_scene_limit ... ok
+test validate::tests::zero_count_exposure_runs_are_reported_by_the_model_check ... ok
+test defaults::tests::new_project_is_valid_and_complete ... ok
+test overlay::tests::newer_minor_properties_survive_a_parse_and_write_in_lexicographic_order ... ok
+
+test result: ok. 43 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-d828876d5a1ea5ce.exe)
+
+running 39 tests
+test elided_patch_must_not_write_null ... ok
+test add_over_existing_object_property_is_invertible ... ok
+test canonical_serialization_rejects_nonfinite_values ... ok
+test diff_does_not_treat_opaque_arrays_as_child_collections ... ok
+test hostile_path_and_id_controls ... ok
+test move_over_existing_object_property_is_invertible ... ok
+test root_add_is_rfc6902_replacement ... ok
+test cloning_a_system_generator_cannot_duplicate_ids ... ok
+test jsonschema_integer_multiple_of_does_not_round_before_testing ... ok
+test property_schema_resolves_nested_child_and_tuple_fields ... ok
+test schema_properties_have_format_introduction_annotations ... ok
+test nfc_applies_to_persisted_strings_beyond_names ... ok
+test canonical_scene_map_order_is_not_document_state ... ok
+test extension_and_metadata_names_are_never_interpreted ... ok
+test int_means_signed_32_bit_unless_spec_states_otherwise ... ok
+test document_assembly_rechecks_schema_ranges_after_public_deserialize ... ok
+test schema_integer_boundary_does_not_round_u64_max_up ... ok
+test linked_file_asset_requires_paths ... ok
+test canonical_map_order_does_not_depend_on_insertion_order ... ok
+test project_library_must_have_local_kind ... ok
+test brush_outline_must_be_closed ... ok
+test mouth_track_manual_ranges_stay_within_the_placement ... ok
+test project_requires_a_visible_palette ... ok
+test swatch_id_alias_is_accepted_by_the_validated_input_path ... ok
+test depth_zero_results_validate_against_their_object_schema ... ok
+test texture_paths_must_be_under_textures ... ok
+test child_stub_type_must_agree_with_the_containment_slot ... ok
+test metadata_depth_is_enforced_at_model_input ... ok
+test image_element_bank_requires_exactly_one_bitmap_per_drawing ... ok
+test duplicate_entry_ids_must_not_silently_overwrite_content ... ok
+test fixed_text_requires_width ... ok
+test spline_handle_offsets_are_clamped_to_adjacent_key_times ... ok
+test every_valid_deep_library_object_has_a_resolvable_canonical_path ... ok
+test containment_and_scene_limit_controls ... ok
+test nested_closed_value_objects_reject_unknown_fields ... ok
+test schema_mutations_cover_all_object_types_and_root_properties ... ok
+test derived_properties_are_output_only_on_validated_entity_input ... ok
+test million_system_ids_unique_ordered_and_correctly_prefixed ... ok
+test ten_megabyte_drawing_validation_measurement ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.69s
+
+     Running tests\c11_r2_adversarial.rs (target\debug\deps\c11_r2_adversarial-5c71caa84cdacfc4.exe)
+
+running 39 tests
+test elided_and_incomplete_operations_fail_without_mutating_input ... ok
+test array_append_patch_inverse_restores_input ... ok
+test missing_copy_source_is_not_implicitly_the_document_root ... ok
+test nested_array_move_with_overwrite_inverse_restores_input ... ok
+test nonfinite_nested_structs_maps_and_model_constructors_are_rejected ... ok
+test ordinary_move_copy_test_and_array_index_shifts_invert ... ok
+test range_patch_rejects_nonstring_mouth_value_without_deleting_text ... ok
+test multiple_of_is_exact_near_u64_and_signed_limits ... ok
+test canonical_writer_limits_are_explicit ... ok
+test property_lookup_preserves_ref_property_annotations ... ok
+test property_lookup_follows_effect_condition_without_discarding_it ... ok
+test every_envelope_type_is_readonly ... ok
+test every_schema_property_has_since_and_envelope_type_is_readonly ... ok
+test all_public_entity_constructors_are_checked_before_document_use ... ok
+test image_import_options_are_opaque ... ok
+test nfc_is_applied_to_declared_non_name_strings_without_touching_opaque_values ... ok
+test cell_note_frame_map_keys_obey_signed_int_bounds ... ok
+test fixed_text_width_and_texture_paths_reject_new_invalid_cases ... ok
+test mouth_label_frame_map_keys_are_positive_and_within_int ... ok
+test duplicate_keys_are_rejected_even_at_distinct_frames ... ok
+test opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved ... ok
+test spline_clamps_both_sides_for_irregular_key_spacing ... ok
+test duplicate_local_ids_across_nested_nodes_share_drawing_scope ... ok
+test swatch_alias_equal_conflicting_and_nested_forms ... ok
+test model_depth_99_100_101_is_enforced_before_parsing ... ok
+test signed_int_boundaries_and_seed_exception ... ok
+test public_serde_entries_cannot_evade_revalidation ... ok
+test randomized_insertion_and_post_patch_revalidation_write_identical_bytes ... ok
+test duplicate_inline_collections_and_cross_entry_global_ids_are_rejected ... ok
+test all_entity_serde_entry_points_reject_unknown_fields_and_revalidate ... ok
+test every_model_stub_and_full_result_validates_at_depth_zero_one_two_all ... ok
+test duplicate_split_entries_all_five_maps_are_rejected ... ok
+test duplicate_placement_sequence_block_and_channel_ids_are_rejected ... ok
+test deeper_library_paths_near_model_limit_resolve ... ok
+test new_entity_semantic_boundary_controls ... ok
+test duplicate_ids_across_split_types_and_inline_levels_are_rejected ... ok
+test every_document_entry_kind_revalidates_deserialized_fields ... ok
+test forty_previously_implemented_register_rows_retain_constraints ... ok
+test cloned_generator_eight_threads_100k_each_are_unique ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.06s
+
+     Running tests\c11_r3_adversarial.rs (target\debug\deps\c11_r3_adversarial-a8857936026507eb.exe)
+
+running 11 tests
+test zero_length_exposure_runs_are_invalid_range_payloads ... ok
+test malformed_mouth_ranges_return_typed_errors ... ok
+test resolved_stateless_move_inverse_does_not_shift_numeric_object_keys ... ok
+test moving_into_own_subtree_fails_atomically_and_copying_parent_succeeds ... ok
+test append_move_remove_sequences_restore_nested_arrays ... ok
+test anonymous_variant_property_declarations_have_since ... ok
+test property_schema_nested_conditionals_and_ref_annotations_survive ... ok
+test property_schema_preserves_every_enum_alternative ... ok
+test property_schema_preserves_nullable_value_domains ... ok
+test opaque_mouth_track_lookalikes_are_ordinary_json_changes ... ok
+test frame_map_keys_and_nfc_values_at_fresh_boundaries ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running tests\c11_r3_random.rs (target\debug\deps\c11_r3_random-6c1b6125b0b642df.exe)
+
+running 1 test
+test ten_thousand_rfc6902_sequences_apply_and_invert ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.47s
+
+     Running tests\c11_r3_register.rs (target\debug\deps\c11_r3_register-c658429acb5dc12f.exe)
+
+running 4 tests
+test rows_146_and_148_drawing_pivot_and_ordered_nodes ... ok
+test rows_128_to_137_transform_constraints_and_pivots ... ok
+test rows_138_to_141_camera_export_skeleton_and_bone_blocks ... ok
+test rows_111_to_124_element_variant_blocks_are_required_and_typed ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running tests\c11_r4_exposure_bounds.rs (target\debug\deps\c11_r4_exposure_bounds-949c3295f69c1935.exe)
+
+running 2 tests
+test exposure_range_rejects_window_past_scene_limit ... ok
+test exposure_range_rejects_total_above_scene_limit ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\c11_r5_write_bounds.rs (target\debug\deps\c11_r5_write_bounds-bd1a8838a73da728.exe)
+
+running 4 tests
+test nested_exposure_count_write_obeys_total_limit ... ok
+test exposure_append_batch_cannot_cross_limit ... ok
+test whole_mouth_string_writes_obey_scene_limit ... ok
+test copy_and_move_into_exposure_obey_scene_limit ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c11_r6_staged_inverse.rs (target\debug\deps\c11_r6_staged_inverse-dafcb5df179ac2a0.exe)
+
+running 2 tests
+test staged_append_inverse_survives_run_merging ... ok
+test staged_inverse_restores_frames_after_runs_merge ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests\c12_kernel_support.rs (target\debug\deps\c12_kernel_support-b660eef33bdfd723.exe)
+
+running 6 tests
+test own_views_and_pointers_of_nested_objects ... ok
+test stamping_sets_document_and_object_revisions_and_the_drawing_rule ... ok
+test list_insertions_and_removals_diff_by_id ... ok
+test typed_object_pointers_agree_with_the_entry_json ... ok
+test multi_entry_commits_are_atomic_and_carry_verified_undo_and_redo ... ok
+test validated_entry_cache_never_hides_object_issues ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests\conformance.rs (target\debug\deps\conformance-346978796391f47b.exe)
+
+running 15 tests
+test x_command_annotations_name_registered_commands ... ok
+test published_schema_bundle_is_current ... ok
+test schemas_are_valid_draft_2020_12 ... ok
+test spec_example_paths_resolve ... ok
+test reference_errors_carry_the_spec_codes ... ok
+test fixture_covers_every_object_and_element_type ... ok
+test canonical_paths_resolve_to_their_objects ... ok
+test revisions_newer_than_the_document_are_integrity_errors ... ok
+test ambiguous_names_list_candidates ... ok
+test every_entry_validates_and_has_no_query_only_properties ... ok
+test persisted_json_equals_query_json_minus_transient ... ok
+test change_sets_describe_and_invert_edits ... ok
+test every_object_validates_at_every_depth ... ok
+test canonical_round_trip_is_byte_identical ... ok
+test golden_canonical_entries ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+
+     Running tests\properties.rs (target\debug\deps\properties-c513219dac878472.exe)
+
+running 18 tests
+test timestamps_round_trip ... ok
+test numbers_round_trip_through_canonical_text ... ok
+test json_parsing_of_doubles_is_correctly_rounded ... ok
+test names_normalise_idempotently ... ok
+test generated_paths_print_and_parse_identically ... ok
+test id_parsing_never_panics_and_matches_the_grammar ... ok
+test path_parsing_never_panics ... ok
+test number_vectors_for_the_front_end ... ok
+test canonical_json_is_stable ... ok
+test child_collection_patches_apply_and_invert ... ok
+test exposure_range_patches_apply_and_invert ... ok
+test random_rfc6902_sequences_invert_against_their_pre_state ... ok
+test patches_apply_and_invert ... ok
+test every_object_type_has_a_schema_that_rejects_unknown_properties ... ok
+test pens_round_trip ... ok
+test elements_of_every_type_round_trip ... ok
+test palettes_round_trip ... ok
+test strokes_round_trip ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+     Running tests\staged_commit.rs (target\debug\deps\staged_commit-af468fefef6cbb2e.exe)
+
+running 3 tests
+test document_level_frame_writes_are_refused_and_leave_the_document_unchanged ... ok
+test random_patches_never_commit_a_document_with_integrity_errors ... ok
+test staged_commit_sweep_commits_and_refuses ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 28.17s
+
+     Running tests\staged_inverse.rs (target\debug\deps\staged_inverse-7decf05ae8ec3aff.exe)
+
+running 2 tests
+test staged_exposure_and_mouth_edits_undo_and_redo_exactly ... ok
+test staged_inverse_sweep_covers_merging_and_splitting_runs ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.33s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_persist-3d74022d1c9d9097.exe)
+
+running 15 tests
+test layout::tests::names ... ok
+test b64::tests::rfc4648_vectors ... ok
+test fsx::tests::absolute_paths_only ... ok
+test manifest::tests::ver02 ... ok
+test manifest::tests::parse_round_trip_keeps_unknown_fields ... ok
+test time::tests::round_trips ... ok
+test zip::tests::unsafe_names_are_refused ... ok
+test manifest::tests::versions ... ok
+test zip::tests::deterministic_bytes ... ok
+test host::tests::own_process_is_alive_and_a_bogus_one_is_not ... ok
+test zip::tests::mimetype_rules ... ok
+test settings::tests::missing_data_and_corrupt ... ok
+test zip::tests::round_trip_plain_and_zip64 ... ok
+test fsx::tests::atomic_write_replaces_and_leaves_no_temporaries ... ok
+test lock::tests::exclusive_live_and_stale ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.74s
+
+     Running tests\c13_r1_format.rs (target\debug\deps\c13_r1_format-30bd05bdf1305cd0.exe)
+
+running 7 tests
+test malformed_journal_cannot_delete_an_arbitrary_project_entry ... FAILED
+test partial_folder_rollback_restores_every_already_replaced_entry ... FAILED
+test folder_has_the_same_mimetype_entry_as_package ... FAILED
+test repairs_at_exhausted_document_revision_fail_closed ... FAILED
+test newer_minor_unknown_properties_survive_on_the_same_frozen_entry ... FAILED
+test existing_project_thumbnail_survives_save ... FAILED
+test package_and_folder_round_trip_all_fixture_entries_and_binary_bytes ... ok
+
+failures:
+
+---- malformed_journal_cannot_delete_an_arbitrary_project_entry stdout ----
+
+thread 'malformed_journal_cannot_delete_an_arbitrary_project_entry' (31324) panicked at crates\persist\tests\c13_r1_format.rs:84:50:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "The system cannot find the file specified." }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- partial_folder_rollback_restores_every_already_replaced_entry stdout ----
+
+thread 'partial_folder_rollback_restores_every_already_replaced_entry' (31572) panicked at crates\persist\tests\c13_r1_format.rs:32:5:
+SAVE-02: recovery left mixed old/new entries: [[110, 101, 119, 45, 112, 114, 111, 106, 101, 99, 116], [111, 108, 100, 45, 112, 97, 108, 101, 116, 116, 101]]
+
+---- folder_has_the_same_mimetype_entry_as_package stdout ----
+
+thread 'folder_has_the_same_mimetype_entry_as_package' (25184) panicked at crates\persist\tests\c13_r1_format.rs:69:46:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "The system cannot find the file specified." }
+
+---- repairs_at_exhausted_document_revision_fail_closed stdout ----
+
+thread 'repairs_at_exhausted_document_revision_fail_closed' (14172) panicked at crates\persist\tests\c13_r1_format.rs:179:5:
+REV-03: repair needs a new revision; must not saturate and report clean: Some((false, 18446744073709551615, 1))
+
+---- newer_minor_unknown_properties_survive_on_the_same_frozen_entry stdout ----
+
+thread 'newer_minor_unknown_properties_survive_on_the_same_frozen_entry' (640) panicked at crates\persist\tests\c13_r1_format.rs:145:5:
+assertion `left == right` failed: VER-02: frozen entry lost its unknown properties
+  left: Null
+ right: Object {"content": Array [Number(1), Number(2), Number(3)]}
+
+---- existing_project_thumbnail_survives_save stdout ----
+
+thread 'existing_project_thumbnail_survives_save' (10408) panicked at crates\persist\tests\c13_r1_format.rs:163:5:
+ADR-0014 §17: existing thumbnail must be preserved
+
+
+failures:
+    existing_project_thumbnail_survives_save
+    folder_has_the_same_mimetype_entry_as_package
+    malformed_journal_cannot_delete_an_arbitrary_project_entry
+    newer_minor_unknown_properties_survive_on_the_same_frozen_entry
+    partial_folder_rollback_restores_every_already_replaced_entry
+    repairs_at_exhausted_document_revision_fail_closed
+
+test result: FAILED. 1 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 37.91s
+
+error: test failed, to rerun pass `-p tt-persist --test c13_r1_format`
+     Running tests\hostile.rs (target\debug\deps\hostile-3c14c1234bf8390c.exe)
+
+running 13 tests
+test local_header_naming_another_entry_is_refused ... ok
+test duplicate_entries_encryption_and_unknown_methods_are_refused ... ok
+test mimetype_must_come_first_uncompressed_and_exact ... ok
+test unsafe_entry_names_are_refused_before_extracting_anything ... ok
+test hash_mismatches_are_warnings_and_the_entry_is_still_read ... ok
+test size_lies_and_decompression_bombs_abort_the_load ... ok
+test truncated_and_corrupted_packages_are_invalid_and_never_panic ... ok
+test invalid_trees_are_repaired_without_losing_elements ... ok
+test newer_major_versions_reader_versions_and_unknown_features_refuse_to_open ... ok
+test project_json_missing_or_invalid_is_fatal ... ok
+test duplicate_ids_dangling_references_and_unreadable_entries_are_repaired_deterministically ... ok
+test interrupted_folder_saves_complete_or_roll_back_on_open ... ok
+test newer_minor_content_is_preserved_verbatim_and_unknown_values_freeze_their_entry ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.11s
+
+     Running tests\migrations.rs (target\debug\deps\migrations-e58ec5139a3bb2ad.exe)
+
+running 4 tests
+test values_without_a_new_home_are_kept_under_ext ... ok
+test the_engine_applies_steps_in_order_and_reports_gaps_and_failures ... ok
+test every_product_step_has_a_fixture_and_the_chain_ends_at_the_current_format ... ok
+test the_synthetic_chain_matches_its_fixtures ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\round_trip.rs (target\debug\deps\round_trip-f32a47272e580f33.exe)
+
+running 3 tests
+test an_unchanged_folder_save_rewrites_nothing_and_a_change_rewrites_one_entry ... ok
+test both_forms_hold_identical_entry_bytes_and_saves_are_deterministic ... ok
+test package_and_folder_round_trip_to_the_identical_document ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+     Running tests\zip64.rs (target\debug\deps\zip64-a754f6fe8d1b377a.exe)
+
+running 2 tests
+test an_entry_over_4_gib_round_trips_with_zip64_sizes ... ignored, writes and reads 4.3 GB; run in release with --include-ignored
+test more_than_65535_entries_switch_to_zip64_records ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.93s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_registry-e730c98e713d3b57.exe)
+
+running 1 test
+test owners::tests::every_inventory_entry_has_an_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\declared.rs (target\debug\deps\declared-cdf1b0f615e21b9e.exe)
+
+running 9 tests
+test declarations_carry_owner_scopes_project_rule_undo_and_gui ... ok
+test placeholders_are_strict_and_recorded ... ok
+test parameter_constraints_come_from_the_spec ... ok
+test placeholders_carry_their_spec_issue ... ok
+test literal_constants_are_stated_by_their_own_entry ... ok
+test declarations_follow_the_current_spec_columns ... ok
+test owning_section_examples_validate ... ok
+test schemas_compile_reject_unknown_parameters_and_accept_the_examples ... ok
+test generated_schemas_reject_every_mutated_leaf_and_unknown_member ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.54s
+
+     Running tests\inventory.rs (target\debug\deps\inventory-466b715617d46115.exe)
+
+running 1 test
+test inventory_matches_spec_a_exactly ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_registry_macros-b1205c8f1eec8710.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_render-2a70cceafcf2b977.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c03_fixed_configurations.rs (target\debug\deps\c03_fixed_configurations-0dc19d47ae4881b2.exe)
+
+running 2 tests
+test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
+test fixed_scalar_configuration_hashes_identically_across_oses ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.75s
+
+     Running tests\c03_r1_stress.rs (target\debug\deps\c03_r1_stress-cb6dca8d5119bd07.exe)
+
+running 3 tests
+test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
+test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
+test extended_corpus_repeats_and_cross_os_hashes ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 7.07s
+
+     Running tests\c03_r2_quality.rs (target\debug\deps\c03_r2_quality-486b76ccc6b17b2a.exe)
+
+running 1 test
+test quality_pipeline_opacity_full_corpus ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.46s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_vector-2dc1a838f75c92cb.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_anim
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_audio
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_colour
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_desktop
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_engine
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_executor
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_fx
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_io
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_lipsync
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_mcp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_model
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_persist
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_registry
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_registry_macros
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_render
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_vector
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: 3 targets failed:
+    `-p tt-executor --test c13_r1_evidence_oracle1`
+    `-p tt-executor --test c13_r1_persistence`
+    `-p tt-persist --test c13_r1_format`
+
+[exit 101]

@@ -1,0 +1,72 @@
+{
+  "id": "el_01K742SG2NP1NF53KGWEFA4ME1",
+  "type": "element",
+  "rev": 1,
+  "name": "Camera",
+  "elementType": "camera",
+  "start": 1,
+  "duration": 48,
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "transform": {
+    "offset": {
+      "x": 0,
+      "y": 0,
+      "z": 16
+    },
+    "rotation": 0,
+    "skew": 0,
+    "scale": {
+      "x": 1,
+      "y": 1
+    },
+    "keepProportions": false,
+    "lockDepth": false,
+    "orientToPath": false
+  },
+  "camera": {
+    "fovMode": "dynamic",
+    "fov": 60
+  },
+  "channels": {
+    "fov": {
+      "id": "ch_01K742SG2S3NE8YAJK3XEWDJH7",
+      "type": "channel",
+      "rev": 1,
+      "name": "fov",
+      "curveType": "spline",
+      "keys": [
+        {
+          "id": "ky_01K742SG2T4D9ZH50F8WKMQZED",
+          "type": "key",
+          "rev": 1,
+          "frame": 1,
+          "value": 60,
+          "constantSegment": false,
+          "handles": {
+            "left": {
+              "dt": -4,
+              "dv": 0
+            },
+            "right": {
+              "dt": 4,
+              "dv": 0
+            },
+            "mode": "smooth"
+          },
+          "easing": null
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

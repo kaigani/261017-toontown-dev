@@ -1,0 +1,1073 @@
+[
+  {
+    "id": "FMT-01",
+    "requirement": "Opening a path that is a file reads the package form; opening a path that is a directory reads the folder",
+    "spec": "spec/10_data_model_project_format.md:691",
+    "status": "divergent",
+    "implementation": "crates/persist/src/save.rs:722",
+    "tests": "crates/persist/tests/round_trip.rs",
+    "note": "C13-R1-12"
+  },
+  {
+    "id": "FMT-02",
+    "requirement": "A project remembers its form; Save writes the same form. Converting between forms is a save-as-copy in the",
+    "spec": "spec/10_data_model_project_format.md:694",
+    "status": "implemented",
+    "implementation": "crates/persist/src/save.rs:722",
+    "tests": "crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "FMT-03",
+    "requirement": "When a folder-form project is created, the application writes a `.gitignore` (only if none exists) listing",
+    "spec": "spec/10_data_model_project_format.md:697",
+    "status": "implemented",
+    "implementation": "crates/persist/src/save.rs:722",
+    "tests": "crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "ZIP-01",
+    "requirement": "Standard zip (PKWARE APPNOTE) with ZIP64 support. Entry names are UTF-8 (language-encoding flag set), use",
+    "spec": "spec/10_data_model_project_format.md:711",
+    "status": "divergent",
+    "implementation": "crates/persist/src/zip.rs:546",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs",
+    "note": "C13-R1-10"
+  },
+  {
+    "id": "ZIP-02",
+    "requirement": "The first entry is `mimetype`, stored uncompressed, without extra fields, containing exactly the media type",
+    "spec": "spec/10_data_model_project_format.md:714",
+    "status": "implemented",
+    "implementation": "crates/persist/src/zip.rs:546",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs",
+    "note": ""
+  },
+  {
+    "id": "ZIP-03",
+    "requirement": "JSON entries are deflate-compressed. Already-compressed media (PNG, MP3, AAC, MP4, MOV) SHOULD be stored.",
+    "spec": "spec/10_data_model_project_format.md:716",
+    "status": "implemented",
+    "implementation": "crates/persist/src/zip.rs:546",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs",
+    "note": ""
+  },
+  {
+    "id": "ZIP-04",
+    "requirement": "Readers MUST ignore unknown entries outside the reserved names of §6.3 and MUST preserve them on save",
+    "spec": "spec/10_data_model_project_format.md:717",
+    "status": "implemented",
+    "implementation": "crates/persist/src/zip.rs:546",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs",
+    "note": ""
+  },
+  {
+    "id": "ZIP-05",
+    "requirement": "No encryption, no signatures. Integrity is provided by the SHA-256 list in the manifest (§6.4).",
+    "spec": "spec/10_data_model_project_format.md:719",
+    "status": "implemented",
+    "implementation": "crates/persist/src/zip.rs:546",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs",
+    "note": ""
+  },
+  {
+    "id": "ZIP-06",
+    "requirement": "Readers MUST NOT trust declared sizes: decompression is bounded by the manifest sizes plus a margin and by a",
+    "spec": "spec/10_data_model_project_format.md:720",
+    "status": "implemented",
+    "implementation": "crates/persist/src/zip.rs:546",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs",
+    "note": ""
+  },
+  {
+    "id": "LAY-01",
+    "requirement": "Every object lives in exactly one entry. Entries split the model at: project, palette, scene, element,",
+    "spec": "spec/10_data_model_project_format.md:748",
+    "status": "implemented",
+    "implementation": "crates/persist/src/layout.rs:142",
+    "tests": "crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "LAY-02",
+    "requirement": "Entry names use object IDs, never display names, so renames do not move files. Texture file names are",
+    "spec": "spec/10_data_model_project_format.md:750",
+    "status": "implemented",
+    "implementation": "crates/persist/src/layout.rs:142",
+    "tests": "crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "LAY-03",
+    "requirement": "Entries of deleted objects disappear on the next save; until then the deletion is undoable.",
+    "spec": "spec/10_data_model_project_format.md:752",
+    "status": "implemented",
+    "implementation": "crates/persist/src/layout.rs:142",
+    "tests": "crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "LAY-04",
+    "requirement": "A clean (unmodified) project saves without rewriting any entry. In folder form, only entries whose bytes",
+    "spec": "spec/10_data_model_project_format.md:753",
+    "status": "implemented",
+    "implementation": "crates/persist/src/layout.rs:142",
+    "tests": "crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "JSON-01",
+    "requirement": "UTF-8 without BOM, `\\n` line endings, two-space indentation, final newline.",
+    "spec": "spec/10_data_model_project_format.md:786",
+    "status": "implemented",
+    "implementation": "crates/model/src/canonical.rs:180",
+    "tests": "crates/model/tests/conformance.rs; crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "JSON-02",
+    "requirement": "Object keys in schema order: envelope (`id`/`colourId`, `type`, `rev`, `name`) first, then the type's",
+    "spec": "spec/10_data_model_project_format.md:787",
+    "status": "implemented",
+    "implementation": "crates/model/src/canonical.rs:180",
+    "tests": "crates/model/tests/conformance.rs; crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "JSON-03",
+    "requirement": "Numbers in the shortest form that round-trips to the same double; `-0` written as `0`; integers without",
+    "spec": "spec/10_data_model_project_format.md:790",
+    "status": "implemented",
+    "implementation": "crates/model/src/canonical.rs:180",
+    "tests": "crates/model/tests/conformance.rs; crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "JSON-04",
+    "requirement": "Default-valued optional properties MAY be omitted only where the schema marks them `x-omitDefault`",
+    "spec": "spec/10_data_model_project_format.md:793",
+    "status": "implemented",
+    "implementation": "crates/model/src/canonical.rs:180",
+    "tests": "crates/model/tests/conformance.rs; crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "JSON-05",
+    "requirement": "Saving the same document twice produces byte-identical entries.",
+    "spec": "spec/10_data_model_project_format.md:795",
+    "status": "implemented",
+    "implementation": "crates/model/src/canonical.rs:180",
+    "tests": "crates/model/tests/conformance.rs; crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "VER-01",
+    "requirement": "The format version is `MAJOR.MINOR`. A **minor** increment only adds optional properties, types or enum",
+    "spec": "spec/10_data_model_project_format.md:799",
+    "status": "implemented",
+    "implementation": "crates/persist/src/manifest.rs:237",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/migrations.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "VER-02",
+    "requirement": "On open: if `minReaderVersion` is newer than the reader, or the major version is newer, or a",
+    "spec": "spec/10_data_model_project_format.md:801",
+    "status": "divergent",
+    "implementation": "crates/persist/src/manifest.rs:237",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/migrations.rs; crates/executor/tests/c13_projects.rs",
+    "note": "C13-R1-05"
+  },
+  {
+    "id": "VER-03",
+    "requirement": "Older versions are **migrated in memory** on open by a chain of migration steps (N → N+1), each a pure",
+    "spec": "spec/10_data_model_project_format.md:806",
+    "status": "implemented",
+    "implementation": "crates/persist/src/manifest.rs:237",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/migrations.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "VER-04",
+    "requirement": "Every migration step has fixture tests (old file → expected new JSON) that MUST pass before release.",
+    "spec": "spec/10_data_model_project_format.md:811",
+    "status": "implemented",
+    "implementation": "crates/persist/src/manifest.rs:237",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/migrations.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "VER-05",
+    "requirement": "Libraries (§6.11), templates (§6.9) and palette files carry their own `formatVersion` and follow the same",
+    "spec": "spec/10_data_model_project_format.md:812",
+    "status": "deferred-with-owner",
+    "implementation": "crates/persist/src/manifest.rs:237",
+    "tests": "crates/persist/tests/hostile.rs; crates/persist/tests/migrations.rs; crates/executor/tests/c13_projects.rs",
+    "note": "M7 C7.1/M9 C9.1 complete specialty version/migration semantics; basic readers/writers present"
+  },
+  {
+    "id": "MED-03",
+    "requirement": "Missing assets never prevent opening: affected objects keep their timing and show placeholders; one",
+    "spec": "spec/10_data_model_project_format.md:824",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:477",
+    "tests": "crates/executor/tests/c13_doc.rs; crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "MED-04",
+    "requirement": "Embedded assets no longer referenced by any object of the project (or its local library) are removed from",
+    "spec": "spec/10_data_model_project_format.md:827",
+    "status": "divergent",
+    "implementation": "crates/persist/src/load.rs:477",
+    "tests": "crates/executor/tests/c13_doc.rs; crates/persist/tests/round_trip.rs",
+    "note": "C13-R1-18"
+  },
+  {
+    "id": "MED-05",
+    "requirement": "Bitmap node pixels are stored as PNG entries next to their drawing (§6.3), not as assets.",
+    "spec": "spec/10_data_model_project_format.md:829",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:477",
+    "tests": "crates/executor/tests/c13_doc.rs; crates/persist/tests/round_trip.rs",
+    "note": ""
+  },
+  {
+    "id": "MED-06",
+    "requirement": "Waveform peak caches and thumbnails go under `cache/`; a reader MUST work without them and regenerate them",
+    "spec": "spec/10_data_model_project_format.md:830",
+    "status": "deferred-with-owner",
+    "implementation": "crates/persist/src/load.rs:477",
+    "tests": "crates/executor/tests/c13_doc.rs; crates/persist/tests/round_trip.rs",
+    "note": "M2/M3/M8 cache generation (ADR-0014 §17); caches optional now"
+  },
+  {
+    "id": "LOAD-01",
+    "requirement": "Drawings MAY be loaded lazily (content parsed on first access) provided every query and command behaves",
+    "spec": "spec/10_data_model_project_format.md:931",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "LOAD-02",
+    "requirement": "Cancelling the job leaves no project open (01 §3.2).",
+    "spec": "spec/10_data_model_project_format.md:933",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "LOAD-03",
+    "requirement": "Loading MUST be deterministic: the same files produce the same document, the same IDs, revisions and",
+    "spec": "spec/10_data_model_project_format.md:934",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "REP-01",
+    "requirement": "Repairs form one transaction with origin `load`, undoable as \"Repair on Open\"; the project is then",
+    "spec": "spec/10_data_model_project_format.md:961",
+    "status": "divergent",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_doc.rs",
+    "note": "SI-044; C13-R1-09"
+  },
+  {
+    "id": "REP-02",
+    "requirement": "No repair may silently lose user content: anything removed is listed in the load report with its old JSON.",
+    "spec": "spec/10_data_model_project_format.md:963",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_doc.rs",
+    "note": ""
+  },
+  {
+    "id": "SAVE-03",
+    "requirement": "Saving is not cancellable once writing has started (01 §3.6); progress is reported per phase",
+    "spec": "spec/10_data_model_project_format.md:991",
+    "status": "implemented",
+    "implementation": "crates/persist/src/save.rs:292",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "SAVE-04",
+    "requirement": "A save serialises a consistent snapshot taken between transactions; editing MAY continue while the",
+    "spec": "spec/10_data_model_project_format.md:993",
+    "status": "implemented",
+    "implementation": "crates/persist/src/save.rs:292",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "SAVE-05",
+    "requirement": "Failures are reported with the codes of 01 §3.6 (`project.saveFailed`, `project.permissionDenied`,",
+    "spec": "spec/10_data_model_project_format.md:995",
+    "status": "implemented",
+    "implementation": "crates/persist/src/save.rs:292",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "BAK-01",
+    "requirement": "After a successful save that replaces an existing version, the previous version is moved (not copied, where",
+    "spec": "spec/10_data_model_project_format.md:1000",
+    "status": "implemented",
+    "implementation": "crates/persist/src/backup.rs:108",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "BAK-02",
+    "requirement": "Folder-form projects are backed up as a package-form snapshot of the previous version.",
+    "spec": "spec/10_data_model_project_format.md:1003",
+    "status": "implemented",
+    "implementation": "crates/persist/src/backup.rs:108",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "BAK-03",
+    "requirement": "`files.backups.count` versions are kept per project (default 3, 0 = off), oldest removed first.",
+    "spec": "spec/10_data_model_project_format.md:1004",
+    "status": "implemented",
+    "implementation": "crates/persist/src/backup.rs:108",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "BAK-04",
+    "requirement": "Opening a backup (`project.backup.open`) loads it as an untitled copy; the backup itself is never modified.",
+    "spec": "spec/10_data_model_project_format.md:1005",
+    "status": "implemented",
+    "implementation": "crates/persist/src/backup.rs:108",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "AUTO-01",
+    "requirement": "Every `files.autosave.intervalMinutes` (default 5) while the project is modified, a recovery copy is",
+    "spec": "spec/10_data_model_project_format.md:1009",
+    "status": "implemented",
+    "implementation": "crates/executor/src/maintenance.rs:123",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "AUTO-02",
+    "requirement": "Autosave MUST NOT write to the user's project, change the clean marker, the undo history or the project",
+    "spec": "spec/10_data_model_project_format.md:1012",
+    "status": "implemented",
+    "implementation": "crates/executor/src/maintenance.rs:123",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "AUTO-03",
+    "requirement": "Untitled (never saved) projects are autosaved too (`originalPath: null`).",
+    "spec": "spec/10_data_model_project_format.md:1015",
+    "status": "implemented",
+    "implementation": "crates/executor/src/maintenance.rs:123",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "AUTO-04",
+    "requirement": "The recovery folder is deleted after a successful save, a discard-close or a clean quit (01 §3.7).",
+    "spec": "spec/10_data_model_project_format.md:1016",
+    "status": "implemented",
+    "implementation": "crates/executor/src/maintenance.rs:123",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "REC-01",
+    "requirement": "At launch, recovery folders whose `processId` is not a running instance of the application are offered",
+    "spec": "spec/10_data_model_project_format.md:1020",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/project.rs:1137",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": "C13-R1-08"
+  },
+  {
+    "id": "REC-02",
+    "requirement": "Recovering opens the copy as a **modified** project whose location is `originalPath`, so Save writes to the",
+    "spec": "spec/10_data_model_project_format.md:1023",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/project.rs:1137",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "RO-01",
+    "requirement": "A project on a read-only location opens read-only (01 §3.2).",
+    "spec": "spec/10_data_model_project_format.md:1029",
+    "status": "implemented",
+    "implementation": "crates/executor/src/maintenance.rs:71",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "RO-02",
+    "requirement": "While a project is open the application watches its file (or folder). If it is modified by another process,",
+    "spec": "spec/10_data_model_project_format.md:1030",
+    "status": "divergent",
+    "implementation": "crates/executor/src/maintenance.rs:71",
+    "tests": "crates/executor/tests/c13_projects.rs",
+    "note": "C13-R1-06; SI-045/C1.4"
+  },
+  {
+    "id": "LOCK-01",
+    "requirement": "Opening a project for writing creates a lock file next to it (`<package path>.lock`, or `.lock` inside a",
+    "spec": "spec/10_data_model_project_format.md:1037",
+    "status": "implemented",
+    "implementation": "crates/persist/src/lock.rs:160",
+    "tests": "crates/persist/src/lock.rs::exclusive_live_and_stale; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "LOCK-02",
+    "requirement": "If a live lock held by someone else exists, the project opens read-only and the lock holder is reported",
+    "spec": "spec/10_data_model_project_format.md:1040",
+    "status": "divergent",
+    "implementation": "crates/persist/src/lock.rs:160",
+    "tests": "crates/persist/src/lock.rs::exclusive_live_and_stale; crates/executor/tests/c13_projects.rs",
+    "note": "C13-R1-02"
+  },
+  {
+    "id": "LOCK-03",
+    "requirement": "Libraries use the same mechanism for write access (08 LIB-006).",
+    "spec": "spec/10_data_model_project_format.md:1043",
+    "status": "deferred-with-owner",
+    "implementation": "crates/persist/src/lock.rs:160",
+    "tests": "crates/persist/src/lock.rs::exclusive_live_and_stale; crates/executor/tests/c13_projects.rs",
+    "note": "M9 C9.1 library locks (ADR-0014 §6)"
+  },
+  {
+    "id": "Manifest",
+    "requirement": "format, versions/features, generator, project ID, documentRev, savedAt, SHA256/size list; folder list omitted",
+    "spec": "10 §6–§8",
+    "status": "implemented",
+    "implementation": "crates/persist/src/save.rs:118",
+    "tests": "format-byte-audit.json; hostile::hash_mismatches_are_warnings_and_the_entry_is_still_read",
+    "note": ""
+  },
+  {
+    "id": "Interchange",
+    "requirement": "self-contained full-depth bundle, blobs, remapping and conflict policies",
+    "spec": "10 §6–§8",
+    "status": "divergent",
+    "implementation": "crates/persist/src/save.rs:87",
+    "tests": "c13_doc::bundles_import_into_a_scene_at_a_frame_with_fresh_ids_and_renames",
+    "note": "C13-R1-11"
+  },
+  {
+    "id": "Thumbnail",
+    "requirement": "preserve an existing thumbnail until M3 regeneration",
+    "spec": "10 §6–§8",
+    "status": "divergent",
+    "implementation": "crates/persist/src/save.rs:87",
+    "tests": "c13_r1_format::existing_project_thumbnail_survives_save",
+    "note": "C13-R1-13"
+  },
+  {
+    "id": "Session",
+    "requirement": "optional UI state, invalid ignored, excluded from manifest/undo",
+    "spec": "10 §6–§8",
+    "status": "implemented",
+    "implementation": "crates/persist/src/save.rs:87",
+    "tests": "c13_projects::create_save_close_open_round_trips_both_forms",
+    "note": ""
+  },
+  {
+    "id": "Templates",
+    "requirement": "mimetype, manifest, metadata/content and binaries",
+    "spec": "10 §6.9–§6.11",
+    "status": "implemented",
+    "implementation": "crates/persist/src/library.rs:29",
+    "tests": "c13_doc::packages_templates_palettes_and_libraries_are_inspected_without_opening",
+    "note": ""
+  },
+  {
+    "id": "Palettes",
+    "requirement": "optional mimetype archive or bare JSON, textures",
+    "spec": "10 §6.9–§6.11",
+    "status": "implemented",
+    "implementation": "crates/persist/src/library.rs:29",
+    "tests": "c13_doc::packages_templates_palettes_and_libraries_are_inspected_without_opening",
+    "note": ""
+  },
+  {
+    "id": "LibraryLayout",
+    "requirement": "shared animlib index layout, flat files, broken items",
+    "spec": "10 §6.9–§6.11",
+    "status": "implemented",
+    "implementation": "crates/persist/src/library.rs:29",
+    "tests": "c13_doc::packages_templates_palettes_and_libraries_are_inspected_without_opening",
+    "note": ""
+  },
+  {
+    "id": "Repair-01",
+    "requirement": "Not a package / no `mimetype` / unsafe entry names / unreadable zip; `project.invalidFormat`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-02",
+    "requirement": "Newer major version, `minReaderVersion` too new, unknown required feature; `project.unsupportedVersion`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-03",
+    "requirement": "`project.json` missing or invalid; `project.invalidFormat`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-04",
+    "requirement": "Entry hash or size mismatch; `integrity.hashMismatch`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-05",
+    "requirement": "Entry not valid JSON / fails its schema: palette, element; `doc.schemaViolation`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-06",
+    "requirement": "Drawing entry missing or unreadable; `drawing.contentMissing`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-07",
+    "requirement": "Scene entry unreadable; `doc.schemaViolation`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-08",
+    "requirement": "Duplicate ID; `id.duplicate`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-09",
+    "requirement": "Dangling reference; `ref.dangling`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-10",
+    "requirement": "Element missing from the scene tree / listed twice / cycle; `tree.invalid`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-11",
+    "requirement": "Exposure not canonical, foreign drawing IDs; `exposure.invalid`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-12",
+    "requirement": "Value out of range; `doc.valueClamped`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-13",
+    "requirement": "Invalid or duplicate name; `doc.nameRepaired`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-14",
+    "requirement": "Inconsistent zone fills; `drawing.fillInconsistent`",
+    "spec": "10 §7.2 repair table",
+    "status": "deferred-with-owner",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": "M2 C2.2 planar map (ADR-0014 §17)"
+  },
+  {
+    "id": "Repair-15",
+    "requirement": "Unresolved colour ID; `colour.recovered` / `colour.placeholderCreated`",
+    "spec": "10 §7.2 repair table",
+    "status": "deferred-with-owner",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": "M2 C2.2 colour recovery (ADR-0014 §17), currently colour.unresolved"
+  },
+  {
+    "id": "Repair-16",
+    "requirement": "Missing asset; `project.mediaMissing`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-17",
+    "requirement": "Unreadable transition; `storyline.transitionInvalid`",
+    "spec": "10 §7.2 repair table",
+    "status": "implemented",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": ""
+  },
+  {
+    "id": "Repair-18",
+    "requirement": "Missing font; `text.fontMissing`",
+    "spec": "10 §7.2 repair table",
+    "status": "deferred-with-owner",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": "M2 C2.1 font discovery (ADR-0014 §16)"
+  },
+  {
+    "id": "Repair-19",
+    "requirement": "Unknown properties (newer minor version); `project.newerMinorVersion`",
+    "spec": "10 §7.2 repair table",
+    "status": "divergent",
+    "implementation": "crates/persist/src/repair.rs:266",
+    "tests": "crates/persist/tests/hostile.rs",
+    "note": "C13-R1-05"
+  },
+  {
+    "id": "LoadPhase-1",
+    "requirement": "Container identification and safe names",
+    "spec": "10 §7.1",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "LoadPhase-2",
+    "requirement": "Manifest, versions/features, integrity warnings",
+    "spec": "10 §7.1",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "LoadPhase-3",
+    "requirement": "Pure ordered migration chain",
+    "spec": "10 §7.1",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "LoadPhase-4",
+    "requirement": "Parse/schema validate every entry",
+    "spec": "10 §7.1",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "LoadPhase-5",
+    "requirement": "Resolve references, scene tree and assets",
+    "spec": "10 §7.1",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "LoadPhase-6",
+    "requirement": "Repair, then colour recovery",
+    "spec": "10 §7.1",
+    "status": "deferred-with-owner",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": "M2 C2.2 colour recovery; deterministic basic repair implemented"
+  },
+  {
+    "id": "LoadPhase-7",
+    "requirement": "Derive zones/scene lengths; schedule caches/thumbnails",
+    "spec": "10 §7.1",
+    "status": "deferred-with-owner",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": "M2/M3/M8 derived/cache computations; eager model scene lengths available"
+  },
+  {
+    "id": "LoadPhase-8",
+    "requirement": "Publish report, project.opened and one load-origin change",
+    "spec": "10 §7.1",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:129",
+    "tests": "crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs",
+    "note": ""
+  },
+  {
+    "id": "LoadReport",
+    "requirement": "complete report and deterministic issues/IDs (durationMs is measured)",
+    "spec": "10 §7.3",
+    "status": "implemented",
+    "implementation": "crates/persist/src/load.rs:419",
+    "tests": "c13_doc::a_repaired_load_is_one_non_undoable_step_and_reported",
+    "note": ""
+  },
+  {
+    "id": "ExecutorEffects",
+    "requirement": "commit-only persistence effects; dryRun/atomic failure do not write files or move clean marker",
+    "spec": "11 §7.2–§7.3; C1.2 closure tickets",
+    "status": "divergent",
+    "implementation": "crates/executor/src/persistence.rs:379",
+    "tests": "c13_r1_persistence dry-run and failed atomic batch regressions",
+    "note": "C13-R1-01"
+  },
+  {
+    "id": "InstallGate",
+    "requirement": "open, migration, recovery, backup and repair installation validated before live use",
+    "spec": "ADR-0013 §16; C1.2 closure tickets",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:573",
+    "tests": "compile_fail; c12_policy; c13_projects::opening_bad_files_fails_the_job_and_leaves_no_project_open",
+    "note": ""
+  },
+  {
+    "id": "ReopenedHistory",
+    "requirement": "persisted revisions continue through 10k-step history and exact replay",
+    "spec": "REV-01..06; C1.2 closure tickets",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:478",
+    "tests": "oracle-r1.log; oracle-r3.log; reopened-oracles.json",
+    "note": ""
+  },
+  {
+    "id": "RoundTrip",
+    "requirement": "all command-created supported object types, canonical JSON, revisions, opaque data and binary entries",
+    "spec": "11 §14.3",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/bundle.rs:744",
+    "tests": "c13_doc; c13_r1_format positive fixture round trip; both reopened oracles",
+    "note": "Ordinary 1.0 passes; unknown-minor composition loses data (C13-R1-05). Library child creation remains M9."
+  },
+  {
+    "id": "Examples",
+    "requirement": "each declaration has schemas/examples; every C1.3 example executes on real files",
+    "spec": "11 §14.2",
+    "status": "implemented",
+    "implementation": "crates/executor/tests/c12_kernel_state.rs:317",
+    "tests": "c12_kernel_state; c13_r1_persistence registry schema audit; persistence-registry.json",
+    "note": ""
+  },
+  {
+    "id": "InspectionBound",
+    "requirement": "large packages can be inspected without allocating the entire archive twice",
+    "spec": "10 §5 ZIP64; 11 §14.6; spec A doc.package.get",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/doc_io.rs:977",
+    "tests": "c13_r1_persistence::package_inspection_reads_a_bounded_header; inspection-memory.json",
+    "note": "C13-R1-14"
+  },
+  {
+    "id": "UndoLabels",
+    "requirement": "Import JSON / Repair Project labels match the command table",
+    "spec": "10 §10.2; plan §3.2",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:1004",
+    "tests": "c13_r1_persistence::import_and_repair_undo_labels_match_the_command_table",
+    "note": "C13-R1-17"
+  },
+  {
+    "id": "NewDefaults",
+    "requirement": "one scene, camera/peg, empty drawing element, 120-swatch palette, 8 pens; clean empty history",
+    "spec": "01 §3, §11, §12 / 11 §14.3",
+    "status": "implemented",
+    "implementation": "crates/model/src/defaults.rs:215",
+    "tests": "tt-model defaults tests; c13_projects",
+    "note": ""
+  },
+  {
+    "id": "Presets",
+    "requirement": "all required bundled presets, mostRecent/default precedence, explicit overrides",
+    "spec": "01 §3, §11, §12 / 11 §14.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/project.rs:113",
+    "tests": "c13_projects::workspaces_recent_projects_and_defaults_persist_per_user",
+    "note": "UI custom selection belongs to M4 C4.1"
+  },
+  {
+    "id": "Recent",
+    "requirement": "normalized deduplication, maxCount, exists status, persisted ordering and removal",
+    "spec": "01 §3, §11, §12 / 11 §14.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/store.rs:222",
+    "tests": "c13_projects::workspaces_recent_projects_and_defaults_persist_per_user",
+    "note": ""
+  },
+  {
+    "id": "SettingsIO",
+    "requirement": "per-user conventional directories, atomic versioned human-readable files; corrupt copy/default/warning",
+    "spec": "01 §3, §11, §12 / 11 §14.3",
+    "status": "implemented",
+    "implementation": "crates/persist/src/settings.rs:68",
+    "tests": "settings::missing_data_and_corrupt; c13_projects",
+    "note": "Supported 1.0 settings; no historic product migration exists"
+  },
+  {
+    "id": "Preferences",
+    "requirement": "project default and persistence preference values stored separately",
+    "spec": "01 §3, §11, §12 / 11 §14.3",
+    "status": "divergent",
+    "implementation": "crates/executor/src/store.rs:124",
+    "tests": "c13_projects::workspaces_recent_projects_and_defaults_persist_per_user",
+    "note": "C13-R1-15: defaults are persisted as overrides"
+  },
+  {
+    "id": "Workspaces",
+    "requirement": "user/modified builtin/fullscreen workspace layouts persist and restore",
+    "spec": "01 §3, §11, §12 / 11 §14.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/maintenance.rs:19",
+    "tests": "c13_projects::workspaces_recent_projects_and_defaults_persist_per_user",
+    "note": ""
+  },
+  {
+    "id": "RemainingSettings",
+    "requirement": "keymap, toolbar, window geometry, last dialog folders, suppressed messages, first-run flags",
+    "spec": "01 §3, §11, §12 / 11 §14.3",
+    "status": "deferred-with-owner",
+    "implementation": "crates/persist/src/settings.rs:98",
+    "tests": "C1.3 generic store infrastructure only",
+    "note": "M4 C4.1 shell/settings; M9 C9.3 bundled first-run content; kernel host wiring C1.4"
+  },
+  {
+    "id": "Quit",
+    "requirement": "unsaved policy, no location pathRequired, clean recovery deletion",
+    "spec": "01 §3, §11, §12 / 11 §14.3",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/app.rs:479",
+    "tests": "c13_projects::unsaved_changes_policies_and_quit; c13_r1_persistence dry-run/atomic regression",
+    "note": "C13-R1-01; native quit is M4/C1.4"
+  },
+  {
+    "id": "Lint-missingMedia",
+    "requirement": "missingMedia",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-missingDrawingContent",
+    "requirement": "missingDrawingContent",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-emptyExposure",
+    "requirement": "emptyExposure",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-exposedEmptyDrawing",
+    "requirement": "exposedEmptyDrawing",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-unusedDrawings",
+    "requirement": "unusedDrawings",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-unresolvedColours",
+    "requirement": "unresolvedColours",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-unpaintedZones",
+    "requirement": "unpaintedZones",
+    "spec": "10 §10.3",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": "M2 C2.2"
+  },
+  {
+    "id": "Lint-unusedSwatches",
+    "requirement": "unusedSwatches",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-unusedAssets",
+    "requirement": "unusedAssets",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-danglingReferences",
+    "requirement": "danglingReferences",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-duplicateNames",
+    "requirement": "duplicateNames",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-noCamera",
+    "requirement": "noCamera",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-staleLipSync",
+    "requirement": "staleLipSync",
+    "spec": "10 §10.3",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": "M8 C8.2"
+  },
+  {
+    "id": "Lint-incompleteLipSyncMapping",
+    "requirement": "incompleteLipSyncMapping",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-transitionPadding",
+    "requirement": "transitionPadding",
+    "spec": "10 §10.3",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": "M9 C9.2"
+  },
+  {
+    "id": "Lint-keysOutsideDuration",
+    "requirement": "keysOutsideDuration",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-missingFonts",
+    "requirement": "missingFonts",
+    "spec": "10 §10.3",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": "M2 C2.1"
+  },
+  {
+    "id": "Lint-brokenLibraryItems",
+    "requirement": "brokenLibraryItems",
+    "spec": "10 §10.3",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": ""
+  },
+  {
+    "id": "Lint-outdatedTemplateLinks",
+    "requirement": "outdatedTemplateLinks",
+    "spec": "10 §10.3",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:469",
+    "tests": "c13_doc::validation_references_and_candidates",
+    "note": "M9 C9.1"
+  }
+]

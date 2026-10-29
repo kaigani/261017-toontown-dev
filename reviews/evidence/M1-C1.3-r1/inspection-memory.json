@@ -1,0 +1,8 @@
+{
+  "command": "doc.package.get validate=false",
+  "fileBytes": 268435456,
+  "peakWorkingSetBytes": 285900800,
+  "seconds": 0.23144689993932843,
+  "exitCode": 0,
+  "bounded": false
+}

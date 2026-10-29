@@ -1,0 +1,1361 @@
+[
+  {
+    "id": "app.quit",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:60",
+    "verbatimSpecRow": "| `app.quit` | action | Quit the application | `onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"` | `{quitting: bool}` | n/a |",
+    "implementation": "crates/executor/src/commands/app.rs:473",
+    "status": "divergent",
+    "findings": "C13-R1-01",
+    "params": "`onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"`",
+    "result": "`{quitting: bool}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "app"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Quit, discarding unsaved changes",
+        "params": {
+          "onUnsaved": "discard"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.autosaved",
+    "kind": "event",
+    "spec": "spec/A_command_registry.md:70",
+    "verbatimSpecRow": "| `project.autosaved` | event | A recovery copy was written | `{projectId, recoveryId, savedAt}` | — | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:1396",
+    "status": "implemented",
+    "findings": "",
+    "params": "`{projectId, recoveryId, savedAt}`",
+    "result": "—",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.backup.list",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:71",
+    "verbatimSpecRow": "| `project.backup.list` | query | Backups of a project | `path?: path (default: current project)` | `[{backupId, savedAt, sizeBytes}]` | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:1292",
+    "status": "implemented",
+    "findings": "",
+    "params": "`path?: path (default: current project)`",
+    "result": "`[{backupId, savedAt, sizeBytes}]`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Backups of the current project",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.backup.open",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:72",
+    "verbatimSpecRow": "| `project.backup.open` | action | Open a backup as an untitled copy | `backupId: id; onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"` | `{projectId}` | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:1344",
+    "status": "divergent",
+    "findings": "C13-R1-01",
+    "params": "`backupId: id; onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"`",
+    "result": "`{projectId}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "edit"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Open a backup as an untitled copy",
+        "params": {
+          "backupId": "bk_1a2b3c4d"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.close",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:73",
+    "verbatimSpecRow": "| `project.close` | action | Close the current project | `onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"` | `{closed: bool}` | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:539",
+    "status": "divergent",
+    "findings": "C13-R1-01",
+    "params": "`onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"`",
+    "result": "`{closed: bool}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "edit"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Close, failing if unsaved",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.closed",
+    "kind": "event",
+    "spec": "spec/A_command_registry.md:74",
+    "verbatimSpecRow": "| `project.closed` | event | The project was closed | `{projectId}` | — | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:1408",
+    "status": "implemented",
+    "findings": "",
+    "params": "`{projectId}`",
+    "result": "—",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.create",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:75",
+    "verbatimSpecRow": "| `project.create` | action | Create a new project and make it current; if `path` is given it is saved there immediately | `name: string; path?: path; preset?: string; frameRate?: number (1–120); cameraWidth?: int (16–8192); cameraHeight?: int (16–8192); onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"` | `{projectId, path?, sceneId, cameraId, elementId}` | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:253",
+    "status": "divergent",
+    "findings": "C13-R1-01",
+    "params": "`name: string; path?: path; preset?: string; frameRate?: number (1–120); cameraWidth?: int (16–8192); cameraHeight?: int (16–8192); onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"`",
+    "result": "`{projectId, path?, sceneId, cameraId, elementId}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "edit"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "A 1920×1080, 24 fps project",
+        "params": {
+          "name": "Walk cycle",
+          "frameRate": 24,
+          "cameraWidth": 1920,
+          "cameraHeight": 1080
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.dirty.changed",
+    "kind": "event",
+    "spec": "spec/A_command_registry.md:76",
+    "verbatimSpecRow": "| `project.dirty.changed` | event | Modified state changed | `{projectDirty, globalLibraryDirty}` | — | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:1430",
+    "status": "implemented",
+    "findings": "",
+    "params": "`{projectDirty, globalLibraryDirty}`",
+    "result": "—",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.info.get",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:77",
+    "verbatimSpecRow": "| `project.info.get` | query | Project summary | — | `ProjectInfo` (§12.4) | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:818",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`ProjectInfo` (§12.4)",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "ProjectInfo (01 §12.4)",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.open",
+    "kind": "job",
+    "spec": "spec/A_command_registry.md:78",
+    "verbatimSpecRow": "| `project.open` | job | Open a project package | `path: path; readOnly: bool = false; onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"` | `{jobId}` → `{projectId, readOnly, formatVersion, warnings[]}` | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:463",
+    "status": "implemented",
+    "findings": "",
+    "params": "`path: path; readOnly: bool = false; onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"`",
+    "result": "`{jobId}` → `{projectId, readOnly, formatVersion, warnings[]}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "edit",
+      "files.read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Open a package",
+        "params": {
+          "path": "/tmp/Short.animpkg"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.opened",
+    "kind": "event",
+    "spec": "spec/A_command_registry.md:79",
+    "verbatimSpecRow": "| `project.opened` | event | A project was opened or created | `{projectId, path?, readOnly}` | — | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:1454",
+    "status": "implemented",
+    "findings": "",
+    "params": "`{projectId, path?, readOnly}`",
+    "result": "—",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.presets.list",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:80",
+    "verbatimSpecRow": "| `project.presets.list` | query | Format presets for new projects | — | `[{id, name, kind: \"mostRecent\"\\|\"default\"\\|\"bundled\", frameRate, width, height}]` | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:960",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`[{id, name, kind: \"mostRecent\"\\|\"default\"\\|\"bundled\", frameRate, width, height}]`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Presets for new projects",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.properties.get",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:81",
+    "verbatimSpecRow": "| `project.properties.get` | query | Frame rate and camera size | — | `{frameRate, cameraWidth, cameraHeight}` | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:876",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`{frameRate, cameraWidth, cameraHeight}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Frame rate and camera size",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.properties.set",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:82",
+    "verbatimSpecRow": "| `project.properties.set` | action | Change frame rate / camera size (\"Change Project Properties\"); optionally store as defaults for new projects | `frameRate?: number (1–120); cameraWidth?: int (16–8192); cameraHeight?: int (16–8192); setAsDefault: bool = false` | `{frameRate, cameraWidth, cameraHeight}` | yes |",
+    "implementation": "crates/executor/src/commands/project.rs:910",
+    "status": "divergent",
+    "findings": "C13-R1-15",
+    "params": "`frameRate?: number (1–120); cameraWidth?: int (16–8192); cameraHeight?: int (16–8192); setAsDefault: bool = false`",
+    "result": "`{frameRate, cameraWidth, cameraHeight}`",
+    "undo": "yes",
+    "actualScopes": [
+      "edit"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": "Change Project Properties",
+    "examples": [
+      {
+        "title": "25 fps",
+        "params": {
+          "frameRate": 25
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.recent.list",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:83",
+    "verbatimSpecRow": "| `project.recent.list` | query | Recent-projects list | — | `[{path, name, lastOpened, exists}]` | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:988",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`[{path, name, lastOpened, exists}]`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Recent projects",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.recent.remove",
+    "kind": "ui",
+    "spec": "spec/A_command_registry.md:84",
+    "verbatimSpecRow": "| `project.recent.remove` | ui | Remove one entry or clear the recent list | `path?: path; all: bool = false` | `{remaining: int}` | no |",
+    "implementation": "crates/executor/src/commands/project.rs:1031",
+    "status": "implemented",
+    "findings": "",
+    "params": "`path?: path; all: bool = false`",
+    "result": "`{remaining: int}`",
+    "undo": "no",
+    "actualScopes": [
+      "ui"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Clear the list",
+        "params": {
+          "all": true
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.recovery.delete",
+    "kind": "ui",
+    "spec": "spec/A_command_registry.md:85",
+    "verbatimSpecRow": "| `project.recovery.delete` | ui | Discard recovery data | `recoveryId?: id; all: bool = false` | `{deleted: int}` | no |",
+    "implementation": "crates/executor/src/commands/project.rs:1231",
+    "status": "implemented",
+    "findings": "",
+    "params": "`recoveryId?: id; all: bool = false`",
+    "result": "`{deleted: int}`",
+    "undo": "no",
+    "actualScopes": [
+      "ui"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Discard everything",
+        "params": {
+          "all": true
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.recovery.list",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:86",
+    "verbatimSpecRow": "| `project.recovery.list` | query | Autosave recovery data available | — | `[{recoveryId, projectName, originalPath?, savedAt}]` | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:1077",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`[{recoveryId, projectName, originalPath?, savedAt}]`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Recoverable sessions",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.recovery.open",
+    "kind": "job",
+    "spec": "spec/A_command_registry.md:87",
+    "verbatimSpecRow": "| `project.recovery.open` | job | Open recovery data as a modified project targeting its original path | `recoveryId: id; onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"` | `{jobId}` → `{projectId, warnings[]}` | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:1130",
+    "status": "divergent",
+    "findings": "C13-R1-08",
+    "params": "`recoveryId: id; onUnsaved: enum \"fail\"\\|\"save\"\\|\"discard\" = \"fail\"`",
+    "result": "`{jobId}` → `{projectId, warnings[]}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "edit"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Recover a session",
+        "params": {
+          "recoveryId": "rc_1a2b3c4d"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.save",
+    "kind": "job",
+    "spec": "spec/A_command_registry.md:88",
+    "verbatimSpecRow": "| `project.save` | job | Save the project (and the global library if modified) to its location | `includeGlobalLibrary: bool = true; allowFormatUpgrade: bool = false` | `{jobId}` → `{path, projectSaved, globalLibrarySaved, backupId?}` | no |",
+    "implementation": "crates/executor/src/commands/project.rs:658",
+    "status": "divergent",
+    "findings": "C13-R1-06",
+    "params": "`includeGlobalLibrary: bool = true; allowFormatUpgrade: bool = false`",
+    "result": "`{jobId}` → `{path, projectSaved, globalLibrarySaved, backupId?}`",
+    "undo": "no",
+    "actualScopes": [
+      "edit",
+      "files.write"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Save",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.saveAs",
+    "kind": "job",
+    "spec": "spec/A_command_registry.md:89",
+    "verbatimSpecRow": "| `project.saveAs` | job | Save the project to a new location; the copy becomes current | `path: path; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"; includeGlobalLibrary: bool = true; allowFormatUpgrade: bool = false` | `{jobId}` → `{path, projectSaved, globalLibrarySaved}` | no |",
+    "implementation": "crates/executor/src/commands/project.rs:723",
+    "status": "divergent",
+    "findings": "C13-R1-02",
+    "params": "`path: path; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"; includeGlobalLibrary: bool = true; allowFormatUpgrade: bool = false`",
+    "result": "`{jobId}` → `{path, projectSaved, globalLibrarySaved}`",
+    "undo": "no",
+    "actualScopes": [
+      "edit",
+      "files.write"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Save a copy",
+        "params": {
+          "path": "/tmp/Copy.animpkg"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "project.saved",
+    "kind": "event",
+    "spec": "spec/A_command_registry.md:90",
+    "verbatimSpecRow": "| `project.saved` | event | The project and/or global library was saved | `{projectId, path, projectSaved, globalLibrarySaved}` | — | n/a |",
+    "implementation": "crates/executor/src/commands/project.rs:1480",
+    "status": "implemented",
+    "findings": "",
+    "params": "`{projectId, path, projectSaved, globalLibrarySaved}`",
+    "result": "—",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.asset.embed",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:1002",
+    "verbatimSpecRow": "| `doc.asset.embed` | action | Copy linked files into the package (\"Embed Media\") | `assetIds?: [id]; all: bool = false` | `{embedded: [id], bytes}` | yes |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:685",
+    "status": "divergent",
+    "findings": "C13-R1-16",
+    "params": "`assetIds?: [id]; all: bool = false`",
+    "result": "`{embedded: [id], bytes}`",
+    "undo": "yes",
+    "actualScopes": [
+      "edit",
+      "files.read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": "Embed Media",
+    "examples": [
+      {
+        "title": "Embed every linked file",
+        "params": {
+          "all": true
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.asset.export",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1003",
+    "verbatimSpecRow": "| `doc.asset.export` | query | Write an asset's file to disk (e.g. to share or edit externally) | `assetId: id; path: path; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"` | `{path, bytes}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:787",
+    "status": "implemented",
+    "findings": "",
+    "params": "`assetId: id; path: path; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"`",
+    "result": "`{path, bytes}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read",
+      "files.write"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Write the sample's sound to a file",
+        "params": {
+          "assetId": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+          "path": "/tmp/line1.wav",
+          "onExists": "overwrite"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.asset.list",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1004",
+    "verbatimSpecRow": "| `doc.asset.list` | query | List assets with storage, status and references | `kind?: enum \"sound\"\\|\"image\"\\|\"movie\"\\|\"vector\"; status: enum \"all\"\\|\"missing\"\\|\"changed\"\\|\"linked\"\\|\"embedded\"\\|\"unused\" = \"all\"` | `{assets: [{id, name, kind, storage, status, path?, size, refs: int}]}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:402",
+    "status": "implemented",
+    "findings": "",
+    "params": "`kind?: enum \"sound\"\\|\"image\"\\|\"movie\"\\|\"vector\"; status: enum \"all\"\\|\"missing\"\\|\"changed\"\\|\"linked\"\\|\"embedded\"\\|\"unused\" = \"all\"`",
+    "result": "`{assets: [{id, name, kind, storage, status, path?, size, refs: int}]}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Missing media",
+        "params": {
+          "status": "missing"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.asset.relink",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:1005",
+    "verbatimSpecRow": "| `doc.asset.relink` | action | Point linked assets to a new file, or search a folder for missing ones (\"Relink Media\"); generic form of `sound.asset.relink` / `media.object.relink` (07) | `assetId?: id; path?: path; searchFolder?: path; recursive: bool = true; matchBy: enum \"name\"\\|\"nameAndSize\"\\|\"hash\" = \"nameAndSize\"` | `{relinked: [{assetId, path}], stillMissing: [id]}` | yes |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:581",
+    "status": "implemented",
+    "findings": "",
+    "params": "`assetId?: id; path?: path; searchFolder?: path; recursive: bool = true; matchBy: enum \"name\"\\|\"nameAndSize\"\\|\"hash\" = \"nameAndSize\"`",
+    "result": "`{relinked: [{assetId, path}], stillMissing: [id]}`",
+    "undo": "yes",
+    "actualScopes": [
+      "edit",
+      "files.read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": "Relink Media",
+    "examples": [
+      {
+        "title": "Search a folder for missing media",
+        "params": {
+          "searchFolder": "/tmp/media"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.asset.remove",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:1006",
+    "verbatimSpecRow": "| `doc.asset.remove` | action | Remove assets; only unreferenced ones unless `force` (\"Remove Media\") | `assetIds?: [id]; unused: bool = false; force: bool = false` | `{removed: [id], bytes, detachedRefs: [id]}` | yes |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:903",
+    "status": "implemented",
+    "findings": "",
+    "params": "`assetIds?: [id]; unused: bool = false; force: bool = false`",
+    "result": "`{removed: [id], bytes, detachedRefs: [id]}`",
+    "undo": "yes",
+    "actualScopes": [
+      "edit"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": "Remove Media",
+    "examples": [
+      {
+        "title": "Remove media nothing uses",
+        "params": {
+          "unused": true
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.asset.status.changed",
+    "kind": "event",
+    "spec": "spec/A_command_registry.md:1007",
+    "verbatimSpecRow": "| `doc.asset.status.changed` | event | Assets became missing, changed or available again | — | `{assets: [{assetId, status}]}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:1227",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`{assets: [{assetId, status}]}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.blob.get",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1008",
+    "verbatimSpecRow": "| `doc.blob.get` | query | Read a binary payload (asset file, bitmap node pixels, texture) as base64 | `ref?: id; entry?: string; maxBytes: int = 8388608 (1–67108864)` | `{mediaType, size, sha256, base64}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:230",
+    "status": "implemented",
+    "findings": "",
+    "params": "`ref?: id; entry?: string; maxBytes: int = 8388608 (1–67108864)`",
+    "result": "`{mediaType, size, sha256, base64}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "The embedded sound of the sample",
+        "params": {
+          "ref": "as_01K742SG0G5HPQ0RBF5X4DSR0W"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.changed",
+    "kind": "event",
+    "spec": "spec/A_command_registry.md:1009",
+    "verbatimSpecRow": "| `doc.changed` | event | A transaction was committed (payload defined in 11 §9.2 and §2.6) | — | `{undoStepId, documentRev, label, origin, changes: [change]}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc.rs:1397",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`{undoStepId, documentRev, label, origin, changes: [change]}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.diff",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1010",
+    "verbatimSpecRow": "| `doc.diff` | query | Net changes since a revision or checkpoint (= `doc_diff`) | `sinceRev?: int; sinceCheckpoint?: id; untilRev?: int; within?: id; types?: [string]; detail: enum \"summary\"\\|\"full\" = \"full\"; limit: int = 1000` | `{fromRev, toRev, changes: [change], truncated}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc.rs:1256",
+    "status": "implemented",
+    "findings": "",
+    "params": "`sinceRev?: int; sinceCheckpoint?: id; untilRev?: int; within?: id; types?: [string]; detail: enum \"summary\"\\|\"full\" = \"full\"; limit: int = 1000`",
+    "result": "`{fromRev, toRev, changes: [change], truncated}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Everything since the project was opened",
+        "params": {
+          "sinceRev": 1,
+          "detail": "summary"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.export.json",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1011",
+    "verbatimSpecRow": "| `doc.export.json` | query | Export the project, scenes or elements as an interchange bundle (§6.8), inline or to a file | `scope: enum \"project\"\\|\"scenes\"\\|\"elements\"; refs?: [id]; path?: path; binaries: enum \"embed\"\\|\"reference\"\\|\"omit\" = \"reference\"; pretty: bool = true; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"` | `{bundle?: object, path?: path, bytes, objectCount}` | n/a |",
+    "implementation": "crates/executor/src/commands/bundle.rs:345",
+    "status": "implemented",
+    "findings": "",
+    "params": "`scope: enum \"project\"\\|\"scenes\"\\|\"elements\"; refs?: [id]; path?: path; binaries: enum \"embed\"\\|\"reference\"\\|\"omit\" = \"reference\"; pretty: bool = true; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"`",
+    "result": "`{bundle?: object, path?: path, bytes, objectCount}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "The first scene as an inline bundle",
+        "params": {
+          "scope": "scenes",
+          "refs": [
+            "scene:#1"
+          ],
+          "binaries": "omit"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.import.json",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:1012",
+    "verbatimSpecRow": "| `doc.import.json` | action | Import an interchange bundle as new scenes or into a scene (\"Import JSON\") | `source: path \\| object; target?: id (scene; omit = new scenes); index?: int (scene position); atFrame: int = 1; idPolicy: enum \"new\"\\|\"preserve\" = \"new\"; onConflict: enum \"rename\"\\|\"replace\"\\|\"fail\" = \"rename\"; colours: enum \"keepExisting\"\\|\"updateExisting\" = \"keepExisting\"; dryRun: bool = false` | `{created: {scenes[], elements[], drawings[], palettes[], assets[]}, renamed: [{id, from, to}], recoveredColourIds[], issues[]}` | yes |",
+    "implementation": "crates/executor/src/commands/bundle.rs:1120",
+    "status": "divergent",
+    "findings": "C13-R1-11,17",
+    "params": "`source: path \\| object; target?: id (scene; omit = new scenes); index?: int (scene position); atFrame: int = 1; idPolicy: enum \"new\"\\|\"preserve\" = \"new\"; onConflict: enum \"rename\"\\|\"replace\"\\|\"fail\" = \"rename\"; colours: enum \"keepExisting\"\\|\"updateExisting\" = \"keepExisting\"; dryRun: bool = false`",
+    "result": "`{created: {scenes[], elements[], drawings[], palettes[], assets[]}, renamed: [{id, from, to}], recoveredColourIds[], issues[]}`",
+    "undo": "yes",
+    "actualScopes": [
+      "edit"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": "Import",
+    "examples": [
+      {
+        "title": "Dry-run an import of an inline bundle",
+        "params": {
+          "source": {
+            "format": "animjson",
+            "formatVersion": "1.0",
+            "scenes": [],
+            "elements": [],
+            "drawingBanks": [],
+            "palettes": [],
+            "pens": [],
+            "assets": [],
+            "blobs": {}
+          },
+          "dryRun": true
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.loadReport.get",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1013",
+    "verbatimSpecRow": "| `doc.loadReport.get` | query | The report of the last open (§7.3) | — | `LoadReport` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:73",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`LoadReport`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Repairs and issues of the last load",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.object.find",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1014",
+    "verbatimSpecRow": "| `doc.object.find` | query | Find objects by type, name and predicate (= `find_objects` / `query`) | `type?: string; within?: id; name?: string (exact or glob); where?: object (§10.3); limit: int = 100 (1–1000); offset: int = 0; fields?: [string]; sort?: enum \"path\"\\|\"name\"\\|\"rev\"\\|\"createdAt\" = \"path\"` | `{items: [{id, type, name, path, rev, …fields}], total, nextOffset}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc.rs:444",
+    "status": "implemented",
+    "findings": "",
+    "params": "`type?: string; within?: id; name?: string (exact or glob); where?: object (§10.3); limit: int = 100 (1–1000); offset: int = 0; fields?: [string]; sort?: enum \"path\"\\|\"name\"\\|\"rev\"\\|\"createdAt\" = \"path\"`",
+    "result": "`{items: [{id, type, name, path, rev, …fields}], total, nextOffset}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Every drawing element",
+        "params": {
+          "type": "element",
+          "where": {
+            "elementType": {
+              "op": "in",
+              "value": [
+                "drawing",
+                "image"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "Strokes of the first drawing",
+        "params": {
+          "type": "stroke",
+          "within": "drawingBank:#1/drawing:#1",
+          "limit": 10
+        }
+      },
+      {
+        "title": "Objects whose name starts with B",
+        "params": {
+          "name": "B*"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.object.get",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1015",
+    "verbatimSpecRow": "| `doc.object.get` | query | Read one or more objects as object-model JSON (= `get_object`) | `ref?: id; refs?: [id]; depth: int = 1 (-1 = all, 0–20); fields?: [string]; include?: [enum \"derived\"\\|\"stats\"]; page?: object {pointer: string, offset: int = 0, limit: int = 1000}` | `{object}` or `{objects: [object]}`; paged arrays carry `{total, nextOffset}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc.rs:136",
+    "status": "implemented",
+    "findings": "",
+    "params": "`ref?: id; refs?: [id]; depth: int = 1 (-1 = all, 0–20); fields?: [string]; include?: [enum \"derived\"\\|\"stats\"]; page?: object {pointer: string, offset: int = 0, limit: int = 1000}`",
+    "result": "`{object}` or `{objects: [object]}`; paged arrays carry `{total, nextOffset}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "The first scene with its elements as stubs",
+        "params": {
+          "ref": "scene:#1",
+          "depth": 1
+        }
+      },
+      {
+        "title": "The current element with derived properties",
+        "params": {
+          "ref": "@current",
+          "include": [
+            "derived"
+          ]
+        }
+      },
+      {
+        "title": "Only names and types of two objects",
+        "params": {
+          "refs": [
+            "scene:#1",
+            "palette:#1"
+          ],
+          "fields": [
+            "name"
+          ]
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.object.patch",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:1016",
+    "verbatimSpecRow": "| `doc.object.patch` | action | Generic validated property patch on one or more objects (= `set_properties`) | `targets: [id] (1–1000); props?: object; ops?: [object {op: enum \"add\"\\|\"remove\"\\|\"replace\"\\|\"move\"\\|\"copy\"\\|\"test\", path: string, value?: any, from?: string}]; expectRev?: int \\| object; label?: string; dryRun: bool = false` | `{changes: [change], documentRev}` | yes |",
+    "implementation": "crates/executor/src/commands/doc.rs:859",
+    "status": "implemented",
+    "findings": "",
+    "params": "`targets: [id] (1–1000); props?: object; ops?: [object {op: enum \"add\"\\|\"remove\"\\|\"replace\"\\|\"move\"\\|\"copy\"\\|\"test\", path: string, value?: any, from?: string}]; expectRev?: int \\| object; label?: string; dryRun: bool = false`",
+    "result": "`{changes: [change], documentRev}`",
+    "undo": "yes",
+    "actualScopes": [
+      "edit"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": "Set properties",
+    "examples": [
+      {
+        "title": "Annotate a scene in meta",
+        "params": {
+          "targets": [
+            "scene:#1"
+          ],
+          "props": {
+            "meta": {
+              "status": "layout"
+            }
+          }
+        }
+      },
+      {
+        "title": "Mark the first drawing as mouth shape A",
+        "params": {
+          "targets": [
+            "drawingBank:#1/drawing:#1"
+          ],
+          "ops": [
+            {
+              "op": "replace",
+              "path": "/mouthShape",
+              "value": "A"
+            }
+          ],
+          "label": "Set mouth shape"
+        }
+      },
+      {
+        "title": "Set a pen's persisted tip fields (persisted names `tip` and `tipAngle`, SI-004)",
+        "params": {
+          "targets": [
+            "pen:#1"
+          ],
+          "props": {
+            "tip": "square",
+            "tipAngle": 30
+          },
+          "dryRun": true
+        }
+      },
+      {
+        "title": "Persisted element role (superset enum, SI-003)",
+        "params": {
+          "targets": [
+            "scene:#1/element:#1"
+          ],
+          "props": {
+            "role": "foreground"
+          },
+          "dryRun": true
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.object.refs",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1017",
+    "verbatimSpecRow": "| `doc.object.refs` | query | List objects that reference an object (incoming) or that it references (outgoing) | `ref: id; direction: enum \"incoming\"\\|\"outgoing\" = \"incoming\"; limit: int = 500` | `{refs: [{id, type, path, property}], total}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:193",
+    "status": "implemented",
+    "findings": "",
+    "params": "`ref: id; direction: enum \"incoming\"\\|\"outgoing\" = \"incoming\"; limit: int = 500`",
+    "result": "`{refs: [{id, type, path, property}], total}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Who uses the first palette",
+        "params": {
+          "ref": "palette:#1"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.object.resolve",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1018",
+    "verbatimSpecRow": "| `doc.object.resolve` | query | Resolve paths to IDs and IDs to canonical paths | `refs: [string]` | `{items: [{ref, id, type, name, path, rev} \\| {ref, error}]}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc.rs:565",
+    "status": "implemented",
+    "findings": "",
+    "params": "`refs: [string]`",
+    "result": "`{items: [{ref, id, type, name, path, rev} \\| {ref, error}]}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Resolve a path and the current element",
+        "params": {
+          "refs": [
+            "scene:#1",
+            "@current"
+          ]
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.package.changedOnDisk",
+    "kind": "event",
+    "spec": "spec/A_command_registry.md:1019",
+    "verbatimSpecRow": "| `doc.package.changedOnDisk` | event | The open project's file or folder was modified by another process | — | `{path, detectedAt}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:1249",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`{path, detectedAt}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.package.export",
+    "kind": "job",
+    "spec": "spec/A_command_registry.md:1020",
+    "verbatimSpecRow": "| `doc.package.export` | job | Write a copy of the current project in package or folder form without changing the open project's location | `path: path; form: enum \"package\"\\|\"folder\" = \"package\"; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"` | `{jobId}` → `{path, form, bytes, entries}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:1165",
+    "status": "divergent",
+    "findings": "C13-R1-07",
+    "params": "`path: path; form: enum \"package\"\\|\"folder\" = \"package\"; onExists: enum \"fail\"\\|\"overwrite\" = \"fail\"`",
+    "result": "`{jobId}` → `{path, form, bytes, entries}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read",
+      "files.write"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "A folder-form copy for version control",
+        "params": {
+          "path": "/tmp/Short-folder",
+          "form": "folder",
+          "onExists": "overwrite"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.package.get",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1021",
+    "verbatimSpecRow": "| `doc.package.get` | query | Inspect a package, folder, template or palette file on disk without opening it | `path: path; validate: bool = false` | `{kind: enum \"project\"\\|\"template\"\\|\"palette\"\\|\"library\", form, formatVersion, minReaderVersion, readable, projectId?, name, savedAt, entryCount, issues[]}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_io.rs:1110",
+    "status": "divergent",
+    "findings": "C13-R1-14",
+    "params": "`path: path; validate: bool = false`",
+    "result": "`{kind: enum \"project\"\\|\"template\"\\|\"palette\"\\|\"library\", form, formatVersion, minReaderVersion, readable, projectId?, name, savedAt, entryCount, issues[]}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read",
+      "files.read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Inspect a package without opening it",
+        "params": {
+          "path": "/tmp/Short.animpkg",
+          "validate": true
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.repair",
+    "kind": "action",
+    "spec": "spec/A_command_registry.md:1022",
+    "verbatimSpecRow": "| `doc.repair` | action | Apply the default fix of selected issues (\"Repair Project\") | `issueIds?: [id]; codes?: [string]; within?: id; all: bool = false; dryRun: bool = false` | `{fixed: [issueId], skipped: [{issueId, reason}], changes: [change]}` | yes |",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:1000",
+    "status": "divergent",
+    "findings": "C13-R1-17",
+    "params": "`issueIds?: [id]; codes?: [string]; within?: id; all: bool = false; dryRun: bool = false`",
+    "result": "`{fixed: [issueId], skipped: [{issueId, reason}], changes: [change]}`",
+    "undo": "yes",
+    "actualScopes": [
+      "edit"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": "Repair",
+    "examples": [
+      {
+        "title": "Remove unused media",
+        "params": {
+          "codes": [
+            "unusedAssets"
+          ],
+          "dryRun": true
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.schema.get",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1023",
+    "verbatimSpecRow": "| `doc.schema.get` | query | JSON Schema of an object type (or of one property) | `type: string; property?: string (JSON Pointer)` | `{type, formatVersion, schema}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc.rs:1064",
+    "status": "implemented",
+    "findings": "",
+    "params": "`type: string; property?: string (JSON Pointer)`",
+    "result": "`{type, formatVersion, schema}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "The element schema",
+        "params": {
+          "type": "element"
+        }
+      },
+      {
+        "title": "The schema of a pen's tip",
+        "params": {
+          "type": "pen",
+          "property": "/tip"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.schema.list",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1024",
+    "verbatimSpecRow": "| `doc.schema.list` | query | List object types with their parents and addressing | — | `{formatVersion, types: [{type, aliases[], parents[], nameAddressable, description}]}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc.rs:1015",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`{formatVersion, types: [{type, aliases[], parents[], nameAddressable, description}]}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Every object type with its parents and addressing",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.schema.validate",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1025",
+    "verbatimSpecRow": "| `doc.schema.validate` | query | Validate a candidate object or bundle against the schema and semantic rules without applying it | `type: string; object: object; mode: enum \"create\"\\|\"replace\" = \"replace\"` | `{valid: bool, errors: [{pointer, code, message}]}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:320",
+    "status": "implemented",
+    "findings": "",
+    "params": "`type: string; object: object; mode: enum \"create\"\\|\"replace\" = \"replace\"`",
+    "result": "`{valid: bool, errors: [{pointer, code, message}]}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Check a pen before creating it",
+        "params": {
+          "type": "pen",
+          "object": {
+            "name": "Ink",
+            "kind": "brush",
+            "minSize": 1,
+            "maxSize": 4,
+            "smoothness": 3,
+            "tip": "round",
+            "tipAngle": 0,
+            "colourId": null
+          },
+          "mode": "create"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.state.get",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1026",
+    "verbatimSpecRow": "| `doc.state.get` | query | Document state | — | `{projectId, path, form, formatVersion, migratedFrom, documentRev, savedRev, dirty, readOnly, lock, historyFromRev}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc.rs:1115",
+    "status": "implemented",
+    "findings": "",
+    "params": "—",
+    "result": "`{projectId, path, form, formatVersion, migratedFrom, documentRev, savedRev, dirty, readOnly, lock, historyFromRev}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Revision, dirty flag and diff horizon",
+        "params": {}
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  },
+  {
+    "id": "doc.validate",
+    "kind": "query",
+    "spec": "spec/A_command_registry.md:1027",
+    "verbatimSpecRow": "| `doc.validate` | query | Lint the project or a subtree (§10.3) | `within?: id; checks?: [string] (default all); minSeverity: enum \"info\"\\|\"warning\"\\|\"error\" = \"info\"; limit: int = 500` | `{documentRev, issues: [issue], counts: {error, warning, info}, truncated}` | n/a |",
+    "implementation": "crates/executor/src/commands/doc_lint.rs:922",
+    "status": "implemented",
+    "findings": "",
+    "params": "`within?: id; checks?: [string] (default all); minSeverity: enum \"info\"\\|\"warning\"\\|\"error\" = \"info\"; limit: int = 500`",
+    "result": "`{documentRev, issues: [issue], counts: {error, warning, info}, truncated}`",
+    "undo": "n/a",
+    "actualScopes": [
+      "read"
+    ],
+    "actualEnablement": "always enabled",
+    "actualUndoLabel": null,
+    "examples": [
+      {
+        "title": "Errors only",
+        "params": {
+          "minSeverity": "error"
+        }
+      }
+    ],
+    "tests": "c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json"
+  }
+]

@@ -1,0 +1,107 @@
+{
+  "head": "f119948487cfa11e6e62bef2c2d5179a265e16cc",
+  "recordedAt": "2026-10-29T19:39:53.044998+00:00",
+  "environment": {
+    "CARGO_PROFILE_DEV_DEBUG": "0",
+    "CARGO_PROFILE_TEST_DEBUG": "0",
+    "CARGO_INCREMENTAL": "0",
+    "CARGO_BUILD_JOBS": "4"
+  },
+  "checks": [
+    {
+      "name": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exitCode": 0,
+      "seconds": 0.8668329000938684,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exitCode": 0,
+      "seconds": 6.020934500033036,
+      "sha256": "da9dbf8bb21c0daabb57480061f31e5fe4ebc73ad00093f8d86f0fb5eb911272"
+    },
+    {
+      "name": "regressions",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-executor",
+        "--test",
+        "c13_r1_persistence",
+        "-p",
+        "tt-persist",
+        "--test",
+        "c13_r1_format",
+        "--locked",
+        "--no-fail-fast"
+      ],
+      "exitCode": 101,
+      "seconds": 8.916908300016075,
+      "sha256": "a70c8f54f3a1d4817031505199f08b736729e6024621432acdc4917c50e3bafd"
+    },
+    {
+      "name": "frontend-freshness",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-engine",
+        "--test",
+        "frontend_schemas",
+        "--locked"
+      ],
+      "exitCode": 0,
+      "seconds": 1.8015874000266194,
+      "sha256": "5765bda39ef13f9158b9b74e1726aaa2f92c78689aed3940ac03934a15a8ce24"
+    },
+    {
+      "name": "declaration-generation",
+      "command": [
+        "python",
+        "scripts/gen-command-declarations.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.5717421001754701,
+      "sha256": "c8c5dcfba631471c77933c8bbc8ad0ce5db8fa8bae3d1b58c039c5e57d258fb9"
+    },
+    {
+      "name": "product-diff",
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "f119948",
+        "--",
+        "spec",
+        "crates/*/src",
+        "desktop",
+        "Cargo.toml",
+        "Cargo.lock",
+        "deny.toml",
+        "crates/executor/tests/c12*",
+        "tests/adversarial",
+        "plan"
+      ],
+      "exitCode": 0,
+      "seconds": 0.03937690006569028,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
