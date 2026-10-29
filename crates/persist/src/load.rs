@@ -482,8 +482,38 @@ fn fatal_parts(errors: &[ModelError]) -> ModelError {
 /// textures, library files and thumbnails).
 #[must_use]
 pub fn blob_refs(doc: &Document) -> Vec<(String, String, Option<u64>, &'static str)> {
+    refs(doc, false)
+}
+
+/// The assets that objects use: placements and media sequences (07 §2.3; library item usages arrive with M9).
+#[must_use]
+pub fn used_assets(doc: &Document) -> BTreeSet<String> {
+    let mut out = BTreeSet::new();
+    for e in doc.elements() {
+        for pl in e.placements().iter().flatten() {
+            out.insert(pl.asset_id().as_str().to_owned());
+        }
+        for sq in e.sequences().iter().flatten() {
+            out.insert(sq.asset_id().as_str().to_owned());
+        }
+    }
+    out
+}
+
+/// The binary entries a save writes: as [`blob_refs`], without the media of embedded assets nothing uses (MED-04;
+/// C13-R1-18). Such an asset stays in the document (undo can use it again), and its bytes stay in the session.
+#[must_use]
+pub fn saved_blob_refs(doc: &Document) -> Vec<(String, String, Option<u64>, &'static str)> {
+    refs(doc, true)
+}
+
+fn refs(doc: &Document, only_used: bool) -> Vec<(String, String, Option<u64>, &'static str)> {
+    let used = if only_used { Some(used_assets(doc)) } else { None };
     let mut out = Vec::new();
     for a in doc.project().assets() {
+        if used.as_ref().is_some_and(|u| !u.contains(a.id().as_str())) {
+            continue;
+        }
         if let Some(e) = a.entry() {
             out.push((e.clone(), a.id().as_str().to_owned(), Some(*a.size()), "embedded"));
         }
@@ -603,7 +633,8 @@ pub fn resolve_link(
 
 fn check_media(doc: &Document, blobs: &Blobs, path: &Path) -> (Vec<MissingMedia>, BTreeMap<String, PathBuf>) {
     let mut missing = Vec::new();
-    for (entry, owner, _, kind) in blob_refs(doc) {
+    // Media of unused embedded assets are not saved (MED-04), so their absence is not missing media.
+    for (entry, owner, _, kind) in saved_blob_refs(doc) {
         if !blobs.contains(&entry) {
             missing.push(MissingMedia { object_id: owner, location: entry, kind: kind.to_owned() });
         }

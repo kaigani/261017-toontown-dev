@@ -224,11 +224,12 @@ fn linked_media_relink_embed_blob_export_and_remove() {
         err(&h, "doc.blob.get", json!({ "ref": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "maxBytes": 4 })).code,
         "doc.blobTooLarge"
     );
-    // The embedded file is in the saved package (MED-01) after the linked original is gone.
+    // The embedded bytes belong to the session once the linked original is gone (MED-01). Nothing uses the asset, so
+    // a save leaves its media out of the package (MED-04), while the session keeps them (undo, export).
     std::fs::remove_file(&wav).unwrap();
     job_ok(&h, "project.save", json!({}));
-    ok(&h, "project.close", json!({}));
-    job_ok(&h, "project.open", json!({ "path": s(&dir.join("M.animpkg")) }));
+    let z = tt_persist::zip::ZipArchive::open(&dir.join("M.animpkg"), None, Default::default()).unwrap();
+    assert!(z.entries().iter().all(|e| !e.name.starts_with("media/")), "MED-04: unused media are not saved");
     let out = dir.join("out.wav");
     ok(&h, "doc.asset.export", json!({ "assetId": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "path": s(&out) }));
     assert_eq!(std::fs::read(&out).unwrap(), b"RIFF fake wave bytes");

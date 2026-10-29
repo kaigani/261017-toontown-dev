@@ -1261,7 +1261,7 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
     kind = action,
     label = "Import JSON",
     scopes = [edit],
-    undo = "Import",
+    undo = "Import JSON",
     needs_project,
     example(title = "Dry-run an import of an inline bundle", params = r#"{"source": {"format": "animjson", "formatVersion": "1.0", "scenes": [], "elements": [], "drawingBanks": [], "palettes": [], "pens": [], "assets": [], "blobs": {}}, "dryRun": true}"#),
     agent_only = "agents exchange object-model bundles",

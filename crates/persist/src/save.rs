@@ -93,7 +93,7 @@ pub fn plan(input: &SaveInput<'_>) -> Result<Vec<Planned>, ModelError> {
         let text = entry_text(input.doc, input.preserved, &key)?;
         out.insert(name.clone(), Planned { name, content: Content::Bytes(text.into_bytes()) });
     }
-    for (entry, _, size, _) in load::blob_refs(input.doc) {
+    for (entry, _, size, _) in load::saved_blob_refs(input.doc) {
         if input.blobs.contains(&entry) && !out.contains_key(&entry) {
             out.insert(entry.clone(), Planned { name: entry, content: Content::Blob { size } });
         }

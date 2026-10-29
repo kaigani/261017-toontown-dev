@@ -707,6 +707,16 @@ pub(crate) fn doc_asset_embed(cx: &mut Cx, p: AssetEmbedParams) -> Result<EmbedR
     let cache = cx.session().env.cache.clone();
     let mut embedded = Vec::new();
     let mut bytes = 0u64;
+    // MED-01 (C13-R1-16): identical content is stored once and shared, by SHA-256 — with an asset already embedded,
+    // or with one embedded earlier in this call.
+    let mut by_hash: std::collections::BTreeMap<String, String> = std::collections::BTreeMap::new();
+    for a in doc.project().assets() {
+        if let (AssetStorage::Embedded, Some(e)) = (a.storage(), a.entry())
+            && cx.project()?.store.blobs.contains(e)
+        {
+            by_hash.entry(a.sha256().clone()).or_insert_with(|| e.clone());
+        }
+    }
     for id in wanted {
         let Some(a) = doc.project().assets().iter().find(|a| a.id().as_str() == id) else { continue };
         if *a.storage() != AssetStorage::Linked {
@@ -721,15 +731,17 @@ pub(crate) fn doc_asset_embed(cx: &mut Cx, p: AssetEmbedParams) -> Result<EmbedR
             continue;
         };
         let ext = file.extension().map(|e| e.to_string_lossy().to_ascii_lowercase()).unwrap_or_else(|| "bin".into());
-        let entry = format!("media/{id}.{ext}");
-        // The bytes are frozen in the session cache now (MED-01: original bytes, no re-encoding).
-        let frozen = cache.join(fsx::random_token(8)).join(format!("{id}.{ext}"));
-        if !cx.dry_run() {
-            fsx::copy_file(&file, &frozen).map_err(|e| CommandError::from(fsx::fs_error(&e, &file, "cannot copy")))?;
-        }
         let (sha, size) = std::fs::File::open(&file)
             .and_then(fsx::sha256_reader)
             .map_err(|e| CommandError::from(fsx::fs_error(&e, &file, "cannot read")))?;
+        let shared = by_hash.get(&sha).cloned();
+        let entry = shared.clone().unwrap_or_else(|| format!("media/{id}.{ext}"));
+        // The bytes are frozen in the session cache now (MED-01: original bytes, no re-encoding).
+        let frozen = cache.join(fsx::random_token(8)).join(format!("{id}.{ext}"));
+        if !cx.dry_run() && shared.is_none() {
+            fsx::copy_file(&file, &frozen).map_err(|e| CommandError::from(fsx::fs_error(&e, &file, "cannot copy")))?;
+        }
+        by_hash.entry(sha.clone()).or_insert_with(|| entry.clone());
         asset_patch(
             cx,
             &id,
@@ -742,11 +754,14 @@ pub(crate) fn doc_asset_embed(cx: &mut Cx, p: AssetEmbedParams) -> Result<EmbedR
             ],
         )?;
         if !cx.dry_run()
+            && shared.is_none()
             && let Ok(p) = cx.project_mut()
         {
             p.store.blobs.insert(entry.clone(), BlobData::File(frozen));
         }
-        bytes += size;
+        if shared.is_none() {
+            bytes += size;
+        }
         embedded.push(id);
     }
     Ok(EmbedResult { embedded, bytes })

@@ -1001,7 +1001,7 @@ pub(crate) struct RepairResult {
     kind = action,
     label = "Repair",
     scopes = [edit],
-    undo = "Repair",
+    undo = "Repair Project",
     needs_project,
     example(title = "Remove unused media", params = r#"{"codes": ["unusedAssets"], "dryRun": true}"#),
     gui = "Project › Check Project › Repair (M4)",

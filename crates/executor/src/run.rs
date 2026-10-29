@@ -555,12 +555,25 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
                 }
             }
             Effect::Prefs(values) => {
+                // Only values that differ from the defaults are stored (01 §11; C13-R1-15).
                 for (k, v) in values {
-                    s.env.settings.prefs.insert(k, v);
+                    if crate::store::pref_default(&k).is_some_and(|d| same_value(&d, &v)) {
+                        s.env.settings.prefs.shift_remove(&k);
+                    } else {
+                        s.env.settings.prefs.insert(k, v);
+                    }
                 }
                 let _ = s.env.write("preferences");
             }
         }
+    }
+}
+
+/// Two preference values are the same (numbers compare by value: `24` and `24.0` are one frame rate).
+fn same_value(a: &Value, b: &Value) -> bool {
+    match (a.as_f64(), b.as_f64()) {
+        (Some(x), Some(y)) => (x - y).abs() < f64::EPSILON,
+        _ => a == b,
     }
 }
 
