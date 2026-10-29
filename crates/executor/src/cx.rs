@@ -200,6 +200,11 @@ impl Cx {
         self.effects.push(Effect::Event(Event { name: name.to_owned(), payload }));
     }
 
+    /// The save time of a pending save of this atomic batch (see `persistence::batch_save_time`).
+    pub(crate) fn pending_batch_save(&self) -> Option<String> {
+        crate::persistence::batch_save_time(&self.effects)
+    }
+
     pub(crate) fn take_effects(&mut self) -> Vec<Effect> {
         std::mem::take(&mut self.effects)
     }

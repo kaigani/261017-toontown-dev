@@ -549,11 +549,7 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
                     install_into(s, LoadGrant { _private: () }, *i, origin);
                 }
             }
-            Effect::Save(p) => {
-                if let Some(w) = &p.written {
-                    crate::persistence::finish_save(s, &p.snap, w, true, None);
-                }
-            }
+            Effect::Save(p) => crate::persistence::apply_pending(s, &p),
             Effect::Prefs(values) => {
                 // Only values that differ from the defaults are stored (01 §11; C13-R1-15).
                 for (k, v) in values {
@@ -803,7 +799,8 @@ impl Core {
                 } else {
                     // Pending saves are written only now that every step succeeded, and before anything commits; a
                     // failed write rolls the invocation back (C13-R1-01).
-                    let pre = frozen_guard(&session, &txns).and_then(|()| self.write_pending(&session, &mut effects));
+                    let pre = frozen_guard(&session, &txns)
+                        .and_then(|()| self.write_pending(&session, txns.last().map(|t| &t.after), &mut effects));
                     match pre.and_then(|()| commit(&mut session, txns, &inv.origin)) {
                         Ok(u) => {
                             env.undo = u;
@@ -1008,9 +1005,26 @@ impl Core {
             }
         }
         cx.set_step(None);
+        // A save inside the batch stamps `modifiedAt` into the batch's own changes: one transaction, one undo step,
+        // and the written file is the revision the batch commits (C13-R2-01).
+        if failed.is_none()
+            && !req.dry_run
+            && let Some(now) = cx.pending_batch_save()
+            && let Err(e) = crate::persistence::stamp_staged(&mut cx, &now)
+        {
+            failed = Some((req.steps.len().saturating_sub(1), e));
+        }
         let committed = match failed {
             Some((i, e)) => Err(step_failed(i, &req.steps[i].id, e)),
-            None => cx.finish_staged(req.label.clone()),
+            None => {
+                // Anything sealed during the batch belongs to its single commit.
+                let sealed = cx.take_txns();
+                if sealed.is_empty() {
+                    cx.finish_staged(req.label.clone())
+                } else {
+                    Err(CommandError::new(codes::INTERNAL, "an atomic batch sealed a transaction"))
+                }
+            }
         };
         let mut effects = cx.take_effects();
         let mut session = cx.into_session();
@@ -1041,7 +1055,7 @@ impl Core {
                     let pre = txn
                         .as_ref()
                         .map_or(Ok(()), |t| frozen_guard(&session, std::slice::from_ref(t)))
-                        .and_then(|()| self.write_pending(&session, &mut effects));
+                        .and_then(|()| self.write_pending(&session, txn.as_ref().map(|t| &t.after), &mut effects));
                     let committed = pre.and_then(|()| match txn {
                         Some(t) => commit(&mut session, vec![t], origin),
                         None => Ok(None),
@@ -1152,9 +1166,22 @@ impl Core {
         Envelope::ok(result, rev)
     }
 
-    /// Writes the pending saves of an invocation about to commit (none while simulating).
-    fn write_pending(&self, s: &Session, effects: &mut [Effect]) -> Result<(), CommandError> {
-        if self.simulating { Ok(()) } else { crate::persistence::write_pending(s, effects) }
+    /// Writes the pending saves of an invocation about to commit `final_doc` (`None`: nothing to commit, the live
+    /// document is saved); none while simulating.
+    fn write_pending(
+        &self,
+        s: &Session,
+        final_doc: Option<&Document>,
+        effects: &mut [Effect],
+    ) -> Result<(), CommandError> {
+        if self.simulating || !effects.iter().any(|e| matches!(e, Effect::Save(_))) {
+            return Ok(());
+        }
+        let live = s.project.as_ref().map(|p| p.doc.clone());
+        match final_doc.cloned().or(live) {
+            Some(doc) => crate::persistence::write_pending(s, &doc, effects),
+            None => Err(crate::cx::no_project()),
+        }
     }
 
     /// Saves the open project to its location (the `onUnsaved: "save"` of the load path), as an internal invocation
@@ -1167,7 +1194,7 @@ impl Core {
         let mut effects = cx.take_effects();
         let mut session = cx.into_session();
         let committed = outcome
-            .and_then(|()| self.write_pending(&session, &mut effects))
+            .and_then(|()| self.write_pending(&session, txns.last().map(|t| &t.after), &mut effects))
             .and_then(|()| commit(&mut session, txns, origin).map(|_| ()));
         if committed.is_ok() {
             apply_effects(&mut session, effects, self.simulating, origin);

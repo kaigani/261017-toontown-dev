@@ -298,7 +298,7 @@ pub(crate) fn form_for(path: &str) -> Form {
 pub(crate) fn resolve_unsaved(cx: &mut Cx, policy: crate::commands::common::OnUnsaved) -> Result<(), CommandError> {
     use crate::commands::common::OnUnsaved;
     let Some(p) = cx.session().project.as_ref() else { return Ok(()) };
-    if !p.dirty() {
+    if !unsaved(cx)? {
         return Ok(());
     }
     match policy {
@@ -391,48 +391,116 @@ pub(crate) fn check_upgrade(p: &OpenProject, allow_upgrade: bool) -> Result<(), 
 
 /// A save requested inside an invocation (`onUnsaved: "save"`). Nothing is written while the invocation runs: the
 /// executor writes it once every step has succeeded and only for a real (not dry-run) invocation, and a failed write
-/// rolls the whole invocation back (11 §7.2–§7.3; C13-R1-01).
+/// rolls the whole invocation back (11 §7.2–§7.3; C13-R1-01). The snapshot is the document the invocation commits
+/// (its last transaction), so the file and the committed revision are the same one, and the clean marker is set at
+/// the history position after the commit (C13-R2-01).
 #[derive(Debug, Clone)]
 pub(crate) struct PendingSave {
-    pub snap: Snapshot,
     pub path: PathBuf,
     pub form: Form,
     pub backups: Backups,
+    pub saved_at: String,
+    /// Inside an atomic batch: `modifiedAt` is stamped into the batch's own changes when it ends (one transaction,
+    /// one undo step), not sealed separately.
+    pub in_batch: bool,
+    /// The snapshot written (taken just before the commit).
+    pub snap: Option<Snapshot>,
     /// The finished write, once the executor has performed it.
     pub written: Option<Written>,
 }
 
+/// Whether the project has work to save as this invocation sees it: the live project is modified, or this invocation
+/// (an atomic batch included) has staged or sealed changes (C13-R2-01).
+pub(crate) fn unsaved(cx: &Cx) -> Result<bool, CommandError> {
+    Ok(cx.project()?.dirty() || cx.has_staged())
+}
+
 /// Saves the open project to its location as part of this invocation (the `onUnsaved: "save"` paths): the
-/// `modifiedAt` stamp is staged now, the write is deferred (see [`PendingSave`]).
+/// `modifiedAt` stamp is staged now (at the end of an atomic batch), the write is deferred (see [`PendingSave`]).
 ///
 /// # Errors
 /// As [`check_saveable`].
 pub(crate) fn save_now(cx: &mut Cx, allow_upgrade: bool) -> Result<(), CommandError> {
     let (path, form) = check_saveable(cx.project()?, allow_upgrade)?;
     let now = crate::time::now_iso();
-    if cx.project()?.dirty() {
+    let in_batch = cx.in_atomic_batch();
+    if !in_batch && unsaved(cx)? {
         stamp_modified(cx, &now)?;
     }
-    let snap = snapshot(cx, now)?;
-    let b = backups(&cx.session().env, &snap.doc, &path);
-    cx.defer(Effect::Save(Box::new(PendingSave { snap, path, form, backups: b, written: None })));
+    let b = backups(&cx.session().env, cx.document()?, &path);
+    cx.defer(Effect::Save(Box::new(PendingSave {
+        path,
+        form,
+        backups: b,
+        saved_at: now,
+        in_batch,
+        snap: None,
+        written: None,
+    })));
     Ok(())
 }
 
-/// Writes the pending saves of an invocation that is about to commit.
+/// The save time of a pending save of an atomic batch, if any (the batch stamps `modifiedAt` with it when it ends).
+pub(crate) fn batch_save_time(effects: &[Effect]) -> Option<String> {
+    effects.iter().find_map(|e| match e {
+        Effect::Save(p) if p.in_batch => Some(p.saved_at.clone()),
+        _ => None,
+    })
+}
+
+/// Stamps `project.modifiedAt` into the staged changes (no seal): the stamp of an atomic batch's save.
+///
+/// # Errors
+/// Staging errors.
+pub(crate) fn stamp_staged(cx: &mut Cx, now: &str) -> Result<(), CommandError> {
+    let op = tt_model::change::PatchOp {
+        op: "replace",
+        from: None,
+        path: "/modifiedAt".into(),
+        range: None,
+        value: Some(json!(now)),
+        old_value: None,
+        elided: false,
+    };
+    cx.patch_entries(vec![(tt_model::document::EntryKey::Project, vec![op])])
+}
+
+/// Writes the pending saves of an invocation that is about to commit `final_doc` (the document after its last
+/// transaction).
 ///
 /// # Errors
 /// The save errors of 10 SAVE-05 (the caller rolls the invocation back).
-pub(crate) fn write_pending(s: &Session, effects: &mut [Effect]) -> Result<(), CommandError> {
+pub(crate) fn write_pending(s: &Session, final_doc: &Document, effects: &mut [Effect]) -> Result<(), CommandError> {
     for e in effects.iter_mut() {
         if let Effect::Save(p) = e
             && p.written.is_none()
         {
+            let project = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
+            let snap = Snapshot {
+                session: session_json(final_doc, &s.app),
+                doc: final_doc.clone(),
+                preserved: project.store.preserved.clone(),
+                blobs: project.store.blobs.clone(),
+                position: 0,
+                top: None,
+                saved_at: p.saved_at.clone(),
+            };
             let git = p.form == Form::Folder;
-            p.written = Some(write(&p.snap, &p.path, p.form, Some(&p.backups), &s.env.cache, git)?);
+            p.written = Some(write(&snap, &p.path, p.form, Some(&p.backups), &s.env.cache, git)?);
+            p.snap = Some(snap);
         }
     }
     Ok(())
+}
+
+/// Applies a written pending save after the commit: the clean marker goes to the history position the commit reached.
+pub(crate) fn apply_pending(s: &mut Session, p: &PendingSave) {
+    let (Some(w), Some(mut snap)) = (&p.written, p.snap.clone()) else { return };
+    if let Some(project) = s.project.as_ref() {
+        snap.position = project.history.position();
+        snap.top = project.history.step_id_before(snap.position).map(str::to_owned);
+    }
+    finish_save(s, &snap, w, true, None);
 }
 
 /// Closes the open project: `project.closed`, the lock released, the recovery data deleted when the close discards

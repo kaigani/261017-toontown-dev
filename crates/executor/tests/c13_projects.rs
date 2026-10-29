@@ -466,3 +466,36 @@ fn a_session_whose_lock_was_taken_over_cannot_save_over_the_new_owner() {
     assert_eq!(std::fs::read(&target).unwrap(), before, "LOCK-02: nothing written over the new owner");
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn an_atomic_batch_that_saves_commits_one_step_and_writes_that_revision() {
+    let dir = tmp();
+    let h = spawn(&dir.join("user"));
+    let target = dir.join("Batch.animpkg");
+    ok(&h, "project.create", json!({ "name": "Batch", "path": path(&target) }));
+    let scene = first(&h, "scene");
+    let modified_before = get(&h, "project")["modifiedAt"].clone();
+    let events = h.subscribe();
+    let env = batch(
+        &h,
+        json!({ "label": "Edit and close", "atomic": true, "steps": [
+            { "id": "doc.object.patch", "params": { "targets": [scene], "props": { "meta": { "batch": 1 } } } },
+            { "id": "project.close", "params": { "onUnsaved": "save" } }
+        ] }),
+    );
+    assert!(env.is_ok(), "{env:?}");
+    let saved = tt_persist::load(&target, &Default::default()).unwrap();
+    assert_eq!(env.document_rev, Some(saved.doc.document_rev()), "the file holds the committed revision");
+    let changed: Vec<_> = events.try_iter().filter(|e| e.name == "doc.changed").collect();
+    assert_eq!(changed.len(), 1, "one commit: {changed:?}");
+    assert_eq!(changed[0].payload["documentRev"], saved.doc.document_rev());
+    assert!(changed[0].payload["undoStepId"].is_string(), "one undo step, named by the batch");
+    assert_eq!(changed[0].payload["label"], "Edit and close");
+    // The save stamped modifiedAt inside that same revision.
+    let p = saved.doc.entry_raw_json(&tt_model::document::EntryKey::Project).unwrap();
+    assert_ne!(p["modifiedAt"], modified_before);
+    let key = tt_model::document::EntryKey::Scene(tt_model::Id::parse(&scene).unwrap());
+    assert_eq!(saved.doc.entry_raw_json(&key).unwrap()["meta"]["batch"], 1);
+    assert_eq!(err(&h, "doc.state.get", json!({})).code, "project.none", "closed after the save");
+    let _ = std::fs::remove_dir_all(&dir);
+}
