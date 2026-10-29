@@ -245,20 +245,59 @@ pub(crate) fn normalize(p: &str) -> String {
     if cfg!(windows) { r.to_lowercase() } else { r }
 }
 
-/// A file's identity for change detection: size and modification time (folder form: of `manifest.json`).
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+/// A project's identity for change detection (RO-02): the package file's size and modification time, or for the folder
+/// form those of `manifest.json` plus a fingerprint of every entry file's name, size and modification time
+/// (C13-R1-06: folder entries are edited directly by text tools and version control, and the folder manifest does not
+/// list them). Hidden files (control files, temporaries, old copies) and `session.json` are not project content.
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct Stamp {
     pub len: u64,
     pub modified: Option<std::time::SystemTime>,
+    /// Folder form: the entry-tree fingerprint (SHA-256 hex; empty for a package).
+    pub tree: String,
 }
 
 pub(crate) fn stamp_of(path: &Path, form: Form) -> Option<Stamp> {
-    let target = match form {
-        Form::Package => path.to_path_buf(),
-        Form::Folder => path.join(tt_persist::layout::MANIFEST),
-    };
-    let m = std::fs::metadata(target).ok()?;
-    Some(Stamp { len: m.len(), modified: m.modified().ok() })
+    match form {
+        Form::Package => {
+            let m = std::fs::metadata(path).ok()?;
+            Some(Stamp { len: m.len(), modified: m.modified().ok(), tree: String::new() })
+        }
+        Form::Folder => {
+            let m = std::fs::metadata(path.join(tt_persist::layout::MANIFEST)).ok()?;
+            let mut lines = Vec::new();
+            walk(path, path, 0, &mut lines);
+            lines.sort();
+            let tree = tt_persist::fsx::sha256(lines.join("\n").as_bytes());
+            Some(Stamp { len: m.len(), modified: m.modified().ok(), tree })
+        }
+    }
+}
+
+/// Lists `name size mtime` for every entry file under `dir`.
+fn walk(root: &Path, dir: &Path, depth: usize, out: &mut Vec<String>) {
+    let Ok(rd) = std::fs::read_dir(dir) else { return };
+    for e in rd.flatten() {
+        let name = e.file_name().to_string_lossy().into_owned();
+        if name.starts_with('.') || (depth == 0 && name == tt_persist::layout::SESSION) {
+            continue;
+        }
+        let Ok(ft) = e.file_type() else { continue };
+        let p = e.path();
+        if ft.is_dir() {
+            if depth < 64 {
+                walk(root, &p, depth + 1, out);
+            }
+        } else if let Ok(m) = e.metadata() {
+            let rel = p.strip_prefix(root).map(|r| r.to_string_lossy().into_owned()).unwrap_or_default();
+            let t = m
+                .modified()
+                .ok()
+                .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+                .map_or(0, |d| d.as_nanos());
+            out.push(format!("{rel} {} {t}", m.len()));
+        }
+    }
 }
 
 /// The per-project persistence state.

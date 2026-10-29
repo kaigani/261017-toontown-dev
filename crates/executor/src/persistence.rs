@@ -339,7 +339,12 @@ pub(crate) fn check_saveable(p: &OpenProject, allow_upgrade: bool) -> Result<(Pa
         .hint("save a copy with project.saveAs"));
     }
     check_upgrade(p, allow_upgrade)?;
-    if let Some(at) = &p.store.changed_on_disk {
+    // Maintenance may not have looked since the last change: look again before replacing anything (C13-R1-06).
+    let now = crate::time::now_iso();
+    let changed = p.store.changed_on_disk.as_ref().or_else(|| {
+        (p.store.stamp.is_some() && store::stamp_of(Path::new(&path), p.form_kind()) != p.store.stamp).then_some(&now)
+    });
+    if let Some(at) = changed {
         return Err(CommandError::with_details(
             tt_persist::codes::CHANGED_ON_DISK,
             "the project file was changed by another program since it was opened",
