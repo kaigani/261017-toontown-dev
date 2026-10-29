@@ -195,6 +195,17 @@ pub fn acquire(project: &Path) -> Locked {
         }
         Ok(())
     };
+    // A lock just created exclusively is briefly empty while its owner writes it. Reading it then must not make it
+    // look stale (macOS CI, `c13_r2_persistence::thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner`: a
+    // contender took over a lock still being written and two sessions owned it). An unreadable lock counts as stale
+    // only once it has not changed for 2 s; until then contenders wait and read it again.
+    let settled = |path: &Path| {
+        fs::metadata(path)
+            .and_then(|m| m.modified())
+            .ok()
+            .and_then(|t| t.elapsed().ok())
+            .is_some_and(|age| age > std::time::Duration::from_secs(2))
+    };
     let acquired = |took_over| Locked::Acquired {
         handle: LockHandle { path: path.clone(), info: Mutex::new(info.clone()) },
         took_over,
@@ -211,6 +222,10 @@ pub fn acquire(project: &Path) -> Locked {
         {
             return Locked::HeldByOther(c.clone());
         }
+        if current.is_none() && path.exists() && !settled(&path) {
+            std::thread::sleep(std::time::Duration::from_millis(5));
+            continue;
+        }
         // Stale or unreadable: take it over, one taker at a time.
         match OpenOptions::new().write(true).create_new(true).open(&arbiter) {
             Ok(guard) => {
@@ -219,7 +234,7 @@ pub fn acquire(project: &Path) -> Locked {
                     let again = read(&path);
                     let same = match (&current, &again) {
                         (Some(a), Some(b)) => a.lock_id == b.lock_id && b.stale(),
-                        (None, None) => path.exists(),
+                        (None, None) => path.exists() && settled(&path),
                         _ => false,
                     };
                     if !same {
@@ -267,6 +282,36 @@ pub fn acquire(project: &Path) -> Locked {
 mod tests {
     #![allow(clippy::unwrap_used, clippy::panic, reason = "test")]
     use super::*;
+
+    #[test]
+    fn a_lock_being_written_is_never_taken_over_and_an_abandoned_empty_one_is() {
+        let dir = std::env::temp_dir().join(format!("tt-lock-{}", fsx::random_token(4)));
+        fs::create_dir_all(&dir).unwrap();
+        let project = dir.join("A.animpkg");
+        fs::write(&project, b"x").unwrap();
+        // Another owner has just created the lock exclusively and is still writing it.
+        let path = lock_path(&project);
+        fs::write(&path, b"").unwrap();
+        let owner = LockInfo::new();
+        let writer = {
+            let (path, owner) = (path.clone(), owner.clone());
+            std::thread::spawn(move || {
+                std::thread::sleep(std::time::Duration::from_millis(100));
+                fs::write(&path, serde_json::to_vec(&owner).unwrap()).unwrap();
+            })
+        };
+        match acquire(&project) {
+            Locked::HeldByOther(i) => assert_eq!(i.lock_id, owner.lock_id),
+            other => panic!("a lock being written was taken over: {other:?}"),
+        }
+        writer.join().unwrap();
+        // An empty lock nobody writes any more (a crash) is taken over once it has settled.
+        fs::write(&path, b"").unwrap();
+        std::thread::sleep(std::time::Duration::from_millis(2100));
+        let Locked::Acquired { handle, .. } = acquire(&project) else { panic!("an abandoned empty lock is stale") };
+        drop(handle);
+        let _ = fs::remove_dir_all(&dir);
+    }
 
     #[test]
     fn exclusive_live_and_stale() {
