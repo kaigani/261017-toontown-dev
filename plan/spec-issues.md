@@ -449,6 +449,12 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     `project.defaultsChanged` (`setAsDefault: true` of `project.properties.set`: the values become the defaults of new
     projects).
   - `project.invalidFormat` `details.reason` values beyond `unsafeEntry` and `sizeLimit` (ZIP-01, ZIP-06):
-    `corrupt`, `encrypted`, `notZip`, `noMimetype`, `wrongMimetype`, `duplicateEntry`, `noManifest`, `manifest`,
-    `project`, `library`, `palette`, `unrepairable`, `migration`, `wrongFormat`.
+    - `corrupt`, `encrypted`, `unsupportedCompression`, `notZip`, `noMimetype`, `wrongMimetype`, `duplicateEntry`;
+    - `noManifest`, `manifest`, `project`, `library`, `palette`;
+    - `unrepairable`, `migration`, `wrongFormat`.
+
+    Added in round 1:
+    - `journal`: a malformed folder-save journal;
+    - `unrecoverableSave`: an interrupted folder save that left neither version complete;
+    - `revisionExhausted`: repairs needed at `documentRev` 2^64 − 1.
 - **Question:** add them to 11 §10 and the owning sections.
