@@ -96,7 +96,7 @@ fn group_accepts_a_matching_expect_rev() {
     let h = executor(&dir.join("user"));
     assert!(h.invoke(Invocation::user("project.create", json!({"name":"Group"}))).is_ok());
     let initial = h.snapshot().unwrap().unwrap();
-    let scene = initial.entry_keys().into_iter().find(|k| k.starts_with("scenes/")).unwrap();
+    let scene = initial.entry_keys().into_iter().find(|k| matches!(k, tt_model::document::EntryKey::Scene(_))).unwrap();
     let rev = initial.entry_raw_json(&scene).unwrap()["rev"].as_u64().unwrap();
     let target = dir.join("group-matching.json");
     std::fs::write(&target, serde_json::to_vec(&json!({"label":"outer","atomic":false,"steps":[{"id":"batch","params":{"label":"group","expectRev":{"scene:#1":rev},"steps":[edit(1),edit(2)]}}]})).unwrap()).unwrap();
