@@ -254,11 +254,13 @@ fn oracle(seed_value: u64, name: &str) {
 }
 
 #[test]
+#[ignore = "10 000-operation oracle (about 5 minutes per seed in a debug build on the Windows runner); CI runs both             seeds in release in the headless job: `cargo test --release -p tt-mcp --test c21_history -- --ignored`             (M2 C2.1 obligation 4)"]
 fn geometry_oracle_seed_a571_matches_and_replays() {
     oracle(0xc120_2026_1019_a571, "geometry-history-r1");
 }
 
 #[test]
+#[ignore = "10 000-operation oracle (about 5 minutes per seed in a debug build on the Windows runner); CI runs both             seeds in release in the headless job: `cargo test --release -p tt-mcp --test c21_history -- --ignored`             (M2 C2.1 obligation 4)"]
 fn geometry_oracle_seed_b683_matches_and_replays() {
     oracle(0xc123_2026_1019_b683, "geometry-history-r3");
 }

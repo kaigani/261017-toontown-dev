@@ -76,3 +76,13 @@ print_stderr = "warn"
 # Deterministic, reproducible-ish release builds; no LTO yet (CI time).
 codegen-units = 16
 debug = "line-tables-only"
+
+# Test builds optimise their dependencies (JSON, schema validation, compression, polygon unions; M2 C2.1): the suites
+# spend much of their time there and the Windows check job must fit its 60-minute budget. Workspace crates stay
+# unoptimised (their timing-based watchdog tests keep their margins) except the vector engine's geometry; debug
+# assertions and overflow checks stay on everywhere; release builds are unaffected.
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.dev.package.tt-vector]
+opt-level = 1
