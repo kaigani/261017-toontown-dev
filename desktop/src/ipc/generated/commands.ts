@@ -8807,7 +8807,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "string",
       },
       reason: {
-        description: "`notCompleted` (an error or a confirmation that was not given), `dryRun` (it changed nothing), `readOnly` (a\nquery), `notACommand` (a discovery tool such as `list_commands`), `redacted` (inline data replaced by its hash).",
+        description: "`notCompleted` (it committed nothing: an error, or a confirmation that was not given), `cachedRetry` (a\n`requestId` retry answered from the cache), `dryRun` (it changed nothing), `readOnly` (a query), `notACommand`\n(a discovery tool such as `list_commands`), `redacted` (inline data replaced by its hash).",
         type: "string",
       },
     },
@@ -74321,7 +74321,7 @@ export interface agent_activity_export_Omitted {
   tool: string;
   /** Its command. */
   command_id: string;
-  /** `notCompleted` (an error or a confirmation that was not given), `dryRun` (it changed nothing), `readOnly` (a query), `notACommand` (a discovery tool such as `list_commands`), `redacted` (inline data replaced by its hash). */
+  /** `notCompleted` (it committed nothing: an error, or a confirmation that was not given), `cachedRetry` (a `requestId` retry answered from the cache), `dryRun` (it changed nothing), `readOnly` (a query), `notACommand` (a discovery tool such as `list_commands`), `redacted` (inline data replaced by its hash). */
   reason: string;
 }
 

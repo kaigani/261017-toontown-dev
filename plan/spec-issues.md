@@ -506,6 +506,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     - activity entries gain `dryRun`;
     - `app.state.get` gains `agent` (the calling session: policy, scopes, paused, limits), which 11 §7.1 lists under
       `get_state`.
+  - Round 2:
+    - `fs.ioError` with `details.reason: "publish"` and `details.committed`: a file the call produces could not be
+      moved into place after the commit;
+    - activity entries gain `cachedRetry` and, for batches, `committedSteps`;
+    - export omissions gain the reason `cachedRetry`.
 - **Question:** add them to 11 §10, 11 §15.1 and 10 §8.6.
 
 ## SI-049 — MCP revision 2026-07-28 removes resource subscriptions and deprecates logging (found in C1.4; open)
@@ -542,4 +547,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   batch:
   - a committed batch contributes its steps, with references renumbered and clashing names renamed;
   - everything else is listed under `omitted` with its reason in the command result.
+- **Round 2 (C14-R2-02, -03):**
+  - batch entries record `committedSteps`, so a sequential batch that failed after committing some steps contributes
+    exactly those;
+  - a `requestId` retry answered from the cache is recorded with `cachedRetry: true` and left out (reason
+    `cachedRetry`);
+  - replay through batch-script mode into the same initial document reproduces every document entry
+    (`crates/mcp/tests/c14_r2_replay.rs`).
 - **Question:** confirm, or define the representation in 11 §11 (for example nested transactions in the batch format).

@@ -139,6 +139,35 @@ transactions, idempotent requests and the never-block watchdog.
       `scripts/check-release-features.py` proves the product graphs (`tt-headless`, `tt-desktop`) do not contain it.
     - **The SDK used for conformance is pinned** (`mcp==2.0.0`, SI-049 adjudication).
 
+12. **Changes from review round 2** (`reviews/M1-C1.4-r2.md`; response `reviews/M1-C1.4-r2-response.md`).
+    - **Every file a command produces is a staged effect** (C14-R2-05). `agent.token.regenerate`, `doc.export.json`
+      with a `path`, `doc.asset.export` and `agent.activity.export` defer their write (`Effect::WriteFile`, with
+      `private` for the owner-only discovery file). Each file is staged beside its target only when every step
+      succeeded, moved into place after the commit, and discarded on rollback. Handlers write nothing themselves;
+      the remaining direct writes are the session's internal cache and the post-call activity log.
+    - **The contract when the transaction committed but its file could not be published** (C14-R2-01). The call is
+      an error, `fs.ioError` with `details.reason: "publish"`, `details.path` and `details.committed`.
+      - The envelope keeps the commit's `changes`, `undo` and `documentRev`. The document change stays (undoable),
+        so nothing is silently rolled back after other effects applied.
+      - The target keeps what it had and the stage is removed.
+      - The activity entry records the error.
+    - **Replay is the committed edits, all of them, in order** (C14-R2-02, -03; SI-051).
+      - Activity entries of batches record `committedSteps`: all or none for an atomic batch, the successful steps of
+        a sequential batch. Replay keeps exactly those steps, with `$<n>` references remapped.
+      - A call answered from the `requestId` cache is recorded once, as the client's call, with `cachedRetry: true`.
+        It executed nothing, so replay leaves it out (reason `cachedRetry`).
+      - The executor reports cache answers through `ExecutorHandle::invoke_served` without changing the envelope, so
+        a retry still returns the identical first answer.
+    - **Cancelling a request withdraws its elicitation** (C14-R2-04). A pending ask belongs to the request that made
+      it. When the client cancels that request, the wait ends at once, the server sends `notifications/cancelled`
+      for its own `elicitation/create`, and the request gets no response. The token stays pending until it expires,
+      and nothing is authorised.
+    - **Every `onUnsaved: "save"` boundary confirms external changes for agents** (C14-R2-07, the SI-047 ruling).
+      `project.close`, `app.quit`, `project.open`, `project.create`, `project.recovery.open` and
+      `project.backup.open` save through `resolve_unsaved`, which uses the same guard as `project.save`. Agents get
+      the bound `externalChange` token of that call; users get `project.changedOnDisk`. The load path's internal
+      save, which has no call of its own to confirm, refuses a changed file.
+
 ## Consequences
 
 - A command added to the registry is reachable by agents at once (through `run_command`, the docs and the typed
