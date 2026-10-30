@@ -635,18 +635,27 @@ fn submit_save(
                 Locked::NotWritable(_) => None,
             }
         } else {
+            if let Some(h) = &held {
+                lock::boundary(lock::Boundary::SaveBeforeWrite, h.path());
+            }
             if let Some(h) = &held
                 && !h.held()
             {
-                let _ = poster.run(POST_TIMEOUT, |core| {
+                // Lost before writing (LOCK-02): nothing is written, the project stays modified and continues read-only.
+                let holder = lock::read(h.path());
+                let reported = holder.clone();
+                let _ = poster.run(POST_TIMEOUT, move |core| {
                     if let Some(p) = core.session_mut().and_then(|s| s.project.as_mut()) {
                         p.store.saving = false;
+                        p.read_only = true;
+                        p.store.locked_by = reported.and_then(|i| serde_json::to_value(i).ok());
+                        p.store.lock = None;
                     }
                 });
                 return Err(CommandError::with_details(
                     tt_persist::codes::SAVE_FAILED,
                     "this session no longer holds the project's lock; another session took it over",
-                    json!({ "reason": "fileInUse", "lock": lock::read(h.path()) }),
+                    json!({ "reason": "fileInUse", "lock": holder }),
                 ));
             }
             None
@@ -654,6 +663,9 @@ fn submit_save(
         progress.report(0.1, "Write");
         let written = persistence::write(&snap, &target, form, backups.as_ref(), &cache, form == Form::Folder);
         progress.report(0.95, "Replace");
+        if let Some(h) = &held {
+            lock::boundary(lock::Boundary::SaveWritten, h.path());
+        }
         let applied = written.clone();
         let snap2 = snap.clone();
         let backup_id = poster.run(POST_TIMEOUT, move |core| {
@@ -669,6 +681,17 @@ fn submit_save(
             }
         })?;
         let w = written?;
+        // Ownership lost while writing (only where the file system does not carry the lock's protection): the file
+        // was replaced, but the session did not take the save (ADR-0014 §11.5); say so instead of reporting success.
+        if let Some(h) = &held
+            && !h.held()
+        {
+            return Err(CommandError::with_details(
+                tt_persist::codes::SAVE_FAILED,
+                "the project was written, but this session lost its lock meanwhile: it stays modified and read-only",
+                json!({ "reason": "ownershipLost", "path": w.path.to_string_lossy(), "lock": lock::read(h.path()) }),
+            ));
+        }
         Ok(serde_json::to_value(SaveResult {
             path: w.path.to_string_lossy().into_owned(),
             project_saved: true,

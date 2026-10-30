@@ -119,6 +119,10 @@ pub enum Boundary {
     HeartbeatWritten,
     /// A release verified ownership, before removing the file.
     ReleaseChecked,
+    /// A save of the project at this lock's location, before it writes (C14-R1-08; the save checks ownership after).
+    SaveBeforeWrite,
+    /// A save wrote the project, before it is applied to the session (the finish checks ownership again).
+    SaveWritten,
 }
 
 #[cfg(feature = "test-hooks")]
@@ -146,8 +150,10 @@ pub mod hooks {
     }
 }
 
+/// A suspension point of the protocol, also used by the executor's save (C14-R1-08). It does nothing unless the
+/// `test-hooks` feature is enabled, which only test builds do (C14-R1-10).
 #[inline]
-fn boundary(b: Boundary, path: &Path) {
+pub fn boundary(b: Boundary, path: &Path) {
     #[cfg(feature = "test-hooks")]
     hooks::at(b, path);
     #[cfg(not(feature = "test-hooks"))]

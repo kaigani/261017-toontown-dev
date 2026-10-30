@@ -359,3 +359,78 @@ fn crashed_holder_is_detected_at_once_and_liveness_is_measured() {
     assert!(takeover_ms < 5_000.0, "{report}");
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+/// C14-R1-08 (obligation 1): a save suspended before it writes, or after it wrote and before the session takes it,
+/// loses the project's lock to another session (its publication replaced, as on a file system that does not carry
+/// the holder's protection). The save fails and says why; the project stays modified, its saved revision and its
+/// on-disk identity (stamp) do not advance, it continues read-only, and its recovery data stays.
+#[test]
+fn ownership_lost_during_a_suspended_save_never_advances_the_save() {
+    let _g = serial();
+    for at in [Boundary::SaveBeforeWrite, Boundary::SaveWritten] {
+        let (dir, _) = project();
+        let pkg = dir.join("Owned.animpkg");
+        let h = tt_executor::ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
+            config: tt_executor::ExecutorConfig { budget: Duration::from_secs(60) },
+            persist: tt_executor::PersistOptions {
+                user_dirs: Some(tt_executor::UserDirs::under(&dir.join("user"))),
+                maintenance: tt_executor::Maintenance { tick: Duration::ZERO, ..tt_executor::Maintenance::default() },
+                migrations: tt_persist::migrate::CHAIN,
+            },
+        })
+        .unwrap();
+        let ok = |id: &str, params: Value| {
+            let env = h.invoke(tt_executor::Invocation::user(id, params));
+            assert!(env.is_ok(), "{id}: {env:?}");
+            env.result.unwrap_or(Value::Null)
+        };
+        ok("project.create", json!({ "name": "Owned", "path": pkg.to_string_lossy() }));
+        let scene = ok("doc.object.find", json!({ "type": "scene", "limit": 1 }))["items"][0]["id"].clone();
+        ok("doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 1 } } }));
+        // Recovery data exists before the save.
+        let events = h.subscribe();
+        h.run_maintenance(true).unwrap();
+        let deadline = Instant::now() + Duration::from_secs(30);
+        while !events.try_iter().any(|e| e.name == "project.autosaved") {
+            assert!(Instant::now() < deadline, "no autosave");
+            std::thread::sleep(Duration::from_millis(5));
+        }
+        let recovery = dir.join("user").join("Recovery");
+        let recovery_entries = || std::fs::read_dir(&recovery).map_or(0, Iterator::count);
+        assert!(recovery_entries() > 0);
+        let before = ok("doc.state.get", json!({}));
+        let bytes_before = std::fs::read(&pkg).unwrap();
+        let lockfile = lock::lock_path(&pkg);
+        let (reached, resume) = suspend(at, &lockfile);
+        let started = ok("project.save", json!({}));
+        reached.recv_timeout(Duration::from_secs(30)).unwrap();
+        let mut taken: Value = serde_json::from_slice(&std::fs::read(&lockfile).unwrap()).unwrap();
+        taken["lockId"] = json!("another-session");
+        std::fs::write(&lockfile, serde_json::to_vec(&taken).unwrap()).unwrap();
+        resume.send(()).unwrap();
+        let waited = ok("job.wait", json!({ "jobId": started["jobId"], "timeoutMs": 60_000 }));
+        lock::hooks::set(None);
+        let rec = waited.get("record").cloned().unwrap_or(waited);
+        assert_eq!(rec["state"], "failed", "{at:?}: {rec}");
+        assert_eq!(rec["error"]["code"], "project.saveFailed", "{at:?}: {rec}");
+        let reason = if at == Boundary::SaveBeforeWrite { "fileInUse" } else { "ownershipLost" };
+        assert_eq!(rec["error"]["details"]["reason"], reason, "{at:?}: {rec}");
+        let after = ok("doc.state.get", json!({}));
+        assert_eq!(after["dirty"], true, "{at:?}: the project stays modified");
+        assert_eq!(after["savedRev"], before["savedRev"], "{at:?}: the saved revision does not advance");
+        assert_eq!(after["readOnly"], true, "{at:?}: the session continues read-only (LOCK-02)");
+        assert!(recovery_entries() > 0, "{at:?}: the recovery data stays");
+        if at == Boundary::SaveBeforeWrite {
+            assert_eq!(std::fs::read(&pkg).unwrap(), bytes_before, "nothing written after the loss");
+        } else {
+            // The stamp did not advance: the save's own write is an external change to this session (forced watch).
+            h.run_maintenance(true).unwrap();
+            assert!(
+                events.try_iter().any(|e| e.name == "doc.package.changedOnDisk"),
+                "{at:?}: the stamp advanced to the file the session did not take"
+            );
+        }
+        drop(h);
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+}
