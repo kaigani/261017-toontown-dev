@@ -1,10 +1,13 @@
 //! C1.4 obligations 4 and 5: the folder fingerprint's cost at the 2 s watch interval and what callers wait for it,
-//! the size+mtime blind spot (RO-02), and the autosave snapshot's latency during a long atomic batch, under queued
-//! requests and with large preserved media. Results: `target/evidence/c14/{fingerprint,autosave}-<os>.json`.
+//! the size+mtime blind spot of the watch and its detection at save (RO-02, C14-R1-09), the content check's cost at
+//! save, and the autosave snapshot's latency during a long atomic batch, under queued requests and with large preserved
+//! media. Every observation is kept (C14-R1-07): `target/evidence/c14/{fingerprint,autosave}-<os>.json`, checked by
+//! `scripts/analyse-measurements.py`.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 #![allow(clippy::cast_precision_loss, clippy::cast_possible_truncation, clippy::cast_sign_loss, reason = "statistics")]
 
 mod c13_support;
+mod c14_evidence;
 mod common;
 
 use std::path::Path;
@@ -13,6 +16,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, Instant};
 
 use c13_support::*;
+use c14_evidence::{Recorder, ms};
 use common::*;
 use serde_json::{Value, json};
 use tt_executor::{ExecutorConfig, ExecutorHandle, ExecutorOptions, Maintenance, PersistOptions, UserDirs};
@@ -36,32 +40,19 @@ fn spawn_m(dirs: &Path, m: Maintenance) -> ExecutorHandle {
     .unwrap()
 }
 
-fn stats(v: &mut [f64]) -> Value {
-    v.sort_by(f64::total_cmp);
-    let at = |q: f64| v[((v.len() - 1) as f64 * q).round() as usize];
-    json!({ "n": v.len(), "p50": at(0.5), "p90": at(0.9), "p99": at(0.99), "max": v[v.len() - 1] })
-}
-
-fn ms(d: Duration) -> f64 {
-    d.as_secs_f64() * 1e3
-}
-
-fn write_evidence(name: &str, v: &Value) {
-    let out = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c14");
-    std::fs::create_dir_all(&out).unwrap();
-    std::fs::write(out.join(format!("{name}-{}.json", std::env::consts::OS)), serde_json::to_vec_pretty(v).unwrap())
-        .unwrap();
-}
-
-/// Calls a cheap query every 2 ms until `stop`, returning each call's latency in ms.
-fn probe_callers(h: &ExecutorHandle, stop: &Arc<AtomicBool>) -> std::thread::JoinHandle<Vec<f64>> {
+/// Calls a cheap query every 2 ms until `stop`, returning `(tMs, latencyMs)` on the recorder's origin.
+fn probe_callers(
+    h: &ExecutorHandle,
+    stop: &Arc<AtomicBool>,
+    origin: Instant,
+) -> std::thread::JoinHandle<Vec<(f64, f64)>> {
     let (h, stop) = (h.clone(), stop.clone());
     std::thread::spawn(move || {
         let mut v = Vec::new();
         while !stop.load(Ordering::Relaxed) {
             let t = Instant::now();
             let _ = run(&h, "doc.state.get", json!({}));
-            v.push(ms(t.elapsed()));
+            v.push((ms(t.saturating_duration_since(origin)), ms(t.elapsed())));
             std::thread::sleep(Duration::from_millis(2));
         }
         v
@@ -85,31 +76,47 @@ fn folder_fingerprint_cost_at_the_watch_interval_and_the_size_mtime_blind_spot()
     for i in 0..FILES {
         std::fs::write(extras.join(format!("f{i:05}.bin")), format!("{i:016}")).unwrap();
     }
+    let mut rec = Recorder::new();
     // Direct cost: every maintenance pass runs the external-change check (watch interval zero).
     let h = spawn_m(
         &dir.join("direct"),
         Maintenance { tick: Duration::ZERO, watch: Duration::ZERO, ..Maintenance::default() },
     );
+    let opened = Instant::now();
     job_ok(&h, "project.open", json!({ "path": path(&folder) }));
-    let mut watch: Vec<f64> = (0..20).map(|_| ms(h.run_maintenance_timed(false).unwrap().watch.unwrap())).collect();
+    rec.sample("openMs", "ms", opened, ms(opened.elapsed()), Some("includes the content hash recorded at open"));
+    for _ in 0..20 {
+        let at = Instant::now();
+        let w = h.run_maintenance_timed(false).unwrap().watch.unwrap();
+        rec.sample("watchPassMs", "ms", at, ms(w), None);
+    }
+    // The content check of a save (C14-R1-09): a clean save verifies the content before it would replace anything.
+    for _ in 0..5 {
+        let at = Instant::now();
+        let started = ok(&h, "project.save", json!({}));
+        rec.sample("saveContentCheckMs", "ms", at, ms(at.elapsed()), Some("project.save handler incl. content check"));
+        wait(&h, &started);
+    }
     // Callers waiting while passes run back to back (worst case).
     let stop = Arc::new(AtomicBool::new(false));
-    let callers = probe_callers(&h, &stop);
+    let callers = probe_callers(&h, &stop, rec.origin());
     let t = Instant::now();
     while t.elapsed() < Duration::from_secs(3) {
         h.run_maintenance_timed(false).unwrap();
     }
     stop.store(true, Ordering::Relaxed);
-    let mut back_to_back = callers.join().unwrap();
-    // The size+mtime blind spot: same size, modification time restored.
+    rec.extend("callerLatencyBackToBackMs", "ms", callers.join().unwrap());
+    // The size+mtime blind spot of the watch: same size, modification time restored.
     let events = h.subscribe();
     let victim = extras.join("f00042.bin");
     let mtime = std::fs::metadata(&victim).unwrap().modified().unwrap();
     std::fs::write(&victim, "XXXXXXXXXXXXXXXX").unwrap();
     std::fs::File::options().write(true).open(&victim).unwrap().set_modified(mtime).unwrap();
     h.run_maintenance_timed(false).unwrap();
-    let blind = !events.try_iter().any(|e| e.name == "doc.package.changedOnDisk");
-    // A size-changing edit is detected (control).
+    let watch_blind = !events.try_iter().any(|e| e.name == "doc.package.changedOnDisk");
+    // …which the save sees (the content recorded at open).
+    let at_save = err(&h, "project.save", json!({})).code;
+    // A size-changing edit is detected by the watch (control).
     std::fs::write(&victim, "changed size").unwrap();
     h.run_maintenance_timed(false).unwrap();
     let control = events.try_iter().any(|e| e.name == "doc.package.changedOnDisk");
@@ -121,28 +128,26 @@ fn folder_fingerprint_cost_at_the_watch_interval_and_the_size_mtime_blind_spot()
     );
     job_ok(&h, "project.open", json!({ "path": path(&folder), "readOnly": true }));
     let stop = Arc::new(AtomicBool::new(false));
-    let callers = probe_callers(&h, &stop);
+    let callers = probe_callers(&h, &stop, rec.origin());
     std::thread::sleep(Duration::from_secs(10));
     stop.store(true, Ordering::Relaxed);
-    let mut scheduled = callers.join().unwrap();
+    rec.extend("callerLatencyScheduled2sWatchMs", "ms", callers.join().unwrap());
     drop(h);
-    let report = json!({
-        "obligation": "C1.4 obligation 4 (RO-02 folder fingerprint)",
-        "platform": std::env::consts::OS,
-        "fixture": format!("folder-form project + {FILES} files of 16 bytes under extras/"),
-        "watchPassMs": stats(&mut watch),
-        "callerLatencyMs": {
-            "backToBackPasses": stats(&mut back_to_back),
-            "scheduled2sWatch10s": stats(&mut scheduled),
-        },
-        "sizeMtimePreservingEditDetected": !blind,
-        "sizeChangingEditDetected": control,
-        "note": "a same-size edit that restores the modification time is not detected (walk compares name, size, mtime): \
-                 recorded as SI-046 for the spec owner",
-    });
-    write_evidence("fingerprint", &report);
+    let report = rec.report(
+        "C1.4 obligation 4 (RO-02 folder fingerprint) and C14-R1-09 (content check at save)",
+        &format!("folder-form project + {FILES} files of 16 bytes under extras/"),
+        json!({
+            "sizeMtimePreservingEditSeenByWatch": !watch_blind,
+            "sizeMtimePreservingEditAtSave": at_save,
+            "sizeChangingEditSeenByWatch": control,
+            "note": "the 2 s watch compares names, sizes and modification times; every save verifies content hashes \
+                     recorded at open or the last save (SI-047 interim ruling)",
+        }),
+    );
+    c14_evidence::write("fingerprint", &report);
     assert!(control, "{report}");
-    assert!(blind, "the blind spot is documented as SI-046; if it is closed, update the handoff: {report}");
+    assert_eq!(at_save, "project.changedOnDisk", "{report}");
+    assert!(watch_blind, "the watch tick stays size+mtime by ruling; if that changes, update SI-047: {report}");
     let _ = std::fs::remove_dir_all(&dir);
 }
 
@@ -185,6 +190,7 @@ fn autosave_snapshot_latency_during_batches_queued_requests_and_large_media() {
     job_ok(&h, "project.open", json!({ "path": path(&pkg) }));
     let scene = first(&h, "scene");
     let events = h.subscribe();
+    // Waits for the copy a snapshot started (only when one was taken).
     let wait_autosaved = || {
         let deadline = Instant::now() + Duration::from_secs(120);
         loop {
@@ -195,12 +201,14 @@ fn autosave_snapshot_latency_during_batches_queued_requests_and_large_media() {
             std::thread::sleep(Duration::from_millis(5));
         }
     };
+    let mut rec = Recorder::new();
     // Typical snapshot (AUTO-02 budget: <= 50 ms typical).
-    let mut snapshot = Vec::new();
     for i in 0..15 {
         ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "i": i } } }));
+        let at = Instant::now();
         let t = h.run_maintenance_timed(true).unwrap();
-        snapshot.push(ms(t.autosave_snapshot.unwrap()));
+        let snap = t.autosave_snapshot.expect("a dirty revision is snapshotted");
+        rec.sample("snapshotMs", "ms", at, ms(snap), None);
         wait_autosaved();
     }
     // During a long atomic batch: the snapshot waits for the batch (one thread); the copy holds the committed revision.
@@ -216,10 +224,14 @@ fn autosave_snapshot_latency_during_batches_queued_requests_and_large_media() {
     std::thread::sleep(Duration::from_millis(20));
     let asked = Instant::now();
     let during = h.run_maintenance_timed(true).unwrap();
-    let wait_behind_batch = asked.elapsed();
+    rec.sample("waitBehindLongBatchMs", "ms", asked, ms(asked.elapsed()), Some("1000-step atomic batch ahead"));
     let (env, batch_took) = long.join().unwrap();
     assert!(env.is_ok(), "{env:?}");
-    wait_autosaved();
+    rec.sample("longBatchMs", "ms", batch_started, ms(batch_took), None);
+    if let Some(s) = during.autosave_snapshot {
+        rec.sample("snapshotAfterLongBatchMs", "ms", asked, ms(s), None);
+        wait_autosaved();
+    }
     let committed = env.document_rev.unwrap();
     let recovery = dir.join("user").join("Recovery");
     let mut revs = Vec::new();
@@ -251,41 +263,40 @@ fn autosave_snapshot_latency_during_batches_queued_requests_and_large_media() {
             })
         })
         .collect();
-    let mut queued_snapshot = Vec::new();
-    let mut queued_delay = Vec::new();
     for _ in 0..10 {
         let asked = Instant::now();
         let t = h.run_maintenance_timed(true).unwrap();
         let total = asked.elapsed();
-        if let Some(s) = t.autosave_snapshot {
-            queued_snapshot.push(ms(s));
-        }
         let held =
             t.heartbeat.unwrap_or_default() + t.watch.unwrap_or_default() + t.autosave_snapshot.unwrap_or_default();
-        queued_delay.push(ms(total.saturating_sub(held)));
-        wait_autosaved();
+        rec.sample("queuedSchedulingDelayMs", "ms", asked, ms(total.saturating_sub(held)), None);
+        // A snapshot is skipped while the previous copy is still being written (no new copy to wait for).
+        if let Some(s) = t.autosave_snapshot {
+            rec.sample("queuedSnapshotMs", "ms", asked, ms(s), None);
+            wait_autosaved();
+        }
     }
     stop.store(true, Ordering::Relaxed);
     for l in load {
         l.join().unwrap();
     }
-    let report = json!({
-        "obligation": "C1.4 obligation 5 (AUTO-02 autosave latency)",
-        "platform": std::env::consts::OS,
-        "fixture": format!("sample_document(901) ({objects} entries, embedded media 60 KiB each) + a 64 MiB preserved entry (extras/media.bin)"),
-        "snapshotMs": stats(&mut snapshot),
-        "duringLongBatch": {
-            "batchSteps": 1000, "batchMs": ms(batch_took), "maintenanceWaitedMs": ms(wait_behind_batch),
-            "snapshotMs": during.autosave_snapshot.map(ms), "committedRev": committed, "recoveryRevs": revs,
-        },
-        "underQueuedRequests": { "threads": 8, "snapshotMs": stats(&mut queued_snapshot), "schedulingDelayMs": stats(&mut queued_delay) },
-        "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; \
-                                   an atomic batch is one request, so the autosave waits for the whole batch",
-    });
-    write_evidence("autosave", &report);
+    let report = rec.report(
+        "C1.4 obligation 5 (AUTO-02 autosave latency)",
+        &format!(
+            "sample_document(901) ({objects} entries, embedded media 60 KiB each) + a 64 MiB preserved entry \
+             (extras/media.bin)"
+        ),
+        json!({
+            "longBatchSteps": 1000, "committedRev": committed, "recoveryRevs": revs, "queueThreads": 8,
+            "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; \
+                                       an atomic batch is one request, so the autosave waits for the whole batch \
+                                       (each request is bounded by the executor's never-block budget)",
+        }),
+    );
+    c14_evidence::write("autosave", &report);
     assert!(revs.iter().all(|r| *r <= committed), "recovery holds only committed revisions: {report}");
     assert!(revs.contains(&committed), "{report}");
-    let typical = report["snapshotMs"]["p50"].as_f64().unwrap();
+    let typical = report["series"]["snapshotMs"]["summary"]["p50"].as_f64().unwrap();
     assert!(typical <= 50.0, "AUTO-02: typical snapshot {typical} ms: {report}");
     drop(h);
     let _ = std::fs::remove_dir_all(&dir);

@@ -12,8 +12,11 @@ use std::sync::mpsc::{self, Receiver, Sender};
 use std::sync::{Arc, Barrier, Mutex, PoisonError};
 use std::time::{Duration, Instant, SystemTime};
 
+use c14_evidence::{Recorder, ms};
 use serde_json::{Value, json};
 use tt_persist::lock::{self, Boundary, LockInfo, Locked};
+
+mod c14_evidence;
 
 /// The hook is process-global: tests that install one run one at a time.
 static SERIAL: Mutex<()> = Mutex::new(());
@@ -266,21 +269,12 @@ fn child_lock_holder() {
     drop(handle);
 }
 
-fn percentile(v: &mut [f64], q: f64) -> f64 {
-    v.sort_by(f64::total_cmp);
-    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss, clippy::cast_precision_loss, reason = "index")]
-    let i = ((v.len() - 1) as f64 * q).round() as usize;
-    v[i]
-}
-
-#[test]
-fn crashed_holder_is_detected_at_once_and_liveness_is_measured() {
-    let _g = serial();
-    let (dir, project) = project();
-    let file = lock::lock_path(&project);
-    let mut child = std::process::Command::new(std::env::current_exe().unwrap())
+/// Starts a child process holding the project's lock and waits until it holds it.
+fn child_holding(project: &Path) -> (std::process::Child, LockInfo) {
+    let file = lock::lock_path(project);
+    let child = std::process::Command::new(std::env::current_exe().unwrap())
         .args(["--exact", "child_lock_holder", "--ignored", "--nocapture", "--test-threads=1"])
-        .env("TT_C14_CHILD_PROJECT", &project)
+        .env("TT_C14_CHILD_PROJECT", project)
         .stdout(std::process::Stdio::null())
         .spawn()
         .unwrap();
@@ -289,74 +283,75 @@ fn crashed_holder_is_detected_at_once_and_liveness_is_measured() {
         assert!(start.elapsed() < Duration::from_secs(60), "the child never took the lock");
         std::thread::sleep(Duration::from_millis(10));
     }
-    let child_info = lock::read(&file).unwrap();
-    // While the child lives: held, from another process.
-    assert!(matches!(lock::acquire(&project), Locked::HeldByOther(_)));
-    // Probe latency on a held lock.
-    let mut probe_us: Vec<f64> = (0..500)
-        .map(|_| {
-            let t = Instant::now();
-            assert_eq!(lock::probe(&file), Some(true));
-            t.elapsed().as_secs_f64() * 1e6
-        })
-        .collect();
-    let mut held_us: Vec<f64> = (0..50)
-        .map(|_| {
-            let t = Instant::now();
-            assert!(matches!(lock::acquire(&project), Locked::HeldByOther(_)));
-            t.elapsed().as_secs_f64() * 1e6
-        })
-        .collect();
-    // The crash.
-    child.kill().unwrap();
-    let _ = child.wait();
-    let killed = Instant::now();
-    let (handle, took) = loop {
-        match lock::acquire(&project) {
-            Locked::Acquired { handle, took_over } => break (handle, took_over),
-            _ => {
-                assert!(killed.elapsed() < Duration::from_secs(30), "the dead holder's lock was not taken over");
-                std::thread::sleep(Duration::from_millis(1));
+    let info = lock::read(&file).unwrap();
+    (child, info)
+}
+
+#[test]
+fn crashed_holder_is_detected_at_once_and_liveness_is_measured() {
+    let _g = serial();
+    let (dir, project) = project();
+    let file = lock::lock_path(&project);
+    let mut rec = Recorder::new();
+    // Five crashed holders (C14-R1-07: every observation kept).
+    for round in 0..5 {
+        let (mut child, child_info) = child_holding(&project);
+        // While the child lives: held, from another process.
+        assert!(matches!(lock::acquire(&project), Locked::HeldByOther(_)));
+        if round == 0 {
+            for _ in 0..500 {
+                let t = Instant::now();
+                assert_eq!(lock::probe(&file), Some(true));
+                rec.sample("probeHeldMicros", "us", t, t.elapsed().as_secs_f64() * 1e6, None);
+            }
+            for _ in 0..50 {
+                let t = Instant::now();
+                assert!(matches!(lock::acquire(&project), Locked::HeldByOther(_)));
+                rec.sample("acquireOnHeldMicros", "us", t, t.elapsed().as_secs_f64() * 1e6, None);
             }
         }
-    };
-    let takeover_ms = killed.elapsed().as_secs_f64() * 1e3;
-    assert_eq!(took.unwrap().lock_id, child_info.lock_id);
-    drop(handle);
-    // process_alive is bounded.
-    let t = Instant::now();
-    let _ = tt_persist::host::process_alive(4_000_000_000);
-    let alive_ms = t.elapsed().as_secs_f64() * 1e3;
-    assert!(t.elapsed() <= tt_persist::host::LIVENESS_TIMEOUT + Duration::from_millis(500));
-    let report: Value = json!({
-        "obligation": "C1.4 obligation 2 (ADR-0014 §11.4)",
-        "platform": std::env::consts::OS,
-        "protection": if cfg!(windows) { "shareMode" } else { "flock" },
-        "probeHeldMicros": { "n": probe_us.len(), "p50": percentile(&mut probe_us, 0.5), "p99": percentile(&mut probe_us, 0.99) },
-        "acquireOnHeldMicros": { "n": held_us.len(), "p50": percentile(&mut held_us, 0.5), "p99": percentile(&mut held_us, 0.99) },
-        "crashedHolderTakeoverMs": takeover_ms,
-        "processAliveFallbackMs": alive_ms,
-        "bounds": {
-            "protectedLiveHolder": "never stale (probe), whatever heartbeat, clock or process id say",
-            "protectedDeadHolderSameHost": "at once (first open after the process ends)",
-            "protectedOtherHostProbeFree": format!("heartbeat rule: {} s", lock::STALE_SECS),
-            "unprotectedLock": format!("heartbeat older than {} s, or process known dead on this host", lock::STALE_SECS),
-            "unprotectedFutureHeartbeat": format!("file unchanged for {} s", lock::STALE_SECS),
-            "unreadableUnprotected": format!("{} s", lock::TAKEOVER_STALE.as_secs()),
-            "unreadableUnknown": format!("{} s", lock::STALE_SECS),
-            "protectedArbiter": "never removed while its holder lives",
-            "unprotectedArbiter": format!("{} s (either clock direction)", lock::TAKEOVER_STALE.as_secs()),
-            "processAliveTimeoutMs": tt_persist::host::LIVENESS_TIMEOUT.as_millis(),
-        },
-    });
-    let out = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c14");
-    std::fs::create_dir_all(&out).unwrap();
-    std::fs::write(
-        out.join(format!("lock-liveness-{}.json", std::env::consts::OS)),
-        serde_json::to_vec_pretty(&report).unwrap(),
-    )
-    .unwrap();
-    assert!(takeover_ms < 5_000.0, "{report}");
+        child.kill().unwrap();
+        let _ = child.wait();
+        let killed = Instant::now();
+        let (handle, took) = loop {
+            match lock::acquire(&project) {
+                Locked::Acquired { handle, took_over } => break (handle, took_over),
+                _ => {
+                    assert!(killed.elapsed() < Duration::from_secs(30), "the dead holder's lock was not taken over");
+                    std::thread::sleep(Duration::from_millis(1));
+                }
+            }
+        };
+        rec.sample("crashedHolderTakeoverMs", "ms", killed, ms(killed.elapsed()), None);
+        assert_eq!(took.unwrap().lock_id, child_info.lock_id);
+        drop(handle);
+        // process_alive (the fallback) is bounded.
+        let t = Instant::now();
+        let _ = tt_persist::host::process_alive(4_000_000_000);
+        rec.sample("processAliveFallbackMs", "ms", t, ms(t.elapsed()), None);
+        assert!(t.elapsed() <= tt_persist::host::LIVENESS_TIMEOUT + Duration::from_millis(500));
+    }
+    let report = rec.report(
+        "C1.4 obligation 2 (ADR-0014 §11.4)",
+        "a package's lock held by a child process (this test binary), killed five times",
+        json!({
+            "protection": if cfg!(windows) { "write handle shared read/write/delete; probe refuses to share writing" } else { "flock" },
+            "bounds": {
+                "protectedLiveHolder": "never stale (probe), whatever heartbeat, clock or process id say",
+                "protectedDeadHolderSameHost": "at once (first open after the process ends)",
+                "protectedOtherHostProbeFree": format!("heartbeat rule: {} s", lock::STALE_SECS),
+                "unprotectedLock": format!("heartbeat older than {} s, or process known dead on this host", lock::STALE_SECS),
+                "unprotectedFutureHeartbeat": format!("file unchanged for {} s", lock::STALE_SECS),
+                "unreadableUnprotected": format!("{} s", lock::TAKEOVER_STALE.as_secs()),
+                "unreadableUnknown": format!("{} s", lock::STALE_SECS),
+                "protectedArbiter": "never removed while its holder lives",
+                "unprotectedArbiter": format!("{} s (either clock direction)", lock::TAKEOVER_STALE.as_secs()),
+                "processAliveTimeoutMs": tt_persist::host::LIVENESS_TIMEOUT.as_millis(),
+            },
+        }),
+    );
+    c14_evidence::write("lock-liveness", &report);
+    assert!(rec.values("crashedHolderTakeoverMs").iter().all(|t| *t < 5_000.0), "{report}");
     let _ = std::fs::remove_dir_all(&dir);
 }
 

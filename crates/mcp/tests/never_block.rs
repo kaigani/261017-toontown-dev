@@ -6,11 +6,14 @@
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 #![allow(clippy::cast_precision_loss, clippy::cast_possible_truncation, clippy::cast_sign_loss, reason = "statistics")]
 
+#[path = "../../executor/tests/c14_evidence/mod.rs"]
+mod c14_evidence;
 mod support;
 
 use std::collections::BTreeMap;
 use std::time::{Duration, Instant};
 
+use c14_evidence::{Recorder, ms};
 use serde_json::json;
 use support::*;
 
@@ -24,7 +27,7 @@ fn every_command_answers_through_mcp_within_the_watchdog() {
     let reg = tt_executor::registry().unwrap();
     let mut by_status: BTreeMap<String, u64> = BTreeMap::new();
     let mut by_code: BTreeMap<String, u64> = BTreeMap::new();
-    let mut latencies = Vec::new();
+    let mut rec = Recorder::new();
     let mut jobs = Vec::new();
     let mut ids: Vec<&str> =
         reg.entries().filter(|e| e.spec.kind != tt_registry::Kind::Event).map(|e| e.id()).collect();
@@ -41,7 +44,7 @@ fn every_command_answers_through_mcp_within_the_watchdog() {
         let started = Instant::now();
         let req = c.send("tools/call", json!({ "name": "run_command", "arguments": { "id": id, "params": params } }));
         let r = c.wait(req, WATCHDOG).unwrap_or_else(|| panic!("`{id}` was not answered within {WATCHDOG:?}"));
-        latencies.push(started.elapsed().as_secs_f64() * 1e3);
+        rec.sample("callLatencyMs", "ms", started, ms(started.elapsed()), Some(id));
         let env = &r["result"]["structuredContent"];
         let status = env["status"].as_str().unwrap_or("protocol-error").to_owned();
         *by_status.entry(status).or_default() += 1;
@@ -53,10 +56,11 @@ fn every_command_answers_through_mcp_within_the_watchdog() {
         }
     }
     // Eventual job state, measured apart from call responsiveness.
-    let jobs_started = Instant::now();
     let mut job_states: BTreeMap<String, u64> = BTreeMap::new();
     for j in &jobs {
+        let waited = Instant::now();
         let r = c.call("job_wait", json!({ "jobId": j, "timeoutMs": 30000 }));
+        rec.sample("jobWaitMs", "ms", waited, ms(waited.elapsed()), Some(j));
         let state = r["structuredContent"]["result"]["record"]["state"]
             .as_str()
             .or_else(|| r["structuredContent"]["result"]["state"].as_str())
@@ -64,26 +68,15 @@ fn every_command_answers_through_mcp_within_the_watchdog() {
             .to_owned();
         *job_states.entry(state).or_default() += 1;
     }
-    let jobs_ms = jobs_started.elapsed().as_secs_f64() * 1e3;
-    latencies.sort_by(f64::total_cmp);
-    let at = |q: f64| latencies[((latencies.len() - 1) as f64 * q).round() as usize];
-    let report = json!({
-        "suite": "11 §14.5 never-block through MCP (stdio protocol, run_command, first declared example)",
-        "platform": std::env::consts::OS,
-        "commands": ids.len(),
-        "byStatus": by_status,
-        "byErrorCode": by_code,
-        "callLatencyMs": { "p50": at(0.5), "p99": at(0.99), "max": latencies[latencies.len() - 1] },
-        "watchdogMs": WATCHDOG.as_millis(),
-        "jobs": { "started": jobs.len(), "finalStates": job_states, "waitedMs": jobs_ms },
-    });
-    let out = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c14");
-    std::fs::create_dir_all(&out).unwrap();
-    std::fs::write(
-        out.join(format!("never-block-mcp-{}.json", std::env::consts::OS)),
-        serde_json::to_vec_pretty(&report).unwrap(),
-    )
-    .unwrap();
+    let report = rec.report(
+        "11 §14.6 never-block through MCP (stdio protocol, run_command, first declared example)",
+        "a new package project; every registered non-event command once, in id order",
+        json!({
+            "commands": ids.len(), "byStatus": by_status, "byErrorCode": by_code,
+            "watchdogMs": WATCHDOG.as_millis(), "jobs": { "started": jobs.len(), "finalStates": job_states },
+        }),
+    );
+    c14_evidence::write("never-block-mcp", &report);
     assert!(!by_status.contains_key("protocol-error"), "{report}");
     assert_eq!(by_status.values().sum::<u64>(), ids.len() as u64);
     c.close().unwrap();
@@ -108,29 +101,23 @@ fn queued_calls_stay_responsive_while_jobs_run() {
         };
         sent.push((id, Instant::now()));
     }
-    let mut answered = Vec::new();
+    let mut rec = Recorder::new();
     let mut revs = Vec::new();
     for (id, at) in &sent {
         let r = c.wait(*id, WATCHDOG).unwrap();
-        answered.push(at.elapsed().as_secs_f64() * 1e3);
+        rec.sample("perCallMs", "ms", *at, ms(at.elapsed()), None);
         if let Some(rev) = r["result"]["structuredContent"]["documentRev"].as_u64() {
             revs.push(rev);
         }
     }
     let all_answered_ms = started.elapsed().as_secs_f64() * 1e3;
     assert!(revs.windows(2).all(|w| w[0] <= w[1]), "pipelined calls apply in the order sent: {revs:?}");
-    answered.sort_by(f64::total_cmp);
-    let report = json!({
-        "queued": 50, "allAnsweredMs": all_answered_ms,
-        "perCallMs": { "p50": answered[answered.len() / 2], "max": answered[answered.len() - 1] },
-    });
-    let out = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c14");
-    std::fs::create_dir_all(&out).unwrap();
-    std::fs::write(
-        out.join(format!("queued-calls-{}.json", std::env::consts::OS)),
-        serde_json::to_vec_pretty(&report).unwrap(),
-    )
-    .unwrap();
+    let report = rec.report(
+        "C1.4 obligation 7 (queued-call responsiveness, apart from job state)",
+        "50 pipelined calls, half of them starting export jobs",
+        json!({ "queued": 50, "allAnsweredMs": all_answered_ms }),
+    );
+    c14_evidence::write("queued-calls", &report);
     c.close().unwrap();
     let _ = std::fs::remove_dir_all(&dir);
 }

@@ -379,8 +379,9 @@ pub enum Locked {
     NotWritable(String),
 }
 
-/// How long an unprotected arbitration file (or an unreadable, unprotected lock) may live before it counts as left
-/// behind by a crashed process. A protected one is never removed while its holder lives (ADR-0014 §11.4).
+/// How long an unprotected, empty arbitration file (or an unreadable, unprotected lock) may live before it counts as
+/// left behind by a crashed process. A protected one is never removed while its holder lives; an unprotected one whose
+/// holder provably died goes at once (ADR-0014 §11.4).
 pub const TAKEOVER_STALE: Duration = Duration::from_secs(10);
 
 fn takeover_path(lock: &Path) -> PathBuf {
@@ -410,7 +411,16 @@ impl Arbiter {
                 Some(Self { path, token, file: Some(f) })
             }
             Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists || e.raw_os_error() == Some(32) => {
-                if probe(&path) != Some(true) && age(&path).is_some_and(|a| a > TAKEOVER_STALE) {
+                // Nobody protects it: its holder died. That is certain at once on Windows (the protection exists from
+                // the moment the file does) and, elsewhere, once its token is written (written only after the
+                // `flock`); an empty, unprotected file may be a publisher between creating and locking it, and goes
+                // after TAKEOVER_STALE. Two takers removing the same abandoned file stay safe: each holder checks that
+                // its arbiter is still its own before it reports ownership (`still_ours`).
+                let probed = probe(&path);
+                let written = fs::metadata(&path).is_ok_and(|m| m.len() > 0);
+                let abandoned = probed == Some(false) && (cfg!(windows) || written)
+                    || probed != Some(true) && age(&path).is_some_and(|a| a > TAKEOVER_STALE);
+                if abandoned {
                     let _ = fs::remove_file(&path);
                 }
                 None
@@ -695,6 +705,10 @@ mod tests {
         assert!(tk.exists());
         drop(held);
         assert!(!tk.exists());
+        // Unprotected with its token written: its holder died, removed at once (C1.4: no 10 s wait).
+        fs::write(&tk, b"token").unwrap();
+        assert!(Arbiter::try_take(&lock).is_none());
+        assert!(!tk.exists(), "a dead holder's arbiter goes at once");
         // Unprotected and older than TAKEOVER_STALE (also with a future time): removed.
         for t in [SystemTime::now() - TAKEOVER_STALE * 2, SystemTime::now() + Duration::from_secs(3600)] {
             fs::write(&tk, b"x").unwrap();
