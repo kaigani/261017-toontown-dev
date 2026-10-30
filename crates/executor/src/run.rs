@@ -526,7 +526,7 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<Und
     {
         let p = s.project.as_mut().ok_or_else(no_project)?;
         for t in txns {
-            p.log_commit(t.rev, back_of(&t), t.before.clone(), earlier_revs(&t));
+            p.log_commit(t.rev, back_of(&t), t.before.clone(), &t.after, earlier_revs(&t));
             let step_id = match t.kind {
                 TxnKind::Step => {
                     let id = p.history.next_step_id();

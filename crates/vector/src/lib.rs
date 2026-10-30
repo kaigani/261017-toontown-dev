@@ -18,6 +18,7 @@ pub mod drawing;
 pub mod fit;
 pub mod fonts;
 pub mod geom;
+pub mod invariants;
 pub mod num;
 pub mod path;
 pub mod stroke;

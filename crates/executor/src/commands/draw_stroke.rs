@@ -397,7 +397,8 @@ pub(crate) fn draw_stroke_add(cx: &mut Cx, p: StrokeAddParams) -> Result<StrokeA
     let geom = geometry(p.points.as_deref(), p.bezier.as_deref(), p.fit, p.closed)?;
     let mut changes = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, p.create_drawing, &mut changes)?;
-    let d = t.drawing(cx.document()?)?;
+    let doc = cx.document()?.clone();
+    let d = t.drawing(&doc)?;
     check_editable(&d, if t.created { None } else { p.expect_rev })?;
     let pc = pen_choice(cx, p.pen_id.as_deref(), p.pen)?;
     let colour = if kind == StrokeKind::Invisible {
@@ -542,12 +543,13 @@ pub(crate) struct StrokeSetResult {
     rev: u64,
 }
 
-/// The drawing and stroke a `strokeId` names.
+/// The document, drawing and object a `strokeId` (or text ID) names: `<drawingId>/<localId>`, or a local ID in
+/// `drawingId` or the current drawing. The document is the transaction's (a cheap copy-on-write clone).
 pub(crate) fn stroke_target(
     cx: &Cx,
     stroke_id: &str,
     drawing_id: Option<&str>,
-) -> Result<(Drawing, vd::Located), CommandError> {
+) -> Result<(Document, tt_model::Id, vd::Located), CommandError> {
     let doc = cx.document()?.clone();
     let drawing = match (stroke_id.split_once('/'), drawing_id) {
         (Some((d, _)), _) => Some(tt_model::Id::parse(d)?),
@@ -561,15 +563,15 @@ pub(crate) fn stroke_target(
             json!({ "strokeId": stroke_id }),
         ));
     };
-    let d = doc.drawing(&did).cloned().ok_or_else(|| super::draw::not_found(did.as_str()))?;
-    let found = locate_all(&d, &[stroke_id.to_owned()], "/strokeId").map_err(|mut e| {
-        if let Some(m) = e.details.as_object_mut() {
-            m.insert("pointer".into(), json!("/strokeId"));
-        }
-        e
-    })?;
+    let d = doc.drawing(&did).ok_or_else(|| super::draw::not_found(did.as_str()))?;
+    let found = locate_all(d, &[stroke_id.to_owned()], "/strokeId")?;
     let l = found.into_iter().next().ok_or_else(|| CommandError::internal("located nothing"))?;
-    Ok((d, l))
+    Ok((doc.clone(), did, l))
+}
+
+/// The drawing `id` of a document from [`stroke_target`].
+pub(crate) fn drawing_in<'a>(doc: &'a Document, id: &tt_model::Id) -> Result<&'a Drawing, CommandError> {
+    doc.drawing(id).ok_or_else(|| super::draw::not_found(id.as_str()))
 }
 
 #[command(
@@ -590,7 +592,8 @@ pub(crate) fn draw_stroke_set(cx: &mut Cx, p: StrokeSetParams) -> Result<StrokeS
             json!({ "pointer": "/bezier" }),
         ));
     }
-    let (d, l) = stroke_target(cx, &p.stroke_id, p.drawing_id.as_deref())?;
+    let (doc, did, l) = stroke_target(cx, &p.stroke_id, p.drawing_id.as_deref())?;
+    let d = drawing_in(&doc, &did)?;
     if l.kind != ObjectKind::Stroke {
         return Err(err(
             codes::ARG_INVALID,
@@ -598,10 +601,9 @@ pub(crate) fn draw_stroke_set(cx: &mut Cx, p: StrokeSetParams) -> Result<StrokeS
             json!({ "pointer": "/strokeId" }),
         ));
     }
-    check_editable(&d, p.expect_rev)?;
-    let raw = cx.document()?.entry_raw_json(&EntryKey::Drawing(d.id().clone()))?;
-    let cur = raw.pointer(&l.pointer).cloned().unwrap_or(Value::Null);
-    let s = vd::stroke_at(&d, &l.pointer).ok_or_else(|| CommandError::internal("stroke vanished"))?;
+    check_editable(d, p.expect_rev)?;
+    let s = vd::stroke_at(d, &l.pointer).ok_or_else(|| CommandError::internal("stroke vanished"))?;
+    let cur = tt_model::canonical::to_value(s)?;
     let next = tt_vector::stroke::edit(
         s,
         &cur,
@@ -707,7 +709,8 @@ pub(crate) struct ContentAddResult {
 pub(crate) fn draw_content_add(cx: &mut Cx, p: ContentAddParams) -> Result<ContentAddResult, CommandError> {
     let mut changes = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, p.create_drawing, &mut changes)?;
-    let d = t.drawing(cx.document()?)?;
+    let doc = cx.document()?.clone();
+    let d = t.drawing(&doc)?;
     check_editable(&d, None)?;
     let doc = cx.document()?.clone();
     let offset = p.offset.map_or(P::default(), |o| P::new(o.x, o.y));
@@ -774,4 +777,55 @@ pub(crate) fn draw_content_add(cx: &mut Cx, p: ContentAddParams) -> Result<Conte
         id_map: built.id_map,
         rev: committed_rev(cx)?,
     })
+}
+
+/// Normalises strokes changed by a generic patch (`doc.object.patch`, 02 §13.6), against their state in `before`:
+/// geometry is checked (`drawing.invalidGeometry`); a brush stroke whose spine changed while its outline did not gets
+/// its outline swept again; one whose outline changed while its spine did not loses the spine (02 §3.2). The
+/// corrections are staged in the same transaction.
+///
+/// # Errors
+/// `drawing.invalidGeometry`; staging errors.
+pub(crate) fn normalise_patched_strokes(cx: &mut Cx, before: &Document, keys: &[String]) -> Result<(), CommandError> {
+    let mut fixes: Vec<(String, Vec<tt_model::change::PatchOp>)> = Vec::new();
+    for key in keys {
+        let Some((did, local)) = key.split_once('/') else { continue };
+        let did = tt_model::Id::parse(did)?;
+        let doc = cx.document()?;
+        let (Some(old_d), Some(new_d)) = (before.drawing(&did), doc.drawing(&did)) else { continue };
+        let (Some(old_l), Some(new_l)) = (vd::locate(old_d, local), vd::locate(new_d, local)) else { continue };
+        let (Some(old), Some(new)) = (vd::stroke_at(old_d, &old_l.pointer), vd::stroke_at(new_d, &new_l.pointer))
+        else {
+            continue;
+        };
+        let outline = Path::from_points(new.points(), *new.closed());
+        outline.check("/points").map_err(|e| invalid_geometry(&e))?;
+        if let Some(sp) = new.spine() {
+            Path::from_points(&sp.points, sp.points.len() == 1)
+                .check("/spine/points")
+                .map_err(|e| invalid_geometry(&e))?;
+        }
+        if *new.kind() != StrokeKind::Brush {
+            continue;
+        }
+        let spine_changed =
+            old.spine() != new.spine() || tt_vector::stroke::tip_angle(old) != tt_vector::stroke::tip_angle(new);
+        let outline_changed = old.points() != new.points() || old.closed() != new.closed();
+        match (new.spine(), spine_changed, outline_changed) {
+            (Some(sp), true, false) => {
+                let pen =
+                    tt_vector::stroke::spine_pen(new).ok_or_else(|| CommandError::internal("spine without pen"))?;
+                let spine = Path::from_points(&sp.points, sp.points.len() == 1);
+                let swept =
+                    tt_vector::stroke::rederive(&spine, &sp.pressure, &pen).map_err(|e| invalid_geometry(&e))?;
+                fixes.push((key.clone(), vec![op("replace", "/points", Some(swept.points_json()))]));
+            }
+            (Some(_), false, true) => fixes.push((key.clone(), vec![op("replace", "/spine", Some(Value::Null))])),
+            _ => {}
+        }
+    }
+    if !fixes.is_empty() {
+        cx.patch_objects(fixes)?;
+    }
+    Ok(())
 }

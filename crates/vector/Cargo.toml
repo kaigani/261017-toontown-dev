@@ -15,8 +15,9 @@ schemars.workspace = true
 libm = { version = "0.2.16", default-features = false, features = ["force-soft-floats"] }
 # Boolean union of brush sweep polygons on an integer grid (deterministic; MIT OR Apache-2.0).
 i_overlay = { version = "9.1.0", default-features = false }
-# Font metrics for text layout and the missingFonts lint (MIT OR Apache-2.0 / MIT).
-ttf-parser = { version = "0.25.1", default-features = false, features = ["std", "opentype-layout"] }
+# Font metrics for text layout and the missingFonts lint: skrifa (fontations; MIT OR Apache-2.0) parses faces,
+# fontdb (MIT) lists the system fonts.
+skrifa = "0.44.0"
 fontdb = { version = "0.24.0", default-features = false, features = ["std", "fs"] }
 
 [dev-dependencies]

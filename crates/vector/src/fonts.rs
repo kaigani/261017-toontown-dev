@@ -1,7 +1,7 @@
 //! Fonts for text layout (02 §3.7) and the `missingFonts` lint (`doc.validate`).
 //!
 //! The system font list is read once per process (`fontdb`, the platform's font folders) and font files are parsed
-//! with `ttf-parser` for the metrics layout needs: units per em, ascender, descender, line gap, horizontal advances
+//! with `skrifa` for the metrics layout needs: units per em, ascender, descender, line gap, horizontal advances
 //! and `kern`-table pairs. A run whose font is not installed keeps its requested name (§3.7) and is laid out with the
 //! platform's default sans-serif face; when no face can be read at all, a fixed fallback metric (advance 0.5 em,
 //! ascender 0.8 em, descender 0.2 em) keeps layout defined. Layout bounds are derived data: they depend on the font
@@ -41,34 +41,47 @@ impl FaceMetrics {
         Self { family: String::new(), ascender: 0.8, descender: 0.2, line_gap: 0.0, data: None, units_per_em: 1.0 }
     }
 
-    fn with_face<T>(&self, f: impl FnOnce(&ttf_parser::Face<'_>) -> T) -> Option<T> {
+    fn with_face<T>(&self, f: impl FnOnce(&skrifa::FontRef<'_>) -> T) -> Option<T> {
         let (data, index) = self.data.as_ref()?;
-        let face = ttf_parser::Face::parse(data, *index).ok()?;
+        let face = skrifa::FontRef::from_index(data, *index).ok()?;
         Some(f(&face))
     }
 
-    /// Horizontal advances (em) of each character, and the automatic kerning (em) between each pair of neighbours.
+    /// Horizontal advances (em) of each character, and the automatic kerning (em) between each pair of neighbours
+    /// (`kern` table pairs, horizontal, non-variable subtables).
     #[must_use]
     pub fn advances(&self, chars: &[char]) -> (Vec<f64>, Vec<f64>) {
+        use skrifa::MetadataProvider;
+        use skrifa::raw::TableProvider;
+        use skrifa::raw::tables::kern::SubtableKind;
         let upem = self.units_per_em;
         let r = self.with_face(|face| {
-            let glyphs: Vec<Option<ttf_parser::GlyphId>> = chars.iter().map(|c| face.glyph_index(*c)).collect();
+            let charmap = face.charmap();
+            let metrics =
+                face.glyph_metrics(skrifa::prelude::Size::unscaled(), skrifa::prelude::LocationRef::default());
+            let glyphs: Vec<Option<skrifa::GlyphId>> = chars.iter().map(|c| charmap.map(*c)).collect();
             let adv: Vec<f64> = glyphs
                 .iter()
-                .map(|g| g.and_then(|g| face.glyph_hor_advance(g)).map_or(0.5, |a| f64::from(a) / upem))
+                .map(|g| g.and_then(|g| metrics.advance_width(g)).map_or(0.5, |a| f64::from(a) / upem))
                 .collect();
             let mut kern = vec![0.0; chars.len().saturating_sub(1)];
-            if let Some(table) = face.tables().kern {
+            if let Ok(table) = face.kern() {
+                let subtables: Vec<_> = table
+                    .subtables()
+                    .filter_map(Result::ok)
+                    .filter(|s| s.is_horizontal() && !s.is_variable() && !s.is_cross_stream())
+                    .filter_map(|s| s.kind().ok())
+                    .collect();
                 for (i, k) in kern.iter_mut().enumerate() {
                     let (Some(l), Some(r)) = (glyphs[i], glyphs[i + 1]) else { continue };
-                    for sub in table.subtables {
-                        if sub.horizontal
-                            && !sub.variable
-                            && let Some(v) = sub.glyphs_kerning(l, r)
-                        {
-                            *k = f64::from(v) / upem;
-                            break;
-                        }
+                    let found = subtables.iter().find_map(|s| match s {
+                        SubtableKind::Format0(t) => t.kerning(l, r),
+                        SubtableKind::Format2(t) => t.kerning(l, r),
+                        SubtableKind::Format3(t) => t.kerning(l, r),
+                        SubtableKind::Format1(_) => None,
+                    });
+                    if let Some(v) = found {
+                        *k = f64::from(v) / upem;
                     }
                 }
             }
@@ -157,20 +170,23 @@ fn load(db: &fontdb::Database, name: &str, bold: bool, italic: bool) -> Option<F
         fontdb::Source::Binary(b) => (*b).as_ref().to_vec(),
         fontdb::Source::File(path) => std::fs::read(path).ok()?,
     };
-    let face = ttf_parser::Face::parse(&bytes, index).ok()?;
-    let upem = f64::from(face.units_per_em());
+    let m = {
+        use skrifa::MetadataProvider;
+        let face = skrifa::FontRef::from_index(&bytes, index).ok()?;
+        face.metrics(skrifa::prelude::Size::unscaled(), skrifa::prelude::LocationRef::default())
+    };
+    let upem = f64::from(m.units_per_em);
     if upem <= 0.0 {
         return None;
     }
-    let m = FaceMetrics {
+    Some(FaceMetrics {
         family: name.to_owned(),
-        ascender: f64::from(face.ascender()) / upem,
-        descender: -f64::from(face.descender()) / upem,
-        line_gap: f64::from(face.line_gap()) / upem,
-        data: None,
+        ascender: f64::from(m.ascent) / upem,
+        descender: -f64::from(m.descent) / upem,
+        line_gap: f64::from(m.leading) / upem,
+        data: Some((Arc::new(bytes), index)),
         units_per_em: upem,
-    };
-    Some(FaceMetrics { data: Some((Arc::new(bytes), index)), ..m })
+    })
 }
 
 /// Resolves a run's font: the installed family, else the default sans-serif face, else the fixed fallback.

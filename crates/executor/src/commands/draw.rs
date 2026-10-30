@@ -6,7 +6,8 @@
 //! Zones, sides and re-noding (§3.12 item 1) are the planar map's (M2 C2.2): results report `zoneIds: []` and a
 //! `doc.derivedUnavailable` warning instead of computed zones.
 
-use std::collections::BTreeSet;
+use std::borrow::Cow;
+use std::collections::{BTreeMap, BTreeSet};
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -79,12 +80,13 @@ pub(crate) struct Target {
 }
 
 impl Target {
-    /// The drawing as it is before this command's own changes (the new drawing for a created one).
-    pub(crate) fn drawing(&self, doc: &Document) -> Result<Drawing, CommandError> {
+    /// The drawing as it is before this command's own changes (the new drawing for a created one), borrowed from
+    /// `doc` (a cheap copy-on-write clone of the transaction's document), never deep-copied.
+    pub(crate) fn drawing<'a>(&self, doc: &'a Document) -> Result<Cow<'a, Drawing>, CommandError> {
         if let Some(v) = &self.new_json {
-            return tt_model::object::from_json::<Drawing>(v).map_err(crate::cx::model_error);
+            return tt_model::object::from_json::<Drawing>(v).map(Cow::Owned).map_err(crate::cx::model_error);
         }
-        doc.drawing(&self.id).cloned().ok_or_else(|| not_found(self.id.as_str()))
+        doc.drawing(&self.id).map(Cow::Borrowed).ok_or_else(|| not_found(self.id.as_str()))
     }
 }
 
@@ -529,7 +531,8 @@ pub(crate) fn draw_pivot_set(cx: &mut Cx, p: PivotParams) -> Result<PivotResult,
     }
     let mut changes = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut changes)?;
-    let d = t.drawing(cx.document()?)?;
+    let doc = cx.document()?.clone();
+    let d = t.drawing(&doc)?;
     check_editable(&d, p.expect_rev)?;
     changes.push((
         EntryKey::Drawing(t.id.clone()),
@@ -574,39 +577,40 @@ pub(crate) struct DeleteResult {
 }
 
 /// Removal operations for located objects: descendants of removed nodes are skipped; layers whose every stroke is
-/// removed go too. Returns the operations (deepest and last first, so indices stay valid) and the removed IDs.
+/// removed go too. Returns the operations (deepest and last first, so indices stay valid) and the removed IDs, in
+/// document order. Linear in the number of objects.
 pub(crate) fn removal_ops(d: &Drawing, targets: &[Located]) -> (Vec<PatchOp>, Vec<String>) {
     let all = vd::objects(d);
     let mut gone: BTreeSet<String> = targets.iter().map(|t| t.id.clone()).collect();
     // A layer all of whose strokes go is removed with them.
-    for l in all.iter().filter(|o| o.kind == ObjectKind::Layer) {
-        let strokes: Vec<&Located> =
-            all.iter().filter(|o| o.parent.as_deref() == Some(&l.id) && o.kind == ObjectKind::Stroke).collect();
-        if !strokes.is_empty() && strokes.iter().all(|s| gone.contains(&s.id)) {
-            gone.insert(l.id.clone());
+    let mut per_layer: BTreeMap<&str, (usize, usize)> = BTreeMap::new();
+    for o in all.iter().filter(|o| o.kind == ObjectKind::Stroke) {
+        if let Some(l) = o.parent.as_deref() {
+            let e = per_layer.entry(l).or_default();
+            e.0 += 1;
+            if gone.contains(&o.id) {
+                e.1 += 1;
+            }
         }
     }
-    // Everything below a removed node is removed with it.
+    let emptied: Vec<String> = per_layer.iter().filter(|(_, (n, g))| n == g).map(|(l, _)| (*l).to_owned()).collect();
+    gone.extend(emptied);
+    // Everything below a removed node is removed with it (objects come parents first, so one pass suffices).
+    let mut removed_set: BTreeSet<&str> = BTreeSet::new();
     let mut removed: Vec<String> = Vec::new();
     let mut tops: Vec<&Located> = Vec::new();
     for o in &all {
-        let mut ancestor_gone = false;
-        let mut p = o.parent.clone();
-        while let Some(pid) = p {
-            if gone.contains(&pid) {
-                ancestor_gone = true;
-                break;
-            }
-            p = all.iter().find(|x| x.id == pid).and_then(|x| x.parent.clone());
-        }
+        let ancestor_gone = o.parent.as_deref().is_some_and(|p| removed_set.contains(p));
         if ancestor_gone || gone.contains(&o.id) {
+            removed_set.insert(&o.id);
             removed.push(o.id.clone());
-        }
-        if gone.contains(&o.id) && !ancestor_gone {
-            tops.push(o);
+            if !ancestor_gone {
+                tops.push(o);
+            }
         }
     }
-    // Remove from the end of each list first: sort by pointer depth then index, descending.
+    // Remove from the end of each list first; deeper lists (longer pointers with the parent's as prefix) sort later
+    // in ascending order, so descending order removes inside a node before the node's list shifts.
     tops.sort_by(|a, b| b.list.cmp(&a.list).then(b.index.cmp(&a.index)));
     let ops = tops.iter().map(|o| op("remove", &o.pointer, None)).collect();
     (ops, removed)
@@ -625,7 +629,8 @@ pub(crate) fn removal_ops(d: &Drawing, targets: &[Located]) -> (Vec<PatchOp>, Ve
 pub(crate) fn draw_object_delete(cx: &mut Cx, p: DeleteParams) -> Result<DeleteResult, CommandError> {
     let mut changes = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut changes)?;
-    let d = t.drawing(cx.document()?)?;
+    let doc = cx.document()?.clone();
+    let d = t.drawing(&doc)?;
     check_editable(&d, p.expect_rev)?;
     let ids = p.ids.unwrap_or_else(|| selection_ids(cx, &d));
     if ids.is_empty() {
@@ -688,7 +693,8 @@ pub(crate) struct GroupCreateResult {
 pub(crate) fn draw_group_create(cx: &mut Cx, p: GroupCreateParams) -> Result<GroupCreateResult, CommandError> {
     let mut changes = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut changes)?;
-    let d = t.drawing(cx.document()?)?;
+    let doc = cx.document()?.clone();
+    let d = t.drawing(&doc)?;
     check_editable(&d, p.expect_rev)?;
     let ids = p.ids.unwrap_or_else(|| selection_ids(cx, &d));
     if ids.is_empty() {
@@ -734,9 +740,16 @@ pub(crate) fn draw_group_create(cx: &mut Cx, p: GroupCreateParams) -> Result<Gro
     let mut members: Vec<Value> = Vec::new();
     let mut created: Vec<String> = Vec::new();
     let mut ops: Vec<PatchOp> = Vec::new();
-    let raw = cx.document()?.entry_raw_json(&EntryKey::Drawing(t.id.clone()))?;
+    let value_at = |l: &Located| -> Result<Value, CommandError> {
+        let v = if l.kind == ObjectKind::Stroke {
+            vd::stroke_at(&d, &l.pointer).map(tt_model::canonical::to_value)
+        } else {
+            vd::node_at(&d, &l.pointer).map(tt_model::canonical::to_value)
+        };
+        v.ok_or_else(|| CommandError::internal("located object vanished"))?.map_err(CommandError::from)
+    };
     for it in &items {
-        let node = raw.pointer(&it.pointer).cloned().unwrap_or(Value::Null);
+        let node = value_at(it)?;
         let strokes: Vec<&Located> =
             found.iter().filter(|s| s.kind == ObjectKind::Stroke && s.parent.as_deref() == Some(&it.id)).collect();
         if strokes.is_empty() {
@@ -749,10 +762,9 @@ pub(crate) fn draw_group_create(cx: &mut Cx, p: GroupCreateParams) -> Result<Gro
         let mut sorted = strokes.clone();
         sorted.sort_by_key(|s| s.index);
         for s in &sorted {
-            if let Some(v) = raw.pointer(&s.pointer)
-                && let Some(a) = layer.get_mut("strokes").and_then(Value::as_array_mut)
-            {
-                a.push(v.clone());
+            let v = value_at(s)?;
+            if let Some(a) = layer.get_mut("strokes").and_then(Value::as_array_mut) {
+                a.push(v);
             }
         }
         for s in sorted.iter().rev() {
@@ -832,7 +844,8 @@ pub(crate) struct GroupDeleteResult {
 pub(crate) fn draw_group_delete(cx: &mut Cx, p: GroupDeleteParams) -> Result<GroupDeleteResult, CommandError> {
     let mut changes = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut changes)?;
-    let d = t.drawing(cx.document()?)?;
+    let doc = cx.document()?.clone();
+    let d = t.drawing(&doc)?;
     check_editable(&d, p.expect_rev)?;
     let ids = match p.group_ids {
         Some(ids) => ids,
@@ -862,13 +875,14 @@ pub(crate) fn draw_group_delete(cx: &mut Cx, p: GroupDeleteParams) -> Result<Gro
     // Each list from the end, so pointers stay valid.
     let mut sorted = found.clone();
     sorted.sort_by(|a, b| b.list.cmp(&a.list).then(b.index.cmp(&a.index)));
-    let raw = cx.document()?.entry_raw_json(&EntryKey::Drawing(t.id.clone()))?;
     let mut ops = Vec::new();
     let mut members = Vec::new();
     for g in &sorted {
         let Some(children) = vd::node_at(&d, &g.pointer).and_then(|n| n.children().clone()) else { continue };
-        let child_json: Vec<Value> =
-            raw.pointer(&format!("{}/children", g.pointer)).and_then(Value::as_array).cloned().unwrap_or_default();
+        let mut child_json: Vec<Value> = Vec::with_capacity(children.len());
+        for c in &children {
+            child_json.push(tt_model::canonical::to_value(c)?);
+        }
         ops.push(op("remove", &g.pointer, None));
         for (k, c) in child_json.into_iter().enumerate() {
             ops.push(op("add", &format!("{}/{}", g.list, g.index + k), Some(c)));

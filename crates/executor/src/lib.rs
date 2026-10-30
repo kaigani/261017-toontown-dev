@@ -267,6 +267,8 @@ impl ExecutorHandle {
 
     fn spawn_full(options: ExecutorOptions, registry: &'static Registry) -> Result<Self, CommandError> {
         let ExecutorOptions { config, persist } = options;
+        // The system font list (text layout, missingFonts lint) is read once, off the document thread.
+        tt_vector::fonts::warm();
         let (tx, rx) = mpsc::channel::<Request>();
         let subscribers: Arc<Mutex<Vec<Sender<Event>>>> = Arc::new(Mutex::new(Vec::new()));
         let job_subs = subscribers.clone();

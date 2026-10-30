@@ -47,12 +47,38 @@ pub(crate) struct RevRecord {
     /// The revisions the objects the transaction stamped had at `rev - 1` (back-patches restore content, these
     /// restore the revisions; C12-R1-08).
     pub earlier_revs: Vec<(String, u64)>,
+    /// Objects held only by `before` (the entries the transaction replaced): what keeping the snapshot costs.
+    pub weight: usize,
 }
 
 /// Transactions kept for `doc.diff` (10 AG-09 / D11: at least the last 10 000, and back to the last save).
 pub const REV_LOG_LEN: usize = 10_000;
 /// Records that keep their previous snapshot for fast diffs.
 pub const SNAPSHOT_WINDOW: usize = 256;
+/// The most objects the kept snapshots may hold beyond the current document (M2 C2.1 obligations 4 and 11): a commit
+/// replaces whole entries, so each snapshot of a 100 000-stroke drawing holds a full copy of it; older records fall
+/// back to their back-patches (`doc.diff` stays exact, only slower). The newest snapshot is always kept.
+pub const SNAPSHOT_OBJECT_BUDGET: usize = 400_000;
+
+/// The objects of the entries `before` holds that `after` does not share (copy-on-write): nodes and strokes count
+/// one each for drawings, every other entry one.
+pub(crate) fn snapshot_weight(before: &Document, after: &Document) -> usize {
+    fn count(nodes: &[tt_model::entities::drawing::DrawingNode]) -> usize {
+        nodes
+            .iter()
+            .map(|n| 1 + n.strokes().as_ref().map_or(0, Vec::len) + n.children().as_ref().map_or(0, |c| count(c)))
+            .sum()
+    }
+    before
+        .entry_keys()
+        .iter()
+        .filter(|k| !before.same_entry(after, k))
+        .map(|k| match k {
+            tt_model::document::EntryKey::Drawing(id) => before.drawing(id).map_or(1, |d| 1 + count(d.nodes())),
+            _ => 1,
+        })
+        .sum()
+}
 
 /// The open project.
 #[derive(Debug, Clone)]
@@ -101,12 +127,34 @@ impl OpenProject {
 
     /// Records a committed transaction. The log keeps at least the last [`REV_LOG_LEN`] transactions and never drops
     /// a record the last save still needs (D11, AG-09; C12-R1-08).
-    pub fn log_commit(&mut self, rev: u64, back: Back, before: Document, earlier_revs: Vec<(String, u64)>) {
-        self.log.push_back(RevRecord { rev, back, before: Some(before), earlier_revs });
+    pub fn log_commit(
+        &mut self,
+        rev: u64,
+        back: Back,
+        before: Document,
+        after: &Document,
+        earlier_revs: Vec<(String, u64)>,
+    ) {
+        let weight = snapshot_weight(&before, after);
+        self.log.push_back(RevRecord { rev, back, before: Some(before), earlier_revs, weight });
         if self.log.len() > SNAPSHOT_WINDOW
             && let Some(old) = self.log.get_mut(self.log.len() - SNAPSHOT_WINDOW - 1)
         {
             old.before = None;
+        }
+        // Bounded snapshot memory: newest first, keep snapshots while their objects fit the budget.
+        let mut held = 0usize;
+        let mut kept = 0usize;
+        for r in self.log.iter_mut().rev() {
+            if r.before.is_none() {
+                continue;
+            }
+            if kept > 0 && held.saturating_add(r.weight) > SNAPSHOT_OBJECT_BUDGET {
+                r.before = None;
+                continue;
+            }
+            held = held.saturating_add(r.weight);
+            kept += 1;
         }
         while self.log.len() > REV_LOG_LEN
             && self.log.front().is_some_and(|r| self.saved_rev.is_none_or(|saved| r.rev.saturating_sub(1) < saved))

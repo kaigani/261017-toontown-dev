@@ -139,7 +139,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v7
 
@@ -168,6 +168,15 @@ jobs:
           $PY -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
           $PY scripts/check-headless-deps.py "$exe"
           mkdir -p out && cp "$exe" selftest-1.json out/
+
+      - name: 100k-stroke drawing measurements (M2 C2.1 obligation 4; release, recomputed from observations)
+        run: |
+          PY=python3
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
+          cargo test --release --locked -p tt-executor --test c21_measurements -- --ignored --nocapture
+          mkdir -p out
+          $PY scripts/analyse-measurements.py target/evidence/c21 --out out/c21-measurement-analysis.json
+          cp -r target/evidence/c21 out/c21-measurements
 
       - name: MCP protocol conformance of the release binary (official Python SDK client)
         run: |

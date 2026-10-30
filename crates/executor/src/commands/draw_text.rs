@@ -6,7 +6,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use tt_model::ObjectType;
-use tt_model::document::EntryKey;
+use tt_model::document::{Document, EntryKey};
 use tt_model::entities::drawing::{DrawingNode, WidthMode};
 use tt_registry::{CommandError, codes, command};
 use tt_vector::drawing::{self as vd, ObjectKind};
@@ -14,7 +14,7 @@ use tt_vector::geom::Affine;
 use tt_vector::text::{self, Content, Format};
 
 use super::draw::{Bounds, Point, check_editable, committed_rev, err, op, target};
-use super::draw_stroke::{colour_of, stroke_target};
+use super::draw_stroke::{colour_of, drawing_in, stroke_target};
 use crate::cx::Cx;
 
 /// Baseline (`script` in the project format).
@@ -261,7 +261,8 @@ pub(crate) fn draw_text_add(cx: &mut Cx, p: TextAddParams) -> Result<TextResult,
     }
     let mut changes = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, p.create_drawing, &mut changes)?;
-    let d = t.drawing(cx.document()?)?;
+    let doc = cx.document()?.clone();
+    let d = t.drawing(&doc)?;
     check_editable(&d, None)?;
     let colour = colour_of(cx, p.colour_id.as_deref(), None, "/colourId")?;
     let mut c = Content::new(&p.text, text::default_run(colour), text::default_para());
@@ -367,8 +368,8 @@ fn text_node(
     cx: &Cx,
     text_id: &str,
     drawing_id: Option<&str>,
-) -> Result<(tt_model::entities::drawing::Drawing, vd::Located, DrawingNode), CommandError> {
-    let (d, l) = stroke_target(cx, text_id, drawing_id).map_err(|mut e| {
+) -> Result<(Document, tt_model::Id, vd::Located, DrawingNode), CommandError> {
+    let (doc, did, l) = stroke_target(cx, text_id, drawing_id).map_err(|mut e| {
         if let Some(m) = e.details.as_object_mut()
             && m.contains_key("pointer")
         {
@@ -383,8 +384,10 @@ fn text_node(
             json!({ "pointer": "/textId" }),
         ));
     }
-    let n = vd::node_at(&d, &l.pointer).cloned().ok_or_else(|| CommandError::internal("text node vanished"))?;
-    Ok((d, l, n))
+    let n = vd::node_at(drawing_in(&doc, &did)?, &l.pointer)
+        .cloned()
+        .ok_or_else(|| CommandError::internal("text node vanished"))?;
+    Ok((doc, did, l, n))
 }
 
 #[command(
@@ -414,8 +417,9 @@ pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult,
             json!({ "pointer": "/text" }),
         ));
     }
-    let (d, l, n) = text_node(cx, &p.text_id, p.drawing_id.as_deref())?;
-    check_editable(&d, p.expect_rev)?;
+    let (doc, did, l, n) = text_node(cx, &p.text_id, p.drawing_id.as_deref())?;
+    let d = drawing_in(&doc, &did)?;
+    check_editable(d, p.expect_rev)?;
     let mut c = vd::text_content(&n).ok_or_else(|| CommandError::internal("text node without content"))?;
     if let Some(t) = &p.text {
         check_len(t, "/text")?;
@@ -470,8 +474,7 @@ pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult,
         transform[5] = pos.y;
     }
     let node = node_json(n.id().as_str(), transform, width, &c);
-    let raw = cx.document()?.entry_raw_json(&EntryKey::Drawing(d.id().clone()))?;
-    let mut merged = raw.pointer(&l.pointer).cloned().unwrap_or(Value::Null);
+    let mut merged = tt_model::canonical::to_value(&n)?;
     // Keep the envelope (name, meta, ext) and replace the text fields.
     if let (Some(m), Some(src)) = (merged.as_object_mut(), node.as_object()) {
         for k in ["transform", "widthMode", "text", "runs", "paragraphs"] {
@@ -595,8 +598,9 @@ pub(crate) struct TextFormatResult {
     gui = "Text panel (M4 C4.2)",
 )]
 pub(crate) fn draw_text_format_set(cx: &mut Cx, p: TextFormatParams) -> Result<TextFormatResult, CommandError> {
-    let (d, l, n) = text_node(cx, &p.text_id, p.drawing_id.as_deref())?;
-    check_editable(&d, p.expect_rev)?;
+    let (doc, did, l, n) = text_node(cx, &p.text_id, p.drawing_id.as_deref())?;
+    let d = drawing_in(&doc, &did)?;
+    check_editable(d, p.expect_rev)?;
     let colour = match &p.colour_id {
         Some(c) => Some(colour_of(cx, Some(c), None, "/colourId")?),
         None => None,
@@ -630,13 +634,11 @@ pub(crate) fn draw_text_format_set(cx: &mut Cx, p: TextFormatParams) -> Result<T
         return Err(err(codes::ARG_INVALID, format!("the text has {len} characters"), json!({ "pointer": "/length" })));
     }
     c.format(p.start as usize, count, &fmt);
-    let raw = cx.document()?.entry_raw_json(&EntryKey::Drawing(d.id().clone()))?;
     let base = l.pointer.clone();
-    let mut ops = Vec::new();
-    if raw.pointer(&format!("{base}/runs")).is_some() {
-        ops.push(op("replace", &format!("{base}/runs"), Some(json!(c.runs))));
-        ops.push(op("replace", &format!("{base}/paragraphs"), Some(json!(c.paras))));
-    }
+    let ops = vec![
+        op("replace", &format!("{base}/runs"), Some(json!(c.runs))),
+        op("replace", &format!("{base}/paragraphs"), Some(json!(c.paras))),
+    ];
     cx.patch_entries(vec![(EntryKey::Drawing(d.id().clone()), ops)])?;
     let width = if *n.width_mode() == Some(WidthMode::Fixed) { *n.width() } else { None };
     let transform = n.transform().unwrap_or(tt_model::value::IDENTITY);

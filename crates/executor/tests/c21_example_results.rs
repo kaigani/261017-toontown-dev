@@ -18,7 +18,6 @@ mod recorded;
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 
-use common::*;
 use examples::*;
 use serde_json::{Value, json};
 use tt_executor::{Invocation, Status};
@@ -38,7 +37,10 @@ fn results_file() -> PathBuf {
 }
 
 /// One execution of every example: command id → `[{title, result}]` (portable paths).
-fn execute_all() -> (BTreeMap<String, Vec<(String, Value)>>, Vec<String>) {
+/// Command id → `[(example title, result)]`.
+type Executed = BTreeMap<String, Vec<(String, Value)>>;
+
+fn execute_all() -> (Executed, Vec<String>) {
     let registry = tt_executor::registry().unwrap();
     let envelope_schema = tt_registry::schema_of::<tt_executor::Envelope>();
     let mut out: BTreeMap<String, Vec<(String, Value)>> = BTreeMap::new();

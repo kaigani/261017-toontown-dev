@@ -114,7 +114,15 @@ impl Path {
     #[must_use]
     pub fn segments(&self) -> Vec<Cubic> {
         let n = self.anchors.len();
-        let count = if self.closed { n } else { n.saturating_sub(1) };
+        // A single anchor is a dab (no segment), unless it is a closed loop with handles.
+        let count = match n {
+            0 => 0,
+            1 => usize::from(
+                self.closed && (self.anchors[0].inh != P::default() || self.anchors[0].outh != P::default()),
+            ),
+            _ if self.closed => n,
+            _ => n - 1,
+        };
         (0..count)
             .map(|i| {
                 let a = self.anchors[i];

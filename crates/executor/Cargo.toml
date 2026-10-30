@@ -20,6 +20,9 @@ regex.workspace = true
 tt-persist = { workspace = true, features = ["test-hooks"] }
 trybuild.workspace = true
 jsonschema.workspace = true
+proptest.workspace = true
+# Counting allocator of the C2.1 measurement test binary only (MIT; never in a product graph).
+stats_alloc = "0.1.10"
 
 [lints]
 workspace = true

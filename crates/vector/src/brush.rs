@@ -187,8 +187,20 @@ pub fn outline(spine: &Path, pressure: &[[f64; 2]], pen: &BrushPen) -> Result<Pa
     let Some(merged) = bridge(contours) else {
         return Err(GeomError::invalid("/pen", "the brush sweeps no area (zero width)"));
     };
-    let samples: Vec<Sample> = merged.iter().map(|p| Sample { p: *p, pressure: 1.0 }).collect();
     let tol = OUTLINE_TOLERANCE.min(pen.max_size / 16.0).max(1.0 / GRID);
+    // Long straight edges (square and flat tips, bridges) are subdivided so the fit is constrained between their ends
+    // and cannot bulge away from the polygon between sparse vertices.
+    let step = (4.0 * tol).max(0.25);
+    let mut dense: Vec<P> = Vec::with_capacity(merged.len());
+    for (i, a) in merged.iter().enumerate() {
+        let b = merged[(i + 1) % merged.len()];
+        dense.push(*a);
+        let n = (a.dist(b) / step).floor().min(4096.0) as u32;
+        for k in 1..n {
+            dense.push(a.lerp(b, f64::from(k) / f64::from(n)));
+        }
+    }
+    let samples: Vec<Sample> = dense.iter().map(|p| Sample { p: *p, pressure: 1.0 }).collect();
     let f = fit::fit_with(&samples, tol, 0.0, true);
     Ok(f.path)
 }

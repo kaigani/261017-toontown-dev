@@ -311,10 +311,7 @@ fn validation_references_and_candidates() {
     let v = ok(&h, "doc.validate", json!({}));
     let unavailable: Vec<&str> =
         v["unavailable"].as_array().unwrap().iter().map(|u| u["check"].as_str().unwrap()).collect();
-    assert_eq!(
-        unavailable,
-        ["unpaintedZones", "staleLipSync", "transitionPadding", "missingFonts", "outdatedTemplateLinks"]
-    );
+    assert_eq!(unavailable, ["unpaintedZones", "staleLipSync", "transitionPadding", "outdatedTemplateLinks"]);
     assert!(v["issues"].as_array().unwrap().iter().all(|i| i["issueId"].as_str().unwrap().starts_with("is_")));
     assert_eq!(err(&h, "doc.validate", json!({ "checks": ["nope"] })).code, "arg.invalid");
     let errors = ok(&h, "doc.validate", json!({ "minSeverity": "error" }));

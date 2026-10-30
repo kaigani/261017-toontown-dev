@@ -297,7 +297,7 @@ fn permissions_validation_and_availability() {
     assert_eq!(e.code, "arg.invalid");
     let e = err(&h, "app.state.changed", json!({}));
     assert_eq!(e.code, "command.disabled", "events are not invocable");
-    let e = err(&h, "draw.stroke.add", json!({}));
+    let e = err(&h, "draw.flatten.apply", json!({}));
     assert_eq!(e.code, "command.notImplemented");
     assert_eq!(e.details["milestone"], "M2 C2.3");
     // Without a project (01 §1.3).

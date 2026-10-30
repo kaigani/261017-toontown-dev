@@ -17,11 +17,11 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M675X8R425SA4PWXKFQ95YWZ",
+            "projectId": "pr_01M67859J43X0MD77V3GNMWYTT",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M675X8R575Z9MZY8C6BS4H0W",
-            "cameraId": "el_01M675X8R575Z9MZY8C6BS4H0Y",
-            "elementId": "el_01M675X8R575Z9MZY8C6BS4H0Z"
+            "sceneId": "sc_01M67859J6BVH93FBG63BGBP6J",
+            "cameraId": "el_01M67859J6BVH93FBG63BGBP6M",
+            "elementId": "el_01M67859J6BVH93FBG63BGBP6N"
           },
           "changes": [],
           "warnings": [],
@@ -46,25 +46,25 @@
         "response": {
           "status": "ok",
           "result": {
-            "id": "pr_01M675X8R425SA4PWXKFQ95YWZ",
+            "id": "pr_01M67859J43X0MD77V3GNMWYTT",
             "name": "Demo",
             "path": "/tmp/Demo.animpkg",
             "readOnly": false,
             "formatVersion": "1.0",
             "dirty": false,
             "globalLibraryDirty": false,
-            "lastSaved": "2026-10-30T19:52:09.220Z",
+            "lastSaved": "2026-10-30T20:31:29.348Z",
             "frameRate": 24.0,
             "cameraWidth": 1920,
             "cameraHeight": 1080,
             "scenes": [
               {
-                "id": "sc_01M675X8R575Z9MZY8C6BS4H0W",
+                "id": "sc_01M67859J6BVH93FBG63BGBP6J",
                 "name": "Scene-1",
                 "frameCount": 1
               }
             ],
-            "currentSceneId": "sc_01M675X8R575Z9MZY8C6BS4H0W"
+            "currentSceneId": "sc_01M67859J6BVH93FBG63BGBP6J"
           },
           "changes": [],
           "warnings": [],
@@ -97,7 +97,7 @@
           },
           "changes": [
             {
-              "id": "pr_01M675X8R425SA4PWXKFQ95YWZ",
+              "id": "pr_01M67859J43X0MD77V3GNMWYTT",
               "type": "project",
               "op": "modified",
               "rev": 2,
@@ -138,7 +138,7 @@
           },
           "changes": [
             {
-              "id": "pr_01M675X8R425SA4PWXKFQ95YWZ",
+              "id": "pr_01M67859J43X0MD77V3GNMWYTT",
               "type": "project",
               "op": "modified",
               "rev": 3,
@@ -146,8 +146,8 @@
                 {
                   "op": "replace",
                   "path": "/modifiedAt",
-                  "value": "2026-10-30T19:52:09.479Z",
-                  "oldValue": "2026-10-30T19:52:09.220Z"
+                  "value": "2026-10-30T20:31:29.611Z",
+                  "oldValue": "2026-10-30T20:31:29.348Z"
                 }
               ]
             }
@@ -178,14 +178,14 @@
             "state": "succeeded",
             "progress": 1.0,
             "message": "Replace",
-            "startedAt": "2026-10-30T19:52:09.480Z",
+            "startedAt": "2026-10-30T20:31:29.612Z",
             "result": {
               "path": "/tmp/Demo.animpkg",
               "projectSaved": true,
               "globalLibrarySaved": false,
-              "backupId": "bk_480443f25e887580"
+              "backupId": "bk_a52af2e2b15f98bb"
             },
-            "session": "agent:s1-458aad"
+            "session": "agent:s1-38c36c"
           },
           "changes": [],
           "warnings": [],
@@ -232,7 +232,7 @@
             {
               "path": "/tmp/Demo.animpkg",
               "name": "Demo",
-              "lastOpened": "2026-10-30T19:52:09.503Z",
+              "lastOpened": "2026-10-30T20:31:29.634Z",
               "exists": true
             }
           ],
@@ -264,11 +264,11 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M675X98M0YVSE6DKRPAZ9EJ6",
+            "projectId": "pr_01M6785A29RJQ4YF4W8WMK2BCC",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M675X98N74KQ52YMXR3Y1M9B",
-            "cameraId": "el_01M675X98N74KQ52YMXR3Y1M9D",
-            "elementId": "el_01M675X98N74KQ52YMXR3Y1M9E"
+            "sceneId": "sc_01M6785A2A84CMBRWWQC34WHPC",
+            "cameraId": "el_01M6785A2A84CMBRWWQC34WHPE",
+            "elementId": "el_01M6785A2A84CMBRWWQC34WHPF"
           },
           "changes": [],
           "warnings": [],
@@ -297,7 +297,7 @@
           "result": {
             "items": [
               {
-                "id": "sc_01M675X98N74KQ52YMXR3Y1M9B",
+                "id": "sc_01M6785A2A84CMBRWWQC34WHPC",
                 "type": "scene",
                 "name": "Scene-1",
                 "path": "scene:\"Scene-1\"",
@@ -331,52 +331,52 @@
           "status": "ok",
           "result": {
             "object": {
-              "id": "sc_01M675X98N74KQ52YMXR3Y1M9B",
+              "id": "sc_01M6785A2A84CMBRWWQC34WHPC",
               "type": "scene",
               "rev": 1,
               "name": "Scene-1",
               "path": "scene:\"Scene-1\"",
               "visible": true,
               "backgroundColour": "#FFFFFFFF",
-              "currentCameraId": "el_01M675X98N74KQ52YMXR3Y1M9D",
+              "currentCameraId": "el_01M6785A2A84CMBRWWQC34WHPE",
               "paletteStyles": {
-                "pal_01M675X98M0YVSE6DKRPAZ9EJ7": "sty_01M675X98M0YVSE6DKRPAZ9EJ8"
+                "pal_01M6785A29RJQ4YF4W8WMK2BCD": "sty_01M6785A29RJQ4YF4W8WMK2BCE"
               },
               "outTransition": {
-                "id": "tr_01M675X98N74KQ52YMXR3Y1M9H",
+                "id": "tr_01M6785A2A84CMBRWWQC34WHPJ",
                 "type": "transition"
               },
               "tree": [
                 {
-                  "id": "el_01M675X98N74KQ52YMXR3Y1M9C",
+                  "id": "el_01M6785A2A84CMBRWWQC34WHPD",
                   "children": [
                     {
-                      "id": "el_01M675X98N74KQ52YMXR3Y1M9D",
+                      "id": "el_01M6785A2A84CMBRWWQC34WHPE",
                       "children": []
                     }
                   ]
                 },
                 {
-                  "id": "el_01M675X98N74KQ52YMXR3Y1M9E",
+                  "id": "el_01M6785A2A84CMBRWWQC34WHPF",
                   "children": []
                 }
               ],
               "columnOrder": [
-                "el_01M675X98N74KQ52YMXR3Y1M9E"
+                "el_01M6785A2A84CMBRWWQC34WHPF"
               ],
               "elements": [
                 {
-                  "id": "el_01M675X98N74KQ52YMXR3Y1M9C",
+                  "id": "el_01M6785A2A84CMBRWWQC34WHPD",
                   "type": "element",
                   "name": "Camera Peg"
                 },
                 {
-                  "id": "el_01M675X98N74KQ52YMXR3Y1M9D",
+                  "id": "el_01M6785A2A84CMBRWWQC34WHPE",
                   "type": "element",
                   "name": "Camera"
                 },
                 {
-                  "id": "el_01M675X98N74KQ52YMXR3Y1M9E",
+                  "id": "el_01M6785A2A84CMBRWWQC34WHPF",
                   "type": "element",
                   "name": "Drawing"
                 }
@@ -385,7 +385,7 @@
           },
           "targets": {
             "ids": [
-              "sc_01M675X98N74KQ52YMXR3Y1M9B"
+              "sc_01M6785A2A84CMBRWWQC34WHPC"
             ]
           },
           "changes": [],
@@ -430,7 +430,7 @@
           "result": {
             "changes": [
               {
-                "id": "sc_01M675X98N74KQ52YMXR3Y1M9B",
+                "id": "sc_01M6785A2A84CMBRWWQC34WHPC",
                 "type": "scene",
                 "op": "modified",
                 "rev": 2,
@@ -449,12 +449,12 @@
           },
           "targets": {
             "ids": [
-              "sc_01M675X98N74KQ52YMXR3Y1M9B"
+              "sc_01M6785A2A84CMBRWWQC34WHPC"
             ]
           },
           "changes": [
             {
-              "id": "sc_01M675X98N74KQ52YMXR3Y1M9B",
+              "id": "sc_01M6785A2A84CMBRWWQC34WHPC",
               "type": "scene",
               "op": "modified",
               "rev": 2,
@@ -500,7 +500,7 @@
             "toRev": 2,
             "changes": [
               {
-                "id": "sc_01M675X98N74KQ52YMXR3Y1M9B",
+                "id": "sc_01M6785A2A84CMBRWWQC34WHPC",
                 "type": "scene",
                 "op": "modified",
                 "rev": 2,
@@ -564,11 +564,6 @@
                 "reason": "storyline timing (08 §16.5)"
               },
               {
-                "check": "missingFonts",
-                "owner": "M2 C2.1",
-                "reason": "text nodes and font discovery"
-              },
-              {
                 "check": "outdatedTemplateLinks",
                 "owner": "M9 C9.1",
                 "reason": "library template versions"
@@ -601,11 +596,11 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M675X9H2X37K3YHSJ7PDMZDC",
+            "projectId": "pr_01M6785AAQ4XDSJCC2J82TX5YR",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M675X9H3ZFHKDC5DHE7HMTCH",
-            "cameraId": "el_01M675X9H3ZFHKDC5DHE7HMTCK",
-            "elementId": "el_01M675X9H3ZFHKDC5DHE7HMTCM"
+            "sceneId": "sc_01M6785AARXM6QA66ZEEQM3FXK",
+            "cameraId": "el_01M6785AARXM6QA66ZEEQM3FXN",
+            "elementId": "el_01M6785AARXM6QA66ZEEQM3FXP"
           },
           "changes": [],
           "warnings": [],
@@ -642,7 +637,7 @@
           "result": {
             "changes": [
               {
-                "id": "sc_01M675X9H3ZFHKDC5DHE7HMTCH",
+                "id": "sc_01M6785AARXM6QA66ZEEQM3FXK",
                 "type": "scene",
                 "op": "modified",
                 "rev": 2,
@@ -661,12 +656,12 @@
           },
           "targets": {
             "ids": [
-              "sc_01M675X9H3ZFHKDC5DHE7HMTCH"
+              "sc_01M6785AARXM6QA66ZEEQM3FXK"
             ]
           },
           "changes": [
             {
-              "id": "sc_01M675X9H3ZFHKDC5DHE7HMTCH",
+              "id": "sc_01M6785AARXM6QA66ZEEQM3FXK",
               "type": "scene",
               "op": "modified",
               "rev": 2,
@@ -712,9 +707,9 @@
                 "stepId": "u-1",
                 "label": "Mark take",
                 "source": "agent",
-                "agentSessionId": "s1-7ea629",
+                "agentSessionId": "s1-dd0747",
                 "agentName": "c14-test",
-                "time": "2026-10-30T19:52:10.066Z",
+                "time": "2026-10-30T20:31:30.180Z",
                 "objectCount": 1
               }
             ],
@@ -750,7 +745,7 @@
           },
           "changes": [
             {
-              "id": "sc_01M675X9H3ZFHKDC5DHE7HMTCH",
+              "id": "sc_01M6785AARXM6QA66ZEEQM3FXK",
               "type": "scene",
               "op": "modified",
               "rev": 3,
@@ -791,7 +786,7 @@
           },
           "changes": [
             {
-              "id": "sc_01M675X9H3ZFHKDC5DHE7HMTCH",
+              "id": "sc_01M6785AARXM6QA66ZEEQM3FXK",
               "type": "scene",
               "op": "modified",
               "rev": 4,
@@ -833,11 +828,11 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M675X9RTAX1HH03X6KJC53C4",
+            "projectId": "pr_01M6785AJYYDK4ANBYR59X6PVF",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M675X9RVKG64TXWV4JRVHAT1",
-            "cameraId": "el_01M675X9RVKG64TXWV4JRVHAT3",
-            "elementId": "el_01M675X9RVKG64TXWV4JRVHAT4"
+            "sceneId": "sc_01M6785AJZM4Z79CNNA4FKGP4T",
+            "cameraId": "el_01M6785AJZM4Z79CNNA4FKGP4W",
+            "elementId": "el_01M6785AJZM4Z79CNNA4FKGP4X"
           },
           "changes": [],
           "warnings": [],
@@ -896,7 +891,7 @@
           "result": {
             "changes": [
               {
-                "id": "sc_01M675X9RVKG64TXWV4JRVHAT1",
+                "id": "sc_01M6785AJZM4Z79CNNA4FKGP4T",
                 "type": "scene",
                 "op": "modified",
                 "rev": 2,
@@ -915,12 +910,12 @@
           },
           "targets": {
             "ids": [
-              "sc_01M675X9RVKG64TXWV4JRVHAT1"
+              "sc_01M6785AJZM4Z79CNNA4FKGP4T"
             ]
           },
           "changes": [
             {
-              "id": "sc_01M675X9RVKG64TXWV4JRVHAT1",
+              "id": "sc_01M6785AJZM4Z79CNNA4FKGP4T",
               "type": "scene",
               "op": "modified",
               "rev": 2,
@@ -962,7 +957,7 @@
           "result": [
             {
               "name": "before",
-              "createdAt": "2026-10-30T19:52:10.310Z",
+              "createdAt": "2026-10-30T20:31:30.443Z",
               "documentRev": 1,
               "origin": "agent:c14-test"
             }
@@ -994,7 +989,7 @@
           },
           "changes": [
             {
-              "id": "sc_01M675X9RVKG64TXWV4JRVHAT1",
+              "id": "sc_01M6785AJZM4Z79CNNA4FKGP4T",
               "type": "scene",
               "op": "modified",
               "rev": 3,
@@ -1060,11 +1055,11 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M675XA1EEEW3ED556FSCPS73",
+            "projectId": "pr_01M6785ATSJAXAPFZMDB8CA301",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M675XA1FA6E6WW080QGXSPBY",
-            "cameraId": "el_01M675XA1FA6E6WW080QGXSPC0",
-            "elementId": "el_01M675XA1FA6E6WW080QGXSPC1"
+            "sceneId": "sc_01M6785ATVFKAGTBZHCB6V54GW",
+            "cameraId": "el_01M6785ATVFKAGTBZHCB6V54GY",
+            "elementId": "el_01M6785ATVFKAGTBZHCB6V54GZ"
           },
           "changes": [],
           "warnings": [],
@@ -1117,13 +1112,13 @@
             "state": "succeeded",
             "progress": 1.0,
             "message": "",
-            "startedAt": "2026-10-30T19:52:10.585Z",
+            "startedAt": "2026-10-30T20:31:30.693Z",
             "result": {
               "path": "/tmp/Demo.animpkg",
               "projectSaved": true,
               "globalLibrarySaved": false
             },
-            "session": "agent:s1-d85f1a"
+            "session": "agent:s1-7d2180"
           },
           "changes": [],
           "warnings": [],
@@ -1152,13 +1147,13 @@
               "state": "succeeded",
               "progress": 1.0,
               "message": "",
-              "startedAt": "2026-10-30T19:52:10.585Z",
+              "startedAt": "2026-10-30T20:31:30.693Z",
               "result": {
                 "path": "/tmp/Demo.animpkg",
                 "projectSaved": true,
                 "globalLibrarySaved": false
               },
-              "session": "agent:s1-d85f1a"
+              "session": "agent:s1-7d2180"
             }
           ],
           "changes": [],
@@ -1190,11 +1185,11 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M675XA8XHZN7FJ0BY4BF9D1Z",
+            "projectId": "pr_01M6785B2CV63F4YMV8DCA4ZQ5",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M675XA8YQGGF7FP9S70CMKA2",
-            "cameraId": "el_01M675XA8YQGGF7FP9S70CMKA4",
-            "elementId": "el_01M675XA8YQGGF7FP9S70CMKA5"
+            "sceneId": "sc_01M6785B2DJH7N42GY60ZK7PHH",
+            "cameraId": "el_01M6785B2DJH7N42GY60ZK7PHK",
+            "elementId": "el_01M6785B2DJH7N42GY60ZK7PHM"
           },
           "changes": [],
           "warnings": [],
@@ -1230,7 +1225,7 @@
           "result": {
             "changes": [
               {
-                "id": "sc_01M675XA8YQGGF7FP9S70CMKA2",
+                "id": "sc_01M6785B2DJH7N42GY60ZK7PHH",
                 "type": "scene",
                 "op": "modified",
                 "rev": 2,
@@ -1249,12 +1244,12 @@
           },
           "targets": {
             "ids": [
-              "sc_01M675XA8YQGGF7FP9S70CMKA2"
+              "sc_01M6785B2DJH7N42GY60ZK7PHH"
             ]
           },
           "changes": [
             {
-              "id": "sc_01M675XA8YQGGF7FP9S70CMKA2",
+              "id": "sc_01M6785B2DJH7N42GY60ZK7PHH",
               "type": "scene",
               "op": "modified",
               "rev": 2,
@@ -1298,7 +1293,7 @@
             "endpoint": "stdio",
             "sessions": [
               {
-                "sessionId": "s1-4f751f",
+                "sessionId": "s1-e5def6",
                 "client": "c14-test",
                 "policy": "assist",
                 "scopes": [
@@ -1310,8 +1305,8 @@
                   "files.write",
                   "library.global"
                 ],
-                "connectedAt": "2026-10-30T19:52:10.779Z",
-                "lastActivity": "2026-10-30T19:52:10.829Z",
+                "connectedAt": "2026-10-30T20:31:30.889Z",
+                "lastActivity": "2026-10-30T20:31:30.937Z",
                 "paused": false,
                 "transport": "stdio"
               }
@@ -1344,8 +1339,8 @@
           "result": [
             {
               "seq": 1,
-              "time": "2026-10-30T19:52:10.825Z",
-              "sessionId": "s1-4f751f",
+              "time": "2026-10-30T20:31:30.933Z",
+              "sessionId": "s1-e5def6",
               "client": "c14-test",
               "tool": "run_command",
               "commandId": "project.create",
@@ -1357,12 +1352,12 @@
               "undoStepId": null,
               "changedCount": 0,
               "documentRev": 1,
-              "durationMs": 45
+              "durationMs": 42
             },
             {
               "seq": 2,
-              "time": "2026-10-30T19:52:10.829Z",
-              "sessionId": "s1-4f751f",
+              "time": "2026-10-30T20:31:30.937Z",
+              "sessionId": "s1-e5def6",
               "client": "c14-test",
               "tool": "run_command",
               "commandId": "doc.object.patch",
@@ -1384,8 +1379,8 @@
             },
             {
               "seq": 3,
-              "time": "2026-10-30T19:52:10.832Z",
-              "sessionId": "s1-4f751f",
+              "time": "2026-10-30T20:31:30.940Z",
+              "sessionId": "s1-e5def6",
               "client": "c14-test",
               "tool": "run_command",
               "commandId": "agent.server.status",
@@ -1471,11 +1466,11 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M675XAHCYTRGJXDQFZFF7AKZ",
+            "projectId": "pr_01M6785B9S6Y2JMR5GK2BRJ6ZD",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M675XAHD69Z6WPFBTT00JRYQ",
-            "cameraId": "el_01M675XAHD69Z6WPFBTT00JRYS",
-            "elementId": "el_01M675XAHD69Z6WPFBTT00JRYT"
+            "sceneId": "sc_01M6785B9T3RZVJCGYBK3V2GDH",
+            "cameraId": "el_01M6785B9T3RZVJCGYBK3V2GDK",
+            "elementId": "el_01M6785B9T3RZVJCGYBK3V2GDM"
           },
           "changes": [],
           "warnings": [],
@@ -1531,7 +1526,7 @@
           "status": "ok",
           "result": {
             "project": {
-              "id": "pr_01M675XAHCYTRGJXDQFZFF7AKZ",
+              "id": "pr_01M6785B9S6Y2JMR5GK2BRJ6ZD",
               "name": "Demo",
               "path": "/tmp/Demo.animpkg",
               "dirty": false,
@@ -1539,13 +1534,13 @@
               "readOnly": false
             },
             "scene": {
-              "id": "sc_01M675XAHD69Z6WPFBTT00JRYQ",
+              "id": "sc_01M6785B9T3RZVJCGYBK3V2GDH",
               "name": "Scene-1",
               "frameCount": 1
             },
             "frame": 12,
             "element": {
-              "id": "el_01M675XAHD69Z6WPFBTT00JRYR",
+              "id": "el_01M6785B9T3RZVJCGYBK3V2GDJ",
               "name": "Camera Peg",
               "type": "peg"
             },
@@ -1576,9 +1571,9 @@
             "fullScreen": false
           },
           "targets": {
-            "sceneId": "sc_01M675XAHD69Z6WPFBTT00JRYQ",
+            "sceneId": "sc_01M6785B9T3RZVJCGYBK3V2GDH",
             "frame": 12,
-            "elementId": "el_01M675XAHD69Z6WPFBTT00JRYR"
+            "elementId": "el_01M6785B9T3RZVJCGYBK3V2GDJ"
           },
           "changes": [],
           "warnings": [],
@@ -1627,7 +1622,7 @@
           "status": "ok",
           "result": {
             "project": {
-              "id": "pr_01M675XAHCYTRGJXDQFZFF7AKZ",
+              "id": "pr_01M6785B9S6Y2JMR5GK2BRJ6ZD",
               "name": "Demo",
               "path": "/tmp/Demo.animpkg",
               "dirty": false,
@@ -1635,13 +1630,13 @@
               "readOnly": false
             },
             "scene": {
-              "id": "sc_01M675XAHD69Z6WPFBTT00JRYQ",
+              "id": "sc_01M6785B9T3RZVJCGYBK3V2GDH",
               "name": "Scene-1",
               "frameCount": 1
             },
             "frame": 1,
             "element": {
-              "id": "el_01M675XAHD69Z6WPFBTT00JRYR",
+              "id": "el_01M6785B9T3RZVJCGYBK3V2GDJ",
               "name": "Camera Peg",
               "type": "peg"
             },
@@ -1670,14 +1665,14 @@
             "modal": null,
             "agentSessions": [
               {
-                "sessionId": "s1-a1020f",
+                "sessionId": "s1-168c2d",
                 "name": "c14-test",
                 "acting": false
               }
             ],
             "fullScreen": false,
             "agent": {
-              "sessionId": "s1-a1020f",
+              "sessionId": "s1-168c2d",
               "client": "c14-test",
               "policy": "assist",
               "scopes": [

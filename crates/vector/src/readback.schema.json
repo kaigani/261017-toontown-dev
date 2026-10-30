@@ -1,5 +1,5 @@
 {
-  "$comment": "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of strokes) are the planar map's, M2 C2.2; they are absent until then.",
+  "description": "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of strokes) are the planar map's, M2 C2.2; they are absent until then.",
   "type": "object",
   "additionalProperties": false,
   "required": ["drawingId", "elementId", "name", "rev", "locked", "space", "pivot", "bounds", "nodes"],

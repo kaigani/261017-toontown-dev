@@ -30708,6 +30708,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
   },
   "draw.drawing.get.result": {
     title: "DrawingReadback",
+    description: "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of strokes) are the planar map's, M2 C2.2; they are absent until then.",
     type: "object",
     properties: {
       drawingId: {
@@ -30776,7 +30777,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         },
       },
     },
-    $comment: "draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of strokes) are the planar map's, M2 C2.2; they are absent until then.",
     additionalProperties: false,
     required: [
       "drawingId",
@@ -82126,6 +82126,7 @@ export interface draw_drawing_get_stroke {
   parentId?: draw_drawing_get_parentId;
 }
 
+/** draw.drawing.get result (02 §13.4), closed. Zones (and the leftZoneId/rightZoneId of strokes) are the planar map's, M2 C2.2; they are absent until then. */
 export interface draw_drawing_get_result {
   drawingId: string;
   elementId: string | null;
