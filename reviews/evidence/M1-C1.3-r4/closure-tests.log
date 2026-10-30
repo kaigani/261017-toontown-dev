@@ -1,0 +1,15 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r4\crates\executor)
+At line:2 char:93
++ ... closure.rs; cargo test -p tt-executor --locked --test c13_r4_closure  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.94s
+     Running tests\c13_r4_closure.rs (target\debug\deps\c13_r4_closure-fee1e84df385db03.exe)
+
+running 2 tests
+test label_and_real_reference_in_one_entry_are_distinguished ... ok
+test remove_export_three_undo_blob_close_clears_cache ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s

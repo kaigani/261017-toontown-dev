@@ -1,0 +1,83 @@
+crates/model/src/entities\transition.rs:55:        id: Id,
+crates/model/src/entities\transition.rs:102:    pub fn none(id: Id) -> Self {
+crates/model/src/entities\sound.rs:49:    pub asset_id: Id,
+crates/model/src/entities\sound.rs:92:        id: Id,
+crates/model/src/entities\sound.rs:101:        asset_id: Id,
+crates/model/src/entities\sound.rs:143:    pub a: Option<Id>,
+crates/model/src/entities\sound.rs:146:    pub b: Option<Id>,
+crates/model/src/entities\sound.rs:149:    pub c: Option<Id>,
+crates/model/src/entities\sound.rs:152:    pub d: Option<Id>,
+crates/model/src/entities\sound.rs:155:    pub e: Option<Id>,
+crates/model/src/entities\sound.rs:158:    pub f: Option<Id>,
+crates/model/src/entities\sound.rs:161:    pub g: Option<Id>,
+crates/model/src/entities\sound.rs:164:    pub x: Option<Id>,
+crates/model/src/entities\sound.rs:170:    pub fn get(&self, shape: MouthShape) -> Option<&Id> {
+crates/model/src/entities\sound.rs:190:    pub drawing_element_id: Id,
+crates/model/src/entities\sound.rs:205:        id: Id,
+crates/model/src/entities\sound.rs:214:        asset_id: Id,
+crates/model/src/entities\scene.rs:20:    pub id: Id,
+crates/model/src/entities\scene.rs:33:        id: Id,
+crates/model/src/entities\scene.rs:51:        current_camera_id: Option<Id>,
+crates/model/src/entities\scene.rs:60:        column_order: Vec<Id>,
+crates/model/src/entities\scene.rs:80:    pub id: Id,
+crates/model/src/entities\scene.rs:86:    pub palette_styles: IndexMap<Id, Id>,
+crates/model/src/entities\scene.rs:88:    pub elements: Vec<Id>,
+crates/model/src/entities\scene.rs:92:    pub column_order: Vec<Id>,
+crates/model/src/entities\scene.rs:94:    pub current_camera_id: Option<Id>,
+crates/model/src/entities\project.rs:27:        id: Id,
+crates/model/src/entities\project.rs:87:    pub id: Id,
+crates/model/src/entities\project.rs:99:    pub palettes: Vec<Id>,
+crates/model/src/entities\project.rs:103:    pub drawing_banks: Vec<Id>,
+crates/model/src/entities\project.rs:105:    pub scenes: Vec<Id>,
+crates/model/src/entities\project.rs:107:    pub library: Id,
+crates/model/src/entities\pen.rs:43:        id: Id,
+crates/model/src/entities\pen.rs:71:        colour_id: Option<Id>,
+crates/model/src/entities\pen.rs:88:    pub fn new(id: Id, name: String, kind: PenKind, min_size: f64, max_size: f64, smoothness: u8) -> Self {
+crates/model/src/entities\pen.rs:110:    pub fn default_set(mut ids: impl FnMut() -> Id) -> Vec<Pen> {
+crates/model/src/entities\palette.rs:20:        id: Id,
+crates/model/src/entities\palette.rs:46:    pub fn new(id: Id, name: String) -> Self {
+crates/model/src/entities\palette.rs:133:        colour_id: Id,
+crates/model/src/entities\palette.rs:178:    pub fn solid(colour_id: Id, name: String, styles: &[Id], rgba: Colour) -> Self {
+crates/model/src/entities\palette.rs:213:        id: Id,
+crates/model/src/entities\palette.rs:247:    pub fn new(id: Id, name: String, styles: Vec<PaletteStyle>, swatches: Vec<Swatch>) -> Self {
+crates/model/src/entities\mod.rs:206:    id: Id,
+crates/model/src/entities\mod.rs:214:    pub fn new(id: Id, ty: ObjectType, name: Option<String>) -> Self {
+crates/model/src/entities\mod.rs:220:    pub fn id(&self) -> &Id {
+crates/model/src/entities\mod.rs:300:    ids: Vec<Id>,
+crates/model/src/entities\mod.rs:307:    pub fn new(ids: Vec<Id>) -> Self {
+crates/model/src/entities\mod.rs:313:    pub fn ids(&self) -> &[Id] {
+crates/model/src/entities\mod.rs:361:    id: Id,
+crates/model/src/entities\mod.rs:368:    pub fn new(id: Id) -> Self {
+crates/model/src/entities\mod.rs:374:    pub fn id(&self) -> &Id {
+crates/model/src/entities\library.rs:62:        id: Id,
+crates/model/src/entities\library.rs:137:        id: Id,
+crates/model/src/entities\library.rs:217:        id: Id,
+crates/model/src/entities\library.rs:250:    pub fn local(id: Id, name: String) -> Self {
+crates/model/src/entities\asset.rs:56:    pub library_id: Option<Id>,
+crates/model/src/entities\asset.rs:58:    pub item_id: Option<Id>,
+crates/model/src/entities\asset.rs:71:        id: Id,
+crates/model/src/entities\channel.rs:94:        id: Id,
+crates/model/src/entities\channel.rs:128:    pub fn new(id: Id, frame: u32, value: f64) -> Self {
+crates/model/src/entities\channel.rs:152:        id: Id,
+crates/model/src/entities\channel.rs:201:        id: Id,
+crates/model/src/entities\channel.rs:239:    pub fn one_d(id: Id, name: String, curve_type: CurveType, keys: Vec<Key>) -> Self {
+crates/model/src/entities\element.rs:555:pub type ExposureRun = (Option<Id>, u32);
+crates/model/src/entities\element.rs:565:        id: Id,
+crates/model/src/entities\element.rs:625:        drawing_bank_id: Option<Id>,
+crates/model/src/entities\element.rs:714:    pub id: Id,
+crates/model/src/entities\element.rs:722:    pub drawing_bank_id: Option<Id>,
+crates/model/src/entities\effect.rs:346:        id: Id,
+crates/model/src/entities\drawing.rs:71:    pub pen_id: Option<Id>,
+crates/model/src/entities\drawing.rs:107:    pub colour_id: Option<Id>,
+crates/model/src/entities\drawing.rs:131:        id: Id,
+crates/model/src/entities\drawing.rs:147:        colour_id: Option<Id>,
+crates/model/src/entities\drawing.rs:254:    pub colour_id: Option<Id>,
+crates/model/src/entities\drawing.rs:290:        id: Id,
+crates/model/src/entities\drawing.rs:364:    pub fn layer(id: Id, hint: LayerHint) -> Self {
+crates/model/src/entities\drawing.rs:393:    pub style_id: Id,
+crates/model/src/entities\drawing.rs:403:    pub colour_id: Id,
+crates/model/src/entities\drawing.rs:405:    pub palette_id: Id,
+crates/model/src/entities\drawing.rs:422:        id: Id,
+crates/model/src/entities\drawing.rs:463:    pub fn empty(id: Id, name: String, created_at: Timestamp) -> Self {
+crates/model/src/entities\drawing.rs:489:        id: Id,
+crates/model/src/entities\drawing.rs:514:    pub fn new(id: Id, drawings: Vec<Id>) -> Self {
