@@ -6,7 +6,7 @@ test_C02_R1_07_nearest_rank_percentile_matches_frontend (__main__.ToolingTests.t
 test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts) ... ok
 
 ----------------------------------------------------------------------
-Ran 4 tests in 0.620s
+Ran 4 tests in 0.533s
 
 OK
 === c02-r2-tooling.py
@@ -21,26 +21,26 @@ test_macos_extended_accessor_contracts (__main__.AnalyzerAttacks.test_macos_exte
 test_pause_segmentation_and_pose_only_native_reference_unknown (__main__.AnalyzerAttacks.test_pause_segmentation_and_pose_only_native_reference_unknown) ... ok
 
 ----------------------------------------------------------------------
-Ran 9 tests in 0.558s
+Ran 9 tests in 0.552s
 
 OK
 === c02-r3-tooling.py
 test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs (__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.243s
+Ran 1 test in 0.248s
 
 OK
 === c03-r1-tooling.py
 ............
 ----------------------------------------------------------------------
-Ran 12 tests in 1.012s
+Ran 12 tests in 0.966s
 
 OK
 === c03-r2-tooling.py
 .........
 ----------------------------------------------------------------------
-Ran 9 tests in 0.544s
+Ran 9 tests in 0.542s
 
 OK
 === c04-r2-decisions.py
@@ -58,7 +58,7 @@ test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected (__main__.Regres
 test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter (__main__.Regressions.test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter) ... ok
 
 ----------------------------------------------------------------------
-Ran 3 tests in 0.071s
+Ran 3 tests in 0.068s
 
 OK
 === c04-r3-page.py
@@ -68,20 +68,20 @@ OK
 
  Test Files  1 passed (1)
       Tests  5 passed (5)
-   Start at  03:15:00
-   Duration  1.12s (environment 59%, transform 13%, setup 12%, tests 12%, import 4%)
+   Start at  05:20:29
+   Duration  1.10s (environment 60%, transform 13%, setup 12%, tests 12%, import 4%)
 
 === c04-r5-decisions.py
 test_outside_packets_cannot_change_action_rate_or_platform_decision (__main__.OutsideNativeClock.test_outside_packets_cannot_change_action_rate_or_platform_decision) ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.054s
+Ran 1 test in 0.052s
 
 OK
 === c11-r2-review-policy.py
 ..
 ----------------------------------------------------------------------
-Ran 2 tests in 0.040s
+Ran 2 tests in 0.033s
 
 OK
 === c14-r1-mcp.py
@@ -113,6 +113,26 @@ test_suspension_hooks_are_not_a_normal_dependency_feature (__main__.ReleaseFeatu
 Ran 23 tests in 0.010s
 
 OK (skipped=21)
+=== c14-r2-mcp.py
+test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) ... ok
+test_all_state_include_combinations_are_command_projections (__main__.Protocol.test_all_state_include_combinations_are_command_projections) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_cancel_live_elicitation_releases_the_call_worker (__main__.Protocol.test_cancel_live_elicitation_releases_the_call_worker) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_close_with_save_offers_external_change_confirmation (__main__.Protocol.test_close_with_save_offers_external_change_confirmation) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once (__main__.Protocol.test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_export_publication_failure_is_not_a_successful_audit_record (__main__.Protocol.test_export_publication_failure_is_not_a_successful_audit_record) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_idempotent_retry_is_not_a_second_replay_operation (__main__.Protocol.test_idempotent_retry_is_not_a_second_replay_operation) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded (__main__.Protocol.test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize (__main__.Protocol.test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_long_unicode_and_nested_globs_keep_the_server_usable (__main__.Protocol.test_long_unicode_and_nested_globs_keep_the_server_usable) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_nested_wrapper_validation_never_edits (__main__.Protocol.test_nested_wrapper_validation_never_edits) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_nonreading_client_without_eof_is_closed_by_pressure_timeout (__main__.Protocol.test_nonreading_client_without_eof_is_closed_by_pressure_timeout) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_partial_sequential_batch_keeps_its_committed_edits_in_replay (__main__.Protocol.test_partial_sequential_batch_keeps_its_committed_edits_in_replay) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+test_typed_tools_reject_nested_types_and_extra_options (__main__.Protocol.test_typed_tools_reject_nested_types_and_extra_options) ... skipped 'real binary supplied by bins/headless/tests/c14_r2.rs'
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.018s
+
+OK (skipped=13)
 skip collect_runtime_evidence.py: M0 evidence collector, not a test: needs a release build and writes reviews/evidence/M0-C0.1-r1/
 === headless_guard.py
 ...
@@ -121,18 +141,19 @@ Ran 3 tests in 0.000s
 
 OK
 === summary
-ok   c02-r1-tooling.py (0.7 s)
+ok   c02-r1-tooling.py (0.6 s)
 ok   c02-r2-tooling.py (0.6 s)
-ok   c02-r3-tooling.py (0.3 s)
+ok   c02-r3-tooling.py (0.4 s)
 ok   c03-r1-tooling.py (1.1 s)
 ok   c03-r2-tooling.py (0.6 s)
 ok   c04-r2-decisions.py (0.1 s)
-ok   c04-r3-decisions.py (0.2 s)
+ok   c04-r3-decisions.py (0.1 s)
 ok   c04-r3-page.py (1.7 s)
 ok   c04-r5-decisions.py (0.1 s)
 ok   c11-r2-review-policy.py (0.1 s)
 ok   c14-r1-mcp.py (0.1 s)
+ok   c14-r2-mcp.py (0.1 s)
 ok   headless_guard.py (0.2 s)
-12/12 reviewer Python suites passed
+13/13 reviewer Python suites passed
 
 [exit 0]

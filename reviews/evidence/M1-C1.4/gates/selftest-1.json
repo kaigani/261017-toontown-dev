@@ -23,7 +23,7 @@
     {
       "id": "engine.ping",
       "ok": true,
-      "detail": "echoed seq and 1024 payload bytes in 100 ns"
+      "detail": "echoed seq and 1024 payload bytes in 400 ns"
     },
     {
       "id": "determinism.ieee754",

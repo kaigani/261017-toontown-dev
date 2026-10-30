@@ -1,0 +1,121 @@
+diff --git a/crates/executor/tests/c12_kernel_state.rs b/crates/executor/tests/c12_kernel_state.rs
+index a7a292d..f0baa5d 100644
+--- a/crates/executor/tests/c12_kernel_state.rs
++++ b/crates/executor/tests/c12_kernel_state.rs
+@@ -368,6 +368,8 @@ fn clipboard_for(h: &ExecutorHandle, id: &str) {
+ #[test]
+ fn every_example_runs_on_the_fixture_under_the_watchdog() {
+     let registry = tt_executor::registry().unwrap();
++    let envelope_schema = tt_registry::schema_of::<tt_executor::Envelope>();
++    let mut schema_checked = 0;
+     let mut ran = 0;
+     let mut failures = Vec::new();
+     for e in registry.entries() {
+@@ -402,6 +404,36 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
+                 _ => {
+                     if env.status != Status::Ok {
+                         failures.push(format!("{} example `{}` failed: {:?}", e.id(), ex.title, env.error));
++                    } else {
++                        // C1.4 r2 (CI schema-failure adjudication): every successful example's result matches its
++                        // declared result schema and the envelope its schema, on every OS (portable paths above);
++                        // a job example must finish `succeeded` (the job table checks its final result against
++                        // `x-jobResult`, C12-R1-13).
++                        let v = env.result.clone().unwrap_or(Value::Null);
++                        for (what, schema, value) in [
++                            ("result", e.result_schema(), v.clone()),
++                            ("envelope", envelope_schema.clone(), serde_json::to_value(&env).unwrap()),
++                        ] {
++                            let validator = jsonschema::options()
++                                .with_draft(jsonschema::Draft::Draft202012)
++                                .build(&schema)
++                                .unwrap();
++                            let errors: Vec<String> = validator.iter_errors(&value).map(|x| x.to_string()).collect();
++                            if !errors.is_empty() {
++                                failures.push(format!("{} example `{}`: {what} schema: {errors:?}", e.id(), ex.title));
++                            }
++                        }
++                        if e.spec.kind == tt_registry::Kind::Job
++                            && let Some(job) = v.get("jobId").and_then(Value::as_str).filter(|j| *j != "dryRun")
++                        {
++                            let rec = h.jobs().wait(job, Duration::from_secs(30)).map(|(r, _)| r);
++                            match rec {
++                                Ok(r) if r.state == tt_executor::JobState::Succeeded => schema_checked += 1,
++                                other => failures.push(format!("{} example `{}`: job {other:?}", e.id(), ex.title)),
++                            }
++                        } else {
++                            schema_checked += 1;
++                        }
+                     }
+                 }
+             }
+@@ -420,7 +452,7 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
+ "
+         )
+     );
+-    println!("examples run: {ran}");
++    println!("examples run: {ran}; successful results schema-checked: {schema_checked}");
+     assert!(ran >= 140, "examples: {ran}");
+ }
+ 
+diff --git a/crates/executor/tests/c14_obligations.rs b/crates/executor/tests/c14_obligations.rs
+index 510046b..fee5dc8 100644
+--- a/crates/executor/tests/c14_obligations.rs
++++ b/crates/executor/tests/c14_obligations.rs
+@@ -404,3 +404,44 @@ fn an_activity_export_is_written_only_when_its_call_commits() {
+     drop(h);
+     let _ = std::fs::remove_dir_all(&dir);
+ }
++
++#[test]
++fn a_file_that_cannot_be_published_after_the_commit_fails_the_call_and_reports_the_commit() {
++    // C14-R2-01 (ADR-0015 §12): staging succeeds, the rename onto a directory fails after the transaction committed.
++    let dir = tmp();
++    let h = spawn(&dir.join("user"));
++    ok(&h, "project.create", json!({ "name": "Publish", "path": path(&dir.join("Publish.animpkg")) }));
++    let scene = first(&h, "scene");
++    let blocked = dir.join("directory.jsonl");
++    std::fs::create_dir_all(&blocked).unwrap();
++    // Alone: nothing committed, the call fails.
++    let alone = run(&h, "agent.activity.export", json!({ "path": path(&blocked), "onExists": "overwrite" }));
++    let e = alone.error.clone().unwrap();
++    assert_eq!(e.code, "fs.ioError", "{alone:?}");
++    assert_eq!(e.details["reason"], "publish");
++    assert_eq!(e.details["committed"], false);
++    // With an edit in the same atomic batch: the edit committed and stays (undoable); the call says so.
++    let before = rev(&h);
++    let both = batch(
++        &h,
++        json!({ "label": "Edit and export", "atomic": true, "steps": [
++            { "id": "doc.object.patch", "params": { "targets": [scene], "props": { "meta": { "published": false } } } },
++            { "id": "agent.activity.export", "params": { "path": path(&blocked), "onExists": "overwrite" } },
++        ] }),
++    );
++    let e = both.error.clone().unwrap();
++    assert_eq!(e.code, "fs.ioError", "{both:?}");
++    assert_eq!(e.details["committed"], true);
++    assert_eq!(both.document_rev, Some(before + 1));
++    assert!(!both.changes.is_empty() && both.undo.is_some(), "{both:?}");
++    assert_eq!(get(&h, &scene)["meta"]["published"], false);
++    assert!(blocked.is_dir());
++    let leftovers = std::fs::read_dir(&dir)
++        .unwrap()
++        .flatten()
++        .filter(|e| e.file_name().to_string_lossy().ends_with(".tmp"))
++        .count();
++    assert_eq!(leftovers, 0, "the stage is removed");
++    drop(h);
++    let _ = std::fs::remove_dir_all(&dir);
++}
+diff --git a/crates/mcp/tests/fixtures/audit-golden.jsonl b/crates/mcp/tests/fixtures/audit-golden.jsonl
+index dd57de8..c25afa9 100644
+--- a/crates/mcp/tests/fixtures/audit-golden.jsonl
++++ b/crates/mcp/tests/fixtures/audit-golden.jsonl
+@@ -3,7 +3,7 @@
+ {"seq":3,"documentRev":1,"changedCount":0,"client":"c14-test","tool":"get_object","commandId":"doc.object.get","params":{"ref":"<id1>"},"status":"ok","undoStepId":null}
+ {"seq":4,"documentRev":2,"changedCount":1,"client":"c14-test","tool":"set_properties","commandId":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"audit":1}}},"status":"ok","undoStepId":"u-1"}
+ {"seq":5,"documentRev":2,"dryRun":true,"client":"c14-test","tool":"set_properties","commandId":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"audit":2}}},"status":"ok","undoStepId":null,"changedCount":1}
+-{"seq":6,"documentRev":3,"changedCount":1,"client":"c14-test","tool":"batch","commandId":"batch","params":{"label":"Pair","steps":[{"id":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"b":1}}},"as":null},{"id":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"b":2}}},"as":null}],"atomic":true,"stopOnError":true,"dryRun":false},"status":"ok","undoStepId":"u-2"}
++{"seq":6,"documentRev":3,"committedSteps":[0,1],"client":"c14-test","tool":"batch","commandId":"batch","params":{"label":"Pair","steps":[{"id":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"b":1}}},"as":null},{"id":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"b":2}}},"as":null}],"atomic":true,"stopOnError":true,"dryRun":false},"status":"ok","undoStepId":"u-2","changedCount":1}
+ {"seq":7,"documentRev":4,"changedCount":1,"client":"c14-test","tool":"undo","commandId":"edit.undo","params":{},"status":"ok","undoStepId":null}
+ {"seq":8,"documentRev":5,"changedCount":1,"client":"c14-test","tool":"redo","commandId":"edit.redo","params":{},"status":"ok","undoStepId":null}
+ {"seq":9,"documentRev":5,"changedCount":0,"client":"c14-test","tool":"run_command","commandId":"doc.object.patch","params":{"targets":["el_missing"],"props":{}},"status":"error","errorCode":"ref.notFound","undoStepId":null}

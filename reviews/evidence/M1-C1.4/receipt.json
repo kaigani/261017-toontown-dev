@@ -40,8 +40,8 @@
     "gates/release-features.log": 0,
     "gates/measurements.log": 0
   },
-  "recordedAt": "2026-10-30T10:29:16+00:00",
-  "baseCommit": "836de8ca8d85c1fa53224a61606ada7ead0a767c",
+  "recordedAt": "2026-10-30T12:36:18+00:00",
+  "baseCommit": "c8887db4b9e40b5bfa7ab56de58345730843f15a",
   "dirtyFiles": [
     "reviews/evidence/M1-C1.3-r2/inspection-memory.json",
     "reviews/evidence/M1-C1.3-r3/open-latency.json",
@@ -53,8 +53,10 @@
     "reviews/evidence/M1-C1.4/gates/measurements.log",
     "reviews/evidence/M1-C1.4/gates/pnpm-test.log",
     "reviews/evidence/M1-C1.4/gates/reviewer-python-suites.log",
+    "reviews/evidence/M1-C1.4/gates/selftest-1.json",
     "reviews/evidence/M1-C1.4/gates/test-diag.log",
-    "reviews/evidence/M1-C1.4/gates/test.log"
+    "reviews/evidence/M1-C1.4/gates/test.log",
+    "reviews/evidence/M1-C1.4/receipt.json"
   ],
   "machine": {
     "os": "Windows-11-10.0.26200-SP0",
@@ -62,26 +64,26 @@
     "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
   },
   "sha256": {
-    "gates/build.log": "dceaa11a295af01048cb67c01617a64bc6f2665607a2a449dd3b39b844e05bbe",
-    "gates/clippy-diag.log": "38c9e1cf6397f4be7d317d7f96e382a65e1efc7c3114f4879c9e1f03f92205a2",
-    "gates/clippy.log": "f5252aa6e4731575fd18170821a3df8d20e1e5651f70a1fffc2b5fd6bbd866a1",
+    "gates/build.log": "7531a399b586708106581569b8dbd4769efe133a541904ebffc0c51c5fbb8861",
+    "gates/clippy-diag.log": "f671f777f06cac989eca4cef29b93c1562464e38df2470e74edac83ef52cf238",
+    "gates/clippy.log": "ffcebb85612d45ed33f21fcf2174d63867f6ec5668f1a308b5fcdfa4b15bc8f9",
     "gates/declarations.log": "bf51ee4b609102e540f8c6ee21b3f40e4f0a7af487383f5e37e96f4f11df76ee",
     "gates/deny.log": "0c5426c91d0521a1b54196fd17fa063057adc68e94cd297e59dbcfa11ebc7153",
     "gates/fmt.log": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
-    "gates/headless.log": "bd2f96fdd3a4c78a4f09ae6033659ef6254bc68d79c1fbf4b2811e81bd4b8054",
-    "gates/mcp-conformance.log": "f2c18944943e2f83b98c30845b0ce5839650f8134dccee7a868355c80c390a04",
-    "gates/measurements.log": "7859d78757cdabada22797498e369a194c9f59dbb290d998effd18fe4de29970",
+    "gates/headless.log": "e4c45a85454a7b8633798979bacb4cd2ac20c1537f2a0e7e072a37c0b3abcb04",
+    "gates/mcp-conformance.log": "c2283aaea35ed9e86ff619c5271d55257596b1f95efa356d363ca66378222e19",
+    "gates/measurements.log": "5d3339666e9804a6d5ec32d6f58c29086bbb3544ba458329a3311b7bc9ca77fc",
     "gates/pnpm-format.log": "c99d0a6ae963d1c83b01deafa2e993d73d3bdceebbbde9508a83ba7d4b6e4829",
     "gates/pnpm-licenses.log": "2d685b39a756468ae498f680b9e15748fc8f2db9913b72da6652d7317e37f6ca",
     "gates/pnpm-lint.log": "27d1c9da90e3723e813f92352b6882884d1a51cd07b90368d3bef605ac09563b",
-    "gates/pnpm-test.log": "cb515f4e16b06b617d07f4f1069dcb3db06370b7a5d6e1a1e3605073c2caa706",
+    "gates/pnpm-test.log": "2a2f866635b5c7a6de9aba7ce60dc941c74e7ce62e8b652b4843b7e5264d380d",
     "gates/pnpm-typecheck.log": "aa5a38955f949a6cba31ec0a0ec0aadfb5695da948defb8ab06d14ff2f0b9d24",
     "gates/release-features.log": "e6227864cae2235a93f3d6976804744d5bba5ff8627564bba542bc6a84024133",
-    "gates/reviewer-python-suites.log": "feecdcacca5ba3b28f99248c2064be875d55722b41241ca7fa7256d6051ee4b7",
-    "gates/selftest-1.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "gates/reviewer-python-suites.log": "1ba4bde35bd2c2e0d61538d1336ad1f451a8219da43c5e6249cf8497ab34d02b",
+    "gates/selftest-1.json": "59b4d994c759d31f1feec388e90c06c0ef917f47f3e5e773c46ad87402b945ac",
     "gates/selftest-2.json": "fbeadf361843cb7f2588227a57efb06d55828a6a85eba4a5f4034be7a5c3f3e0",
     "gates/selftest-compare.log": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46",
-    "gates/test-diag.log": "7c96d3a83832a50e95310c31516f52294abf611f6fd735bd81c2a69bcc17469b",
-    "gates/test.log": "713320ca0f6fb804719a50cfe9bcc2e5a9d60847f9e30a825e6da13c42a07f96"
+    "gates/test-diag.log": "9a7821166e78ace64ccd9e899a79b30db0e22622cadd70c092325e40ad9e4926",
+    "gates/test.log": "e6d7cdcf1cf7fe956f0e03c81db53519a8d2885217d46ba805269dad6ebec6ef"
   }
 }
