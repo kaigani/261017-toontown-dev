@@ -322,6 +322,7 @@ pub(crate) fn project_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResul
         project.store.lock = lock;
         project.store.saved_at = Some(now.clone());
         project.store.stamp = crate::store::stamp_of(path, w.form);
+        project.store.content = crate::store::content_of(path, w.form);
     }
     if !cx.dry_run() {
         let env = &mut cx.session_mut().env;
@@ -443,6 +444,7 @@ pub(crate) fn project_from_loaded(
     project.store.saved_at = loaded.saved_at;
     project.store.linked = loaded.linked;
     project.store.stamp = path.as_ref().and_then(|p| crate::store::stamp_of(Path::new(p), form));
+    project.store.content = path.as_ref().and_then(|p| crate::store::content_of(Path::new(p), form));
     for m in &loaded.missing {
         if m.kind == "linked" {
             project.store.asset_status.insert(m.object_id.clone(), "missing".into());
@@ -691,25 +693,7 @@ pub(crate) fn project_save(cx: &mut Cx, p: SaveParams) -> Result<Job<SaveResult>
     // RO-02 / SI-045: an agent gets the choice as `needs_confirmation` (accept = keep mine: overwrite; the other choice
     // is reloading with project.open). The confirmation is bound to the file's identity and this session's lock, so
     // a file changed again, or a lock lost, after the confirmation was requested refuses the token.
-    let mut external_ok = false;
-    if matches!(cx.origin(), crate::types::Origin::Agent { .. })
-        && let Some((path, at, binding)) = persistence::external_change(cx.project()?)
-    {
-        cx.confirm(
-            crate::agents::Category::ExternalChange,
-            format!("`{path}` was changed by another program since it was opened; saving overwrites those changes"),
-            vec![
-                json!({ "kind": "overwriteExternalChange", "path": path, "detectedAt": at }),
-                // Reloading discards unsaved work: the `app` scope's, so the user's choice (11 §6.1).
-                json!({ "kind": "alternative", "choice": "reload", "by": "user", "commandId": "project.open",
-                        "params": { "path": path, "onUnsaved": "discard" } }),
-                json!({ "kind": "alternative", "choice": "keepBoth", "commandId": "project.saveAs",
-                        "params": { "path": "<another path>" } }),
-            ],
-            Some(binding),
-        )?;
-        external_ok = true;
-    }
+    let external_ok = persistence::guard_external_change(cx)?;
     let (path, form) = persistence::check_saveable(cx.project()?, p.allow_format_upgrade, external_ok)?;
     if cx.dry_run() {
         return Ok(Job::dry());
@@ -803,7 +787,14 @@ pub(crate) fn project_save_as(cx: &mut Cx, p: SaveAsParams) -> Result<Job<SaveAs
         )
         .hint("pass onExists: \"overwrite\""));
     }
-    if !same {
+    if same {
+        // Over the current location: the same external-change rule as project.save (RO-02; C14-R1-09). The user's
+        // `onExists: "overwrite"` is the explicit "keep mine" choice (C1.3, ADR-0014 §12); an agent confirms.
+        let external_ok = persistence::guard_external_change(cx)?;
+        if !external_ok && p.on_exists != OnExists::Overwrite {
+            persistence::check_external(cx.project()?)?;
+        }
+    } else {
         persistence::confirm_overwrite(cx, &target)?;
     }
     if cx.dry_run() {
@@ -1283,6 +1274,9 @@ fn recover_claimed(
         inst.project.store.stamp = original
             .as_ref()
             .and_then(|o| crate::store::stamp_of(Path::new(o), original_form.unwrap_or(Form::Package)));
+        inst.project.store.content = original
+            .as_ref()
+            .and_then(|o| crate::store::content_of(Path::new(o), original_form.unwrap_or(Form::Package)));
         // The blobs of the copy stay readable from the recovery folder; the original's location is the save target.
         let progress2 = progress.clone();
         let origin = origin.clone();

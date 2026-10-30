@@ -275,6 +275,47 @@ pub(crate) fn stamp_of(path: &Path, form: Form) -> Option<Stamp> {
     }
 }
 
+/// The content of the project on disk (C14-R1-09; SI-047 interim ruling): a package's SHA-256; for a folder, the
+/// SHA-256 of the sorted `name sha256` lines of every entry file (the fingerprint's file set; folder manifests carry
+/// no per-entry hashes). Reads the whole project: computed at open, after saves and before a save replaces it, never
+/// by the watch tick.
+pub(crate) fn content_of(path: &Path, form: Form) -> Option<String> {
+    match form {
+        Form::Package => std::fs::File::open(path).and_then(tt_persist::fsx::sha256_reader).ok().map(|(h, _)| h),
+        Form::Folder => {
+            let mut files = Vec::new();
+            entry_files(path, path, 0, &mut files);
+            files.sort();
+            let mut lines = Vec::with_capacity(files.len());
+            for rel in files {
+                let (h, _) = std::fs::File::open(path.join(&rel)).and_then(tt_persist::fsx::sha256_reader).ok()?;
+                lines.push(format!("{} {h}", rel.to_string_lossy()));
+            }
+            Some(tt_persist::fsx::sha256(lines.join("\n").as_bytes()))
+        }
+    }
+}
+
+/// The entry files of a folder-form project, relative to its root (the rule of [`walk`]).
+fn entry_files(root: &Path, dir: &Path, depth: usize, out: &mut Vec<PathBuf>) {
+    let Ok(rd) = std::fs::read_dir(dir) else { return };
+    for e in rd.flatten() {
+        let name = e.file_name().to_string_lossy().into_owned();
+        if depth == 0 && (name.starts_with('.') || name == tt_persist::layout::SESSION) {
+            continue;
+        }
+        let Ok(ft) = e.file_type() else { continue };
+        let p = e.path();
+        if ft.is_dir() {
+            if depth < 64 {
+                entry_files(root, &p, depth + 1, out);
+            }
+        } else if let Ok(rel) = p.strip_prefix(root) {
+            out.push(rel.to_path_buf());
+        }
+    }
+}
+
 /// Lists `name size mtime` for every entry file under `dir`.
 fn walk(root: &Path, dir: &Path, depth: usize, out: &mut Vec<String>) {
     let Ok(rd) = std::fs::read_dir(dir) else { return };
@@ -319,6 +360,8 @@ pub(crate) struct Store {
     pub autosaving: bool,
     pub saving: bool,
     pub stamp: Option<Stamp>,
+    /// The content hash of the project on disk at open or the last save ([`content_of`]; C14-R1-09).
+    pub content: Option<String>,
     /// Set when the file changed on disk (RO-02), with the detection time.
     pub changed_on_disk: Option<String>,
     pub saved_at: Option<String>,
@@ -345,6 +388,7 @@ impl Default for Store {
             autosaving: false,
             saving: false,
             stamp: None,
+            content: None,
             changed_on_disk: None,
             saved_at: None,
             linked: BTreeMap::new(),

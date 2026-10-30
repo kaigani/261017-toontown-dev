@@ -319,6 +319,7 @@ pub(crate) fn finish_save(
         p.store.migrated_from = None;
         p.store.saved_at = Some(snap.saved_at.clone());
         p.store.stamp = store::stamp_of(&w.path, w.form);
+        p.store.content = store::content_of(&w.path, w.form);
         p.store.changed_on_disk = None;
         if let Some(l) = lock {
             p.store.lock = Some(l);
@@ -384,15 +385,69 @@ pub(crate) fn resolve_unsaved(cx: &mut Cx, policy: crate::commands::common::OnUn
 pub(crate) fn external_change(p: &OpenProject) -> Option<(String, String, Value)> {
     let path = p.path.clone()?;
     let now = store::stamp_of(Path::new(&path), p.form_kind());
+    // Size and modification time first (cheap); then the content recorded at open or the last save, so an edit that
+    // keeps both is still seen before a save replaces the file (C14-R1-09).
+    let content = p.store.content.as_ref().and_then(|_| store::content_of(Path::new(&path), p.form_kind()));
     let at = match &p.store.changed_on_disk {
         Some(at) => at.clone(),
         None if p.store.stamp.is_some() && now != p.store.stamp => crate::time::now_iso(),
+        None if p.store.content.is_some() && content != p.store.content => crate::time::now_iso(),
         None => return None,
     };
     let binding = json!({
-        "path": path, "file": format!("{now:?}"), "lock": p.store.lock.as_ref().map(|l| l.info().lock_id),
+        "path": path, "file": format!("{now:?}"), "content": content,
+        "lock": p.store.lock.as_ref().map(|l| l.info().lock_id),
     });
     Some((path, at, binding))
+}
+
+/// RO-02 for an agent's save over the project's location (SI-045, C14-R1-09): after an external change the call
+/// needs confirmation (category `externalChange`), bound to the file's identity, its content and the session's lock.
+/// `true`: confirmed (the save may replace the changed file). For the user it does nothing ([`check_external`]
+/// answers `project.changedOnDisk`).
+///
+/// # Errors
+/// `confirmation.required` and the other confirmation errors.
+pub(crate) fn guard_external_change(cx: &mut Cx) -> Result<bool, CommandError> {
+    if !matches!(cx.origin(), crate::types::Origin::Agent { .. }) {
+        return Ok(false);
+    }
+    let Some((path, at, binding)) = external_change(cx.project()?) else { return Ok(false) };
+    cx.confirm(
+        crate::agents::Category::ExternalChange,
+        format!("`{path}` was changed by another program since it was opened; saving overwrites those changes"),
+        vec![
+            json!({ "kind": "overwriteExternalChange", "path": path, "detectedAt": at }),
+            // Reloading discards unsaved work: the `app` scope's, so the user's choice (11 §6.1).
+            json!({ "kind": "alternative", "choice": "reload", "by": "user", "commandId": "project.open",
+                    "params": { "path": path, "onUnsaved": "discard" } }),
+            json!({ "kind": "alternative", "choice": "keepBoth", "commandId": "project.saveAs",
+                    "params": { "path": "<another path>" } }),
+        ],
+        Some(binding),
+    )?;
+    Ok(true)
+}
+
+/// `project.changedOnDisk` when the project on disk changed since it was opened or saved (RO-02): size, modification
+/// time or content.
+///
+/// # Errors
+/// `project.changedOnDisk`.
+pub(crate) fn check_external(p: &OpenProject) -> Result<(), CommandError> {
+    match external_change(p) {
+        Some((path, at, _)) => Err(changed_on_disk(&path, &at)),
+        None => Ok(()),
+    }
+}
+
+fn changed_on_disk(path: &str, at: &str) -> CommandError {
+    CommandError::with_details(
+        tt_persist::codes::CHANGED_ON_DISK,
+        "the project file was changed by another program since it was opened",
+        json!({ "path": path, "detectedAt": at }),
+    )
+    .hint("reopen it (project.open with onUnsaved) to reload, or keep yours with project.saveAs {path, onExists: \"overwrite\"}")
 }
 
 /// Asks before overwriting an existing file (11 §6.2: "overwrite" is a confirmable action under Assist). The
@@ -454,19 +509,17 @@ pub(crate) fn check_saveable(
     check_upgrade(p, allow_upgrade)?;
     // Maintenance may not have looked since the last change: look again before replacing anything (C13-R1-06).
     let now = crate::time::now_iso();
-    let changed = p.store.changed_on_disk.as_ref().filter(|_| !external_ok).or_else(|| {
+    let changed = p.store.changed_on_disk.clone().filter(|_| !external_ok).or_else(|| {
         if external_ok {
             return None;
         }
-        (p.store.stamp.is_some() && store::stamp_of(Path::new(&path), p.form_kind()) != p.store.stamp).then_some(&now)
+        external_change(p).map(|(_, at, _)| at).or_else(|| {
+            (p.store.stamp.is_some() && store::stamp_of(Path::new(&path), p.form_kind()) != p.store.stamp)
+                .then(|| now.clone())
+        })
     });
     if let Some(at) = changed {
-        return Err(CommandError::with_details(
-            tt_persist::codes::CHANGED_ON_DISK,
-            "the project file was changed by another program since it was opened",
-            json!({ "path": path, "detectedAt": at }),
-        )
-        .hint("reopen it (project.open with onUnsaved) to reload, or keep yours with project.saveAs {path, onExists: \"overwrite\"}"));
+        return Err(changed_on_disk(&path, &at));
     }
     Ok((PathBuf::from(path), p.form_kind()))
 }

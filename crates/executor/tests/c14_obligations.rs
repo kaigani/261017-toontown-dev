@@ -312,3 +312,49 @@ fn session_cache_is_bounded_kept_while_needed_and_released_on_close_and_stop() {
     assert!(!cache.exists(), "the executor stop removes its cache: {report}");
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+/// Rewrites one byte of a file in place, keeping its size and modification time (an edit RO-02's watch cannot see).
+fn flip_keeping_size_and_mtime(file: &Path) {
+    let mtime = std::fs::metadata(file).unwrap().modified().unwrap();
+    let mut bytes = std::fs::read(file).unwrap();
+    let last = bytes.len() - 1;
+    bytes[last] ^= 1;
+    std::fs::write(file, &bytes).unwrap();
+    std::fs::File::options().write(true).open(file).unwrap().set_modified(mtime).unwrap();
+}
+
+#[test]
+fn every_save_path_verifies_the_content_recorded_at_open_or_last_save() {
+    // C14-R1-09 (SI-047 interim ruling): size + mtime for the watch tick, content hashes before a save replaces.
+    for folder in [false, true] {
+        let dir = tmp();
+        let target = if folder { dir.join("Same") } else { dir.join("Same.animpkg") };
+        let h = spawn(&dir.join("user"));
+        let create_path =
+            if folder { format!("{}{}", path(&target), std::path::MAIN_SEPARATOR) } else { path(&target) };
+        ok(&h, "project.create", json!({ "name": "Same", "path": create_path }));
+        let scene = first(&h, "scene");
+        ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 1 } } }));
+        job_ok(&h, "project.save", json!({}));
+        let victim = if folder { target.join("project.json") } else { target.clone() };
+        flip_keeping_size_and_mtime(&victim);
+        h.run_maintenance(false).unwrap();
+        let edited = std::fs::read(&victim).unwrap();
+        // The user: a clean save, a dirty save, and close-with-save are refused.
+        assert_eq!(err(&h, "project.save", json!({})).code, "project.changedOnDisk", "folder {folder}: clean save");
+        ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 2 } } }));
+        assert_eq!(err(&h, "project.save", json!({})).code, "project.changedOnDisk", "folder {folder}: dirty save");
+        let closing = run(&h, "project.close", json!({ "onUnsaved": "save" }));
+        assert_eq!(closing.error.unwrap().code, "project.changedOnDisk", "folder {folder}: close with save");
+        assert_eq!(std::fs::read(&victim).unwrap(), edited, "folder {folder}: nothing replaced the external edit");
+        // An agent: a bound confirmation (SI-045), and the token keeps mine.
+        let a = agent_session(&h, vec![dir.clone()], Policy::Assist);
+        let t = token(&call(&h, &a, "project.save", json!({}), None));
+        assert_eq!(finish(&h, &call(&h, &a, "project.save", json!({}), Some(&t)))["state"], "succeeded");
+        assert_ne!(std::fs::read(&victim).unwrap(), edited, "folder {folder}: keep mine overwrote");
+        // After the save its content is the recorded one: the next save needs nothing.
+        assert!(call(&h, &a, "project.save", json!({}), None).is_ok());
+        drop(h);
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+}
