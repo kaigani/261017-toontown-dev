@@ -549,10 +549,10 @@ index f30e943..2e9f0a6 100644
      drop(h);
      let _ = std::fs::remove_dir_all(&dir);
 diff --git a/crates/executor/tests/c14_obligations.rs b/crates/executor/tests/c14_obligations.rs
-index 319cee8..848b972 100644
+index 319cee8..510046b 100644
 --- a/crates/executor/tests/c14_obligations.rs
 +++ b/crates/executor/tests/c14_obligations.rs
-@@ -312,3 +312,90 @@ fn session_cache_is_bounded_kept_while_needed_and_released_on_close_and_stop() {
+@@ -312,3 +312,95 @@ fn session_cache_is_bounded_kept_while_needed_and_released_on_close_and_stop() {
      assert!(!cache.exists(), "the executor stop removes its cache: {report}");
      let _ = std::fs::remove_dir_all(&dir);
  }
@@ -628,9 +628,14 @@ index 319cee8..848b972 100644
 +        } else {
 +            assert!(!fresh.exists(), "a failed batch created no file");
 +        }
-+        // The same call alone commits and writes.
++        // The same call alone commits and writes; its result matches the declared result schema (both formats).
 +        let done = run(&h, "agent.activity.export", params);
 +        assert!(done.is_ok(), "{done:?}");
++        let schema = tt_executor::registry().unwrap().get("agent.activity.export").unwrap().result_schema();
++        let validator = jsonschema::options().build(&schema).unwrap();
++        let result = done.result.clone().unwrap();
++        let errors: Vec<String> = validator.iter_errors(&result).map(|e| e.to_string()).collect();
++        assert!(errors.is_empty(), "{errors:?} {result}");
 +        assert!(target.exists() && std::fs::read(target).unwrap() != b"old");
 +    }
 +    // No staged temporaries are left beside the targets.
