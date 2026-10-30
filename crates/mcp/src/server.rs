@@ -979,16 +979,20 @@ fn job_wait(
             return None;
         }
     }
-    lock(&shared.st).progress.remove(&job);
-    // A final notification whatever the job's own reports were (it may have finished before the wait began).
+    // A final notification whatever the job's own reports were (it may have finished before the wait began). The
+    // token is unregistered and the final notification sent under the state lock, which the event pump also holds
+    // while it sends progress: no progress for this token can follow the final one (or the response).
     let finished = last.status == Status::Ok
         && last.result.as_ref().and_then(|r| r.get("timedOut")).and_then(Value::as_bool) != Some(true);
+    let mut st = lock(&shared.st);
+    st.progress.remove(&job);
     if let (Some(token), true) = (progress, finished) {
         shared.send(&jsonrpc::notification(
             "notifications/progress",
             json!({ "progressToken": token, "progress": 1000, "total": 1000, "message": "finished" }),
         ));
     }
+    drop(st);
     Some(last)
 }
 
@@ -1165,7 +1169,7 @@ fn on_event(shared: &Shared, ev: &tt_executor::Event) {
         .flatten()
         .filter_map(|c| c.get("id").and_then(Value::as_str).map(str::to_owned))
         .collect();
-    let (record, log, progress) = {
+    let (record, log) = {
         let mut st = lock(&shared.st);
         st.next_seq += 1;
         let record = json!({ "seq": st.next_seq, "time": tt_persist::time::now_iso(), "type": ev.name, "origin": origin, "payload": ev.payload });
@@ -1177,12 +1181,7 @@ fn on_event(shared: &Shared, ev: &tt_executor::Event) {
             st.subscriptions.iter().filter(|u| resources::affected(u, &ev.name, &changed)).cloned().collect();
         st.dirty.extend(dirty);
         let log = st.log_level.is_some_and(|l| l <= 1);
-        let progress = if ev.name == "job.progress" || ev.name == "job.finished" {
-            ev.payload.get("jobId").and_then(Value::as_str).and_then(|j| st.progress.get(j).cloned())
-        } else {
-            None
-        };
-        (record, log, progress)
+        (record, log)
     };
     if log {
         shared.send(&jsonrpc::notification(
@@ -1190,17 +1189,22 @@ fn on_event(shared: &Shared, ev: &tt_executor::Event) {
             json!({ "level": "info", "logger": "events", "data": record }),
         ));
     }
-    if let Some(token) = progress {
-        let p = ev.payload.get("progress").and_then(Value::as_f64).unwrap_or(if ev.name == "job.finished" {
-            1.0
-        } else {
-            0.0
-        });
-        let mut n = json!({ "progressToken": token, "progress": (p * 1000.0).round(), "total": 1000 });
-        if let (Some(m), Some(msg)) = (n.as_object_mut(), ev.payload.get("message").and_then(Value::as_str)) {
-            m.insert("message".into(), json!(msg));
+    if ev.name == "job.progress" || ev.name == "job.finished" {
+        // Sent while holding the state lock in which the token is registered (see `job_wait`).
+        let st = lock(&shared.st);
+        if let Some(token) = ev.payload.get("jobId").and_then(Value::as_str).and_then(|j| st.progress.get(j).cloned()) {
+            let p = ev.payload.get("progress").and_then(Value::as_f64).unwrap_or(if ev.name == "job.finished" {
+                1.0
+            } else {
+                0.0
+            });
+            let mut n = json!({ "progressToken": token, "progress": (p * 1000.0).round(), "total": 1000 });
+            if let (Some(m), Some(msg)) = (n.as_object_mut(), ev.payload.get("message").and_then(Value::as_str)) {
+                m.insert("message".into(), json!(msg));
+            }
+            shared.send(&jsonrpc::notification("notifications/progress", n));
         }
-        shared.send(&jsonrpc::notification("notifications/progress", n));
+        drop(st);
     }
 }
 
