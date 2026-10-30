@@ -980,6 +980,15 @@ fn job_wait(
         }
     }
     lock(&shared.st).progress.remove(&job);
+    // A final notification whatever the job's own reports were (it may have finished before the wait began).
+    let finished = last.status == Status::Ok
+        && last.result.as_ref().and_then(|r| r.get("timedOut")).and_then(Value::as_bool) != Some(true);
+    if let (Some(token), true) = (progress, finished) {
+        shared.send(&jsonrpc::notification(
+            "notifications/progress",
+            json!({ "progressToken": token, "progress": 1000, "total": 1000, "message": "finished" }),
+        ));
+    }
     Some(last)
 }
 

@@ -85,7 +85,7 @@ pub fn parse(line: &str) -> Result<Incoming, Value> {
             (None, Some(e)) => Ok(Incoming::Response { id, outcome: Err(e.clone()) }),
             _ => Err(error(&id, INVALID_REQUEST, "a response has exactly one of `result` and `error`", None)),
         },
-        (Some(_), _) => Err(error(&Value::Null, INVALID_REQUEST, "`method` must be a string", None)),
+        (Some(_), id) => Err(error(&id.unwrap_or(Value::Null), INVALID_REQUEST, "`method` must be a string", None)),
         (None, None) => Err(error(&Value::Null, INVALID_REQUEST, "not a request, notification or response", None)),
     }
 }
