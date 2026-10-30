@@ -1,0 +1,29 @@
+{
+  "obligation": "C1.4 obligation 2 (ADR-0014 §11.4)",
+  "platform": "macos",
+  "protection": "flock",
+  "probeHeldMicros": {
+    "n": 500,
+    "p50": 38.958000000000006,
+    "p99": 75.833
+  },
+  "acquireOnHeldMicros": {
+    "n": 50,
+    "p50": 132.625,
+    "p99": 408.791
+  },
+  "crashedHolderTakeoverMs": 2.1003749999999997,
+  "processAliveFallbackMs": 13.188708,
+  "bounds": {
+    "protectedLiveHolder": "never stale (probe), whatever heartbeat, clock or process id say",
+    "protectedDeadHolderSameHost": "at once (first open after the process ends)",
+    "protectedOtherHostProbeFree": "heartbeat rule: 300 s",
+    "unprotectedLock": "heartbeat older than 300 s, or process known dead on this host",
+    "unprotectedFutureHeartbeat": "file unchanged for 300 s",
+    "unreadableUnprotected": "10 s",
+    "unreadableUnknown": "300 s",
+    "protectedArbiter": "never removed while its holder lives",
+    "unprotectedArbiter": "10 s (either clock direction)",
+    "processAliveTimeoutMs": 2000
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "obligation": "C1.4 obligation 5 (AUTO-02 autosave latency)",
+  "platform": "windows",
+  "fixture": "sample_document(901) (36 entries, embedded media 60 KiB each) + a 64 MiB preserved entry (extras/media.bin)",
+  "snapshotMs": {
+    "n": 15,
+    "p50": 0.1207,
+    "p90": 0.14200000000000002,
+    "p99": 0.15689999999999998,
+    "max": 0.15689999999999998
+  },
+  "duringLongBatch": {
+    "batchSteps": 1000,
+    "batchMs": 4227.2977,
+    "maintenanceWaitedMs": 4221.6861,
+    "snapshotMs": 0.121,
+    "committedRev": 17,
+    "recoveryRevs": [
+      17
+    ]
+  },
+  "underQueuedRequests": {
+    "threads": 8,
+    "snapshotMs": {
+      "n": 10,
+      "p50": 0.13190000000000002,
+      "p90": 0.1584,
+      "p99": 0.161,
+      "max": 0.161
+    },
+    "schedulingDelayMs": {
+      "n": 10,
+      "p50": 55.0845,
+      "p90": 57.4208,
+      "p99": 58.9357,
+      "max": 58.9357
+    }
+  },
+  "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; an atomic batch is one request, so the autosave waits for the whole batch"
+}

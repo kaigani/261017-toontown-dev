@@ -1,0 +1,35 @@
+{
+  "suite": "11 §14.5 never-block through MCP (stdio protocol, run_command, first declared example)",
+  "platform": "windows",
+  "commands": 719,
+  "byStatus": {
+    "error": 650,
+    "ok": 69
+  },
+  "byErrorCode": {
+    "arg.invalid": 1,
+    "checkpoint.notFound": 2,
+    "command.notImplemented": 600,
+    "edit.pasteNotAllowed": 3,
+    "fs.invalidPath": 6,
+    "job.notFound": 2,
+    "permission.denied": 26,
+    "project.backupNotFound": 1,
+    "project.pathRequired": 1,
+    "project.recoveryNotFound": 1,
+    "project.unsavedChanges": 1,
+    "ref.notFound": 5,
+    "workspace.notFound": 1
+  },
+  "callLatencyMs": {
+    "p50": 4.314,
+    "p99": 11.4743,
+    "max": 53.108200000000004
+  },
+  "watchdogMs": 10000,
+  "jobs": {
+    "started": 0,
+    "finalStates": {},
+    "waitedMs": 0.0003
+  }
+}

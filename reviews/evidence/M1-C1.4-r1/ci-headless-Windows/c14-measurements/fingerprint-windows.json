@@ -1,0 +1,31 @@
+{
+  "obligation": "C1.4 obligation 4 (RO-02 folder fingerprint)",
+  "platform": "windows",
+  "fixture": "folder-form project + 10000 files of 16 bytes under extras/",
+  "watchPassMs": {
+    "n": 20,
+    "p50": 38.646100000000004,
+    "p90": 40.4205,
+    "p99": 43.5165,
+    "max": 43.5165
+  },
+  "callerLatencyMs": {
+    "backToBackPasses": {
+      "n": 68,
+      "p50": 39.6398,
+      "p90": 51.3046,
+      "p99": 56.1181,
+      "max": 56.267900000000004
+    },
+    "scheduled2sWatch10s": {
+      "n": 1962,
+      "p50": 2.5366,
+      "p90": 3.7942,
+      "p99": 4.0514,
+      "max": 59.356899999999996
+    }
+  },
+  "sizeMtimePreservingEditDetected": false,
+  "sizeChangingEditDetected": true,
+  "note": "a same-size edit that restores the modification time is not detected (walk compares name, size, mtime): recorded as SI-046 for the spec owner"
+}

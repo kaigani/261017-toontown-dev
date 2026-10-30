@@ -1,0 +1,1478 @@
+﻿{
+  "ci": {
+    "head": "390600123f6af0fef7a2961375e7f6804a290940",
+    "conclusion": "success",
+    "jobs": {
+      "headless without a display (ubuntu)": {
+        "conclusion": "success",
+        "durationSeconds": [
+          "2026-10-30T06:07:17Z",
+          "2026-10-30T06:04:56Z"
+        ],
+        "successfulSteps": [
+          "Set up job",
+          "Run actions/checkout@v7",
+          "Rust toolchain (pinned in rust-toolchain.toml)",
+          "Run Swatinem/rust-cache@v2",
+          "Run cargo build --release --locked -p tt-headless",
+          "Self-test with no display server",
+          "MCP over stdio with no display server (official Python SDK client)",
+          "Post Run Swatinem/rust-cache@v2",
+          "Post Run actions/checkout@v7",
+          "Complete job"
+        ],
+        "rustSummarySumAllSteps": [
+          0,
+          0,
+          0
+        ],
+        "workspaceSummarySum": [
+          0,
+          0,
+          0
+        ],
+        "pythonReviewerSuites": {
+          "tests/adversarial/c02-r1-tooling.py": false,
+          "tests/adversarial/c02-r2-tooling.py": false,
+          "tests/adversarial/c02-r3-tooling.py": false,
+          "tests/adversarial/c03-r1-tooling.py": false,
+          "tests/adversarial/c03-r2-tooling.py": false,
+          "tests/adversarial/c04-r2-decisions.py": false,
+          "tests/adversarial/c04-r3-decisions.py": false,
+          "tests/adversarial/c04-r3-page.py": false,
+          "tests/adversarial/c04-r5-decisions.py": false,
+          "tests/adversarial/c11-r2-review-policy.py": false,
+          "tests/adversarial/headless_guard.py": false
+        },
+        "rustReviewerSuites": {
+          "crates/engine/tests/c11_r1_wire.rs": false,
+          "crates/engine/tests/c11_r2_wire.rs": false,
+          "crates/engine/tests/c11_r3_wire.rs": false,
+          "crates/executor/tests/c12_r1_contracts.rs": false,
+          "crates/executor/tests/c12_r1_macro.rs": false,
+          "crates/executor/tests/c12_r1_scale.rs": false,
+          "crates/executor/tests/c12_r1_stress.rs": false,
+          "crates/executor/tests/c12_r2_contracts.rs": false,
+          "crates/executor/tests/c12_r2_registry.rs": false,
+          "crates/executor/tests/c12_r2_scale.rs": false,
+          "crates/executor/tests/c12_r3_contracts.rs": false,
+          "crates/executor/tests/c12_r3_registry.rs": false,
+          "crates/executor/tests/c12_r3_stress.rs": false,
+          "crates/executor/tests/c12_r4_closure.rs": false,
+          "crates/executor/tests/c13_r1_persistence.rs": false,
+          "crates/executor/tests/c13_r2_persistence.rs": false,
+          "crates/executor/tests/c13_r3_history_r1.rs": false,
+          "crates/executor/tests/c13_r3_history_r3.rs": false,
+          "crates/executor/tests/c13_r3_persistence.rs": false,
+          "crates/executor/tests/c13_r4_closure.rs": false,
+          "crates/model/tests/c11_r1_adversarial.rs": false,
+          "crates/model/tests/c11_r2_adversarial.rs": false,
+          "crates/model/tests/c11_r3_adversarial.rs": false,
+          "crates/model/tests/c11_r3_random.rs": false,
+          "crates/model/tests/c11_r3_register.rs": false,
+          "crates/model/tests/c11_r4_exposure_bounds.rs": false,
+          "crates/model/tests/c11_r5_write_bounds.rs": false,
+          "crates/model/tests/c11_r6_staged_inverse.rs": false,
+          "crates/persist/tests/c13_r1_format.rs": false,
+          "crates/persist/tests/c13_r2_format.rs": false,
+          "crates/persist/tests/c13_r3_format.rs": false,
+          "crates/persist/tests/c13_r4_lock.rs": false,
+          "crates/render/tests/c03_r1_stress.rs": false,
+          "crates/render/tests/c03_r2_quality.rs": false
+        },
+        "sdkCheckSummary": []
+      },
+      "check (macos-latest)": {
+        "conclusion": "success",
+        "durationSeconds": [
+          "2026-10-30T06:29:16Z",
+          "2026-10-30T06:04:56Z"
+        ],
+        "successfulSteps": [
+          "Set up job",
+          "Run actions/checkout@v7",
+          "Rust toolchain (pinned in rust-toolchain.toml)",
+          "Run Swatinem/rust-cache@v2",
+          "Run pnpm/action-setup@v6",
+          "Run actions/setup-node@v7",
+          "Run pnpm install --frozen-lockfile",
+          "Front end \u2014 lint, type-check, test, format, licences",
+          "Reviewer Python suites (every tests/adversarial/*.py)",
+          "Front end \u2014 build, diagnostics variant then default (frontendDist is embedded by the Tauri host)",
+          "Run cargo fmt --all --check",
+          "Generated command declarations are current (C12-R1-12)",
+          "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "Run cargo test --workspace --locked",
+          "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests",
+          "Run taiki-e/install-action@v2",
+          "Run cargo deny --locked check",
+          "Headless binary \u2014 build, self-test (twice, compared), linked-library proof",
+          "MCP protocol conformance with the official Python SDK client (C1.4; 11 \u00a714.7)",
+          "Run actions/upload-artifact@v7",
+          "Post Run actions/setup-node@v7",
+          "Post Run pnpm/action-setup@v6",
+          "Post Run Swatinem/rust-cache@v2",
+          "Post Run actions/checkout@v7",
+          "Complete job"
+        ],
+        "rustSummarySumAllSteps": [
+          714,
+          0,
+          3
+        ],
+        "workspaceSummarySum": [
+          671,
+          0,
+          3
+        ],
+        "pythonReviewerSuites": {
+          "tests/adversarial/c02-r1-tooling.py": true,
+          "tests/adversarial/c02-r2-tooling.py": true,
+          "tests/adversarial/c02-r3-tooling.py": true,
+          "tests/adversarial/c03-r1-tooling.py": true,
+          "tests/adversarial/c03-r2-tooling.py": true,
+          "tests/adversarial/c04-r2-decisions.py": true,
+          "tests/adversarial/c04-r3-decisions.py": true,
+          "tests/adversarial/c04-r3-page.py": true,
+          "tests/adversarial/c04-r5-decisions.py": true,
+          "tests/adversarial/c11-r2-review-policy.py": true,
+          "tests/adversarial/headless_guard.py": true
+        },
+        "rustReviewerSuites": {
+          "crates/engine/tests/c11_r1_wire.rs": true,
+          "crates/engine/tests/c11_r2_wire.rs": true,
+          "crates/engine/tests/c11_r3_wire.rs": true,
+          "crates/executor/tests/c12_r1_contracts.rs": true,
+          "crates/executor/tests/c12_r1_macro.rs": true,
+          "crates/executor/tests/c12_r1_scale.rs": true,
+          "crates/executor/tests/c12_r1_stress.rs": true,
+          "crates/executor/tests/c12_r2_contracts.rs": true,
+          "crates/executor/tests/c12_r2_registry.rs": true,
+          "crates/executor/tests/c12_r2_scale.rs": true,
+          "crates/executor/tests/c12_r3_contracts.rs": true,
+          "crates/executor/tests/c12_r3_registry.rs": true,
+          "crates/executor/tests/c12_r3_stress.rs": true,
+          "crates/executor/tests/c12_r4_closure.rs": true,
+          "crates/executor/tests/c13_r1_persistence.rs": true,
+          "crates/executor/tests/c13_r2_persistence.rs": true,
+          "crates/executor/tests/c13_r3_history_r1.rs": true,
+          "crates/executor/tests/c13_r3_history_r3.rs": true,
+          "crates/executor/tests/c13_r3_persistence.rs": true,
+          "crates/executor/tests/c13_r4_closure.rs": true,
+          "crates/model/tests/c11_r1_adversarial.rs": true,
+          "crates/model/tests/c11_r2_adversarial.rs": true,
+          "crates/model/tests/c11_r3_adversarial.rs": true,
+          "crates/model/tests/c11_r3_random.rs": true,
+          "crates/model/tests/c11_r3_register.rs": true,
+          "crates/model/tests/c11_r4_exposure_bounds.rs": true,
+          "crates/model/tests/c11_r5_write_bounds.rs": true,
+          "crates/model/tests/c11_r6_staged_inverse.rs": true,
+          "crates/persist/tests/c13_r1_format.rs": true,
+          "crates/persist/tests/c13_r2_format.rs": true,
+          "crates/persist/tests/c13_r3_format.rs": true,
+          "crates/persist/tests/c13_r4_lock.rs": true,
+          "crates/render/tests/c03_r1_stress.rs": true,
+          "crates/render/tests/c03_r2_quality.rs": true
+        },
+        "sdkCheckSummary": []
+      },
+      "check (windows-latest)": {
+        "conclusion": "success",
+        "durationSeconds": [
+          "2026-10-30T06:57:29Z",
+          "2026-10-30T06:04:56Z"
+        ],
+        "successfulSteps": [
+          "Set up job",
+          "Run actions/checkout@v7",
+          "Rust toolchain (pinned in rust-toolchain.toml)",
+          "Run Swatinem/rust-cache@v2",
+          "Run pnpm/action-setup@v6",
+          "Run actions/setup-node@v7",
+          "Run pnpm install --frozen-lockfile",
+          "Front end \u2014 lint, type-check, test, format, licences",
+          "Reviewer Python suites (every tests/adversarial/*.py)",
+          "Front end \u2014 build, diagnostics variant then default (frontendDist is embedded by the Tauri host)",
+          "Run cargo fmt --all --check",
+          "Generated command declarations are current (C12-R1-12)",
+          "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+          "Run cargo test --workspace --locked",
+          "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests",
+          "Run taiki-e/install-action@v2",
+          "Run cargo deny --locked check",
+          "Headless binary \u2014 build, self-test (twice, compared), linked-library proof",
+          "MCP protocol conformance with the official Python SDK client (C1.4; 11 \u00a714.7)",
+          "Run actions/upload-artifact@v7",
+          "Post Run actions/setup-node@v7",
+          "Post Run pnpm/action-setup@v6",
+          "Post Run Swatinem/rust-cache@v2",
+          "Post Run actions/checkout@v7",
+          "Complete job"
+        ],
+        "rustSummarySumAllSteps": [
+          725,
+          0,
+          3
+        ],
+        "workspaceSummarySum": [
+          676,
+          0,
+          3
+        ],
+        "pythonReviewerSuites": {
+          "tests/adversarial/c02-r1-tooling.py": true,
+          "tests/adversarial/c02-r2-tooling.py": true,
+          "tests/adversarial/c02-r3-tooling.py": true,
+          "tests/adversarial/c03-r1-tooling.py": true,
+          "tests/adversarial/c03-r2-tooling.py": true,
+          "tests/adversarial/c04-r2-decisions.py": true,
+          "tests/adversarial/c04-r3-decisions.py": true,
+          "tests/adversarial/c04-r3-page.py": true,
+          "tests/adversarial/c04-r5-decisions.py": true,
+          "tests/adversarial/c11-r2-review-policy.py": true,
+          "tests/adversarial/headless_guard.py": true
+        },
+        "rustReviewerSuites": {
+          "crates/engine/tests/c11_r1_wire.rs": true,
+          "crates/engine/tests/c11_r2_wire.rs": true,
+          "crates/engine/tests/c11_r3_wire.rs": true,
+          "crates/executor/tests/c12_r1_contracts.rs": true,
+          "crates/executor/tests/c12_r1_macro.rs": true,
+          "crates/executor/tests/c12_r1_scale.rs": true,
+          "crates/executor/tests/c12_r1_stress.rs": true,
+          "crates/executor/tests/c12_r2_contracts.rs": true,
+          "crates/executor/tests/c12_r2_registry.rs": true,
+          "crates/executor/tests/c12_r2_scale.rs": true,
+          "crates/executor/tests/c12_r3_contracts.rs": true,
+          "crates/executor/tests/c12_r3_registry.rs": true,
+          "crates/executor/tests/c12_r3_stress.rs": true,
+          "crates/executor/tests/c12_r4_closure.rs": true,
+          "crates/executor/tests/c13_r1_persistence.rs": true,
+          "crates/executor/tests/c13_r2_persistence.rs": true,
+          "crates/executor/tests/c13_r3_history_r1.rs": true,
+          "crates/executor/tests/c13_r3_history_r3.rs": true,
+          "crates/executor/tests/c13_r3_persistence.rs": true,
+          "crates/executor/tests/c13_r4_closure.rs": true,
+          "crates/model/tests/c11_r1_adversarial.rs": true,
+          "crates/model/tests/c11_r2_adversarial.rs": true,
+          "crates/model/tests/c11_r3_adversarial.rs": true,
+          "crates/model/tests/c11_r3_random.rs": true,
+          "crates/model/tests/c11_r3_register.rs": true,
+          "crates/model/tests/c11_r4_exposure_bounds.rs": true,
+          "crates/model/tests/c11_r5_write_bounds.rs": true,
+          "crates/model/tests/c11_r6_staged_inverse.rs": true,
+          "crates/persist/tests/c13_r1_format.rs": true,
+          "crates/persist/tests/c13_r2_format.rs": true,
+          "crates/persist/tests/c13_r3_format.rs": true,
+          "crates/persist/tests/c13_r4_lock.rs": true,
+          "crates/render/tests/c03_r1_stress.rs": true,
+          "crates/render/tests/c03_r2_quality.rs": true
+        },
+        "sdkCheckSummary": []
+      }
+    }
+  },
+  "progress50": 50,
+  "exampleSweep": {
+    "calls": 719,
+    "latencyMs": {
+      "n": 719,
+      "p50": 0.43240003287792206,
+      "p99": 2.044500084593892,
+      "max": 167.79489978216588
+    },
+    "statusCounts": {
+      "error": 650,
+      "ok": 69
+    },
+    "errorCounts": {
+      "fs.invalidPath": 6,
+      "null": 69,
+      "permission.denied": 26,
+      "command.notImplemented": 600,
+      "checkpoint.notFound": 2,
+      "ref.notFound": 5,
+      "edit.pasteNotAllowed": 3,
+      "job.notFound": 2,
+      "project.pathRequired": 1,
+      "arg.invalid": 1,
+      "workspace.notFound": 1,
+      "project.backupNotFound": 1,
+      "project.unsavedChanges": 1,
+      "project.recoveryNotFound": 1
+    }
+  },
+  "malformedSweep": {
+    "calls": 719,
+    "latencyMs": {
+      "n": 719,
+      "p50": 0.4072999581694603,
+      "p99": 0.9893001988530159,
+      "max": 1.4293999411165714
+    },
+    "statusCounts": {
+      "error": 719
+    },
+    "errorCounts": {
+      "arg.unknown": 559,
+      "permission.denied": 26,
+      "arg.invalid": 17,
+      "arg.missing": 117
+    }
+  },
+  "flood": [
+    {
+      "probe": "flood",
+      "result": {
+        "responses": 10000,
+        "uniqueIds": 10000,
+        "errors": 9456,
+        "elapsedMs": 279.93269986473024
+      },
+      "ping": {
+        "jsonrpc": "2.0",
+        "id": 2295,
+        "result": {}
+      }
+    }
+  ],
+  "floodRecomputed": {
+    "responses": 10000,
+    "uniqueIds": 10000,
+    "errors": 9456,
+    "lastResponseMs": 269.18669999577105
+  },
+  "protocolAutosave": {
+    "snapshotMs": {
+      "n": 10,
+      "p50": 0.06820000000000001,
+      "p99": 0.08789999999999999,
+      "max": 0.08789999999999999
+    },
+    "schedulingDelayMs": {
+      "n": 10,
+      "p50": 0.02779999999999916,
+      "p99": 0.07650000000000112,
+      "max": 0.07650000000000112
+    },
+    "exportFinalStates": [
+      "succeeded",
+      "succeeded",
+      "succeeded",
+      "succeeded",
+      "succeeded",
+      "succeeded",
+      "succeeded",
+      "succeeded",
+      "succeeded",
+      "succeeded"
+    ]
+  },
+  "builderMeasurements": [
+    {
+      "file": "reviews/evidence/M1-C1.4/measurements/autosave-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 5 (AUTO-02 autosave latency)",
+        "platform": "windows",
+        "fixture": "sample_document(901) (36 entries, embedded media 60 KiB each) + a 64 MiB preserved entry (extras/media.bin)",
+        "snapshotMs": {
+          "n": 15,
+          "p50": 0.0608,
+          "p90": 0.0983,
+          "p99": 0.2122,
+          "max": 0.2122
+        },
+        "duringLongBatch": {
+          "batchSteps": 1000,
+          "batchMs": 1752.4334999999999,
+          "maintenanceWaitedMs": 1746.1200999999999,
+          "snapshotMs": 0.0712,
+          "committedRev": 17,
+          "recoveryRevs": [
+            17
+          ]
+        },
+        "underQueuedRequests": {
+          "threads": 8,
+          "snapshotMs": {
+            "n": 10,
+            "p50": 0.0697,
+            "p90": 0.07490000000000001,
+            "p99": 0.0862,
+            "max": 0.0862
+          },
+          "schedulingDelayMs": {
+            "n": 10,
+            "p50": 22.0382,
+            "p90": 23.5838,
+            "p99": 24.2362,
+            "max": 24.2362
+          }
+        },
+        "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; an atomic batch is one request, so the autosave waits for the whole batch"
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4/measurements/cache-bounds-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 8",
+        "platform": "windows",
+        "fixture": "sample_document(901), every embedded medium 60 KiB",
+        "cacheBytes": {
+          "afterFirstExport": 61440,
+          "afterFiveExportsFiveFailures": 61440,
+          "beforeClose": 61440,
+          "afterProjectSwitch": 0,
+          "afterClose": 0,
+          "afterExecutorStopExists": false
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4/measurements/fingerprint-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 4 (RO-02 folder fingerprint)",
+        "platform": "windows",
+        "fixture": "folder-form project + 10000 files of 16 bytes under extras/",
+        "watchPassMs": {
+          "n": 20,
+          "p50": 17.0197,
+          "p90": 17.5713,
+          "p99": 18.092,
+          "max": 18.092
+        },
+        "callerLatencyMs": {
+          "backToBackPasses": {
+            "n": 165,
+            "p50": 15.813600000000001,
+            "p90": 16.8368,
+            "p99": 17.688599999999997,
+            "max": 18.1481
+          },
+          "scheduled2sWatch10s": {
+            "n": 2864,
+            "p50": 1.1284,
+            "p90": 1.1945000000000001,
+            "p99": 1.6999,
+            "max": 18.628700000000002
+          }
+        },
+        "sizeMtimePreservingEditDetected": false,
+        "sizeChangingEditDetected": true,
+        "note": "a same-size edit that restores the modification time is not detected (walk compares name, size, mtime): recorded as SI-046 for the spec owner"
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4/measurements/lock-liveness-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 2 (ADR-0014 \u00c2\u00a711.4)",
+        "platform": "windows",
+        "protection": "shareMode",
+        "probeHeldMicros": {
+          "n": 500,
+          "p50": 4.300000000000001,
+          "p99": 6.8
+        },
+        "acquireOnHeldMicros": {
+          "n": 50,
+          "p50": 66.69999999999999,
+          "p99": 152.10000000000002
+        },
+        "crashedHolderTakeoverMs": 8.0146,
+        "processAliveFallbackMs": 25.006899999999998,
+        "bounds": {
+          "protectedLiveHolder": "never stale (probe), whatever heartbeat, clock or process id say",
+          "protectedDeadHolderSameHost": "at once (first open after the process ends)",
+          "protectedOtherHostProbeFree": "heartbeat rule: 300 s",
+          "unprotectedLock": "heartbeat older than 300 s, or process known dead on this host",
+          "unprotectedFutureHeartbeat": "file unchanged for 300 s",
+          "unreadableUnprotected": "10 s",
+          "unreadableUnknown": "300 s",
+          "protectedArbiter": "never removed while its holder lives",
+          "unprotectedArbiter": "10 s (either clock direction)",
+          "processAliveTimeoutMs": 2000
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4/measurements/never-block-mcp-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "suite": "11 \u00c2\u00a714.5 never-block through MCP (stdio protocol, run_command, first declared example)",
+        "platform": "windows",
+        "commands": 719,
+        "byStatus": {
+          "error": 650,
+          "ok": 69
+        },
+        "byErrorCode": {
+          "arg.invalid": 1,
+          "checkpoint.notFound": 2,
+          "command.notImplemented": 600,
+          "edit.pasteNotAllowed": 3,
+          "fs.invalidPath": 6,
+          "job.notFound": 2,
+          "permission.denied": 26,
+          "project.backupNotFound": 1,
+          "project.pathRequired": 1,
+          "project.recoveryNotFound": 1,
+          "project.unsavedChanges": 1,
+          "ref.notFound": 5,
+          "workspace.notFound": 1
+        },
+        "callLatencyMs": {
+          "p50": 1.719,
+          "p99": 4.1116,
+          "max": 23.3286
+        },
+        "watchdogMs": 10000,
+        "jobs": {
+          "started": 0,
+          "finalStates": {},
+          "waitedMs": 9.999999999999999e-05
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4/measurements/queued-calls-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "queued": 50,
+        "allAnsweredMs": 131.24640000000002,
+        "perCallMs": {
+          "p50": 68.1511,
+          "max": 130.1606
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/autosave-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 5 (AUTO-02 autosave latency)",
+        "platform": "windows",
+        "fixture": "sample_document(901) (36 entries, embedded media 60 KiB each) + a 64 MiB preserved entry (extras/media.bin)",
+        "snapshotMs": {
+          "n": 15,
+          "p50": 0.1207,
+          "p90": 0.14200000000000002,
+          "p99": 0.15689999999999998,
+          "max": 0.15689999999999998
+        },
+        "duringLongBatch": {
+          "batchSteps": 1000,
+          "batchMs": 4227.2977,
+          "maintenanceWaitedMs": 4221.6861,
+          "snapshotMs": 0.121,
+          "committedRev": 17,
+          "recoveryRevs": [
+            17
+          ]
+        },
+        "underQueuedRequests": {
+          "threads": 8,
+          "snapshotMs": {
+            "n": 10,
+            "p50": 0.13190000000000002,
+            "p90": 0.1584,
+            "p99": 0.161,
+            "max": 0.161
+          },
+          "schedulingDelayMs": {
+            "n": 10,
+            "p50": 55.0845,
+            "p90": 57.4208,
+            "p99": 58.9357,
+            "max": 58.9357
+          }
+        },
+        "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; an atomic batch is one request, so the autosave waits for the whole batch"
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/cache-bounds-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 8",
+        "platform": "windows",
+        "fixture": "sample_document(901), every embedded medium 60 KiB",
+        "cacheBytes": {
+          "afterFirstExport": 61440,
+          "afterFiveExportsFiveFailures": 61440,
+          "beforeClose": 61440,
+          "afterProjectSwitch": 0,
+          "afterClose": 0,
+          "afterExecutorStopExists": false
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/fingerprint-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 4 (RO-02 folder fingerprint)",
+        "platform": "windows",
+        "fixture": "folder-form project + 10000 files of 16 bytes under extras/",
+        "watchPassMs": {
+          "n": 20,
+          "p50": 38.646100000000004,
+          "p90": 40.4205,
+          "p99": 43.5165,
+          "max": 43.5165
+        },
+        "callerLatencyMs": {
+          "backToBackPasses": {
+            "n": 68,
+            "p50": 39.6398,
+            "p90": 51.3046,
+            "p99": 56.1181,
+            "max": 56.267900000000004
+          },
+          "scheduled2sWatch10s": {
+            "n": 1962,
+            "p50": 2.5366,
+            "p90": 3.7942,
+            "p99": 4.0514,
+            "max": 59.356899999999996
+          }
+        },
+        "sizeMtimePreservingEditDetected": false,
+        "sizeChangingEditDetected": true,
+        "note": "a same-size edit that restores the modification time is not detected (walk compares name, size, mtime): recorded as SI-046 for the spec owner"
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/lock-liveness-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 2 (ADR-0014 \u00c2\u00a711.4)",
+        "platform": "windows",
+        "protection": "shareMode",
+        "probeHeldMicros": {
+          "n": 500,
+          "p50": 10.0,
+          "p99": 25.400000000000002
+        },
+        "acquireOnHeldMicros": {
+          "n": 50,
+          "p50": 191.39999999999998,
+          "p99": 264.59999999999997
+        },
+        "crashedHolderTakeoverMs": 5.855499999999999,
+        "processAliveFallbackMs": 79.6292,
+        "bounds": {
+          "protectedLiveHolder": "never stale (probe), whatever heartbeat, clock or process id say",
+          "protectedDeadHolderSameHost": "at once (first open after the process ends)",
+          "protectedOtherHostProbeFree": "heartbeat rule: 300 s",
+          "unprotectedLock": "heartbeat older than 300 s, or process known dead on this host",
+          "unprotectedFutureHeartbeat": "file unchanged for 300 s",
+          "unreadableUnprotected": "10 s",
+          "unreadableUnknown": "300 s",
+          "protectedArbiter": "never removed while its holder lives",
+          "unprotectedArbiter": "10 s (either clock direction)",
+          "processAliveTimeoutMs": 2000
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/never-block-mcp-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "suite": "11 \u00c2\u00a714.5 never-block through MCP (stdio protocol, run_command, first declared example)",
+        "platform": "windows",
+        "commands": 719,
+        "byStatus": {
+          "error": 650,
+          "ok": 69
+        },
+        "byErrorCode": {
+          "arg.invalid": 1,
+          "checkpoint.notFound": 2,
+          "command.notImplemented": 600,
+          "edit.pasteNotAllowed": 3,
+          "fs.invalidPath": 6,
+          "job.notFound": 2,
+          "permission.denied": 26,
+          "project.backupNotFound": 1,
+          "project.pathRequired": 1,
+          "project.recoveryNotFound": 1,
+          "project.unsavedChanges": 1,
+          "ref.notFound": 5,
+          "workspace.notFound": 1
+        },
+        "callLatencyMs": {
+          "p50": 4.314,
+          "p99": 11.4743,
+          "max": 53.108200000000004
+        },
+        "watchdogMs": 10000,
+        "jobs": {
+          "started": 0,
+          "finalStates": {},
+          "waitedMs": 0.0003
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/queued-calls-windows.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "queued": 50,
+        "allAnsweredMs": 469.4217,
+        "perCallMs": {
+          "p50": 256.3392,
+          "max": 465.6592
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/autosave-macos.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 5 (AUTO-02 autosave latency)",
+        "platform": "macos",
+        "fixture": "sample_document(901) (36 entries, embedded media 60 KiB each) + a 64 MiB preserved entry (extras/media.bin)",
+        "snapshotMs": {
+          "n": 15,
+          "p50": 0.06583399999999999,
+          "p90": 0.0815,
+          "p99": 0.10104199999999999,
+          "max": 0.10104199999999999
+        },
+        "duringLongBatch": {
+          "batchSteps": 1000,
+          "batchMs": 2379.101583,
+          "maintenanceWaitedMs": 2345.7202079999997,
+          "snapshotMs": 0.063041,
+          "committedRev": 17,
+          "recoveryRevs": [
+            17
+          ]
+        },
+        "underQueuedRequests": {
+          "threads": 8,
+          "snapshotMs": {
+            "n": 10,
+            "p50": 0.06483299999999999,
+            "p90": 0.073333,
+            "p99": 0.07358300000000001,
+            "max": 0.07358300000000001
+          },
+          "schedulingDelayMs": {
+            "n": 10,
+            "p50": 31.351416999999998,
+            "p90": 32.285542,
+            "p99": 32.827291,
+            "max": 32.827291
+          }
+        },
+        "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; an atomic batch is one request, so the autosave waits for the whole batch"
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/cache-bounds-macos.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 8",
+        "platform": "macos",
+        "fixture": "sample_document(901), every embedded medium 60 KiB",
+        "cacheBytes": {
+          "afterFirstExport": 61440,
+          "afterFiveExportsFiveFailures": 61440,
+          "beforeClose": 61440,
+          "afterProjectSwitch": 0,
+          "afterClose": 0,
+          "afterExecutorStopExists": false
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/fingerprint-macos.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 4 (RO-02 folder fingerprint)",
+        "platform": "macos",
+        "fixture": "folder-form project + 10000 files of 16 bytes under extras/",
+        "watchPassMs": {
+          "n": 20,
+          "p50": 46.286083,
+          "p90": 52.830291,
+          "p99": 54.25675,
+          "max": 54.25675
+        },
+        "callerLatencyMs": {
+          "backToBackPasses": {
+            "n": 75,
+            "p50": 22.901208999999998,
+            "p90": 33.625625,
+            "p99": 37.881709,
+            "max": 39.97225
+          },
+          "scheduled2sWatch10s": {
+            "n": 472,
+            "p50": 1.562292,
+            "p90": 1.7484169999999999,
+            "p99": 3.5305419999999996,
+            "max": 40.876542
+          }
+        },
+        "sizeMtimePreservingEditDetected": false,
+        "sizeChangingEditDetected": true,
+        "note": "a same-size edit that restores the modification time is not detected (walk compares name, size, mtime): recorded as SI-046 for the spec owner"
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/lock-liveness-macos.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "obligation": "C1.4 obligation 2 (ADR-0014 \u00c2\u00a711.4)",
+        "platform": "macos",
+        "protection": "flock",
+        "probeHeldMicros": {
+          "n": 500,
+          "p50": 38.958000000000006,
+          "p99": 75.833
+        },
+        "acquireOnHeldMicros": {
+          "n": 50,
+          "p50": 132.625,
+          "p99": 408.791
+        },
+        "crashedHolderTakeoverMs": 2.1003749999999997,
+        "processAliveFallbackMs": 13.188708,
+        "bounds": {
+          "protectedLiveHolder": "never stale (probe), whatever heartbeat, clock or process id say",
+          "protectedDeadHolderSameHost": "at once (first open after the process ends)",
+          "protectedOtherHostProbeFree": "heartbeat rule: 300 s",
+          "unprotectedLock": "heartbeat older than 300 s, or process known dead on this host",
+          "unprotectedFutureHeartbeat": "file unchanged for 300 s",
+          "unreadableUnprotected": "10 s",
+          "unreadableUnknown": "300 s",
+          "protectedArbiter": "never removed while its holder lives",
+          "unprotectedArbiter": "10 s (either clock direction)",
+          "processAliveTimeoutMs": 2000
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/never-block-mcp-macos.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "suite": "11 \u00c2\u00a714.5 never-block through MCP (stdio protocol, run_command, first declared example)",
+        "platform": "macos",
+        "commands": 719,
+        "byStatus": {
+          "error": 650,
+          "ok": 69
+        },
+        "byErrorCode": {
+          "arg.invalid": 1,
+          "checkpoint.notFound": 2,
+          "command.notImplemented": 600,
+          "edit.pasteNotAllowed": 3,
+          "fs.outsideRoots": 6,
+          "job.notFound": 2,
+          "permission.denied": 26,
+          "project.backupNotFound": 1,
+          "project.pathRequired": 1,
+          "project.recoveryNotFound": 1,
+          "project.unsavedChanges": 1,
+          "ref.notFound": 5,
+          "workspace.notFound": 1
+        },
+        "callLatencyMs": {
+          "p50": 2.0695829999999997,
+          "p99": 5.617125,
+          "max": 28.379583
+        },
+        "watchdogMs": 10000,
+        "jobs": {
+          "started": 0,
+          "finalStates": {},
+          "waitedMs": 4.2e-05
+        }
+      }
+    },
+    {
+      "file": "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/queued-calls-macos.json",
+      "recomputableSamples": false,
+      "retainedMeasurement": {
+        "queued": 50,
+        "allAnsweredMs": 229.762,
+        "perCallMs": {
+          "p50": 134.70629200000002,
+          "max": 228.41975
+        }
+      }
+    }
+  ],
+  "measurementRecomputationLimit": "Builder percentiles lack original observations on both OSes; values are retained claims, not independently recomputed statistics.",
+  "focusedRuntimeDeclarations": 32,
+  "freshArtifactDownloads": {
+    "Windows/sdk-conformance.json": {
+      "sha256": "0d2767ed3e02029b8596ae71e9cc85f5dddcab10cbca8660e73cd94358c5f596",
+      "matchesInherited": true
+    },
+    "Windows/selftest-1.json": {
+      "sha256": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+      "matchesInherited": true
+    },
+    "Windows/toontown-headless.exe": {
+      "sha256": "70a068cf2add9db1345da63681b2c9cd4f861484ca29fb0e6f11bd4963f2bbbf",
+      "matchesInherited": true
+    },
+    "Windows/c14-measurements/autosave-windows.json": {
+      "sha256": "4b69e316b7bc3d6620ec0f5e0f3d17d9eba33f4531a3e36ddadcf8b0a75b55f0",
+      "matchesInherited": true
+    },
+    "Windows/c14-measurements/cache-bounds-windows.json": {
+      "sha256": "f643aa0a4ffaafc4f7582578f25a426ee82d413a3d1fdfff7cba686501fb1ca6",
+      "matchesInherited": true
+    },
+    "Windows/c14-measurements/fingerprint-windows.json": {
+      "sha256": "9d26d410c8a1cd2a9f387725ec25c710199bac02150a0666b165234f20d80dd2",
+      "matchesInherited": true
+    },
+    "Windows/c14-measurements/lock-liveness-windows.json": {
+      "sha256": "43d235b083828e6553215ae0fa799fa388e4cbca0fa84f02fb61836ffcb98932",
+      "matchesInherited": true
+    },
+    "Windows/c14-measurements/never-block-mcp-windows.json": {
+      "sha256": "aa2286754a7d44f0c9f0f538e152604034ca77d072a2b8781b35aa9ddce11fc6",
+      "matchesInherited": true
+    },
+    "Windows/c14-measurements/queued-calls-windows.json": {
+      "sha256": "24b14ad2a205e17aa97f97086f68aab59cea831977eb5407cb22953cf89d47c8",
+      "matchesInherited": true
+    },
+    "macOS/sdk-conformance.json": {
+      "sha256": "a18676af5daec5da73075489cda431b9ce2c8b0525a21557a77d3299e71dc6a2",
+      "matchesInherited": true
+    },
+    "macOS/selftest-1.json": {
+      "sha256": "535154768e50065b4807b6f4c4975c2910bee7926533851de2dcf7afe525e1a9",
+      "matchesInherited": true
+    },
+    "macOS/toontown-headless": {
+      "sha256": "252e8d434a2e6fb531e63d30244590e820e0fda1f79de2b3652246e7fe6cf448",
+      "matchesInherited": true
+    },
+    "macOS/c14-measurements/autosave-macos.json": {
+      "sha256": "46b606c73236d489bc3d95faaf31227a7e1d3639e89578c04f355820261dca75",
+      "matchesInherited": true
+    },
+    "macOS/c14-measurements/cache-bounds-macos.json": {
+      "sha256": "c0f969baf063c5d3bec14198e5dca6a7254c8fcca75e1c638004d1cca209a951",
+      "matchesInherited": true
+    },
+    "macOS/c14-measurements/fingerprint-macos.json": {
+      "sha256": "fdbde364e6bda22855b65561068c2dcec75007f3cf98296163dac0aa143e716c",
+      "matchesInherited": true
+    },
+    "macOS/c14-measurements/lock-liveness-macos.json": {
+      "sha256": "fe7bb7fa6e6e5959ecc54951ef6906bf79b202275b935b06c2af04d1103ee141",
+      "matchesInherited": true
+    },
+    "macOS/c14-measurements/never-block-mcp-macos.json": {
+      "sha256": "7c2b3c20521973b9b5996202f24f2f6b66cf9bca565835082966270d0131fe13",
+      "matchesInherited": true
+    },
+    "macOS/c14-measurements/queued-calls-macos.json": {
+      "sha256": "87d8351ae004ca0afb16e0618e18a742aa8449e35a7a96442937f933d7e6a17c",
+      "matchesInherited": true
+    }
+  },
+  "observedDottedCodes": [
+    "arg.invalid",
+    "arg.missing",
+    "arg.unknown",
+    "checkpoint.notFound",
+    "command.notImplemented",
+    "edit.pasteNotAllowed",
+    "fs.invalidPath",
+    "job.notFound",
+    "permission.denied",
+    "project.backupNotFound",
+    "project.pathRequired",
+    "project.recoveryNotFound",
+    "project.unsavedChanges",
+    "ref.notFound",
+    "workspace.notFound"
+  ],
+  "freshWorkspace": {
+    "summarySum": [
+      355,
+      1,
+      1
+    ],
+    "hasFailedSummary": true,
+    "complete": false
+  },
+  "register": {
+    "requirements": {
+      "total": 226,
+      "deferred-with-owner": 71,
+      "implemented": 130,
+      "divergent": 24,
+      "missing": 1
+    },
+    "declarations": {
+      "total": 32,
+      "implemented": 19,
+      "divergent": 2,
+      "deferred-with-owner": 11
+    }
+  },
+  "findingCounts": {
+    "P0": 0,
+    "P1": 15,
+    "P2": 2
+  },
+  "obligations": [
+    {
+      "id": 1,
+      "decision": "Partially met"
+    },
+    {
+      "id": 2,
+      "decision": "Partially met"
+    },
+    {
+      "id": 3,
+      "decision": "Met for tested local/CI configurations"
+    },
+    {
+      "id": 4,
+      "decision": "Partially met"
+    },
+    {
+      "id": 5,
+      "decision": "Partially met"
+    },
+    {
+      "id": 6,
+      "decision": "Partially met"
+    },
+    {
+      "id": 7,
+      "decision": "Partially met"
+    },
+    {
+      "id": 8,
+      "decision": "Met for tested scenarios"
+    }
+  ],
+  "finalCi": {
+    "head": "390600123f6af0fef7a2961375e7f6804a290940",
+    "conclusion": "success",
+    "jobs": {
+      "bundle (windows-latest)": "success",
+      "raster determinism (macos-latest)": "success",
+      "headless without a display (ubuntu)": "success",
+      "raster determinism (windows-latest)": "success",
+      "bundle (macos-latest)": "success",
+      "check (macos-latest)": "success",
+      "check (windows-latest)": "success",
+      "raster determinism (ubuntu-latest)": "success"
+    }
+  },
+  "sdk": {
+    "client": "mcp (Python SDK) 2.0.0",
+    "server": "target/c14-ci-verified/Windows/toontown-headless.exe",
+    "platform": "win32",
+    "seconds": 1.79,
+    "passed": 24,
+    "failed": 0,
+    "checks": [
+      {
+        "check": "initialize.protocolVersion",
+        "ok": true,
+        "detail": "2025-11-25"
+      },
+      {
+        "check": "initialize.capabilities",
+        "ok": true,
+        "detail": "experimental=None logging=LoggingCapability() prompts=PromptsCapability(list_changed=False) resources=ResourcesCapability(subscribe=True, list_changed=False) tools=ToolsCapability(list_changed=True) completions=CompletionsCapability() extensions=None tasks=None"
+      },
+      {
+        "check": "initialize.instructions",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "ping",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "roots/list asked after initialized",
+        "ok": true,
+        "detail": "[True]"
+      },
+      {
+        "check": "tools/list 28 generic tools",
+        "ok": true,
+        "detail": "['batch', 'checkpoint', 'convert_coordinates', 'describe_command', 'describe_frame', 'doc_diff', 'find_objects', 'get_docs', 'get_object', 'get_state', 'history', 'hit_test', 'inspect_ui', 'job_cancel', 'job_status', 'job_wait', 'key', 'list_commands', 'pointer', 'redo', 'render_contact_sheet', 'render_drawing', 'render_frame', 'run_command', 'screenshot', 'set_properties', 'type_text', 'undo']"
+      },
+      {
+        "check": "tools carry outputSchema",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "tools/call run_command project.create (inside client roots)",
+        "ok": true,
+        "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M65V6DQ3ZRD7HTD5YZJHKMGY', 'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-5sxgjruk\\\\Conformance.animpkg', 'sceneId': 'sc_01M65V6DQ3ZRD7HTD5YZJHKMN2', 'cameraId': 'el_01M65V6DQ3ZRD7HTD5YZJHKMN4', 'elementId': 'el_01M65V6DQ3ZRD7HTD5YZJHKMN5'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+      },
+      {
+        "check": "tools/call get_state",
+        "ok": true,
+        "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M65V6DQ3ZRD7HTD5YZJHKMGY', 'name': 'Conformance', 'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-5sxgjruk\\\\Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M65V6DQ3ZRD7HTD5YZJHKMN2', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M65V6DQ3ZRD7HTD5YZJ"
+      },
+      {
+        "check": "tools/call get_object",
+        "ok": true,
+        "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M65V6DQ3ZRD7HTD5YZJHKMN2', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M65V6DQ3ZRD7HTD5YZJHKMN4', 'paletteStyles': {'pal_01M65V6DQ3ZRD7HTD5YZJHKMGZ': 'sty_01M65V6DQ3ZRD7HTD5YZJHKMH0'}, 'outTransition': {'id': 'tr_01M65V6DQ3ZRD7HTD5YZJHKMN8', 'ty"
+      },
+      {
+        "check": "resources/list",
+        "ok": true,
+        "detail": "['app://state', 'app://project', 'app://docs/agent-guide', 'app://docs/object-model', 'app://docs/coordinates', 'app://docs/errors', 'app://events', 'app://activity']"
+      },
+      {
+        "check": "resources/templates/list",
+        "ok": true,
+        "detail": "10"
+      },
+      {
+        "check": "resources/read docs equals instructions",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "resources/read object",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "resources/subscribe -> notifications/resources/updated",
+        "ok": true,
+        "detail": "9"
+      },
+      {
+        "check": "logging/setLevel -> notifications/message",
+        "ok": true,
+        "detail": "4"
+      },
+      {
+        "check": "prompts/list",
+        "ok": true,
+        "detail": "['orient', 'draw_and_paint', 'traditional_animation', 'cutout_rig', 'animate_motion', 'lip_sync', 'storyboard_to_animatic', 'effects_pass', 'export_deliverable', 'review_and_fix']"
+      },
+      {
+        "check": "prompts/get",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "completion/complete",
+        "ok": true,
+        "detail": "['doc.object.get']"
+      },
+      {
+        "check": "elicitation/create for a confirmation",
+        "ok": true,
+        "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-5sxgjruk\\\\Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"C:\\\\\\\\Users\\\\\\\\kaiga\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\tt-c14-sdk-5sxgjruk\\\\\\\\Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'Proceed"
+      },
+      {
+        "check": "accepted elicitation proceeds",
+        "ok": true,
+        "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M65V6DQ3ZRD7HTD5YZJHKMGY', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-10-30T07:25:41.279Z', 'oldValue': '2026-10-30T07:25:40.451Z'}]}], 'warnings': [], 'documentRev': 3}"
+      },
+      {
+        "check": "job_wait ok",
+        "ok": true,
+        "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-10-30T07:25:41.280Z', 'result': {'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-5sxgjruk\\\\Export.animpkg', 'form': 'package', 'bytes': 6685, 'entries': 11}, 'session': 'agent:s1-6e941b'}, 'changes': [], 'warnings': [], 'document"
+      },
+      {
+        "check": "notifications/progress",
+        "ok": true,
+        "detail": "[(1000.0, 1000.0, 'Write'), (1000.0, 1000.0, 'finished')]"
+      },
+      {
+        "check": "pointer answers notImplemented with its milestone",
+        "ok": true,
+        "detail": "{'status': 'error', 'changes': [], 'warnings': [], 'documentRev': None, 'error': {'code': 'command.notImplemented', 'message': 'the `pointer` tool is not available yet: pointer gestures produce the structured commands of the drawing tools (gesture equivalence, 11 \u00a77.6), which arrive with M2', 'details': {'tool': 'pointer', 'milestone': 'M2 C2.3'}, 'hint': 'use the structured commands (run_command)"
+      }
+    ]
+  },
+  "baselineReviewerSuites": {
+    "rust": 34,
+    "python": 11
+  },
+  "finalVerification": {
+    "baseline": "390600123f6af0fef7a2961375e7f6804a290940",
+    "runtime": {
+      "total": 23,
+      "failures": [
+        "test_accepted_elicitation_preserves_request_id_result",
+        "test_activity_batch_export_does_not_turn_dry_runs_into_edits",
+        "test_activity_batch_export_keeps_committed_batch_operations",
+        "test_atomic_failure_has_no_activity_export_effect",
+        "test_closed_stdout_ends_the_unusable_session",
+        "test_elicitation_is_one_audit_entry_per_tool_call",
+        "test_eof_while_eliciting_ends_the_session",
+        "test_filter_has_bounded_runtime",
+        "test_get_state_matches_the_command_envelope",
+        "test_invalid_utf8_frame_does_not_destroy_stream",
+        "test_malformed_elicitation_does_not_overwrite",
+        "test_non_object_tool_arguments_are_rejected",
+        "test_nonreading_client_with_eof_does_not_pin_the_session",
+        "test_second_initialize_is_rejected",
+        "test_size_and_mtime_preserving_edit_requires_confirmation",
+        "test_undo_and_redo_emit_the_declared_events",
+        "test_unknown_cancellation_does_not_cancel_a_future_request",
+        "test_unknown_tool_argument_is_rejected",
+        "test_wrong_dry_run_type_does_not_commit",
+        "test_wrong_expect_rev_type_does_not_commit",
+        "test_percentile_evidence_retains_observations",
+        "test_suspension_hooks_are_not_a_normal_dependency_feature"
+      ],
+      "errors": 0,
+      "passes": [
+        "test_project_resource_is_readable"
+      ],
+      "failureCount": 22,
+      "passCount": 1
+    },
+    "cargoHeadless": {
+      "expectedFailure": true,
+      "runtimeTotal": 23,
+      "runtimeFailures": 22
+    },
+    "cargoMcp": {
+      "autosavePassed": true,
+      "limitsExpectedFailures": 2
+    },
+    "pythonDiscovery": {
+      "total": 12,
+      "inheritedPassed": 11,
+      "expectedFailingSuite": "c14-r1-mcp.py"
+    },
+    "findingCoverage": {
+      "C14-R1-01": {
+        "level": "P1",
+        "tests": [
+          "test_wrong_dry_run_type_does_not_commit",
+          "test_wrong_expect_rev_type_does_not_commit",
+          "test_non_object_tool_arguments_are_rejected",
+          "test_unknown_tool_argument_is_rejected"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-02": {
+        "level": "P1",
+        "tests": [
+          "test_malformed_elicitation_does_not_overwrite"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-03": {
+        "level": "P1",
+        "tests": [
+          "test_atomic_failure_has_no_activity_export_effect"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-04": {
+        "level": "P1",
+        "tests": [
+          "test_accepted_elicitation_preserves_request_id_result"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-05": {
+        "level": "P1",
+        "tests": [
+          "test_filter_has_bounded_runtime"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-06": {
+        "level": "P1",
+        "tests": [
+          "saved_observe_policy_and_limits_survive_restart"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-07": {
+        "level": "P1",
+        "tests": [
+          "ReleaseFeature.test_percentile_evidence_retains_observations"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-08": {
+        "level": "P2",
+        "disposition": "downgraded: missing deterministic runtime repro"
+      },
+      "C14-R1-09": {
+        "level": "P1",
+        "tests": [
+          "test_size_and_mtime_preserving_edit_requires_confirmation"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-10": {
+        "level": "P1",
+        "tests": [
+          "ReleaseFeature.test_suspension_hooks_are_not_a_normal_dependency_feature"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-11": {
+        "level": "P1",
+        "tests": [
+          "configured_batch_limit_applies_to_batch_script"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-12": {
+        "level": "P1",
+        "tests": [
+          "test_elicitation_is_one_audit_entry_per_tool_call"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-13": {
+        "level": "P1",
+        "tests": [
+          "test_invalid_utf8_frame_does_not_destroy_stream"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-14": {
+        "level": "P1",
+        "tests": [
+          "test_closed_stdout_ends_the_unusable_session",
+          "test_eof_while_eliciting_ends_the_session",
+          "test_nonreading_client_with_eof_does_not_pin_the_session"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-15": {
+        "level": "P1",
+        "tests": [
+          "test_activity_batch_export_keeps_committed_batch_operations",
+          "test_activity_batch_export_does_not_turn_dry_runs_into_edits"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-16": {
+        "level": "P2",
+        "tests": [
+          "test_get_state_matches_the_command_envelope",
+          "test_undo_and_redo_emit_the_declared_events"
+        ],
+        "result": "expected failure reproduced"
+      },
+      "C14-R1-17": {
+        "level": "P1",
+        "tests": [
+          "test_unknown_cancellation_does_not_cancel_a_future_request",
+          "test_second_initialize_is_rejected"
+        ],
+        "result": "expected failure reproduced"
+      }
+    },
+    "saveProofGap": {
+      "lockBoundaries": [
+        "ArbiterTaken",
+        "PublishCreated",
+        "PublishWritten",
+        "TakeoverDecided",
+        "HeartbeatChecked",
+        "HeartbeatWritten",
+        "ReleaseChecked"
+      ],
+      "runtimeReproAvailable": false
+    },
+    "environment": {
+      "displayVariablesRemoved": true,
+      "suiteNetworkUse": false,
+      "notes": "Python suite uses only stdlib, local pipes and filesystem; no SDK or network needed."
+    }
+  },
+  "artifactSha256": {
+    "reviews/evidence/M1-C1.4/measurements/autosave-windows.json": "e28c80a46a92be27f53d4c92424f4382f38cc3740bab546788cda10348d5d677",
+    "reviews/evidence/M1-C1.4/measurements/cache-bounds-windows.json": "f643aa0a4ffaafc4f7582578f25a426ee82d413a3d1fdfff7cba686501fb1ca6",
+    "reviews/evidence/M1-C1.4/measurements/fingerprint-windows.json": "b4ea24ee1c1b7eb4a4962a425b07769e91423fdd0ceb82f4dbdb0546e5a72d1f",
+    "reviews/evidence/M1-C1.4/measurements/lock-liveness-windows.json": "06d8b24621f6b01a197b08e078eae5690bb3221c54964a9273cb5d627f9dc1eb",
+    "reviews/evidence/M1-C1.4/measurements/never-block-mcp-windows.json": "1e73a69ea23c6660d3f9ffbb1f34f0e131352383efb2bd1b1f9ee1f08d178d10",
+    "reviews/evidence/M1-C1.4/measurements/queued-calls-windows.json": "cb750561229622321efe308e0f8ec84640b456fe3def0330b110d85a5557c53f",
+    "reviews/evidence/M1-C1.4/measurements/sdk-conformance-windows.json": "b4a8c7156611a698f6071f4a958002f0709d56912a81e21cfbf0eed4600c7acf",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/autosave-windows.json": "4b69e316b7bc3d6620ec0f5e0f3d17d9eba33f4531a3e36ddadcf8b0a75b55f0",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/cache-bounds-windows.json": "f643aa0a4ffaafc4f7582578f25a426ee82d413a3d1fdfff7cba686501fb1ca6",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/fingerprint-windows.json": "9d26d410c8a1cd2a9f387725ec25c710199bac02150a0666b165234f20d80dd2",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/lock-liveness-windows.json": "43d235b083828e6553215ae0fa799fa388e4cbca0fa84f02fb61836ffcb98932",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/never-block-mcp-windows.json": "aa2286754a7d44f0c9f0f538e152604034ca77d072a2b8781b35aa9ddce11fc6",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/c14-measurements/queued-calls-windows.json": "24b14ad2a205e17aa97f97086f68aab59cea831977eb5407cb22953cf89d47c8",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/sdk-conformance.json": "0d2767ed3e02029b8596ae71e9cc85f5dddcab10cbca8660e73cd94358c5f596",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/selftest-1.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-Windows/toontown-headless.exe": "70a068cf2add9db1345da63681b2c9cd4f861484ca29fb0e6f11bd4963f2bbbf",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/autosave-macos.json": "46b606c73236d489bc3d95faaf31227a7e1d3639e89578c04f355820261dca75",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/cache-bounds-macos.json": "c0f969baf063c5d3bec14198e5dca6a7254c8fcca75e1c638004d1cca209a951",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/fingerprint-macos.json": "fdbde364e6bda22855b65561068c2dcec75007f3cf98296163dac0aa143e716c",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/lock-liveness-macos.json": "fe7bb7fa6e6e5959ecc54951ef6906bf79b202275b935b06c2af04d1103ee141",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/never-block-mcp-macos.json": "7c2b3c20521973b9b5996202f24f2f6b66cf9bca565835082966270d0131fe13",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/c14-measurements/queued-calls-macos.json": "87d8351ae004ca0afb16e0618e18a742aa8449e35a7a96442937f933d7e6a17c",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/sdk-conformance.json": "a18676af5daec5da73075489cda431b9ce2c8b0525a21557a77d3299e71dc6a2",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/selftest-1.json": "535154768e50065b4807b6f4c4975c2910bee7926533851de2dcf7afe525e1a9",
+    "reviews/evidence/M1-C1.4-r1/ci-headless-macOS/toontown-headless": "252e8d434a2e6fb531e63d30244590e820e0fda1f79de2b3652246e7fe6cf448"
+  },
+  "builderReceipt": {
+    "exitCodes": {
+      "gates/fmt.log": 0,
+      "gates/declarations.log": 0,
+      "gates/clippy.log": 0,
+      "gates/clippy-diag.log": 0,
+      "gates/deny.log": 0,
+      "gates/pnpm-lint.log": 0,
+      "gates/pnpm-typecheck.log": 0,
+      "gates/pnpm-test.log": 0,
+      "gates/pnpm-format.log": 0,
+      "gates/pnpm-licenses.log": 0,
+      "gates/build.log": 0,
+      "gates/headless.log": 0,
+      "gates/mcp-conformance.log": 0,
+      "gates/reviewer-python-suites.log": 0,
+      "gates/test.log": 0,
+      "gates/test-diag.log": 0
+    },
+    "sha256Matches": {
+      "gates/build.log": true,
+      "gates/clippy-diag.log": true,
+      "gates/clippy.log": true,
+      "gates/declarations.log": true,
+      "gates/deny.log": true,
+      "gates/fmt.log": true,
+      "gates/headless.log": true,
+      "gates/mcp-conformance.log": true,
+      "gates/pnpm-format.log": true,
+      "gates/pnpm-licenses.log": true,
+      "gates/pnpm-lint.log": true,
+      "gates/pnpm-test.log": true,
+      "gates/pnpm-typecheck.log": true,
+      "gates/reviewer-python-suites.log": true,
+      "gates/selftest-1.json": true,
+      "gates/selftest-2.json": true,
+      "gates/selftest-compare.log": true,
+      "gates/test-diag.log": true,
+      "gates/test.log": true
+    }
+  }
+}
