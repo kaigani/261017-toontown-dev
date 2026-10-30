@@ -20,7 +20,7 @@ use crate::geom::{P, signed_area};
 use crate::num;
 use crate::path::{GeomError, Path};
 
-/// Grid of the union: 1/64 du (coordinates up to ±10⁷ du stay inside the engine's i32 range).
+/// Grid of the union: 1/64 du (coordinates up to ±10^7 du stay inside the engine's i32 range).
 pub const GRID: f64 = 64.0;
 
 /// Fitting tolerance of outline contours (du).
@@ -112,7 +112,7 @@ fn hull(mut pts: Vec<P>) -> Vec<P> {
 }
 
 fn to_int(p: P) -> IntPoint<i32> {
-    // |p| ≤ 10⁷ + 100 du, so |p × 64| < 2³⁰: inside the engine's range.
+    // |p| ≤ 10^7 + 100 du, so |p × 64| < 2^30: inside the engine's range.
     IntPoint::new((p.x * GRID).round() as i32, (p.y * GRID).round() as i32)
 }
 

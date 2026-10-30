@@ -9,7 +9,7 @@ use serde_json::{Value, json};
 use crate::geom::{Cubic, P, Rect};
 
 /// The largest coordinate magnitude accepted in drawing space (du). Brush outlines are computed on an integer grid of
-/// 1/64 du whose range this keeps inside (`brush`), and 10⁷ du is 100 000 fields from the centre.
+/// 1/64 du whose range this keeps inside (`brush`), and 10^7 du is 100 000 fields from the centre.
 pub const MAX_COORD: f64 = 1.0e7;
 
 /// The most anchors (or input samples) one stroke may have (02 §12.2 `drawing.invalidGeometry` beyond).

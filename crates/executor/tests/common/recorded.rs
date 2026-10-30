@@ -61,7 +61,7 @@ pub fn differences(a: &Value, b: &Value, at: &str, out: &mut Vec<String>) {
     }
 }
 
-/// Keys whose values are times or durations: always recorded as varying, even when two recording runs happened to
+/// Keys whose values are times or durations (and, below, machine facts): always recorded as varying, even when two recording runs happened to
 /// agree (a duration of 0 ms twice).
 const TIME_KEYS: [&str; 12] = [
     "durationMs",
@@ -89,12 +89,17 @@ pub fn varying(a: &Value, b: &Value) -> Vec<String> {
     out
 }
 
+/// Keys whose values are facts about the machine (operating system, locale), not the document.
+const MACHINE_KEYS: [&str; 2] = ["platform", "locale"];
+
 fn times(v: &Value, at: &str, out: &mut Vec<String>) {
     match v {
         Value::Object(m) => {
             for (k, x) in m {
                 let p = format!("{at}/{}", escape(k));
-                if TIME_KEYS.contains(&k.as_str()) && !x.is_object() && !x.is_array() {
+                // A confirmation's projected file size includes the run's absolute paths (machine dependent).
+                let machine = MACHINE_KEYS.contains(&k.as_str()) || (k == "bytes" && at.contains("/consequences/"));
+                if (TIME_KEYS.contains(&k.as_str()) || machine) && !x.is_object() && !x.is_array() {
                     out.push(p);
                 } else {
                     times(x, &p, out);
