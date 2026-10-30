@@ -5,10 +5,13 @@ for r in d['requirements']:
  if r['line'] in [26,219,505,573]:
   r.update(status='implemented',note='The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81.',test='crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs')
  if r['line']==81:
-  r.update(status='divergent',note='C14-R3-02 binding atomic-group script extension is incomplete: both matching and mismatching group expectRev are rejected as unknown fields. Owner builder C1.4 before M1 merge.',test='crates/mcp/tests/c14_r4_closure.rs')
+  r.update(implementation='crates/mcp/src/script.rs:44; crates/executor/src/run.rs:1179',status='divergent',note='C14-R3-02 binding atomic-group script extension is incomplete: both matching and mismatching group expectRev are rejected as unknown fields. Owner builder C1.4 before M1 merge.',test='crates/mcp/tests/c14_r4_closure.rs')
+for r in d['requirements']:
+ if r['line']==505: r['implementation']='crates/executor/src/lib.rs:474'
+ if r['line']==219: r['implementation']='crates/mcp/src/server.rs:217'
 for r in d['declarations']:
  if r['id']=='agent.activity.export':
-  r.update(status='implemented',note='Original divergence closes: committed edits survive publication errors; atomic groups preserve exact revisions and undo history. Group expectRev omission belongs to script execution row S11-L81.',test='crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs')
+  r.update(implementation='crates/executor/src/commands/agent.rs:758',status='implemented',note='Original divergence closes: committed edits survive publication errors; atomic groups preserve exact revisions and undo history. Group expectRev omission belongs to script execution row S11-L81.',test='crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs')
 d['counts']=dict(collections.Counter(r['status'] for r in d['requirements']));d['declarationCounts']=dict(collections.Counter(r['status'] for r in d['declarations']))
 assert [r['id'] for r in d['requirements'] if r['status']=='divergent']==['S11-L81', 'S11-L96']
 (E/'conformance.json').write_text(json.dumps(d,indent=2)+'\n')

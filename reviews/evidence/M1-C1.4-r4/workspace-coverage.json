@@ -1,0 +1,13 @@
+{
+  "originalTargets": 104,
+  "coveredOriginalTargets": 104,
+  "missing": [],
+  "failures": {
+    "c14_r4_closure": [
+      2,
+      1,
+      0
+    ]
+  },
+  "originalTargetCountChanges": {}
+}

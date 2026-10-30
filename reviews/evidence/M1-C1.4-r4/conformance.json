@@ -211,7 +211,7 @@
       "line": 81,
       "requirement": "| **Batch script** | `app --headless --run <batch.json> [--project <path>] [--out <log.jsonl>]` | Executes a JSON file with the same structure as the `batch` tool (\u00a77.3) without an MCP client, then exits with status 0 (all steps ok) or non-zero. Lets an agent-authored procedure be replayed in CI. |",
       "status": "divergent",
-      "implementation": "bins/headless/src/cli.rs:149",
+      "implementation": "crates/mcp/src/script.rs:44; crates/executor/src/run.rs:1179",
       "test": "crates/mcp/tests/c14_r4_closure.rs",
       "note": "C14-R3-02 binding atomic-group script extension is incomplete: both matching and mismatching group expectRev are rejected as unknown fields. Owner builder C1.4 before M1 merge.",
       "kind": "table row"
@@ -813,7 +813,7 @@
       "line": 219,
       "requirement": "1. If the client supports **elicitation**, the server sends an elicitation request summarising the action (what will be lost or written, object counts, paths) and waits for accept/decline. Decline \u2192 error `confirmation.declined`.",
       "status": "implemented",
-      "implementation": "crates/executor/src/cx.rs:214",
+      "implementation": "crates/mcp/src/server.rs:217",
       "test": "crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs",
       "note": "The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81.",
       "kind": "list rule"
@@ -2335,7 +2335,7 @@
       "line": 505,
       "requirement": "- Every agent call (tool name, command id, parameters with inline media replaced by a hash, result status, changed object count, undo step id, duration, session/client name) is appended to an **activity log** kept per project session and, optionally, persisted next to the project as `agent-activity.jsonl` (preference, default off).",
       "status": "implemented",
-      "implementation": "crates/executor/src/lib.rs:422",
+      "implementation": "crates/executor/src/lib.rs:474",
       "test": "crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs",
       "note": "The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81.",
       "kind": "list rule"
@@ -2849,7 +2849,7 @@
       "spec": "spec/A_command_registry.md:1035",
       "declaration": "| `agent.activity.export` | action | Write the activity log to a file | `path; format?: enum \"jsonl\"\\|\"batch\" = \"jsonl\"; onExists?: enum \"fail\"\\|\"overwrite\"\\|\"rename\" = \"fail\"` | `{path, entries}` | no |",
       "status": "implemented",
-      "implementation": "crates/executor/src/commands/agent.rs:728",
+      "implementation": "crates/executor/src/commands/agent.rs:758",
       "note": "Original divergence closes: committed edits survive publication errors; atomic groups preserve exact revisions and undo history. Group expectRev omission belongs to script execution row S11-L81.",
       "test": "crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs"
     },
