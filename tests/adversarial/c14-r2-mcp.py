@@ -10,6 +10,7 @@ import pathlib
 import queue
 import subprocess
 import tempfile
+import threading
 import time
 import unittest
 
@@ -31,6 +32,49 @@ class Protocol(unittest.TestCase):
 
     def tearDown(self):
         self.c.close()
+
+    def test_typed_tools_reject_nested_types_and_extra_options(self):
+        self.c.close()
+        self.c = c = r1.Client(extra=("--typed-tools", "doc"))
+        scene = c.project()
+        for args in [{"targets": [scene], "props": {}, "dryRun": "true"},
+                     {"targets": [scene], "props": {}, "unknownReviewOption": True},
+                     {"targets": [None], "props": {}}, {"targets": [scene], "props": None}]:
+            e = env(c.call("doc_object_patch", args))
+            self.assertEqual(e["status"], "error", e)
+            self.assertTrue(e["error"]["code"].startswith("arg."), e)
+
+    def test_nonreading_client_without_eof_is_closed_by_pressure_timeout(self):
+        p = subprocess.Popen([BINARY, "--mcp-stdio", "--user-dir", str(self.c.root / "pressure")],
+                             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        def flood():
+            try:
+                # Inline ping doesn't need initialize. Enough replies fill the OS pipe and bounded queue.
+                for i in range(15000):
+                    p.stdin.write((json.dumps({"jsonrpc": "2.0", "id": i, "method": "ping"}) + "\n").encode())
+                    p.stdin.flush()
+            except (OSError, ValueError):
+                pass
+        thread = threading.Thread(target=flood, daemon=True)
+        thread.start()
+        try:
+            p.wait(timeout=18)
+        finally:
+            if p.poll() is None:
+                p.kill()
+            thread.join(timeout=2)
+            p.communicate(timeout=5)
+
+    def test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded(self):
+        p = subprocess.Popen([BINARY, "--mcp-stdio", "--user-dir", str(self.c.root / "utf8-eof")],
+                             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        try:
+            out, _ = p.communicate(b'{"bad":"\xff"}', timeout=5)
+            self.assertTrue(any(json.loads(line).get("error", {}).get("code") == -32700 for line in out.splitlines()), out)
+        finally:
+            if p.poll() is None:
+                p.kill()
+                p.communicate(timeout=5)
 
     def test_nested_wrapper_validation_never_edits(self):
         c = self.c
@@ -93,6 +137,27 @@ class Protocol(unittest.TestCase):
         exported = [x for x in entries if x["commandId"] == "agent.activity.export"]
         self.assertEqual(e["status"], "error", "a file that was never published was reported as exported")
         self.assertEqual(exported[-1]["status"], "error", exported)
+
+    def test_close_with_save_offers_external_change_confirmation(self):
+        for folder in [False, True]:
+            with self.subTest(folder=folder):
+                self.c.close()
+                self.c = c = r1.Client()
+                target = c.root / ("Folder" if folder else "P.animpkg")
+                made = c.run("project.create", {"name": "P", "path": str(target) + (os.sep if folder else "")})
+                self.assertEqual(made["status"], "ok", made)
+                scene = made["result"]["sceneId"]
+                c.run("doc.object.patch", {"targets": [scene], "props": {"meta": {"n": 1}}})
+                project = target / "project.json" if folder else target
+                stamp = project.stat()
+                changed = bytearray(project.read_bytes())
+                changed[-1] ^= 1
+                project.write_bytes(changed)
+                os.utime(project, ns=(stamp.st_atime_ns, stamp.st_mtime_ns))
+                e = c.run("project.close", {"onUnsaved": "save"})
+                self.assertEqual(project.read_bytes(), changed)
+                self.assertEqual(e["status"], "needs_confirmation", e)
+                self.assertEqual(e["result"]["category"], "externalChange", e)
 
     def test_partial_sequential_batch_keeps_its_committed_edits_in_replay(self):
         # C14-R2-02: an error envelope does not roll back earlier non-atomic steps.
