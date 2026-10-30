@@ -346,6 +346,7 @@ pub(crate) fn build_bundle(
     kind = query,
     label = "Export JSON",
     scopes = [read],
+    confirm = ["overwrite"],
     needs_project,
     example(title = "The first scene as an inline bundle", params = r#"{"scope": "scenes", "refs": ["scene:#1"], "binaries": "omit"}"#),
     agent_only = "agents exchange object-model bundles",
@@ -370,6 +371,7 @@ pub(crate) fn doc_export_json(cx: &mut Cx, p: ExportJsonParams) -> Result<Export
                 )
                 .hint("pass onExists: \"overwrite\""));
             }
+            persistence::confirm_overwrite(cx, &target)?;
             let text = if p.pretty {
                 tt_model::canonical::to_canonical_string(&bundle)?
             } else {

@@ -432,12 +432,26 @@ pub(crate) struct InfoResult {
     kind = query,
     label = "Application information",
     scopes = [read],
-    not_implemented = "M1 C1.4",
     example(title = "Read name, version, platform, locale and languages", params = "{}"),
     gui = "About window (M4)",
 )]
 pub(crate) fn app_info_get(_cx: &mut Cx, _p: NoParams) -> Result<InfoResult, CommandError> {
-    Err(CommandError::not_implemented("app.info.get", "M1 C1.4"))
+    // The UI language: `LC_ALL`/`LC_MESSAGES`/`LANG` (POSIX form `en_GB.UTF-8` → `en-GB`), else `en`. Only English
+    // texts exist before localisation (M10), so `languages` is `["en"]` (11 §13: an `en` copy is always available).
+    let raw = ["LC_ALL", "LC_MESSAGES", "LANG"]
+        .iter()
+        .filter_map(|k| std::env::var(k).ok())
+        .find(|v| !v.is_empty() && v != "C" && v != "POSIX")
+        .unwrap_or_else(|| "en".to_owned());
+    let locale = raw.split(['.', '@']).next().unwrap_or("en").replace('_', "-");
+    Ok(InfoResult {
+        name: "Toontown".to_owned(),
+        version: env!("CARGO_PKG_VERSION").to_owned(),
+        platform: format!("{}-{}", std::env::consts::OS, std::env::consts::ARCH),
+        locale: if locale.is_empty() { "en".to_owned() } else { locale },
+        languages: vec!["en".to_owned()],
+        format_version: tt_model::FORMAT_VERSION.to_owned(),
+    })
 }
 
 /// `app.quit` parameters.
@@ -474,6 +488,7 @@ pub(crate) fn unsaved(cx: &Cx) -> CommandError {
     kind = action,
     label = "Quit",
     scopes = [app],
+    confirm = ["discardUnsaved"],
     example(title = "Quit, discarding unsaved changes", params = r#"{"onUnsaved": "discard"}"#),
 )]
 pub(crate) fn app_quit(cx: &mut Cx, p: QuitParams) -> Result<QuitResult, CommandError> {

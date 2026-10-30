@@ -76,6 +76,10 @@ pub struct InvokeOptions {
     pub expect_rev: BTreeMap<String, u64>,
     /// Idempotency key: a repeated id within the session returns the original result.
     pub request_id: Option<String>,
+    /// The token of a `needs_confirmation` result: proceeds once with the confirmed action (11 §6.3).
+    pub confirm_token: Option<String>,
+    /// `confirm: true` (11 §6.3 rule 3): honoured only for categories the session's policy pre-authorises.
+    pub confirm: bool,
 }
 
 /// One command invocation.
@@ -100,7 +104,7 @@ impl Invocation {
 }
 
 /// One step of a batch (11 §7.3).
-#[derive(Debug, Clone, PartialEq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct BatchStep {
     /// Command id.
@@ -114,7 +118,7 @@ pub struct BatchStep {
 }
 
 /// A batch request (11 §7.3).
-#[derive(Debug, Clone, PartialEq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct BatchRequest {
     /// Undo label of the batch (one step when atomic).

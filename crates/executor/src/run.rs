@@ -473,6 +473,33 @@ fn frozen_guard(s: &Session, txns: &[Txn]) -> Result<(), CommandError> {
     Ok(())
 }
 
+/// The envelope of a failed call. `confirmation.required` (11 §6.3) is not a failure: the call had no effect and
+/// returns `needs_confirmation` with the token, the summary and the consequences; `agent.confirmation.requested` tells
+/// the GUI (attached mode).
+fn needs_confirmation(session: &mut Session, e: CommandError, rev: Option<u64>) -> Envelope {
+    if e.code != "confirmation.required" {
+        return Envelope::error(e, rev);
+    }
+    let d = &e.details;
+    let result = json!({
+        "status": "needs_confirmation",
+        "confirmToken": d.get("confirmToken"),
+        "summary": d.get("summary"),
+        "consequences": d.get("consequences"),
+        "category": d.get("category"),
+    });
+    session.emit(
+        "agent.confirmation.requested",
+        json!({
+            "confirmationId": d.get("confirmToken"), "sessionId": d.get("sessionId"),
+            "summary": d.get("summary"), "consequences": d.get("consequences"),
+        }),
+    );
+    let mut env = Envelope::ok(result, rev);
+    env.status = crate::types::Status::NeedsConfirmation;
+    env
+}
+
 /// Commits transactions: installs each stamped snapshot, records undo steps or moves the history position, logs
 /// the revision and emits `doc.changed`.
 fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<UndoRef>, CommandError> {
@@ -654,6 +681,65 @@ impl Core {
         Self { session: Some(session), requests: RequestCache::default(), registry, simulating: false, budget }
     }
 
+    /// The origin a call runs with: an agent session registered in the hub gets its current name and grant.
+    fn effective_origin(&self, origin: &Origin) -> Origin {
+        if let Origin::Agent { session, .. } = origin
+            && let Some(s) = self.session.as_ref().and_then(|x| x.agents.sessions.get(session))
+        {
+            return Origin::Agent { session: session.clone(), name: s.client.clone(), scopes: s.scopes.clone() };
+        }
+        origin.clone()
+    }
+
+    /// Registers an agent session (`agent.session.connected`).
+    pub(crate) fn connect_agent(&mut self, c: crate::agents::AgentConnect) -> crate::agents::AgentSession {
+        let roots = c.roots.clone();
+        let Some(s) = self.session.as_mut() else {
+            return crate::agents::AgentHub::default().connect(c, crate::time::now_iso());
+        };
+        let a = s.agents.connect(c, crate::time::now_iso());
+        if !roots.is_empty() {
+            s.env.roots.insert(a.session_id.clone(), roots);
+        }
+        s.emit(
+            "agent.session.connected",
+            json!({ "sessionId": a.session_id, "client": a.client, "policy": a.policy.as_str() }),
+        );
+        a
+    }
+
+    /// Removes an agent session (`agent.session.disconnected`).
+    pub(crate) fn disconnect_agent(&mut self, session: &str, reason: &str) {
+        if let Some(s) = self.session.as_mut()
+            && s.agents.sessions.remove(session).is_some()
+        {
+            s.agents.pending.retain(|_, p| p.session != session);
+            s.env.roots.remove(session);
+            s.emit("agent.session.disconnected", json!({ "sessionId": session, "reason": reason }));
+        }
+    }
+
+    /// The state an MCP server polls.
+    pub(crate) fn agent_status(&self, session: &str) -> crate::agents::AgentStatus {
+        self.session
+            .as_ref()
+            .map_or_else(|| crate::agents::AgentHub::default().status(session), |s| s.agents.status(session))
+    }
+
+    /// Appends one activity entry for an agent call (11 §11), and beside the project when persisting is on.
+    pub(crate) fn audit(&mut self, entry: crate::agents::ActivityEntry) -> crate::agents::ActivityEntry {
+        let Some(s) = self.session.as_mut() else { return entry };
+        let e = s.agents.record(entry);
+        if s.agents.persist
+            && let Some(dir) =
+                s.project.as_ref().and_then(|p| p.path.as_ref()).and_then(|p| crate::commands::agent::activity_file(p))
+            && let Ok(line) = serde_json::to_string(&e)
+        {
+            let _ = crate::commands::agent::append_line(&dir, &line);
+        }
+        e
+    }
+
     fn take_session(&mut self) -> Session {
         self.session.take().unwrap_or_default()
     }
@@ -746,6 +832,9 @@ impl Core {
     }
 
     fn run(&mut self, inv: &Invocation) -> Envelope {
+        // An agent session's grant is the hub's (11 §6.1; `agent.session.grant` applies to the next call).
+        let resolved = Invocation { origin: self.effective_origin(&inv.origin), ..inv.clone() };
+        let inv = &resolved;
         let Some(entry) = self.registry.get(&inv.command).copied() else {
             return Envelope::error(unknown(&inv.command, self.registry), self.rev());
         };
@@ -756,6 +845,11 @@ impl Core {
         // run when it is set, exactly as with the invocation option.
         let dry = inv.options.dry_run || param_dry_run(&entry, &inv.params);
         let mut cx = Cx::new(session, inv.origin.clone(), entry.id(), dry);
+        cx.set_confirmation(
+            inv.options.confirm_token.clone(),
+            inv.options.confirm,
+            crate::agents::fingerprint(entry.id(), &inv.params),
+        );
         let outcome = run_step(&mut cx, &entry, inv.params.clone(), &inv.options).and_then(|result| {
             let label = cx
                 .label()
@@ -776,7 +870,7 @@ impl Core {
         let env = match outcome {
             Err(e) => {
                 rollback.apply(&mut session);
-                let mut env = Envelope::error(e, rev_before);
+                let mut env = needs_confirmation(&mut session, e, rev_before);
                 env.warnings = warnings;
                 env
             }
@@ -840,6 +934,8 @@ impl Core {
 
     /// A batch (11 §7.3).
     pub(crate) fn batch(&mut self, req: &BatchRequest, origin: &Origin) -> Envelope {
+        let resolved = self.effective_origin(origin);
+        let origin = &resolved;
         if req.steps.is_empty() || req.steps.len() > MAX_BATCH_STEPS {
             return Envelope::error(
                 CommandError::with_details(

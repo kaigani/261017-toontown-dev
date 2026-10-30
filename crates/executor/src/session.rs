@@ -145,6 +145,8 @@ pub(crate) struct Session {
     pub edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
     /// The persistence environment (C1.3).
     pub env: crate::store::Env,
+    /// Agent sessions, confirmations and the activity log (C1.4). Not rolled back with a failed call.
+    pub agents: crate::agents::AgentHub,
 }
 
 impl Session {

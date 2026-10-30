@@ -24,6 +24,7 @@
 //! sets), AG-01…AG-09, §6–§8 and §10.2–§10.3 through the executor; 01 §3 (projects), §5 (window, panels, workspaces:
 //! kernel state), §6.1 (undo/redo), §11 (settings), §12.4. Milestone: M1 (C1.2, C1.3). Decisions: ADR-0013, ADR-0014.
 
+pub mod agents;
 mod align;
 mod app;
 pub mod commands;
@@ -332,6 +333,111 @@ impl ExecutorHandle {
     #[must_use]
     pub fn batch(&self, req: BatchRequest, origin: Origin) -> Envelope {
         self.call("batch", |r| Request::Batch(req, origin, r)).unwrap_or_else(|e| Envelope::error(e, None))
+    }
+
+    /// Registers an agent session with the hub (11 §6.1; `agent.session.connected`). Its grant is authoritative for
+    /// every later call of `Origin::Agent { session, .. }`.
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal` (executor stopped).
+    pub fn connect_agent(&self, c: agents::AgentConnect) -> Result<agents::AgentSession, CommandError> {
+        self.call("agent.connect", |r| {
+            Request::Run(Box::new(move |core| {
+                let _ = r.send(core.connect_agent(c));
+            }))
+        })
+    }
+
+    /// Removes an agent session (`agent.session.disconnected`); its pending confirmations and roots go with it.
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal` (executor stopped).
+    pub fn disconnect_agent(&self, session: &str, reason: &str) -> Result<(), CommandError> {
+        let (session, reason) = (session.to_owned(), reason.to_owned());
+        self.call("agent.disconnect", |r| {
+            Request::Run(Box::new(move |core| {
+                core.disconnect_agent(&session, &reason);
+                let _ = r.send(());
+            }))
+        })
+    }
+
+    /// The session state an MCP server polls between calls (connected, paused, grant, limits, typed tools).
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal` (executor stopped).
+    pub fn agent_status(&self, session: &str) -> Result<agents::AgentStatus, CommandError> {
+        let session = session.to_owned();
+        self.call("agent.status", |r| {
+            Request::Run(Box::new(move |core| {
+                let _ = r.send(core.agent_status(&session));
+            }))
+        })
+    }
+
+    /// Sets how long confirmation tokens are valid (11 §6.3: five minutes; tests shorten it).
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal` (executor stopped).
+    pub fn set_confirmation_ttl(&self, ttl: Duration) -> Result<(), CommandError> {
+        self.call("agent.ttl", |r| {
+            Request::Run(Box::new(move |core| {
+                if let Some(s) = core.session_mut() {
+                    s.agents.ttl = Some(ttl);
+                }
+                let _ = r.send(());
+            }))
+        })
+    }
+
+    /// Runs one agent call and appends its activity entry (11 §11): exactly one entry per call, whatever its outcome,
+    /// with the MCP tool that made it.
+    #[must_use]
+    pub fn invoke_audited(&self, inv: Invocation, tool: &str) -> Envelope {
+        let started = std::time::Instant::now();
+        let (command, params, origin) = (inv.command.clone(), inv.params.clone(), inv.origin.clone());
+        let env = self.invoke(inv);
+        self.audit(&origin, tool, &command, &params, &env, started.elapsed());
+        env
+    }
+
+    /// Runs one agent batch and appends its activity entry (one for the batch; 11 §11 groups by batch).
+    #[must_use]
+    pub fn batch_audited(&self, req: BatchRequest, origin: Origin, tool: &str) -> Envelope {
+        let started = std::time::Instant::now();
+        let params = serde_json::to_value(&req).unwrap_or(Value::Null);
+        let env = self.batch(req, origin.clone());
+        self.audit(&origin, tool, "batch", &params, &env, started.elapsed());
+        env
+    }
+
+    fn audit(&self, origin: &Origin, tool: &str, command: &str, params: &Value, env: &Envelope, took: Duration) {
+        let Origin::Agent { session, name, .. } = origin else { return };
+        let entry = agents::ActivityEntry {
+            seq: 0,
+            time: time::now_iso(),
+            session_id: session.clone(),
+            client: name.clone(),
+            tool: tool.to_owned(),
+            command_id: command.to_owned(),
+            params: agents::redact(params),
+            status: match env.status {
+                Status::Ok => "ok",
+                Status::NeedsConfirmation => "needs_confirmation",
+                Status::Error => "error",
+            }
+            .to_owned(),
+            error_code: env.error.as_ref().map(|e| e.code.clone()),
+            undo_step_id: env.undo.as_ref().map(|u| u.step_id.clone()),
+            changed_count: env.changes.len(),
+            document_rev: env.document_rev,
+            duration_ms: u64::try_from(took.as_millis()).unwrap_or(u64::MAX),
+        };
+        let _ = self.call("agent.audit", |r| {
+            Request::Run(Box::new(move |core| {
+                let _ = r.send(core.audit(entry));
+            }))
+        });
     }
 
     /// Opens a document as the project, as the user, refusing to discard unsaved changes of an open project

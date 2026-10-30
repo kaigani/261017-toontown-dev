@@ -240,7 +240,7 @@ fn edits(h: &ExecutorHandle) {
 /// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
 /// that stands for the examples' `/tmp`.
 fn with_files(id: &str) -> bool {
-    ["project.", "doc.asset.", "doc.blob.", "doc.package."].iter().any(|p| id.starts_with(p))
+    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent."].iter().any(|p| id.starts_with(p))
 }
 
 fn wait_job(h: &ExecutorHandle, started: &Value) {
@@ -327,6 +327,37 @@ fn map_tmp(v: &mut Value, dir: &std::path::Path) {
     }
 }
 
+/// `agent.*` examples (C1.4) name a session `a1` and a confirmation `cf_1`: an agent session is connected and a
+/// confirmable call of it (an overwriting Save As) leaves a pending confirmation; the placeholders become their ids.
+fn agent_placeholders(h: &ExecutorHandle, dir: &std::path::Path, params: &mut Value) {
+    let a = h
+        .connect_agent(tt_executor::agents::AgentConnect { client: "Example agent".into(), ..Default::default() })
+        .unwrap();
+    let origin =
+        tt_executor::Origin::Agent { session: a.session_id.clone(), name: a.client.clone(), scopes: a.scopes.clone() };
+    let env = h.invoke(tt_executor::Invocation {
+        command: "project.saveAs".into(),
+        params: json!({ "path": dir.join("Short.animpkg").to_string_lossy(), "onExists": "overwrite" }),
+        options: Default::default(),
+        origin,
+    });
+    assert_eq!(env.status, Status::NeedsConfirmation, "{env:?}");
+    let token = env.result.unwrap()["confirmToken"].as_str().unwrap().to_owned();
+    fn walk(v: &mut Value, map: &[(&str, &str)]) {
+        match v {
+            Value::String(s) => {
+                if let Some((_, to)) = map.iter().find(|(from, _)| s == from) {
+                    *s = (*to).to_owned();
+                }
+            }
+            Value::Array(x) => x.iter_mut().for_each(|y| walk(y, map)),
+            Value::Object(m) => m.values_mut().for_each(|y| walk(y, map)),
+            _ => {}
+        }
+    }
+    walk(params, &[("a1", &a.session_id), ("cf_1", &token)]);
+}
+
 /// The clipboard a paste example expects (paste examples paste cells of `Bob`).
 fn clipboard_for(h: &ExecutorHandle, id: &str) {
     if matches!(id, "edit.paste" | "edit.pasteSpecial" | "edit.pasteAsNewElement") {
@@ -354,6 +385,9 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
             let mut params: Value = serde_json::from_str(ex.params).unwrap();
             if files {
                 map_tmp(&mut params, &dir);
+            }
+            if e.id().starts_with("agent.") {
+                agent_placeholders(&h, &dir, &mut params);
             }
             let t = Instant::now();
             let env = h.invoke(Invocation::user(e.id(), params));

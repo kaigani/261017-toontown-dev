@@ -254,6 +254,7 @@ fn write_new(
     kind = action,
     label = "New Project",
     scopes = [edit],
+    confirm = ["overwrite", "discardUnsaved"],
     example(title = "A 1920×1080, 24 fps project", params = r#"{"name": "Walk cycle", "frameRate": 24, "cameraWidth": 1920, "cameraHeight": 1080}"#),
 )]
 pub(crate) fn project_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResult, CommandError> {
@@ -294,6 +295,11 @@ pub(crate) fn project_create(cx: &mut Cx, p: CreateParams) -> Result<CreateResul
     let (doc, created) = tt_model::defaults::new_project(&spec, &mut ids, &now).map_err(crate::cx::model_error)?;
     let mut project = OpenProject::new(doc.clone(), None, false);
     project.permanent_dirty = false;
+    if let Some(path) = &path
+        && p.on_exists == OnExists::Overwrite
+    {
+        persistence::confirm_overwrite(cx, path)?;
+    }
     if let Some(path) = &path
         && !cx.dry_run()
     {
@@ -464,6 +470,7 @@ fn job_failed(e: &CommandError) -> CommandError {
     kind = job,
     label = "Open…",
     scopes = [edit, files_read],
+    confirm = ["discardUnsaved"],
     example(title = "Open a package", params = r#"{"path": "/tmp/Short.animpkg"}"#),
 )]
 pub(crate) fn project_open(cx: &mut Cx, p: OpenParams) -> Result<Job<OpenResult>, CommandError> {
@@ -540,6 +547,7 @@ pub(crate) struct ClosedResult {
     kind = action,
     label = "Close Project",
     scopes = [edit],
+    confirm = ["discardUnsaved"],
     needs_project,
     example(title = "Close, failing if unsaved", params = "{}"),
 )]
@@ -675,11 +683,31 @@ fn submit_save(
     kind = job,
     label = "Save",
     scopes = [edit, files_write],
+    confirm = ["externalChange"],
     needs_project,
     example(title = "Save", params = "{}"),
 )]
 pub(crate) fn project_save(cx: &mut Cx, p: SaveParams) -> Result<Job<SaveResult>, CommandError> {
-    let (path, form) = persistence::check_saveable(cx.project()?, p.allow_format_upgrade)?;
+    // RO-02 / SI-045: an agent gets the choice as `needs_confirmation` (accept = keep mine: overwrite; the other choice
+    // is reloading with project.open). The confirmation is bound to the file's identity and this session's lock, so
+    // a file changed again, or a lock lost, after the confirmation was requested refuses the token.
+    let mut external_ok = false;
+    if matches!(cx.origin(), crate::types::Origin::Agent { .. })
+        && let Some((path, at, binding)) = persistence::external_change(cx.project()?)
+    {
+        cx.confirm(
+            crate::agents::Category::ExternalChange,
+            format!("`{path}` was changed by another program since it was opened; saving overwrites those changes"),
+            vec![
+                json!({ "kind": "overwriteExternalChange", "path": path, "detectedAt": at }),
+                json!({ "kind": "alternative", "choice": "reload", "commandId": "project.open",
+                        "params": { "path": path, "onUnsaved": "discard" } }),
+            ],
+            Some(binding),
+        )?;
+        external_ok = true;
+    }
+    let (path, form) = persistence::check_saveable(cx.project()?, p.allow_format_upgrade, external_ok)?;
     if cx.dry_run() {
         return Ok(Job::dry());
     }
@@ -740,6 +768,7 @@ pub(crate) struct SaveAsResult {
     kind = job,
     label = "Save As…",
     scopes = [edit, files_write],
+    confirm = ["overwrite"],
     needs_project,
     example(title = "Save a copy", params = r#"{"path": "/tmp/Copy.animpkg"}"#),
 )]
@@ -770,6 +799,9 @@ pub(crate) fn project_save_as(cx: &mut Cx, p: SaveAsParams) -> Result<Job<SaveAs
             json!({ "path": target.to_string_lossy() }),
         )
         .hint("pass onExists: \"overwrite\""));
+    }
+    if !same {
+        persistence::confirm_overwrite(cx, &target)?;
     }
     if cx.dry_run() {
         return Ok(Job::dry());
@@ -1150,6 +1182,7 @@ fn recovery_not_found(id: &str) -> CommandError {
     kind = job,
     label = "Recover",
     scopes = [edit],
+    confirm = ["discardUnsaved"],
     example(title = "Recover a session", params = r#"{"recoveryId": "rc_1a2b3c4d"}"#),
     gui = "Recovery dialog at launch (M4)",
 )]
@@ -1397,6 +1430,7 @@ pub(crate) struct ProjectId {
     kind = action,
     label = "Open backup",
     scopes = [edit],
+    confirm = ["discardUnsaved"],
     example(title = "Open a backup as an untitled copy", params = r#"{"backupId": "bk_1a2b3c4d"}"#),
     gui = "File › Open Backup (M4)",
 )]

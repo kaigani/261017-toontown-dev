@@ -92,7 +92,14 @@ fn stubs_and_declarations_name_their_owners() {
             }
         }
     }
-    assert_eq!(registry().get("app.info.get").unwrap().status(), Status::NotImplemented { owner: "M1 C1.4" });
+    // C1.4 implemented every command it owns (agent.*, app.info.get).
+    assert_eq!(registry().get("app.info.get").unwrap().status(), Status::Implemented);
+    let c14: Vec<&str> = registry()
+        .entries()
+        .filter(|e| e.status() == Status::NotImplemented { owner: "M1 C1.4" })
+        .map(|e| e.id())
+        .collect();
+    assert!(c14.is_empty(), "C1.4 stubs left: {c14:?}");
     // C1.3 implemented every command it owns.
     assert_eq!(registry().get("doc.validate").unwrap().status(), Status::Implemented);
     let c13: Vec<&str> = registry()

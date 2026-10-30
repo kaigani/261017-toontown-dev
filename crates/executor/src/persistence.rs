@@ -354,17 +354,63 @@ pub(crate) fn resolve_unsaved(cx: &mut Cx, policy: crate::commands::common::OnUn
                     json!({ "commandId": cx.command(), "missingScopes": ["app"] }),
                 ));
             }
-            Ok(())
+            let name = cx.project()?.doc.project().name().clone();
+            cx.confirm(
+                crate::agents::Category::Discard,
+                format!("Discard the unsaved changes of `{name}`"),
+                vec![json!({ "kind": "discardUnsaved", "project": name })],
+                None,
+            )
         }
         OnUnsaved::Save => save_now(cx, false).map(|_| ()),
     }
+}
+
+/// The project file changed on disk since it was opened or saved (10 RO-02): its path, the detection time and the
+/// file's current identity (stamp and lock), which a confirmation to overwrite it is bound to (SI-045).
+pub(crate) fn external_change(p: &OpenProject) -> Option<(String, String, Value)> {
+    let path = p.path.clone()?;
+    let now = store::stamp_of(Path::new(&path), p.form_kind());
+    let at = match &p.store.changed_on_disk {
+        Some(at) => at.clone(),
+        None if p.store.stamp.is_some() && now != p.store.stamp => crate::time::now_iso(),
+        None => return None,
+    };
+    let binding = json!({
+        "path": path, "file": format!("{now:?}"), "lock": p.store.lock.as_ref().map(|l| l.info().lock_id),
+    });
+    Some((path, at, binding))
+}
+
+/// Asks before overwriting an existing file (11 §6.2: "overwrite" is a confirmable action under Assist). The
+/// confirmation is bound to the file's identity (size and modification time).
+///
+/// # Errors
+/// `confirmation.required` and the other confirmation errors of `Cx::confirm`.
+pub(crate) fn confirm_overwrite(cx: &mut Cx, path: &Path) -> Result<(), CommandError> {
+    if !path.exists() {
+        return Ok(());
+    }
+    let meta = std::fs::metadata(path).ok();
+    let size = meta.as_ref().map(std::fs::Metadata::len);
+    let modified = meta.and_then(|m| m.modified().ok()).map(|t| format!("{t:?}"));
+    cx.confirm(
+        crate::agents::Category::Overwrite,
+        format!("Overwrite `{}`", path.display()),
+        vec![json!({ "kind": "overwrite", "path": path.to_string_lossy(), "bytes": size })],
+        Some(json!({ "path": path.to_string_lossy(), "bytes": size, "modified": modified })),
+    )
 }
 
 /// Checks that the open project may be saved to its location.
 ///
 /// # Errors
 /// `project.pathRequired`, `project.readOnly`, `project.formatUpgrade`, `project.changedOnDisk`.
-pub(crate) fn check_saveable(p: &OpenProject, allow_upgrade: bool) -> Result<(PathBuf, Form), CommandError> {
+pub(crate) fn check_saveable(
+    p: &OpenProject,
+    allow_upgrade: bool,
+    external_ok: bool,
+) -> Result<(PathBuf, Form), CommandError> {
     let Some(path) = p.path.clone() else {
         return Err(CommandError::with_details(
             "project.pathRequired",
@@ -395,7 +441,10 @@ pub(crate) fn check_saveable(p: &OpenProject, allow_upgrade: bool) -> Result<(Pa
     check_upgrade(p, allow_upgrade)?;
     // Maintenance may not have looked since the last change: look again before replacing anything (C13-R1-06).
     let now = crate::time::now_iso();
-    let changed = p.store.changed_on_disk.as_ref().or_else(|| {
+    let changed = p.store.changed_on_disk.as_ref().filter(|_| !external_ok).or_else(|| {
+        if external_ok {
+            return None;
+        }
         (p.store.stamp.is_some() && store::stamp_of(Path::new(&path), p.form_kind()) != p.store.stamp).then_some(&now)
     });
     if let Some(at) = changed {
@@ -462,7 +511,7 @@ pub(crate) fn unsaved(cx: &Cx) -> Result<bool, CommandError> {
 /// # Errors
 /// As [`check_saveable`].
 pub(crate) fn save_now(cx: &mut Cx, allow_upgrade: bool) -> Result<(), CommandError> {
-    let (path, form) = check_saveable(cx.project()?, allow_upgrade)?;
+    let (path, form) = check_saveable(cx.project()?, allow_upgrade, false)?;
     let now = crate::time::now_iso();
     let in_batch = cx.in_atomic_batch();
     if !in_batch && unsaved(cx)? {

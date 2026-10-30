@@ -803,6 +803,7 @@ fn exists_error(path: &Path) -> CommandError {
     kind = query,
     label = "Export media file",
     scopes = [read, files_write],
+    confirm = ["overwrite"],
     needs_project,
     example(title = "Write the sample's sound to a file", params = r#"{"assetId": "as_01K742SG0G5HPQ0RBF5X4DSR0W", "path": "/tmp/line1.wav", "onExists": "overwrite"}"#),
     gui = "Project › Media › Export (M8)",
@@ -813,6 +814,7 @@ pub(crate) fn doc_asset_export(cx: &mut Cx, p: AssetExportParams) -> Result<Path
     if target.exists() && p.on_exists == OnExists::Fail {
         return Err(exists_error(&target));
     }
+    persistence::confirm_overwrite(cx, &target)?;
     let (src, _) = asset_source(cx, &key)?;
     let bytes = read_source(cx, &src, 1 << 40)?;
     if !cx.dry_run() {
@@ -919,6 +921,7 @@ pub(crate) fn remove_assets(cx: &mut Cx, ids: &[String], force: bool) -> Result<
     kind = action,
     label = "Remove Media",
     scopes = [edit],
+    confirm = ["destructive"],
     undo = "Remove Media",
     needs_project,
     example(title = "Remove media nothing uses", params = r#"{"unused": true}"#),
@@ -941,6 +944,20 @@ pub(crate) fn doc_asset_remove(cx: &mut Cx, p: AssetRemoveParams) -> Result<Remo
     };
     if ids.is_empty() {
         return Ok(RemoveResult { removed: Vec::new(), bytes: 0, detached_refs: Vec::new() });
+    }
+    // Removing media that placements use (force) deletes those placements; removing every unused asset deletes
+    // media nobody asked for by name. Both are destructive under Assist (11 §6.3).
+    let refs = asset_refs(&doc);
+    let used: Vec<&String> = ids.iter().filter(|id| refs.get(*id).is_some_and(|r| !r.is_empty())).collect();
+    if (p.force && !used.is_empty()) || p.unused {
+        cx.confirm(
+            crate::agents::Category::Destructive,
+            format!("Remove {} asset(s){}", ids.len(), if used.is_empty() { String::new() } else { " and the placements and sequences that use them".to_owned() }),
+            ids.iter()
+                .map(|id| json!({ "kind": "removeAsset", "assetId": id, "usedBy": refs.get(id).cloned().unwrap_or_default() }))
+                .collect(),
+            None,
+        )?;
     }
     remove_assets(cx, &ids, p.force)
 }
@@ -1181,6 +1198,7 @@ pub(crate) struct PackageExported {
     kind = job,
     label = "Export a copy",
     scopes = [read, files_write],
+    confirm = ["overwrite"],
     needs_project,
     example(title = "A folder-form copy for version control", params = r#"{"path": "/tmp/Short-folder", "form": "folder", "onExists": "overwrite"}"#),
     agent_only = "agents copy the project in either form (10 FMT-02)",
@@ -1197,6 +1215,7 @@ pub(crate) fn doc_package_export(cx: &mut Cx, p: PackageExportParams) -> Result<
     if target.exists() && p.on_exists == OnExists::Fail {
         return Err(exists_error(&target));
     }
+    persistence::confirm_overwrite(cx, &target)?;
     if target.exists() && form == Form::Package && target.is_dir() {
         return Err(invalid("/path", "a package cannot replace a folder"));
     }

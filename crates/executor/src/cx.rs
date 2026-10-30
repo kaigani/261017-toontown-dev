@@ -113,6 +113,10 @@ pub struct Cx {
     /// IDs drawn so far from this transaction's ID stream (see [`Cx::new_id`]).
     ids_drawn: u64,
     step: Option<usize>,
+    /// The call's confirmation inputs (11 §6.3): token, `confirm: true`, parameter fingerprint.
+    confirm_token: Option<String>,
+    confirm_flag: bool,
+    fingerprint: String,
 }
 
 /// Millisecond base of the ULID time part of transaction IDs (2025-10-15T00:00:00Z); the time part is a logical
@@ -162,7 +166,80 @@ impl Cx {
             effects: Vec::new(),
             ids_drawn: 0,
             step: None,
+            confirm_token: None,
+            confirm_flag: false,
+            fingerprint: String::new(),
         }
+    }
+
+    /// Sets the call's confirmation inputs.
+    pub(crate) fn set_confirmation(&mut self, token: Option<String>, confirm: bool, fingerprint: String) {
+        self.confirm_token = token;
+        self.confirm_flag = confirm;
+        self.fingerprint = fingerprint;
+    }
+
+    /// A confirmable condition was reached (11 §6.3). For the user (the GUI asks itself, M4), for dry runs and when
+    /// the agent session's policy does not confirm `category`, this passes. `confirm: true` passes for categories the
+    /// session pre-authorises. A valid `confirmToken` for this very call passes once. Otherwise the call fails without
+    /// side effects with `confirmation.required`, which the executor turns into the `needs_confirmation` result; the
+    /// token it carries is registered now: single use, five minutes, bound to the session, the command, the
+    /// parameters, the document revision and `binding` (a condition that must still hold when the token is used).
+    ///
+    /// # Errors
+    /// `confirmation.required`, `confirmation.expired`, `confirmation.declined`.
+    pub fn confirm(
+        &mut self,
+        category: crate::agents::Category,
+        summary: impl Into<String>,
+        consequences: Vec<Value>,
+        binding: Option<Value>,
+    ) -> Result<(), CommandError> {
+        let Origin::Agent { session, .. } = &self.origin else { return Ok(()) };
+        let session = session.clone();
+        if self.dry_run {
+            return Ok(());
+        }
+        let rev = self.session.project.as_ref().map(|p| p.doc.document_rev());
+        let hub = &mut self.session.agents;
+        let (policy, pre) = hub
+            .sessions
+            .get(&session)
+            .map_or((hub.limits.policy, false), |s| (s.policy, s.preauthorized.contains(&category)));
+        if !policy.confirms(category) || (self.confirm_flag && pre) {
+            return Ok(());
+        }
+        if let Some(token) = self.confirm_token.take() {
+            return hub.take(&token, &session, self.command, &self.fingerprint, rev, binding.as_ref());
+        }
+        hub.prune();
+        let summary = summary.into();
+        let token = format!("cf_{}", tt_persist::fsx::random_token(12));
+        hub.pending.insert(
+            token.clone(),
+            crate::agents::Pending {
+                id: token.clone(),
+                session: session.clone(),
+                command: self.command.to_owned(),
+                fingerprint: self.fingerprint.clone(),
+                document_rev: rev,
+                created: std::time::Instant::now(),
+                summary: summary.clone(),
+                consequences: consequences.clone(),
+                category,
+                decision: None,
+                binding,
+            },
+        );
+        Err(CommandError::with_details(
+            "confirmation.required",
+            summary.clone(),
+            json!({
+                "confirmToken": token, "summary": summary, "consequences": consequences,
+                "category": category.as_str(), "sessionId": session,
+            }),
+        )
+        .hint("re-invoke the same command with the same parameters and confirmToken within five minutes"))
     }
 
     /// The next ID of this transaction's ID stream (C12-R2-04). The stream is seeded from the project's ID and the

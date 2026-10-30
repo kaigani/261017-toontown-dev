@@ -16,7 +16,6 @@ export const COMMAND_INDEX = {
         format: "batch",
       },
     ],
-    milestone: "M1 C1.4",
   },
   "agent.activity.list": {
     kind: "query",
@@ -27,7 +26,6 @@ export const COMMAND_INDEX = {
         limit: 20,
       },
     ],
-    milestone: "M1 C1.4",
   },
   "agent.activity.persist.set": {
     kind: "toggle",
@@ -38,7 +36,6 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M1 C1.4",
   },
   "agent.confirmation.requested": {
     kind: "event",
@@ -47,7 +44,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.4",
     event: true,
   },
   "agent.confirmation.respond": {
@@ -60,7 +56,6 @@ export const COMMAND_INDEX = {
         accept: true,
       },
     ],
-    milestone: "M1 C1.4",
   },
   "agent.policy.defaults.set": {
     kind: "ui",
@@ -72,7 +67,6 @@ export const COMMAND_INDEX = {
         maxJobs: 2,
       },
     ],
-    milestone: "M1 C1.4",
   },
   "agent.server.set": {
     kind: "ui",
@@ -83,7 +77,6 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M1 C1.4",
   },
   "agent.server.status": {
     kind: "query",
@@ -92,7 +85,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.4",
   },
   "agent.session.connected": {
     kind: "event",
@@ -101,7 +93,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.4",
     event: true,
   },
   "agent.session.disconnect": {
@@ -113,7 +104,6 @@ export const COMMAND_INDEX = {
         sessionId: "a1",
       },
     ],
-    milestone: "M1 C1.4",
   },
   "agent.session.disconnected": {
     kind: "event",
@@ -122,7 +112,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.4",
     event: true,
   },
   "agent.session.grant": {
@@ -139,7 +128,6 @@ export const COMMAND_INDEX = {
         ],
       },
     ],
-    milestone: "M1 C1.4",
   },
   "agent.session.pause": {
     kind: "ui",
@@ -148,7 +136,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.4",
   },
   "agent.session.resume": {
     kind: "ui",
@@ -157,7 +144,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.4",
   },
   "agent.token.regenerate": {
     kind: "ui",
@@ -166,7 +152,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.4",
   },
   "agent.typedTools.set": {
     kind: "ui",
@@ -181,7 +166,6 @@ export const COMMAND_INDEX = {
         ],
       },
     ],
-    milestone: "M1 C1.4",
   },
   "anim.bone.create": {
     kind: "action",
@@ -1353,7 +1337,6 @@ export const COMMAND_INDEX = {
     examples: [
       {},
     ],
-    milestone: "M1 C1.4",
   },
   "app.mode.set": {
     kind: "ui",
@@ -8957,12 +8940,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         const: "observe",
       },
       {
-        description: "Asks before consequential actions.",
+        description: "All scopes except `network`, `print`, `prefs`, `app`; confirms destructive and overwriting actions.",
         type: "string",
         const: "assist",
       },
       {
-        description: "Acts within its scopes.",
+        description: "All scopes except `app`; confirms only `network`/`print` actions and discarding unsaved work.",
         type: "string",
         const: "autonomous",
       },
@@ -8983,6 +8966,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+        default: null,
       },
       maxJobs: {
         description: "Concurrent jobs per session.",
@@ -9187,12 +9171,12 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         const: "observe",
       },
       {
-        description: "Asks before consequential actions.",
+        description: "All scopes except `network`, `print`, `prefs`, `app`; confirms destructive and overwriting actions.",
         type: "string",
         const: "assist",
       },
       {
-        description: "Acts within its scopes.",
+        description: "All scopes except `app`; confirms only `network`/`print` actions and discarding unsaved work.",
         type: "string",
         const: "autonomous",
       },
@@ -9217,6 +9201,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+        default: null,
       },
       scopes: {
         description: "Scopes.",
