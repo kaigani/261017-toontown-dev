@@ -16,6 +16,8 @@
     "gates/headless.log": "cargo build --release --locked -p tt-headless && \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\" --version && \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\" --selftest && \"C:\\Python313\\python.exe\" scripts/check-headless-deps.py \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\"",
     "gates/reviewer-python-suites.log": "\"C:\\Python313\\python.exe\" scripts/run-reviewer-python-suites.py",
     "gates/mcp-conformance.log": "\"C:\\Python313\\python.exe\" scripts/mcp-conformance.py \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\"",
+    "gates/release-features.log": "\"C:\\Python313\\python.exe\" scripts/check-release-features.py",
+    "gates/measurements.log": "\"C:\\Python313\\python.exe\" scripts/analyse-measurements.py target/evidence/c14",
     "gates/declarations.log": "\"C:\\Python313\\python.exe\" scripts/gen-command-declarations.py && git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md"
   },
   "status": {
@@ -34,24 +36,29 @@
     "gates/mcp-conformance.log": 0,
     "gates/reviewer-python-suites.log": 0,
     "gates/test.log": 0,
-    "gates/test-diag.log": 0
+    "gates/test-diag.log": 0,
+    "gates/release-features.log": 0,
+    "gates/measurements.log": 0
   },
-  "recordedAt": "2026-10-30T06:03:26+00:00",
-  "baseCommit": "543e169fd549f24b0f9075aa0285d655e36cab7d",
+  "recordedAt": "2026-10-30T09:14:58+00:00",
+  "baseCommit": "fcf40d4ada2c17a71e06f9c94a60a21546a9d979",
   "dirtyFiles": [
     "reviews/evidence/M1-C1.3-r2/inspection-memory.json",
     "reviews/evidence/M1-C1.3-r3/open-latency.json",
     "reviews/evidence/M1-C1.4/gates/build.log",
     "reviews/evidence/M1-C1.4/gates/clippy-diag.log",
     "reviews/evidence/M1-C1.4/gates/clippy.log",
+    "reviews/evidence/M1-C1.4/gates/deny.log",
     "reviews/evidence/M1-C1.4/gates/headless.log",
     "reviews/evidence/M1-C1.4/gates/mcp-conformance.log",
     "reviews/evidence/M1-C1.4/gates/pnpm-test.log",
     "reviews/evidence/M1-C1.4/gates/reviewer-python-suites.log",
-    "reviews/evidence/M1-C1.4/gates/selftest-1.json",
     "reviews/evidence/M1-C1.4/gates/selftest-2.json",
     "reviews/evidence/M1-C1.4/gates/test-diag.log",
-    "reviews/evidence/M1-C1.4/gates/test.log"
+    "reviews/evidence/M1-C1.4/gates/test.log",
+    "reviews/evidence/M1-C1.4/receipt.json",
+    "reviews/evidence/M1-C1.4/gates/measurements.log",
+    "reviews/evidence/M1-C1.4/gates/release-features.log"
   ],
   "machine": {
     "os": "Windows-11-10.0.26200-SP0",
@@ -59,24 +66,26 @@
     "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
   },
   "sha256": {
-    "gates/build.log": "b5124ba2480fcf32dede7dc550c79443dfcb23549c8f6f9de3dc67f4e1762e38",
-    "gates/clippy-diag.log": "0f8d1af70e998d8b48c3ba8e074c4bf58ad6332ea42a183ab210af4d8660fd02",
-    "gates/clippy.log": "cad975bf5030c6aada8b022f6c5539b304c577fab7d8d7c1b990b23fa627b0d2",
+    "gates/build.log": "1fd60ee8ddd2b880b8073e89cb5901d97ec07d07d157e8dbdab33ec6719aabb3",
+    "gates/clippy-diag.log": "01a504d2950815dffc419f1ecf051e4a5af16104a4dee9c80ab78bcc29011ab8",
+    "gates/clippy.log": "7646046a6a4124d91093ec4c9b5df6152f304cd1f5b2fff31f726024411ed850",
     "gates/declarations.log": "bf51ee4b609102e540f8c6ee21b3f40e4f0a7af487383f5e37e96f4f11df76ee",
-    "gates/deny.log": "a49ce72093e00375b3426d2ee6bb33f1249c39f9b0cbd37c2d79d9b57a1bcc0c",
+    "gates/deny.log": "0c5426c91d0521a1b54196fd17fa063057adc68e94cd297e59dbcfa11ebc7153",
     "gates/fmt.log": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
-    "gates/headless.log": "d91a80fc1b9b6e991c717fae13a5875c187c06a397472db138b65ff1d04a3efe",
-    "gates/mcp-conformance.log": "9942565c30b303c37eb21a1e7889fd1d89c76cfb90a8e18322ddd77268b85420",
+    "gates/headless.log": "f657637ca7f36e50a021cdaa5e79f25811d533bea7a03dceb5c01fb1246e4809",
+    "gates/mcp-conformance.log": "2b3218b7b47c2a5e670f0185d6f032fe183babb3263697ad7ce65954cb498c5a",
+    "gates/measurements.log": "e84b5302cf3b0634227625d18dd8c20d6f108e52ba37f7400aaa4cb81f5c1439",
     "gates/pnpm-format.log": "c99d0a6ae963d1c83b01deafa2e993d73d3bdceebbbde9508a83ba7d4b6e4829",
     "gates/pnpm-licenses.log": "2d685b39a756468ae498f680b9e15748fc8f2db9913b72da6652d7317e37f6ca",
     "gates/pnpm-lint.log": "27d1c9da90e3723e813f92352b6882884d1a51cd07b90368d3bef605ac09563b",
-    "gates/pnpm-test.log": "bb27be1bdbc47c23315d049beafb10ae6eb810e540cb90c05209e627270bceb6",
+    "gates/pnpm-test.log": "cfb08855f1af7a05ef2fa69fe1bcfb136bbaeb14d85808527370da53a8928cf6",
     "gates/pnpm-typecheck.log": "aa5a38955f949a6cba31ec0a0ec0aadfb5695da948defb8ab06d14ff2f0b9d24",
-    "gates/reviewer-python-suites.log": "30048bcc1eeb1571cbe4046893bb0f3ac18108308f58773e44ba6e513065afaa",
+    "gates/release-features.log": "e6227864cae2235a93f3d6976804744d5bba5ff8627564bba542bc6a84024133",
+    "gates/reviewer-python-suites.log": "2c606756fd2cd787bc8f22f9370dc170f4429683de4e76d389074c975a6d1b37",
     "gates/selftest-1.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
-    "gates/selftest-2.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "gates/selftest-2.json": "fbeadf361843cb7f2588227a57efb06d55828a6a85eba4a5f4034be7a5c3f3e0",
     "gates/selftest-compare.log": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46",
-    "gates/test-diag.log": "806aa95ce54b465834f07695385c1260bf9be6e7244cf33a7198cb8e25267f74",
-    "gates/test.log": "99d1546aa6b08fd3be52682c8f6c0781b9ce79446d747f2a11f139ee796015be"
+    "gates/test-diag.log": "fbfbff57a8d509334d476bd4bd71863de99c6b13dc33f89811171404ce1ec52e",
+    "gates/test.log": "cc2252ea09cc003f0756ac4d82f0f2fd4da5d00577707652af6348256c0e10ca"
   }
 }

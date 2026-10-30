@@ -6,7 +6,7 @@
     "arch": "x86_64",
     "cpus": 32,
     "profile": "debug",
-    "startedAt": "2026-10-30T08:18:25.855Z",
+    "startedAt": "2026-10-30T09:12:41.189Z",
     "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
     "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
   },
@@ -15,3607 +15,3607 @@
       "unit": "ms",
       "samples": [
         {
-          "tMs": 284.4953,
-          "value": 3.3151,
+          "tMs": 281.4314,
+          "value": 2.92,
           "label": "agent.activity.export"
         },
         {
-          "tMs": 287.9582,
-          "value": 2.6854999999999998,
+          "tMs": 284.499,
+          "value": 2.4287,
           "label": "agent.activity.list"
         },
         {
-          "tMs": 290.7561,
-          "value": 2.2967999999999997,
+          "tMs": 287.0234,
+          "value": 2.532,
           "label": "agent.activity.persist.set"
         },
         {
-          "tMs": 293.17470000000003,
-          "value": 2.1459,
+          "tMs": 289.6844,
+          "value": 2.1860999999999997,
           "label": "agent.confirmation.respond"
         },
         {
-          "tMs": 295.57,
-          "value": 2.2870999999999997,
+          "tMs": 292.1187,
+          "value": 2.1859,
           "label": "agent.policy.defaults.set"
         },
         {
-          "tMs": 298.0525,
-          "value": 2.4546,
+          "tMs": 294.46299999999997,
+          "value": 2.1542000000000003,
           "label": "agent.server.set"
         },
         {
-          "tMs": 300.5891,
-          "value": 2.4535,
+          "tMs": 296.6916,
+          "value": 2.2669,
           "label": "agent.server.status"
         },
         {
-          "tMs": 303.1205,
-          "value": 2.2227,
+          "tMs": 299.0373,
+          "value": 2.1281,
           "label": "agent.session.disconnect"
         },
         {
-          "tMs": 305.53380000000004,
-          "value": 2.1666,
+          "tMs": 301.34889999999996,
+          "value": 2.1147,
           "label": "agent.session.grant"
         },
         {
-          "tMs": 307.8041,
-          "value": 2.0915,
+          "tMs": 303.55969999999996,
+          "value": 2.0831,
           "label": "agent.session.pause"
         },
         {
-          "tMs": 309.9836,
-          "value": 2.0621,
+          "tMs": 305.73539999999997,
+          "value": 2.1294,
           "label": "agent.session.resume"
         },
         {
-          "tMs": 312.1161,
-          "value": 2.0815,
+          "tMs": 307.944,
+          "value": 2.1975,
           "label": "agent.token.regenerate"
         },
         {
-          "tMs": 314.3191,
-          "value": 2.134,
+          "tMs": 310.2723,
+          "value": 2.1084,
           "label": "agent.typedTools.set"
         },
         {
-          "tMs": 359.5025,
-          "value": 2.4237,
+          "tMs": 354.47790000000003,
+          "value": 3.0206999999999997,
           "label": "anim.bone.create"
         },
         {
-          "tMs": 362.0147,
-          "value": 2.2358000000000002,
+          "tMs": 357.57030000000003,
+          "value": 2.2832999999999997,
           "label": "anim.bone.delete"
         },
         {
-          "tMs": 364.3333,
-          "value": 2.3588,
+          "tMs": 359.9296,
+          "value": 2.2546,
           "label": "anim.bone.influence.set"
         },
         {
-          "tMs": 366.76379999999995,
-          "value": 2.2964,
+          "tMs": 362.2513,
+          "value": 2.2412,
           "label": "anim.bone.parent.set"
         },
         {
-          "tMs": 369.15979999999996,
-          "value": 2.4901,
+          "tMs": 364.58099999999996,
+          "value": 2.2391,
           "label": "anim.bone.pose.set"
         },
         {
-          "tMs": 371.7461,
-          "value": 2.3318000000000003,
+          "tMs": 366.90729999999996,
+          "value": 2.2206,
           "label": "anim.bone.reach.apply"
         },
         {
-          "tMs": 374.153,
-          "value": 2.2432,
+          "tMs": 369.199,
+          "value": 2.1941,
           "label": "anim.bone.rest.set"
         },
         {
-          "tMs": 376.4653,
-          "value": 2.2414,
+          "tMs": 371.46659999999997,
+          "value": 2.6021,
           "label": "anim.camera.create"
         },
         {
-          "tMs": 378.7624,
-          "value": 2.2231,
+          "tMs": 374.13079999999997,
+          "value": 2.1683000000000003,
           "label": "anim.camera.current.get"
         },
         {
-          "tMs": 381.0481,
-          "value": 2.2384000000000004,
+          "tMs": 376.3581,
+          "value": 2.1768,
           "label": "anim.camera.current.set"
         },
         {
-          "tMs": 383.3496,
-          "value": 2.2175,
+          "tMs": 378.5881,
+          "value": 2.1943,
           "label": "anim.camera.delete"
         },
         {
-          "tMs": 385.6732,
-          "value": 2.2529999999999997,
+          "tMs": 380.8879,
+          "value": 2.1654,
           "label": "anim.camera.get"
         },
         {
-          "tMs": 387.9955,
-          "value": 2.2726,
+          "tMs": 383.1205,
+          "value": 2.2103,
           "label": "anim.camera.list"
         },
         {
-          "tMs": 390.3204,
-          "value": 2.1451000000000002,
+          "tMs": 385.37890000000004,
+          "value": 2.121,
           "label": "anim.camera.select"
         },
         {
-          "tMs": 392.546,
-          "value": 2.2786,
+          "tMs": 387.5752,
+          "value": 2.3341,
           "label": "anim.camera.set"
         },
         {
-          "tMs": 394.8976,
-          "value": 2.226,
+          "tMs": 389.97900000000004,
+          "value": 2.2834000000000003,
           "label": "anim.channel.copy"
         },
         {
-          "tMs": 397.18399999999997,
-          "value": 2.247,
+          "tMs": 392.32820000000004,
+          "value": 2.2217000000000002,
           "label": "anim.channel.cut"
         },
         {
-          "tMs": 399.5071,
-          "value": 2.2539000000000002,
+          "tMs": 394.6146,
+          "value": 2.1883,
           "label": "anim.channel.paste"
         },
         {
-          "tMs": 401.8339,
-          "value": 2.2604,
+          "tMs": 396.8815,
+          "value": 2.185,
           "label": "anim.depth.move"
         },
         {
-          "tMs": 404.1499,
-          "value": 2.2188,
+          "tMs": 399.1227,
+          "value": 2.1678,
           "label": "anim.display.allPegs.set"
         },
         {
-          "tMs": 406.4231,
-          "value": 2.2018,
+          "tMs": 401.3445,
+          "value": 2.1201000000000003,
           "label": "anim.display.antialiasToolOverlays.set"
         },
         {
-          "tMs": 408.6807,
-          "value": 2.1988,
+          "tMs": 403.5161,
+          "value": 2.2093,
           "label": "anim.display.arms.set"
         },
         {
-          "tMs": 410.9443,
-          "value": 2.2149,
+          "tMs": 405.7796,
+          "value": 2.2843999999999998,
           "label": "anim.display.envelopes.set"
         },
         {
-          "tMs": 413.2143,
-          "value": 2.1849,
+          "tMs": 408.11940000000004,
+          "value": 2.1419,
           "label": "anim.display.frameMarkers.set"
         },
         {
-          "tMs": 415.4698,
-          "value": 2.1088,
+          "tMs": 410.3319,
+          "value": 2.1237999999999997,
           "label": "anim.display.get"
         },
         {
-          "tMs": 417.6371,
-          "value": 2.2476000000000003,
+          "tMs": 412.5138,
+          "value": 2.1259,
           "label": "anim.display.pegGhosts.set"
         },
         {
-          "tMs": 419.93960000000004,
-          "value": 2.3145000000000002,
+          "tMs": 414.6989,
+          "value": 2.1502000000000003,
           "label": "anim.display.pivotPath.set"
         },
         {
-          "tMs": 422.3266,
-          "value": 2.1841999999999997,
+          "tMs": 416.90290000000005,
+          "value": 2.0834,
           "label": "anim.display.smoothPaths.set"
         },
         {
-          "tMs": 424.7864,
-          "value": 2.3024999999999998,
+          "tMs": 419.2541,
+          "value": 2.2326,
           "label": "anim.evaluate"
         },
         {
-          "tMs": 427.1851,
-          "value": 2.2187,
+          "tMs": 421.5752,
+          "value": 2.1648,
           "label": "anim.flip.apply"
         },
         {
-          "tMs": 429.4656,
-          "value": 2.17,
+          "tMs": 423.8074,
+          "value": 2.1852,
           "label": "anim.function.curveType.set"
         },
         {
-          "tMs": 431.7509,
-          "value": 2.1266000000000003,
+          "tMs": 426.1026,
+          "value": 2.1138,
           "label": "anim.function.get"
         },
         {
-          "tMs": 433.94509999999997,
-          "value": 2.1050999999999997,
+          "tMs": 428.281,
+          "value": 2.1881,
           "label": "anim.function.key.add"
         },
         {
-          "tMs": 436.11899999999997,
-          "value": 2.2822,
+          "tMs": 430.535,
+          "value": 2.159,
           "label": "anim.function.key.duplicate"
         },
         {
-          "tMs": 438.4715,
-          "value": 2.1898,
+          "tMs": 432.76120000000003,
+          "value": 2.1498,
           "label": "anim.function.key.remove"
         },
         {
-          "tMs": 440.75419999999997,
-          "value": 2.2281,
+          "tMs": 434.996,
+          "value": 2.2452,
           "label": "anim.function.key.set"
         },
         {
-          "tMs": 443.05719999999997,
-          "value": 2.1722,
+          "tMs": 437.3121,
+          "value": 2.2150999999999996,
           "label": "anim.function.list"
         },
         {
-          "tMs": 445.30589999999995,
-          "value": 2.2106,
+          "tMs": 439.6015,
+          "value": 2.1925999999999997,
           "label": "anim.function.preset.apply"
         },
         {
-          "tMs": 447.5917,
-          "value": 2.1478,
+          "tMs": 441.8703,
+          "value": 2.1569,
           "label": "anim.function.sample"
         },
         {
-          "tMs": 449.83459999999997,
-          "value": 2.3701999999999996,
+          "tMs": 444.12420000000003,
+          "value": 2.2238,
           "label": "anim.function.set"
         },
         {
-          "tMs": 452.26840000000004,
-          "value": 2.2776,
+          "tMs": 446.4165,
+          "value": 2.039,
           "label": "anim.functionEditor.get"
         },
         {
-          "tMs": 454.60990000000004,
-          "value": 2.2350999999999996,
+          "tMs": 448.5161,
+          "value": 2.0772,
           "label": "anim.functionEditor.open"
         },
         {
-          "tMs": 456.90049999999997,
-          "value": 2.1879999999999997,
+          "tMs": 450.6483,
+          "value": 2.0881,
           "label": "anim.functionEditor.syncFrame.set"
         },
         {
-          "tMs": 459.14700000000005,
-          "value": 2.2201,
+          "tMs": 452.7947,
+          "value": 2.0791999999999997,
           "label": "anim.functionEditor.view.set"
         },
         {
-          "tMs": 461.4547,
-          "value": 2.2301,
+          "tMs": 454.94689999999997,
+          "value": 2.1612,
           "label": "anim.hierarchy.attach"
         },
         {
-          "tMs": 463.7582,
-          "value": 2.1801,
+          "tMs": 457.1738,
+          "value": 2.1735,
           "label": "anim.hierarchy.detach"
         },
         {
-          "tMs": 466.0164,
-          "value": 2.1411,
+          "tMs": 459.4382,
+          "value": 2.1525,
           "label": "anim.hierarchy.get"
         },
         {
-          "tMs": 468.2184,
-          "value": 2.2896,
+          "tMs": 461.65630000000004,
+          "value": 2.1691000000000003,
           "label": "anim.hierarchy.select"
         },
         {
-          "tMs": 470.59060000000005,
-          "value": 2.3827000000000003,
+          "tMs": 463.9032,
+          "value": 2.176,
           "label": "anim.key.add"
         },
         {
-          "tMs": 473.0662,
-          "value": 2.2710999999999997,
+          "tMs": 466.15630000000004,
+          "value": 2.1591,
           "label": "anim.key.list"
         },
         {
-          "tMs": 475.4143,
-          "value": 2.2499,
+          "tMs": 468.38530000000003,
+          "value": 2.1132999999999997,
           "label": "anim.key.move"
         },
         {
-          "tMs": 477.73290000000003,
-          "value": 2.2119,
+          "tMs": 470.56219999999996,
+          "value": 2.2509,
           "label": "anim.key.remove"
         },
         {
-          "tMs": 480.0142,
-          "value": 2.2508,
+          "tMs": 472.89160000000004,
+          "value": 2.2088,
           "label": "anim.loop.set"
         },
         {
-          "tMs": 482.3549,
-          "value": 2.1635999999999997,
+          "tMs": 475.1908,
+          "value": 2.1311,
           "label": "anim.node.get"
         },
         {
-          "tMs": 484.6006,
-          "value": 2.2294,
+          "tMs": 477.4003,
+          "value": 2.1882,
           "label": "anim.node.options.set"
         },
         {
-          "tMs": 486.902,
-          "value": 2.4941999999999998,
+          "tMs": 479.6517,
+          "value": 2.1125,
           "label": "anim.node.pathDisplay.set"
         },
         {
-          "tMs": 489.4947,
-          "value": 2.2407999999999997,
+          "tMs": 481.862,
+          "value": 2.0696,
           "label": "anim.path.get"
         },
         {
-          "tMs": 491.8162,
-          "value": 2.1951,
+          "tMs": 484.0011,
+          "value": 2.0723,
           "label": "anim.path.lockDepth.set"
         },
         {
-          "tMs": 494.0963,
-          "value": 2.1923,
+          "tMs": 486.1537,
+          "value": 2.3,
           "label": "anim.path.point.add"
         },
         {
-          "tMs": 496.3699,
-          "value": 2.1894,
+          "tMs": 488.5326,
+          "value": 2.2544,
           "label": "anim.path.point.remove"
         },
         {
-          "tMs": 498.6257,
-          "value": 2.1304000000000003,
+          "tMs": 490.8559,
+          "value": 2.1318,
           "label": "anim.path.point.select"
         },
         {
-          "tMs": 500.8643,
-          "value": 2.2506000000000004,
+          "tMs": 493.0947,
+          "value": 2.1938,
           "label": "anim.path.point.set"
         },
         {
-          "tMs": 503.20050000000003,
-          "value": 2.2531,
+          "tMs": 495.3682,
+          "value": 2.2438,
           "label": "anim.path.sample"
         },
         {
-          "tMs": 505.5765,
-          "value": 2.3270999999999997,
+          "tMs": 497.71939999999995,
+          "value": 2.2188,
           "label": "anim.path.set"
         },
         {
-          "tMs": 507.97110000000004,
-          "value": 2.2756,
+          "tMs": 500.004,
+          "value": 2.0981,
           "label": "anim.peg.create"
         },
         {
-          "tMs": 510.3023,
-          "value": 2.142,
+          "tMs": 502.1544,
+          "value": 2.0758,
           "label": "anim.pegOnlyMode.set"
         },
         {
-          "tMs": 512.5035999999999,
-          "value": 2.1406,
+          "tMs": 504.32220000000007,
+          "value": 2.2729999999999997,
           "label": "anim.point.copy"
         },
         {
-          "tMs": 514.7213,
-          "value": 2.1751,
+          "tMs": 506.6767,
+          "value": 2.2139,
           "label": "anim.point.paste"
         },
         {
-          "tMs": 516.9616,
-          "value": 2.076,
+          "tMs": 508.9576,
+          "value": 2.0436,
           "label": "anim.prefs.get"
         },
         {
-          "tMs": 519.1088000000001,
-          "value": 2.2586,
+          "tMs": 511.07179999999994,
+          "value": 1.949,
           "label": "anim.prefs.set"
         },
         {
-          "tMs": 521.4731,
-          "value": 2.2728,
+          "tMs": 513.1135999999999,
+          "value": 2.2012,
           "label": "anim.projection.get"
         },
         {
-          "tMs": 523.8048,
-          "value": 2.1181,
+          "tMs": 515.3666999999999,
+          "value": 2.0937,
           "label": "anim.record.options.get"
         },
         {
-          "tMs": 525.9863,
-          "value": 2.0936000000000003,
+          "tMs": 517.5210999999999,
+          "value": 2.0623,
           "label": "anim.record.options.set"
         },
         {
-          "tMs": 528.1759000000001,
-          "value": 2.2341,
+          "tMs": 519.6733,
+          "value": 2.2659999999999996,
           "label": "anim.record.run"
         },
         {
-          "tMs": 530.4681,
-          "value": 2.0862,
+          "tMs": 522.0034999999999,
+          "value": 2.1982999999999997,
           "label": "anim.reset.apply"
         },
         {
-          "tMs": 532.624,
-          "value": 2.1302,
+          "tMs": 524.2774999999999,
+          "value": 2.1494,
           "label": "anim.segment.set"
         },
         {
-          "tMs": 534.8226000000001,
-          "value": 2.1871,
+          "tMs": 526.4989,
+          "value": 2.1848,
           "label": "anim.segment.uniform.apply"
         },
         {
-          "tMs": 537.0800999999999,
-          "value": 2.2009999999999996,
+          "tMs": 528.7515999999999,
+          "value": 2.0863,
           "label": "anim.skeleton.create"
         },
         {
-          "tMs": 539.3704,
-          "value": 2.2854,
+          "tMs": 530.9223,
+          "value": 2.1151,
           "label": "anim.skeleton.deform.get"
         },
         {
-          "tMs": 541.7208,
-          "value": 2.1245000000000003,
+          "tMs": 533.0966999999999,
+          "value": 2.0528,
           "label": "anim.skeleton.delete"
         },
         {
-          "tMs": 543.9827,
-          "value": 2.1127,
+          "tMs": 535.2791,
+          "value": 2.2905,
           "label": "anim.skeleton.get"
         },
         {
-          "tMs": 546.1619,
-          "value": 2.1087,
+          "tMs": 537.6355000000001,
+          "value": 2.2291,
           "label": "anim.skeleton.restPose.apply"
         },
         {
-          "tMs": 548.3188,
-          "value": 2.0637,
+          "tMs": 539.9173000000001,
+          "value": 2.1419,
           "label": "anim.skeleton.root.select"
         },
         {
-          "tMs": 550.4468999999999,
-          "value": 2.418,
+          "tMs": 542.1296,
+          "value": 2.4278,
           "label": "anim.skeleton.set"
         },
         {
-          "tMs": 552.9272,
-          "value": 2.2361,
+          "tMs": 544.6211,
+          "value": 2.1677,
           "label": "anim.skeleton.skin.add"
         },
         {
-          "tMs": 555.2342,
-          "value": 2.1538999999999997,
+          "tMs": 546.8487,
+          "value": 2.1536,
           "label": "anim.skeleton.skin.remove"
         },
         {
-          "tMs": 557.4411,
-          "value": 2.1052000000000004,
+          "tMs": 549.0536000000001,
+          "value": 2.0687,
           "label": "anim.snapLastKey.set"
         },
         {
-          "tMs": 559.6173,
-          "value": 2.2149,
+          "tMs": 551.194,
+          "value": 2.1026000000000002,
           "label": "anim.stretch.apply"
         },
         {
-          "tMs": 561.8799,
-          "value": 2.1182000000000003,
+          "tMs": 553.3443,
+          "value": 2.1710000000000003,
           "label": "anim.tool.get"
         },
         {
-          "tMs": 564.0534,
-          "value": 2.1002,
+          "tMs": 555.5746,
+          "value": 2.2837,
           "label": "anim.tool.set"
         },
         {
-          "tMs": 566.2812,
-          "value": 2.2556,
+          "tMs": 557.9849,
+          "value": 2.2633,
           "label": "anim.transform.set"
         },
         {
-          "tMs": 568.6193000000001,
-          "value": 2.3979,
+          "tMs": 560.3276000000001,
+          "value": 2.1386,
           "label": "anim.view.coords.get"
         },
         {
-          "tMs": 571.0999,
-          "value": 2.4085,
+          "tMs": 562.545,
+          "value": 2.0500000000000003,
           "label": "anim.view.get"
         },
         {
-          "tMs": 573.5755,
-          "value": 2.1341,
+          "tMs": 564.6600000000001,
+          "value": 2.0527,
           "label": "anim.view.slot.select"
         },
         {
-          "tMs": 575.7751,
-          "value": 2.2253,
+          "tMs": 566.7742,
+          "value": 2.0953999999999997,
           "label": "anim.view.type.set"
         },
         {
-          "tMs": 578.9009000000001,
-          "value": 2.5423,
+          "tMs": 569.7141999999999,
+          "value": 2.5458,
           "label": "app.context.set"
         },
         {
-          "tMs": 581.6286,
-          "value": 2.4326,
+          "tMs": 572.4443,
+          "value": 2.4869,
           "label": "app.currentElement.move"
         },
         {
-          "tMs": 584.1493,
-          "value": 2.42,
+          "tMs": 575.0232,
+          "value": 2.1759,
           "label": "app.currentElement.set"
         },
         {
-          "tMs": 586.8469,
-          "value": 2.5856999999999997,
+          "tMs": 577.3756,
+          "value": 2.3606,
           "label": "app.frame.move"
         },
         {
-          "tMs": 589.5352,
-          "value": 2.1464000000000003,
+          "tMs": 579.8313,
+          "value": 2.1308,
           "label": "app.frame.set"
         },
         {
-          "tMs": 591.8090000000001,
-          "value": 2.1207000000000003,
+          "tMs": 582.0802000000001,
+          "value": 2.1158,
           "label": "app.info.get"
         },
         {
-          "tMs": 594.0877,
-          "value": 2.3042000000000002,
+          "tMs": 584.3582,
+          "value": 2.4192,
           "label": "app.mode.set"
         },
         {
-          "tMs": 597.1451,
-          "value": 2.2263,
+          "tMs": 587.5443,
+          "value": 2.3162,
           "label": "app.state.get"
         },
         {
-          "tMs": 599.4684,
-          "value": 2.1389,
+          "tMs": 589.9651,
+          "value": 2.1903,
           "label": "capture.auto.start"
         },
         {
-          "tMs": 601.6628000000001,
-          "value": 2.1028000000000002,
+          "tMs": 592.2084,
+          "value": 2.074,
           "label": "capture.auto.stop"
         },
         {
-          "tMs": 603.8289,
-          "value": 2.3132,
+          "tMs": 594.3378,
+          "value": 2.0667,
           "label": "capture.device.dialog.open"
         },
         {
-          "tMs": 606.246,
-          "value": 2.0555,
+          "tMs": 596.4896,
+          "value": 2.1136000000000004,
           "label": "capture.device.get"
         },
         {
-          "tMs": 608.3975,
-          "value": 2.0385,
+          "tMs": 598.6854999999999,
+          "value": 2.0265999999999997,
           "label": "capture.device.list"
         },
         {
-          "tMs": 610.4975999999999,
-          "value": 2.0546,
+          "tMs": 600.7683999999999,
+          "value": 2.1552,
           "label": "capture.device.select"
         },
         {
-          "tMs": 612.6298,
-          "value": 2.2070000000000003,
+          "tMs": 602.9977,
+          "value": 2.0776000000000003,
           "label": "capture.device.settings.set"
         },
         {
-          "tMs": 614.904,
-          "value": 2.1313,
+          "tMs": 605.1382,
+          "value": 2.2466999999999997,
           "label": "capture.display.set"
         },
         {
-          "tMs": 617.1126999999999,
-          "value": 2.0869,
+          "tMs": 607.4685,
+          "value": 2.1053,
           "label": "capture.frame.add"
         },
         {
-          "tMs": 619.323,
-          "value": 2.913,
+          "tMs": 609.6958999999999,
+          "value": 2.5923000000000003,
           "label": "capture.frame.addFromFile"
         },
         {
-          "tMs": 622.2952,
-          "value": 2.1917,
+          "tMs": 612.3485,
+          "value": 2.0471,
           "label": "capture.inputLock.set"
         },
         {
-          "tMs": 624.5523,
-          "value": 2.3685,
+          "tMs": 614.4585000000001,
+          "value": 2.2862999999999998,
           "label": "capture.keyColour.set"
         },
         {
-          "tMs": 627.0392,
-          "value": 2.4917,
+          "tMs": 616.8615,
+          "value": 2.4838,
           "label": "capture.keying.set"
         },
         {
-          "tMs": 629.6007,
-          "value": 2.1462,
+          "tMs": 619.4186000000001,
+          "value": 2.0475,
           "label": "capture.lightTable.references.list"
         },
         {
-          "tMs": 631.8105,
-          "value": 2.1224999999999996,
+          "tMs": 621.5315999999999,
+          "value": 2.4072,
           "label": "capture.lightTable.set"
         },
         {
-          "tMs": 633.9976,
-          "value": 2.1191,
+          "tMs": 624.0099,
+          "value": 2.1125,
           "label": "capture.preview.get"
         },
         {
-          "tMs": 636.1676000000001,
-          "value": 2.2399,
+          "tMs": 626.1723000000001,
+          "value": 2.0351000000000004,
           "label": "capture.session.close"
         },
         {
-          "tMs": 638.5558,
-          "value": 2.2054,
+          "tMs": 628.338,
+          "value": 2.0358,
           "label": "capture.session.get"
         },
         {
-          "tMs": 640.8384,
-          "value": 2.193,
+          "tMs": 630.4471000000001,
+          "value": 2.1252,
           "label": "capture.session.open"
         },
         {
-          "tMs": 643.182,
-          "value": 2.1268,
+          "tMs": 632.7147,
+          "value": 2.1491000000000002,
           "label": "capture.source.set"
         },
         {
-          "tMs": 645.3805,
-          "value": 2.0986,
+          "tMs": 634.9384,
+          "value": 2.068,
           "label": "capture.target.set"
         },
         {
-          "tMs": 647.5506,
-          "value": 2.1033,
+          "tMs": 637.0803000000001,
+          "value": 2.1887,
           "label": "cell.blank.add"
         },
         {
-          "tMs": 649.7209,
-          "value": 2.2012,
+          "tMs": 639.3368,
+          "value": 2.2185,
           "label": "cell.blank.remove"
         },
         {
-          "tMs": 652.0255000000001,
-          "value": 2.2950000000000004,
+          "tMs": 641.6572,
+          "value": 2.2659999999999996,
           "label": "cell.clipboard.apply"
         },
         {
-          "tMs": 654.4198,
-          "value": 2.4229,
+          "tMs": 644.0323999999999,
+          "value": 2.2718,
           "label": "cell.clipboard.set"
         },
         {
-          "tMs": 656.9473,
-          "value": 2.2087,
+          "tMs": 646.4065,
+          "value": 2.2737,
           "label": "cell.columnate.apply"
         },
         {
-          "tMs": 659.2219,
-          "value": 2.1975,
+          "tMs": 648.7465,
+          "value": 2.1406,
           "label": "cell.cycle.create"
         },
         {
-          "tMs": 661.4805,
-          "value": 2.139,
+          "tMs": 650.9463,
+          "value": 2.0542999999999996,
           "label": "cell.drawing.duplicate"
         },
         {
-          "tMs": 663.6904999999999,
-          "value": 2.144,
+          "tMs": 653.0683,
+          "value": 2.1075999999999997,
           "label": "cell.exposure.add"
         },
         {
-          "tMs": 665.9041,
-          "value": 2.1140999999999996,
+          "tMs": 655.2446,
+          "value": 2.2361999999999997,
           "label": "cell.exposure.remove"
         },
         {
-          "tMs": 668.0927,
-          "value": 2.1048999999999998,
+          "tMs": 657.5545999999999,
+          "value": 2.1310000000000002,
           "label": "cell.exposure.set"
         },
         {
-          "tMs": 670.2673,
-          "value": 2.2954999999999997,
+          "tMs": 659.7571,
+          "value": 2.1013,
           "label": "cell.fill.apply"
         },
         {
-          "tMs": 672.6459,
-          "value": 2.1584999999999996,
+          "tMs": 661.9304999999999,
+          "value": 2.0725000000000002,
           "label": "cell.label.set"
         },
         {
-          "tMs": 674.8709,
-          "value": 2.1126,
+          "tMs": 664.0675,
+          "value": 2.0863,
           "label": "cell.note.set"
         },
         {
-          "tMs": 677.0536999999999,
-          "value": 2.1672000000000002,
+          "tMs": 666.224,
+          "value": 2.0717000000000003,
           "label": "cell.range.add"
         },
         {
-          "tMs": 679.2927,
-          "value": 2.088,
+          "tMs": 668.3629,
+          "value": 2.1473,
           "label": "cell.range.delete"
         },
         {
-          "tMs": 681.4965,
-          "value": 2.3204,
+          "tMs": 670.6247,
+          "value": 2.4499999999999997,
           "label": "cell.range.move"
         },
         {
-          "tMs": 683.8972,
-          "value": 2.1475999999999997,
+          "tMs": 673.1863,
+          "value": 2.3117,
           "label": "cell.select"
         },
         {
-          "tMs": 686.1089999999999,
-          "value": 2.3235,
+          "tMs": 675.5624,
+          "value": 2.1253,
           "label": "cell.selection.get"
         },
         {
-          "tMs": 688.5557,
-          "value": 2.3403,
+          "tMs": 677.8079,
+          "value": 2.1679999999999997,
           "label": "checkpoint.create"
         },
         {
-          "tMs": 690.9783,
-          "value": 2.2033,
+          "tMs": 680.0564999999999,
+          "value": 2.1492,
           "label": "checkpoint.delete"
         },
         {
-          "tMs": 693.3222,
-          "value": 2.1223,
+          "tMs": 682.3354,
+          "value": 2.1069999999999998,
           "label": "checkpoint.list"
         },
         {
-          "tMs": 695.5535000000001,
-          "value": 2.1574,
+          "tMs": 684.5483999999999,
+          "value": 2.1755,
           "label": "checkpoint.restore"
         },
         {
-          "tMs": 697.7728,
-          "value": 2.0934,
+          "tMs": 686.7875,
+          "value": 2.1832000000000003,
           "label": "colour.autoColourUpdate.set"
         },
         {
-          "tMs": 699.9274,
-          "value": 2.0546,
+          "tMs": 689.0291,
+          "value": 2.1553,
           "label": "colour.current.get"
         },
         {
-          "tMs": 702.0371,
-          "value": 2.2456,
+          "tMs": 691.2445,
+          "value": 2.1215,
           "label": "colour.current.set"
         },
         {
-          "tMs": 704.3406,
-          "value": 2.3961,
+          "tMs": 693.4143,
+          "value": 2.1005,
           "label": "colour.editor.close"
         },
         {
-          "tMs": 706.7837999999999,
-          "value": 2.1456,
+          "tMs": 695.5641999999999,
+          "value": 2.0778,
           "label": "colour.editor.open"
         },
         {
-          "tMs": 709.0033,
-          "value": 2.1275,
+          "tMs": 697.7147,
+          "value": 2.124,
           "label": "colour.fillMapping.get"
         },
         {
-          "tMs": 711.2198,
-          "value": 2.1562,
+          "tMs": 699.932,
+          "value": 2.2092,
           "label": "colour.fillMapping.set"
         },
         {
-          "tMs": 713.4725,
-          "value": 2.2089000000000003,
+          "tMs": 702.2401,
+          "value": 2.3461,
           "label": "colour.gap.close"
         },
         {
-          "tMs": 715.7373,
-          "value": 2.0476,
+          "tMs": 704.6513,
+          "value": 2.1327999999999996,
           "label": "colour.gapClosing.get"
         },
         {
-          "tMs": 717.8335,
-          "value": 2.0874,
+          "tMs": 706.8389999999999,
+          "value": 2.1854,
           "label": "colour.gapClosing.set"
         },
         {
-          "tMs": 719.9974,
-          "value": 2.5547,
+          "tMs": 709.1089000000001,
+          "value": 2.1678,
           "label": "colour.missing.list"
         },
         {
-          "tMs": 722.7158999999999,
-          "value": 2.4583,
+          "tMs": 711.4348,
+          "value": 2.3904,
           "label": "colour.paint.apply"
         },
         {
-          "tMs": 725.2904,
-          "value": 2.2288,
+          "tMs": 713.937,
+          "value": 2.1826,
           "label": "colour.paint.remove"
         },
         {
-          "tMs": 727.6368,
-          "value": 2.2624,
+          "tMs": 716.2413,
+          "value": 2.2735,
           "label": "colour.paintUnpainted.apply"
         },
         {
-          "tMs": 729.9807999999999,
-          "value": 2.1498,
+          "tMs": 718.5964,
+          "value": 2.2813999999999997,
           "label": "colour.palette.create"
         },
         {
-          "tMs": 732.1931000000001,
-          "value": 2.1458,
+          "tMs": 720.9397,
+          "value": 2.1869,
           "label": "colour.palette.delete"
         },
         {
-          "tMs": 734.4019000000001,
-          "value": 2.2548999999999997,
+          "tMs": 723.1868999999999,
+          "value": 2.197,
           "label": "colour.palette.duplicate"
         },
         {
-          "tMs": 736.7279,
-          "value": 2.2946,
+          "tMs": 725.4512,
+          "value": 2.1645000000000003,
           "label": "colour.palette.export"
         },
         {
-          "tMs": 739.1595,
-          "value": 2.0894,
+          "tMs": 727.7523,
+          "value": 2.1632000000000002,
           "label": "colour.palette.get"
         },
         {
-          "tMs": 741.3352,
-          "value": 2.0476,
+          "tMs": 730.0037,
+          "value": 2.0985,
           "label": "colour.palette.import"
         },
         {
-          "tMs": 743.4608999999999,
-          "value": 2.0216000000000003,
+          "tMs": 732.1784,
+          "value": 2.0427,
           "label": "colour.palette.list"
         },
         {
-          "tMs": 745.5458,
-          "value": 2.0517,
+          "tMs": 734.283,
+          "value": 2.1213,
           "label": "colour.palette.rename"
         },
         {
-          "tMs": 747.6547999999999,
-          "value": 2.0231,
+          "tMs": 736.4612999999999,
+          "value": 2.1614,
           "label": "colour.palette.select"
         },
         {
-          "tMs": 749.7562,
-          "value": 2.1534,
+          "tMs": 738.7019,
+          "value": 2.3251,
           "label": "colour.palette.set"
         },
         {
-          "tMs": 752.0257,
-          "value": 2.2388,
+          "tMs": 741.1587,
+          "value": 2.1966,
           "label": "colour.pick"
         },
         {
-          "tMs": 754.3761,
-          "value": 2.5064,
+          "tMs": 743.4683,
+          "value": 2.215,
           "label": "colour.recolour.apply"
         },
         {
-          "tMs": 756.9693,
-          "value": 2.0706,
+          "tMs": 745.7623,
+          "value": 2.0850999999999997,
           "label": "colour.recovery.run"
         },
         {
-          "tMs": 759.1069,
-          "value": 2.0444,
+          "tMs": 747.9084,
+          "value": 2.0941,
           "label": "colour.sceneStyles.get"
         },
         {
-          "tMs": 761.2203,
-          "value": 2.1499,
+          "tMs": 750.0657,
+          "value": 2.115,
           "label": "colour.selection.apply"
         },
         {
-          "tMs": 763.4396,
-          "value": 2.1828,
+          "tMs": 752.2501000000001,
+          "value": 2.0873,
           "label": "colour.style.delete"
         },
         {
-          "tMs": 765.6933,
-          "value": 2.1877,
+          "tMs": 754.4048,
+          "value": 2.2188,
           "label": "colour.style.duplicate"
         },
         {
-          "tMs": 767.9519,
-          "value": 2.0959,
+          "tMs": 756.7033,
+          "value": 2.1406,
           "label": "colour.style.list"
         },
         {
-          "tMs": 770.1115,
-          "value": 2.454,
+          "tMs": 758.9107,
+          "value": 2.1208,
           "label": "colour.style.rename"
         },
         {
-          "tMs": 772.6387,
-          "value": 2.1982999999999997,
+          "tMs": 761.1,
+          "value": 2.1524,
           "label": "colour.style.select"
         },
         {
-          "tMs": 774.9165999999999,
-          "value": 2.1627,
+          "tMs": 763.331,
+          "value": 2.1773000000000002,
           "label": "colour.swatch.create"
         },
         {
-          "tMs": 777.1407,
-          "value": 2.1003,
+          "tMs": 765.5686000000001,
+          "value": 2.1767000000000003,
           "label": "colour.swatch.delete"
         },
         {
-          "tMs": 779.3227,
-          "value": 2.1492999999999998,
+          "tMs": 767.8185,
+          "value": 2.1857,
           "label": "colour.swatch.get"
         },
         {
-          "tMs": 781.5588,
-          "value": 2.104,
+          "tMs": 770.0929,
+          "value": 2.2293,
           "label": "colour.swatch.list"
         },
         {
-          "tMs": 783.7222,
-          "value": 2.1017,
+          "tMs": 772.3911,
+          "value": 2.2905,
           "label": "colour.swatch.move"
         },
         {
-          "tMs": 785.9059000000001,
-          "value": 2.7157,
+          "tMs": 774.7692000000001,
+          "value": 2.5043,
           "label": "colour.swatch.set"
         },
         {
-          "tMs": 788.679,
-          "value": 2.1557,
+          "tMs": 777.3302,
+          "value": 2.1197999999999997,
           "label": "colour.swatchNames.set"
         },
         {
-          "tMs": 790.9091999999999,
-          "value": 2.3194,
+          "tMs": 779.5219,
+          "value": 2.305,
           "label": "colour.tintBlend.apply"
         },
         {
-          "tMs": 793.2846,
-          "value": 2.115,
+          "tMs": 781.8864,
+          "value": 2.0762,
           "label": "colour.tintDialog.open"
         },
         {
-          "tMs": 795.4975,
-          "value": 2.2677,
+          "tMs": 784.0546,
+          "value": 2.1938,
           "label": "colour.tintOffset.apply"
         },
         {
-          "tMs": 797.8942,
-          "value": 2.2317,
+          "tMs": 786.3698,
+          "value": 2.1356,
           "label": "colour.usage.list"
         },
         {
-          "tMs": 800.2953,
-          "value": 2.2015,
+          "tMs": 788.6578,
+          "value": 2.2443,
           "label": "doc.asset.embed"
         },
         {
-          "tMs": 802.6507,
-          "value": 2.4615,
+          "tMs": 791.0579,
+          "value": 2.2762,
           "label": "doc.asset.export"
         },
         {
-          "tMs": 805.4350999999999,
-          "value": 2.4650000000000003,
+          "tMs": 793.6307,
+          "value": 2.3742,
           "label": "doc.asset.list"
         },
         {
-          "tMs": 808.1204,
-          "value": 2.3493,
+          "tMs": 796.215,
+          "value": 2.3379,
           "label": "doc.asset.relink"
         },
         {
-          "tMs": 810.6206,
-          "value": 2.1897,
+          "tMs": 798.7079,
+          "value": 2.1732,
           "label": "doc.asset.remove"
         },
         {
-          "tMs": 812.9536,
-          "value": 2.1702000000000004,
+          "tMs": 801.0275,
+          "value": 2.1885,
           "label": "doc.blob.get"
         },
         {
-          "tMs": 815.4615,
-          "value": 2.4032,
+          "tMs": 803.5532,
+          "value": 2.4948,
           "label": "doc.diff"
         },
         {
-          "tMs": 818.1759,
-          "value": 4.2108,
+          "tMs": 806.3456,
+          "value": 4.3964,
           "label": "doc.export.json"
         },
         {
-          "tMs": 822.8838000000001,
-          "value": 2.5793,
+          "tMs": 811.2013000000001,
+          "value": 2.5313000000000003,
           "label": "doc.import.json"
         },
         {
-          "tMs": 825.7301,
-          "value": 2.1432,
+          "tMs": 813.986,
+          "value": 2.0993,
           "label": "doc.loadReport.get"
         },
         {
-          "tMs": 828.1737999999999,
-          "value": 2.6146,
+          "tMs": 816.3705,
+          "value": 2.5702,
           "label": "doc.object.find"
         },
         {
-          "tMs": 831.1784,
-          "value": 2.7664,
+          "tMs": 819.3165,
+          "value": 2.8338,
           "label": "doc.object.get"
         },
         {
-          "tMs": 834.4264999999999,
-          "value": 3.3416,
+          "tMs": 822.6352,
+          "value": 3.4471,
           "label": "doc.object.patch"
         },
         {
-          "tMs": 838.0591,
-          "value": 3.9381,
+          "tMs": 826.3194000000001,
+          "value": 3.7853000000000003,
           "label": "doc.object.refs"
         },
         {
-          "tMs": 842.1322,
-          "value": 2.3216,
+          "tMs": 830.2241,
+          "value": 2.3042000000000002,
           "label": "doc.object.resolve"
         },
         {
-          "tMs": 844.6936000000001,
-          "value": 2.1708000000000003,
+          "tMs": 832.7501000000001,
+          "value": 2.1023,
           "label": "doc.package.export"
         },
         {
-          "tMs": 847.0529,
-          "value": 2.1710000000000003,
+          "tMs": 835.0331,
+          "value": 2.081,
           "label": "doc.package.get"
         },
         {
-          "tMs": 849.5373000000001,
-          "value": 4.7412,
+          "tMs": 837.4158,
+          "value": 4.7709,
           "label": "doc.repair"
         },
         {
-          "tMs": 854.4213000000001,
-          "value": 23.089599999999997,
+          "tMs": 842.3203,
+          "value": 22.6232,
           "label": "doc.schema.get"
         },
         {
-          "tMs": 878.0095,
-          "value": 2.4742,
+          "tMs": 865.4247,
+          "value": 2.6069999999999998,
           "label": "doc.schema.list"
         },
         {
-          "tMs": 880.7074,
-          "value": 2.5532,
+          "tMs": 868.246,
+          "value": 2.665,
           "label": "doc.schema.validate"
         },
         {
-          "tMs": 883.4411,
-          "value": 2.0703,
+          "tMs": 871.1322,
+          "value": 2.4421,
           "label": "doc.state.get"
         },
         {
-          "tMs": 885.8705,
-          "value": 5.3386,
+          "tMs": 873.943,
+          "value": 5.1687,
           "label": "doc.validate"
         },
         {
-          "tMs": 891.2894,
-          "value": 2.0898000000000003,
+          "tMs": 879.1932,
+          "value": 2.1652,
           "label": "draw.arrange.apply"
         },
         {
-          "tMs": 893.4483,
-          "value": 2.0374999999999996,
+          "tMs": 881.4326,
+          "value": 2.1605000000000003,
           "label": "draw.bounds.get"
         },
         {
-          "tMs": 895.5474,
-          "value": 2.0258,
+          "tMs": 883.6574,
+          "value": 2.0939,
           "label": "draw.breakApart.apply"
         },
         {
-          "tMs": 897.6448,
-          "value": 2.0393999999999997,
+          "tMs": 885.8288,
+          "value": 2.2246,
           "label": "draw.centreLine.apply"
         },
         {
-          "tMs": 899.7597000000001,
-          "value": 2.1580000000000004,
+          "tMs": 888.1685,
+          "value": 2.3693,
           "label": "draw.content.add"
         },
         {
-          "tMs": 901.991,
-          "value": 2.3701999999999996,
+          "tMs": 890.6146,
+          "value": 2.1161000000000003,
           "label": "draw.current.get"
         },
         {
-          "tMs": 904.4641,
-          "value": 2.402,
+          "tMs": 892.8179,
+          "value": 2.1307,
           "label": "draw.cut.apply"
         },
         {
-          "tMs": 907.2230999999999,
-          "value": 2.1009,
+          "tMs": 895.2907,
+          "value": 2.0726999999999998,
           "label": "draw.drawing.get"
         },
         {
-          "tMs": 909.4206,
-          "value": 2.0733,
+          "tMs": 897.448,
+          "value": 2.0458,
           "label": "draw.drawing.rename"
         },
         {
-          "tMs": 911.6007999999999,
-          "value": 2.5025999999999997,
+          "tMs": 899.5934,
+          "value": 2.4242,
           "label": "draw.drawing.render"
         },
         {
-          "tMs": 914.2185000000001,
-          "value": 2.2919,
+          "tMs": 902.1291,
+          "value": 2.2054,
           "label": "draw.ellipse.add"
         },
         {
-          "tMs": 916.59,
-          "value": 2.1697,
+          "tMs": 904.4164,
+          "value": 2.3173,
           "label": "draw.envelope.apply"
         },
         {
-          "tMs": 918.8614,
-          "value": 2.335,
+          "tMs": 906.8328,
+          "value": 2.2801,
           "label": "draw.erase.apply"
         },
         {
-          "tMs": 921.3779,
-          "value": 2.2014,
+          "tMs": 909.1979,
+          "value": 2.1210999999999998,
           "label": "draw.feather.apply"
         },
         {
-          "tMs": 923.6486,
-          "value": 2.1693,
+          "tMs": 911.3871,
+          "value": 2.0969,
           "label": "draw.flatten.apply"
         },
         {
-          "tMs": 925.8971,
-          "value": 2.1551,
+          "tMs": 913.553,
+          "value": 2.0927,
           "label": "draw.flip.apply"
         },
         {
-          "tMs": 928.1137,
-          "value": 2.1307,
+          "tMs": 915.7037,
+          "value": 2.0780999999999996,
           "label": "draw.group.create"
         },
         {
-          "tMs": 930.3136,
-          "value": 2.1322,
+          "tMs": 917.8412999999999,
+          "value": 2.0343,
           "label": "draw.group.delete"
         },
         {
-          "tMs": 932.5255999999999,
-          "value": 2.1798,
+          "tMs": 919.9634,
+          "value": 2.0925000000000002,
           "label": "draw.hitTest.get"
         },
         {
-          "tMs": 934.7942,
-          "value": 2.1322,
+          "tMs": 922.2314,
+          "value": 2.197,
           "label": "draw.inspectorPreview.set"
         },
         {
-          "tMs": 937.0292000000001,
-          "value": 2.2991,
+          "tMs": 924.5372,
+          "value": 2.2298999999999998,
           "label": "draw.line.add"
         },
         {
-          "tMs": 939.3993,
-          "value": 2.1037,
+          "tMs": 926.8323,
+          "value": 2.1002,
           "label": "draw.linesToBrush.apply"
         },
         {
-          "tMs": 941.5647,
-          "value": 2.0714,
+          "tMs": 928.9931,
+          "value": 2.0818999999999996,
           "label": "draw.lock.set"
         },
         {
-          "tMs": 943.6949,
-          "value": 2.0723,
+          "tMs": 931.1359,
+          "value": 2.0528999999999997,
           "label": "draw.object.delete"
         },
         {
-          "tMs": 945.8293,
-          "value": 2.0704000000000002,
+          "tMs": 933.2508,
+          "value": 2.0944000000000003,
           "label": "draw.optimize.apply"
         },
         {
-          "tMs": 947.9694,
-          "value": 2.0787,
+          "tMs": 935.4136,
+          "value": 2.1092,
           "label": "draw.pivot.set"
         },
         {
-          "tMs": 950.1159,
-          "value": 2.1233,
+          "tMs": 937.5937,
+          "value": 2.4145,
           "label": "draw.point.add"
         },
         {
-          "tMs": 952.3053,
-          "value": 2.1107,
+          "tMs": 940.1021000000001,
+          "value": 2.1289,
           "label": "draw.point.delete"
         },
         {
-          "tMs": 954.5021,
-          "value": 2.3567,
+          "tMs": 942.3146,
+          "value": 2.193,
           "label": "draw.point.move"
         },
         {
-          "tMs": 956.9488,
-          "value": 2.2587,
+          "tMs": 944.5957000000001,
+          "value": 2.1300999999999997,
           "label": "draw.point.set"
         },
         {
-          "tMs": 959.2973000000001,
-          "value": 2.2862,
+          "tMs": 946.8186,
+          "value": 2.1704,
           "label": "draw.pointSelection.set"
         },
         {
-          "tMs": 961.6955,
-          "value": 2.2418,
+          "tMs": 949.1048,
+          "value": 2.1961,
           "label": "draw.polyline.add"
         },
         {
-          "tMs": 964.0474999999999,
-          "value": 2.2174,
+          "tMs": 951.4108,
+          "value": 2.2416,
           "label": "draw.rectangle.add"
         },
         {
-          "tMs": 966.3553,
-          "value": 2.2024000000000004,
+          "tMs": 953.7502,
+          "value": 2.4684,
           "label": "draw.repositionAll.apply"
         },
         {
-          "tMs": 968.6296,
-          "value": 2.1305,
+          "tMs": 956.2969,
+          "value": 2.2803,
           "label": "draw.rotate.apply"
         },
         {
-          "tMs": 970.8368,
-          "value": 2.3156000000000003,
+          "tMs": 958.6545,
+          "value": 2.1351,
           "label": "draw.segment.move"
         },
         {
-          "tMs": 973.236,
-          "value": 2.0843,
+          "tMs": 960.8718,
+          "value": 2.0252999999999997,
           "label": "draw.selection.get"
         },
         {
-          "tMs": 975.4266,
-          "value": 2.2016,
+          "tMs": 963.0035,
+          "value": 2.2635,
           "label": "draw.selection.set"
         },
         {
-          "tMs": 977.7123,
-          "value": 2.22,
+          "tMs": 965.3475000000001,
+          "value": 2.143,
           "label": "draw.smooth.apply"
         },
         {
-          "tMs": 980.1037,
-          "value": 2.3829,
+          "tMs": 967.6483000000001,
+          "value": 2.3185,
           "label": "draw.stroke.add"
         },
         {
-          "tMs": 982.5831000000001,
-          "value": 2.2239,
+          "tMs": 970.0645,
+          "value": 2.2508,
           "label": "draw.stroke.set"
         },
         {
-          "tMs": 984.9021,
-          "value": 2.1963,
+          "tMs": 972.4133,
+          "value": 2.2619,
           "label": "draw.text.add"
         },
         {
-          "tMs": 987.2013,
-          "value": 2.2864,
+          "tMs": 974.7787,
+          "value": 2.2401999999999997,
           "label": "draw.text.set"
         },
         {
-          "tMs": 989.5891999999999,
-          "value": 2.3029,
+          "tMs": 977.1195,
+          "value": 2.2117,
           "label": "draw.textFormat.set"
         },
         {
-          "tMs": 991.9995,
-          "value": 2.2249000000000003,
+          "tMs": 979.4368,
+          "value": 2.2466999999999997,
           "label": "draw.transform.apply"
         },
         {
-          "tMs": 994.3167000000001,
-          "value": 2.1242,
+          "tMs": 981.7778000000001,
+          "value": 2.1164,
           "label": "draw.vectorFile.import"
         },
         {
-          "tMs": 996.5077,
-          "value": 2.1214,
+          "tMs": 983.9655,
+          "value": 2.0862,
           "label": "draw.vectorize.preview"
         },
         {
-          "tMs": 998.716,
-          "value": 2.1708000000000003,
+          "tMs": 986.1415,
+          "value": 2.3267,
           "label": "draw.vectorize.run"
         },
         {
-          "tMs": 1000.9625,
-          "value": 2.2599,
+          "tMs": 988.5448,
+          "value": 2.1477000000000004,
           "label": "draw.viewMapping.get"
         },
         {
-          "tMs": 1003.2792,
-          "value": 2.2661000000000002,
+          "tMs": 990.7543,
+          "value": 2.09,
           "label": "drawAid.autoLightTable.set"
         },
         {
-          "tMs": 1005.6003,
-          "value": 2.3887,
+          "tMs": 992.8994,
+          "value": 2.277,
           "label": "drawAid.background.set"
         },
         {
-          "tMs": 1008.0423000000001,
-          "value": 2.1121,
+          "tMs": 995.2303999999999,
+          "value": 2.0555,
           "label": "drawAid.currentOnTop.set"
         },
         {
-          "tMs": 1010.2107,
-          "value": 2.0568,
+          "tMs": 997.3417999999999,
+          "value": 2.0333,
           "label": "drawAid.grid.set"
         },
         {
-          "tMs": 1012.3156,
-          "value": 2.036,
+          "tMs": 999.4265,
+          "value": 1.9998,
           "label": "drawAid.lightTableShade.set"
         },
         {
-          "tMs": 1014.4049,
-          "value": 2.0695,
+          "tMs": 1001.4844,
+          "value": 2.0524,
           "label": "drawAid.onionSkin.set"
         },
         {
-          "tMs": 1016.5257999999999,
-          "value": 2.1459,
+          "tMs": 1003.5936,
+          "value": 2.2187,
           "label": "drawAid.onionSkinCycle.run"
         },
         {
-          "tMs": 1018.7326999999999,
-          "value": 2.5362,
+          "tMs": 1005.8981,
+          "value": 2.5981,
           "label": "drawAid.onionSkinStyle.set"
         },
         {
-          "tMs": 1021.3285999999999,
-          "value": 3.0745999999999998,
+          "tMs": 1008.5535000000001,
+          "value": 2.0824,
           "label": "drawAid.selectionDisplay.set"
         },
         {
-          "tMs": 1024.4922000000001,
-          "value": 2.4918,
+          "tMs": 1010.7025000000001,
+          "value": 2.0753,
           "label": "drawAid.state.get"
         },
         {
-          "tMs": 1027.0489,
-          "value": 2.1411,
+          "tMs": 1012.8417999999999,
+          "value": 2.1064,
           "label": "drawAid.staticLightTable.add"
         },
         {
-          "tMs": 1029.2611,
-          "value": 2.1109,
+          "tMs": 1015.0183,
+          "value": 2.0743,
           "label": "drawAid.staticLightTable.list"
         },
         {
-          "tMs": 1031.4367,
-          "value": 2.1235,
+          "tMs": 1017.152,
+          "value": 2.1069999999999998,
           "label": "drawAid.staticLightTable.remove"
         },
         {
-          "tMs": 1033.6412,
-          "value": 2.1584,
+          "tMs": 1019.337,
+          "value": 2.1183,
           "label": "drawAid.staticLightTable.set"
         },
         {
-          "tMs": 1035.8566,
-          "value": 2.2161,
+          "tMs": 1021.5110999999999,
+          "value": 2.2318,
           "label": "drawAid.staticLightTablePanel.set"
         },
         {
-          "tMs": 1038.1965,
-          "value": 2.1638,
+          "tMs": 1023.7955999999999,
+          "value": 2.1172,
           "label": "drawAid.strokes.set"
         },
         {
-          "tMs": 1040.6748,
-          "value": 2.1782,
+          "tMs": 1026.2156,
+          "value": 2.1381,
           "label": "edit.clipboard.get"
         },
         {
-          "tMs": 1043.2389,
-          "value": 2.6597999999999997,
+          "tMs": 1028.7255,
+          "value": 2.6724,
           "label": "edit.clipboard.set"
         },
         {
-          "tMs": 1046.2031,
-          "value": 2.4353000000000002,
+          "tMs": 1031.6995,
+          "value": 2.3864,
           "label": "edit.copy"
         },
         {
-          "tMs": 1048.9261000000001,
-          "value": 4.3758,
+          "tMs": 1034.3629,
+          "value": 4.194599999999999,
           "label": "edit.cut"
         },
         {
-          "tMs": 1053.6464999999998,
-          "value": 2.7558000000000002,
+          "tMs": 1038.8820999999998,
+          "value": 2.6378,
           "label": "edit.cutSpecial"
         },
         {
-          "tMs": 1056.5952,
-          "value": 2.5300000000000002,
+          "tMs": 1041.7045,
+          "value": 2.3647,
           "label": "edit.delete"
         },
         {
-          "tMs": 1059.2839999999999,
-          "value": 2.2976,
+          "tMs": 1044.2343999999998,
+          "value": 2.2636000000000003,
           "label": "edit.deselectAll"
         },
         {
-          "tMs": 1061.8444,
-          "value": 2.2902,
+          "tMs": 1046.7530000000002,
+          "value": 2.2347,
           "label": "edit.history.get"
         },
         {
-          "tMs": 1064.2393000000002,
-          "value": 4.6435,
+          "tMs": 1049.0828999999999,
+          "value": 4.6888,
           "label": "edit.history.move"
         },
         {
-          "tMs": 1069.2189999999998,
-          "value": 2.7323999999999997,
+          "tMs": 1054.1263999999999,
+          "value": 2.7271,
           "label": "edit.paste"
         },
         {
-          "tMs": 1072.0801,
-          "value": 2.2720000000000002,
+          "tMs": 1056.9816999999998,
+          "value": 2.3617,
           "label": "edit.pasteAsNewElement"
         },
         {
-          "tMs": 1074.7204,
-          "value": 2.6346,
+          "tMs": 1059.7317,
+          "value": 2.6993,
           "label": "edit.pasteSpecial"
         },
         {
-          "tMs": 1077.4766,
-          "value": 2.9608999999999996,
+          "tMs": 1062.5549999999998,
+          "value": 2.9913000000000003,
           "label": "edit.redo"
         },
         {
-          "tMs": 1080.6245000000001,
-          "value": 2.3576,
+          "tMs": 1065.7052,
+          "value": 2.3495,
           "label": "edit.selectAll"
         },
         {
-          "tMs": 1083.157,
-          "value": 2.1853,
+          "tMs": 1068.2241999999999,
+          "value": 2.2323999999999997,
           "label": "edit.selection.get"
         },
         {
-          "tMs": 1085.5797,
-          "value": 2.8158,
+          "tMs": 1070.6861999999999,
+          "value": 2.6811000000000003,
           "label": "edit.selection.set"
         },
         {
-          "tMs": 1088.5720000000001,
-          "value": 3.0331,
+          "tMs": 1073.504,
+          "value": 3.055,
           "label": "edit.undo"
         },
         {
-          "tMs": 1091.6721,
-          "value": 2.058,
+          "tMs": 1076.6228,
+          "value": 2.0933,
           "label": "element.annotation.set"
         },
         {
-          "tMs": 1093.8044,
-          "value": 2.1056999999999997,
+          "tMs": 1078.7855,
+          "value": 2.0805,
           "label": "element.childExposure.apply"
         },
         {
-          "tMs": 1095.9778000000001,
-          "value": 2.0684,
+          "tMs": 1080.9296,
+          "value": 2.1142000000000003,
           "label": "element.clone"
         },
         {
-          "tMs": 1098.112,
-          "value": 2.0696,
+          "tMs": 1083.1077,
+          "value": 2.1477000000000004,
           "label": "element.collapsed.set"
         },
         {
-          "tMs": 1100.2503,
-          "value": 2.311,
+          "tMs": 1085.3161,
+          "value": 2.3105,
           "label": "element.colour.set"
         },
         {
-          "tMs": 1102.6627,
-          "value": 2.2033,
+          "tMs": 1087.8553,
+          "value": 2.297,
           "label": "element.create"
         },
         {
-          "tMs": 1104.9365,
-          "value": 2.2044,
+          "tMs": 1090.2192,
+          "value": 2.1662,
           "label": "element.current.move"
         },
         {
-          "tMs": 1107.2006000000001,
-          "value": 2.0975,
+          "tMs": 1092.4421,
+          "value": 2.1145,
           "label": "element.current.set"
         },
         {
-          "tMs": 1109.3653,
-          "value": 2.1123000000000003,
+          "tMs": 1094.6161000000002,
+          "value": 2.1229,
           "label": "element.delete"
         },
         {
-          "tMs": 1111.5448,
-          "value": 2.1132999999999997,
+          "tMs": 1096.804,
+          "value": 2.1422,
           "label": "element.drawing.create"
         },
         {
-          "tMs": 1113.7398,
-          "value": 2.0967,
+          "tMs": 1099.0222,
+          "value": 2.1109,
           "label": "element.drawing.delete"
         },
         {
-          "tMs": 1115.9034000000001,
-          "value": 2.0833000000000004,
+          "tMs": 1101.1956,
+          "value": 2.2252,
           "label": "element.drawing.duplicate"
         },
         {
-          "tMs": 1118.0816,
-          "value": 2.3154999999999997,
+          "tMs": 1103.5236,
+          "value": 2.1564,
           "label": "element.drawing.list"
         },
         {
-          "tMs": 1120.471,
-          "value": 2.2436000000000003,
+          "tMs": 1105.7432000000001,
+          "value": 2.2599,
           "label": "element.drawing.rename"
         },
         {
-          "tMs": 1122.775,
-          "value": 2.1207000000000003,
+          "tMs": 1108.0618,
+          "value": 2.0766999999999998,
           "label": "element.drawingContent.delete"
         },
         {
-          "tMs": 1124.9556,
-          "value": 2.1222,
+          "tMs": 1110.2,
+          "value": 2.0926,
           "label": "element.drawingLock.set"
         },
         {
-          "tMs": 1127.1345,
-          "value": 2.0928,
+          "tMs": 1112.3528000000001,
+          "value": 2.0789,
           "label": "element.duplicate"
         },
         {
-          "tMs": 1129.3836,
-          "value": 2.1287,
+          "tMs": 1114.5751,
+          "value": 2.1332,
           "label": "element.get"
         },
         {
-          "tMs": 1131.5952,
-          "value": 2.1786000000000003,
+          "tMs": 1116.7829,
+          "value": 2.1112,
           "label": "element.hierarchy.get"
         },
         {
-          "tMs": 1133.8389,
-          "value": 2.1635,
+          "tMs": 1118.9555,
+          "value": 2.0701,
           "label": "element.hierarchy.select"
         },
         {
-          "tMs": 1136.0854,
-          "value": 2.3594000000000004,
+          "tMs": 1121.1047,
+          "value": 2.2901000000000002,
           "label": "element.list"
         },
         {
-          "tMs": 1138.5207,
-          "value": 2.2363999999999997,
+          "tMs": 1123.4740000000002,
+          "value": 2.1624,
           "label": "element.lock.set"
         },
         {
-          "tMs": 1140.8202,
-          "value": 2.1223,
+          "tMs": 1125.6986,
+          "value": 2.1632000000000002,
           "label": "element.mediaLength.set"
         },
         {
-          "tMs": 1142.9995,
-          "value": 2.1113,
+          "tMs": 1127.923,
+          "value": 2.0804,
           "label": "element.note.set"
         },
         {
-          "tMs": 1145.1738,
-          "value": 2.1578,
+          "tMs": 1130.0707,
+          "value": 2.1055,
           "label": "element.order.move"
         },
         {
-          "tMs": 1147.4052,
-          "value": 2.2420999999999998,
+          "tMs": 1132.247,
+          "value": 2.1229999999999998,
           "label": "element.order.set"
         },
         {
-          "tMs": 1149.7079999999999,
-          "value": 2.1453,
+          "tMs": 1134.4292,
+          "value": 2.0566,
           "label": "element.parent.remove"
         },
         {
-          "tMs": 1151.9253,
-          "value": 2.186,
+          "tMs": 1136.5507,
+          "value": 2.2395,
           "label": "element.parent.set"
         },
         {
-          "tMs": 1154.1718,
-          "value": 2.3439,
+          "tMs": 1138.8500999999999,
+          "value": 2.254,
           "label": "element.parentPeg.create"
         },
         {
-          "tMs": 1156.5786,
-          "value": 2.1402,
+          "tMs": 1141.1648,
+          "value": 2.1504,
           "label": "element.properties.set"
         },
         {
-          "tMs": 1158.7784000000001,
-          "value": 2.1194,
+          "tMs": 1143.3811999999998,
+          "value": 2.1370999999999998,
           "label": "element.rename"
         },
         {
-          "tMs": 1160.9569,
-          "value": 2.1616999999999997,
+          "tMs": 1145.5823,
+          "value": 2.0967,
           "label": "element.select"
         },
         {
-          "tMs": 1163.1773,
-          "value": 2.2012,
+          "tMs": 1147.7416,
+          "value": 2.0837,
           "label": "element.solo.set"
         },
         {
-          "tMs": 1165.4619,
-          "value": 2.2472,
+          "tMs": 1149.9052000000001,
+          "value": 2.1860999999999997,
           "label": "element.timing.set"
         },
         {
-          "tMs": 1167.7641,
-          "value": 2.2963,
+          "tMs": 1152.1478,
+          "value": 2.0865,
           "label": "element.typeColour.get"
         },
         {
-          "tMs": 1170.1272000000001,
-          "value": 2.8112,
+          "tMs": 1154.2963,
+          "value": 2.5776000000000003,
           "label": "element.typeColour.set"
         },
         {
-          "tMs": 1173.0087,
-          "value": 2.1814,
+          "tMs": 1156.9513,
+          "value": 2.2071,
           "label": "element.unusedDrawing.list"
         },
         {
-          "tMs": 1175.2686999999999,
-          "value": 2.2786999999999997,
+          "tMs": 1159.2343999999998,
+          "value": 2.1348000000000003,
           "label": "element.visibility.set"
         },
         {
-          "tMs": 1177.716,
-          "value": 2.2485,
+          "tMs": 1161.5346,
+          "value": 2.1315,
           "label": "export.drawingPdf.run"
         },
         {
-          "tMs": 1180.0627,
-          "value": 2.1582,
+          "tMs": 1163.7592,
+          "value": 2.1378,
           "label": "export.formats.list"
         },
         {
-          "tMs": 1182.2714,
-          "value": 2.1221,
+          "tMs": 1165.9476,
+          "value": 2.0692000000000004,
           "label": "export.movie.defaults.get"
         },
         {
-          "tMs": 1184.4493,
-          "value": 2.0673000000000004,
+          "tMs": 1168.0705,
+          "value": 1.9797999999999998,
           "label": "export.movie.defaults.set"
         },
         {
-          "tMs": 1186.825,
-          "value": 2.4484,
+          "tMs": 1170.2315,
+          "value": 2.3899,
           "label": "export.movie.run"
         },
         {
-          "tMs": 1189.466,
-          "value": 2.2436000000000003,
+          "tMs": 1172.7919,
+          "value": 2.3882,
           "label": "export.movie.validate"
         },
         {
-          "tMs": 1191.7716,
-          "value": 2.1619,
+          "tMs": 1175.2413,
+          "value": 2.137,
           "label": "export.publish.account.close"
         },
         {
-          "tMs": 1193.9919,
-          "value": 2.0828,
+          "tMs": 1177.4377,
+          "value": 2.0684,
           "label": "export.publish.account.get"
         },
         {
-          "tMs": 1196.1314,
-          "value": 1.9513,
+          "tMs": 1179.5624,
+          "value": 1.9648,
           "label": "export.publish.account.open"
         },
         {
-          "tMs": 1198.1444999999999,
-          "value": 2.1418,
+          "tMs": 1181.5889,
+          "value": 2.0357000000000003,
           "label": "export.publish.categories.list"
         },
         {
-          "tMs": 1200.4655,
-          "value": 2.0044,
+          "tMs": 1183.7976,
+          "value": 1.9686000000000001,
           "label": "export.publish.run"
         },
         {
-          "tMs": 1202.577,
-          "value": 2.0731,
+          "tMs": 1185.8599000000002,
+          "value": 2.3146999999999998,
           "label": "export.publish.service.list"
         },
         {
-          "tMs": 1204.7348,
-          "value": 2.3849,
+          "tMs": 1188.2588,
+          "value": 2.2964,
           "label": "export.publish.validate"
         },
         {
-          "tMs": 1207.2063,
-          "value": 2.1909,
+          "tMs": 1190.6397,
+          "value": 2.2116000000000002,
           "label": "export.report.get"
         },
         {
-          "tMs": 1209.4596,
-          "value": 2.1738,
+          "tMs": 1192.9166,
+          "value": 2.0842,
           "label": "export.settings.get"
         },
         {
-          "tMs": 1211.7006999999999,
-          "value": 2.1275,
+          "tMs": 1195.0674999999999,
+          "value": 2.1915,
           "label": "export.settings.set"
         },
         {
-          "tMs": 1213.9915999999998,
-          "value": 2.2529999999999997,
+          "tMs": 1197.4169,
+          "value": 2.2301,
           "label": "export.snapshot.run"
         },
         {
-          "tMs": 1216.3034,
-          "value": 2.0861,
+          "tMs": 1199.7055,
+          "value": 2.0845,
           "label": "fx.allEffects.get"
         },
         {
-          "tMs": 1218.4417999999998,
-          "value": 2.1814,
+          "tMs": 1201.8423,
+          "value": 2.1384,
           "label": "fx.allEffects.set"
         },
         {
-          "tMs": 1220.6978,
-          "value": 2.4156999999999997,
+          "tMs": 1204.0514,
+          "value": 2.3834,
           "label": "fx.block.add"
         },
         {
-          "tMs": 1223.2855,
-          "value": 2.1641999999999997,
+          "tMs": 1206.6499,
+          "value": 2.1337,
           "label": "fx.block.defaults.apply"
         },
         {
-          "tMs": 1225.6315,
-          "value": 2.1316,
+          "tMs": 1208.9490999999998,
+          "value": 2.0658,
           "label": "fx.block.get"
         },
         {
-          "tMs": 1227.8299,
-          "value": 2.1121,
+          "tMs": 1211.0761,
+          "value": 1.9913999999999998,
           "label": "fx.block.list"
         },
         {
-          "tMs": 1229.9945,
-          "value": 2.198,
+          "tMs": 1213.1216,
+          "value": 2.0372,
           "label": "fx.block.remove"
         },
         {
-          "tMs": 1232.2566,
-          "value": 2.1272,
+          "tMs": 1215.214,
+          "value": 2.0111,
           "label": "fx.block.seed.set"
         },
         {
-          "tMs": 1234.5562,
-          "value": 2.1681,
+          "tMs": 1217.3985,
+          "value": 2.083,
           "label": "fx.block.set"
         },
         {
-          "tMs": 1236.9117,
-          "value": 2.4166000000000003,
+          "tMs": 1219.6449,
+          "value": 2.0551,
           "label": "fx.block.type.set"
         },
         {
-          "tMs": 1239.5517,
-          "value": 2.7066999999999997,
+          "tMs": 1221.9865,
+          "value": 2.7179,
           "label": "fx.create"
         },
         {
-          "tMs": 1242.3457,
-          "value": 2.1832000000000003,
+          "tMs": 1224.791,
+          "value": 2.063,
           "label": "fx.curve.get"
         },
         {
-          "tMs": 1244.6391,
-          "value": 2.297,
+          "tMs": 1226.9562,
+          "value": 2.164,
           "label": "fx.dropShadow.transform.set"
         },
         {
-          "tMs": 1248.8627999999999,
-          "value": 2.127,
+          "tMs": 1230.9116,
+          "value": 2.0745999999999998,
           "label": "fx.get"
         },
         {
-          "tMs": 1251.2105,
-          "value": 2.2812,
+          "tMs": 1233.1915,
+          "value": 2.0446,
           "label": "fx.hitTest.run"
         },
         {
-          "tMs": 1253.7742,
-          "value": 2.3127,
+          "tMs": 1235.3054000000002,
+          "value": 2.0606,
           "label": "fx.keyframe.add"
         },
         {
-          "tMs": 1256.1719,
-          "value": 2.133,
+          "tMs": 1237.4383,
+          "value": 2.229,
           "label": "fx.keyframe.list"
         },
         {
-          "tMs": 1258.3671000000002,
-          "value": 2.211,
+          "tMs": 1239.7298,
+          "value": 2.2853,
           "label": "fx.keyframe.remove"
         },
         {
-          "tMs": 1260.6656,
-          "value": 2.1535,
+          "tMs": 1242.0979,
+          "value": 2.0856999999999997,
           "label": "fx.list"
         },
         {
-          "tMs": 1262.897,
-          "value": 2.2393,
+          "tMs": 1244.2574,
+          "value": 2.15,
           "label": "fx.paramElement.add"
         },
         {
-          "tMs": 1265.2065000000002,
-          "value": 2.1007000000000002,
+          "tMs": 1246.4770999999998,
+          "value": 2.0837999999999997,
           "label": "fx.paramElement.list"
         },
         {
-          "tMs": 1267.3767,
-          "value": 2.1327999999999996,
+          "tMs": 1248.6335,
+          "value": 2.1111,
           "label": "fx.paramElement.remove"
         },
         {
-          "tMs": 1269.5666,
-          "value": 2.4133,
+          "tMs": 1250.8052,
+          "value": 2.0396,
           "label": "fx.paramRows.get"
         },
         {
-          "tMs": 1272.0535,
-          "value": 2.1925,
+          "tMs": 1252.909,
+          "value": 2.2239,
           "label": "fx.paramRows.set"
         },
         {
-          "tMs": 1274.3165000000001,
-          "value": 2.1351999999999998,
+          "tMs": 1255.2015000000001,
+          "value": 2.2466,
           "label": "fx.params.get"
         },
         {
-          "tMs": 1276.5362,
-          "value": 2.2431,
+          "tMs": 1257.5369,
+          "value": 2.1679,
           "label": "fx.params.set"
         },
         {
-          "tMs": 1278.8996,
-          "value": 2.2047999999999996,
+          "tMs": 1259.8191000000002,
+          "value": 2.1239000000000003,
           "label": "fx.particles.get"
         },
         {
-          "tMs": 1281.1819,
-          "value": 2.1388000000000003,
+          "tMs": 1262.0206999999998,
+          "value": 2.0962,
           "label": "fx.preset.apply"
         },
         {
-          "tMs": 1283.4359,
-          "value": 2.0595000000000003,
+          "tMs": 1264.2314999999999,
+          "value": 2.0181999999999998,
           "label": "fx.preset.create"
         },
         {
-          "tMs": 1285.5552,
-          "value": 2.3931,
+          "tMs": 1266.313,
+          "value": 2.0406,
           "label": "fx.preset.delete"
         },
         {
-          "tMs": 1288.0381,
-          "value": 2.3912,
+          "tMs": 1268.4168,
+          "value": 2.1515000000000004,
           "label": "fx.preset.export"
         },
         {
-          "tMs": 1290.5302000000001,
-          "value": 2.1492,
+          "tMs": 1270.6631,
+          "value": 2.2374,
           "label": "fx.preset.get"
         },
         {
-          "tMs": 1292.7454,
-          "value": 1.9992,
+          "tMs": 1272.968,
+          "value": 2.2367,
           "label": "fx.preset.import"
         },
         {
-          "tMs": 1294.8237,
-          "value": 2.1041,
+          "tMs": 1275.2948,
+          "value": 2.2429,
           "label": "fx.preset.list"
         },
         {
-          "tMs": 1296.9925,
-          "value": 2.0165,
+          "tMs": 1277.5988,
+          "value": 2.041,
           "label": "fx.preset.rename"
         },
         {
-          "tMs": 1299.0519,
-          "value": 2.0521,
+          "tMs": 1279.6847,
+          "value": 2.0288,
           "label": "fx.preview.cache.delete"
         },
         {
-          "tMs": 1301.1414000000002,
-          "value": 2.0766,
+          "tMs": 1281.7545,
+          "value": 2.0231,
           "label": "fx.preview.close"
         },
         {
-          "tMs": 1303.3641,
-          "value": 2.3687,
+          "tMs": 1283.8552000000002,
+          "value": 2.112,
           "label": "fx.preview.frame.get"
         },
         {
-          "tMs": 1305.7869,
-          "value": 2.1456,
+          "tMs": 1286.0173,
+          "value": 2.2848,
           "label": "fx.preview.open"
         },
         {
-          "tMs": 1307.9822000000001,
-          "value": 2.1184,
+          "tMs": 1288.3567,
+          "value": 2.1757999999999997,
           "label": "fx.preview.options.get"
         },
         {
-          "tMs": 1310.1552000000001,
-          "value": 2.0845,
+          "tMs": 1290.5901,
+          "value": 2.1113,
           "label": "fx.preview.options.set"
         },
         {
-          "tMs": 1312.2991,
-          "value": 2.1221,
+          "tMs": 1292.7653,
+          "value": 2.0895,
           "label": "fx.preview.render"
         },
         {
-          "tMs": 1314.4895999999999,
-          "value": 2.1205,
+          "tMs": 1294.921,
+          "value": 2.0398,
           "label": "fx.preview.status.get"
         },
         {
-          "tMs": 1316.6623,
-          "value": 2.1075,
+          "tMs": 1297.0182000000002,
+          "value": 2.0282999999999998,
           "label": "fx.preview.stop"
         },
         {
-          "tMs": 1318.837,
-          "value": 2.2583,
+          "tMs": 1299.1115,
+          "value": 2.1153,
           "label": "fx.renderList.get"
         },
         {
-          "tMs": 1321.1603,
-          "value": 2.4006000000000003,
+          "tMs": 1301.28,
+          "value": 2.1034,
           "label": "fx.renderer.capabilities.get"
         },
         {
-          "tMs": 1323.6203,
-          "value": 2.1151999999999997,
+          "tMs": 1303.4306,
+          "value": 2.1965,
           "label": "fx.renderer.options.get"
         },
         {
-          "tMs": 1325.7981,
-          "value": 2.1778,
+          "tMs": 1305.6869,
+          "value": 2.2172,
           "label": "fx.renderer.options.set"
         },
         {
-          "tMs": 1328.0475000000001,
-          "value": 2.1637,
+          "tMs": 1307.9808,
+          "value": 2.1575,
           "label": "fx.shake.displacement.get"
         },
         {
-          "tMs": 1330.2854,
-          "value": 2.1870000000000003,
+          "tMs": 1310.2078,
+          "value": 2.1695,
           "label": "fx.simulation.run"
         },
         {
-          "tMs": 1332.5455,
-          "value": 2.1631,
+          "tMs": 1312.4468,
+          "value": 2.1106,
           "label": "fx.spriteSet.get"
         },
         {
-          "tMs": 1334.7757,
-          "value": 2.1564,
+          "tMs": 1314.6227,
+          "value": 2.0943,
           "label": "fx.spriteSet.list"
         },
         {
-          "tMs": 1337.01,
-          "value": 2.5460000000000003,
+          "tMs": 1316.7903999999999,
+          "value": 2.1066000000000003,
           "label": "fx.timing.set"
         },
         {
-          "tMs": 1339.71,
-          "value": 2.2037,
+          "tMs": 1319.0424,
+          "value": 2.064,
           "label": "fx.types.get"
         },
         {
-          "tMs": 1342.0778,
-          "value": 2.2005000000000003,
+          "tMs": 1321.2604,
+          "value": 2.3381000000000003,
           "label": "fx.types.list"
         },
         {
-          "tMs": 1344.3981,
-          "value": 2.1498,
+          "tMs": 1323.7223,
+          "value": 2.1928,
           "label": "import.file.get"
         },
         {
-          "tMs": 1346.7318,
-          "value": 2.3503,
+          "tMs": 1326.0928999999999,
+          "value": 2.3129,
           "label": "import.file.run"
         },
         {
-          "tMs": 1349.1633000000002,
-          "value": 2.1467,
+          "tMs": 1328.4798,
+          "value": 2.0999,
           "label": "import.formats.list"
         },
         {
-          "tMs": 1351.4252,
-          "value": 2.7166,
+          "tMs": 1330.68,
+          "value": 2.6237,
           "label": "import.keyedImage.get"
         },
         {
-          "tMs": 1354.3343000000002,
-          "value": 2.8392,
+          "tMs": 1333.4915999999998,
+          "value": 2.5551,
           "label": "import.keyedImages.run"
         },
         {
-          "tMs": 1357.3322,
-          "value": 2.216,
+          "tMs": 1336.1975,
+          "value": 2.1932,
           "label": "import.movie.run"
         },
         {
-          "tMs": 1359.6185,
-          "value": 2.1603,
+          "tMs": 1338.4648000000002,
+          "value": 2.4903999999999997,
           "label": "import.options.get"
         },
         {
-          "tMs": 1361.8494,
-          "value": 2.1528,
+          "tMs": 1341.0339,
+          "value": 2.1511,
           "label": "import.options.set"
         },
         {
-          "tMs": 1364.0599,
-          "value": 2.0969,
+          "tMs": 1343.2415,
+          "value": 2.1031999999999997,
           "label": "import.vectorize.settings.get"
         },
         {
-          "tMs": 1366.2218,
-          "value": 2.1510000000000002,
+          "tMs": 1345.4105,
+          "value": 2.1249,
           "label": "import.vectorize.settings.set"
         },
         {
-          "tMs": 1368.6701,
-          "value": 2.5993,
+          "tMs": 1347.8179,
+          "value": 2.4495,
           "label": "inspect.contactSheet.render"
         },
         {
-          "tMs": 1371.6246999999998,
-          "value": 2.5818,
+          "tMs": 1350.5557000000001,
+          "value": 2.3903000000000003,
           "label": "inspect.coordinates.convert"
         },
         {
-          "tMs": 1374.3715,
-          "value": 2.2984,
+          "tMs": 1353.1109,
+          "value": 2.3040000000000003,
           "label": "inspect.frame.describe"
         },
         {
-          "tMs": 1376.9118,
-          "value": 2.4741,
+          "tMs": 1355.6586,
+          "value": 2.7032,
           "label": "inspect.hitTest"
         },
         {
-          "tMs": 1379.5403,
-          "value": 2.3589,
+          "tMs": 1358.5194999999999,
+          "value": 2.3177,
           "label": "inspect.screenshot"
         },
         {
-          "tMs": 1382.0071,
-          "value": 2.2546,
+          "tMs": 1360.9469000000001,
+          "value": 2.1627,
           "label": "inspect.ui.tree"
         },
         {
-          "tMs": 1384.5221,
-          "value": 2.2528,
+          "tMs": 1363.3789000000002,
+          "value": 2.1405,
           "label": "job.cancel"
         },
         {
-          "tMs": 1387.0892000000001,
-          "value": 2.3389,
+          "tMs": 1365.7843,
+          "value": 2.0896999999999997,
           "label": "job.list"
         },
         {
-          "tMs": 1389.7360999999999,
-          "value": 2.2157999999999998,
+          "tMs": 1368.1547,
+          "value": 2.0795000000000003,
           "label": "job.wait"
         },
         {
-          "tMs": 1392.0162,
-          "value": 2.1189999999999998,
+          "tMs": 1370.303,
+          "value": 2.1592000000000002,
           "label": "keymap.export"
         },
         {
-          "tMs": 1394.2166,
-          "value": 2.133,
+          "tMs": 1372.552,
+          "value": 2.303,
           "label": "keymap.get"
         },
         {
-          "tMs": 1396.4395,
-          "value": 2.0928,
+          "tMs": 1374.9402,
+          "value": 2.0848,
           "label": "keymap.import"
         },
         {
-          "tMs": 1398.6068999999998,
-          "value": 2.1368,
+          "tMs": 1377.0991000000001,
+          "value": 2.13,
           "label": "keymap.list"
         },
         {
-          "tMs": 1400.8231,
-          "value": 2.1296,
+          "tMs": 1379.308,
+          "value": 1.9710999999999999,
           "label": "keymap.remove"
         },
         {
-          "tMs": 1403.0071,
-          "value": 2.1465,
+          "tMs": 1381.3289,
+          "value": 1.9471,
           "label": "keymap.reset"
         },
         {
-          "tMs": 1405.2541999999999,
-          "value": 2.1056999999999997,
+          "tMs": 1383.3645,
+          "value": 1.9402,
           "label": "keymap.set"
         },
         {
-          "tMs": 1407.4266,
-          "value": 2.1534,
+          "tMs": 1385.3735000000001,
+          "value": 2.1254999999999997,
           "label": "library.close"
         },
         {
-          "tMs": 1409.6353,
-          "value": 2.1975,
+          "tMs": 1387.6433000000002,
+          "value": 2.2369,
           "label": "library.create"
         },
         {
-          "tMs": 1411.8993,
-          "value": 2.1326,
+          "tMs": 1389.9470000000001,
+          "value": 2.1874,
           "label": "library.drawing.insert"
         },
         {
-          "tMs": 1414.0997,
-          "value": 2.1396,
+          "tMs": 1392.2031000000002,
+          "value": 2.1307,
           "label": "library.element.duplicate"
         },
         {
-          "tMs": 1416.3041,
-          "value": 2.2131,
+          "tMs": 1394.3964,
+          "value": 2.0825,
           "label": "library.folder.create"
         },
         {
-          "tMs": 1418.5755,
-          "value": 2.4160000000000004,
+          "tMs": 1396.5352,
+          "value": 2.1123000000000003,
           "label": "library.folder.delete"
         },
         {
-          "tMs": 1421.0569,
-          "value": 2.2996000000000003,
+          "tMs": 1398.7053,
+          "value": 2.0777,
           "label": "library.folder.rename"
         },
         {
-          "tMs": 1423.4193,
-          "value": 2.212,
+          "tMs": 1400.8421,
+          "value": 2.1819,
           "label": "library.item.delete"
         },
         {
-          "tMs": 1425.7048000000002,
-          "value": 2.1762,
+          "tMs": 1403.0990000000002,
+          "value": 2.1999,
           "label": "library.item.duplicate"
         },
         {
-          "tMs": 1427.9421000000002,
-          "value": 2.1752,
+          "tMs": 1405.3628,
+          "value": 2.1639,
           "label": "library.item.get"
         },
         {
-          "tMs": 1430.2146,
-          "value": 2.1871,
+          "tMs": 1407.624,
+          "value": 2.1947,
           "label": "library.item.import"
         },
         {
-          "tMs": 1432.5321,
-          "value": 2.2397,
+          "tMs": 1409.9475,
+          "value": 2.1397,
           "label": "library.item.list"
         },
         {
-          "tMs": 1434.8452,
-          "value": 2.3313,
+          "tMs": 1412.1629,
+          "value": 2.11,
           "label": "library.item.move"
         },
         {
-          "tMs": 1437.2409,
-          "value": 2.216,
+          "tMs": 1414.3307,
+          "value": 2.0983,
           "label": "library.item.rename"
         },
         {
-          "tMs": 1439.5232,
-          "value": 2.2672,
+          "tMs": 1416.4934,
+          "value": 2.1297,
           "label": "library.item.thumbnail.get"
         },
         {
-          "tMs": 1441.8724,
-          "value": 2.1429,
+          "tMs": 1418.6978,
+          "value": 2.0937,
           "label": "library.list"
         },
         {
-          "tMs": 1444.1106000000002,
-          "value": 2.0997,
+          "tMs": 1420.8862,
+          "value": 2.3678000000000003,
           "label": "library.node.get"
         },
         {
-          "tMs": 1446.2679,
-          "value": 2.0912,
+          "tMs": 1423.3215,
+          "value": 2.159,
           "label": "library.open"
         },
         {
-          "tMs": 1448.4166,
-          "value": 2.1153999999999997,
+          "tMs": 1425.5377,
+          "value": 2.1488,
           "label": "library.preview.get"
         },
         {
-          "tMs": 1450.5965999999999,
-          "value": 2.1187,
+          "tMs": 1427.7550999999999,
+          "value": 2.1227,
           "label": "library.preview.set"
         },
         {
-          "tMs": 1452.8031,
-          "value": 2.4121,
+          "tMs": 1429.9655,
+          "value": 2.1061,
           "label": "library.project.get"
         },
         {
-          "tMs": 1455.286,
-          "value": 2.1843000000000004,
+          "tMs": 1432.1356,
+          "value": 2.1205,
           "label": "library.refresh.run"
         },
         {
-          "tMs": 1457.5421,
-          "value": 2.1318,
+          "tMs": 1434.3203,
+          "value": 2.1167,
           "label": "library.save"
         },
         {
-          "tMs": 1459.7256,
-          "value": 2.1018,
+          "tMs": 1436.4872,
+          "value": 2.1568,
           "label": "library.selection.get"
         },
         {
-          "tMs": 1461.8872000000001,
-          "value": 2.1507,
+          "tMs": 1438.7075,
+          "value": 2.2274,
           "label": "library.selection.set"
         },
         {
-          "tMs": 1464.0859,
-          "value": 2.0875,
+          "tMs": 1440.9899,
+          "value": 2.0877,
           "label": "library.starter.open"
         },
         {
-          "tMs": 1466.2553,
-          "value": 2.1477000000000004,
+          "tMs": 1443.1677,
+          "value": 2.1764,
           "label": "library.template.create"
         },
         {
-          "tMs": 1468.4559,
-          "value": 2.1169000000000002,
+          "tMs": 1445.4029,
+          "value": 2.0404,
           "label": "library.template.edit.get"
         },
         {
-          "tMs": 1470.6318,
-          "value": 2.5314,
+          "tMs": 1447.502,
+          "value": 2.1308,
           "label": "library.template.edit.start"
         },
         {
-          "tMs": 1473.2169,
-          "value": 2.1170999999999998,
+          "tMs": 1449.6801,
+          "value": 2.0888,
           "label": "library.template.edit.stop"
         },
         {
-          "tMs": 1475.4018,
-          "value": 2.1614999999999998,
+          "tMs": 1451.8327,
+          "value": 2.1097,
           "label": "library.template.export"
         },
         {
-          "tMs": 1477.632,
-          "value": 2.4204,
+          "tMs": 1454.0105999999998,
+          "value": 2.6367000000000003,
           "label": "library.template.frame.render"
         },
         {
-          "tMs": 1480.2215,
-          "value": 2.1609,
+          "tMs": 1456.812,
+          "value": 2.1915,
           "label": "library.template.get"
         },
         {
-          "tMs": 1482.5451,
-          "value": 2.4681,
+          "tMs": 1459.1544000000001,
+          "value": 2.3145000000000002,
           "label": "library.template.insert"
         },
         {
-          "tMs": 1485.1749,
-          "value": 2.3411999999999997,
+          "tMs": 1461.621,
+          "value": 2.2694,
           "label": "library.template.search"
         },
         {
-          "tMs": 1487.6046999999999,
-          "value": 2.3514,
+          "tMs": 1463.9652999999998,
+          "value": 2.211,
           "label": "library.templateUpdate.apply"
         },
         {
-          "tMs": 1490.0335,
-          "value": 2.1491000000000002,
+          "tMs": 1466.2521,
+          "value": 2.1269,
           "label": "library.templateUpdate.list"
         },
         {
-          "tMs": 1492.2649999999999,
-          "value": 2.1111,
+          "tMs": 1468.4615999999999,
+          "value": 2.1125,
           "label": "library.tree.get"
         },
         {
-          "tMs": 1494.4331,
-          "value": 2.0452,
+          "tMs": 1470.6331000000002,
+          "value": 2.1986000000000003,
           "label": "library.view.get"
         },
         {
-          "tMs": 1496.5279,
-          "value": 2.1529000000000003,
+          "tMs": 1472.8924000000002,
+          "value": 2.2784,
           "label": "library.view.set"
         },
         {
-          "tMs": 1498.7413000000001,
-          "value": 2.2339,
+          "tMs": 1475.2352,
+          "value": 2.125,
           "label": "library.writeAccess.set"
         },
         {
-          "tMs": 1501.1082,
-          "value": 2.2834000000000003,
+          "tMs": 1477.4942,
+          "value": 2.2685,
           "label": "lipsync.apply"
         },
         {
-          "tMs": 1503.5725,
-          "value": 2.657,
+          "tMs": 1479.9243,
+          "value": 2.2544,
           "label": "lipsync.detect"
         },
         {
-          "tMs": 1506.3075000000001,
-          "value": 2.1906999999999996,
+          "tMs": 1482.2527,
+          "value": 2.0593,
           "label": "lipsync.display.set"
         },
         {
-          "tMs": 1508.5831,
-          "value": 2.2157999999999998,
+          "tMs": 1484.3904,
+          "value": 2.06,
           "label": "lipsync.mapping.get"
         },
         {
-          "tMs": 1510.8854000000001,
-          "value": 2.1974,
+          "tMs": 1486.528,
+          "value": 2.2347,
           "label": "lipsync.mapping.mouth.set"
         },
         {
-          "tMs": 1513.1779000000001,
-          "value": 2.2555,
+          "tMs": 1488.8552,
+          "value": 2.3948,
           "label": "lipsync.mapping.set"
         },
         {
-          "tMs": 1515.4985000000001,
-          "value": 2.2532,
+          "tMs": 1491.3175999999999,
+          "value": 2.1091,
           "label": "lipsync.mouth.set"
         },
         {
-          "tMs": 1517.7946,
-          "value": 2.1311,
+          "tMs": 1493.4684,
+          "value": 1.9757,
           "label": "lipsync.panel.close"
         },
         {
-          "tMs": 1519.9755000000002,
-          "value": 2.1944,
+          "tMs": 1495.4907,
+          "value": 1.9941999999999998,
           "label": "lipsync.panel.open"
         },
         {
-          "tMs": 1522.2333999999998,
-          "value": 2.2445,
+          "tMs": 1497.5436,
+          "value": 1.9921000000000002,
           "label": "lipsync.panel.state.set"
         },
         {
-          "tMs": 1524.546,
-          "value": 2.1205,
+          "tMs": 1499.5935,
+          "value": 1.9659,
           "label": "lipsync.settings.get"
         },
         {
-          "tMs": 1526.7397,
-          "value": 2.1306,
+          "tMs": 1501.6314,
+          "value": 2.0256,
           "label": "lipsync.settings.set"
         },
         {
-          "tMs": 1528.9344,
-          "value": 2.1307,
+          "tMs": 1503.7213,
+          "value": 2.0888999999999998,
           "label": "lipsync.shapes.list"
         },
         {
-          "tMs": 1531.1417000000001,
-          "value": 2.1927000000000003,
+          "tMs": 1505.8867999999998,
+          "value": 2.2548999999999997,
           "label": "lipsync.template.import"
         },
         {
-          "tMs": 1533.396,
-          "value": 2.1224999999999996,
+          "tMs": 1508.1992,
+          "value": 1.9694,
           "label": "lipsync.template.list"
         },
         {
-          "tMs": 1535.5683999999999,
-          "value": 2.2874000000000003,
+          "tMs": 1510.2172,
+          "value": 2.0101,
           "label": "lipsync.track.clear"
         },
         {
-          "tMs": 1537.9681,
-          "value": 2.2759,
+          "tMs": 1512.3307000000002,
+          "value": 2.0128,
           "label": "lipsync.track.get"
         },
         {
-          "tMs": 1540.3690000000001,
-          "value": 2.2369,
+          "tMs": 1514.4605,
+          "value": 2.0837999999999997,
           "label": "lipsync.track.set"
         },
         {
-          "tMs": 1542.7341999999999,
-          "value": 2.2394,
+          "tMs": 1516.6591999999998,
+          "value": 2.1578999999999997,
           "label": "media.movie.import"
         },
         {
-          "tMs": 1545.0414,
-          "value": 2.1466,
+          "tMs": 1518.8911,
+          "value": 2.0301,
           "label": "media.movie.probe"
         },
         {
-          "tMs": 1547.2609,
-          "value": 2.1235999999999997,
+          "tMs": 1520.9966000000002,
+          "value": 2.1464000000000003,
           "label": "media.object.list"
         },
         {
-          "tMs": 1549.451,
-          "value": 2.175,
+          "tMs": 1523.2095000000002,
+          "value": 2.1648,
           "label": "media.object.relink"
         },
         {
-          "tMs": 1551.7127,
-          "value": 2.2137,
+          "tMs": 1525.4655000000002,
+          "value": 2.1992000000000003,
           "label": "media.sequence.add"
         },
         {
-          "tMs": 1554.0045999999998,
-          "value": 2.4405,
+          "tMs": 1527.7467,
+          "value": 2.1053,
           "label": "media.sequence.get"
         },
         {
-          "tMs": 1556.5456,
-          "value": 2.2586,
+          "tMs": 1529.9385000000002,
+          "value": 2.1001000000000003,
           "label": "media.sequence.list"
         },
         {
-          "tMs": 1558.8727,
-          "value": 2.3153,
+          "tMs": 1532.1058,
+          "value": 2.2325,
           "label": "media.sequence.move"
         },
         {
-          "tMs": 1561.2797999999998,
-          "value": 2.1792000000000002,
+          "tMs": 1534.4159,
+          "value": 2.1292,
           "label": "media.sequence.naturalTiming.apply"
         },
         {
-          "tMs": 1563.5344,
-          "value": 2.1397,
+          "tMs": 1536.6037000000001,
+          "value": 2.2338,
           "label": "media.sequence.remove"
         },
         {
-          "tMs": 1565.7534,
-          "value": 2.1067,
+          "tMs": 1538.9176,
+          "value": 2.2178,
           "label": "media.sequence.set"
         },
         {
-          "tMs": 1567.9188,
-          "value": 2.2620999999999998,
+          "tMs": 1541.1967,
+          "value": 2.1717,
           "label": "media.sound.play"
         },
         {
-          "tMs": 1570.2259000000001,
-          "value": 2.2091,
+          "tMs": 1543.4125999999999,
+          "value": 2.0854,
           "label": "media.sound.stop"
         },
         {
-          "tMs": 1572.4905,
-          "value": 2.1182000000000003,
+          "tMs": 1545.5573,
+          "value": 2.1249,
           "label": "playback.forceRate.set"
         },
         {
-          "tMs": 1574.6623,
-          "value": 2.0734,
+          "tMs": 1547.7348,
+          "value": 2.0443000000000002,
           "label": "playback.loop.set"
         },
         {
-          "tMs": 1576.7815999999998,
-          "value": 2.0686,
+          "tMs": 1549.8283000000001,
+          "value": 2.0313000000000003,
           "label": "playback.player.close"
         },
         {
-          "tMs": 1578.8944000000001,
-          "value": 2.0460000000000003,
+          "tMs": 1551.9072,
+          "value": 2.1974,
           "label": "playback.player.get"
         },
         {
-          "tMs": 1580.9972,
-          "value": 2.0707999999999998,
+          "tMs": 1554.1708,
+          "value": 2.1679999999999997,
           "label": "playback.player.open"
         },
         {
-          "tMs": 1583.1281999999999,
-          "value": 2.0971,
+          "tMs": 1556.5013,
+          "value": 2.2522,
           "label": "playback.player.set"
         },
         {
-          "tMs": 1585.3752000000002,
-          "value": 2.1754000000000002,
+          "tMs": 1558.9102,
+          "value": 2.1743,
           "label": "playback.preview.run"
         },
         {
-          "tMs": 1587.6266,
-          "value": 2.3948,
+          "tMs": 1561.1492999999998,
+          "value": 2.0679000000000003,
           "label": "playback.range.get"
         },
         {
-          "tMs": 1590.0836,
-          "value": 2.2430000000000003,
+          "tMs": 1563.2777,
+          "value": 2.0957,
           "label": "playback.range.mode.set"
         },
         {
-          "tMs": 1592.3843,
-          "value": 2.1237,
+          "tMs": 1565.428,
+          "value": 2.0978,
           "label": "playback.range.set"
         },
         {
-          "tMs": 1594.5702,
-          "value": 2.1612,
+          "tMs": 1567.5842,
+          "value": 2.0509,
           "label": "playback.rate.set"
         },
         {
-          "tMs": 1596.7902000000001,
-          "value": 2.1332,
+          "tMs": 1569.6908999999998,
+          "value": 2.0268,
           "label": "playback.start"
         },
         {
-          "tMs": 1599.0071,
-          "value": 2.0624,
+          "tMs": 1571.8032,
+          "value": 2.4204,
           "label": "playback.state.get"
         },
         {
-          "tMs": 1601.1205,
-          "value": 2.1072,
+          "tMs": 1574.2787,
+          "value": 2.093,
           "label": "playback.stop"
         },
         {
-          "tMs": 1603.2903,
-          "value": 2.3764,
+          "tMs": 1576.4355,
+          "value": 2.2420999999999998,
           "label": "prefs.get"
         },
         {
-          "tMs": 1605.7416,
-          "value": 2.1145,
+          "tMs": 1578.7523999999999,
+          "value": 2.0932,
           "label": "prefs.list"
         },
         {
-          "tMs": 1607.9104,
-          "value": 1.9751999999999998,
+          "tMs": 1580.8988,
+          "value": 1.9546,
           "label": "prefs.reset"
         },
         {
-          "tMs": 1609.95,
-          "value": 1.9856,
+          "tMs": 1582.9168,
+          "value": 1.9509,
           "label": "prefs.set"
         },
         {
-          "tMs": 1612.0035000000003,
-          "value": 2.0696999999999997,
+          "tMs": 1584.9285,
+          "value": 2.0358,
           "label": "print.pageSetup.get"
         },
         {
-          "tMs": 1614.1301,
-          "value": 2.1069999999999998,
+          "tMs": 1587.0179,
+          "value": 2.2672,
           "label": "print.pageSetup.set"
         },
         {
-          "tMs": 1616.3463,
-          "value": 2.2238,
+          "tMs": 1589.4031,
+          "value": 2.5493,
           "label": "print.preview.get"
         },
         {
-          "tMs": 1618.6387,
-          "value": 2.153,
+          "tMs": 1592.0292,
+          "value": 2.2046,
           "label": "print.printer.list"
         },
         {
-          "tMs": 1620.9962,
-          "value": 2.1975,
+          "tMs": 1594.465,
+          "value": 2.0825,
           "label": "print.run"
         },
         {
-          "tMs": 1623.2913,
-          "value": 2.117,
+          "tMs": 1596.6472,
+          "value": 2.0899,
           "label": "print.settings.get"
         },
         {
-          "tMs": 1625.5454,
-          "value": 2.2925,
+          "tMs": 1598.8684,
+          "value": 2.2154000000000003,
           "label": "print.settings.set"
         },
         {
-          "tMs": 1628.0339999999999,
-          "value": 2.2466,
+          "tMs": 1601.2589,
+          "value": 2.1525,
           "label": "project.backup.list"
         },
         {
-          "tMs": 1630.5787,
-          "value": 24.7646,
+          "tMs": 1603.6906,
+          "value": 26.3885,
           "label": "project.create"
         },
         {
-          "tMs": 1655.6301,
-          "value": 2.1978,
+          "tMs": 1630.3765,
+          "value": 2.3973000000000004,
           "label": "project.info.get"
         },
         {
-          "tMs": 1658.0182,
-          "value": 2.5664,
+          "tMs": 1632.9423,
+          "value": 2.7349,
           "label": "project.presets.list"
         },
         {
-          "tMs": 1660.6983,
-          "value": 2.0453,
+          "tMs": 1635.8033,
+          "value": 2.1771,
           "label": "project.properties.get"
         },
         {
-          "tMs": 1662.9263999999998,
-          "value": 3.4962999999999997,
+          "tMs": 1638.1583,
+          "value": 3.7376,
           "label": "project.properties.set"
         },
         {
-          "tMs": 1666.5389,
-          "value": 2.0414,
+          "tMs": 1642.0256,
+          "value": 2.1571,
           "label": "project.recent.list"
         },
         {
-          "tMs": 1668.6973,
-          "value": 4.3981,
+          "tMs": 1644.3057,
+          "value": 4.3451,
           "label": "project.recent.remove"
         },
         {
-          "tMs": 1673.2279999999998,
-          "value": 2.3994,
+          "tMs": 1648.7736,
+          "value": 2.2626,
           "label": "project.recovery.delete"
         },
         {
-          "tMs": 1675.7724,
-          "value": 2.2721,
+          "tMs": 1651.1753,
+          "value": 2.1616,
           "label": "project.recovery.list"
         },
         {
-          "tMs": 1678.2213000000002,
-          "value": 2.2713,
+          "tMs": 1653.5061,
+          "value": 2.2637,
           "label": "project.save"
         },
         {
-          "tMs": 1680.6987,
-          "value": 2.3279,
+          "tMs": 1655.9746,
+          "value": 2.3527,
           "label": "project.saveAs"
         },
         {
-          "tMs": 1683.1510999999998,
-          "value": 2.559,
+          "tMs": 1658.4489,
+          "value": 2.5121,
           "label": "render.frame.run"
         },
         {
-          "tMs": 1685.7697,
-          "value": 2.5785,
+          "tMs": 1661.0252,
+          "value": 2.0959,
           "label": "render.limits.get"
         },
         {
-          "tMs": 1688.5544000000002,
-          "value": 2.6235,
+          "tMs": 1663.3015,
+          "value": 2.4789999999999996,
           "label": "render.range.run"
         },
         {
-          "tMs": 1691.2852,
-          "value": 2.1944,
+          "tMs": 1665.8799,
+          "value": 2.1140999999999996,
           "label": "sound.asset.get"
         },
         {
-          "tMs": 1693.5461,
-          "value": 2.1704,
+          "tMs": 1668.0574,
+          "value": 2.1093,
           "label": "sound.asset.import"
         },
         {
-          "tMs": 1695.7938000000001,
-          "value": 2.1177,
+          "tMs": 1670.2363999999998,
+          "value": 2.2409,
           "label": "sound.asset.list"
         },
         {
-          "tMs": 1697.9834999999998,
-          "value": 2.099,
+          "tMs": 1672.5476,
+          "value": 2.27,
           "label": "sound.asset.probe"
         },
         {
-          "tMs": 1700.1513,
-          "value": 2.1657,
+          "tMs": 1674.8907,
+          "value": 2.1411,
           "label": "sound.asset.relink"
         },
         {
-          "tMs": 1702.3714,
-          "value": 2.2355,
+          "tMs": 1677.0807,
+          "value": 2.061,
           "label": "sound.editor.close"
         },
         {
-          "tMs": 1704.6643000000001,
-          "value": 2.2598000000000003,
+          "tMs": 1679.2015999999999,
+          "value": 2.0989,
           "label": "sound.editor.open"
         },
         {
-          "tMs": 1706.9986999999999,
-          "value": 2.0604,
+          "tMs": 1681.3645999999999,
+          "value": 2.075,
           "label": "sound.editor.state.get"
         },
         {
-          "tMs": 1709.1340000000002,
-          "value": 2.1565999999999996,
+          "tMs": 1683.5176999999999,
+          "value": 2.1818,
           "label": "sound.editor.state.set"
         },
         {
-          "tMs": 1711.3492999999999,
-          "value": 2.0786,
+          "tMs": 1685.7595999999999,
+          "value": 2.0995,
           "label": "sound.element.streamed.set"
         },
         {
-          "tMs": 1713.4756,
-          "value": 2.0547,
+          "tMs": 1687.9111999999998,
+          "value": 2.2761,
           "label": "sound.envelope.clear"
         },
         {
-          "tMs": 1715.5882,
-          "value": 2.0451,
+          "tMs": 1690.2604999999999,
+          "value": 2.2629,
           "label": "sound.envelope.get"
         },
         {
-          "tMs": 1717.708,
-          "value": 2.0818,
+          "tMs": 1692.6013,
+          "value": 2.1293,
           "label": "sound.envelope.point.add"
         },
         {
-          "tMs": 1719.8645999999999,
-          "value": 2.3926,
+          "tMs": 1694.8018,
+          "value": 2.2748,
           "label": "sound.envelope.point.move"
         },
         {
-          "tMs": 1722.3319999999999,
-          "value": 2.1,
+          "tMs": 1697.1495,
+          "value": 2.0766,
           "label": "sound.envelope.point.remove"
         },
         {
-          "tMs": 1724.5097999999998,
-          "value": 2.1378,
+          "tMs": 1699.3059,
+          "value": 2.1747,
           "label": "sound.envelope.set"
         },
         {
-          "tMs": 1726.7199,
-          "value": 2.0818,
+          "tMs": 1701.5525999999998,
+          "value": 2.0798,
           "label": "sound.fade.apply"
         },
         {
-          "tMs": 1728.9007000000001,
-          "value": 2.1085000000000003,
+          "tMs": 1703.7335,
+          "value": 2.2114000000000003,
           "label": "sound.import"
         },
         {
-          "tMs": 1731.0829999999999,
-          "value": 2.0966,
+          "tMs": 1706.0394,
+          "value": 2.2404,
           "label": "sound.placement.add"
         },
         {
-          "tMs": 1733.2736,
-          "value": 2.0492000000000004,
+          "tMs": 1708.3817,
+          "value": 2.1747,
           "label": "sound.placement.get"
         },
         {
-          "tMs": 1735.4241,
-          "value": 2.0749,
+          "tMs": 1710.6664,
+          "value": 2.0399,
           "label": "sound.placement.list"
         },
         {
-          "tMs": 1737.5738,
-          "value": 2.2988,
+          "tMs": 1712.7759,
+          "value": 2.1220000000000003,
           "label": "sound.placement.move"
         },
         {
-          "tMs": 1739.9261,
-          "value": 2.1146,
+          "tMs": 1714.9506,
+          "value": 2.0662,
           "label": "sound.placement.remove"
         },
         {
-          "tMs": 1742.1504,
-          "value": 2.1174000000000004,
+          "tMs": 1717.1263,
+          "value": 2.1473999999999998,
           "label": "sound.placement.set"
         },
         {
-          "tMs": 1744.3319999999999,
-          "value": 2.0659,
+          "tMs": 1719.3409,
+          "value": 2.2004,
           "label": "sound.placement.split"
         },
         {
-          "tMs": 1746.4735999999998,
-          "value": 2.1258000000000004,
+          "tMs": 1721.618,
+          "value": 2.2045,
           "label": "sound.placement.trim"
         },
         {
-          "tMs": 1748.6673,
-          "value": 2.1725,
+          "tMs": 1723.8910999999998,
+          "value": 2.1925999999999997,
           "label": "sound.play"
         },
         {
-          "tMs": 1750.8926000000001,
-          "value": 2.0915,
+          "tMs": 1726.1363,
+          "value": 2.1362,
           "label": "sound.playback.set"
         },
         {
-          "tMs": 1753.0511,
-          "value": 2.3036,
+          "tMs": 1728.3431999999998,
+          "value": 2.0907999999999998,
           "label": "sound.range.delete"
         },
         {
-          "tMs": 1755.423,
-          "value": 2.1353,
+          "tMs": 1730.4979,
+          "value": 2.0522,
           "label": "sound.range.select"
         },
         {
-          "tMs": 1757.6182999999999,
-          "value": 2.0513,
+          "tMs": 1732.6153,
+          "value": 2.0186,
           "label": "sound.recent.list"
         },
         {
-          "tMs": 1759.7230000000002,
-          "value": 2.0474,
+          "tMs": 1734.6903,
+          "value": 2.092,
           "label": "sound.scrubbing.set"
         },
         {
-          "tMs": 1761.8197,
-          "value": 2.0119000000000002,
+          "tMs": 1736.8391000000001,
+          "value": 2.1971,
           "label": "sound.settings.get"
         },
         {
-          "tMs": 1763.9124000000002,
-          "value": 2.061,
+          "tMs": 1739.1308,
+          "value": 2.2355,
           "label": "sound.silence.list"
         },
         {
-          "tMs": 1766.0206999999998,
-          "value": 2.0382,
+          "tMs": 1741.4185,
+          "value": 2.0343,
           "label": "sound.stop"
         },
         {
-          "tMs": 1768.1643,
-          "value": 2.2,
+          "tMs": 1743.554,
+          "value": 2.1625,
           "label": "sound.waveform.get"
         },
         {
-          "tMs": 1770.4236,
-          "value": 2.3233,
+          "tMs": 1745.7696999999998,
+          "value": 2.0769,
           "label": "sound.waveforms.set"
         },
         {
-          "tMs": 1772.8038999999999,
-          "value": 2.1786000000000003,
+          "tMs": 1747.8985,
+          "value": 2.0016000000000003,
           "label": "storyline.currentScene.get"
         },
         {
-          "tMs": 1775.0395,
-          "value": 2.1151999999999997,
+          "tMs": 1749.9546,
+          "value": 2.0406,
           "label": "storyline.currentScene.set"
         },
         {
-          "tMs": 1777.2426,
-          "value": 2.1157,
+          "tMs": 1752.0796,
+          "value": 2.0899,
           "label": "storyline.frame.get"
         },
         {
-          "tMs": 1779.4215,
-          "value": 2.1285000000000003,
+          "tMs": 1754.2339,
+          "value": 2.3923,
           "label": "storyline.frame.render"
         },
         {
-          "tMs": 1781.6847,
-          "value": 2.095,
+          "tMs": 1756.7642,
+          "value": 2.1092,
           "label": "storyline.get"
         },
         {
-          "tMs": 1783.8403999999998,
-          "value": 2.1254,
+          "tMs": 1758.9368,
+          "value": 2.0945,
           "label": "storyline.play.start"
         },
         {
-          "tMs": 1786.0151,
-          "value": 2.1829,
+          "tMs": 1761.0816,
+          "value": 2.0636,
           "label": "storyline.play.stop"
         },
         {
-          "tMs": 1788.2527000000002,
-          "value": 2.1471,
+          "tMs": 1763.1975,
+          "value": 2.1016,
           "label": "storyline.playhead.get"
         },
         {
-          "tMs": 1790.4479,
-          "value": 2.0274,
+          "tMs": 1765.3452,
+          "value": 2.0578,
           "label": "storyline.playhead.set"
         },
         {
-          "tMs": 1792.5338,
-          "value": 2.0086,
+          "tMs": 1767.4638,
+          "value": 2.1018999999999997,
           "label": "storyline.scene.create"
         },
         {
-          "tMs": 1794.5977,
-          "value": 2.0282999999999998,
+          "tMs": 1769.6233000000002,
+          "value": 2.2728,
           "label": "storyline.scene.delete"
         },
         {
-          "tMs": 1796.7456,
-          "value": 2.0141999999999998,
+          "tMs": 1772.023,
+          "value": 2.2226,
           "label": "storyline.scene.get"
         },
         {
-          "tMs": 1798.8817,
-          "value": 2.0312,
+          "tMs": 1774.3818,
+          "value": 2.0535,
           "label": "storyline.scene.list"
         },
         {
-          "tMs": 1800.9800999999998,
-          "value": 2.149,
+          "tMs": 1776.5054999999998,
+          "value": 2.1553,
           "label": "storyline.scene.move"
         },
         {
-          "tMs": 1803.2066,
-          "value": 2.3925,
+          "tMs": 1778.7209000000003,
+          "value": 2.1151,
           "label": "storyline.scene.rename"
         },
         {
-          "tMs": 1805.7522000000001,
-          "value": 2.6074,
+          "tMs": 1780.9636,
+          "value": 2.371,
           "label": "storyline.scene.set"
         },
         {
-          "tMs": 1808.4287,
-          "value": 2.1756,
+          "tMs": 1783.4014,
+          "value": 2.0957,
           "label": "storyline.scene.visible.set"
         },
         {
-          "tMs": 1810.6607000000001,
-          "value": 2.1127,
+          "tMs": 1785.5491,
+          "value": 2.1228000000000002,
           "label": "storyline.selection.get"
         },
         {
-          "tMs": 1812.8324999999998,
-          "value": 2.1433,
+          "tMs": 1787.7298,
+          "value": 2.3127,
           "label": "storyline.selection.set"
         },
         {
-          "tMs": 1815.0779,
-          "value": 2.1365999999999996,
+          "tMs": 1790.1437,
+          "value": 2.099,
           "label": "storyline.transition.get"
         },
         {
-          "tMs": 1817.3139,
-          "value": 2.0888999999999998,
+          "tMs": 1792.3393,
+          "value": 2.0617,
           "label": "storyline.transition.list"
         },
         {
-          "tMs": 1819.5012,
-          "value": 2.3436,
+          "tMs": 1794.4964,
+          "value": 2.0796,
           "label": "storyline.transition.remove"
         },
         {
-          "tMs": 1821.9807,
-          "value": 2.3064999999999998,
+          "tMs": 1796.6931000000002,
+          "value": 2.3674,
           "label": "storyline.transition.set"
         },
         {
-          "tMs": 1824.3676,
-          "value": 1.9976,
+          "tMs": 1799.1421,
+          "value": 2.0753,
           "label": "storyline.transition.types.list"
         },
         {
-          "tMs": 1826.4179000000001,
-          "value": 1.9827,
+          "tMs": 1801.2703999999999,
+          "value": 2.0622000000000003,
           "label": "storyline.view.get"
         },
         {
-          "tMs": 1828.4512,
-          "value": 2.0888999999999998,
+          "tMs": 1803.3839999999998,
+          "value": 2.1997,
           "label": "storyline.view.set"
         },
         {
-          "tMs": 1830.6011,
-          "value": 2.2676,
+          "tMs": 1805.6439,
+          "value": 2.3998,
           "label": "timeline.backgroundColour.set"
         },
         {
-          "tMs": 1832.9429,
-          "value": 2.1645000000000003,
+          "tMs": 1808.1117,
+          "value": 2.1245000000000003,
           "label": "timeline.currentFrame.move"
         },
         {
-          "tMs": 1835.1662,
-          "value": 2.2196,
+          "tMs": 1810.2958999999998,
+          "value": 2.0932,
           "label": "timeline.currentFrame.set"
         },
         {
-          "tMs": 1837.4415,
-          "value": 2.2893000000000003,
+          "tMs": 1812.4453,
+          "value": 2.0805,
           "label": "timeline.effectParameterRows.set"
         },
         {
-          "tMs": 1839.7942,
-          "value": 2.0591,
+          "tMs": 1814.5864000000001,
+          "value": 2.1619,
           "label": "timeline.frameLabel.get"
         },
         {
-          "tMs": 1841.9075,
-          "value": 2.0296,
+          "tMs": 1816.7996,
+          "value": 2.0641000000000003,
           "label": "timeline.playbackRange.get"
         },
         {
-          "tMs": 1843.9991,
-          "value": 2.0081,
+          "tMs": 1818.9202,
+          "value": 2.0788,
           "label": "timeline.playbackRange.set"
         },
         {
-          "tMs": 1846.1551,
-          "value": 2.0275,
+          "tMs": 1821.1386,
+          "value": 2.4595,
           "label": "timeline.rows.list"
         },
         {
-          "tMs": 1848.247,
-          "value": 2.0293,
+          "tMs": 1823.6645999999998,
+          "value": 2.1163000000000003,
           "label": "timeline.singleCellSelection.set"
         },
         {
-          "tMs": 1850.3314,
-          "value": 2.0205,
+          "tMs": 1825.844,
+          "value": 2.0856,
           "label": "timeline.soundWaveforms.set"
         },
         {
-          "tMs": 1852.4075,
-          "value": 2.2083,
+          "tMs": 1827.9838000000002,
+          "value": 2.1046,
           "label": "timeline.timeDisplay.set"
         },
         {
-          "tMs": 1854.7329000000002,
-          "value": 2.1925999999999997,
+          "tMs": 1830.1745999999998,
+          "value": 2.1188000000000002,
           "label": "timeline.transferOptions.get"
         },
         {
-          "tMs": 1857.0764,
-          "value": 2.3524000000000003,
+          "tMs": 1832.4481,
+          "value": 2.346,
           "label": "timeline.transferOptions.set"
         },
         {
-          "tMs": 1859.4931,
-          "value": 2.1841999999999997,
+          "tMs": 1834.8594,
+          "value": 2.0888999999999998,
           "label": "timeline.view.set"
         },
         {
-          "tMs": 1861.7354000000003,
-          "value": 2.1099,
+          "tMs": 1837.0058999999999,
+          "value": 2.0843,
           "label": "tool.active.get"
         },
         {
-          "tMs": 1863.9069,
-          "value": 2.12,
+          "tMs": 1839.149,
+          "value": 2.238,
           "label": "tool.active.set"
         },
         {
-          "tMs": 1866.0883,
-          "value": 2.0088,
+          "tMs": 1841.4491,
+          "value": 2.0927,
           "label": "tool.brush.options.set"
         },
         {
-          "tMs": 1868.1535999999999,
-          "value": 2.1439,
+          "tMs": 1843.5955000000001,
+          "value": 2.0795000000000003,
           "label": "tool.drawTopLayer.set"
         },
         {
-          "tMs": 1870.3611,
-          "value": 2.1538,
+          "tMs": 1845.7350999999999,
+          "value": 2.1681,
           "label": "tool.eraser.options.set"
         },
         {
-          "tMs": 1872.5801,
-          "value": 2.0961,
+          "tMs": 1847.9583000000002,
+          "value": 2.1197999999999997,
           "label": "tool.group.select"
         },
         {
-          "tMs": 1874.7490999999998,
-          "value": 2.0366999999999997,
+          "tMs": 1850.1465,
+          "value": 2.0614000000000003,
           "label": "tool.list"
         },
         {
-          "tMs": 1876.8409,
-          "value": 2.0664,
+          "tMs": 1852.2628000000002,
+          "value": 2.0815,
           "label": "tool.options.get"
         },
         {
-          "tMs": 1878.967,
-          "value": 2.0734,
+          "tMs": 1854.4065,
+          "value": 2.3089999999999997,
           "label": "tool.options.set"
         },
         {
-          "tMs": 1881.0998,
-          "value": 2.0791,
+          "tMs": 1856.7863,
+          "value": 2.1651000000000002,
           "label": "tool.pen.create"
         },
         {
-          "tMs": 1883.2327,
-          "value": 2.0634,
+          "tMs": 1859.0106,
+          "value": 2.0514,
           "label": "tool.pen.delete"
         },
         {
-          "tMs": 1885.3731,
-          "value": 2.1702000000000004,
+          "tMs": 1861.1420999999998,
+          "value": 2.0029000000000003,
           "label": "tool.pen.list"
         },
         {
-          "tMs": 1887.6142,
-          "value": 2.3949000000000003,
+          "tMs": 1863.2070999999999,
+          "value": 2.1009,
           "label": "tool.pen.rename"
         },
         {
-          "tMs": 1890.0689000000002,
-          "value": 2.1264000000000003,
+          "tMs": 1865.3606,
+          "value": 2.0868,
           "label": "tool.pen.select"
         },
         {
-          "tMs": 1892.3636,
-          "value": 2.227,
+          "tMs": 1867.6037999999999,
+          "value": 2.0769,
           "label": "tool.pen.set"
         },
         {
-          "tMs": 1894.6667000000002,
-          "value": 2.2102,
+          "tMs": 1869.7506,
+          "value": 2.1687,
           "label": "tool.pencil.options.set"
         },
         {
-          "tMs": 1896.9317,
-          "value": 2.1174000000000004,
+          "tMs": 1871.9942,
+          "value": 2.5243,
           "label": "tool.placeBehind.set"
         },
         {
-          "tMs": 1899.1118000000001,
-          "value": 2.1265,
+          "tMs": 1874.5858,
+          "value": 2.1304000000000003,
           "label": "tool.polyline.options.set"
         },
         {
-          "tMs": 1901.2956000000001,
-          "value": 2.2095000000000002,
+          "tMs": 1876.7734,
+          "value": 2.0656,
           "label": "tool.select.options.set"
         },
         {
-          "tMs": 1903.5672,
-          "value": 2.1935000000000002,
+          "tMs": 1878.8947,
+          "value": 2.0154,
           "label": "tool.settings.get"
         },
         {
-          "tMs": 1905.8154,
-          "value": 2.2387,
+          "tMs": 1880.9613000000002,
+          "value": 2.0949,
           "label": "tool.snapToContour.set"
         },
         {
-          "tMs": 1908.1201999999998,
-          "value": 2.1153999999999997,
+          "tMs": 1883.1193,
+          "value": 2.0946,
           "label": "tool.symmetry.set"
         },
         {
-          "tMs": 1910.2942999999998,
-          "value": 2.0713,
+          "tMs": 1885.273,
+          "value": 2.2125,
           "label": "tool.tablet.set"
         },
         {
-          "tMs": 1912.4903,
-          "value": 2.1813000000000002,
+          "tMs": 1887.6179,
+          "value": 2.3866,
           "label": "tool.text.options.set"
         },
         {
-          "tMs": 1914.7267000000002,
-          "value": 2.0597,
+          "tMs": 1890.0722999999998,
+          "value": 2.1467,
           "label": "ui.contextHelpMode.set"
         },
         {
-          "tMs": 1916.8414,
-          "value": 2.0572,
+          "tMs": 1892.2839000000001,
+          "value": 2.1050999999999997,
           "label": "ui.help.get"
         },
         {
-          "tMs": 1918.9399,
-          "value": 2.3738,
+          "tMs": 1894.4356,
+          "value": 2.0696,
           "label": "ui.help.open"
         },
         {
-          "tMs": 1921.3727000000001,
-          "value": 2.2445999999999997,
+          "tMs": 1896.5507000000002,
+          "value": 2.0757000000000003,
           "label": "ui.preferences.open"
         },
         {
-          "tMs": 1923.6718,
-          "value": 2.1332999999999998,
+          "tMs": 1898.6787000000002,
+          "value": 2.0709999999999997,
           "label": "ui.startScreen.set"
         },
         {
-          "tMs": 1925.8671000000002,
-          "value": 2.1031,
+          "tMs": 1900.8087,
+          "value": 2.0633,
           "label": "ui.statusBar.get"
         },
         {
-          "tMs": 1928.0248,
-          "value": 2.0978,
+          "tMs": 1902.9247,
+          "value": 2.2628,
           "label": "ui.statusBar.set"
         },
         {
-          "tMs": 1930.1795,
-          "value": 2.0951,
+          "tMs": 1905.2453,
+          "value": 2.2014,
           "label": "ui.theme.list"
         },
         {
-          "tMs": 1932.3294,
-          "value": 2.0715999999999997,
+          "tMs": 1907.499,
+          "value": 2.0551,
           "label": "ui.tips.list"
         },
         {
-          "tMs": 1934.4483,
-          "value": 2.2479,
+          "tMs": 1909.6004,
+          "value": 2.0339,
           "label": "ui.tips.reset"
         },
         {
-          "tMs": 1936.7540000000001,
-          "value": 2.3365,
+          "tMs": 1911.6928,
+          "value": 2.0715999999999997,
           "label": "ui.tips.set"
         },
         {
-          "tMs": 1939.1509999999998,
-          "value": 2.0566,
+          "tMs": 1913.8191,
+          "value": 2.0298,
           "label": "view.active.set"
         },
         {
-          "tMs": 1941.2903,
-          "value": 2.1335,
+          "tMs": 1915.9301,
+          "value": 2.1671,
           "label": "view.coordinates.convert"
         },
         {
-          "tMs": 1943.4943,
-          "value": 1.986,
+          "tMs": 1918.1669000000002,
+          "value": 2.0937,
           "label": "view.list"
         },
         {
-          "tMs": 1945.5575000000001,
-          "value": 2.0547,
+          "tMs": 1920.339,
+          "value": 2.084,
           "label": "view.pan.set"
         },
         {
-          "tMs": 1947.6783,
-          "value": 2.0138000000000003,
+          "tMs": 1922.4881,
+          "value": 2.1555,
           "label": "view.rotation.set"
         },
         {
-          "tMs": 1949.7515,
-          "value": 2.3293,
+          "tMs": 1924.7060000000001,
+          "value": 2.0657,
           "label": "view.transform.get"
         },
         {
-          "tMs": 1952.1551000000002,
-          "value": 2.0366999999999997,
+          "tMs": 1926.8393,
+          "value": 2.1138,
           "label": "view.transform.reset"
         },
         {
-          "tMs": 1954.2585,
-          "value": 2.4032,
+          "tMs": 1929.012,
+          "value": 2.1741,
           "label": "view.type.set"
         },
         {
-          "tMs": 1956.7376,
-          "value": 2.0833000000000004,
+          "tMs": 1931.2578999999998,
+          "value": 2.0818,
           "label": "view.zoom.set"
         },
         {
-          "tMs": 1958.9334000000001,
-          "value": 2.1538999999999997,
+          "tMs": 1933.4538,
+          "value": 2.0868,
           "label": "window.floatingPanels.set"
         },
         {
-          "tMs": 1961.1743000000001,
-          "value": 2.1119,
+          "tMs": 1935.6365,
+          "value": 2.2493000000000003,
           "label": "window.fullScreen.set"
         },
         {
-          "tMs": 1963.5162,
-          "value": 2.0049,
+          "tMs": 1938.1162000000002,
+          "value": 2.2951,
           "label": "window.geometry.get"
         },
         {
-          "tMs": 1965.8438,
-          "value": 2.2544,
+          "tMs": 1940.7415,
+          "value": 2.2497,
           "label": "window.geometry.set"
         },
         {
-          "tMs": 1968.1918999999998,
-          "value": 2.1613,
+          "tMs": 1943.0822,
+          "value": 2.1229999999999998,
           "label": "window.minimized.set"
         },
         {
-          "tMs": 1970.6603999999998,
-          "value": 2.5498000000000003,
+          "tMs": 1945.4481,
+          "value": 2.4377,
           "label": "window.panel.list"
         },
         {
-          "tMs": 1973.9998,
-          "value": 2.4857,
+          "tMs": 1948.6668,
+          "value": 2.4724999999999997,
           "label": "window.panel.move"
         },
         {
-          "tMs": 1976.8759,
-          "value": 2.4369,
+          "tMs": 1951.5142,
+          "value": 2.4644,
           "label": "window.panel.set"
         },
         {
-          "tMs": 1979.3767,
-          "value": 2.1349,
+          "tMs": 1954.0448999999999,
+          "value": 2.22,
           "label": "window.raiseAll.run"
         },
         {
-          "tMs": 1981.5956999999999,
-          "value": 2.2011000000000003,
+          "tMs": 1956.3578000000002,
+          "value": 2.1644,
           "label": "window.sidePanelsExtended.set"
         },
         {
-          "tMs": 1983.922,
-          "value": 2.2001999999999997,
+          "tMs": 1958.6390000000001,
+          "value": 2.2011000000000003,
           "label": "window.toolbar.items.reset"
         },
         {
-          "tMs": 1986.256,
-          "value": 2.3360999999999996,
+          "tMs": 1960.9775,
+          "value": 2.214,
           "label": "window.toolbar.items.set"
         },
         {
-          "tMs": 1988.7979,
-          "value": 3.1492,
+          "tMs": 1963.3867,
+          "value": 3.0466,
           "label": "window.toolbar.list"
         },
         {
-          "tMs": 1992.299,
-          "value": 2.5461,
+          "tMs": 1966.8088,
+          "value": 2.5231,
           "label": "window.toolbar.set"
         },
         {
-          "tMs": 1995.5551,
-          "value": 7.699,
+          "tMs": 1970.0204999999999,
+          "value": 8.2247,
           "label": "workspace.create"
         },
         {
-          "tMs": 2003.3759,
-          "value": 2.742,
+          "tMs": 1978.3705,
+          "value": 2.4705999999999997,
           "label": "workspace.delete"
         },
         {
-          "tMs": 2006.2630000000001,
-          "value": 2.539,
+          "tMs": 1980.9832000000001,
+          "value": 2.5096,
           "label": "workspace.export"
         },
         {
-          "tMs": 2009.4411,
-          "value": 2.801,
+          "tMs": 1984.0884999999998,
+          "value": 2.6738,
           "label": "workspace.get"
         },
         {
-          "tMs": 2012.4025,
-          "value": 2.4892,
+          "tMs": 1986.918,
+          "value": 2.5631,
           "label": "workspace.import"
         },
         {
-          "tMs": 2016.0800000000002,
-          "value": 3.8249999999999997,
+          "tMs": 1990.7172,
+          "value": 3.8281,
           "label": "workspace.layout.set"
         },
         {
-          "tMs": 2020.1987,
-          "value": 2.5383,
+          "tMs": 1994.7081,
+          "value": 2.3461,
           "label": "workspace.list"
         },
         {
-          "tMs": 2022.8405,
-          "value": 4.6809,
+          "tMs": 1997.1498,
+          "value": 4.9384,
           "label": "workspace.rename"
         },
         {
-          "tMs": 2027.6494,
-          "value": 2.6172,
+          "tMs": 2002.2144,
+          "value": 2.666,
           "label": "workspace.reset"
         },
         {
-          "tMs": 2030.3586,
-          "value": 2.4194,
+          "tMs": 2004.9685,
+          "value": 2.5238,
           "label": "workspace.save"
         },
         {
-          "tMs": 2032.8779,
-          "value": 5.6916,
+          "tMs": 2007.5928,
+          "value": 5.0242,
           "label": "workspace.select"
         },
         {
-          "tMs": 2038.6655,
-          "value": 2.5225,
+          "tMs": 2012.683,
+          "value": 2.3630999999999998,
           "label": "xsheet.columnWidth.set"
         },
         {
-          "tMs": 2041.2553999999998,
-          "value": 2.4096,
+          "tMs": 2015.1109,
+          "value": 2.3728,
           "label": "xsheet.currentCell.set"
         },
         {
-          "tMs": 2043.7268,
-          "value": 2.3479,
+          "tMs": 2017.5456000000001,
+          "value": 2.3043,
           "label": "xsheet.display.set"
         },
         {
-          "tMs": 2046.2310000000002,
-          "value": 2.4352,
+          "tMs": 2019.9957999999997,
+          "value": 2.4872,
           "label": "xsheet.exposures.get"
         },
         {
-          "tMs": 2048.7904000000003,
-          "value": 2.5084,
+          "tMs": 2022.6232,
+          "value": 2.8042000000000002,
           "label": "xsheet.exposures.set"
         },
         {
-          "tMs": 2051.3795,
-          "value": 2.4941,
+          "tMs": 2025.5063999999998,
+          "value": 2.4423,
           "label": "xsheet.lightTable.add"
         },
         {
-          "tMs": 2053.9456,
-          "value": 2.5239,
+          "tMs": 2028.0163999999997,
+          "value": 2.2652,
           "label": "xsheet.lightTable.list"
         },
         {
-          "tMs": 2056.5463,
-          "value": 2.4027,
+          "tMs": 2030.3435,
+          "value": 2.2926,
           "label": "xsheet.lightTable.move"
         },
         {
-          "tMs": 2059.0044000000003,
-          "value": 2.3161,
+          "tMs": 2032.6933000000001,
+          "value": 2.283,
           "label": "xsheet.lightTable.remove"
         },
         {
-          "tMs": 2061.3801,
-          "value": 2.3318000000000003,
+          "tMs": 2035.0389999999998,
+          "value": 2.3564,
           "label": "xsheet.lightTable.set"
         },
         {
-          "tMs": 2063.7636,
-          "value": 2.274,
+          "tMs": 2037.4468000000002,
+          "value": 2.493,
           "label": "xsheet.panel.set"
         },
         {
-          "tMs": 2066.1724,
-          "value": 2.2138,
+          "tMs": 2040.0781000000002,
+          "value": 2.341,
           "label": "app.quit"
         },
         {
-          "tMs": 2068.5186,
-          "value": 2.7796000000000003,
+          "tMs": 2042.5511,
+          "value": 2.5821,
           "label": "project.backup.open"
         },
         {
-          "tMs": 2071.4285999999997,
-          "value": 2.6622999999999997,
+          "tMs": 2045.2642,
+          "value": 2.4080999999999997,
           "label": "project.close"
         },
         {
-          "tMs": 2074.3561,
-          "value": 2.5852000000000004,
+          "tMs": 2047.9281,
+          "value": 2.4581999999999997,
           "label": "project.open"
         },
         {
-          "tMs": 2077.166,
-          "value": 2.605,
+          "tMs": 2050.6004,
+          "value": 2.5434,
           "label": "project.recovery.open"
         }
       ],
       "summary": {
         "n": 719,
-        "p50": 2.1841999999999997,
-        "p90": 2.4892,
-        "p99": 4.6435,
-        "max": 24.7646
+        "p50": 2.1568,
+        "p90": 2.4377,
+        "p99": 4.6888,
+        "max": 26.3885
       }
     }
   },

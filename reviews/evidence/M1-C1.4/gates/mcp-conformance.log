@@ -7,7 +7,7 @@ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\scripts\mcp-conf
   "client": "mcp (Python SDK) 2.0.0",
   "server": "C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe",
   "platform": "win32",
-  "seconds": 1.38,
+  "seconds": 1.41,
   "passed": 24,
   "failed": 0,
   "checks": [
@@ -49,17 +49,17 @@ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\scripts\mcp-conf
     {
       "check": "tools/call run_command project.create (inside client roots)",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M65PFTW124KZ1S12FYSZDABV', 'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-ylqpe52m\\\\Conformance.animpkg', 'sceneId': 'sc_01M65PFTW124KZ1S12FYSZDAFZ', 'cameraId': 'el_01M65PFTW124KZ1S12FYSZDAG1', 'elementId': 'el_01M65PFTW124KZ1S12FYSZDAG2'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+      "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M661EGRX2D2M7CERAKXRNJ1V', 'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-xx9cec9g\\\\Conformance.animpkg', 'sceneId': 'sc_01M661EGRX2D2M7CERAKXRNJ5Z', 'cameraId': 'el_01M661EGRX2D2M7CERAKXRNJ61', 'elementId': 'el_01M661EGRX2D2M7CERAKXRNJ62'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
     },
     {
       "check": "tools/call get_state",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M65PFTW124KZ1S12FYSZDABV', 'name': 'Conformance', 'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-ylqpe52m\\\\Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M65PFTW124KZ1S12FYSZDAFZ', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M65PFTW124KZ1S12FYS"
+      "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M661EGRX2D2M7CERAKXRNJ1V', 'name': 'Conformance', 'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-xx9cec9g\\\\Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M661EGRX2D2M7CERAKXRNJ5Z', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M661EGRX2D2M7CERAKX"
     },
     {
       "check": "tools/call get_object",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M65PFTW124KZ1S12FYSZDAFZ', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M65PFTW124KZ1S12FYSZDAG1', 'paletteStyles': {'pal_01M65PFTW124KZ1S12FYSZDABW': 'sty_01M65PFTW124KZ1S12FYSZDABX'}, 'outTransition': {'id': 'tr_01M65PFTW124KZ1S12FYSZDAG5', 'ty"
+      "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M661EGRX2D2M7CERAKXRNJ5Z', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M661EGRX2D2M7CERAKXRNJ61', 'paletteStyles': {'pal_01M661EGRX2D2M7CERAKXRNJ1W': 'sty_01M661EGRX2D2M7CERAKXRNJ1X'}, 'outTransition': {'id': 'tr_01M661EGRX2D2M7CERAKXRNJ65', 'ty"
     },
     {
       "check": "resources/list",
@@ -109,17 +109,17 @@ C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\scripts\mcp-conf
     {
       "check": "elicitation/create for a confirmation",
       "ok": true,
-      "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-ylqpe52m\\\\Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"C:\\\\\\\\Users\\\\\\\\kaiga\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\tt-c14-sdk-ylqpe52m\\\\\\\\Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'Proceed"
+      "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-xx9cec9g\\\\Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"C:\\\\\\\\Users\\\\\\\\kaiga\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\tt-c14-sdk-xx9cec9g\\\\\\\\Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'Proceed"
     },
     {
       "check": "accepted elicitation proceeds",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M65PFTW124KZ1S12FYSZDABV', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-10-30T06:03:26.710Z', 'oldValue': '2026-10-30T06:03:25.953Z'}]}], 'warnings': [], 'documentRev': 3}"
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M661EGRX2D2M7CERAKXRNJ1V', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-10-30T09:14:57.927Z', 'oldValue': '2026-10-30T09:14:57.181Z'}]}], 'warnings': [], 'documentRev': 3}"
     },
     {
       "check": "job_wait ok",
       "ok": true,
-      "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-10-30T06:03:26.714Z', 'result': {'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-ylqpe52m\\\\Export.animpkg', 'form': 'package', 'bytes': 6670, 'entries': 11}, 'session': 'agent:s1-b032de'}, 'changes': [], 'warnings': [], 'document"
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-10-30T09:14:57.932Z', 'result': {'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-xx9cec9g\\\\Export.animpkg', 'form': 'package', 'bytes': 6671, 'entries': 11}, 'session': 'agent:s1-2c7eec'}, 'changes': [], 'warnings': [], 'document"
     },
     {
       "check": "notifications/progress",

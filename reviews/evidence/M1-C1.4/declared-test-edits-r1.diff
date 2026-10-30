@@ -1,0 +1,838 @@
+diff --git a/bins/headless/tests/mcp.rs b/bins/headless/tests/mcp.rs
+index 1200e2d..010e9e7 100644
+--- a/bins/headless/tests/mcp.rs
++++ b/bins/headless/tests/mcp.rs
+@@ -20,8 +20,12 @@ fn tmp() -> PathBuf {
+     d
+ }
+ 
++/// A per-process unique suffix: the clock alone repeats when two tests start in the same tick (it did on Windows).
+ fn rand() -> u64 {
+-    std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos() as u64 % 1_000_000_007
++    static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
++    let n = NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
++    let t = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos() as u64;
++    (t % 1_000_000_007) * 1000 + n
+ }
+ 
+ fn p(path: &Path) -> String {
+diff --git a/crates/executor/tests/c14_lock_races.rs b/crates/executor/tests/c14_lock_races.rs
+index 218cab3..40fd115 100644
+--- a/crates/executor/tests/c14_lock_races.rs
++++ b/crates/executor/tests/c14_lock_races.rs
+@@ -12,9 +12,12 @@ use std::sync::mpsc::{self, Receiver, Sender};
+ use std::sync::{Arc, Barrier, Mutex, PoisonError};
+ use std::time::{Duration, Instant, SystemTime};
+ 
++use c14_evidence::{Recorder, ms};
+ use serde_json::{Value, json};
+ use tt_persist::lock::{self, Boundary, LockInfo, Locked};
+ 
++mod c14_evidence;
++
+ /// The hook is process-global: tests that install one run one at a time.
+ static SERIAL: Mutex<()> = Mutex::new(());
+ 
+@@ -266,21 +269,12 @@ fn child_lock_holder() {
+     drop(handle);
+ }
+ 
+-fn percentile(v: &mut [f64], q: f64) -> f64 {
+-    v.sort_by(f64::total_cmp);
+-    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss, clippy::cast_precision_loss, reason = "index")]
+-    let i = ((v.len() - 1) as f64 * q).round() as usize;
+-    v[i]
+-}
+-
+-#[test]
+-fn crashed_holder_is_detected_at_once_and_liveness_is_measured() {
+-    let _g = serial();
+-    let (dir, project) = project();
+-    let file = lock::lock_path(&project);
+-    let mut child = std::process::Command::new(std::env::current_exe().unwrap())
++/// Starts a child process holding the project's lock and waits until it holds it.
++fn child_holding(project: &Path) -> (std::process::Child, LockInfo) {
++    let file = lock::lock_path(project);
++    let child = std::process::Command::new(std::env::current_exe().unwrap())
+         .args(["--exact", "child_lock_holder", "--ignored", "--nocapture", "--test-threads=1"])
+-        .env("TT_C14_CHILD_PROJECT", &project)
++        .env("TT_C14_CHILD_PROJECT", project)
+         .stdout(std::process::Stdio::null())
+         .spawn()
+         .unwrap();
+@@ -289,73 +283,149 @@ fn crashed_holder_is_detected_at_once_and_liveness_is_measured() {
+         assert!(start.elapsed() < Duration::from_secs(60), "the child never took the lock");
+         std::thread::sleep(Duration::from_millis(10));
+     }
+-    let child_info = lock::read(&file).unwrap();
+-    // While the child lives: held, from another process.
+-    assert!(matches!(lock::acquire(&project), Locked::HeldByOther(_)));
+-    // Probe latency on a held lock.
+-    let mut probe_us: Vec<f64> = (0..500)
+-        .map(|_| {
+-            let t = Instant::now();
+-            assert_eq!(lock::probe(&file), Some(true));
+-            t.elapsed().as_secs_f64() * 1e6
+-        })
+-        .collect();
+-    let mut held_us: Vec<f64> = (0..50)
+-        .map(|_| {
+-            let t = Instant::now();
+-            assert!(matches!(lock::acquire(&project), Locked::HeldByOther(_)));
+-            t.elapsed().as_secs_f64() * 1e6
+-        })
+-        .collect();
+-    // The crash.
+-    child.kill().unwrap();
+-    let _ = child.wait();
+-    let killed = Instant::now();
+-    let (handle, took) = loop {
+-        match lock::acquire(&project) {
+-            Locked::Acquired { handle, took_over } => break (handle, took_over),
+-            _ => {
+-                assert!(killed.elapsed() < Duration::from_secs(30), "the dead holder's lock was not taken over");
+-                std::thread::sleep(Duration::from_millis(1));
++    let info = lock::read(&file).unwrap();
++    (child, info)
++}
++
++#[test]
++fn crashed_holder_is_detected_at_once_and_liveness_is_measured() {
++    let _g = serial();
++    let (dir, project) = project();
++    let file = lock::lock_path(&project);
++    let mut rec = Recorder::new();
++    // Five crashed holders (C14-R1-07: every observation kept).
++    for round in 0..5 {
++        let (mut child, child_info) = child_holding(&project);
++        // While the child lives: held, from another process.
++        assert!(matches!(lock::acquire(&project), Locked::HeldByOther(_)));
++        if round == 0 {
++            for _ in 0..500 {
++                let t = Instant::now();
++                assert_eq!(lock::probe(&file), Some(true));
++                rec.sample("probeHeldMicros", "us", t, t.elapsed().as_secs_f64() * 1e6, None);
++            }
++            for _ in 0..50 {
++                let t = Instant::now();
++                assert!(matches!(lock::acquire(&project), Locked::HeldByOther(_)));
++                rec.sample("acquireOnHeldMicros", "us", t, t.elapsed().as_secs_f64() * 1e6, None);
+             }
+         }
+-    };
+-    let takeover_ms = killed.elapsed().as_secs_f64() * 1e3;
+-    assert_eq!(took.unwrap().lock_id, child_info.lock_id);
+-    drop(handle);
+-    // process_alive is bounded.
+-    let t = Instant::now();
+-    let _ = tt_persist::host::process_alive(4_000_000_000);
+-    let alive_ms = t.elapsed().as_secs_f64() * 1e3;
+-    assert!(t.elapsed() <= tt_persist::host::LIVENESS_TIMEOUT + Duration::from_millis(500));
+-    let report: Value = json!({
+-        "obligation": "C1.4 obligation 2 (ADR-0014 §11.4)",
+-        "platform": std::env::consts::OS,
+-        "protection": if cfg!(windows) { "shareMode" } else { "flock" },
+-        "probeHeldMicros": { "n": probe_us.len(), "p50": percentile(&mut probe_us, 0.5), "p99": percentile(&mut probe_us, 0.99) },
+-        "acquireOnHeldMicros": { "n": held_us.len(), "p50": percentile(&mut held_us, 0.5), "p99": percentile(&mut held_us, 0.99) },
+-        "crashedHolderTakeoverMs": takeover_ms,
+-        "processAliveFallbackMs": alive_ms,
+-        "bounds": {
+-            "protectedLiveHolder": "never stale (probe), whatever heartbeat, clock or process id say",
+-            "protectedDeadHolderSameHost": "at once (first open after the process ends)",
+-            "protectedOtherHostProbeFree": format!("heartbeat rule: {} s", lock::STALE_SECS),
+-            "unprotectedLock": format!("heartbeat older than {} s, or process known dead on this host", lock::STALE_SECS),
+-            "unprotectedFutureHeartbeat": format!("file unchanged for {} s", lock::STALE_SECS),
+-            "unreadableUnprotected": format!("{} s", lock::TAKEOVER_STALE.as_secs()),
+-            "unreadableUnknown": format!("{} s", lock::STALE_SECS),
+-            "protectedArbiter": "never removed while its holder lives",
+-            "unprotectedArbiter": format!("{} s (either clock direction)", lock::TAKEOVER_STALE.as_secs()),
+-            "processAliveTimeoutMs": tt_persist::host::LIVENESS_TIMEOUT.as_millis(),
+-        },
+-    });
+-    let out = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c14");
+-    std::fs::create_dir_all(&out).unwrap();
+-    std::fs::write(
+-        out.join(format!("lock-liveness-{}.json", std::env::consts::OS)),
+-        serde_json::to_vec_pretty(&report).unwrap(),
+-    )
+-    .unwrap();
+-    assert!(takeover_ms < 5_000.0, "{report}");
++        child.kill().unwrap();
++        let _ = child.wait();
++        let killed = Instant::now();
++        let (handle, took) = loop {
++            match lock::acquire(&project) {
++                Locked::Acquired { handle, took_over } => break (handle, took_over),
++                _ => {
++                    assert!(killed.elapsed() < Duration::from_secs(30), "the dead holder's lock was not taken over");
++                    std::thread::sleep(Duration::from_millis(1));
++                }
++            }
++        };
++        rec.sample("crashedHolderTakeoverMs", "ms", killed, ms(killed.elapsed()), None);
++        assert_eq!(took.unwrap().lock_id, child_info.lock_id);
++        drop(handle);
++        // process_alive (the fallback) is bounded.
++        let t = Instant::now();
++        let _ = tt_persist::host::process_alive(4_000_000_000);
++        rec.sample("processAliveFallbackMs", "ms", t, ms(t.elapsed()), None);
++        assert!(t.elapsed() <= tt_persist::host::LIVENESS_TIMEOUT + Duration::from_millis(500));
++    }
++    let report = rec.report(
++        "C1.4 obligation 2 (ADR-0014 §11.4)",
++        "a package's lock held by a child process (this test binary), killed five times",
++        json!({
++            "protection": if cfg!(windows) { "write handle shared read/write/delete; probe refuses to share writing" } else { "flock" },
++            "bounds": {
++                "protectedLiveHolder": "never stale (probe), whatever heartbeat, clock or process id say",
++                "protectedDeadHolderSameHost": "at once (first open after the process ends)",
++                "protectedOtherHostProbeFree": format!("heartbeat rule: {} s", lock::STALE_SECS),
++                "unprotectedLock": format!("heartbeat older than {} s, or process known dead on this host", lock::STALE_SECS),
++                "unprotectedFutureHeartbeat": format!("file unchanged for {} s", lock::STALE_SECS),
++                "unreadableUnprotected": format!("{} s", lock::TAKEOVER_STALE.as_secs()),
++                "unreadableUnknown": format!("{} s", lock::STALE_SECS),
++                "protectedArbiter": "never removed while its holder lives",
++                "unprotectedArbiter": format!("{} s (either clock direction)", lock::TAKEOVER_STALE.as_secs()),
++                "processAliveTimeoutMs": tt_persist::host::LIVENESS_TIMEOUT.as_millis(),
++            },
++        }),
++    );
++    c14_evidence::write("lock-liveness", &report);
++    assert!(rec.values("crashedHolderTakeoverMs").iter().all(|t| *t < 5_000.0), "{report}");
+     let _ = std::fs::remove_dir_all(&dir);
+ }
++
++/// C14-R1-08 (obligation 1): a save suspended before it writes, or after it wrote and before the session takes it,
++/// loses the project's lock to another session (its publication replaced, as on a file system that does not carry
++/// the holder's protection). The save fails and says why; the project stays modified, its saved revision and its
++/// on-disk identity (stamp) do not advance, it continues read-only, and its recovery data stays.
++#[test]
++fn ownership_lost_during_a_suspended_save_never_advances_the_save() {
++    let _g = serial();
++    for at in [Boundary::SaveBeforeWrite, Boundary::SaveWritten] {
++        let (dir, _) = project();
++        let pkg = dir.join("Owned.animpkg");
++        let h = tt_executor::ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
++            config: tt_executor::ExecutorConfig { budget: Duration::from_secs(60) },
++            persist: tt_executor::PersistOptions {
++                user_dirs: Some(tt_executor::UserDirs::under(&dir.join("user"))),
++                maintenance: tt_executor::Maintenance { tick: Duration::ZERO, ..tt_executor::Maintenance::default() },
++                migrations: tt_persist::migrate::CHAIN,
++            },
++        })
++        .unwrap();
++        let ok = |id: &str, params: Value| {
++            let env = h.invoke(tt_executor::Invocation::user(id, params));
++            assert!(env.is_ok(), "{id}: {env:?}");
++            env.result.unwrap_or(Value::Null)
++        };
++        ok("project.create", json!({ "name": "Owned", "path": pkg.to_string_lossy() }));
++        let scene = ok("doc.object.find", json!({ "type": "scene", "limit": 1 }))["items"][0]["id"].clone();
++        ok("doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 1 } } }));
++        // Recovery data exists before the save.
++        let events = h.subscribe();
++        h.run_maintenance(true).unwrap();
++        let deadline = Instant::now() + Duration::from_secs(30);
++        while !events.try_iter().any(|e| e.name == "project.autosaved") {
++            assert!(Instant::now() < deadline, "no autosave");
++            std::thread::sleep(Duration::from_millis(5));
++        }
++        let recovery = dir.join("user").join("Recovery");
++        let recovery_entries = || std::fs::read_dir(&recovery).map_or(0, Iterator::count);
++        assert!(recovery_entries() > 0);
++        let before = ok("doc.state.get", json!({}));
++        let bytes_before = std::fs::read(&pkg).unwrap();
++        let lockfile = lock::lock_path(&pkg);
++        let (reached, resume) = suspend(at, &lockfile);
++        let started = ok("project.save", json!({}));
++        reached.recv_timeout(Duration::from_secs(30)).unwrap();
++        let mut taken: Value = serde_json::from_slice(&std::fs::read(&lockfile).unwrap()).unwrap();
++        taken["lockId"] = json!("another-session");
++        std::fs::write(&lockfile, serde_json::to_vec(&taken).unwrap()).unwrap();
++        resume.send(()).unwrap();
++        let waited = ok("job.wait", json!({ "jobId": started["jobId"], "timeoutMs": 60_000 }));
++        lock::hooks::set(None);
++        let rec = waited.get("record").cloned().unwrap_or(waited);
++        assert_eq!(rec["state"], "failed", "{at:?}: {rec}");
++        assert_eq!(rec["error"]["code"], "project.saveFailed", "{at:?}: {rec}");
++        let reason = if at == Boundary::SaveBeforeWrite { "fileInUse" } else { "ownershipLost" };
++        assert_eq!(rec["error"]["details"]["reason"], reason, "{at:?}: {rec}");
++        let after = ok("doc.state.get", json!({}));
++        assert_eq!(after["dirty"], true, "{at:?}: the project stays modified");
++        assert_eq!(after["savedRev"], before["savedRev"], "{at:?}: the saved revision does not advance");
++        assert_eq!(after["readOnly"], true, "{at:?}: the session continues read-only (LOCK-02)");
++        assert!(recovery_entries() > 0, "{at:?}: the recovery data stays");
++        if at == Boundary::SaveBeforeWrite {
++            assert_eq!(std::fs::read(&pkg).unwrap(), bytes_before, "nothing written after the loss");
++        } else {
++            // The stamp did not advance: the save's own write is an external change to this session (forced watch).
++            h.run_maintenance(true).unwrap();
++            assert!(
++                events.try_iter().any(|e| e.name == "doc.package.changedOnDisk"),
++                "{at:?}: the stamp advanced to the file the session did not take"
++            );
++        }
++        drop(h);
++        let _ = std::fs::remove_dir_all(&dir);
++    }
++}
+diff --git a/crates/executor/tests/c14_measurements.rs b/crates/executor/tests/c14_measurements.rs
+index f30e943..2e9f0a6 100644
+--- a/crates/executor/tests/c14_measurements.rs
++++ b/crates/executor/tests/c14_measurements.rs
+@@ -1,10 +1,13 @@
+ //! C1.4 obligations 4 and 5: the folder fingerprint's cost at the 2 s watch interval and what callers wait for it,
+-//! the size+mtime blind spot (RO-02), and the autosave snapshot's latency during a long atomic batch, under queued
+-//! requests and with large preserved media. Results: `target/evidence/c14/{fingerprint,autosave}-<os>.json`.
++//! the size+mtime blind spot of the watch and its detection at save (RO-02, C14-R1-09), the content check's cost at
++//! save, and the autosave snapshot's latency during a long atomic batch, under queued requests and with large preserved
++//! media. Every observation is kept (C14-R1-07): `target/evidence/c14/{fingerprint,autosave}-<os>.json`, checked by
++//! `scripts/analyse-measurements.py`.
+ #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
+ #![allow(clippy::cast_precision_loss, clippy::cast_possible_truncation, clippy::cast_sign_loss, reason = "statistics")]
+ 
+ mod c13_support;
++mod c14_evidence;
+ mod common;
+ 
+ use std::path::Path;
+@@ -13,6 +16,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
+ use std::time::{Duration, Instant};
+ 
+ use c13_support::*;
++use c14_evidence::{Recorder, ms};
+ use common::*;
+ use serde_json::{Value, json};
+ use tt_executor::{ExecutorConfig, ExecutorHandle, ExecutorOptions, Maintenance, PersistOptions, UserDirs};
+@@ -36,32 +40,19 @@ fn spawn_m(dirs: &Path, m: Maintenance) -> ExecutorHandle {
+     .unwrap()
+ }
+ 
+-fn stats(v: &mut [f64]) -> Value {
+-    v.sort_by(f64::total_cmp);
+-    let at = |q: f64| v[((v.len() - 1) as f64 * q).round() as usize];
+-    json!({ "n": v.len(), "p50": at(0.5), "p90": at(0.9), "p99": at(0.99), "max": v[v.len() - 1] })
+-}
+-
+-fn ms(d: Duration) -> f64 {
+-    d.as_secs_f64() * 1e3
+-}
+-
+-fn write_evidence(name: &str, v: &Value) {
+-    let out = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c14");
+-    std::fs::create_dir_all(&out).unwrap();
+-    std::fs::write(out.join(format!("{name}-{}.json", std::env::consts::OS)), serde_json::to_vec_pretty(v).unwrap())
+-        .unwrap();
+-}
+-
+-/// Calls a cheap query every 2 ms until `stop`, returning each call's latency in ms.
+-fn probe_callers(h: &ExecutorHandle, stop: &Arc<AtomicBool>) -> std::thread::JoinHandle<Vec<f64>> {
++/// Calls a cheap query every 2 ms until `stop`, returning `(tMs, latencyMs)` on the recorder's origin.
++fn probe_callers(
++    h: &ExecutorHandle,
++    stop: &Arc<AtomicBool>,
++    origin: Instant,
++) -> std::thread::JoinHandle<Vec<(f64, f64)>> {
+     let (h, stop) = (h.clone(), stop.clone());
+     std::thread::spawn(move || {
+         let mut v = Vec::new();
+         while !stop.load(Ordering::Relaxed) {
+             let t = Instant::now();
+             let _ = run(&h, "doc.state.get", json!({}));
+-            v.push(ms(t.elapsed()));
++            v.push((ms(t.saturating_duration_since(origin)), ms(t.elapsed())));
+             std::thread::sleep(Duration::from_millis(2));
+         }
+         v
+@@ -85,31 +76,47 @@ fn folder_fingerprint_cost_at_the_watch_interval_and_the_size_mtime_blind_spot()
+     for i in 0..FILES {
+         std::fs::write(extras.join(format!("f{i:05}.bin")), format!("{i:016}")).unwrap();
+     }
++    let mut rec = Recorder::new();
+     // Direct cost: every maintenance pass runs the external-change check (watch interval zero).
+     let h = spawn_m(
+         &dir.join("direct"),
+         Maintenance { tick: Duration::ZERO, watch: Duration::ZERO, ..Maintenance::default() },
+     );
++    let opened = Instant::now();
+     job_ok(&h, "project.open", json!({ "path": path(&folder) }));
+-    let mut watch: Vec<f64> = (0..20).map(|_| ms(h.run_maintenance_timed(false).unwrap().watch.unwrap())).collect();
++    rec.sample("openMs", "ms", opened, ms(opened.elapsed()), Some("includes the content hash recorded at open"));
++    for _ in 0..20 {
++        let at = Instant::now();
++        let w = h.run_maintenance_timed(false).unwrap().watch.unwrap();
++        rec.sample("watchPassMs", "ms", at, ms(w), None);
++    }
++    // The content check of a save (C14-R1-09): a clean save verifies the content before it would replace anything.
++    for _ in 0..5 {
++        let at = Instant::now();
++        let started = ok(&h, "project.save", json!({}));
++        rec.sample("saveContentCheckMs", "ms", at, ms(at.elapsed()), Some("project.save handler incl. content check"));
++        wait(&h, &started);
++    }
+     // Callers waiting while passes run back to back (worst case).
+     let stop = Arc::new(AtomicBool::new(false));
+-    let callers = probe_callers(&h, &stop);
++    let callers = probe_callers(&h, &stop, rec.origin());
+     let t = Instant::now();
+     while t.elapsed() < Duration::from_secs(3) {
+         h.run_maintenance_timed(false).unwrap();
+     }
+     stop.store(true, Ordering::Relaxed);
+-    let mut back_to_back = callers.join().unwrap();
+-    // The size+mtime blind spot: same size, modification time restored.
++    rec.extend("callerLatencyBackToBackMs", "ms", callers.join().unwrap());
++    // The size+mtime blind spot of the watch: same size, modification time restored.
+     let events = h.subscribe();
+     let victim = extras.join("f00042.bin");
+     let mtime = std::fs::metadata(&victim).unwrap().modified().unwrap();
+     std::fs::write(&victim, "XXXXXXXXXXXXXXXX").unwrap();
+     std::fs::File::options().write(true).open(&victim).unwrap().set_modified(mtime).unwrap();
+     h.run_maintenance_timed(false).unwrap();
+-    let blind = !events.try_iter().any(|e| e.name == "doc.package.changedOnDisk");
+-    // A size-changing edit is detected (control).
++    let watch_blind = !events.try_iter().any(|e| e.name == "doc.package.changedOnDisk");
++    // …which the save sees (the content recorded at open).
++    let at_save = err(&h, "project.save", json!({})).code;
++    // A size-changing edit is detected by the watch (control).
+     std::fs::write(&victim, "changed size").unwrap();
+     h.run_maintenance_timed(false).unwrap();
+     let control = events.try_iter().any(|e| e.name == "doc.package.changedOnDisk");
+@@ -121,28 +128,26 @@ fn folder_fingerprint_cost_at_the_watch_interval_and_the_size_mtime_blind_spot()
+     );
+     job_ok(&h, "project.open", json!({ "path": path(&folder), "readOnly": true }));
+     let stop = Arc::new(AtomicBool::new(false));
+-    let callers = probe_callers(&h, &stop);
++    let callers = probe_callers(&h, &stop, rec.origin());
+     std::thread::sleep(Duration::from_secs(10));
+     stop.store(true, Ordering::Relaxed);
+-    let mut scheduled = callers.join().unwrap();
++    rec.extend("callerLatencyScheduled2sWatchMs", "ms", callers.join().unwrap());
+     drop(h);
+-    let report = json!({
+-        "obligation": "C1.4 obligation 4 (RO-02 folder fingerprint)",
+-        "platform": std::env::consts::OS,
+-        "fixture": format!("folder-form project + {FILES} files of 16 bytes under extras/"),
+-        "watchPassMs": stats(&mut watch),
+-        "callerLatencyMs": {
+-            "backToBackPasses": stats(&mut back_to_back),
+-            "scheduled2sWatch10s": stats(&mut scheduled),
+-        },
+-        "sizeMtimePreservingEditDetected": !blind,
+-        "sizeChangingEditDetected": control,
+-        "note": "a same-size edit that restores the modification time is not detected (walk compares name, size, mtime): \
+-                 recorded as SI-046 for the spec owner",
+-    });
+-    write_evidence("fingerprint", &report);
++    let report = rec.report(
++        "C1.4 obligation 4 (RO-02 folder fingerprint) and C14-R1-09 (content check at save)",
++        &format!("folder-form project + {FILES} files of 16 bytes under extras/"),
++        json!({
++            "sizeMtimePreservingEditSeenByWatch": !watch_blind,
++            "sizeMtimePreservingEditAtSave": at_save,
++            "sizeChangingEditSeenByWatch": control,
++            "note": "the 2 s watch compares names, sizes and modification times; every save verifies content hashes \
++                     recorded at open or the last save (SI-047 interim ruling)",
++        }),
++    );
++    c14_evidence::write("fingerprint", &report);
+     assert!(control, "{report}");
+-    assert!(blind, "the blind spot is documented as SI-046; if it is closed, update the handoff: {report}");
++    assert_eq!(at_save, "project.changedOnDisk", "{report}");
++    assert!(watch_blind, "the watch tick stays size+mtime by ruling; if that changes, update SI-047: {report}");
+     let _ = std::fs::remove_dir_all(&dir);
+ }
+ 
+@@ -185,6 +190,7 @@ fn autosave_snapshot_latency_during_batches_queued_requests_and_large_media() {
+     job_ok(&h, "project.open", json!({ "path": path(&pkg) }));
+     let scene = first(&h, "scene");
+     let events = h.subscribe();
++    // Waits for the copy a snapshot started (only when one was taken).
+     let wait_autosaved = || {
+         let deadline = Instant::now() + Duration::from_secs(120);
+         loop {
+@@ -195,12 +201,14 @@ fn autosave_snapshot_latency_during_batches_queued_requests_and_large_media() {
+             std::thread::sleep(Duration::from_millis(5));
+         }
+     };
++    let mut rec = Recorder::new();
+     // Typical snapshot (AUTO-02 budget: <= 50 ms typical).
+-    let mut snapshot = Vec::new();
+     for i in 0..15 {
+         ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "i": i } } }));
++        let at = Instant::now();
+         let t = h.run_maintenance_timed(true).unwrap();
+-        snapshot.push(ms(t.autosave_snapshot.unwrap()));
++        let snap = t.autosave_snapshot.expect("a dirty revision is snapshotted");
++        rec.sample("snapshotMs", "ms", at, ms(snap), None);
+         wait_autosaved();
+     }
+     // During a long atomic batch: the snapshot waits for the batch (one thread); the copy holds the committed revision.
+@@ -216,10 +224,14 @@ fn autosave_snapshot_latency_during_batches_queued_requests_and_large_media() {
+     std::thread::sleep(Duration::from_millis(20));
+     let asked = Instant::now();
+     let during = h.run_maintenance_timed(true).unwrap();
+-    let wait_behind_batch = asked.elapsed();
++    rec.sample("waitBehindLongBatchMs", "ms", asked, ms(asked.elapsed()), Some("1000-step atomic batch ahead"));
+     let (env, batch_took) = long.join().unwrap();
+     assert!(env.is_ok(), "{env:?}");
+-    wait_autosaved();
++    rec.sample("longBatchMs", "ms", batch_started, ms(batch_took), None);
++    if let Some(s) = during.autosave_snapshot {
++        rec.sample("snapshotAfterLongBatchMs", "ms", asked, ms(s), None);
++        wait_autosaved();
++    }
+     let committed = env.document_rev.unwrap();
+     let recovery = dir.join("user").join("Recovery");
+     let mut revs = Vec::new();
+@@ -251,41 +263,40 @@ fn autosave_snapshot_latency_during_batches_queued_requests_and_large_media() {
+             })
+         })
+         .collect();
+-    let mut queued_snapshot = Vec::new();
+-    let mut queued_delay = Vec::new();
+     for _ in 0..10 {
+         let asked = Instant::now();
+         let t = h.run_maintenance_timed(true).unwrap();
+         let total = asked.elapsed();
+-        if let Some(s) = t.autosave_snapshot {
+-            queued_snapshot.push(ms(s));
+-        }
+         let held =
+             t.heartbeat.unwrap_or_default() + t.watch.unwrap_or_default() + t.autosave_snapshot.unwrap_or_default();
+-        queued_delay.push(ms(total.saturating_sub(held)));
+-        wait_autosaved();
++        rec.sample("queuedSchedulingDelayMs", "ms", asked, ms(total.saturating_sub(held)), None);
++        // A snapshot is skipped while the previous copy is still being written (no new copy to wait for).
++        if let Some(s) = t.autosave_snapshot {
++            rec.sample("queuedSnapshotMs", "ms", asked, ms(s), None);
++            wait_autosaved();
++        }
+     }
+     stop.store(true, Ordering::Relaxed);
+     for l in load {
+         l.join().unwrap();
+     }
+-    let report = json!({
+-        "obligation": "C1.4 obligation 5 (AUTO-02 autosave latency)",
+-        "platform": std::env::consts::OS,
+-        "fixture": format!("sample_document(901) ({objects} entries, embedded media 60 KiB each) + a 64 MiB preserved entry (extras/media.bin)"),
+-        "snapshotMs": stats(&mut snapshot),
+-        "duringLongBatch": {
+-            "batchSteps": 1000, "batchMs": ms(batch_took), "maintenanceWaitedMs": ms(wait_behind_batch),
+-            "snapshotMs": during.autosave_snapshot.map(ms), "committedRev": committed, "recoveryRevs": revs,
+-        },
+-        "underQueuedRequests": { "threads": 8, "snapshotMs": stats(&mut queued_snapshot), "schedulingDelayMs": stats(&mut queued_delay) },
+-        "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; \
+-                                   an atomic batch is one request, so the autosave waits for the whole batch",
+-    });
+-    write_evidence("autosave", &report);
++    let report = rec.report(
++        "C1.4 obligation 5 (AUTO-02 autosave latency)",
++        &format!(
++            "sample_document(901) ({objects} entries, embedded media 60 KiB each) + a 64 MiB preserved entry \
++             (extras/media.bin)"
++        ),
++        json!({
++            "longBatchSteps": 1000, "committedRev": committed, "recoveryRevs": revs, "queueThreads": 8,
++            "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; \
++                                       an atomic batch is one request, so the autosave waits for the whole batch \
++                                       (each request is bounded by the executor's never-block budget)",
++        }),
++    );
++    c14_evidence::write("autosave", &report);
+     assert!(revs.iter().all(|r| *r <= committed), "recovery holds only committed revisions: {report}");
+     assert!(revs.contains(&committed), "{report}");
+-    let typical = report["snapshotMs"]["p50"].as_f64().unwrap();
++    let typical = report["series"]["snapshotMs"]["summary"]["p50"].as_f64().unwrap();
+     assert!(typical <= 50.0, "AUTO-02: typical snapshot {typical} ms: {report}");
+     drop(h);
+     let _ = std::fs::remove_dir_all(&dir);
+diff --git a/crates/executor/tests/c14_obligations.rs b/crates/executor/tests/c14_obligations.rs
+index 319cee8..848b972 100644
+--- a/crates/executor/tests/c14_obligations.rs
++++ b/crates/executor/tests/c14_obligations.rs
+@@ -312,3 +312,90 @@ fn session_cache_is_bounded_kept_while_needed_and_released_on_close_and_stop() {
+     assert!(!cache.exists(), "the executor stop removes its cache: {report}");
+     let _ = std::fs::remove_dir_all(&dir);
+ }
++
++/// Rewrites one byte of a file in place, keeping its size and modification time (an edit RO-02's watch cannot see).
++fn flip_keeping_size_and_mtime(file: &Path) {
++    let mtime = std::fs::metadata(file).unwrap().modified().unwrap();
++    let mut bytes = std::fs::read(file).unwrap();
++    let last = bytes.len() - 1;
++    bytes[last] ^= 1;
++    std::fs::write(file, &bytes).unwrap();
++    std::fs::File::options().write(true).open(file).unwrap().set_modified(mtime).unwrap();
++}
++
++#[test]
++fn every_save_path_verifies_the_content_recorded_at_open_or_last_save() {
++    // C14-R1-09 (SI-047 interim ruling): size + mtime for the watch tick, content hashes before a save replaces.
++    for folder in [false, true] {
++        let dir = tmp();
++        let target = if folder { dir.join("Same") } else { dir.join("Same.animpkg") };
++        let h = spawn(&dir.join("user"));
++        let create_path =
++            if folder { format!("{}{}", path(&target), std::path::MAIN_SEPARATOR) } else { path(&target) };
++        ok(&h, "project.create", json!({ "name": "Same", "path": create_path }));
++        let scene = first(&h, "scene");
++        ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 1 } } }));
++        job_ok(&h, "project.save", json!({}));
++        let victim = if folder { target.join("project.json") } else { target.clone() };
++        flip_keeping_size_and_mtime(&victim);
++        h.run_maintenance(false).unwrap();
++        let edited = std::fs::read(&victim).unwrap();
++        // The user: a clean save, a dirty save, and close-with-save are refused.
++        assert_eq!(err(&h, "project.save", json!({})).code, "project.changedOnDisk", "folder {folder}: clean save");
++        ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "n": 2 } } }));
++        assert_eq!(err(&h, "project.save", json!({})).code, "project.changedOnDisk", "folder {folder}: dirty save");
++        let closing = run(&h, "project.close", json!({ "onUnsaved": "save" }));
++        assert_eq!(closing.error.unwrap().code, "project.changedOnDisk", "folder {folder}: close with save");
++        assert_eq!(std::fs::read(&victim).unwrap(), edited, "folder {folder}: nothing replaced the external edit");
++        // An agent: a bound confirmation (SI-045), and the token keeps mine.
++        let a = agent_session(&h, vec![dir.clone()], Policy::Assist);
++        let t = token(&call(&h, &a, "project.save", json!({}), None));
++        assert_eq!(finish(&h, &call(&h, &a, "project.save", json!({}), Some(&t)))["state"], "succeeded");
++        assert_ne!(std::fs::read(&victim).unwrap(), edited, "folder {folder}: keep mine overwrote");
++        // After the save its content is the recorded one: the next save needs nothing.
++        assert!(call(&h, &a, "project.save", json!({}), None).is_ok());
++        drop(h);
++        let _ = std::fs::remove_dir_all(&dir);
++    }
++}
++
++#[test]
++fn an_activity_export_is_written_only_when_its_call_commits() {
++    // C14-R1-03: creation and replacement are staged effects; a later failing step keeps the old file / no file.
++    let dir = tmp();
++    let h = spawn(&dir.join("user"));
++    ok(&h, "project.create", json!({ "name": "Staged", "path": path(&dir.join("Staged.animpkg")) }));
++    let existing = dir.join("existing.jsonl");
++    std::fs::write(&existing, b"old").unwrap();
++    let fresh = dir.join("fresh.jsonl");
++    for (target, extra) in [(&existing, json!({ "onExists": "overwrite" })), (&fresh, json!({}))] {
++        let mut params = json!({ "path": path(target) });
++        params.as_object_mut().unwrap().extend(extra.as_object().unwrap().clone());
++        let failed = batch(
++            &h,
++            json!({ "label": "Export then fail", "atomic": true, "steps": [
++                { "id": "agent.activity.export", "params": params },
++                { "id": "doc.object.patch", "params": { "targets": ["el_missing"], "props": {} } },
++            ] }),
++        );
++        assert!(failed.error.is_some(), "{failed:?}");
++        if target == &existing {
++            assert_eq!(std::fs::read(&existing).unwrap(), b"old", "a failed batch kept the old file");
++        } else {
++            assert!(!fresh.exists(), "a failed batch created no file");
++        }
++        // The same call alone commits and writes.
++        let done = run(&h, "agent.activity.export", params);
++        assert!(done.is_ok(), "{done:?}");
++        assert!(target.exists() && std::fs::read(target).unwrap() != b"old");
++    }
++    // No staged temporaries are left beside the targets.
++    let leftovers: Vec<_> = std::fs::read_dir(&dir)
++        .unwrap()
++        .flatten()
++        .filter(|e| e.file_name().to_string_lossy().ends_with(".tmp"))
++        .collect();
++    assert!(leftovers.is_empty(), "{leftovers:?}");
++    drop(h);
++    let _ = std::fs::remove_dir_all(&dir);
++}
+diff --git a/crates/mcp/tests/audit.rs b/crates/mcp/tests/audit.rs
+index c3f56b1..1224140 100644
+--- a/crates/mcp/tests/audit.rs
++++ b/crates/mcp/tests/audit.rs
+@@ -78,7 +78,7 @@ fn one_entry_per_call_and_reproducible_from_the_committed_fixture() {
+         ("describe_command", json!({ "id": "doc.diff" })),
+         ("list_commands", json!({ "namespace": "edit" })),
+         ("get_docs", json!({ "topic": "errors" })),
+-        ("pointer", json!({})),
++        ("pointer", json!({ "view": "camera", "events": [{ "type": "down", "x": 1, "y": 1 }] })),
+         ("checkpoint", json!({ "action": "create", "name": "audit" })),
+         (
+             "run_command",
+diff --git a/crates/mcp/tests/fixtures/audit-golden.jsonl b/crates/mcp/tests/fixtures/audit-golden.jsonl
+index 1822419..dd57de8 100644
+--- a/crates/mcp/tests/fixtures/audit-golden.jsonl
++++ b/crates/mcp/tests/fixtures/audit-golden.jsonl
+@@ -2,7 +2,7 @@
+ {"seq":2,"documentRev":1,"changedCount":0,"client":"c14-test","tool":"get_state","commandId":"app.state.get","params":{},"status":"ok","undoStepId":null}
+ {"seq":3,"documentRev":1,"changedCount":0,"client":"c14-test","tool":"get_object","commandId":"doc.object.get","params":{"ref":"<id1>"},"status":"ok","undoStepId":null}
+ {"seq":4,"documentRev":2,"changedCount":1,"client":"c14-test","tool":"set_properties","commandId":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"audit":1}}},"status":"ok","undoStepId":"u-1"}
+-{"seq":5,"documentRev":2,"changedCount":1,"client":"c14-test","tool":"set_properties","commandId":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"audit":2}}},"status":"ok","undoStepId":null}
++{"seq":5,"documentRev":2,"dryRun":true,"client":"c14-test","tool":"set_properties","commandId":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"audit":2}}},"status":"ok","undoStepId":null,"changedCount":1}
+ {"seq":6,"documentRev":3,"changedCount":1,"client":"c14-test","tool":"batch","commandId":"batch","params":{"label":"Pair","steps":[{"id":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"b":1}}},"as":null},{"id":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"b":2}}},"as":null}],"atomic":true,"stopOnError":true,"dryRun":false},"status":"ok","undoStepId":"u-2"}
+ {"seq":7,"documentRev":4,"changedCount":1,"client":"c14-test","tool":"undo","commandId":"edit.undo","params":{},"status":"ok","undoStepId":null}
+ {"seq":8,"documentRev":5,"changedCount":1,"client":"c14-test","tool":"redo","commandId":"edit.redo","params":{},"status":"ok","undoStepId":null}
+@@ -11,6 +11,6 @@
+ {"seq":11,"documentRev":null,"changedCount":0,"client":"c14-test","tool":"describe_command","commandId":"describe_command","params":{"id":"doc.diff"},"status":"ok","undoStepId":null}
+ {"seq":12,"documentRev":null,"changedCount":0,"client":"c14-test","tool":"list_commands","commandId":"list_commands","params":{"namespace":"edit"},"status":"ok","undoStepId":null}
+ {"seq":13,"documentRev":null,"changedCount":0,"client":"c14-test","tool":"get_docs","commandId":"get_docs","params":{"topic":"errors"},"status":"ok","undoStepId":null}
+-{"seq":14,"documentRev":null,"changedCount":0,"client":"c14-test","tool":"pointer","commandId":"pointer","params":{},"status":"error","errorCode":"command.notImplemented","undoStepId":null}
++{"seq":14,"documentRev":null,"changedCount":0,"client":"c14-test","tool":"pointer","commandId":"pointer","params":{"view":"camera","events":[{"type":"down","x":1,"y":1}]},"status":"error","errorCode":"command.notImplemented","undoStepId":null}
+ {"seq":15,"documentRev":5,"changedCount":0,"client":"c14-test","tool":"checkpoint","commandId":"checkpoint.create","params":{"name":"audit"},"status":"ok","undoStepId":null}
+ {"seq":16,"documentRev":6,"changedCount":1,"client":"c14-test","tool":"run_command","commandId":"project.saveAs","params":{"path":"<dir>/Audit.animpkg","onExists":"overwrite"},"status":"ok","undoStepId":null}
+diff --git a/crates/mcp/tests/never_block.rs b/crates/mcp/tests/never_block.rs
+index 2e83ef6..16c2de5 100644
+--- a/crates/mcp/tests/never_block.rs
++++ b/crates/mcp/tests/never_block.rs
+@@ -6,11 +6,14 @@
+ #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
+ #![allow(clippy::cast_precision_loss, clippy::cast_possible_truncation, clippy::cast_sign_loss, reason = "statistics")]
+ 
++#[path = "../../executor/tests/c14_evidence/mod.rs"]
++mod c14_evidence;
+ mod support;
+ 
+ use std::collections::BTreeMap;
+ use std::time::{Duration, Instant};
+ 
++use c14_evidence::{Recorder, ms};
+ use serde_json::json;
+ use support::*;
+ 
+@@ -24,7 +27,7 @@ fn every_command_answers_through_mcp_within_the_watchdog() {
+     let reg = tt_executor::registry().unwrap();
+     let mut by_status: BTreeMap<String, u64> = BTreeMap::new();
+     let mut by_code: BTreeMap<String, u64> = BTreeMap::new();
+-    let mut latencies = Vec::new();
++    let mut rec = Recorder::new();
+     let mut jobs = Vec::new();
+     let mut ids: Vec<&str> =
+         reg.entries().filter(|e| e.spec.kind != tt_registry::Kind::Event).map(|e| e.id()).collect();
+@@ -41,7 +44,7 @@ fn every_command_answers_through_mcp_within_the_watchdog() {
+         let started = Instant::now();
+         let req = c.send("tools/call", json!({ "name": "run_command", "arguments": { "id": id, "params": params } }));
+         let r = c.wait(req, WATCHDOG).unwrap_or_else(|| panic!("`{id}` was not answered within {WATCHDOG:?}"));
+-        latencies.push(started.elapsed().as_secs_f64() * 1e3);
++        rec.sample("callLatencyMs", "ms", started, ms(started.elapsed()), Some(id));
+         let env = &r["result"]["structuredContent"];
+         let status = env["status"].as_str().unwrap_or("protocol-error").to_owned();
+         *by_status.entry(status).or_default() += 1;
+@@ -53,10 +56,11 @@ fn every_command_answers_through_mcp_within_the_watchdog() {
+         }
+     }
+     // Eventual job state, measured apart from call responsiveness.
+-    let jobs_started = Instant::now();
+     let mut job_states: BTreeMap<String, u64> = BTreeMap::new();
+     for j in &jobs {
++        let waited = Instant::now();
+         let r = c.call("job_wait", json!({ "jobId": j, "timeoutMs": 30000 }));
++        rec.sample("jobWaitMs", "ms", waited, ms(waited.elapsed()), Some(j));
+         let state = r["structuredContent"]["result"]["record"]["state"]
+             .as_str()
+             .or_else(|| r["structuredContent"]["result"]["state"].as_str())
+@@ -64,26 +68,15 @@ fn every_command_answers_through_mcp_within_the_watchdog() {
+             .to_owned();
+         *job_states.entry(state).or_default() += 1;
+     }
+-    let jobs_ms = jobs_started.elapsed().as_secs_f64() * 1e3;
+-    latencies.sort_by(f64::total_cmp);
+-    let at = |q: f64| latencies[((latencies.len() - 1) as f64 * q).round() as usize];
+-    let report = json!({
+-        "suite": "11 §14.5 never-block through MCP (stdio protocol, run_command, first declared example)",
+-        "platform": std::env::consts::OS,
+-        "commands": ids.len(),
+-        "byStatus": by_status,
+-        "byErrorCode": by_code,
+-        "callLatencyMs": { "p50": at(0.5), "p99": at(0.99), "max": latencies[latencies.len() - 1] },
+-        "watchdogMs": WATCHDOG.as_millis(),
+-        "jobs": { "started": jobs.len(), "finalStates": job_states, "waitedMs": jobs_ms },
+-    });
+-    let out = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c14");
+-    std::fs::create_dir_all(&out).unwrap();
+-    std::fs::write(
+-        out.join(format!("never-block-mcp-{}.json", std::env::consts::OS)),
+-        serde_json::to_vec_pretty(&report).unwrap(),
+-    )
+-    .unwrap();
++    let report = rec.report(
++        "11 §14.6 never-block through MCP (stdio protocol, run_command, first declared example)",
++        "a new package project; every registered non-event command once, in id order",
++        json!({
++            "commands": ids.len(), "byStatus": by_status, "byErrorCode": by_code,
++            "watchdogMs": WATCHDOG.as_millis(), "jobs": { "started": jobs.len(), "finalStates": job_states },
++        }),
++    );
++    c14_evidence::write("never-block-mcp", &report);
+     assert!(!by_status.contains_key("protocol-error"), "{report}");
+     assert_eq!(by_status.values().sum::<u64>(), ids.len() as u64);
+     c.close().unwrap();
+@@ -108,29 +101,23 @@ fn queued_calls_stay_responsive_while_jobs_run() {
+         };
+         sent.push((id, Instant::now()));
+     }
+-    let mut answered = Vec::new();
++    let mut rec = Recorder::new();
+     let mut revs = Vec::new();
+     for (id, at) in &sent {
+         let r = c.wait(*id, WATCHDOG).unwrap();
+-        answered.push(at.elapsed().as_secs_f64() * 1e3);
++        rec.sample("perCallMs", "ms", *at, ms(at.elapsed()), None);
+         if let Some(rev) = r["result"]["structuredContent"]["documentRev"].as_u64() {
+             revs.push(rev);
+         }
+     }
+     let all_answered_ms = started.elapsed().as_secs_f64() * 1e3;
+     assert!(revs.windows(2).all(|w| w[0] <= w[1]), "pipelined calls apply in the order sent: {revs:?}");
+-    answered.sort_by(f64::total_cmp);
+-    let report = json!({
+-        "queued": 50, "allAnsweredMs": all_answered_ms,
+-        "perCallMs": { "p50": answered[answered.len() / 2], "max": answered[answered.len() - 1] },
+-    });
+-    let out = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/evidence/c14");
+-    std::fs::create_dir_all(&out).unwrap();
+-    std::fs::write(
+-        out.join(format!("queued-calls-{}.json", std::env::consts::OS)),
+-        serde_json::to_vec_pretty(&report).unwrap(),
+-    )
+-    .unwrap();
++    let report = rec.report(
++        "C1.4 obligation 7 (queued-call responsiveness, apart from job state)",
++        "50 pipelined calls, half of them starting export jobs",
++        json!({ "queued": 50, "allAnsweredMs": all_answered_ms }),
++    );
++    c14_evidence::write("queued-calls", &report);
+     c.close().unwrap();
+     let _ = std::fs::remove_dir_all(&dir);
+ }
+diff --git a/crates/mcp/tests/protocol.rs b/crates/mcp/tests/protocol.rs
+index 66f7d37..8131d5c 100644
+--- a/crates/mcp/tests/protocol.rs
++++ b/crates/mcp/tests/protocol.rs
+@@ -110,7 +110,7 @@ fn tools_list_schemas_and_structured_content_validate() {
+         ("list_commands", json!({ "namespace": "doc" })),
+         ("describe_command", json!({ "id": "doc.object.patch" })),
+         ("get_docs", json!({ "topic": "errors" })),
+-        ("pointer", json!({ "action": "click", "view": "camera", "x": 1, "y": 1 })),
++        ("pointer", json!({ "view": "camera", "events": [{ "type": "down", "x": 1, "y": 1 }] })),
+         ("run_command", json!({ "id": "no.such.command" })),
+     ] {
+         let r = c.call(tool, args);
+@@ -120,7 +120,7 @@ fn tools_list_schemas_and_structured_content_validate() {
+         assert_eq!(r["isError"], sc["status"] == "error", "{tool}: {r}");
+         assert!(r["content"][0]["text"].as_str().unwrap().starts_with(tool), "{tool}: {r}");
+     }
+-    let pointer = c.call("pointer", json!({}));
++    let pointer = c.call("pointer", json!({ "view": "camera", "events": [{ "type": "down", "x": 1, "y": 1 }] }));
+     assert_eq!(pointer["structuredContent"]["error"]["code"], "command.notImplemented");
+     assert_eq!(pointer["structuredContent"]["error"]["details"]["milestone"], "M2 C2.3");
+     let state = c.call("get_state", json!({ "include": ["agent", "project"] }))["structuredContent"]["result"].clone();
+diff --git a/scripts/mcp-conformance.py b/scripts/mcp-conformance.py
+index 90909da..d7c2f2f 100644
+--- a/scripts/mcp-conformance.py
++++ b/scripts/mcp-conformance.py
+@@ -144,7 +144,7 @@ async def run(binary, workdir):
+             check("job_wait ok", sc(r).get("status") == "ok", sc(r))
+             check("notifications/progress", bool(progress), progress)
+ 
+-            r = await s.call_tool("pointer", {})
++            r = await s.call_tool("pointer", {"view": "camera", "events": [{"type": "down", "x": 1, "y": 1}]})
+             check("pointer answers notImplemented with its milestone", sc(r).get("error", {}).get("details", {}).get("milestone") == "M2 C2.3", sc(r))
+ 
+ 

@@ -5,6 +5,6 @@ $ cargo clippy --workspace --all-targets --locked -- -D warnings
     Checking tt-mcp v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\mcp)
     Checking tt-desktop v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\desktop\src-tauri)
     Checking tt-headless v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\bins\headless)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.33s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.33s
 
 [exit 0]
