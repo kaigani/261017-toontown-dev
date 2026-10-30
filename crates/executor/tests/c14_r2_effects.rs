@@ -8,6 +8,26 @@ use common::*;
 use serde_json::json;
 
 #[test]
+fn json_export_is_not_published_by_a_failed_atomic_batch() {
+    let dir = tmp();
+    let h = spawn(&dir.join("user"));
+    ok(&h, "project.create", json!({"name": "Export"}));
+    let target = dir.join("bundle.json");
+    let failed = batch(
+        &h,
+        json!({"label": "export rollback", "steps": [
+            {"id": "doc.export.json", "params": {"scope": "project", "path": target.to_string_lossy()}},
+            {"id": "unknown.command", "params": {}}
+        ]}),
+    );
+    assert!(failed.error.is_some(), "{failed:?}");
+    let published = target.exists();
+    drop(h);
+    let _ = std::fs::remove_dir_all(&dir);
+    assert!(!published, "failed atomic batch published doc.export.json");
+}
+
+#[test]
 fn discovery_token_file_does_not_change_when_atomic_batch_rolls_back() {
     let dir = tmp();
     let h = spawn(&dir.join("user"));

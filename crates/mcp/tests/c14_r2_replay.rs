@@ -2,7 +2,7 @@
 #![allow(clippy::unwrap_used, clippy::panic, missing_docs, reason = "review regression")]
 mod support;
 
-use serde_json::{Value, json};
+use serde_json::json;
 use support::*;
 use tt_executor::Invocation;
 
