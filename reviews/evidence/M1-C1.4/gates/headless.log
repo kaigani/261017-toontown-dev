@@ -4,7 +4,7 @@ $ cargo build --release --locked -p tt-headless
    Compiling tt-engine v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\engine)
    Compiling tt-mcp v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\mcp)
    Compiling tt-headless v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\bins\headless)
-    Finished `release` profile [optimized + debuginfo] target(s) in 27.15s
+    Finished `release` profile [optimized + debuginfo] target(s) in 26.89s
 
 [exit 0]
 $ "C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\target\release\toontown-headless.exe" --version
