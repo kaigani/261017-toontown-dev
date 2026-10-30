@@ -1,0 +1,7 @@
+$ "C:\Python313\python.exe" scripts/gen-command-declarations.py
+662 declarations -> crates\registry\src\declared.rs, crates\registry\src\declared.json
+
+[exit 0]
+$ git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md
+
+[exit 0]

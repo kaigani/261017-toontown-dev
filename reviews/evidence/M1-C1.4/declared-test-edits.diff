@@ -369,44 +369,23 @@ index b79aa1c..6645ab1 100644
      // C1.3 implemented every command it owns.
      assert_eq!(registry().get("doc.validate").unwrap().status(), Status::Implemented);
      let c13: Vec<&str> = registry()
-diff --git a/crates/executor/tests/c13_projects.rs b/crates/executor/tests/c13_projects.rs
-index 0247a4a..fc215dc 100644
---- a/crates/executor/tests/c13_projects.rs
-+++ b/crates/executor/tests/c13_projects.rs
-@@ -451,7 +451,17 @@ fn a_session_whose_lock_was_taken_over_cannot_save_over_the_new_owner() {
-     let lock = tt_persist::lock::lock_path(&target);
-     let mut info: Value = serde_json::from_slice(&std::fs::read(&lock).unwrap()).unwrap();
-     info["lockId"] = json!("someone-else");
--    std::fs::write(&lock, serde_json::to_vec(&info).unwrap()).unwrap();
-+    // C1.4 (ADR-0014 §11.4): on Windows the live holder's handle refuses every other writer, so a takeover of a live
-+    // session cannot happen at all; with advisory locks (flock) the file can still be overwritten and the save must
-+    // refuse.
-+    if std::fs::write(&lock, serde_json::to_vec(&info).unwrap()).is_err() {
-+        if !cfg!(windows) {
-+            panic!("only Windows share modes refuse the write");
-+        }
-+        assert_eq!(tt_persist::lock::probe(&lock), Some(true));
-+        let _ = std::fs::remove_dir_all(&dir);
-+        return;
-+    }
-     let before = std::fs::read(&target).unwrap();
-     for (id, params) in [("project.save", json!({})), ("project.close", json!({ "onUnsaved": "save" }))] {
-         let env = run(&a, id, params);
 diff --git a/crates/persist/src/lock.rs b/crates/persist/src/lock.rs
-index 619474d..1cddf27 100644
+index 619474d..6afda84 100644
 --- a/crates/persist/src/lock.rs
 +++ b/crates/persist/src/lock.rs
-@@ -8,14 +8,26 @@
+@@ -8,14 +8,28 @@
  //! other. Every change of a lock file (publishing, taking over, heartbeat, release) happens under the lock's arbiter
  //! `<lock>.takeover`, created exclusively; an opener reads its publication back before it reports ownership, and a
  //! heartbeat fails closed (ADR-0014 §11; C13-R1-02, C13-R3-01).
 +//!
 +//! **Operating-system ownership (C1.4 obligations 1–2, ADR-0014 §11.4).** The holder keeps its lock file, and every
-+//! arbiter keeps its arbitration file, open for its whole life with OS-enforced protection: on Windows a handle whose
-+//! share mode lets others read but not write, rename or delete; elsewhere an exclusive `flock`. The kernel releases it
-+//! when the process ends, however it ends. A [`probe`] therefore proves a live holder without trusting process ids
-+//! (reuse), clocks (jumps, future modification times) or heartbeats (a paused holder): a protected lock whose probe
-+//! answers "held" is never stale, and on Windows cannot even be removed. A protected lock on this host whose probe
++//! arbiter keeps its arbitration file, open for its whole life: on Windows a handle with write access (shared for
++//! reading, writing and deletion, so other sessions can still read the lock, and a foreign replacement is still caught
++//! by the token checks), elsewhere an exclusive `flock`. The kernel releases it when the process ends, however it
++//! ends. A [`probe`] (Windows: an open that refuses to share writing, which fails while any write handle is open;
++//! elsewhere: a shared `flock`) therefore proves a live holder without trusting process ids (reuse), clocks (jumps,
++//! future modification times) or heartbeats (a paused holder): a protected lock whose probe answers "held" is never
++//! stale and never removed by a taker. A protected lock on this host whose probe
 +//! answers "free" was left by a dead process and is taken over at once. Heartbeat age and process ids remain the
 +//! rule only where the probe cannot answer (another host on a file system that does not carry locks, or a lock written
 +//! without protection). The lock file is written in place through the protected handle (a rename would replace the
@@ -426,7 +405,7 @@ index 619474d..1cddf27 100644
  use tt_model::ModelError;
  
  use crate::{codes, fsx, host, time};
-@@ -24,6 +36,9 @@ use crate::{codes, fsx, host, time};
+@@ -24,6 +38,9 @@ use crate::{codes, fsx, host, time};
  pub const HEARTBEAT_SECS: u64 = 60;
  /// Staleness (LOCK-02, D13).
  pub const STALE_SECS: u64 = 300;
@@ -436,7 +415,7 @@ index 619474d..1cddf27 100644
  
  /// The content of a lock file.
  #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-@@ -60,7 +75,8 @@ impl LockInfo {
+@@ -60,7 +77,8 @@ impl LockInfo {
          }
      }
  
@@ -446,7 +425,7 @@ index 619474d..1cddf27 100644
      #[must_use]
      pub fn stale(&self) -> bool {
          let age = time::ms_from_iso(&self.heartbeat_at).map_or(i64::MAX, |t| time::now_ms().saturating_sub(t));
-@@ -70,6 +86,129 @@ impl LockInfo {
+@@ -70,6 +88,132 @@ impl LockInfo {
          }
          self.host == host::host() && host::process_alive(self.process_id) == Some(false)
      }
@@ -523,8 +502,9 @@ index 619474d..1cddf27 100644
 +    #[cfg(windows)]
 +    {
 +        use std::os::windows::fs::OpenOptionsExt;
-+        // FILE_SHARE_READ: others may read; nobody may write, rename or delete while this handle is open.
-+        o.share_mode(0x0000_0001);
++        // FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE: the open write handle is the protection (see
++        // `probe`); others may still read, replace or remove the file, which the token checks catch.
++        o.share_mode(0x0000_0007);
 +    }
 +    let f = o.open(path)?;
 +    #[cfg(not(windows))]
@@ -544,7 +524,9 @@ index 619474d..1cddf27 100644
 +pub fn probe(path: &Path) -> Option<bool> {
 +    #[cfg(windows)]
 +    {
-+        match OpenOptions::new().write(true).open(path) {
++        use std::os::windows::fs::OpenOptionsExt;
++        // Read access, sharing reading and deletion but not writing: refused while any handle can write the file.
++        match OpenOptions::new().read(true).share_mode(0x0000_0001 | 0x0000_0004).open(path) {
 +            Ok(_) => Some(false),
 +            // ERROR_SHARING_VIOLATION
 +            Err(e) if e.raw_os_error() == Some(32) => Some(true),
@@ -576,7 +558,7 @@ index 619474d..1cddf27 100644
  }
  
  /// The lock file of a project path.
-@@ -89,6 +228,8 @@ pub fn lock_path(project: &Path) -> PathBuf {
+@@ -89,6 +233,8 @@ pub fn lock_path(project: &Path) -> PathBuf {
  pub struct LockHandle {
      path: PathBuf,
      info: Mutex<LockInfo>,
@@ -585,7 +567,7 @@ index 619474d..1cddf27 100644
  }
  
  impl LockHandle {
-@@ -108,57 +249,111 @@ impl LockHandle {
+@@ -108,57 +254,111 @@ impl LockHandle {
      #[must_use]
      pub fn held(&self) -> bool {
          let ours = self.info.lock().map(|i| i.lock_id.clone()).unwrap_or_default();
@@ -653,20 +635,20 @@ index 619474d..1cddf27 100644
 -        info.heartbeat_at = time::now_iso();
 -        let text = serde_json::to_vec_pretty(&*info).map_err(|e| ModelError::new(codes::INTERNAL, e.to_string()))?;
 -        fsx::write_atomic(&self.path, &text, fsx::fs_error)
-     }
++    }
 +
 +    fn release_handle(&self) {
 +        let _ = self.file.lock().map(|mut f| f.take());
-+    }
-+}
-+
+     }
+ }
+ 
 +fn write_in_place(f: &mut File, text: &[u8]) -> std::io::Result<()> {
 +    f.seek(SeekFrom::Start(0))?;
 +    f.write_all(text)?;
 +    f.set_len(text.len() as u64)?;
 +    f.sync_all()
- }
- 
++}
++
  impl Drop for LockHandle {
      fn drop(&mut self) {
          let ours = self.info.lock().map(|i| i.lock_id.clone()).unwrap_or_default();
@@ -713,7 +695,7 @@ index 619474d..1cddf27 100644
  pub enum Locked {
      /// We hold the lock; `took_over` names a stale lock that was replaced.
      Acquired {
-@@ -173,9 +368,9 @@ pub enum Locked {
+@@ -173,9 +373,9 @@ pub enum Locked {
      NotWritable(String),
  }
  
@@ -726,7 +708,7 @@ index 619474d..1cddf27 100644
  
  fn takeover_path(lock: &Path) -> PathBuf {
      let mut s = lock.as_os_str().to_owned();
-@@ -183,25 +378,28 @@ fn takeover_path(lock: &Path) -> PathBuf {
+@@ -183,25 +383,28 @@ fn takeover_path(lock: &Path) -> PathBuf {
      PathBuf::from(s)
  }
  
@@ -767,7 +749,7 @@ index 619474d..1cddf27 100644
                      let _ = fs::remove_file(&path);
                  }
                  None
-@@ -216,30 +414,34 @@ impl Arbiter {
+@@ -216,30 +419,34 @@ impl Arbiter {
              if let Some(a) = Self::try_take(lock) {
                  return Some(a);
              }
@@ -810,7 +792,7 @@ index 619474d..1cddf27 100644
      Stale(Option<LockInfo>),
  }
  
-@@ -247,18 +449,29 @@ fn state(path: &Path) -> State {
+@@ -247,18 +454,29 @@ fn state(path: &Path) -> State {
      if !path.exists() {
          return State::Absent;
      }
@@ -851,7 +833,7 @@ index 619474d..1cddf27 100644
      }
  }
  
-@@ -267,7 +480,7 @@ fn unreadable_holder(path: &Path) -> LockInfo {
+@@ -267,7 +485,7 @@ fn unreadable_holder(path: &Path) -> LockInfo {
      let at = fs::metadata(path)
          .and_then(|m| m.modified())
          .ok()
@@ -860,7 +842,7 @@ index 619474d..1cddf27 100644
          .and_then(|d| i64::try_from(d.as_millis()).ok())
          .map(time::iso_from_ms)
          .unwrap_or_default();
-@@ -285,14 +498,15 @@ fn unreadable_holder(path: &Path) -> LockInfo {
+@@ -285,14 +503,15 @@ fn unreadable_holder(path: &Path) -> LockInfo {
  /// Tries to lock a project path (LOCK-01, LOCK-02; ADR-0014 §11).
  ///
  /// Publication and takeover happen only while holding the lock's arbiter (`<lock>.takeover`): under it, the lock's
@@ -880,7 +862,7 @@ index 619474d..1cddf27 100644
          Ok(t) => t,
          Err(e) => return Locked::NotWritable(e.to_string()),
      };
-@@ -301,41 +515,50 @@ pub fn acquire(project: &Path) -> Locked {
+@@ -301,41 +520,50 @@ pub fn acquire(project: &Path) -> Locked {
              return Locked::HeldByOther(c);
          }
          let Some(arbiter) = Arbiter::try_take(&path) else {
@@ -942,7 +924,7 @@ index 619474d..1cddf27 100644
              Some(b) => Locked::HeldByOther(b),
              None => Locked::HeldByOther(unreadable_holder(&path)),
          };
-@@ -351,52 +574,129 @@ mod tests {
+@@ -351,52 +579,123 @@ mod tests {
      #![allow(clippy::unwrap_used, clippy::panic, reason = "test")]
      use super::*;
  
@@ -1009,12 +991,8 @@ index 619474d..1cddf27 100644
 -        assert_eq!(old.lock_id, info.lock_id);
 +        let (_, protected) = read_raw(handle.path()).unwrap();
 +        assert!(protected);
-+        // Another writer cannot replace it (Windows: share mode); a heartbeat 26 years old (a clock jump, a paused
-+        // holder) does not make a protected lock stale.
-+        if cfg!(windows) {
-+            assert!(fs::write(handle.path(), b"{}").is_err());
-+            assert!(fs::remove_file(handle.path()).is_err());
-+        }
++        // A heartbeat 26 years old or 74 years ahead (a clock jump, a paused holder) does not make a protected lock
++        // stale.
 +        for at in ["2000-01-01T00:00:00.000Z", "2100-01-01T00:00:00.000Z"] {
 +            let mut f = handle.file.lock().unwrap();
 +            let mut jumped = handle.info();
@@ -1075,10 +1053,8 @@ index 619474d..1cddf27 100644
 +        let lock = lock_path(&project);
 +        let held = Arbiter::try_take(&lock).unwrap();
 +        let tk = takeover_path(&lock);
-+        // Old-looking but protected (a paused arbiter): left alone.
-+        if cfg!(windows) {
-+            assert!(File::options().write(true).open(&tk).is_err());
-+        }
++        // Protected (a paused arbiter, however old it looks): left alone.
++        assert_eq!(probe(&tk), Some(true));
 +        assert!(Arbiter::try_take(&lock).is_none());
 +        assert!(tk.exists());
 +        drop(held);

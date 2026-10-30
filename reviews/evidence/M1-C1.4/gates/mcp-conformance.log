@@ -1,0 +1,137 @@
+$ "C:\Python313\python.exe" scripts/mcp-conformance.py "C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\target\release\toontown-headless.exe"
+C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\scripts\mcp-conformance.py:112: MCPDeprecationWarning: resources/subscribe is removed as of 2026-07-28; use Client.listen() instead.
+  await s.subscribe_resource(f"app://object/{scene}")
+C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\scripts\mcp-conformance.py:113: MCPDeprecationWarning: The logging capability is deprecated as of 2026-07-28 (SEP-2577).
+  await s.set_logging_level("info")
+{
+  "client": "mcp (Python SDK) 2.0.0",
+  "server": "C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe",
+  "platform": "win32",
+  "seconds": 1.39,
+  "passed": 24,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "initialize.protocolVersion",
+      "ok": true,
+      "detail": "2025-11-25"
+    },
+    {
+      "check": "initialize.capabilities",
+      "ok": true,
+      "detail": "experimental=None logging=LoggingCapability() prompts=PromptsCapability(list_changed=False) resources=ResourcesCapability(subscribe=True, list_changed=False) tools=ToolsCapability(list_changed=True) completions=CompletionsCapability() extensions=None tasks=None"
+    },
+    {
+      "check": "initialize.instructions",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "ping",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "roots/list asked after initialized",
+      "ok": true,
+      "detail": "[True]"
+    },
+    {
+      "check": "tools/list 28 generic tools",
+      "ok": true,
+      "detail": "['batch', 'checkpoint', 'convert_coordinates', 'describe_command', 'describe_frame', 'doc_diff', 'find_objects', 'get_docs', 'get_object', 'get_state', 'history', 'hit_test', 'inspect_ui', 'job_cancel', 'job_status', 'job_wait', 'key', 'list_commands', 'pointer', 'redo', 'render_contact_sheet', 'render_drawing', 'render_frame', 'run_command', 'screenshot', 'set_properties', 'type_text', 'undo']"
+    },
+    {
+      "check": "tools carry outputSchema",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "tools/call run_command project.create (inside client roots)",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M65GYRPSHE02CVV76T749YHS', 'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-87xa4059\\\\Conformance.animpkg', 'sceneId': 'sc_01M65GYRPSHE02CVV76T749YNX', 'cameraId': 'el_01M65GYRPSHE02CVV76T749YNZ', 'elementId': 'el_01M65GYRPSHE02CVV76T749YP0'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+    },
+    {
+      "check": "tools/call get_state",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M65GYRPSHE02CVV76T749YHS', 'name': 'Conformance', 'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-87xa4059\\\\Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M65GYRPSHE02CVV76T749YNX', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M65GYRPSHE02CVV76T7"
+    },
+    {
+      "check": "tools/call get_object",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M65GYRPSHE02CVV76T749YNX', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M65GYRPSHE02CVV76T749YNZ', 'paletteStyles': {'pal_01M65GYRPSHE02CVV76T749YHT': 'sty_01M65GYRPSHE02CVV76T749YHV'}, 'outTransition': {'id': 'tr_01M65GYRPSHE02CVV76T749YP3', 'ty"
+    },
+    {
+      "check": "resources/list",
+      "ok": true,
+      "detail": "['app://state', 'app://project', 'app://docs/agent-guide', 'app://docs/object-model', 'app://docs/coordinates', 'app://docs/errors', 'app://events', 'app://activity']"
+    },
+    {
+      "check": "resources/templates/list",
+      "ok": true,
+      "detail": "10"
+    },
+    {
+      "check": "resources/read docs equals instructions",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "resources/read object",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "resources/subscribe -> notifications/resources/updated",
+      "ok": true,
+      "detail": "9"
+    },
+    {
+      "check": "logging/setLevel -> notifications/message",
+      "ok": true,
+      "detail": "4"
+    },
+    {
+      "check": "prompts/list",
+      "ok": true,
+      "detail": "['orient', 'draw_and_paint', 'traditional_animation', 'cutout_rig', 'animate_motion', 'lip_sync', 'storyboard_to_animatic', 'effects_pass', 'export_deliverable', 'review_and_fix']"
+    },
+    {
+      "check": "prompts/get",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "completion/complete",
+      "ok": true,
+      "detail": "['doc.object.get']"
+    },
+    {
+      "check": "elicitation/create for a confirmation",
+      "ok": true,
+      "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-87xa4059\\\\Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"C:\\\\\\\\Users\\\\\\\\kaiga\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\tt-c14-sdk-87xa4059\\\\\\\\Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'Proceed"
+    },
+    {
+      "check": "accepted elicitation proceeds",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M65GYRPSHE02CVV76T749YHS', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-10-30T04:26:44.629Z', 'oldValue': '2026-10-30T04:26:43.801Z'}]}], 'warnings': [], 'documentRev': 3}"
+    },
+    {
+      "check": "job_wait ok",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-10-30T04:26:44.631Z', 'result': {'path': 'C:\\\\Users\\\\kaiga\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-87xa4059\\\\Export.animpkg', 'form': 'package', 'bytes': 6685, 'entries': 11}, 'session': 'agent:s1-7fb527'}, 'changes': [], 'warnings': [], 'document"
+    },
+    {
+      "check": "notifications/progress",
+      "ok": true,
+      "detail": "[(1000.0, 1000.0, 'Write'), (1000.0, 1000.0, 'finished')]"
+    },
+    {
+      "check": "pointer answers notImplemented with its milestone",
+      "ok": true,
+      "detail": "{'status': 'error', 'changes': [], 'warnings': [], 'documentRev': None, 'error': {'code': 'command.notImplemented', 'message': 'the `pointer` tool is not available yet: pointer gestures produce the structured commands of the drawing tools (gesture equivalence, 11 \u00a77.6), which arrive with M2', 'details': {'tool': 'pointer', 'milestone': 'M2 C2.3'}, 'hint': 'use the structured commands (run_command)"
+    }
+  ]
+}
+
+[exit 0]
