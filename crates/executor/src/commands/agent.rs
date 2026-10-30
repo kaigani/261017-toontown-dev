@@ -666,9 +666,8 @@ fn replay_batch(entries: &[crate::agents::ActivityEntry]) -> (Vec<Value>, Vec<Om
             Some("cachedRetry")
         } else if e.dry_run || batch_dry {
             Some("dryRun")
-        } else if is_batch && committed.is_empty() {
-            Some("notCompleted")
-        } else if !is_batch && e.status != "ok" {
+        } else if (is_batch && committed.is_empty()) || (!is_batch && e.status != "ok") {
+            // It committed nothing: an error, or a confirmation that was not given.
             Some("notCompleted")
         } else if redacted(&e.params) {
             Some("redacted")
