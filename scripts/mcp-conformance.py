@@ -144,7 +144,7 @@ async def run(binary, workdir):
             check("job_wait ok", sc(r).get("status") == "ok", sc(r))
             check("notifications/progress", bool(progress), progress)
 
-            r = await s.call_tool("pointer", {})
+            r = await s.call_tool("pointer", {"view": "camera", "events": [{"type": "down", "x": 1, "y": 1}]})
             check("pointer answers notImplemented with its milestone", sc(r).get("error", {}).get("details", {}).get("milestone") == "M2 C2.3", sc(r))
 
 

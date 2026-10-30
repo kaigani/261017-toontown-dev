@@ -710,8 +710,7 @@ fn replay_batch(entries: &[crate::agents::ActivityEntry]) -> (Vec<Value>, Vec<Om
                 relocate(p, offset, &names);
             }
             if let Some(m) = s.as_object_mut() {
-                let renamed: Option<String> =
-                    m.get("as").and_then(Value::as_str).and_then(|n| names.get(n)).map(String::clone);
+                let renamed: Option<String> = m.get("as").and_then(Value::as_str).and_then(|n| names.get(n).cloned());
                 if let Some(n) = renamed {
                     m.insert("as".into(), json!(n));
                 }
