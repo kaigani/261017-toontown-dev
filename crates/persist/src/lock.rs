@@ -5,7 +5,9 @@
 //! process is known dead on the same host, is stale and is taken over with a warning.
 //!
 //! `lockId` is a random token: two executors in one process (tests, embedding hosts) are still "someone else" to each
-//! other. A fresh lock is created exclusively (`create_new`), so two openers cannot both acquire it.
+//! other. Every change of a lock file (publishing, taking over, heartbeat, release) happens under the lock's arbiter
+//! `<lock>.takeover`, created exclusively; an opener reads its publication back before it reports ownership, and a
+//! heartbeat fails closed (ADR-0014 §11; C13-R1-02, C13-R3-01).
 
 use std::fs::{self, OpenOptions};
 use std::io::Write;
@@ -109,20 +111,26 @@ impl LockHandle {
         read(&self.path).is_some_and(|i| i.lock_id == ours)
     }
 
-    /// Refreshes the heartbeat (LOCK-01). A lock taken over by someone else is not overwritten.
+    /// Refreshes the heartbeat (LOCK-01), under the lock's arbiter (C13-R3-01). It fails closed: when the lock file is
+    /// missing, unreadable or holds another token, nothing is written and the error tells the caller this session no
+    /// longer owns the project (maintenance then continues read-only). A heartbeat never recreates or replaces
+    /// another claimant's publication. When a takeover holds the arbiter, this heartbeat is skipped (the next one
+    /// sees the outcome).
     ///
     /// # Errors
-    /// `fs.ioError` when the file cannot be written.
+    /// `project.lockedByOther` when the lock is no longer this session's; `fs.ioError` when it cannot be written.
     pub fn refresh(&self) -> Result<(), ModelError> {
         let mut info = self.info.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
-        if let Some(current) = read(&self.path)
-            && current.lock_id != info.lock_id
-        {
-            return Err(ModelError::with_details(
-                codes::LOCKED_BY_OTHER,
-                "the lock was taken over by someone else",
-                json!({ "lock": current }),
-            ));
+        let Some(_arbiter) = Arbiter::try_take(&self.path) else { return Ok(()) };
+        match read(&self.path) {
+            Some(current) if current.lock_id == info.lock_id => {}
+            current => {
+                return Err(ModelError::with_details(
+                    codes::LOCKED_BY_OTHER,
+                    "this session no longer holds the project's lock (taken over, removed or unreadable)",
+                    json!({ "lock": current }),
+                ));
+            }
         }
         info.heartbeat_at = time::now_iso();
         let text = serde_json::to_vec_pretty(&*info).map_err(|e| ModelError::new(codes::INTERNAL, e.to_string()))?;
@@ -133,7 +141,10 @@ impl LockHandle {
 impl Drop for LockHandle {
     fn drop(&mut self) {
         let ours = self.info.lock().map(|i| i.lock_id.clone()).unwrap_or_default();
-        if read(&self.path).is_some_and(|i| i.lock_id == ours) {
+        // Removed only while it is still ours, under the arbiter (never someone else's publication).
+        if let Some(_arbiter) = Arbiter::take(&self.path, 200)
+            && read(&self.path).is_some_and(|i| i.lock_id == ours)
+        {
             let _ = fs::remove_file(&self.path);
         }
     }
@@ -162,7 +173,8 @@ pub enum Locked {
     NotWritable(String),
 }
 
-/// How long a takeover arbitration file may live before it counts as left behind by a crashed process.
+/// How long an arbitration file may live before it counts as left behind by a crashed process (a paused arbiter
+/// beyond this is a C1.4 obligation, ADR-0014 §11).
 const TAKEOVER_STALE: std::time::Duration = std::time::Duration::from_secs(10);
 
 fn takeover_path(lock: &Path) -> PathBuf {
@@ -171,110 +183,166 @@ fn takeover_path(lock: &Path) -> PathBuf {
     PathBuf::from(s)
 }
 
-/// Tries to lock a project path (LOCK-01, LOCK-02).
+/// The lock's arbitration file (`<lock>.takeover`, created exclusively): every change of the lock file — publishing,
+/// taking over, heartbeat, release — happens while holding it (C13-R1-02, C13-R3-01).
+struct Arbiter {
+    path: PathBuf,
+}
+
+impl Arbiter {
+    /// One attempt. An arbitration file older than [`TAKEOVER_STALE`] is removed (its holder crashed).
+    fn try_take(lock: &Path) -> Option<Self> {
+        let path = takeover_path(lock);
+        match OpenOptions::new().write(true).create_new(true).open(&path) {
+            Ok(_) => Some(Self { path }),
+            Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {
+                let abandoned = fs::metadata(&path)
+                    .and_then(|m| m.modified())
+                    .ok()
+                    .and_then(|t| t.elapsed().ok())
+                    .is_some_and(|age| age > TAKEOVER_STALE);
+                if abandoned {
+                    let _ = fs::remove_file(&path);
+                }
+                None
+            }
+            Err(_) => None,
+        }
+    }
+
+    /// Up to `attempts` attempts, 5 ms apart.
+    fn take(lock: &Path, attempts: u32) -> Option<Self> {
+        for _ in 0..attempts {
+            if let Some(a) = Self::try_take(lock) {
+                return Some(a);
+            }
+            std::thread::sleep(std::time::Duration::from_millis(5));
+        }
+        None
+    }
+}
+
+impl Drop for Arbiter {
+    fn drop(&mut self) {
+        let _ = fs::remove_file(&self.path);
+    }
+}
+
+/// The modification age of a file.
+fn age(path: &Path) -> Option<std::time::Duration> {
+    fs::metadata(path).and_then(|m| m.modified()).ok().and_then(|t| t.elapsed().ok())
+}
+
+/// What the lock file says to an opener.
+enum State {
+    /// No lock file.
+    Absent,
+    /// A live owner (or a lock that cannot be read yet and is not old enough to be abandoned).
+    Held(LockInfo),
+    /// A stale lock (LOCK-02), or an unreadable one abandoned for [`STALE_SECS`]; `Some` when it was readable.
+    Stale(Option<LockInfo>),
+}
+
+fn state(path: &Path) -> State {
+    if !path.exists() {
+        return State::Absent;
+    }
+    match read(path) {
+        Some(c) if c.stale() => State::Stale(Some(c)),
+        Some(c) => State::Held(c),
+        // Unreadable (empty while its publisher writes, or damaged): like a lock whose heartbeat is its modification
+        // time, stale only after STALE_SECS (C13-R3-01: a paused live writer is not taken over).
+        None => {
+            if age(path).is_some_and(|a| a > std::time::Duration::from_secs(STALE_SECS)) {
+                State::Stale(None)
+            } else {
+                State::Held(unreadable_holder(path))
+            }
+        }
+    }
+}
+
+/// The holder reported for a lock that cannot be read.
+fn unreadable_holder(path: &Path) -> LockInfo {
+    let at = fs::metadata(path)
+        .and_then(|m| m.modified())
+        .ok()
+        .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+        .and_then(|d| i64::try_from(d.as_millis()).ok())
+        .map(time::iso_from_ms)
+        .unwrap_or_default();
+    LockInfo {
+        user: String::new(),
+        host: String::new(),
+        process_id: 0,
+        app_version: String::new(),
+        opened_at: at.clone(),
+        heartbeat_at: at,
+        lock_id: String::new(),
+    }
+}
+
+/// Tries to lock a project path (LOCK-01, LOCK-02; ADR-0014 §11).
 ///
-/// A fresh lock is created exclusively (`create_new`). A stale lock is taken over under an arbitration file
-/// (`<lock>.takeover`, also created exclusively; C13-R1-02): only its creator replaces the lock, after checking that the
-/// lock is still the same stale one, by removing it and creating its own lock exclusively. Everyone else waits for the
-/// takeover to finish and then sees the new live lock, so concurrent takeovers yield one owner.
+/// Publication and takeover happen only while holding the lock's arbiter (`<lock>.takeover`): under it, the lock's
+/// state is read again; a stale lock is removed; the new lock is created exclusively, written and flushed; and the
+/// file is read back. `Acquired` is returned only when the file holds this session's token (C13-R3-01); otherwise
+/// the holder is reported. A lock that cannot be read counts as held until it is [`STALE_SECS`] old.
 #[must_use]
 pub fn acquire(project: &Path) -> Locked {
     let path = lock_path(project);
-    let arbiter = takeover_path(&path);
     let info = LockInfo::new();
     let text = match serde_json::to_vec_pretty(&info) {
         Ok(t) => t,
         Err(e) => return Locked::NotWritable(e.to_string()),
     };
-    let create = |path: &Path| -> std::io::Result<()> {
-        let mut f = OpenOptions::new().write(true).create_new(true).open(path)?;
-        if let Err(e) = f.write_all(&text).and_then(|()| f.sync_all()) {
-            drop(f);
-            let _ = fs::remove_file(path);
-            return Err(e);
-        }
-        Ok(())
-    };
-    // A lock just created exclusively is briefly empty while its owner writes it. Reading it then must not make it
-    // look stale (macOS CI, `c13_r2_persistence::thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner`: a
-    // contender took over a lock still being written and two sessions owned it). An unreadable lock counts as stale
-    // only once it has not changed for 2 s; until then contenders wait and read it again.
-    let settled = |path: &Path| {
-        fs::metadata(path)
-            .and_then(|m| m.modified())
-            .ok()
-            .and_then(|t| t.elapsed().ok())
-            .is_some_and(|age| age > std::time::Duration::from_secs(2))
-    };
-    let acquired = |took_over| Locked::Acquired {
-        handle: LockHandle { path: path.clone(), info: Mutex::new(info.clone()) },
-        took_over,
-    };
     for _ in 0..400 {
-        match create(&path) {
-            Ok(()) => return acquired(None),
-            Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {}
-            Err(e) => return Locked::NotWritable(e.to_string()),
+        if let State::Held(c) = state(&path) {
+            return Locked::HeldByOther(c);
         }
-        let current = read(&path);
-        if let Some(c) = &current
-            && !c.stale()
-        {
-            return Locked::HeldByOther(c.clone());
-        }
-        if current.is_none() && path.exists() && !settled(&path) {
+        let Some(arbiter) = Arbiter::try_take(&path) else {
             std::thread::sleep(std::time::Duration::from_millis(5));
             continue;
-        }
-        // Stale or unreadable: take it over, one taker at a time.
-        match OpenOptions::new().write(true).create_new(true).open(&arbiter) {
-            Ok(guard) => {
-                drop(guard);
-                let outcome = (|| {
-                    let again = read(&path);
-                    let same = match (&current, &again) {
-                        (Some(a), Some(b)) => a.lock_id == b.lock_id && b.stale(),
-                        (None, None) => path.exists() && settled(&path),
-                        _ => false,
-                    };
-                    if !same {
-                        return None; // Someone else changed the lock meanwhile: look again.
-                    }
-                    if let Err(e) = fs::remove_file(&path)
-                        && e.kind() != std::io::ErrorKind::NotFound
-                    {
-                        return Some(Locked::NotWritable(format!("cannot replace the stale lock: {e}")));
-                    }
-                    match create(&path) {
-                        Ok(()) => Some(acquired(current.clone())),
-                        Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => None,
-                        Err(e) => Some(Locked::NotWritable(e.to_string())),
-                    }
-                })();
-                let _ = fs::remove_file(&arbiter);
-                if let Some(o) = outcome {
-                    return o;
+        };
+        let took_over = match state(&path) {
+            State::Held(c) => return Locked::HeldByOther(c),
+            State::Absent => None,
+            State::Stale(c) => {
+                if let Err(e) = fs::remove_file(&path)
+                    && e.kind() != std::io::ErrorKind::NotFound
+                {
+                    return Locked::NotWritable(format!("cannot replace the stale lock: {e}"));
                 }
+                c
             }
-            Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {
-                // Another taker is at work; an arbitration file left by a crashed process is cleared after a while.
-                let old = fs::metadata(&arbiter)
-                    .and_then(|m| m.modified())
-                    .ok()
-                    .and_then(|t| t.elapsed().ok())
-                    .is_some_and(|age| age > TAKEOVER_STALE);
-                if old {
-                    let _ = fs::remove_file(&arbiter);
-                } else {
-                    std::thread::sleep(std::time::Duration::from_millis(5));
-                }
+        };
+        let published = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&path)
+            .and_then(|mut f| f.write_all(&text).and_then(|()| f.sync_all()));
+        if let Err(e) = published {
+            if e.kind() == std::io::ErrorKind::AlreadyExists {
+                drop(arbiter);
+                continue;
             }
-            Err(e) => return Locked::NotWritable(e.to_string()),
+            let _ = fs::remove_file(&path);
+            return Locked::NotWritable(e.to_string());
         }
+        // Validate the publication before announcing ownership.
+        let back = read(&path);
+        drop(arbiter);
+        return match back {
+            Some(b) if b.lock_id == info.lock_id => {
+                Locked::Acquired { handle: LockHandle { path, info: Mutex::new(info) }, took_over }
+            }
+            Some(b) => Locked::HeldByOther(b),
+            None => Locked::HeldByOther(unreadable_holder(&path)),
+        };
     }
-    match read(&path) {
-        Some(c) => Locked::HeldByOther(c),
-        None => Locked::NotWritable("the lock could not be taken".to_owned()),
+    match state(&path) {
+        State::Held(c) | State::Stale(Some(c)) => Locked::HeldByOther(c),
+        _ => Locked::NotWritable("the lock could not be taken".to_owned()),
     }
 }
 
@@ -284,31 +352,26 @@ mod tests {
     use super::*;
 
     #[test]
-    fn a_lock_being_written_is_never_taken_over_and_an_abandoned_empty_one_is() {
+    fn an_unreadable_lock_is_held_until_abandoned_and_a_heartbeat_fails_closed() {
         let dir = std::env::temp_dir().join(format!("tt-lock-{}", fsx::random_token(4)));
         fs::create_dir_all(&dir).unwrap();
         let project = dir.join("A.animpkg");
         fs::write(&project, b"x").unwrap();
-        // Another owner has just created the lock exclusively and is still writing it.
+        // A lock that cannot be read yet (its publisher is writing it, or paused) is held, never taken over.
         let path = lock_path(&project);
         fs::write(&path, b"").unwrap();
-        let owner = LockInfo::new();
-        let writer = {
-            let (path, owner) = (path.clone(), owner.clone());
-            std::thread::spawn(move || {
-                std::thread::sleep(std::time::Duration::from_millis(100));
-                fs::write(&path, serde_json::to_vec(&owner).unwrap()).unwrap();
-            })
+        assert!(matches!(acquire(&project), Locked::HeldByOther(_)));
+        // An unreadable lock untouched for longer than STALE_SECS is abandoned and taken over (LOCK-02 timing).
+        let old = std::time::SystemTime::now() - std::time::Duration::from_secs(STALE_SECS + 60);
+        fs::File::options().write(true).open(&path).unwrap().set_modified(old).unwrap();
+        let Locked::Acquired { handle, took_over: None } = acquire(&project) else {
+            panic!("an abandoned lock is stale")
         };
-        match acquire(&project) {
-            Locked::HeldByOther(i) => assert_eq!(i.lock_id, owner.lock_id),
-            other => panic!("a lock being written was taken over: {other:?}"),
-        }
-        writer.join().unwrap();
-        // An empty lock nobody writes any more (a crash) is taken over once it has settled.
-        fs::write(&path, b"").unwrap();
-        std::thread::sleep(std::time::Duration::from_millis(2100));
-        let Locked::Acquired { handle, .. } = acquire(&project) else { panic!("an abandoned empty lock is stale") };
+        assert!(handle.held());
+        // Its heartbeat refuses a missing lock and leaves it missing.
+        fs::remove_file(&path).unwrap();
+        assert!(handle.refresh().is_err());
+        assert!(!path.exists(), "a heartbeat never recreates the lock");
         drop(handle);
         let _ = fs::remove_dir_all(&dir);
     }
