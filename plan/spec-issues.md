@@ -461,16 +461,28 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     - `revisionExhausted`: repairs needed at `documentRev` 2^64 − 1.
 - **Question:** add them to 11 §10 and the owning sections.
 
-## SI-047 — RO-02 cannot see an edit that keeps size and modification time (found in C1.4; open)
+## SI-047 — RO-02 cannot see an edit that keeps size and modification time (found in C1.4; interim ruling, open)
 
 - **Section:** 10 §8.5 RO-02 ("the application detects that the open project file changed on disk").
 - **Problem:** detection compares sizes and modification times (a package; for a folder, every entry file's). An
   external edit that keeps a file's size and restores its modification time is not detected. Measured with a
   10,000-file folder (`reviews/evidence/M1-C1.4/measurements/fingerprint-*.json`: `sizeMtimePreservingEditDetected:
   false`). Hashing contents at the 2 s watch interval would cost a full read of the project every 2 s.
-- **Decision taken:** none; the C1.3 behaviour stays (C1.3 review obligation 4 allows recording it).
-- **Question:** is size + modification time the intended contract (documented as a limit), or should RO-02 require
-  content hashes, for example at save time only?
+- **Interim ruling (orchestrator, C1.4 round 1, binding until the spec owner decides; C14-R1-09):**
+  - the watch tick keeps size + modification time;
+  - every save that replaces the project verifies its on-disk content against the content hash recorded at open or
+    at the last save (`project.save`, Save As over the current path, `project.close {onUnsaved: "save"}`);
+  - a mismatch is `needs_confirmation` for agents and `project.changedOnDisk` for users.
+
+  As implemented (ADR-0014 §12):
+  - package: the SHA-256 of the file;
+  - folder: the SHA-256 of every entry file. The folder manifest has no per-entry hash list (only packages carry
+    one), so the entry files are hashed directly.
+
+  The cost on the 10,000-file folder is recorded per save (`measurements/fingerprint-*.json`, `saveContentCheckMs`).
+- **Question for the user / spec owner:** is the cost of hashing the whole project at every save acceptable? A
+  cheaper policy would hash only at the first save after an idle period, or only entries whose size or time changed
+  plus a sample. Should RO-02 state the size + modification-time limit of the watch explicitly?
 
 ## SI-048 — codes, reasons and lock fields C1.4 adds (found in C1.4; decided)
 
@@ -487,6 +499,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     that NFC or case folding would merge.
   - The lock file gains `osProtection: "shareMode" | "flock"`, which says that its holder protects it with an open
     handle (readers that do not know the key ignore it).
+  - Round 1:
+    - `project.saveFailed` `details.reason: "ownershipLost"`: a save wrote the project but the session lost its lock
+      meanwhile;
+    - `agent.activity.export` results gain `omitted: [{seq, tool, commandId, reason}]`;
+    - activity entries gain `dryRun`;
+    - `app.state.get` gains `agent` (the calling session: policy, scopes, paused, limits), which 11 §7.1 lists under
+      `get_state`.
 - **Question:** add them to 11 §10, 11 §15.1 and 10 §8.6.
 
 ## SI-049 — MCP revision 2026-07-28 removes resource subscriptions and deprecates logging (found in C1.4; open)
@@ -508,3 +527,19 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decision taken (ADR-0014 §12):** the agent's `needs_confirmation` offers keep mine (accepting overwrites) and
   names reload as the user's choice (`by: "user"`); its other choice is `project.saveAs` to another path.
 - **Question:** confirm, or let the confirmation itself authorise the discard of a reload.
+
+## SI-051 — what a replayable activity export contains (found in C1.4 round 1; decided)
+
+- **Sections:** 11 §11 ("Exportable as a replayable batch JSON"), §3 (batch-script mode), §7.2 (dry runs have no
+  effect).
+- **Problem:** an activity log holds calls that a replay must not repeat as written:
+  - dry runs;
+  - queries and discovery tools (`list_commands` and the other tools that are not command ids);
+  - failed or unconfirmed calls;
+  - calls whose inline data were redacted to a hash;
+  - batches, whose `$<n>` references are relative to the batch.
+- **Decision taken (ADR-0015 §11, C14-R1-15):** the export contains committed edits only, in order, as one sequential
+  batch:
+  - a committed batch contributes its steps, with references renumbered and clashing names renamed;
+  - everything else is listed under `omitted` with its reason in the command result.
+- **Question:** confirm, or define the representation in 11 §11 (for example nested transactions in the batch format).

@@ -236,9 +236,22 @@ saved, reopened, read back identically.
       `osProtection: "shareMode" | "flock"` (SI-048). After writing, a heartbeat and a publication read the file back
       and check that their arbiter is still theirs; a resumed participant that lost either fails closed and gives up
       its handle. `process_alive` (the fallback) is bounded by 2 s.
+    - **Arbiter abandonment** (C1.4 round 1). An arbitration file nobody protects goes at once when its holder
+      provably died. On Windows protection exists from the file's creation; elsewhere the file's token is written only
+      after its `flock`. Only an empty, unprotected file waits `TAKEOVER_STALE` (a publisher may be between creating
+      and locking it). Two takers removing the same abandoned file stay safe, because each holder checks
+      `still_ours()` before it reports ownership. Measured: a holder killed inside its arbiter window is taken over in
+      tens of milliseconds, where it took 10 s before.
     - **11.5 Saves under lost ownership.** A save checks ownership before writing (C13-R1-02) and again when it
       finishes: if the lock was lost meanwhile (possible only where the protection is not carried), the clean marker,
-      the saved revision and the stamp do not advance and the session continues read-only.
+      the saved revision and the stamp do not advance and the session continues read-only. Since C1.4 round 1
+      (C14-R1-08) the save has two test-only suspension points (`Boundary::SaveBeforeWrite`, `SaveWritten`), and the
+      outcome is reported:
+      - lost before the write: nothing is written and the job fails `project.saveFailed {reason: "fileInUse"}`;
+      - lost after the write: the job fails `{reason: "ownershipLost"}`.
+
+      In both cases the project stays modified and read-only, and its recovery data stays
+      (`c14_lock_races.rs::ownership_lost_during_a_suspended_save_never_advances_the_save`).
     - **Evidence** (C1.4): `crates/executor/tests/c14_lock_races.rs` suspends a publisher (arbiter taken, file created,
       file written), a heartbeat (checked, written), a release and a takeover through the `test-hooks` feature of
       `tt-persist`, races eight openers against each, and checks at most one owner; it pauses an arbiter past its
@@ -265,9 +278,17 @@ saved, reopened, read back identically.
       (overwrites). Reloading discards unsaved work, which needs the `app` scope (11 §6.1): it is the user's choice,
       offered as a consequence with `by: "user"`; the agent's other choice is `project.saveAs` elsewhere (SI-050).
       Users keep the C1.3 error.
-    - **Blind spot** (C1.4 obligation 4): an edit that keeps a file's size and restores its modification time is not
-      detected (SI-047). Cost of the fingerprint at the 2 s interval with 10,000 files:
-      `reviews/evidence/M1-C1.4/measurements/fingerprint-*.json`.
+    - **Content at save** (C1.4 obligation 4; SI-047 interim ruling of the orchestrator, C14-R1-09). The 2 s watch
+      keeps comparing sizes and modification times, so it cannot see an edit that keeps both. Every save that would
+      replace the project verifies the on-disk content against the hash recorded at open or at the last save:
+      `project.save` (clean or dirty), Save As over the current location, and `project.close {onUnsaved: "save"}`.
+      - A package's hash is the SHA-256 of the file.
+      - A folder's hash is the SHA-256 of every entry file's name and SHA-256. Folder manifests carry no per-entry
+        hashes, so the entry files themselves are hashed (the fingerprint's file set).
+
+      On a mismatch, agents get the bound `externalChange` confirmation and users `project.changedOnDisk`. A user's
+      Save As over the current location with `onExists: "overwrite"` stays the explicit "keep mine". Cost, with every
+      sample: `reviews/evidence/M1-C1.4/measurements/fingerprint-*.json` (`saveContentCheckMs`, 10,000 files).
     - **Folder names** (C1.4 obligation 3): a folder-form save refuses, before writing anything, entry names that
       Unicode normalisation (NFC) or case folding would merge (`project.saveFailed`, reason `nameCollision`). An
       existing on-disk spelling of a kept entry is never scheduled for removal.

@@ -93,6 +93,52 @@ transactions, idempotent requests and the never-block watchdog.
     - the agent indicator and in-app confirmations (`askInApp`) need that shell. `agent.server.set` stores the
       preference and warns `agent.httpUnavailable`.
 
+11. **Changes from review round 1** (`reviews/M1-C1.4-r1.md`; response `reviews/M1-C1.4-r1-response.md`). These
+    replace the corresponding parts of decisions 1–9.
+    - **Wrapper input is validated before conversion** (C14-R1-01). `arguments` must be an object (`-32602`
+      otherwise). A generic tool's complete input (options, projections, pagination, types, unknown fields) is
+      validated against its published input schema, and violations are envelopes with `arg.*` codes. Nothing reaches
+      a command with a safety option dropped.
+    - **Elicitation answers are strict** (C14-R1-02). Only `action: "accept"` with the boolean `content.confirm: true`
+      authorises. Decline, cancel, a missing or non-boolean `confirm`, an error answer or anything else declines.
+      Closing the session, or no answer at all, leaves `needs_confirmation`.
+    - **One logical call** (C14-R1-04, -12). An answered elicitation re-invokes the same call with its token and its
+      `requestId`; a decline first marks the token declined (`agent.confirmation.respond` as the user). The executor
+      settles a remembered `needs_confirmation` when a retry carries its token, so the requestId remembers the final
+      outcome without a second transaction. The server audits the logical call once, with its final status and whole
+      duration.
+    - **Session limits at command admission** (C14-R1-11). `maxBatchSteps` and `maxJobs` are checked by the executor
+      for every agent submission (invocations, batches, typed tools, batch scripts), not by the server's wrappers.
+      Saved policy defaults and limits are restored when an executor starts (C14-R1-06).
+    - **File effects are staged** (C14-R1-03). `agent.activity.export` defers its write (`Effect::WriteFile`). It is
+      staged beside the target only when every step succeeded, moved into place after the commit, and discarded on
+      rollback.
+    - **Replayable export** (C14-R1-15, SI-051). `format: "batch"` contains committed edits only, in order. A
+      committed batch contributes its steps, with `$<n>` references renumbered and clashing `as` names renamed. Dry
+      runs, queries, discovery tools, incomplete calls and redacted parameters are left out, and the result lists
+      them under `omitted` with the reason. Activity entries record `dryRun`.
+    - **Transport** (C14-R1-13, -14). Frames are cut at `maxInlineBytes` without allocating more; an over-long frame
+      is skipped to its newline and answered with an error. Invalid UTF-8 is a parse error of its frame only. One
+      writer thread owns the output behind a bounded queue (4096 messages). A write or flush failure, or a queue that
+      stays full for 10 s, closes the session. Nothing writes under the state lock: progress for a `job_wait` token is
+      queued under the lock that registers the token, and the final notification and the response are queued after
+      it is unregistered. Closing (input EOF, output failure, user disconnect) fails pending requests to the client,
+      skips queued requests, waits a bounded time for the running one, and never waits for a blocked writer.
+    - **Lifecycle** (C14-R1-17). `initialize` happens once (a second one is `-32600`). Cancellation applies only to
+      live requests (admitted, not yet answered; at most 64), and an unknown or finished id is ignored. A duplicate
+      id while the first is in progress is refused.
+    - **Server-owned work** (C14-R1-05). `list_commands`, `describe_command` and `get_docs` run under a 5 s watchdog
+      on their own thread (`command.timeout` when it passes), so the call thread is never held. The glob matcher is
+      iterative and quadratic at worst. Work inside the executor keeps the executor's never-block budget; restarting
+      a document thread that never returns is still M4 (gap 3 of the handoff).
+    - **One state shape** (C14-R1-16). `app.state.get` reports the calling agent session (`agent`: session, client,
+      policy, scopes, paused, limits). `get_state` returns the command's data unchanged and narrows it only when
+      `include` is given. `edit.undo` and `edit.redo` emit `doc.undone` / `doc.redone {undoStepId, label}`
+      (11 §9.2).
+    - **Release graph** (C14-R1-10). `test-hooks` is enabled only on `tt-executor`'s dev-dependency;
+      `scripts/check-release-features.py` proves the product graphs (`tt-headless`, `tt-desktop`) do not contain it.
+    - **The SDK used for conformance is pinned** (`mcp==2.0.0`, SI-049 adjudication).
+
 ## Consequences
 
 - A command added to the registry is reachable by agents at once (through `run_command`, the docs and the typed
