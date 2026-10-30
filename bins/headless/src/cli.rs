@@ -249,10 +249,20 @@ fn start(cli: &Cli) -> Result<ExecutorHandle, CliError> {
     if let Some(project) = &cli.project {
         let path = absolute(project)?;
         let env = user("project.open", json!({ "path": path.to_string_lossy() }));
+        let fail = |why: String| CliError::Failed(format!("cannot open {}: {why}", path.display()));
         if env.status != Status::Ok {
-            let why =
-                env.error.map_or_else(|| "needs confirmation".to_owned(), |e| format!("{}: {}", e.code, e.message));
-            return Err(CliError::Failed(format!("cannot open {}: {why}", path.display())));
+            return Err(fail(
+                env.error.map_or_else(|| "needs confirmation".to_owned(), |e| format!("{}: {}", e.code, e.message)),
+            ));
+        }
+        // Opening is a job (10 §8): serve only once the project is installed.
+        if let Some(job) = env.result.as_ref().and_then(|r| r.get("jobId")).cloned() {
+            let waited = user("job.wait", json!({ "jobId": job, "timeoutMs": 600_000 }));
+            let record = waited.result.unwrap_or_default();
+            let record = record.get("record").cloned().unwrap_or(record);
+            if record.get("state").and_then(serde_json::Value::as_str) != Some("succeeded") {
+                return Err(fail(record.get("error").map_or_else(|| record.to_string(), ToString::to_string)));
+            }
         }
     }
     if let Some(ns) = &cli.typed_tools {
