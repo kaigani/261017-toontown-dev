@@ -1,0 +1,56 @@
+{
+  "what": "Local gate logs recorded by scripts/record-gates.py.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked --no-fail-fast",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-lint.log": "pnpm lint",
+    "gates/pnpm-typecheck.log": "pnpm typecheck",
+    "gates/pnpm-test.log": "pnpm test",
+    "gates/pnpm-format.log": "pnpm format:check",
+    "gates/pnpm-licenses.log": "pnpm licenses:check",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless.log": "cargo build --release --locked -p tt-headless && \"C:\\Users\\kaiga\\work\\review\\m1-c14-r5\\target\\release\\toontown-headless.exe\" --version && \"C:\\Users\\kaiga\\work\\review\\m1-c14-r5\\target\\release\\toontown-headless.exe\" --selftest && \"C:\\Python313\\python.exe\" scripts/check-headless-deps.py \"C:\\Users\\kaiga\\work\\review\\m1-c14-r5\\target\\release\\toontown-headless.exe\"",
+    "gates/reviewer-python-suites.log": "\"C:\\Python313\\python.exe\" scripts/run-reviewer-python-suites.py",
+    "gates/mcp-conformance.log": "\"C:\\Python313\\python.exe\" scripts/mcp-conformance.py \"C:\\Users\\kaiga\\work\\review\\m1-c14-r5\\target\\release\\toontown-headless.exe\"",
+    "gates/release-features.log": "\"C:\\Python313\\python.exe\" scripts/check-release-features.py",
+    "gates/measurements.log": "\"C:\\Python313\\python.exe\" scripts/analyse-measurements.py target/evidence/c14",
+    "gates/declarations.log": "\"C:\\Python313\\python.exe\" scripts/check-product-allows.py && \"C:\\Python313\\python.exe\" scripts/gen-command-declarations.py && git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md"
+  },
+  "status": {
+    "gates/test.log": 0,
+    "gates/pnpm-test.log": 0,
+    "gates/declarations.log": 0,
+    "gates/headless.log": 0,
+    "gates/mcp-conformance.log": 0
+  },
+  "recordedAt": "2026-10-30T18:17:22+00:00",
+  "baseCommit": "7796afc6af4ea76cf056e5063752c2b65f78f821",
+  "dirtyFiles": [
+    "reviews/evidence/M1-C1.3-r2/inspection-memory.json",
+    "reviews/evidence/M1-C1.3-r3/open-latency.json",
+    "reviews/evidence/M1-C1.4-r5/ci.log",
+    "reviews/evidence/M1-C1.4-r5/gates/",
+    "reviews/evidence/M1-C1.4-r5/ignored-verification.log",
+    "reviews/evidence/M1-C1.4-r5/probe-clippy.log",
+    "reviews/evidence/M1-C1.4-r5/verify-ignored.py"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "sha256": {
+    "gates/declarations.log": "0553b54520c66d49345f278083496a43c9cc7443b4b2b42d5a25b2168c67df98",
+    "gates/headless.log": "ae96a951397273403e3d694f7b87842f5dfbbef2c6df7e1ab05255f81be7a250",
+    "gates/mcp-conformance.log": "14c546ac9fa39b862aea7410d1bb0db8287fc0bedad649e314666303f26dc634",
+    "gates/pnpm-test.log": "3c351342a0bd15dc424a5aa25534398af71ac5e99b34c9a4fbacec54286cc35f",
+    "gates/selftest-1.json": "4b5d6a2822969c9b9a773349d229c385e3d098794e37f202bd6ebc8c58b023ea",
+    "gates/selftest-2.json": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "gates/selftest-compare.log": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46",
+    "gates/test.log": "a837bb17315ca4444e6900e77fda1919e7a515012b019949bb49da86c980aba2"
+  }
+}
