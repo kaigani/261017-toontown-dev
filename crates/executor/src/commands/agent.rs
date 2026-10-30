@@ -601,8 +601,7 @@ pub(crate) struct Exported {
     path: String,
     /// Entries.
     entries: u32,
-    /// `format: "batch"`: the entries left out of the replayable batch, with the reason (C14-R1-15).
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+    /// `format: "batch"`: the entries left out of the replayable batch, with the reason (C14-R1-15); empty otherwise.
     omitted: Vec<Omitted>,
 }
 

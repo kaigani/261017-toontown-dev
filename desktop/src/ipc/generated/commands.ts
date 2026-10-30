@@ -8834,7 +8834,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
       },
       omitted: {
-        description: "`format: \"batch\"`: the entries left out of the replayable batch, with the reason (C14-R1-15).",
+        description: "`format: \"batch\"`: the entries left out of the replayable batch, with the reason (C14-R1-15); empty otherwise.",
         type: "array",
         items: {
           $ref: "#/$defs/agent.activity.export.Omitted",
@@ -74331,7 +74331,7 @@ export interface agent_activity_export_result {
   path: string;
   /** Entries. */
   entries: number;
-  /** `format: "batch"`: the entries left out of the replayable batch, with the reason (C14-R1-15). */
+  /** `format: "batch"`: the entries left out of the replayable batch, with the reason (C14-R1-15); empty otherwise. */
   omitted: agent_activity_export_Omitted[];
 }
 

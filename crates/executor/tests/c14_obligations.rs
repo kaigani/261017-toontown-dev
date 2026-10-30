@@ -384,9 +384,14 @@ fn an_activity_export_is_written_only_when_its_call_commits() {
         } else {
             assert!(!fresh.exists(), "a failed batch created no file");
         }
-        // The same call alone commits and writes.
+        // The same call alone commits and writes; its result matches the declared result schema (both formats).
         let done = run(&h, "agent.activity.export", params);
         assert!(done.is_ok(), "{done:?}");
+        let schema = tt_executor::registry().unwrap().get("agent.activity.export").unwrap().result_schema();
+        let validator = jsonschema::options().build(&schema).unwrap();
+        let result = done.result.clone().unwrap();
+        let errors: Vec<String> = validator.iter_errors(&result).map(|e| e.to_string()).collect();
+        assert!(errors.is_empty(), "{errors:?} {result}");
         assert!(target.exists() && std::fs::read(target).unwrap() != b"old");
     }
     // No staged temporaries are left beside the targets.
