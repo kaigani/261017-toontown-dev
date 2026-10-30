@@ -604,6 +604,7 @@ fn gate(doc: &Document) -> Result<(), CommandError> {
 /// previous project, `project.opened` for the new one, and the `doc.changed` of its load repairs (origin `load`).
 fn install_into(s: &mut Session, _grant: LoadGrant, inst: Install, origin: &Origin) -> Value {
     if let Some(old) = s.project.take() {
+        crate::persistence::clear_cache(&s.env, &old);
         s.emit("project.closed", json!({ "projectId": old.doc.project().id().as_str() }));
     }
     let Install { project, repairs, restore } = inst;

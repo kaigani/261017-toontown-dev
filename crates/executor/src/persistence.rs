@@ -206,17 +206,7 @@ pub(crate) fn write(
                 layout::Kind::Media | layout::Kind::Pixels | layout::Kind::Texture | layout::Kind::LibraryFile
             );
             if binary && !keep.contains(&name) {
-                let to = cache.join(fsx::random_token(8)).join(name.replace('/', "_"));
-                if let Some(dir) = to.parent() {
-                    std::fs::create_dir_all(dir)
-                        .map_err(|e| CommandError::from(fsx::save_error(&e, dir, "cannot create")))?;
-                }
-                let mut r = base.reader(&name, base.size(&name).unwrap_or(0))?;
-                let mut f = std::fs::File::create(&to)
-                    .map_err(|e| CommandError::from(fsx::save_error(&e, &to, "cannot create")))?;
-                std::io::copy(&mut r, &mut f)
-                    .map_err(|e| CommandError::from(fsx::save_error(&e, &to, "cannot write")))?;
-                carried.push((name, to));
+                carried.push((name.clone(), carry(base, &name, cache)?));
             }
         }
     }
@@ -225,6 +215,57 @@ pub(crate) fn write(
     let container =
         Container::open(target, tt_persist::manifest::PACKAGE_MIMETYPE, tt_persist::zip::Limits::default()).ok();
     Ok(Written { path: target.to_path_buf(), form, saved, container, carried })
+}
+
+/// Copies one binary entry of `base` into the session cache, content-addressed (C13-R3-03): the bytes are streamed
+/// into a private temporary and hashed, then kept as `<cache>/carried/<sha256>/<entry name>`. When that copy exists
+/// already (an earlier export or save carried the same bytes), the temporary is dropped and the existing copy reused,
+/// so repeated exports and saves never multiply cached bytes.
+fn carry(base: &Container, name: &str, cache: &Path) -> Result<PathBuf, CommandError> {
+    let dir = cache.join("carried");
+    std::fs::create_dir_all(&dir).map_err(|e| CommandError::from(fsx::save_error(&e, &dir, "cannot create")))?;
+    let tmp = dir.join(format!(".{}.part", fsx::random_token(8)));
+    let copied = (|| -> Result<String, CommandError> {
+        let mut r = base.reader(name, base.size(name).unwrap_or(0))?;
+        let mut f =
+            std::fs::File::create(&tmp).map_err(|e| CommandError::from(fsx::save_error(&e, &tmp, "cannot create")))?;
+        std::io::copy(&mut r, &mut f).map_err(|e| CommandError::from(fsx::save_error(&e, &tmp, "cannot write")))?;
+        drop(f);
+        let (sha, _) = std::fs::File::open(&tmp)
+            .and_then(fsx::sha256_reader)
+            .map_err(|e| CommandError::from(fsx::save_error(&e, &tmp, "cannot read")))?;
+        Ok(sha)
+    })();
+    let sha = match copied {
+        Ok(s) => s,
+        Err(e) => {
+            let _ = std::fs::remove_file(&tmp);
+            return Err(e);
+        }
+    };
+    let to = dir.join(&sha).join(name.replace('/', "_"));
+    if to.is_file() {
+        let _ = std::fs::remove_file(&tmp);
+        return Ok(to);
+    }
+    if let Some(d) = to.parent() {
+        std::fs::create_dir_all(d).map_err(|e| CommandError::from(fsx::save_error(&e, d, "cannot create")))?;
+    }
+    if let Err(e) = std::fs::rename(&tmp, &to) {
+        let _ = std::fs::remove_file(&tmp);
+        if !to.is_file() {
+            return Err(CommandError::from(fsx::save_error(&e, &to, "cannot keep")));
+        }
+    }
+    Ok(to)
+}
+
+/// Empties the session cache when its project goes (C13-R3-03): nothing in it serves another project, and the
+/// closed project's history is gone. Not while that project is being saved (the write may read from it).
+pub(crate) fn clear_cache(env: &Env, closing: &OpenProject) {
+    if !closing.store.saving {
+        let _ = std::fs::remove_dir_all(&env.cache);
+    }
 }
 
 /// Applies a finished save to the open project (document thread): clean marker at the snapshot's position, saved
@@ -508,6 +549,7 @@ pub(crate) fn apply_pending(s: &mut Session, p: &PendingSave) {
 pub(crate) fn close(s: &mut Session) {
     let Some(p) = s.project.take() else { return };
     let _ = recovery::delete(&s.env.dirs.recovery, &p.store.recovery_id);
+    clear_cache(&s.env, &p);
     s.emit("project.closed", json!({ "projectId": p.doc.project().id().as_str() }));
     drop(p);
     s.app = AppContext::default();

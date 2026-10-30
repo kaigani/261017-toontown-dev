@@ -199,7 +199,9 @@ fn the_watchdog_answers_within_its_budget() {
             Some(e) => assert_eq!(e.code, "command.timeout", "{e:?}"),
         }
     }
-    assert!(opened, "the fixture opened within the budget at least once");
+    // Setup only: the fixture is open (possibly by an attempt that finished after its caller timed out). What the test
+    // proves is below: every caller invocation returns within 500 ms, and a 1 ms budget yields `command.timeout`.
+    assert!(opened, "setup: the fixture project is installed (an open may complete after its caller timed out)");
     let mut timed_out = false;
     for _ in 0..50 {
         let t = Instant::now();

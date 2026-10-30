@@ -499,3 +499,60 @@ fn an_atomic_batch_that_saves_commits_one_step_and_writes_that_revision() {
     assert_eq!(err(&h, "doc.state.get", json!({})).code, "project.none", "closed after the save");
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn closing_a_project_removes_its_cached_media() {
+    use std::sync::Arc;
+    use tt_persist::container::{BlobData, Blobs, Form};
+    let dir = tmp();
+    // Unique asset IDs (seed), so the cached file names belong to this test only.
+    let doc = tt_model::fixture::sample_document(9031).unwrap();
+    let mut blobs = Blobs::default();
+    for (n, _, _, _) in tt_persist::load::blob_refs(&doc) {
+        blobs.insert(n, BlobData::Bytes(Arc::new(vec![7; 2048])));
+    }
+    let source = dir.join("Cached.animpkg");
+    let input = tt_persist::save::SaveInput {
+        doc: &doc,
+        preserved: &Default::default(),
+        blobs: &blobs,
+        session: None,
+        saved_at: "2026-10-29T12:00:00.000Z".into(),
+    };
+    tt_persist::save::save(&source, Form::Package, &input, None, false).unwrap();
+    let h = spawn(&dir.join("user"));
+    job_ok(&h, "project.open", json!({ "path": path(&source) }));
+    let assets = ok(&h, "doc.asset.list", json!({}));
+    let asset = assets["assets"].as_array().unwrap().iter().find(|a| a["storage"] == "embedded").unwrap().clone();
+    let id = asset["id"].as_str().unwrap().to_owned();
+    let name = get(&h, &id)["entry"].as_str().unwrap().replace('/', "_");
+    let cached = || {
+        fn walk(p: &Path, wanted: &str, n: &mut usize) {
+            for e in std::fs::read_dir(p).into_iter().flatten().flatten() {
+                if e.path().is_dir() {
+                    walk(&e.path(), wanted, n);
+                } else if e.file_name() == wanted {
+                    *n += 1;
+                }
+            }
+        }
+        let mut n = 0;
+        for e in std::fs::read_dir(std::env::temp_dir()).unwrap().flatten() {
+            if e.file_name().to_string_lossy().starts_with(&format!("tt-cache-{}-", std::process::id())) {
+                walk(&e.path(), &name, &mut n);
+            }
+        }
+        n
+    };
+    // Removed media are carried to the cache by a Save As (undo needs them), once however often it happens.
+    ok(&h, "doc.asset.remove", json!({ "assetIds": [id], "force": true }));
+    job_ok(&h, "project.saveAs", json!({ "path": path(&dir.join("Elsewhere.animpkg")) }));
+    job_ok(&h, "doc.package.export", json!({ "path": path(&dir.join("Copy.animpkg")) }));
+    assert_eq!(cached(), 1, "one content-addressed copy");
+    ok(&h, "edit.undo", json!({}));
+    assert!(ok(&h, "doc.blob.get", json!({ "ref": id }))["base64"].is_string(), "undo reaches the cached bytes");
+    // Closing the project removes what only its history needed.
+    ok(&h, "project.close", json!({ "onUnsaved": "discard" }));
+    assert_eq!(cached(), 0, "C13-R3-03: the closed project's cached media are gone");
+    let _ = std::fs::remove_dir_all(&dir);
+}
