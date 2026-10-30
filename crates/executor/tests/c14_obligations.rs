@@ -358,3 +358,44 @@ fn every_save_path_verifies_the_content_recorded_at_open_or_last_save() {
         let _ = std::fs::remove_dir_all(&dir);
     }
 }
+
+#[test]
+fn an_activity_export_is_written_only_when_its_call_commits() {
+    // C14-R1-03: creation and replacement are staged effects; a later failing step keeps the old file / no file.
+    let dir = tmp();
+    let h = spawn(&dir.join("user"));
+    ok(&h, "project.create", json!({ "name": "Staged", "path": path(&dir.join("Staged.animpkg")) }));
+    let existing = dir.join("existing.jsonl");
+    std::fs::write(&existing, b"old").unwrap();
+    let fresh = dir.join("fresh.jsonl");
+    for (target, extra) in [(&existing, json!({ "onExists": "overwrite" })), (&fresh, json!({}))] {
+        let mut params = json!({ "path": path(target) });
+        params.as_object_mut().unwrap().extend(extra.as_object().unwrap().clone());
+        let failed = batch(
+            &h,
+            json!({ "label": "Export then fail", "atomic": true, "steps": [
+                { "id": "agent.activity.export", "params": params },
+                { "id": "doc.object.patch", "params": { "targets": ["el_missing"], "props": {} } },
+            ] }),
+        );
+        assert!(failed.error.is_some(), "{failed:?}");
+        if target == &existing {
+            assert_eq!(std::fs::read(&existing).unwrap(), b"old", "a failed batch kept the old file");
+        } else {
+            assert!(!fresh.exists(), "a failed batch created no file");
+        }
+        // The same call alone commits and writes.
+        let done = run(&h, "agent.activity.export", params);
+        assert!(done.is_ok(), "{done:?}");
+        assert!(target.exists() && std::fs::read(target).unwrap() != b"old");
+    }
+    // No staged temporaries are left beside the targets.
+    let leftovers: Vec<_> = std::fs::read_dir(&dir)
+        .unwrap()
+        .flatten()
+        .filter(|e| e.file_name().to_string_lossy().ends_with(".tmp"))
+        .collect();
+    assert!(leftovers.is_empty(), "{leftovers:?}");
+    drop(h);
+    let _ = std::fs::remove_dir_all(&dir);
+}
