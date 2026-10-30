@@ -135,7 +135,7 @@ impl Category {
 
 /// Session limits (11 §6.5) and attached-mode preferences (`agent.policy.defaults.set`).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct Limits {
     /// Default policy of new sessions.
     pub policy: Policy,

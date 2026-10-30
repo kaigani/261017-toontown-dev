@@ -257,6 +257,12 @@ impl ExecutorHandle {
         let mut env = store::Env::new(&persist);
         env.poster = Some(Poster(tx.clone()));
         let mut session = session::Session { jobs: jobs.clone(), env, ..session::Session::default() };
+        // The saved agent policy defaults and limits (`agent.policy.defaults.set`; C14-R1-06).
+        if let Some(saved) = session.env.pref("agent.policy.defaults")
+            && let Ok(limits) = serde_json::from_value::<agents::Limits>(saved)
+        {
+            session.agents.limits = limits;
+        }
         maintenance::start(&mut session);
         let subs = subscribers.clone();
         let budget = config.budget;

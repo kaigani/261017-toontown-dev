@@ -831,6 +831,36 @@ impl Core {
         }
     }
 
+    /// The session limits of agent submissions (11 §6.5), checked once here for every entry point: protocol
+    /// wrappers, typed tools, batches and batch scripts (C14-R1-11). `steps`: the size of a batch being admitted;
+    /// `job`: a job command being admitted.
+    fn admit(&self, origin: &Origin, steps: Option<usize>, job: Option<&str>) -> Result<(), CommandError> {
+        let Origin::Agent { .. } = origin else { return Ok(()) };
+        let Some(s) = self.session.as_ref() else { return Ok(()) };
+        let limits = &s.agents.limits;
+        if let Some(n) = steps
+            && n > limits.max_batch_steps as usize
+        {
+            return Err(CommandError::with_details(
+                codes::LIMIT_EXCEEDED,
+                format!("a batch of this session has at most {} steps", limits.max_batch_steps),
+                json!({ "limit": "maxBatchSteps", "value": limits.max_batch_steps, "actual": n }),
+            ));
+        }
+        if let Some(command) = job {
+            let running = s.jobs.list(None, Some(&origin.session_key())).iter().filter(|j| !j.state.is_final()).count();
+            if running >= limits.max_jobs as usize {
+                return Err(CommandError::with_details(
+                    codes::LIMIT_EXCEEDED,
+                    format!("this session already runs {running} job(s); the limit is {}", limits.max_jobs),
+                    json!({ "limit": "maxJobs", "value": limits.max_jobs, "commandId": command }),
+                )
+                .hint("wait for a job with job_wait, or cancel one"));
+            }
+        }
+        Ok(())
+    }
+
     fn run(&mut self, inv: &Invocation) -> Envelope {
         // An agent session's grant is the hub's (11 §6.1; `agent.session.grant` applies to the next call).
         let resolved = Invocation { origin: self.effective_origin(&inv.origin), ..inv.clone() };
@@ -838,6 +868,13 @@ impl Core {
         let Some(entry) = self.registry.get(&inv.command).copied() else {
             return Envelope::error(unknown(&inv.command, self.registry), self.rev());
         };
+        if !self.simulating
+            && !inv.options.dry_run
+            && let Err(e) =
+                self.admit(&inv.origin, None, (entry.spec.kind == Kind::Job).then_some(inv.command.as_str()))
+        {
+            return Envelope::error(e, self.rev());
+        }
         let session = self.take_session();
         let before = observe(&session);
         let rollback = Rollback::take(&session);
@@ -945,6 +982,9 @@ impl Core {
                 ),
                 self.rev(),
             );
+        }
+        if let Err(e) = self.admit(origin, Some(req.steps.len()), None) {
+            return Envelope::error(e, self.rev());
         }
         if req.atomic
             && let Some((i, s)) = req
