@@ -2,6 +2,8 @@
 import importlib.util
 import json
 import pathlib
+import re
+import subprocess
 import tempfile
 import unittest
 
@@ -12,6 +14,13 @@ spec.loader.exec_module(analyzer)
 
 
 class Measurements(unittest.TestCase):
+    def test_no_new_product_allow_attributes_since_round_two(self):
+        diff = subprocess.check_output(["git", "diff", "--unified=0", "0e7d02e", "--",
+                                       "crates/*/src/**", "bins/*/src/**", "desktop/src/**"], cwd=ROOT, text=True)
+        added = [line for line in diff.splitlines() if line.startswith("+") and not line.startswith("+++")]
+        self.assertEqual([line for line in added if re.search(r"#\[allow", line)], [],
+                         "standing review rule forbids new product allow attributes")
+
     def test_boolean_summary_fields_are_not_valid_numeric_evidence(self):
         for field in ["n", "p50", "p90", "p99", "max"]:
             with self.subTest(field=field), tempfile.TemporaryDirectory() as tmp:

@@ -3,6 +3,7 @@ import importlib.util
 import json
 import os
 import pathlib
+import queue
 import subprocess
 import time
 import unittest
@@ -82,6 +83,39 @@ class Protocol(unittest.TestCase):
                            capture_output=True, timeout=15)
         self.assertNotEqual(p.returncode, 0, p.stdout)
         self.assertFalse(target.exists(), p.stdout)
+
+    def test_cancelled_elicitation_does_not_authorize_a_late_accept(self):
+        # ADR-0015 section 12: cancellation withdraws the ask and authorizes nothing.
+        self.c.close()
+        self.c = c = r1.Client(caps={"elicitation": {}})
+        c.project()
+        target = c.root / "cancelled.jsonl"
+        target.write_bytes(b"original")
+        rid = 9000
+        c.send({"jsonrpc": "2.0", "id": rid, "method": "tools/call", "params": {
+            "name": "run_command", "arguments": {"id": "agent.activity.export", "params": {
+                "path": str(target), "onExists": "overwrite"}}}})
+        deadline = time.monotonic() + 5
+        while True:
+            msg = c.q.get(timeout=max(.001, deadline - time.monotonic()))
+            if msg.get("method") == "elicitation/create":
+                break
+            c.saved.append(msg)
+        # Ordered frames in one pipe write: cancellation is handled before the late answer.
+        frames = [{"jsonrpc": "2.0", "method": "notifications/cancelled", "params": {"requestId": rid}},
+                  {"jsonrpc": "2.0", "id": msg["id"], "result": {"action": "accept", "content": {"confirm": True}}}]
+        c.p.stdin.write(("\n".join(json.dumps(x) for x in frames) + "\n").encode())
+        c.p.stdin.flush()
+        # This queued tool proves the call worker has finished the cancelled call.
+        self.assertEqual(c.run("app.state.get", {})["status"], "ok")
+        self.assertEqual(target.read_bytes(), b"original", "a cancelled elicitation accepted a late answer and overwrote the file")
+        received = list(c.saved)
+        while True:
+            try:
+                received.append(c.q.get_nowait())
+            except queue.Empty:
+                break
+        self.assertFalse(any(x.get("id") == rid and "method" not in x for x in received), received)
 
 
 if __name__ == "__main__":
