@@ -1,8 +1,8 @@
 {
   "counts": {
     "deferred-with-owner": 72,
-    "implemented": 149,
-    "divergent": 5
+    "implemented": 148,
+    "divergent": 6
   },
   "declarationCounts": {
     "implemented": 20,
@@ -730,10 +730,10 @@
       "section": "6.3",
       "line": 216,
       "requirement": "Commands declare which conditions require confirmation (deleting a scene, deleting unused drawings, discarding unsaved changes, overwriting a file, uploading). Under the session's policy:",
-      "status": "implemented",
+      "status": "divergent",
       "implementation": "crates/executor/src/cx.rs:205",
-      "test": "crates/mcp/tests/protocol.rs",
-      "note": "Within the implemented M1 kernel; domain operations keep their declared later owners.",
+      "test": "tests/adversarial/c14-r2-mcp.py::test_close_with_save_offers_external_change_confirmation",
+      "note": "C14-R2-07: close-with-save does not offer the mandated external-change confirmation to agents.",
       "kind": "normative prose"
     },
     {

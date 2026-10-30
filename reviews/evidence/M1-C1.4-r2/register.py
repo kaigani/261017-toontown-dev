@@ -46,6 +46,7 @@ for r in rows:
     if n == 588:
         r['note'] += ' Network half remains builder at the first network command.'
     new = {
+        216: ('C14-R2-07: close-with-save does not offer the mandated external-change confirmation to agents.', 'tests/adversarial/c14-r2-mcp.py::test_close_with_save_offers_external_change_confirmation'),
         26: ('C14-R2-01/02/03: activity/replay attribution is inaccurate.', 'tests/adversarial/c14-r2-mcp.py; crates/mcp/tests/c14_r2_replay.rs'),
         311: ('C14-R2-05: token, JSON bundle and media exports publish outside the atomic commit gate.', 'crates/executor/tests/c14_r2_effects.rs'),
         505: ('C14-R2-01/02/03: failed file publication recorded as success; replay omits partial commits and duplicates cached retries.', 'tests/adversarial/c14-r2-mcp.py; crates/mcp/tests/c14_r2_replay.rs'),
