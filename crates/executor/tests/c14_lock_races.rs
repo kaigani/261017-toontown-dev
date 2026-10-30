@@ -209,7 +209,9 @@ fn a_resumed_heartbeat_whose_lock_was_replaced_fails_closed() {
     forged.lock_id = "someone-else".into();
     if std::fs::write(handle.path(), serde_json::to_vec(&forged).unwrap()).is_err() {
         // Windows: the live holder's share mode refuses every other writer: the scenario cannot arise locally.
-        assert!(cfg!(windows));
+        if !cfg!(windows) {
+            panic!("only Windows share modes refuse the write");
+        }
     } else {
         assert!(handle.refresh().is_err());
         assert!(!handle.held());

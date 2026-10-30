@@ -350,6 +350,10 @@ fn read_raw(path: &Path) -> Option<(LockInfo, bool)> {
 
 /// The outcome of trying to lock a project.
 #[derive(Debug)]
+#[allow(
+    clippy::large_enum_variant,
+    reason = "one value per project open; boxing the handle would change the API callers and tests match on"
+)]
 pub enum Locked {
     /// We hold the lock; `took_over` names a stale lock that was replaced.
     Acquired {

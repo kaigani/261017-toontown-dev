@@ -181,7 +181,9 @@ fn lock_ownership_is_rechecked_after_the_confirmation() {
     let mut info: Value = serde_json::from_slice(&std::fs::read(&lock).unwrap()).unwrap();
     info["lockId"] = json!("someone-else");
     if std::fs::write(&lock, serde_json::to_vec(&info).unwrap()).is_err() {
-        assert!(cfg!(windows), "a live holder's share mode refuses the takeover itself");
+        if !cfg!(windows) {
+            panic!("a live holder's share mode refuses the takeover itself");
+        }
     } else {
         let env = call(&h, &a, "project.save", json!({}), Some(&t));
         let code = match (&env.error, &env.result) {

@@ -455,7 +455,9 @@ fn a_session_whose_lock_was_taken_over_cannot_save_over_the_new_owner() {
     // session cannot happen at all; with advisory locks (flock) the file can still be overwritten and the save must
     // refuse.
     if std::fs::write(&lock, serde_json::to_vec(&info).unwrap()).is_err() {
-        assert!(cfg!(windows), "only Windows share modes refuse the write");
+        if !cfg!(windows) {
+            panic!("only Windows share modes refuse the write");
+        }
         assert_eq!(tt_persist::lock::probe(&lock), Some(true));
         let _ = std::fs::remove_dir_all(&dir);
         return;

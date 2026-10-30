@@ -40,6 +40,12 @@ GATES = {
         f'"{PY}" scripts/check-headless-deps.py {QEXE}',
     ],
     "reviewer-python-suites": [f'"{PY}" scripts/run-reviewer-python-suites.py'],
+    # C1.4: the official MCP Python SDK client against the release binary (needs `pip install mcp`).
+    "mcp-conformance": [f'"{PY}" scripts/mcp-conformance.py {QEXE}'],
+    "declarations": [
+        f'"{PY}" scripts/gen-command-declarations.py',
+        "git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md",
+    ],
 }
 
 

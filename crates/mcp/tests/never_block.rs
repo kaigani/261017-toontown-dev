@@ -11,7 +11,7 @@ mod support;
 use std::collections::BTreeMap;
 use std::time::{Duration, Instant};
 
-use serde_json::{Value, json};
+use serde_json::json;
 use support::*;
 
 const WATCHDOG: Duration = Duration::from_secs(10);
