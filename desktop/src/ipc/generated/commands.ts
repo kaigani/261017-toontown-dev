@@ -8788,9 +8788,39 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "path",
     ],
   },
+  "agent.activity.export.Omitted": {
+    description: "An activity entry a replayable batch leaves out.",
+    type: "object",
+    properties: {
+      seq: {
+        description: "The entry's sequence number.",
+        type: "integer",
+        maximum: 18446744073709551615n,
+        minimum: 0,
+      },
+      tool: {
+        description: "Its tool.",
+        type: "string",
+      },
+      command_id: {
+        description: "Its command.",
+        type: "string",
+      },
+      reason: {
+        description: "`notCompleted` (an error or a confirmation that was not given), `dryRun` (it changed nothing), `readOnly` (a\nquery), `notACommand` (a discovery tool such as `list_commands`), `redacted` (inline data replaced by its hash).",
+        type: "string",
+      },
+    },
+    required: [
+      "seq",
+      "tool",
+      "command_id",
+      "reason",
+    ],
+  },
   "agent.activity.export.result": {
     title: "Exported",
-    description: "`{path, entries}`.",
+    description: "`{path, entries, omitted?}`.",
     type: "object",
     properties: {
       path: {
@@ -8803,10 +8833,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         maximum: 2147483647,
         minimum: 0,
       },
+      omitted: {
+        description: "`format: \"batch\"`: the entries left out of the replayable batch, with the reason (C14-R1-15).",
+        type: "array",
+        items: {
+          $ref: "#/$defs/agent.activity.export.Omitted",
+        },
+      },
     },
     required: [
       "path",
       "entries",
+      "omitted",
     ],
   },
   "agent.activity.list.params": {
@@ -16374,6 +16412,46 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "acting",
     ],
   },
+  "app.context.set.CallerAgentState": {
+    description: "The calling agent session in `AppState` (C14-R1-16: one state shape for `get_state` and `app.state.get`).",
+    type: "object",
+    properties: {
+      sessionId: {
+        description: "Session id.",
+        type: "string",
+      },
+      client: {
+        description: "Client name.",
+        type: "string",
+      },
+      policy: {
+        description: "Policy preset.",
+        type: "string",
+      },
+      scopes: {
+        description: "Granted scopes.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      paused: {
+        description: "Paused by the user.",
+        type: "boolean",
+      },
+      limits: {
+        description: "Session limits (11 §6.5).",
+      },
+    },
+    required: [
+      "sessionId",
+      "client",
+      "policy",
+      "scopes",
+      "paused",
+      "limits",
+    ],
+  },
   "app.context.set.result": {
     title: "AppState",
     description: "`AppState` (01 §12.4).",
@@ -16509,6 +16587,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       fullScreen: {
         description: "Full-screen presentation (01 §5.6; explicit `enabled` state, readiness bullet 4).",
         type: "boolean",
+      },
+      agent: {
+        description: "The calling agent session (11 §7.1 `get_state`: \"session scopes and policy\"); absent for the user.",
+        anyOf: [
+          {
+            $ref: "#/$defs/app.context.set.CallerAgentState",
+          },
+          {
+            type: "null",
+          },
+        ],
       },
     },
     required: [
@@ -17029,6 +17118,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Full-screen presentation (01 §5.6; explicit `enabled` state, readiness bullet 4).",
         type: "boolean",
       },
+      agent: {
+        description: "The calling agent session (11 §7.1 `get_state`: \"session scopes and policy\"); absent for the user.",
+        anyOf: [
+          {
+            $ref: "#/$defs/app.state.changed.CallerAgentState",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
     },
     required: [
       "selection",
@@ -17295,6 +17395,46 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "sessionId",
       "name",
       "acting",
+    ],
+  },
+  "app.state.changed.CallerAgentState": {
+    description: "The calling agent session in `AppState` (C14-R1-16: one state shape for `get_state` and `app.state.get`).",
+    type: "object",
+    properties: {
+      sessionId: {
+        description: "Session id.",
+        type: "string",
+      },
+      client: {
+        description: "Client name.",
+        type: "string",
+      },
+      policy: {
+        description: "Policy preset.",
+        type: "string",
+      },
+      scopes: {
+        description: "Granted scopes.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      paused: {
+        description: "Paused by the user.",
+        type: "boolean",
+      },
+      limits: {
+        description: "Session limits (11 §6.5).",
+      },
+    },
+    required: [
+      "sessionId",
+      "client",
+      "policy",
+      "scopes",
+      "paused",
+      "limits",
     ],
   },
   "app.state.changed.result": {
@@ -17583,6 +17723,46 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "acting",
     ],
   },
+  "app.state.get.CallerAgentState": {
+    description: "The calling agent session in `AppState` (C14-R1-16: one state shape for `get_state` and `app.state.get`).",
+    type: "object",
+    properties: {
+      sessionId: {
+        description: "Session id.",
+        type: "string",
+      },
+      client: {
+        description: "Client name.",
+        type: "string",
+      },
+      policy: {
+        description: "Policy preset.",
+        type: "string",
+      },
+      scopes: {
+        description: "Granted scopes.",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      paused: {
+        description: "Paused by the user.",
+        type: "boolean",
+      },
+      limits: {
+        description: "Session limits (11 §6.5).",
+      },
+    },
+    required: [
+      "sessionId",
+      "client",
+      "policy",
+      "scopes",
+      "paused",
+      "limits",
+    ],
+  },
   "app.state.get.result": {
     title: "AppState",
     description: "`AppState` (01 §12.4).",
@@ -17718,6 +17898,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       fullScreen: {
         description: "Full-screen presentation (01 §5.6; explicit `enabled` state, readiness bullet 4).",
         type: "boolean",
+      },
+      agent: {
+        description: "The calling agent session (11 §7.1 `get_state`: \"session scopes and policy\"); absent for the user.",
+        anyOf: [
+          {
+            $ref: "#/$defs/app.state.get.CallerAgentState",
+          },
+          {
+            type: "null",
+          },
+        ],
       },
     },
     required: [
@@ -74122,12 +74313,26 @@ export interface agent_activity_export_params {
   onExists?: agent_activity_export_ExportOnExists;
 }
 
-/** `{path, entries}`. */
+/** An activity entry a replayable batch leaves out. */
+export interface agent_activity_export_Omitted {
+  /** The entry's sequence number. */
+  seq: number | bigint;
+  /** Its tool. */
+  tool: string;
+  /** Its command. */
+  command_id: string;
+  /** `notCompleted` (an error or a confirmation that was not given), `dryRun` (it changed nothing), `readOnly` (a query), `notACommand` (a discovery tool such as `list_commands`), `redacted` (inline data replaced by its hash). */
+  reason: string;
+}
+
+/** `{path, entries, omitted?}`. */
 export interface agent_activity_export_result {
   /** File written. */
   path: string;
   /** Entries. */
   entries: number;
+  /** `format: "batch"`: the entries left out of the replayable batch, with the reason (C14-R1-15). */
+  omitted: agent_activity_export_Omitted[];
 }
 
 /** `agent.activity.list` parameters. */
@@ -76021,6 +76226,22 @@ export interface app_context_set_AgentSessionState {
   acting: boolean;
 }
 
+/** The calling agent session in `AppState` (C14-R1-16: one state shape for `get_state` and `app.state.get`). */
+export interface app_context_set_CallerAgentState {
+  /** Session id. */
+  sessionId: string;
+  /** Client name. */
+  client: string;
+  /** Policy preset. */
+  policy: string;
+  /** Granted scopes. */
+  scopes: string[];
+  /** Paused by the user. */
+  paused: boolean;
+  /** Session limits (11 §6.5). */
+  limits: unknown;
+}
+
 /** `AppState` (01 §12.4). */
 export interface app_context_set_result {
   /** Open project or `null`. */
@@ -76055,6 +76276,8 @@ export interface app_context_set_result {
   agentSessions: app_context_set_AgentSessionState[];
   /** Full-screen presentation (01 §5.6; explicit `enabled` state, readiness bullet 4). */
   fullScreen: boolean;
+  /** The calling agent session (11 §7.1 `get_state`: "session scopes and policy"); absent for the user. */
+  agent?: app_context_set_CallerAgentState | null;
 }
 
 /** Previous / next. */
@@ -76216,6 +76439,8 @@ export interface app_state_changed_AppState {
   agentSessions: app_state_changed_AgentSessionState[];
   /** Full-screen presentation (01 §5.6; explicit `enabled` state, readiness bullet 4). */
   fullScreen: boolean;
+  /** The calling agent session (11 §7.1 `get_state`: "session scopes and policy"); absent for the user. */
+  agent?: app_state_changed_CallerAgentState | null;
 }
 
 /** The open project in `AppState`. */
@@ -76321,6 +76546,22 @@ export interface app_state_changed_AgentSessionState {
   name: string;
   /** Currently running a command. */
   acting: boolean;
+}
+
+/** The calling agent session in `AppState` (C14-R1-16: one state shape for `get_state` and `app.state.get`). */
+export interface app_state_changed_CallerAgentState {
+  /** Session id. */
+  sessionId: string;
+  /** Client name. */
+  client: string;
+  /** Policy preset. */
+  policy: string;
+  /** Granted scopes. */
+  scopes: string[];
+  /** Paused by the user. */
+  paused: boolean;
+  /** Session limits (11 §6.5). */
+  limits: unknown;
 }
 
 /** `app.state.changed` payload. */
@@ -76439,6 +76680,22 @@ export interface app_state_get_AgentSessionState {
   acting: boolean;
 }
 
+/** The calling agent session in `AppState` (C14-R1-16: one state shape for `get_state` and `app.state.get`). */
+export interface app_state_get_CallerAgentState {
+  /** Session id. */
+  sessionId: string;
+  /** Client name. */
+  client: string;
+  /** Policy preset. */
+  policy: string;
+  /** Granted scopes. */
+  scopes: string[];
+  /** Paused by the user. */
+  paused: boolean;
+  /** Session limits (11 §6.5). */
+  limits: unknown;
+}
+
 /** `AppState` (01 §12.4). */
 export interface app_state_get_result {
   /** Open project or `null`. */
@@ -76473,6 +76730,8 @@ export interface app_state_get_result {
   agentSessions: app_state_get_AgentSessionState[];
   /** Full-screen presentation (01 §5.6; explicit `enabled` state, readiness bullet 4). */
   fullScreen: boolean;
+  /** The calling agent session (11 §7.1 `get_state`: "session scopes and policy"); absent for the user. */
+  agent?: app_state_get_CallerAgentState | null;
 }
 
 export interface capture_auto_start_params {

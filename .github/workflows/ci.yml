@@ -124,7 +124,7 @@ jobs:
           $PY -m venv .venv-mcp
           VPY=.venv-mcp/bin/python
           if [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-mcp/Scripts/python.exe; fi
-          $VPY -m pip install --quiet "mcp>=1.10"
+          $VPY -m pip install --quiet "mcp==2.0.0"
           PYTHONIOENCODING=utf-8 $VPY scripts/mcp-conformance.py "$exe" out/sdk-conformance.json
           # The C1.4 measurements written by the test suite (lock liveness, cache, fingerprint, autosave, never-block),
           # recomputed from their observations (C14-R1-07), and the release-feature proof (C14-R1-10).
@@ -286,7 +286,7 @@ jobs:
       - name: MCP over stdio with no display server (official Python SDK client)
         run: |
           python3 -m venv .venv-mcp
-          .venv-mcp/bin/python -m pip install --quiet "mcp>=1.10"
+          .venv-mcp/bin/python -m pip install --quiet "mcp==2.0.0"
           env -u DISPLAY -u WAYLAND_DISPLAY .venv-mcp/bin/python scripts/mcp-conformance.py target/release/toontown-headless
 
   # C0.3 rasteriser determinism (spike): every fixture scene, every rasteriser configuration, must reproduce the
