@@ -41,9 +41,21 @@ fn usage_error_exits_two() {
 }
 
 #[test]
-fn mcp_stdio_not_yet_available_exits_three() {
-    let out = bin().args(["--headless", "--mcp-stdio"]).output().unwrap();
-    assert_eq!(out.status.code(), Some(3));
-    let stderr = String::from_utf8(out.stderr).unwrap();
-    assert!(stderr.contains("M1"), "{stderr}");
+fn mcp_stdio_exits_zero_when_the_client_closes_its_input() {
+    let dir = std::env::temp_dir().join(format!("tt-headless-cli-{}", std::process::id()));
+    let out = bin()
+        .args(["--headless", "--mcp-stdio", "--user-dir"])
+        .arg(&dir)
+        .stdin(std::process::Stdio::null())
+        .output()
+        .unwrap();
+    let _ = std::fs::remove_dir_all(&dir);
+    assert_eq!(out.status.code(), Some(0), "stderr: {}", String::from_utf8_lossy(&out.stderr));
+    assert!(out.stdout.is_empty(), "nothing is written before the client speaks");
+}
+
+#[test]
+fn a_bad_policy_is_a_usage_error() {
+    let out = bin().args(["--mcp-stdio", "--policy", "root"]).output().unwrap();
+    assert_eq!(out.status.code(), Some(2));
 }

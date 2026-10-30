@@ -37,7 +37,20 @@ pub(crate) fn app_state(s: &Session) -> AppState {
     agent_only = "the GUI shows this state directly; agents read it as their first call (11 §7.1 get_state)",
 )]
 pub(crate) fn app_state_get(cx: &mut Cx, _p: NoParams) -> Result<AppState, CommandError> {
-    Ok(app_state(cx.session()))
+    let mut st = app_state(cx.session());
+    // 11 §7.1: the connected agent sessions (C1.4 agent hub).
+    st.agent_sessions = cx
+        .session()
+        .agents
+        .sessions
+        .values()
+        .map(|s| crate::app::AgentSessionState {
+            session_id: s.session_id.clone(),
+            name: s.client.clone(),
+            acting: false,
+        })
+        .collect();
+    Ok(st)
 }
 
 /// `app.context.set` parameters.

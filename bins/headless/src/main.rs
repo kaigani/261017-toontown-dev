@@ -5,14 +5,18 @@
 //! ```text
 //! toontown-headless --version
 //! toontown-headless --selftest [--json]
-//! toontown-headless [--headless] --mcp-stdio [--project <path>]                       (M1, C1.4)
-//! toontown-headless [--headless] --run <batch.json> [--project <path>] [--out <log>]  (M1, C1.4)
+//! toontown-headless [--headless] --mcp-stdio [--project <path>] [agent options]
+//! toontown-headless [--headless] --run <batch.json> [--project <path>] [--out <log>] [agent options]
+//!
+//! agent options: --policy <p> --grant <scopes> --allow-path <dir>... --preauthorize <categories>
+//!                --typed-tools [<namespaces>] (MCP only) --user-dir <dir>
 //! ```
 //!
 //! The binary links no GUI, windowing or GPU library; CI proves it by running `--selftest` on a runner without a
 //! window system and by checking the binary's linked libraries (`scripts/check-headless-deps.py`).
 //!
-//! Exit status: 0 success, 1 self-test failure, 2 usage error, 3 feature not available in this build, 4 I/O error.
+//! Exit status: 0 success, 1 self-test or engine failure, 2 usage error (including an invalid batch script), 3 feature
+//! not available in this build, 4 I/O error, 5 a batch-script step failed.
 
 mod cli;
 
@@ -30,7 +34,8 @@ fn main() -> ExitCode {
             return ExitCode::from(u8::try_from(e.exit_code()).unwrap_or(2));
         }
     };
-    let mut stdout = std::io::stdout().lock();
+    // Not locked: in MCP mode the server writes from its own threads.
+    let mut stdout = std::io::stdout();
     match cli::run(&cli, &mut stdout) {
         Ok(outcome) => ExitCode::from(outcome.exit_code()),
         Err(e) => {

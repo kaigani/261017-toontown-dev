@@ -8,6 +8,15 @@ publish.workspace = true
 
 [dependencies]
 tt-engine.workspace = true
+tt-executor.workspace = true
+tt-model.workspace = true
+tt-persist.workspace = true
+tt-registry.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+jsonschema.workspace = true
 
 [lints]
 workspace = true

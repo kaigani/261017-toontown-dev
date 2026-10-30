@@ -397,7 +397,7 @@ impl ExecutorHandle {
         let started = std::time::Instant::now();
         let (command, params, origin) = (inv.command.clone(), inv.params.clone(), inv.origin.clone());
         let env = self.invoke(inv);
-        self.audit(&origin, tool, &command, &params, &env, started.elapsed());
+        self.audit_call(&origin, tool, &command, &params, &env, started.elapsed());
         env
     }
 
@@ -407,11 +407,21 @@ impl ExecutorHandle {
         let started = std::time::Instant::now();
         let params = serde_json::to_value(&req).unwrap_or(Value::Null);
         let env = self.batch(req, origin.clone());
-        self.audit(&origin, tool, "batch", &params, &env, started.elapsed());
+        self.audit_call(&origin, tool, "batch", &params, &env, started.elapsed());
         env
     }
 
-    fn audit(&self, origin: &Origin, tool: &str, command: &str, params: &Value, env: &Envelope, took: Duration) {
+    /// Appends one activity entry for a call the MCP server answered itself (a server-side tool such as
+    /// `describe_command`, or a tool whose capability arrives with a later milestone). No-op for non-agent origins.
+    pub fn audit_call(
+        &self,
+        origin: &Origin,
+        tool: &str,
+        command: &str,
+        params: &Value,
+        env: &Envelope,
+        took: Duration,
+    ) {
         let Origin::Agent { session, name, .. } = origin else { return };
         let entry = agents::ActivityEntry {
             seq: 0,

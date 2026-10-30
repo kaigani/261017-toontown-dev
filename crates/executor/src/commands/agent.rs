@@ -164,7 +164,7 @@ pub(crate) fn agent_session_grant(cx: &mut Cx, p: GrantParams) -> Result<Map<Str
                     Some(sc) => {
                         out.insert(sc);
                     }
-                    None => return Err(invalid(&format!("/scopes/{i}"), &format!("`{name}` is not a scope"))),
+                    None => return Err(invalid(&format!("/scopes/{i}"), format!("`{name}` is not a scope"))),
                 }
             }
             Some(out)

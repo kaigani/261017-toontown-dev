@@ -4505,6 +4505,7 @@ dependencies = [
  "serde_json",
  "thiserror 2.0.21",
  "tt-engine",
+ "tt-executor",
  "tt-mcp",
 ]
 
@@ -4529,7 +4530,14 @@ dependencies = [
 name = "tt-mcp"
 version = "0.0.1"
 dependencies = [
+ "jsonschema",
+ "serde",
+ "serde_json",
  "tt-engine",
+ "tt-executor",
+ "tt-model",
+ "tt-persist",
+ "tt-registry",
 ]
 
 [[package]]
