@@ -14,6 +14,11 @@ sha2.workspace = true
 flate2.workspace = true
 crc32fast.workspace = true
 getrandom.workspace = true
+unicode-normalization.workspace = true
+
+[features]
+# Suspension points in the lock protocol for the C1.4 race tests (never enabled in products).
+test-hooks = []
 
 [dev-dependencies]
 proptest.workspace = true

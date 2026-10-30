@@ -451,7 +451,15 @@ fn a_session_whose_lock_was_taken_over_cannot_save_over_the_new_owner() {
     let lock = tt_persist::lock::lock_path(&target);
     let mut info: Value = serde_json::from_slice(&std::fs::read(&lock).unwrap()).unwrap();
     info["lockId"] = json!("someone-else");
-    std::fs::write(&lock, serde_json::to_vec(&info).unwrap()).unwrap();
+    // C1.4 (ADR-0014 §11.4): on Windows the live holder's handle refuses every other writer, so a takeover of a live
+    // session cannot happen at all; with advisory locks (flock) the file can still be overwritten and the save must
+    // refuse.
+    if std::fs::write(&lock, serde_json::to_vec(&info).unwrap()).is_err() {
+        assert!(cfg!(windows), "only Windows share modes refuse the write");
+        assert_eq!(tt_persist::lock::probe(&lock), Some(true));
+        let _ = std::fs::remove_dir_all(&dir);
+        return;
+    }
     let before = std::fs::read(&target).unwrap();
     for (id, params) in [("project.save", json!({})), ("project.close", json!({ "onUnsaved": "save" }))] {
         let env = run(&a, id, params);

@@ -2,10 +2,33 @@
 //! process is still running (LOCK-02 "process known dead on the same host", REC-01).
 //!
 //! Process liveness is asked of the operating system's own tool (`tasklist` on Windows, `kill -0` elsewhere), so no
-//! native calls are needed; when the tool cannot answer, liveness is unknown and only the heartbeat decides.
+//! native calls are needed; when the tool cannot answer within [`LIVENESS_TIMEOUT`], liveness is unknown and only the
+//! heartbeat decides. A process id says nothing once the process is gone (ids are reused): locks rely on their
+//! holder's open, protected handle instead (`lock::probe`), and the id is only the fallback (C1.4 obligation 2).
 
-use std::process::Command;
+use std::process::{Command, Output, Stdio};
 use std::sync::OnceLock;
+use std::time::{Duration, Instant};
+
+/// The longest a liveness question waits for the operating system's tool.
+pub const LIVENESS_TIMEOUT: Duration = Duration::from_secs(2);
+
+/// Runs a tool, giving up (and killing it) after [`LIVENESS_TIMEOUT`].
+fn bounded(cmd: &mut Command) -> Option<Output> {
+    let mut child = cmd.stdin(Stdio::null()).stdout(Stdio::piped()).stderr(Stdio::piped()).spawn().ok()?;
+    let start = Instant::now();
+    loop {
+        match child.try_wait() {
+            Ok(Some(_)) => return child.wait_with_output().ok(),
+            Ok(None) if start.elapsed() < LIVENESS_TIMEOUT => std::thread::sleep(Duration::from_millis(5)),
+            _ => {
+                let _ = child.kill();
+                let _ = child.wait();
+                return None;
+            }
+        }
+    }
+}
 
 /// The user name (`USERNAME` / `USER`), or `unknown`.
 #[must_use]
@@ -47,15 +70,14 @@ pub fn process_alive(pid: u32) -> Option<bool> {
         return Some(true);
     }
     if cfg!(windows) {
-        let out =
-            Command::new("tasklist").args(["/FI", &format!("PID eq {pid}"), "/NH", "/FO", "CSV"]).output().ok()?;
+        let out = bounded(Command::new("tasklist").args(["/FI", &format!("PID eq {pid}"), "/NH", "/FO", "CSV"]))?;
         if !out.status.success() {
             return None;
         }
         let text = String::from_utf8_lossy(&out.stdout);
         Some(text.contains(&format!("\"{pid}\"")))
     } else {
-        let out = Command::new("kill").args(["-0", &pid.to_string()]).output().ok()?;
+        let out = bounded(Command::new("kill").args(["-0", &pid.to_string()]))?;
         if out.status.success() {
             return Some(true);
         }

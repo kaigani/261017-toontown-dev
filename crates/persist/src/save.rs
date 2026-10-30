@@ -81,6 +81,40 @@ pub fn entry_text(doc: &Document, preserved: &Preserved, key: &EntryKey) -> Resu
     tt_model::canonical::to_canonical_string(&value)
 }
 
+/// The key under which file systems may treat two entry names as the same file: NFC (APFS and HFS+ ignore
+/// normalisation differences) and lower case (NTFS and default APFS ignore case).
+#[must_use]
+pub fn fold_key(name: &str) -> String {
+    use unicode_normalization::UnicodeNormalization;
+    name.nfc().flat_map(char::to_lowercase).collect()
+}
+
+/// Folder-form preflight (C1.4 obligation 3): entry names that a file system may store as one file are refused before
+/// anything is written (a package keeps them apart; a folder could not without overwriting one with the other).
+///
+/// # Errors
+/// `project.saveFailed` with reason `nameCollision` and the colliding names.
+pub fn folder_names_preflight<'a>(names: impl Iterator<Item = &'a str>) -> Result<(), ModelError> {
+    let mut seen: BTreeMap<String, &str> = BTreeMap::new();
+    for n in names.chain([layout::MIMETYPE, layout::MANIFEST]) {
+        if let Some(other) = seen.insert(fold_key(n), n)
+            && other != n
+        {
+            return Err(ModelError::with_details(
+                codes::SAVE_FAILED,
+                format!(
+                    "the entries `{other}` and `{n}` would be the same file in a folder (Unicode normalisation or case)"
+                ),
+                json!({
+                    "reason": "nameCollision", "names": [other, n],
+                    "hint": "save as a package (.animpkg), which keeps both entries, or rename one of them",
+                }),
+            ));
+        }
+    }
+    Ok(())
+}
+
 /// The entries a snapshot is saved as (manifest excluded), sorted by name with `mimetype` first.
 ///
 /// # Errors
@@ -401,6 +435,8 @@ pub fn save_folder(
             json!({ "reason": "ioError", "path": root.to_string_lossy() }),
         ));
     }
+    let planned = plan(input)?;
+    folder_names_preflight(planned.iter().map(|p| p.name.as_str()))?;
     fs::create_dir_all(root).map_err(|e| fsx::save_error(&e, root, "cannot create the folder"))?;
     if !existed && opts.git_files {
         write_git_files(root)?;
@@ -417,7 +453,6 @@ pub fn save_folder(
             sink.discard(st);
         }
     };
-    let planned = plan(input)?;
     let mimetype =
         Planned { name: layout::MIMETYPE.to_owned(), content: Content::Bytes(PACKAGE_MIMETYPE.as_bytes().to_vec()) };
     let manifest = manifest_for(input, None);
@@ -520,6 +555,9 @@ pub fn save_folder(
     // Entries of deleted objects disappear (LAY-03); entries outside the reserved names stay (ZIP-04).
     let keep: BTreeSet<&str> =
         planned.iter().map(|p| p.name.as_str()).chain(std::iter::once(layout::MIMETYPE)).collect();
+    // A file whose name differs from a kept entry's only by normalisation or case is that entry's file on APFS and
+    // NTFS: never removed (C1.4 obligation 3).
+    let kept_keys: BTreeSet<String> = keep.iter().map(|n| fold_key(n)).collect();
     let deletions: Vec<String> = existing
         .as_ref()
         .map(|idx| {
@@ -528,6 +566,7 @@ pub fn save_folder(
                 .filter(|n| {
                     let k = layout::classify(n);
                     !keep.contains(n.as_str())
+                        && !kept_keys.contains(&fold_key(n))
                         && !matches!(k, Kind::Unknown | Kind::Cache | Kind::Manifest | Kind::Session)
                 })
                 .cloned()

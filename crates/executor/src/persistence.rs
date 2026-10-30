@@ -282,6 +282,19 @@ pub(crate) fn finish_save(
     if p.doc.project().id() != snap.doc.project().id() {
         return None;
     }
+    // Ownership lost while the save ran (C1.4 obligation 1: possible only where the file system does not carry the
+    // holder's protection): the clean marker, the saved revision and the stamp do not advance, and the session
+    // continues read-only (LOCK-02).
+    if becomes_current
+        && lock.is_none()
+        && let Some(l) = p.store.lock.as_ref().filter(|l| !l.held())
+    {
+        p.store.locked_by = tt_persist::lock::read(l.path()).and_then(|i| serde_json::to_value(i).ok());
+        p.store.lock = None;
+        p.read_only = true;
+        p.store.saving = false;
+        return None;
+    }
     if becomes_current {
         p.history.mark_clean_at(snap.position, snap.top.as_deref());
         p.permanent_dirty = false;
