@@ -61,6 +61,50 @@ pub fn differences(a: &Value, b: &Value, at: &str, out: &mut Vec<String>) {
     }
 }
 
+/// Keys whose values are times or durations: always recorded as varying, even when two recording runs happened to
+/// agree (a duration of 0 ms twice).
+const TIME_KEYS: [&str; 12] = [
+    "durationMs",
+    "time",
+    "startedAt",
+    "finishedAt",
+    "connectedAt",
+    "createdAt",
+    "exportedAt",
+    "lastOpened",
+    "modifiedAt",
+    "savedAt",
+    "heartbeatAt",
+    "openedAt",
+];
+
+/// The pointers that vary between two executions `a` and `b`: their differences plus every time/duration member.
+pub fn varying(a: &Value, b: &Value) -> Vec<String> {
+    let mut out = Vec::new();
+    differences(a, b, "", &mut out);
+    times(a, "", &mut out);
+    out.sort();
+    out.dedup();
+    out
+}
+
+fn times(v: &Value, at: &str, out: &mut Vec<String>) {
+    match v {
+        Value::Object(m) => {
+            for (k, x) in m {
+                let p = format!("{at}/{}", escape(k));
+                if TIME_KEYS.contains(&k.as_str()) && !x.is_object() && !x.is_array() {
+                    out.push(p);
+                } else {
+                    times(x, &p, out);
+                }
+            }
+        }
+        Value::Array(a) => a.iter().enumerate().for_each(|(i, x)| times(x, &format!("{at}/{i}"), out)),
+        _ => {}
+    }
+}
+
 fn keys(m: &Map<String, Value>) -> Vec<&String> {
     m.keys().collect()
 }
@@ -69,12 +113,8 @@ fn keys(m: &Map<String, Value>) -> Vec<&String> {
 pub fn matches(recorded: &Value, live: &Value, varies: &[String]) -> Result<(), String> {
     let mut diffs = Vec::new();
     differences(recorded, live, "", &mut diffs);
-    let unexpected: Vec<&String> = diffs
-        .iter()
-        .filter(|d| {
-            !varies.iter().any(|v| *d == v || d.starts_with(&format!("{v}/")) || v.starts_with(&format!("{d}/")))
-        })
-        .collect();
+    let unexpected: Vec<&String> =
+        diffs.iter().filter(|d| !varies.iter().any(|v| *d == v || d.starts_with(&format!("{v}/")))).collect();
     if unexpected.is_empty() { Ok(()) } else { Err(format!("differs at {unexpected:?}")) }
 }
 

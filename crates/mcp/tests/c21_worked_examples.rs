@@ -234,8 +234,7 @@ fn every_kernel_namespace_has_a_retained_worked_example() {
                 .iter()
                 .zip(first.iter().zip(&second))
                 .map(|(st, ((req, a), (_, b)))| {
-                    let mut varies = Vec::new();
-                    recorded::differences(a, b, "", &mut varies);
+                    let varies = recorded::varying(a, b);
                     json!({ "note": st.note, "request": req, "response": a, "varies": varies })
                 })
                 .collect();

@@ -98,8 +98,7 @@ fn every_implemented_example_has_a_retained_executed_result() {
                 .iter()
                 .zip(&second[id])
                 .map(|((title, a), (_, b))| {
-                    let mut varies = Vec::new();
-                    recorded::differences(a, b, "", &mut varies);
+                    let varies = recorded::varying(a, b);
                     let text = serde_json::to_string(a).unwrap();
                     if text.len() > DIGEST_ABOVE {
                         assert!(varies.is_empty(), "{id} `{title}`: a digest needs a reproducible result");

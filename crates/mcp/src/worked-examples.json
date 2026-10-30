@@ -17,21 +17,21 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M674QJBS3E60T171E9G9BNH1",
+            "projectId": "pr_01M675X8R425SA4PWXKFQ95YWZ",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M674QJBTKZN9ARV60ZXBJSF9",
-            "cameraId": "el_01M674QJBTKZN9ARV60ZXBJSFB",
-            "elementId": "el_01M674QJBTKZN9ARV60ZXBJSFC"
+            "sceneId": "sc_01M675X8R575Z9MZY8C6BS4H0W",
+            "cameraId": "el_01M675X8R575Z9MZY8C6BS4H0Y",
+            "elementId": "el_01M675X8R575Z9MZY8C6BS4H0Z"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 1
         },
         "varies": [
-          "/result/projectId",
-          "/result/sceneId",
           "/result/cameraId",
-          "/result/elementId"
+          "/result/elementId",
+          "/result/projectId",
+          "/result/sceneId"
         ]
       },
       {
@@ -46,35 +46,35 @@
         "response": {
           "status": "ok",
           "result": {
-            "id": "pr_01M674QJBS3E60T171E9G9BNH1",
+            "id": "pr_01M675X8R425SA4PWXKFQ95YWZ",
             "name": "Demo",
             "path": "/tmp/Demo.animpkg",
             "readOnly": false,
             "formatVersion": "1.0",
             "dirty": false,
             "globalLibraryDirty": false,
-            "lastSaved": "2026-10-30T19:31:33.881Z",
+            "lastSaved": "2026-10-30T19:52:09.220Z",
             "frameRate": 24.0,
             "cameraWidth": 1920,
             "cameraHeight": 1080,
             "scenes": [
               {
-                "id": "sc_01M674QJBTKZN9ARV60ZXBJSF9",
+                "id": "sc_01M675X8R575Z9MZY8C6BS4H0W",
                 "name": "Scene-1",
                 "frameCount": 1
               }
             ],
-            "currentSceneId": "sc_01M674QJBTKZN9ARV60ZXBJSF9"
+            "currentSceneId": "sc_01M675X8R575Z9MZY8C6BS4H0W"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 1
         },
         "varies": [
+          "/result/currentSceneId",
           "/result/id",
           "/result/lastSaved",
-          "/result/scenes/0/id",
-          "/result/currentSceneId"
+          "/result/scenes/0/id"
         ]
       },
       {
@@ -97,7 +97,7 @@
           },
           "changes": [
             {
-              "id": "pr_01M674QJBS3E60T171E9G9BNH1",
+              "id": "pr_01M675X8R425SA4PWXKFQ95YWZ",
               "type": "project",
               "op": "modified",
               "rev": 2,
@@ -138,7 +138,7 @@
           },
           "changes": [
             {
-              "id": "pr_01M674QJBS3E60T171E9G9BNH1",
+              "id": "pr_01M675X8R425SA4PWXKFQ95YWZ",
               "type": "project",
               "op": "modified",
               "rev": 3,
@@ -146,8 +146,8 @@
                 {
                   "op": "replace",
                   "path": "/modifiedAt",
-                  "value": "2026-10-30T19:31:34.147Z",
-                  "oldValue": "2026-10-30T19:31:33.881Z"
+                  "value": "2026-10-30T19:52:09.479Z",
+                  "oldValue": "2026-10-30T19:52:09.220Z"
                 }
               ]
             }
@@ -157,8 +157,8 @@
         },
         "varies": [
           "/changes/0/id",
-          "/changes/0/patch/0/value",
-          "/changes/0/patch/0/oldValue"
+          "/changes/0/patch/0/oldValue",
+          "/changes/0/patch/0/value"
         ]
       },
       {
@@ -178,23 +178,23 @@
             "state": "succeeded",
             "progress": 1.0,
             "message": "Replace",
-            "startedAt": "2026-10-30T19:31:34.148Z",
+            "startedAt": "2026-10-30T19:52:09.480Z",
             "result": {
               "path": "/tmp/Demo.animpkg",
               "projectSaved": true,
               "globalLibrarySaved": false,
-              "backupId": "bk_730c25d1732b4638"
+              "backupId": "bk_480443f25e887580"
             },
-            "session": "agent:s1-a46ffc"
+            "session": "agent:s1-458aad"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 3
         },
         "varies": [
-          "/result/startedAt",
           "/result/result/backupId",
-          "/result/session"
+          "/result/session",
+          "/result/startedAt"
         ]
       },
       {
@@ -232,7 +232,7 @@
             {
               "path": "/tmp/Demo.animpkg",
               "name": "Demo",
-              "lastOpened": "2026-10-30T19:31:34.168Z",
+              "lastOpened": "2026-10-30T19:52:09.503Z",
               "exists": true
             }
           ],
@@ -264,21 +264,21 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M674QJVN00SZPDRXQ48QW49A",
+            "projectId": "pr_01M675X98M0YVSE6DKRPAZ9EJ6",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
-            "cameraId": "el_01M674QJVPDJGZJ01RXJ8CBS3B",
-            "elementId": "el_01M674QJVPDJGZJ01RXJ8CBS3C"
+            "sceneId": "sc_01M675X98N74KQ52YMXR3Y1M9B",
+            "cameraId": "el_01M675X98N74KQ52YMXR3Y1M9D",
+            "elementId": "el_01M675X98N74KQ52YMXR3Y1M9E"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 1
         },
         "varies": [
-          "/result/projectId",
-          "/result/sceneId",
           "/result/cameraId",
-          "/result/elementId"
+          "/result/elementId",
+          "/result/projectId",
+          "/result/sceneId"
         ]
       },
       {
@@ -297,7 +297,7 @@
           "result": {
             "items": [
               {
-                "id": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+                "id": "sc_01M675X98N74KQ52YMXR3Y1M9B",
                 "type": "scene",
                 "name": "Scene-1",
                 "path": "scene:\"Scene-1\"",
@@ -331,52 +331,52 @@
           "status": "ok",
           "result": {
             "object": {
-              "id": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+              "id": "sc_01M675X98N74KQ52YMXR3Y1M9B",
               "type": "scene",
               "rev": 1,
               "name": "Scene-1",
               "path": "scene:\"Scene-1\"",
               "visible": true,
               "backgroundColour": "#FFFFFFFF",
-              "currentCameraId": "el_01M674QJVPDJGZJ01RXJ8CBS3B",
+              "currentCameraId": "el_01M675X98N74KQ52YMXR3Y1M9D",
               "paletteStyles": {
-                "pal_01M674QJVN00SZPDRXQ48QW49B": "sty_01M674QJVN00SZPDRXQ48QW49C"
+                "pal_01M675X98M0YVSE6DKRPAZ9EJ7": "sty_01M675X98M0YVSE6DKRPAZ9EJ8"
               },
               "outTransition": {
-                "id": "tr_01M674QJVPDJGZJ01RXJ8CBS3F",
+                "id": "tr_01M675X98N74KQ52YMXR3Y1M9H",
                 "type": "transition"
               },
               "tree": [
                 {
-                  "id": "el_01M674QJVPDJGZJ01RXJ8CBS3A",
+                  "id": "el_01M675X98N74KQ52YMXR3Y1M9C",
                   "children": [
                     {
-                      "id": "el_01M674QJVPDJGZJ01RXJ8CBS3B",
+                      "id": "el_01M675X98N74KQ52YMXR3Y1M9D",
                       "children": []
                     }
                   ]
                 },
                 {
-                  "id": "el_01M674QJVPDJGZJ01RXJ8CBS3C",
+                  "id": "el_01M675X98N74KQ52YMXR3Y1M9E",
                   "children": []
                 }
               ],
               "columnOrder": [
-                "el_01M674QJVPDJGZJ01RXJ8CBS3C"
+                "el_01M675X98N74KQ52YMXR3Y1M9E"
               ],
               "elements": [
                 {
-                  "id": "el_01M674QJVPDJGZJ01RXJ8CBS3A",
+                  "id": "el_01M675X98N74KQ52YMXR3Y1M9C",
                   "type": "element",
                   "name": "Camera Peg"
                 },
                 {
-                  "id": "el_01M674QJVPDJGZJ01RXJ8CBS3B",
+                  "id": "el_01M675X98N74KQ52YMXR3Y1M9D",
                   "type": "element",
                   "name": "Camera"
                 },
                 {
-                  "id": "el_01M674QJVPDJGZJ01RXJ8CBS3C",
+                  "id": "el_01M675X98N74KQ52YMXR3Y1M9E",
                   "type": "element",
                   "name": "Drawing"
                 }
@@ -385,7 +385,7 @@
           },
           "targets": {
             "ids": [
-              "sc_01M674QJVPDJGZJ01RXJ8CBS39"
+              "sc_01M675X98N74KQ52YMXR3Y1M9B"
             ]
           },
           "changes": [],
@@ -393,17 +393,17 @@
           "documentRev": 1
         },
         "varies": [
-          "/result/object/id",
-          "/result/object/currentCameraId",
-          "/result/object/paletteStyles",
-          "/result/object/outTransition/id",
-          "/result/object/tree/0/id",
-          "/result/object/tree/0/children/0/id",
-          "/result/object/tree/1/id",
           "/result/object/columnOrder/0",
+          "/result/object/currentCameraId",
           "/result/object/elements/0/id",
           "/result/object/elements/1/id",
           "/result/object/elements/2/id",
+          "/result/object/id",
+          "/result/object/outTransition/id",
+          "/result/object/paletteStyles",
+          "/result/object/tree/0/children/0/id",
+          "/result/object/tree/0/id",
+          "/result/object/tree/1/id",
           "/targets/ids/0"
         ]
       },
@@ -430,7 +430,7 @@
           "result": {
             "changes": [
               {
-                "id": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+                "id": "sc_01M675X98N74KQ52YMXR3Y1M9B",
                 "type": "scene",
                 "op": "modified",
                 "rev": 2,
@@ -449,12 +449,12 @@
           },
           "targets": {
             "ids": [
-              "sc_01M674QJVPDJGZJ01RXJ8CBS39"
+              "sc_01M675X98N74KQ52YMXR3Y1M9B"
             ]
           },
           "changes": [
             {
-              "id": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+              "id": "sc_01M675X98N74KQ52YMXR3Y1M9B",
               "type": "scene",
               "op": "modified",
               "rev": 2,
@@ -477,9 +477,9 @@
           "documentRev": 2
         },
         "varies": [
+          "/changes/0/id",
           "/result/changes/0/id",
-          "/targets/ids/0",
-          "/changes/0/id"
+          "/targets/ids/0"
         ]
       },
       {
@@ -500,7 +500,7 @@
             "toRev": 2,
             "changes": [
               {
-                "id": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+                "id": "sc_01M675X98N74KQ52YMXR3Y1M9B",
                 "type": "scene",
                 "op": "modified",
                 "rev": 2,
@@ -601,21 +601,21 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M674QK3EFWZG92EVKS7RS1NN",
+            "projectId": "pr_01M675X9H2X37K3YHSJ7PDMZDC",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M674QK3GMNCBC0FWXBV3JYSP",
-            "cameraId": "el_01M674QK3GMNCBC0FWXBV3JYSR",
-            "elementId": "el_01M674QK3GMNCBC0FWXBV3JYSS"
+            "sceneId": "sc_01M675X9H3ZFHKDC5DHE7HMTCH",
+            "cameraId": "el_01M675X9H3ZFHKDC5DHE7HMTCK",
+            "elementId": "el_01M675X9H3ZFHKDC5DHE7HMTCM"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 1
         },
         "varies": [
-          "/result/projectId",
-          "/result/sceneId",
           "/result/cameraId",
-          "/result/elementId"
+          "/result/elementId",
+          "/result/projectId",
+          "/result/sceneId"
         ]
       },
       {
@@ -642,7 +642,7 @@
           "result": {
             "changes": [
               {
-                "id": "sc_01M674QK3GMNCBC0FWXBV3JYSP",
+                "id": "sc_01M675X9H3ZFHKDC5DHE7HMTCH",
                 "type": "scene",
                 "op": "modified",
                 "rev": 2,
@@ -661,12 +661,12 @@
           },
           "targets": {
             "ids": [
-              "sc_01M674QK3GMNCBC0FWXBV3JYSP"
+              "sc_01M675X9H3ZFHKDC5DHE7HMTCH"
             ]
           },
           "changes": [
             {
-              "id": "sc_01M674QK3GMNCBC0FWXBV3JYSP",
+              "id": "sc_01M675X9H3ZFHKDC5DHE7HMTCH",
               "type": "scene",
               "op": "modified",
               "rev": 2,
@@ -689,9 +689,9 @@
           "documentRev": 2
         },
         "varies": [
+          "/changes/0/id",
           "/result/changes/0/id",
-          "/targets/ids/0",
-          "/changes/0/id"
+          "/targets/ids/0"
         ]
       },
       {
@@ -712,9 +712,9 @@
                 "stepId": "u-1",
                 "label": "Mark take",
                 "source": "agent",
-                "agentSessionId": "s1-1bf8dd",
+                "agentSessionId": "s1-7ea629",
                 "agentName": "c14-test",
-                "time": "2026-10-30T19:31:34.679Z",
+                "time": "2026-10-30T19:52:10.066Z",
                 "objectCount": 1
               }
             ],
@@ -750,7 +750,7 @@
           },
           "changes": [
             {
-              "id": "sc_01M674QK3GMNCBC0FWXBV3JYSP",
+              "id": "sc_01M675X9H3ZFHKDC5DHE7HMTCH",
               "type": "scene",
               "op": "modified",
               "rev": 3,
@@ -791,7 +791,7 @@
           },
           "changes": [
             {
-              "id": "sc_01M674QK3GMNCBC0FWXBV3JYSP",
+              "id": "sc_01M675X9H3ZFHKDC5DHE7HMTCH",
               "type": "scene",
               "op": "modified",
               "rev": 4,
@@ -833,21 +833,21 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M674QKAM6R7H9R65S6CFJPT2",
+            "projectId": "pr_01M675X9RTAX1HH03X6KJC53C4",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M674QKAP94X48ZDHMTPVZRC8",
-            "cameraId": "el_01M674QKAP94X48ZDHMTPVZRCA",
-            "elementId": "el_01M674QKAP94X48ZDHMTPVZRCB"
+            "sceneId": "sc_01M675X9RVKG64TXWV4JRVHAT1",
+            "cameraId": "el_01M675X9RVKG64TXWV4JRVHAT3",
+            "elementId": "el_01M675X9RVKG64TXWV4JRVHAT4"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 1
         },
         "varies": [
-          "/result/projectId",
-          "/result/sceneId",
           "/result/cameraId",
-          "/result/elementId"
+          "/result/elementId",
+          "/result/projectId",
+          "/result/sceneId"
         ]
       },
       {
@@ -896,7 +896,7 @@
           "result": {
             "changes": [
               {
-                "id": "sc_01M674QKAP94X48ZDHMTPVZRC8",
+                "id": "sc_01M675X9RVKG64TXWV4JRVHAT1",
                 "type": "scene",
                 "op": "modified",
                 "rev": 2,
@@ -915,12 +915,12 @@
           },
           "targets": {
             "ids": [
-              "sc_01M674QKAP94X48ZDHMTPVZRC8"
+              "sc_01M675X9RVKG64TXWV4JRVHAT1"
             ]
           },
           "changes": [
             {
-              "id": "sc_01M674QKAP94X48ZDHMTPVZRC8",
+              "id": "sc_01M675X9RVKG64TXWV4JRVHAT1",
               "type": "scene",
               "op": "modified",
               "rev": 2,
@@ -943,9 +943,9 @@
           "documentRev": 2
         },
         "varies": [
+          "/changes/0/id",
           "/result/changes/0/id",
-          "/targets/ids/0",
-          "/changes/0/id"
+          "/targets/ids/0"
         ]
       },
       {
@@ -962,7 +962,7 @@
           "result": [
             {
               "name": "before",
-              "createdAt": "2026-10-30T19:31:34.911Z",
+              "createdAt": "2026-10-30T19:52:10.310Z",
               "documentRev": 1,
               "origin": "agent:c14-test"
             }
@@ -994,7 +994,7 @@
           },
           "changes": [
             {
-              "id": "sc_01M674QKAP94X48ZDHMTPVZRC8",
+              "id": "sc_01M675X9RVKG64TXWV4JRVHAT1",
               "type": "scene",
               "op": "modified",
               "rev": 3,
@@ -1060,21 +1060,21 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M674QKJ5V8KBX5483ME7J3VK",
+            "projectId": "pr_01M675XA1EEEW3ED556FSCPS73",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M674QKJ639QG01M78YWB213A",
-            "cameraId": "el_01M674QKJ639QG01M78YWB213C",
-            "elementId": "el_01M674QKJ639QG01M78YWB213D"
+            "sceneId": "sc_01M675XA1FA6E6WW080QGXSPBY",
+            "cameraId": "el_01M675XA1FA6E6WW080QGXSPC0",
+            "elementId": "el_01M675XA1FA6E6WW080QGXSPC1"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 1
         },
         "varies": [
-          "/result/projectId",
-          "/result/sceneId",
           "/result/cameraId",
-          "/result/elementId"
+          "/result/elementId",
+          "/result/projectId",
+          "/result/sceneId"
         ]
       },
       {
@@ -1117,21 +1117,21 @@
             "state": "succeeded",
             "progress": 1.0,
             "message": "",
-            "startedAt": "2026-10-30T19:31:35.152Z",
+            "startedAt": "2026-10-30T19:52:10.585Z",
             "result": {
               "path": "/tmp/Demo.animpkg",
               "projectSaved": true,
               "globalLibrarySaved": false
             },
-            "session": "agent:s1-509c6a"
+            "session": "agent:s1-d85f1a"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 1
         },
         "varies": [
-          "/result/startedAt",
-          "/result/session"
+          "/result/session",
+          "/result/startedAt"
         ]
       },
       {
@@ -1152,13 +1152,13 @@
               "state": "succeeded",
               "progress": 1.0,
               "message": "",
-              "startedAt": "2026-10-30T19:31:35.152Z",
+              "startedAt": "2026-10-30T19:52:10.585Z",
               "result": {
                 "path": "/tmp/Demo.animpkg",
                 "projectSaved": true,
                 "globalLibrarySaved": false
               },
-              "session": "agent:s1-509c6a"
+              "session": "agent:s1-d85f1a"
             }
           ],
           "changes": [],
@@ -1166,8 +1166,8 @@
           "documentRev": 1
         },
         "varies": [
-          "/result/0/startedAt",
-          "/result/0/session"
+          "/result/0/session",
+          "/result/0/startedAt"
         ]
       }
     ]
@@ -1190,21 +1190,21 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M674QKS9HE3FNG3J17M54C13",
+            "projectId": "pr_01M675XA8XHZN7FJ0BY4BF9D1Z",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M674QKSBF7EN7REF6ZWNYPJ6",
-            "cameraId": "el_01M674QKSBF7EN7REF6ZWNYPJ8",
-            "elementId": "el_01M674QKSBF7EN7REF6ZWNYPJ9"
+            "sceneId": "sc_01M675XA8YQGGF7FP9S70CMKA2",
+            "cameraId": "el_01M675XA8YQGGF7FP9S70CMKA4",
+            "elementId": "el_01M675XA8YQGGF7FP9S70CMKA5"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 1
         },
         "varies": [
-          "/result/projectId",
-          "/result/sceneId",
           "/result/cameraId",
-          "/result/elementId"
+          "/result/elementId",
+          "/result/projectId",
+          "/result/sceneId"
         ]
       },
       {
@@ -1230,7 +1230,7 @@
           "result": {
             "changes": [
               {
-                "id": "sc_01M674QKSBF7EN7REF6ZWNYPJ6",
+                "id": "sc_01M675XA8YQGGF7FP9S70CMKA2",
                 "type": "scene",
                 "op": "modified",
                 "rev": 2,
@@ -1249,12 +1249,12 @@
           },
           "targets": {
             "ids": [
-              "sc_01M674QKSBF7EN7REF6ZWNYPJ6"
+              "sc_01M675XA8YQGGF7FP9S70CMKA2"
             ]
           },
           "changes": [
             {
-              "id": "sc_01M674QKSBF7EN7REF6ZWNYPJ6",
+              "id": "sc_01M675XA8YQGGF7FP9S70CMKA2",
               "type": "scene",
               "op": "modified",
               "rev": 2,
@@ -1277,9 +1277,9 @@
           "documentRev": 2
         },
         "varies": [
+          "/changes/0/id",
           "/result/changes/0/id",
-          "/targets/ids/0",
-          "/changes/0/id"
+          "/targets/ids/0"
         ]
       },
       {
@@ -1298,7 +1298,7 @@
             "endpoint": "stdio",
             "sessions": [
               {
-                "sessionId": "s1-de9e3f",
+                "sessionId": "s1-4f751f",
                 "client": "c14-test",
                 "policy": "assist",
                 "scopes": [
@@ -1310,8 +1310,8 @@
                   "files.write",
                   "library.global"
                 ],
-                "connectedAt": "2026-10-30T19:31:35.335Z",
-                "lastActivity": "2026-10-30T19:31:35.381Z",
+                "connectedAt": "2026-10-30T19:52:10.779Z",
+                "lastActivity": "2026-10-30T19:52:10.829Z",
                 "paused": false,
                 "transport": "stdio"
               }
@@ -1323,9 +1323,9 @@
           "documentRev": 2
         },
         "varies": [
-          "/result/sessions/0/sessionId",
           "/result/sessions/0/connectedAt",
-          "/result/sessions/0/lastActivity"
+          "/result/sessions/0/lastActivity",
+          "/result/sessions/0/sessionId"
         ]
       },
       {
@@ -1344,8 +1344,8 @@
           "result": [
             {
               "seq": 1,
-              "time": "2026-10-30T19:31:35.377Z",
-              "sessionId": "s1-de9e3f",
+              "time": "2026-10-30T19:52:10.825Z",
+              "sessionId": "s1-4f751f",
               "client": "c14-test",
               "tool": "run_command",
               "commandId": "project.create",
@@ -1357,12 +1357,12 @@
               "undoStepId": null,
               "changedCount": 0,
               "documentRev": 1,
-              "durationMs": 40
+              "durationMs": 45
             },
             {
               "seq": 2,
-              "time": "2026-10-30T19:31:35.381Z",
-              "sessionId": "s1-de9e3f",
+              "time": "2026-10-30T19:52:10.829Z",
+              "sessionId": "s1-4f751f",
               "client": "c14-test",
               "tool": "run_command",
               "commandId": "doc.object.patch",
@@ -1384,8 +1384,8 @@
             },
             {
               "seq": 3,
-              "time": "2026-10-30T19:31:35.384Z",
-              "sessionId": "s1-de9e3f",
+              "time": "2026-10-30T19:52:10.832Z",
+              "sessionId": "s1-4f751f",
               "client": "c14-test",
               "tool": "run_command",
               "commandId": "agent.server.status",
@@ -1402,12 +1402,15 @@
           "documentRev": 2
         },
         "varies": [
-          "/result/0/time",
+          "/result/0/durationMs",
           "/result/0/sessionId",
-          "/result/1/time",
+          "/result/0/time",
+          "/result/1/durationMs",
           "/result/1/sessionId",
-          "/result/2/time",
-          "/result/2/sessionId"
+          "/result/1/time",
+          "/result/2/durationMs",
+          "/result/2/sessionId",
+          "/result/2/time"
         ]
       },
       {
@@ -1468,21 +1471,21 @@
         "response": {
           "status": "ok",
           "result": {
-            "projectId": "pr_01M674QM0RAFD618541GE7N45G",
+            "projectId": "pr_01M675XAHCYTRGJXDQFZFF7AKZ",
             "path": "/tmp/Demo.animpkg",
-            "sceneId": "sc_01M674QM0SPX3RFX7XWK5JPW01",
-            "cameraId": "el_01M674QM0SPX3RFX7XWK5JPW03",
-            "elementId": "el_01M674QM0SPX3RFX7XWK5JPW04"
+            "sceneId": "sc_01M675XAHD69Z6WPFBTT00JRYQ",
+            "cameraId": "el_01M675XAHD69Z6WPFBTT00JRYS",
+            "elementId": "el_01M675XAHD69Z6WPFBTT00JRYT"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 1
         },
         "varies": [
-          "/result/projectId",
-          "/result/sceneId",
           "/result/cameraId",
-          "/result/elementId"
+          "/result/elementId",
+          "/result/projectId",
+          "/result/sceneId"
         ]
       },
       {
@@ -1528,7 +1531,7 @@
           "status": "ok",
           "result": {
             "project": {
-              "id": "pr_01M674QM0RAFD618541GE7N45G",
+              "id": "pr_01M675XAHCYTRGJXDQFZFF7AKZ",
               "name": "Demo",
               "path": "/tmp/Demo.animpkg",
               "dirty": false,
@@ -1536,13 +1539,13 @@
               "readOnly": false
             },
             "scene": {
-              "id": "sc_01M674QM0SPX3RFX7XWK5JPW01",
+              "id": "sc_01M675XAHD69Z6WPFBTT00JRYQ",
               "name": "Scene-1",
               "frameCount": 1
             },
             "frame": 12,
             "element": {
-              "id": "el_01M674QM0SPX3RFX7XWK5JPW02",
+              "id": "el_01M675XAHD69Z6WPFBTT00JRYR",
               "name": "Camera Peg",
               "type": "peg"
             },
@@ -1573,20 +1576,20 @@
             "fullScreen": false
           },
           "targets": {
-            "sceneId": "sc_01M674QM0SPX3RFX7XWK5JPW01",
+            "sceneId": "sc_01M675XAHD69Z6WPFBTT00JRYQ",
             "frame": 12,
-            "elementId": "el_01M674QM0SPX3RFX7XWK5JPW02"
+            "elementId": "el_01M675XAHD69Z6WPFBTT00JRYR"
           },
           "changes": [],
           "warnings": [],
           "documentRev": 1
         },
         "varies": [
+          "/result/element/id",
           "/result/project/id",
           "/result/scene/id",
-          "/result/element/id",
-          "/targets/sceneId",
-          "/targets/elementId"
+          "/targets/elementId",
+          "/targets/sceneId"
         ]
       },
       {
@@ -1624,7 +1627,7 @@
           "status": "ok",
           "result": {
             "project": {
-              "id": "pr_01M674QM0RAFD618541GE7N45G",
+              "id": "pr_01M675XAHCYTRGJXDQFZFF7AKZ",
               "name": "Demo",
               "path": "/tmp/Demo.animpkg",
               "dirty": false,
@@ -1632,13 +1635,13 @@
               "readOnly": false
             },
             "scene": {
-              "id": "sc_01M674QM0SPX3RFX7XWK5JPW01",
+              "id": "sc_01M675XAHD69Z6WPFBTT00JRYQ",
               "name": "Scene-1",
               "frameCount": 1
             },
             "frame": 1,
             "element": {
-              "id": "el_01M674QM0SPX3RFX7XWK5JPW02",
+              "id": "el_01M675XAHD69Z6WPFBTT00JRYR",
               "name": "Camera Peg",
               "type": "peg"
             },
@@ -1667,14 +1670,14 @@
             "modal": null,
             "agentSessions": [
               {
-                "sessionId": "s1-ad2e89",
+                "sessionId": "s1-a1020f",
                 "name": "c14-test",
                 "acting": false
               }
             ],
             "fullScreen": false,
             "agent": {
-              "sessionId": "s1-ad2e89",
+              "sessionId": "s1-a1020f",
               "client": "c14-test",
               "policy": "assist",
               "scopes": [
@@ -1704,11 +1707,11 @@
           "documentRev": 1
         },
         "varies": [
-          "/result/project/id",
-          "/result/scene/id",
-          "/result/element/id",
+          "/result/agent/sessionId",
           "/result/agentSessions/0/sessionId",
-          "/result/agent/sessionId"
+          "/result/element/id",
+          "/result/project/id",
+          "/result/scene/id"
         ]
       }
     ]
