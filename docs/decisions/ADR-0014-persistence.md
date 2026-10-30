@@ -122,8 +122,10 @@ saved, reopened, read back identically.
      - palettes replace same-named palettes that have another ID, and their style entries go with them;
      - assets and pens (items of the project's lists) replace same-named items (C13-R2-03). The replacement gets a
        fresh ID, because media entry names embed the asset ID and undo must find the old bytes under the old name,
-       and every reference to the old ID follows (placements, media sequences, strokes' `penId`; outside the opaque
-       `meta`/`ext`);
+       and every reference to the old ID follows. Only positions the schema declares as references to that kind
+       (`x-ref: "asset"` / `"pen"`) are repointed: placements, media sequences, and the pen on a brush stroke's spine
+       (`spine.pen.penId`). Names, labels and other strings stay as they are even when they equal the ID, and opaque
+       `meta`/`ext` data is never entered (C13-R3-02);
      - with `idPolicy: "preserve"`, an ID conflict is replaced too (scenes, elements, assets, pens). ID conflicts
        fail only under `fail`; under `rename` the import gets fresh IDs. Assets and pens also follow `rename`
        (07 §2.3) and `fail`.
@@ -160,7 +162,11 @@ saved, reopened, read back identically.
        arrive with M9);
      - the bytes of unused assets stay in the session for undo. Whenever a write switches the project's binary source
        (any save, Save As elsewhere, the save of a recovered project), the entries of the old source that the new one
-       will not hold are first copied to the session cache (C13-R2-02).
+       will not hold are first copied to the session cache (C13-R2-02);
+     - the copies are content-addressed (`<cache>/carried/<sha256>/<entry>`): repeated exports and saves reuse one
+       copy (C13-R3-03);
+     - closing or replacing a project empties the session cache, since nothing in it serves another project, except
+       while that project is being saved. Stopping the executor removes the cache entirely.
 
 9. **Backups (BAK-01…04).**
    - Backups live in `<user>/Backups/<projectId>/<savedAt>.animpkg`, indexed by `backup.json`.
@@ -183,11 +189,32 @@ saved, reopened, read back identically.
 
 11. **Locks (LOCK-01/02, D13).**
     - The lock file holds a random `lockId`, so two executors in one process are still "someone else" to each other.
-    - A fresh lock is created exclusively.
     - A live lock opens the project read-only (`project.lockedByOther` in the report, holder in `doc.state.get`).
-    - A stale lock (5 minutes, or a dead process) is taken over with a warning. The takeover is arbitrated by an
-      exclusively created `<lock>.takeover` (C13-R1-02). Only its creator replaces the lock: it checks that the lock
-      is still the same stale one, then creates its own lock exclusively. Concurrent takers end with one owner.
+    - **One arbiter for every change** (C13-R1-02, C13-R3-01). Publishing a lock, taking a stale one over, a heartbeat
+      and the release on close all happen while holding the lock's arbiter, `<lock>.takeover`, which is created
+      exclusively.
+    - **Publication is validated.** Under the arbiter, an opener:
+      1. reads the lock's state again;
+      2. removes a stale lock (5 minutes, or a dead process; taken over with a warning);
+      3. creates its lock exclusively, writes it and flushes it;
+      4. reads it back.
+
+      It reports `Acquired` only when the file holds its token; otherwise it reports the holder. A takeover therefore
+      cannot interleave between creating and writing a lock, and a resumed writer never announces ownership of a
+      publication that was replaced.
+    - **Heartbeats fail closed.** A heartbeat writes only when the file holds this session's token. A missing,
+      unreadable or foreign lock is an error, which maintenance turns into read-only for that session. A heartbeat
+      never recreates or replaces another claimant's publication. While a takeover holds the arbiter, the heartbeat
+      is skipped, and the next one sees the outcome.
+    - **Unreadable locks.** A lock that cannot be read (empty while written, or damaged) counts as held until it is as
+      old as a stale heartbeat (5 minutes, by modification time); then it is abandoned and taken over. The modification
+      time detects only abandoned files; live writers are protected by the arbiter and the read-back.
+    - **Arbiter expiry.** An arbiter older than 10 s counts as left behind by a crashed process and is removed.
+    - **Left to C1.4** (`reviews/M1-C1.3-r3.md`, "Concrete C1.4 obligations" 1–2):
+      - an arbiter paused for longer than 10 s and then resuming;
+      - PID reuse (process identity is a PID without a start-time token);
+      - backward or forward clock jumps (heartbeat, arbiter and modification-time ages are wall-clock);
+      - deterministic suspension tests at each ownership boundary, on NTFS and APFS.
 
 12. **External changes (RO-02).**
     - For a package, maintenance compares the file's size and modification time.
