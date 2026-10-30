@@ -1,0 +1,203 @@
+{
+  "product": "39ea1b2",
+  "receiptBase": "c8887db4b9e40b5bfa7ab56de58345730843f15a",
+  "receiptHashes": {
+    "gates/build.log": true,
+    "gates/clippy-diag.log": true,
+    "gates/clippy.log": true,
+    "gates/declarations.log": true,
+    "gates/deny.log": true,
+    "gates/fmt.log": true,
+    "gates/headless.log": true,
+    "gates/mcp-conformance.log": true,
+    "gates/measurements.log": true,
+    "gates/pnpm-format.log": true,
+    "gates/pnpm-licenses.log": true,
+    "gates/pnpm-lint.log": true,
+    "gates/pnpm-test.log": true,
+    "gates/pnpm-typecheck.log": true,
+    "gates/release-features.log": true,
+    "gates/reviewer-python-suites.log": true,
+    "gates/selftest-1.json": true,
+    "gates/selftest-2.json": true,
+    "gates/selftest-compare.log": true,
+    "gates/test-diag.log": true,
+    "gates/test.log": true
+  },
+  "receiptStatuses": {
+    "gates/fmt.log": 0,
+    "gates/declarations.log": 0,
+    "gates/clippy.log": 0,
+    "gates/clippy-diag.log": 0,
+    "gates/deny.log": 0,
+    "gates/pnpm-lint.log": 0,
+    "gates/pnpm-typecheck.log": 0,
+    "gates/pnpm-test.log": 0,
+    "gates/pnpm-format.log": 0,
+    "gates/pnpm-licenses.log": 0,
+    "gates/build.log": 0,
+    "gates/headless.log": 0,
+    "gates/mcp-conformance.log": 0,
+    "gates/reviewer-python-suites.log": 0,
+    "gates/test.log": 0,
+    "gates/test-diag.log": 0,
+    "gates/release-features.log": 0,
+    "gates/measurements.log": 0
+  },
+  "receiptWorkspaceTotals": {
+    "passed": 695,
+    "failed": 0,
+    "ignored": 5
+  },
+  "reviewerDiffEmpty": true,
+  "productLintCandidates": [
+    "    #[allow(clippy::too_many_arguments, reason = \"one activity entry\")]"
+  ],
+  "dependencyDiff": "",
+  "generatedDiff": "",
+  "c14TicketFileUnchangedSinceIntroduction": true,
+  "ci": {
+    "ci-green": {
+      "head": "39ea1b2939197cb746835e7579c34433e4543c5b",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "raster determinism (macos-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": []
+        },
+        {
+          "name": "bundle (macos-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": []
+        },
+        {
+          "name": "raster determinism (ubuntu-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": []
+        },
+        {
+          "name": "check (macos-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": [
+            {
+              "name": "MCP protocol conformance with the official Python SDK client (C1.4; 11 \u00a714.7)",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "headless without a display (ubuntu)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": [
+            {
+              "name": "MCP over stdio with no display server (official Python SDK client)",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "bundle (windows-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": []
+        },
+        {
+          "name": "check (windows-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": [
+            {
+              "name": "MCP protocol conformance with the official Python SDK client (C1.4; 11 \u00a714.7)",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "raster determinism (windows-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": []
+        }
+      ]
+    },
+    "ci-failed": {
+      "head": "30452bd6e32d93d46a84762c048d285aaff1dcce",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "name": "check (windows-latest)",
+          "conclusion": "failure",
+          "failedSteps": [
+            "Run cargo clippy --workspace --all-targets --locked -- -D warnings"
+          ],
+          "sdkSteps": [
+            {
+              "name": "MCP protocol conformance with the official Python SDK client (C1.4; 11 \u00a714.7)",
+              "conclusion": "skipped"
+            }
+          ]
+        },
+        {
+          "name": "raster determinism (windows-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": []
+        },
+        {
+          "name": "bundle (windows-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": []
+        },
+        {
+          "name": "bundle (macos-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": []
+        },
+        {
+          "name": "headless without a display (ubuntu)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": [
+            {
+              "name": "MCP over stdio with no display server (official Python SDK client)",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "raster determinism (ubuntu-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": []
+        },
+        {
+          "name": "check (macos-latest)",
+          "conclusion": "failure",
+          "failedSteps": [
+            "Run cargo clippy --workspace --all-targets --locked -- -D warnings"
+          ],
+          "sdkSteps": [
+            {
+              "name": "MCP protocol conformance with the official Python SDK client (C1.4; 11 \u00a714.7)",
+              "conclusion": "skipped"
+            }
+          ]
+        },
+        {
+          "name": "raster determinism (macos-latest)",
+          "conclusion": "success",
+          "failedSteps": [],
+          "sdkSteps": []
+        }
+      ]
+    }
+  }
+}

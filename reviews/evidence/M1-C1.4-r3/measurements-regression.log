@@ -1,0 +1,101 @@
+python : test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) ... 
+At line:2 char:190
++ ... col-r3.log; python tests/adversarial/c14-r3-measurements.py *> review ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_boolean_su..._evidence) ... :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='n') ... FAIL
+  test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p50') ... FAIL
+  test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p90') ... FAIL
+  test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p99') ... FAIL
+  test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='max') ... FAIL
+test_malformed_shapes_are_rejected (__main__.Measurements.test_malformed_shapes_are_rejected) ... ok
+test_no_new_product_allow_attributes_since_round_two 
+(__main__.Measurements.test_no_new_product_allow_attributes_since_round_two) ... FAIL
+
+======================================================================
+FAIL: test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 34, in 
+test_boolean_summary_fields_are_not_valid_numeric_evidence
+    self.assertFalse(analyzer.check_file(path)["ok"], f"accepted boolean summary.{field}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : accepted boolean summary.n
+
+======================================================================
+FAIL: test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p50')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 34, in 
+test_boolean_summary_fields_are_not_valid_numeric_evidence
+    self.assertFalse(analyzer.check_file(path)["ok"], f"accepted boolean summary.{field}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : accepted boolean summary.p50
+
+======================================================================
+FAIL: test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p90')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 34, in 
+test_boolean_summary_fields_are_not_valid_numeric_evidence
+    self.assertFalse(analyzer.check_file(path)["ok"], f"accepted boolean summary.{field}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : accepted boolean summary.p90
+
+======================================================================
+FAIL: test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p99')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 34, in 
+test_boolean_summary_fields_are_not_valid_numeric_evidence
+    self.assertFalse(analyzer.check_file(path)["ok"], f"accepted boolean summary.{field}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : accepted boolean summary.p99
+
+======================================================================
+FAIL: test_boolean_summary_fields_are_not_valid_numeric_evidence 
+(__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='max')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 34, in 
+test_boolean_summary_fields_are_not_valid_numeric_evidence
+    self.assertFalse(analyzer.check_file(path)["ok"], f"accepted boolean summary.{field}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : accepted boolean summary.max
+
+======================================================================
+FAIL: test_no_new_product_allow_attributes_since_round_two 
+(__main__.Measurements.test_no_new_product_allow_attributes_since_round_two)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 21, in 
+test_no_new_product_allow_attributes_since_round_two
+    self.assertEqual([line for line in added if re.search(r"#\[allow", line)], [],
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     "standing review rule forbids new product allow attributes")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['+    #[allow(clippy::too_many_arguments, reason = "one activity entry")]'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'+    #[allow(clippy::too_many_arguments, reason = "one activity entry")]'
+
+- ['+    #[allow(clippy::too_many_arguments, reason = "one activity entry")]']
++ [] : standing review rule forbids new product allow attributes
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.094s
+
+FAILED (failures=6)

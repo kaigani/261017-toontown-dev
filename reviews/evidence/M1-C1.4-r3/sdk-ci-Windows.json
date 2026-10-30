@@ -1,0 +1,130 @@
+{
+  "client": "mcp (Python SDK) 2.0.0",
+  "server": "target/release/toontown-headless.exe",
+  "platform": "win32",
+  "seconds": 1.41,
+  "passed": 24,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "initialize.protocolVersion",
+      "ok": true,
+      "detail": "2025-11-25"
+    },
+    {
+      "check": "initialize.capabilities",
+      "ok": true,
+      "detail": "experimental=None logging=LoggingCapability() prompts=PromptsCapability(list_changed=False) resources=ResourcesCapability(subscribe=True, list_changed=False) tools=ToolsCapability(list_changed=True) completions=CompletionsCapability() extensions=None tasks=None"
+    },
+    {
+      "check": "initialize.instructions",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "ping",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "roots/list asked after initialized",
+      "ok": true,
+      "detail": "[True]"
+    },
+    {
+      "check": "tools/list 28 generic tools",
+      "ok": true,
+      "detail": "['batch', 'checkpoint', 'convert_coordinates', 'describe_command', 'describe_frame', 'doc_diff', 'find_objects', 'get_docs', 'get_object', 'get_state', 'history', 'hit_test', 'inspect_ui', 'job_cancel', 'job_status', 'job_wait', 'key', 'list_commands', 'pointer', 'redo', 'render_contact_sheet', 'render_drawing', 'render_frame', 'run_command', 'screenshot', 'set_properties', 'type_text', 'undo']"
+    },
+    {
+      "check": "tools carry outputSchema",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "tools/call run_command project.create (inside client roots)",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'projectId': 'pr_01M66ER2XKE4E14HRWW8629PA5', 'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-255ewe58\\\\Conformance.animpkg', 'sceneId': 'sc_01M66ER2XMFBHS2087Z4XCBMY2', 'cameraId': 'el_01M66ER2XMFBHS2087Z4XCBMY4', 'elementId': 'el_01M66ER2XMFBHS2087Z4XCBMY5'}, 'changes': [], 'warnings': [], 'documentRev': 1}"
+    },
+    {
+      "check": "tools/call get_state",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'project': {'id': 'pr_01M66ER2XKE4E14HRWW8629PA5', 'name': 'Conformance', 'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-255ewe58\\\\Conformance.animpkg', 'dirty': False, 'globalLibraryDirty': False, 'readOnly': False}, 'scene': {'id': 'sc_01M66ER2XMFBHS2087Z4XCBMY2', 'name': 'Scene-1', 'frameCount': 1}, 'frame': 1, 'element': {'id': 'el_01M66ER2XMFBHS2087"
+    },
+    {
+      "check": "tools/call get_object",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'object': {'id': 'sc_01M66ER2XMFBHS2087Z4XCBMY2', 'type': 'scene', 'rev': 1, 'name': 'Scene-1', 'path': 'scene:\"Scene-1\"', 'visible': True, 'backgroundColour': '#FFFFFFFF', 'currentCameraId': 'el_01M66ER2XMFBHS2087Z4XCBMY4', 'paletteStyles': {'pal_01M66ER2XKE4E14HRWW8629PA6': 'sty_01M66ER2XKE4E14HRWW8629PA7'}, 'outTransition': {'id': 'tr_01M66ER2XMFBHS2087Z4XCBMY8', 'ty"
+    },
+    {
+      "check": "resources/list",
+      "ok": true,
+      "detail": "['app://state', 'app://project', 'app://docs/agent-guide', 'app://docs/object-model', 'app://docs/coordinates', 'app://docs/errors', 'app://events', 'app://activity']"
+    },
+    {
+      "check": "resources/templates/list",
+      "ok": true,
+      "detail": "10"
+    },
+    {
+      "check": "resources/read docs equals instructions",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "resources/read object",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "resources/subscribe -> notifications/resources/updated",
+      "ok": true,
+      "detail": "9"
+    },
+    {
+      "check": "logging/setLevel -> notifications/message",
+      "ok": true,
+      "detail": "4"
+    },
+    {
+      "check": "prompts/list",
+      "ok": true,
+      "detail": "['orient', 'draw_and_paint', 'traditional_animation', 'cutout_rig', 'animate_motion', 'lip_sync', 'storyboard_to_animatic', 'effects_pass', 'export_deliverable', 'review_and_fix']"
+    },
+    {
+      "check": "prompts/get",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "completion/complete",
+      "ok": true,
+      "detail": "['doc.object.get']"
+    },
+    {
+      "check": "elicitation/create for a confirmation",
+      "ok": true,
+      "detail": "[ElicitRequestFormParams(meta=None, mode='form', message='Overwrite `C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-255ewe58\\\\Existing.animpkg`\\n\\nConsequences: [{\"kind\":\"overwrite\",\"path\":\"C:\\\\\\\\Users\\\\\\\\RUNNER~1\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\tt-c14-sdk-255ewe58\\\\\\\\Existing.animpkg\",\"bytes\":8}]', requested_schema={'type': 'object', 'properties': {'confirm': {'type': 'boolean', 'title': 'P"
+    },
+    {
+      "check": "accepted elicitation proceeds",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-1'}, 'changes': [{'id': 'pr_01M66ER2XKE4E14HRWW8629PA5', 'type': 'project', 'op': 'modified', 'rev': 3, 'patch': [{'op': 'replace', 'path': '/modifiedAt', 'value': '2026-10-30T13:07:22.927Z', 'oldValue': '2026-10-30T13:07:22.163Z'}]}], 'warnings': [], 'documentRev': 3}"
+    },
+    {
+      "check": "job_wait ok",
+      "ok": true,
+      "detail": "{'status': 'ok', 'result': {'jobId': 'job-2', 'commandId': 'doc.package.export', 'state': 'succeeded', 'progress': 1.0, 'message': 'Write', 'startedAt': '2026-10-30T13:07:22.930Z', 'result': {'path': 'C:\\\\Users\\\\RUNNER~1\\\\AppData\\\\Local\\\\Temp\\\\tt-c14-sdk-255ewe58\\\\Export.animpkg', 'form': 'package', 'bytes': 6710, 'entries': 11}, 'session': 'agent:s1-7a69c7'}, 'changes': [], 'warnings': [], 'docum"
+    },
+    {
+      "check": "notifications/progress",
+      "ok": true,
+      "detail": "[(1000.0, 1000.0, 'Write'), (1000.0, 1000.0, 'finished')]"
+    },
+    {
+      "check": "pointer answers notImplemented with its milestone",
+      "ok": true,
+      "detail": "{'status': 'error', 'changes': [], 'warnings': [], 'documentRev': None, 'error': {'code': 'command.notImplemented', 'message': 'the `pointer` tool is not available yet: pointer gestures produce the structured commands of the drawing tools (gesture equivalence, 11 \u00a77.6), which arrive with M2', 'details': {'tool': 'pointer', 'milestone': 'M2 C2.3'}, 'hint': 'use the structured commands (run_command)"
+    }
+  ]
+}

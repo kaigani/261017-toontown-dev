@@ -67,13 +67,15 @@ fn sequential_publication_failure_keeps_committed_edits_in_script_replay() {
     publication_failure_replay(false);
 }
 
-#[test]
-fn two_edits_in_one_atomic_batch_replay_with_the_same_revision() {
+fn atomic_history_replay(undo: bool, checkpoint: bool) {
     let dir = tmp();
     let h = executor(&dir.join("user"));
     assert!(h.invoke(Invocation::user("project.create", json!({"name":"Replay"}))).is_ok());
     let initial = h.snapshot().unwrap().unwrap();
-    let (mut c, _) = Client::connect(&h, opts(&dir), json!({}));
+    let (mut c, _) = Client::connect(&h, autonomous_opts(&dir), json!({}));
+    if checkpoint {
+        assert_eq!(c.run("checkpoint.create", json!({"name":"before"}))["status"], "ok");
+    }
     let e = c.call(
         "batch",
         json!({"label":"two edits", "atomic":true, "steps":[
@@ -82,6 +84,12 @@ fn two_edits_in_one_atomic_batch_replay_with_the_same_revision() {
         ]}),
     );
     assert_eq!(e["structuredContent"]["status"], "ok", "{e}");
+    if undo {
+        assert_eq!(c.run("edit.undo", json!({}))["status"], "ok");
+    }
+    if checkpoint {
+        assert_eq!(c.run("checkpoint.restore", json!({"name":"before"}))["status"], "ok");
+    }
     let target = dir.join("replay.json");
     assert_eq!(c.run("agent.activity.export", json!({"path":path(&target),"format":"batch"}))["status"], "ok");
     let fresh = executor(&dir.join("fresh-user"));
@@ -101,4 +109,19 @@ fn two_edits_in_one_atomic_batch_replay_with_the_same_revision() {
             "atomic replay must retain canonical entry revisions: {k:?}"
         );
     }
+}
+
+#[test]
+fn two_edits_in_one_atomic_batch_replay_with_the_same_revision() {
+    atomic_history_replay(false, false);
+}
+
+#[test]
+fn undo_after_an_atomic_batch_replays_the_same_document() {
+    atomic_history_replay(true, false);
+}
+
+#[test]
+fn checkpoint_restore_after_an_atomic_batch_replays_the_same_document() {
+    atomic_history_replay(false, true);
 }

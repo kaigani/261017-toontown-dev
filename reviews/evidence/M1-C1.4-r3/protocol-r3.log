@@ -1,0 +1,36 @@
+python : test_cancelled_elicitation_does_not_authorize_a_late_accept 
+(__main__.Protocol.test_cancelled_elicitation_does_not_authorize_a_late_accept) ... FAIL
+At line:2 char:103
++ ... .exe).Path; python tests/adversarial/c14-r3-mcp.py *> reviews/evidenc ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_cancelled_...ccept) ... FAIL:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped 
+(__main__.Protocol.test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped) ... ok
+malformed watchdog: 796 commands, 2388 calls
+test_every_registered_command_rejects_malformed_params_within_watchdog 
+(__main__.Protocol.test_every_registered_command_rejects_malformed_params_within_watchdog) ... ok
+test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure 
+(__main__.Protocol.test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure) ... ok
+test_headless_run_rolls_back_export_on_later_failure 
+(__main__.Protocol.test_headless_run_rolls_back_export_on_later_failure) ... ok
+
+======================================================================
+FAIL: test_cancelled_elicitation_does_not_authorize_a_late_accept 
+(__main__.Protocol.test_cancelled_elicitation_does_not_authorize_a_late_accept)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-mcp.py", line 111, in 
+test_cancelled_elicitation_does_not_authorize_a_late_accept
+    self.assertEqual(target.read_bytes(), b"original", "a cancelled elicitation accepted a late answer and overwrote 
+the file")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^
+AssertionError: b'{"seq":1,"time":"2026-10-30T13:22:58.875Z[290 chars]4}\n' != b'original' : a cancelled elicitation 
+accepted a late answer and overwrote the file
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.483s
+
+FAILED (failures=1)

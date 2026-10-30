@@ -1,0 +1,299 @@
+=== c02-r1-tooling.py
+test_C02_R1_02_native_timestamp_association (__main__.ToolingTests.test_C02_R1_02_native_timestamp_association) ... ok
+test_C02_R1_03_native_pose_only_contact_boundaries (__main__.ToolingTests.test_C02_R1_03_native_pose_only_contact_boundaries) ... ok
+test_C02_R1_07_nearest_rank_percentile_matches_frontend (__main__.ToolingTests.test_C02_R1_07_nearest_rank_percentile_matches_frontend) ... ok
+test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.620s
+
+OK
+=== c02-r2-tooling.py
+test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success (__main__.AnalyzerAttacks.test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success) ... ok
+test_C02_R2_01_explicit_v1_is_rejected (__main__.AnalyzerAttacks.test_C02_R2_01_explicit_v1_is_rejected) ... ok
+test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly (__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) ... ok
+test_C02_R2_02_achieved_rate_is_recomputed_or_rejected (__main__.AnalyzerAttacks.test_C02_R2_02_achieved_rate_is_recomputed_or_rejected) ... ok
+test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold (__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) ... ok
+test_explicit_failure_without_report_remains_analyzable (__main__.AnalyzerAttacks.test_explicit_failure_without_report_remains_analyzable) ... ok
+test_lossless_stationary_including_down_has_zero_missing (__main__.AnalyzerAttacks.test_lossless_stationary_including_down_has_zero_missing) ... ok
+test_macos_extended_accessor_contracts (__main__.AnalyzerAttacks.test_macos_extended_accessor_contracts) ... ok
+test_pause_segmentation_and_pose_only_native_reference_unknown (__main__.AnalyzerAttacks.test_pause_segmentation_and_pose_only_native_reference_unknown) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.542s
+
+OK
+=== c02-r3-tooling.py
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs (__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.233s
+
+OK
+=== c03-r1-tooling.py
+............
+----------------------------------------------------------------------
+Ran 12 tests in 1.885s
+
+OK
+=== c03-r2-tooling.py
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.542s
+
+OK
+=== c04-r2-decisions.py
+test_C04_R2_01_rate_intervals_cover_fractional_hz (__main__.DecisionContracts.test_C04_R2_01_rate_intervals_cover_fractional_hz) ... ok
+test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row (__main__.DecisionContracts.test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row) ... ok
+test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes (__main__.DecisionContracts.test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.031s
+
+OK
+=== c04-r3-decisions.py
+test_C04_R3_01_outside_contact_must_not_flip_candidate (__main__.Regressions.test_C04_R3_01_outside_contact_must_not_flip_candidate) ... ok
+test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected (__main__.Regressions.test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected) ... ok
+test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter (__main__.Regressions.test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.069s
+
+OK
+=== c04-r3-page.py
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c14-r3/desktop
+
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  06:31:17
+   Duration  1.09s (environment 60%, transform 13%, tests 12%, setup 12%, import 3%)
+
+=== c04-r5-decisions.py
+test_outside_packets_cannot_change_action_rate_or_platform_decision (__main__.OutsideNativeClock.test_outside_packets_cannot_change_action_rate_or_platform_decision) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.053s
+
+OK
+=== c11-r2-review-policy.py
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.034s
+
+OK
+=== c14-r1-mcp.py
+test_accepted_elicitation_preserves_request_id_result (__main__.Protocol.test_accepted_elicitation_preserves_request_id_result) ... elicitation_request_id [{"status": "ok", "result": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-nwrv9nbp\\keep.jsonl", "entries": 1, "omitted": []}, "changes": [], "warnings": [], "documentRev": 1}, {"status": "ok", "result": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-nwrv9nbp\\keep.jsonl", "entries": 1, "omitted": []}, "changes": [], "warnings": [], "documentRev": 1}]
+ok
+test_activity_batch_export_does_not_turn_dry_runs_into_edits (__main__.Protocol.test_activity_batch_export_does_not_turn_dry_runs_into_edits) ... dry_activity_replay []
+ok
+test_activity_batch_export_keeps_committed_batch_operations (__main__.Protocol.test_activity_batch_export_keeps_committed_batch_operations) ... batch_activity_replay {
+  "label": "Agent activity",
+  "atomic": false,
+  "stopOnError": true,
+  "steps": [
+    {
+      "id": "project.create",
+      "params": {
+        "name": "P",
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-4zwggczo\\P.animpkg"
+      }
+    },
+    {
+      "id": "doc.object.patch",
+      "params": {
+        "targets": [
+          "sc_01M66G3XXYRMMXGWPW9RP2H09S"
+        ],
+        "props": {
+          "meta": {
+            "replaySentinel": 99
+          }
+        }
+      }
+    }
+  ]
+}
+ok
+test_atomic_failure_has_no_activity_export_effect (__main__.Protocol.test_atomic_failure_has_no_activity_export_effect) ... atomic_export {"jsonrpc": "2.0", "id": 103, "result": {"content": [{"type": "text", "text": "batch: `batch` failed: batch.stepFailed \u2014 step 2 (`no.such.command`) failed: no command `no.such.command`"}], "structuredContent": {"status": "error", "changes": [], "warnings": [], "documentRev": 1, "error": {"code": "batch.stepFailed", "message": "step 2 (`no.such.command`) failed: no command `no.such.command`", "details": {"stepIndex": 2, "commandId": "no.such.command", "error": {"code": "command.unknown", "message": "no command `no.such.command`", "details": {"commandId": "no.such.command", "suggestions": []}, "hint": "list_commands shows every registered command"}}}, "steps": [{"status": "ok", "result": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-zu5ejuxk\\should-not-exist.jsonl", "entries": 1, "omitted": []}, "changes": [], "warnings": [], "documentRev": 1}, {"status": "error", "changes": [], "warnings": [], "documentRev": 1, "error": {"code": "command.unknown", "message": "no command `no.such.command`", "details": {"commandId": "no.such.command", "suggestions": []}, "hint": "list_commands shows every registered command"}}]}, "isError": true}} file_exists False
+ok
+test_closed_stdout_ends_the_unusable_session (__main__.Protocol.test_closed_stdout_ends_the_unusable_session) ... ok
+test_elicitation_is_one_audit_entry_per_tool_call (__main__.Protocol.test_elicitation_is_one_audit_entry_per_tool_call) ... elicitation_audit [{"seq": 2, "time": "2026-10-30T13:31:19.223Z", "sessionId": "s1-0e04de", "client": "reviewer", "tool": "run_command", "commandId": "agent.activity.export", "params": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-su9q1t2s\\keep.jsonl", "onExists": "overwrite"}, "status": "ok", "undoStepId": null, "changedCount": 0, "documentRev": 1, "durationMs": 2}]
+ok
+test_eof_while_eliciting_ends_the_session (__main__.Protocol.test_eof_while_eliciting_ends_the_session) ... ok
+test_filter_has_bounded_runtime (__main__.Protocol.test_filter_has_bounded_runtime) ... ok
+test_get_state_matches_the_command_envelope (__main__.Protocol.test_get_state_matches_the_command_envelope) ... state_wrapper_command {"status": "ok", "result": {"project": null, "scene": null, "frame": null, "element": null, "drawing": null, "mode": null, "activeView": null, "focusedPanel": "cameraView", "activeTool": null, "selection": {"context": "staging", "ids": [], "kinds": []}, "workspace": {"name": "Default", "modified": false}, "playback": {"playing": false}, "startScreenVisible": true, "modal": null, "agentSessions": [{"sessionId": "s1-f0c46e", "name": "reviewer", "acting": false}], "fullScreen": false, "agent": {"sessionId": "s1-f0c46e", "client": "reviewer", "policy": "assist", "scopes": ["read", "edit", "ui", "input", "files.read", "files.write", "library.global"], "paused": false, "limits": {"policy": "assist", "maxJobs": 2, "maxBatchSteps": 1000, "maxInlineImagePx": 2048, "maxInlineBytes": 52428800, "askInApp": true, "letAgentMoveView": true, "highlightAgentChanges": true}}}, "changes": [], "warnings": [], "documentRev": null} generic {"status": "ok", "result": {"project": null, "scene": null, "frame": null, "element": null, "drawing": null, "mode": null, "activeView": null, "focusedPanel": "cameraView", "activeTool": null, "selection": {"context": "staging", "ids": [], "kinds": []}, "workspace": {"name": "Default", "modified": false}, "playback": {"playing": false}, "startScreenVisible": true, "modal": null, "agentSessions": [{"sessionId": "s1-f0c46e", "name": "reviewer", "acting": false}], "fullScreen": false, "agent": {"sessionId": "s1-f0c46e", "client": "reviewer", "policy": "assist", "scopes": ["read", "edit", "ui", "input", "files.read", "files.write", "library.global"], "paused": false, "limits": {"policy": "assist", "maxJobs": 2, "maxBatchSteps": 1000, "maxInlineImagePx": 2048, "maxInlineBytes": 52428800, "askInApp": true, "letAgentMoveView": true, "highlightAgentChanges": true}}}, "changes": [], "warnings": [], "documentRev": null}
+ok
+test_invalid_utf8_frame_does_not_destroy_stream (__main__.Protocol.test_invalid_utf8_frame_does_not_destroy_stream) ... ok
+test_malformed_elicitation_does_not_overwrite (__main__.Protocol.test_malformed_elicitation_does_not_overwrite) ... malformed_elicitation {"jsonrpc": "2.0", "id": 103, "result": {"content": [{"type": "text", "text": "run_command: `agent.activity.export` failed: confirmation.declined \u2014 the user declined the action"}], "structuredContent": {"status": "error", "changes": [], "warnings": [], "documentRev": 1, "error": {"code": "confirmation.declined", "message": "the user declined the action", "details": {"confirmToken": "cf_a901b2382455fad37d277404"}}}, "isError": true}} preserved True
+ok
+test_non_object_tool_arguments_are_rejected (__main__.Protocol.test_non_object_tool_arguments_are_rejected) ... wrong_arguments {"jsonrpc": "2.0", "id": 102, "error": {"code": -32602, "message": "`arguments` must be an object (the tool's input schema)"}}
+ok
+test_nonreading_client_with_eof_does_not_pin_the_session (__main__.Protocol.test_nonreading_client_with_eof_does_not_pin_the_session) ... ok
+test_project_resource_is_readable (__main__.Protocol.test_project_resource_is_readable) ... project_resource {"jsonrpc": "2.0", "id": 103, "result": {"contents": [{"uri": "app://project", "mimeType": "application/json", "text": "{\n  \"object\": {\n    \"id\": \"pr_01M66G3ZRXV60006RQTCENEJTS\",\n    \"type\": \"project\",\n    \"rev\": 1,\n    \"name\": \"P\",\n    \"path\": \"project\",\n    \"createdAt\": \"2026-10-30T13:31:20.733Z\",\n    \"modifiedAt\": \"2026-10-30T13:31:20.733Z\",\n    \"frameRate\": 24.0,\n    \"cameraWidth\": 1920,\n    \"cameraHeight\": 1080,\n    \"autoColourUpdate\": false,\n    \"startTransition\": {\n      \"id\": \"tr_01M66G3ZRXV60006RQTCENEJZ2\",\n      \"type\": \"transition\"\n    },\n    \"palettes\": [\n      {\n        \"id\": \"pal_01M66G3ZRXV60006RQTCENEJTT\",\n        \"type\": \"palette\",\n        \"name\": \"Default\"\n      }\n    ],\n    \"pens\": [\n      {\n        \"id\": \"pen_01M66G3ZRXV60006RQTCENEJYM\",\n        \"type\": \"pen\",\n        \"name\": \"Pen 1\"\n      },\n      {\n        \"id\": \"pen_01M66G3ZRXV60006RQTCENEJYN\",\n        \"type\": \"pen\",\n        \"name\": \"Pen 2\"\n      },\n      {\n        \"id\": \"pen_01M66G3ZRXV60006RQTCENEJYP\",\n        \"type\": \"pen\",\n        \"name\": \"Pen 3\"\n      },\n      {\n        \"id\": \"pen_01M66G3ZRXV60006RQTCENEJYQ\",\n        \"type\": \"pen\",\n        \"name\": \"Pen 4\"\n      },\n      {\n        \"id\": \"pen_01M66G3ZRXV60006RQTCENEJYR\",\n        \"type\": \"pen\",\n        \"name\": \"Pen 5\"\n      },\n      {\n        \"id\": \"pen_01M66G3ZRXV60006RQTCENEJYS\",\n        \"type\": \"pen\",\n        \"name\": \"Eraser 1\"\n      },\n      {\n        \"id\": \"pen_01M66G3ZRXV60006RQTCENEJYT\",\n        \"type\": \"pen\",\n        \"name\": \"Eraser 2\"\n      },\n      {\n        \"id\": \"pen_01M66G3ZRXV60006RQTCENEJYV\",\n        \"type\": \"pen\",\n        \"name\": \"Eraser 3\"\n      }\n    ],\n    \"assets\": [],\n    \"drawingBanks\": [\n      {\n        \"id\": \"db_01M66G3ZRXV60006RQTCENEJYW\",\n        \"type\": \"drawingBank\"\n      }\n    ],\n    \"scenes\": [\n      {\n        \"id\": \"sc_01M66G3ZRXV60006RQTCENEJYX\",\n        \"type\": \"scene\",\n        \"name\": \"Scene-1\"\n      }\n    ],\n    \"library\": {\n      \"id\": \"lib_01M66G3ZRXV60006RQTCENEJZ1\",\n      \"type\": \"library\",\n      \"name\": \"Local\"\n    }\n  }\n}"}]}}
+ok
+test_second_initialize_is_rejected (__main__.Protocol.test_second_initialize_is_rejected) ... ok
+test_size_and_mtime_preserving_edit_requires_confirmation (__main__.Protocol.test_size_and_mtime_preserving_edit_requires_confirmation) ... same_size_mtime_save {"status": "needs_confirmation", "result": {"status": "needs_confirmation", "confirmToken": "cf_426f2327acbee057ec474d7d", "summary": "`C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-7o6b_g5l\\P.animpkg` was changed by another program since it was opened; saving overwrites those changes", "consequences": [{"kind": "overwriteExternalChange", "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-7o6b_g5l\\P.animpkg", "detectedAt": "2026-10-30T13:31:20.884Z"}, {"kind": "alternative", "choice": "reload", "by": "user", "commandId": "project.open", "params": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-7o6b_g5l\\P.animpkg", "onUnsaved": "discard"}}, {"kind": "alternative", "choice": "keepBoth", "commandId": "project.saveAs", "params": {"path": "<another path>"}}], "category": "externalChange"}, "changes": [], "warnings": [], "documentRev": 1}
+ok
+test_undo_and_redo_emit_the_declared_events (__main__.Protocol.test_undo_and_redo_emit_the_declared_events) ... undo_redo_events ["agent.session.connected", "project.opened", "app.state.changed", "edit.history.changed", "project.dirty.changed", "doc.changed", "app.state.changed", "edit.history.changed", "project.dirty.changed", "doc.changed", "doc.undone", "app.state.changed", "edit.history.changed", "project.dirty.changed", "doc.changed", "doc.redone", "app.state.changed", "edit.history.changed", "project.dirty.changed"]
+ok
+test_unknown_cancellation_does_not_cancel_a_future_request (__main__.Protocol.test_unknown_cancellation_does_not_cancel_a_future_request) ... ok
+test_unknown_tool_argument_is_rejected (__main__.Protocol.test_unknown_tool_argument_is_rejected) ... unknown_argument {"jsonrpc": "2.0", "id": 102, "result": {"content": [{"type": "text", "text": "get_state: `get_state` failed: arg.unknown \u2014 `tool:get_state`: Additional properties are not allowed ('misspelled' was unexpected)"}], "structuredContent": {"status": "error", "changes": [], "warnings": [], "documentRev": null, "error": {"code": "arg.unknown", "message": "`tool:get_state`: Additional properties are not allowed ('misspelled' was unexpected)", "details": {"pointer": "/misspelled", "message": "Additional properties are not allowed ('misspelled' was unexpected)", "allowed": null, "violations": [{"pointer": "/misspelled", "message": "Additional properties are not allowed ('misspelled' was unexpected)", "allowed": null, "code": "arg.unknown"}]}}}, "isError": true}}
+ok
+test_wrong_dry_run_type_does_not_commit (__main__.Protocol.test_wrong_dry_run_type_does_not_commit) ... wrong_dry_run {"jsonrpc": "2.0", "id": 103, "result": {"content": [{"type": "text", "text": "run_command: `run_command` failed: arg.invalid \u2014 `tool:run_command`: \"true\" is not of type \"boolean\""}], "structuredContent": {"status": "error", "changes": [], "warnings": [], "documentRev": null, "error": {"code": "arg.invalid", "message": "`tool:run_command`: \"true\" is not of type \"boolean\"", "details": {"pointer": "/dryRun", "message": "\"true\" is not of type \"boolean\"", "allowed": {"type": "boolean"}, "violations": [{"pointer": "/dryRun", "message": "\"true\" is not of type \"boolean\"", "allowed": {"type": "boolean"}, "code": "arg.invalid"}]}}}, "isError": true}}
+ok
+test_wrong_expect_rev_type_does_not_commit (__main__.Protocol.test_wrong_expect_rev_type_does_not_commit) ... wrong_expect_rev {"jsonrpc": "2.0", "id": 103, "result": {"content": [{"type": "text", "text": "set_properties: `set_properties` failed: arg.invalid \u2014 `tool:set_properties`: [] is not of type \"object\""}], "structuredContent": {"status": "error", "changes": [], "warnings": [], "documentRev": null, "error": {"code": "arg.invalid", "message": "`tool:set_properties`: [] is not of type \"object\"", "details": {"pointer": "/expectRev", "message": "[] is not of type \"object\"", "allowed": {"type": "object"}, "violations": [{"pointer": "/expectRev", "message": "[] is not of type \"object\"", "allowed": {"type": "object"}, "code": "arg.invalid"}]}}}, "isError": true}}
+ok
+test_percentile_evidence_retains_observations (__main__.ReleaseFeature.test_percentile_evidence_retains_observations) ... ok
+test_suspension_hooks_are_not_a_normal_dependency_feature (__main__.ReleaseFeature.test_suspension_hooks_are_not_a_normal_dependency_feature) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 2.588s
+
+OK
+=== c14-r2-mcp.py
+test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) ... ok
+test_all_state_include_combinations_are_command_projections (__main__.Protocol.test_all_state_include_combinations_are_command_projections) ... ok
+test_cancel_live_elicitation_releases_the_call_worker (__main__.Protocol.test_cancel_live_elicitation_releases_the_call_worker) ... ok
+test_close_with_save_offers_external_change_confirmation (__main__.Protocol.test_close_with_save_offers_external_change_confirmation) ... ok
+test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once (__main__.Protocol.test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once) ... ok
+test_export_publication_failure_is_not_a_successful_audit_record (__main__.Protocol.test_export_publication_failure_is_not_a_successful_audit_record) ... publication_failure {"status": "error", "changes": [], "warnings": [], "documentRev": 1, "error": {"code": "fs.ioError", "message": "`C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-67vdaoa6\\directory.jsonl` could not be published: Access is denied. (os error 5)", "details": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-67vdaoa6\\directory.jsonl", "reason": "publish", "committed": false, "documentRev": 1}}} target_is_directory True
+ok
+test_idempotent_retry_is_not_a_second_replay_operation (__main__.Protocol.test_idempotent_retry_is_not_a_second_replay_operation) ... retry_replay {"label": "Agent activity", "atomic": false, "stopOnError": true, "steps": [{"id": "project.create", "params": {"name": "P", "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-bc8zvtz9\\P.animpkg"}}, {"id": "doc.object.patch", "params": {"targets": ["sc_01M66G41R6S4FQ47PWG708TWFB"], "props": {"meta": {"n": 1}}}}, {"id": "doc.object.patch", "params": {"targets": ["sc_01M66G41R6S4FQ47PWG708TWFB"], "props": {"meta": {"n": 2}}}}, {"id": "edit.undo", "params": {}}]}
+ok
+test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded (__main__.Protocol.test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded) ... ok
+test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize (__main__.Protocol.test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize) ... ok
+test_long_unicode_and_nested_globs_keep_the_server_usable (__main__.Protocol.test_long_unicode_and_nested_globs_keep_the_server_usable) ... ok
+test_nested_wrapper_validation_never_edits (__main__.Protocol.test_nested_wrapper_validation_never_edits) ... ok
+test_nonreading_client_without_eof_is_closed_by_pressure_timeout (__main__.Protocol.test_nonreading_client_without_eof_is_closed_by_pressure_timeout) ... ok
+test_partial_sequential_batch_keeps_its_committed_edits_in_replay (__main__.Protocol.test_partial_sequential_batch_keeps_its_committed_edits_in_replay) ... partial_replay {"export": {"status": "ok", "result": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-w6afky2i\\partial.json", "entries": 3, "omitted": [{"seq": 3, "tool": "run_command", "command_id": "doc.object.get", "reason": "readOnly"}]}, "changes": [], "warnings": [], "documentRev": 2}, "batch": {"label": "Agent activity", "atomic": false, "stopOnError": true, "steps": [{"id": "project.create", "params": {"name": "P", "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-w6afky2i\\P.animpkg"}}, {"id": "doc.object.patch", "params": {"targets": ["sc_01M66G4D2J0PNNZM60PSJ7VD45"], "props": {"meta": {"kept": 1}}}}]}}
+ok
+test_typed_tools_reject_nested_types_and_extra_options (__main__.Protocol.test_typed_tools_reject_nested_types_and_extra_options) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 13.175s
+
+OK
+=== c14-r3-mcp.py
+test_cancelled_elicitation_does_not_authorize_a_late_accept (__main__.Protocol.test_cancelled_elicitation_does_not_authorize_a_late_accept) ... FAIL
+test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped (__main__.Protocol.test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped) ... ok
+test_every_registered_command_rejects_malformed_params_within_watchdog (__main__.Protocol.test_every_registered_command_rejects_malformed_params_within_watchdog) ... malformed watchdog: 796 commands, 2388 calls
+ok
+test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure (__main__.Protocol.test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure) ... ok
+test_headless_run_rolls_back_export_on_later_failure (__main__.Protocol.test_headless_run_rolls_back_export_on_later_failure) ... ok
+
+======================================================================
+FAIL: test_cancelled_elicitation_does_not_authorize_a_late_accept (__main__.Protocol.test_cancelled_elicitation_does_not_authorize_a_late_accept)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-mcp.py", line 118, in test_cancelled_elicitation_does_not_authorize_a_late_accept
+    self.assertEqual(target.read_bytes(), b"original", "a cancelled elicitation accepted a late answer and overwrote the file")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'{"seq":1,"time":"2026-10-30T13:31:34.682Z[290 chars]6}\n' != b'original' : a cancelled elicitation accepted a late answer and overwrote the file
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.512s
+
+FAILED (failures=1)
+=== c14-r3-measurements.py
+test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) ... 
+  test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='n') ... FAIL
+  test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p50') ... FAIL
+  test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p90') ... FAIL
+  test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p99') ... FAIL
+  test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='max') ... FAIL
+test_malformed_shapes_are_rejected (__main__.Measurements.test_malformed_shapes_are_rejected) ... ok
+test_no_new_product_allow_attributes_since_round_two (__main__.Measurements.test_no_new_product_allow_attributes_since_round_two) ... FAIL
+
+======================================================================
+FAIL: test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 34, in test_boolean_summary_fields_are_not_valid_numeric_evidence
+    self.assertFalse(analyzer.check_file(path)["ok"], f"accepted boolean summary.{field}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : accepted boolean summary.n
+
+======================================================================
+FAIL: test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p50')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 34, in test_boolean_summary_fields_are_not_valid_numeric_evidence
+    self.assertFalse(analyzer.check_file(path)["ok"], f"accepted boolean summary.{field}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : accepted boolean summary.p50
+
+======================================================================
+FAIL: test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p90')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 34, in test_boolean_summary_fields_are_not_valid_numeric_evidence
+    self.assertFalse(analyzer.check_file(path)["ok"], f"accepted boolean summary.{field}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : accepted boolean summary.p90
+
+======================================================================
+FAIL: test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='p99')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 34, in test_boolean_summary_fields_are_not_valid_numeric_evidence
+    self.assertFalse(analyzer.check_file(path)["ok"], f"accepted boolean summary.{field}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : accepted boolean summary.p99
+
+======================================================================
+FAIL: test_boolean_summary_fields_are_not_valid_numeric_evidence (__main__.Measurements.test_boolean_summary_fields_are_not_valid_numeric_evidence) (field='max')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 34, in test_boolean_summary_fields_are_not_valid_numeric_evidence
+    self.assertFalse(analyzer.check_file(path)["ok"], f"accepted boolean summary.{field}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : accepted boolean summary.max
+
+======================================================================
+FAIL: test_no_new_product_allow_attributes_since_round_two (__main__.Measurements.test_no_new_product_allow_attributes_since_round_two)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\tests\adversarial\c14-r3-measurements.py", line 21, in test_no_new_product_allow_attributes_since_round_two
+    self.assertEqual([line for line in added if re.search(r"#\[allow", line)], [],
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     "standing review rule forbids new product allow attributes")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['+    #[allow(clippy::too_many_arguments, reason = "one activity entry")]'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'+    #[allow(clippy::too_many_arguments, reason = "one activity entry")]'
+
+- ['+    #[allow(clippy::too_many_arguments, reason = "one activity entry")]']
++ [] : standing review rule forbids new product allow attributes
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.065s
+
+FAILED (failures=6)
+skip collect_runtime_evidence.py: M0 evidence collector, not a test: needs a release build and writes reviews/evidence/M0-C0.1-r1/
+=== headless_guard.py
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+=== summary
+ok   c02-r1-tooling.py (0.7 s)
+ok   c02-r2-tooling.py (0.6 s)
+ok   c02-r3-tooling.py (0.3 s)
+ok   c03-r1-tooling.py (2.0 s)
+ok   c03-r2-tooling.py (0.6 s)
+ok   c04-r2-decisions.py (0.1 s)
+ok   c04-r3-decisions.py (0.2 s)
+ok   c04-r3-page.py (1.7 s)
+ok   c04-r5-decisions.py (0.1 s)
+ok   c11-r2-review-policy.py (0.1 s)
+ok   c14-r1-mcp.py (2.7 s)
+ok   c14-r2-mcp.py (13.3 s)
+FAIL c14-r3-mcp.py (1.6 s)
+FAIL c14-r3-measurements.py (0.1 s)
+ok   headless_guard.py (0.2 s)
+13/15 reviewer Python suites passed

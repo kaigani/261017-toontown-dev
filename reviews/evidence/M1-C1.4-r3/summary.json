@@ -1,0 +1,66 @@
+{
+  "product": "39ea1b2",
+  "ciRun": 41056649947,
+  "ciWindowsBinarySha256": "1acdfaf066bbe4335f5f7180b48a4e2073f0a082ed547da7f0a17abdec7902f0",
+  "workspace": {
+    "passed": 695,
+    "failed": 0,
+    "ignored": 5
+  },
+  "newReplay": {
+    "passed": 1,
+    "failed": 4,
+    "ignored": 0
+  },
+  "historyOracles": [
+    {
+      "seed": "0xc12020261019a571",
+      "operations": 10000,
+      "replayOperations": 10000,
+      "editsUndoRedoCreateRestoreDryRun": [
+        5472,
+        3911,
+        528,
+        1,
+        1690,
+        534
+      ],
+      "documentRev": 11231,
+      "durationSeconds": 81.9033838,
+      "oracle": "independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"
+    },
+    {
+      "seed": "0xc12320261019b683",
+      "operations": 10000,
+      "replayOperations": 10000,
+      "editsUndoRedoCreateRestoreDryRun": [
+        5494,
+        3902,
+        470,
+        1,
+        1724,
+        511
+      ],
+      "documentRev": 11177,
+      "durationSeconds": 81.6109423,
+      "oracle": "independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"
+    }
+  ],
+  "sdkCI": {
+    "Windows": {
+      "passed": 24,
+      "failed": 0,
+      "client": "mcp (Python SDK) 2.0.0"
+    },
+    "macOS": {
+      "passed": 24,
+      "failed": 0,
+      "client": "mcp (Python SDK) 2.0.0"
+    }
+  },
+  "notes": [
+    "PowerShell shell wrappers can report exit 1 for native stderr, including successful test output; use the complete retained test-result records.",
+    "Initial replay-only and rust-r3 logs precede reviewer fixture refinements; replay-final supersedes their replay section.",
+    "New expected failures are deliberate review regressions, not product fixes."
+  ]
+}

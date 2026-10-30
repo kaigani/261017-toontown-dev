@@ -108,7 +108,6 @@ class Protocol(unittest.TestCase):
         c.p.stdin.flush()
         # This queued tool proves the call worker has finished the cancelled call.
         self.assertEqual(c.run("app.state.get", {})["status"], "ok")
-        self.assertEqual(target.read_bytes(), b"original", "a cancelled elicitation accepted a late answer and overwrote the file")
         received = list(c.saved)
         while True:
             try:
@@ -116,6 +115,38 @@ class Protocol(unittest.TestCase):
             except queue.Empty:
                 break
         self.assertFalse(any(x.get("id") == rid and "method" not in x for x in received), received)
+        self.assertEqual(target.read_bytes(), b"original", "a cancelled elicitation accepted a late answer and overwrote the file")
+
+    def test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped(self):
+        for folder in [False, True]:
+            with self.subTest(folder=folder):
+                self.c.close()
+                self.c = c = r1.Client()
+                target = c.root / ("Folder" if folder else "P.animpkg")
+                made = c.run("project.create", {"name": "P", "path": str(target) + (os.sep if folder else "")})
+                self.assertEqual(made["status"], "ok", made)
+                scene = made["result"]["sceneId"]
+                self.assertEqual(c.run("doc.object.patch", {"targets": [scene], "props": {"meta": {"mine": True}}})["status"], "ok")
+                victim = target / "project.json" if folder else target
+                stamp = victim.stat()
+                external = bytearray(victim.read_bytes())
+                external[-1] ^= 1
+                victim.write_bytes(external)
+                os.utime(victim, ns=(stamp.st_atime_ns, stamp.st_mtime_ns))
+                denied = c.run("app.quit", {"onUnsaved": "save"})
+                self.assertEqual(denied["error"]["code"], "permission.denied", denied)
+                e = c.run("project.close", {"onUnsaved": "save"})
+                self.assertEqual(e["status"], "needs_confirmation", e)
+                self.assertEqual(e["result"]["category"], "externalChange", e)
+                self.assertEqual(victim.read_bytes(), external)
+                done = c.call("run_command", {"id": "project.close", "params": {"onUnsaved": "save"},
+                                              "confirmToken": e["result"]["confirmToken"]})["result"]["structuredContent"]
+                self.assertEqual(done["status"], "ok", done)
+                opened = c.run("project.open", {"path": str(target)})
+                self.assertEqual(opened["status"], "ok", opened)
+                waited = c.run("job.wait", {"jobId": opened["result"]["jobId"], "timeoutMs": 5000})
+                self.assertEqual(waited["result"]["state"], "succeeded", waited)
+                self.assertTrue(c.run("doc.object.get", {"ref": scene})["result"]["object"]["meta"]["mine"])
 
 
 if __name__ == "__main__":

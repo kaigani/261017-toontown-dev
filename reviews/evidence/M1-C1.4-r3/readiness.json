@@ -1,0 +1,352 @@
+{
+  "specIssues": [
+    {
+      "id": "SI-001",
+      "status": "open with spec owner",
+      "title": "\u2014 09 \u00a74.4 \"\u2248 CRF 18 equivalent\" under platform H.264 encoders (found in C0.4; open)",
+      "dependency": "No: encoder quality mapping is M10; M1 has no encoder. Owner: spec owner with builder M10 C10.1."
+    },
+    {
+      "id": "SI-002",
+      "status": "closed (reserved; no active issue)",
+      "title": "\u2014 reserved",
+      "dependency": "Reserved for measured deterministic-format incompatibility, M10 C10.1."
+    },
+    {
+      "id": "SI-003",
+      "status": "decided",
+      "title": "\u2014 element `role` values disagree (found in C1.1; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-004",
+      "status": "decided",
+      "title": "\u2014 properties named `type` collide with the envelope `type`; pen fields (found in C1.1; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-005",
+      "status": "decided",
+      "title": "\u2014 persisted properties defined outside section 10 (found in C1.1; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-006",
+      "status": "decided",
+      "title": "\u2014 motion points are objects with IDs but missing from 10 \u00a72.1 (found in C1.1; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-007",
+      "status": "decided",
+      "title": "\u2014 particle effect names (found in C1.1; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-008",
+      "status": "open with spec owner",
+      "title": "\u2014 `importOptions` of image elements is undefined (found in C1.1; open)",
+      "dependency": "Yes: M1 preserves opaque importOptions without interpreting it; explicit interim contract. Owner: spec owner with builder M10 C10.2."
+    },
+    {
+      "id": "SI-009",
+      "status": "closed (removed)",
+      "title": "Removed misreading; number not reused",
+      "dependency": "No active obligation; removed by C1.1 round-one ruling."
+    },
+    {
+      "id": "SI-010",
+      "status": "closed (removed)",
+      "title": "Removed misreading; number not reused",
+      "dependency": "No active obligation; removed by C1.1 round-one ruling."
+    },
+    {
+      "id": "SI-011",
+      "status": "decided",
+      "title": "\u2014 meaning of `depth` in `doc.object.get` (found in C1.1; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-012",
+      "status": "closed (removed)",
+      "title": "Removed misreading; number not reused",
+      "dependency": "No active obligation; removed by C1.1 round-one ruling."
+    },
+    {
+      "id": "SI-013",
+      "status": "decided",
+      "title": "\u2014 brush strokes with `closed: false` in section 02's example (found in C1.1 r1; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-014",
+      "status": "decided",
+      "title": "\u2014 order of map keys in canonical JSON (found in C1.1 r1; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-015",
+      "status": "decided",
+      "title": "\u2014 `include: [\"stats\"]` of `doc.object.get` is undefined (found in C1.2; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-016",
+      "status": "decided",
+      "title": "\u2014 event entries put their payload in different columns (found in C1.2; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-017",
+      "status": "decided",
+      "title": "\u2014 base and form of batch step references (found in C1.2; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-018",
+      "status": "decided",
+      "title": "\u2014 `@current` as the start of a path (found in C1.2; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-019",
+      "status": "decided",
+      "title": "\u2014 main-toolbar item names (found in C1.2; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-020",
+      "status": "decided",
+      "title": "\u2014 error codes the executor needs that 11 \u00a710 does not list (found in C1.2; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-021",
+      "status": "decided",
+      "title": "\u2014 `elements` clipboard items by reference (found in C1.2 r1; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-022",
+      "status": "decided",
+      "title": "\u2014 references to deleted elements (found in C1.2 r1; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-023",
+      "status": "decided",
+      "title": "\u2014 `anim.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-024",
+      "status": "decided",
+      "title": "\u2014 `capture.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-025",
+      "status": "decided",
+      "title": "\u2014 `colour.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-026",
+      "status": "decided",
+      "title": "\u2014 `draw.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-027",
+      "status": "decided",
+      "title": "\u2014 `drawAid.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-028",
+      "status": "closed",
+      "title": "\u2014 `element.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-029",
+      "status": "decided",
+      "title": "\u2014 `export.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-030",
+      "status": "decided",
+      "title": "\u2014 `fx.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-031",
+      "status": "closed",
+      "title": "\u2014 `import.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-032",
+      "status": "closed",
+      "title": "\u2014 `keymap.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-033",
+      "status": "decided",
+      "title": "\u2014 `library.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-034",
+      "status": "decided",
+      "title": "\u2014 `lipsync.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-035",
+      "status": "decided",
+      "title": "\u2014 `playback.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-036",
+      "status": "closed",
+      "title": "\u2014 `prefs.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-037",
+      "status": "closed",
+      "title": "\u2014 `print.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-038",
+      "status": "decided",
+      "title": "\u2014 `sound.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-039",
+      "status": "decided",
+      "title": "\u2014 `storyline.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-040",
+      "status": "decided",
+      "title": "\u2014 `tool.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-041",
+      "status": "decided",
+      "title": "\u2014 `ui.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-042",
+      "status": "decided",
+      "title": "\u2014 `view.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)",
+      "dependency": "Strict placeholders remain the interim declaration contract; owning domain checkpoint must replace them before implementing the handler."
+    },
+    {
+      "id": "SI-043",
+      "status": "closed",
+      "title": "\u2014 `xsheet.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-044",
+      "status": "decided",
+      "title": "\u2014 \"Repair on Open\" cannot be undone into an invalid document (found in C1.3; decided)",
+      "dependency": "M1 uses an un-undoable repair base to preserve integrity. Spec-owner ratification remains; builder M1 C1.3 decision stands."
+    },
+    {
+      "id": "SI-045",
+      "status": "closed",
+      "title": "\u2014 the agent confirmation of RO-02 before the confirmation protocol exists (found in C1.3; closed in C1.4)",
+      "dependency": "M1 confirmation delivered; C14-R2-07 closes save-boundary bypass. Reload is a user action under SI-050."
+    },
+    {
+      "id": "SI-046",
+      "status": "decided",
+      "title": "\u2014 codes C1.3 needs that the spec does not list (found in C1.3; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-047",
+      "status": "open with spec owner",
+      "title": "\u2014 RO-02 cannot see an edit that keeps size and modification time (found in C1.4; interim ruling, open)",
+      "dependency": "Yes: binding interim ruling requires content hashes at save; watch remains size+mtime. Owner: spec owner with builder M1 C1.4 / M4 C4.1."
+    },
+    {
+      "id": "SI-048",
+      "status": "decided",
+      "title": "\u2014 codes, reasons and lock fields C1.4 adds (found in C1.4; decided)",
+      "dependency": "Recorded decision applies where referenced; no undecided M1 dependency."
+    },
+    {
+      "id": "SI-049",
+      "status": "open with spec owner",
+      "title": "\u2014 MCP revision 2026-07-28 removes resource subscriptions and deprecates logging (found in C1.4; open)",
+      "dependency": "Yes: supported older revisions are explicit; spec owner must decide the newer subscription protocol. Owner: spec owner with builder M1 C1.4 / M4 C4.1."
+    },
+    {
+      "id": "SI-050",
+      "status": "decided",
+      "title": "\u2014 RO-02's \"same choice\" for agents meets 11 \u00a76.1's `app` scope (found in C1.4; decided)",
+      "dependency": "M1 keeps app scope unavailable to agents; reload belongs to the user; keep-mine uses a bound token."
+    },
+    {
+      "id": "SI-051",
+      "status": "decided",
+      "title": "\u2014 what a replayable activity export contains (found in C1.4 round 1; decided)",
+      "dependency": "M1 depends on replay semantics. C14-R3-01/02 block implementation closure; builder/orchestrator C1.4."
+    }
+  ],
+  "ignoredTests": [
+    {
+      "path": "crates/mcp/tests/c14_tickets.rs",
+      "test": "every_result_lists_its_effective_params",
+      "introduction": "5983f29",
+      "unchanged": true,
+      "sha256": "a999e6fc7089f6ed7f8d7869929ace11086645b185c5c8d592aa5a30f671a059",
+      "owner": "builder M4 C4.1; before dialogs/result contracts are completed"
+    },
+    {
+      "path": "crates/mcp/tests/c14_tickets.rs",
+      "test": "namespace_docs_carry_a_worked_example_with_executed_results",
+      "introduction": "5983f29",
+      "unchanged": true,
+      "sha256": "ebb6ca59d7d5bc036e87868fcc52649138c26c6f21e513d98e03b3007a38bfd9",
+      "owner": "builder before M2 C2.1 begins"
+    },
+    {
+      "path": "crates/persist/tests/zip64.rs",
+      "test": "an_entry_over_4_gib_round_trips_with_zip64_sizes",
+      "introduction": "04cc687",
+      "unchanged": true,
+      "sha256": "c66790a90545d82e0d4bf947183ac9b491063edfbff69243df7d9cc4fa8d4b20",
+      "owner": "builder M1 C1.3; release scenario retained, rerun before changing ZIP64 writer"
+    },
+    {
+      "path": "crates/executor/tests/c14_lock_races.rs",
+      "test": "child_lock_holder",
+      "introduction": "4e34520",
+      "unchanged": true,
+      "sha256": "38cd9560023619d2d4d85b03bdc8b7024e190f96c124bd4d2fae65d8484ce3bf",
+      "owner": "builder M1 C1.4; parent must execute it in every ordinary workspace run"
+    },
+    {
+      "path": "crates/render/tests/c03_r1_stress.rs",
+      "test": "c03_r1_04_simd_dispatch_must_not_change_final_pixels",
+      "introduction": "f0f55d8",
+      "unchanged": true,
+      "sha256": "8974725627b8e14be87ee35e6f5bf576d5b31270035eb946e05f41681125d39c",
+      "owner": "builder M3 C3.3; before final-renderer SIMD dispatch"
+    }
+  ]
+}
