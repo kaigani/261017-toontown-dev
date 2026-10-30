@@ -368,6 +368,8 @@ fn clipboard_for(h: &ExecutorHandle, id: &str) {
 #[test]
 fn every_example_runs_on_the_fixture_under_the_watchdog() {
     let registry = tt_executor::registry().unwrap();
+    let envelope_schema = tt_registry::schema_of::<tt_executor::Envelope>();
+    let mut schema_checked = 0;
     let mut ran = 0;
     let mut failures = Vec::new();
     for e in registry.entries() {
@@ -402,6 +404,36 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
                 _ => {
                     if env.status != Status::Ok {
                         failures.push(format!("{} example `{}` failed: {:?}", e.id(), ex.title, env.error));
+                    } else {
+                        // C1.4 r2 (CI schema-failure adjudication): every successful example's result matches its
+                        // declared result schema and the envelope its schema, on every OS (portable paths above);
+                        // a job example must finish `succeeded` (the job table checks its final result against
+                        // `x-jobResult`, C12-R1-13).
+                        let v = env.result.clone().unwrap_or(Value::Null);
+                        for (what, schema, value) in [
+                            ("result", e.result_schema(), v.clone()),
+                            ("envelope", envelope_schema.clone(), serde_json::to_value(&env).unwrap()),
+                        ] {
+                            let validator = jsonschema::options()
+                                .with_draft(jsonschema::Draft::Draft202012)
+                                .build(&schema)
+                                .unwrap();
+                            let errors: Vec<String> = validator.iter_errors(&value).map(|x| x.to_string()).collect();
+                            if !errors.is_empty() {
+                                failures.push(format!("{} example `{}`: {what} schema: {errors:?}", e.id(), ex.title));
+                            }
+                        }
+                        if e.spec.kind == tt_registry::Kind::Job
+                            && let Some(job) = v.get("jobId").and_then(Value::as_str).filter(|j| *j != "dryRun")
+                        {
+                            let rec = h.jobs().wait(job, Duration::from_secs(30)).map(|(r, _)| r);
+                            match rec {
+                                Ok(r) if r.state == tt_executor::JobState::Succeeded => schema_checked += 1,
+                                other => failures.push(format!("{} example `{}`: job {other:?}", e.id(), ex.title)),
+                            }
+                        } else {
+                            schema_checked += 1;
+                        }
                     }
                 }
             }
@@ -420,7 +452,7 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
 "
         )
     );
-    println!("examples run: {ran}");
+    println!("examples run: {ran}; successful results schema-checked: {schema_checked}");
     assert!(ran >= 140, "examples: {ran}");
 }
 

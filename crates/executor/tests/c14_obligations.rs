@@ -404,3 +404,44 @@ fn an_activity_export_is_written_only_when_its_call_commits() {
     drop(h);
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn a_file_that_cannot_be_published_after_the_commit_fails_the_call_and_reports_the_commit() {
+    // C14-R2-01 (ADR-0015 §12): staging succeeds, the rename onto a directory fails after the transaction committed.
+    let dir = tmp();
+    let h = spawn(&dir.join("user"));
+    ok(&h, "project.create", json!({ "name": "Publish", "path": path(&dir.join("Publish.animpkg")) }));
+    let scene = first(&h, "scene");
+    let blocked = dir.join("directory.jsonl");
+    std::fs::create_dir_all(&blocked).unwrap();
+    // Alone: nothing committed, the call fails.
+    let alone = run(&h, "agent.activity.export", json!({ "path": path(&blocked), "onExists": "overwrite" }));
+    let e = alone.error.clone().unwrap();
+    assert_eq!(e.code, "fs.ioError", "{alone:?}");
+    assert_eq!(e.details["reason"], "publish");
+    assert_eq!(e.details["committed"], false);
+    // With an edit in the same atomic batch: the edit committed and stays (undoable); the call says so.
+    let before = rev(&h);
+    let both = batch(
+        &h,
+        json!({ "label": "Edit and export", "atomic": true, "steps": [
+            { "id": "doc.object.patch", "params": { "targets": [scene], "props": { "meta": { "published": false } } } },
+            { "id": "agent.activity.export", "params": { "path": path(&blocked), "onExists": "overwrite" } },
+        ] }),
+    );
+    let e = both.error.clone().unwrap();
+    assert_eq!(e.code, "fs.ioError", "{both:?}");
+    assert_eq!(e.details["committed"], true);
+    assert_eq!(both.document_rev, Some(before + 1));
+    assert!(!both.changes.is_empty() && both.undo.is_some(), "{both:?}");
+    assert_eq!(get(&h, &scene)["meta"]["published"], false);
+    assert!(blocked.is_dir());
+    let leftovers = std::fs::read_dir(&dir)
+        .unwrap()
+        .flatten()
+        .filter(|e| e.file_name().to_string_lossy().ends_with(".tmp"))
+        .count();
+    assert_eq!(leftovers, 0, "the stage is removed");
+    drop(h);
+    let _ = std::fs::remove_dir_all(&dir);
+}
