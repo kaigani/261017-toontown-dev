@@ -42,6 +42,10 @@ GATES = {
     "reviewer-python-suites": [f'"{PY}" scripts/run-reviewer-python-suites.py'],
     # C1.4: the official MCP Python SDK client against the release binary (needs `pip install mcp`).
     "mcp-conformance": [f'"{PY}" scripts/mcp-conformance.py {QEXE}'],
+    # C14-R1-10: test-only features never reach the product dependency graph.
+    "release-features": [f'"{PY}" scripts/check-release-features.py'],
+    # C14-R1-07: the C1.4 measurement summaries recomputed from their observations (after the test gate).
+    "measurements": [f'"{PY}" scripts/analyse-measurements.py target/evidence/c14'],
     "declarations": [
         f'"{PY}" scripts/gen-command-declarations.py',
         "git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md",

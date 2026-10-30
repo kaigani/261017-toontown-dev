@@ -126,8 +126,12 @@ jobs:
           if [ "$RUNNER_OS" = "Windows" ]; then VPY=.venv-mcp/Scripts/python.exe; fi
           $VPY -m pip install --quiet "mcp>=1.10"
           PYTHONIOENCODING=utf-8 $VPY scripts/mcp-conformance.py "$exe" out/sdk-conformance.json
-          # The C1.4 measurements written by the test suite (lock liveness, cache, fingerprint, autosave, never-block).
-          if [ -d target/evidence/c14 ]; then cp -r target/evidence/c14 out/c14-measurements; fi
+          # The C1.4 measurements written by the test suite (lock liveness, cache, fingerprint, autosave, never-block),
+          # recomputed from their observations (C14-R1-07), and the release-feature proof (C14-R1-10).
+          $PY scripts/analyse-measurements.py target/evidence/c14 --out out/measurement-analysis.json
+          cp -r target/evidence/c14 out/c14-measurements
+          $PY scripts/check-release-features.py > out/release-features.log || { cat out/release-features.log; exit 1; }
+          cat out/release-features.log
 
       - uses: actions/upload-artifact@v7
         with:
