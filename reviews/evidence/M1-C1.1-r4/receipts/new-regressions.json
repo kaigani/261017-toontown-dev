@@ -1,0 +1,21 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r4_exposure_bounds",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r4",
+  "base": "3b6179f57bbdf65ac847787f34ef937f88035178",
+  "started_utc": "2026-10-18T23:54:48.159683+00:00",
+  "elapsed_seconds": 5.089,
+  "exit_code": 101,
+  "log": "logs/new-regressions.log",
+  "sha256": "025b1230620125d6b284342ed44660a11fa6f04b16ef869d1ae886fa9e1316f3",
+  "env": {}
+}

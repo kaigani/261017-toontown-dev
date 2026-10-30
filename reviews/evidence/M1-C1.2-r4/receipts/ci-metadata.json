@@ -1,0 +1,25 @@
+{
+  "command": [
+    "gh",
+    "run",
+    "view",
+    "39247718490",
+    "--json",
+    "headSha,status,conclusion,url,jobs,workflowName"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c12-r4",
+  "startedAt": "2026-10-19T12:22:49.209702+00:00",
+  "durationSeconds": 1.09,
+  "exitCode": 0,
+  "head": "f2100570e636292028e70bc6a32ab444c37547ae",
+  "dirtyFiles": [
+    "?? reviews/evidence/M1-C1.2-r4/"
+  ],
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "log": "logs\\ci-metadata.log",
+  "sha256": "96d8ad06859faf9caf35563ac7bb8589436a2dc9df8aa2749313a12c6c7340fd",
+  "extraEnv": {
+    "TT_C12_REVIEW_ARTIFACT_DIR": "C:\\Users\\kaiga\\work\\review\\m1-c12-r4\\reviews\\evidence\\M1-C1.2-r4"
+  }
+}

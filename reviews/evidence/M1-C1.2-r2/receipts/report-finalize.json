@@ -1,0 +1,19 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.2-r2/finalize-report.py"
+  ],
+  "exit": 0,
+  "started": "2026-10-19T09:05:14.912422+00:00",
+  "seconds": 0.05078019999200478,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? crates/executor/tests/c12_r2_registry.rs",
+    "?? crates/executor/tests/c12_r2_scale.rs",
+    "?? reviews/M1-C1.2-r2.md",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\report-finalize.log",
+  "sha256": "d2c6849be54d77bc1b27ecbd8f1006483e830c70daf8b3c9828f2baedb46ec3a"
+}

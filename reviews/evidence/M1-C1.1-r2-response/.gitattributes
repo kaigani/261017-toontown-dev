@@ -1,0 +1,4 @@
+# Raw evidence must retain its original bytes across Windows/macOS checkouts.
+*.log -text
+*.json -text
+*.patch -text

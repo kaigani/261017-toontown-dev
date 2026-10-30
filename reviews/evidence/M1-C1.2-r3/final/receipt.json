@@ -1,0 +1,48 @@
+{
+  "what": "Local gate logs recorded by scripts/record-gates.py.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked --no-fail-fast",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-lint.log": "pnpm lint",
+    "gates/pnpm-typecheck.log": "pnpm typecheck",
+    "gates/pnpm-test.log": "pnpm test",
+    "gates/pnpm-format.log": "pnpm format:check",
+    "gates/pnpm-licenses.log": "pnpm licenses:check",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless.log": "cargo build --release --locked -p tt-headless && \"C:\\Users\\kaiga\\work\\review\\m1-c12-r3\\target\\release\\toontown-headless.exe\" --version && \"C:\\Users\\kaiga\\work\\review\\m1-c12-r3\\target\\release\\toontown-headless.exe\" --selftest && \"C:\\Python313\\python.exe\" scripts/check-headless-deps.py \"C:\\Users\\kaiga\\work\\review\\m1-c12-r3\\target\\release\\toontown-headless.exe\"",
+    "gates/reviewer-python-suites.log": "\"C:\\Python313\\python.exe\" scripts/run-reviewer-python-suites.py"
+  },
+  "status": {
+    "gates/fmt.log": 0,
+    "gates/clippy.log": 0,
+    "gates/test.log": 101,
+    "gates/clippy-diag.log": 0,
+    "gates/test-diag.log": 0,
+    "gates/deny.log": 0
+  },
+  "recordedAt": "2026-10-19T11:09:39+00:00",
+  "baseCommit": "2e0e5dd5feaf47199f5c15595b187a34db3e5c5e",
+  "dirtyFiles": [
+    "crates/executor/tests/c12_r3_contracts.rs",
+    "crates/executor/tests/c12_r3_registry.rs",
+    "crates/executor/tests/c12_r3_stress.rs",
+    "reviews/evidence/M1-C1.2-r3/"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "sha256": {
+    "gates/clippy-diag.log": "534b52ff31e240c572cd4e216ee40304bb6bb7e1665ecdc2bc466c3c441b65e2",
+    "gates/clippy.log": "77d81c40db23329636eb1945624689814112653a1be1112b9fa390560fccc8cb",
+    "gates/deny.log": "847d456b5c15bbd8e92343dd43becdbc8a2041e328f2f4127459e53a9970ceed",
+    "gates/fmt.log": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
+    "gates/test-diag.log": "24d66a840934fd89cc41f2ee896fab1361f9f3cc4feb17c36bc4fed91ed88e5b",
+    "gates/test.log": "e57fdb9b9870337cbfb916a2010e683013d0f26b14dbb8031a892d2a7f6ad28c"
+  }
+}

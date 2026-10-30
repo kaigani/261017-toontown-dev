@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r3\reviews\evidence\M1-C1.2-r3\audit-ci.py", line 34, in <module>
+    assert set(required) <= set(targets), (job["name"], set(required) - set(targets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('check (macos-latest)', {'c12_r1_macro', 'c11_r2_adversarial', 'c11_r3_adversarial', 'c12_r1_stress', 'adversarial_c01', 'c11_r2_wire', 'c11_r3_register', 'c11_r6_staged_inverse', 'c11_r3_random', 'c12_r1_scale', 'c12_r1_contracts', 'c11_r1_wire', 'c11_r1_adversarial', 'c12_r2_scale', 'c12_r2_contracts', 'c12_never_block', 'c11_r3_wire', 'c11_r5_write_bounds', 'c11_r4_exposure_bounds', 'c12_r2_registry'})

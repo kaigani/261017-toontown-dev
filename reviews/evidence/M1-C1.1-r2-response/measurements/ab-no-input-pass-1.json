@@ -1,0 +1,26 @@
+{
+  "tool": "crates/model/examples/scale.rs",
+  "profile": "release",
+  "os": "windows",
+  "arch": "x86_64",
+  "timesAreWallClockMs": true,
+  "commit": "see receipt",
+  "measurements": {
+    "drawingJsonBytes": 28568777,
+    "drawing100kParseValidateMs": 824.847,
+    "palette10kParseValidateMs": 38.014,
+    "drawings10kParseValidateMs": 32.045,
+    "elements1kParseValidateMs": 9.646,
+    "documentAssembleAndCheckMs": 1132.166,
+    "objectCount": 121092,
+    "drawingCanonicalWriteMs": 551.819,
+    "drawingObjectJsonDepthAllWithPathsMs": 876.753,
+    "documentCloneMs": 0.861,
+    "drawingEntryRawJsonMs": 408.293,
+    "drawingOwnViewsMs": 586.426,
+    "diffWholeDocumentNoSharedEntriesMs": 3449.043,
+    "diffWholeDocumentChanges": 1,
+    "diffOneStrokeIn100kStrokeEntryMs": 1750.81,
+    "diffOneStrokeChangedObjects": 1
+  }
+}

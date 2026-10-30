@@ -1,0 +1,24 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r7_staged_commit_10000",
+    "--locked",
+    "random_patches_never_commit_a_document_with_integrity_errors",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:26:03.781106+00:00",
+  "elapsed_seconds": 248.157,
+  "exit_code": 0,
+  "log": "logs/c11_r7_staged_commit_10000.log",
+  "sha256": "7855370e29ef798293385864a87d378f40f3a59fc84c895752f82608edffa418",
+  "env": {
+    "PROPTEST_RNG_SEED": "14714358888662014198"
+  }
+}

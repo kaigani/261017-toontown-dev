@@ -1,0 +1,351 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/.t3/worktrees/261017-toontown-dev/m1-core-kernel/desktop
+
+ ✓ src/test/c01-r2-node.test.ts > round-2 permanent node regressions: c01-r2-boundary.test.mjs 9576ms
+ ✓ src/test/c01-r2-node.test.ts > round-2 permanent node regressions: c01-r2-licenses.test.mjs 115ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects static import in ordinary src code 2088ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects type-only import in ordinary src code 15ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects re-export in ordinary src code 13ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects export star in ordinary src code 9ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects dynamic import in ordinary src code 36ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects dynamic import via template in ordinary src code 28ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects dynamic import via variable in ordinary src code 26ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects dynamic import via concatenation in ordinary src code 10ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects require in ordinary src code 29ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects import.meta.glob in ordinary src code 31ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects import.meta.glob through a cast in ordinary src code 14ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects aliased import.meta in ordinary src code 10ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects window global in ordinary src code 35ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects computed window global in ordinary src code 21ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects bare global in ordinary src code 10ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects in operator in ordinary src code 13ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects eval in ordinary src code 9ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects new Function in ordinary src code 11ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects raw transport (static) in ordinary src code 22ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects raw transport (dynamic) in ordinary src code 24ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects raw transport (re-export) in ordinary src code 20ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects raw transport (with extension) in ordinary src code 23ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects absolute specifier in ordinary src code 20ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects drive specifier in ordinary src code 21ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects file: specifier in ordinary src code 22ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects backslash specifier in ordinary src code 20ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects non-canonical relative in ordinary src code 22ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects bare parent in ordinary src code 20ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects outside src (desktop root) in ordinary src code 74ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects outside desktop (repo tests) in ordinary src code 31ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects blanket block disable 29ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects blanket line disable 10ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects next-line disable of the rule 10ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects block disable of several boundary rules 9ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects disable of the comments rule itself 10ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects disable of no-eval 24ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > covers .ts files 43ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > covers .tsx files 27ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > covers .mts files 25ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > covers .cts files 29ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > covers .js files 17ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > covers .jsx files 15ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > covers .mjs files 3ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > covers .cjs files 15ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects the raw transport inside src/ipc too (only index.ts may import it) 22ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > rejects climbing out of src/ at any depth 120ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: rejected forms > test files may reach only tests/ and boundary/ outside src/ 75ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects String.fromCharCode in shipped code 11ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects String.fromCodePoint in shipped code 10ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects String.raw in shipped code 9ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects concat on a literal in shipped code 9ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects concat on a template in shipped code 7ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects join on an array literal in shipped code 10ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects template with literal pieces in shipped code 9ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects atob in shipped code 7ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects window.atob in shipped code 13ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects Worker in shipped code 11ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects SharedWorker in shipped code 9ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects window.Worker in shipped code 16ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects navigator.serviceWorker in shipped code 11ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects new URL(…, import.meta.url) in shipped code 25ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > rejects ?worker import in shipped code 20ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: string assembly and workers (C01-R4-01/02) > allows ordinary join, templates with variables and these APIs in tests 46ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: accepted forms > the transport file may import Tauri 35ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: accepted forms > src/ipc/index.ts may import the transport 37ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: accepted forms > ordinary code using the host API, relative imports inside src/, and import.meta.env 70ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: accepted forms > test files may import repository test helpers and the boundary definitions 22ms
+ ✓ src/ipc/boundary.lint.test.ts > IPC boundary lint: accepted forms > the committed source tree is clean and no deeper than the per-depth rules cover 4260ms
+ ✓ src/ipc/boundary.lint.test.ts > public surface of src/ipc > does not export the raw transport 90ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: static import (.ts) 67ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: static import (.tsx) 25ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: static import (.mts) 22ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: static import (.cts) 21ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: static import (.js) 23ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: static import (.jsx) 21ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: static import (.mjs) 21ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: require (.cjs) 23ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: lint suppressed with eslint-disable 24ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: dynamic import 23ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: re-export 21ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: import.meta.glob of the package 21ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: Tauri global 23ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: raw transport import 21ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: raw transport dynamic import 21ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: module outside desktop (repo tests fixture) 23ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > refuses to bundle: module outside src (desktop tooling) 22ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > builds code that uses the validated host API (positive control) 88ms
+ ✓ src/ipc/boundary.build.test.ts > IPC boundary at bundle time > builds plain code inside src (positive control) 26ms
+ ✓ src/ipc/boundary.build.test.ts > index.html imports only src/main.tsx (C01-R3-02) > refuses an inline module importing the raw transport 27ms
+ ✓ src/ipc/boundary.build.test.ts > index.html imports only src/main.tsx (C01-R3-02) > refuses an inline module importing anything but main.tsx, even the host API 22ms
+ ✓ src/ipc/boundary.build.test.ts > index.html imports only src/main.tsx (C01-R3-02) > builds the real index.html (positive control) 612ms
+ ✓ src/ipc/boundary.build.test.ts > emitted-chunk attribution (C01-R3-01) > accepts mentions attributable to the transport 1ms
+ ✓ src/ipc/boundary.build.test.ts > emitted-chunk attribution (C01-R3-01) > rejects a mention in any other module 0ms
+ ✓ src/ipc/boundary.build.test.ts > emitted-chunk attribution (C01-R3-01) > rejects mentions in the chunk that no module accounts for 0ms
+ ✓ src/ipc/boundary.build.test.ts > dev server: placeholder re-resolution only for approved modules (C01-R3-02) > serves the real graph, and refuses a module never reached through an import edge 108ms
+ ✓ src/ipc/boundary.build.test.ts > config selection is pinned (C01-R3-02) > every vite/vitest script passes --config vite.config.ts and Tauri runs those scripts 1ms
+ ✓ src/ipc/boundary.build.test.ts > string-assembled Tauri names (C01-R4-01) > refuses String.fromCharCode (unminified build) 21ms
+ ✓ src/ipc/boundary.build.test.ts > string-assembled Tauri names (C01-R4-01) > refuses String.fromCharCode (minified build) 20ms
+ ✓ src/ipc/boundary.build.test.ts > string-assembled Tauri names (C01-R4-01) > refuses concat (unminified build) 21ms
+ ✓ src/ipc/boundary.build.test.ts > string-assembled Tauri names (C01-R4-01) > refuses concat (minified build) 20ms
+ ✓ src/ipc/boundary.build.test.ts > string-assembled Tauri names (C01-R4-01) > refuses array join (unminified build) 21ms
+ ✓ src/ipc/boundary.build.test.ts > string-assembled Tauri names (C01-R4-01) > refuses array join (minified build) 20ms
+ ✓ src/ipc/boundary.build.test.ts > string-assembled Tauri names (C01-R4-01) > refuses template pieces (unminified build) 20ms
+ ✓ src/ipc/boundary.build.test.ts > string-assembled Tauri names (C01-R4-01) > refuses template pieces (minified build) 23ms
+ ✓ src/ipc/boundary.build.test.ts > string-assembled Tauri names (C01-R4-01) > refuses atob (unminified build) 20ms
+ ✓ src/ipc/boundary.build.test.ts > string-assembled Tauri names (C01-R4-01) > refuses atob (minified build) 20ms
+ ✓ src/ipc/boundary.build.test.ts > final-output checks on synthetic bundles (generateBundle) > accepts the expected layout 1ms
+ ✓ src/ipc/boundary.build.test.ts > final-output checks on synthetic bundles (generateBundle) > rejects a minified Tauri invoke in another chunk 1ms
+ ✓ src/ipc/boundary.build.test.ts > final-output checks on synthetic bundles (generateBundle) > rejects disguised forms in another chunk or asset 2ms
+ ✓ src/ipc/boundary.build.test.ts > final-output checks on synthetic bundles (generateBundle) > rejects Tauri modules outside the transport chunk and foreign modules inside it 1ms
+ ✓ src/ipc/boundary.build.test.ts > final-output checks on synthetic bundles (generateBundle) > rejects extra transport exports and importers other than the ipc/index chunk 1ms
+ ✓ src/ipc/boundary.build.test.ts > standalone dist check (boundary/check-dist.mjs) > passes a clean dist 136ms
+ ✓ src/ipc/boundary.build.test.ts > standalone dist check (boundary/check-dist.mjs) > fails on any mention outside the transport chunk, in any detected form 825ms
+ ✓ src/ipc/boundary.build.test.ts > standalone dist check (boundary/check-dist.mjs) > fails when the transport chunk is missing (plugins or manualChunks disabled) 142ms
+ ✓ src/ipc/boundary.build.test.ts > workers are refused (C01-R4-02) > a worker-importing entry fails lint, and its Tauri-importing worker fails the build 1072ms
+ ✓ src/test/c01-r3-node.test.ts > round-3 IPC boundary regressions through the real lint/build configs 3140ms
+ ✓ src/test/platformFloor.test.ts > declared platform floor > browserslist, the Vite build target and the Tauri macOS minimum agree 2ms
+ ✓ src/test/platformFloor.test.ts > lint rejects APIs newer than the floor in shipped code > flags Object.hasOwn (Safari 15.4) 2091ms
+ ✓ src/test/platformFloor.test.ts > lint rejects APIs newer than the floor in shipped code > flags structuredClone (Safari 15.4) 20ms
+ ✓ src/test/platformFloor.test.ts > lint rejects APIs newer than the floor in shipped code > flags Array.prototype.at (Safari 15.4) 13ms
+ ✓ src/test/platformFloor.test.ts > lint rejects APIs newer than the floor in shipped code > accepts the floor-safe replacement 16ms
+ ✓ src/diagnostics/gating.build.test.ts > M0 diagnostics gating (C0.4) > reads both registries from lib.rs 2ms
+ ✓ src/diagnostics/gating.build.test.ts > M0 diagnostics gating (C0.4) > the default build contains no spike page and names no diagnostic command 729ms
+ ✓ src/diagnostics/gating.build.test.ts > M0 diagnostics gating (C0.4) > the diagnostics build contains both spike pages and every diagnostic command (control) 879ms
+ ✓ src/test/c03-r1-binary.test.ts > valid binary control travels through real invokeBinary 184ms
+ ✓ src/test/c03-r1-binary.test.ts > C03-R1-02: rejects NaN move coordinate 181ms
+ ✓ src/test/c03-r1-binary.test.ts > C03-R1-02: rejects infinite cubic control 179ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: wrong counts 182ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: 2^31 counts 200ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: out of range group 178ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: negative width 180ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: out of range points 177ms
+ ✓ src/test/c03-r1-binary.test.ts > malformed control: truncation 178ms
+ ✓ src/test/c01-r4-node.test.ts > round-4 closure: final emitted code cannot bypass the IPC boundary 1361ms
+ ✓ src/test/c03-r1-tooling.test.ts > C03-R1: incomplete canvas evidence and missing committed PNGs fail closed 1055ms
+stdout | src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > validates a representative ten-megabyte drawing
+{"review":"drawing-validation","bytes":10339142,"ms":1046.887}
+
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > coerces doubles declared inside generated conditional effect schemas 3ms
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > rejects unpaired surrogate strings that the Rust UTF-8 reader cannot accept 0ms
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > rejects malformed model tuples at every element position 1ms
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > preserves u64, negative large integers, long strings, and canonical f64 values 14ms
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > keeps proxy/getter/prototype rejection and never invokes a getter 1ms
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > validates a representative ten-megabyte drawing 1212ms
+ ✓ src/spikes/tablet/analyzer.test.ts > offline analyzer > rejects unknown and obsolete log versions 108ms
+ ✓ src/spikes/tablet/analyzer.test.ts > offline analyzer > version 3: recomputes the host rate from the monotonic endpoints and rejects a disagreeing aggregate 253ms
+ ✓ src/spikes/tablet/analyzer.test.ts > offline analyzer > labels an explicitly failed run and refuses a successful run without its report 101ms
+ ✓ src/spikes/tablet/analyzer.test.ts > offline analyzer > reports a declared manual log as having no injection reference 51ms
+ ✓ src/spikes/tablet/analyzer.test.ts > offline analyzer > C02-R3-01: refuses logs without run records unless they declare a manual capture 254ms
+ ✓ src/spikes/tablet/analyzer.test.ts > offline analyzer > C02-R3-01: a versionless log with any synthetic field is rejected 300ms
+ ✓ src/spikes/tablet/analyzer.test.ts > offline analyzer > C02-R3-03: prints lost ranges from the data 53ms
+ ✓ src/spikes/tablet/analyzer.test.ts > offline analyzer > recomputes per-stroke results and run matches from raw data, agreeing with the page 53ms
+ ✓ src/spikes/canvas/analyzer.test.ts > canvas analyzer > recomputes the run summary the page shows 50ms
+ ✓ src/spikes/canvas/analyzer.test.ts > canvas analyzer > accepts a complete 1 Hz run as a missed target (C03-R2-02) 38ms
+ ✓ src/spikes/canvas/analyzer.test.ts > canvas analyzer > accepts a complete one-frame run as complete with insufficient cadence samples (C03-R3-01) 38ms
+ ✓ src/spikes/canvas/analyzer.test.ts > canvas analyzer > rejects zero frames under a claimed complete span, and one frame in a version-1 log (C03-R3-01) 203ms
+ ✓ src/spikes/canvas/analyzer.test.ts > canvas analyzer > labels an explicitly failed run and rejects malformed or contradictory logs 712ms
+ ✓ src/test/c02-r2-tooling.test.ts > C02-R2: permanent analyzer evidence-integrity attacks 752ms
+ ✓ src/test/c02-r2-tooling.test.ts > C02-R1-07 closure: Python and frontend percentile results have identical binary64 bits on ties 38ms
+ ✓ src/test/c03-r2-tooling.test.ts > C03-R2-01: analyzer validates point/verb counts and workload for every seed 644ms
+ ✓ src/test/c02-r1-tooling.test.ts > C0.2 adversarial native conversion and offline analysis regressions 600ms
+ ✓ src/test/decisionRules.test.ts > the C0.4 decision rules hold (scripts/test_decision_rules.py) 548ms
+ ✓ src/spikes/tablet/actions.test.tsx > maps the six procedure actions to their contact episodes and ignores contacts outside them 98ms
+ ✓ src/spikes/tablet/actions.test.tsx > C04-R3-02: a held Space (auto-repeat) starts A1 once and finishes nothing 62ms
+ ✓ src/spikes/tablet/actions.test.tsx > C04-R3-02: one held K skips only the current action 10ms
+ ✓ src/spikes/tablet/actions.test.tsx > C04-R3-02: two presses within 500 ms make one transition; a keyup without its keydown makes none 8ms
+ ✓ src/spikes/tablet/actions.test.tsx > C04-R3-02: Space on a focused toolbar button marks an action and does not activate the button 50ms
+ ✓ src/spikes/tablet/actions.test.tsx > typing Space and K in the form creates no marker; the events are logged as ignored 13ms
+ ✓ src/spikes/tablet/actions.test.tsx > records an action still running at Save as unfinished, and actions never reached as not recorded 59ms
+ ✓ src/spikes/tablet/actions.test.tsx > rejects malformed action records and key logs that disagree with them 210ms
+ ✓ src/test/c02-r3-tooling.test.ts > C02-R3-01: missing synthetic run records cannot be classified as manual hardware 331ms
+ ✓ src/test/c03-r2-page.test.tsx > current page manual save is accepted 72ms
+ ✓ src/test/c03-r2-page.test.tsx > current page interactive 60 Hz run is accepted 73ms
+ ✓ src/test/c03-r2-page.test.tsx > C03-R2-02: current page slow 1 Hz completed run is accepted as a missed target 54ms
+ ✓ src/test/c03-r3-page.test.tsx > control: completed 0.2 Hz phase with two recorded pan frames is accepted 80ms
+ ✓ src/test/c03-r3-page.test.tsx > C03-R3-01: completed 0.1 Hz phase is accepted even with one recorded pan frame 56ms
+ ✓ src/test/c02-r1-measurement.test.tsx > C02-R1-03: lifting between two perfect 250 Hz strokes is not a drop or contact time 2ms
+ ✓ src/test/c02-r1-measurement.test.tsx > C02-R1-03: native contact summaries exclude pen-up time too 0ms
+ ✓ src/test/c02-r1-measurement.test.tsx > C02-R1-06: API presence is not inferred from having observed a batch larger than one 1ms
+ ✓ src/test/c02-r1-measurement.test.tsx > C02-R1-01: exported evidence retains injection timing and frame values for independent analysis 72ms
+ ✓ src/test/c02-r1-measurement.test.tsx > C02-R1-05: a lossless 1024-contact-frame run reports zero missing frames 31ms
+ ✓ src/App.test.tsx > App shell > renders the status bar with engine info from the host 81ms
+ ✓ src/App.test.tsx > App shell > shows a pending menu command in the status bar 31ms
+ ✓ src/App.test.tsx > menu command handling > runs workspace.reset through the front-end context 1ms
+ ✓ src/App.test.tsx > menu command handling > reports unknown front-end commands as errors 0ms
+ ✓ src/App.test.tsx > panels > use the stable panel ids of 01 §5.2 1ms
+ ✓ src/ipc/wire.test.ts > lossless wire JSON > parses like JSON.parse for ordinary documents 2ms
+ ✓ src/ipc/wire.test.ts > lossless wire JSON > keeps integers beyond 2^53 - 1 exactly as bigint, and only those 0ms
+ ✓ src/ipc/wire.test.ts > lossless wire JSON > rejects malformed text, duplicate keys and excessive depth 1ms
+ ✓ src/ipc/wire.test.ts > lossless wire JSON > builds own data properties: __proto__ is a key, prototypes stay untouched 0ms
+ ✓ src/ipc/wire.test.ts > lossless wire JSON > writes numbers exactly like the Rust canonical writer (2 000 shared vectors) 23ms
+ ✓ src/ipc/wire.test.ts > lossless wire JSON > coerces digit-only doubles back to numbers where the schema says number 1ms
+ ✓ src/ipc/wire.test.ts > integer schemas and bigint > accepts safe numbers and unsafe bigints within bounds, nothing else 0ms
+ ✓ src/ipc/wire.test.ts > integer schemas and bigint > object transports still reject bigint (only the parser produces it) 0ms
+ ✓ src/ipc/wire.test.ts > generated wire schemas > describe the engine types the host sends 1ms
+ ✓ src/ipc/wire.test.ts > generated model schemas (10 §2.8): the Rust goldens validate in the front end too > every persisted entry of the sample project validates against its type 12ms
+ ✓ src/ipc/wire.test.ts > generated model schemas (10 §2.8): the Rust goldens validate in the front end too > rejects the same objects after hostile edits 4ms
+ ✓ src/ipc/wire.test.ts > the host API over the text transport > delivers 64-bit integers exactly, from a string or a UTF-8 body 1ms
+ ✓ src/ipc/wire.test.ts > the host API over the text transport > sends arguments as JSON text, losslessly 0ms
+ ✓ src/ipc/wire.test.ts > the host API over the text transport > rejects malformed or invalid text as ipc.invalidResponse 1ms
+ ✓ src/ipc/wire.test.ts > the host API over the text transport > maps error text to HostError with the stable code and lossless details 0ms
+ ✓ src/ipc/wire.test.ts > the host API over the text transport > delivers menu events sent as text and drops malformed ones 0ms
+ ✓ src/ipc/wire.test.ts > the host API over the text transport > still works over the object-returning mock 1ms
+ ✓ src/ipc/wire.test.ts > the host API over the text transport > certifyWireText never throws 0ms
+ ✓ src/ipc/wire.test.ts > C01-R3-04 on the platform floor: proxies are rejected without structuredClone (Safari 15.0) > rejects transparent object and array proxies, nested too, with structuredClone removed 0ms
+ ✓ src/ipc/wire.test.ts > C01-R3-04 on the platform floor: proxies are rejected without structuredClone (Safari 15.0) > the probe fails closed when MessageChannel is missing 0ms
+stdout | src/test/c01-r3-schema.test.ts > round-3 schema closure controls > certifies 1 MiB ping strings promptly and snapshots the value
+schema 1MiB milliseconds (Node, not WebView2): { p50: 0.22069999999999368, max: 0.5075999999999965 }
+
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-03: arrays must have every index and no extra named properties > plain-data preflight rejects a hole compensated by an extra property 1ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-03: arrays must have every index and no extra named properties > certify rejects the same shape nested under an unconstrained JSON property 0ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-03: arrays must have every index and no extra named properties > the real menu-event path drops the malformed array 1ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-04: structured-clone failures must fail through the host boundary > certify rejects a transparent object proxy without throwing 0ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-04: structured-clone failures must fail through the host boundary > a ping with an uncloneable transport value yields ipc.invalidResponse 1ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-04: structured-clone failures must fail through the host boundary > an uncloneable menu event is dropped without throwing through the listener 0ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-05: declared Safari 15/macOS 12 runtime floor > valid transport values still work when structuredClone is unavailable 1ms
+ ✓ src/test/c01-r3-schema.test.ts > C01-R3-05: declared Safari 15/macOS 12 runtime floor > valid transport values still work when Object.hasOwn is unavailable 0ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > rejects foreign-realm objects and arrays before cloning 1ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > accepts null-prototype own __proto__ data without altering any prototype 0ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > does not invoke array accessors or clone non-JSON types 1ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > enforces 64 object/array levels and accepts frozen plain data 1ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > own toJSON functions reject without invocation; plain toJSON data is just data 0ms
+ ✓ src/test/c01-r3-schema.test.ts > round-3 schema closure controls > certifies 1 MiB ping strings promptly and snapshots the value 8ms
+ ✓ src/diagnostics/ipcBench.test.ts > IPC benchmark > measures every requested payload size 5ms
+ ✓ src/diagnostics/ipcBench.test.ts > IPC benchmark > records failures instead of throwing 6ms
+ ✓ src/diagnostics/ipcBench.test.ts > IPC benchmark > does nothing when the host requested no benchmark 0ms
+ ✓ src/ipc/hostApi.test.ts > host API over the mock transport > pings and echoes seq and payload 3ms
+ ✓ src/ipc/hostApi.test.ts > host API over the mock transport > maps host error envelopes to HostError with the stable code 6ms
+ ✓ src/ipc/hostApi.test.ts > host API over the mock transport > reports engine info 0ms
+ ✓ src/ipc/hostApi.test.ts > host API over the mock transport > rejects malformed responses as ipc.invalidResponse 0ms
+ ✓ src/ipc/hostApi.test.ts > host API over the mock transport > delivers valid menu commands, drops malformed ones, and unsubscribes 1ms
+ ✓ src/ipc/hostApi.test.ts > toHostError > wraps unknown errors as internal 0ms
+ ✓ src/spikes/tablet/analysis.test.ts > web summary > derives rate, pressure resolution, tilt and coalescing 3ms
+ ✓ src/spikes/tablet/analysis.test.ts > web summary > counts gaps longer than twice the median interval 0ms
+ ✓ src/spikes/tablet/analysis.test.ts > web summary > handles an empty capture and mouse-only input 0ms
+ ✓ src/spikes/tablet/analysis.test.ts > native summary > uses device timestamps and only pose packets 1ms
+ ✓ src/spikes/tablet/analysis.test.ts > simulation matching > identifies frames by pressure and measures latency 1ms
+ ✓ src/spikes/tablet/analysis.test.ts > simulation matching > ignores zero pressure, out-of-range values and duplicates 0ms
+ ✓ src/spikes/tablet/analysis.test.ts > review round 1 (C0.2) > segments web strokes at pointerdown/pointerup and reports each 0ms
+ ✓ src/spikes/tablet/analysis.test.ts > review round 1 (C0.2) > reports the three handler-latency estimators separately 0ms
+ ✓ src/spikes/tablet/analysis.test.ts > review round 1 (C0.2) > splits native strokes on up, proximity-out and pressure returning to zero 0ms
+ ✓ src/spikes/tablet/analysis.test.ts > review round 1 (C0.2) > never mixes clocks: one packet without a device time switches the summary to host time 0ms
+ ✓ src/spikes/tablet/analysis.test.ts > review round 1 (C0.2) > counts host-to-page loss from sequence numbers, and nothing without them 1ms
+ ✓ src/spikes/tablet/analysis.test.ts > review round 1 (C0.2) > lists the missing frame indices and handler latency of a simulation 0ms
+ ✓ src/spikes/tablet/analysis.test.ts > pressure scale > infers the Ink range of the synthetic device and matches every frame with it 1ms
+ ✓ src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) > C01-R1-03: rejects missing EngineInfo.platform 3ms
+ ✓ src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) > C01-R1-03: rejects missing EngineInfo.arch 0ms
+ ✓ src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) > C01-R1-03: rejects missing EngineInfo.runMode 0ms
+ ✓ src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) > C01-R1-03: rejects an unknown run mode 0ms
+ ✓ src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) > C01-R1-03: rejects a negative Rust u64 ping field 1ms
+ ✓ src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) > C01-R1-03: rejects array-shaped menu parameters 0ms
+ ✓ src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) > C01-R1-05: mock enforces the same UTF-8 byte limit as Rust 4ms
+ ✓ src/test/adversarial.test.ts > C0.1 adversarial regressions (intentionally red until the builder fixes them) > C01-R1-07: IPC benchmark fails if the return payload is dropped 0ms
+ ✓ src/spikes/canvas/decode.test.ts > render-list envelope (src/ipc) > certifies the Rust-encoded fixture 3ms
+ ✓ src/spikes/canvas/decode.test.ts > render-list envelope (src/ipc) > rejects a wrong magic, an unknown version, a length that disagrees with the counts, and no transport 2ms
+ ✓ src/spikes/canvas/decode.test.ts > render-list decoder > decodes strokes, fills and groups of the fixture 2ms
+ ✓ src/spikes/canvas/decode.test.ts > render-list decoder > throws on malformed contents instead of reading out of range 2ms
+ ✓ src/test/c03-r2-binary.test.ts > refuses nonfinite or adjacent out of bounds coordinate NaN 4ms
+ ✓ src/test/c03-r2-binary.test.ts > refuses nonfinite or adjacent out of bounds coordinate Infinity 0ms
+ ✓ src/test/c03-r2-binary.test.ts > refuses nonfinite or adjacent out of bounds coordinate -Infinity 0ms
+ ✓ src/test/c03-r2-binary.test.ts > refuses nonfinite or adjacent out of bounds coordinate -1.401298464324817e-45 1ms
+ ✓ src/test/c03-r2-binary.test.ts > refuses nonfinite or adjacent out of bounds coordinate 100.00000762939453 1ms
+ ✓ src/test/c03-r2-binary.test.ts > accepts subnormal coordinates inside bounds 1ms
+ ✓ src/test/c03-r2-binary.test.ts > rejects NaN header bounds 0ms
+ ✓ src/test/c03-r2-binary.test.ts > does not wrap 2^31 points times 8 to match a header-only packet 0ms
+ ✓ src/test/c03-r2-binary.test.ts > accepts an empty verb range with no geometry from that path 1ms
+ ✓ src/ipc/schema.test.ts > schema validator > distinguishes objects from arrays and null 2ms
+ ✓ src/ipc/schema.test.ts > schema validator > enforces required, additional properties, enums 0ms
+ ✓ src/ipc/schema.test.ts > schema validator > enforces integer ranges, including the JS safe-integer ceiling for u64 0ms
+ ✓ src/ipc/schema.test.ts > schema validator > reports nested JSON pointers 0ms
+ ✓ src/ipc/schema.test.ts > wire schemas > engine info requires every declared field 1ms
+ ✓ src/ipc/schema.test.ts > wire schemas > accepts the shape the Rust host serializes 0ms
+ ✓ src/ipc/schema.test.ts > wire schemas > menu events need a command id and object params 0ms
+ ✓ src/ipc/schema.test.ts > wire schemas > bench plan 0ms
+ ✓ src/ipc/schema.test.ts > own-property semantics (C01-R2-02) > rejects prototype-named keys at every nesting level 1ms
+ ✓ src/ipc/schema.test.ts > own-property semantics (C01-R2-02) > a schema that declares a prototype-named property still validates it as an own key 0ms
+ ✓ src/ipc/schema.test.ts > own-property semantics (C01-R2-02) > rejects Object.create(...) values with inherited fields, at the top and nested 0ms
+ ✓ src/ipc/schema.test.ts > own-property semantics (C01-R2-02) > rejects Object.create(...) transports through the real host API 1ms
+ ✓ src/ipc/schema.test.ts > own-property semantics (C01-R2-02) > rejects class instances, accessors, functions, symbols, holes, cycles and excessive depth 0ms
+ ✓ src/ipc/schema.test.ts > own-property semantics (C01-R2-02) > returns a snapshot: changing the transport object afterwards does not change validated data 0ms
+ ✓ src/ipc/schema.test.ts > platform floor: Safari 15.0 / macOS 12.0 (ADR-0005, C01-R3-05) > certifies host responses with BOTH Object.hasOwn and structuredClone removed 0ms
+ ✓ src/ipc/schema.test.ts > exact-index arrays and own copies (C01-R3-03) > rejects holes compensated by named properties, and out-of-order or extra keys 0ms
+ ✓ src/ipc/schema.test.ts > exact-index arrays and own copies (C01-R3-03) > copyPlainData keeps prototypes, own __proto__ keys and values, and shares nothing 0ms
+ ✓ src/ipc/schema.test.ts > exact-index arrays and own copies (C01-R3-03) > certify never throws, even for a Proxy whose traps throw 0ms
+ ✓ src/ipc/commands.test.ts > generated command schemas > match the registry version and resolve for every typed declaration 3ms
+ ✓ src/ipc/commands.test.ts > generated command schemas > accept every declared example, as the executor does 3ms
+ ✓ src/ipc/commands.test.ts > generated command schemas > reject unknown, missing and out-of-range parameters 0ms
+ ✓ src/ipc/commands.test.ts > generated command schemas > carry 64-bit revisions losslessly and only in one representation 1ms
+ ✓ src/ipc/commands.test.ts > generated command schemas > accept only finite doubles and keep integral doubles as numbers 1ms
+ ✓ src/ipc/commands.test.ts > generated command schemas > validate free-form results by own properties, at bounded depth, as snapshots 1ms
+ ✓ src/ipc/commands.test.ts > generated command schemas > validate whole envelopes 0ms
+ ✓ src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared JSON key named __proto__ 2ms
+ ✓ src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared JSON key named constructor 0ms
+ ✓ src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared JSON key named toString 0ms
+ ✓ src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects an undeclared JSON key named hasOwnProperty 0ms
+ ✓ src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > rejects the extra key through the real appInfo API 2ms
+ ✓ src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > does not certify inherited, incorrectly typed required ping fields 0ms
+ ✓ src/test/c01-r2-schema.test.ts > C01-R2-02: schema validation must use own properties > checks prototype-named extra properties at nested levels too 0ms
+ ✓ src/test/c01-r2-schema.test.ts > round-2 schema attack controls > rejects non-finite, unsafe, negative, fractional and string u64 values 0ms
+ ✓ src/test/c01-r2-schema.test.ts > round-2 schema attack controls > rejects nested arrays, ordinary extra keys and prototype-named enum values 1ms
+ ✓ src/test/c01-r2-schema.test.ts > round-2 schema attack controls > anyOf checks another branch after a failure and rejects when all fail 0ms
+ ✓ src/test/c01-r2-schema.test.ts > round-2 schema attack controls > invalid-response errors do not include rejected payload values 0ms
+ ✓ src/test/c01-r2-schema.test.ts > round-2 schema attack controls > current wire patterns reject long adversarial suffixes 1ms
+ ✓ src/lib/latency.test.ts > latency statistics > nearest-rank percentiles 1ms
+ ✓ src/lib/latency.test.ts > latency statistics > summarizes unsorted samples 1ms
+ ✓ src/lib/latency.test.ts > latency statistics > measures a burst against the host 3ms
+ ✓ src/lib/latency.test.ts > latency statistics > formats milliseconds 0ms
+ ✓ src/lib/latency.test.ts > ping echo verification > accepts a faithful echo, with and without payload 1ms
+ ✓ src/lib/latency.test.ts > ping echo verification > rejects dropped, truncated and same-length corrupted payloads 1ms
+ ✓ src/lib/latency.test.ts > ping echo verification > checksum differs for permutations 0ms
+ ✓ src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > coerces both branches of a discriminated conditional with doubles 2ms
+ ✓ src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > does not let an inapplicable oneOf double branch corrupt an integer branch 0ms
+ ✓ src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > coerces scalar doubles declared through allOf 0ms
+ ✓ src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > keeps opaque metadata large integers unchanged under generated conditional schemas 1ms
+ ✓ src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > accepts all integer edges or rejects inexact outside-range literals 1ms
+ ✓ src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > enforces wire depth immediately above and below the limit 1ms
+ ✓ src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > rejects fresh malformed escaped keys and non-finite nested values 0ms
+ ✓ src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > does not mutate parsed inputs while coercing conditionally typed numbers 0ms
+ ✓ src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > runs the TypeScript middle stage of the Rust to TS to Rust exchange 0ms
+ ✓ src/ipc/c11-r3-adversarial.test.ts > C11 R3 independent wire closure > selects three numeric branches without changing unrelated integers 3ms
+ ✓ src/ipc/c11-r3-adversarial.test.ts > C11 R3 independent wire closure > coerces mixed doubles and wide integers inside one applicable alternative 0ms
+ ✓ src/ipc/c11-r3-adversarial.test.ts > C11 R3 independent wire closure > coerces a generated Element inside a nullable reply without rounding its revision 2ms
+ ✓ src/ipc/c11-r3-adversarial.test.ts > C11 R3 independent wire closure > reads every emitted value exactly at the mixed object-array depth limit 1ms
+ ✓ src/ipc/spikeApi.test.ts > spike API (C0.2) > is disabled in a normal launch (mock host) 3ms
+ ✓ src/ipc/spikeApi.test.ts > spike API (C0.2) > certifies every streamed batch and counts the invalid ones 2ms
+ ✓ src/ipc/spikeApi.test.ts > spike API (C0.2) > rejects an invalid start result and transports without channels 1ms
+ ✓ src/ipc/spikeApi.test.ts > spike API (C0.2) > validates the spike mode shape 0ms
+ ✓ src/test/decisionTables.test.ts > C0.4 decision rule sets > tablet-rules: the go/no-go report's copy equals docs/decisions/ADR-0009-tablet-input.md 2ms
+ ✓ src/test/decisionTables.test.ts > C0.4 decision rule sets > canvas-rules: the go/no-go report's copy equals docs/decisions/ADR-0007-interactive-canvas.md 1ms
+ ✓ src/ipc/wireCorpus.test.ts > shared hostile-JSON corpus > uses the engine depth limit 1ms
+ ✓ src/ipc/wireCorpus.test.ts > shared hostile-JSON corpus > rejects every hostile text 2ms
+ ✓ src/ipc/wireCorpus.test.ts > shared hostile-JSON corpus > accepts every valid text and writes it canonically 1ms
+ ✓ src/ipc/wireCorpus.test.ts > shared hostile-JSON corpus > rejects invalid UTF-8 bodies 0ms
+ ✓ src/ui-bindings/menu.test.ts > menu bindings manifest > routes only to commands the front end implements 1ms
+ ✓ src/ui-bindings/menu.test.ts > menu bindings manifest > uses command ids of the form namespace.object[.verb] 0ms
+ ✓ src/ui-bindings/menu.test.ts > menu bindings manifest > gives every pending command a milestone 0ms
+ ✓ src/ui-bindings/menu.test.ts > menu bindings manifest > has File, Edit, View and Help menus 0ms
+
+ Test Files  40 passed (40)
+      Tests  333 passed (333)
+   Start at  21:17:35
+   Duration  57.68s (tests 74%, environment 15%, setup 8%, import 2%, transform 1%)
+
+    Isolate  40 workers spawned · ~284ms startup each (spawn + environment, per file)
+             at least ~11.07s faster with isolate: false — reuses workers across files instead of one per file
+

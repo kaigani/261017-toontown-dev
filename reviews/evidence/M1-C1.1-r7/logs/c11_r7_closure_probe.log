@@ -1,0 +1,30 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r7\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.61s
+     Running tests\c11_r7_closure_probe.rs (target\debug\deps\c11_r7_closure_probe-6d830265f1077832.exe)
+
+running 4 tests
+REFUSAL structural-limit: doc.limitExceeded: the exposure covers 100039 frames; a scene has at most 100000 (10 §5) immutable=true
+REFUSAL dangling-drawing: exposure.invalid: drawing `missing_drawing` is not in the element's bank immutable=true
+FALLBACK wrong-success: source-extracted production guard fired; root replace; raw and staged undo/redo exact; no panic/error surfaced
+REFUSAL immutable-id: arg.invalid: the id of `el_01K742SG111V8G92Y7VK4MAR41` is immutable (10 ID-01) immutable=true
+REFUSAL failing-test: doc.patchTestFailed: test failed at `/name` immutable=true
+test full_gate_stays_atomic ... ok
+FALLBACK apply-error: source-extracted production guard fired; root replace; raw and staged undo/redo exact; no panic/error surfaced
+test self_check_falls_back_for_wrong_and_unapplicable_diff ... ok
+CASE mouth-grow: staged_differs=true undo_ops=4 redo_ops=4 canonical_forward_ops=4 raw_undo/exact_redo/original_replay/full_snapshot=true
+CASE merge-neighbors: staged_differs=true undo_ops=1 redo_ops=1 canonical_forward_ops=1 raw_undo/exact_redo/original_replay/full_snapshot=true
+CASE mouth-shrink: staged_differs=true undo_ops=4 redo_ops=4 canonical_forward_ops=4 raw_undo/exact_redo/original_replay/full_snapshot=true
+CASE split-run: staged_differs=false undo_ops=1 redo_ops=1 canonical_forward_ops=1 raw_undo/exact_redo/original_replay/full_snapshot=true
+CASE inline-child-multiple-content-changes: staged_differs=true undo_ops=5 redo_ops=5 canonical_forward_ops=5 raw_undo/exact_redo/original_replay/full_snapshot=true
+test length_changing_mouth_tracks_and_inline_content ... ok
+CASE equivalent-noncanonical: staged_differs=true undo_ops=0 redo_ops=0 canonical_forward_ops=0 raw_undo/exact_redo/original_replay/full_snapshot=true
+CASE append-and-merge: staged_differs=true undo_ops=1 redo_ops=1 canonical_forward_ops=1 raw_undo/exact_redo/original_replay/full_snapshot=true
+CASE append-trailing-blank: staged_differs=true undo_ops=0 redo_ops=0 canonical_forward_ops=0 raw_undo/exact_redo/original_replay/full_snapshot=true
+CASE three-canonicalization-sites: staged_differs=true undo_ops=2 redo_ops=2 canonical_forward_ops=2 raw_undo/exact_redo/original_replay/full_snapshot=true
+CASE whole-entry-nested: staged_differs=true undo_ops=2 redo_ops=2 canonical_forward_ops=2 raw_undo/exact_redo/original_replay/full_snapshot=true
+test fresh_exposure_shapes_and_nested_canonicalization ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+

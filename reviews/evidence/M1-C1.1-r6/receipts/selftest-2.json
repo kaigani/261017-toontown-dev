@@ -1,0 +1,15 @@
+{
+  "command": [
+    "C:\\Users\\kaiga\\work\\review\\m1-c11-r6\\target\\release\\toontown-headless.exe",
+    "--selftest",
+    "--json"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:37:03.081079+00:00",
+  "elapsed_seconds": 0.005,
+  "exit_code": 0,
+  "log": "logs/selftest-2.log",
+  "sha256": "0e2e070900f4fba3a83a15f8718cdd8d030fe4a1efb5b9dc478a755dea0fc595",
+  "env": {}
+}

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "cargo",
+    "deny",
+    "--version"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:44:54.301702+00:00",
+  "elapsed_seconds": 0.183,
+  "exit_code": 0,
+  "log": "logs/version-cargo-deny.log",
+  "sha256": "1758f5ea93d8ad3585079f05c19358b7bb969cce1bf6c7bdab6659a8cd1ef6b8",
+  "env": {}
+}

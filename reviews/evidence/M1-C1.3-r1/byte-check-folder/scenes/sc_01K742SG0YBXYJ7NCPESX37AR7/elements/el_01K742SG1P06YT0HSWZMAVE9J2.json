@@ -1,0 +1,82 @@
+{
+  "id": "el_01K742SG1P06YT0HSWZMAVE9J2",
+  "type": "element",
+  "rev": 1,
+  "name": "Boom",
+  "elementType": "particleImpact",
+  "start": 1,
+  "duration": 48,
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "params": {},
+  "blocks": [
+    {
+      "id": "blk_01K742SG2J5A2NAFD1PCFKXGP8",
+      "type": "particleBlock",
+      "rev": 1,
+      "particleType": "explosion",
+      "variant": null,
+      "presetId": "builtin.explosion.normal",
+      "seed": 99,
+      "spriteSetId": null,
+      "static": {
+        "background": "transparent",
+        "simulationStart": -19,
+        "firstFrame": 1,
+        "duration": 48,
+        "maxParticles": 3000,
+        "lifetimeFrames": -1,
+        "fade": true,
+        "areaWidth": 1400,
+        "areaHeight": 1000,
+        "areaDepth": 600,
+        "floorLevel": 0
+      },
+      "dynamic": {
+        "bounciness": {
+          "value": 0
+        },
+        "directionEW": {
+          "value": 150
+        },
+        "directionFB": {
+          "value": 0
+        },
+        "directionNS": {
+          "value": -1000
+        },
+        "intensity": {
+          "keyframes": [
+            {
+              "frame": 1,
+              "value": 20
+            },
+            {
+              "frame": 48,
+              "value": 60
+            }
+          ]
+        },
+        "scale": {
+          "value": 100
+        },
+        "speedMax": {
+          "value": 5
+        },
+        "speedMin": {
+          "value": 2
+        }
+      }
+    }
+  ],
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

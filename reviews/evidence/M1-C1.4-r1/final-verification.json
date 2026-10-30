@@ -1,0 +1,191 @@
+{
+  "baseline": "390600123f6af0fef7a2961375e7f6804a290940",
+  "runtime": {
+    "total": 23,
+    "failures": [
+      "test_accepted_elicitation_preserves_request_id_result",
+      "test_activity_batch_export_does_not_turn_dry_runs_into_edits",
+      "test_activity_batch_export_keeps_committed_batch_operations",
+      "test_atomic_failure_has_no_activity_export_effect",
+      "test_closed_stdout_ends_the_unusable_session",
+      "test_elicitation_is_one_audit_entry_per_tool_call",
+      "test_eof_while_eliciting_ends_the_session",
+      "test_filter_has_bounded_runtime",
+      "test_get_state_matches_the_command_envelope",
+      "test_invalid_utf8_frame_does_not_destroy_stream",
+      "test_malformed_elicitation_does_not_overwrite",
+      "test_non_object_tool_arguments_are_rejected",
+      "test_nonreading_client_with_eof_does_not_pin_the_session",
+      "test_second_initialize_is_rejected",
+      "test_size_and_mtime_preserving_edit_requires_confirmation",
+      "test_undo_and_redo_emit_the_declared_events",
+      "test_unknown_cancellation_does_not_cancel_a_future_request",
+      "test_unknown_tool_argument_is_rejected",
+      "test_wrong_dry_run_type_does_not_commit",
+      "test_wrong_expect_rev_type_does_not_commit",
+      "test_percentile_evidence_retains_observations",
+      "test_suspension_hooks_are_not_a_normal_dependency_feature"
+    ],
+    "errors": 0,
+    "passes": [
+      "test_project_resource_is_readable"
+    ]
+  },
+  "cargoHeadless": {
+    "expectedFailure": true,
+    "runtimeTotal": 23,
+    "runtimeFailures": 22
+  },
+  "cargoMcp": {
+    "autosavePassed": true,
+    "limitsExpectedFailures": 2
+  },
+  "pythonDiscovery": {
+    "total": 12,
+    "inheritedPassed": 11,
+    "expectedFailingSuite": "c14-r1-mcp.py"
+  },
+  "findingCoverage": {
+    "C14-R1-01": {
+      "level": "P1",
+      "tests": [
+        "test_wrong_dry_run_type_does_not_commit",
+        "test_wrong_expect_rev_type_does_not_commit",
+        "test_non_object_tool_arguments_are_rejected",
+        "test_unknown_tool_argument_is_rejected"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-02": {
+      "level": "P1",
+      "tests": [
+        "test_malformed_elicitation_does_not_overwrite"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-03": {
+      "level": "P1",
+      "tests": [
+        "test_atomic_failure_has_no_activity_export_effect"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-04": {
+      "level": "P1",
+      "tests": [
+        "test_accepted_elicitation_preserves_request_id_result"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-05": {
+      "level": "P1",
+      "tests": [
+        "test_filter_has_bounded_runtime"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-06": {
+      "level": "P1",
+      "tests": [
+        "saved_observe_policy_and_limits_survive_restart"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-07": {
+      "level": "P1",
+      "tests": [
+        "ReleaseFeature.test_percentile_evidence_retains_observations"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-08": {
+      "level": "P2",
+      "disposition": "downgraded: missing deterministic runtime repro"
+    },
+    "C14-R1-09": {
+      "level": "P1",
+      "tests": [
+        "test_size_and_mtime_preserving_edit_requires_confirmation"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-10": {
+      "level": "P1",
+      "tests": [
+        "ReleaseFeature.test_suspension_hooks_are_not_a_normal_dependency_feature"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-11": {
+      "level": "P1",
+      "tests": [
+        "configured_batch_limit_applies_to_batch_script"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-12": {
+      "level": "P1",
+      "tests": [
+        "test_elicitation_is_one_audit_entry_per_tool_call"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-13": {
+      "level": "P1",
+      "tests": [
+        "test_invalid_utf8_frame_does_not_destroy_stream"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-14": {
+      "level": "P1",
+      "tests": [
+        "test_closed_stdout_ends_the_unusable_session",
+        "test_eof_while_eliciting_ends_the_session",
+        "test_nonreading_client_with_eof_does_not_pin_the_session"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-15": {
+      "level": "P1",
+      "tests": [
+        "test_activity_batch_export_keeps_committed_batch_operations",
+        "test_activity_batch_export_does_not_turn_dry_runs_into_edits"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-16": {
+      "level": "P2",
+      "tests": [
+        "test_get_state_matches_the_command_envelope",
+        "test_undo_and_redo_emit_the_declared_events"
+      ],
+      "result": "expected failure reproduced"
+    },
+    "C14-R1-17": {
+      "level": "P1",
+      "tests": [
+        "test_unknown_cancellation_does_not_cancel_a_future_request",
+        "test_second_initialize_is_rejected"
+      ],
+      "result": "expected failure reproduced"
+    }
+  },
+  "saveProofGap": {
+    "lockBoundaries": [
+      "ArbiterTaken",
+      "PublishCreated",
+      "PublishWritten",
+      "TakeoverDecided",
+      "HeartbeatChecked",
+      "HeartbeatWritten",
+      "ReleaseChecked"
+    ],
+    "runtimeReproAvailable": false
+  },
+  "environment": {
+    "displayVariablesRemoved": true,
+    "suiteNetworkUse": false,
+    "notes": "Python suite uses only stdlib, local pipes and filesystem; no SDK or network needed."
+  }
+}

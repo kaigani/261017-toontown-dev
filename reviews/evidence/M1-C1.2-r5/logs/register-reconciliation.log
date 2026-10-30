@@ -1,0 +1,36 @@
+{
+  "requirements": {
+    "implemented": 65,
+    "divergent": 0,
+    "missing": 0,
+    "deferred-with-owner": 7
+  },
+  "commands": {
+    "implemented": 69,
+    "divergent": 0,
+    "missing": 0,
+    "deferred-with-owner": 727
+  },
+  "totalRequirements": 72,
+  "totalCommands": 796,
+  "declaredRuntime": {
+    "notImplemented": 727,
+    "implemented": 69
+  },
+  "previousDivergentCommands": {
+    "closed": 3,
+    "stillDivergent": 0
+  },
+  "previousDivergentRequirements": {
+    "closed": 3,
+    "stillDivergent": 0
+  },
+  "newDivergentCommandRows": [],
+  "schemas": {
+    "generated": 662,
+    "generatedHoleRows": 0,
+    "unresolvedRefs": 0,
+    "examples": 809
+  },
+  "qualification": "Scoped reconciliation of accepted R4 register and fix-induced regressions, not a fourth exhaustive review or a proof of all possible values."
+}

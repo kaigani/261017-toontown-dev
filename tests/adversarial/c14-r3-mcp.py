@@ -1,0 +1,153 @@
+"""Round-three malformed-parameter watchdog and staged-export entry-point variants."""
+import importlib.util
+import json
+import os
+import pathlib
+import queue
+import subprocess
+import time
+import unittest
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+spec = importlib.util.spec_from_file_location("r1", ROOT / "tests/adversarial/c14-r1-mcp.py")
+r1 = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(r1)
+BINARY = os.environ.get("TT_REVIEW_BINARY")
+
+
+@unittest.skipUnless(BINARY, "set TT_REVIEW_BINARY to a built headless binary")
+class Protocol(unittest.TestCase):
+    def setUp(self):
+        self.c = r1.Client(extra=("--typed-tools", "doc,agent", "--policy", "autonomous"))
+
+    def tearDown(self):
+        self.c.close()
+
+    def test_every_registered_command_rejects_malformed_params_within_watchdog(self):
+        c = self.c
+        c.project()
+        cursor = None
+        ids = []
+        while True:
+            args = {"page": {"limit": 500}}
+            if cursor:
+                args["page"]["cursor"] = cursor
+            result = c.call("list_commands", args)["result"]["structuredContent"]["result"]
+            items = result.get("items", result.get("commands", []))
+            ids.extend(x["id"] for x in items)
+            cursor = result.get("nextCursor")
+            if not cursor:
+                break
+        self.assertGreater(len(ids), 700, result)
+        for command in ids:
+            for params in [None, [], {"__review_unknown_field__": {"nested": [False, None]}}]:
+                with self.subTest(command=command, params=params):
+                    started = time.monotonic()
+                    response = c.request("tools/call", {"name": "run_command", "arguments": {"id": command, "params": params}}, timeout=5)
+                    self.assertLess(time.monotonic() - started, 5)
+                    self.assertEqual(response["result"]["structuredContent"]["status"], "error", response)
+        print(f"malformed watchdog: {len(ids)} commands, {3 * len(ids)} calls", flush=True)
+
+    def test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure(self):
+        c = self.c
+        c.project()
+        for command, base in [("doc.export.json", {"scope": "scenes", "refs": ["scene:#1"]}),
+                              ("agent.activity.export", {})]:
+            for existing in [False, True]:
+                target = c.root / (command + str(existing) + ".json")
+                if existing:
+                    target.write_bytes(b"original")
+                params = {**base, "path": str(target), "onExists": "overwrite"}
+                e = c.call("batch", {"label": "rollback", "atomic": True, "steps": [
+                    {"id": command, "params": params}, {"id": "unknown.command", "params": {}}]})
+                self.assertEqual(e["result"]["structuredContent"]["status"], "error", e)
+                self.assertEqual(target.read_bytes() if target.exists() else None, b"original" if existing else None)
+                e = c.call("run_command", {"id": command, "params": params, "dryRun": True})
+                self.assertEqual(e["result"]["structuredContent"]["status"], "ok", e)
+                self.assertEqual(target.read_bytes() if target.exists() else None, b"original" if existing else None)
+                e = c.call(command.replace(".", "_"), params)
+                self.assertEqual(e["result"]["structuredContent"]["status"], "ok", e)
+                self.assertTrue(target.is_file())
+                self.assertNotEqual(target.read_bytes(), b"original")
+
+    def test_headless_run_rolls_back_export_on_later_failure(self):
+        c = self.c
+        c.project()
+        target = c.root / "script-export.json"
+        script = c.root / "script.json"
+        script.write_text(json.dumps({"label": "rollback", "atomic": True, "steps": [
+            {"id": "doc.export.json", "params": {"path": str(target)}},
+            {"id": "unknown.command", "params": {}}]}), encoding="utf-8")
+        p = subprocess.run([BINARY, "--run", str(script), "--project", str(c.root / "P.animpkg"),
+                            "--allow-path", str(c.root), "--user-dir", str(c.root / "script-user")],
+                           capture_output=True, timeout=15)
+        self.assertNotEqual(p.returncode, 0, p.stdout)
+        self.assertFalse(target.exists(), p.stdout)
+
+    def test_cancelled_elicitation_does_not_authorize_a_late_accept(self):
+        # ADR-0015 section 12: cancellation withdraws the ask and authorizes nothing.
+        self.c.close()
+        self.c = c = r1.Client(caps={"elicitation": {}})
+        c.project()
+        target = c.root / "cancelled.jsonl"
+        target.write_bytes(b"original")
+        rid = 9000
+        c.send({"jsonrpc": "2.0", "id": rid, "method": "tools/call", "params": {
+            "name": "run_command", "arguments": {"id": "agent.activity.export", "params": {
+                "path": str(target), "onExists": "overwrite"}}}})
+        deadline = time.monotonic() + 5
+        while True:
+            msg = c.q.get(timeout=max(.001, deadline - time.monotonic()))
+            if msg.get("method") == "elicitation/create":
+                break
+            c.saved.append(msg)
+        # Ordered frames in one pipe write: cancellation is handled before the late answer.
+        frames = [{"jsonrpc": "2.0", "method": "notifications/cancelled", "params": {"requestId": rid}},
+                  {"jsonrpc": "2.0", "id": msg["id"], "result": {"action": "accept", "content": {"confirm": True}}}]
+        c.p.stdin.write(("\n".join(json.dumps(x) for x in frames) + "\n").encode())
+        c.p.stdin.flush()
+        # This queued tool proves the call worker has finished the cancelled call.
+        self.assertEqual(c.run("app.state.get", {})["status"], "ok")
+        received = list(c.saved)
+        while True:
+            try:
+                received.append(c.q.get_nowait())
+            except queue.Empty:
+                break
+        self.assertFalse(any(x.get("id") == rid and "method" not in x for x in received), received)
+        self.assertEqual(target.read_bytes(), b"original", "a cancelled elicitation accepted a late answer and overwrote the file")
+
+    def test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped(self):
+        for folder in [False, True]:
+            with self.subTest(folder=folder):
+                self.c.close()
+                self.c = c = r1.Client()
+                target = c.root / ("Folder" if folder else "P.animpkg")
+                made = c.run("project.create", {"name": "P", "path": str(target) + (os.sep if folder else "")})
+                self.assertEqual(made["status"], "ok", made)
+                scene = made["result"]["sceneId"]
+                self.assertEqual(c.run("doc.object.patch", {"targets": [scene], "props": {"meta": {"mine": True}}})["status"], "ok")
+                victim = target / "project.json" if folder else target
+                stamp = victim.stat()
+                external = bytearray(victim.read_bytes())
+                external[-1] ^= 1
+                victim.write_bytes(external)
+                os.utime(victim, ns=(stamp.st_atime_ns, stamp.st_mtime_ns))
+                denied = c.run("app.quit", {"onUnsaved": "save"})
+                self.assertEqual(denied["error"]["code"], "permission.denied", denied)
+                e = c.run("project.close", {"onUnsaved": "save"})
+                self.assertEqual(e["status"], "needs_confirmation", e)
+                self.assertEqual(e["result"]["category"], "externalChange", e)
+                self.assertEqual(victim.read_bytes(), external)
+                done = c.call("run_command", {"id": "project.close", "params": {"onUnsaved": "save"},
+                                              "confirmToken": e["result"]["confirmToken"]})["result"]["structuredContent"]
+                self.assertEqual(done["status"], "ok", done)
+                opened = c.run("project.open", {"path": str(target)})
+                self.assertEqual(opened["status"], "ok", opened)
+                waited = c.run("job.wait", {"jobId": opened["result"]["jobId"], "timeoutMs": 5000})
+                self.assertEqual(waited["result"]["state"], "succeeded", waited)
+                self.assertTrue(c.run("doc.object.get", {"ref": scene})["result"]["object"]["meta"]["mine"])
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

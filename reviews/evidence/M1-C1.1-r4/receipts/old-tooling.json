@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "tests/adversarial/c03-r1-tooling.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r4",
+  "base": "3b6179f57bbdf65ac847787f34ef937f88035178",
+  "started_utc": "2026-10-18T23:48:39.245068+00:00",
+  "elapsed_seconds": 6.379,
+  "exit_code": 0,
+  "log": "logs/old-tooling.log",
+  "sha256": "9b3c91db3b114714cc782848ef0b60c61f253008bd896c8eb73a32a9e4abd16d",
+  "env": {}
+}

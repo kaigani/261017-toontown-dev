@@ -1,0 +1,17 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "-p",
+    "tt-engine",
+    "--test",
+    "frontend_schemas"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T20:00:06.658824+00:00",
+  "seconds": 0.7339202000293881,
+  "exit": 0,
+  "logSha256": "23a93aa98b94fe11384f5ea95750f74050a00800bcea5ac3086a2987624df1ea",
+  "proptestSeed": "1182711"
+}

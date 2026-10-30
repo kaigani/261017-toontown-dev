@@ -1,0 +1,10 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r7\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.80s
+     Running tests\c11_r4_exposure_bounds.rs (target\debug\deps\c11_r4_exposure_bounds-f7f2fe040f1002b0.exe)
+
+running 2 tests
+test exposure_range_rejects_window_past_scene_limit ... ok
+test exposure_range_rejects_total_above_scene_limit ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

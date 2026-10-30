@@ -1,0 +1,44 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r3\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.40s
+     Running tests\c12_r3_contracts.rs (target\debug\deps\c12_r3_contracts-d703beb9e6999d6c.exe)
+
+running 14 tests
+test json04_multi_operation_inverse_restores_raw_bytes_and_opaque_boundaries ... ok
+
+thread 'checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision' (33064) panicked at crates\executor\tests\c12_r3_contracts.rs:92:5:
+assertion `left == right` failed: R2-03: checkpoint must carry the staged object's revision stamps
+  left: Array [Object {"id": String("dr_01K742SG0KZJY81XFP1PYP7NX1"), "type": String("drawing"), "op": String("modified"), "rev": Number(2), "patch": Array []}]
+ right: Array []
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision ... FAILED
+test maximum_revision_rolls_back_checkpoints_and_keeps_executor_alive ... ok
+test checkpoint_create_delete_and_failure_are_transactional_on_fresh_content ... ok
+
+thread 'staged_drawing_only_diff_keeps_content_invalidation' (7620) panicked at crates\executor\tests\c12_r3_contracts.rs:77:5:
+REV-02 and R2-12: drawing filter must not erase staged content invalidation: []
+test staged_drawing_only_diff_keeps_content_invalidation ... FAILED
+test fresh_clipboard_property_values_are_checked_before_storage ... ok
+test public_staging_rewind_and_serde_candidates_cannot_cross_load_integrity_gate ... ok
+test key_and_template_creation_predict_ids_and_stay_opaque ... ok
+test fresh_complete_forest_paste_preserves_derived_parent_links ... ok
+test malformed_paste_destination_variants_never_fall_back ... ok
+test dry_run_ids_match_for_all_implemented_paste_creation_routes ... ok
+test opaque_payloads_survive_every_edit_handler_and_property_patch ... ok
+
+thread 'overlapping_identical_waits_retain_one_original_envelope' (26468) panicked at crates\executor\tests\c12_r3_contracts.rs:59:5:
+assertion `left == right` failed: 11 §7.2: overlapping identical retries must return the original envelope
+  left: Object {"status": String("ok"), "result": Object {"jobId": String("job-1"), "commandId": String("review.r3"), "state": String("succeeded"), "progress": Number(1.0), "message": String(""), "startedAt": String("2026-10-19T11:00:42.847Z"), "result": Object {"fresh": Number(49443)}, "session": String("user")}, "changes": Array [], "warnings": Array [], "documentRev": Number(1)}
+ right: Object {"status": String("ok"), "result": Object {"jobId": String("job-1"), "commandId": String("review.r3"), "state": String("running"), "progress": Number(0.0), "message": String(""), "startedAt": String("2026-10-19T11:00:42.847Z"), "session": String("user"), "timedOut": Bool(true)}, "changes": Array [], "warnings": Array [], "documentRev": Number(1)}
+test overlapping_identical_waits_retain_one_original_envelope ... FAILED
+test sequential_batch_wait_uses_elapsed_time_and_reaches_completion ... ok
+
+failures:
+
+failures:
+    checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision
+    overlapping_identical_waits_retain_one_original_envelope
+    staged_drawing_only_diff_keeps_content_invalidation
+
+test result: FAILED. 11 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.52s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r3_contracts`

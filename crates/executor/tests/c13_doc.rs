@@ -1,0 +1,539 @@
+//! C1.3 `doc.*` commands through the executor: the round trip of 11 §14.3 (objects created by a command, saved,
+//! reopened, read back identically), the interchange bundle, assets and blobs, packages, validation and repair,
+//! references, candidate validation, and the load report of a repaired project.
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
+
+mod c13_support;
+mod common;
+
+use std::collections::BTreeMap;
+use std::path::Path;
+
+use c13_support::{job_ok, spawn, tmp};
+use common::*;
+use serde_json::{Value, json};
+use tt_model::ObjectType;
+
+fn s(p: &Path) -> String {
+    p.to_string_lossy().into_owned()
+}
+
+/// Every object of the open project by type: id → its `doc.object.get` JSON (depth 1).
+fn all_objects(h: &tt_executor::ExecutorHandle) -> BTreeMap<String, Value> {
+    let mut out = BTreeMap::new();
+    for ty in ObjectType::ALL {
+        let mut offset = 0;
+        loop {
+            let found = ok(h, "doc.object.find", json!({ "type": ty.as_str(), "limit": 1000, "offset": offset }));
+            for item in found["items"].as_array().unwrap() {
+                let id = item["id"].as_str().unwrap().to_owned();
+                out.insert(id.clone(), get(h, &id));
+            }
+            match found["nextOffset"].as_u64() {
+                Some(n) => offset = n,
+                None => break,
+            }
+        }
+    }
+    out
+}
+
+fn without(mut v: Value, keys: &[&str]) -> Value {
+    fn strip(v: &mut Value, keys: &[&str]) {
+        match v {
+            Value::Object(m) => {
+                for k in keys {
+                    m.shift_remove(*k);
+                }
+                m.values_mut().for_each(|x| strip(x, keys));
+            }
+            Value::Array(a) => a.iter_mut().for_each(|x| strip(x, keys)),
+            _ => {}
+        }
+    }
+    strip(&mut v, keys);
+    v
+}
+
+#[test]
+fn objects_created_by_import_survive_save_and_reopen_identically() {
+    let dir = tmp();
+    // The source: the sample project, which holds every object type the bundle carries.
+    let src = spawn(&dir.join("src"));
+    assert!(src.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+    let bundle = ok(&src, "doc.export.json", json!({ "scope": "project", "binaries": "embed" }))["bundle"].clone();
+    let source_objects = all_objects(&src);
+    // The project's start transition belongs to the project, which an import does not replace.
+    let start = ok(&src, "doc.object.get", json!({ "ref": "project" }))["object"]["startTransition"]["id"].clone();
+    // The target: a new project; the bundle's scenes, banks, palettes, pens and assets are imported by command.
+    let h = spawn(&dir.join("dst"));
+    ok(&h, "project.create", json!({ "name": "Round trip" }));
+    let r = ok(&h, "doc.import.json", json!({ "source": bundle, "idPolicy": "preserve" }));
+    assert_eq!(r["created"]["scenes"].as_array().unwrap().len(), 2, "{r}");
+    let imported = all_objects(&h);
+    // Import fidelity: every imported object equals its source, revisions and paths aside.
+    let mut types = std::collections::BTreeSet::new();
+    for (id, v) in &source_objects {
+        let t = v["type"].as_str().unwrap().to_owned();
+        if matches!(t.as_str(), "project" | "library" | "libraryFolder" | "libraryItem") || v["id"] == start {
+            continue;
+        }
+        let got = imported.get(id).unwrap_or_else(|| panic!("{t} `{id}` was not imported"));
+        // Imported scenes also hold a style entry for the target project's own palette (10 §4.3).
+        let mut got = got.clone();
+        if t == "scene" {
+            let src_ps = v["paletteStyles"].as_object().unwrap().clone();
+            let ps = got["paletteStyles"].as_object_mut().unwrap();
+            ps.retain(|k, _| src_ps.contains_key(k));
+        }
+        let scrub = |x: &Value| without(x.clone(), &["rev", "path", "name"]);
+        assert_eq!(scrub(&got), scrub(v), "{t} `{id}`");
+        types.insert(t);
+    }
+    for t in [
+        "palette",
+        "paletteStyle",
+        "swatch",
+        "pen",
+        "asset",
+        "drawingBank",
+        "drawing",
+        "drawingNode",
+        "stroke",
+        "scene",
+        "transition",
+        "element",
+        "channel",
+        "key",
+        "motionPoint",
+        "particleBlock",
+        "soundPlacement",
+        "mediaSequence",
+    ] {
+        assert!(types.contains(t), "the round trip covers {t}: {types:?}");
+    }
+    // 11 §14.3: save → reopen → get_object returns identical JSON, for every object.
+    let before = all_objects(&h);
+    let target = dir.join("RT.animpkg");
+    job_ok(&h, "project.saveAs", json!({ "path": s(&target) }));
+    let saved = all_objects(&h);
+    ok(&h, "project.close", json!({}));
+    job_ok(&h, "project.open", json!({ "path": s(&target) }));
+    let after = all_objects(&h);
+    // modifiedAt of the project is volatile (set by the save).
+    let vol = |m: &BTreeMap<String, Value>| {
+        m.iter().map(|(k, v)| (k.clone(), without(v.clone(), &["modifiedAt"]))).collect::<BTreeMap<_, _>>()
+    };
+    assert_eq!(after, saved, "reopened == saved, revisions included");
+    assert_eq!(vol(&after).len(), vol(&before).len());
+    // The folder form too.
+    let folder = dir.join("RT-folder.animpkg");
+    job_ok(&h, "doc.package.export", json!({ "path": s(&folder), "form": "folder" }));
+    ok(&h, "project.close", json!({}));
+    job_ok(&h, "project.open", json!({ "path": s(&folder) }));
+    assert_eq!(all_objects(&h), saved);
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+#[test]
+fn bundles_import_into_a_scene_at_a_frame_with_fresh_ids_and_renames() {
+    let dir = tmp();
+    let h = spawn(&dir.join("u"));
+    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+    let bob = ok(&h, "doc.object.resolve", json!({ "refs": ["scene:\"Intro\"/element:\"Bob\""] }))["items"][0]["id"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    let b =
+        ok(&h, "doc.export.json", json!({ "scope": "elements", "refs": [bob], "binaries": "omit" }))["bundle"].clone();
+    assert_eq!(b["scope"]["kind"], "elements");
+    let before = get(&h, &bob);
+    let scene2 = ok(&h, "doc.object.resolve", json!({ "refs": ["scene:\"Scene-2\""] }))["items"][0]["id"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    let r = ok(&h, "doc.import.json", json!({ "source": b, "target": scene2, "atFrame": 11 }));
+    let new_ids: Vec<String> =
+        r["created"]["elements"].as_array().unwrap().iter().map(|x| x.as_str().unwrap().to_owned()).collect();
+    assert!(!new_ids.contains(&bob), "fresh IDs");
+    let copy = new_ids.iter().map(|i| get(&h, i)).find(|e| e["elementType"] == "drawing").unwrap();
+    assert_eq!(copy["exposure"][0], json!([null, 10]), "the copy starts at frame 11: {}", copy["exposure"]);
+    // The copy exposes the copies of Bob's drawings (fresh IDs) with the same timing.
+    assert_eq!(copy["exposure"][1][1], before["exposure"][0][1]);
+    assert_ne!(copy["exposure"][1][0], before["exposure"][0][0]);
+    // Again: names conflict in the target scene and are renamed.
+    let r2 = ok(&h, "doc.import.json", json!({ "source": b, "target": scene2 }));
+    assert!(!r2["renamed"].as_array().unwrap().is_empty(), "{r2}");
+    let e = err(&h, "doc.import.json", json!({ "source": b, "target": scene2, "onConflict": "fail" }));
+    assert_eq!(e.code, "doc.importConflict");
+    // A dry run changes nothing; one import is one undo step.
+    let rev0 = rev(&h);
+    let d = run(&h, "doc.import.json", json!({ "source": b, "target": scene2, "dryRun": true }));
+    assert!(d.is_ok());
+    assert_eq!(rev(&h), rev0);
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(
+        ok(&h, "edit.history.get", json!({}))["position"].as_u64().unwrap() + 1,
+        ok(&h, "edit.history.get", json!({}))["entries"].as_array().unwrap().len() as u64
+    );
+    // Writing a bundle to a file and importing it from there.
+    let file = dir.join("bob.animjson");
+    let w = ok(&h, "doc.export.json", json!({ "scope": "elements", "refs": [bob], "path": s(&file) }));
+    assert!(w["bytes"].as_u64().unwrap() > 0 && file.is_file());
+    assert_eq!(
+        err(&h, "doc.export.json", json!({ "scope": "elements", "refs": [bob], "path": s(&file) })).code,
+        "fs.exists"
+    );
+    ok(&h, "doc.import.json", json!({ "source": s(&file), "target": scene2 }));
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+#[test]
+fn linked_media_relink_embed_blob_export_and_remove() {
+    let dir = tmp();
+    let h = spawn(&dir.join("u"));
+    ok(&h, "project.create", json!({ "name": "Media" }));
+    job_ok(&h, "project.saveAs", json!({ "path": s(&dir.join("M.animpkg")) }));
+    let media = dir.join("media");
+    std::fs::create_dir_all(&media).unwrap();
+    let wav = media.join("line.wav");
+    std::fs::write(&wav, b"RIFF fake wave bytes").unwrap();
+    let sha = tt_persist::fsx::sha256(b"RIFF fake wave bytes");
+    // A bundle carrying one linked asset whose file is not where the link says.
+    let bundle = json!({
+        "format": "animjson", "formatVersion": "1.0", "scenes": [], "elements": [], "drawingBanks": [], "palettes": [],
+        "pens": [], "blobs": {},
+        "assets": [{ "id": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "type": "asset", "rev": 1, "name": "line.wav", "kind": "sound",
+            "mediaType": "audio/wav", "storage": "linked", "entry": null,
+            "link": { "kind": "file", "path": "elsewhere/line.wav", "absolutePath": "/nowhere/elsewhere/line.wav", "libraryId": null, "itemId": null, "versionId": null },
+            "size": 20, "sha256": sha, "importedAt": "2026-10-19T00:00:00.000Z", "sourcePath": null }]
+    });
+    ok(&h, "doc.import.json", json!({ "source": bundle, "idPolicy": "preserve" }));
+    let list = ok(&h, "doc.asset.list", json!({ "status": "unused" }));
+    assert_eq!(list["assets"].as_array().unwrap().len(), 1);
+    let r = ok(&h, "doc.asset.relink", json!({ "searchFolder": s(&media), "matchBy": "hash" }));
+    assert_eq!(r["relinked"][0]["assetId"], "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "{r}");
+    let listed = ok(&h, "doc.asset.list", json!({}));
+    assert_eq!(listed["assets"][0]["status"], "ok", "{listed}");
+    let e = ok(&h, "doc.asset.embed", json!({ "all": true }));
+    assert_eq!(e["embedded"][0], "as_01K7AAAAAAAAAAAAAAAAAAAAAA");
+    let blob = ok(&h, "doc.blob.get", json!({ "ref": "as_01K7AAAAAAAAAAAAAAAAAAAAAA" }));
+    assert_eq!(tt_persist::b64::decode(blob["base64"].as_str().unwrap()).unwrap(), b"RIFF fake wave bytes");
+    assert_eq!(blob["sha256"], sha);
+    assert_eq!(
+        err(&h, "doc.blob.get", json!({ "ref": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "maxBytes": 4 })).code,
+        "doc.blobTooLarge"
+    );
+    // The embedded bytes belong to the session once the linked original is gone (MED-01). Nothing uses the asset, so
+    // a save leaves its media out of the package (MED-04), while the session keeps them (undo, export).
+    std::fs::remove_file(&wav).unwrap();
+    job_ok(&h, "project.save", json!({}));
+    let z = tt_persist::zip::ZipArchive::open(&dir.join("M.animpkg"), None, Default::default()).unwrap();
+    assert!(z.entries().iter().all(|e| !e.name.starts_with("media/")), "MED-04: unused media are not saved");
+    let out = dir.join("out.wav");
+    ok(&h, "doc.asset.export", json!({ "assetId": "as_01K7AAAAAAAAAAAAAAAAAAAAAA", "path": s(&out) }));
+    assert_eq!(std::fs::read(&out).unwrap(), b"RIFF fake wave bytes");
+    // Unused media: validated, repaired by the default fix, restored by undo.
+    let v = ok(&h, "doc.validate", json!({ "checks": ["unusedAssets"] }));
+    assert_eq!(v["issues"][0]["code"], "unusedAssets");
+    let fixed = ok(&h, "doc.repair", json!({ "codes": ["unusedAssets"] }));
+    assert_eq!(fixed["fixed"].as_array().unwrap().len(), 1, "{fixed}");
+    assert!(ok(&h, "doc.asset.list", json!({}))["assets"].as_array().unwrap().is_empty());
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(ok(&h, "doc.asset.list", json!({}))["assets"].as_array().unwrap().len(), 1);
+    // MED-04: removed and saved, the entry leaves the package.
+    ok(&h, "doc.asset.remove", json!({ "unused": true }));
+    job_ok(&h, "project.save", json!({}));
+    let z = tt_persist::zip::ZipArchive::open(&dir.join("M.animpkg"), None, Default::default()).unwrap();
+    assert!(z.entries().iter().all(|e| !e.name.starts_with("media/")));
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+#[test]
+fn packages_templates_palettes_and_libraries_are_inspected_without_opening() {
+    let dir = tmp();
+    let h = spawn(&dir.join("u"));
+    ok(&h, "project.create", json!({ "name": "Inspect" }));
+    let pkg = dir.join("I.animpkg");
+    job_ok(&h, "project.saveAs", json!({ "path": s(&pkg) }));
+    let info = ok(&h, "doc.package.get", json!({ "path": s(&pkg), "validate": true }));
+    assert_eq!(
+        (info["kind"].clone(), info["form"].clone(), info["readable"].clone()),
+        (json!("project"), json!("package"), json!(true))
+    );
+    assert_eq!(info["name"], "Inspect");
+    assert_eq!(info["projectId"], first(&h, "project"));
+    let bad = dir.join("bad.animpkg");
+    std::fs::write(&bad, b"PK\x03\x04garbage").unwrap();
+    let bi = ok(&h, "doc.package.get", json!({ "path": s(&bad) }));
+    assert_eq!(bi["readable"], false);
+    assert_eq!(bi["issues"][0]["code"], "project.invalidFormat");
+    let pal = dir.join("p.animpal");
+    tt_persist::library::write_palette_file(
+        &pal,
+        &json!({ "format": "animpal", "formatVersion": "1.0", "palettes": [{ "name": "Skin" }] }),
+        &Default::default(),
+        true,
+    )
+    .unwrap();
+    let pi = ok(&h, "doc.package.get", json!({ "path": s(&pal) }));
+    assert_eq!(
+        (pi["kind"].clone(), pi["readable"].clone(), pi["name"].clone()),
+        (json!("palette"), json!(true), json!("Skin"))
+    );
+    let tpl = dir.join("t.animtpl");
+    tt_persist::library::write_template(
+        &tpl,
+        &json!({ "id": "tp_1", "name": "Walk" }),
+        &json!({ "format": "animjson" }),
+        &Default::default(),
+        None,
+    )
+    .unwrap();
+    let ti = ok(&h, "doc.package.get", json!({ "path": s(&tpl) }));
+    assert_eq!((ti["kind"].clone(), ti["name"].clone()), (json!("template"), json!("Walk")));
+    let lib = dir.join("Lib");
+    std::fs::create_dir_all(lib.join("files")).unwrap();
+    let library: tt_model::entities::library::Library = tt_model::object::from_json(&json!({
+        "id": "lib_01K7BBBBBBBBBBBBBBBBBBBBBB", "type": "library", "rev": 1, "name": "Shared", "kind": "global", "formatVersion": "1.0",
+        "children": [{ "id": "li_01K7CCCCCCCCCCCCCCCCCCCCCC", "type": "libraryItem", "rev": 1, "name": "Gone", "itemKind": "image", "file": "gone.png", "thumbnail": null }]
+    })).unwrap();
+    tt_persist::library::write_library_index(&lib, &library).unwrap();
+    let li = ok(&h, "doc.package.get", json!({ "path": s(&lib) }));
+    assert_eq!((li["kind"].clone(), li["name"].clone()), (json!("library"), json!("Shared")));
+    assert_eq!(li["issues"][0]["code"], "brokenLibraryItems");
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+#[test]
+fn validation_references_and_candidates() {
+    let h = fixture();
+    let v = ok(&h, "doc.validate", json!({}));
+    let unavailable: Vec<&str> =
+        v["unavailable"].as_array().unwrap().iter().map(|u| u["check"].as_str().unwrap()).collect();
+    assert_eq!(
+        unavailable,
+        ["unpaintedZones", "staleLipSync", "transitionPadding", "missingFonts", "outdatedTemplateLinks"]
+    );
+    assert!(v["issues"].as_array().unwrap().iter().all(|i| i["issueId"].as_str().unwrap().starts_with("is_")));
+    assert_eq!(err(&h, "doc.validate", json!({ "checks": ["nope"] })).code, "arg.invalid");
+    let errors = ok(&h, "doc.validate", json!({ "minSeverity": "error" }));
+    assert!(errors["issues"].as_array().unwrap().iter().all(|i| i["severity"] == "error"));
+    // References: the drawing element's bank is used by it.
+    let bob = ok(&h, "doc.object.resolve", json!({ "refs": ["scene:\"Intro\"/element:\"Bob\""] }))["items"][0]["id"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    let bank = get(&h, &bob)["drawingBankId"].as_str().unwrap().to_owned();
+    let incoming = ok(&h, "doc.object.refs", json!({ "ref": bank }));
+    assert!(
+        incoming["refs"].as_array().unwrap().iter().any(|r| r["id"] == bob && r["property"] == "/drawingBankId"),
+        "{incoming}"
+    );
+    let outgoing = ok(&h, "doc.object.refs", json!({ "ref": bob, "direction": "outgoing" }));
+    assert!(outgoing["refs"].as_array().unwrap().iter().any(|r| r["id"] == bank));
+    // Candidates.
+    let good = json!({ "name": "Ink", "kind": "brush", "minSize": 1, "maxSize": 4, "smoothness": 3, "tip": "round", "tipAngle": 0, "colourId": null });
+    assert_eq!(
+        ok(&h, "doc.schema.validate", json!({ "type": "pen", "object": good, "mode": "create" }))["valid"],
+        true
+    );
+    let bad = json!({ "name": "Ink", "kind": "brush", "minSize": 9, "maxSize": 4, "smoothness": 3, "tip": "round", "tipAngle": 0, "colourId": null });
+    let r = ok(&h, "doc.schema.validate", json!({ "type": "pen", "object": bad, "mode": "create" }));
+    assert_eq!(r["valid"], false);
+    let el = ok(&h, "doc.object.get", json!({ "ref": bob, "depth": -1 }))["object"].clone();
+    let mut el = without(el, &["path"]);
+    let same = ok(&h, "doc.schema.validate", json!({ "type": "element", "object": el.clone() }));
+    assert_eq!(same["valid"], true, "{same}");
+    el["drawingBankId"] = json!("db_01K7DDDDDDDDDDDDDDDDDDDDDD");
+    let r = ok(&h, "doc.schema.validate", json!({ "type": "element", "object": el }));
+    assert_eq!(r["valid"], false, "a replacement must keep the document's references valid: {r}");
+}
+
+#[test]
+fn a_repaired_load_is_one_non_undoable_step_and_reported() {
+    let dir = tmp();
+    let h = spawn(&dir.join("u"));
+    ok(&h, "project.create", json!({ "name": "Damaged" }));
+    let folder = dir.join("D.animpkg");
+    job_ok(&h, "project.saveAs", json!({ "path": format!("{}/", s(&folder)) }));
+    ok(&h, "project.close", json!({}));
+    // Make the scene list an element that does not exist.
+    let p: Value = serde_json::from_slice(&std::fs::read(folder.join("project.json")).unwrap()).unwrap();
+    let sid = p["scenes"][0]["id"].as_str().unwrap().to_owned();
+    let sp = folder.join("scenes").join(&sid).join("scene.json");
+    let mut sc: Value = serde_json::from_slice(&std::fs::read(&sp).unwrap()).unwrap();
+    sc["elements"].as_array_mut().unwrap().push(json!({ "id": "el_01K7EEEEEEEEEEEEEEEEEEEEEE", "type": "element" }));
+    std::fs::write(&sp, serde_json::to_vec(&sc).unwrap()).unwrap();
+    let events = h.subscribe();
+    let r = job_ok(&h, "project.open", json!({ "path": s(&folder) }));
+    assert!(r["warnings"].as_array().unwrap().iter().any(|w| w["id"] == "ref.dangling"), "{r}");
+    let changed: Vec<_> = events.try_iter().filter(|e| e.name == "doc.changed").collect();
+    assert!(
+        changed.iter().any(|e| e.payload["origin"] == "load" && e.payload["label"] == "Repair on Open"),
+        "REP-01: {changed:?}"
+    );
+    let report = ok(&h, "doc.loadReport.get", json!({}));
+    assert!(report["repairedCount"].as_u64().unwrap() >= 1);
+    assert_eq!(report["issues"][0]["code"], "ref.dangling");
+    let st = ok(&h, "doc.state.get", json!({}));
+    assert_eq!(st["dirty"], true, "REP-01: the project is modified");
+    assert_eq!(st["documentRev"].as_u64().unwrap(), st["savedRev"].as_u64().unwrap() + 1);
+    let hist = ok(&h, "edit.history.get", json!({}));
+    assert_eq!(hist["entries"][0]["label"], "Repair on Open");
+    assert_eq!(
+        err(&h, "edit.undo", json!({})).code,
+        "edit.nothingToUndo",
+        "the repair cannot be undone into an invalid document"
+    );
+    job_ok(&h, "project.save", json!({}));
+    assert_eq!(ok(&h, "doc.state.get", json!({}))["dirty"], false);
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+#[test]
+fn import_replace_replaces_elements_of_the_target_scene_and_palettes_by_name() {
+    let dir = tmp();
+    let src = spawn(&dir.join("src"));
+    ok(&src, "project.create", json!({ "name": "Source" }));
+    let whole = ok(&src, "doc.export.json", json!({ "scope": "project", "binaries": "omit" }))["bundle"].clone();
+    let scene = first(&src, "scene");
+    let one = ok(&src, "doc.export.json", json!({ "scope": "scenes", "refs": [scene], "binaries": "omit" }))["bundle"]
+        .clone();
+    let h = spawn(&dir.join("dst"));
+    ok(&h, "project.create", json!({ "name": "Target" }));
+    let target = first(&h, "scene");
+    let names = |h: &tt_executor::ExecutorHandle, ty: &str| -> Vec<(String, String)> {
+        let found = ok(h, "doc.object.find", json!({ "type": ty, "limit": 1000 }));
+        let mut v: Vec<(String, String)> = found["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|i| (i["name"].as_str().unwrap_or_default().to_owned(), i["id"].as_str().unwrap().to_owned()))
+            .collect();
+        v.sort();
+        v
+    };
+    let before = names(&h, "element");
+    // Into a scene: same-named elements are replaced, not renamed.
+    let r = ok(&h, "doc.import.json", json!({ "source": one, "target": target, "onConflict": "replace" }));
+    assert!(r["renamed"].as_array().unwrap().is_empty(), "{r}");
+    let after = names(&h, "element");
+    assert_eq!(after.iter().map(|x| &x.0).collect::<Vec<_>>(), before.iter().map(|x| &x.0).collect::<Vec<_>>());
+    assert!(after.iter().all(|a| !before.contains(a)), "every element is the imported one: {after:?}");
+    // As new scenes: the same-named scene and palette are replaced; the project keeps one of each.
+    let pal_before = names(&h, "palette");
+    let r = ok(&h, "doc.import.json", json!({ "source": whole, "onConflict": "replace" }));
+    assert!(r["renamed"].as_array().unwrap().is_empty(), "{r}");
+    let pals = names(&h, "palette");
+    assert_eq!(pals.len(), pal_before.len(), "{pals:?}");
+    assert!(pals.iter().all(|p| !pal_before.contains(p)), "the palette was replaced: {pals:?}");
+    let scenes = names(&h, "scene");
+    assert_eq!(scenes.len(), 1, "{scenes:?}");
+    assert_ne!(scenes[0].1, target);
+    // One undo step restores the previous scene and palette.
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(names(&h, "palette"), pal_before);
+    assert_eq!(names(&h, "scene")[0].1, target);
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+#[test]
+fn replacing_a_used_asset_repoints_its_placements_and_undo_restores_them() {
+    // The fixture's sound is used by placements; a bundle brings an asset with the same name.
+    let placements = |h: &tt_executor::ExecutorHandle| -> Vec<String> {
+        let mut out = Vec::new();
+        let found = ok(h, "doc.object.find", json!({ "type": "soundPlacement", "limit": 1000 }));
+        for i in found["items"].as_array().unwrap() {
+            out.push(get(h, i["id"].as_str().unwrap())["assetId"].as_str().unwrap().to_owned());
+        }
+        out
+    };
+    let assets =
+        |h: &tt_executor::ExecutorHandle| ok(h, "doc.asset.list", json!({}))["assets"].as_array().unwrap().clone();
+    for preserve in [false, true] {
+        let h = fixture();
+        let sound = assets(&h).into_iter().find(|a| a["kind"] == "sound").unwrap();
+        let old_id = sound["id"].as_str().unwrap().to_owned();
+        assert!(placements(&h).contains(&old_id), "the fixture uses its sound");
+        let mut asset = get(&h, &old_id);
+        asset.as_object_mut().unwrap().shift_remove("path");
+        let bundle = json!({ "format": "animjson", "formatVersion": "1.0", "scenes": [], "elements": [],
+            "drawingBanks": [], "palettes": [], "pens": [], "blobs": {}, "assets": [asset] });
+        let policy = if preserve { "preserve" } else { "new" };
+        // `fail` refuses the name conflict (and, preserved, the ID conflict); `rename` keeps both.
+        let e = err(&h, "doc.import.json", json!({ "source": bundle, "idPolicy": policy, "onConflict": "fail" }));
+        assert_eq!(e.code, "doc.importConflict");
+        let before_assets = assets(&h);
+        let before_refs = placements(&h);
+        let r = ok(&h, "doc.import.json", json!({ "source": bundle, "idPolicy": policy, "onConflict": "replace" }));
+        assert!(r["renamed"].as_array().unwrap().is_empty(), "{r}");
+        let now = assets(&h);
+        assert_eq!(now.len(), before_assets.len(), "replaced, not appended: {now:?}");
+        let new_id = r["created"]["assets"][0].as_str().unwrap().to_owned();
+        assert_ne!(new_id, old_id);
+        assert!(now.iter().all(|a| a["id"] != old_id));
+        // The placements follow the replacement; the document stays coherent.
+        let refs = placements(&h);
+        assert!(!refs.contains(&old_id) && refs.contains(&new_id), "{refs:?}");
+        // One undo step restores the asset and its references.
+        ok(&h, "edit.undo", json!({}));
+        assert_eq!(assets(&h), before_assets);
+        assert_eq!(placements(&h), before_refs);
+        if !preserve {
+            let r = ok(&h, "doc.import.json", json!({ "source": bundle, "onConflict": "rename" }));
+            assert_eq!(r["renamed"].as_array().unwrap().len(), 1, "{r}");
+            assert_eq!(assets(&h).len(), before_assets.len() + 1);
+        }
+    }
+}
+
+#[test]
+fn replacing_a_pen_repoints_typed_stroke_references_only() {
+    let h = fixture();
+    let pens = |h: &tt_executor::ExecutorHandle| {
+        ok(h, "doc.object.find", json!({ "type": "pen", "limit": 100 }))["items"].clone()
+    };
+    let pen = pens(&h)[0]["id"].as_str().unwrap().to_owned();
+    // A brush stroke records its pen on its spine (`spine.pen.penId`, `x-ref: "pen"`).
+    let strokes = ok(&h, "doc.object.find", json!({ "type": "stroke", "limit": 100 }))["items"].clone();
+    let stroke = strokes
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|s| s["id"].as_str().unwrap().to_owned())
+        .find(|s| get(&h, s)["spine"].is_object())
+        .unwrap();
+    let mut spine = get(&h, &stroke)["spine"].clone();
+    spine["pen"]["penId"] = json!(pen);
+    ok(&h, "doc.object.patch", json!({ "targets": [stroke], "props": { "spine": spine } }));
+    // A free string equal to the pen's ID: a scene named after it (imported; renames are later milestones' commands)
+    // is not a reference.
+    let dir = tmp();
+    let src = spawn(&dir.join("src"));
+    ok(&src, "project.create", json!({ "name": "Names" }));
+    let s0 = first(&src, "scene");
+    let mut named =
+        ok(&src, "doc.export.json", json!({ "scope": "scenes", "refs": [s0], "binaries": "omit" }))["bundle"].clone();
+    named["scenes"][0]["name"] = json!(pen);
+    named["palettes"] = json!([]);
+    named["pens"] = json!([]);
+    let r = ok(&h, "doc.import.json", json!({ "source": named }));
+    let other = r["created"]["scenes"][0].as_str().unwrap().to_owned();
+    assert_eq!(get(&h, &other)["name"], pen.as_str());
+    let mut bundled = get(&h, &pen);
+    bundled.as_object_mut().unwrap().shift_remove("path");
+    let bundle = json!({ "format": "animjson", "formatVersion": "1.0", "scenes": [], "elements": [], "drawingBanks": [],
+        "palettes": [], "assets": [], "blobs": {}, "pens": [bundled] });
+    ok(&h, "doc.import.json", json!({ "source": bundle, "onConflict": "replace" }));
+    let now = pens(&h);
+    assert!(now.as_array().unwrap().iter().all(|p| p["id"] != pen.as_str()), "{now}");
+    let new_pen = get(&h, &stroke)["spine"]["pen"]["penId"].as_str().unwrap().to_owned();
+    assert_ne!(new_pen, pen, "the stroke follows the replacement");
+    assert!(now.as_array().unwrap().iter().any(|p| p["id"] == new_pen.as_str()));
+    assert_eq!(get(&h, &other)["name"], pen.as_str(), "a name equal to the old ID is not a reference");
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(get(&h, &stroke)["spine"]["pen"]["penId"], pen.as_str());
+    drop(src);
+    let _ = std::fs::remove_dir_all(&dir);
+}

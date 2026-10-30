@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r3\reviews\evidence\M1-C1.2-r3\final-registers.py", line 79, in <module>
+    current[rid]=f"{p}:{next(n for n,l in enumerate(read(ROOT/p).splitlines(),1) if needle in l)}"
+                        ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration

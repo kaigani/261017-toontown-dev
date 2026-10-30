@@ -1,0 +1,98 @@
+{
+  "productHead": "4333ff13fc12db1e871d0b3cd088a88b4f11adb6",
+  "recordedAt": "2026-10-30T00:25:08.335029+00:00",
+  "workspaceExit": {
+    "exit": 0
+  },
+  "workspaceRust": [
+    611,
+    0,
+    2
+  ],
+  "newTargetExit": {
+    "exit": 101
+  },
+  "newTargetRust": [
+    11,
+    4,
+    0
+  ],
+  "diagnosticsRust": [
+    49,
+    0,
+    0
+  ],
+  "newTargetClippyExit": {
+    "exit": 0
+  },
+  "fmtLogEmpty": true,
+  "lockStressRuns": 100,
+  "lockStressFailures": 0,
+  "openLatencyMilliseconds": {
+    "count": 20,
+    "min": 1.0928000000000002,
+    "median": 1.1467500000000002,
+    "max": 1.2542
+  },
+  "expectedFailingRegressions": {
+    "C13-R3-01": [
+      "a_live_writer_paused_beyond_two_seconds_is_not_taken_over",
+      "heartbeat_refuses_an_unreadable_replacement_lock"
+    ],
+    "C13-R3-02": [
+      "asset_replace_preserves_unrelated_strings_equal_to_the_old_id"
+    ],
+    "C13-R3-03": [
+      "repeated_exports_do_not_duplicate_omitted_media_in_session_cache"
+    ]
+  },
+  "sha256": {
+    "crates/executor/tests/c13_r3_history_r1.rs": "75f2c2f0f954411b72283cd70bc56e7cd4d076cbff0d56549f538be453133d6e",
+    "crates/executor/tests/c13_r3_history_r3.rs": "7397561d731bae36d67abb99b6b121c855dacb380ea1cd84c38cb414ba0b0525",
+    "crates/executor/tests/c13_r3_persistence.rs": "343666d4214df8fb7ecd31a44edff8bc565fbfc2dae4c0912e0224ec20156922",
+    "crates/persist/tests/c13_r3_format.rs": "b0a9926b8da73c8b97b126d78f28a3cbd29cc093be8db44a0d040a081a1ccb87",
+    "reviews/evidence/M1-C1.3-r3/.gitattributes": "a045c6b033f02c3da33d9dee10cf83b0bec49dcf3b5eae149e606124c59c6e08",
+    "reviews/evidence/M1-C1.3-r3/audit.json": "2cea0935e7d467a2d5e48bec340ff99aa7e65895c70bdd5d519fe042e2d2f174",
+    "reviews/evidence/M1-C1.3-r3/audit.py": "8faea51e7df1daa6ba711b9a28561d548667c2a2be5a14a8723ea4d431fae1ee",
+    "reviews/evidence/M1-C1.3-r3/builder-tests.diff": "4126ff9ba6ce457192ec75d0a6e78597da904474e78902316ed5e20a8e73e5eb",
+    "reviews/evidence/M1-C1.3-r3/ci-analysis.json": "8f99c988ee6355ae18491be7028468deaac0f4a6c07344cf64fb7428b86d8205",
+    "reviews/evidence/M1-C1.3-r3/ci-previous-failed.log": "90f09c3f01f10059195a5ecff240cdf3955e7578febef3dd36c77a0e634fe087",
+    "reviews/evidence/M1-C1.3-r3/ci-previous.json": "352dd5848829f4f98dbaf29d77950783173a890583b726c24bf6994acc6c0956",
+    "reviews/evidence/M1-C1.3-r3/ci.json": "7766bb7f7fe7d2aa894ba5c18cee86cbe7c05375c9f4efa598573bf8ac317e10",
+    "reviews/evidence/M1-C1.3-r3/ci.log": "e1b7ecdcb3c160f0913b544a2362824bb10171e644e37fababb5e0dcd459af92",
+    "reviews/evidence/M1-C1.3-r3/clippy-final.log": "d7a6bfabaf6d3a49c951e6cbda46879f20167d2c889e86a48dc680643e8504b2",
+    "reviews/evidence/M1-C1.3-r3/clippy-status.json": "019f195b1d8e80d158ba3ca033f1f52f3e8d165f2754ca95b2e980c17b8f3df0",
+    "reviews/evidence/M1-C1.3-r3/clippy.log": "ca5904188db2bf701cd13f07f931ff6d59c0cfb61c3a166df29f97d4739f8bfb",
+    "reviews/evidence/M1-C1.3-r3/command-register.json": "7a3c28b43eaf8a4ec3fb9713574d6beadc318eb32c5fa126270c8f14c48f628b",
+    "reviews/evidence/M1-C1.3-r3/conformance.md": "c3dd041d34bb2ef2e7170694463055d435356722f0ea24d45ea24e3c95415c3b",
+    "reviews/evidence/M1-C1.3-r3/diagnostics.log": "70e4c3921a40bdb6b5968696388c54e07ab4fc9981b40cf2acd15627eb70f7f3",
+    "reviews/evidence/M1-C1.3-r3/final-status.json": "29112e2c4da929d9490bf93ab16a8fe573e448def102e53d842d5bc0ff462a81",
+    "reviews/evidence/M1-C1.3-r3/final-tests.log": "639b588a34c6a81b74c218ad247fce2677bebe21a7f7955f81ba3a3af869369a",
+    "reviews/evidence/M1-C1.3-r3/fmt-initial.log": "a51eb6e2e507577d86f63708f0886d81b01ce4bf09a56b64e1e3dabae76cb2a5",
+    "reviews/evidence/M1-C1.3-r3/fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reviews/evidence/M1-C1.3-r3/format-final.log": "dae51871e3ce00334ea0eacd7eaf53c2d76a9222aa016b8074fa881d5ddfd675",
+    "reviews/evidence/M1-C1.3-r3/format.log": "557b4c0c2602858e5908fb894ef26d2c7257a85e769ed0e14d8183798fff2e59",
+    "reviews/evidence/M1-C1.3-r3/lock-stress.json": "3f5ae106e44760d1ddc65093b9eb377f61f0dbfc9994cf7c52f9b2255a69472e",
+    "reviews/evidence/M1-C1.3-r3/lock-stress.log": "ecc57cae81ef84815fd85ebcbbea927c2e48fc9a1866dbaace8cdc62daad015a",
+    "reviews/evidence/M1-C1.3-r3/open-latency.json": "f3196946b68ea0eabb7a1c689b3e619969a75a77b34b1619535369faee2aa7a1",
+    "reviews/evidence/M1-C1.3-r3/oracle-source-audit.json": "eba3e7d62e1d3684a8752354d2bbbb5c3699e003296555fb79d6b4a2da5e4ce1",
+    "reviews/evidence/M1-C1.3-r3/pnpm-test.log": "782e6ec8291053e2317ca05ad3ede62be18300b3c8cc26e93e81e9bf8126e7f9",
+    "reviews/evidence/M1-C1.3-r3/protected.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reviews/evidence/M1-C1.3-r3/python.log": "24a0e059558201bbd47b99750d9c2f046928783fe3c1795bc7f0bb036bab3f8a",
+    "reviews/evidence/M1-C1.3-r3/receipt.py": "715bc6ba9d392a139f83adc67bf1e39426df5d1382f6892ecfff20dd965e580c",
+    "reviews/evidence/M1-C1.3-r3/register-counts.json": "ad1f7301c7dff80c1a210bfbd8c0bbe61d1b97777d25231a20c752480600b7df",
+    "reviews/evidence/M1-C1.3-r3/register.py": "5492ec8fc943cd41d26868838f0268f5dfdb418af10d7dc2d2d6ecd6f86ce8f9",
+    "reviews/evidence/M1-C1.3-r3/requirements.json": "9ec37f75ba4d4f49c687369da346afeb18897e6950d39393e7e33b22004e6b56",
+    "reviews/evidence/M1-C1.3-r3/saved-history-final.log": "fdf1bfb5547017fb275b550e3e4c8bb786d005c60579c9593bd872282c4013e2",
+    "reviews/evidence/M1-C1.3-r3/saved-history.log": "588d20bb5b8195767a3de913b95b2100abc8fc62fa0eacbe758306e1fca09bd2",
+    "reviews/evidence/M1-C1.3-r3/supplemental-requirements.json": "16696352de1205add2b872665872d4d4384879e274350e9e205b4e1bb31c5520",
+    "reviews/evidence/M1-C1.3-r3/variants-complete.log": "2535372e95f58053bfddd62dd54453fcdfdb95e27de7334ebd66e0764cef231a",
+    "reviews/evidence/M1-C1.3-r3/variants-extended.log": "05f20b18df9a5d5a3f80026525e24962c8f1e942895bd6eba45dae244bdff005",
+    "reviews/evidence/M1-C1.3-r3/variants-final.log": "7c5a4a6d280e42298d9d38fa31a7c863afd954d6bd36274bea3b035a2480f042",
+    "reviews/evidence/M1-C1.3-r3/variants.log": "10c7033df4f58ceafdb51515a06421e53f0672817f00f29ed852b03ef7d4b4c1",
+    "reviews/evidence/M1-C1.3-r3/workspace-status.json": "019f195b1d8e80d158ba3ca033f1f52f3e8d165f2754ca95b2e980c17b8f3df0",
+    "reviews/evidence/M1-C1.3-r3/workspace.log": "07e74c28a253fba0e13aadb6b2d6d54e756f67032309a9bf821151254c965ae9",
+    "reviews/M1-C1.3-r3.md": "64eab78216fc8f4389504da364aeb526ad99e190bf7f08551c44987b61a28a38"
+  },
+  "gitStatus": "A  crates/executor/tests/c13_r3_history_r1.rs\nA  crates/executor/tests/c13_r3_history_r3.rs\nA  crates/executor/tests/c13_r3_persistence.rs\nA  crates/persist/tests/c13_r3_format.rs\nA  reviews/M1-C1.3-r3.md\nAM reviews/evidence/M1-C1.3-r3/.gitattributes\nA  reviews/evidence/M1-C1.3-r3/audit.json\nA  reviews/evidence/M1-C1.3-r3/audit.py\nA  reviews/evidence/M1-C1.3-r3/builder-tests.diff\nA  reviews/evidence/M1-C1.3-r3/ci-analysis.json\nA  reviews/evidence/M1-C1.3-r3/ci-previous-failed.log\nA  reviews/evidence/M1-C1.3-r3/ci-previous.json\nA  reviews/evidence/M1-C1.3-r3/ci.json\nA  reviews/evidence/M1-C1.3-r3/ci.log\nA  reviews/evidence/M1-C1.3-r3/clippy-final.log\nA  reviews/evidence/M1-C1.3-r3/clippy-status.json\nA  reviews/evidence/M1-C1.3-r3/clippy.log\nA  reviews/evidence/M1-C1.3-r3/command-register.json\nA  reviews/evidence/M1-C1.3-r3/conformance.md\nA  reviews/evidence/M1-C1.3-r3/diagnostics.log\nA  reviews/evidence/M1-C1.3-r3/final-status.json\nA  reviews/evidence/M1-C1.3-r3/final-tests.log\nA  reviews/evidence/M1-C1.3-r3/fmt-initial.log\nA  reviews/evidence/M1-C1.3-r3/fmt.log\nA  reviews/evidence/M1-C1.3-r3/format-final.log\nA  reviews/evidence/M1-C1.3-r3/format.log\nA  reviews/evidence/M1-C1.3-r3/lock-stress.json\nA  reviews/evidence/M1-C1.3-r3/lock-stress.log\nA  reviews/evidence/M1-C1.3-r3/open-latency.json\nA  reviews/evidence/M1-C1.3-r3/oracle-source-audit.json\nA  reviews/evidence/M1-C1.3-r3/pnpm-test.log\nA  reviews/evidence/M1-C1.3-r3/protected.diff\nA  reviews/evidence/M1-C1.3-r3/python.log\nA  reviews/evidence/M1-C1.3-r3/receipt.json\nA  reviews/evidence/M1-C1.3-r3/receipt.py\nA  reviews/evidence/M1-C1.3-r3/register-counts.json\nA  reviews/evidence/M1-C1.3-r3/register.py\nA  reviews/evidence/M1-C1.3-r3/requirements.json\nA  reviews/evidence/M1-C1.3-r3/saved-history-final.log\nA  reviews/evidence/M1-C1.3-r3/saved-history.log\nA  reviews/evidence/M1-C1.3-r3/supplemental-requirements.json\nA  reviews/evidence/M1-C1.3-r3/variants-complete.log\nA  reviews/evidence/M1-C1.3-r3/variants-extended.log\nA  reviews/evidence/M1-C1.3-r3/variants-final.log\nA  reviews/evidence/M1-C1.3-r3/variants.log\nA  reviews/evidence/M1-C1.3-r3/workspace-status.json\nA  reviews/evidence/M1-C1.3-r3/workspace.log\n"
+}

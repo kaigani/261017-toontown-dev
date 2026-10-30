@@ -1,0 +1,23 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r2_adversarial",
+    "new_entity_semantic_boundary_controls",
+    "--locked",
+    "--",
+    "--exact",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:58:30.614644+00:00",
+  "elapsed_seconds": 2.411995900038164,
+  "exit_code": 0,
+  "log": "logs\\final-semantic-closure.log",
+  "sha256": "025b23fde0f5216db6a1665426058b4aa9a977d9b87f56964e71613756fb5892",
+  "proptest_seed": "1182712"
+}

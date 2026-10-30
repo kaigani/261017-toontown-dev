@@ -1,0 +1,28 @@
+   Compiling once_cell v1.21.4
+   Compiling getrandom v0.4.3
+   Compiling ahash v0.8.12
+   Compiling referencing v0.59.0
+   Compiling jsonschema-value v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\vector)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\audio)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\registry)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\lipsync)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\executor)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\io)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\engine)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.05s
+     Running tests\c11_r3_wire.rs (target\debug\deps\c11_r3_wire-482805dffcb350c8.exe)
+
+running 2 tests
+test negative_and_noninteger_range_frames_are_typed_wire_errors ... ok
+test mixed_depth_boundary_writer_output_is_readable ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

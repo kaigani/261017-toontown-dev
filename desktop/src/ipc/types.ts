@@ -1,48 +1,41 @@
-// Wire types shared with the Rust host (crates/engine, desktop/src-tauri). Hand-written in M0; from M1 they are
-// generated from the registry's JSON Schemas so the two sides cannot drift.
+// Wire types shared with the Rust host. The product types are generated from the Rust types (src/ipc/generated/,
+// ADR-0012), so the two sides cannot drift; integers that can exceed 2^53 - 1 are typed `number | bigint`. The M0
+// diagnostics and spike types below are hand-written (not product API).
+import type { EngineInfo as GeneratedEngineInfo } from './generated/wire';
 
-/** Error envelope of every failed host call: stable dotted code (11 §10), message, structured details. */
-export interface ErrorInfo {
-  code: string;
-  message: string;
-  details?: unknown;
-}
-
-export interface PingRequest {
-  seq: number;
-  payload?: string;
-}
-
-export interface PingResponse {
-  seq: number;
-  payload: string | null;
-  engineUptimeNs: number;
-  handlerNs: number;
-}
-
-export type RunMode = 'attached' | 'headless' | 'batchScript';
+export type {
+  ErrorInfo,
+  MenuCommandEvent,
+  MenuHandler,
+  PingRequest,
+  PingResponse,
+  RunMode,
+} from './generated/wire';
 
 /**
  * Internal engine bootstrap information (crates/engine `EngineInfo`). Not the spec query `app.info.get` (01 §12),
- * which adds `locale` and `languages[]` and arrives as a registered query in C1.4.
+ * which adds `locale` and `languages[]` and arrives as a registered query in C1.4. Spelled out field by field so the
+ * C0.1 regression (tests/adversarial/c01.rs) can read the key list; `ENGINE_INFO_IS_GENERATED` proves at compile
+ * time that it is exactly the type generated from Rust.
  */
 export interface EngineInfo {
-  name: string;
-  version: string;
-  platform: string;
-  arch: string;
-  formatVersion: string;
-  registryVersion: string;
-  runMode: RunMode;
+  name: GeneratedEngineInfo['name'];
+  version: GeneratedEngineInfo['version'];
+  platform: GeneratedEngineInfo['platform'];
+  arch: GeneratedEngineInfo['arch'];
+  formatVersion: GeneratedEngineInfo['formatVersion'];
+  registryVersion: GeneratedEngineInfo['registryVersion'];
+  runMode: GeneratedEngineInfo['runMode'];
 }
 
-/** A main-menu command the host forwarded to the front end (`desktop/src/ui-bindings/menu.json`). */
-export interface MenuCommandEvent {
-  command: string;
-  params: Record<string, unknown>;
-  handler: 'frontend' | 'pending';
-  milestone: string | null;
-}
+/** `true` only when A and B are mutually assignable (same keys, same optionality, same value types). */
+type Exact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
+
+/** Compile-time proof that the spelled-out `EngineInfo` equals the generated one. */
+export const ENGINE_INFO_IS_GENERATED: [
+  Exact<EngineInfo, GeneratedEngineInfo>,
+  Exact<keyof EngineInfo, keyof GeneratedEngineInfo>,
+] = [true, true];
 
 /** M0 diagnostics: what `toontown --ipc-bench` asks the front end to measure. */
 export interface BenchPlan {

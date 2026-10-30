@@ -1,0 +1,48 @@
+[
+  {
+    "original": "crates\\executor\\tests\\c12_r1_stress.rs",
+    "sha256": "e52dfbc98be3cfd3fe30133b5941bc55b862ecf267c8ced5d4e358391c0581d6",
+    "changes": [
+      "fixture -> saved/reopened fixture",
+      "replay fixture -> saved/reopened fixture",
+      "append helper"
+    ],
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "tt-executor",
+      "--release",
+      "--locked",
+      "--test",
+      "c13_r1_evidence_oracle1",
+      "ten_thousand_history_operations",
+      "--",
+      "--nocapture"
+    ],
+    "exitCode": 0
+  },
+  {
+    "original": "crates\\executor\\tests\\c12_r3_stress.rs",
+    "sha256": "9ff696571b5d9b798ba8a9142968fb4465f7c8afd74cb59d51a65c67e76af650",
+    "changes": [
+      "fixture -> saved/reopened fixture",
+      "replay fixture -> saved/reopened fixture",
+      "append helper"
+    ],
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "tt-executor",
+      "--release",
+      "--locked",
+      "--test",
+      "c13_r1_evidence_oracle3",
+      "ten_thousand_history_operations",
+      "--",
+      "--nocapture"
+    ],
+    "exitCode": 0
+  }
+]

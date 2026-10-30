@@ -1,0 +1,9 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.67s
+     Running tests\c11_r3_random.rs (target\debug\deps\c11_r3_random-a0fd8279b285ea46.exe)
+
+running 1 test
+seed=Ok("280104956805984"); successful cases=10000; add/remove/replace/move/copy/test=[8365, 5909, 9715, 5745, 8437, 12000]
+test ten_thousand_rfc6902_sequences_apply_and_invert ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.45s
+

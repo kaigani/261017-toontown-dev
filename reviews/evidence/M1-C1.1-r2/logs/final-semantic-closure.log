@@ -1,0 +1,9 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.52s
+     Running tests\c11_r2_adversarial.rs (target\debug\deps\c11_r2_adversarial-68e9b986a80122da.exe)
+
+running 1 test
+test new_entity_semantic_boundary_controls ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 38 filtered out; finished in 0.34s
+

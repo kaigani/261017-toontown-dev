@@ -1,0 +1,12 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/.t3/worktrees/261017-toontown-dev/m1-core-kernel/desktop
+
+stdout | src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > validates a representative ten-megabyte drawing
+{"review":"drawing-validation","bytes":10339142,"ms":1059.08}
+
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  15:21:35
+   Duration  1.60s (tests 83%, setup 8%, transform 8%, import 1%)
+

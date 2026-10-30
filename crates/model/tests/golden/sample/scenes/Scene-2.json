@@ -1,0 +1,49 @@
+{
+  "id": "sc_01K742SG2M2H2H02X6D97DG7DN",
+  "type": "scene",
+  "rev": 1,
+  "name": "Scene-2",
+  "visible": false,
+  "backgroundColour": "#202020FF",
+  "currentCameraId": "el_01K742SG2N1KWPRQ64SA20BQWW",
+  "paletteStyles": {
+    "pal_01K742SG02PPWW6K8BZY81A0M0": "sty_01K742SG037JJRBSXV1W92F1BN",
+    "pal_01K742SG0AGX319NWQ7HE2MH4W": "sty_01K742SG0BHZ6HZ10GCCZF61NC"
+  },
+  "outTransition": {
+    "id": "tr_01K742SG2R85DNDRN0V96K9JB3",
+    "type": "transition",
+    "rev": 1,
+    "transitionType": "none",
+    "durationLeft": 12,
+    "blankDuration": 0,
+    "durationRight": 12,
+    "colour": "#000000FF",
+    "angle": 0,
+    "direction": null,
+    "size": 25
+  },
+  "tree": [
+    {
+      "id": "el_01K742SG2N1KWPRQ64SA20BQWW",
+      "children": []
+    },
+    {
+      "id": "el_01K742SG2PA6VE2W9T5930NH2F",
+      "children": []
+    }
+  ],
+  "columnOrder": ["el_01K742SG2PA6VE2W9T5930NH2F"],
+  "elements": [
+    {
+      "id": "el_01K742SG2N1KWPRQ64SA20BQWW",
+      "type": "element",
+      "name": "Camera"
+    },
+    {
+      "id": "el_01K742SG2PA6VE2W9T5930NH2F",
+      "type": "element",
+      "name": "Drawing"
+    }
+  ]
+}

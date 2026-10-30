@@ -1,0 +1,19 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.16s
+     Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-8b08020a096734ce.exe)
+
+running 1 test
+
+thread 'metadata_depth_is_enforced_at_model_input' (13492) panicked at crates\model\tests\c11_r1_adversarial.rs:240:5:
+accepted object cannot be written by its canonical writer
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test metadata_depth_is_enforced_at_model_input ... FAILED
+
+failures:
+
+failures:
+    metadata_depth_is_enforced_at_model_input
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 38 filtered out; finished in 0.17s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r1_adversarial`

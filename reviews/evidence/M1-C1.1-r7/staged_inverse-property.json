@@ -1,0 +1,8 @@
+{
+  "test": "staged_exposure_and_mouth_edits_undo_and_redo_exactly",
+  "seed": "12915398304474523881",
+  "cases": 10000,
+  "builder_source_sha256": "3073787456132645d63e8b4348649f866eca6fb9e036897968f3a35bd0929d96",
+  "expanded_source_sha256": "b248a5eef977bba5f0e7815fe555f2cc45ec5d32e741096de54e050e6d9a5a34",
+  "modification": "Only cases: 256 -> cases: 10_000 in a temporary test target; builder file unchanged"
+}

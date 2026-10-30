@@ -1,0 +1,22 @@
+{
+  "id": "el_01K742SG1FHV1XX6DVFB5PD8ZF",
+  "type": "element",
+  "rev": 1,
+  "name": "Clip-mask",
+  "elementType": "effectParameter",
+  "start": 1,
+  "duration": 48,
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "slot": "mask",
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

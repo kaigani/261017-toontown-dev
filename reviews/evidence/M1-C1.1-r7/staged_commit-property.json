@@ -1,0 +1,8 @@
+{
+  "test": "random_patches_never_commit_a_document_with_integrity_errors",
+  "seed": "14714358888662014198",
+  "cases": 10000,
+  "builder_source_sha256": "c1b8cd7a002c244cb844933b197bbfa44fc4c5d14b6da81824d002e79a8bb203",
+  "expanded_source_sha256": "31fe8de0f2cf08b0a0e740b2b45784d8520de2a649e59857c1ec3accc89a7a0c",
+  "modification": "Only cases: 256 -> cases: 10_000 in a temporary test target; builder file unchanged"
+}

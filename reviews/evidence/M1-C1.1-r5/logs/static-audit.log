@@ -1,0 +1,211 @@
+{
+  "public_api_delta": {
+    "base": "3b6179f",
+    "head": "9c3f586",
+    "added": [],
+    "removed": [],
+    "changed_model_sources": [
+      "crates/model/src/change.rs"
+    ],
+    "added_allow_unsafe_mut_lines": [],
+    "method": "Compared all public source declarations, inspected complete changed module and verified re-exports, entity accessors, macros and Document are unchanged. No stateless invert reintroduced."
+  },
+  "ci": [
+    {
+      "name": "check (windows-latest)",
+      "workspace_counts": [
+        281,
+        0,
+        1
+      ],
+      "diagnostics_counts": [
+        49,
+        0,
+        0
+      ],
+      "reviewer_rust_counts": {
+        "c11_r1_adversarial": [
+          39,
+          0,
+          0
+        ],
+        "c11_r2_adversarial": [
+          39,
+          0,
+          0
+        ],
+        "c11_r3_adversarial": [
+          11,
+          0,
+          0
+        ],
+        "c11_r3_register": [
+          4,
+          0,
+          0
+        ],
+        "c11_r3_random": [
+          1,
+          0,
+          0
+        ],
+        "c11_r4_exposure_bounds": [
+          2,
+          0,
+          0
+        ],
+        "c11_r1_wire": [
+          4,
+          0,
+          0
+        ],
+        "c11_r2_wire": [
+          6,
+          0,
+          0
+        ],
+        "c11_r3_wire": [
+          2,
+          0,
+          0
+        ],
+        "c03_r2_encoder": [
+          5,
+          0,
+          0
+        ],
+        "adversarial_c01": [
+          7,
+          0,
+          0
+        ],
+        "c03_fixed_configurations": [
+          2,
+          0,
+          0
+        ],
+        "c03_r1_stress": [
+          2,
+          0,
+          1
+        ],
+        "c03_r2_quality": [
+          1,
+          0,
+          0
+        ]
+      },
+      "python_suite_counts": {
+        "c02-r1-tooling.py": 4,
+        "c02-r2-tooling.py": 9,
+        "c02-r3-tooling.py": 1,
+        "c03-r1-tooling.py": 12,
+        "c03-r2-tooling.py": 9,
+        "c04-r2-decisions.py": 3,
+        "c04-r3-decisions.py": 3,
+        "c04-r3-page.py": 5,
+        "c04-r5-decisions.py": 1,
+        "c11-r2-review-policy.py": 2,
+        "headless_guard.py": 3
+      }
+    },
+    {
+      "name": "check (macos-latest)",
+      "workspace_counts": [
+        275,
+        0,
+        1
+      ],
+      "diagnostics_counts": [
+        43,
+        0,
+        0
+      ],
+      "reviewer_rust_counts": {
+        "c11_r1_adversarial": [
+          39,
+          0,
+          0
+        ],
+        "c11_r2_adversarial": [
+          39,
+          0,
+          0
+        ],
+        "c11_r3_adversarial": [
+          11,
+          0,
+          0
+        ],
+        "c11_r3_register": [
+          4,
+          0,
+          0
+        ],
+        "c11_r3_random": [
+          1,
+          0,
+          0
+        ],
+        "c11_r4_exposure_bounds": [
+          2,
+          0,
+          0
+        ],
+        "c11_r1_wire": [
+          4,
+          0,
+          0
+        ],
+        "c11_r2_wire": [
+          6,
+          0,
+          0
+        ],
+        "c11_r3_wire": [
+          2,
+          0,
+          0
+        ],
+        "c03_r2_encoder": [
+          5,
+          0,
+          0
+        ],
+        "adversarial_c01": [
+          7,
+          0,
+          0
+        ],
+        "c03_fixed_configurations": [
+          2,
+          0,
+          0
+        ],
+        "c03_r1_stress": [
+          2,
+          0,
+          1
+        ],
+        "c03_r2_quality": [
+          1,
+          0,
+          0
+        ]
+      },
+      "python_suite_counts": {
+        "c02-r1-tooling.py": 4,
+        "c02-r2-tooling.py": 9,
+        "c02-r3-tooling.py": 1,
+        "c03-r1-tooling.py": 12,
+        "c03-r2-tooling.py": 9,
+        "c04-r2-decisions.py": 3,
+        "c04-r3-decisions.py": 3,
+        "c04-r3-page.py": 5,
+        "c04-r5-decisions.py": 1,
+        "c11-r2-review-policy.py": 2,
+        "headless_guard.py": 3
+      }
+    }
+  ]
+}

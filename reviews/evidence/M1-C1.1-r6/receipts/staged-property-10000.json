@@ -1,0 +1,24 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r6_staged_property",
+    "--locked",
+    "random_patches_never_commit_a_document_with_integrity_errors",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:35:00.216320+00:00",
+  "elapsed_seconds": 235.067,
+  "exit_code": 0,
+  "log": "logs/staged-property-10000.log",
+  "sha256": "1d79addd5aa707cf1e8aabd2dec9ef7d9e838d1b934a356fe58d052f49e3f0da",
+  "env": {
+    "PROPTEST_RNG_SEED": "404401471746785596"
+  }
+}

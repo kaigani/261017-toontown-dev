@@ -1,0 +1,15 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\executor)
+    Finished `test` profile [unoptimized] target(s) in 0.96s
+     Running tests\c13_r1_evidence_examples.rs (target\debug\deps\c13_r1_evidence_examples-0efcf113e77c7a46.exe)
+
+running 1 test
+final job example succeeded and schema validated: doc.package.export
+final job example succeeded and schema validated: project.open
+final job example succeeded and schema validated: project.recovery.open
+final job example succeeded and schema validated: project.save
+final job example succeeded and schema validated: project.saveAs
+examples run: 56
+test every_example_runs_on_the_fixture_under_the_watchdog ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 5.29s
+

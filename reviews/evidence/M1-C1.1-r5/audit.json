@@ -1,0 +1,644 @@
+{
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "audited_utc": "2026-10-19T00:46:11.682555+00:00",
+  "verdict": "block",
+  "open_findings": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 0
+  },
+  "finding": "C11-R5-01 continues C11-R4-01; counted once",
+  "register_counts": {
+    "implemented": 234,
+    "deferred": 193,
+    "divergent": 1,
+    "missing": 0
+  },
+  "workspace_baseline": [
+    281,
+    0,
+    1
+  ],
+  "workspace_final": [
+    281,
+    4,
+    1
+  ],
+  "prior_review_suites": {
+    "R1": 49,
+    "R2": 56,
+    "R3": 22,
+    "R4": 2
+  },
+  "selftests_identical_check_results": [
+    [
+      "engine.components",
+      true
+    ],
+    [
+      "engine.versions",
+      true
+    ],
+    [
+      "engine.ping",
+      true
+    ],
+    [
+      "determinism.ieee754",
+      true
+    ],
+    [
+      "headless.mcpLinked",
+      true
+    ]
+  ],
+  "public_stateless_invert_absent_from_rustdoc": true,
+  "nonzero_receipts": {
+    "final-workspace": 101,
+    "new-regressions": 101,
+    "node-guards": 1
+  },
+  "invocation_error": "node-guards: corrected case invocations all pass; see launch-note.txt",
+  "receipts": {
+    "bounds-probe": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r5_bounds_probe",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "sha256": "389bcd2590d8f0538cfc76cba8a0d7dfb3c8a8f46abc7a867ee905f80e68b440"
+    },
+    "ci-full": {
+      "exit_code": 0,
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "39180390724",
+        "--log"
+      ],
+      "sha256": "e619c2f74482f5b3976498e7096af6351663c79d96417369475649afe7e5ca54"
+    },
+    "ci-metadata": {
+      "exit_code": 0,
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "39180390724",
+        "--json",
+        "headSha,status,conclusion,url,jobs"
+      ],
+      "sha256": "6a1652bd6e531a79807e4cf025d94b5434da1c3e4be86e490bbbe7cc3cf3b20d"
+    },
+    "clippy-diagnostics": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "clippy",
+        "-p",
+        "tt-desktop",
+        "--all-targets",
+        "--locked",
+        "--features",
+        "m0-diagnostics",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "sha256": "cf3849b1979b635fc0d326cde5fda61659a19d440893a989c68234ded00d2fb9"
+    },
+    "clippy": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "sha256": "fcccbfb85e7d327df414793f3e0eebf7b61ae90a7a469f1ac620aedae5cfbc43"
+    },
+    "deny": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "deny",
+        "--locked",
+        "check"
+      ],
+      "sha256": "55f8a048b0083c980316a77a2547a345d054f973a50ee1af61b3d028d76cf325"
+    },
+    "diagnostics-gate": {
+      "exit_code": 0,
+      "command": [
+        "python",
+        "scripts/check-diagnostics-gating.py",
+        "target/release/toontown.exe",
+        "--expect",
+        "default"
+      ],
+      "sha256": "568a602d2b8b3b31f0a4387817e08b347fdb3064cebe0ab0bc80452d962abd17"
+    },
+    "final-clippy": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "sha256": "42d6f0b2e00c4085ae496eb0dc51c785f220128c733cb6d7a873a9453cbfa44c"
+    },
+    "final-fmt": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-workspace": {
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--no-fail-fast"
+      ],
+      "sha256": "3139b306795a722daf099fdb3aac20f296163de85b116e6bf552c385ee6d97f1"
+    },
+    "fmt": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frontend-build-diagnostics": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "--dir",
+        "desktop",
+        "build:diagnostics"
+      ],
+      "sha256": "593f38af11f49a9b5cd07d32f7012637a1fac8cc1afcebffe87ce08b65833e94"
+    },
+    "frontend-build": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "--dir",
+        "desktop",
+        "build"
+      ],
+      "sha256": "7f8ceed34445c8026025d70ef332da2bed2fa9ee26e4629f84ca4e08af9dcc54"
+    },
+    "headless-build": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-headless"
+      ],
+      "sha256": "13dc0fd8dd4bb611550869bb61da4fc8c6964c0030361b03202348c35d37da53"
+    },
+    "headless-guard": {
+      "exit_code": 0,
+      "command": [
+        "python",
+        "scripts/check-headless-deps.py",
+        "target/release/toontown-headless.exe"
+      ],
+      "sha256": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295"
+    },
+    "install": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "sha256": "2195e74720972c485c5bb2c16f66e9894c6b6c541bbab14df875c9a1ab96be95"
+    },
+    "issue-state": {
+      "exit_code": 0,
+      "command": [
+        "gh",
+        "issue",
+        "list",
+        "--state",
+        "all",
+        "--json",
+        "number,title,state,url",
+        "--limit",
+        "100"
+      ],
+      "sha256": "02d4d8a94e6f68ded1eb4dec1a58d2470b08f96cbaa94496f74af2ccffc0a502"
+    },
+    "new-regressions": {
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r5_write_bounds",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "sha256": "77be78ded87be526830e6041f188100312613ba57d41d86e8c4b86c71e789936"
+    },
+    "node-guards-allowlist": {
+      "exit_code": 0,
+      "command": [
+        "node",
+        "tests/adversarial/guards.mjs",
+        "allowlist"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node-guards-imports": {
+      "exit_code": 0,
+      "command": [
+        "node",
+        "tests/adversarial/guards.mjs",
+        "imports"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node-guards-licensing": {
+      "exit_code": 0,
+      "command": [
+        "node",
+        "tests/adversarial/guards.mjs",
+        "licensing"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node-guards": {
+      "exit_code": 1,
+      "command": [
+        "node",
+        "--test",
+        "tests/adversarial/guards.mjs"
+      ],
+      "sha256": "45efca50d8fea64eb6fa254e15beeaa51e2bbcd8625d01a80e13e9e2cd59ee3e"
+    },
+    "pnpm-format-check": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "format:check"
+      ],
+      "sha256": "5a462d3478865055f9be33b28ddbe332e9813b1a513a311ada338dbc2fb93cc2"
+    },
+    "pnpm-licenses-check": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "licenses:check"
+      ],
+      "sha256": "2924ceaf79104a1bb51b240eec722dcc8f1414b133d2ddcbe2778a796fd8cb9a"
+    },
+    "pnpm-lint": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "lint"
+      ],
+      "sha256": "c5df996e81adf8202ff406a6ee7be458f0a8c77d1eb08ea3034ddc39c1dcd517"
+    },
+    "pnpm-test": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "test"
+      ],
+      "sha256": "9ecd7de81476d4d973d7f0ebad0a1cebb691751151102af0106e4ca06a296825"
+    },
+    "pnpm-typecheck": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "typecheck"
+      ],
+      "sha256": "8c2680e869b7745d89d0bdd2b35cf029e6f82496dd31ae0b9b0b37c6c805738c"
+    },
+    "r4-regressions": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r4_exposure_bounds",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "sha256": "5462c2d2845cd630a1b63365799f4ffe3cbdff3c6bf84be06e3404c31bf1ee97"
+    },
+    "random-fresh": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r3_random",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "sha256": "a7323c8196d16d2610ed9e47e978eb9f3eaf95b03d1fb6736bdaecb6e7e33f38"
+    },
+    "random-recorded": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-model",
+        "--test",
+        "c11_r3_random",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "sha256": "36cf4a756e81ee5a8308e99a2939fd411f7d1b1565a9b7388a4a906ecc3e22a4"
+    },
+    "raster": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "run",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-render",
+        "--example",
+        "c03_raster",
+        "--",
+        "--out",
+        "target/review-m1-c11-r5-raster",
+        "--report",
+        "reviews/evidence/M1-C1.1-r5/raster.json",
+        "--check",
+        "crates/render/examples/c03_raster/hashes.json"
+      ],
+      "sha256": "69089b24c8b8a3d4b512a9f44b103721af031c51e2f981b981bbce56d0bf4fef"
+    },
+    "register-audit": {
+      "exit_code": 0,
+      "command": [
+        "python",
+        "reviews/evidence/M1-C1.1-r5/conformance.py"
+      ],
+      "sha256": "df2cfcb2cdedec41dea3a596b1480553db3dbc65faa316a84a39643be5e44a26"
+    },
+    "review-diff-check": {
+      "exit_code": 0,
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "review-policy": {
+      "exit_code": 0,
+      "command": [
+        "python",
+        "tests/adversarial/c11-r2-review-policy.py"
+      ],
+      "sha256": "f288acb875131edbdbe38829865294b5bcaa8592770fe85e2148c121599e5a03"
+    },
+    "reviewed-diff": {
+      "exit_code": 0,
+      "command": [
+        "git",
+        "diff",
+        "ccdb9de..9c3f586"
+      ],
+      "sha256": "fb8becec870d41ca8989cb1a6ceceac5bee42042cedef7f941ebc96d197ddfed"
+    },
+    "reviewed-history": {
+      "exit_code": 0,
+      "command": [
+        "git",
+        "log",
+        "--oneline",
+        "ccdb9de..9c3f586"
+      ],
+      "sha256": "bbbb97772ec604f5036bce05821e3078bc295076c4d823b4eac33c9680de2523"
+    },
+    "reviewer-python": {
+      "exit_code": 0,
+      "command": [
+        "python",
+        "scripts/run-reviewer-python-suites.py"
+      ],
+      "sha256": "ffc4e97b47c82e8b972ef5dfb5dca0cb0c3d08e437d832eafc4e53cbf1a831fd"
+    },
+    "reviewer-ts": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "--dir",
+        "desktop",
+        "exec",
+        "vitest",
+        "run",
+        "--config",
+        "vite.config.ts",
+        "--reporter=json",
+        "--outputFile=C:\\Users\\kaiga\\work\\review\\m1-c11-r5\\reviews\\evidence\\M1-C1.1-r5\\reviewer-ts-results.json",
+        "src/ipc/c11-r1-adversarial.test.ts",
+        "src/ipc/c11-r2-adversarial.test.ts",
+        "src/ipc/c11-r3-adversarial.test.ts"
+      ],
+      "sha256": "1e7d6454f75592b7f2d6e2d5a16cd5c6e21c6b91b0421fbfb5d3849f0ac13681"
+    },
+    "rustdoc": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "doc",
+        "-p",
+        "tt-model",
+        "--no-deps",
+        "--locked"
+      ],
+      "sha256": "f17d4c4950c4057000812ac5abcd53305652240445610be2432ce114c0cbb7cd"
+    },
+    "selftest-1": {
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\kaiga\\work\\review\\m1-c11-r5\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "sha256": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d"
+    },
+    "selftest-2": {
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\kaiga\\work\\review\\m1-c11-r5\\target\\release\\toontown-headless.exe",
+        "--selftest",
+        "--json"
+      ],
+      "sha256": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d"
+    },
+    "static-audit": {
+      "exit_code": 0,
+      "command": [
+        "python",
+        "reviews/evidence/M1-C1.1-r5/audit_static.py"
+      ],
+      "sha256": "d942e8d8266e83d5f11506f3ff9d35dc6c8eb928a40a11919868b49aa67d772b"
+    },
+    "tauri-release": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "--dir",
+        "desktop",
+        "tauri",
+        "build",
+        "--no-bundle",
+        "--",
+        "--locked"
+      ],
+      "sha256": "056320df92e1b25b17439373639f70905a1571267d26d3face24b1e9043702b4"
+    },
+    "test-diagnostics": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "tt-desktop",
+        "--locked",
+        "--features",
+        "m0-diagnostics"
+      ],
+      "sha256": "4b476fa6674d8f9132e9dc335e0f229139fa616dcd45163d268f317839045ece"
+    },
+    "test-edit-diff": {
+      "exit_code": 0,
+      "command": [
+        "git",
+        "diff",
+        "ccdb9de..9c3f586",
+        "--",
+        "crates/*/tests",
+        "desktop/src/ipc/c11-r*",
+        "desktop/src/test",
+        "tests/"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "version-cargo-deny": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "deny",
+        "--version"
+      ],
+      "sha256": "1758f5ea93d8ad3585079f05c19358b7bb969cce1bf6c7bdab6659a8cd1ef6b8"
+    },
+    "version-node": {
+      "exit_code": 0,
+      "command": [
+        "node",
+        "--version"
+      ],
+      "sha256": "ed7de8ea0cd4b667ff55ad318ae19bed3b87fd3e7f1027a7ce127bb04df124c4"
+    },
+    "version-pnpm": {
+      "exit_code": 0,
+      "command": [
+        "cmd",
+        "/c",
+        "pnpm",
+        "--version"
+      ],
+      "sha256": "f6909ad4055d5f461f08da0dfa79daf83732395af0c38e6724279b4f4cfa8620"
+    },
+    "version-python": {
+      "exit_code": 0,
+      "command": [
+        "python",
+        "--version"
+      ],
+      "sha256": "6661d0c2df33bef5d9f73854a4077f010efb8264ecd67f29bb03271eca58b956"
+    },
+    "version-rustc": {
+      "exit_code": 0,
+      "command": [
+        "rustc",
+        "--version"
+      ],
+      "sha256": "2073de5abf149185c2f4d7473dc833bc921b99135560d24ae7b2293f33a9c376"
+    },
+    "workspace": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked"
+      ],
+      "sha256": "2951f60b29ade44cb103af421b57a4e9da0af9e43692ef942aaf502ffe4d364c"
+    }
+  }
+}

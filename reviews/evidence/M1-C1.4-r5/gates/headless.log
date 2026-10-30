@@ -1,0 +1,136 @@
+$ cargo build --release --locked -p tt-headless
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling autocfg v1.5.1
+   Compiling cfg-if v1.0.5
+   Compiling memchr v2.8.3
+   Compiling serde v1.0.229
+   Compiling zmij v1.0.23
+   Compiling equivalent v1.0.3
+   Compiling foldhash v0.2.0
+   Compiling allocator-api2 v0.2.21
+   Compiling zerocopy v0.8.63
+   Compiling getrandom v0.3.4
+   Compiling ref-cast v1.0.27
+   Compiling serde_json v1.0.154
+   Compiling version_check v0.9.5
+   Compiling itoa v1.0.18
+   Compiling heck v0.5.0
+   Compiling regex-syntax v0.8.11
+   Compiling parking_lot_core v0.9.12
+   Compiling once_cell v1.21.4
+   Compiling windows-link v0.2.1
+   Compiling smallvec v1.16.3
+   Compiling scopeguard v1.2.0
+   Compiling unicode-general-category v1.1.0
+   Compiling jsonschema-value v0.59.0
+   Compiling borrow-or-share v0.2.4
+   Compiling bit-vec v0.8.0
+   Compiling thiserror v2.0.21
+   Compiling num-cmp v0.1.0
+   Compiling micromap v0.3.0
+   Compiling outref v0.5.2
+   Compiling bytecount v0.6.9
+   Compiling percent-encoding v2.3.2
+   Compiling lock_api v0.4.14
+   Compiling getrandom v0.4.3
+   Compiling vsimd v0.8.0
+   Compiling tinyvec v1.13.3
+   Compiling data-encoding v2.11.1
+   Compiling dyn-clone v1.0.20
+   Compiling ryu v1.0.23
+   Compiling bit-set v0.8.0
+   Compiling typenum v1.20.1
+   Compiling ahash v0.8.12
+   Compiling crc32fast v1.5.2
+   Compiling hashbrown v0.17.1
+   Compiling num-traits v0.2.19
+   Compiling simd-adler32 v0.3.10
+   Compiling adler2 v2.0.1
+   Compiling const-oid v0.10.2
+   Compiling cpufeatures v0.3.1
+   Compiling anstyle v1.0.14
+   Compiling clap_lex v1.1.1
+   Compiling aho-corasick v1.1.5
+   Compiling uuid-simd v0.8.0
+   Compiling unicode-normalization v0.1.26
+   Compiling miniz_oxide v0.9.1
+   Compiling clap_builder v4.6.7
+   Compiling parking_lot v0.12.5
+   Compiling hybrid-array v0.4.15
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling jsonschema-regex v0.59.0
+   Compiling flate2 v1.1.10
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling num-integer v0.1.47
+   Compiling num-complex v0.4.6
+   Compiling regex-automata v0.4.18
+   Compiling num-bigint v0.4.8
+   Compiling num-iter v0.1.46
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling indexmap v2.14.2
+   Compiling serde_derive_internals v0.30.0
+   Compiling num-rational v0.4.2
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\registry-macros)
+   Compiling num v0.4.3
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling clap_derive v4.6.7
+   Compiling fraction v0.17.0
+   Compiling schemars_derive v1.2.3
+   Compiling regex v1.13.1
+   Compiling fancy-regex v0.19.2
+   Compiling strum v0.28.0
+   Compiling clap v4.6.7
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\persist)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\registry)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\lipsync)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\render)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\executor)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\io)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r5\bins\headless)
+    Finished `release` profile [optimized + debuginfo] target(s) in 44.74s
+
+[exit 0]
+$ "C:\Users\kaiga\work\review\m1-c14-r5\target\release\toontown-headless.exe" --version
+toontown-headless 0.0.1 (Toontown 0.0.1; format 1.0; registry 0.1.0; windows-x86_64)
+
+[exit 0]
+$ "C:\Users\kaiga\work\review\m1-c14-r5\target\release\toontown-headless.exe" --selftest
+Toontown 0.0.1 self-test (windows-x86_64, run mode headless)
+  [ok] engine.components      13 crates linked: tt-model, tt-registry, tt-executor, tt-vector, tt-colour, tt-anim, tt-fx, tt-render, tt-audio, tt-lipsync, tt-persist, tt-io, tt-engine
+  [ok] engine.versions        formatVersion 1.0 (MAJOR.MINOR), registryVersion 0.1.0 (semver)
+  [ok] engine.ping            echoed seq and 1024 payload bytes in 100 ns
+  [ok] determinism.ieee754    sha256 d22c8ec2eb9c269ed207f8421f83e96edcf58774894cfad3186b5e2169ad5a16 matches golden
+  [ok] kernel.executor        registry 796 entries (v0.1.0); patch rev Some(2), undo rev Some(3) from 1; stub answered Some("command.notImplemented")
+  [ok] headless.mcpLinked     tt-mcp linked (M1 (C1.4))
+self-test passed
+
+[exit 0]
+$ "C:\Python313\python.exe" scripts/check-headless-deps.py "C:\Users\kaiga\work\review\m1-c14-r5\target\release\toontown-headless.exe"
+crate graph: 106 crates, forbidden: none
+linked libraries (win32): bcryptprimitives.dll, kernel32.dll, api-ms-win-core-synch-l1-2-0.dll, kernel32.dll, ntdll.dll, vcruntime140.dll, api-ms-win-crt-math-l1-1-0.dll, api-ms-win-crt-runtime-l1-1-0.dll, api-ms-win-crt-stdio-l1-1-0.dll, api-ms-win-crt-locale-l1-1-0.dll, api-ms-win-crt-heap-l1-1-0.dll
+forbidden libraries: none
+headless dependency check passed
+
+[exit 0]

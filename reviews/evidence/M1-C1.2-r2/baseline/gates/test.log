@@ -1,0 +1,1297 @@
+$ cargo test --workspace --locked --no-fail-fast
+   Compiling windows-link v0.2.1
+   Compiling cfg-if v1.0.5
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling equivalent v1.0.3
+   Compiling regex-syntax v0.8.11
+   Compiling scopeguard v1.2.0
+   Compiling smallvec v1.16.3
+   Compiling foldhash v0.2.0
+   Compiling allocator-api2 v0.2.21
+   Compiling heck v0.5.0
+   Compiling bit-vec v0.8.0
+   Compiling once_cell v1.21.4
+   Compiling dyn-clone v1.0.20
+   Compiling percent-encoding v2.3.2
+   Compiling rand_core v0.10.1
+   Compiling borrow-or-share v0.2.4
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling zerocopy v0.8.63
+   Compiling bytecount v0.6.9
+   Compiling outref v0.5.2
+   Compiling vsimd v0.8.0
+   Compiling micromap v0.3.0
+   Compiling num-cmp v0.1.0
+   Compiling data-encoding v2.11.1
+   Compiling tinyvec v1.13.3
+   Compiling num-traits v0.2.19
+   Compiling ryu v1.0.23
+   Compiling thiserror v2.0.21
+   Compiling ref-cast v1.0.27
+   Compiling unicode-general-category v1.1.0
+   Compiling lock_api v0.4.14
+   Compiling getrandom v0.3.4
+   Compiling windows-sys v0.61.2
+   Compiling getrandom v0.4.3
+   Compiling parking_lot_core v0.9.12
+   Compiling bit-set v0.8.0
+   Compiling zerofrom v0.1.8
+   Compiling cpufeatures v0.3.1
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\registry-macros)
+   Compiling fnv v1.0.7
+   Compiling hashbrown v0.17.1
+   Compiling winnow v1.0.4
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling siphasher v1.0.4
+   Compiling strum_macros v0.28.0
+   Compiling writeable v0.6.4
+   Compiling litemap v0.8.3
+   Compiling aho-corasick v1.1.5
+   Compiling parking_lot v0.12.5
+   Compiling unicode-normalization v0.1.26
+   Compiling utf8_iter v1.0.4
+   Compiling typenum v1.20.1
+   Compiling glob v0.3.4
+   Compiling log v0.4.34
+   Compiling icu_properties_data v2.3.0
+   Compiling uuid-simd v0.8.0
+   Compiling icu_normalizer_data v2.3.0
+   Compiling const-oid v0.10.2
+   Compiling yoke v0.8.3
+   Compiling num-conv v0.2.2
+   Compiling stable_deref_trait v1.2.1
+   Compiling phf_shared v0.13.1
+   Compiling time-core v0.1.9
+   Compiling powerfmt v0.2.1
+   Compiling deranged v0.5.9
+   Compiling num-integer v0.1.47
+   Compiling num-complex v0.4.6
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling zerovec v0.11.8
+   Compiling phf_generator v0.13.1
+   Compiling zerotrie v0.2.5
+   Compiling crossbeam-utils v0.8.23
+   Compiling simd-adler32 v0.3.10
+   Compiling typeid v1.0.3
+   Compiling web-time v1.1.0
+   Compiling adler2 v2.0.1
+   Compiling phf_codegen v0.13.1
+   Compiling string_cache_codegen v0.6.1
+   Compiling num-bigint v0.4.8
+   Compiling num-iter v0.1.46
+   Compiling bytes v1.12.1
+   Compiling alloc-no-stdlib v3.0.0
+   Compiling crc32fast v1.5.2
+   Compiling miniz_oxide v0.9.1
+   Compiling phf_macros v0.13.1
+   Compiling quick-xml v0.42.0
+   Compiling base64 v0.23.1
+   Compiling dunce v1.0.5
+   Compiling serde_json v1.0.154
+   Compiling miniz_oxide v0.8.9
+   Compiling alloc-stdlib v0.3.0
+   Compiling fdeflate v0.3.7
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling hybrid-array v0.4.15
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling brotli-decompressor v6.0.1
+   Compiling serde_spanned v1.1.2
+   Compiling string_cache v0.9.0
+   Compiling fastrand v2.5.0
+   Compiling icu_collections v2.3.0
+   Compiling form_urlencoded v1.2.2
+   Compiling regex-automata v0.4.18
+   Compiling jsonschema-regex v0.59.0
+   Compiling icu_locale_core v2.3.0
+   Compiling web_atoms v0.2.6
+   Compiling flate2 v1.1.10
+   Compiling http v1.5.0
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling uuid v1.28.0
+   Compiling crossbeam-channel v0.5.17
+   Compiling anyhow v1.0.104
+   Compiling libc v0.2.191
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling selectors v0.38.0
+   Compiling windows-strings v0.5.1
+   Compiling phf v0.13.1
+   Compiling num-rational v0.4.2
+   Compiling windows-result v0.4.1
+   Compiling serde v1.0.229
+   Compiling indexmap v2.14.2
+   Compiling bitflags v2.13.2
+   Compiling quick-error v1.2.3
+   Compiling brotli v9.0.0
+   Compiling wait-timeout v0.2.1
+   Compiling ctor v1.0.13
+   Compiling bit-vec v0.10.1
+   Compiling windows-core v0.62.2
+   Compiling cssparser v0.37.0
+   Compiling num v0.4.3
+   Compiling icu_provider v2.3.1
+   Compiling fraction v0.17.0
+   Compiling rand v0.10.3
+   Compiling digest v0.11.3
+   Compiling bit-set v0.11.1
+   Compiling fluent-uri v0.4.1
+   Compiling strum v0.28.0
+   Compiling email_address v0.2.9
+   Compiling sha2 v0.11.1
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_properties v2.3.0
+   Compiling chacha20 v0.10.2
+   Compiling rand_xorshift v0.5.0
+   Compiling unarray v0.1.4
+   Compiling core_detect v1.0.0
+   Compiling cfb v0.14.0
+   Compiling jsonptr v0.7.1
+   Compiling time v0.3.55
+   Compiling erased-serde v0.4.10
+   Compiling option-ext v0.2.0
+   Compiling cargo_metadata v0.19.2
+   Compiling vswhom-sys v0.1.3
+   Compiling target-tuple v1.0.2
+   Compiling serde_with v3.24.0
+   Compiling windows-threading v0.2.1
+   Compiling vswhom v0.1.0
+   Compiling windows-numerics v0.3.1
+   Compiling windows-collections v0.3.2
+   Compiling time-macros v0.2.32
+   Compiling raw-window-handle v0.6.2
+   Compiling markup5ever v0.39.0
+   Compiling json-patch v4.2.0
+   Compiling ahash v0.8.12
+   Compiling infer v0.22.0
+   Compiling serde-untagged v0.1.9
+   Compiling html5ever v0.39.0
+   Compiling windows-future v0.3.2
+   Compiling webview2-com-sys v0.39.1
+   Compiling dpi v0.1.2
+   Compiling cargo_toml v1.0.1
+   Compiling winapi-util v0.1.11
+   Compiling tempfile v3.27.0
+   Compiling windows_x86_64_msvc v0.52.6
+   Compiling windows-version v0.1.7
+   Compiling idna_adapter v1.2.2
+   Compiling termcolor v1.4.1
+   Compiling same-file v1.0.6
+   Compiling regex v1.13.1
+   Compiling fancy-regex v0.19.2
+   Compiling referencing v0.59.0
+   Compiling jsonschema-value v0.59.0
+   Compiling schemars v1.2.3
+   Compiling idna v1.1.0
+   Compiling rusty-fork v0.3.1
+   Compiling trybuild v1.0.122
+   Compiling windows v0.62.2
+   Compiling proptest v1.12.0
+   Compiling dom_query v0.28.0
+   Compiling url v2.5.8
+   Compiling arrayvec v0.7.8
+   Compiling pin-project-lite v0.2.17
+   Compiling png v0.17.16
+   Compiling bytemuck v1.25.2
+   Compiling polycool v0.4.0
+   Compiling walkdir v2.5.0
+   Compiling windows-targets v0.52.6
+   Compiling crossbeam-epoch v0.9.21
+   Compiling jsonschema v0.59.0
+   Compiling schemars v0.8.22
+   Compiling urlpattern v0.6.0
+   Compiling plist v1.10.1
+   Compiling tracing-core v0.1.36
+   Compiling semver v1.0.28
+   Compiling winreg v0.56.0
+   Compiling dirs-sys v0.5.0
+   Compiling sha2 v0.10.9
+   Compiling ico v0.5.0
+   Compiling dirs v7.0.0
+   Compiling embed-resource v3.0.12
+   Compiling tracing v0.1.44
+   Compiling crossbeam-deque v0.8.8
+   Compiling windows-result v0.1.2
+   Compiling kurbo v0.13.1
+   Compiling tauri-winres v0.3.6
+   Compiling color v0.3.3
+   Compiling png v0.18.1
+   Compiling euclid v0.22.14
+   Compiling linebender_resource_handle v0.1.1
+   Compiling unicode-segmentation v1.13.3
+   Compiling rayon-core v1.13.0
+   Compiling windows-core v0.54.0
+   Compiling softbuffer v0.4.8
+   Compiling strum_macros v0.26.4
+   Compiling keyboard-types v0.8.3
+   Compiling fearless_simd v0.7.0
+   Compiling tauri-utils v2.10.2
+   Compiling either v1.19.0
+   Compiling serialize-to-javascript v0.1.2
+   Compiling thiserror v1.0.69
+   Compiling tokio v1.53.3
+   Compiling window-vibrancy v0.8.1
+   Compiling guillotiere v0.7.0
+   Compiling rayon v1.12.0
+   Compiling ordered-channel v1.2.0
+   Compiling enum_dispatch v0.3.13
+   Compiling thread_local v1.1.10
+   Compiling anstyle v1.0.14
+   Compiling clap_lex v1.1.1
+   Compiling mime v0.3.17
+   Compiling clap_derive v4.6.7
+   Compiling peniko v0.6.1
+   Compiling windows v0.54.0
+   Compiling clap_builder v4.6.7
+   Compiling cookie v0.18.2
+   Compiling muda v0.20.0
+   Compiling strum v0.26.3
+   Compiling clap v4.6.7
+   Compiling octotablet v0.1.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\model)
+   Compiling vello_common v0.3.0
+   Compiling vello_cpu v0.3.0
+   Compiling tauri-build v2.7.3
+   Compiling tauri-codegen v2.7.3
+   Compiling tauri v2.12.4
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\desktop\src-tauri)
+   Compiling tauri-macros v2.7.3
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\registry)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\colour)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\audio)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\persist)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\fx)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\lipsync)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\engine)
+   Compiling tao v0.37.1
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\mcp)
+   Compiling webview2-com v0.39.1
+   Compiling wry v0.57.0
+   Compiling tauri-runtime v2.12.2
+   Compiling tauri-runtime-wry v2.12.2
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\bins\headless)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 53s
+     Running unittests src\lib.rs (target\debug\deps\tt_anim-59cc3b5d1f3661d4.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_audio-7d1399d1685c21cf.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_colour-3faeb162ca5dab59.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_desktop-56e483dfd4e5f92f.exe)
+
+running 38 tests
+test bindings::tests::command_id_syntax ... ok
+test diagnostics::tests::no_arguments_is_interactive ... ok
+test diagnostics::tests::spike_flags ... ok
+test spikes::tablet::simulate_windows::tests::zigzag_never_repeats_a_pixel_in_adjacent_frames_and_stationary_always_does ... ok
+test diagnostics::tests::requested_diagnostic_names_the_flag ... ok
+test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+test bindings::tests::embedded_manifest_is_valid ... ok
+test bindings::tests::per_platform_accelerators ... ok
+test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+test bindings::tests::quit_is_bound_on_every_platform ... ok
+test menu::tests::event_serializes_camel_case ... ok
+test spikes::canvas::renderlist::tests::encoder_refuses_invalid_geometry ... ok
+test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+test menu::tests::pending_command_carries_milestone ... ok
+test spikes::tablet::simulate_windows::tests::pressure_steps_through_every_level ... ok
+test spikes::tablet::simulate_windows::tests::positions_stay_inside_the_rectangle ... ok
+test spikes::tablet::simulate_windows::tests::sine_repeats_pixels_where_the_review_found_missing_frames ... ok
+test spikes::tablet::simulate_windows::tests::tilt_and_rotation_stay_in_range ... ok
+test diagnostics::tests::bench_with_count ... ok
+test spikes::tablet::tests::disabled_unless_tablet ... ok
+test spikes::tablet::tests::request_rejects_unknown_fields ... ok
+test menu::tests::host_commands ... ok
+test spikes::tablet::tests::validates_simulation_requests ... ok
+test diagnostics::tests::errors ... ok
+test spikes::tablet::tests::sequencer_is_gap_free_and_wire_packets_flatten ... ok
+test spikes::tablet::simulate_windows::tests::pressure_only_holds_tilt_and_rotation_and_position ... ok
+test tests::default_build_registers_no_diagnostic_commands ... ok
+test tests::diagnostics_overlay_config_enables_both_halves ... ok
+test spikes::tablet::tests::packet_serializes_camel_case ... ok
+test menu::tests::frontend_command_carries_params ... ok
+test tests::tauri_config_matches_workspace_and_plan ... ok
+test spikes::canvas::renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+test spikes::canvas::renderlist::tests::encoding_has_the_documented_layout ... ok
+test spikes::canvas::renderlist::tests::scenes_have_the_specified_sizes ... ok
+test spikes::canvas::renderlist::tests::generation_is_reproducible ... ok
+test spikes::canvas::renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+
+test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+     Running unittests src\main.rs (target\debug\deps\toontown-8c7a4d5f9113ab66.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running ..\..\tests\adversarial\c03-r2-encoder.rs (target\debug\deps\c03_r2_encoder-0ffc28e26ec5aa43.exe)
+
+running 11 tests
+test c03_r2_03_unknown_style_must_be_refused ... ok
+test adjacent_out_of_bounds_and_negative_width_are_refused ... ok
+test renderlist::tests::encoder_refuses_invalid_geometry ... ok
+test c03_r2_03_unpaired_coordinate_must_be_refused ... ok
+test nonfinite_points_and_bounds_return_typed_errors ... ok
+test renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+test subnormal_and_empty_path_are_valid ... ok
+test renderlist::tests::encoding_has_the_documented_layout ... ok
+test renderlist::tests::scenes_have_the_specified_sizes ... ok
+test renderlist::tests::generation_is_reproducible ... ok
+test renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_engine-f23579edd3b46671.exe)
+
+running 19 tests
+test components::tests::every_component_cites_spec_sections ... ok
+test components::tests::lists_every_plan_crate_once ... ok
+test determinism::tests::workload_has_expected_shape ... ok
+test ping::tests::echoes_seq_and_payload ... ok
+test selftest::tests::dotted_version_parser ... ok
+test tests::info_reports_versions_and_mode ... ok
+test tests::info_serializes_camel_case ... ok
+test error::tests::limit_exceeded_wire_form ... ok
+test ping::tests::request_rejects_unknown_fields ... ok
+test tests::engine_is_send_and_sync ... ok
+test determinism::tests::hex_encodes_lowercase ... ok
+test wire::tests::requests_reject_unknown_fields_and_bad_json ... ok
+test wire::tests::u64_values_are_exact_on_the_wire ... ok
+test ping::tests::payload_limit_is_inclusive ... ok
+test wire::tests::definitions_cover_every_wire_type ... ok
+test determinism::tests::probe_is_stable_within_a_run ... ok
+test determinism::tests::probe_matches_golden ... ok
+test selftest::tests::selftest_passes ... ok
+test selftest::tests::push_keeps_ok_consistent ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+
+     Running tests\c11_r1_wire.rs (target\debug\deps\c11_r1_wire-472d6bdca957cbb4.exe)
+
+running 4 tests
+test typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null ... ok
+test opaque_json_integer_outside_u64_is_not_silently_rounded ... ok
+test nested_duplicate_keys_are_rejected_in_requests ... ok
+test supported_integer_boundaries_and_utf8_controls ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests\c11_r2_wire.rs (target\debug\deps\c11_r2_wire-53c70b0f6901ee38.exe)
+
+running 6 tests
+test nested_nonfinite_f32_f64_maps_and_sequences_are_errors ... ok
+test cross_language_exchange ... ok
+test fresh_hostile_text_cases_reject_and_escaped_unicode_roundtrips ... ok
+test integer_edges_are_lossless_or_typed_errors ... ok
+test wire_depth_one_under_and_one_over ... ok
+test writer_never_emits_text_its_reader_rejects_at_depth_boundary ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c11_r3_wire.rs (target\debug\deps\c11_r3_wire-07adf99c951d725f.exe)
+
+running 2 tests
+test negative_and_noninteger_range_frames_are_typed_wire_errors ... ok
+test mixed_depth_boundary_writer_output_is_readable ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\frontend_schemas.rs (target\debug\deps\frontend_schemas-4a1cfc39bc0bfe3b.exe)
+
+running 3 tests
+test wire_module_is_current ... ok
+test model_module_is_current ... ok
+test commands_module_is_current ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests\wire_corpus.rs (target\debug\deps\wire_corpus-58ed66f7be94a457.exe)
+
+running 4 tests
+test invalid_utf8_bodies_are_rejected ... ok
+test the_corpus_depth_is_the_engine_limit ... ok
+test every_hostile_text_is_rejected_with_a_typed_error ... ok
+test every_valid_text_is_accepted_and_written_canonically ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_executor-c741305b308b05e1.exe)
+
+running 6 tests
+test time::tests::known_instants ... ok
+test align::tests::patches_without_preconditions_are_returned_unchanged ... ok
+test align::tests::shifting_patches_are_checked_in_order ... ok
+test align::tests::preconditions_hold_modulo_rev_and_are_rewritten ... ok
+test align::tests::content_differences_are_divergence ... ok
+test run::tests::created_objects_survive_undo_redo_cycles_with_rising_revisions ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+
+     Running tests\c12_edit_ops.rs (target\debug\deps\c12_edit_ops-0570b3ae7e6188e8.exe)
+
+running 16 tests
+test paste_special_again_needs_an_earlier_paste_special ... ok
+test locked_drawings_refuse_cut_and_paste ... ok
+test paste_errors ... ok
+test motion_point_paste_special_pastes_selected_values ... ok
+test templates_copy_between_catalogs ... ok
+test selection_is_the_default_target ... ok
+test dry_run_cut_changes_nothing ... ok
+test element_properties_paste_onto_elements ... ok
+test keys_paste_at_a_frame_and_cut_special_filters_key_groups ... ok
+test delete_clears_cells_and_cut_special_removes_frames ... ok
+test paste_as_new_element_copies_the_cells_into_a_new_bank ... ok
+test drawing_objects_cut_copy_paste_and_new_element ... ok
+test paste_and_paste_special_cells ... ok
+test cut_and_paste_in_one_atomic_batch_is_one_undo_step ... ok
+test copy_and_paste_elements_makes_renamed_clones_sharing_drawings ... ok
+test cut_element_reparents_children_and_paste_restores_it ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+     Running tests\c12_kernel_state.rs (target\debug\deps\c12_kernel_state-d428093ad43347eb.exe)
+
+running 7 tests
+test the_watchdog_answers_within_its_budget ... ok
+test window_and_panel_state_is_queryable_and_settable ... ok
+test workspaces_are_kernel_state ... ok
+test the_application_context_follows_commands ... ok
+test every_generated_declaration_answers_with_its_owner ... ok
+test jobs_run_off_the_document_thread ... ok
+test every_example_runs_on_the_fixture_under_the_watchdog ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.15s
+
+     Running tests\c12_never_block.rs (target\debug\deps\c12_never_block-14fad7dc68d34ca0.exe)
+
+running 1 test
+test a_handler_that_does_not_return_never_blocks_callers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.84s
+
+     Running tests\c12_policy.rs (target\debug\deps\c12_policy-fbe12e4b6943c13a.exe)
+
+running 11 tests
+test locked_drawings_refuse_content_patches ... ok
+test special_references_resolve_against_the_context ... ok
+test whole_object_and_structural_patches_are_refused ... ok
+test queries_find_resolve_and_page ... ok
+test derived_properties_are_projected_on_request ... ok
+test batches_resolve_references_and_refuse_jobs_and_history ... ok
+test naming_rulings_hold_in_patches ... ok
+test value_collections_are_patchable_and_validated ... ok
+test read_only_derived_transient_and_command_properties_are_refused ... ok
+test permissions_validation_and_availability ... ok
+test the_load_transaction_is_guarded ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+
+     Running tests\c12_r1_contracts.rs (target\debug\deps\c12_r1_contracts-8f2401014a07d704.exe)
+
+running 36 tests
+test registry_file_and_network_commands_declare_required_scopes ... ok
+test edit_commands_promised_for_c12_are_implemented ... ok
+test edit_clipboard_is_disabled_without_a_project ... ok
+test registry_owners_follow_the_milestone_plan ... ok
+test registry_stubs_have_actual_parameter_constraints_and_examples ... ok
+test every_registry_entry_has_a_gui_binding_or_agent_only_justification ... ok
+test request_id_collision_returns_original_result_per_literal_spec ... ok
+test agent_cannot_read_another_sessions_jobs_with_all_true ... ok
+test clipboard_get_returns_the_specified_clipboard_directly ... ok
+test expect_rev_map_checks_every_listed_object_not_only_patch_targets ... ok
+test job_wait_obeys_request_id_and_retains_document_revision ... ok
+test dry_run_cannot_cancel_a_running_job ... ok
+test agent_cannot_cancel_another_sessions_job ... ok
+test changes_report_drawing_revision_when_a_stroke_changes ... ok
+test fullscreen_state_and_active_view_agree_with_visible_central_panel ... ok
+test idle_query_does_not_repair_context_after_atomic_current_element_change ... ok
+test clipboard_set_validates_the_content_for_its_kind ... ok
+test expect_rev_error_reports_current_rev_and_small_current_object ... ok
+test failed_batch_clipboard_emits_no_change_event ... ok
+test failed_atomic_batch_cannot_cancel_a_running_job ... ok
+test revision_exhaustion_is_an_error_and_does_not_kill_the_document_thread ... ok
+test renamed_builtin_workspace_can_still_be_restored ... ok
+test checkpoint_in_atomic_batch_has_the_committed_content_revision ... ok
+test workspace_switch_defaults_to_autosaving_current_arrangement ... ok
+test explicitly_saving_and_reselecting_current_workspace_keeps_layout ... ok
+test parameter_dry_run_is_honoured_inside_atomic_batch ... ok
+test dry_run_clipboard_emits_no_change_event ... ok
+test doc_diff_sees_prior_uncommitted_atomic_steps ... ok
+test setting_mode_activates_a_view_of_the_requested_type ... ok
+test external_safe_code_cannot_install_a_mutated_stale_snapshot ... ok
+test sequential_batch_dry_run_queries_see_previous_simulated_edits ... ok
+test diff_older_than_snapshot_window_replays_repeated_entry_batch ... ok
+test job_wait_timeout_policy_is_explicitly_measured ... ok
+test historical_diff_reports_the_revision_of_its_requested_end_state ... ok
+test session_idempotency_survives_more_than_ten_thousand_other_requests ... ok
+test diff_retains_the_last_save_even_after_ten_thousand_transactions ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 34.98s
+
+     Running tests\c12_r1_macro.rs (target\debug\deps\c12_r1_macro-62b25f91d26111a0.exe)
+
+running 2 tests
+test duplicate_ids_and_inventory_kind_drift_are_rejected ... ok
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling autocfg v1.5.1
+    Checking memchr v2.8.3
+   Compiling serde v1.0.229
+    Checking cfg-if v1.0.5
+    Checking foldhash v0.2.0
+   Compiling zmij v1.0.23
+    Checking allocator-api2 v0.2.21
+    Checking equivalent v1.0.3
+   Compiling getrandom v0.3.4
+   Compiling zerocopy v0.8.63
+   Compiling version_check v0.9.5
+   Compiling serde_json v1.0.154
+   Compiling ref-cast v1.0.27
+    Checking regex-syntax v0.8.11
+    Checking itoa v1.0.18
+   Compiling parking_lot_core v0.9.12
+    Checking once_cell v1.21.4
+    Checking scopeguard v1.2.0
+    Checking smallvec v1.16.3
+    Checking windows-link v0.2.1
+   Compiling heck v0.5.0
+    Checking bit-vec v0.8.0
+   Compiling jsonschema-value v0.59.0
+   Compiling unicode-general-category v1.1.0
+    Checking borrow-or-share v0.2.4
+    Checking bytecount v0.6.9
+   Compiling thiserror v2.0.21
+    Checking vsimd v0.8.0
+   Compiling getrandom v0.4.3
+    Checking outref v0.5.2
+    Checking num-cmp v0.1.0
+    Checking percent-encoding v2.3.2
+    Checking micromap v0.3.0
+    Checking lock_api v0.4.14
+    Checking tinyvec v1.13.3
+    Checking dyn-clone v1.0.20
+    Checking data-encoding v2.11.1
+    Checking ryu v1.0.23
+    Checking bit-set v0.8.0
+    Checking hashbrown v0.17.1
+    Checking uuid-simd v0.8.0
+    Checking aho-corasick v1.1.5
+   Compiling ahash v0.8.12
+   Compiling num-traits v0.2.19
+    Checking unicode-normalization v0.1.26
+    Checking parking_lot v0.12.5
+    Checking regex-automata v0.4.18
+    Checking jsonschema-regex v0.59.0
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+    Checking num-integer v0.1.47
+    Checking num-complex v0.4.6
+    Checking num-bigint v0.4.8
+    Checking num-iter v0.1.46
+    Checking indexmap v2.14.2
+    Checking fancy-regex v0.19.2
+    Checking regex v1.13.1
+    Checking num-rational v0.4.2
+   Compiling serde_derive_internals v0.30.0
+    Checking num v0.4.3
+    Checking fraction v0.17.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling schemars_derive v1.2.3
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\registry-macros)
+    Checking strum v0.28.0
+    Checking fluent-uri v0.4.1
+    Checking email_address v0.2.9
+    Checking schemars v1.2.3
+    Checking referencing v0.59.0
+    Checking jsonschema v0.59.0
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\model)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\registry)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\executor)
+    Checking tt-executor-tests v0.0.0 (C:\Users\kaiga\work\review\m1-c12-r2\target\tests\trybuild\tt-executor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.26s
+
+
+test tests\c12-r1-ui\missing_example.rs ... ok
+
+
+test missing_example_is_rejected_at_compile_time ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.07s
+
+     Running tests\c12_r1_scale.rs (target\debug\deps\c12_r1_scale-f340c6b888130351.exe)
+
+running 1 test
+test every_command_rejects_huge_malformed_input_on_large_documents ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.99s
+
+     Running tests\c12_r1_stress.rs (target\debug\deps\c12_r1_stress-c8d7af268c75599a.exe)
+
+running 5 tests
+test ordinary_dry_run_preserves_exact_history_and_matches_real_result ... ok
+test all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded ... ok
+test eight_clients_cas_commands_and_batches_have_no_lost_updates ... ok
+test every_executable_typed_example_also_validates_its_result_schema ... ok
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 46.30s
+
+     Running tests\c12_registry.rs (target\debug\deps\c12_registry-b595cb50f1341ad0.exe)
+
+running 6 tests
+test registry_covers_spec_a_and_types_every_m1_command ... ok
+test ui_binding_manifest_parity ... ok
+test describe_reports_declarations ... ok
+test drawing_command_delegation_ruling ... ok
+test stubs_and_declarations_name_their_owners ... ok
+test every_declaration_has_schemas_and_valid_examples ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+     Running tests\c12_transactions.rs (target\debug\deps\c12_transactions-e2d1ded977268b16.exe)
+
+running 14 tests
+test model_level_staged_commit_of_several_entries_is_atomic ... ok
+test events_follow_commits ... ok
+test a_patch_is_one_transaction_with_stamped_revisions_and_an_undo_step ... ok
+test drawing_content_edits_stamp_the_drawing ... ok
+test expect_rev_conflicts_are_typed ... ok
+test request_ids_make_calls_idempotent_per_session ... ok
+test checkpoints_restore_as_one_undoable_step_without_lowering_revisions ... ok
+test doc_diff_reports_net_changes_since_a_revision_or_checkpoint ... ok
+test dry_runs_report_changes_and_change_nothing ... ok
+test atomic_batches_commit_several_entries_as_one_step_or_roll_back_entirely ... ok
+test job_results_must_satisfy_the_declared_final_result_schema ... ok
+test a_batch_changing_one_property_twice_undoes_and_redoes_exactly ... ok
+test undo_and_redo_replay_verified_patches_and_keep_step_ids ... ok
+test history_keeps_at_least_200_steps ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.20s
+
+     Running tests\compile_fail.rs (target\debug\deps\compile_fail-cce25ceaa2a80058.exe)
+
+running 1 test
+   Compiling memchr v2.8.3
+   Compiling cfg-if v1.0.5
+   Compiling foldhash v0.2.0
+   Compiling allocator-api2 v0.2.21
+   Compiling equivalent v1.0.3
+   Compiling regex-syntax v0.8.11
+   Compiling itoa v1.0.18
+   Compiling scopeguard v1.2.0
+   Compiling smallvec v1.16.3
+   Compiling windows-link v0.2.1
+   Compiling once_cell v1.21.4
+   Compiling bit-vec v0.8.0
+   Compiling borrow-or-share v0.2.4
+   Compiling micromap v0.3.0
+   Compiling outref v0.5.2
+   Compiling num-cmp v0.1.0
+   Compiling bytecount v0.6.9
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling zerocopy v0.8.63
+   Compiling vsimd v0.8.0
+   Compiling percent-encoding v2.3.2
+   Compiling unicode-general-category v1.1.0
+   Compiling data-encoding v2.11.1
+   Compiling dyn-clone v1.0.20
+   Compiling tinyvec v1.13.3
+   Compiling ryu v1.0.23
+   Compiling num-traits v0.2.19
+   Compiling ref-cast v1.0.27
+   Compiling strum v0.28.0
+   Compiling thiserror v2.0.21
+   Compiling getrandom v0.3.4
+   Compiling getrandom v0.4.3
+   Compiling lock_api v0.4.14
+   Compiling bit-set v0.8.0
+   Compiling parking_lot_core v0.9.12
+   Compiling hashbrown v0.17.1
+   Compiling unicode-normalization v0.1.26
+   Compiling aho-corasick v1.1.5
+   Compiling parking_lot v0.12.5
+   Compiling uuid-simd v0.8.0
+   Compiling num-integer v0.1.47
+   Compiling num-complex v0.4.6
+   Compiling num-bigint v0.4.8
+   Compiling num-iter v0.1.46
+   Compiling regex-automata v0.4.18
+   Compiling jsonschema-regex v0.59.0
+   Compiling num-rational v0.4.2
+   Compiling serde v1.0.229
+   Compiling indexmap v2.14.2
+   Compiling num v0.4.3
+   Compiling fraction v0.17.0
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling serde_json v1.0.154
+   Compiling ahash v0.8.12
+   Compiling referencing v0.59.0
+   Compiling jsonschema-value v0.59.0
+   Compiling schemars v1.2.3
+   Compiling fancy-regex v0.19.2
+   Compiling regex v1.13.1
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\model)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\executor)
+   Compiling tt-executor-tests v0.0.0 (C:\Users\kaiga\work\review\m1-c12-r2\target\tests\trybuild\tt-executor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.59s
+
+
+test tests\ui\core_install.rs [should fail to compile] ... ok
+test tests\ui\cx_clone_default.rs [should fail to compile] ... ok
+test tests\ui\cx_constructor.rs [should fail to compile] ... ok
+test tests\ui\cx_struct_literal.rs [should fail to compile] ... ok
+test tests\ui\document_fields.rs [should fail to compile] ... ok
+test tests\ui\enablement_read_only.rs [should fail to compile] ... ok
+test tests\ui\entity_fields.rs [should fail to compile] ... ok
+test tests\ui\handle_channel.rs [should fail to compile] ... ok
+test tests\ui\job_keeps_context.rs [should fail to compile] ... ok
+test tests\ui\load_grant_forged.rs [should fail to compile] ... ok
+test tests\ui\request_type.rs [should fail to compile] ... ok
+test tests\ui\session_private.rs [should fail to compile] ... ok
+test tests\ui-pass\read_snapshots.rs [should pass] ... ok
+
+
+test exclusive_mutation_capability ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.29s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_fx-b4be6f856c108bdf.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\main.rs (target\debug\deps\toontown_headless-5f4a80e7f34e684a.exe)
+
+running 7 tests
+test cli::tests::actions_are_exclusive ... ok
+test cli::tests::version_line ... ok
+test cli::tests::an_action_is_required ... ok
+test cli::tests::future_modes_are_typed_errors ... ok
+test cli::tests::option_combinations ... ok
+test cli::tests::selftest_human_passes ... ok
+test cli::tests::selftest_json_passes ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running ..\..\tests\adversarial\c01.rs (target\debug\deps\adversarial_c01-c7d9db3385c0c031.exe)
+
+running 7 tests
+test c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get ... ok
+test wire_engine_info_field_names_match_typescript ... ok
+test c01_r1_05_rust_control_rejects_multibyte_over_limit ... ok
+test c01_r1_06_dependency_proof_rejects_graphics_dependencies ... ok
+test c01_r1_01_license_grouping_preserves_mandatory_copyleft ... ok
+test c01_r1_01_license_allowlist_stays_within_user_policy ... ok
+test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.99s
+
+     Running tests\cli.rs (target\debug\deps\cli-e8d1a70272e78813.exe)
+
+running 5 tests
+test mcp_stdio_not_yet_available_exits_three ... ok
+test usage_error_exits_two ... ok
+test version_exits_zero ... ok
+test selftest_exits_zero_with_json_report ... ok
+test selftest_runs_with_display_environment_removed ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.89s
+
+     Running tests\guard_fixtures.rs (target\debug\deps\guard_fixtures-3a7a5ee4e3034ec5.exe)
+
+running 1 test
+test rejects_a_real_direct_composition_import ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_io-fa8dd6720c72901c.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_lipsync-45fdf97f24c598a0.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_mcp-7ec38fc27e64f0d2.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_model-bc40083439292256.exe)
+
+running 41 tests
+test canonical::tests::large_integers_are_exact ... ok
+test id::tests::validates_character_set_and_length ... ok
+test name::tests::next_free_uses_smallest_unused ... ok
+test input::tests::opaque_values_are_untouched_but_ordered ... ok
+test id::tests::seeded_generators_are_reproducible ... ok
+test canonical::tests::numbers_match_ecmascript ... ok
+test id::tests::compound_form ... ok
+test canonical::tests::integral_doubles_normalise_to_integers ... ok
+test error::tests::wire_form_has_three_fields ... ok
+test canonical::tests::layout_is_two_space_with_tuples_on_one_line ... ok
+test path::tests::spec_examples_parse_and_print ... ok
+test path::tests::quoted_names_escape ... ok
+test name::tests::normalises_nfc_and_trims ... ok
+test path::tests::refs_classify ... ok
+test name::tests::per_entity_rules ... ok
+test id::tests::ulid_encoding_is_26_crockford_chars_and_ordered ... ok
+test change::tests::move_and_copy_need_from ... ok
+test change::tests::inverse_against_pre_state_is_concrete ... ok
+test pointer::tests::indexes_are_strict ... ok
+test json_text::tests::rules ... ok
+test change::tests::range_replace_checks_types_window_and_bounds ... ok
+test entities::tests::ext_keys_are_reverse_dns ... ok
+test change::tests::range_operations_apply_only_to_declared_fields ... ok
+test path::tests::rejects_malformed_paths ... ok
+test input::tests::depth_counts_containers ... ok
+test id::tests::clones_share_one_sequence ... ok
+test object::tests::runs_are_merged_and_trailing_blanks_dropped ... ok
+test entities::tests::stubs_reject_full_objects_and_foreign_types ... ok
+test pointer::tests::round_trip_escapes ... ok
+test types::tests::names_round_trip_and_aliases_resolve ... ok
+test id::tests::generated_ids_are_valid_prefixed_and_increasing ... ok
+test types::tests::prefixes_are_unique_and_valid ... ok
+test value::tests::colours_normalise_to_upper_rgba ... ok
+test value::tests::timestamps_round_trip_and_reject_impossible_dates ... ok
+test types::tests::tags_reject_other_types ... ok
+test schema_ts::tests::types_and_bigint_bounds ... ok
+test canonical::tests::non_finite_values_are_errors_not_null ... ok
+test value::tests::timestamp_display_matches_civil_conversion_for_many_days ... ok
+test change::tests::frame_bearing_writes_are_bounded_at_the_scene_limit ... ok
+test validate::tests::zero_count_exposure_runs_are_reported_by_the_model_check ... ok
+test overlay::tests::newer_minor_properties_survive_a_parse_and_write_in_lexicographic_order ... ok
+
+test result: ok. 41 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-fbab84c0e66509f0.exe)
+
+running 39 tests
+test elided_patch_must_not_write_null ... ok
+test diff_does_not_treat_opaque_arrays_as_child_collections ... ok
+test add_over_existing_object_property_is_invertible ... ok
+test canonical_serialization_rejects_nonfinite_values ... ok
+test move_over_existing_object_property_is_invertible ... ok
+test root_add_is_rfc6902_replacement ... ok
+test hostile_path_and_id_controls ... ok
+test cloning_a_system_generator_cannot_duplicate_ids ... ok
+test jsonschema_integer_multiple_of_does_not_round_before_testing ... ok
+test property_schema_resolves_nested_child_and_tuple_fields ... ok
+test schema_properties_have_format_introduction_annotations ... ok
+test nfc_applies_to_persisted_strings_beyond_names ... ok
+test canonical_scene_map_order_is_not_document_state ... ok
+test fixed_text_requires_width ... ok
+test depth_zero_results_validate_against_their_object_schema ... ok
+test project_library_must_have_local_kind ... ok
+test project_requires_a_visible_palette ... ok
+test extension_and_metadata_names_are_never_interpreted ... ok
+test canonical_map_order_does_not_depend_on_insertion_order ... ok
+test mouth_track_manual_ranges_stay_within_the_placement ... ok
+test schema_integer_boundary_does_not_round_u64_max_up ... ok
+test spline_handle_offsets_are_clamped_to_adjacent_key_times ... ok
+test swatch_id_alias_is_accepted_by_the_validated_input_path ... ok
+test image_element_bank_requires_exactly_one_bitmap_per_drawing ... ok
+test duplicate_entry_ids_must_not_silently_overwrite_content ... ok
+test child_stub_type_must_agree_with_the_containment_slot ... ok
+test int_means_signed_32_bit_unless_spec_states_otherwise ... ok
+test linked_file_asset_requires_paths ... ok
+test brush_outline_must_be_closed ... ok
+test document_assembly_rechecks_schema_ranges_after_public_deserialize ... ok
+test texture_paths_must_be_under_textures ... ok
+test every_valid_deep_library_object_has_a_resolvable_canonical_path ... ok
+test metadata_depth_is_enforced_at_model_input ... ok
+test containment_and_scene_limit_controls ... ok
+test nested_closed_value_objects_reject_unknown_fields ... ok
+test schema_mutations_cover_all_object_types_and_root_properties ... ok
+test derived_properties_are_output_only_on_validated_entity_input ... ok
+test million_system_ids_unique_ordered_and_correctly_prefixed ... ok
+test ten_megabyte_drawing_validation_measurement ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.90s
+
+     Running tests\c11_r2_adversarial.rs (target\debug\deps\c11_r2_adversarial-0edf6f222258b96d.exe)
+
+running 39 tests
+test elided_and_incomplete_operations_fail_without_mutating_input ... ok
+test array_append_patch_inverse_restores_input ... ok
+test ordinary_move_copy_test_and_array_index_shifts_invert ... ok
+test missing_copy_source_is_not_implicitly_the_document_root ... ok
+test nested_array_move_with_overwrite_inverse_restores_input ... ok
+test nonfinite_nested_structs_maps_and_model_constructors_are_rejected ... ok
+test range_patch_rejects_nonstring_mouth_value_without_deleting_text ... ok
+test canonical_writer_limits_are_explicit ... ok
+test multiple_of_is_exact_near_u64_and_signed_limits ... ok
+test property_lookup_follows_effect_condition_without_discarding_it ... ok
+test property_lookup_preserves_ref_property_annotations ... ok
+test every_envelope_type_is_readonly ... ok
+test every_schema_property_has_since_and_envelope_type_is_readonly ... ok
+test all_public_entity_constructors_are_checked_before_document_use ... ok
+test image_import_options_are_opaque ... ok
+test cell_note_frame_map_keys_obey_signed_int_bounds ... ok
+test nfc_is_applied_to_declared_non_name_strings_without_touching_opaque_values ... ok
+test opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved ... ok
+test duplicate_keys_are_rejected_even_at_distinct_frames ... ok
+test fixed_text_width_and_texture_paths_reject_new_invalid_cases ... ok
+test spline_clamps_both_sides_for_irregular_key_spacing ... ok
+test signed_int_boundaries_and_seed_exception ... ok
+test mouth_label_frame_map_keys_are_positive_and_within_int ... ok
+test duplicate_local_ids_across_nested_nodes_share_drawing_scope ... ok
+test swatch_alias_equal_conflicting_and_nested_forms ... ok
+test model_depth_99_100_101_is_enforced_before_parsing ... ok
+test public_serde_entries_cannot_evade_revalidation ... ok
+test duplicate_inline_collections_and_cross_entry_global_ids_are_rejected ... ok
+test randomized_insertion_and_post_patch_revalidation_write_identical_bytes ... ok
+test all_entity_serde_entry_points_reject_unknown_fields_and_revalidate ... ok
+test every_model_stub_and_full_result_validates_at_depth_zero_one_two_all ... ok
+test duplicate_placement_sequence_block_and_channel_ids_are_rejected ... ok
+test duplicate_split_entries_all_five_maps_are_rejected ... ok
+test deeper_library_paths_near_model_limit_resolve ... ok
+test new_entity_semantic_boundary_controls ... ok
+test every_document_entry_kind_revalidates_deserialized_fields ... ok
+test duplicate_ids_across_split_types_and_inline_levels_are_rejected ... ok
+test forty_previously_implemented_register_rows_retain_constraints ... ok
+test cloned_generator_eight_threads_100k_each_are_unique ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.91s
+
+     Running tests\c11_r3_adversarial.rs (target\debug\deps\c11_r3_adversarial-1a0dbcebd5aad757.exe)
+
+running 11 tests
+test malformed_mouth_ranges_return_typed_errors ... ok
+test zero_length_exposure_runs_are_invalid_range_payloads ... ok
+test resolved_stateless_move_inverse_does_not_shift_numeric_object_keys ... ok
+test moving_into_own_subtree_fails_atomically_and_copying_parent_succeeds ... ok
+test append_move_remove_sequences_restore_nested_arrays ... ok
+test anonymous_variant_property_declarations_have_since ... ok
+test property_schema_nested_conditionals_and_ref_annotations_survive ... ok
+test property_schema_preserves_every_enum_alternative ... ok
+test property_schema_preserves_nullable_value_domains ... ok
+test opaque_mouth_track_lookalikes_are_ordinary_json_changes ... ok
+test frame_map_keys_and_nfc_values_at_fresh_boundaries ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests\c11_r3_random.rs (target\debug\deps\c11_r3_random-173bfabd37f1d116.exe)
+
+running 1 test
+test ten_thousand_rfc6902_sequences_apply_and_invert ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.73s
+
+     Running tests\c11_r3_register.rs (target\debug\deps\c11_r3_register-817fbad50014b531.exe)
+
+running 4 tests
+test rows_146_and_148_drawing_pivot_and_ordered_nodes ... ok
+test rows_128_to_137_transform_constraints_and_pivots ... ok
+test rows_138_to_141_camera_export_skeleton_and_bone_blocks ... ok
+test rows_111_to_124_element_variant_blocks_are_required_and_typed ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+
+     Running tests\c11_r4_exposure_bounds.rs (target\debug\deps\c11_r4_exposure_bounds-480767c0ecad5649.exe)
+
+running 2 tests
+test exposure_range_rejects_window_past_scene_limit ... ok
+test exposure_range_rejects_total_above_scene_limit ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests\c11_r5_write_bounds.rs (target\debug\deps\c11_r5_write_bounds-68c05f2e64670e1a.exe)
+
+running 4 tests
+test exposure_append_batch_cannot_cross_limit ... ok
+test nested_exposure_count_write_obeys_total_limit ... ok
+test copy_and_move_into_exposure_obey_scene_limit ... ok
+test whole_mouth_string_writes_obey_scene_limit ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c11_r6_staged_inverse.rs (target\debug\deps\c11_r6_staged_inverse-5eee2cf69f516c58.exe)
+
+running 2 tests
+test staged_append_inverse_survives_run_merging ... ok
+test staged_inverse_restores_frames_after_runs_merge ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+     Running tests\c12_kernel_support.rs (target\debug\deps\c12_kernel_support-c7f584a9631a4834.exe)
+
+running 6 tests
+test own_views_and_pointers_of_nested_objects ... ok
+test stamping_sets_document_and_object_revisions_and_the_drawing_rule ... ok
+test list_insertions_and_removals_diff_by_id ... ok
+test typed_object_pointers_agree_with_the_entry_json ... ok
+test multi_entry_commits_are_atomic_and_carry_verified_undo_and_redo ... ok
+test validated_entry_cache_never_hides_object_issues ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running tests\conformance.rs (target\debug\deps\conformance-2321258859c70a82.exe)
+
+running 15 tests
+test x_command_annotations_name_registered_commands ... ok
+test published_schema_bundle_is_current ... ok
+test schemas_are_valid_draft_2020_12 ... ok
+test reference_errors_carry_the_spec_codes ... ok
+test revisions_newer_than_the_document_are_integrity_errors ... ok
+test fixture_covers_every_object_and_element_type ... ok
+test spec_example_paths_resolve ... ok
+test ambiguous_names_list_candidates ... ok
+test change_sets_describe_and_invert_edits ... ok
+test every_entry_validates_and_has_no_query_only_properties ... ok
+test persisted_json_equals_query_json_minus_transient ... ok
+test canonical_paths_resolve_to_their_objects ... ok
+test every_object_validates_at_every_depth ... ok
+test canonical_round_trip_is_byte_identical ... ok
+test golden_canonical_entries ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+
+     Running tests\properties.rs (target\debug\deps\properties-9a8adbecdf3b72d0.exe)
+
+running 18 tests
+test timestamps_round_trip ... ok
+test numbers_round_trip_through_canonical_text ... ok
+test json_parsing_of_doubles_is_correctly_rounded ... ok
+test names_normalise_idempotently ... ok
+test id_parsing_never_panics_and_matches_the_grammar ... ok
+test generated_paths_print_and_parse_identically ... ok
+test path_parsing_never_panics ... ok
+test canonical_json_is_stable ... ok
+test child_collection_patches_apply_and_invert ... ok
+test number_vectors_for_the_front_end ... ok
+test exposure_range_patches_apply_and_invert ... ok
+test random_rfc6902_sequences_invert_against_their_pre_state ... ok
+test patches_apply_and_invert ... ok
+test every_object_type_has_a_schema_that_rejects_unknown_properties ... ok
+test pens_round_trip ... ok
+test palettes_round_trip ... ok
+test elements_of_every_type_round_trip ... ok
+test strokes_round_trip ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+
+     Running tests\staged_commit.rs (target\debug\deps\staged_commit-9c39a63c6c4161b2.exe)
+
+running 3 tests
+test document_level_frame_writes_are_refused_and_leave_the_document_unchanged ... ok
+test random_patches_never_commit_a_document_with_integrity_errors ... ok
+test staged_commit_sweep_commits_and_refuses ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 30.87s
+
+     Running tests\staged_inverse.rs (target\debug\deps\staged_inverse-49ca067b55eb2140.exe)
+
+running 2 tests
+test staged_exposure_and_mouth_edits_undo_and_redo_exactly ... ok
+test staged_inverse_sweep_covers_merging_and_splitting_runs ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.22s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_persist-1e98e5a5b94939d0.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_registry-88779604b364b768.exe)
+
+running 1 test
+test owners::tests::every_inventory_entry_has_an_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\declared.rs (target\debug\deps\declared-eca1670e82a48bbb.exe)
+
+running 4 tests
+test declarations_carry_owner_scopes_project_rule_undo_and_gui ... ok
+test declarations_follow_the_current_spec_columns ... ok
+test parameter_constraints_come_from_the_spec ... ok
+test schemas_compile_reject_unknown_parameters_and_accept_the_examples ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests\inventory.rs (target\debug\deps\inventory-c052157a03bbe7c9.exe)
+
+running 1 test
+test inventory_matches_spec_a_exactly ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_registry_macros-0ef638ad07c52a93.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_render-7545749cb0f57bcf.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c03_fixed_configurations.rs (target\debug\deps\c03_fixed_configurations-ff6ecec6fc16b6bb.exe)
+
+running 2 tests
+test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
+test fixed_scalar_configuration_hashes_identically_across_oses ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.36s
+
+     Running tests\c03_r1_stress.rs (target\debug\deps\c03_r1_stress-ee5b53f219c5152a.exe)
+
+running 3 tests
+test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
+test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
+test extended_corpus_repeats_and_cross_os_hashes ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 10.15s
+
+     Running tests\c03_r2_quality.rs (target\debug\deps\c03_r2_quality-86fa414d83e6b616.exe)
+
+running 1 test
+test quality_pipeline_opacity_full_corpus ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.93s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_vector-1fe1809a0160d24a.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_anim
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_audio
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_colour
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_desktop
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_engine
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_executor
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_fx
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_io
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_lipsync
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_mcp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_model
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_persist
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_registry
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_registry_macros
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_render
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_vector
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+[exit 0]

@@ -1,0 +1,87 @@
+cargo :    Compiling syn v3.0.9
+At line:2 char:98
++ ... _DEBUG='0'; cargo test -p tt-headless --test c14_r3 --locked -- --noc ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling syn v3.0.9:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling serde_derive_internals v0.30.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling clap_derive v4.6.7
+   Compiling schemars_derive v1.2.3
+   Compiling ref-cast v1.0.27
+   Compiling thiserror v2.0.21
+   Compiling clap v4.6.7
+   Compiling serde v1.0.229
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\anim)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\persist)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\vector)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\registry)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\lipsync)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\mcp)
+   Compiling tt-headless v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\bins\headless)
+    Finished `test` profile [unoptimized] target(s) in 17.79s
+     Running tests\c14_r3.rs (target\debug\deps\c14_r3-7bc5736728224da5.exe)
+
+running 1 test
+test_cancelled_elicitation_does_not_authorize_a_late_accept 
+(__main__.Protocol.test_cancelled_elicitation_does_not_authorize_a_late_accept) ... FAIL
+test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped 
+(__main__.Protocol.test_close_keep_mine_completes_for_package_and_folder_and_quit_stays_scoped) ... ok
+malformed watchdog: 796 commands, 2388 calls
+test_every_registered_command_rejects_malformed_params_within_watchdog 
+(__main__.Protocol.test_every_registered_command_rejects_malformed_params_within_watchdog) ... ok
+test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure 
+(__main__.Protocol.test_generic_typed_and_atomic_exports_preserve_targets_on_later_failure) ... ok
+test_headless_run_rolls_back_export_on_later_failure 
+(__main__.Protocol.test_headless_run_rolls_back_export_on_later_failure) ... ok
+
+======================================================================
+FAIL: test_cancelled_elicitation_does_not_authorize_a_late_accept 
+(__main__.Protocol.test_cancelled_elicitation_does_not_authorize_a_late_accept)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r3\bins\headless\../..\tests/adversarial/c14-r3-mcp.py", line 111, in 
+test_cancelled_elicitation_does_not_authorize_a_late_accept
+    self.assertEqual(target.read_bytes(), b"original", "a cancelled elicitation accepted a late answer and overwrote 
+the file")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^
+AssertionError: b'{"seq":1,"time":"2026-10-30T13:24:26.192Z[291 chars]1}\n' != b'original' : a cancelled elicitation 
+accepted a late answer and overwrote the file
+
+----------------------------------------------------------------------
+Ran 5 tests in 5.893s
+
+FAILED (failures=1)
+
+thread 'real_stdio_round_three_regressions' (8268) panicked at bins\headless\tests\c14_r3.rs:14:5:
+round-three protocol suite failed: exit code: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test real_stdio_round_three_regressions ... FAILED
+
+failures:
+
+failures:
+    real_stdio_round_three_regressions
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.98s
+
+error: test failed, to rerun pass `-p tt-headless --test c14_r3`

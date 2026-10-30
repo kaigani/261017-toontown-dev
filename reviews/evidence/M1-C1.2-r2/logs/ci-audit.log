@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r2\reviews\evidence\M1-C1.2-r2\audit-ci.py", line 40, in <module>
+    assert len(matches)==1 and matches[0]['status']=='ok', (os,suite,matches)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('windows-latest', 'compile_fail', [{'suite': 'compile_fail.rs', 'status': 'ok', 'passed': 1, 'failed': 0, 'ignored': 0}, {'suite': 'compile_fail.rs', 'status': 'ok', 'passed': 0, 'failed': 0, 'ignored': 0}, {'suite': 'compile_fail.rs', 'status': 'ok', 'passed': 7, 'failed': 0, 'ignored': 0}, {'suite': 'compile_fail.rs', 'status': 'ok', 'passed': 7, 'failed': 0, 'ignored': 0}])

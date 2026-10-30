@@ -1,0 +1,14 @@
+{
+  "format": "animpkg",
+  "formatVersion": "1.0",
+  "minReaderVersion": "1.0",
+  "requiredFeatures": [],
+  "generator": {
+    "name": "Toontown",
+    "version": "0.0.1",
+    "platform": "windows-x64"
+  },
+  "projectId": "pr_01K742SG00KCS2RFAC17SMYQ7P",
+  "documentRev": 1,
+  "savedAt": "2026-10-19T12:00:00.000Z"
+}

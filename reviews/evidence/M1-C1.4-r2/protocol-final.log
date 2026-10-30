@@ -1,0 +1,130 @@
+test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) ... 
+  test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) (case=0) ... FAIL
+  test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) (case=1) ... FAIL
+  test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) (case=2) ... FAIL
+test_all_state_include_combinations_are_command_projections (__main__.Protocol.test_all_state_include_combinations_are_command_projections) ... ok
+test_cancel_live_elicitation_releases_the_call_worker (__main__.Protocol.test_cancel_live_elicitation_releases_the_call_worker) ... FAIL
+test_close_with_save_offers_external_change_confirmation (__main__.Protocol.test_close_with_save_offers_external_change_confirmation) ... 
+  test_close_with_save_offers_external_change_confirmation (__main__.Protocol.test_close_with_save_offers_external_change_confirmation) (folder=False) ... FAIL
+  test_close_with_save_offers_external_change_confirmation (__main__.Protocol.test_close_with_save_offers_external_change_confirmation) (folder=True) ... FAIL
+test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once (__main__.Protocol.test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once) ... ok
+test_export_publication_failure_is_not_a_successful_audit_record (__main__.Protocol.test_export_publication_failure_is_not_a_successful_audit_record) ... publication_failure {"status": "ok", "result": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-br9_pkf7\\directory.jsonl", "entries": 1, "omitted": []}, "changes": [], "warnings": [], "documentRev": 1} target_is_directory True
+FAIL
+test_idempotent_retry_is_not_a_second_replay_operation (__main__.Protocol.test_idempotent_retry_is_not_a_second_replay_operation) ... retry_replay {"label": "Agent activity", "atomic": false, "stopOnError": true, "steps": [{"id": "project.create", "params": {"name": "P", "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-vrnmupr4\\P.animpkg"}}, {"id": "doc.object.patch", "params": {"targets": ["sc_01M66A71P7J6JDQQB8KCPVA74D"], "props": {"meta": {"n": 1}}}}, {"id": "doc.object.patch", "params": {"targets": ["sc_01M66A71P7J6JDQQB8KCPVA74D"], "props": {"meta": {"n": 2}}}}, {"id": "edit.undo", "params": {}}, {"id": "edit.undo", "params": {}}]}
+FAIL
+test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded (__main__.Protocol.test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded) ... ok
+test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize (__main__.Protocol.test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize) ... ok
+test_long_unicode_and_nested_globs_keep_the_server_usable (__main__.Protocol.test_long_unicode_and_nested_globs_keep_the_server_usable) ... ok
+test_nested_wrapper_validation_never_edits (__main__.Protocol.test_nested_wrapper_validation_never_edits) ... ok
+test_nonreading_client_without_eof_is_closed_by_pressure_timeout (__main__.Protocol.test_nonreading_client_without_eof_is_closed_by_pressure_timeout) ... ok
+test_partial_sequential_batch_keeps_its_committed_edits_in_replay (__main__.Protocol.test_partial_sequential_batch_keeps_its_committed_edits_in_replay) ... partial_replay {"export": {"status": "ok", "result": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-v40de0gf\\partial.json", "entries": 3, "omitted": [{"seq": 2, "tool": "batch", "command_id": "batch", "reason": "notCompleted"}, {"seq": 3, "tool": "run_command", "command_id": "doc.object.get", "reason": "readOnly"}]}, "changes": [], "warnings": [], "documentRev": 2}, "batch": {"label": "Agent activity", "atomic": false, "stopOnError": true, "steps": [{"id": "project.create", "params": {"name": "P", "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-v40de0gf\\P.animpkg"}}]}}
+FAIL
+test_typed_tools_reject_nested_types_and_extra_options (__main__.Protocol.test_typed_tools_reject_nested_types_and_extra_options) ... ok
+
+======================================================================
+FAIL: test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) (case=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r2-mcp.py", line 283, in test_analyzer_rejects_backwards_time_nonfinite_and_empty_series
+    self.assertFalse(m.check_file(p)["ok"], "malformed measurement evidence was accepted")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : malformed measurement evidence was accepted
+
+======================================================================
+FAIL: test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) (case=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r2-mcp.py", line 283, in test_analyzer_rejects_backwards_time_nonfinite_and_empty_series
+    self.assertFalse(m.check_file(p)["ok"], "malformed measurement evidence was accepted")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : malformed measurement evidence was accepted
+
+======================================================================
+FAIL: test_analyzer_rejects_backwards_time_nonfinite_and_empty_series (__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) (case=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r2-mcp.py", line 283, in test_analyzer_rejects_backwards_time_nonfinite_and_empty_series
+    self.assertFalse(m.check_file(p)["ok"], "malformed measurement evidence was accepted")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : malformed measurement evidence was accepted
+
+======================================================================
+FAIL: test_cancel_live_elicitation_releases_the_call_worker (__main__.Protocol.test_cancel_live_elicitation_releases_the_call_worker)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r2-mcp.py", line 215, in test_cancel_live_elicitation_releases_the_call_worker
+    answer = c.wait(801, timeout=5)
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r1-mcp.py", line 55, in wait
+    msg = self.q.get(timeout=max(.001, deadline - time.monotonic()))
+  File "C:\Python313\Lib\queue.py", line 212, in get
+    raise Empty
+_queue.Empty
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r2-mcp.py", line 217, in test_cancel_live_elicitation_releases_the_call_worker
+    self.fail("cancelled elicitation still holds the call worker after 5 seconds (ping answered)")
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: cancelled elicitation still holds the call worker after 5 seconds (ping answered)
+
+======================================================================
+FAIL: test_close_with_save_offers_external_change_confirmation (__main__.Protocol.test_close_with_save_offers_external_change_confirmation) (folder=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r2-mcp.py", line 159, in test_close_with_save_offers_external_change_confirmation
+    self.assertEqual(e["status"], "needs_confirmation", e)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'needs_confirmation'
+- error
++ needs_confirmation
+ : {'status': 'error', 'changes': [], 'warnings': [], 'documentRev': 2, 'error': {'code': 'project.changedOnDisk', 'message': 'the project file was changed by another program since it was opened', 'details': {'path': 'C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-c_q0rn5a\\P.animpkg', 'detectedAt': '2026-10-30T11:48:08.952Z'}, 'hint': 'reopen it (project.open with onUnsaved) to reload, or keep yours with project.saveAs {path, onExists: "overwrite"}'}}
+
+======================================================================
+FAIL: test_close_with_save_offers_external_change_confirmation (__main__.Protocol.test_close_with_save_offers_external_change_confirmation) (folder=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r2-mcp.py", line 159, in test_close_with_save_offers_external_change_confirmation
+    self.assertEqual(e["status"], "needs_confirmation", e)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'needs_confirmation'
+- error
++ needs_confirmation
+ : {'status': 'error', 'changes': [], 'warnings': [], 'documentRev': 2, 'error': {'code': 'project.changedOnDisk', 'message': 'the project file was changed by another program since it was opened', 'details': {'path': 'C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-9lhrzy_v\\Folder\\', 'detectedAt': '2026-10-30T11:48:09.050Z'}, 'hint': 'reopen it (project.open with onUnsaved) to reload, or keep yours with project.saveAs {path, onExists: "overwrite"}'}}
+
+======================================================================
+FAIL: test_export_publication_failure_is_not_a_successful_audit_record (__main__.Protocol.test_export_publication_failure_is_not_a_successful_audit_record)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r2-mcp.py", line 138, in test_export_publication_failure_is_not_a_successful_audit_record
+    self.assertEqual(e["status"], "error", "a file that was never published was reported as exported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ok' != 'error'
+- ok
++ error
+ : a file that was never published was reported as exported
+
+======================================================================
+FAIL: test_idempotent_retry_is_not_a_second_replay_operation (__main__.Protocol.test_idempotent_retry_is_not_a_second_replay_operation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r2-mcp.py", line 192, in test_idempotent_retry_is_not_a_second_replay_operation
+    self.assertEqual(sum(s["id"] == "edit.undo" for s in replay["steps"]), 1,
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     "a cached requestId retry became another undo in the replay")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1 : a cached requestId retry became another undo in the replay
+
+======================================================================
+FAIL: test_partial_sequential_batch_keeps_its_committed_edits_in_replay (__main__.Protocol.test_partial_sequential_batch_keeps_its_committed_edits_in_replay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c14-r2\tests\adversarial\c14-r2-mcp.py", line 176, in test_partial_sequential_batch_keeps_its_committed_edits_in_replay
+    self.assertEqual(len(kept), 1, "export omitted an edit that committed before a later step failed")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : export omitted an edit that committed before a later step failed
+
+----------------------------------------------------------------------
+Ran 14 tests in 18.489s
+
+FAILED (failures=9)

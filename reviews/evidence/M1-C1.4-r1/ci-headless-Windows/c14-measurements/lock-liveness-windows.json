@@ -1,0 +1,29 @@
+{
+  "obligation": "C1.4 obligation 2 (ADR-0014 §11.4)",
+  "platform": "windows",
+  "protection": "shareMode",
+  "probeHeldMicros": {
+    "n": 500,
+    "p50": 10.0,
+    "p99": 25.400000000000002
+  },
+  "acquireOnHeldMicros": {
+    "n": 50,
+    "p50": 191.39999999999998,
+    "p99": 264.59999999999997
+  },
+  "crashedHolderTakeoverMs": 5.855499999999999,
+  "processAliveFallbackMs": 79.6292,
+  "bounds": {
+    "protectedLiveHolder": "never stale (probe), whatever heartbeat, clock or process id say",
+    "protectedDeadHolderSameHost": "at once (first open after the process ends)",
+    "protectedOtherHostProbeFree": "heartbeat rule: 300 s",
+    "unprotectedLock": "heartbeat older than 300 s, or process known dead on this host",
+    "unprotectedFutureHeartbeat": "file unchanged for 300 s",
+    "unreadableUnprotected": "10 s",
+    "unreadableUnknown": "300 s",
+    "protectedArbiter": "never removed while its holder lives",
+    "unprotectedArbiter": "10 s (either clock direction)",
+    "processAliveTimeoutMs": 2000
+  }
+}

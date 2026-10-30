@@ -1,0 +1,9 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r3\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.03s
+     Running tests\c12_r2_contracts.rs (target\debug\deps\c12_r2_contracts-27ec0f4f412d609a.exe)
+
+running 1 test
+test export_registry_for_independent_audit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 39 filtered out; finished in 0.15s
+

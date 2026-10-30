@@ -1,0 +1,836 @@
+[
+  {
+    "id": "R01",
+    "requirement": "Inventory IDs, namespace, kind and verbatim table columns (A)",
+    "status": "implemented",
+    "implementation": "crates/registry/src/inventory.rs:8",
+    "tests": "c12_registry; registry.json; this independent set comparison",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R02",
+    "requirement": "Every inventory entry has constrained parameter/result schemas (plan 3.2; 11 14.2)",
+    "status": "divergent",
+    "implementation": "scripts/gen-command-declarations.py:425",
+    "tests": "c12_r2_registry",
+    "note": "597 generated entries retain schema holes; named-result shells, scopes and project rules also incomplete.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-02"
+    ]
+  },
+  {
+    "id": "R03",
+    "requirement": "Every command example executes and matches its result schema (11 14.2)",
+    "status": "implemented",
+    "implementation": "crates/registry/tests/declared.rs:25",
+    "tests": "independently_validate_every_declared_parameter_example",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R04",
+    "requirement": "Every stub names a correct owner (plan 4)",
+    "status": "implemented",
+    "implementation": "crates/registry/src/owners.rs:15",
+    "tests": "registry_owners_follow_the_milestone_plan",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R05",
+    "requirement": "Registry version and generated frontend schema freshness",
+    "status": "implemented",
+    "implementation": "crates/registry/src/lib.rs:57",
+    "tests": "frontend_schemas; c12_registry",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R06",
+    "requirement": "Attribute macro rejects missing example/duplicate ID/wrong kind",
+    "status": "implemented",
+    "implementation": "crates/registry-macros/src/lib.rs:6",
+    "tests": "c12_r1_macro",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R07",
+    "requirement": "Exclusive mutation capability (plan 3.2; 11 P2)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:838",
+    "tests": "safe_revision_reconstruction_cannot_install_future_object_revisions",
+    "note": "Load capability and dirty-project policy fixed, but public revision reconstruction + load installs rev>documentRev.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-01"
+    ]
+  },
+  {
+    "id": "R08",
+    "requirement": "One serialized document queue (REV-06)",
+    "status": "implemented",
+    "implementation": "crates/executor/src/lib.rs:272",
+    "tests": "eight_fresh_clients_mix_object_guards_and_atomic_batches",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R09",
+    "requirement": "Staged full integrity gate and rollback of document edits",
+    "status": "implemented",
+    "implementation": "crates/model/src/document/mod.rs:674",
+    "tests": "c12_transactions; staged_commit; c11_r4/r5/r6",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R10",
+    "requirement": "Atomic rollback covers every observable side effect (11 7.3)",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:133",
+    "tests": "failed_batch_rolls_back_all_five_effect_classes_together",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R11",
+    "requirement": "Atomic batch one revision, undo step and label",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:724",
+    "tests": "c12_transactions",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R12",
+    "requirement": "Query steps see prior staged changes (11 7.3)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/checkpoint.rs:113",
+    "tests": "checkpoint_is_visible_to_later_atomic_query",
+    "note": "Later steps cannot read pending checkpoint creation.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-03"
+    ]
+  },
+  {
+    "id": "R13",
+    "requirement": "Numeric/named intermediate references",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:962",
+    "tests": "c12_transactions",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R14",
+    "requirement": "Long-running job-kind steps rejected in atomic batches",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:659",
+    "tests": "c12_transactions",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R15",
+    "requirement": "Ordinary edit dryRun changes/history/revisions",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/edit_ops.rs:80",
+    "tests": "paste_dry_run_predicts_created_ids_exactly",
+    "note": "Ordinary metadata previews fixed; ID-creating edits predict different IDs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": [
+      "C12-R2-04"
+    ]
+  },
+  {
+    "id": "R16",
+    "requirement": "Dry run covers clipboard events and cancellation",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:428",
+    "tests": "failed_batch_rolls_back_all_five_effect_classes_together; c12_r1_contracts",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R17",
+    "requirement": "Command-parameter dryRun in atomic batch",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:744",
+    "tests": "parameter_dry_run_is_honoured_inside_atomic_batch",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R18",
+    "requirement": "Sequential dry-run batch simulates preceding edits",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:632",
+    "tests": "sequential_dry_run_simulates_checkpoints",
+    "note": "Simulation suppresses checkpoint creation, so later query result differs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-03"
+    ]
+  },
+  {
+    "id": "R19",
+    "requirement": "Common run_command envelope including job.wait",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:906",
+    "tests": "pending_job_wait_reserves_request_id_against_other_commands; sequential_batch_job_wait_honours_wait_timeout_contract",
+    "note": "Two-phase wait lacks in-flight reservation; batched wait uses polling-only handler.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-06",
+      "C12-R2-07"
+    ]
+  },
+  {
+    "id": "R20",
+    "requirement": "Undo/redo canonical content and revision stamps",
+    "status": "implemented",
+    "implementation": "crates/executor/src/cx.rs:669",
+    "tests": "edit_object_kinds_clipboard_and_history_roundtrip; standalone_m1_element_types_roundtrip_undo_redo",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R21",
+    "requirement": "Failed batch history, redo invalidation, grouped labels",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:374",
+    "tests": "c12_transactions; c12_r1_stress",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R22",
+    "requirement": "Checkpoint create/list/delete/restore and history independence",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/checkpoint.rs:48",
+    "tests": "checkpoint_create_then_delete_in_atomic_batch_succeeds",
+    "note": "Standalone lifecycle works; create/delete composition fails.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": [
+      "C12-R2-03"
+    ]
+  },
+  {
+    "id": "R23",
+    "requirement": "Checkpoint created from staged content has coherent rev",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:428",
+    "tests": "checkpoint_between_edits_captures_its_staged_content",
+    "note": "Checkpoint stores final batch content, not its staged point; before-edit prediction has wrong revision.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-03"
+    ]
+  },
+  {
+    "id": "R24",
+    "requirement": "Checkpoint cost at 100k strokes/10k drawings",
+    "status": "implemented",
+    "implementation": "crates/model/src/document/mod.rs:104",
+    "tests": "c12_r1_scale; large-documents.json",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R25",
+    "requirement": "expectRev scalar and envelope guard",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:286",
+    "tests": "mixed_expect_rev_guards_cover_paths_compound_ids_and_unmodified_project",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R26",
+    "requirement": "expectRev map checks every listed object (REV-05)",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/doc.rs:679",
+    "tests": "mixed_expect_rev_guards_cover_paths_compound_ids_and_unmodified_project",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R27",
+    "requirement": "Conflict details.currentRev and current small JSON (REV-05)",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:299",
+    "tests": "mixed_expect_rev_guards_cover_paths_compound_ids_and_unmodified_project",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R28",
+    "requirement": "requestId retry same ID returns original without execution",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:906",
+    "tests": "pending_job_wait_reserves_request_id_against_other_commands",
+    "note": "Eviction and session isolation fixed; pending wait has no request-cache entry.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-06"
+    ]
+  },
+  {
+    "id": "R29",
+    "requirement": "requestId different parameters same ID",
+    "status": "divergent",
+    "implementation": "crates/executor/src/run.rs:74",
+    "tests": "pending_job_wait_reserves_request_id_against_other_commands",
+    "note": "Completed collisions conform to R1-22; overlapping different command still executes.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": [
+      "C12-R2-06"
+    ]
+  },
+  {
+    "id": "R30",
+    "requirement": "requestId persistence across process restart",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/run.rs:57",
+    "tests": "source audit",
+    "note": "Retained deferral: Not required by 11 7.2 (within-session); durable session protocol is C1.4 decision, not a persistence defect",
+    "priorStatus": "deferred-with-owner",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R31",
+    "requirement": "documentRev exactly +1 per edit/undo/redo (REV-01/03)",
+    "status": "implemented",
+    "implementation": "crates/executor/src/cx.rs:502",
+    "tests": "c12_transactions; c12_r1_stress",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R32",
+    "requirement": "Revision overflow is controlled error, not thread panic",
+    "status": "implemented",
+    "implementation": "crates/executor/src/cx.rs:507",
+    "tests": "revision_max_blocks_fresh_paste_and_keeps_queries_alive",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R33",
+    "requirement": "Drawing rev follows content edits (REV-02)",
+    "status": "implemented",
+    "implementation": "crates/model/src/document/stamp.rs:22",
+    "tests": "c12_transactions; changes_report_drawing_revision_when_a_stroke_changes",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R34",
+    "requirement": "Every changed revision returned to caller (11 P6)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/doc.rs:1298",
+    "tests": "hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff",
+    "note": "Envelope and event now include drawing rev; doc.diff still drops drawing invalidation.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-12"
+    ]
+  },
+  {
+    "id": "R35",
+    "requirement": "Persist revs through save/reopen (REV-04)",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/project.rs:161",
+    "tests": "typed declarations; handoff",
+    "note": "Retained deferral: C1.3 persistence; cannot prove with C1.2 stubs",
+    "priorStatus": "deferred-with-owner",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R36",
+    "requirement": "Change sets oldValue/concrete paths/numeric opaque keys",
+    "status": "divergent",
+    "implementation": "crates/model/src/change.rs:890",
+    "tests": "json04_materialised_parent_is_removed_by_raw_patch_inverse",
+    "note": "JSON-04 synthesised parent is absent from inverse; opaque nested meta/ext containers invented.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": [
+      "C12-R2-11"
+    ]
+  },
+  {
+    "id": "R37",
+    "requirement": "Historical doc.diff within retained 10k window",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/doc.rs:1194",
+    "tests": "diff_reports_drawing_content_revision_invalidation",
+    "note": "Historical reconstruction fixed; semantic diff omits drawing revision-only change.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-12"
+    ]
+  },
+  {
+    "id": "R38",
+    "requirement": "doc.diff retains last save even beyond 10k (AG-09)",
+    "status": "implemented",
+    "implementation": "crates/executor/src/session.rs:92",
+    "tests": "fresh_historical_diff_replays_and_agrees_with_checkpoint_across_batch_steps; diff_retains_the_last_save_even_after_ten_thousand_transactions",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R39",
+    "requirement": "500-change envelope cap and oversized event elision",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:319",
+    "tests": "c12_transactions; c12_policy",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R40",
+    "requirement": "IDs/compound paths/special references/projections",
+    "status": "implemented",
+    "implementation": "crates/executor/src/cx.rs:355",
+    "tests": "c12_policy; c11_r1/r2/r3",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R41",
+    "requirement": "Derived fields already computable from model",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/derived.rs:14",
+    "tests": "c12_policy",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R42",
+    "requirement": "Geometry/render/media-derived fields not yet computable",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/derived.rs:5",
+    "tests": "c12_policy; doc.derivedUnavailable",
+    "note": "Retained deferral: Explicit M2/M3/M7/M8 owners and warnings; no pretend complete renderer",
+    "priorStatus": "deferred-with-owner",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R43",
+    "requirement": "x-command / structural mutation routes and drawing aliases",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/doc.rs:737",
+    "tests": "c12_registry::drawing_command_delegation_ruling; c12_policy",
+    "note": "Retained deferral: Aliases mapped; specialized handlers intentionally M2/M3 etc; no hidden generic mutation",
+    "priorStatus": "deferred-with-owner",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R44",
+    "requirement": "No-project enablement (01 1.3)",
+    "status": "divergent",
+    "implementation": "scripts/gen-command-declarations.py:176",
+    "tests": "library_close_has_no_project_rule_from_01_1_3",
+    "note": "All edit.* now gated; generated library declarations still exempt disallowed no-project commands.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-02"
+    ]
+  },
+  {
+    "id": "R45",
+    "requirement": "Dirty-project quit fail/discard/save policy",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/app.rs:479",
+    "tests": "c12_kernel_state",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R46",
+    "requirement": "Fullscreen explicit enabled parameter",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/window.rs:29",
+    "tests": "c12_kernel_state; c12_r1_contracts",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R47",
+    "requirement": "Mode/current view/fullscreen readback agreement",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/app.rs:380",
+    "tests": "fresh_mode_workspace_and_renamed_builtin_reset_are_coherent",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R48",
+    "requirement": "Workspace autoSave/default/save/reset rules",
+    "status": "implemented",
+    "implementation": "crates/executor/src/ui.rs:922",
+    "tests": "fresh_mode_workspace_and_renamed_builtin_reset_are_coherent",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R49",
+    "requirement": "Queryable panels/layout/toolbars",
+    "status": "implemented",
+    "implementation": "crates/executor/src/ui.rs:555",
+    "tests": "c12_kernel_state",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R50",
+    "requirement": "All edit.* functionality due C1.2 (plan 4)",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/edit_ops.rs:1348",
+    "tests": "c12_r2_contracts",
+    "note": "Seven handlers exist; hierarchy, locks, opaque metadata, targets and deterministic prediction remain incorrect.",
+    "priorStatus": "missing",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-04",
+      "C12-R2-05",
+      "C12-R2-08",
+      "C12-R2-09",
+      "C12-R2-13",
+      "C12-R2-14"
+    ]
+  },
+  {
+    "id": "R51",
+    "requirement": "Clipboard structured kind validation",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/edit.rs:705",
+    "tests": "clipboard_element_properties_validates_values_not_only_names",
+    "note": "elementProperties checks allowed field names, but accepts noninteger columnWidth.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-10"
+    ]
+  },
+  {
+    "id": "R52",
+    "requirement": "Clipboard return shape",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/edit.rs:823",
+    "tests": "clipboard_get_returns_the_specified_clipboard_directly",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R53",
+    "requirement": "Manifest forward parity; declared typed reverse coverage",
+    "status": "implemented",
+    "implementation": "crates/executor/tests/c12_registry.rs:124",
+    "tests": "c12_registry::ui_binding_manifest_parity",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R54",
+    "requirement": "Full-inventory reverse parity build gate (11 14.1)",
+    "status": "implemented",
+    "implementation": "crates/executor/tests/c12_registry.rs:124",
+    "tests": "every_registry_entry_has_a_gui_binding_or_agent_only_justification",
+    "note": "Reverse parity now visits all 796 entries; 662 GUI locations/agent-event justifications are declarative future bindings, not native dispatch proof.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R55",
+    "requirement": "Real native command dispatch/state parity",
+    "status": "deferred-with-owner",
+    "implementation": "desktop/src-tauri/src/menu.rs:35",
+    "tests": "handoff; source audit",
+    "note": "Retained deferral: M4 C4.1 per accepted readiness split; native fullscreen still toggles directly",
+    "priorStatus": "deferred-with-owner",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R56",
+    "requirement": "Every registered command malformed inputs under watchdog",
+    "status": "implemented",
+    "implementation": "crates/executor/src/lib.rs:174",
+    "tests": "c12_r1_stress; c12_r1_scale",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R57",
+    "requirement": "Watchdog bounds caller vs actual execution",
+    "status": "implemented",
+    "implementation": "crates/executor/src/lib.rs:174",
+    "tests": "c12_kernel_state::the_watchdog_answers_within_its_budget; job_wait_timeout_policy_is_explicitly_measured",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R58",
+    "requirement": "Perpetually looping registered handler and modal interception proof",
+    "status": "implemented",
+    "implementation": "crates/executor/tests/c12_never_block.rs:33",
+    "tests": "c12_never_block; ci-audit.json; baseline/gates/headless.log",
+    "note": "Citation accepted: 11 P5 / actual section 14.6 prohibit modal/user waits, not forced Rust thread preemption. Test proves bounded caller timeout and recovery after release only. Process restart/real modal interception remain C1.4/M4.",
+    "priorStatus": "missing",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R59",
+    "requirement": "Explicit scopes on implemented calls",
+    "status": "implemented",
+    "implementation": "crates/executor/src/run.rs:224",
+    "tests": "c12_policy",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R60",
+    "requirement": "Job session isolation",
+    "status": "implemented",
+    "implementation": "crates/executor/src/commands/job.rs:34",
+    "tests": "fresh_job_cross_session_list_wait_cancel_are_isolated",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R61",
+    "requirement": "File/prefs/network scopes on inventory stubs",
+    "status": "divergent",
+    "implementation": "scripts/gen-command-declarations.py:207",
+    "tests": "library_global_write_scope_is_declared",
+    "note": "File/network examples improved; global-library item mutations still lack library.global.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": [
+      "C12-R2-02"
+    ]
+  },
+  {
+    "id": "R62",
+    "requirement": "Protocol initialize/tools/resources/subscriptions/prompts/events/audit/confirmation",
+    "status": "deferred-with-owner",
+    "implementation": "crates/executor/src/commands/agent.rs:64",
+    "tests": "agent.* typed declarations; bins/headless flags",
+    "note": "Retained deferral: C1.4; no MCP inspector run possible at this checkpoint",
+    "priorStatus": "deferred-with-owner",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R63",
+    "requirement": "Job wait/status/cancel/progress table",
+    "status": "divergent",
+    "implementation": "crates/executor/src/commands/job.rs:119",
+    "tests": "sequential_batch_job_wait_honours_wait_timeout_contract",
+    "note": "Owned job table and event ordering work; sequential batch wait ignores timeout.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": [
+      "C12-R2-07"
+    ]
+  },
+  {
+    "id": "R64",
+    "requirement": "No new unsafe/product unwrap/expect/panic allowances",
+    "status": "implemented",
+    "implementation": "Cargo.toml:62",
+    "tests": "source audit; clippy; CI",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R65",
+    "requirement": "Existing three-layer IPC gate / worker ban / diagnostics gate",
+    "status": "implemented",
+    "implementation": "desktop/eslint.config.js:10",
+    "tests": "baseline build; Vitest boundary 69+46; CI default/diagnostics builds",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R66",
+    "requirement": "Composite command-result boundary controls",
+    "status": "implemented",
+    "implementation": "desktop/src/ipc/commands.test.ts:30",
+    "tests": "7 command schema tests; frontend_schemas",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R67",
+    "requirement": "Touched-object diff and 100k full-commit costs",
+    "status": "implemented",
+    "implementation": "crates/executor/src/cx.rs:433",
+    "tests": "commit-scale.log; large-documents.json",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R68",
+    "requirement": "10k-drawing query performance",
+    "status": "implemented",
+    "implementation": "crates/model/src/document/paths.rs:113",
+    "tests": "c12_r1_scale; logs/release-scale.log; large-documents.json",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "divergent",
+    "builderClaim": "fixed",
+    "findings": []
+  },
+  {
+    "id": "R69",
+    "requirement": "Dependency/licence and lockfile changes",
+    "status": "implemented",
+    "implementation": "Cargo.lock:3",
+    "tests": "cargo deny; CI; git diff",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R70",
+    "requirement": "Reviewer test preservation and CI coverage accuracy",
+    "status": "implemented",
+    "implementation": ".github/workflows/ci.yml:88",
+    "tests": "ci-audit.json; static-audit.json; final/gates/test.log",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R71",
+    "requirement": "Fresh-seed randomized coverage and shrinking",
+    "status": "implemented",
+    "implementation": "crates/executor/tests/c12_r2_contracts.rs:834",
+    "tests": "eight_fresh_clients_mix_object_guards_and_atomic_batches; random-history.json; c11_r3_random",
+    "note": "Rechecked source and passing inherited suite in baseline/final logs.",
+    "priorStatus": "implemented",
+    "builderClaim": "unchanged",
+    "findings": []
+  },
+  {
+    "id": "R72",
+    "requirement": "Persistence unchecked assembly confinement",
+    "status": "deferred-with-owner",
+    "implementation": "crates/model/src/document/mod.rs:232",
+    "tests": "C1.1 closure carryover",
+    "note": "Retained deferral: C1.3 load/repair; open capability must first close C12-R1-01",
+    "priorStatus": "deferred-with-owner",
+    "builderClaim": "unchanged",
+    "findings": []
+  }
+]

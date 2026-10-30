@@ -1,0 +1,24 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-executor",
+    "--locked",
+    "--test",
+    "c12_r2_contracts",
+    "--",
+    "--nocapture"
+  ],
+  "exit": 101,
+  "started": "2026-10-19T08:21:14.965639+00:00",
+  "seconds": 4.8913140000076964,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? crates/executor/tests/c12_r2_registry.rs",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\contracts-v3.log",
+  "sha256": "95c046c33010a728fbc58b310150eaf41cfb675bb9122b118c39469a45f7ca1e"
+}

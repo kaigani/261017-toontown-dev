@@ -1,0 +1,5 @@
+error[E0451]: field `_private` of struct `LoadGrant` is private
+ --> tests/ui/load_grant_forged.rs:3:43
+  |
+3 |     let _grant = tt_executor::LoadGrant { _private: () };
+  |                                           ^^^^^^^^ private field

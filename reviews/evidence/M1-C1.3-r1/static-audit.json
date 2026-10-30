@@ -1,0 +1,314 @@
+{
+  "method": "41 changed src files before inline cfg(test) modules; ordinary string literals/comments removed with line numbers retained; allowances retained for manual review; compiler/clippy gates independently passed",
+  "files": [
+    {
+      "path": "crates/executor/src/commands/app.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/commands/bundle.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 196,
+          "attribute": "#[allow(clippy::too_many_lines)]"
+        },
+        {
+          "line": 443,
+          "attribute": "#[allow(dead_code, reason = \"read by the executor: a set `dryRun` makes the call a dry run (10 AG-02)\")]"
+        },
+        {
+          "line": 743,
+          "attribute": "#[allow(clippy::too_many_lines)]"
+        }
+      ]
+    },
+    {
+      "path": "crates/executor/src/commands/common.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/commands/doc.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 685,
+          "attribute": "#[allow(dead_code, reason = \"read by the executor from the raw parameters\")]"
+        }
+      ]
+    },
+    {
+      "path": "crates/executor/src/commands/doc_io.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/commands/doc_lint.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 80,
+          "attribute": "#[allow(clippy::too_many_arguments, reason = \"a recursive walk carrying its context\")]"
+        },
+        {
+          "line": 548,
+          "attribute": "#[allow(clippy::too_many_lines)]"
+        },
+        {
+          "line": 974,
+          "attribute": "#[allow(dead_code, reason = \"read by the executor: a set `dryRun` makes the call a dry run (10 AG-02)\")]"
+        }
+      ]
+    },
+    {
+      "path": "crates/executor/src/commands/mod.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/commands/project.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 560,
+          "attribute": "#[allow(dead_code, reason = \"no global library is open before M9\")]"
+        },
+        {
+          "line": 583,
+          "attribute": "#[allow(clippy::too_many_arguments)]"
+        },
+        {
+          "line": 703,
+          "attribute": "#[allow(dead_code, reason = \"no global library is open before M9\")]"
+        }
+      ]
+    },
+    {
+      "path": "crates/executor/src/cx.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/history.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/jobs.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/lib.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/maintenance.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/persistence.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/run.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/session.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/store.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/types.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/executor/src/ui.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/model/src/defaults.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/model/src/lib.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/b64.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/backup.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/codes.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/container.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/fsx.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/host.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/layout.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/lib.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/library.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/load.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 128,
+          "attribute": "#[allow(clippy::too_many_lines)]"
+        },
+        {
+          "line": 191,
+          "attribute": "#[allow(clippy::cast_precision_loss, reason = \"progress fraction\")]"
+        }
+      ]
+    },
+    {
+      "path": "crates/persist/src/lock.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 65,
+          "attribute": "#[allow(clippy::cast_possible_wrap, reason = \"constant\")]"
+        }
+      ]
+    },
+    {
+      "path": "crates/persist/src/manifest.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/migrate.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/recovery.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 54,
+          "attribute": "#[allow(clippy::cast_possible_wrap, reason = \"constant\")]"
+        }
+      ]
+    },
+    {
+      "path": "crates/persist/src/repair.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 439,
+          "attribute": "#[allow(clippy::cast_possible_truncation, reason = \"integral and below 2^53\")]"
+        },
+        {
+          "line": 752,
+          "attribute": "#[allow(clippy::too_many_lines)]"
+        },
+        {
+          "line": 1202,
+          "attribute": "#[allow(clippy::too_many_lines)]"
+        },
+        {
+          "line": 1501,
+          "attribute": "#[allow(clippy::too_many_lines)]"
+        },
+        {
+          "line": 1514,
+          "attribute": "#[allow(clippy::too_many_arguments)]"
+        },
+        {
+          "line": 1913,
+          "attribute": "#[allow(clippy::too_many_arguments)]"
+        }
+      ]
+    },
+    {
+      "path": "crates/persist/src/report.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 67,
+          "attribute": "#[allow(clippy::too_many_arguments, reason = \"the fields of an issue\")]"
+        }
+      ]
+    },
+    {
+      "path": "crates/persist/src/save.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 393,
+          "attribute": "#[allow(clippy::too_many_lines)]"
+        }
+      ]
+    },
+    {
+      "path": "crates/persist/src/settings.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/time.rs",
+      "prohibited": [],
+      "allowAttributes": []
+    },
+    {
+      "path": "crates/persist/src/zip.rs",
+      "prohibited": [],
+      "allowAttributes": [
+        {
+          "line": 545,
+          "attribute": "#[allow(clippy::too_many_lines)]"
+        }
+      ]
+    }
+  ],
+  "dependencyDiff": "diff --git a/Cargo.lock b/Cargo.lock\nindex d307d7f..6077b57 100644\n--- a/Cargo.lock\n+++ b/Cargo.lock\n@@ -4484,6 +4484,7 @@ dependencies = [\n  \"serde_json\",\n  \"trybuild\",\n  \"tt-model\",\n+ \"tt-persist\",\n  \"tt-registry\",\n ]\n \n@@ -4551,6 +4552,13 @@ dependencies = [\n name = \"tt-persist\"\n version = \"0.0.1\"\n dependencies = [\n+ \"crc32fast\",\n+ \"flate2\",\n+ \"getrandom 0.4.3\",\n+ \"proptest\",\n+ \"serde\",\n+ \"serde_json\",\n+ \"sha2 0.11.1\",\n  \"tt-model\",\n ]\n \ndiff --git a/Cargo.toml b/Cargo.toml\nindex 047492b..085b22f 100644\n--- a/Cargo.toml\n+++ b/Cargo.toml\n@@ -48,6 +48,10 @@ trybuild = \"1.0\"\n # `doc.object.find` regex predicates (10 §10.3); linear-time engine.\n regex = \"1\"\n sha2 = \"0.11\"\n+# Package containers (10 §6.2): deflate for JSON entries, CRC-32 of zip entries. Our own zip reader/writer (tt-persist)\n+# applies the hostile-input rules of ZIP-01/ZIP-06 itself; these crates only compress and checksum.\n+flate2 = { version = \"1.1\", default-features = false, features = [\"rust_backend\"] }\n+crc32fast = \"1.5\"\n thiserror = \"2.0\"\n tauri = { version = \"2.12\", features = [] }\n tauri-build = { version = \"2.7\", features = [] }\ndiff --git a/crates/persist/Cargo.toml b/crates/persist/Cargo.toml\nindex 2efdaa4..0eac38e 100644\n--- a/crates/persist/Cargo.toml\n+++ b/crates/persist/Cargo.toml\n@@ -8,6 +8,15 @@ publish.workspace = true\n \n [dependencies]\n tt-model.workspace = true\n+serde.workspace = true\n+serde_json.workspace = true\n+sha2.workspace = true\n+flate2.workspace = true\n+crc32fast.workspace = true\n+getrandom.workspace = true\n+\n+[dev-dependencies]\n+proptest.workspace = true\n \n [lints]\n workspace = true\n"
+}

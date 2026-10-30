@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-headless"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:27:48.677332+00:00",
+  "elapsed_seconds": 37.704,
+  "exit_code": 0,
+  "log": "logs/headless-build.log",
+  "sha256": "91fbc1bce6c0b97c2822f30d9143bd7eef2863dbccfc66e5cea7a13df898c672",
+  "env": {}
+}

@@ -1,0 +1,50 @@
+   Compiling rand_core v0.10.1
+   Compiling once_cell v1.21.4
+   Compiling getrandom v0.4.3
+   Compiling windows-sys v0.61.2
+   Compiling fastrand v2.5.0
+   Compiling quick-error v1.2.3
+   Compiling bit-vec v0.10.1
+   Compiling wait-timeout v0.2.1
+   Compiling unarray v0.1.4
+   Compiling core_detect v1.0.0
+   Compiling rand_xorshift v0.5.0
+   Compiling chacha20 v0.10.2
+   Compiling ahash v0.8.12
+   Compiling bit-set v0.11.1
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling tempfile v3.27.0
+   Compiling rand v0.10.3
+   Compiling rusty-fork v0.3.1
+   Compiling jsonschema v0.59.0
+   Compiling proptest v1.12.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\model)
+    Finished `release` profile [optimized + debuginfo] target(s) in 40.17s
+     Running `target\release\examples\scale.exe`
+{
+  "tool": "crates/model/examples/scale.rs",
+  "profile": "release",
+  "os": "windows",
+  "arch": "x86_64",
+  "timesAreWallClockMs": true,
+  "commit": "see receipt",
+  "measurements": {
+    "drawingJsonBytes": 28568777,
+    "drawing100kParseValidateMs": 997.458,
+    "palette10kParseValidateMs": 43.559,
+    "drawings10kParseValidateMs": 41.1,
+    "elements1kParseValidateMs": 15.757,
+    "documentAssembleAndCheckMs": 1171.188,
+    "objectCount": 121092,
+    "drawingCanonicalWriteMs": 684.525,
+    "drawingObjectJsonDepthAllWithPathsMs": 879.945,
+    "documentCloneMs": 0.862,
+    "drawingEntryRawJsonMs": 399.974,
+    "drawingOwnViewsMs": 558.956,
+    "diffWholeDocumentNoSharedEntriesMs": 3109.234,
+    "diffWholeDocumentChanges": 1,
+    "diffOneStrokeIn100kStrokeEntryMs": 1564.582,
+    "diffOneStrokeChangedObjects": 1
+  }
+}

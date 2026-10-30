@@ -1,0 +1,74 @@
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m1-c11-r2
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m1-c11-r2\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c11-r2/desktop
+
+ ❯ src/ipc/c11-r2-adversarial.test.ts (9 tests | 2 failed) 12ms
+   ❯ C11 R2 wire closure (9)
+     × does not let an inapplicable oneOf double branch corrupt an integer branch 4ms
+     × coerces scalar doubles declared through allOf 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > does not let an inapplicable oneOf double branch corrupt an integer branch
+AssertionError: expected undefined to deeply equal { kind: 'integer', …(1) }
+
+- Expected:
+{
+  "kind": "integer",
+  "x": 9007199254740993n,
+}
+
++ Received:
+undefined
+
+ ❯ src/ipc/c11-r2-adversarial.test.ts:47:47
+     45|     const text = '{"kind":"integer","x":9007199254740993}';
+     46|     expect(violations(schema, parseWireJson(text), '', {})).toEqual([]…
+     47|     expect(certifyWireText(text, schema, {})).toEqual({ kind: 'integer…
+       |                                               ^
+     48|   });
+     49|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/ipc/c11-r2-adversarial.test.ts > C11 R2 wire closure > coerces scalar doubles declared through allOf
+AssertionError: expected undefined to deeply equal { x: 100000000000000000000 }
+
+- Expected:
+{
+  "x": 100000000000000000000,
+}
+
++ Received:
+undefined
+
+ ❯ src/ipc/c11-r2-adversarial.test.ts:56:72
+     54|       required: ['x'],
+     55|     };
+     56|     expect(certifyWireText('{"x":100000000000000000000}', schema, {}))…
+       |                                                                        ^
+     57|   });
+     58|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 37 passed (38)
+      Tests  2 failed | 320 passed (322)
+   Start at  14:47:10
+   Duration  95.40s (tests 84%, environment 10%, setup 4%, import 1%, transform 1%)
+
+    Isolate  38 workers spawned · ~322ms startup each (spawn + environment, per file)
+             at least ~11.90s faster with isolate: false — reuses workers across files instead of one per file
+
+C:\Users\kaiga\work\review\m1-c11-r2\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 test: `vitest run --config vite.config.ts`
+Exit status 1
+ ELIFECYCLE  Test failed. See above for more details.

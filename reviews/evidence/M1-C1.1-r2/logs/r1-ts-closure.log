@@ -1,0 +1,18 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c11-r2/desktop
+
+stdout | src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > validates a representative ten-megabyte drawing
+{"review":"drawing-validation","bytes":10339142,"ms":1117.8987000000002}
+
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > coerces doubles declared inside generated conditional effect schemas 4ms
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > rejects unpaired surrogate strings that the Rust UTF-8 reader cannot accept 0ms
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > rejects malformed model tuples at every element position 1ms
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > preserves u64, negative large integers, long strings, and canonical f64 values 14ms
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > keeps proxy/getter/prototype rejection and never invokes a getter 1ms
+ ✓ src/ipc/c11-r1-adversarial.test.ts > C11 R1 text boundary > validates a representative ten-megabyte drawing 1293ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  14:53:49
+   Duration  1.72s (tests 82%, setup 8%, transform 7%, import 2%)
+

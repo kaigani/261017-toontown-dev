@@ -1,0 +1,901 @@
+
+Iteration 1
+cargo :    Compiling proc-macro2 v1.0.107
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling proc-macro2 v1.0.107:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+   Compiling aho-corasick v1.1.5
+   Compiling serde_core v1.0.229
+   Compiling windows-sys v0.61.2
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling winapi-util v0.1.11
+   Compiling regex-automata v0.4.18
+   Compiling termcolor v1.4.1
+   Compiling serde_derive_internals v0.30.0
+   Compiling indexmap v2.14.2
+   Compiling serde_spanned v1.1.2
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling schemars_derive v1.2.3
+   Compiling serde_json v1.0.154
+   Compiling ref-cast v1.0.27
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r4\crates\registry-macros)
+   Compiling fancy-regex v0.19.2
+   Compiling regex v1.13.1
+   Compiling thiserror v2.0.21
+   Compiling serde v1.0.229
+   Compiling strum v0.28.0
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling trybuild v1.0.122
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r4\crates\model)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r4\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r4\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 24.20s
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.60s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.33s
+
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r4\crates\executor)
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.47s
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 2.54s
+
+Iteration 2
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 1.48s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.56s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 3.50s
+
+Iteration 3
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 2.08s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.48s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 3.37s
+
+Iteration 4
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 2.32s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.46s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.17s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.17s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 4.00s
+
+Iteration 5
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.23s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 3.02s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.23s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.44s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.18s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.18s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.67s
+
+Iteration 6
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.15s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.15s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.33s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.61s
+
+Iteration 7
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.33s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.57s
+
+Iteration 8
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.32s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.55s
+
+Iteration 9
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.57s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.28s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.40s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.16s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.16s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.65s
+
+Iteration 10
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.32s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.48s
+
+Iteration 11
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.15s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.15s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.32s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.60s
+
+Iteration 12
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.15s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.15s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.32s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.48s
+
+Iteration 13
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.53s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.32s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.42s
+
+Iteration 14
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.32s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.41s
+
+Iteration 15
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.50s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.32s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.41s
+
+Iteration 16
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.33s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.42s
+
+Iteration 17
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.14s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.50s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.32s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.45s
+
+Iteration 18
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.33s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.41s
+
+Iteration 19
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.33s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.44s
+
+Iteration 20
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:175
++ ... ntent $log; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.53s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:339
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r1_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r1_persistence.rs (target\debug\deps\c13_r1_persistence-7f8d56792c915df1.exe)
+
+running 1 test
+test save_as_current_path_does_not_overwrite_another_sessions_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.33s
+
+cargo :     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+At line:2 char:515
++ ... EXITCODE }; cargo test -p tt-executor --locked --test c13_r2_persiste ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.13s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running tests\c13_r2_persistence.rs (target\debug\deps\c13_r2_persistence-3dd05a18397f6b31.exe)
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.53s

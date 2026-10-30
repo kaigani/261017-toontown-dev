@@ -14,6 +14,8 @@ Thumbs.db
 .idea/
 # Local
 *.log
+# Raw evidence logs are committed (review hygiene; C11-R2-09)
+!reviews/evidence/**/*.log
 .env
 # Python
 __pycache__/

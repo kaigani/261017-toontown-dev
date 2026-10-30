@@ -1,0 +1,15 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "c38109b..3b6179f"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r4",
+  "base": "3b6179f57bbdf65ac847787f34ef937f88035178",
+  "started_utc": "2026-10-18T23:45:27.646790+00:00",
+  "elapsed_seconds": 0.066,
+  "exit_code": 0,
+  "log": "logs/reviewed-diff.log",
+  "sha256": "13e840f559eb5d60aa921594b4f2809a6c0996c83a9e4fa9baaf5febbe9452e6",
+  "env": {}
+}

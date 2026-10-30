@@ -1,0 +1,31 @@
+{
+  "obligation": "C1.4 obligation 4 (RO-02 folder fingerprint)",
+  "platform": "macos",
+  "fixture": "folder-form project + 10000 files of 16 bytes under extras/",
+  "watchPassMs": {
+    "n": 20,
+    "p50": 46.286083,
+    "p90": 52.830291,
+    "p99": 54.25675,
+    "max": 54.25675
+  },
+  "callerLatencyMs": {
+    "backToBackPasses": {
+      "n": 75,
+      "p50": 22.901208999999998,
+      "p90": 33.625625,
+      "p99": 37.881709,
+      "max": 39.97225
+    },
+    "scheduled2sWatch10s": {
+      "n": 472,
+      "p50": 1.562292,
+      "p90": 1.7484169999999999,
+      "p99": 3.5305419999999996,
+      "max": 40.876542
+    }
+  },
+  "sizeMtimePreservingEditDetected": false,
+  "sizeChangingEditDetected": true,
+  "note": "a same-size edit that restores the modification time is not detected (walk compares name, size, mtime): recorded as SI-046 for the spec owner"
+}

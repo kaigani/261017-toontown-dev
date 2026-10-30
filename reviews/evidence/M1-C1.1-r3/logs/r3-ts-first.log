@@ -1,0 +1,101 @@
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c11-r3/desktop
+
+ ❯ src/ipc/c11-r3-adversarial.test.ts (4 tests | 2 failed) 11ms
+   ❯ C11 R3 independent wire closure (4)
+     × coerces mixed doubles and wide integers inside one applicable alternative 4ms
+     × coerces a generated Element inside a nullable reply without rounding its revision 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/ipc/c11-r3-adversarial.test.ts > C11 R3 independent wire closure > coerces mixed doubles and wide integers inside one applicable alternative
+AssertionError: expected undefined to deeply equal { kind: 'mixed', …(2) }
+
+- Expected:
+{
+  "kind": "mixed",
+  "revision": 9007199254740997n,
+  "x": 10000000000000000000,
+}
+
++ Received:
+undefined
+
+ ❯ src/ipc/c11-r3-adversarial.test.ts:28:70
+     26|     const expected = { kind: 'mixed', x: 1e19, revision: 9007199254740…
+     27|     expect(violations(schema, expected, '', {})).toEqual([]);
+     28|     expect(certifyWireText(stringifyWireJson(expected), schema, {})).t…
+       |                                                                      ^
+     29|   });
+     30|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/ipc/c11-r3-adversarial.test.ts > C11 R3 independent wire closure > coerces a generated Element inside a nullable reply without rounding its revision
+AssertionError: expected undefined to deeply equal { …(21) }
+
+- Expected:
+{
+  "backgroundColour": null,
+  "channels": {},
+  "collapsed": false,
+  "columnWidth": 80,
+  "createdAt": "2026-10-17T09:30:12.345Z",
+  "deformable": false,
+  "duration": 48,
+  "elementType": "dropShadow",
+  "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+  "locked": false,
+  "loopType": "count",
+  "loops": 1,
+  "markerColour": null,
+  "name": "Shadow",
+  "params": {
+    "colour": "#000000FF",
+    "hideElements": false,
+    "opacity": 50,
+    "parentColourTransformMode": "drawingsOnly",
+    "transform": {
+      "origin": {
+        "x": 10000000000000000000,
+        "y": -0.2,
+      },
+      "xAxis": {
+        "x": 1,
+        "y": 0,
+      },
+      "yAxis": {
+        "x": 0,
+        "y": 1,
+      },
+    },
+  },
+  "positionLoop": "cycle",
+  "rev": 9007199254740997n,
+  "role": "normal",
+  "start": 1,
+  "type": "element",
+  "visibleInScene": true,
+}
+
++ Received:
+undefined
+
+ ❯ src/ipc/c11-r3-adversarial.test.ts:37:81
+     35|     const generated: Schema = { anyOf: [{ $ref: '#/$defs/Element' }, {…
+     36|     expect(violations(generated, expected, '', MODEL_DEFS)).toEqual([]…
+     37|     expect(certifyWireText(stringifyWireJson(expected), generated, MOD…
+       |                                                                                 ^
+     38|   });
+     39|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  15:48:36
+   Duration  479ms (setup 54%, transform 34%, import 8%, tests 3%, worker 1%)
+
+undefined
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "vitest" not found

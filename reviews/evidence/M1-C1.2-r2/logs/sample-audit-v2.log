@@ -1,0 +1,181 @@
+anim.bone.create | A: `skeletonId: id; parentBoneId?: id; root?: point; tip: point; name?: string` | result: `{boneId}`
+ META True ['edit'] Create a bone needs an open project (01 §1.3); see spec 05 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/boneId", "schema": {}}]}
+anim.camera.delete | A: `cameraId: id` | result: `{currentCameraId}`
+ META True ['edit'] Delete a camera needs an open project (01 §1.3); see spec 05 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/currentCameraId", "schema": {}}]}
+anim.function.key.set | A: `nodeId: id; channel: string; frame: number; newFrame?: number; value?: number; left?: object {dt,dv}; right?: object {dt,dv}; handleMode?: enum "smooth"|"broken"; constantSegment?: bool; lockInTime?: bool` | result: `{frame, value}`
+ META True ['edit'] Edit a key point: move in time, value, handles, handle mode, needs an open project (01 §1.3); see spec 05 for the full rule
+ HOLES {"p": [{"pointer": "/properties/left/properties/dt", "schema": {}}, {"pointer": "/properties/left/properties/dv", "schema": {}}, {"pointer": "/properties/right/properties/dt", "schema": {}}, {"pointer": "/properties/right/properties/dv", "schema": {}}], "r": [{"pointer": "/properties/frame", "schema": {}}, {"pointer": "/properties/value", "schema": {}}]}
+anim.function.sample | A: `nodeId: id; channel: string; from: number; to: number; step: number = 1` | result: `{samples: [{frame, value}]}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 05 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/samples/items/properties/frame", "schema": {}}, {"pointer": "/properties/samples/items/properties/value", "schema": {}}]}
+anim.functionEditor.get | A: — | result: `{nodeId, channel, projection, selectedFrames[], syncFrame, view}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 05 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/nodeId", "schema": {}}, {"pointer": "/properties/channel", "schema": {}}, {"pointer": "/properties/projection", "schema": {}}, {"pointer": "/properties/selectedFrames/items", "schema": {}}, {"pointer": "/properties/syncFrame", "schema": {}}, {"pointer": "/properties/view", "schema": {}}]}
+anim.path.sample | A: `nodeId: id; from?: int; to?: int; step: number = 1; what: enum "origin"|"pivot" = "origin"; space: enum "parent"|"world" = "world"` | result: `{samples: [{frame, x, y, z}]}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 05 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/samples/items/properties/frame", "schema": {}}]}
+anim.pegOnlyMode.set | A: `enabled: bool` | result: `{enabled}`
+ META True ['ui'] None needs an open project (01 §1.3); see spec 05 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/enabled", "schema": {}}]}
+anim.point.paste | A: `targetPointIds: [id]; properties?: [enum "x"|"y"|"z"|"tension"|"continuity"|"bias"|"rotation"|"rotationPivot"|"scaleX"|"scaleY"|"scalePivot"]; again: bool = false` | result: `{applied[], skipped[]}`
+ META True ['edit'] Paste a copied point needs an open project (01 §1.3); see spec 05 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/applied/items", "schema": {}}, {"pointer": "/properties/skipped/items", "schema": {}}]}
+anim.skeleton.deform.get | A: `skeletonId: id; frame?: int; points: [point]` | result: `{points: [{x, y, weights: [{boneId, w}]}]}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 05 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/points/items/properties/weights/items/properties/boneId", "schema": {}}]}
+anim.skeleton.set | A: `skeletonId: id; boneColour?: colour; showTrack?: bool; showRoot?: bool; showBones?: bool; showInfluence?: bool; vectorQuality?: enum "low"|"medium"|"high"|"highest"; deformationEnabled?: bool` | result: `{skeletonId}`
+ META True ['edit'] Skeleton display and quality options needs an open project (01 §1.3); see spec 05 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/skeletonId", "schema": {}}]}
+capture.auto.start | A: `sessionId?: id; interval: int = 1 (1–999); unit: "ms"|"s"|"min"|"h"|"day" = "s"; maxCount?: int; lockInput: bool = false` | result: `{jobId}` → `{captures: int, cellIds[]}`
+ META True ['edit'] Start auto capture needs an open project (01 §1.3); see spec 09 for the full rule
+ HOLES {"p": [], "r": []}
+capture.device.get | A: `deviceId: id` | result: `Device & {settings, settingsSchema}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 09 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/", "schema": {"$schema": "https://json-schema.org/draft/2020-12/schema", "title": "capture.device.get result", "description": "Device & {settings, settingsSchema}", "x-spec": "`Device & {settings, settingsSchema}`"}}]}
+capture.lightTable.references.list | A: `sessionId?: id` | result: `{references: [{refId, label, elementId?, drawingId?, frame?}]}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 09 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/references/items/properties/refId", "schema": {}}, {"pointer": "/properties/references/items/properties/label", "schema": {}}, {"pointer": "/properties/references/items/properties/elementId", "schema": {}}, {"pointer": "/properties/references/items/properties/drawingId", "schema": {}}, {"pointer": "/properties/references/items/properties/frame", "schema": {}}]}
+cell.cycle.create | A: `elementId?: id; from?: int; to?: int; cycles: int (1–999)` | result: `{from, to}`
+ META True ['edit'] Repeat the range so that it appears N times in total needs an open project (01 §1.3); see spec 04 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/from", "schema": {}}, {"pointer": "/properties/to", "schema": {}}]}
+cell.range.delete | A: `elementIds?: [id]; from?: int; to?: int; shift: bool = false` | result: `{changed: [{elementId, from, to}]}`
+ META True ['edit'] Delete cells: clear needs an open project (01 §1.3); see spec 04 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/changed/items/properties/elementId", "schema": {}}, {"pointer": "/properties/changed/items/properties/from", "schema": {}}, {"pointer": "/properties/changed/items/properties/to", "schema": {}}]}
+cell.selection.get | A: — | result: `{elementIds[], from, to, rowsSelected, currentElementId, currentFrame}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 04 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/elementIds/items", "schema": {}}, {"pointer": "/properties/from", "schema": {}}, {"pointer": "/properties/to", "schema": {}}, {"pointer": "/properties/rowsSelected", "schema": {}}, {"pointer": "/properties/currentElementId", "schema": {}}, {"pointer": "/properties/currentFrame", "schema": {}}]}
+checkpoint.list | A: — | result: `[{name, createdAt, documentRev, origin}]`
+ META True ['read'] None always enabled
+ HOLES {"p": [], "r": []}
+checkpoint.restore | A: `name: string` | result: `{name, documentRev}`
+ META True ['edit'] Restore checkpoint a project is open with at least one checkpoint; not inside an atomic batch
+ HOLES {"p": [], "r": []}
+colour.style.select | A: `paletteId: id; styleId: id; sceneId?: id` | result: `{sceneId, paletteId, styleId}`
+ META True ['edit'] Style Change needs an open project (01 §1.3); see spec 03 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/sceneId", "schema": {}}, {"pointer": "/properties/paletteId", "schema": {}}, {"pointer": "/properties/styleId", "schema": {}}]}
+colour.swatch.list | A: `paletteId?: id; styleId?: id; sceneId?: id; kind?: enum "solid"|"linearGradient"|"radialGradient"|"texture"; includeUsage: bool = false` | result: `{paletteId, styleId, swatches: [{colourId, name, kind, index, deformable, value, usageCount?}]}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 03 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/paletteId", "schema": {}}, {"pointer": "/properties/styleId", "schema": {}}, {"pointer": "/properties/swatches/items/properties/colourId", "schema": {}}, {"pointer": "/properties/swatches/items/properties/name", "schema": {}}, {"pointer": "/properties/swatches/items/properties/kind", "schema": {}}, {"pointer": "/properties/swatches/items/properties/index", "schema": {}}, {"pointer": "/properties/swatches/items/properties/deformable", "schema": {}}, {"pointer": "/properties/swatches/items/properties/value", "schema": {}}, {"pointer": "/properties/swatches/items/properties/usageCount", "schema": {}}]}
+doc.package.get | A: `path: path; validate: bool = false` | result: `{kind: enum "project"|"template"|"palette"|"library", form, formatVersion, minReaderVersion, readable, projectId?, name, savedAt, entryCount, issues[]}`
+ META False ['read', 'files.read'] None always enabled
+ HOLES {"p": [], "r": []}
+doc.state.get | A: — | result: `{projectId, path, form, formatVersion, migratedFrom, documentRev, savedRev, dirty, readOnly, lock, historyFromRev}`
+ META True ['read'] None always enabled
+ HOLES {"p": [], "r": [{"pointer": "/properties/lock", "schema": {"description": "Lock holder (C1.3)."}}]}
+doc.validate | A: `within?: id; checks?: [string] (default all); minSeverity: enum "info"|"warning"|"error" = "info"; limit: int = 500` | result: `{documentRev, issues: [issue], counts: {error, warning, info}, truncated}`
+ META True ['read'] None always enabled
+ HOLES {"p": [], "r": []}
+draw.breakApart.apply | A: `drawingId?: id; textIds?: [id] = selected text` | result: `{groupIds: [id], rev}`
+ META True ['edit'] Break Text Apart needs an open project (01 §1.3); see spec 02 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/rev", "schema": {}}]}
+draw.segment.move | A: `strokeId: id; segment: int; t: number = 0.5 (0–1); delta: point` | result: `{strokeId, rev}`
+ META True ['edit'] Contour Editing needs an open project (01 §1.3); see spec 02 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/strokeId", "schema": {}}, {"pointer": "/properties/rev", "schema": {}}]}
+drawAid.state.get | A: — | result: `{grid, onionSkin, onionSkinStyle, autoLightTable, staticLightTable, lightTableShade, strokes, currentOnTop, selectionDisplay, background}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 02 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/grid", "schema": {}}, {"pointer": "/properties/onionSkin", "schema": {}}, {"pointer": "/properties/onionSkinStyle", "schema": {}}, {"pointer": "/properties/autoLightTable", "schema": {}}, {"pointer": "/properties/staticLightTable", "schema": {}}, {"pointer": "/properties/lightTableShade", "schema": {}}, {"pointer": "/properties/strokes", "schema": {}}, {"pointer": "/properties/currentOnTop", "schema": {}}, {"pointer": "/properties/selectionDisplay", "schema": {}}, {"pointer": "/properties/background", "schema": {}}]}
+edit.history.move | A: `position: int (0–entry count)` | result: `{position}`
+ META True ['edit'] None a project is open; not inside an atomic batch
+ HOLES {"p": [], "r": []}
+element.get | A: `elementId: id` | result: element object
+ META True ['read'] None needs an open project (01 §1.3); see spec 04 for the full rule
+ HOLES {"p": [], "r": []}
+element.parentPeg.create | A: `elementIds?: [id]; name?: string` | result: `{pegId, name}`
+ META True ['edit'] Create a peg and attach the given elements to it needs an open project (01 §1.3); see spec 04 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/pegId", "schema": {}}, {"pointer": "/properties/name", "schema": {}}]}
+export.publish.run | A: `serviceId: id; path?: path; export?: object; metadata: {title: string; description?: string; tags?: [string]; category?: string; visibility?: "public"|"unlisted"|"private" = "private"}; confirm?: bool; confirmToken?: string` | result: `{jobId}` or `needs_confirmation` → `{remoteId, url?, manifest}`
+ META True ['read', 'files.read', 'files.write', 'network'] None needs an open project (01 §1.3); see spec 09 for the full rule
+ HOLES {"p": [], "r": []}
+export.publish.validate | A: `serviceId: id; path?: path; export?: object; metadata?: object` | result: `{ok: bool, problems: [{code, limit?, actual?}]}`
+ META True ['read', 'files.read'] None needs an open project (01 §1.3); see spec 09 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/problems/items/properties/code", "schema": {}}, {"pointer": "/properties/problems/items/properties/limit", "schema": {}}, {"pointer": "/properties/problems/items/properties/actual", "schema": {}}]}
+fx.allEffects.get | A: — | result: `{enabled}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 06 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/enabled", "schema": {}}]}
+fx.block.add | A: `effectId: id; frame?: int = current; type?: string; variant?: string; presetId?: id; seed?: int` | result: `{blockId, startFrame, duration}`
+ META True ['edit'] Add Particle Block needs an open project (01 §1.3); see spec 06 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/blockId", "schema": {}}, {"pointer": "/properties/startFrame", "schema": {}}, {"pointer": "/properties/duration", "schema": {}}]}
+fx.changed | A: — | result: `{effectId, blockId?, what: enum "params"|"keyframes"|"timing"|"slots"|"blocks"}`
+ META False ['read'] None see spec 06 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/effectId", "schema": {}}, {"pointer": "/properties/blockId", "schema": {}}]}
+inspect.frame.describe | A: `sceneId?: id; frame?: int; cameraId?: id; detail?: enum "summary"|"full" = "summary"` | result: `{elements: [{elementId, name, drawingId?, worldTransform, cameraBounds, opacity, effects[]}], sounds: [{elementId, level}], mouthShape?, warnings[]}`
+ META True ['read'] None always enabled
+ HOLES {"p": [], "r": []}
+job.wait | A: `jobId: string; timeoutMs?: int = 60000` | result: Job record, `timedOut?: bool`
+ META False ['read'] None always enabled
+ HOLES {"p": [], "r": [{"pointer": "/properties/result", "schema": {"description": "Final result."}}, {"pointer": "/$defs/CommandError/properties/details", "schema": {"description": "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small)."}}]}
+library.close | A: `libraryId: id; discardChanges: bool = false` | result: `{closed}` or `needs_confirmation`
+ META False ['ui'] None see spec 08 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/closed", "schema": {}}]}
+library.item.delete | A: `itemIds: [id]` | result: `{deletedIds: [id]}`
+ META True ['edit'] Delete items needs an open project (01 §1.3); see spec 08 for the full rule
+ HOLES {"p": [], "r": []}
+library.tree.get | A: `libraryId?: id; folderId?: id; depth: int = -1; includeItems: bool = true` | result: `{nodes: [LibraryNode]}` (nested)
+ META False ['read'] None see spec 08 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/nodes/items", "schema": {"type": "object", "description": "`LibraryNode` (owning section)", "x-specType": "LibraryNode"}}]}
+lipsync.mapping.mouth.set | A: `soundElementId: id; drawingElementId: id; mouth: enum "A"|"B"|"C"|"D"|"E"|"F"|"G"|"X"; drawing?: id | string | null; step?: enum "next"|"previous"` | result: `{mouth, drawingId, drawingName}`
+ META True ['edit'] Map one shape to a drawing, or step to the previous/next dra needs an open project (01 §1.3); see spec 07 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/mouth", "schema": {}}, {"pointer": "/properties/drawingId", "schema": {}}, {"pointer": "/properties/drawingName", "schema": {}}]}
+lipsync.panel.state.set | A: `soundElementId?: id; drawingElementId?: id; showAdvanced?: bool` | result: `{soundElementId, drawingElementId, showAdvanced}`
+ META True ['ui'] None needs an open project (01 §1.3); see spec 07 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/soundElementId", "schema": {}}, {"pointer": "/properties/drawingElementId", "schema": {}}, {"pointer": "/properties/showAdvanced", "schema": {}}]}
+media.sequence.remove | A: `sequenceId: id; closeGap?: bool = false` | result: `{}`
+ META True ['edit'] Remove a sequence needs an open project (01 §1.3); see spec 07 for the full rule
+ HOLES {"p": [], "r": []}
+playback.preview.run | A: `type: "movie"|"scene"|"xsheet"|"xsheetSelection"|"quick"; openPlayer: bool = true; wait: bool = false` | result: `{jobId}` → `{previewId, manifest}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 09 for the full rule
+ HOLES {"p": [], "r": []}
+project.recovery.open | A: `recoveryId: id; onUnsaved: enum "fail"|"save"|"discard" = "fail"` | result: `{jobId}` → `{projectId, warnings[]}`
+ META False ['edit'] None always enabled
+ HOLES {"p": [], "r": []}
+sound.asset.import | A: `path: path; allowLarge?: bool = false` | result: `{assetId, reusedAsset, durationSec}`
+ META True ['edit', 'files.read'] Add an audio file to the project's sound assets without plac needs an open project (01 §1.3); see spec 07 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/assetId", "schema": {}}, {"pointer": "/properties/reusedAsset", "schema": {}}, {"pointer": "/properties/durationSec", "schema": {}}]}
+sound.editor.state.set | A: `currentFrame?: int; selectedPlacementId?: id; zoom?: int (0–100); scrubbing?: bool; loop?: bool` | result: editor state
+ META True ['ui'] None needs an open project (01 §1.3); see spec 07 for the full rule
+ HOLES {"p": [], "r": []}
+sound.scrubbing.set | A: `enabled: bool` | result: `{enabled, effective}`
+ META True ['ui'] None needs an open project (01 §1.3); see spec 07 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/enabled", "schema": {}}, {"pointer": "/properties/effective", "schema": {}}]}
+storyline.currentScene.get | A: — | result: `{sceneId, index, name}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 08 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/sceneId", "schema": {}}, {"pointer": "/properties/index", "schema": {}}, {"pointer": "/properties/name", "schema": {}}]}
+storyline.frame.render | A: `globalFrame: int; width?: int; height?: int` | result: `{png, width, height}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 08 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/png", "schema": {}}]}
+timeline.currentFrame.set | A: `frame: int (≥1); sceneId?: id` | result: `{frame, clamped: bool}`
+ META True ['ui'] None needs an open project (01 §1.3); see spec 04 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/frame", "schema": {}}]}
+timeline.singleCellSelection.set | A: `enabled: bool` | result: `{enabled}`
+ META True ['ui'] None needs an open project (01 §1.3); see spec 04 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/enabled", "schema": {}}]}
+tool.active.changed | A: — | result: `{toolId, temporary: bool}`
+ META False ['read'] None see spec 02 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/toolId", "schema": {}}]}
+tool.settings.get | A: — | result: `{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 02 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/placeBehind", "schema": {}}, {"pointer": "/properties/drawTopLayer", "schema": {}}, {"pointer": "/properties/snapToContour", "schema": {}}, {"pointer": "/properties/symmetry", "schema": {}}, {"pointer": "/properties/tablet", "schema": {}}, {"pointer": "/properties/gapClosing", "schema": {}}]}
+tool.text.options.set | A: `font?: string; size?: number (1–512) = 36; bold?: bool = false; italic?: bool = false; baseline?: enum "normal"|"subscript"|"superscript" = "normal"; kerning?: int (−60–60) = 0; autoKern?: bool = true; align?: enum "left"|"centre"|"right"|"justify" = "left"; leftMargin?: number = 0; rightMargin?: number = 0; indent?: number = 0; lineSpacing?: number = 0; outlineColourId?: id|null` | result: `{options}`
+ META True ['ui'] None needs an open project (01 §1.3); see spec 02 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/options", "schema": {}}]}
+ui.help.open | A: `topic?: string` | result: `{}`
+ META False ['ui'] None see spec 01 for the full rule
+ HOLES {"p": [], "r": []}
+ui.preferences.open | A: `category?: string` | result: `{}`
+ META False ['ui'] None see spec 01 for the full rule
+ HOLES {"p": [], "r": []}
+view.coordinates.convert | A: `viewId: id; point: point; from: enum "view"|"drawing"|"scene"; to: enum "view"|"drawing"|"scene"` | result: `{point}`
+ META True ['read'] None needs an open project (01 §1.3); see spec 01 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/point", "schema": {}}]}
+workspace.rename | A: `name: string; newName: string` | result: `{name}`
+ META False ['ui'] None always enabled
+ HOLES {"p": [], "r": []}
+xsheet.columnWidth.set | A: `elementId?: id; width?: int (20–1000); reset: bool = false` | result: `{widths: object}`
+ META True ['ui'] None needs an open project (01 §1.3); see spec 04 for the full rule
+ HOLES {"p": [], "r": []}
+xsheet.lightTable.remove | A: `itemIds?: [id]; all: bool = false` | result: `{removedIds[]}`
+ META True ['ui'] None needs an open project (01 §1.3); see spec 04 for the full rule
+ HOLES {"p": [], "r": [{"pointer": "/properties/removedIds/items", "schema": {}}]}
+HOLE COUNTS 30 584

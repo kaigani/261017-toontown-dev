@@ -1,0 +1,616 @@
+"""Analysis of a C0.3 canvas-spike log (`toontown --spike canvas --spike-log <file> [--spike-auto]`).
+
+Usage: python scripts/analyse-canvas-log.py <log.json | log.json.gz> [--json <out.json>] [--snapshots <dir>]
+
+Every number is recomputed from the raw samples in the log; the page's own readout is not stored and not used.
+The log is validated completely before anything is printed; malformed, incomplete or contradictory evidence exits
+with status 2 and prints nothing on stdout (C03-R1-01):
+* `spike` must be `canvas` and `version` 1 or 2; `source` must be `auto`, `interactive` or `manual`, and agree with
+  `environment.mode.auto`;
+* the environment must be complete: time origin, user agent, device pixel ratio, viewport, screen, WebGPU API flag,
+  forced renderer (consistent with the launch mode), launch mode, and host facts (or the host error);
+* parameters must declare the scenes, seed, flattening tolerance, transfer/pixel counts and durations; the seed must be
+  one in the workload table (seed 1), anything else is rejected rather than left unchecked;
+* an `auto` log must contain the full matrix: one run per expected back end (the forced one, else WebGPU when its API
+  exists, and WebGL2) and declared scene, in order, and one pixel run per back end; an explicitly failed run (with
+  its error) counts as an observation, a missing one does not. A `manual` log must contain no runs;
+* every successful run must match the declared workload: transfers numbered 0..n-1 in order; every transfer's byte
+  count equal to the scene's size in the workload table and, when the transfer logs its header (current logs), to the
+  size its header counts imply, with every header count (groups, paths, points, verbs) equal to the table's and the
+  header naming the same scene, seed and frame (C03-R2-01); decode statistics consistent with the decoded header
+  (paths equal, cubics within its verbs and points, strokes with segments, fills with vertices) and equal to the
+  workload (paths, cubics, stroke/fill paths, and at tolerance 0.5 segments, fill vertices and triangles);
+  non-negative durations, upload completion not before its CPU
+  part, idle and pan/zoom timestamps monotonic and covering the declared durations (version 2: each phase's
+  logged span lasts at least its declared duration and its samples end exactly on the span's end, so a complete
+  slow run passes and a truncated one does not; version 1: the stored samples themselves span the durations), a
+  CPU time for every frame,
+  a GPU completion time for every WebGPU frame and none for WebGL2, renderer facts, and canvas geometry consistent
+  with the device pixel ratio;
+* pixel runs must have one sample per declared transfer, numbered in order, with the byte count of their size.
+
+Estimators (also printed):
+* transfer = performance.now() around one binary `canvasScene` invoke (request, host encode, IPC, envelope check);
+  throughput = total bytes / total transfer time;
+* display refresh = mean rAF interval of the idle phase (nothing drawn), (last - first) / (n - 1); the median would
+  be biased by WebKit's 1 ms timestamp rounding (a 60 Hz median reads 17 ms);
+* frame interval = difference of consecutive rAF timestamps during pan/zoom; fps = (n - 1) * 1000 / (last - first);
+* long frame = interval > 1.5 x display refresh;
+* 60 fps target met when fps >= 57 (0.95 x 60); the display rate is printed next to it (a display below 60 Hz
+  cannot meet it). A complete run with fewer than two pan/zoom samples (or no time between them) has no cadence
+  estimate: fps and the target read "insufficient samples (n=...)" and the run is still reported as complete
+  (C03-R3-01);
+* CPU frame = JS update + record + submit; GPU frame (WebGPU) = submit to `onSubmittedWorkDone` (includes queueing);
+* IPC-per-frame ceiling = 1000 / (p50 transfer ms): the frame rate if the full render list had to cross IPC every
+  frame (no decode or draw included).
+Percentiles are nearest-rank (as desktop/src/lib/latency.ts).
+
+Decision (C04-R2-03): after the tables, the analyzer applies the canvas rule set of
+docs/decisions/ADR-0007-interactive-canvas.md to this log and prints the outcome. Its parts:
+* Step 0 classifies every back end x scene cell as met, missed, insufficient evidence (complete run without a cadence
+  estimate), failed, unavailable (an error starting "<backend> unavailable", or no WebGPU API), or not measured (no
+  run: an interactive partial capture or a forced renderer);
+* a back end is scorable only with a numeric fps for all three scenes; its score is the worst scene's fps;
+* the scorable back end with the higher score is selected (a tie goes to WebGPU), so a back end without a valid
+  measurement is never selected over one with a valid measurement;
+* the outcome matrix is applied to the selected back end. Cells that are not measured are listed with the run that
+  measures them, and a decision with such cells is marked provisional.
+The decision is also written to `--json` as `decision`. Standard library only.
+"""
+
+import base64
+import gzip
+import json
+import math
+import os
+import sys
+
+# Log versions read: 1 (C0.3 rounds 0-1, no phase spans) and 2 (current page, explicit phase spans; C03-R2-02).
+VERSIONS = (1, 2)
+PHASES_SINCE = 2
+ANALYSIS_VERSION = 1
+SOURCES = ("auto", "interactive", "manual")
+BACKENDS = ("webgpu", "webgl2")
+SCENES = ("paths100k", "groups1k", "brush10k")
+# Workload of the TTRL v1 scenes for seed 1 (desktop/src-tauri/src/spikes/canvas/renderlist.rs, whose test
+# `scenes_have_the_specified_sizes` pins the same header counts): encoded bytes, every header count and the decoder's
+# statistics; segment/vertex/triangle counts hold for the flattening tolerance 0.5. Seed 1 is the only supported seed:
+# a log with any other seed is rejected, never left unchecked (C03-R2-01).
+WORKLOAD = {
+    "paths100k": {"bytes": 8_700_096, "groups": 1, "paths": 100_000, "points": 700_000, "verbs": 300_000,
+                  "cubics": 200_000, "strokePaths": 100_000, "fillPaths": 0, "segments": 2_832_713, "fillVertices": 0,
+                  "triangles": 0},
+    "groups1k": {"bytes": 2_024_072, "groups": 1000, "paths": 20_000, "points": 170_000, "verbs": 80_000,
+                 "cubics": 50_000, "strokePaths": 10_000, "fillPaths": 10_000, "segments": 101_961,
+                 "fillVertices": 175_915, "triangles": 145_915},
+    "brush10k": {"bytes": 10_085_716, "groups": 1, "paths": 10_000, "points": 1_088_402, "verbs": 1_098_402,
+                 "cubics": 0, "strokePaths": 0, "fillPaths": 10_000, "segments": 0, "fillVertices": 1_088_402,
+                 "triangles": 1_062_652},
+}
+HEADER_COUNTS = ("groups", "paths", "points", "verbs")
+TABLE_SEED = 1
+TABLE_TOLERANCE = 0.5
+
+
+class LogError(Exception):
+    pass
+
+
+def load(path):
+    opener = gzip.open if path.endswith(".gz") else open
+    with opener(path, "rt", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def pct(values, p):
+    if not values:
+        return None
+    s = sorted(values)
+    return s[min(max(1, math.ceil(p / 100 * len(s))), len(s)) - 1]
+
+
+def stats(values):
+    if not values:
+        return None
+    return {"n": len(values), "p50": pct(values, 50), "p95": pct(values, 95), "max": max(values),
+            "mean": sum(values) / len(values)}
+
+
+def num(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
+
+
+def integer(v):
+    return isinstance(v, int) and not isinstance(v, bool)
+
+
+def monotonic(ts):
+    return all(num(t) for t in ts) and all(b >= a for a, b in zip(ts, ts[1:]))
+
+
+def intervals(ts):
+    return [b - a for a, b in zip(ts, ts[1:])]
+
+
+def fmt(v, d=1):
+    return "-" if v is None else f"{v:.{d}f}"
+
+
+def nonneg(v):
+    return num(v) and v >= 0
+
+
+def encoded_len(h):
+    return 72 + 24 * h["groups"] + 28 * h["paths"] + 8 * h["points"] + math.ceil(h["verbs"] / 4) * 4
+
+
+def validate_environment(log, source):
+    env = log.get("environment")
+    if not isinstance(env, dict) or not num(env.get("timeOrigin")):
+        raise LogError("environment.timeOrigin is missing")
+    if not isinstance(env.get("userAgent"), str) or not env["userAgent"]:
+        raise LogError("environment.userAgent is missing")
+    if not num(env.get("devicePixelRatio")) or env["devicePixelRatio"] <= 0:
+        raise LogError("environment.devicePixelRatio is missing")
+    for key in ("viewport", "screen"):
+        v = env.get(key)
+        if not isinstance(v, dict) or not all(num(v.get(k)) and v[k] > 0 for k in ("width", "height")):
+            raise LogError(f"environment.{key} is missing")
+    if not isinstance(env.get("webgpuApi"), bool):
+        raise LogError("environment.webgpuApi is missing")
+    forced = env.get("forcedRenderer", "absent")
+    if forced not in (None, "webgpu", "webgl2"):
+        raise LogError(f"environment.forcedRenderer {forced!r} is missing or unknown")
+    mode = env.get("mode")
+    if not isinstance(mode, dict) or mode.get("name") != "canvas" or not isinstance(mode.get("auto"), bool):
+        raise LogError("environment.mode (the canvas launch mode) is missing")
+    if mode.get("renderer") != forced:
+        raise LogError(f"forced renderer {forced!r} disagrees with the launch mode {mode.get('renderer')!r}")
+    if mode["auto"] != (source == "auto"):
+        raise LogError(f"source {source!r} disagrees with launch mode auto={mode['auto']}")
+    host = env.get("host")
+    if not (isinstance(host, dict) and isinstance(host.get("os"), str) and isinstance(host.get("arch"), str)):
+        if not (isinstance(env.get("hostError"), str) and env["hostError"]):
+            raise LogError("environment.host is missing (and no host error is recorded)")
+    return env
+
+
+def validate_parameters(log):
+    params = log.get("parameters")
+    if not isinstance(params, dict):
+        raise LogError("parameters are missing")
+    for k in ("transfers", "idleMs", "panZoomMs", "pixelTransfers"):
+        if not integer(params.get(k)) or params[k] < 1:
+            raise LogError(f"parameters.{k} is not a positive integer")
+    scenes = params.get("scenes")
+    if not isinstance(scenes, list) or not scenes or any(x not in SCENES for x in scenes) or len(set(scenes)) != len(scenes):
+        raise LogError(f"parameters.scenes {scenes!r} is not a list of distinct known scenes")
+    if not integer(params.get("seed")):
+        raise LogError("parameters.seed is missing")
+    if params["seed"] != TABLE_SEED:
+        raise LogError(f"seed {params['seed']} not in the supported workload table (supported: {TABLE_SEED})")
+    if not num(params.get("flattenTolerance")) or params["flattenTolerance"] <= 0:
+        raise LogError("parameters.flattenTolerance is missing")
+    return params
+
+
+def expected_backends(env):
+    if env["forcedRenderer"]:
+        return [env["forcedRenderer"]]
+    return ["webgpu", "webgl2"] if env["webgpuApi"] else ["webgl2"]
+
+
+def validate_run(run, label, params, version):
+    tr = run.get("transfers")
+    if not isinstance(tr, list) or len(tr) != params["transfers"]:
+        raise LogError(f"{label}: expected {params['transfers']} transfer samples")
+    want = WORKLOAD[run["scene"]]  # validate_parameters admits only the table seed
+    headers = []
+    for k, x in enumerate(tr):
+        if not (isinstance(x, dict) and x.get("i") == k and x.get("frame") == k):
+            raise LogError(f"{label}: transfer {k} is not numbered {k} (i/frame {x.get('i')!r}/{x.get('frame')!r})")
+        if not (integer(x.get("bytes")) and nonneg(x.get("invokeMs")) and integer(x.get("encodeNs"))
+                and x["encodeNs"] >= 0 and integer(x.get("generateNs")) and x["generateNs"] >= 0):
+            raise LogError(f"{label}: malformed transfer sample {k}")
+        header = x.get("header")
+        if header is not None:
+            if not (isinstance(header, dict) and all(integer(header.get(f)) and header[f] >= 0
+                                                     for f in HEADER_COUNTS)):
+                raise LogError(f"{label}: transfer {k} header counts malformed")
+            if header.get("kind") != run["scene"] or header.get("seed") != params["seed"] or header.get("frame") != k:
+                raise LogError(f"{label}: transfer {k} header describes another scene, seed or frame")
+            if x["bytes"] != encoded_len(header):
+                raise LogError(f"{label}: transfer {k} is {x['bytes']} bytes; its header counts imply {encoded_len(header)}")
+            for f in HEADER_COUNTS:
+                if header[f] != want[f]:
+                    raise LogError(f"{label}: transfer {k} header {f} = {header[f]} differs from the "
+                                   f"{run['scene']} workload ({want[f]})")
+            headers.append(header)
+        if x["bytes"] != want["bytes"]:
+            raise LogError(f"{label}: transfer {k} is {x['bytes']} bytes; {run['scene']} encodes to {want['bytes']}")
+    if len({x["bytes"] for x in tr}) != 1:
+        raise LogError(f"{label}: transfers of one scene differ in size")
+    dec = run.get("decode")
+    if not (isinstance(dec, dict) and nonneg(dec.get("ms"))
+            and all(integer(dec.get(k)) and dec[k] >= 0 for k in ("paths", "cubics", "strokePaths", "fillPaths",
+                                                                    "segments", "fillVertices", "triangles"))):
+        raise LogError(f"{label}: decode record missing or malformed")
+    if dec.get("tolerance") != params["flattenTolerance"]:
+        raise LogError(f"{label}: decode tolerance {dec.get('tolerance')!r} differs from the declared parameter")
+    if dec["strokePaths"] + dec["fillPaths"] != dec["paths"]:
+        raise LogError(f"{label}: decode stroke + fill paths do not add up to its paths")
+    # The decoder's own counts must be possible for the list it decoded (every run, independent of the table): it
+    # decodes exactly the header's paths, every cubic is one verb with three points, strokes need segments, fills
+    # need vertices, and a fill triangle needs fill vertices.
+    for h in headers or [want]:
+        if dec["paths"] != h["paths"]:
+            raise LogError(f"{label}: decode paths = {dec['paths']} but the header declares {h['paths']}")
+        if dec["cubics"] > h["verbs"] or 3 * dec["cubics"] > h["points"]:
+            raise LogError(f"{label}: decode cubics = {dec['cubics']} exceed the header's verbs or points")
+    if dec["paths"] and not (dec["segments"] or dec["fillVertices"]):
+        raise LogError(f"{label}: decode produced no geometry for {dec['paths']} paths")
+    if (dec["strokePaths"] > 0) != (dec["segments"] > 0) or (dec["fillPaths"] > 0) != (dec["fillVertices"] > 0):
+        raise LogError(f"{label}: decode stroke/fill paths disagree with its segments/fill vertices")
+    if dec["triangles"] and not dec["fillVertices"]:
+        raise LogError(f"{label}: decode triangles without fill vertices")
+    keys = ["paths", "cubics", "strokePaths", "fillPaths"]
+    if dec["tolerance"] == TABLE_TOLERANCE:
+        keys += ["segments", "fillVertices", "triangles"]
+    for k in keys:
+        if dec[k] != want[k]:
+            raise LogError(f"{label}: decode {k} = {dec[k]} contradicts the {run['scene']} workload ({want[k]})")
+    up = run.get("upload")
+    if not (isinstance(up, dict) and nonneg(up.get("cpuMs")) and nonneg(up.get("completeMs"))
+            and up["completeMs"] + 1e-6 >= up["cpuMs"]):
+        raise LogError(f"{label}: upload record missing, negative or completed before its CPU part")
+    idle = run.get("idle")
+    if not isinstance(idle, list) or len(idle) < 2 or not monotonic(idle):
+        raise LogError(f"{label}: idle timestamps missing or non-monotonic")
+    frames = run.get("frames")
+    # Version 2 judges completion on the phase span alone, so one sample is a complete observation (a 0.1 Hz display
+    # reaches the 10 s span on its first callback; C03-R3-01); zero samples is malformed even with a span. Version 1
+    # has no span and needs the samples themselves to cover the duration.
+    min_frames = 1 if version >= PHASES_SINCE else 2
+    if not isinstance(frames, list) or len(frames) < min_frames:
+        raise LogError(f"{label}: pan/zoom frames missing (need at least {min_frames})")
+    ts = [f.get("t") if isinstance(f, dict) else None for f in frames]
+    if not monotonic(ts):
+        raise LogError(f"{label}: frame timestamps non-monotonic")
+    if version >= PHASES_SINCE:
+        # Completion comes from the page's explicit phase spans, so a complete run passes at any frame rate (a 1 Hz
+        # run stores only the frames after its start); the raw samples must lie exactly within the spans.
+        phases = run.get("phases")
+        if not isinstance(phases, dict):
+            raise LogError(f"{label}: phase spans missing (log version {version})")
+        for name, samples, duration, first_is_start in (("idle", idle, params["idleMs"], True),
+                                                        ("panZoom", ts, params["panZoomMs"], False)):
+            span = phases.get(name)
+            if not (isinstance(span, dict) and num(span.get("start")) and num(span.get("end"))):
+                raise LogError(f"{label}: {name} phase span missing or malformed")
+            if span["end"] - span["start"] < duration:
+                raise LogError(f"{label}: {name} phase lasted {span['end'] - span['start']:.1f} ms, shorter than "
+                               f"the declared {duration} ms (incomplete run)")
+            first_ok = samples[0] == span["start"] if first_is_start else samples[0] > span["start"]
+            if not first_ok or samples[-1] != span["end"]:
+                raise LogError(f"{label}: {name} samples do not cover their phase span (truncated or extended)")
+        if phases["idle"]["end"] > phases["panZoom"]["start"]:
+            raise LogError(f"{label}: the idle phase overlaps the pan/zoom phase")
+    else:
+        # Version 1 logs record no spans; the stored samples must cover the durations (pan/zoom within one 100 ms
+        # frame of slack, which a run slower than 10 Hz cannot meet: the reason for version 2).
+        if idle[-1] - idle[0] < params["idleMs"]:
+            raise LogError(f"{label}: idle timestamps shorter than {params['idleMs']} ms")
+        if ts[-1] - ts[0] < params["panZoomMs"] - 100:
+            raise LogError(f"{label}: frame timestamps shorter than {params['panZoomMs']} ms")
+    if idle[-1] > ts[0]:
+        raise LogError(f"{label}: the idle phase overlaps the pan/zoom phase")
+    for k, f in enumerate(frames):
+        if not nonneg(f.get("cpuMs")):
+            raise LogError(f"{label}: frame {k} has no non-negative CPU time")
+        gpu = f.get("gpuMs")
+        if run["backend"] == "webgpu" and not nonneg(gpu):
+            raise LogError(f"{label}: WebGPU frame {k} has no non-negative GPU completion time")
+        if run["backend"] == "webgl2" and gpu is not None:
+            raise LogError(f"{label}: WebGL2 frame {k} claims a GPU time the back end cannot measure")
+    canvas = run.get("canvas")
+    if not (isinstance(canvas, dict) and integer(canvas.get("width")) and integer(canvas.get("height"))
+            and canvas["width"] >= 1 and canvas["height"] >= 1 and num(canvas.get("dpr")) and canvas["dpr"] > 0
+            and num(canvas.get("cssWidth")) and num(canvas.get("cssHeight"))
+            and abs(canvas["width"] - max(1, round(canvas["cssWidth"] * canvas["dpr"]))) <= 1
+            and abs(canvas["height"] - max(1, round(canvas["cssHeight"] * canvas["dpr"]))) <= 1):
+        raise LogError(f"{label}: canvas geometry missing or inconsistent with its device pixel ratio")
+    if not isinstance(run.get("renderer"), dict) or not run["renderer"]:
+        raise LogError(f"{label}: renderer facts missing")
+
+
+def validate(log):
+    if log.get("spike") != "canvas":
+        raise LogError(f"not a canvas-spike log (spike {log.get('spike')!r})")
+    if log.get("version") not in VERSIONS:
+        raise LogError(f"unsupported canvas log version {log.get('version')!r} (this analyzer reads {VERSIONS})")
+    source = log.get("source")
+    if source not in SOURCES:
+        raise LogError(f"unknown or missing source {source!r} (expected one of {SOURCES})")
+    env = validate_environment(log, source)
+    params = validate_parameters(log)
+    runs = log.get("runs")
+    pixels = log.get("pixelRuns")
+    if not isinstance(runs, list) or not isinstance(pixels, list):
+        raise LogError("runs / pixelRuns are missing")
+    if source == "manual" and (runs or pixels):
+        raise LogError("log declares source 'manual' but contains runs")
+    if source != "manual" and not runs:
+        raise LogError(f"log source {source!r} has no runs")
+    backends = expected_backends(env)
+    for i, run in enumerate(runs):
+        if not isinstance(run, dict) or run.get("backend") not in BACKENDS or run.get("scene") not in params["scenes"]:
+            raise LogError(f"run {i}: unknown backend or a scene that is not declared")
+        if run["backend"] not in backends:
+            raise LogError(f"run {i}: back end {run['backend']} was not expected (forced {env['forcedRenderer']!r}, "
+                           f"WebGPU API {env['webgpuApi']})")
+    if source == "auto":
+        expected = [(b, sc) for b in backends for sc in params["scenes"]]
+        got = [(r["backend"], r["scene"]) for r in runs]
+        if got != expected:
+            raise LogError(f"automatic run matrix is incomplete or out of order: expected {expected}, got {got}")
+        if [p.get("backend") if isinstance(p, dict) else None for p in pixels] != backends:
+            raise LogError(f"automatic run needs one pixel run per back end {backends}")
+    for i, run in enumerate(runs):
+        label = f"run {i} ({run['backend']}/{run['scene']})"
+        if "error" not in run:
+            raise LogError(f"{label}: no error field")
+        if run["error"] is not None:
+            if not isinstance(run["error"], str) or not run["error"]:
+                raise LogError(f"{label}: failed run without an error message")
+            continue
+        validate_run(run, label, params, log["version"])
+    for i, p in enumerate(pixels):
+        if not isinstance(p, dict) or p.get("backend") not in backends:
+            raise LogError(f"pixel run {i}: unknown or unexpected back end")
+        if p.get("error"):
+            continue
+        if not (integer(p.get("width")) and integer(p.get("height")) and p["width"] >= 1 and p["height"] >= 1):
+            raise LogError(f"pixel run {i}: size missing")
+        samples = p.get("samples")
+        if not isinstance(samples, list) or len(samples) != params["pixelTransfers"]:
+            raise LogError(f"pixel run {i}: expected {params['pixelTransfers']} samples")
+        for k, x in enumerate(samples):
+            if not (isinstance(x, dict) and x.get("i") == k and integer(x.get("bytes"))
+                    and x["bytes"] == 16 + 4 * p["width"] * p["height"] and nonneg(x.get("invokeMs"))
+                    and nonneg(x.get("uploadMs")) and integer(x.get("fillNs")) and x["fillNs"] >= 0):
+                raise LogError(f"pixel run {i}: malformed sample {k}")
+
+
+def analyse_run(run):
+    if run.get("error"):
+        return {"backend": run["backend"], "scene": run["scene"], "outcome": "failed", "error": run["error"]}
+    tr = run["transfers"]
+    tms = [s["invokeMs"] for s in tr]
+    total_bytes = sum(s["bytes"] for s in tr)
+    it = run["idle"]
+    ts = [f["t"] for f in run["frames"]]
+    iv = intervals(ts)
+    # Cadence needs a pair of samples spanning time; otherwise the run is still complete (validated on its phase span)
+    # but its cadence statistics are unavailable and stated as such, never invented (C03-R3-01).
+    if len(ts) < 2:
+        cadence = f"insufficient samples (n={len(ts)})"
+    elif ts[-1] <= ts[0]:
+        cadence = f"insufficient samples (n={len(ts)}, zero-length span)"
+    else:
+        cadence = None
+    fps = None if cadence else (len(ts) - 1) * 1000 / (ts[-1] - ts[0])
+    refresh = (it[-1] - it[0]) / (len(it) - 1) if len(it) > 1 and it[-1] > it[0] else None
+    gpu = [f["gpuMs"] for f in run["frames"] if f.get("gpuMs") is not None]
+    transfer = stats(tms)
+    info = run.get("renderer") or {}
+    return {
+        "backend": run["backend"], "scene": run["scene"], "outcome": "ok", "error": None, "complete": True,
+        "cadence": cadence or "ok",
+        "gpu": info.get("unmaskedRenderer") or info.get("renderer") or " ".join(
+            str(info.get(k)) for k in ("vendor", "architecture", "device", "description") if info.get(k)) or "-",
+        "canvas": run["canvas"],
+        "bytesPerTransfer": total_bytes / len(tr),
+        "transferMs": transfer,
+        "transferMBps": total_bytes / 1e6 / (sum(tms) / 1000) if sum(tms) > 0 else None,
+        "encodeMs": stats([s["encodeNs"] / 1e6 for s in tr]),
+        "generateMs": max(s["generateNs"] for s in tr) / 1e6,
+        "ipcPerFrameCeilingFps": 1000 / transfer["p50"] if transfer and transfer["p50"] > 0 else None,
+        "decodeMs": run["decode"]["ms"],
+        "decode": {k: v for k, v in run["decode"].items() if k != "ms"},
+        "uploadMs": run["upload"],
+        "refreshMs": refresh,
+        "frames": len(ts),
+        "intervalMs": stats(iv),
+        "fps": fps,
+        "longFrames": sum(1 for d in iv if refresh and d > 1.5 * refresh),
+        "cpuMs": stats([f["cpuMs"] for f in run["frames"]]),
+        "gpuMs": stats(gpu),
+        "meetsTarget": None if fps is None else fps >= 57,
+    }
+
+
+def analyse_pixels(p):
+    if p.get("error"):
+        return {"backend": p["backend"], "outcome": "failed", "error": p["error"]}
+    s = p["samples"]
+    inv = [x["invokeMs"] for x in s]
+    up = [x["uploadMs"] for x in s]
+    total = sum(x["bytes"] for x in s)
+    return {"backend": p["backend"], "outcome": "ok", "width": p["width"], "height": p["height"],
+            "bytes": s[0]["bytes"], "transferMs": stats(inv), "uploadMs": stats(up),
+            "transferMBps": total / 1e6 / (sum(inv) / 1000) if sum(inv) > 0 else None,
+            "frameCostP50Ms": (pct(inv, 50) or 0) + (pct(up, 50) or 0)}
+
+
+TARGET_FPS = 57
+DECISION_BACKENDS = ("webgpu", "webgl2")
+REPEAT_WITH = {"webgpu": "--spike canvas --spike-auto (WebGPU needs an adapter)",
+               "webgl2": "--spike canvas --spike-auto --spike-renderer webgl2"}
+
+
+def cell_status(run, analysis):
+    """Step 0 status of one back end x scene cell."""
+    if run is None:
+        return "not measured"
+    if analysis["outcome"] == "failed":
+        return "unavailable" if str(analysis["error"]).startswith(f"{run['backend']} unavailable") else "failed"
+    if analysis["fps"] is None:
+        return "insufficient evidence"
+    return "met" if analysis["fps"] >= TARGET_FPS else "missed"
+
+
+def canvas_decision(log, analyses):
+    """The ADR-0007 canvas rule set applied to one accepted log."""
+    env, scenes = log["environment"], SCENES
+    cells = {b: {sc: "not measured" for sc in scenes} for b in DECISION_BACKENDS}
+    fps = {b: {} for b in DECISION_BACKENDS}
+    if env.get("webgpuApi") is False:
+        cells["webgpu"] = {sc: "unavailable" for sc in scenes}
+    for run, a in zip(log["runs"], analyses):
+        if run.get("backend") in cells and run.get("scene") in scenes:
+            cells[run["backend"]][run["scene"]] = cell_status(run, a)
+            if a.get("fps") is not None:
+                fps[run["backend"]][run["scene"]] = a["fps"]
+    missing = [f"{b} {sc}: not measured: repeat with {REPEAT_WITH[b]}" for b in DECISION_BACKENDS for sc in scenes
+               if cells[b][sc] == "not measured"]
+    insufficient = [f"{b} {sc}: insufficient evidence (no cadence estimate): repeat with {REPEAT_WITH[b]}"
+                    for b in DECISION_BACKENDS for sc in scenes if cells[b][sc] == "insufficient evidence"]
+    broken = {b: any(cells[b][sc] in ("failed", "unavailable") for sc in scenes) for b in DECISION_BACKENDS}
+    scores = {b: min(fps[b][sc] for sc in scenes) for b in DECISION_BACKENDS
+              if not broken[b] and all(cells[b][sc] in ("met", "missed") for sc in scenes)}
+    selected = max(scores, key=lambda b: (scores[b], b == "webgpu")) if scores else None
+    if broken["webgl2"] and broken["webgpu"]:
+        outcome = "no-go for the webview canvas on this platform until investigated (both back ends unavailable or failed)"
+    elif selected is None:
+        outcome = "insufficient evidence: no back end has a valid measurement of all three scenes; repeat the listed runs"
+    else:
+        c = cells[selected]
+        if c["groups1k"] == "missed":
+            outcome = "no-go for the webview canvas as designed: native-wgpu integration prototype required in M4"
+        elif c["brush10k"] == "missed":
+            outcome = ("go-with-condition: M4 pre-tessellates fills in Rust and adds fill level-of-detail; E-C2 "
+                       "re-measures brush10k; native-wgpu prototype if it still misses")
+        elif c["paths100k"] == "missed":
+            outcome = "go; M4 adds culling and level-of-detail for drawings of the paths100k size"
+        else:
+            outcome = "go as written"
+        if broken["webgl2"]:
+            outcome = ("investigate WebGL2 (mandatory path) before any conclusion for this platform or floor; "
+                       f"interim, with WebGPU: {outcome}")
+    provisional = bool(missing or insufficient) and selected is not None
+    return {"cells": cells, "scores": scores, "selected": selected, "outcome": outcome,
+            "provisional": provisional, "notMeasured": missing, "insufficient": insufficient}
+
+
+def print_decision(d):
+    print("\n### Decision (ADR-0007 canvas rule set)\n")
+    print("| back end | " + " | ".join(SCENES) + " | score (worst fps) |")
+    print("|---|" + "---|" * (len(SCENES) + 1))
+    for b in DECISION_BACKENDS:
+        score = d["scores"].get(b)
+        print(f"| {b} | " + " | ".join(d["cells"][b][sc] for sc in SCENES) + f" | {fmt(score)} |")
+    print(f"\n- selected back end: {d['selected'] or 'none'}")
+    print(f"- outcome: **{d['outcome']}**" + (" (provisional: some cells are not measured or insufficient)"
+                                             if d["provisional"] else ""))
+    for line in d["notMeasured"] + d["insufficient"]:
+        print(f"- {line}")
+
+
+def s3(st, d=2):
+    return "-" if not st else f"{st['p50']:.{d}f} / {st['p95']:.{d}f} / {st['max']:.{d}f}"
+
+
+def target(r):
+    if r["meetsTarget"] is None:
+        return f"not estimated: {r['cadence']} (run complete)"
+    return "met" if r["meetsTarget"] else "missed"
+
+
+def report(log, runs, pixels):
+    env = log["environment"]
+    host = env.get("host") or {}
+    print(f"## Canvas spike log (version {log['version']})\n")
+    print(f"- source: {log['source']}; userAgent: {env.get('userAgent')}")
+    print(f"- host: {host.get('os')} {host.get('arch')}, {host.get('osVersion')}, webview {host.get('webviewVersion')}, "
+          f"CPUs {host.get('cpuCount')}; DPR {env.get('devicePixelRatio')}, viewport {env.get('viewport')}")
+    print(f"- WebGPU API present: {env.get('webgpuApi')}; forced renderer: {env.get('forcedRenderer')}")
+    print(f"- parameters: {log['parameters']}")
+    print("\n### Runs (p50 / p95 / max)\n")
+    print("| back end | scene | GPU | canvas px | MB / transfer | transfer ms | MB/s | encode ms | decode ms | "
+          "upload ms (cpu / complete) | refresh ms | fps | interval ms | long frames | CPU frame ms | GPU frame ms | "
+          "60 fps target | IPC-per-frame ceiling fps |")
+    print("|" + "---|" * 18)
+    for r in runs:
+        if r["outcome"] != "ok":
+            print(f"| {r['backend']} | {r['scene']} | **FAILED**: {r['error']} |" + " |" * 15)
+            continue
+        c = r["canvas"]
+        print(f"| {r['backend']} | {r['scene']} | {r['gpu']} | {c['width']}x{c['height']} | "
+              f"{r['bytesPerTransfer'] / 1e6:.2f} | {s3(r['transferMs'], 1)} | {fmt(r['transferMBps'], 0)} | "
+              f"{s3(r['encodeMs'])} | {r['decodeMs']:.1f} | {r['uploadMs']['cpuMs']:.1f} / {r['uploadMs']['completeMs']:.1f} | "
+              f"{fmt(r['refreshMs'], 2)} | {fmt(r['fps']) if r['fps'] is not None else r['cadence']} | {s3(r['intervalMs'])} | "
+              f"{r['longFrames']} of {max(r['frames'] - 1, 0)} | {s3(r['cpuMs'])} | {s3(r['gpuMs'])} | "
+              f"{target(r)} | "
+              f"{fmt(r['ipcPerFrameCeilingFps'])} |")
+    print("\nDecode details (segments = stroke instances; triangles = fill triangles):\n")
+    for r in runs:
+        if r["outcome"] == "ok":
+            d = r["decode"]
+            print(f"- {r['backend']} {r['scene']}: paths {d.get('paths')}, cubics {d.get('cubics')}, segments "
+                  f"{d.get('segments')}, fill vertices {d.get('fillVertices')}, triangles {d.get('triangles')}, "
+                  f"GPU bytes {(d.get('strokeBytes', 0) + d.get('fillBytes', 0)) / 1e6:.1f} MB, tolerance {d.get('tolerance')}")
+    print("\n### Pixel-frame transfer (host-raster fallback, transfer + texture upload only)\n")
+    print("| back end | size | MB / frame | transfer ms | upload ms | MB/s | transfer + upload p50 ms |")
+    print("|---|---|---|---|---|---|---|")
+    for p in pixels:
+        if p["outcome"] != "ok":
+            print(f"| {p['backend']} | **FAILED**: {p['error']} | | | | | |")
+            continue
+        print(f"| {p['backend']} | {p['width']}x{p['height']} | {p['bytes'] / 1e6:.2f} | {s3(p['transferMs'], 1)} | "
+              f"{s3(p['uploadMs'], 1)} | {fmt(p['transferMBps'], 0)} | {p['frameCostP50Ms']:.1f} |")
+
+
+def main(argv):
+    args = argv[1:]
+    out_json = snap_dir = None
+    for flag in ("--json", "--snapshots"):
+        if flag in args:
+            i = args.index(flag)
+            if i + 1 >= len(args):
+                print(__doc__)
+                return 2
+            if flag == "--json":
+                out_json = args[i + 1]
+            else:
+                snap_dir = args[i + 1]
+            del args[i:i + 2]
+    if len(args) != 1:
+        print(__doc__)
+        return 2
+    log = load(args[0])
+    try:
+        validate(log)
+    except LogError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
+    runs = [analyse_run(r) for r in log["runs"]]
+    pixels = [analyse_pixels(p) for p in log["pixelRuns"]]
+    decision = canvas_decision(log, runs)
+    report(log, runs, pixels)
+    print_decision(decision)
+    if snap_dir:
+        os.makedirs(snap_dir, exist_ok=True)
+        for r in log["runs"]:
+            s = r.get("snapshot")
+            for mime, ext in (("image/png", "png"), ("image/jpeg", "jpg")):
+                if isinstance(s, str) and s.startswith(f"data:{mime};base64,"):
+                    with open(os.path.join(snap_dir, f"{r['backend']}-{r['scene']}.{ext}"), "wb") as f:
+                        f.write(base64.b64decode(s.split(",", 1)[1]))
+    if out_json:
+        with open(out_json, "w", encoding="utf-8") as f:
+            json.dump({"version": ANALYSIS_VERSION, "runs": runs, "pixelRuns": pixels, "decision": decision}, f, indent=1)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

@@ -1,0 +1,1129 @@
+{
+  "workspace": {
+    "originalTargets": [
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_anim-86351e58a335b192.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_audio-2f1381a15b0888ae.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_colour-83f8147da891d44a.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_desktop-a4a9a4ff16c406d5.exe)",
+        "state": "ok",
+        "passed": 38,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.27
+      },
+      {
+        "target": "unittests src\\main.rs (target\\debug\\deps\\toontown-3703dda43bfb187d.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "..\\..\\tests\\adversarial\\c03-r2-encoder.rs (target\\debug\\deps\\c03_r2_encoder-ed0ca691f15cb6c2.exe)",
+        "state": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.27
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_engine-24d4825e92b77cef.exe)",
+        "state": "ok",
+        "passed": 19,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.29
+      },
+      {
+        "target": "tests\\c11_r1_wire.rs (target\\debug\\deps\\c11_r1_wire-164e2a990935fbe2.exe)",
+        "state": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.03
+      },
+      {
+        "target": "tests\\c11_r2_wire.rs (target\\debug\\deps\\c11_r2_wire-4a90a9107d697ce1.exe)",
+        "state": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tests\\c11_r3_wire.rs (target\\debug\\deps\\c11_r3_wire-1b18e9322936c218.exe)",
+        "state": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.01
+      },
+      {
+        "target": "tests\\frontend_schemas.rs (target\\debug\\deps\\frontend_schemas-3be086263e67d1b0.exe)",
+        "state": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.25
+      },
+      {
+        "target": "tests\\wire_corpus.rs (target\\debug\\deps\\wire_corpus-2ad965e758cdad0d.exe)",
+        "state": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.01
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_executor-60786d73aee1bba9.exe)",
+        "state": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.28
+      },
+      {
+        "target": "tests\\c12_checkpoint_property.rs (target\\debug\\deps\\c12_checkpoint_property-78d1486404af87f6.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 2.2
+      },
+      {
+        "target": "tests\\c12_edit_ops.rs (target\\debug\\deps\\c12_edit_ops-c7ea50446044020b.exe)",
+        "state": "ok",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.38
+      },
+      {
+        "target": "tests\\c12_invalidation_property.rs (target\\debug\\deps\\c12_invalidation_property-2a4a0d5d6985c538.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 1.6
+      },
+      {
+        "target": "tests\\c12_kernel_state.rs (target\\debug\\deps\\c12_kernel_state-0e31cfacaa013349.exe)",
+        "state": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 33.15
+      },
+      {
+        "target": "tests\\c12_never_block.rs (target\\debug\\deps\\c12_never_block-20f4a72da86134d6.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.82
+      },
+      {
+        "target": "tests\\c12_policy.rs (target\\debug\\deps\\c12_policy-5b749b44695d7118.exe)",
+        "state": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.34
+      },
+      {
+        "target": "tests\\c12_r1_contracts.rs (target\\debug\\deps\\c12_r1_contracts-ee4b729329e8f9fa.exe)",
+        "state": "ok",
+        "passed": 36,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 40.28
+      },
+      {
+        "target": "tests\\c12_r1_macro.rs (target\\debug\\deps\\c12_r1_macro-9059e77abcfa54a9.exe)",
+        "state": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.45
+      },
+      {
+        "target": "tests\\c12_r1_scale.rs (target\\debug\\deps\\c12_r1_scale-f836009855d90bfa.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 22.54
+      },
+      {
+        "target": "tests\\c12_r1_stress.rs (target\\debug\\deps\\c12_r1_stress-9fb75eb7bd2eb6a9.exe)",
+        "state": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 58.1
+      },
+      {
+        "target": "tests\\c12_r2_contracts.rs (target\\debug\\deps\\c12_r2_contracts-c2fd585cb1bf101d.exe)",
+        "state": "ok",
+        "passed": 40,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 4.35
+      },
+      {
+        "target": "tests\\c12_r2_registry.rs (target\\debug\\deps\\c12_r2_registry-b92d3314a6cee869.exe)",
+        "state": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.11
+      },
+      {
+        "target": "tests\\c12_r2_scale.rs (target\\debug\\deps\\c12_r2_scale-e14482d7e4d79874.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 35.86
+      },
+      {
+        "target": "tests\\c12_r3_contracts.rs (target\\debug\\deps\\c12_r3_contracts-2fab5fb6d6fd8d07.exe)",
+        "state": "ok",
+        "passed": 15,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 1.49
+      },
+      {
+        "target": "tests\\c12_r3_registry.rs (target\\debug\\deps\\c12_r3_registry-0ef1465d2d628768.exe)",
+        "state": "ok",
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.22
+      },
+      {
+        "target": "tests\\c12_r3_stress.rs (target\\debug\\deps\\c12_r3_stress-6cb100210f82ef66.exe)",
+        "state": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 60.16
+      },
+      {
+        "target": "tests\\c12_r4_closure.rs (target\\debug\\deps\\c12_r4_closure-9b7133c3881a624f.exe)",
+        "state": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.24
+      },
+      {
+        "target": "tests\\c12_registry.rs (target\\debug\\deps\\c12_registry-c6e06c373b3d6921.exe)",
+        "state": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.2
+      },
+      {
+        "target": "tests\\c12_transactions.rs (target\\debug\\deps\\c12_transactions-44bb9d303ce0036f.exe)",
+        "state": "ok",
+        "passed": 14,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 1.11
+      },
+      {
+        "target": "tests\\c13_doc.rs (target\\debug\\deps\\c13_doc-2e71a396d60195b1.exe)",
+        "state": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 2.46
+      },
+      {
+        "target": "tests\\c13_projects.rs (target\\debug\\deps\\c13_projects-36803ea733dc90e2.exe)",
+        "state": "ok",
+        "passed": 10,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.82
+      },
+      {
+        "target": "tests\\compile_fail.rs (target\\debug\\deps\\compile_fail-d5b8f3de6ad3817a.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 6.8
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_fx-487405f5032325cc.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "unittests src\\main.rs (target\\debug\\deps\\toontown_headless-969b011a1cc56dbd.exe)",
+        "state": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.29
+      },
+      {
+        "target": "..\\..\\tests\\adversarial\\c01.rs (target\\debug\\deps\\adversarial_c01-706822338d577a39.exe)",
+        "state": "ok",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 2.38
+      },
+      {
+        "target": "tests\\cli.rs (target\\debug\\deps\\cli-770dbb55897c69cc.exe)",
+        "state": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.88
+      },
+      {
+        "target": "tests\\guard_fixtures.rs (target\\debug\\deps\\guard_fixtures-c2e200cd1837d257.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.49
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_io-c3e00618f19594fd.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_lipsync-d5e45d34894d6713.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_mcp-2e64a90dac0c6503.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_model-58dbd11fd7a07932.exe)",
+        "state": "ok",
+        "passed": 43,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.23
+      },
+      {
+        "target": "tests\\c11_r1_adversarial.rs (target\\debug\\deps\\c11_r1_adversarial-d828876d5a1ea5ce.exe)",
+        "state": "ok",
+        "passed": 39,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 2.69
+      },
+      {
+        "target": "tests\\c11_r2_adversarial.rs (target\\debug\\deps\\c11_r2_adversarial-5c71caa84cdacfc4.exe)",
+        "state": "ok",
+        "passed": 39,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 3.06
+      },
+      {
+        "target": "tests\\c11_r3_adversarial.rs (target\\debug\\deps\\c11_r3_adversarial-a8857936026507eb.exe)",
+        "state": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.23
+      },
+      {
+        "target": "tests\\c11_r3_random.rs (target\\debug\\deps\\c11_r3_random-6c1b6125b0b642df.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 2.47
+      },
+      {
+        "target": "tests\\c11_r3_register.rs (target\\debug\\deps\\c11_r3_register-c658429acb5dc12f.exe)",
+        "state": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.44
+      },
+      {
+        "target": "tests\\c11_r4_exposure_bounds.rs (target\\debug\\deps\\c11_r4_exposure_bounds-949c3295f69c1935.exe)",
+        "state": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.01
+      },
+      {
+        "target": "tests\\c11_r5_write_bounds.rs (target\\debug\\deps\\c11_r5_write_bounds-bd1a8838a73da728.exe)",
+        "state": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tests\\c11_r6_staged_inverse.rs (target\\debug\\deps\\c11_r6_staged_inverse-dafcb5df179ac2a0.exe)",
+        "state": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.24
+      },
+      {
+        "target": "tests\\c12_kernel_support.rs (target\\debug\\deps\\c12_kernel_support-b660eef33bdfd723.exe)",
+        "state": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.25
+      },
+      {
+        "target": "tests\\conformance.rs (target\\debug\\deps\\conformance-346978796391f47b.exe)",
+        "state": "ok",
+        "passed": 15,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.39
+      },
+      {
+        "target": "tests\\properties.rs (target\\debug\\deps\\properties-c513219dac878472.exe)",
+        "state": "ok",
+        "passed": 18,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.36
+      },
+      {
+        "target": "tests\\staged_commit.rs (target\\debug\\deps\\staged_commit-af468fefef6cbb2e.exe)",
+        "state": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 28.17
+      },
+      {
+        "target": "tests\\staged_inverse.rs (target\\debug\\deps\\staged_inverse-7decf05ae8ec3aff.exe)",
+        "state": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 18.33
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_persist-3d74022d1c9d9097.exe)",
+        "state": "ok",
+        "passed": 15,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 1.74
+      },
+      {
+        "target": "tests\\hostile.rs (target\\debug\\deps\\hostile-3c14c1234bf8390c.exe)",
+        "state": "ok",
+        "passed": 13,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 11.11
+      },
+      {
+        "target": "tests\\migrations.rs (target\\debug\\deps\\migrations-e58ec5139a3bb2ad.exe)",
+        "state": "ok",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tests\\round_trip.rs (target\\debug\\deps\\round_trip-f32a47272e580f33.exe)",
+        "state": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.6
+      },
+      {
+        "target": "tests\\zip64.rs (target\\debug\\deps\\zip64-a754f6fe8d1b377a.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 1,
+        "seconds": 0.93
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_registry-e730c98e713d3b57.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tests\\declared.rs (target\\debug\\deps\\declared-cdf1b0f615e21b9e.exe)",
+        "state": "ok",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 1.54
+      },
+      {
+        "target": "tests\\inventory.rs (target\\debug\\deps\\inventory-466b715617d46115.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_registry_macros-b1205c8f1eec8710.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_render-2a70cceafcf2b977.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tests\\c03_fixed_configurations.rs (target\\debug\\deps\\c03_fixed_configurations-0dc19d47ae4881b2.exe)",
+        "state": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 4.75
+      },
+      {
+        "target": "tests\\c03_r1_stress.rs (target\\debug\\deps\\c03_r1_stress-cb6dca8d5119bd07.exe)",
+        "state": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 1,
+        "seconds": 7.07
+      },
+      {
+        "target": "tests\\c03_r2_quality.rs (target\\debug\\deps\\c03_r2_quality-486b76ccc6b17b2a.exe)",
+        "state": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 3.46
+      },
+      {
+        "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_vector-2dc1a838f75c92cb.exe)",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_anim",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_audio",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_colour",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_desktop",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_engine",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_executor",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_fx",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_io",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_lipsync",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_mcp",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_model",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_persist",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_registry",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_registry_macros",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_render",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "tt_vector",
+        "state": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      }
+    ],
+    "originalPassed": 556,
+    "originalFailed": 0,
+    "originalIgnored": 2,
+    "reviewerTargets": [
+      {
+        "target": "tests\\c13_r1_evidence_oracle1.rs (target\\debug\\deps\\c13_r1_evidence_oracle1-1e9ee3e139ba5cf8.exe)",
+        "state": "FAILED",
+        "passed": 4,
+        "failed": 1,
+        "ignored": 0,
+        "seconds": 81.1
+      },
+      {
+        "target": "tests\\c13_r1_persistence.rs (target\\debug\\deps\\c13_r1_persistence-325b16146220dfb0.exe)",
+        "state": "FAILED",
+        "passed": 0,
+        "failed": 6,
+        "ignored": 0,
+        "seconds": 0.36
+      },
+      {
+        "target": "tests\\c13_r1_format.rs (target\\debug\\deps\\c13_r1_format-30bd05bdf1305cd0.exe)",
+        "state": "FAILED",
+        "passed": 1,
+        "failed": 6,
+        "ignored": 0,
+        "seconds": 37.91
+      }
+    ]
+  },
+  "initialPersistExecutor": [
+    {
+      "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_executor-eefa3c4bbc3ba3fa.exe)",
+      "state": "ok",
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.27
+    },
+    {
+      "target": "tests\\c12_checkpoint_property.rs (target\\debug\\deps\\c12_checkpoint_property-0ed524d82a472b27.exe)",
+      "state": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 2.13
+    },
+    {
+      "target": "tests\\c12_edit_ops.rs (target\\debug\\deps\\c12_edit_ops-e75941bed955ec64.exe)",
+      "state": "ok",
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.37
+    },
+    {
+      "target": "tests\\c12_invalidation_property.rs (target\\debug\\deps\\c12_invalidation_property-3ff6c6671d38d4e2.exe)",
+      "state": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 1.5
+    },
+    {
+      "target": "tests\\c12_kernel_state.rs (target\\debug\\deps\\c12_kernel_state-7802400124e9d0b5.exe)",
+      "state": "ok",
+      "passed": 7,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 32.38
+    },
+    {
+      "target": "tests\\c12_never_block.rs (target\\debug\\deps\\c12_never_block-ab245499fda68804.exe)",
+      "state": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.84
+    },
+    {
+      "target": "tests\\c12_policy.rs (target\\debug\\deps\\c12_policy-ec982b21d77f42e9.exe)",
+      "state": "ok",
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.32
+    },
+    {
+      "target": "tests\\c12_r1_contracts.rs (target\\debug\\deps\\c12_r1_contracts-fcd558eab09cd166.exe)",
+      "state": "ok",
+      "passed": 36,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 39.17
+    },
+    {
+      "target": "tests\\c12_r1_macro.rs (target\\debug\\deps\\c12_r1_macro-05fa0e0b833683d2.exe)",
+      "state": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 28.22
+    },
+    {
+      "target": "tests\\c12_r1_scale.rs (target\\debug\\deps\\c12_r1_scale-132d94a42aaf1356.exe)",
+      "state": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 22.72
+    },
+    {
+      "target": "tests\\c12_r1_stress.rs (target\\debug\\deps\\c12_r1_stress-ba15c1451688dfa6.exe)",
+      "state": "ok",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 59.31
+    },
+    {
+      "target": "tests\\c12_r2_contracts.rs (target\\debug\\deps\\c12_r2_contracts-08cb2db961b2f3ed.exe)",
+      "state": "ok",
+      "passed": 40,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 4.48
+    },
+    {
+      "target": "tests\\c12_r2_registry.rs (target\\debug\\deps\\c12_r2_registry-9985681ff9c86a73.exe)",
+      "state": "ok",
+      "passed": 7,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.11
+    },
+    {
+      "target": "tests\\c12_r2_scale.rs (target\\debug\\deps\\c12_r2_scale-fed1680031790c4d.exe)",
+      "state": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 36.74
+    },
+    {
+      "target": "tests\\c12_r3_contracts.rs (target\\debug\\deps\\c12_r3_contracts-d09e84d875d6fd5b.exe)",
+      "state": "ok",
+      "passed": 15,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 1.5
+    },
+    {
+      "target": "tests\\c12_r3_registry.rs (target\\debug\\deps\\c12_r3_registry-d92a1238a53b19d8.exe)",
+      "state": "ok",
+      "passed": 12,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.22
+    },
+    {
+      "target": "tests\\c12_r3_stress.rs (target\\debug\\deps\\c12_r3_stress-c1820ad976c1e956.exe)",
+      "state": "ok",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 57.45
+    },
+    {
+      "target": "tests\\c12_r4_closure.rs (target\\debug\\deps\\c12_r4_closure-d8271c5a40b3e1aa.exe)",
+      "state": "ok",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.24
+    },
+    {
+      "target": "tests\\c12_registry.rs (target\\debug\\deps\\c12_registry-eb5f817f3e47d8e3.exe)",
+      "state": "ok",
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.2
+    },
+    {
+      "target": "tests\\c12_transactions.rs (target\\debug\\deps\\c12_transactions-32ea5caad1f7eb96.exe)",
+      "state": "ok",
+      "passed": 14,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 1.11
+    },
+    {
+      "target": "tests\\c13_doc.rs (target\\debug\\deps\\c13_doc-27140be28fbdfe84.exe)",
+      "state": "ok",
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 2.41
+    },
+    {
+      "target": "tests\\c13_projects.rs (target\\debug\\deps\\c13_projects-f2c241066ecdaa24.exe)",
+      "state": "ok",
+      "passed": 10,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.79
+    },
+    {
+      "target": "tests\\compile_fail.rs (target\\debug\\deps\\compile_fail-7a80c7fdda9f5ef8.exe)",
+      "state": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 43.54
+    },
+    {
+      "target": "unittests src\\lib.rs (target\\debug\\deps\\tt_persist-8f03a29527c0bf0e.exe)",
+      "state": "ok",
+      "passed": 15,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.03
+    },
+    {
+      "target": "tests\\hostile.rs (target\\debug\\deps\\hostile-a72420f1f77e45fd.exe)",
+      "state": "ok",
+      "passed": 13,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 2.69
+    },
+    {
+      "target": "tests\\migrations.rs (target\\debug\\deps\\migrations-015f9d4dcd32d6d5.exe)",
+      "state": "ok",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.0
+    },
+    {
+      "target": "tests\\round_trip.rs (target\\debug\\deps\\round_trip-ce8e99964baba99a.exe)",
+      "state": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.45
+    },
+    {
+      "target": "tests\\zip64.rs (target\\debug\\deps\\zip64-46f4e4e803da1b6e.exe)",
+      "state": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 1,
+      "seconds": 0.86
+    },
+    {
+      "target": "tt_executor",
+      "state": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.0
+    },
+    {
+      "target": "tt_persist",
+      "state": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 0.0
+    }
+  ],
+  "growth": {
+    "baseline": {
+      "binarySumSeconds": 543.41,
+      "passed": 502,
+      "targets": {
+        "c12_r1_stress": {
+          "state": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "seconds": 66.55
+        },
+        "compile_fail": {
+          "state": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "seconds": 47.92
+        },
+        "c12_kernel_state": {
+          "state": "ok",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0,
+          "seconds": 26.52
+        }
+      }
+    },
+    "budget": {
+      "binarySumSeconds": 997.15,
+      "passed": 556,
+      "targets": {
+        "c12_r1_stress": {
+          "state": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "seconds": 128.26
+        },
+        "compile_fail": {
+          "state": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "seconds": 109.27
+        },
+        "c12_kernel_state": {
+          "state": "ok",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0,
+          "seconds": 110.53
+        }
+      }
+    },
+    "initial": {
+      "binarySumSeconds": 1157.95,
+      "passed": 556,
+      "targets": {
+        "c12_r1_stress": {
+          "state": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "seconds": 159.48
+        },
+        "compile_fail": {
+          "state": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "seconds": 133.89
+        },
+        "c12_kernel_state": {
+          "state": "ok",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0,
+          "seconds": 81.18
+        }
+      }
+    }
+  },
+  "frontendCI": {
+    "baseline": {
+      "1_check (windows-latest).txt": {
+        "outsideLintSubtestDurationMs": null,
+        "timedOut": false,
+        "vitest333": true,
+        "reviewerPython11": true,
+        "subtestExcerpt": ""
+      },
+      "3_check (macos-latest).txt": {
+        "outsideLintSubtestDurationMs": null,
+        "timedOut": false,
+        "vitest333": true,
+        "reviewerPython11": true,
+        "subtestExcerpt": ""
+      }
+    },
+    "initial": {
+      "1_check (macos-latest).txt": {
+        "outsideLintSubtestDurationMs": "30179.988458",
+        "timedOut": true,
+        "vitest333": true,
+        "reviewerPython11": false,
+        "subtestExcerpt": "# Subtest: C01-R2-01: lint coverage follows frontend imports outside desktop/src\nnot ok 6 - C01-R2-01: lint coverage follows frontend imports outside desktop/src\n  ---\n  duration_ms: 30179.988458\n  type: 'test'\n  location: '/Users/runner/work/261017-toontown-dev/261017-toontown-dev/tests/adversarial/c01-r2-boundary.test.mjs:65:1'\n  failureType: 'testCodeFailure'\n  error: 'ifError got unwanted exception: spawnSync /Users/runner/hostedtoolcache/node/22.23.3/arm64/bin/node ETIMEDOUT'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: ~\n  actual:\n  error: 'spawnSync /Users/runner/hostedtoolcache/node/22.23.3/arm64/bin/node ETIMEDOUT'\n  stack: |-\n    Object.spawnSync (node:internal/child_process:1120:20)\n    spawnSync (node:child_process:902:24)\n    TestContext.<anonymous> (file:///Users/runner/work/261017-toontown-dev/261017-toontown-dev/tests/adversarial/c01-r2-boundary.test.mjs:77:17)\n    async Test.run (node:internal/test_runner/test:1054:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)\n  operator: 'ifError'\n  stack: |-\n    TestContext.<anonymous> (file:///Users/runner/work/261017-toontown-dev/261017-toontown-dev/tests/adversarial/c01-r2-boundary.test.mjs:80:12)\n    Object.spawnSync (node:internal/child_process:1120:20)\n    spawnSync (node:child_process:902:24)\n    TestContext.<anonymous> (file:///Users/runner/work/261017-toontown-dev/261017-toontown-dev/tests/adversarial/c01-r2-boundary.test.mjs:77:17)\n    async Test.run (node:internal/test_runner/test:1054:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 5\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 38633.539375\n', '' ], pid: 4193, stdout: 'TAP version 13\n"
+      },
+      "4_check (windows-latest).txt": {
+        "outsideLintSubtestDurationMs": null,
+        "timedOut": false,
+        "vitest333": true,
+        "reviewerPython11": true,
+        "subtestExcerpt": ""
+      }
+    },
+    "budget": {
+      "2_check (macos-latest).txt": {
+        "outsideLintSubtestDurationMs": null,
+        "timedOut": false,
+        "vitest333": true,
+        "reviewerPython11": true,
+        "subtestExcerpt": ""
+      },
+      "3_check (windows-latest).txt": {
+        "outsideLintSubtestDurationMs": null,
+        "timedOut": false,
+        "vitest333": true,
+        "reviewerPython11": true,
+        "subtestExcerpt": ""
+      }
+    },
+    "rerun": {
+      "0_check (macos-latest).txt": {
+        "outsideLintSubtestDurationMs": null,
+        "timedOut": false,
+        "vitest333": true,
+        "reviewerPython11": true,
+        "subtestExcerpt": ""
+      }
+    }
+  },
+  "localLintComparison": [
+    {
+      "ref": "67265b8",
+      "commandsTsBytes": 2093066,
+      "medianSeconds": 9.111430099932477,
+      "allPassed": true
+    },
+    {
+      "ref": "f119948",
+      "commandsTsBytes": 2131622,
+      "medianSeconds": 9.04262370010838,
+      "allPassed": true
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+$ pnpm test
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m1-c14-r5
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m1-c14-r5\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c14-r5/desktop
+
+
+ Test Files  40 passed (40)
+      Tests  333 passed (333)
+   Start at  11:15:26
+   Duration  66.43s (tests 77%, environment 13%, setup 6%, import 2%, transform 1%)
+
+    Isolate  40 workers spawned · ~276ms startup each (spawn + environment, per file)
+             at least ~10.75s faster with isolate: false — reuses workers across files instead of one per file
+
+TAP version 13
+# Subtest: single identifiers
+ok 1 - single identifiers
+  ---
+  duration_ms: 0.9504
+  type: 'test'
+  ...
+# Subtest: OR needs one allowed alternative, AND needs all
+ok 2 - OR needs one allowed alternative, AND needs all
+  ---
+  duration_ms: 0.2158
+  type: 'test'
+  ...
+# Subtest: precedence: AND binds tighter than OR
+ok 3 - precedence: AND binds tighter than OR
+  ---
+  duration_ms: 0.1119
+  type: 'test'
+  ...
+# Subtest: nested groups (C01-R1-01)
+ok 4 - nested groups (C01-R1-01)
+  ---
+  duration_ms: 0.8615
+  type: 'test'
+  ...
+# Subtest: WITH exceptions must be allowed as a whole
+ok 5 - WITH exceptions must be allowed as a whole
+  ---
+  duration_ms: 0.1556
+  type: 'test'
+  ...
+# Subtest: or-later suffix
+ok 6 - or-later suffix
+  ---
+  duration_ms: 0.0674
+  type: 'test'
+  ...
+# Subtest: malformed and non-SPDX strings fail closed
+ok 7 - malformed and non-SPDX strings fail closed
+  ---
+  duration_ms: 0.1049
+  type: 'test'
+  ...
+# Subtest: every operand is validated, even behind an allowed OR branch (C01-R2-03)
+ok 8 - every operand is validated, even behind an allowed OR branch (C01-R2-03)
+  ---
+  duration_ms: 0.1449
+  type: 'test'
+  ...
+# Subtest: allow-list is read from deny.toml
+ok 9 - allow-list is read from deny.toml
+  ---
+  duration_ms: 0.3673
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 60.5866
+
+[exit 0]

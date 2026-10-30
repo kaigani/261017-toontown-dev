@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "exitCode": 0,
+    "seconds": 0.9819078999571502
+  },
+  {
+    "command": [
+      "cargo",
+      "clippy",
+      "-p",
+      "tt-executor",
+      "--test",
+      "c13_r2_persistence",
+      "-p",
+      "tt-persist",
+      "--test",
+      "c13_r1_format",
+      "--test",
+      "c13_r2_format",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exitCode": 0,
+    "seconds": 0.7815741000231355
+  }
+]

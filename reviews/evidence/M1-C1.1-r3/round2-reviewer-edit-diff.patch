@@ -1,0 +1,32 @@
+diff --git a/crates/model/tests/c11_r2_adversarial.rs b/crates/model/tests/c11_r2_adversarial.rs
+index 5cba916..99d31b8 100644
+--- a/crates/model/tests/c11_r2_adversarial.rs
++++ b/crates/model/tests/c11_r2_adversarial.rs
+@@ -49,7 +49,10 @@ fn op(kind: &'static str, path: &str, from: Option<&str>, value: Option<Value>,
+ 
+ fn roundtrip_patch(before: Value, patch: Vec<change::PatchOp>) {
+     let after = change::apply(&before, &patch).unwrap();
+-    let inverse = change::invert(&patch);
++    // Amended by the builder in round 2 per the orchestrator's C11-R2-02 ruling ("inverses must be computed against
++    // the pre-state with resolved concrete indices (never `-`)"): the inverse is computed from `before`. The two
++    // assertions are unchanged.
++    let inverse = change::invert_against(&before, &patch).unwrap();
+     assert_eq!(change::apply(&after, &inverse).unwrap(), before, "patch={patch:?}; inverse={inverse:?}");
+ }
+ 
+diff --git a/tests/adversarial/c11-r2-review-policy.py b/tests/adversarial/c11-r2-review-policy.py
+index 9340241..6f67be7 100644
+--- a/tests/adversarial/c11-r2-review-policy.py
++++ b/tests/adversarial/c11-r2-review-policy.py
+@@ -27,7 +27,10 @@ class ReviewPolicy(unittest.TestCase):
+                           "desktop/src/ipc/c11-r1-adversarial.test.ts",
+                           "desktop/src/test", "tests/adversarial").splitlines())
+         allowed = {"crates/model/tests/c11_r1_adversarial.rs",
+-                   "crates/engine/tests/c11_r1_wire.rs"}
++                   "crates/engine/tests/c11_r1_wire.rs",
++                   # Amended by the builder in round 2 per the orchestrator's C11-R2-01 ruling (2026-10-18): the
++                   # guards.mjs MIT-0 edit "is accepted retroactively" and is declared in the round-2 response.
++                   "tests/adversarial/guards.mjs"}
+         self.assertFalse(changed - allowed, "C11-R2-01: unauthorized reviewer-test edit: " + str(changed - allowed))
+ 
+     def test_claimed_response_raw_logs_are_committed(self):

@@ -1,0 +1,19 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-desktop",
+    "--locked",
+    "--features",
+    "m0-diagnostics"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:36:43.595480+00:00",
+  "elapsed_seconds": 42.61648950004019,
+  "exit_code": 0,
+  "log": "logs\\baseline-gate-test-diagnostics.log",
+  "sha256": "74ecb4608bff889004529e24a1b5d019b246cc472ad8e332749e33e23cfa7ac4",
+  "proptest_seed": "1182712"
+}

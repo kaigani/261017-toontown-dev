@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r5\reviews\evidence\M1-C1.2-r5\audit-delta.py", line 39, in <module>
+    assert all((c['kind'] == 'removed' and c['path'][-1] in ('enum', 'const')) or
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               (c['kind'] == 'added' and c['path'][-1] == 'type') for c in changes)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

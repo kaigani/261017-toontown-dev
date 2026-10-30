@@ -1,0 +1,137 @@
+{
+  "failure": "disk exhaustion during Rust linking; successful frontend/fmt gates retained; subsequent compact-gates is the conclusive Rust run",
+  "logs": [
+    {
+      "log": "gates-run\\gates\\build.log",
+      "sha256": "6b9cd4a2f67ed7ea152858b54e928785ac4bc00bea5bf8a38e374cf24d1a2510",
+      "commands": [
+        "pnpm --dir desktop build:diagnostics",
+        "pnpm --dir desktop build"
+      ],
+      "exits": [
+        "0",
+        "0"
+      ],
+      "complete": true
+    },
+    {
+      "log": "gates-run\\gates\\clippy-diag.log",
+      "sha256": "0c1790a847e2f5e273ac8ad83a81f7da804621be02bdd84e844e6c13218bd901",
+      "commands": [
+        "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings"
+      ],
+      "exits": [
+        "101"
+      ],
+      "complete": true
+    },
+    {
+      "log": "gates-run\\gates\\clippy.log",
+      "sha256": "2bbde728c3fb74f66f677fa5b7af5fb96e19a86e81a807631a8c4f5cb019cb0e",
+      "commands": [
+        "cargo clippy --workspace --all-targets --locked -- -D warnings"
+      ],
+      "exits": [
+        "0"
+      ],
+      "complete": true
+    },
+    {
+      "log": "gates-run\\gates\\fmt.log",
+      "sha256": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
+      "commands": [
+        "cargo fmt --all --check"
+      ],
+      "exits": [
+        "0"
+      ],
+      "complete": true
+    },
+    {
+      "log": "gates-run\\gates\\pnpm-format.log",
+      "sha256": "e51bcc20c5ff35fe484ec318152ece4e1e72e9d0a0d618abdabe534833a5a43e",
+      "commands": [
+        "pnpm format:check"
+      ],
+      "exits": [
+        "0"
+      ],
+      "complete": true
+    },
+    {
+      "log": "gates-run\\gates\\pnpm-licenses.log",
+      "sha256": "8c026c4b9295c83cc7abc7c5de91b7d8f06991acbee3abc2efa7c058abdb6332",
+      "commands": [
+        "pnpm licenses:check"
+      ],
+      "exits": [
+        "0"
+      ],
+      "complete": true
+    },
+    {
+      "log": "gates-run\\gates\\pnpm-lint.log",
+      "sha256": "1fbb745cc3b53eecb1d926f95368273964dcf90dd36def3a4802ed5cb7b37964",
+      "commands": [
+        "pnpm lint"
+      ],
+      "exits": [
+        "0"
+      ],
+      "complete": true
+    },
+    {
+      "log": "gates-run\\gates\\pnpm-test.log",
+      "sha256": "6b056d5174df1822468ef66a2510cadb2cc11af581290b197025d441ece81f3b",
+      "commands": [
+        "pnpm test"
+      ],
+      "exits": [
+        "0"
+      ],
+      "complete": true
+    },
+    {
+      "log": "gates-run\\gates\\pnpm-typecheck.log",
+      "sha256": "bcc62d4a843c771fd29e780e5a844d7770077b2d98e83d26bbbb41f76276b337",
+      "commands": [
+        "pnpm typecheck"
+      ],
+      "exits": [
+        "0"
+      ],
+      "complete": true
+    },
+    {
+      "log": "gates-run\\gates\\reviewer-python-suites.log",
+      "sha256": "700e8a07566afbc7d1aee9f73522d4dd1760bec031dcc61d7fd2c01f712c0f97",
+      "commands": [
+        "\"C:\\Python313\\python.exe\" scripts/run-reviewer-python-suites.py"
+      ],
+      "exits": [
+        "0"
+      ],
+      "complete": true
+    },
+    {
+      "log": "gates-run\\gates\\test-diag.log",
+      "sha256": "5d209ca6c621e016521d023a8f9999f652a6ba397cfc86edd61eecf433b03b2a",
+      "commands": [
+        "cargo test -p tt-desktop --locked --features m0-diagnostics"
+      ],
+      "exits": [],
+      "complete": false
+    },
+    {
+      "log": "gates-run\\gates\\test.log",
+      "sha256": "e5aaaf95042991a1b577ec2d2dc4552f044698b9eb2c7894ea2995a36f1bc4fa",
+      "commands": [
+        "cargo test --workspace --locked --no-fail-fast"
+      ],
+      "exits": [
+        "101"
+      ],
+      "complete": true
+    }
+  ]
+}

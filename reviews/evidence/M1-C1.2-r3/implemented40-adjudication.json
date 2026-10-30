@@ -1,0 +1,364 @@
+[
+  {
+    "id": "app.context.set",
+    "source": "crates/executor/src/commands/app.rs:63",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "app.currentElement.move",
+    "source": "crates/executor/src/commands/app.rs:178",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "app.frame.move",
+    "source": "crates/executor/src/commands/app.rs:293",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "app.mode.set",
+    "source": "crates/executor/src/commands/app.rs:372",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "checkpoint.create",
+    "source": "crates/executor/src/commands/checkpoint.rs:40",
+    "status": "divergent",
+    "findings": [
+      "C12-R3-02"
+    ],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "checkpoint.delete",
+    "source": "crates/executor/src/commands/checkpoint.rs:147",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "doc.object.find",
+    "source": "crates/executor/src/commands/doc.rs:445",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "doc.object.patch",
+    "source": "crates/executor/src/commands/doc.rs:860",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "doc.schema.list",
+    "source": "crates/executor/src/commands/doc.rs:1016",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "doc.state.get",
+    "source": "crates/executor/src/commands/doc.rs:1115",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "edit.clipboard.changed",
+    "source": "crates/executor/src/commands/edit.rs:898",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Event is registered metadata and rejects invocation; event tests verify delivery."
+  },
+  {
+    "id": "edit.clipboard.get",
+    "source": "crates/executor/src/commands/edit.rs:833",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "edit.clipboard.set",
+    "source": "crates/executor/src/commands/edit.rs:882",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "edit.copy",
+    "source": "crates/executor/src/commands/edit_ops.rs:1504",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "edit.cutSpecial",
+    "source": "crates/executor/src/commands/edit_ops.rs:1597",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "edit.delete",
+    "source": "crates/executor/src/commands/edit_ops.rs:1529",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "edit.deselectAll",
+    "source": "crates/executor/src/commands/edit.rs:572",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "edit.history.changed",
+    "source": "crates/executor/src/commands/edit.rs:280",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Event is registered metadata and rejects invocation; event tests verify delivery."
+  },
+  {
+    "id": "edit.history.get",
+    "source": "crates/executor/src/commands/edit.rs:182",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "edit.pasteSpecial",
+    "source": "crates/executor/src/commands/edit_ops.rs:1657",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "edit.selection.changed",
+    "source": "crates/executor/src/commands/edit.rs:587",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Event is registered metadata and rejects invocation; event tests verify delivery."
+  },
+  {
+    "id": "edit.selection.get",
+    "source": "crates/executor/src/commands/edit.rs:324",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "job.finished",
+    "source": "crates/executor/src/commands/job.rs:164",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Event is registered metadata and rejects invocation; event tests verify delivery."
+  },
+  {
+    "id": "project.dirty.changed",
+    "source": "crates/executor/src/commands/project.rs:497",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Event is registered metadata and rejects invocation; event tests verify delivery."
+  },
+  {
+    "id": "project.opened",
+    "source": "crates/executor/src/commands/project.rs:521",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Event is registered metadata and rejects invocation; event tests verify delivery."
+  },
+  {
+    "id": "window.panel.list",
+    "source": "crates/executor/src/commands/window.rs:35",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "window.panel.move",
+    "source": "crates/executor/src/commands/window.rs:137",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "window.sidePanelsExtended.set",
+    "source": "crates/executor/src/commands/window.rs:184",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "window.toolbar.items.reset",
+    "source": "crates/executor/src/commands/window.rs:385",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "window.toolbar.items.set",
+    "source": "crates/executor/src/commands/window.rs:349",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "window.toolbar.list",
+    "source": "crates/executor/src/commands/window.rs:248",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "window.toolbar.set",
+    "source": "crates/executor/src/commands/window.rs:307",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "workspace.create",
+    "source": "crates/executor/src/commands/workspace.rs:120",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "workspace.delete",
+    "source": "crates/executor/src/commands/workspace.rs:171",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "workspace.get",
+    "source": "crates/executor/src/commands/workspace.rs:38",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "workspace.layout.set",
+    "source": "crates/executor/src/commands/workspace.rs:226",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "workspace.list",
+    "source": "crates/executor/src/commands/workspace.rs:17",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "workspace.reset",
+    "source": "crates/executor/src/commands/workspace.rs:206",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "workspace.save",
+    "source": "crates/executor/src/commands/workspace.rs:83",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  },
+  {
+    "id": "workspace.select",
+    "source": "crates/executor/src/commands/workspace.rs:70",
+    "status": "implemented",
+    "findings": [],
+    "checked": "spec A/01 or owning section; source declaration/handler; enablement/no-project/scopes; example/result schema; malformed execution",
+    "runtimeEvidence": "c12_r3_stress::every_executable_typed_example_also_validates_its_result_schema; retained c12_policy/c12_workspace/c12_jobs/c12_transactions/c12_registry suites",
+    "note": "Command checked as callable handler."
+  }
+]

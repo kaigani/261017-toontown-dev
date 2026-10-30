@@ -1,0 +1,69 @@
+{
+  "what": "Round-3 response: local gate logs (gates/) and the reviewer's TypeScript 10 MB validation measurement (measurements/), recorded from the working tree described by baseCommit + dirtyFiles, before the round-3 commit.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-*.log": "pnpm lint | typecheck | test | format:check | licenses:check",
+    "gates/node-test.log": "node --test scripts/check-npm-licenses.test.mjs",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless-*.log, selftest-*": "cargo build --release --locked -p tt-headless; --selftest --json twice, compared; scripts/check-headless-deps.py",
+    "gates/c03-r1-tooling.log": "python tests/adversarial/c03-r1-tooling.py",
+    "measurements/ts-10mb-drawing-node.log": "pnpm --dir desktop exec vitest run src/ipc/c11-r1-adversarial.test.ts --silent=false"
+  },
+  "recordedAt": "2026-10-18T23:21:35+00:00",
+  "baseCommit": "a551cd0e1ca479142e2a2e30f52e801d663c9ffc",
+  "dirtyFiles": [
+    "crates/model/schema/model-1.0.schema.json",
+    "crates/model/src/change.rs",
+    "crates/model/src/schema.rs",
+    "crates/model/src/validate.rs",
+    "crates/model/tests/c11_r1_adversarial.rs",
+    "crates/model/tests/c11_r2_adversarial.rs",
+    "crates/model/tests/c11_r3_adversarial.rs",
+    "crates/model/tests/conformance.rs",
+    "crates/model/tests/properties.rs",
+    "desktop/src/ipc/generated/model.ts",
+    "desktop/src/ipc/wireJson.ts",
+    "docs/decisions/ADR-0010-object-model-and-identifiers.md",
+    "docs/decisions/ADR-0011-canonical-json-and-schemas.md",
+    "docs/decisions/ADR-0012-ipc-wire-transport.md",
+    "plan/traceability.csv",
+    "reviews/M1-C1.1-handoff.md",
+    "reviews/evidence/M1-C1.1-r3-response/"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "timeOrigin": "performance.now() elapsed around one operation (wall clock, ms)",
+  "caveats": [
+    "single run, background load not controlled"
+  ],
+  "sha256": {
+    "gates/build.log": "29d529c49578484bea4192d3a463a5a462db238f6986d4a27637fba68c99e9f7",
+    "gates/c03-r1-tooling.log": "98a4be059bbc15a2e4a290d9393cad93a0c6327e211c5f8b7c871b9c2755e31b",
+    "gates/clippy-diag.log": "725a058ba7941fbeca554f2c44dc8c42d763fd28ca8f5f13c23fcd150230ed7d",
+    "gates/clippy.log": "1ad2cae5a7873c3bd6dc8d27bf2cfc7ec8efcc7f2ae5c266c0eebdf2351fec66",
+    "gates/deny.log": "69c387dc462b9c37f752f53d1c7a2a510e7bfc60550534035443e44d43c24a3d",
+    "gates/fmt.log": "e20fecd1b340974b1c268348f4daa9d31a5c67f6065c319097a12bbe3e21f962",
+    "gates/headless-build.log": "41f179b658bf94192588e3849606ecbbeb2b77b5b4f5f3f64628c8cea9dfaf8e",
+    "gates/headless-deps.log": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295",
+    "gates/node-test.log": "140645e338b4c6cb8be27328eb328b5e191d8933f80f18f5f8ba3a3641b3be30",
+    "gates/pnpm-format.log": "3741b86ebc596c5914a8805d60966c473eb165aa935bad114c67be1d4b114bb1",
+    "gates/pnpm-licenses.log": "26eeca268a0c4bdfb47c1188020ecd167a2a1b3944c625ed7225fe0fb7f10535",
+    "gates/pnpm-lint.log": "9acfaa811763526641b9fd04d72d6150daffdae7aa0f42b3e1e1fe4afbbe7a21",
+    "gates/pnpm-test.log": "ba85bbacc4285d4e30f7e7c887a2dc2b7f5a591138cee062b0be19eb0042879b",
+    "gates/pnpm-typecheck.log": "de37029285525bc9cfc231919392594833e45e9f3c3c5f6c5a7925c99161762f",
+    "gates/selftest-1.json": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+    "gates/selftest-2.json": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+    "gates/selftest-compare.log": "67bd29b3acc47c40247ef48e2155b582d8ac3af5ed0afd23947c089ed02d3e9c",
+    "gates/test-diag.log": "2861a1fe95f5f8af770ede24e931810e0a55858d5b2e6b7ddf5348bdfc955ea4",
+    "gates/test.log": "2cd6075155ee9184941533950485dec3658584d0616c1da88abdfba422ff6e10",
+    "measurements/ts-10mb-drawing-node.log": "340d1b05b78663f1aae5bf0d59775e3111daba0b050c9f64fcedbdca24a660b8"
+  }
+}

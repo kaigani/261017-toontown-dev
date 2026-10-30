@@ -1,0 +1,15 @@
+error[E0521]: borrowed data escapes outside of function
+ --> tests/ui/job_keeps_context.rs:5:13
+  |
+4 |   fn handler(cx: &mut tt_executor::Cx, jobs: &Arc<tt_executor::JobTable>) {
+  |              --  - let's call the lifetime of this reference `'1`
+  |              |
+  |              `cx` is a reference that is only valid in the function body
+5 |       let _ = jobs.submit("job.test", "user", move |_| {
+  |  _____________^
+6 | |         cx.patch_objects(Vec::new()).map(|()| serde_json::Value::Null)
+7 | |     });
+  | |      ^
+  | |      |
+  | |______`cx` escapes the function body here
+  |        argument requires that `'1` must outlive `'static`

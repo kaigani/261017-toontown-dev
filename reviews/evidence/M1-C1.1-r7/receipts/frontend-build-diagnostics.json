@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "--dir",
+    "desktop",
+    "build:diagnostics"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:21:02.926813+00:00",
+  "elapsed_seconds": 1.846,
+  "exit_code": 0,
+  "log": "logs/frontend-build-diagnostics.log",
+  "sha256": "2bfebda38c20ecebf52999db10d6df3616e09ab62d1622a1ede70d2951c6d350",
+  "env": {}
+}

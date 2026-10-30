@@ -1,0 +1,14 @@
+{
+  "command": [
+    "cargo",
+    "deny",
+    "--locked",
+    "check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:51:19.439546+00:00",
+  "seconds": 6.672045400016941,
+  "exit": 0,
+  "logSha256": "b7947b857e9c138f007480d9251f190986f3c6f952cf2037fc8fd04d31d87c17",
+  "proptestSeed": "1182711"
+}

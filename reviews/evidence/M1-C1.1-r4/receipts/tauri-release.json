@@ -1,0 +1,22 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "--dir",
+    "desktop",
+    "tauri",
+    "build",
+    "--no-bundle",
+    "--",
+    "--locked"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r4",
+  "base": "3b6179f57bbdf65ac847787f34ef937f88035178",
+  "started_utc": "2026-10-18T23:54:28.052770+00:00",
+  "elapsed_seconds": 67.117,
+  "exit_code": 0,
+  "log": "logs/tauri-release.log",
+  "sha256": "cbb2be9b84fbe0d0d0f1195dce487f01bc95559d457dc0d6cde6fe0c9e5ed8e6",
+  "env": {}
+}

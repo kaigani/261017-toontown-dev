@@ -1,0 +1,85 @@
+{
+  "id": "el_01K742SG18FWWKH14N0RFB0V71",
+  "type": "element",
+  "rev": 1,
+  "name": "Dialogue",
+  "elementType": "sound",
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "visibleInXsheet": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "streamed": false,
+  "showMouthShapes": true,
+  "placements": [
+    {
+      "id": "pl_01K742SG26M7NBT20KCAM2NWXK",
+      "type": "soundPlacement",
+      "rev": 1,
+      "assetId": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+      "startFrame": 1,
+      "stopFrame": 8,
+      "inPoint": 0,
+      "outPoint": 2.5,
+      "loops": 1,
+      "volume": -3,
+      "envelope": [
+        {
+          "time": 0,
+          "left": 0,
+          "right": 0
+        },
+        {
+          "time": 0.5,
+          "left": 1,
+          "right": 1
+        }
+      ],
+      "mouthTrack": {
+        "mouths": "XABBCDEX",
+        "manual": [
+          {
+            "from": 3,
+            "to": 4
+          }
+        ],
+        "labels": {
+          "1": "rest"
+        },
+        "source": "detected",
+        "producedFor": {
+          "assetId": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+          "inPoint": 0,
+          "outPoint": 2.5,
+          "loops": 1,
+          "stopFrame": 8,
+          "frameRate": 23.976
+        }
+      }
+    }
+  ],
+  "lipSyncMappings": [
+    {
+      "drawingElementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+      "mapping": {
+        "A": "dr_01K742SG0M5J3BAJSW8241WA87",
+        "B": null,
+        "C": null,
+        "D": null,
+        "E": null,
+        "F": null,
+        "G": null,
+        "X": "dr_01K742SG0NG5HTFZRD7238FZXJ"
+      },
+      "autoReapply": true
+    }
+  ],
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

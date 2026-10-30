@@ -1,0 +1,348 @@
+# ADR-0014 — Persistence: packages, folders, saves, recovery and the `project.*`/`doc.*` commands
+
+Status: accepted (M1 C1.3, 2026-10-26). Scope: plan §4 row M1, checkpoint C1.3; the C1.3 tickets of the C1.2
+closure (`reviews/M1-C1.2-r5-closure.md`).
+
+## Context
+
+C1.2 delivered the serialized executor with a guarded load path (ADR-0013 §16) but no files. Spec 10 §6–§8 fixes:
+- the package (`.animpkg`, zip with ZIP64) and its folder form;
+- the manifest and versions, migrations;
+- the load sequence with repairs and a load report;
+- atomic saves, backups, autosave, crash recovery, read-only and locking.
+
+Spec 01 §3 and §11 add new-project defaults, recent projects, presets and persisted user settings. Spec 10 §10 and
+spec A list the `project.*` and `doc.*` commands. Spec 11 §14.3 requires a round trip: objects created by commands,
+saved, reopened, read back identically.
+
+## Decision
+
+1. **Two crates, one owner of installation.**
+   - `tt-persist` reads and writes files. Loading produces a *candidate* `Document` plus its load report, preserved
+     data and binary entries. It never touches an open document.
+   - Only the executor installs a candidate. It does so through `install_into`, which needs a `LoadGrant`, after
+     its integrity gate (`Document::issues()` errors: schemas, references, REV-01…06, §5 limits). Every path runs
+     that gate first: open, recovery, backup, repair and migration.
+   - Unchecked assembly (`Document::from_parts`) is used only by the candidate load and repair code (the C1.1
+     confinement ticket).
+
+2. **Folder form.** A folder project holds the same entries with the same bytes as the package, `mimetype` included
+   (FMT-01; C13-R1-12). There is one difference: the folder manifest omits the entry list (10 §6.4).
+   - **Entry names** are portable in every segment (C13-R1-10). Beyond ZIP-01's rules, no segment may:
+     - contain `:` (drive prefixes such as `vendor/C:/x`, NTFS streams) or any of `*?"<>|`;
+     - end in `.` or a space;
+     - be a Windows device name;
+     - be longer than 200 UTF-8 bytes (C13-R2-05). File systems allow 255 per component (APFS counts UTF-8 bytes;
+       NTFS counts UTF-16 units, never more), and the hidden siblings of a folder save add 18 bytes.
+   - **Control files** are files whose first path segment starts with `.`: `.lock`, `.save-journal.json`, temporary
+     files, and the `.git/`, `.gitignore` and `.gitattributes` of a version-controlled project folder. They belong to
+     the folder, not to the project: they are never read as entries, preserved, listed or copied into a package.
+   - **A folder save** (`tt_persist::journal`; C13-R1-03) first writes each changed entry to a flushed temporary
+     sibling and keeps an **old copy** (a hard link, or a copy) of every entry it replaces.
+   - The journal `.save-journal.json` (version 2.0) records each replaced and removed entry, with the size and SHA-256
+     of its new and old versions.
+   - The save then:
+     1. renames the temporaries over their entries;
+     2. moves removed entries to their old copies;
+     3. renames `manifest.json` last, after the removals (C13-R2-06);
+     4. deletes the journal, then the old copies.
+
+     Recovery completing a save follows the same order.
+
+     Unchanged entries are not rewritten (LAY-04).
+   - **On open, a leftover journal is validated completely before anything changes** (C13-R1-04): format, version,
+     safe and distinct names, temporaries and old copies as hidden siblings of their entry, and hashes. A malformed
+     journal changes nothing, and the open fails (`project.invalidFormat`, `reason: "journal"`).
+   - **A valid journal is completed or rolled back, never left mixed:**
+     - it is completed when every new version is present;
+     - it is rolled back when every old version is present;
+     - otherwise it is left untouched, and the open fails (`reason: "unrecoverableSave"`).
+
+     A completion or a rollback is reported as `project.saveInterrupted`.
+
+3. **Atomic replacement and durability.**
+   - Every file replacement writes a temporary sibling, flushes it (`sync_all`) and renames it over the target.
+   - On POSIX the parent directory is then flushed.
+   - On Windows, `std::fs::rename` is `MoveFileExW(MOVEFILE_REPLACE_EXISTING)`. It replaces atomically, but without
+     `MOVEFILE_WRITE_THROUGH`, which safe Rust cannot reach. The file content is durable (flushed before the rename);
+     the rename itself becomes durable when the OS flushes metadata. We accept this: product code has no unsafe or
+     native calls (plan §3.2).
+   - **Package saves:**
+     1. write `<target>.tmp-*`;
+     2. verify it by reopening it and checking every entry against the manifest;
+     3. stage the backup of the previous version (hard link, falling back to a copy);
+     4. rename over the target;
+     5. commit the backup.
+
+     A failure at any step deletes the temporary and leaves the target untouched (SAVE-01).
+
+4. **Repairs on open (REP-01/REP-02, LOAD-03).**
+   - Repairs work on the entries' JSON, in a fixed order and in entry-path order. New IDs come from a generator
+     seeded by the input, so the same files always give the same document.
+   - Every removed or replaced value is listed in the load report with its old JSON (REP-02). An unreadable entry
+     keeps its raw text under the parent's `ext["app.unreadable"]`.
+   - A repair is a new revision. A file whose `documentRev` is already 2^64 − 1 and that needs repairs fails to open
+     (`project.invalidFormat`, `reason: "revisionExhausted"`) instead of installing an unstamped repair (C13-R1-09).
+   - **The repaired project opens modified.** Its history starts with the step "Repair on Open" (origin `load`),
+     whose `doc.changed` reports the repairs. **That step cannot be undone.** Undoing it would install the unrepaired
+     document, which fails the integrity gate (ticket "validate every candidate"). So:
+     - to keep the repaired version, save it;
+     - to drop it, close without saving.
+
+     REP-01 says "undoable"; see SI-044.
+
+5. **Newer minor versions (VER-02).**
+   - Unknown properties are kept per entry as *overlays* and merged back on save.
+   - An entry holding an enum value this version does not know is *frozen*. In memory it holds a known substitute;
+     on save it is written back exactly as read, its unknown properties included (C13-R1-05).
+   - **Frozen objects are read-only.** The executor refuses any transaction, dry runs included, that changes a frozen
+     entry, with `doc.unknownValue` `{entry, unknownValues}`.
+   - The `modifiedAt` stamp of a save is exempt, because a frozen `project.json` is written as read anyway.
+   - The manifest keeps the newer `formatVersion` and its unknown members.
+
+6. **Libraries, templates and palette files.**
+   - `library.json` is the model's library object, with its `children` written as `root` and `format: "animlib"`.
+     So the project-local library (`library/`) and a library folder on disk share one format (10 §6.11).
+   - Templates (`.animtpl`) and palette archives (`.animpal`) use the same hostile-safe zip reader and writer as
+     packages, with their own `mimetype` and manifest `format`.
+   - The global library, with its locking (LOCK-03), is M9's. This checkpoint provides the file formats and the
+     project-local library.
+
+7. **Interchange import (`doc.import.json`, 10 §6.8).**
+   - One transaction, validated as a whole before anything changes, one undo step "Import JSON". This is the command
+     table's label (C13-R1-17); `doc.repair` likewise uses "Repair Project".
+   - `idPolicy: "new"` gives every object a fresh ID, and every reference inside the bundle follows, including entry
+     names that embed IDs. Colour IDs are kept: they are the identity that colour recovery works with.
+   - `"preserve"` keeps IDs and makes an existing ID a conflict.
+   - Name conflicts are handled by `rename` (`-2`, `-3`, …), `replace` or `fail` (`doc.importConflict`).
+   - `replace` (C13-R1-11) removes the same-named existing objects in the same transaction:
+     - new scenes replace same-named scenes and their elements (the first one takes its place in the scene list);
+     - elements imported into a scene replace that scene's same-named elements, removed as `edit.delete` removes
+       them; a scene left without a current camera takes the imported one;
+     - palettes replace same-named palettes that have another ID, and their style entries go with them;
+     - assets and pens (items of the project's lists) replace same-named items (C13-R2-03). The replacement gets a
+       fresh ID, because media entry names embed the asset ID and undo must find the old bytes under the old name,
+       and every reference to the old ID follows. Only positions the schema declares as references to that kind
+       (`x-ref: "asset"` / `"pen"`) are repointed: placements, media sequences, and the pen on a brush stroke's spine
+       (`spine.pen.penId`). Names, labels and other strings stay as they are even when they equal the ID, and opaque
+       `meta`/`ext` data is never entered (C13-R3-02);
+     - with `idPolicy: "preserve"`, an ID conflict is replaced too (scenes, elements, assets, pens). ID conflicts
+       fail only under `fail`; under `rename` the import gets fresh IDs. Assets and pens also follow `rename`
+       (07 §2.3) and `fail`.
+   - Palettes merge by palette ID, with swatches handled by `keepExisting` or `updateExisting`.
+   - A scene imported into a project also gets a style entry for each palette of that project (10 §4.3). This is why
+     the round-trip test compares the source's own style keys.
+
+8. **Saves inside the executor.**
+   - A save first stamps `project.modifiedAt` (10 §4.1, "set by each save") as a *system transaction*. It has its
+     own revision and a `doc.changed` with `undoStepId: null` and origin `system`, but no undo step.
+   - It then snapshots the document (a copy-on-write clone, taken between transactions, SAVE-04) and writes it on a
+     job thread.
+   - The result is applied on the document thread. The clean marker moves to the snapshot's undo position only if
+     the history still leads there.
+   - A save cannot be cancelled once writing starts (SAVE-03).
+   - **`onUnsaved: "save"`** (`project.close`, `project.create`, `app.quit`, and the open, backup and recovery paths)
+     records a pending save (C13-R1-01, C13-R2-01):
+     - the project counts as unsaved when the live project is modified or the invocation has staged or sealed
+       changes, so an atomic batch's own edits are saved;
+     - the `modifiedAt` stamp is a system transaction of a single invocation; inside an atomic batch it is stamped
+       into the batch's own changes when the batch ends, so there is one transaction and one undo step;
+     - the executor writes the pending save once every step has succeeded, before the commit, and never for a dry
+       run; the snapshot is the document the commit installs, so the file holds exactly the committed revision;
+     - a failed write rolls the whole invocation back;
+     - the clean marker (at the history position the commit reached), saved revision, location and recovery
+       deletion are applied after the commit.
+   - **Every write to the current location needs this session's lock** (C13-R1-02). A plain save checks that the
+     lock is still held. A same-path Save As from a read-only session must take the lock first, and fails while the
+     owner holds it.
+   - **Media (MED-01, MED-04; C13-R1-16/18):**
+     - embedding content whose SHA-256 an embedded asset already has reuses that asset's entry, so both assets keep
+       their identity and share one stored copy;
+     - a save writes only the media of assets that objects use (placements and media sequences; library usages
+       arrive with M9);
+     - the bytes of unused assets stay in the session for undo. Whenever a write switches the project's binary source
+       (any save, Save As elsewhere, the save of a recovered project), the entries of the old source that the new one
+       will not hold are first copied to the session cache (C13-R2-02);
+     - the copies are content-addressed (`<cache>/carried/<sha256>/<entry>`): repeated exports and saves reuse one
+       copy (C13-R3-03);
+     - closing or replacing a project empties the session cache, since nothing in it serves another project, except
+       while that project is being saved. Stopping the executor removes the cache entirely.
+
+9. **Backups (BAK-01…04).**
+   - Backups live in `<user>/Backups/<projectId>/<savedAt>.animpkg`, indexed by `backup.json`.
+   - `files.backups.count` versions are kept, oldest removed first. A folder project is backed up as a package
+     snapshot (BAK-02).
+   - `project.backup.open` opens a backup as an untitled copy.
+
+10. **Autosave and recovery (AUTO-01…04, REC-01/02).**
+    - Maintenance runs on the document thread. Hosts tick it every second; tests call
+      `ExecutorHandle::run_maintenance`, which delivers its events before returning.
+    - It writes a folder-form copy of a snapshot to `<user>/Recovery/<recoveryId>/project/`, with `recovery.json`.
+      Only changed entries are written. The project file, its clean marker, history and location are never touched.
+    - The owner refreshes `heartbeatAt` every 60 s. Recovery data is offered when its owner is gone: the heartbeat
+      is older than 5 minutes, or the process is known dead on the same host. Liveness is checked with `kill -0` on
+      POSIX and `tasklist /FI "PID eq …"` on Windows; unknown means alive.
+    - **Recovering claims the data first** (C13-R1-08). Under an exclusively created `<recoveryId>/.claim`, the data
+      is re-read; while it is still orphaned, its `recovery.json` gets the new owner and a fresh heartbeat. A second
+      session is then refused (`project.recoveryInUse`). A recovery that fails gives the claim back.
+    - A recovered project is modified and keeps its original path. Saving it deletes the recovery data (AUTO-04).
+
+11. **Locks (LOCK-01/02, D13).**
+    - The lock file holds a random `lockId`, so two executors in one process are still "someone else" to each other.
+    - A live lock opens the project read-only (`project.lockedByOther` in the report, holder in `doc.state.get`).
+    - **One arbiter for every change** (C13-R1-02, C13-R3-01). Publishing a lock, taking a stale one over, a heartbeat
+      and the release on close all happen while holding the lock's arbiter, `<lock>.takeover`, which is created
+      exclusively.
+    - **Publication is validated.** Under the arbiter, an opener:
+      1. reads the lock's state again;
+      2. removes a stale lock (5 minutes, or a dead process; taken over with a warning);
+      3. creates its lock exclusively, writes it and flushes it;
+      4. reads it back.
+
+      It reports `Acquired` only when the file holds its token; otherwise it reports the holder. A takeover therefore
+      cannot interleave between creating and writing a lock, and a resumed writer never announces ownership of a
+      publication that was replaced.
+    - **Heartbeats fail closed.** A heartbeat writes only when the file holds this session's token. A missing,
+      unreadable or foreign lock is an error, which maintenance turns into read-only for that session. A heartbeat
+      never recreates or replaces another claimant's publication. While a takeover holds the arbiter, the heartbeat
+      is skipped, and the next one sees the outcome.
+    - **Unreadable locks.** A lock that cannot be read (empty while written, or damaged) counts as held until it is as
+      old as a stale heartbeat (5 minutes, by modification time); then it is abandoned and taken over. The modification
+      time detects only abandoned files; live writers are protected by the arbiter and the read-back.
+    - **Arbiter expiry.** An arbiter nobody protects any more (below) and older than 10 s, in either clock direction,
+      counts as left behind by a crashed process and is removed.
+    - **11.4 Operating-system ownership (C1.4 obligations 1–2).** The C1.3 protocol trusted ages and process ids, so a
+      paused arbiter, a reused PID or a clock jump could misjudge a live holder. From C1.4 the holder keeps its lock
+      file, and every arbiter its arbitration file, open for its whole life:
+      - Windows: a handle with write access, shared for reading, writing and deletion. Other sessions still read the
+        lock, and a foreign process can still replace or remove it, which the token checks catch (the C1.3 reviewer
+        regressions `c13_r3_format` and `c13_r4_lock` act as such a foreign writer).
+      - macOS and Linux: an exclusive `flock` (`std::fs::File::try_lock`).
+
+      The kernel releases the handle or the `flock` when the process ends, however it ends. `lock::probe` asks for
+      it: on Windows an open with read access that refuses to share writing (it fails with a sharing violation while
+      any write handle is open; SMB carries share modes across clients), elsewhere a shared `flock`. Hence:
+      - a protected lock whose probe answers *held* is never stale and never removed by a taker, whatever its
+        heartbeat, the clocks or its process id say;
+      - a protected lock written on this host whose probe answers *free* was left by a dead process and is taken over
+        at once (PID reuse no longer matters);
+      - an arbiter whose probe answers *held* is never removed as abandoned, however old it looks;
+      - the heartbeat and process-id rules remain only where the probe cannot answer: another host on a file system
+        that does not carry locks, or a lock written without protection (`osProtection` absent). An unprotected lock
+        whose heartbeat lies in the future is stale once its file has not changed for 5 minutes.
+
+      The lock file is written in place through the protected handle (a rename would replace the protected file). A
+      reader that catches it mid-write sees an unreadable lock, which counts as held. The lock JSON gains
+      `osProtection: "shareMode" | "flock"` (SI-048). After writing, a heartbeat and a publication read the file back
+      and check that their arbiter is still theirs; a resumed participant that lost either fails closed and gives up
+      its handle. `process_alive` (the fallback) is bounded by 2 s.
+    - **Arbiter abandonment** (C1.4 round 1). An arbitration file nobody protects goes at once when its holder
+      provably died. On Windows protection exists from the file's creation; elsewhere the file's token is written only
+      after its `flock`. Only an empty, unprotected file waits `TAKEOVER_STALE` (a publisher may be between creating
+      and locking it). Two takers removing the same abandoned file stay safe, because each holder checks
+      `still_ours()` before it reports ownership. Measured: a holder killed inside its arbiter window is taken over in
+      tens of milliseconds, where it took 10 s before.
+    - **11.5 Saves under lost ownership.** A save checks ownership before writing (C13-R1-02) and again when it
+      finishes: if the lock was lost meanwhile (possible only where the protection is not carried), the clean marker,
+      the saved revision and the stamp do not advance and the session continues read-only. Since C1.4 round 1
+      (C14-R1-08) the save has two test-only suspension points (`Boundary::SaveBeforeWrite`, `SaveWritten`), and the
+      outcome is reported:
+      - lost before the write: nothing is written and the job fails `project.saveFailed {reason: "fileInUse"}`;
+      - lost after the write: the job fails `{reason: "ownershipLost"}`.
+
+      In both cases the project stays modified and read-only, and its recovery data stays
+      (`c14_lock_races.rs::ownership_lost_during_a_suspended_save_never_advances_the_save`).
+    - **Evidence** (C1.4): `crates/executor/tests/c14_lock_races.rs` suspends a publisher (arbiter taken, file created,
+      file written), a heartbeat (checked, written), a release and a takeover through the `test-hooks` feature of
+      `tt-persist`, races eight openers against each, and checks at most one owner; it pauses an arbiter past its
+      abandonment age; it kills a holder process and measures the takeover. Results per OS are in
+      `reviews/evidence/M1-C1.4/measurements/lock-liveness-*.json`.
+
+12. **External changes (RO-02).**
+    - For a package, maintenance compares the file's size and modification time.
+    - For a folder, it compares those of `manifest.json` plus a fingerprint of every entry file's name, size and
+      modification time (C13-R1-06). Exactly what the container leaves out is left out (C13-R2-04): control files,
+      whose first path segment starts with `.`, and `session.json`. Hidden names deeper down are preserved entries
+      and count.
+    - Every save checks again before writing.
+    - A change emits `doc.package.changedOnDisk` and marks the project.
+    - The next plain `project.save` fails with `project.changedOnDisk`, carrying a hint naming both choices:
+      - *reload*: `project.open` with `onUnsaved`;
+      - *keep mine*: `project.saveAs {path, onExists: "overwrite"}`.
+    - RO-02 asks for a `needs_confirmation` result. The confirmation protocol is C1.4's (plan row M1), and this
+      error is the kernel's pre-confirmation form; see SI-045.
+    - **From C1.4** (SI-045 closed): for an agent, `project.save` after an external change returns
+      `needs_confirmation` (category `externalChange`, every policy). The token is bound to the call, the
+      `documentRev`, the file's identity (stamp) and the session's lock; a file changed again refuses the token
+      (`confirmation.expired`), and ownership is checked again after the confirmation. Accepting keeps mine
+      (overwrites). Reloading discards unsaved work, which needs the `app` scope (11 §6.1): it is the user's choice,
+      offered as a consequence with `by: "user"`; the agent's other choice is `project.saveAs` elsewhere (SI-050).
+      Users keep the C1.3 error.
+    - **Content at save** (C1.4 obligation 4; SI-047 interim ruling of the orchestrator, C14-R1-09). The 2 s watch
+      keeps comparing sizes and modification times, so it cannot see an edit that keeps both. Every save that would
+      replace the project verifies the on-disk content against the hash recorded at open or at the last save:
+      `project.save` (clean or dirty), Save As over the current location, and `project.close {onUnsaved: "save"}`.
+      - A package's hash is the SHA-256 of the file.
+      - A folder's hash is the SHA-256 of every entry file's name and SHA-256. Folder manifests carry no per-entry
+        hashes, so the entry files themselves are hashed (the fingerprint's file set).
+
+      On a mismatch, agents get the bound `externalChange` confirmation and users `project.changedOnDisk`. A user's
+      Save As over the current location with `onExists: "overwrite"` stays the explicit "keep mine". Cost, with every
+      sample: `reviews/evidence/M1-C1.4/measurements/fingerprint-*.json` (`saveContentCheckMs`, 10,000 files).
+    - **Folder names** (C1.4 obligation 3): a folder-form save refuses, before writing anything, entry names that
+      Unicode normalisation (NFC) or case folding would merge (`project.saveFailed`, reason `nameCollision`). An
+      existing on-disk spelling of a kept entry is never scheduled for removal.
+
+13. **User folders and settings (01 §3.7, §11).**
+    - `PersistOptions.user_dirs` names the settings, recovery and backups folders. Hosts pass
+      `UserDirs::platform()`.
+    - Library embedding and tests get an isolated temporary folder, removed when the executor stops.
+    - Settings are four versioned JSON files (`preferences`, `recent`, `state`, `workspaces`), written atomically.
+      Preferences store only values that differ from the defaults (C13-R1-15).
+    - A corrupt file is kept aside, the defaults apply to that file only, and it is reported once (`prefs.corrupt`).
+    - Workspaces are written whenever the window/workspace state changes and are restored at start.
+
+14. **File-system roots (11 §6.2).**
+    - Path parameters must be absolute (01 §12.1 rule 2).
+    - An agent may use paths inside the open project's folder and inside the roots its host grants
+      (`ExecutorHandle::grant_roots(session, roots)`); anything else is `fs.outsideRoots`.
+    - User origins are not restricted.
+
+15. **Error details and codes.**
+    - `project.invalidFormat` always carries `details.reason`. Spec 10 names `unsafeEntry` and `sizeLimit`; this
+      checkpoint adds:
+      - `corrupt`, `encrypted`, `unsupportedCompression`, `notZip`, `noMimetype`, `wrongMimetype`, `duplicateEntry`;
+      - `noManifest`, `manifest`, `project`, `library`, `palette`;
+      - `unrepairable`, `migration`, `wrongFormat`;
+      - in round 1: `journal`, `unrecoverableSave` and `revisionExhausted`.
+    - Codes the spec does not list are recorded in SI-046.
+
+16. **Lint checks owned by later milestones (`doc.validate`, 10 §10.3).** Checks that need computations owned by
+    later milestones are returned in `unavailable` with their owner, not guessed:
+    - `unpaintedZones`: M2 C2.2;
+    - `missingFonts`: M2 C2.1;
+    - `staleLipSync`: M8 C8.2;
+    - `transitionPadding`: M9 C9.2;
+    - `outdatedTemplateLinks`: M9 C9.1.
+
+17. **Deferred load steps.**
+    - Colour recovery for unresolved colour IDs (§7.1 step 6, 03 §11.2) is M2 C2.2's. Until then, unresolved IDs
+      stay unresolved and are reported (`colour.unresolved`).
+    - Derived data and thumbnails (§7.1 step 7) belong to their owners: zones M2, thumbnails M3.
+    - `thumbnail.png` is preserved when present, and not generated (C13-R1-13).
+
+18. **Migrations (VER-03/04).**
+    - A step is a pure `fn(Entries) -> Result<Entries, String>`; the product chain `migrate::CHAIN` is empty, since
+      1.0 is the first format.
+    - Every product step needs a fixture folder `crates/persist/tests/fixtures/migrations/<from>-<to>/`, enforced by
+      `tests/migrations.rs`.
+    - A migrated project opens unmodified. Its first save needs `allowFormatUpgrade` (`project.formatUpgrade`).
+    - Hosts and tests may supply their own chain (`PersistOptions.migrations`).
+
+## Consequences
+
+- One reader serves packages, folders, templates and palette archives: hostile-input safety is in one place
+  (`tt_persist::zip`). The hostile cases include unsafe names, size lies, decompression bombs, duplicates, encryption,
+  truncation, path escapes and symbolic links. They run in CI on both platforms.
+- Windows saves are atomic but not write-through (§3). Revisit if a safe API becomes available.
+- REP-01 and RO-02 diverge from the letter of the spec until the spec owner rules (SI-044, SI-045).

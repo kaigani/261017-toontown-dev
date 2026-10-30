@@ -1,0 +1,4047 @@
+[
+  {
+    "id": "agent.activity.export",
+    "title": "Export as a replayable batch",
+    "valid": true
+  },
+  {
+    "id": "agent.activity.list",
+    "title": "The last 20 actions",
+    "valid": true
+  },
+  {
+    "id": "agent.activity.persist.set",
+    "title": "Persist the activity log",
+    "valid": true
+  },
+  {
+    "id": "agent.confirmation.requested",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "agent.confirmation.respond",
+    "title": "Accept a request",
+    "valid": true
+  },
+  {
+    "id": "agent.policy.defaults.set",
+    "title": "Assist by default",
+    "valid": true
+  },
+  {
+    "id": "agent.server.set",
+    "title": "Enable the local agent server",
+    "valid": true
+  },
+  {
+    "id": "agent.server.status",
+    "title": "Endpoint and connected sessions",
+    "valid": true
+  },
+  {
+    "id": "agent.session.connected",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "agent.session.disconnect",
+    "title": "Disconnect a session",
+    "valid": true
+  },
+  {
+    "id": "agent.session.disconnected",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "agent.session.grant",
+    "title": "Let a session edit",
+    "valid": true
+  },
+  {
+    "id": "agent.session.pause",
+    "title": "Pause every session",
+    "valid": true
+  },
+  {
+    "id": "agent.session.resume",
+    "title": "Resume every session",
+    "valid": true
+  },
+  {
+    "id": "agent.token.regenerate",
+    "title": "Invalidate the bearer token",
+    "valid": true
+  },
+  {
+    "id": "agent.typedTools.set",
+    "title": "Expose doc and edit commands as tools",
+    "valid": true
+  },
+  {
+    "id": "anim.bone.create",
+    "title": "Required parameters only: Create a bone (chained to a parent bone, or freestanding)",
+    "valid": true
+  },
+  {
+    "id": "anim.bone.delete",
+    "title": "Required parameters only: Delete bones",
+    "valid": true
+  },
+  {
+    "id": "anim.bone.influence.set",
+    "title": "Required parameters only: Influence type and zone",
+    "valid": true
+  },
+  {
+    "id": "anim.bone.parent.set",
+    "title": "Required parameters only: Reparent a bone (null = make it a root bone)",
+    "valid": true
+  },
+  {
+    "id": "anim.bone.pose.set",
+    "title": "Required parameters only: Pose bones by angles/lengths at a frame (keys)",
+    "valid": true
+  },
+  {
+    "id": "anim.bone.reach.apply",
+    "title": "Required parameters only: Natural movement: IK reach to a target, or FK rotation with follow-through",
+    "valid": true
+  },
+  {
+    "id": "anim.bone.rest.set",
+    "title": "Required parameters only: Set rest (setup) values",
+    "valid": true
+  },
+  {
+    "id": "anim.camera.create",
+    "title": "No parameters: Add a camera",
+    "valid": true
+  },
+  {
+    "id": "anim.camera.current.get",
+    "title": "No parameters: Current camera of a scene",
+    "valid": true
+  },
+  {
+    "id": "anim.camera.current.set",
+    "title": "Required parameters only: Make a camera the scene's current camera",
+    "valid": true
+  },
+  {
+    "id": "anim.camera.currentChanged",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "anim.camera.delete",
+    "title": "Required parameters only: Delete a camera (not the last one)",
+    "valid": true
+  },
+  {
+    "id": "anim.camera.get",
+    "title": "No parameters: Camera properties and evaluated view at a frame",
+    "valid": true
+  },
+  {
+    "id": "anim.camera.list",
+    "title": "No parameters: Cameras of a scene",
+    "valid": true
+  },
+  {
+    "id": "anim.camera.select",
+    "title": "No parameters: Select the current camera",
+    "valid": true
+  },
+  {
+    "id": "anim.camera.set",
+    "title": "Required parameters only: Set camera position, roll, FOV mode and FOV (keyed at `frame` when dynamic)",
+    "valid": true
+  },
+  {
+    "id": "anim.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "anim.channel.copy",
+    "title": "Required parameters only: Copy chosen channels' keys of a node",
+    "valid": true
+  },
+  {
+    "id": "anim.channel.cut",
+    "title": "Required parameters only: Cut special: copy then remove chosen channels' keys",
+    "valid": true
+  },
+  {
+    "id": "anim.channel.paste",
+    "title": "Required parameters only: Paste copied channel keys at a frame",
+    "valid": true
+  },
+  {
+    "id": "anim.depth.move",
+    "title": "Required parameters only: Depth nudge forward/backward",
+    "valid": true
+  },
+  {
+    "id": "anim.display.allPegs.set",
+    "title": "Required parameters only: Show all pegs' paths",
+    "valid": true
+  },
+  {
+    "id": "anim.display.antialiasToolOverlays.set",
+    "title": "Required parameters only: Anti-alias tool furniture",
+    "valid": true
+  },
+  {
+    "id": "anim.display.arms.set",
+    "title": "Required parameters only: Show element arms while rotating pegs",
+    "valid": true
+  },
+  {
+    "id": "anim.display.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "anim.display.envelopes.set",
+    "title": "Required parameters only: Show bone influence envelopes",
+    "valid": true
+  },
+  {
+    "id": "anim.display.frameMarkers.set",
+    "title": "Required parameters only: Show frame markers on paths",
+    "valid": true
+  },
+  {
+    "id": "anim.display.get",
+    "title": "No parameters: All display options of §4",
+    "valid": true
+  },
+  {
+    "id": "anim.display.pegGhosts.set",
+    "title": "Required parameters only: Show peg ghosts",
+    "valid": true
+  },
+  {
+    "id": "anim.display.pivotPath.set",
+    "title": "Required parameters only: Show pivot paths",
+    "valid": true
+  },
+  {
+    "id": "anim.display.smoothPaths.set",
+    "title": "Required parameters only: Anti-alias motion paths",
+    "valid": true
+  },
+  {
+    "id": "anim.evaluate",
+    "title": "Required parameters only: Evaluate transforms of nodes at frames (no rendering)",
+    "valid": true
+  },
+  {
+    "id": "anim.flip.apply",
+    "title": "Required parameters only: Flip nodes horizontally or vertically",
+    "valid": true
+  },
+  {
+    "id": "anim.function.curveType.set",
+    "title": "Required parameters only: Change a channel's curve type",
+    "valid": true
+  },
+  {
+    "id": "anim.function.get",
+    "title": "Required parameters only: Function curve as a key-point list",
+    "valid": true
+  },
+  {
+    "id": "anim.function.key.add",
+    "title": "Required parameters only: Add a key point (value defaults to current curve value)",
+    "valid": true
+  },
+  {
+    "id": "anim.function.key.duplicate",
+    "title": "Required parameters only: Copy a key point to another frame",
+    "valid": true
+  },
+  {
+    "id": "anim.function.key.remove",
+    "title": "Required parameters only: Remove key points",
+    "valid": true
+  },
+  {
+    "id": "anim.function.key.set",
+    "title": "Required parameters only: Edit a key point: move in time, value, handles, handle mode, constant flag, lock",
+    "valid": true
+  },
+  {
+    "id": "anim.function.list",
+    "title": "Required parameters only: Channels of a node with curve type and key count",
+    "valid": true
+  },
+  {
+    "id": "anim.function.preset.apply",
+    "title": "Required parameters only: Apply an easing preset to a segment or the whole curve",
+    "valid": true
+  },
+  {
+    "id": "anim.function.sample",
+    "title": "Required parameters only: Evaluate a channel over a frame range",
+    "valid": true
+  },
+  {
+    "id": "anim.function.set",
+    "title": "Required parameters only: Replace a 1-D channel's key list and curve type",
+    "valid": true
+  },
+  {
+    "id": "anim.functionEditor.get",
+    "title": "No parameters: Function-editor state",
+    "valid": true
+  },
+  {
+    "id": "anim.functionEditor.open",
+    "title": "Required parameters only: Open the function editor on a node/channel/projection",
+    "valid": true
+  },
+  {
+    "id": "anim.functionEditor.syncFrame.set",
+    "title": "Required parameters only: Sync the editor's selected frame with the current frame",
+    "valid": true
+  },
+  {
+    "id": "anim.functionEditor.view.set",
+    "title": "No parameters: Function-editor view: fit, grid, zooms, panel and toolbar visibility, panel side",
+    "valid": true
+  },
+  {
+    "id": "anim.hierarchy.attach",
+    "title": "Required parameters only: Attach/reparent nodes under a parent (or the next peg/effect above)",
+    "valid": true
+  },
+  {
+    "id": "anim.hierarchy.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "anim.hierarchy.detach",
+    "title": "Required parameters only: Detach nodes from their parent (up one level)",
+    "valid": true
+  },
+  {
+    "id": "anim.hierarchy.get",
+    "title": "No parameters: Scene node tree with kinds and attachment",
+    "valid": true
+  },
+  {
+    "id": "anim.hierarchy.select",
+    "title": "Required parameters only: Select parent / descendants / first child / previous or next sibling",
+    "valid": true
+  },
+  {
+    "id": "anim.key.add",
+    "title": "No parameters: Add keyframes (full pose or chosen channels); optionally on a whole hierarchy or",
+    "valid": true
+  },
+  {
+    "id": "anim.key.list",
+    "title": "Required parameters only: Keyed frames and channels of a node",
+    "valid": true
+  },
+  {
+    "id": "anim.key.move",
+    "title": "Required parameters only: Move keys of a node to another frame",
+    "valid": true
+  },
+  {
+    "id": "anim.key.remove",
+    "title": "No parameters: Remove keyframes at a frame (default channels position/rotation/scale/skew) or a",
+    "valid": true
+  },
+  {
+    "id": "anim.loop.set",
+    "title": "Required parameters only: Set looping of a peg, effect, skeleton or bone",
+    "valid": true
+  },
+  {
+    "id": "anim.node.get",
+    "title": "Required parameters only: All animation properties of a node",
+    "valid": true
+  },
+  {
+    "id": "anim.node.options.set",
+    "title": "No parameters: Set non-transform node options",
+    "valid": true
+  },
+  {
+    "id": "anim.node.pathDisplay.set",
+    "title": "Required parameters only: Per-node motion-path display switch (as in the Timeline)",
+    "valid": true
+  },
+  {
+    "id": "anim.path.get",
+    "title": "Required parameters only: Motion path with all points, parameters and arc lengths",
+    "valid": true
+  },
+  {
+    "id": "anim.path.lockDepth.set",
+    "title": "Required parameters only: Constant Z for the segment starting at a keyframe",
+    "valid": true
+  },
+  {
+    "id": "anim.path.point.add",
+    "title": "Required parameters only: Add a keyframe or control point (by frame, or at a curve location)",
+    "valid": true
+  },
+  {
+    "id": "anim.path.point.remove",
+    "title": "Required parameters only: Delete motion points",
+    "valid": true
+  },
+  {
+    "id": "anim.path.point.select",
+    "title": "No parameters: Select a motion point, or the previous/next one",
+    "valid": true
+  },
+  {
+    "id": "anim.path.point.set",
+    "title": "Required parameters only: Edit a motion point (position, frame, lock in time, TCB, constant, per-key rotat",
+    "valid": true
+  },
+  {
+    "id": "anim.path.sample",
+    "title": "Required parameters only: Positions per frame (frame markers, ghosts, pivot path)",
+    "valid": true
+  },
+  {
+    "id": "anim.path.set",
+    "title": "Required parameters only: Replace a node's whole motion path",
+    "valid": true
+  },
+  {
+    "id": "anim.peg.create",
+    "title": "No parameters: Add a peg; with `wrapIds`, add a parent peg around those nodes",
+    "valid": true
+  },
+  {
+    "id": "anim.pegOnlyMode.set",
+    "title": "Required parameters only: Peg-only mode on/off (§6.1)",
+    "valid": true
+  },
+  {
+    "id": "anim.point.copy",
+    "title": "Required parameters only: Copy a motion point to the clipboard",
+    "valid": true
+  },
+  {
+    "id": "anim.point.paste",
+    "title": "Required parameters only: Paste a copied point (all properties, or chosen ones = paste special; `again` re",
+    "valid": true
+  },
+  {
+    "id": "anim.prefs.get",
+    "title": "No parameters: Scene-planning preferences (§16)",
+    "valid": true
+  },
+  {
+    "id": "anim.prefs.set",
+    "title": "No parameters: Set scene-planning preferences",
+    "valid": true
+  },
+  {
+    "id": "anim.projection.get",
+    "title": "No parameters: Project world points or node bounds into output pixels",
+    "valid": true
+  },
+  {
+    "id": "anim.record.completed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "anim.record.options.get",
+    "title": "No parameters: Motion-recording options",
+    "valid": true
+  },
+  {
+    "id": "anim.record.options.set",
+    "title": "No parameters: Motion-recording options (persisted user settings)",
+    "valid": true
+  },
+  {
+    "id": "anim.record.run",
+    "title": "Required parameters only: Record motion from a sample list (§14.4)",
+    "valid": true
+  },
+  {
+    "id": "anim.reset.apply",
+    "title": "No parameters: Reset nodes: remove keys and restore default static values",
+    "valid": true
+  },
+  {
+    "id": "anim.segment.set",
+    "title": "Required parameters only: Make segments starting at a keyframe constant or tweened",
+    "valid": true
+  },
+  {
+    "id": "anim.segment.uniform.apply",
+    "title": "Required parameters only: Make the segment left/right of a key uniform (linear)",
+    "valid": true
+  },
+  {
+    "id": "anim.skeleton.create",
+    "title": "No parameters: Add a skeleton, optionally moving elements into its skin group",
+    "valid": true
+  },
+  {
+    "id": "anim.skeleton.deform.get",
+    "title": "Required parameters only: Deformed positions and weights of given rest-space points",
+    "valid": true
+  },
+  {
+    "id": "anim.skeleton.delete",
+    "title": "Required parameters only: Delete a skeleton (skin elements are moved out to its level)",
+    "valid": true
+  },
+  {
+    "id": "anim.skeleton.get",
+    "title": "Required parameters only: Bone tree with rest and current values",
+    "valid": true
+  },
+  {
+    "id": "anim.skeleton.restPose.apply",
+    "title": "Required parameters only: Copy the rest pose to the current frame or to all keyframes",
+    "valid": true
+  },
+  {
+    "id": "anim.skeleton.root.select",
+    "title": "No parameters: Select the skeleton root of the current bone/skin element",
+    "valid": true
+  },
+  {
+    "id": "anim.skeleton.set",
+    "title": "Required parameters only: Skeleton display and quality options",
+    "valid": true
+  },
+  {
+    "id": "anim.skeleton.skin.add",
+    "title": "Required parameters only: Put elements into the skin group",
+    "valid": true
+  },
+  {
+    "id": "anim.skeleton.skin.remove",
+    "title": "Required parameters only: Take elements out of the skin group",
+    "valid": true
+  },
+  {
+    "id": "anim.snapLastKey.set",
+    "title": "Required parameters only: Snap-last-keyframe on/off (§6.5)",
+    "valid": true
+  },
+  {
+    "id": "anim.stretch.apply",
+    "title": "Required parameters only: Re-time a node's channels proportionally to a new duration",
+    "valid": true
+  },
+  {
+    "id": "anim.tool.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "anim.tool.get",
+    "title": "No parameters: Current scene-planning tool",
+    "valid": true
+  },
+  {
+    "id": "anim.tool.set",
+    "title": "Required parameters only: Select the active scene-planning tool (independent of the drawing tool)",
+    "valid": true
+  },
+  {
+    "id": "anim.transform.set",
+    "title": "No parameters: Set static values or key animated values (Select/Transform/Rotate/Scale/Skew too",
+    "valid": true
+  },
+  {
+    "id": "anim.view.coords.get",
+    "title": "Required parameters only: Map points between scene space and view pixels (for pointer simulation)",
+    "valid": true
+  },
+  {
+    "id": "anim.view.get",
+    "title": "Required parameters only: View state of a scene view",
+    "valid": true
+  },
+  {
+    "id": "anim.view.slot.select",
+    "title": "Required parameters only: Switch active view: store current state and restore the other slot",
+    "valid": true
+  },
+  {
+    "id": "anim.view.type.set",
+    "title": "Required parameters only: Switch a view window between Drawing, Camera, Top and Side",
+    "valid": true
+  },
+  {
+    "id": "app.context.set",
+    "title": "Go to frame 12 of the first scene",
+    "valid": true
+  },
+  {
+    "id": "app.context.set",
+    "title": "Make an element current by path",
+    "valid": true
+  },
+  {
+    "id": "app.currentElement.move",
+    "title": "Next element in Timeline order",
+    "valid": true
+  },
+  {
+    "id": "app.currentElement.set",
+    "title": "Make the first element of the first scene current",
+    "valid": true
+  },
+  {
+    "id": "app.frame.move",
+    "title": "Next frame",
+    "valid": true
+  },
+  {
+    "id": "app.frame.move",
+    "title": "Back to the previous drawing change",
+    "valid": true
+  },
+  {
+    "id": "app.frame.set",
+    "title": "Go to frame 1",
+    "valid": true
+  },
+  {
+    "id": "app.info.get",
+    "title": "Read name, version, platform, locale and languages",
+    "valid": true
+  },
+  {
+    "id": "app.mode.set",
+    "title": "Switch to drawing mode",
+    "valid": true
+  },
+  {
+    "id": "app.quit",
+    "title": "Quit, discarding unsaved changes",
+    "valid": true
+  },
+  {
+    "id": "app.state.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "app.state.get",
+    "title": "Read the current project, scene, frame, element, selection and workspace",
+    "valid": true
+  },
+  {
+    "id": "capture.auto.start",
+    "title": "No parameters: Start auto capture (each capture is its own undo step)",
+    "valid": true
+  },
+  {
+    "id": "capture.auto.stop",
+    "title": "No parameters: Stop auto capture",
+    "valid": true
+  },
+  {
+    "id": "capture.device.added",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "capture.device.dialog.open",
+    "title": "Required parameters only: Show the device's own settings interface, if it has one (user-facing)",
+    "valid": true
+  },
+  {
+    "id": "capture.device.get",
+    "title": "Required parameters only: Device descriptor, current settings and settings schema",
+    "valid": true
+  },
+  {
+    "id": "capture.device.list",
+    "title": "No parameters: List connected capture devices and scanners",
+    "valid": true
+  },
+  {
+    "id": "capture.device.removed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "capture.device.select",
+    "title": "Required parameters only: Set the default acquisition device (remembered)",
+    "valid": true
+  },
+  {
+    "id": "capture.device.settings.set",
+    "title": "Required parameters only: Set device settings (exposure, ISO, white balance, focus, zoom, scan options…)",
+    "valid": true
+  },
+  {
+    "id": "capture.display.set",
+    "title": "No parameters: Preview display aids",
+    "valid": true
+  },
+  {
+    "id": "capture.frame.add",
+    "title": "No parameters: Capture from the session's device into the target (Capture Image)",
+    "valid": true
+  },
+  {
+    "id": "capture.frame.addFromFile",
+    "title": "Required parameters only: Feed supplied image files through the capture pipeline (Capture Image)",
+    "valid": true
+  },
+  {
+    "id": "capture.frame.captured",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "capture.inputLock.set",
+    "title": "Required parameters only: Ignore pointer input during auto capture",
+    "valid": true
+  },
+  {
+    "id": "capture.keyColour.set",
+    "title": "No parameters: Set key colour directly or by sampling the preview",
+    "valid": true
+  },
+  {
+    "id": "capture.keying.set",
+    "title": "Required parameters only: Set keying parameters of the session (persisted)",
+    "valid": true
+  },
+  {
+    "id": "capture.lightTable.references.list",
+    "title": "No parameters: Available light-table references for the current target frame",
+    "valid": true
+  },
+  {
+    "id": "capture.lightTable.set",
+    "title": "No parameters: Light-table reference, opacity and aspect-ratio mode",
+    "valid": true
+  },
+  {
+    "id": "capture.preview.get",
+    "title": "No parameters: Current processed preview as PNG (keying, display aids, light table)",
+    "valid": true
+  },
+  {
+    "id": "capture.session.close",
+    "title": "No parameters: Close the session (stops auto capture)",
+    "valid": true
+  },
+  {
+    "id": "capture.session.error",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "capture.session.get",
+    "title": "No parameters: Read session state",
+    "valid": true
+  },
+  {
+    "id": "capture.session.open",
+    "title": "No parameters: Open a capture session (and optionally the capture window)",
+    "valid": true
+  },
+  {
+    "id": "capture.source.set",
+    "title": "No parameters: Set source, resolution / image size, noise reduction",
+    "valid": true
+  },
+  {
+    "id": "capture.target.set",
+    "title": "No parameters: Target element/frame and insert/advance behaviour",
+    "valid": true
+  },
+  {
+    "id": "cell.blank.add",
+    "title": "No parameters: Insert blank cell(s) at a frame; following cells shift later",
+    "valid": true
+  },
+  {
+    "id": "cell.blank.remove",
+    "title": "No parameters: Delete blank cell(s) at a frame; fails with `cell.notBlank` on a non-blank cell",
+    "valid": true
+  },
+  {
+    "id": "cell.clipboard.apply",
+    "title": "No parameters: Paste the clipboard at a target, normally or as new drawings, with optional tran",
+    "valid": true
+  },
+  {
+    "id": "cell.clipboard.set",
+    "title": "No parameters: Copy (or cut, undoable) an explicit range or whole elements to the clipboard",
+    "valid": true
+  },
+  {
+    "id": "cell.columnate.apply",
+    "title": "Required parameters only: Advanced cycle: write first..last drawings with exposure, loop mode and placemen",
+    "valid": true
+  },
+  {
+    "id": "cell.cycle.create",
+    "title": "Required parameters only: Repeat the range so that it appears N times in total; following cells shift",
+    "valid": true
+  },
+  {
+    "id": "cell.drawing.duplicate",
+    "title": "No parameters: Duplicate drawing: copy the drawing at the range and expose the copy there",
+    "valid": true
+  },
+  {
+    "id": "cell.exposure.add",
+    "title": "No parameters: Add exposure: hold longer by N frames, following cells shift later",
+    "valid": true
+  },
+  {
+    "id": "cell.exposure.remove",
+    "title": "No parameters: Remove exposure: shorten by N frames, following cells shift earlier",
+    "valid": true
+  },
+  {
+    "id": "cell.exposure.set",
+    "title": "Required parameters only: Set every exposure in the range to N frames (ones / twos / threes / N)",
+    "valid": true
+  },
+  {
+    "id": "cell.exposures.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "cell.fill.apply",
+    "title": "Required parameters only: Extend exposure: expose the drawing at `frame` through `toFrame`, overwriting",
+    "valid": true
+  },
+  {
+    "id": "cell.label.set",
+    "title": "No parameters: Change label / substitute the drawing in the range by name, id, or by stepping t",
+    "valid": true
+  },
+  {
+    "id": "cell.note.set",
+    "title": "Required parameters only: Set, update or remove (empty text) a cell note",
+    "valid": true
+  },
+  {
+    "id": "cell.range.add",
+    "title": "No parameters: Insert cells (blank or named; one element or all elements)",
+    "valid": true
+  },
+  {
+    "id": "cell.range.delete",
+    "title": "No parameters: Delete cells: clear (leave blanks) or remove and shift earlier",
+    "valid": true
+  },
+  {
+    "id": "cell.range.move",
+    "title": "Required parameters only: Move / copy / link / copy-as-new-drawings a cell range to another frame or eleme",
+    "valid": true
+  },
+  {
+    "id": "cell.select",
+    "title": "Required parameters only: Select cells (frames × elements), a whole track, or a sound clip extent",
+    "valid": true
+  },
+  {
+    "id": "cell.selection.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "cell.selection.get",
+    "title": "No parameters: Current cell/row selection and current position",
+    "valid": true
+  },
+  {
+    "id": "checkpoint.create",
+    "title": "Checkpoint before an experiment",
+    "valid": true
+  },
+  {
+    "id": "checkpoint.delete",
+    "title": "Delete a checkpoint",
+    "valid": true
+  },
+  {
+    "id": "checkpoint.list",
+    "title": "All checkpoints, oldest first",
+    "valid": true
+  },
+  {
+    "id": "checkpoint.restore",
+    "title": "Restore a checkpoint",
+    "valid": true
+  },
+  {
+    "id": "colour.autoColourUpdate.set",
+    "title": "Required parameters only: Project flag: template colours overwrite existing swatch values",
+    "valid": true
+  },
+  {
+    "id": "colour.current.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "colour.current.get",
+    "title": "No parameters: Current palette, swatch and style",
+    "valid": true
+  },
+  {
+    "id": "colour.current.set",
+    "title": "Required parameters only: Set the current colour (switches current palette if needed)",
+    "valid": true
+  },
+  {
+    "id": "colour.editor.close",
+    "title": "No parameters: Close the editor, committing or discarding the pending edit",
+    "valid": true
+  },
+  {
+    "id": "colour.editor.open",
+    "title": "No parameters: Open the colour editor / texture properties for a swatch",
+    "valid": true
+  },
+  {
+    "id": "colour.fillMapping.get",
+    "title": "Required parameters only: Fill mapping of a gradient/texture-filled object (optionally copy to clipboard)",
+    "valid": true
+  },
+  {
+    "id": "colour.fillMapping.set",
+    "title": "Required parameters only: Set fill mapping on objects: explicit, default fit, or from clipboard (\"Edit Fil",
+    "valid": true
+  },
+  {
+    "id": "colour.gap.close",
+    "title": "Required parameters only: Close a gap by adding an invisible stroke between the nearest stroke ends (\"Clos",
+    "valid": true
+  },
+  {
+    "id": "colour.gapClosing.get",
+    "title": "No parameters: Current gap closing mode and tolerances",
+    "valid": true
+  },
+  {
+    "id": "colour.gapClosing.set",
+    "title": "Required parameters only: Set the automatic gap closing mode (persisted user setting)",
+    "valid": true
+  },
+  {
+    "id": "colour.missing.list",
+    "title": "No parameters: Colour IDs referenced by artwork but not found in any palette",
+    "valid": true
+  },
+  {
+    "id": "colour.paint.apply",
+    "title": "No parameters: Paint zones, lines, brush strokes or text by ID, point or crossing path (\"Paint\"",
+    "valid": true
+  },
+  {
+    "id": "colour.paint.remove",
+    "title": "No parameters: Unpaint zones or lines by ID or point (\"Unpaint\")",
+    "valid": true
+  },
+  {
+    "id": "colour.paintUnpainted.apply",
+    "title": "No parameters: Fill unpainted zones only, by ID, point, lasso or all (\"Paint Unpainted\")",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.create",
+    "title": "No parameters: Create a palette (\"Add Palette\")",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.delete",
+    "title": "Required parameters only: Delete a palette and all its styles (\"Remove Palette\")",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.duplicate",
+    "title": "Required parameters only: Duplicate a palette with new IDs (\"Duplicate Palette\")",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.export",
+    "title": "Required parameters only: Write palettes to an `.animpal` file",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.get",
+    "title": "Required parameters only: Full palette as JSON (§12.3)",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.import",
+    "title": "Required parameters only: Import palettes from an `.animpal` file (\"Import Palette\")",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.list",
+    "title": "No parameters: List palettes in order",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.rename",
+    "title": "Required parameters only: Rename a palette (\"Rename Palette\")",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.select",
+    "title": "Required parameters only: Make a palette current (selects its first swatch)",
+    "valid": true
+  },
+  {
+    "id": "colour.palette.set",
+    "title": "Required parameters only: Replace or merge a palette's styles and swatches from a palette JSON object",
+    "valid": true
+  },
+  {
+    "id": "colour.pick",
+    "title": "Required parameters only: Colour at a rendered point (dropper read-back)",
+    "valid": true
+  },
+  {
+    "id": "colour.recolour.apply",
+    "title": "No parameters: Replace colour A with colour B across drawings/elements/scene/project (\"Replace ",
+    "valid": true
+  },
+  {
+    "id": "colour.recovery.performed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "colour.recovery.run",
+    "title": "No parameters: Recreate missing swatches from recovery copies (\"Colour Recovery\")",
+    "valid": true
+  },
+  {
+    "id": "colour.sceneStyle.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "colour.sceneStyles.get",
+    "title": "No parameters: Style selected for every palette in a scene",
+    "valid": true
+  },
+  {
+    "id": "colour.selection.apply",
+    "title": "No parameters: Recolour selected drawing objects (\"Set Colour\")",
+    "valid": true
+  },
+  {
+    "id": "colour.style.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "colour.style.delete",
+    "title": "Required parameters only: Delete a style (\"Delete Style\")",
+    "valid": true
+  },
+  {
+    "id": "colour.style.duplicate",
+    "title": "Required parameters only: Duplicate a style, same colour IDs (\"Duplicate Style\")",
+    "valid": true
+  },
+  {
+    "id": "colour.style.list",
+    "title": "Required parameters only: List a palette's styles and which scenes use each",
+    "valid": true
+  },
+  {
+    "id": "colour.style.rename",
+    "title": "Required parameters only: Rename a style (\"Rename Style\")",
+    "valid": true
+  },
+  {
+    "id": "colour.style.select",
+    "title": "Required parameters only: Set the style of a palette for a scene (\"Style Change\")",
+    "valid": true
+  },
+  {
+    "id": "colour.swatch.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "colour.swatch.create",
+    "title": "No parameters: Add a colour or texture swatch (\"Add Colour\" / \"Add Texture\")",
+    "valid": true
+  },
+  {
+    "id": "colour.swatch.delete",
+    "title": "Required parameters only: Delete a swatch, optionally recolouring its uses (\"Remove Colour\")",
+    "valid": true
+  },
+  {
+    "id": "colour.swatch.get",
+    "title": "Required parameters only: One swatch, all styles, plus value resolved for a scene",
+    "valid": true
+  },
+  {
+    "id": "colour.swatch.list",
+    "title": "No parameters: List swatches of a palette with values for a style",
+    "valid": true
+  },
+  {
+    "id": "colour.swatch.move",
+    "title": "Required parameters only: Reorder a swatch within its palette (\"Move Colour\")",
+    "valid": true
+  },
+  {
+    "id": "colour.swatch.set",
+    "title": "Required parameters only: Edit a swatch's name, kind, value(s) or flags (\"Edit Colour\")",
+    "valid": true
+  },
+  {
+    "id": "colour.swatchNames.set",
+    "title": "Required parameters only: Show or hide swatch names in the palette view",
+    "valid": true
+  },
+  {
+    "id": "colour.tintBlend.apply",
+    "title": "No parameters: Blend a colour into all colours of a style (\"Blend Style\")",
+    "valid": true
+  },
+  {
+    "id": "colour.tintDialog.open",
+    "title": "Required parameters only: Open the tint offset or tint blend UI for a style",
+    "valid": true
+  },
+  {
+    "id": "colour.tintOffset.apply",
+    "title": "No parameters: Offset all colours of a style (\"Offset Style\")",
+    "valid": true
+  },
+  {
+    "id": "colour.usage.list",
+    "title": "No parameters: Where colours are used (by swatch or palette)",
+    "valid": true
+  },
+  {
+    "id": "doc.asset.embed",
+    "title": "Embed every linked asset",
+    "valid": true
+  },
+  {
+    "id": "doc.asset.export",
+    "title": "Write an embedded sound to a file",
+    "valid": true
+  },
+  {
+    "id": "doc.asset.list",
+    "title": "Missing assets",
+    "valid": true
+  },
+  {
+    "id": "doc.asset.relink",
+    "title": "Search a folder for missing assets",
+    "valid": true
+  },
+  {
+    "id": "doc.asset.remove",
+    "title": "Remove unused assets",
+    "valid": true
+  },
+  {
+    "id": "doc.asset.status.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "doc.blob.get",
+    "title": "The project thumbnail entry",
+    "valid": true
+  },
+  {
+    "id": "doc.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "doc.diff",
+    "title": "Everything since the project was opened",
+    "valid": true
+  },
+  {
+    "id": "doc.export.json",
+    "title": "The first scene as an inline bundle",
+    "valid": true
+  },
+  {
+    "id": "doc.import.json",
+    "title": "Dry-run an import from a file",
+    "valid": true
+  },
+  {
+    "id": "doc.loadReport.get",
+    "title": "Repairs and issues of the last load",
+    "valid": true
+  },
+  {
+    "id": "doc.object.find",
+    "title": "Every drawing element",
+    "valid": true
+  },
+  {
+    "id": "doc.object.find",
+    "title": "Strokes of the first drawing",
+    "valid": true
+  },
+  {
+    "id": "doc.object.find",
+    "title": "Objects whose name starts with B",
+    "valid": true
+  },
+  {
+    "id": "doc.object.get",
+    "title": "The first scene with its elements as stubs",
+    "valid": true
+  },
+  {
+    "id": "doc.object.get",
+    "title": "The current element with derived properties",
+    "valid": true
+  },
+  {
+    "id": "doc.object.get",
+    "title": "Only names and types of two objects",
+    "valid": true
+  },
+  {
+    "id": "doc.object.patch",
+    "title": "Annotate a scene in meta",
+    "valid": true
+  },
+  {
+    "id": "doc.object.patch",
+    "title": "Mark the first drawing as mouth shape A",
+    "valid": true
+  },
+  {
+    "id": "doc.object.patch",
+    "title": "Set a pen's persisted tip fields (persisted names `tip` and `tipAngle`, SI-004)",
+    "valid": true
+  },
+  {
+    "id": "doc.object.patch",
+    "title": "Persisted element role (superset enum, SI-003)",
+    "valid": true
+  },
+  {
+    "id": "doc.object.refs",
+    "title": "Who uses the first palette",
+    "valid": true
+  },
+  {
+    "id": "doc.object.resolve",
+    "title": "Resolve a path and the current element",
+    "valid": true
+  },
+  {
+    "id": "doc.package.changedOnDisk",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "doc.package.export",
+    "title": "Export the folder form",
+    "valid": true
+  },
+  {
+    "id": "doc.package.get",
+    "title": "Inspect a package without opening it",
+    "valid": true
+  },
+  {
+    "id": "doc.repair",
+    "title": "Fix every dangling reference",
+    "valid": true
+  },
+  {
+    "id": "doc.schema.get",
+    "title": "The element schema",
+    "valid": true
+  },
+  {
+    "id": "doc.schema.get",
+    "title": "The schema of a pen's tip",
+    "valid": true
+  },
+  {
+    "id": "doc.schema.list",
+    "title": "Every object type with its parents and addressing",
+    "valid": true
+  },
+  {
+    "id": "doc.schema.validate",
+    "title": "Check a pen before creating it",
+    "valid": true
+  },
+  {
+    "id": "doc.state.get",
+    "title": "Revision, dirty flag and diff horizon",
+    "valid": true
+  },
+  {
+    "id": "doc.validate",
+    "title": "Errors only",
+    "valid": true
+  },
+  {
+    "id": "draw.arrange.apply",
+    "title": "Required parameters only: Change stacking order (\"Bring to Front\", \"Bring Forward\", \"Send Backward\", \"Send",
+    "valid": true
+  },
+  {
+    "id": "draw.bounds.get",
+    "title": "No parameters: Bounding box of the drawing or of given objects",
+    "valid": true
+  },
+  {
+    "id": "draw.breakApart.apply",
+    "title": "No parameters: Convert text to per-character vector groups (\"Break Text Apart\")",
+    "valid": true
+  },
+  {
+    "id": "draw.centreLine.apply",
+    "title": "No parameters: Convert brush strokes to pencil lines (\"Extract Centre Line\")",
+    "valid": true
+  },
+  {
+    "id": "draw.content.add",
+    "title": "Required parameters only: Insert drawing content given in the §13.4 JSON shape (IDs reassigned; colour rec",
+    "valid": true
+  },
+  {
+    "id": "draw.current.get",
+    "title": "No parameters: Current drawing target and context",
+    "valid": true
+  },
+  {
+    "id": "draw.cut.apply",
+    "title": "No parameters: Cut artwork along a polygon or rectangle; inside part selected or deleted (\"Cutt",
+    "valid": true
+  },
+  {
+    "id": "draw.drawing.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "draw.drawing.get",
+    "title": "No parameters: Full vector content as JSON (§13.4)",
+    "valid": true
+  },
+  {
+    "id": "draw.drawing.rename",
+    "title": "Required parameters only: Rename a drawing (\"Rename Drawing\")",
+    "valid": true
+  },
+  {
+    "id": "draw.drawing.render",
+    "title": "Required parameters only: Render a drawing to PNG at a requested size",
+    "valid": true
+  },
+  {
+    "id": "draw.ellipse.add",
+    "title": "Required parameters only: Add an ellipse as a closed pencil path (\"Ellipse Tool\")",
+    "valid": true
+  },
+  {
+    "id": "draw.envelope.apply",
+    "title": "Required parameters only: Perspective/envelope distortion of the selection (\"Perspective Tool\")",
+    "valid": true
+  },
+  {
+    "id": "draw.erase.apply",
+    "title": "No parameters: Erase along a path with the eraser tip, or everything inside a region (\"Eraser T",
+    "valid": true
+  },
+  {
+    "id": "draw.feather.apply",
+    "title": "No parameters: Feather edges of filled shapes (\"Feather Edges\")",
+    "valid": true
+  },
+  {
+    "id": "draw.flatten.apply",
+    "title": "No parameters: Merge selected layers into one (\"Flatten Drawing\")",
+    "valid": true
+  },
+  {
+    "id": "draw.flip.apply",
+    "title": "Required parameters only: Flip selection (\"Flip Horizontal\"/\"Flip Vertical\")",
+    "valid": true
+  },
+  {
+    "id": "draw.group.create",
+    "title": "No parameters: Group objects (\"Group Selection\")",
+    "valid": true
+  },
+  {
+    "id": "draw.group.delete",
+    "title": "No parameters: Ungroup: dissolve groups, keep members (\"Ungroup Selection\")",
+    "valid": true
+  },
+  {
+    "id": "draw.hitTest.get",
+    "title": "Required parameters only: Objects and zone under a point, front to back",
+    "valid": true
+  },
+  {
+    "id": "draw.inspectorPreview.set",
+    "title": "Required parameters only: Show/hide the drawing thumbnail in the inspector",
+    "valid": true
+  },
+  {
+    "id": "draw.line.add",
+    "title": "Required parameters only: Add a straight pencil line (\"Line Tool\")",
+    "valid": true
+  },
+  {
+    "id": "draw.linesToBrush.apply",
+    "title": "No parameters: Convert centre lines to brush strokes (\"Convert Lines to Brush\")",
+    "valid": true
+  },
+  {
+    "id": "draw.lock.set",
+    "title": "Required parameters only: Lock or unlock a drawing (\"Lock Drawing\"/\"Unlock Drawing\")",
+    "valid": true
+  },
+  {
+    "id": "draw.object.delete",
+    "title": "No parameters: Delete objects (\"Delete Object\")",
+    "valid": true
+  },
+  {
+    "id": "draw.optimize.apply",
+    "title": "No parameters: Merge layers only where appearance is unchanged (\"Optimize Drawing\")",
+    "valid": true
+  },
+  {
+    "id": "draw.pivot.set",
+    "title": "Required parameters only: Move the drawing pivot (\"Change Drawing Pivot\")",
+    "valid": true
+  },
+  {
+    "id": "draw.point.add",
+    "title": "Required parameters only: Add an anchor on a stroke without changing its shape (\"Contour Editing\")",
+    "valid": true
+  },
+  {
+    "id": "draw.point.delete",
+    "title": "No parameters: Delete anchors; strokes rebuilt or removed (\"Contour Editing\")",
+    "valid": true
+  },
+  {
+    "id": "draw.point.move",
+    "title": "Required parameters only: Move anchors (shared junction anchors move together) (\"Contour Editing\")",
+    "valid": true
+  },
+  {
+    "id": "draw.point.set",
+    "title": "Required parameters only: Set an anchor's position and handles (\"Contour Editing\")",
+    "valid": true
+  },
+  {
+    "id": "draw.pointSelection.set",
+    "title": "No parameters: Select anchor points (Contour Editor selection)",
+    "valid": true
+  },
+  {
+    "id": "draw.polyline.add",
+    "title": "Required parameters only: Add a polyline of straight/curved segments (\"Polyline Tool\")",
+    "valid": true
+  },
+  {
+    "id": "draw.rectangle.add",
+    "title": "Required parameters only: Add a rectangle as a closed pencil path (\"Rectangle Tool\")",
+    "valid": true
+  },
+  {
+    "id": "draw.repositionAll.apply",
+    "title": "No parameters: Apply one transform to every drawing of an element (\"Reposition All Drawings\")",
+    "valid": true
+  },
+  {
+    "id": "draw.rotate.apply",
+    "title": "Required parameters only: Rotate selection by a fixed step (\"Rotate 90° CW\"/\"Rotate 90° CCW\"/\"Rotate 180°\"",
+    "valid": true
+  },
+  {
+    "id": "draw.segment.move",
+    "title": "Required parameters only: Reshape a segment so its point at t moves by delta (\"Contour Editing\")",
+    "valid": true
+  },
+  {
+    "id": "draw.selection.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "draw.selection.get",
+    "title": "No parameters: Current drawing selection",
+    "valid": true
+  },
+  {
+    "id": "draw.selection.set",
+    "title": "No parameters: Select drawing objects by IDs, point, rectangle, lasso, all or none",
+    "valid": true
+  },
+  {
+    "id": "draw.smooth.apply",
+    "title": "No parameters: Remove unnecessary points (\"Smooth Selection\")",
+    "valid": true
+  },
+  {
+    "id": "draw.stroke.add",
+    "title": "No parameters: Add a brush stroke, pencil line or invisible stroke (\"Brush Tool\"/\"Pencil Tool\"/",
+    "valid": true
+  },
+  {
+    "id": "draw.stroke.set",
+    "title": "Required parameters only: Replace a stroke's geometry, pressure, thickness or visibility (\"Edit Stroke\")",
+    "valid": true
+  },
+  {
+    "id": "draw.text.add",
+    "title": "Required parameters only: Add a text object (\"New Text Object\")",
+    "valid": true
+  },
+  {
+    "id": "draw.text.set",
+    "title": "Required parameters only: Replace or edit text content, width mode or position (\"Typing\"/\"Set Text Width\"/",
+    "valid": true
+  },
+  {
+    "id": "draw.textFormat.set",
+    "title": "Required parameters only: Set character/paragraph formatting of a text range (\"Text Property Modified\")",
+    "valid": true
+  },
+  {
+    "id": "draw.transform.apply",
+    "title": "No parameters: Move/scale/rotate/skew objects numerically, optionally as a copy (\"Move/Scale/Ro",
+    "valid": true
+  },
+  {
+    "id": "draw.vectorFile.import",
+    "title": "Required parameters only: Import an Illustrator/PDF file into a drawing (\"Import Vector File\")",
+    "valid": true
+  },
+  {
+    "id": "draw.vectorize.preview",
+    "title": "No parameters: Preview vectorization of one image as PNG",
+    "valid": true
+  },
+  {
+    "id": "draw.vectorize.run",
+    "title": "No parameters: Import and vectorize image files, or convert an image element, into drawings (\"I",
+    "valid": true
+  },
+  {
+    "id": "draw.viewMapping.get",
+    "title": "No parameters: Mapping between a view's pixels and drawing space",
+    "valid": true
+  },
+  {
+    "id": "drawAid.autoLightTable.set",
+    "title": "Required parameters only: Auto light table",
+    "valid": true
+  },
+  {
+    "id": "drawAid.background.set",
+    "title": "No parameters: Drawing View background",
+    "valid": true
+  },
+  {
+    "id": "drawAid.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "drawAid.currentOnTop.set",
+    "title": "Required parameters only: Show current drawing on top in the Camera View",
+    "valid": true
+  },
+  {
+    "id": "drawAid.grid.set",
+    "title": "No parameters: Grid visibility, type and overlay",
+    "valid": true
+  },
+  {
+    "id": "drawAid.lightTableShade.set",
+    "title": "No parameters: Shading of auto and static light tables",
+    "valid": true
+  },
+  {
+    "id": "drawAid.onionSkin.set",
+    "title": "No parameters: Onion skin on/off and counts",
+    "valid": true
+  },
+  {
+    "id": "drawAid.onionSkinCycle.run",
+    "title": "Required parameters only: Cycle previous or next onion-skin count 0→1→2→3→0",
+    "valid": true
+  },
+  {
+    "id": "drawAid.onionSkinStyle.set",
+    "title": "No parameters: Onion-skin appearance",
+    "valid": true
+  },
+  {
+    "id": "drawAid.selectionDisplay.set",
+    "title": "No parameters: Camera View selection display options",
+    "valid": true
+  },
+  {
+    "id": "drawAid.state.get",
+    "title": "No parameters: State of all drawing aids",
+    "valid": true
+  },
+  {
+    "id": "drawAid.staticLightTable.add",
+    "title": "No parameters: Send a drawing or image to the static light table",
+    "valid": true
+  },
+  {
+    "id": "drawAid.staticLightTable.list",
+    "title": "No parameters: Static light-table entries",
+    "valid": true
+  },
+  {
+    "id": "drawAid.staticLightTable.remove",
+    "title": "No parameters: Delete entries (sources untouched)",
+    "valid": true
+  },
+  {
+    "id": "drawAid.staticLightTable.set",
+    "title": "No parameters: Show/hide, hide all others, overlay/underlay entries",
+    "valid": true
+  },
+  {
+    "id": "drawAid.staticLightTablePanel.set",
+    "title": "Required parameters only: Show/hide the static light-table panel",
+    "valid": true
+  },
+  {
+    "id": "drawAid.strokes.set",
+    "title": "Required parameters only: Show Strokes (invisible strokes and open ends)",
+    "valid": true
+  },
+  {
+    "id": "edit.clipboard.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "edit.clipboard.get",
+    "title": "Kind and item count",
+    "valid": true
+  },
+  {
+    "id": "edit.clipboard.set",
+    "title": "Put an element reference on the clipboard",
+    "valid": true
+  },
+  {
+    "id": "edit.copy",
+    "title": "Copy two cells of a column",
+    "valid": true
+  },
+  {
+    "id": "edit.cut",
+    "title": "Cut the first scene's first element",
+    "valid": true
+  },
+  {
+    "id": "edit.cutSpecial",
+    "title": "Cut cells and remove their frames",
+    "valid": true
+  },
+  {
+    "id": "edit.delete",
+    "title": "Clear the first cell of a column",
+    "valid": true
+  },
+  {
+    "id": "edit.deselectAll",
+    "title": "Clear the selection of the focused context",
+    "valid": true
+  },
+  {
+    "id": "edit.history.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "edit.history.get",
+    "title": "The last 20 entries",
+    "valid": true
+  },
+  {
+    "id": "edit.history.move",
+    "title": "Back to the opened state",
+    "valid": true
+  },
+  {
+    "id": "edit.paste",
+    "title": "Paste copied cells at frame 30 of a column",
+    "valid": true
+  },
+  {
+    "id": "edit.pasteAsNewElement",
+    "title": "A new element from the copied cells, starting at frame 1",
+    "valid": true
+  },
+  {
+    "id": "edit.pasteSpecial",
+    "title": "Insert copied cells at frame 1 of a column",
+    "valid": true
+  },
+  {
+    "id": "edit.redo",
+    "title": "Redo one step",
+    "valid": true
+  },
+  {
+    "id": "edit.selectAll",
+    "title": "Select every element of the current scene",
+    "valid": true
+  },
+  {
+    "id": "edit.selection.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "edit.selection.get",
+    "title": "Selection of the focused context",
+    "valid": true
+  },
+  {
+    "id": "edit.selection.set",
+    "title": "Select the first element of the first scene",
+    "valid": true
+  },
+  {
+    "id": "edit.undo",
+    "title": "Undo the last step",
+    "valid": true
+  },
+  {
+    "id": "element.annotation.set",
+    "title": "Required parameters only: Set a drawing element as annotation element, or back",
+    "valid": true
+  },
+  {
+    "id": "element.childExposure.apply",
+    "title": "Required parameters only: Extend the exposure of a peg's children up to a frame",
+    "valid": true
+  },
+  {
+    "id": "element.clone",
+    "title": "Required parameters only: Clone a cell-based element (shared drawing bank, independent timing)",
+    "valid": true
+  },
+  {
+    "id": "element.collapsed.set",
+    "title": "Required parameters only: Collapse / expand parent rows in the Timeline (saved with the scene)",
+    "valid": true
+  },
+  {
+    "id": "element.colour.set",
+    "title": "No parameters: Set marker and/or Timeline background colour; an empty string reverts to the cat",
+    "valid": true
+  },
+  {
+    "id": "element.create",
+    "title": "Required parameters only: Create one or more elements of a type (batch creation; the per-type add commands",
+    "valid": true
+  },
+  {
+    "id": "element.current.move",
+    "title": "Required parameters only: Previous / next element in Timeline or Exposure Sheet order",
+    "valid": true
+  },
+  {
+    "id": "element.current.set",
+    "title": "Required parameters only: Make an element the current element",
+    "valid": true
+  },
+  {
+    "id": "element.delete",
+    "title": "No parameters: Delete elements; children are re-attached to the deleted element's parent",
+    "valid": true
+  },
+  {
+    "id": "element.drawing.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "element.drawing.create",
+    "title": "Required parameters only: Create an empty drawing in the bank, optionally exposed over a range",
+    "valid": true
+  },
+  {
+    "id": "element.drawing.delete",
+    "title": "Required parameters only: Delete drawings from the bank; exposed drawings need `ifInUse: \"clearCells\"`",
+    "valid": true
+  },
+  {
+    "id": "element.drawing.duplicate",
+    "title": "Required parameters only: Copy a drawing into a new bank entry without exposing it",
+    "valid": true
+  },
+  {
+    "id": "element.drawing.list",
+    "title": "Required parameters only: Drawings of an element's bank with usage and optional thumbnails",
+    "valid": true
+  },
+  {
+    "id": "element.drawing.rename",
+    "title": "Required parameters only: Rename a drawing (all cells, all clones)",
+    "valid": true
+  },
+  {
+    "id": "element.drawingContent.delete",
+    "title": "No parameters: Clear drawing: delete content, keep the drawing and its labels",
+    "valid": true
+  },
+  {
+    "id": "element.drawingLock.set",
+    "title": "Required parameters only: Lock / unlock drawings",
+    "valid": true
+  },
+  {
+    "id": "element.duplicate",
+    "title": "No parameters: Independent copy of elements including copies of their drawings",
+    "valid": true
+  },
+  {
+    "id": "element.get",
+    "title": "Required parameters only: Full state of one element (17.5)",
+    "valid": true
+  },
+  {
+    "id": "element.hierarchy.get",
+    "title": "Required parameters only: Parent, children and siblings of an element",
+    "valid": true
+  },
+  {
+    "id": "element.hierarchy.select",
+    "title": "Required parameters only: Select parent, children, first child, previous/next sibling or skeleton root",
+    "valid": true
+  },
+  {
+    "id": "element.list",
+    "title": "No parameters: List the elements of a scene in Timeline or Exposure Sheet order",
+    "valid": true
+  },
+  {
+    "id": "element.lock.set",
+    "title": "Required parameters only: Lock / unlock in the scene-planning views: given, all, all others",
+    "valid": true
+  },
+  {
+    "id": "element.mediaLength.set",
+    "title": "Required parameters only: Reset a media element's exposure to the natural media length, or set a length",
+    "valid": true
+  },
+  {
+    "id": "element.note.set",
+    "title": "Required parameters only: Set, update or remove (empty text) an element note",
+    "valid": true
+  },
+  {
+    "id": "element.order.move",
+    "title": "Required parameters only: Bring to front / forward, send backward / to back within the level (Timeline) or",
+    "valid": true
+  },
+  {
+    "id": "element.order.set",
+    "title": "Required parameters only: Set the complete order of one Timeline level or of the Exposure Sheet columns (d",
+    "valid": true
+  },
+  {
+    "id": "element.parent.remove",
+    "title": "No parameters: Detach elements from their parent (they move to the parent's level)",
+    "valid": true
+  },
+  {
+    "id": "element.parent.set",
+    "title": "No parameters: Attach elements to a peg, effect, skeleton or camera, or to the nearest peg/effe",
+    "valid": true
+  },
+  {
+    "id": "element.parentPeg.create",
+    "title": "No parameters: Create a peg and attach the given elements to it",
+    "valid": true
+  },
+  {
+    "id": "element.properties.set",
+    "title": "Required parameters only: Set composite role and deformable flag (transform values: section 05)",
+    "valid": true
+  },
+  {
+    "id": "element.rename",
+    "title": "Required parameters only: Rename an element",
+    "valid": true
+  },
+  {
+    "id": "element.select",
+    "title": "Required parameters only: Select elements (rows / columns)",
+    "valid": true
+  },
+  {
+    "id": "element.solo.set",
+    "title": "Required parameters only: Solo mode on/off (view state)",
+    "valid": true
+  },
+  {
+    "id": "element.state.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "element.timing.set",
+    "title": "No parameters: Change start frame, duration and loops of bar elements; move or stretch bars",
+    "valid": true
+  },
+  {
+    "id": "element.typeColour.get",
+    "title": "No parameters: Default colours of all categories",
+    "valid": true
+  },
+  {
+    "id": "element.typeColour.set",
+    "title": "Required parameters only: Set the default colour of an element category (preference)",
+    "valid": true
+  },
+  {
+    "id": "element.unusedDrawing.list",
+    "title": "No parameters: Find drawings not exposed in any cell, for given elements or the whole scene",
+    "valid": true
+  },
+  {
+    "id": "element.visibility.set",
+    "title": "Required parameters only: Show/hide in the scene or the Exposure Sheet for the given elements, all, or all",
+    "valid": true
+  },
+  {
+    "id": "export.drawingPdf.run",
+    "title": "Required parameters only: Export one vector drawing to a single-page PDF",
+    "valid": true
+  },
+  {
+    "id": "export.formats.list",
+    "title": "No parameters: List export formats with capabilities and settings schemas",
+    "valid": true
+  },
+  {
+    "id": "export.job.finished",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "export.movie.defaults.get",
+    "title": "No parameters: Read persisted export-dialog values (path, format, type, range, publishing optio",
+    "valid": true
+  },
+  {
+    "id": "export.movie.defaults.set",
+    "title": "Required parameters only: Write persisted export-dialog values",
+    "valid": true
+  },
+  {
+    "id": "export.movie.run",
+    "title": "Required parameters only: Export movie / animated GIF / image sequence / vector animation",
+    "valid": true
+  },
+  {
+    "id": "export.movie.validate",
+    "title": "Required parameters only: Dry-run an export: resolve frames, path, conflicts, estimates, enabled ranges",
+    "valid": true
+  },
+  {
+    "id": "export.publish.account.close",
+    "title": "Required parameters only: Sign out and forget the stored token",
+    "valid": true
+  },
+  {
+    "id": "export.publish.account.get",
+    "title": "Required parameters only: Sign-in status for a service",
+    "valid": true
+  },
+  {
+    "id": "export.publish.account.open",
+    "title": "Required parameters only: Start browser sign-in for a service (user completes it)",
+    "valid": true
+  },
+  {
+    "id": "export.publish.categories.list",
+    "title": "Required parameters only: Categories offered by a service",
+    "valid": true
+  },
+  {
+    "id": "export.publish.run",
+    "title": "Required parameters only: Upload a movie to a service (outward action; needs scope and confirm)",
+    "valid": true
+  },
+  {
+    "id": "export.publish.service.list",
+    "title": "No parameters: Configured publishing services, limits and metadata requirements",
+    "valid": true
+  },
+  {
+    "id": "export.publish.validate",
+    "title": "Required parameters only: Check a file or export parameters against a service's limits and required metada",
+    "valid": true
+  },
+  {
+    "id": "export.report.get",
+    "title": "Required parameters only: Size report of a finished vector-format export",
+    "valid": true
+  },
+  {
+    "id": "export.settings.get",
+    "title": "Required parameters only: Read stored settings of a format and active preset",
+    "valid": true
+  },
+  {
+    "id": "export.settings.set",
+    "title": "Required parameters only: Store Custom settings for a format, or reset to Default",
+    "valid": true
+  },
+  {
+    "id": "export.snapshot.run",
+    "title": "Required parameters only: Export the current (or given) frame as a still image, active-view composition by",
+    "valid": true
+  },
+  {
+    "id": "fx.allEffects.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "fx.allEffects.get",
+    "title": "No parameters: Current all-effects display state",
+    "valid": true
+  },
+  {
+    "id": "fx.allEffects.set",
+    "title": "Required parameters only: Enable or disable effect display in interactive views",
+    "valid": true
+  },
+  {
+    "id": "fx.block.add",
+    "title": "Required parameters only: Add a block at a frame (split or append) (\"Add Particle Block\")",
+    "valid": true
+  },
+  {
+    "id": "fx.block.defaults.apply",
+    "title": "Required parameters only: Reset a block's parameters to its type's defaults (\"Reset to Defaults\")",
+    "valid": true
+  },
+  {
+    "id": "fx.block.get",
+    "title": "Required parameters only: Full block record (static values, dynamic curves/keyframes, seed, sprite set)",
+    "valid": true
+  },
+  {
+    "id": "fx.block.list",
+    "title": "Required parameters only: List a particle effect's blocks",
+    "valid": true
+  },
+  {
+    "id": "fx.block.remove",
+    "title": "No parameters: Remove a block; frames merge into a neighbour (\"Remove Particle Block\")",
+    "valid": true
+  },
+  {
+    "id": "fx.block.seed.set",
+    "title": "Required parameters only: Set a block's seed, or draw a new random one",
+    "valid": true
+  },
+  {
+    "id": "fx.block.set",
+    "title": "Required parameters only: Set block static values (timing, background, region, floor, caps, lifetime, fade",
+    "valid": true
+  },
+  {
+    "id": "fx.block.type.set",
+    "title": "Required parameters only: Change a block's particle type and variant, loading that type's defaults (\"Chang",
+    "valid": true
+  },
+  {
+    "id": "fx.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "fx.create",
+    "title": "Required parameters only: Create one or more effects with full parameters (\"Create Effect\")",
+    "valid": true
+  },
+  {
+    "id": "fx.curve.get",
+    "title": "Required parameters only: Function-curve ids of animatable parameters (for editing with section 05 command",
+    "valid": true
+  },
+  {
+    "id": "fx.dropShadow.transform.set",
+    "title": "Required parameters only: Set or reset the shadow transform (\"Change Drop Shadow\")",
+    "valid": true
+  },
+  {
+    "id": "fx.get",
+    "title": "Required parameters only: Full effect record (static values, keyframes, blocks, slots, timing)",
+    "valid": true
+  },
+  {
+    "id": "fx.hitTest.run",
+    "title": "Required parameters only: Identify pickable objects under a view position",
+    "valid": true
+  },
+  {
+    "id": "fx.keyframe.add",
+    "title": "Required parameters only: Add an effect (or block) keyframe, optionally with values (\"Add Effect Keyframe\"",
+    "valid": true
+  },
+  {
+    "id": "fx.keyframe.list",
+    "title": "Required parameters only: List keyframes with their values",
+    "valid": true
+  },
+  {
+    "id": "fx.keyframe.remove",
+    "title": "Required parameters only: Remove a keyframe (\"Remove Effect Keyframe\")",
+    "valid": true
+  },
+  {
+    "id": "fx.list",
+    "title": "No parameters: List effects in a scene",
+    "valid": true
+  },
+  {
+    "id": "fx.paramElement.add",
+    "title": "Required parameters only: Attach elements to a parameter slot (mask, sprites, bones, skin)",
+    "valid": true
+  },
+  {
+    "id": "fx.paramElement.list",
+    "title": "Required parameters only: List an effect's parameter elements and the elements attached to each",
+    "valid": true
+  },
+  {
+    "id": "fx.paramElement.remove",
+    "title": "Required parameters only: Detach elements from a parameter slot",
+    "valid": true
+  },
+  {
+    "id": "fx.paramRows.get",
+    "title": "No parameters: Parameter-row visibility per effect",
+    "valid": true
+  },
+  {
+    "id": "fx.paramRows.set",
+    "title": "Required parameters only: Show or hide parameter rows in the Timeline for given effects or all effects",
+    "valid": true
+  },
+  {
+    "id": "fx.params.get",
+    "title": "Required parameters only: Resolved parameter values at a frame plus derived values",
+    "valid": true
+  },
+  {
+    "id": "fx.params.set",
+    "title": "Required parameters only: Set any subset of an effect's (or block's) parameters (\"Change Effect Parameters",
+    "valid": true
+  },
+  {
+    "id": "fx.particles.get",
+    "title": "Required parameters only: Deterministic particle snapshot of a block at a frame",
+    "valid": true
+  },
+  {
+    "id": "fx.preset.apply",
+    "title": "Required parameters only: Apply a preset to an effect or particle block (\"Apply Preset\")",
+    "valid": true
+  },
+  {
+    "id": "fx.preset.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "fx.preset.create",
+    "title": "Required parameters only: Save an effect's or block's current parameters (or an explicit body) as a user p",
+    "valid": true
+  },
+  {
+    "id": "fx.preset.delete",
+    "title": "Required parameters only: Delete a user preset",
+    "valid": true
+  },
+  {
+    "id": "fx.preset.export",
+    "title": "Required parameters only: Export user (or built-in) presets to a preset file",
+    "valid": true
+  },
+  {
+    "id": "fx.preset.get",
+    "title": "Required parameters only: Full preset body, optionally with thumbnail PNG",
+    "valid": true
+  },
+  {
+    "id": "fx.preset.import",
+    "title": "Required parameters only: Import user presets from a preset file",
+    "valid": true
+  },
+  {
+    "id": "fx.preset.list",
+    "title": "No parameters: List presets",
+    "valid": true
+  },
+  {
+    "id": "fx.preset.rename",
+    "title": "Required parameters only: Rename a user preset",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.cache.delete",
+    "title": "No parameters: Clear the rendered-frame cache",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.close",
+    "title": "No parameters: Close the effect preview panel",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.frame.get",
+    "title": "No parameters: Cached preview render of a frame as PNG",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.frameRendered",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.invalidated",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.open",
+    "title": "No parameters: Open (or focus) the effect preview panel",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.options.get",
+    "title": "No parameters: Effect preview settings",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.options.set",
+    "title": "No parameters: Change effect preview settings",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.render",
+    "title": "No parameters: Render frames into the effect preview cache",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.status.get",
+    "title": "No parameters: Rendering state and cache usage",
+    "valid": true
+  },
+  {
+    "id": "fx.preview.stop",
+    "title": "No parameters: Stop the running preview render (same as `job_cancel`)",
+    "valid": true
+  },
+  {
+    "id": "fx.renderList.get",
+    "title": "Required parameters only: Compositor output for a frame: ordered drawables with transforms, colour transfo",
+    "valid": true
+  },
+  {
+    "id": "fx.renderer.capabilities.get",
+    "title": "No parameters: Renderer capabilities and computed recommendations",
+    "valid": true
+  },
+  {
+    "id": "fx.renderer.options.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "fx.renderer.options.get",
+    "title": "No parameters: Display-quality and renderer options (§6.9)",
+    "valid": true
+  },
+  {
+    "id": "fx.renderer.options.set",
+    "title": "Required parameters only: Change display-quality and renderer options",
+    "valid": true
+  },
+  {
+    "id": "fx.shake.displacement.get",
+    "title": "Required parameters only: Shake displacement samples",
+    "valid": true
+  },
+  {
+    "id": "fx.simulation.run",
+    "title": "Required parameters only: Pre-simulate a block up to a frame (warms the cache)",
+    "valid": true
+  },
+  {
+    "id": "fx.spriteSet.get",
+    "title": "Required parameters only: Sprite-set details and variant thumbnails",
+    "valid": true
+  },
+  {
+    "id": "fx.spriteSet.list",
+    "title": "No parameters: List built-in sprite sets",
+    "valid": true
+  },
+  {
+    "id": "fx.timing.set",
+    "title": "Required parameters only: Change start frame, duration and/or loop count (\"Change Effect Timing\")",
+    "valid": true
+  },
+  {
+    "id": "fx.types.get",
+    "title": "Required parameters only: Descriptor of one effect type, optionally narrowed to one particle type",
+    "valid": true
+  },
+  {
+    "id": "fx.types.list",
+    "title": "No parameters: List all effect types with parameter JSON schemas, slots, flags, particle types,",
+    "valid": true
+  },
+  {
+    "id": "import.completed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "import.file.get",
+    "title": "Required parameters only: Inspect a file before import",
+    "valid": true
+  },
+  {
+    "id": "import.file.run",
+    "title": "Required parameters only: Import files (any family) at a target; one undo step",
+    "valid": true
+  },
+  {
+    "id": "import.formats.list",
+    "title": "No parameters: Supported import formats by family",
+    "valid": true
+  },
+  {
+    "id": "import.keyedImage.get",
+    "title": "Required parameters only: Preview keying on one image (PNG)",
+    "valid": true
+  },
+  {
+    "id": "import.keyedImages.run",
+    "title": "Required parameters only: Import images with keying, one cell per file",
+    "valid": true
+  },
+  {
+    "id": "import.movie.run",
+    "title": "Required parameters only: Import a movie as an image sequence (and its audio)",
+    "valid": true
+  },
+  {
+    "id": "import.options.get",
+    "title": "No parameters: Read persisted import options",
+    "valid": true
+  },
+  {
+    "id": "import.options.set",
+    "title": "No parameters: Write persisted import options",
+    "valid": true
+  },
+  {
+    "id": "import.vectorize.settings.get",
+    "title": "No parameters: Read import-and-vectorize settings",
+    "valid": true
+  },
+  {
+    "id": "import.vectorize.settings.set",
+    "title": "No parameters: Write the remembered import-and-vectorize settings (defaults for `draw.vectorize",
+    "valid": true
+  },
+  {
+    "id": "inspect.contactSheet.render",
+    "title": "Every fourth frame of 1–24",
+    "valid": true
+  },
+  {
+    "id": "inspect.coordinates.convert",
+    "title": "Field units to camera space",
+    "valid": true
+  },
+  {
+    "id": "inspect.frame.describe",
+    "title": "What the current frame shows",
+    "valid": true
+  },
+  {
+    "id": "inspect.hitTest",
+    "title": "What is at the camera centre",
+    "valid": true
+  },
+  {
+    "id": "inspect.screenshot",
+    "title": "The main window",
+    "valid": true
+  },
+  {
+    "id": "inspect.ui.tree",
+    "title": "The window's accessibility tree, 3 levels",
+    "valid": true
+  },
+  {
+    "id": "job.cancel",
+    "title": "Cancel a job",
+    "valid": true
+  },
+  {
+    "id": "job.finished",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "job.list",
+    "title": "The caller's jobs",
+    "valid": true
+  },
+  {
+    "id": "job.progress",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "job.wait",
+    "title": "Wait up to 5 s",
+    "valid": true
+  },
+  {
+    "id": "keymap.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "keymap.export",
+    "title": "Required parameters only: Write the keymap to a file",
+    "valid": true
+  },
+  {
+    "id": "keymap.get",
+    "title": "No parameters: Bindings of a command, or the command a key sequence runs in a context",
+    "valid": true
+  },
+  {
+    "id": "keymap.import",
+    "title": "Required parameters only: Read a keymap file",
+    "valid": true
+  },
+  {
+    "id": "keymap.list",
+    "title": "No parameters: Bindings, filterable",
+    "valid": true
+  },
+  {
+    "id": "keymap.remove",
+    "title": "Required parameters only: Remove bindings of a command",
+    "valid": true
+  },
+  {
+    "id": "keymap.reset",
+    "title": "No parameters: Restore default bindings for one command or all",
+    "valid": true
+  },
+  {
+    "id": "keymap.set",
+    "title": "Required parameters only: Bind a key sequence to a command (with optional fixed parameters)",
+    "valid": true
+  },
+  {
+    "id": "library.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "library.close",
+    "title": "Required parameters only: Close a library (not the project-local one)",
+    "valid": true
+  },
+  {
+    "id": "library.closed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "library.create",
+    "title": "Required parameters only: Create a new empty library in a folder and open it",
+    "valid": true
+  },
+  {
+    "id": "library.drawing.insert",
+    "title": "Required parameters only: Copy a drawing (project branch or single-drawing item) to an element frame (\"Cop",
+    "valid": true
+  },
+  {
+    "id": "library.element.duplicate",
+    "title": "Required parameters only: Copy an element into another scene (project branch)",
+    "valid": true
+  },
+  {
+    "id": "library.folder.create",
+    "title": "Required parameters only: Create a folder (\"New folder\")",
+    "valid": true
+  },
+  {
+    "id": "library.folder.delete",
+    "title": "Required parameters only: Delete a folder and its contents",
+    "valid": true
+  },
+  {
+    "id": "library.folder.rename",
+    "title": "Required parameters only: Rename a folder",
+    "valid": true
+  },
+  {
+    "id": "library.item.delete",
+    "title": "Required parameters only: Delete items",
+    "valid": true
+  },
+  {
+    "id": "library.item.duplicate",
+    "title": "Required parameters only: Copy folders/items into a folder",
+    "valid": true
+  },
+  {
+    "id": "library.item.get",
+    "title": "Required parameters only: Get item properties (§9)",
+    "valid": true
+  },
+  {
+    "id": "library.item.import",
+    "title": "Required parameters only: Import media or template files into a folder",
+    "valid": true
+  },
+  {
+    "id": "library.item.list",
+    "title": "Required parameters only: List the contents of a folder",
+    "valid": true
+  },
+  {
+    "id": "library.item.move",
+    "title": "Required parameters only: Move folders/items to a folder (same or another library)",
+    "valid": true
+  },
+  {
+    "id": "library.item.rename",
+    "title": "Required parameters only: Rename an item",
+    "valid": true
+  },
+  {
+    "id": "library.item.thumbnail.get",
+    "title": "Required parameters only: Get an item's thumbnail (generated if missing)",
+    "valid": true
+  },
+  {
+    "id": "library.list",
+    "title": "No parameters: List open libraries",
+    "valid": true
+  },
+  {
+    "id": "library.node.get",
+    "title": "Required parameters only: Get one library, folder or item with its location (library name and folder path)",
+    "valid": true
+  },
+  {
+    "id": "library.open",
+    "title": "Required parameters only: Open an existing library",
+    "valid": true
+  },
+  {
+    "id": "library.opened",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "library.preview.get",
+    "title": "No parameters: Get preview state",
+    "valid": true
+  },
+  {
+    "id": "library.preview.set",
+    "title": "No parameters: Set preview item, frame, playing and enabled state",
+    "valid": true
+  },
+  {
+    "id": "library.project.get",
+    "title": "No parameters: Get the project branch: scenes, elements, optionally drawings",
+    "valid": true
+  },
+  {
+    "id": "library.refresh.run",
+    "title": "Required parameters only: Re-read a library or folder from disk and regenerate missing thumbnails",
+    "valid": true
+  },
+  {
+    "id": "library.save",
+    "title": "No parameters: Save modified libraries (project-local is saved with the project)",
+    "valid": true
+  },
+  {
+    "id": "library.selection.get",
+    "title": "No parameters: Get the library selection",
+    "valid": true
+  },
+  {
+    "id": "library.selection.set",
+    "title": "Required parameters only: Select library nodes (tree or item list)",
+    "valid": true
+  },
+  {
+    "id": "library.starter.open",
+    "title": "No parameters: Restore the starter library (re-open; optionally reinstall its files)",
+    "valid": true
+  },
+  {
+    "id": "library.template.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "library.template.create",
+    "title": "Required parameters only: Create a template from project objects (elements, a scene, a drawing, strokes)",
+    "valid": true
+  },
+  {
+    "id": "library.template.edit.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "library.template.edit.get",
+    "title": "No parameters: Get template edit mode state",
+    "valid": true
+  },
+  {
+    "id": "library.template.edit.start",
+    "title": "Required parameters only: Enter template edit mode",
+    "valid": true
+  },
+  {
+    "id": "library.template.edit.stop",
+    "title": "No parameters: Return to scene, committing edits into the template (\"Edit template\")",
+    "valid": true
+  },
+  {
+    "id": "library.template.export",
+    "title": "Required parameters only: Export a template as a standalone `.animtpl` file",
+    "valid": true
+  },
+  {
+    "id": "library.template.frame.render",
+    "title": "Required parameters only: Render one frame of a template (preview)",
+    "valid": true
+  },
+  {
+    "id": "library.template.get",
+    "title": "Required parameters only: Get full template metadata and element tree",
+    "valid": true
+  },
+  {
+    "id": "library.template.insert",
+    "title": "Required parameters only: Insert a template or media item into a scene by copy or link",
+    "valid": true
+  },
+  {
+    "id": "library.template.search",
+    "title": "No parameters: Search templates and items across libraries with metadata",
+    "valid": true
+  },
+  {
+    "id": "library.templateUpdate.apply",
+    "title": "Required parameters only: Update chosen drawings from their template",
+    "valid": true
+  },
+  {
+    "id": "library.templateUpdate.list",
+    "title": "Required parameters only: List drawings of an element derived from templates, with changed state",
+    "valid": true
+  },
+  {
+    "id": "library.tree.get",
+    "title": "No parameters: Get the folder/item hierarchy",
+    "valid": true
+  },
+  {
+    "id": "library.view.get",
+    "title": "No parameters: Get panel state",
+    "valid": true
+  },
+  {
+    "id": "library.view.set",
+    "title": "Required parameters only: Set the item-list display mode",
+    "valid": true
+  },
+  {
+    "id": "library.writeAccess.set",
+    "title": "Required parameters only: Request or release exclusive write access to a library",
+    "valid": true
+  },
+  {
+    "id": "lipsync.apply",
+    "title": "Required parameters only: Write the drawing element's exposures from the mouth track (Apply Lip-sync; a dr",
+    "valid": true
+  },
+  {
+    "id": "lipsync.detect",
+    "title": "No parameters: Detect the mouth track for a placement (or all placements of an element), option",
+    "valid": true
+  },
+  {
+    "id": "lipsync.display.set",
+    "title": "Required parameters only: Show/hide lip-sync mode for a sound column (detects first if needed)",
+    "valid": true
+  },
+  {
+    "id": "lipsync.mapping.get",
+    "title": "Required parameters only: Read the stored mapping, or resolve the automatic mapping, for a sound/drawing p",
+    "valid": true
+  },
+  {
+    "id": "lipsync.mapping.mouth.set",
+    "title": "Required parameters only: Map one shape to a drawing, or step to the previous/next drawing",
+    "valid": true
+  },
+  {
+    "id": "lipsync.mapping.set",
+    "title": "Required parameters only: Store a full or partial mapping (by drawing id or name; null = empty)",
+    "valid": true
+  },
+  {
+    "id": "lipsync.mouth.set",
+    "title": "Required parameters only: Set one mouth on a frame range and mark it manual (Set Mouth)",
+    "valid": true
+  },
+  {
+    "id": "lipsync.panel.close",
+    "title": "No parameters: Close the lip-sync panel",
+    "valid": true
+  },
+  {
+    "id": "lipsync.panel.open",
+    "title": "No parameters: Open/raise the lip-sync panel",
+    "valid": true
+  },
+  {
+    "id": "lipsync.panel.state.set",
+    "title": "No parameters: Set the panel's selected sound, mouth element and advanced-area visibility",
+    "valid": true
+  },
+  {
+    "id": "lipsync.settings.get",
+    "title": "No parameters: Project defaults for detection",
+    "valid": true
+  },
+  {
+    "id": "lipsync.settings.set",
+    "title": "No parameters: Set project defaults for detection (including the phoneme map)",
+    "valid": true
+  },
+  {
+    "id": "lipsync.shapes.list",
+    "title": "No parameters: The eight mouth shapes with descriptions, covered sounds and reference images",
+    "valid": true
+  },
+  {
+    "id": "lipsync.template.import",
+    "title": "Required parameters only: Import a mouth template as a new drawing element (eight tagged drawings)",
+    "valid": true
+  },
+  {
+    "id": "lipsync.template.list",
+    "title": "No parameters: Mouth templates available in the Library",
+    "valid": true
+  },
+  {
+    "id": "lipsync.track.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "lipsync.track.clear",
+    "title": "No parameters: Delete the lip-sync track of a placement or element",
+    "valid": true
+  },
+  {
+    "id": "lipsync.track.get",
+    "title": "No parameters: Read the per-frame mouth track",
+    "valid": true
+  },
+  {
+    "id": "lipsync.track.set",
+    "title": "Required parameters only: Write a mouth track explicitly (whole or part)",
+    "valid": true
+  },
+  {
+    "id": "lipsync.track.stale",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "media.movie.import",
+    "title": "Required parameters only: Import a movie as an image sequence (plus optional audio)",
+    "valid": true
+  },
+  {
+    "id": "media.movie.probe",
+    "title": "Required parameters only: Inspect a movie file",
+    "valid": true
+  },
+  {
+    "id": "media.object.list",
+    "title": "No parameters: Project media registry (linked sources, location, missing state, usage)",
+    "valid": true
+  },
+  {
+    "id": "media.object.relink",
+    "title": "Required parameters only: Point a media object at a new file or Library item",
+    "valid": true
+  },
+  {
+    "id": "media.sequence.add",
+    "title": "Required parameters only: Link a Library item or external file into a media element as a new sequence",
+    "valid": true
+  },
+  {
+    "id": "media.sequence.get",
+    "title": "Required parameters only: One sequence (name, location, frames, link offset, source length)",
+    "valid": true
+  },
+  {
+    "id": "media.sequence.list",
+    "title": "Required parameters only: List sequences of a media element",
+    "valid": true
+  },
+  {
+    "id": "media.sequence.move",
+    "title": "Required parameters only: Move a sequence to a new start frame",
+    "valid": true
+  },
+  {
+    "id": "media.sequence.naturalTiming.apply",
+    "title": "Required parameters only: Reset a sequence to one exposure per source frame from its link offset (Reset Me",
+    "valid": true
+  },
+  {
+    "id": "media.sequence.remove",
+    "title": "Required parameters only: Remove a sequence",
+    "valid": true
+  },
+  {
+    "id": "media.sequence.set",
+    "title": "Required parameters only: Change a sequence's stop frame or link offset",
+    "valid": true
+  },
+  {
+    "id": "media.sound.play",
+    "title": "Required parameters only: Play the sound contained in a media cell's linked source",
+    "valid": true
+  },
+  {
+    "id": "media.sound.stop",
+    "title": "No parameters: Stop media sound playback",
+    "valid": true
+  },
+  {
+    "id": "media.source.missing",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "playback.forceRate.set",
+    "title": "Required parameters only: Force frame rate (drop frames to keep real time)",
+    "valid": true
+  },
+  {
+    "id": "playback.loop.set",
+    "title": "Required parameters only: Loop playback on/off",
+    "valid": true
+  },
+  {
+    "id": "playback.player.close",
+    "title": "No parameters: Close the player",
+    "valid": true
+  },
+  {
+    "id": "playback.player.get",
+    "title": "No parameters: Read player state",
+    "valid": true
+  },
+  {
+    "id": "playback.player.open",
+    "title": "No parameters: Open the preview player on a preview or a movie file",
+    "valid": true
+  },
+  {
+    "id": "playback.player.set",
+    "title": "No parameters: Control the player (play/pause, seek, loop, volume, mute, size report)",
+    "valid": true
+  },
+  {
+    "id": "playback.preview.run",
+    "title": "Required parameters only: Render a preview (movie / scene / exposure sheet / selection / quick) and option",
+    "valid": true
+  },
+  {
+    "id": "playback.range.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "playback.range.get",
+    "title": "No parameters: Read a scene's playback range",
+    "valid": true
+  },
+  {
+    "id": "playback.range.mode.set",
+    "title": "Required parameters only: Set range mode Automatic Fit / Free (restores last free values)",
+    "valid": true
+  },
+  {
+    "id": "playback.range.set",
+    "title": "No parameters: Set free range ends (switches to Free; validated and adjusted)",
+    "valid": true
+  },
+  {
+    "id": "playback.rate.set",
+    "title": "No parameters: Interactive playback rate (does not change project fps)",
+    "valid": true
+  },
+  {
+    "id": "playback.start",
+    "title": "No parameters: Start interactive playback of the current scene in the views (Play); storyline p",
+    "valid": true
+  },
+  {
+    "id": "playback.started",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "playback.state.get",
+    "title": "No parameters: Read playback state and options",
+    "valid": true
+  },
+  {
+    "id": "playback.stop",
+    "title": "No parameters: Stop interactive playback (scene or storyline); current frame stays where stoppe",
+    "valid": true
+  },
+  {
+    "id": "playback.stopped",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "prefs.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "prefs.get",
+    "title": "Required parameters only: Values of preferences by key",
+    "valid": true
+  },
+  {
+    "id": "prefs.list",
+    "title": "No parameters: Preference schema and values",
+    "valid": true
+  },
+  {
+    "id": "prefs.reset",
+    "title": "No parameters: Reset preferences to defaults by key or prefix (`prefix: \"\"` = all)",
+    "valid": true
+  },
+  {
+    "id": "prefs.set",
+    "title": "Required parameters only: Set one or more preferences atomically",
+    "valid": true
+  },
+  {
+    "id": "print.pageSetup.get",
+    "title": "No parameters: Read page setup",
+    "valid": true
+  },
+  {
+    "id": "print.pageSetup.set",
+    "title": "No parameters: Set paper size and orientation",
+    "valid": true
+  },
+  {
+    "id": "print.preview.get",
+    "title": "No parameters: Lay out pages and return page count and one page image",
+    "valid": true
+  },
+  {
+    "id": "print.printer.list",
+    "title": "No parameters: Installed printers and their capabilities",
+    "valid": true
+  },
+  {
+    "id": "print.run",
+    "title": "No parameters: Print to a printer (needs scope + confirm) or to a file/PDF",
+    "valid": true
+  },
+  {
+    "id": "print.settings.get",
+    "title": "No parameters: Read persisted print parameters",
+    "valid": true
+  },
+  {
+    "id": "print.settings.set",
+    "title": "Required parameters only: Write persisted print parameters",
+    "valid": true
+  },
+  {
+    "id": "project.autosaved",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "project.backup.list",
+    "title": "Backups of the current project",
+    "valid": true
+  },
+  {
+    "id": "project.backup.open",
+    "title": "Open a backup as an untitled copy",
+    "valid": true
+  },
+  {
+    "id": "project.close",
+    "title": "Close, failing if unsaved",
+    "valid": true
+  },
+  {
+    "id": "project.closed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "project.create",
+    "title": "A 1920×1080, 24 fps project",
+    "valid": true
+  },
+  {
+    "id": "project.dirty.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "project.info.get",
+    "title": "ProjectInfo (01 §12.4)",
+    "valid": true
+  },
+  {
+    "id": "project.open",
+    "title": "Open a package",
+    "valid": true
+  },
+  {
+    "id": "project.opened",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "project.presets.list",
+    "title": "Presets for new projects",
+    "valid": true
+  },
+  {
+    "id": "project.properties.get",
+    "title": "Frame rate and camera size",
+    "valid": true
+  },
+  {
+    "id": "project.properties.set",
+    "title": "25 fps",
+    "valid": true
+  },
+  {
+    "id": "project.recent.list",
+    "title": "Recent projects",
+    "valid": true
+  },
+  {
+    "id": "project.recent.remove",
+    "title": "Clear the list",
+    "valid": true
+  },
+  {
+    "id": "project.recovery.delete",
+    "title": "Discard everything",
+    "valid": true
+  },
+  {
+    "id": "project.recovery.list",
+    "title": "Recoverable sessions",
+    "valid": true
+  },
+  {
+    "id": "project.recovery.open",
+    "title": "Recover a session",
+    "valid": true
+  },
+  {
+    "id": "project.save",
+    "title": "Save",
+    "valid": true
+  },
+  {
+    "id": "project.saveAs",
+    "title": "Save a copy",
+    "valid": true
+  },
+  {
+    "id": "project.saved",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "render.frame.run",
+    "title": "No parameters: Deterministically render one frame to PNG/JPEG, inline or to file",
+    "valid": true
+  },
+  {
+    "id": "render.limits.get",
+    "title": "No parameters: Inline size limits, max output size, supported render formats",
+    "valid": true
+  },
+  {
+    "id": "render.range.run",
+    "title": "Required parameters only: Render a frame range of one scene to an image sequence (movie ranges with transi",
+    "valid": true
+  },
+  {
+    "id": "sound.asset.get",
+    "title": "Required parameters only: Get one asset's format, status and users",
+    "valid": true
+  },
+  {
+    "id": "sound.asset.import",
+    "title": "Required parameters only: Add an audio file to the project's sound assets without placing it",
+    "valid": true
+  },
+  {
+    "id": "sound.asset.list",
+    "title": "No parameters: List sound assets of the project",
+    "valid": true
+  },
+  {
+    "id": "sound.asset.missing",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "sound.asset.probe",
+    "title": "Required parameters only: Inspect an audio (or movie) file without importing it",
+    "valid": true
+  },
+  {
+    "id": "sound.asset.relink",
+    "title": "Required parameters only: Point a (missing) asset at a new file; placements keep their timing",
+    "valid": true
+  },
+  {
+    "id": "sound.editor.close",
+    "title": "Required parameters only: Close the editor, committing all its edits as one *Edit Sound* step or discardin",
+    "valid": true
+  },
+  {
+    "id": "sound.editor.open",
+    "title": "Required parameters only: Open the sound element editor on an element",
+    "valid": true
+  },
+  {
+    "id": "sound.editor.state.get",
+    "title": "No parameters: Editor state",
+    "valid": true
+  },
+  {
+    "id": "sound.editor.state.set",
+    "title": "No parameters: Set editor current frame, selection, zoom, scrubbing, loop",
+    "valid": true
+  },
+  {
+    "id": "sound.element.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "sound.element.streamed.set",
+    "title": "Required parameters only: Mark a sound element for streamed SWF export",
+    "valid": true
+  },
+  {
+    "id": "sound.envelope.clear",
+    "title": "Required parameters only: Remove the envelope (unity gain)",
+    "valid": true
+  },
+  {
+    "id": "sound.envelope.get",
+    "title": "Required parameters only: Read a placement's envelope",
+    "valid": true
+  },
+  {
+    "id": "sound.envelope.point.add",
+    "title": "Required parameters only: Add one envelope point",
+    "valid": true
+  },
+  {
+    "id": "sound.envelope.point.move",
+    "title": "Required parameters only: Move/re-level one envelope point (time clamped between neighbours)",
+    "valid": true
+  },
+  {
+    "id": "sound.envelope.point.remove",
+    "title": "Required parameters only: Remove one envelope point",
+    "valid": true
+  },
+  {
+    "id": "sound.envelope.set",
+    "title": "Required parameters only: Replace the whole envelope",
+    "valid": true
+  },
+  {
+    "id": "sound.fade.apply",
+    "title": "Required parameters only: Apply a fade preset",
+    "valid": true
+  },
+  {
+    "id": "sound.import",
+    "title": "Required parameters only: Import an audio file and place it in a sound element (Import Sound)",
+    "valid": true
+  },
+  {
+    "id": "sound.placement.add",
+    "title": "Required parameters only: Place an existing asset or Library sound item in a sound element",
+    "valid": true
+  },
+  {
+    "id": "sound.placement.get",
+    "title": "Required parameters only: Full parameters of one placement",
+    "valid": true
+  },
+  {
+    "id": "sound.placement.list",
+    "title": "No parameters: List placements of an element or a scene",
+    "valid": true
+  },
+  {
+    "id": "sound.placement.move",
+    "title": "Required parameters only: Move a placement to a new start frame, keeping its length",
+    "valid": true
+  },
+  {
+    "id": "sound.placement.remove",
+    "title": "Required parameters only: Remove a placement (Remove Sound)",
+    "valid": true
+  },
+  {
+    "id": "sound.placement.set",
+    "title": "Required parameters only: Set loop count and/or volume (and any trim/move field) of a placement",
+    "valid": true
+  },
+  {
+    "id": "sound.placement.split",
+    "title": "Required parameters only: Split a placement into two at a frame",
+    "valid": true
+  },
+  {
+    "id": "sound.placement.trim",
+    "title": "Required parameters only: Set in/out points (source seconds) and/or truncate at a stop frame",
+    "valid": true
+  },
+  {
+    "id": "sound.play",
+    "title": "No parameters: Play audio without picture: one placement, one element's mix, an asset, or the s",
+    "valid": true
+  },
+  {
+    "id": "sound.playback.set",
+    "title": "Required parameters only: Enable/disable sound during interactive playback (per user)",
+    "valid": true
+  },
+  {
+    "id": "sound.range.delete",
+    "title": "Required parameters only: Empty a frame range of a sound element, splitting and trimming placements (§7.2)",
+    "valid": true
+  },
+  {
+    "id": "sound.range.select",
+    "title": "Required parameters only: Select frames of a placement in the Exposure Sheet/Timeline (whole, from start, ",
+    "valid": true
+  },
+  {
+    "id": "sound.recent.list",
+    "title": "No parameters: Recently imported sounds (for quick re-import)",
+    "valid": true
+  },
+  {
+    "id": "sound.scrubbing.set",
+    "title": "Required parameters only: Enable/disable Timeline sound scrubbing (per user)",
+    "valid": true
+  },
+  {
+    "id": "sound.settings.get",
+    "title": "No parameters: Read sound playback/scrubbing/waveform settings and audio device status",
+    "valid": true
+  },
+  {
+    "id": "sound.silence.list",
+    "title": "No parameters: Silence and speech ranges",
+    "valid": true
+  },
+  {
+    "id": "sound.stop",
+    "title": "No parameters: Stop one-shot sound playback (one or all)",
+    "valid": true
+  },
+  {
+    "id": "sound.waveform.get",
+    "title": "No parameters: Numeric waveform summary per frame (or per time bucket for an asset)",
+    "valid": true
+  },
+  {
+    "id": "sound.waveform.ready",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "sound.waveforms.set",
+    "title": "Required parameters only: Show waveforms or solid bars in Timeline/Exposure Sheet (per user)",
+    "valid": true
+  },
+  {
+    "id": "storyline.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "storyline.currentScene.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "storyline.currentScene.get",
+    "title": "No parameters: Get the current scene",
+    "valid": true
+  },
+  {
+    "id": "storyline.currentScene.set",
+    "title": "Required parameters only: Make a scene current in all editing views",
+    "valid": true
+  },
+  {
+    "id": "storyline.frame.get",
+    "title": "Required parameters only: Map a global frame to scene(s), local frame(s) and transition",
+    "valid": true
+  },
+  {
+    "id": "storyline.frame.render",
+    "title": "Required parameters only: Render a global storyline frame including transitions",
+    "valid": true
+  },
+  {
+    "id": "storyline.get",
+    "title": "No parameters: Get the full storyline model with computed global timing",
+    "valid": true
+  },
+  {
+    "id": "storyline.play.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "storyline.play.start",
+    "title": "No parameters: Start Play Storyline (whole movie with transitions)",
+    "valid": true
+  },
+  {
+    "id": "storyline.play.stop",
+    "title": "No parameters: Stop Play Storyline",
+    "valid": true
+  },
+  {
+    "id": "storyline.playhead.get",
+    "title": "No parameters: Get the storyline playhead",
+    "valid": true
+  },
+  {
+    "id": "storyline.playhead.set",
+    "title": "No parameters: Move the storyline playhead (scrub)",
+    "valid": true
+  },
+  {
+    "id": "storyline.scene.create",
+    "title": "No parameters: Add a scene (\"Add scene\")",
+    "valid": true
+  },
+  {
+    "id": "storyline.scene.delete",
+    "title": "Required parameters only: Delete a scene and its content (\"Delete scene\")",
+    "valid": true
+  },
+  {
+    "id": "storyline.scene.get",
+    "title": "Required parameters only: Get one scene",
+    "valid": true
+  },
+  {
+    "id": "storyline.scene.list",
+    "title": "No parameters: List scenes in order",
+    "valid": true
+  },
+  {
+    "id": "storyline.scene.move",
+    "title": "Required parameters only: Move a scene to an index (\"Reorder scene\")",
+    "valid": true
+  },
+  {
+    "id": "storyline.scene.rename",
+    "title": "Required parameters only: Rename a scene (\"Change scene name\")",
+    "valid": true
+  },
+  {
+    "id": "storyline.scene.set",
+    "title": "Required parameters only: Set scene properties in one step (\"Change scene properties\")",
+    "valid": true
+  },
+  {
+    "id": "storyline.scene.visible.set",
+    "title": "Required parameters only: Show or hide a scene in the movie (\"Show/Hide scene\")",
+    "valid": true
+  },
+  {
+    "id": "storyline.selection.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "storyline.selection.get",
+    "title": "No parameters: Get the storyline selection",
+    "valid": true
+  },
+  {
+    "id": "storyline.selection.set",
+    "title": "No parameters: Select a scene or an edit point in the Storyline/Scene Manager",
+    "valid": true
+  },
+  {
+    "id": "storyline.transition.get",
+    "title": "No parameters: Get the transition at an edit point",
+    "valid": true
+  },
+  {
+    "id": "storyline.transition.list",
+    "title": "No parameters: List all edit points with their transitions and computed spans",
+    "valid": true
+  },
+  {
+    "id": "storyline.transition.remove",
+    "title": "No parameters: Set an edit point's transition to none (cut)",
+    "valid": true
+  },
+  {
+    "id": "storyline.transition.set",
+    "title": "No parameters: Set transition type and parameters at an edit point (one undo step)",
+    "valid": true
+  },
+  {
+    "id": "storyline.transition.types.list",
+    "title": "No parameters: List transition types with their parameters, ranges, defaults and allowed direct",
+    "valid": true
+  },
+  {
+    "id": "storyline.view.get",
+    "title": "No parameters: Get storyline view state",
+    "valid": true
+  },
+  {
+    "id": "storyline.view.set",
+    "title": "No parameters: Set storyline zoom or fit to view",
+    "valid": true
+  },
+  {
+    "id": "storyline.warning.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "timeline.backgroundColour.set",
+    "title": "Required parameters only: Timeline background colour preference",
+    "valid": true
+  },
+  {
+    "id": "timeline.currentFrame.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "timeline.currentFrame.move",
+    "title": "Required parameters only: First / previous / next / last frame, or previous / next drawing of an element; ",
+    "valid": true
+  },
+  {
+    "id": "timeline.currentFrame.set",
+    "title": "Required parameters only: Set the current frame (clamped to 1..scene length)",
+    "valid": true
+  },
+  {
+    "id": "timeline.effectParameterRows.set",
+    "title": "Required parameters only: Show/hide effect-parameter rows of one effect (omit = all effects)",
+    "valid": true
+  },
+  {
+    "id": "timeline.frameLabel.get",
+    "title": "Required parameters only: Format frame numbers per the current time display",
+    "valid": true
+  },
+  {
+    "id": "timeline.playbackRange.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "timeline.playbackRange.get",
+    "title": "No parameters: Current playback range",
+    "valid": true
+  },
+  {
+    "id": "timeline.playbackRange.set",
+    "title": "No parameters: Automatic or free playback range, start and end (clamped)",
+    "valid": true
+  },
+  {
+    "id": "timeline.rows.list",
+    "title": "No parameters: Timeline read model: rows, bars, keyframe markers, clips (17.5)",
+    "valid": true
+  },
+  {
+    "id": "timeline.singleCellSelection.set",
+    "title": "Required parameters only: Single cell selection preference",
+    "valid": true
+  },
+  {
+    "id": "timeline.soundWaveforms.set",
+    "title": "Required parameters only: Show sound rows as waveforms or solid bars",
+    "valid": true
+  },
+  {
+    "id": "timeline.timeDisplay.set",
+    "title": "Required parameters only: Display frames or feet and frames (preference)",
+    "valid": true
+  },
+  {
+    "id": "timeline.transferOptions.get",
+    "title": "Required parameters only: Read a stored option set",
+    "valid": true
+  },
+  {
+    "id": "timeline.transferOptions.set",
+    "title": "Required parameters only: Store the paste-special, cut-special or drag-and-drop option set (17.3)",
+    "valid": true
+  },
+  {
+    "id": "timeline.view.set",
+    "title": "No parameters: Zoom level, scroll position, reveal an element (show Timeline selection)",
+    "valid": true
+  },
+  {
+    "id": "tool.active.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "tool.active.get",
+    "title": "No parameters: Active tool (and temporary override, if any)",
+    "valid": true
+  },
+  {
+    "id": "tool.active.set",
+    "title": "Required parameters only: Activate a tool",
+    "valid": true
+  },
+  {
+    "id": "tool.brush.options.set",
+    "title": "Required parameters only: Brush options (current brush pen)",
+    "valid": true
+  },
+  {
+    "id": "tool.drawTopLayer.set",
+    "title": "Required parameters only: Draw on Top Layer",
+    "valid": true
+  },
+  {
+    "id": "tool.eraser.options.set",
+    "title": "Required parameters only: Eraser options (current eraser pen)",
+    "valid": true
+  },
+  {
+    "id": "tool.group.select",
+    "title": "Required parameters only: Select a tool group; advance within it if already active (group cycling)",
+    "valid": true
+  },
+  {
+    "id": "tool.list",
+    "title": "No parameters: All drawing tools with group, option schema and current options",
+    "valid": true
+  },
+  {
+    "id": "tool.options.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "tool.options.get",
+    "title": "Required parameters only: Options of a tool",
+    "valid": true
+  },
+  {
+    "id": "tool.options.set",
+    "title": "Required parameters only: Set any option(s) of any tool (generic form of the rows below)",
+    "valid": true
+  },
+  {
+    "id": "tool.pen.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "tool.pen.create",
+    "title": "No parameters: New pen from current or given pen (\"New Pen\")",
+    "valid": true
+  },
+  {
+    "id": "tool.pen.delete",
+    "title": "Required parameters only: Delete a pen (\"Delete Pen\")",
+    "valid": true
+  },
+  {
+    "id": "tool.pen.list",
+    "title": "No parameters: Pens of the project with all settings",
+    "valid": true
+  },
+  {
+    "id": "tool.pen.rename",
+    "title": "Required parameters only: Rename a pen (\"Rename Pen\")",
+    "valid": true
+  },
+  {
+    "id": "tool.pen.select",
+    "title": "Required parameters only: Make a pen current for its tool family",
+    "valid": true
+  },
+  {
+    "id": "tool.pen.set",
+    "title": "Required parameters only: Change pen settings (\"Set Pen Style\")",
+    "valid": true
+  },
+  {
+    "id": "tool.pencil.options.set",
+    "title": "No parameters: Pencil and shape-tool line thickness source",
+    "valid": true
+  },
+  {
+    "id": "tool.placeBehind.set",
+    "title": "Required parameters only: Draw Behind",
+    "valid": true
+  },
+  {
+    "id": "tool.polyline.options.set",
+    "title": "No parameters: Polyline snapping",
+    "valid": true
+  },
+  {
+    "id": "tool.select.options.set",
+    "title": "No parameters: Select tool options",
+    "valid": true
+  },
+  {
+    "id": "tool.settings.get",
+    "title": "No parameters: All global drawing-tool settings",
+    "valid": true
+  },
+  {
+    "id": "tool.snapToContour.set",
+    "title": "Required parameters only: Snap to Contour (Contour Editor)",
+    "valid": true
+  },
+  {
+    "id": "tool.symmetry.set",
+    "title": "No parameters: Symmetry drawing mode",
+    "valid": true
+  },
+  {
+    "id": "tool.tablet.set",
+    "title": "No parameters: Tablet input settings",
+    "valid": true
+  },
+  {
+    "id": "tool.text.options.set",
+    "title": "No parameters: Text panel defaults for new text",
+    "valid": true
+  },
+  {
+    "id": "ui.contextHelpMode.set",
+    "title": "Required parameters only: Enter/leave context-help mode",
+    "valid": true
+  },
+  {
+    "id": "ui.help.get",
+    "title": "No parameters: Help text of a command, panel, preference or message",
+    "valid": true
+  },
+  {
+    "id": "ui.help.open",
+    "title": "No parameters: Open the documentation, optionally at a topic",
+    "valid": true
+  },
+  {
+    "id": "ui.message.shown",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "ui.preferences.open",
+    "title": "No parameters: Open the preferences window at a category (GUI convenience)",
+    "valid": true
+  },
+  {
+    "id": "ui.startScreen.set",
+    "title": "Required parameters only: Show/hide the start screen",
+    "valid": true
+  },
+  {
+    "id": "ui.statusBar.get",
+    "title": "No parameters: Status bar segment texts",
+    "valid": true
+  },
+  {
+    "id": "ui.statusBar.set",
+    "title": "Required parameters only: Show/hide the status bar (same as `interface.statusBar.visible`)",
+    "valid": true
+  },
+  {
+    "id": "ui.theme.list",
+    "title": "No parameters: Available themes (selected via `interface.theme`)",
+    "valid": true
+  },
+  {
+    "id": "ui.tips.list",
+    "title": "No parameters: Suppressible messages and their state",
+    "valid": true
+  },
+  {
+    "id": "ui.tips.reset",
+    "title": "No parameters: Show all tips again",
+    "valid": true
+  },
+  {
+    "id": "ui.tips.set",
+    "title": "Required parameters only: Suppress or re-enable one message",
+    "valid": true
+  },
+  {
+    "id": "view.active.set",
+    "title": "Required parameters only: Make a view window active (focus it)",
+    "valid": true
+  },
+  {
+    "id": "view.coordinates.convert",
+    "title": "Required parameters only: Convert a point between view pixels, drawing space and scene space for a view",
+    "valid": true
+  },
+  {
+    "id": "view.list",
+    "title": "No parameters: View windows with type, focus, size and transform",
+    "valid": true
+  },
+  {
+    "id": "view.pan.set",
+    "title": "No parameters: Pan: centre on a document point, by a pixel offset, or on the pointer (centre on",
+    "valid": true
+  },
+  {
+    "id": "view.rotation.set",
+    "title": "No parameters: Set view rotation absolutely or in 30° steps",
+    "valid": true
+  },
+  {
+    "id": "view.transform.get",
+    "title": "No parameters: Zoom, rotation and centre of a view",
+    "valid": true
+  },
+  {
+    "id": "view.transform.reset",
+    "title": "No parameters: Reset view / reset zoom / reset rotation / recentre",
+    "valid": true
+  },
+  {
+    "id": "view.type.set",
+    "title": "Required parameters only: Switch a view window's type; `\"previous\"` = switch active view",
+    "valid": true
+  },
+  {
+    "id": "view.zoom.set",
+    "title": "No parameters: Set zoom absolutely or by table steps (zoom in = +1, zoom out = −1)",
+    "valid": true
+  },
+  {
+    "id": "window.floatingPanels.set",
+    "title": "Hide floating panels and palettes",
+    "valid": true
+  },
+  {
+    "id": "window.fullScreen.set",
+    "title": "Enter full screen",
+    "valid": true
+  },
+  {
+    "id": "window.fullScreen.set",
+    "title": "Leave full screen",
+    "valid": true
+  },
+  {
+    "id": "window.geometry.get",
+    "title": "Position, size and screens of the main window",
+    "valid": true
+  },
+  {
+    "id": "window.geometry.set",
+    "title": "Resize the main window",
+    "valid": true
+  },
+  {
+    "id": "window.minimized.set",
+    "title": "Minimise the main window",
+    "valid": true
+  },
+  {
+    "id": "window.panel.list",
+    "title": "Every panel with its visibility, place and focus",
+    "valid": true
+  },
+  {
+    "id": "window.panel.move",
+    "title": "Dock the History panel as a tab next to Properties",
+    "valid": true
+  },
+  {
+    "id": "window.panel.set",
+    "title": "Show and focus the History panel",
+    "valid": true
+  },
+  {
+    "id": "window.panel.set",
+    "title": "Float the Colour panel",
+    "valid": true
+  },
+  {
+    "id": "window.raiseAll.run",
+    "title": "Raise every application window",
+    "valid": true
+  },
+  {
+    "id": "window.sidePanelsExtended.set",
+    "title": "Let the side areas run full height",
+    "valid": true
+  },
+  {
+    "id": "window.toolbar.items.reset",
+    "title": "Restore the default main toolbar",
+    "valid": true
+  },
+  {
+    "id": "window.toolbar.items.set",
+    "title": "Grid and playback only",
+    "valid": true
+  },
+  {
+    "id": "window.toolbar.list",
+    "title": "The main toolbar and the tool palettes",
+    "valid": true
+  },
+  {
+    "id": "window.toolbar.set",
+    "title": "Hide the bone tools",
+    "valid": true
+  },
+  {
+    "id": "workspace.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "workspace.create",
+    "title": "Save the current arrangement as a new workspace",
+    "valid": true
+  },
+  {
+    "id": "workspace.delete",
+    "title": "Delete a user workspace (built-in ones cannot be deleted)",
+    "valid": true
+  },
+  {
+    "id": "workspace.export",
+    "title": "Export the Drawing workspace",
+    "valid": true
+  },
+  {
+    "id": "workspace.get",
+    "title": "The current arrangement",
+    "valid": true
+  },
+  {
+    "id": "workspace.get",
+    "title": "The stored Drawing workspace",
+    "valid": true
+  },
+  {
+    "id": "workspace.import",
+    "title": "Import a workspace file",
+    "valid": true
+  },
+  {
+    "id": "workspace.layout.set",
+    "title": "Camera view with the Timeline below",
+    "valid": true
+  },
+  {
+    "id": "workspace.list",
+    "title": "Built-in and user workspaces in menu order",
+    "valid": true
+  },
+  {
+    "id": "workspace.rename",
+    "title": "Rename the Staging workspace",
+    "valid": true
+  },
+  {
+    "id": "workspace.reset",
+    "title": "Restore and select the Default workspace",
+    "valid": true
+  },
+  {
+    "id": "workspace.save",
+    "title": "Save the arrangement into the current workspace",
+    "valid": true
+  },
+  {
+    "id": "workspace.select",
+    "title": "Switch to the Drawing workspace",
+    "valid": true
+  },
+  {
+    "id": "xsheet.columnWidth.set",
+    "title": "No parameters: Set one column's width, or reset all widths",
+    "valid": true
+  },
+  {
+    "id": "xsheet.currentCell.set",
+    "title": "Required parameters only: Set the current element and frame together",
+    "valid": true
+  },
+  {
+    "id": "xsheet.display.set",
+    "title": "No parameters: Thumbnails, exposure text in held cells, element-name prefix, notes",
+    "valid": true
+  },
+  {
+    "id": "xsheet.exposures.get",
+    "title": "No parameters: Exposure sheet of a frame window as run-length JSON (17.2)",
+    "valid": true
+  },
+  {
+    "id": "xsheet.exposures.set",
+    "title": "Required parameters only: Atomically replace exposures of one or more columns over frame windows (17.2)",
+    "valid": true
+  },
+  {
+    "id": "xsheet.lightTable.add",
+    "title": "No parameters: Send drawings to the static light table (omit items = selection)",
+    "valid": true
+  },
+  {
+    "id": "xsheet.lightTable.changed",
+    "title": "Subscribe (events take no parameters)",
+    "valid": true
+  },
+  {
+    "id": "xsheet.lightTable.list",
+    "title": "No parameters: Light-table items in stacking order",
+    "valid": true
+  },
+  {
+    "id": "xsheet.lightTable.move",
+    "title": "Required parameters only: Reorder a light-table item",
+    "valid": true
+  },
+  {
+    "id": "xsheet.lightTable.remove",
+    "title": "No parameters: Remove light-table items, or all",
+    "valid": true
+  },
+  {
+    "id": "xsheet.lightTable.set",
+    "title": "No parameters: Show/hide and over/under for given items, all, or all others",
+    "valid": true
+  },
+  {
+    "id": "xsheet.panel.set",
+    "title": "No parameters: Show/hide the element list panel, static light table panel and toolbar",
+    "valid": true
+  }
+]

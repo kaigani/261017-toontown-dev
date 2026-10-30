@@ -1,0 +1,129 @@
+{
+  "ciTotals": {
+    "check (windows-latest)": [
+      628,
+      0,
+      2
+    ],
+    "check (macos-latest)": [
+      623,
+      0,
+      2
+    ]
+  },
+  "reviewerSuites": {
+    "check (windows-latest)": {
+      "c13_r1_persistence": [
+        18,
+        0,
+        0
+      ],
+      "c13_r2_persistence": [
+        14,
+        0,
+        0
+      ],
+      "c13_r3_history_r1": [
+        1,
+        0,
+        0
+      ],
+      "c13_r3_history_r3": [
+        1,
+        0,
+        0
+      ],
+      "c13_r3_persistence": [
+        10,
+        0,
+        0
+      ],
+      "c13_r1_format": [
+        8,
+        0,
+        0
+      ],
+      "c13_r2_format": [
+        7,
+        0,
+        0
+      ],
+      "c13_r3_format": [
+        3,
+        0,
+        0
+      ]
+    },
+    "check (macos-latest)": {
+      "c13_r1_persistence": [
+        18,
+        0,
+        0
+      ],
+      "c13_r2_persistence": [
+        14,
+        0,
+        0
+      ],
+      "c13_r3_history_r1": [
+        1,
+        0,
+        0
+      ],
+      "c13_r3_history_r3": [
+        1,
+        0,
+        0
+      ],
+      "c13_r3_persistence": [
+        10,
+        0,
+        0
+      ],
+      "c13_r1_format": [
+        8,
+        0,
+        0
+      ],
+      "c13_r2_format": [
+        7,
+        0,
+        0
+      ],
+      "c13_r3_format": [
+        3,
+        0,
+        0
+      ]
+    }
+  },
+  "receiptHashes": 17,
+  "receiptAllMatch": true,
+  "receiptStatuses": {
+    "gates/fmt.log": 0,
+    "gates/clippy.log": 0,
+    "gates/clippy-diag.log": 0,
+    "gates/deny.log": 0,
+    "gates/test.log": 0,
+    "gates/test-diag.log": 0,
+    "gates/pnpm-lint.log": 0,
+    "gates/pnpm-typecheck.log": 0,
+    "gates/pnpm-test.log": 0,
+    "gates/pnpm-format.log": 0,
+    "gates/pnpm-licenses.log": 0,
+    "gates/build.log": 0,
+    "gates/headless.log": 0,
+    "gates/reviewer-python-suites.log": 0
+  },
+  "builderWorkspaceTotals": [
+    628,
+    0,
+    2
+  ],
+  "protectedDiff": [],
+  "changedExistingTests": [
+    "crates/executor/tests/c12_kernel_state.rs",
+    "crates/executor/tests/c13_doc.rs",
+    "crates/executor/tests/c13_projects.rs"
+  ]
+}

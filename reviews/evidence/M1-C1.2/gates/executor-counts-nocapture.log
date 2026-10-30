@@ -1,0 +1,30 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.11s
+     Running tests\c12_kernel_state.rs (target\debug\deps\c12_kernel_state-2ed10326fb849c16.exe)
+
+running 7 tests
+test window_and_panel_state_is_queryable_and_settable ... ok
+test the_application_context_follows_commands ... ok
+test workspaces_are_kernel_state ... ok
+test the_watchdog_answers_within_its_budget ... ok
+stubs: 662
+test every_inventory_stub_answers_with_its_owner ... ok
+test jobs_run_off_the_document_thread ... ok
+examples run: 147
+test every_example_runs_on_the_fixture_under_the_watchdog ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.79s
+
+     Running tests\c12_registry.rs (target\debug\deps\c12_registry-3b331fcb7100205f.exe)
+
+running 6 tests
+typed declarations: 134
+test registry_covers_spec_a_and_types_every_m1_command ... ok
+test ui_binding_manifest_parity ... ok
+test describe_reports_declarations ... ok
+test drawing_command_delegation_ruling ... ok
+test stubs_and_declarations_name_their_owners ... ok
+test every_declaration_has_schemas_and_valid_examples ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+

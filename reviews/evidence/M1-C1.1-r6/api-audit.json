@@ -1,0 +1,21 @@
+{
+  "base": "9c3f586",
+  "head": "fb31cfe",
+  "added": [
+    [
+      "crates/model/src/document/mod.rs",
+      "pub fn with_patched_entry("
+    ]
+  ],
+  "removed": [],
+  "added_allow_unsafe_mut_lines": [
+    "+            scan_frame_fields(value, &mut concrete.to_vec(), op, 0)?;",
+    "+fn scan_frame_fields(v: &Value, at: &mut Vec<String>, op: &PatchOp, depth: usize) -> Result<(), ModelError> {"
+  ],
+  "changed_model_sources": [
+    "crates/model/src/change.rs",
+    "crates/model/src/document/mod.rs"
+  ],
+  "signature": "pub fn with_patched_entry(&self, key: &EntryKey, patch: &[crate::change::PatchOp]) -> Result<(Document, Vec<crate::change::PatchOp>), Vec<ModelError>>",
+  "inspection": "Full diff inspected: no new product allows/unsafe/public mutable reference; private scanner mutates only a local traversal stack. Builder staged_commit.rs adds the declared test-helper unwrap_used/panic allowance. No stateless invert returns."
+}

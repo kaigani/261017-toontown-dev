@@ -1,0 +1,275 @@
+[
+  {
+    "register_row": 2,
+    "citation": "10 §1.1, L30",
+    "requirement": "string: string | Unicode, stored as UTF-8, normalised to NFC on input.",
+    "status": "implemented",
+    "implementation": "crates/model/src/input.rs:164",
+    "note": "R2-10 closed: declared pattern-map values normalize; nondecimal Unicode frame keys reject.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-15",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 833,
+      "name": "nfc_is_applied_to_declared_non_name_strings_without_touching_opaque_values",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial nfc_is_applied_to_declared_non_name_strings_without_touching_opaque_values --locked -- --exact --nocapture"
+    },
+    "response_table_row": 1,
+    "row": 2,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-10; direct declared strings NFC, but patternProperties maps (cellNotes) are skipped as opaque",
+    "r3_test": {
+      "name": "frame_map_keys_and_nfc_values_at_fresh_boundaries",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:205",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial frame_map_keys_and_nfc_values_at_fresh_boundaries --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "register_row": 3,
+    "citation": "10 §1.1, L31",
+    "requirement": "int: number (integer) | 32-bit signed range unless stated.",
+    "status": "implemented",
+    "implementation": "crates/model/src/schema.rs:364",
+    "note": "R2-08 closed: signed bounds on frame-map keys.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-14",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 522,
+      "name": "cell_note_frame_map_keys_obey_signed_int_bounds",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial cell_note_frame_map_keys_obey_signed_int_bounds --locked -- --exact --nocapture"
+    },
+    "response_table_row": 2,
+    "row": 3,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-08; direct int fields fixed, frame-map keys still exceed signed int",
+    "r3_test": {
+      "name": "frame_map_keys_and_nfc_values_at_fresh_boundaries",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:205",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial frame_map_keys_and_nfc_values_at_fresh_boundaries --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "register_row": 11,
+    "citation": "10 §1.1, L39",
+    "requirement": "frame: int ≥ 1 | Frame numbers are **1-based** everywhere: in files, queries and commands. Ranges are inclusive `{from, to}`.",
+    "status": "implemented",
+    "implementation": "crates/model/src/validate.rs:285",
+    "note": "R2-08 closed: frame keys positive, within signed-32-bit range.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-14",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 531,
+      "name": "mouth_label_frame_map_keys_are_positive_and_within_int",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial mouth_label_frame_map_keys_are_positive_and_within_int --locked -- --exact --nocapture"
+    },
+    "response_table_row": 4,
+    "row": 11,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-08; direct frames/manual ranges fixed, label frame zero and out-of-int keys accepted",
+    "r3_test": {
+      "name": "frame_map_keys_and_nfc_values_at_fresh_boundaries",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:205",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial frame_map_keys_and_nfc_values_at_fresh_boundaries --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "register_row": 177,
+    "citation": "10 §4.14, L613",
+    "requirement": "labels: map frame (string, placement-relative) → string | Optional display labels.",
+    "status": "implemented",
+    "implementation": "crates/model/src/validate.rs:699",
+    "note": "R2-08/10 closed: labels are bounded placement-relative frames; values NFC.",
+    "r1_status": "implemented",
+    "r1_note": "Field/type/default representation reviewed; cross-cutting findings remain applicable.",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 531,
+      "name": "mouth_label_frame_map_keys_are_positive_and_within_int",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial mouth_label_frame_map_keys_are_positive_and_within_int --locked -- --exact --nocapture"
+    },
+    "row": 177,
+    "r2_status": "divergent",
+    "r2_note": "C11-R2-08: frame map keys accept invalid bounds; previously implemented row downgraded. C11-R2-10 also affects cellNotes NFC.",
+    "r3_test": {
+      "name": "frame_map_keys_and_nfc_values_at_fresh_boundaries",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:205",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial frame_map_keys_and_nfc_values_at_fresh_boundaries --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "register_row": 388,
+    "citation": "10 §2.6 L248",
+    "requirement": "created/deleted/modified, parentId/index, oldValue, invertibility, array moves and range edits",
+    "status": "divergent",
+    "implementation": "crates/model/src/change.rs:522",
+    "note": "Pre-state RFC property passes 10,000 cases, but C11-R3-02 corrupts numeric object keys via public stateless invert and C11-R3-03 accepts malformed exposure ranges. R3-01 breaks opaque diffs.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-03/04; generated ordinary edits/inverses pass seeded property tests.",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 267,
+      "name": "array_append_patch_inverse_restores_input",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial array_append_patch_inverse_restores_input --locked -- --exact --nocapture"
+    },
+    "response_table_row": 28,
+    "row": 388,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-02/03/04; original overwrite/elision cases fixed, array inverse and malformed-operation gaps remain",
+    "r3_test": {
+      "name": "resolved_stateless_move_inverse_does_not_shift_numeric_object_keys",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:138",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial resolved_stateless_move_inverse_does_not_shift_numeric_object_keys --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "register_row": 392,
+    "citation": "10 §2.8 L281",
+    "requirement": "Property x-since and persisted immutable/readOnly annotations",
+    "status": "divergent",
+    "implementation": "crates/model/src/schema.rs:352",
+    "note": "R2-11 fixes MouthTrack.stale and Stub; C11-R3-06: DynamicParam anonymous value/keyframes declarations still lack x-since.",
+    "r1_status": "missing",
+    "r1_note": "C11-R1-13: object-level x-since is not property-level x-since; type lacks readOnly.",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 800,
+      "name": "every_schema_property_has_since_and_envelope_type_is_readonly",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial every_schema_property_has_since_and_envelope_type_is_readonly --locked -- --exact --nocapture"
+    },
+    "response_table_row": 30,
+    "row": 392,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-11; MouthTrack.stale is added after annotation pass and lacks x-since; envelope type readOnly fixed",
+    "r3_test": {
+      "name": "anonymous_variant_property_declarations_have_since",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:193",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial anonymous_variant_property_declarations_have_since --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "register_row": 394,
+    "citation": "10 §10.2 L1131",
+    "requirement": "Property-schema lookup through child unions and numeric tuple indices",
+    "status": "divergent",
+    "implementation": "crates/model/src/schema.rs:624",
+    "note": "Nested traversal and ref annotations fixed; C11-R3-04: flat merge intersects alternatives, rejecting null and non-first enum values.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-19; implementation already published in model API; command registration itself remains C1.3.",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 458,
+      "name": "property_lookup_follows_effect_condition_without_discarding_it",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial property_lookup_follows_effect_condition_without_discarding_it --locked -- --exact --nocapture"
+    },
+    "response_table_row": 31,
+    "row": 394,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-06; conditional paths absent, ref siblings dropped; original tuple/child paths fixed",
+    "r3_test": {
+      "name": "property_schema_preserves_nullable_value_domains",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:158",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial property_schema_preserves_nullable_value_domains --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "register_row": 398,
+    "citation": "10 §4.7 L470",
+    "requirement": "cellNotes decimal frame keys and <=10,000-character values; cell {frame,drawingId,drawingName,note}",
+    "status": "implemented",
+    "implementation": "crates/model/src/schema.rs:364",
+    "note": "R2-08/10 closed: frame map bounds and NFC values; prior 10,000-character controls pass.",
+    "r1_status": "implemented",
+    "r1_note": "Persisted map/cell view present; NFC global defect C11-R1-15 applies.",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 522,
+      "name": "cell_note_frame_map_keys_obey_signed_int_bounds",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial cell_note_frame_map_keys_obey_signed_int_bounds --locked -- --exact --nocapture"
+    },
+    "row": 398,
+    "r2_status": "divergent",
+    "r2_note": "C11-R2-08: frame map keys accept invalid bounds; previously implemented row downgraded. C11-R2-10 also affects cellNotes NFC.",
+    "r3_test": {
+      "name": "frame_map_keys_and_nfc_values_at_fresh_boundaries",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:205",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial frame_map_keys_and_nfc_values_at_fresh_boundaries --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "register_row": 412,
+    "citation": "10 §1/5",
+    "requirement": "Input depth must preserve serializability and boundary guarantees",
+    "status": "implemented",
+    "implementation": "crates/model/src/canonical.rs:180",
+    "note": "R2-07 closed: text depth 128, including root and scalar, agrees in Rust and TypeScript.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-09: accepts depth 140 while canonical writer is capped at 128; JS boundary 64.",
+    "test": {
+      "file": "crates/engine/tests/c11_r2_wire.rs",
+      "line": 28,
+      "name": "writer_never_emits_text_its_reader_rejects_at_depth_boundary",
+      "command": "cargo test -p tt-engine --test c11_r2_wire writer_never_emits_text_its_reader_rejects_at_depth_boundary --locked -- --exact --nocapture"
+    },
+    "response_table_row": 37,
+    "row": 412,
+    "r2_status": "divergent",
+    "r2_note": "open C11-R2-07; model100 protects objects, generic wire writer permits scalar at level129 which reader rejects",
+    "r3_test": {
+      "name": "mixed_depth_boundary_writer_output_is_readable",
+      "location": "crates/engine/tests/c11_r3_wire.rs:7",
+      "command": "cargo test -p tt-engine --test c11_r3_wire mixed_depth_boundary_writer_output_is_readable --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "register_row": 56,
+    "citation": "10 §2.2, L137",
+    "requirement": "meta: object | Free-form metadata for users, agents and tools (tags, review status, notes). Never interpreted by the application; preserved on copy, duplicate, export and template creation. Default `{}`.",
+    "status": "divergent",
+    "implementation": "crates/model/src/change.rs:471",
+    "note": "Reopened C11-R3-01: diff applies mouth-letter semantics to opaque metadata lookalikes; valid pen edits cannot be applied.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-03",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 217,
+      "name": "opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved --locked -- --exact --nocapture"
+    },
+    "response_table_row": 8,
+    "row": 56,
+    "r2_status": "implemented",
+    "r2_note": "fixed; opaque model-like keys, arrays, nesting and diff/inverse preserved",
+    "r3_test": {
+      "name": "opaque_mouth_track_lookalikes_are_ordinary_json_changes",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:115",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial opaque_mouth_track_lookalikes_are_ordinary_json_changes --locked -- --exact --nocapture"
+    }
+  },
+  {
+    "register_row": 57,
+    "citation": "10 §2.2, L138",
+    "requirement": "ext: object | Extension data keyed by a reverse-DNS namespace (`\"com.example.tool\": {…}`). Unknown namespaces MUST be preserved verbatim through load, edit and save. Default `{}`.",
+    "status": "divergent",
+    "implementation": "crates/model/src/change.rs:471",
+    "note": "Reopened C11-R3-01: same regression under reverse-DNS ext namespaces.",
+    "r1_status": "divergent",
+    "r1_note": "C11-R1-03",
+    "test": {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "line": 217,
+      "name": "opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved",
+      "command": "cargo test -p tt-model --test c11_r2_adversarial opaque_model_lookalikes_deep_arrays_and_patch_inverse_are_preserved --locked -- --exact --nocapture"
+    },
+    "response_table_row": 9,
+    "row": 57,
+    "r2_status": "implemented",
+    "r2_note": "fixed; opaque values unchanged; integers lossless or typed error per ruling",
+    "r3_test": {
+      "name": "opaque_mouth_track_lookalikes_are_ordinary_json_changes",
+      "location": "crates/model/tests/c11_r3_adversarial.rs:115",
+      "command": "cargo test -p tt-model --test c11_r3_adversarial opaque_mouth_track_lookalikes_are_ordinary_json_changes --locked -- --exact --nocapture"
+    }
+  }
+]

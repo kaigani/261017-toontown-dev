@@ -1,0 +1,8 @@
+
+> toontown-workspace@ lint C:\Users\kaiga\work\review\m1-c11-r2
+> pnpm -r --workspace-concurrency=1 lint
+
+
+> @toontown/desktop@0.0.1 lint C:\Users\kaiga\work\review\m1-c11-r2\desktop
+> eslint . --max-warnings 0
+

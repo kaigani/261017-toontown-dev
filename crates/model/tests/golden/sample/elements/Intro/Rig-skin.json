@@ -1,0 +1,22 @@
+{
+  "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+  "type": "element",
+  "rev": 1,
+  "name": "Rig-skin",
+  "elementType": "effectParameter",
+  "start": 1,
+  "duration": 48,
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "slot": "skin",
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

@@ -1,0 +1,11 @@
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r1\crates\engine)
+    Finished `test` profile [unoptimized] target(s) in 1.05s
+     Running tests\frontend_schemas.rs (target\debug\deps\frontend_schemas-a138506ae7300be7.exe)
+
+running 3 tests
+test wire_module_is_current ... ok
+test model_module_is_current ... ok
+test commands_module_is_current ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+

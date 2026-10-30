@@ -1,0 +1,2 @@
+# Raw evidence retains its original bytes across platform checkouts.
+* -text -whitespace

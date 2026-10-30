@@ -1,0 +1,8 @@
+* -text whitespace=cr-at-eol
+logs/* -text -diff -whitespace
+receipts/* -text
+ci/* -text -diff -whitespace
+ci/** -text -diff -whitespace
+ci-recomputed/* -text -diff -whitespace
+*.json -text
+*.patch -text -diff -whitespace

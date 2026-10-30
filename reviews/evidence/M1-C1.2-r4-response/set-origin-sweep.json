@@ -1,0 +1,173 @@
+{
+  "summary": {
+    "newSets": 17,
+    "byOrigin": {
+      "09 PrintParams": 4,
+      "named type ($defs)": 9,
+      "own entry (other column)": 4
+    },
+    "unstated": []
+  },
+  "rows": [
+    {
+      "id": "tool.pen.set",
+      "path": "result/$defs/Pen/properties/type",
+      "values": "pen",
+      "origin": "named type ($defs)",
+      "spec": "`{pen}`"
+    },
+    {
+      "id": "tool.pen.set",
+      "path": "result/$defs/Pen/else/propertyNames",
+      "values": [
+        "id",
+        "type",
+        "name"
+      ],
+      "origin": "named type ($defs)",
+      "spec": "`{pen}`"
+    },
+    {
+      "id": "tool.pen.set",
+      "path": "result/$defs/PenKind/oneOf/0",
+      "values": "brush",
+      "origin": "named type ($defs)",
+      "spec": "`{pen}`"
+    },
+    {
+      "id": "tool.pen.set",
+      "path": "result/$defs/PenKind/oneOf/1",
+      "values": "eraser",
+      "origin": "named type ($defs)",
+      "spec": "`{pen}`"
+    },
+    {
+      "id": "tool.pen.set",
+      "path": "result/$defs/Tip/oneOf/0",
+      "values": "round",
+      "origin": "named type ($defs)",
+      "spec": "`{pen}`"
+    },
+    {
+      "id": "tool.pen.set",
+      "path": "result/$defs/Tip/oneOf/1",
+      "values": "oval",
+      "origin": "named type ($defs)",
+      "spec": "`{pen}`"
+    },
+    {
+      "id": "tool.pen.set",
+      "path": "result/$defs/Tip/oneOf/2",
+      "values": "square",
+      "origin": "named type ($defs)",
+      "spec": "`{pen}`"
+    },
+    {
+      "id": "tool.pen.set",
+      "path": "result/$defs/Tip/oneOf/3",
+      "values": "flat",
+      "origin": "named type ($defs)",
+      "spec": "`{pen}`"
+    },
+    {
+      "id": "tool.pencil.options.set",
+      "path": "result/properties/options/properties/thicknessSource",
+      "values": [
+        "penMax",
+        "fixed"
+      ],
+      "origin": "own entry (other column)",
+      "spec": "`{options}`"
+    },
+    {
+      "id": "tool.select.options.set",
+      "path": "result/properties/options/properties/rectRule",
+      "values": [
+        "inside",
+        "intersect"
+      ],
+      "origin": "own entry (other column)",
+      "spec": "`{options}`"
+    },
+    {
+      "id": "tool.text.options.set",
+      "path": "result/properties/options/properties/baseline",
+      "values": [
+        "normal",
+        "subscript",
+        "superscript"
+      ],
+      "origin": "own entry (other column)",
+      "spec": "`{options}`"
+    },
+    {
+      "id": "tool.text.options.set",
+      "path": "result/properties/options/properties/align",
+      "values": [
+        "left",
+        "centre",
+        "right",
+        "justify"
+      ],
+      "origin": "own entry (other column)",
+      "spec": "`{options}`"
+    },
+    {
+      "id": "colour.palette.get",
+      "path": "result/$defs/spec.PaletteObject/properties/swatches/items/properties/kind",
+      "values": [
+        "solid",
+        "linearGradient",
+        "radialGradient",
+        "texture"
+      ],
+      "origin": "named type ($defs)",
+      "spec": "Palette object (+ `usageCount` and base64 PNG `thumbnail` per swatch when requested)"
+    },
+    {
+      "id": "print.settings.set",
+      "path": "params/properties/values/properties/layout",
+      "values": [
+        "single",
+        "grid",
+        "flipbook"
+      ],
+      "origin": "09 PrintParams",
+      "spec": "`values: object`"
+    },
+    {
+      "id": "print.settings.set",
+      "path": "params/properties/values/properties/type",
+      "values": [
+        "wholeMovie",
+        "currentSceneCamera",
+        "currentSceneXsheet",
+        "element"
+      ],
+      "origin": "09 PrintParams",
+      "spec": "`values: object`"
+    },
+    {
+      "id": "print.settings.set",
+      "path": "params/properties/values/properties/range",
+      "values": [
+        "all",
+        "frames",
+        "selection",
+        "playbackRange"
+      ],
+      "origin": "09 PrintParams",
+      "spec": "`values: object`"
+    },
+    {
+      "id": "print.settings.set",
+      "path": "params/properties/values/properties/orientation",
+      "values": [
+        "portrait",
+        "landscape"
+      ],
+      "origin": "09 PrintParams",
+      "spec": "`values: object`"
+    }
+  ]
+}

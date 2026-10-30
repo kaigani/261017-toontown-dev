@@ -1,0 +1,203 @@
+# C1.3 final register — scoped round-4 closure
+
+Reviewed `205cd97`; inherited round-3 row identities, accepted closures and deferrals retained.
+Order: implemented / divergent / missing / deferred-with-owner.
+
+- 119 requirements: **104 / 1 / 0 / 14**.
+- 123 including the four parser supplement rows: **108 / 1 / 0 / 14**.
+- 48 declarations: **48 / 0 / 0 / 0**.
+
+Only LOCK-01, LOCK-02, Interchange and `doc.import.json` change status from round 3.
+REP-01 remains divergent pending SI-044. MED-04's separate cache finding is closed.
+The accepted SAVE-01 Windows write-through and RO-02 C1.4 handoff notes remain.
+Inherited source coordinates are navigation hints. This is a scoped closure assessment.
+
+## Requirement rows
+
+| ID / requirement | Status | Implementation | Test / ruling |
+|---|---|---|---|
+| FMT-01 — Opening a path that is a file reads the package form; opening a path that is a directory reads the folder | implemented | crates/persist/src/save.rs:686 | c13_r2_format::overlong_component_is_not_a_portable_folder_entry; c13_r3_format::two_hundred_byte_unicode_components_work_in_windows_folder_form; round_trip; Round-2 finding closed by the cited tests; scope and limitations in round-3 report. |
+| FMT-02 — A project remembers its form; Save writes the same form. Converting between forms is a save-as-copy in the | implemented | crates/persist/src/save.rs:686 | crates/persist/tests/round_trip.rs;  |
+| FMT-03 — When a folder-form project is created, the application writes a `.gitignore` (only if none exists) listing | implemented | crates/persist/src/save.rs:686 | crates/persist/tests/round_trip.rs;  |
+| ZIP-01 — Standard zip (PKWARE APPNOTE) with ZIP64 support. Entry names are UTF-8 (language-encoding flag set), use | implemented | crates/persist/src/zip.rs:564 | c13_r1_format::zip_names_reject_drive_prefixes_in_every_path_component; c13_r2_format::portable_entry_names_reject_windows_special_forms; Round-1 divergence closed by the cited passing tests; scope as in round-2 report. |
+| ZIP-02 — The first entry is `mimetype`, stored uncompressed, without extra fields, containing exactly the media type | implemented | crates/persist/src/zip.rs:564 | crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs;  |
+| ZIP-03 — JSON entries are deflate-compressed. Already-compressed media (PNG, MP3, AAC, MP4, MOV) SHOULD be stored. | implemented | crates/persist/src/zip.rs:564 | crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs;  |
+| ZIP-04 — Readers MUST ignore unknown entries outside the reserved names of §6.3 and MUST preserve them on save | implemented | crates/persist/src/zip.rs:564 | crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs;  |
+| ZIP-05 — No encryption, no signatures. Integrity is provided by the SHA-256 list in the manifest (§6.4). | implemented | crates/persist/src/zip.rs:564 | crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs;  |
+| ZIP-06 — Readers MUST NOT trust declared sizes: decompression is bounded by the manifest sizes plus a margin and by a | implemented | crates/persist/src/zip.rs:564 | crates/persist/tests/hostile.rs; crates/persist/tests/zip64.rs;  |
+| LAY-01 — Every object lives in exactly one entry. Entries split the model at: project, palette, scene, element, | implemented | crates/persist/src/layout.rs:142 | crates/persist/tests/round_trip.rs;  |
+| LAY-02 — Entry names use object IDs, never display names, so renames do not move files. Texture file names are | implemented | crates/persist/src/layout.rs:142 | crates/persist/tests/round_trip.rs;  |
+| LAY-03 — Entries of deleted objects disappear on the next save; until then the deletion is undoable. | implemented | crates/persist/src/layout.rs:142 | crates/persist/tests/round_trip.rs;  |
+| LAY-04 — A clean (unmodified) project saves without rewriting any entry. In folder form, only entries whose bytes | implemented | crates/persist/src/layout.rs:142 | crates/persist/tests/round_trip.rs;  |
+| JSON-01 — UTF-8 without BOM, `\n` line endings, two-space indentation, final newline. | implemented | crates/model/src/canonical.rs:180 | crates/model/tests/conformance.rs; crates/persist/tests/round_trip.rs;  |
+| JSON-02 — Object keys in schema order: envelope (`id`/`colourId`, `type`, `rev`, `name`) first, then the type's | implemented | crates/model/src/canonical.rs:180 | crates/model/tests/conformance.rs; crates/persist/tests/round_trip.rs;  |
+| JSON-03 — Numbers in the shortest form that round-trips to the same double; `-0` written as `0`; integers without | implemented | crates/model/src/canonical.rs:180 | crates/model/tests/conformance.rs; crates/persist/tests/round_trip.rs;  |
+| JSON-04 — Default-valued optional properties MAY be omitted only where the schema marks them `x-omitDefault` | implemented | crates/model/src/canonical.rs:180 | crates/model/tests/conformance.rs; crates/persist/tests/round_trip.rs;  |
+| JSON-05 — Saving the same document twice produces byte-identical entries. | implemented | crates/model/src/canonical.rs:180 | crates/model/tests/conformance.rs; crates/persist/tests/round_trip.rs;  |
+| VER-01 — The format version is `MAJOR.MINOR`. A **minor** increment only adds optional properties, types or enum | implemented | crates/persist/src/manifest.rs:237 | crates/persist/tests/hostile.rs; crates/persist/tests/migrations.rs; crates/executor/tests/c13_projects.rs;  |
+| VER-02 — On open: if `minReaderVersion` is newer than the reader, or the major version is newer, or a | implemented | crates/persist/src/manifest.rs:237 | c13_r1_format::newer_minor_unknown_properties_survive_on_the_same_frozen_entry; c13_r2_format::frozen_entry_nested_unknown_data_survives_other_entry_edit_both_forms_and_reopen; Round-1 divergence closed by the cited passing tests; scope as in round-2 report. |
+| VER-03 — Older versions are **migrated in memory** on open by a chain of migration steps (N → N+1), each a pure | implemented | crates/persist/src/manifest.rs:237 | crates/persist/tests/hostile.rs; crates/persist/tests/migrations.rs; crates/executor/tests/c13_projects.rs;  |
+| VER-04 — Every migration step has fixture tests (old file → expected new JSON) that MUST pass before release. | implemented | crates/persist/src/manifest.rs:237 | crates/persist/tests/hostile.rs; crates/persist/tests/migrations.rs; crates/executor/tests/c13_projects.rs;  |
+| VER-05 — Libraries (§6.11), templates (§6.9) and palette files carry their own `formatVersion` and follow the same | deferred-with-owner | crates/persist/src/manifest.rs:237 | crates/persist/tests/hostile.rs; crates/persist/tests/migrations.rs; crates/executor/tests/c13_projects.rs; M7 C7.1/M9 C9.1 complete specialty version/migration semantics; basic readers/writers present |
+| MED-03 — Missing assets never prevent opening: affected objects keep their timing and show placeholders; one | implemented | crates/persist/src/load.rs:484 | crates/executor/tests/c13_doc.rs; crates/persist/tests/round_trip.rs;  |
+| MED-04 — Embedded assets no longer referenced by any object of the project (or its local library) are removed from | implemented | crates/persist/src/load.rs:484 | c13_r2_persistence::save_as_package_retains_removed_asset_bytes_for_undo; c13_r2_persistence::save_as_folder_retains_removed_asset_bytes_for_undo; c13_r3_persistence::media_survives_cross_form_save_as_and_recovery_deletion_with_two_undos; c13_r1_persistence::unreferenced_embedded_media_is_removed_from_the_saved_package; Undo bytes retained across form changes and AUTO-04 deletion. C13-R3-03 closed: repeated exports reuse cached bytes; close clears cache; c13_r4_closure. |
+| MED-05 — Bitmap node pixels are stored as PNG entries next to their drawing (§6.3), not as assets. | implemented | crates/persist/src/load.rs:484 | crates/executor/tests/c13_doc.rs; crates/persist/tests/round_trip.rs;  |
+| MED-06 — Waveform peak caches and thumbnails go under `cache/`; a reader MUST work without them and regenerate them | deferred-with-owner | crates/persist/src/load.rs:484 | crates/executor/tests/c13_doc.rs; crates/persist/tests/round_trip.rs; M2/M3/M8 cache generation (ADR-0014 §17); caches optional now |
+| LOAD-01 — Drawings MAY be loaded lazily (content parsed on first access) provided every query and command behaves | implemented | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| LOAD-02 — Cancelling the job leaves no project open (01 §3.2). | implemented | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| LOAD-03 — Loading MUST be deterministic: the same files produce the same document, the same IDs, revisions and | implemented | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| REP-01 — Repairs form one transaction with origin `load`, undoable as "Repair on Open"; the project is then | divergent | crates/persist/src/repair.rs:266 | c13_doc::a_repaired_load_is_one_non_undoable_step_and_reported; c13_r2_format::document_revision_boundaries_with_and_without_repairs; SI-044 awaits the orchestrator/spec-owner ruling; no authority inferred from the builder decision. |
+| REP-02 — No repair may silently lose user content: anything removed is listed in the load report with its old JSON. | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_doc.rs;  |
+| SAVE-03 — Saving is not cancellable once writing has started (01 §3.6); progress is reported per phase | implemented | crates/persist/src/save.rs:301 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| SAVE-04 — A save serialises a consistent snapshot taken between transactions; editing MAY continue while the | implemented | crates/persist/src/save.rs:301 | c13_projects::an_atomic_batch_that_saves_commits_one_step_and_writes_that_revision; c13_r2_persistence::successful_atomic_close_with_save_commits_and_emits_the_saved_revision; c13_r3_persistence::failed_and_dry_atomic_save_variants_preserve_disk_revision_and_events; Round-2 finding closed by the cited tests; scope and limitations in round-3 report. |
+| SAVE-05 — Failures are reported with the codes of 01 §3.6 (`project.saveFailed`, `project.permissionDenied`, | implemented | crates/persist/src/save.rs:301 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| BAK-01 — After a successful save that replaces an existing version, the previous version is moved (not copied, where | implemented | crates/persist/src/backup.rs:108 | crates/executor/tests/c13_projects.rs;  |
+| BAK-02 — Folder-form projects are backed up as a package-form snapshot of the previous version. | implemented | crates/persist/src/backup.rs:108 | crates/executor/tests/c13_projects.rs;  |
+| BAK-03 — `files.backups.count` versions are kept per project (default 3, 0 = off), oldest removed first. | implemented | crates/persist/src/backup.rs:108 | crates/executor/tests/c13_projects.rs;  |
+| BAK-04 — Opening a backup (`project.backup.open`) loads it as an untitled copy; the backup itself is never modified. | implemented | crates/persist/src/backup.rs:108 | crates/executor/tests/c13_projects.rs;  |
+| AUTO-01 — Every `files.autosave.intervalMinutes` (default 5) while the project is modified, a recovery copy is | implemented | crates/executor/src/maintenance.rs:123 | crates/executor/tests/c13_projects.rs;  |
+| AUTO-02 — Autosave MUST NOT write to the user's project, change the clean marker, the undo history or the project | implemented | crates/executor/src/maintenance.rs:123 | crates/executor/tests/c13_projects.rs;  |
+| AUTO-03 — Untitled (never saved) projects are autosaved too (`originalPath: null`). | implemented | crates/executor/src/maintenance.rs:123 | crates/executor/tests/c13_projects.rs;  |
+| AUTO-04 — The recovery folder is deleted after a successful save, a discard-close or a clean quit (01 §3.7). | implemented | crates/executor/src/maintenance.rs:123 | crates/executor/tests/c13_projects.rs;  |
+| REC-01 — At launch, recovery folders whose `processId` is not a running instance of the application are offered | implemented | crates/executor/src/commands/project.rs:1156 | c13_r1_persistence::recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover; c13_r2_format::recovery_claim_expires_when_actual_child_owner_exits_and_release_restores_metadata; Round-1 divergence closed by the cited passing tests; scope as in round-2 report. |
+| REC-02 — Recovering opens the copy as a **modified** project whose location is `originalPath`, so Save writes to the | implemented | crates/executor/src/commands/project.rs:1156 | crates/executor/tests/c13_projects.rs;  |
+| RO-01 — A project on a read-only location opens read-only (01 §3.2). | implemented | crates/executor/src/maintenance.rs:71 | crates/executor/tests/c13_projects.rs;  |
+| RO-02 — While a project is open the application watches its file (or folder). If it is modified by another process, | implemented | crates/executor/src/maintenance.rs:71 | c13_r2_persistence::folder_hidden_preserved_entry_change_blocks_save; c13_r3_persistence::folder_fingerprint_includes_nested_hidden_names_but_excludes_root_controls_and_session; c13_r2_persistence::folder_visible_mutations_are_detected_without_waiting_for_maintenance_and_own_save_is_clean; Kernel implementation; SI-045 confirmation result remains C1.4 obligation under standing ruling. |
+| LOCK-01 — Opening a project for writing creates a lock file next to it (`<package path>.lock`, or `.lock` inside a | implemented | crates/persist/src/lock.rs:181 | C13-R3-01/02 closed as ruled: c13_r3_format (3), c13_r3_persistence (10), c13_r4_lock (1), c13_r4_closure (2); see M1-C1.3-r4-closure.md. |
+| LOCK-02 — If a live lock held by someone else exists, the project opens read-only and the lock holder is reported | implemented | crates/persist/src/lock.rs:181 | C13-R3-01/02 closed as ruled: c13_r3_format (3), c13_r3_persistence (10), c13_r4_lock (1), c13_r4_closure (2); see M1-C1.3-r4-closure.md. |
+| LOCK-03 — Libraries use the same mechanism for write access (08 LIB-006). | deferred-with-owner | crates/persist/src/lock.rs:181 | crates/persist/src/lock.rs::exclusive_live_and_stale; crates/executor/tests/c13_projects.rs; M9 C9.1 library locks (ADR-0014 §6) |
+| Manifest — format, versions/features, generator, project ID, documentRev, savedAt, SHA256/size list; folder list omitted | implemented | crates/persist/src/save.rs:127 | format-byte-audit.json; hostile::hash_mismatches_are_warnings_and_the_entry_is_still_read;  |
+| Interchange — self-contained full-depth bundle, blobs, remapping and conflict policies | implemented | crates/persist/src/save.rs:88 | C13-R3-01/02 closed as ruled: c13_r3_format (3), c13_r3_persistence (10), c13_r4_lock (1), c13_r4_closure (2); see M1-C1.3-r4-closure.md. |
+| Thumbnail — preserve an existing thumbnail until M3 regeneration | implemented | crates/persist/src/save.rs:88 | c13_r1_format::existing_project_thumbnail_survives_save; Round-1 divergence closed by the cited passing tests; scope as in round-2 report. |
+| Session — optional UI state, invalid ignored, excluded from manifest/undo | implemented | crates/persist/src/save.rs:88 | c13_projects::create_save_close_open_round_trips_both_forms;  |
+| Templates — mimetype, manifest, metadata/content and binaries | implemented | crates/persist/src/library.rs:29 | c13_doc::packages_templates_palettes_and_libraries_are_inspected_without_opening;  |
+| Palettes — optional mimetype archive or bare JSON, textures | implemented | crates/persist/src/library.rs:29 | c13_doc::packages_templates_palettes_and_libraries_are_inspected_without_opening;  |
+| LibraryLayout — shared animlib index layout, flat files, broken items | implemented | crates/persist/src/library.rs:29 | c13_doc::packages_templates_palettes_and_libraries_are_inspected_without_opening;  |
+| Repair-01 — Not a package / no `mimetype` / unsafe entry names / unreadable zip; `project.invalidFormat` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-02 — Newer major version, `minReaderVersion` too new, unknown required feature; `project.unsupportedVersion` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-03 — `project.json` missing or invalid; `project.invalidFormat` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-04 — Entry hash or size mismatch; `integrity.hashMismatch` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-05 — Entry not valid JSON / fails its schema: palette, element; `doc.schemaViolation` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-06 — Drawing entry missing or unreadable; `drawing.contentMissing` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-07 — Scene entry unreadable; `doc.schemaViolation` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-08 — Duplicate ID; `id.duplicate` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-09 — Dangling reference; `ref.dangling` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-10 — Element missing from the scene tree / listed twice / cycle; `tree.invalid` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-11 — Exposure not canonical, foreign drawing IDs; `exposure.invalid` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-12 — Value out of range; `doc.valueClamped` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-13 — Invalid or duplicate name; `doc.nameRepaired` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-14 — Inconsistent zone fills; `drawing.fillInconsistent` | deferred-with-owner | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs; M2 C2.2 planar map (ADR-0014 §17) |
+| Repair-15 — Unresolved colour ID; `colour.recovered` / `colour.placeholderCreated` | deferred-with-owner | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs; M2 C2.2 colour recovery (ADR-0014 §17), currently colour.unresolved |
+| Repair-16 — Missing asset; `project.mediaMissing` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-17 — Unreadable transition; `storyline.transitionInvalid` | implemented | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs;  |
+| Repair-18 — Missing font; `text.fontMissing` | deferred-with-owner | crates/persist/src/repair.rs:266 | crates/persist/tests/hostile.rs; M2 C2.1 font discovery (ADR-0014 §16) |
+| Repair-19 — Unknown properties (newer minor version); `project.newerMinorVersion` | implemented | crates/persist/src/repair.rs:266 | c13_r2_format::frozen_entry_nested_unknown_data_survives_other_entry_edit_both_forms_and_reopen; Round-1 divergence closed by the cited passing tests; scope as in round-2 report. |
+| LoadPhase-1 — Container identification and safe names | implemented | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| LoadPhase-2 — Manifest, versions/features, integrity warnings | implemented | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| LoadPhase-3 — Pure ordered migration chain | implemented | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| LoadPhase-4 — Parse/schema validate every entry | implemented | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| LoadPhase-5 — Resolve references, scene tree and assets | implemented | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| LoadPhase-6 — Repair, then colour recovery | deferred-with-owner | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs; M2 C2.2 colour recovery; deterministic basic repair implemented |
+| LoadPhase-7 — Derive zones/scene lengths; schedule caches/thumbnails | deferred-with-owner | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs; M2 C2.2 zones; M3 C3.3 renderer-derived thumbnails/caches; M8 C8.1 waveform caches. Existing eager scene lengths remain implemented. |
+| LoadPhase-8 — Publish report, project.opened and one load-origin change | implemented | crates/persist/src/load.rs:129 | crates/persist/tests/hostile.rs; crates/executor/tests/c13_projects.rs;  |
+| LoadReport — complete report and deterministic issues/IDs (durationMs is measured) | implemented | crates/persist/src/load.rs:426 | c13_doc::a_repaired_load_is_one_non_undoable_step_and_reported;  |
+| ExecutorEffects — commit-only persistence effects; dryRun/atomic failure do not write files or move clean marker | implemented | crates/executor/src/persistence.rs:395 | c13_r2_persistence::clean_project_atomic_close_saves_staged_edits; c13_r2_persistence::clean_project_atomic_quit_saves_staged_edits; c13_r3_persistence::failed_and_dry_atomic_save_variants_preserve_disk_revision_and_events; Round-2 finding closed by the cited tests; scope and limitations in round-3 report. |
+| InstallGate — open, migration, recovery, backup and repair installation validated before live use | implemented | crates/executor/src/run.rs:591 | compile_fail; c12_policy; c13_projects::opening_bad_files_fails_the_job_and_leaves_no_project_open;  |
+| ReopenedHistory — persisted revisions continue through 10k-step history and exact replay | implemented | crates/executor/src/run.rs:478 | oracle-r1.log; oracle-r3.log; reopened-oracles.json;  |
+| RoundTrip — all command-created supported object types, canonical JSON, revisions, opaque data and binary entries | implemented | crates/executor/src/commands/bundle.rs:839 | c13_r1_format::package_and_folder_round_trip_all_fixture_entries_and_binary_bytes; c13_r2_format::frozen_entry_nested_unknown_data_survives_other_entry_edit_both_forms_and_reopen; Round-1 divergence closed by the cited passing tests; scope as in round-2 report. |
+| Examples — each declaration has schemas/examples; every C1.3 example executes on real files | implemented | crates/executor/tests/c12_kernel_state.rs:317 | c12_kernel_state; c13_r1_persistence registry schema audit; persistence-registry.json;  |
+| InspectionBound — large packages can be inspected without allocating the entire archive twice | implemented | crates/executor/src/commands/doc_io.rs:992 | c13_r1_persistence::package_inspection_reads_a_bounded_header; c13_r2_persistence::gigabyte_package_inspection_is_bounded_with_and_without_validation; inspection-memory.json; Round-1 divergence closed by the cited passing tests; scope as in round-2 report. |
+| UndoLabels — Import JSON / Repair Project labels match the command table | implemented | crates/executor/src/commands/doc_lint.rs:1004 | c13_r1_persistence::import_and_repair_undo_labels_match_the_command_table; Round-1 divergence closed by the cited passing tests; scope as in round-2 report. |
+| NewDefaults — one scene, camera/peg, empty drawing element, 120-swatch palette, 8 pens; clean empty history | implemented | crates/model/src/defaults.rs:215 | tt-model defaults tests; c13_projects;  |
+| Presets — all required bundled presets, mostRecent/default precedence, explicit overrides | implemented | crates/executor/src/commands/project.rs:113 | c13_projects::workspaces_recent_projects_and_defaults_persist_per_user; UI custom selection belongs to M4 C4.1 |
+| Recent — normalized deduplication, maxCount, exists status, persisted ordering and removal | implemented | crates/executor/src/store.rs:222 | c13_projects::workspaces_recent_projects_and_defaults_persist_per_user;  |
+| SettingsIO — per-user conventional directories, atomic versioned human-readable files; corrupt copy/default/warning | implemented | crates/persist/src/settings.rs:68 | settings::missing_data_and_corrupt; c13_projects; Supported 1.0 settings; no historic product migration exists |
+| Preferences — project default and persistence preference values stored separately | implemented | crates/executor/src/store.rs:124 | c13_r1_persistence::default_preference_values_are_not_persisted_as_overrides; Round-1 divergence closed by the cited passing tests; scope as in round-2 report. |
+| Workspaces — user/modified builtin/fullscreen workspace layouts persist and restore | implemented | crates/executor/src/maintenance.rs:19 | c13_projects::workspaces_recent_projects_and_defaults_persist_per_user;  |
+| RemainingSettings — keymap, toolbar, window geometry, last dialog folders, suppressed messages, first-run flags | deferred-with-owner | crates/persist/src/settings.rs:98 | C1.3 generic store infrastructure only; M4 C4.1 shell/settings; M9 C9.3 bundled first-run content; kernel host wiring C1.4 |
+| Quit — unsaved policy, no location pathRequired, clean recovery deletion | implemented | crates/executor/src/commands/app.rs:479 | c13_r2_persistence::clean_project_atomic_quit_saves_staged_edits; c13_r2_persistence::failed_atomic_quit_save_leaves_disk_and_revision_unchanged; Round-2 finding closed by the cited tests; scope and limitations in round-3 report. |
+| Lint-missingMedia — missingMedia | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-missingDrawingContent — missingDrawingContent | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-emptyExposure — emptyExposure | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-exposedEmptyDrawing — exposedEmptyDrawing | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-unusedDrawings — unusedDrawings | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-unresolvedColours — unresolvedColours | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-unpaintedZones — unpaintedZones | deferred-with-owner | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates; M2 C2.2 |
+| Lint-unusedSwatches — unusedSwatches | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-unusedAssets — unusedAssets | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-danglingReferences — danglingReferences | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-duplicateNames — duplicateNames | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-noCamera — noCamera | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-staleLipSync — staleLipSync | deferred-with-owner | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates; M8 C8.2 |
+| Lint-incompleteLipSyncMapping — incompleteLipSyncMapping | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-transitionPadding — transitionPadding | deferred-with-owner | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates; M9 C9.2 |
+| Lint-keysOutsideDuration — keysOutsideDuration | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-missingFonts — missingFonts | deferred-with-owner | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates; M2 C2.1 |
+| Lint-brokenLibraryItems — brokenLibraryItems | implemented | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates;  |
+| Lint-outdatedTemplateLinks — outdatedTemplateLinks | deferred-with-owner | crates/executor/src/commands/doc_lint.rs:469 | c13_doc::validation_references_and_candidates; M9 C9.1 |
+
+## Supplemental rows
+
+| ID | Status | Test / ruling |
+|---|---|---|
+| MED-01 | implemented | c13_r1_persistence::identical_embedded_asset_content_is_stored_once; c13_doc::linked_media_relink_embed_blob_export_and_remove; Shared content and undo retained; separate resource-growth P2 C13-R3-03. |
+| MED-02 | implemented | c13_doc::linked_media_relink_embed_blob_export_and_remove; Linked original resolution and missing media handling; specialty relink UX remains deferred as before. |
+| SAVE-01 | implemented | c13_r1_persistence::failed_package_export_overwrite_keeps_the_previous_destination; round_trip; Subject to accepted ADR-0014 section 3 Windows write-through deviation; no new durability claim. |
+| SAVE-02 | implemented | c13_r2_format::actual_folder_writer_keeps_manifest_after_removal_renames; journal::a_save_interrupted_after_any_rename_recovers_to_one_whole_version; c13_r1_format::partial_folder_rollback_restores_every_already_replaced_entry; Changing manifest, removal, and post-final-rename journal boundary pass. |
+
+## Declarations
+
+| ID | Status | Tests / findings |
+|---|---|---|
+| `app.quit` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-01; round-2 finding C13-R2-01 permanent regression;  |
+| `project.autosaved` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.backup.list` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.backup.open` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-01;  |
+| `project.close` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-01; round-2 finding C13-R2-01 permanent regression;  |
+| `project.closed` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.create` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-01; round-2 finding C13-R2-06 permanent regression;  |
+| `project.dirty.changed` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.info.get` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.open` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.opened` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.presets.list` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.properties.get` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.properties.set` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-15;  |
+| `project.recent.list` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.recent.remove` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.recovery.delete` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.recovery.list` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `project.recovery.open` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-08;  |
+| `project.save` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-06; round-2 finding C13-R2-04 permanent regression;  |
+| `project.saveAs` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-02; round-2 finding C13-R2-02 permanent regression;  |
+| `project.saved` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.asset.embed` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-16;  |
+| `doc.asset.export` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.asset.list` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.asset.relink` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.asset.remove` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.asset.status.changed` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.blob.get` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.changed` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.diff` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.export.json` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.import.json` | implemented | C13-R3-01/02 closed as ruled: c13_r3_format (3), c13_r3_persistence (10), c13_r4_lock (1), c13_r4_closure (2); see M1-C1.3-r4-closure.md. |
+| `doc.loadReport.get` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.object.find` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.object.get` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.object.patch` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.object.refs` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.object.resolve` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.package.changedOnDisk` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.package.export` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-07; round-2 finding C13-R2-06 permanent regression; C13-R3-03 closed: r3 repeated-export test and r4 remove/export/undo/close case pass;  |
+| `doc.package.get` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-14;  |
+| `doc.repair` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json; round-2 report closure table for C13-R1-17;  |
+| `doc.schema.get` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.schema.list` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.schema.validate` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.state.get` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+| `doc.validate` | implemented | c12_kernel_state::every_example_runs_on_the_fixture_under_the_watchdog; c13_projects/c13_doc; runtime schemas in persistence-registry.json;  |
+
+## Deferred ownership validation
+
+Every deferred row names an owner present in plan §4: LOCK-03 / library lock repair → M9 C9.1; zone/colour repairs and load derivation → M2 C2.2; font repair/lint → M2 C2.1; derived caches/thumbnails → M3 C3.3 and M8 C8.1; shell settings → M4 C4.1, startup content → M9 C9.3, host wiring → M1 C1.4; lip-sync lint → M8 C8.2; transition lint → M9 C9.2; template lint → M9 C9.1. These owners are listed, not newly deferred by this review.

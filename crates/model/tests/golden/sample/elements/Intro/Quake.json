@@ -1,0 +1,28 @@
+{
+  "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+  "type": "element",
+  "rev": 1,
+  "name": "Quake",
+  "elementType": "shake",
+  "start": 1,
+  "duration": 48,
+  "loops": 2,
+  "loopType": "fill",
+  "positionLoop": "offset",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "params": {
+    "axis": "xy",
+    "waveTime": 4,
+    "decayHalfLifeFrames": 6,
+    "amplitude": 0.5
+  },
+  "channels": {},
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

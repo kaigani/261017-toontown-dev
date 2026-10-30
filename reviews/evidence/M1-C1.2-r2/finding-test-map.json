@@ -1,0 +1,59 @@
+{
+  "C12-R2-01": [
+    "safe_revision_reconstruction_cannot_install_future_object_revisions"
+  ],
+  "C12-R2-02": [
+    "generated_result_rejects_wrong_enabled_type",
+    "generated_nested_parameters_reject_wrong_handle_type",
+    "generated_named_result_is_not_an_unconstrained_object",
+    "library_global_write_scope_is_declared",
+    "library_close_has_no_project_rule_from_01_1_3",
+    "result_schema_catalogue_does_not_accept_null_for_device_record"
+  ],
+  "C12-R2-03": [
+    "checkpoint_is_visible_to_later_atomic_query",
+    "checkpoint_create_then_delete_in_atomic_batch_succeeds",
+    "checkpoint_before_edit_predicts_same_result_in_dry_run",
+    "checkpoint_between_edits_captures_its_staged_content",
+    "sequential_dry_run_simulates_checkpoints"
+  ],
+  "C12-R2-04": [
+    "paste_dry_run_predicts_created_ids_exactly",
+    "identical_document_and_paste_sequence_produce_identical_ids"
+  ],
+  "C12-R2-05": [
+    "element_delete_preserves_opaque_metadata_and_extension_strings",
+    "drawing_copy_preserves_object_shaped_opaque_metadata"
+  ],
+  "C12-R2-06": [
+    "pending_job_wait_reserves_request_id_against_other_commands"
+  ],
+  "C12-R2-07": [
+    "sequential_batch_job_wait_honours_wait_timeout_contract"
+  ],
+  "C12-R2-08": [
+    "edit_envelopes_report_explicit_or_selection_targets"
+  ],
+  "C12-R2-09": [
+    "malformed_paste_destination_is_rejected_without_fallback"
+  ],
+  "C12-R2-10": [
+    "clipboard_element_properties_validates_values_not_only_names"
+  ],
+  "C12-R2-11": [
+    "json04_materialised_parent_is_removed_by_raw_patch_inverse",
+    "json04_materialisation_does_not_invent_opaque_nested_containers"
+  ],
+  "C12-R2-12": [
+    "diff_reports_drawing_content_revision_invalidation",
+    "hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff"
+  ],
+  "C12-R2-13": [
+    "copying_a_peg_includes_descendants_per_scene_edit_rules",
+    "cutting_a_peg_removes_descendants_per_scene_edit_rules",
+    "copying_complete_scene_forest_preserves_effect_parentage_on_paste"
+  ],
+  "C12-R2-14": [
+    "cross_bank_cell_paste_cannot_overwrite_a_locked_drawing"
+  ]
+}

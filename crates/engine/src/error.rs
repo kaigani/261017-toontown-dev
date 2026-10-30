@@ -1,6 +1,7 @@
 //! Typed engine errors and their wire form (11 §10: stable dotted codes `area.reason`).
 
-use serde::Serialize;
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 
 /// Errors returned by the engine facade.
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
@@ -37,13 +38,16 @@ impl EngineError {
 }
 
 /// Serializable error envelope: `{code, message, details}` (11 §10).
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
 pub struct ErrorInfo {
     /// Stable dotted code.
     pub code: String,
     /// Human-readable message.
     pub message: String,
-    /// Structured details (code-specific).
+    /// Structured details (code-specific); absent = `{}`.
+    #[serde(default)]
+    #[schemars(extend("x-omitDefault" = true))]
     pub details: serde_json::Value,
 }
 

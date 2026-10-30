@@ -1,0 +1,683 @@
+    Blocking waiting for file lock on package cache
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\model)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r1\crates\engine)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.62s
+     Running unittests src\lib.rs (target\debug\deps\tt_anim-f88a22975f9e614d.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_audio-5a95f35c6c4429aa.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_colour-573f310aa5fcf9e4.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_desktop-6f057200a94ec5d5.exe)
+
+running 38 tests
+test bindings::tests::command_id_syntax ... ok
+test diagnostics::tests::bench_with_count ... ok
+test spikes::tablet::simulate_windows::tests::positions_stay_inside_the_rectangle ... ok
+test diagnostics::tests::no_arguments_is_interactive ... ok
+test bindings::tests::per_platform_accelerators ... ok
+test spikes::tablet::simulate_windows::tests::tilt_and_rotation_stay_in_range ... ok
+test menu::tests::pending_command_carries_milestone ... ok
+test diagnostics::tests::requested_diagnostic_names_the_flag ... ok
+test diagnostics::tests::errors ... ok
+test spikes::tablet::tests::request_rejects_unknown_fields ... ok
+test bindings::tests::enablement_without_project_follows_01_1_3 ... ok
+test menu::tests::event_serializes_camel_case ... ok
+test menu::tests::frontend_command_carries_params ... ok
+test spikes::canvas::renderlist::tests::encoder_refuses_invalid_geometry ... ok
+test bindings::tests::embedded_manifest_is_valid ... ok
+test bindings::tests::platform_specific_duplicates_are_allowed ... ok
+test spikes::tablet::simulate_windows::tests::pressure_only_holds_tilt_and_rotation_and_position ... ok
+test menu::tests::unknown_and_platform_hidden_ids_are_unbound ... ok
+test bindings::tests::rejects_duplicates_bad_ids_and_missing_milestones ... ok
+test spikes::tablet::simulate_windows::tests::pressure_steps_through_every_level ... ok
+test spikes::canvas::renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+test spikes::tablet::tests::packet_serializes_camel_case ... ok
+test spikes::tablet::tests::disabled_unless_tablet ... ok
+test spikes::tablet::simulate_windows::tests::zigzag_never_repeats_a_pixel_in_adjacent_frames_and_stationary_always_does ... ok
+test bindings::tests::quit_is_bound_on_every_platform ... ok
+test diagnostics::tests::spike_flags ... ok
+test spikes::tablet::simulate_windows::tests::sine_repeats_pixels_where_the_review_found_missing_frames ... ok
+test bindings::tests::task_menus_exist_on_both_product_platforms ... ok
+test spikes::tablet::tests::sequencer_is_gap_free_and_wire_packets_flatten ... ok
+test spikes::tablet::tests::validates_simulation_requests ... ok
+test tests::default_build_registers_no_diagnostic_commands ... ok
+test tests::diagnostics_overlay_config_enables_both_halves ... ok
+test menu::tests::host_commands ... ok
+test tests::tauri_config_matches_workspace_and_plan ... ok
+test spikes::canvas::renderlist::tests::encoding_has_the_documented_layout ... ok
+test spikes::canvas::renderlist::tests::scenes_have_the_specified_sizes ... ok
+test spikes::canvas::renderlist::tests::generation_is_reproducible ... ok
+test spikes::canvas::renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+
+test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+
+     Running unittests src\main.rs (target\debug\deps\toontown-cd0f2fa223bc051d.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running ..\..\tests\adversarial\c03-r2-encoder.rs (target\debug\deps\c03_r2_encoder-d0e2808d2dfb0a85.exe)
+
+running 11 tests
+test renderlist::tests::encoder_refuses_invalid_geometry ... ok
+test renderlist::tests::tiny_fixture_matches_committed_bytes ... ok
+test subnormal_and_empty_path_are_valid ... ok
+test adjacent_out_of_bounds_and_negative_width_are_refused ... ok
+test c03_r2_03_unpaired_coordinate_must_be_refused ... ok
+test c03_r2_03_unknown_style_must_be_refused ... ok
+test nonfinite_points_and_bounds_return_typed_errors ... ok
+test renderlist::tests::encoding_has_the_documented_layout ... ok
+test renderlist::tests::scenes_have_the_specified_sizes ... ok
+test renderlist::tests::generated_scenes_are_valid_and_bounded_by_their_points ... ok
+test renderlist::tests::generation_is_reproducible ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_engine-58dd508760213d2c.exe)
+
+running 19 tests
+test determinism::tests::workload_has_expected_shape ... ok
+test error::tests::limit_exceeded_wire_form ... ok
+test ping::tests::echoes_seq_and_payload ... ok
+test ping::tests::request_rejects_unknown_fields ... ok
+test selftest::tests::dotted_version_parser ... ok
+test ping::tests::payload_limit_is_inclusive ... ok
+test tests::engine_is_send_and_sync ... ok
+test selftest::tests::push_keeps_ok_consistent ... ok
+test tests::info_reports_versions_and_mode ... ok
+test tests::info_serializes_camel_case ... ok
+test wire::tests::definitions_cover_every_wire_type ... ok
+test wire::tests::requests_reject_unknown_fields_and_bad_json ... ok
+test wire::tests::u64_values_are_exact_on_the_wire ... ok
+test selftest::tests::selftest_passes ... ok
+test components::tests::every_component_cites_spec_sections ... ok
+test components::tests::lists_every_plan_crate_once ... ok
+test determinism::tests::hex_encodes_lowercase ... ok
+test determinism::tests::probe_matches_golden ... ok
+test determinism::tests::probe_is_stable_within_a_run ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests\c11_r1_wire.rs (target\debug\deps\c11_r1_wire-4d148d0de95e9306.exe)
+
+running 4 tests
+test nested_duplicate_keys_are_rejected_in_requests ... FAILED
+test opaque_json_integer_outside_u64_is_not_silently_rounded ... FAILED
+test supported_integer_boundaries_and_utf8_controls ... ok
+test typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null ... FAILED
+
+failures:
+
+---- nested_duplicate_keys_are_rejected_in_requests stdout ----
+
+thread 'nested_duplicate_keys_are_rejected_in_requests' (28412) panicked at crates\engine\tests\c11_r1_wire.rs:14:5:
+duplicate keys must not silently erase a value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- opaque_json_integer_outside_u64_is_not_silently_rounded stdout ----
+
+thread 'opaque_json_integer_outside_u64_is_not_silently_rounded' (29012) panicked at crates\engine\tests\c11_r1_wire.rs:9:5:
+assertion `left == right` failed: opaque extension integer loses precision in Rust
+  left: "{\"com.example.tool\":{\"n\":-18446744073709552000}}"
+ right: "{\"com.example.tool\":{\"n\":-18446744073709551615}}"
+
+---- typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null stdout ----
+
+thread 'typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null' (15448) panicked at crates\engine\tests\c11_r1_wire.rs:22:5:
+10 §1.1 NaN is invalid; serde_json silently writes null
+
+
+failures:
+    nested_duplicate_keys_are_rejected_in_requests
+    opaque_json_integer_outside_u64_is_not_silently_rounded
+    typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null
+
+test result: FAILED. 1 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p tt-engine --test c11_r1_wire`
+     Running tests\frontend_schemas.rs (target\debug\deps\frontend_schemas-fb3f8851af6fdc90.exe)
+
+running 2 tests
+test wire_module_is_current ... ok
+test model_module_is_current ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_executor-b337eae5bb9547eb.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_fx-bd778d9187cb17c9.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\main.rs (target\debug\deps\toontown_headless-bb4d702334015b37.exe)
+
+running 7 tests
+test cli::tests::option_combinations ... ok
+test cli::tests::selftest_human_passes ... ok
+test cli::tests::version_line ... ok
+test cli::tests::actions_are_exclusive ... ok
+test cli::tests::selftest_json_passes ... ok
+test cli::tests::an_action_is_required ... ok
+test cli::tests::future_modes_are_typed_errors ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running ..\..\tests\adversarial\c01.rs (target\debug\deps\adversarial_c01-97ba7ea775620970.exe)
+
+running 7 tests
+test wire_engine_info_field_names_match_typescript ... ok
+test c01_r1_04_engine_info_is_bootstrap_info_not_app_info_get ... ok
+test c01_r1_05_rust_control_rejects_multibyte_over_limit ... ok
+test c01_r1_01_license_allowlist_stays_within_user_policy ... ok
+test c01_r1_01_license_grouping_preserves_mandatory_copyleft ... ok
+test c01_r1_06_dependency_proof_rejects_graphics_dependencies ... ok
+test c01_r1_02_dynamic_import_cannot_bypass_ipc_boundary ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.48s
+
+     Running tests\cli.rs (target\debug\deps\cli-3a42eaab568ea8d7.exe)
+
+running 5 tests
+test mcp_stdio_not_yet_available_exits_three ... ok
+test usage_error_exits_two ... ok
+test selftest_exits_zero_with_json_report ... ok
+test version_exits_zero ... ok
+test selftest_runs_with_display_environment_removed ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests\guard_fixtures.rs (target\debug\deps\guard_fixtures-419fd4a6f2ed7699.exe)
+
+running 1 test
+test rejects_a_real_direct_composition_import ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_io-b0b1ae39c380bb50.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_lipsync-bd114ded6694f46d.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_mcp-f54e025c3255c3b4.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_model-996e58c7cd8f4805.exe)
+
+running 30 tests
+test id::tests::ulid_encoding_is_26_crockford_chars_and_ordered ... ok
+test canonical::tests::large_integers_are_exact ... ok
+test entities::tests::stubs_reject_full_objects_and_foreign_types ... ok
+test canonical::tests::integral_doubles_normalise_to_integers ... ok
+test error::tests::wire_form_has_three_fields ... ok
+test id::tests::compound_form ... ok
+test types::tests::names_round_trip_and_aliases_resolve ... ok
+test canonical::tests::layout_is_two_space_with_tuples_on_one_line ... ok
+test id::tests::validates_character_set_and_length ... ok
+test name::tests::next_free_uses_smallest_unused ... ok
+test canonical::tests::numbers_match_ecmascript ... ok
+test entities::tests::ext_keys_are_reverse_dns ... ok
+test name::tests::normalises_nfc_and_trims ... ok
+test path::tests::quoted_names_escape ... ok
+test name::tests::per_entity_rules ... ok
+test path::tests::rejects_malformed_paths ... ok
+test path::tests::spec_examples_parse_and_print ... ok
+test path::tests::refs_classify ... ok
+test types::tests::tags_reject_other_types ... ok
+test types::tests::prefixes_are_unique_and_valid ... ok
+test pointer::tests::round_trip_escapes ... ok
+test value::tests::colours_normalise_to_upper_rgba ... ok
+test value::tests::timestamps_round_trip_and_reject_impossible_dates ... ok
+test pointer::tests::indexes_are_strict ... ok
+test id::tests::seeded_generators_are_reproducible ... ok
+test object::tests::runs_are_merged_and_trailing_blanks_dropped ... ok
+test schema_ts::tests::types_and_bigint_bounds ... ok
+test id::tests::generated_ids_are_valid_prefixed_and_increasing ... ok
+test value::tests::timestamp_display_matches_civil_conversion_for_many_days ... ok
+test overlay::tests::newer_minor_properties_survive_a_parse_and_write_in_lexicographic_order ... ok
+
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-b69a543d1cfc8a3e.exe)
+
+running 34 tests
+test add_over_existing_object_property_is_invertible ... FAILED
+test elided_patch_must_not_write_null ... FAILED
+test diff_does_not_treat_opaque_arrays_as_child_collections ... FAILED
+test canonical_serialization_rejects_nonfinite_values ... FAILED
+test hostile_path_and_id_controls ... ok
+test root_add_is_rfc6902_replacement ... FAILED
+test move_over_existing_object_property_is_invertible ... FAILED
+test jsonschema_integer_multiple_of_does_not_round_before_testing ... FAILED
+test schema_properties_have_format_introduction_annotations ... FAILED
+test mouth_track_manual_ranges_stay_within_the_placement ... FAILED
+test document_assembly_rechecks_schema_ranges_after_public_deserialize ... FAILED
+test depth_zero_results_validate_against_their_object_schema ... FAILED
+test image_element_bank_requires_exactly_one_bitmap_per_drawing ... FAILED
+test canonical_map_order_does_not_depend_on_insertion_order ... FAILED
+test linked_file_asset_requires_paths ... FAILED
+test swatch_id_alias_is_accepted_by_the_validated_input_path ... FAILED
+test nfc_applies_to_persisted_strings_beyond_names ... FAILED
+test texture_paths_must_be_under_textures ... FAILED
+test duplicate_entry_ids_must_not_silently_overwrite_content ... FAILED
+test schema_integer_boundary_does_not_round_u64_max_up ... ok
+test brush_outline_must_be_closed ... FAILED
+test extension_and_metadata_names_are_never_interpreted ... FAILED
+test fixed_text_requires_width ... FAILED
+test spline_handle_offsets_are_clamped_to_adjacent_key_times ... FAILED
+test int_means_signed_32_bit_unless_spec_states_otherwise ... FAILED
+test metadata_depth_is_enforced_at_model_input ... FAILED
+test canonical_scene_map_order_is_not_document_state ... FAILED
+test containment_and_scene_limit_controls ... FAILED
+test child_stub_type_must_agree_with_the_containment_slot ... FAILED
+test every_valid_deep_library_object_has_a_resolvable_canonical_path ... FAILED
+test nested_closed_value_objects_reject_unknown_fields ... ok
+test schema_mutations_cover_all_object_types_and_root_properties ... ok
+test million_system_ids_unique_ordered_and_correctly_prefixed ... ok
+test ten_megabyte_drawing_validation_measurement ... ok
+
+failures:
+
+---- add_over_existing_object_property_is_invertible stdout ----
+
+thread 'add_over_existing_object_property_is_invertible' (22600) panicked at crates\model\tests\c11_r1_adversarial.rs:234:5:
+assertion `left == right` failed: RFC6902 add replaces existing property; oldValue must restore it
+  left: Object {}
+ right: Object {"a": Number(1)}
+
+---- elided_patch_must_not_write_null stdout ----
+
+thread 'elided_patch_must_not_write_null' (20884) panicked at crates\model\tests\c11_r1_adversarial.rs:260:5:
+10 §2.6: elided value requires reread, never replacement with null
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- diff_does_not_treat_opaque_arrays_as_child_collections stdout ----
+
+thread 'diff_does_not_treat_opaque_arrays_as_child_collections' (29248) panicked at crates\model\tests\c11_r1_adversarial.rs:321:5:
+assertion `left == right` failed: metadata edits disappeared from generated patch
+  left: Object {"meta": Object {"items": Array [Object {"id": String("a"), "type": String("pen")}]}}
+ right: Object {"meta": Object {"items": Array [Object {"id": String("a"), "type": String("scene")}]}}
+
+---- canonical_serialization_rejects_nonfinite_values stdout ----
+
+thread 'canonical_serialization_rejects_nonfinite_values' (29060) panicked at crates\model\tests\c11_r1_adversarial.rs:419:5:
+assertion failed: canonical::to_canonical(&f64::NAN).is_err()
+
+---- root_add_is_rfc6902_replacement stdout ----
+
+thread 'root_add_is_rfc6902_replacement' (29072) panicked at crates\model\tests\c11_r1_adversarial.rs:252:51:
+called `Result::unwrap()` on an `Err` value: ModelError { code: "arg.invalid", message: "the operation needs a non-root path", details: Object {"pointer": String("")} }
+
+---- move_over_existing_object_property_is_invertible stdout ----
+
+thread 'move_over_existing_object_property_is_invertible' (30544) panicked at crates\model\tests\c11_r1_adversarial.rs:246:5:
+assertion `left == right` failed: 10 §2.6 every patch invertible
+  left: Object {"a": Number(1)}
+ right: Object {"a": Number(1), "b": Number(2)}
+
+---- jsonschema_integer_multiple_of_does_not_round_before_testing stdout ----
+
+thread 'jsonschema_integer_multiple_of_does_not_round_before_testing' (12200) panicked at crates\model\tests\c11_r1_adversarial.rs:413:5:
+exact integer divisible by 5 rejected
+
+---- schema_properties_have_format_introduction_annotations stdout ----
+
+thread 'schema_properties_have_format_introduction_annotations' (18896) panicked at crates\model\tests\c11_r1_adversarial.rs:349:5:
+assertion `left == right` failed: 10 section 2.8 annotates properties, not only objects
+  left: Null
+ right: "1.0"
+
+---- mouth_track_manual_ranges_stay_within_the_placement stdout ----
+
+thread 'mouth_track_manual_ranges_stay_within_the_placement' (10740) panicked at crates\model\tests\c11_r1_adversarial.rs:427:5:
+assertion failed: object::from_json::<tt_model::entities::sound::SoundPlacement>(&s).is_err()
+
+---- document_assembly_rechecks_schema_ranges_after_public_deserialize stdout ----
+
+thread 'document_assembly_rechecks_schema_ranges_after_public_deserialize' (10992) panicked at crates\model\tests\c11_r1_adversarial.rs:82:5:
+10 §4.2: Document accepted pen sizes > 100 via public Deserialize
+
+---- depth_zero_results_validate_against_their_object_schema stdout ----
+
+thread 'depth_zero_results_validate_against_their_object_schema' (27904) panicked at crates\model\tests\c11_r1_adversarial.rs:72:5:
+10 §2.2 both full objects and stubs validate: {"id":"pr_01K742SG00AGK6CWBR28XFH7HT","type":"project","name":"Sample"}
+
+---- image_element_bank_requires_exactly_one_bitmap_per_drawing stdout ----
+
+thread 'image_element_bank_requires_exactly_one_bitmap_per_drawing' (10408) panicked at crates\model\tests\c11_r1_adversarial.rs:95:5:
+10 §4.10 empty image drawing accepted
+
+---- canonical_map_order_does_not_depend_on_insertion_order stdout ----
+
+thread 'canonical_map_order_does_not_depend_on_insertion_order' (24172) panicked at crates\model\tests\c11_r1_adversarial.rs:152:5:
+assertion `left == right` failed: 10 AG-06 identical documents identical JSON
+  left: "{\n  \"id\": \"pen_01K742SG0D52WQP7QB3MVEBHKZ\",\n  \"type\": \"pen\",\n  \"rev\": 1,\n  \"name\": \"Pen 1\",\n  \"kind\": \"brush\",\n  \"minSize\": 0.5,\n  \"maxSize\": 2,\n  \"smoothness\": 3,\n  \"tip\": \"round\",\n  \"tipAngle\": 0,\n  \"colourId\": null,\n  \"meta\": {\n    \"a\": 1,\n    \"b\": 2\n  }\n}\n"
+ right: "{\n  \"id\": \"pen_01K742SG0D52WQP7QB3MVEBHKZ\",\n  \"type\": \"pen\",\n  \"rev\": 1,\n  \"name\": \"Pen 1\",\n  \"kind\": \"brush\",\n  \"minSize\": 0.5,\n  \"maxSize\": 2,\n  \"smoothness\": 3,\n  \"tip\": \"round\",\n  \"tipAngle\": 0,\n  \"colourId\": null,\n  \"meta\": {\n    \"b\": 2,\n    \"a\": 1\n  }\n}\n"
+
+---- linked_file_asset_requires_paths stdout ----
+
+thread 'linked_file_asset_requires_paths' (18688) panicked at crates\model\tests\c11_r1_adversarial.rs:104:5:
+10 §4.16 linked file with no locator accepted
+
+---- swatch_id_alias_is_accepted_by_the_validated_input_path stdout ----
+
+thread 'swatch_id_alias_is_accepted_by_the_validated_input_path' (26936) panicked at crates\model\tests\c11_r1_adversarial.rs:65:5:
+10 §2.2 explicitly accepts id as alias
+
+---- nfc_applies_to_persisted_strings_beyond_names stdout ----
+
+thread 'nfc_applies_to_persisted_strings_beyond_names' (24960) panicked at crates\model\tests\c11_r1_adversarial.rs:57:5:
+assertion `left == right` failed: 10 §1.1 string
+  left: String("e\u{301}")
+ right: String("é")
+
+---- texture_paths_must_be_under_textures stdout ----
+
+thread 'texture_paths_must_be_under_textures' (28604) panicked at crates\model\tests\c11_r1_adversarial.rs:140:5:
+10 §4.13: texture entry outside textures/
+
+---- duplicate_entry_ids_must_not_silently_overwrite_content stdout ----
+
+thread 'duplicate_entry_ids_must_not_silently_overwrite_content' (25840) panicked at crates\model\tests\c11_r1_adversarial.rs:37:5:
+ID-01: duplicate entry disappeared before validation
+
+---- brush_outline_must_be_closed stdout ----
+
+thread 'brush_outline_must_be_closed' (6852) panicked at crates\model\tests\c11_r1_adversarial.rs:113:5:
+10 §4.9: brush outlines are closed
+
+---- extension_and_metadata_names_are_never_interpreted stdout ----
+
+thread 'extension_and_metadata_names_are_never_interpreted' (23976) panicked at crates\model\tests\c11_r1_adversarial.rs:47:5:
+assertion `left == right` failed: 10 §2.2: ext verbatim
+  left: Object {"type": String("element"), "name": String("é"), "payload": Array [Number(1), Number(2), Number(3)]}
+ right: Object {"type": String("element"), "name": String("  e\u{301}  "), "payload": Array [Number(1), Number(2), Number(3)]}
+
+---- fixed_text_requires_width stdout ----
+
+thread 'fixed_text_requires_width' (8012) panicked at crates\model\tests\c11_r1_adversarial.rs:130:5:
+10 §4.9: fixed text without width
+
+---- spline_handle_offsets_are_clamped_to_adjacent_key_times stdout ----
+
+thread 'spline_handle_offsets_are_clamped_to_adjacent_key_times' (11068) panicked at crates\model\tests\c11_r1_adversarial.rs:437:9:
+10 section 4.12 and 05 section 10.3 require handle time clamping
+
+---- int_means_signed_32_bit_unless_spec_states_otherwise stdout ----
+
+thread 'int_means_signed_32_bit_unless_spec_states_otherwise' (7424) panicked at crates\model\tests\c11_r1_adversarial.rs:276:5:
+10 §1.1 int is signed 32-bit; frame is int
+
+---- metadata_depth_is_enforced_at_model_input stdout ----
+
+thread 'metadata_depth_is_enforced_at_model_input' (28728) panicked at crates\model\tests\c11_r1_adversarial.rs:214:5:
+accepted object cannot be written by its canonical writer
+
+---- canonical_scene_map_order_is_not_document_state stdout ----
+
+thread 'canonical_scene_map_order_is_not_document_state' (28696) panicked at crates\model\tests\c11_r1_adversarial.rs:166:69:
+called `Result::unwrap()` on an `Err` value: [ModelError { code: "doc.schemaViolation", message: "`element` children are stored in their own entry; only stubs are allowed here", details: Object {"pointer": String("")} }]
+
+---- containment_and_scene_limit_controls stdout ----
+
+thread 'containment_and_scene_limit_controls' (26684) panicked at crates\model\tests\c11_r1_adversarial.rs:202:47:
+called `Result::unwrap()` on an `Err` value: [ModelError { code: "arg.invalid", message: "the bar ends after frame 100000", details: Object {"pointer": String("/duration"), "rule": String("limit")} }]
+
+---- child_stub_type_must_agree_with_the_containment_slot stdout ----
+
+thread 'child_stub_type_must_agree_with_the_containment_slot' (13228) panicked at crates\model\tests\c11_r1_adversarial.rs:343:5:
+palette slot schema accepted scene stub
+
+---- every_valid_deep_library_object_has_a_resolvable_canonical_path stdout ----
+
+thread 'every_valid_deep_library_object_has_a_resolvable_canonical_path' (8528) panicked at crates\model\tests\c11_r1_adversarial.rs:336:5:
+unresolvable canonical path: library:local/libraryFolder:"Folder 32"/libraryFolder:"Folder 31"/libraryFolder:"Folder 30"/libraryFolder:"Folder 29"/libraryFolder:"Folder 28"/libraryFolder:"Folder 27"/libraryFolder:"Folder 26"/libraryFolder:"Folder 25"/libraryFolder:"Folder 24"/libraryFolder:"Folder 23"/libraryFolder:"Folder 22"/libraryFolder:"Folder 21"/libraryFolder:"Folder 20"/libraryFolder:"Folder 19"/libraryFolder:"Folder 18"/libraryFolder:"Folder 17"/libraryFolder:"Folder 16"/libraryFolder:"Folder 15"/libraryFolder:"Folder 14"/libraryFolder:"Folder 13"/libraryFolder:"Folder 12"/libraryFolder:"Folder 11"/libraryFolder:"Folder 10"/libraryFolder:"Folder 9"/libraryFolder:"Folder 8"/libraryFolder:"Folder 7"/libraryFolder:"Folder 6"/libraryFolder:"Folder 5"/libraryFolder:"Folder 4"/libraryFolder:"Folder 3"/libraryFolder:"Folder 2"/libraryFolder:"Folder 1"/libraryFolder:"Folder 0"/libraryFolder:"Leaf"
+
+
+failures:
+    add_over_existing_object_property_is_invertible
+    brush_outline_must_be_closed
+    canonical_map_order_does_not_depend_on_insertion_order
+    canonical_scene_map_order_is_not_document_state
+    canonical_serialization_rejects_nonfinite_values
+    child_stub_type_must_agree_with_the_containment_slot
+    containment_and_scene_limit_controls
+    depth_zero_results_validate_against_their_object_schema
+    diff_does_not_treat_opaque_arrays_as_child_collections
+    document_assembly_rechecks_schema_ranges_after_public_deserialize
+    duplicate_entry_ids_must_not_silently_overwrite_content
+    elided_patch_must_not_write_null
+    every_valid_deep_library_object_has_a_resolvable_canonical_path
+    extension_and_metadata_names_are_never_interpreted
+    fixed_text_requires_width
+    image_element_bank_requires_exactly_one_bitmap_per_drawing
+    int_means_signed_32_bit_unless_spec_states_otherwise
+    jsonschema_integer_multiple_of_does_not_round_before_testing
+    linked_file_asset_requires_paths
+    metadata_depth_is_enforced_at_model_input
+    mouth_track_manual_ranges_stay_within_the_placement
+    move_over_existing_object_property_is_invertible
+    nfc_applies_to_persisted_strings_beyond_names
+    root_add_is_rfc6902_replacement
+    schema_properties_have_format_introduction_annotations
+    spline_handle_offsets_are_clamped_to_adjacent_key_times
+    swatch_id_alias_is_accepted_by_the_validated_input_path
+    texture_paths_must_be_under_textures
+
+test result: FAILED. 6 passed; 28 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.30s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r1_adversarial`
+     Running tests\conformance.rs (target\debug\deps\conformance-0ac8096f6f909764.exe)
+
+running 15 tests
+test x_command_annotations_name_registered_commands ... ok
+test published_schema_bundle_is_current ... ok
+test schemas_are_valid_draft_2020_12 ... ok
+test spec_example_paths_resolve ... ok
+test revisions_newer_than_the_document_are_integrity_errors ... ok
+test persisted_json_equals_query_json_minus_transient ... ok
+test reference_errors_carry_the_spec_codes ... ok
+test fixture_covers_every_object_and_element_type ... ok
+test ambiguous_names_list_candidates ... ok
+test canonical_paths_resolve_to_their_objects ... ok
+test golden_canonical_entries ... ok
+test every_entry_validates_and_has_no_query_only_properties ... ok
+test change_sets_describe_and_invert_edits ... ok
+test canonical_round_trip_is_byte_identical ... ok
+test every_object_validates_at_every_depth ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+     Running tests\properties.rs (target\debug\deps\properties-d10468dcc1542ee5.exe)
+
+running 17 tests
+test names_normalise_idempotently ... ok
+test numbers_round_trip_through_canonical_text ... ok
+test timestamps_round_trip ... ok
+test generated_paths_print_and_parse_identically ... ok
+test json_parsing_of_doubles_is_correctly_rounded ... ok
+test path_parsing_never_panics ... ok
+test id_parsing_never_panics_and_matches_the_grammar ... ok
+test number_vectors_for_the_front_end ... ok
+test child_collection_patches_apply_and_invert ... ok
+test exposure_range_patches_apply_and_invert ... ok
+test canonical_json_is_stable ... ok
+test patches_apply_and_invert ... ok
+test every_object_type_has_a_schema_that_rejects_unknown_properties ... ok
+test pens_round_trip ... ok
+test palettes_round_trip ... ok
+test elements_of_every_type_round_trip ... ok
+test strokes_round_trip ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_persist-15662ba852efb3bc.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_registry-e7ed13e25130fc05.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_render-a5af2a8af88daeb3.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\c03_fixed_configurations.rs (target\debug\deps\c03_fixed_configurations-80a17922aecd7376.exe)
+
+running 2 tests
+test u8_pipeline_loses_opacity_over_an_opaque_background_known_limitation ... ok
+test fixed_scalar_configuration_hashes_identically_across_oses ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.53s
+
+     Running tests\c03_r1_stress.rs (target\debug\deps\c03_r1_stress-7bd10297f26d4179.exe)
+
+running 3 tests
+test c03_r1_04_simd_dispatch_must_not_change_final_pixels ... ignored, C0.4 ticket: SIMD policy for the final renderer
+test c03_r1_05_source_over_an_opaque_background_stays_opaque ... ok
+test extended_corpus_repeats_and_cross_os_hashes ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 12.55s
+
+     Running tests\c03_r2_quality.rs (target\debug\deps\c03_r2_quality-d717cda6110d123a.exe)
+
+running 1 test
+test quality_pipeline_opacity_full_corpus ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.63s
+
+     Running unittests src\lib.rs (target\debug\deps\tt_vector-7764ade471375737.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_anim
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_audio
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_colour
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_desktop
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_engine
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_executor
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_fx
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_io
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_lipsync
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_mcp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_model
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_persist
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_registry
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_render
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tt_vector
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: 2 targets failed:
+    `-p tt-engine --test c11_r1_wire`
+    `-p tt-model --test c11_r1_adversarial`

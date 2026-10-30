@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cargo",
+    "run",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-model",
+    "--example",
+    "scale"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:39:38.896889+00:00",
+  "seconds": 54.8992322999984,
+  "exit": 0,
+  "logSha256": "f091b632d6f74e10ee56cfdd64f11c89ff2ea505e3e9c1d3d4ba022c5026da94",
+  "proptestSeed": "1182711"
+}

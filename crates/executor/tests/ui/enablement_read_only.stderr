@@ -1,0 +1,7 @@
+error[E0596]: cannot borrow `*cx` as mutable, as it is behind a `&` reference
+ --> tests/ui/enablement_read_only.rs:4:17
+  |
+3 |     if let Some(cx) = any.downcast_ref::<tt_executor::Cx>() {
+  |                 -- consider changing this binding's type to be: `&mut Cx`
+4 |         let _ = cx.patch_objects(Vec::new());
+  |                 ^^ `cx` is a `&` reference, so it cannot be borrowed as mutable

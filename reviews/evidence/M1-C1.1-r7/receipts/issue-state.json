@@ -1,0 +1,21 @@
+{
+  "command": [
+    "gh",
+    "issue",
+    "list",
+    "--state",
+    "all",
+    "--json",
+    "number,title,state,url",
+    "--limit",
+    "100"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:29:51.121005+00:00",
+  "elapsed_seconds": 0.594,
+  "exit_code": 0,
+  "log": "logs/issue-state.log",
+  "sha256": "8057deb4b618bf845e1c05f0925030f2a5b6fa879b90ac0721be8615303b9d6e",
+  "env": {}
+}

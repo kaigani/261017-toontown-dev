@@ -1,0 +1,22 @@
+{
+  "id": "db_01K742SG0J7F7Q6PFR14P6N3Q8",
+  "type": "drawingBank",
+  "rev": 1,
+  "drawings": [
+    {
+      "id": "dr_01K742SG0K2MAFQFRCGHKKSKTZ",
+      "type": "drawing",
+      "name": "1"
+    },
+    {
+      "id": "dr_01K742SG0MKQYXG7GVDP56Q6T2",
+      "type": "drawing",
+      "name": "2"
+    },
+    {
+      "id": "dr_01K742SG0NJP036GTFYGEPHF9W",
+      "type": "drawing",
+      "name": "10"
+    }
+  ]
+}

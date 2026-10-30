@@ -1,0 +1,31 @@
+{
+  "command": [
+    "cargo",
+    "run",
+    "--release",
+    "--locked",
+    "-p",
+    "tt-render",
+    "--example",
+    "c03_raster",
+    "--",
+    "--out",
+    "reviews/evidence/M1-C1.2-r2/raster",
+    "--report",
+    "reviews/evidence/M1-C1.2-r2/raster-report.json",
+    "--check",
+    "crates/render/examples/c03_raster/hashes.json"
+  ],
+  "exit": 0,
+  "started": "2026-10-19T08:29:35.639644+00:00",
+  "seconds": 31.820462999981828,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? crates/executor/tests/c12_r2_registry.rs",
+    "?? crates/executor/tests/c12_r2_scale.rs",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\raster-check.log",
+  "sha256": "07f80f9424ed57a2eb083490275e397a78eac84c1c3ffb78e9a55405bac7f835"
+}

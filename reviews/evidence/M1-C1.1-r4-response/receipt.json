@@ -1,0 +1,53 @@
+{
+  "what": "Closure-check r4 response: local gate logs, recorded from the working tree described by baseCommit + dirtyFiles before the fix commit.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-*.log": "pnpm lint | typecheck | test | format:check | licenses:check",
+    "gates/node-test.log": "node --test scripts/check-npm-licenses.test.mjs",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless-*.log, selftest-*": "cargo build --release --locked -p tt-headless; --selftest --json twice, compared; scripts/check-headless-deps.py",
+    "gates/reviewer-python-suites.log": "python scripts/run-reviewer-python-suites.py (every tests/adversarial/*.py)"
+  },
+  "recordedAt": "2026-10-19T00:09:08+00:00",
+  "baseCommit": "7ba98f12f5e07ce3d2d1ad979ab19510be37909a",
+  "dirtyFiles": [
+    ".github/workflows/ci.yml",
+    "crates/model/src/change.rs",
+    "docs/decisions/ADR-0011-canonical-json-and-schemas.md",
+    "plan/traceability.csv",
+    "reviews/M1-C1.1-handoff.md",
+    "reviews/evidence/M1-C1.1-r4-response/",
+    "scripts/run-reviewer-python-suites.py"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "sha256": {
+    "gates/build.log": "13b06bbdf7a1c2fcce86b2898a5c798d02ff3456e51646f60665745fd9231f7b",
+    "gates/clippy-diag.log": "8047e3dc2d6bb00065c51f1e1b2c575d4d445b19e548f5ec6fcc2f1c1c059da1",
+    "gates/clippy.log": "e6da3b4fb85e6b21fe2da3ea287bd1e92bf9c13f0bfd24c1beba80b723cd2c4c",
+    "gates/deny.log": "69c387dc462b9c37f752f53d1c7a2a510e7bfc60550534035443e44d43c24a3d",
+    "gates/fmt.log": "e20fecd1b340974b1c268348f4daa9d31a5c67f6065c319097a12bbe3e21f962",
+    "gates/headless-build.log": "003026ca821bfb28a4be4c4876eaaae3e6e7ec84a2c0394258e97c3f2a406ea9",
+    "gates/headless-deps.log": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295",
+    "gates/node-test.log": "340bdeac5afb473f822d48457b947ef707a1e46e03338b37f3759ea300d9dcf4",
+    "gates/pnpm-format.log": "3741b86ebc596c5914a8805d60966c473eb165aa935bad114c67be1d4b114bb1",
+    "gates/pnpm-licenses.log": "26eeca268a0c4bdfb47c1188020ecd167a2a1b3944c625ed7225fe0fb7f10535",
+    "gates/pnpm-lint.log": "9acfaa811763526641b9fd04d72d6150daffdae7aa0f42b3e1e1fe4afbbe7a21",
+    "gates/pnpm-test.log": "6f1701f3e0e560d60d8448bc7748cf88b8f128fecfcde5ddd48877b29302b0a8",
+    "gates/pnpm-typecheck.log": "de37029285525bc9cfc231919392594833e45e9f3c3c5f6c5a7925c99161762f",
+    "gates/reviewer-python-suites.log": "6bf0712095c9f9b855770a24e9a7f34de2ab3643fb83a54d6551619c92452f0a",
+    "gates/selftest-1.json": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+    "gates/selftest-2.json": "301aa650be58c485b9713c69b5313a35a5a04865e5b5a0a1dc2e36976b68399d",
+    "gates/selftest-compare.log": "67bd29b3acc47c40247ef48e2155b582d8ac3af5ed0afd23947c089ed02d3e9c",
+    "gates/test-diag.log": "d9d0b7afa04e0624fa3353cd41d813065de5af2dee40387c7d386577ae34375d",
+    "gates/test.log": "a74b751f9986e1a41bfdce2baff37bccd9f73fd59d4af56ac7701d3662f042ab"
+  }
+}

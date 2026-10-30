@@ -1,0 +1,19 @@
+
+> toontown-workspace@ lint C:\Users\kaiga\work\review\m1-c11-r1
+> pnpm -r --workspace-concurrency=1 lint
+
+
+> @toontown/desktop@0.0.1 lint C:\Users\kaiga\work\review\m1-c11-r1\desktop
+> eslint . --max-warnings 0
+
+
+C:\Users\kaiga\work\review\m1-c11-r1\desktop\src\ipc\c11-r1-adversarial.test.ts
+  100:8   error  Unexpected comma in middle of array  no-sparse-arrays
+  100:10  error  Unexpected comma in middle of array  no-sparse-arrays
+
+✖ 2 problems (2 errors, 0 warnings)
+
+C:\Users\kaiga\work\review\m1-c11-r1\desktop:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @toontown/desktop@0.0.1 lint: `eslint . --max-warnings 0`
+Exit status 1
+ ELIFECYCLE  Command failed with exit code 1.

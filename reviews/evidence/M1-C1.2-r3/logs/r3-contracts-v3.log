@@ -1,0 +1,113 @@
+    Blocking waiting for file lock on build directory
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r3\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 58.43s
+     Running tests\c12_r3_contracts.rs (target\debug\deps\c12_r3_contracts-d703beb9e6999d6c.exe)
+
+running 12 tests
+test json04_multi_operation_inverse_restores_raw_bytes_and_opaque_boundaries ... ok
+
+thread 'staged_drawing_only_diff_keeps_content_invalidation' (4872) panicked at crates\executor\tests\c12_r3_contracts.rs:77:5:
+REV-02 and R2-12: drawing filter must not erase staged content invalidation: []
+test checkpoint_create_delete_and_failure_are_transactional_on_fresh_content ... note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+
+thread 'checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision' (30192) panicked at crates\executor\tests\c12_r3_contracts.rs:92:5:
+assertion `left == right` failed: R2-03: checkpoint must carry the staged object's revision stamps
+  left: Array [Object {"id": String("dr_01K742SG0KZJY81XFP1PYP7NX1"), "type": String("drawing"), "op": String("modified"), "rev": Number(2), "patch": Array []}]
+ right: Array []
+test staged_drawing_only_diff_keeps_content_invalidation ... FAILED
+test checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision ... FAILED
+
+thread 'opaque_payloads_survive_every_edit_handler_and_property_patch' (11500) panicked at crates\executor\tests\c12_r3_contracts.rs:197:9:
+assertion `left == right` failed: edit.copy: sibling opaque strings
+  left: Object {"0": Object {"ext": Object {}, "id": String("el_01K742SG105FQ5K9Z63WZHRJKF"), "rev": Number(77), "type": String("element")}, "ids": Array [String("el_01K742SG105FQ5K9Z63WZHRJKF"), String("a/b~c")]}
+ right: Object {"0": Object {"type": String("element"), "id": String("el_01K742SG105FQ5K9Z63WZHRJKF"), "rev": Number(77), "ext": Object {"literal": Null}}, "ids": Array [String("el_01K742SG105FQ5K9Z63WZHRJKF"), String("a/b~c")]}
+test opaque_payloads_survive_every_edit_handler_and_property_patch ... FAILED
+test fresh_clipboard_property_values_are_checked_before_storage ... ok
+test public_staging_rewind_and_serde_candidates_cannot_cross_load_integrity_gate ... ok
+
+thread 'dry_run_ids_match_for_all_implemented_paste_creation_routes' (27268) panicked at crates\executor\tests\c12_r3_contracts.rs:159:9:
+edit.paste: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "edit.pasteNotAllowed", message: "cannot paste drawingObjects in the drawing context: there is no current drawing", details: Object {"kind": String("drawingObjects"), "context": String("drawing"), "reason": String("there is no current drawing")}, hint: None }), dry_run: false, steps: None } Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "edit.pasteNotAllowed", message: "cannot paste drawingObjects in the drawing context: there is no current drawing", details: Object {"kind": String("drawingObjects"), "context": String("drawing"), "reason": String("there is no current drawing")}, hint: None }), dry_run: false, steps: None }
+test dry_run_ids_match_for_all_implemented_paste_creation_routes ... FAILED
+test fresh_complete_forest_paste_preserves_derived_parent_links ... ok
+test malformed_paste_destination_variants_never_fall_back ... ok
+
+thread 'overlapping_identical_waits_retain_one_original_envelope' (32880) panicked at crates\executor\tests\c12_r3_contracts.rs:59:5:
+assertion `left == right` failed: 11 §7.2: overlapping identical retries must return the original envelope
+  left: Object {"status": String("ok"), "result": Object {"jobId": String("job-1"), "commandId": String("review.r3"), "state": String("succeeded"), "progress": Number(1.0), "message": String(""), "startedAt": String("2026-10-19T10:58:30.211Z"), "result": Object {"fresh": Number(49443)}, "session": String("user")}, "changes": Array [], "warnings": Array [], "documentRev": Number(1)}
+ right: Object {"status": String("ok"), "result": Object {"jobId": String("job-1"), "commandId": String("review.r3"), "state": String("running"), "progress": Number(0.0), "message": String(""), "startedAt": String("2026-10-19T10:58:30.211Z"), "session": String("user"), "timedOut": Bool(true)}, "changes": Array [], "warnings": Array [], "documentRev": Number(1)}
+test overlapping_identical_waits_retain_one_original_envelope ... FAILED
+test sequential_batch_wait_uses_elapsed_time_and_reaches_completion ... ok
+
+failures:
+
+failures:
+    checkpoint_after_stroke_edit_has_no_diff_at_same_committed_revision
+    dry_run_ids_match_for_all_implemented_paste_creation_routes
+    opaque_payloads_survive_every_edit_handler_and_property_patch
+    overlapping_identical_waits_retain_one_original_envelope
+    staged_drawing_only_diff_keeps_content_invalidation
+
+test result: FAILED. 7 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.81s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r3_contracts`
+     Running tests\c12_r3_registry.rs (target\debug\deps\c12_r3_registry-f5fbe8ba30bfdac6.exe)
+
+running 9 tests
+
+thread 'xsheet_panel_result_preserves_boolean_fields_from_parameters' (28520) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+xsheet.panel.set: specification-valid value rejected: [Object {"pointer": String("/elementList"), "message": String("true is not of type \"array\"")}]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'print_settings_accepts_a_defined_print_parameter' (22728) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+print.settings.set: specification-valid value rejected: [Object {"pointer": String("/values"), "message": String("Additional properties are not allowed ('copies' was unexpected)")}]
+
+thread 'preference_listing_can_return_a_boolean_preference' (22320) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+prefs.list: specification-valid value rejected: [Object {"pointer": String("/0/value"), "message": String("true is not of type \"number\"")}]
+
+thread 'polyline_options_result_is_the_option_object' (27432) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+tool.polyline.options.set: specification-valid value rejected: [Object {"pointer": String("/options"), "message": String("{\"snap\":true,\"snapRadius\":8} is not of type \"array\"")}]
+
+thread 'envelope_point_results_use_time_and_gains_from_07' (27164) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+sound.envelope.set: specification-valid value rejected: [Object {"pointer": String("/points/0"), "message": String("\"x\" is a required property")}, Object {"pointer": String("/points/0"), "message": String("\"y\" is a required property")}, Object {"pointer": String("/points/0"), "message": String("Additional properties are not allowed ('time', 'left', 'right' were unexpected)")}]
+
+thread 'binding_params_support_commands_other_than_undo' (30848) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+keymap.list: specification-valid value rejected: [Object {"pointer": String("/0/params"), "message": String("Additional properties are not allowed ('frame' was unexpected)")}, Object {"pointer": String("/0/params"), "message": String("\"steps\" is a required property")}]
+
+thread 'selected_point_anchor_is_the_integer_index_from_02' (33636) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+draw.pointSelection.set: specification-valid value rejected: [Object {"pointer": String("/selectedPoints/0/anchor"), "message": String("2 is not of type \"object\"")}]
+
+thread 'path_result_accepts_exact_05_section_19_4_example' (27988) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+anim.path.get: specification-valid value rejected: [Object {"pointer": String("/length"), "message": String("14.37 is not of type \"integer\"")}, Object {"pointer": String("/points/1/frame"), "message": String("7.412 is not of type \"integer\"")}]
+
+thread 'velocity_function_pins_accept_the_explicit_frame_value_shape' (28084) panicked at crates\executor\tests\c12_r3_registry.rs:9:5:
+anim.function.get: specification-valid value rejected: [Object {"pointer": String("/pins/0"), "message": String("{\"frame\":1,\"value\":0.0} is not of types \"null\", \"boolean\", \"number\", \"string\"")}, Object {"pointer": String("/pins/1"), "message": String("{\"frame\":24,\"value\":14.37} is not of types \"null\", \"boolean\", \"number\", \"string\"")}]
+test path_result_accepts_exact_05_section_19_4_example ... FAILED
+test preference_listing_can_return_a_boolean_preference ... FAILED
+test envelope_point_results_use_time_and_gains_from_07 ... FAILED
+test xsheet_panel_result_preserves_boolean_fields_from_parameters ... FAILED
+test selected_point_anchor_is_the_integer_index_from_02 ... FAILED
+test binding_params_support_commands_other_than_undo ... FAILED
+test print_settings_accepts_a_defined_print_parameter ... FAILED
+test polyline_options_result_is_the_option_object ... FAILED
+test velocity_function_pins_accept_the_explicit_frame_value_shape ... FAILED
+
+failures:
+
+failures:
+    binding_params_support_commands_other_than_undo
+    envelope_point_results_use_time_and_gains_from_07
+    path_result_accepts_exact_05_section_19_4_example
+    polyline_options_result_is_the_option_object
+    preference_listing_can_return_a_boolean_preference
+    print_settings_accepts_a_defined_print_parameter
+    selected_point_anchor_is_the_integer_index_from_02
+    velocity_function_pins_accept_the_explicit_frame_value_shape
+    xsheet_panel_result_preserves_boolean_fields_from_parameters
+
+test result: FAILED. 0 passed; 9 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r3_registry`
+error: 2 targets failed:
+    `-p tt-executor --test c12_r3_contracts`
+    `-p tt-executor --test c12_r3_registry`

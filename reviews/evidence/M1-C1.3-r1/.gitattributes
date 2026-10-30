@@ -1,0 +1,6 @@
+*.log -text -whitespace
+*.zip -text
+*.json -text whitespace=cr-at-eol
+*.txt -text -whitespace
+*.animpkg -text
+format-samples/** -text -whitespace

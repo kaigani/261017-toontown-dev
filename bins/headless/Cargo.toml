@@ -13,6 +13,7 @@ path = "src/main.rs"
 [dependencies]
 tt-engine.workspace = true
 tt-mcp.workspace = true
+tt-executor.workspace = true
 clap.workspace = true
 serde.workspace = true
 serde_json.workspace = true

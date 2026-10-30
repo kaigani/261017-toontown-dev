@@ -1,0 +1,23 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r4\crates\executor)
+At line:2 char:1
++ cargo test -p tt-executor --locked --test c13_r3_persistence *> revie ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.75s
+     Running tests\c13_r3_persistence.rs (target\debug\deps\c13_r3_persistence-b5ecace1e425de6b.exe)
+
+running 10 tests
+test asset_replace_with_palette_import_repoints_existing_scene_placements ... ok
+test asset_replace_preserves_unrelated_strings_equal_to_the_old_id ... ok
+test movie_asset_replace_repoints_sequences_and_one_undo_restores_exact_entries ... ok
+test checkpoint_restore_inside_atomic_batch_is_refused_without_saving ... ok
+test save_as_job_and_stale_expect_rev_inside_atomic_batch_roll_back ... ok
+test repeated_exports_do_not_duplicate_omitted_media_in_session_cache ... ok
+test failed_and_dry_atomic_save_variants_preserve_disk_revision_and_events ... ok
+test fixture_open_latency_twenty_samples ... ok
+test folder_fingerprint_includes_nested_hidden_names_but_excludes_root_controls_and_session ... ok
+test media_survives_cross_form_save_as_and_recovery_deletion_with_two_undos ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.96s

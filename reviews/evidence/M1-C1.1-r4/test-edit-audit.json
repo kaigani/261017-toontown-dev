@@ -1,0 +1,60 @@
+{
+  "base": "c38109b",
+  "head": "3b6179f",
+  "reviewer_test_call_sites": 5,
+  "reviewer_test_files": [
+    {
+      "file": "crates/model/tests/c11_r1_adversarial.rs",
+      "replacements": [
+        [
+          "change::invert(&patch)",
+          "change::invert_against(&a, &patch).unwrap()",
+          2
+        ]
+      ],
+      "exact_after_removing_comments_and_whitespace": true
+    },
+    {
+      "file": "crates/model/tests/c11_r2_adversarial.rs",
+      "replacements": [
+        [
+          "change::invert(&patch)",
+          "change::invert_against(&a, &patch).unwrap()",
+          1
+        ],
+        [
+          "change::apply(&value, &change::invert(&[p])).is_err()",
+          "change::invert_against(&value, &[p]).is_err()",
+          1
+        ]
+      ],
+      "exact_after_removing_comments_and_whitespace": true
+    },
+    {
+      "file": "crates/model/tests/c11_r3_adversarial.rs",
+      "replacements": [
+        [
+          "change::invert(&patch)",
+          "change::invert_against(&before, &patch).unwrap()",
+          1
+        ]
+      ],
+      "exact_after_removing_comments_and_whitespace": true
+    }
+  ],
+  "all_requested_path_changes": [
+    "crates/model/tests/c11_r1_adversarial.rs",
+    "crates/model/tests/c11_r2_adversarial.rs",
+    "crates/model/tests/c11_r3_adversarial.rs",
+    "crates/model/tests/conformance.rs",
+    "crates/model/tests/properties.rs",
+    "desktop/src/ipc/generated/model.ts",
+    "desktop/src/ipc/wireJson.ts"
+  ],
+  "other_files": {
+    "crates/model/tests/conformance.rs": "Builder-owned inversion caller; equality expectations unchanged.",
+    "crates/model/tests/properties.rs": "Builder-owned inversion callers/import qualification; property assertions unchanged.",
+    "desktop/src/ipc/generated/model.ts": "Generated product schema; four x-since additions, no reviewer assertions.",
+    "desktop/src/ipc/wireJson.ts": "Product numeric-coercion fix for R3-05, no reviewer assertions."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "requirements": {
+    "divergent": 17,
+    "implemented": 88,
+    "deferred-with-owner": 14
+  },
+  "commands": {
+    "divergent": 13,
+    "implemented": 35
+  },
+  "requirementTotal": 119,
+  "commandTotal": 48
+}

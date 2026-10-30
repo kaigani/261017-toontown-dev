@@ -1,0 +1,26 @@
+{
+  "format": "toontown-presets",
+  "formatVersion": "1.0",
+  "presets": [
+    { "id": "web-small-4x3", "name": "Web small 4:3", "width": 480, "height": 360, "frameRate": 12 },
+    { "id": "web-medium-4x3", "name": "Web medium 4:3", "width": 640, "height": 480, "frameRate": 12 },
+    { "id": "web-16x9", "name": "Web 16:9", "width": 960, "height": 540, "frameRate": 24 },
+    { "id": "sd-ntsc-4x3", "name": "SD NTSC 4:3 (square pixels)", "width": 720, "height": 540, "frameRate": 29.97 },
+    { "id": "sd-ntsc-16x9", "name": "SD NTSC 16:9 (square pixels)", "width": 854, "height": 480, "frameRate": 29.97 },
+    { "id": "sd-pal-4x3", "name": "SD PAL 4:3 (square pixels)", "width": 768, "height": 576, "frameRate": 25 },
+    { "id": "sd-pal-16x9", "name": "SD PAL 16:9 (square pixels)", "width": 1024, "height": 576, "frameRate": 25 },
+    { "id": "hd-720p-24", "name": "HD 720p 24", "width": 1280, "height": 720, "frameRate": 24 },
+    { "id": "hd-720p-25", "name": "HD 720p 25", "width": 1280, "height": 720, "frameRate": 25 },
+    { "id": "hd-720p-30", "name": "HD 720p 30", "width": 1280, "height": 720, "frameRate": 30 },
+    { "id": "hd-1080p-24", "name": "HD 1080p 24", "width": 1920, "height": 1080, "frameRate": 24 },
+    { "id": "hd-1080p-25", "name": "HD 1080p 25", "width": 1920, "height": 1080, "frameRate": 25 },
+    { "id": "hd-1080p-30", "name": "HD 1080p 30", "width": 1920, "height": 1080, "frameRate": 30 },
+    { "id": "uhd-4k-24", "name": "UHD 4K 24", "width": 3840, "height": 2160, "frameRate": 24 },
+    { "id": "uhd-4k-25", "name": "UHD 4K 25", "width": 3840, "height": 2160, "frameRate": 25 },
+    { "id": "uhd-4k-30", "name": "UHD 4K 30", "width": 3840, "height": 2160, "frameRate": 30 },
+    { "id": "dci-2k", "name": "DCI 2K", "width": 2048, "height": 1080, "frameRate": 24 },
+    { "id": "dci-4k", "name": "DCI 4K", "width": 4096, "height": 2160, "frameRate": 24 },
+    { "id": "social-square", "name": "Social square", "width": 1080, "height": 1080, "frameRate": 30 },
+    { "id": "social-vertical", "name": "Social vertical", "width": 1080, "height": 1920, "frameRate": 30 }
+  ]
+}

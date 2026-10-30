@@ -1,0 +1,20 @@
+{
+  "requirements": {
+    "divergent": 8,
+    "implemented": 97,
+    "deferred-with-owner": 14
+  },
+  "declarations": {
+    "divergent": 7,
+    "implemented": 41
+  },
+  "requirementTotal": 119,
+  "declarationTotal": 48,
+  "supplementalNamedRequirements": {
+    "implemented": 3,
+    "divergent": 1,
+    "missing": 0,
+    "deferred-with-owner": 0,
+    "total": 4
+  }
+}

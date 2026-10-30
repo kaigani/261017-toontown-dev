@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "format:check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:35:27.594778+00:00",
+  "elapsed_seconds": 1.557,
+  "exit_code": 0,
+  "log": "logs/pnpm-format-check.log",
+  "sha256": "5a462d3478865055f9be33b28ddbe332e9813b1a513a311ada338dbc2fb93cc2",
+  "env": {}
+}

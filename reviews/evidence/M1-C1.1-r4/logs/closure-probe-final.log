@@ -1,0 +1,18 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r4\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.46s
+     Running tests\c11_r4_closure_probe.rs (target\debug\deps\c11_r4_closure_probe-28bb19cb4333b514.exe)
+
+running 7 tests
+test empty_exposure_lists_are_canonical_and_invertible ... ok
+test numeric_object_array_moves ... ok
+test exposure_counts_and_window_consistency ... ok
+test opaque_text_with_and_without_range ... ok
+scene-limit range 1..100001 ACCEPTED: {"exposure":[["dr_new",100001]]}
+scene-limit range 100001..100001 ACCEPTED: {"exposure":[["dr_review",4],[null,99996],["dr_new",1]]}
+test inspect_patch_scene_limit ... ok
+All 522 recursively discovered declarations carry x-since=1.0
+test property_discovery_and_anonymous_annotations ... ok
+test model_integrity_rejects_invalid_counts_and_excessive_totals ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+

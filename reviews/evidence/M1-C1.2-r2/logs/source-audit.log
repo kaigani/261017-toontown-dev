@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r2\reviews\evidence\M1-C1.2-r2\audit-source.py", line 25, in <module>
+    assert not locks
+           ^^^^^^^^^
+AssertionError

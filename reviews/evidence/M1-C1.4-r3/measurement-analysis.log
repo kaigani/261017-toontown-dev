@@ -1,0 +1,71 @@
+ok   autosave-windows.json (series)
+       longBatchMs: n=1 p50=1754.4171 p99=1754.4171 max=1754.4171 ms
+       queuedSchedulingDelayMs: n=10 p50=23.1418 p99=24.3711 max=24.3711 ms
+       queuedSnapshotMs: n=10 p50=0.07160000000000001 p99=0.0771 max=0.0771 ms
+       snapshotAfterLongBatchMs: n=1 p50=0.0891 p99=0.0891 max=0.0891 ms
+       snapshotMs: n=15 p50=0.0621 p99=0.1821 max=0.1821 ms
+       waitBehindLongBatchMs: n=1 p50=1750.205 p99=1750.205 max=1750.205 ms
+ok   cache-bounds-windows.json (facts)
+ok   fingerprint-windows.json (series)
+       callerLatencyBackToBackMs: n=164 p50=15.9795 p99=17.2339 max=17.9201 ms
+       callerLatencyScheduled2sWatchMs: n=2872 p50=1.1219 p99=1.6474 max=18.2623 ms
+       openMs: n=1 p50=370.2525 p99=370.2525 max=370.2525 ms
+       saveContentCheckMs: n=5 p50=282.497 p99=282.8981 max=282.8981 ms
+       watchPassMs: n=20 p50=17.4046 p99=18.782 max=18.782 ms
+ok   lock-liveness-windows.json (series)
+       acquireOnHeldMicros: n=50 p50=66.9 p99=480.2 max=480.2 us
+       crashedHolderTakeoverMs: n=5 p50=16.4451 p99=17.0061 max=17.0061 ms
+       probeHeldMicros: n=500 p50=4.4 p99=8.8 max=39.199999999999996 us
+       processAliveFallbackMs: n=5 p50=24.5015 p99=25.8193 max=25.8193 ms
+ok   never-block-mcp-windows.json (series)
+       callLatencyMs: n=719 p50=2.1546 p99=4.5456 max=25.5095 ms
+ok   queued-calls-windows.json (series)
+       perCallMs: n=50 p50=64.0573 p99=121.85650000000001 max=121.85650000000001 ms
+ok   sdk-conformance-windows.json (facts)
+ok   autosave-windows.json (series)
+       longBatchMs: n=1 p50=2549.3046 p99=2549.3046 max=2549.3046 ms
+       queuedSchedulingDelayMs: n=10 p50=36.3834 p99=38.0329 max=38.0329 ms
+       queuedSnapshotMs: n=9 p50=0.16019999999999998 p99=0.189 max=0.189 ms
+       snapshotAfterLongBatchMs: n=1 p50=0.1406 p99=0.1406 max=0.1406 ms
+       snapshotMs: n=15 p50=0.1425 p99=0.1832 max=0.1832 ms
+       waitBehindLongBatchMs: n=1 p50=2539.3267 p99=2539.3267 max=2539.3267 ms
+ok   cache-bounds-windows.json (facts)
+ok   fingerprint-windows.json (series)
+       callerLatencyBackToBackMs: n=107 p50=24.4585 p99=36.086600000000004 max=56.0784 ms
+       callerLatencyScheduled2sWatchMs: n=2565 p50=1.4794999999999998 p99=2.2624 max=32.898700000000005 ms
+       openMs: n=1 p50=498.1103 p99=498.1103 max=498.1103 ms
+       saveContentCheckMs: n=5 p50=307.51509999999996 p99=331.7121 max=331.7121 ms
+       watchPassMs: n=20 p50=24.281 p99=69.8019 max=69.8019 ms
+ok   lock-liveness-windows.json (series)
+       acquireOnHeldMicros: n=50 p50=76.8 p99=150.8 max=150.8 us
+       crashedHolderTakeoverMs: n=5 p50=3.6251 p99=15.0606 max=15.0606 ms
+       probeHeldMicros: n=500 p50=6.0 p99=12.6 max=72.8 us
+       processAliveFallbackMs: n=5 p50=27.5331 p99=33.6488 max=33.6488 ms
+ok   never-block-mcp-windows.json (series)
+       callLatencyMs: n=719 p50=3.1854 p99=7.6492 max=38.815200000000004 ms
+ok   queued-calls-windows.json (series)
+       perCallMs: n=50 p50=118.23559999999999 p99=237.00119999999998 max=237.00119999999998 ms
+ok   autosave-macos.json (series)
+       longBatchMs: n=1 p50=4822.851958 p99=4822.851958 max=4822.851958 ms
+       queuedSchedulingDelayMs: n=10 p50=40.001332 p99=61.394917 max=61.394917 ms
+       queuedSnapshotMs: n=10 p50=0.116 p99=0.19816699999999998 max=0.19816699999999998 ms
+       snapshotAfterLongBatchMs: n=1 p50=0.26975000000000005 p99=0.26975000000000005 max=0.26975000000000005 ms
+       snapshotMs: n=15 p50=0.141375 p99=0.213167 max=0.213167 ms
+       waitBehindLongBatchMs: n=1 p50=4662.014416 p99=4662.014416 max=4662.014416 ms
+ok   cache-bounds-macos.json (facts)
+ok   fingerprint-macos.json (series)
+       callerLatencyBackToBackMs: n=48 p50=47.329 p99=72.544167 max=72.544167 ms
+       callerLatencyScheduled2sWatchMs: n=481 p50=3.2269170000000003 p99=19.172583 max=97.90112500000001 ms
+       openMs: n=1 p50=541.685833 p99=541.685833 max=541.685833 ms
+       saveContentCheckMs: n=5 p50=397.704583 p99=580.304584 max=580.304584 ms
+       watchPassMs: n=20 p50=53.074666 p99=65.799375 max=65.799375 ms
+ok   lock-liveness-macos.json (series)
+       acquireOnHeldMicros: n=50 p50=79.084 p99=433.875 max=433.875 us
+       crashedHolderTakeoverMs: n=5 p50=3.095792 p99=3.527625 max=3.527625 ms
+       probeHeldMicros: n=500 p50=8.417 p99=38.458 max=57.125 us
+       processAliveFallbackMs: n=5 p50=14.174791 p99=14.636583 max=14.636583 ms
+ok   never-block-mcp-macos.json (series)
+       callLatencyMs: n=719 p50=3.774375 p99=13.6755 max=45.505207999999996 ms
+ok   queued-calls-macos.json (series)
+       perCallMs: n=50 p50=155.606875 p99=310.574917 max=310.574917 ms
+19 file(s), 0 rejected

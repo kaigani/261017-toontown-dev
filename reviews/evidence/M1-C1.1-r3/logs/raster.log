@@ -1,0 +1,100 @@
+   Compiling syn v3.0.9
+   Compiling smallvec v1.16.3
+   Compiling crossbeam-utils v0.8.23
+   Compiling crossbeam-epoch v0.9.21
+   Compiling simd-adler32 v0.3.10
+   Compiling arrayvec v0.7.8
+   Compiling crossbeam-deque v0.8.8
+   Compiling adler2 v2.0.1
+   Compiling rayon-core v1.13.0
+   Compiling linebender_resource_handle v0.1.1
+   Compiling either v1.19.0
+   Compiling fearless_simd v0.7.0
+   Compiling thread_local v1.1.10
+   Compiling bitflags v2.13.2
+   Compiling crc32fast v1.5.2
+   Compiling euclid v0.22.14
+   Compiling miniz_oxide v0.9.1
+   Compiling fdeflate v0.3.7
+   Compiling miniz_oxide v0.8.9
+   Compiling parking_lot_core v0.9.12
+   Compiling polycool v0.4.0
+   Compiling parking_lot v0.12.5
+   Compiling kurbo v0.13.1
+   Compiling flate2 v1.1.10
+   Compiling guillotiere v0.7.0
+   Compiling png v0.18.1
+   Compiling crossbeam-channel v0.5.17
+   Compiling serde_derive_internals v0.30.0
+   Compiling ordered-channel v1.2.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling bytemuck_derive v1.12.1
+   Compiling schemars_derive v1.2.3
+   Compiling ref-cast v1.0.27
+   Compiling rayon v1.12.0
+   Compiling thiserror v2.0.21
+   Compiling bytemuck v1.25.2
+   Compiling color v0.3.3
+   Compiling serde v1.0.229
+   Compiling peniko v0.6.1
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling vello_common v0.3.0
+   Compiling vello_cpu v0.3.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\anim)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\fx)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\colour)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r3\crates\render)
+    Finished `release` profile [optimized + debuginfo] target(s) in 43.98s
+     Running `target\release\examples\c03_raster.exe --out target/review-m1-c11-r3-raster --report reviews/evidence/M1-C1.1-r3/raster.json --check crates/render/examples/c03_raster/hashes.json`
+"windows" "x86_64" (vello_cpu detected SIMD level "Avx2(Avx2 { _private: () })")
+| scene | ttraster ms | vello_cpu_fallback ms | vello_cpu_simd ms | vello_cpu_mt3 ms | vello_cpu_f32_fallback ms | vello_cpu_f32_simd ms | ttraster vs vello max diff |
+|---|---|---|---|---|---|---|---|
+| cubic_blobs | 0.110 | 0.036 | 0.021 | 0.279 | 0.057 | 0.049 | 62 |
+| thin_strokes | 0.083 | 0.060 | 0.071 | 0.279 | 0.076 | 0.061 | 1 |
+| aa_edge_angles | 0.272 | 0.181 | 0.093 | 0.211 | 0.162 | 0.113 | 3 |
+| translucent_overlap | 0.102 | 0.043 | 0.028 | 0.162 | 0.060 | 0.049 | 30 |
+| alpha_stack | 0.318 | 0.079 | 0.046 | 0.164 | 0.095 | 0.078 | 1 |
+| linear_gradient | 0.257 | 0.043 | 0.017 | 0.147 | 0.063 | 0.049 | 1 |
+| radial_gradient | 0.260 | 0.056 | 0.023 | 0.154 | 0.071 | 0.054 | 48 |
+| gradient_transformed | 0.156 | 0.044 | 0.019 | 0.135 | 0.061 | 0.047 | 2 |
+| clip_circle | 0.117 | 0.096 | 0.050 | 0.133 | 0.109 | 0.086 | 43 |
+| clip_nested | 0.167 | 0.060 | 0.030 | 0.146 | 0.078 | 0.068 | 68 |
+| glyph_nonzero | 0.061 | 0.037 | 0.015 | 0.127 | 0.053 | 0.045 | 58 |
+| glyph_evenodd | 0.069 | 0.038 | 0.015 | 0.128 | 0.057 | 0.045 | 58 |
+| degenerate | 0.031 | 0.028 | 0.010 | 0.245 | 0.046 | 0.040 | 0 |
+| star_nonzero | 0.051 | 0.038 | 0.014 | 0.376 | 0.051 | 0.044 | 1 |
+| star_evenodd | 0.078 | 0.044 | 0.013 | 0.137 | 0.051 | 0.043 | 1 |
+| coincident_edges | 0.044 | 0.045 | 0.014 | 0.198 | 0.051 | 0.049 | 2 |
+| extreme_coordinates | 0.089 | 0.049 | 0.014 | 0.129 | 0.045 | 0.046 | 3 |
+| subpixel_translation | 0.070 | 0.049 | 0.022 | 0.201 | 0.060 | 0.053 | 51 |
+| non_integer_scales | 0.207 | 0.059 | 0.031 | 0.210 | 0.070 | 0.062 | 61 |
+| stroked_curves | 0.187 | 0.055 | 0.028 | 0.207 | 0.066 | 0.060 | 132 |
+| many_small_paths | 0.389 | 0.261 | 0.191 | 0.251 | 0.305 | 0.210 | 15 |
+| hairline_grid | 0.090 | 0.107 | 0.054 | 0.131 | 0.128 | 0.082 | 1 |
+| perf_2000_cubics_512 | 18.083 | 6.344 | 4.538 | 2.587 | 6.907 | 4.935 | 89 |
+| stress_00 | 2.985 | 0.453 | 0.256 | 0.744 | 0.402 | 0.308 | 72 |
+| stress_01 | 2.995 | 0.394 | 0.244 | 0.403 | 0.406 | 0.327 | 72 |
+| stress_02 | 2.987 | 0.442 | 0.262 | 0.347 | 0.369 | 0.267 | 70 |
+| stress_03 | 3.742 | 0.455 | 0.233 | 0.573 | 0.368 | 0.275 | 70 |
+| stress_04 | 3.053 | 0.450 | 0.236 | 0.314 | 0.370 | 0.270 | 98 |
+| stress_05 | 3.037 | 0.394 | 0.251 | 0.327 | 0.368 | 0.269 | 64 |
+| stress_06 | 3.053 | 0.416 | 0.252 | 0.308 | 0.370 | 0.270 | 63 |
+| stress_07 | 3.042 | 0.400 | 0.241 | 0.522 | 0.371 | 0.268 | 63 |
+| stress_08 | 5.223 | 0.425 | 0.259 | 0.319 | 0.372 | 0.264 | 65 |
+| stress_09 | 3.061 | 0.393 | 0.233 | 0.303 | 0.367 | 0.264 | 57 |
+| stress_10 | 3.082 | 0.428 | 0.235 | 0.516 | 0.374 | 0.268 | 60 |
+| stress_11 | 3.038 | 0.391 | 0.229 | 1.048 | 0.366 | 0.273 | 61 |
+| stress_12 | 3.071 | 0.421 | 0.232 | 1.091 | 0.365 | 0.272 | 62 |
+| stress_13 | 3.176 | 0.391 | 0.230 | 1.657 | 0.385 | 0.267 | 79 |
+| stress_14 | 3.242 | 0.426 | 0.234 | 1.169 | 0.370 | 0.273 | 80 |
+| stress_15 | 3.053 | 0.395 | 0.234 | 0.569 | 0.368 | 0.268 | 78 |

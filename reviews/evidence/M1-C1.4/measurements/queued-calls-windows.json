@@ -1,0 +1,231 @@
+{
+  "obligation": "C1.4 obligation 7 (queued-call responsiveness, apart from job state)",
+  "fixture": "50 pipelined calls, half of them starting export jobs",
+  "environment": {
+    "os": "windows",
+    "arch": "x86_64",
+    "cpus": 32,
+    "profile": "debug",
+    "startedAt": "2026-10-30T16:48:24.942Z",
+    "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+    "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+  },
+  "series": {
+    "perCallMs": {
+      "unit": "ms",
+      "samples": [
+        {
+          "tMs": 0.0,
+          "value": 4.8736999999999995
+        },
+        {
+          "tMs": 0.0,
+          "value": 7.609999999999999
+        },
+        {
+          "tMs": 0.0,
+          "value": 10.9051
+        },
+        {
+          "tMs": 0.0,
+          "value": 13.4065
+        },
+        {
+          "tMs": 0.0,
+          "value": 16.8184
+        },
+        {
+          "tMs": 0.0,
+          "value": 17.9596
+        },
+        {
+          "tMs": 0.0,
+          "value": 21.0526
+        },
+        {
+          "tMs": 0.0,
+          "value": 21.9857
+        },
+        {
+          "tMs": 0.0,
+          "value": 25.1131
+        },
+        {
+          "tMs": 0.0,
+          "value": 26.047
+        },
+        {
+          "tMs": 0.0,
+          "value": 29.2368
+        },
+        {
+          "tMs": 0.0,
+          "value": 31.573200000000003
+        },
+        {
+          "tMs": 0.0,
+          "value": 35.00940000000001
+        },
+        {
+          "tMs": 0.0,
+          "value": 37.237100000000005
+        },
+        {
+          "tMs": 0.0,
+          "value": 40.3872
+        },
+        {
+          "tMs": 0.0,
+          "value": 41.331
+        },
+        {
+          "tMs": 0.0,
+          "value": 44.5175
+        },
+        {
+          "tMs": 0.0,
+          "value": 45.457499999999996
+        },
+        {
+          "tMs": 0.0,
+          "value": 48.5615
+        },
+        {
+          "tMs": 0.0,
+          "value": 51.0141
+        },
+        {
+          "tMs": 0.0,
+          "value": 54.483700000000006
+        },
+        {
+          "tMs": 0.0,
+          "value": 56.8093
+        },
+        {
+          "tMs": 0.0,
+          "value": 59.9638
+        },
+        {
+          "tMs": 0.0,
+          "value": 60.9167
+        },
+        {
+          "tMs": 0.0,
+          "value": 64.106
+        },
+        {
+          "tMs": 0.0,
+          "value": 65.04350000000001
+        },
+        {
+          "tMs": 0.0,
+          "value": 68.5562
+        },
+        {
+          "tMs": 0.0,
+          "value": 70.92410000000001
+        },
+        {
+          "tMs": 0.0,
+          "value": 74.1024
+        },
+        {
+          "tMs": 0.0,
+          "value": 76.3891
+        },
+        {
+          "tMs": 0.0,
+          "value": 79.5654
+        },
+        {
+          "tMs": 0.0,
+          "value": 80.5164
+        },
+        {
+          "tMs": 0.0,
+          "value": 83.6593
+        },
+        {
+          "tMs": 0.0,
+          "value": 84.7389
+        },
+        {
+          "tMs": 0.0,
+          "value": 87.9262
+        },
+        {
+          "tMs": 0.0,
+          "value": 90.27350000000001
+        },
+        {
+          "tMs": 0.0,
+          "value": 93.45190000000001
+        },
+        {
+          "tMs": 0.0,
+          "value": 95.771
+        },
+        {
+          "tMs": 0.0,
+          "value": 98.9656
+        },
+        {
+          "tMs": 0.0,
+          "value": 99.88560000000001
+        },
+        {
+          "tMs": 0.0,
+          "value": 103.0871
+        },
+        {
+          "tMs": 0.0,
+          "value": 104.0485
+        },
+        {
+          "tMs": 0.0,
+          "value": 107.1812
+        },
+        {
+          "tMs": 0.0,
+          "value": 108.22800000000001
+        },
+        {
+          "tMs": 0.0,
+          "value": 111.3454
+        },
+        {
+          "tMs": 0.0,
+          "value": 113.6549
+        },
+        {
+          "tMs": 0.0,
+          "value": 116.8257
+        },
+        {
+          "tMs": 0.0,
+          "value": 119.1859
+        },
+        {
+          "tMs": 0.0,
+          "value": 122.2925
+        },
+        {
+          "tMs": 0.0,
+          "value": 123.21730000000001
+        }
+      ],
+      "summary": {
+        "n": 50,
+        "p50": 65.04350000000001,
+        "p90": 111.3454,
+        "p99": 123.21730000000001,
+        "max": 123.21730000000001
+      }
+    }
+  },
+  "facts": {
+    "queued": 50,
+    "allAnsweredMs": 124.06259999999999
+  }
+}

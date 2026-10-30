@@ -1,0 +1,27 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "--dir",
+    "desktop",
+    "exec",
+    "vitest",
+    "run",
+    "--config",
+    "vite.config.ts",
+    "--reporter=json",
+    "--outputFile=C:\\Users\\kaiga\\work\\review\\m1-c11-r5\\reviews\\evidence\\M1-C1.1-r5\\reviewer-ts-results.json",
+    "src/ipc/c11-r1-adversarial.test.ts",
+    "src/ipc/c11-r2-adversarial.test.ts",
+    "src/ipc/c11-r3-adversarial.test.ts"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:46:00.486407+00:00",
+  "elapsed_seconds": 3.175,
+  "exit_code": 0,
+  "log": "logs/reviewer-ts.log",
+  "sha256": "1e7d6454f75592b7f2d6e2d5a16cd5c6e21c6b91b0421fbfb5d3849f0ac13681",
+  "env": {}
+}

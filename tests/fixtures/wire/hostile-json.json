@@ -1,0 +1,434 @@
+{
+  "description": "Shared hostile-JSON corpus (C11-R1-17): the engine (tt_model::json_text via tt_engine::wire::from_wire_json, crates/engine/tests/wire_corpus.rs) and the front end (parseWireJson, desktop/src/ipc/wireCorpus.test.ts) must reject every `reject` text and accept every `accept` text, writing it back as `canonical`. `nest` entries expand to open*count + inner + close*count. `bytes` entries are invalid UTF-8 request bodies.",
+  "maxDepth": 128,
+  "reject": [
+    {
+      "why": "empty text",
+      "text": ""
+    },
+    {
+      "why": "white space only",
+      "text": " \n"
+    },
+    {
+      "why": "byte order mark",
+      "text": "\ufeff{}"
+    },
+    {
+      "why": "trailing characters",
+      "text": "{} x"
+    },
+    {
+      "why": "two values",
+      "text": "1 2"
+    },
+    {
+      "why": "trailing comma in array",
+      "text": "[1,]"
+    },
+    {
+      "why": "trailing comma in object",
+      "text": "{\"a\":1,}"
+    },
+    {
+      "why": "missing comma",
+      "text": "[1 2]"
+    },
+    {
+      "why": "leading comma",
+      "text": "[,1]"
+    },
+    {
+      "why": "unclosed array",
+      "text": "["
+    },
+    {
+      "why": "unclosed object",
+      "text": "{"
+    },
+    {
+      "why": "key without value",
+      "text": "{\"a\"}"
+    },
+    {
+      "why": "colon without value",
+      "text": "{\"a\":}"
+    },
+    {
+      "why": "unquoted key",
+      "text": "{a:1}"
+    },
+    {
+      "why": "single-quoted string",
+      "text": "'a'"
+    },
+    {
+      "why": "line comment",
+      "text": "[1]//c"
+    },
+    {
+      "why": "block comment",
+      "text": "/*c*/[1]"
+    },
+    {
+      "why": "non-breaking space as white space",
+      "text": "\u00a0[1]"
+    },
+    {
+      "why": "vertical tab as white space",
+      "text": "\u000b[1]"
+    },
+    {
+      "why": "leading zero",
+      "text": "01"
+    },
+    {
+      "why": "negative leading zero",
+      "text": "-01"
+    },
+    {
+      "why": "fraction without digits",
+      "text": "1."
+    },
+    {
+      "why": "fraction without integer part",
+      "text": ".5"
+    },
+    {
+      "why": "plus sign",
+      "text": "+1"
+    },
+    {
+      "why": "lone minus",
+      "text": "-"
+    },
+    {
+      "why": "exponent without digits",
+      "text": "1e"
+    },
+    {
+      "why": "signed exponent without digits",
+      "text": "1e+"
+    },
+    {
+      "why": "hexadecimal",
+      "text": "0x10"
+    },
+    {
+      "why": "NaN",
+      "text": "NaN"
+    },
+    {
+      "why": "Infinity",
+      "text": "Infinity"
+    },
+    {
+      "why": "negative Infinity",
+      "text": "-Infinity"
+    },
+    {
+      "why": "truncated null",
+      "text": "nul"
+    },
+    {
+      "why": "truncated true",
+      "text": "tru"
+    },
+    {
+      "why": "capitalised literal",
+      "text": "True"
+    },
+    {
+      "why": "double overflow",
+      "text": "1e400"
+    },
+    {
+      "why": "negative double overflow",
+      "text": "-1.5e400"
+    },
+    {
+      "why": "integer above u64::MAX, not exactly a double",
+      "text": "18446744073709551617"
+    },
+    {
+      "why": "integer below -u64::MAX, not exactly a double",
+      "text": "-18446744073709551615"
+    },
+    {
+      "why": "integer below i64::MIN, not exactly a double",
+      "text": "-9223372036854775809"
+    },
+    {
+      "why": "30-digit integer, not exactly a double",
+      "text": "123456789012345678901234567890"
+    },
+    {
+      "why": "21-digit integer, not exactly a double",
+      "text": "123456789012345678901"
+    },
+    {
+      "why": "duplicate key",
+      "text": "{\"a\":1,\"a\":2}"
+    },
+    {
+      "why": "duplicate key after unescaping",
+      "text": "{\"a\":1,\"\\u0061\":2}"
+    },
+    {
+      "why": "nested duplicate key",
+      "text": "{\"meta\":{\"x\":1,\"x\":2}}"
+    },
+    {
+      "why": "duplicate key deep in an array",
+      "text": "[{\"k\":[{\"x\":1,\"y\":2,\"x\":3}]}]"
+    },
+    {
+      "why": "lone high surrogate escape",
+      "text": "\"\\ud800\""
+    },
+    {
+      "why": "lone low surrogate escape",
+      "text": "\"\\udc00\""
+    },
+    {
+      "why": "high surrogate followed by a letter",
+      "text": "\"\\ud800x\""
+    },
+    {
+      "why": "two high surrogates",
+      "text": "\"\\udbff\\udbff\""
+    },
+    {
+      "why": "reversed surrogate pair",
+      "text": "\"\\udc00\\ud800\""
+    },
+    {
+      "why": "lone surrogate in a key",
+      "text": "{\"\\ud800\":1}"
+    },
+    {
+      "why": "raw control character in a string",
+      "text": "\"a\u0001b\""
+    },
+    {
+      "why": "raw line feed in a string",
+      "text": "\"a\nb\""
+    },
+    {
+      "why": "invalid escape",
+      "text": "\"\\x\""
+    },
+    {
+      "why": "short unicode escape",
+      "text": "\"\\u00\""
+    },
+    {
+      "why": "non-hex unicode escape",
+      "text": "\"\\u00G0\""
+    },
+    {
+      "why": "unterminated string",
+      "text": "\"abc"
+    },
+    {
+      "why": "unterminated escape",
+      "text": "\"\\"
+    },
+    {
+      "why": "129 nested arrays",
+      "nest": {
+        "open": "[",
+        "close": "]",
+        "count": 129,
+        "inner": ""
+      }
+    },
+    {
+      "why": "128 nested arrays around a scalar (scalar at depth 129)",
+      "nest": {
+        "open": "[",
+        "close": "]",
+        "count": 128,
+        "inner": "0"
+      }
+    },
+    {
+      "why": "128 nested objects around a scalar",
+      "nest": {
+        "open": "{\"a\":",
+        "close": "}",
+        "count": 128,
+        "inner": "0"
+      }
+    }
+  ],
+  "accept": [
+    {
+      "why": "zero",
+      "text": "0",
+      "canonical": "0"
+    },
+    {
+      "why": "negative zero is written as 0",
+      "text": "-0",
+      "canonical": "0"
+    },
+    {
+      "why": "white space and scalars",
+      "text": " [1, 2.5 ,true,null] ",
+      "canonical": "[1,2.5,true,null]"
+    },
+    {
+      "why": "u64::MAX",
+      "text": "18446744073709551615",
+      "canonical": "18446744073709551615"
+    },
+    {
+      "why": "i64::MIN",
+      "text": "-9223372036854775808",
+      "canonical": "-9223372036854775808"
+    },
+    {
+      "why": "2^53 + 1",
+      "text": "9007199254740993",
+      "canonical": "9007199254740993"
+    },
+    {
+      "why": "2^64, exactly a double",
+      "text": "18446744073709551616",
+      "canonical": "18446744073709551616"
+    },
+    {
+      "why": "-2^64, exactly a double",
+      "text": "-18446744073709551616",
+      "canonical": "-18446744073709551616"
+    },
+    {
+      "why": "1e20 in full, exactly a double",
+      "text": "100000000000000000000",
+      "canonical": "100000000000000000000"
+    },
+    {
+      "why": "exponent form",
+      "text": "1E2",
+      "canonical": "100"
+    },
+    {
+      "why": "small double",
+      "text": "1e-7",
+      "canonical": "1e-7"
+    },
+    {
+      "why": "large double",
+      "text": "1.5e300",
+      "canonical": "1.5e+300"
+    },
+    {
+      "why": "underflow to zero",
+      "text": "1e-400",
+      "canonical": "0"
+    },
+    {
+      "why": "1e21 switches to exponent form",
+      "text": "1e21",
+      "canonical": "1e+21"
+    },
+    {
+      "why": "shortest round-trip digits",
+      "text": "0.30000000000000004",
+      "canonical": "0.30000000000000004"
+    },
+    {
+      "why": "surrogate pair",
+      "text": "\"\\ud83d\\ude00\"",
+      "canonical": "\"\ud83d\ude00\""
+    },
+    {
+      "why": "line separator",
+      "text": "\"\\u2028\"",
+      "canonical": "\"\u2028\""
+    },
+    {
+      "why": "control escapes",
+      "text": "\"\\b\\f\\n\\r\\t\\u001f\"",
+      "canonical": "\"\\b\\f\\n\\r\\t\\u001f\""
+    },
+    {
+      "why": "escaped solidus",
+      "text": "\"\\/\"",
+      "canonical": "\"/\""
+    },
+    {
+      "why": "delete character",
+      "text": "\"\\u007f\"",
+      "canonical": "\"\u007f\""
+    },
+    {
+      "why": "__proto__ is an ordinary key",
+      "text": "{\"__proto__\":{\"x\":1},\"constructor\":2}",
+      "canonical": "{\"__proto__\":{\"x\":1},\"constructor\":2}"
+    },
+    {
+      "why": "empty containers",
+      "text": "{\"a\":{},\"b\":[]}",
+      "canonical": "{\"a\":{},\"b\":[]}"
+    },
+    {
+      "why": "128 nested arrays",
+      "nest": {
+        "open": "[",
+        "close": "]",
+        "count": 128,
+        "inner": ""
+      },
+      "canonical": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"
+    },
+    {
+      "why": "127 nested arrays around a scalar",
+      "nest": {
+        "open": "[",
+        "close": "]",
+        "count": 127,
+        "inner": "0"
+      },
+      "canonical": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[0]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"
+    }
+  ],
+  "bytes": [
+    {
+      "why": "invalid UTF-8 byte",
+      "bytes": [
+        255
+      ]
+    },
+    {
+      "why": "overlong encoding of /",
+      "bytes": [
+        34,
+        192,
+        175,
+        34
+      ]
+    },
+    {
+      "why": "UTF-8-encoded surrogate",
+      "bytes": [
+        34,
+        237,
+        160,
+        128,
+        34
+      ]
+    },
+    {
+      "why": "truncated four-byte sequence",
+      "bytes": [
+        34,
+        240,
+        159,
+        152,
+        34
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+error: at least one `example(...)` is required (11 §14.2)
+ --> tests/c12-r1-ui/missing_example.rs:1:1
+  |
+1 | #[tt_registry::command(id="app.state.get",kind=query,label="Missing example")]
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `tt_registry::command` (in Nightly builds, run with -Z macro-backtrace for more info)

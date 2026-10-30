@@ -1,0 +1,25 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "--dir",
+    "desktop",
+    "tauri",
+    "build",
+    "--no-bundle",
+    "--",
+    "--locked"
+  ],
+  "exit": 0,
+  "started": "2026-10-19T08:22:11.381322+00:00",
+  "seconds": 63.50446520000696,
+  "head": "237c8f34286921d4db5cb8d06c2aeb6392368418",
+  "dirty": [
+    "?? crates/executor/tests/c12_r2_contracts.rs",
+    "?? crates/executor/tests/c12_r2_registry.rs",
+    "?? reviews/evidence/M1-C1.2-r2/"
+  ],
+  "log": "logs\\tauri-release.log",
+  "sha256": "a610bbd8e30cfaab42446cb57ae4a3034625a673c32e534b737e22417fb4c50d"
+}

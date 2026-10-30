@@ -1,0 +1,968 @@
+{
+  "windows": {
+    "rust": {
+      "c11_r1_adversarial": {
+        "expected": 39,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 39,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 8.56
+          }
+        ],
+        "matches": true
+      },
+      "c11_r2_adversarial": {
+        "expected": 39,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 39,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 15.7
+          }
+        ],
+        "matches": true
+      },
+      "c11_r3_adversarial": {
+        "expected": 11,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 11,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.67
+          }
+        ],
+        "matches": true
+      },
+      "c11_r3_random": {
+        "expected": 1,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 7.0
+          }
+        ],
+        "matches": true
+      },
+      "c11_r3_register": {
+        "expected": 4,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 1.35
+          }
+        ],
+        "matches": true
+      },
+      "c11_r4_exposure_bounds": {
+        "expected": 2,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.02
+          }
+        ],
+        "matches": true
+      },
+      "c11_r5_write_bounds": {
+        "expected": 4,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.0
+          }
+        ],
+        "matches": true
+      },
+      "c11_r6_staged_inverse": {
+        "expected": 2,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.63
+          }
+        ],
+        "matches": true
+      },
+      "c11_r1_wire": {
+        "expected": 4,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.09
+          }
+        ],
+        "matches": true
+      },
+      "c11_r2_wire": {
+        "expected": 6,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.0
+          }
+        ],
+        "matches": true
+      },
+      "c11_r3_wire": {
+        "expected": 2,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.02
+          }
+        ],
+        "matches": true
+      },
+      "c01": {
+        "expected": 7,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 7,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 7.44
+          }
+        ],
+        "matches": true
+      },
+      "c03-r2-encoder": {
+        "expected": 11,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 11,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.8
+          }
+        ],
+        "matches": true
+      },
+      "c12_r1_contracts": {
+        "expected": 36,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 36,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 105.54
+          }
+        ],
+        "matches": true
+      },
+      "c12_r1_stress": {
+        "expected": 5,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 159.48
+          }
+        ],
+        "matches": true
+      },
+      "c12_r1_macro": {
+        "expected": 2,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 76.68
+          }
+        ],
+        "matches": true
+      },
+      "c12_r1_scale": {
+        "expected": 1,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 58.86
+          }
+        ],
+        "matches": true
+      },
+      "c12_r2_contracts": {
+        "expected": 40,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 40,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 14.43
+          }
+        ],
+        "matches": true
+      },
+      "c12_r2_registry": {
+        "expected": 7,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 7,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.39
+          }
+        ],
+        "matches": true
+      },
+      "c12_r2_scale": {
+        "expected": 1,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 95.11
+          }
+        ],
+        "matches": true
+      },
+      "c12_r3_contracts": {
+        "expected": 15,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 15,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 2.53
+          }
+        ],
+        "matches": true
+      },
+      "c12_r3_registry": {
+        "expected": 12,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 12,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.72
+          }
+        ],
+        "matches": true
+      },
+      "c12_r3_stress": {
+        "expected": 5,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 158.96
+          }
+        ],
+        "matches": true
+      },
+      "c12_r4_closure": {
+        "expected": 4,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.71
+          }
+        ],
+        "matches": true
+      }
+    },
+    "allRustMatch": true,
+    "frontend": {
+      "c11-r1-adversarial": {
+        "expected": 6,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:33.2935507Z  \u2713 src/ipc/c11-r1-adversarial.test.ts (6 tests) 2716ms"
+        ]
+      },
+      "c11-r2-adversarial": {
+        "expected": 9,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:34.1386214Z  \u2713 src/ipc/c11-r2-adversarial.test.ts (9 tests) 17ms"
+        ]
+      },
+      "c11-r3-adversarial": {
+        "expected": 4,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:41.6247293Z  \u2713 src/ipc/c11-r3-adversarial.test.ts (4 tests) 16ms"
+        ]
+      },
+      "adversarial": {
+        "expected": 8,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:07:06.6872376Z  \u2713 src/test/adversarial.test.ts (8 tests) 22ms"
+        ]
+      },
+      "c01-r2-node": {
+        "expected": 2,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:06:53.1665039Z  \u2713 src/test/c01-r2-node.test.ts (2 tests) 27993ms"
+        ]
+      },
+      "c01-r2-schema": {
+        "expected": 12,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:35.6764410Z  \u2713 src/test/c01-r2-schema.test.ts (12 tests) 17ms"
+        ]
+      },
+      "c01-r3-node": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:07:01.1396323Z  \u2713 src/test/c01-r3-node.test.ts (1 test) 6369ms"
+        ]
+      },
+      "c01-r3-schema": {
+        "expected": 14,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:23.4285467Z  \u2713 src/test/c01-r3-schema.test.ts (14 tests) 31ms"
+        ]
+      },
+      "c01-r4-node": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:07:04.0377649Z  \u2713 src/test/c01-r4-node.test.ts (1 test) 2534ms"
+        ]
+      },
+      "c02-r1-measurement": {
+        "expected": 5,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:28.3517290Z  \u2713 src/test/c02-r1-measurement.test.tsx (5 tests) 282ms"
+        ]
+      },
+      "c02-r1-tooling": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:07:05.1611590Z  \u2713 src/test/c02-r1-tooling.test.ts (1 test) 759ms"
+        ]
+      },
+      "c02-r2-tooling": {
+        "expected": 2,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:58.9597296Z  \u2713 src/test/c02-r2-tooling.test.ts (2 tests) 2365ms"
+        ]
+      },
+      "c02-r3-tooling": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:06:04.2482947Z  \u2713 src/test/c02-r3-tooling.test.ts (1 test) 378ms"
+        ]
+      },
+      "c03-r1-binary": {
+        "expected": 9,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:45.1104637Z  \u2713 src/test/c03-r1-binary.test.ts (9 tests) 3083ms"
+        ]
+      },
+      "c03-r1-tooling": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:06:24.8079330Z  \u2713 src/test/c03-r1-tooling.test.ts (1 test) 20175ms"
+        ]
+      },
+      "c03-r2-binary": {
+        "expected": 9,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:56.2309707Z  \u2713 src/test/c03-r2-binary.test.ts (9 tests) 24ms"
+        ]
+      },
+      "c03-r2-page": {
+        "expected": 3,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:30.1869548Z  \u2713 src/test/c03-r2-page.test.tsx (3 tests) 313ms"
+        ]
+      },
+      "c03-r2-tooling": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:06:54.4008681Z  \u2713 src/test/c03-r2-tooling.test.ts (1 test) 869ms"
+        ]
+      },
+      "c03-r3-page": {
+        "expected": 2,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:26.5638821Z  \u2713 src/test/c03-r3-page.test.tsx (2 tests) 218ms"
+        ]
+      },
+      "boundary.lint": {
+        "expected": 69,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:05:13.1754867Z  \u2713 src/ipc/boundary.lint.test.ts (69 tests) 26061ms"
+        ]
+      },
+      "boundary.build": {
+        "expected": 46,
+        "matches": true,
+        "logLines": [
+          "2026-10-27T00:04:45.7907473Z  \u2713 src/ipc/boundary.build.test.ts (46 tests) 6877ms"
+        ]
+      }
+    },
+    "allFrontendMatch": true,
+    "python": {
+      "c02-r1-tooling": true,
+      "c02-r2-tooling": true,
+      "c02-r3-tooling": true,
+      "c03-r1-tooling": true,
+      "c03-r2-tooling": true,
+      "c04-r2-decisions": true,
+      "c04-r3-decisions": true,
+      "c04-r3-page": true,
+      "c04-r5-decisions": true,
+      "c11-r2-review-policy": true,
+      "headless_guard": true
+    },
+    "allPythonPresent": true,
+    "workspacePassed": 556,
+    "workspaceIgnored": 2
+  },
+  "macos": {
+    "rust": {
+      "c11_r1_adversarial": {
+        "expected": 39,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 39,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 5.4
+          }
+        ],
+        "matches": true
+      },
+      "c11_r2_adversarial": {
+        "expected": 39,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 39,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 10.42
+          }
+        ],
+        "matches": true
+      },
+      "c11_r3_adversarial": {
+        "expected": 11,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 11,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.44
+          }
+        ],
+        "matches": true
+      },
+      "c11_r3_random": {
+        "expected": 1,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 3.5
+          }
+        ],
+        "matches": true
+      },
+      "c11_r3_register": {
+        "expected": 4,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.8
+          }
+        ],
+        "matches": true
+      },
+      "c11_r4_exposure_bounds": {
+        "expected": 2,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.01
+          }
+        ],
+        "matches": true
+      },
+      "c11_r5_write_bounds": {
+        "expected": 4,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.0
+          }
+        ],
+        "matches": true
+      },
+      "c11_r6_staged_inverse": {
+        "expected": 2,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.46
+          }
+        ],
+        "matches": true
+      },
+      "c11_r1_wire": {
+        "expected": 4,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.11
+          }
+        ],
+        "matches": true
+      },
+      "c11_r2_wire": {
+        "expected": 6,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.01
+          }
+        ],
+        "matches": true
+      },
+      "c11_r3_wire": {
+        "expected": 2,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.02
+          }
+        ],
+        "matches": true
+      },
+      "c01": {
+        "expected": 7,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 7,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 4.08
+          }
+        ],
+        "matches": true
+      },
+      "c03-r2-encoder": {
+        "expected": 11,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 11,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.74
+          }
+        ],
+        "matches": true
+      },
+      "c12_r1_contracts": {
+        "expected": 36,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 36,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 104.73
+          }
+        ],
+        "matches": true
+      },
+      "c12_r1_stress": {
+        "expected": 5,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 134.06
+          }
+        ],
+        "matches": true
+      },
+      "c12_r1_macro": {
+        "expected": 2,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 2,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 65.78
+          }
+        ],
+        "matches": true
+      },
+      "c12_r1_scale": {
+        "expected": 1,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 51.65
+          }
+        ],
+        "matches": true
+      },
+      "c12_r2_contracts": {
+        "expected": 40,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 40,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 11.12
+          }
+        ],
+        "matches": true
+      },
+      "c12_r2_registry": {
+        "expected": 7,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 7,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.31
+          }
+        ],
+        "matches": true
+      },
+      "c12_r2_scale": {
+        "expected": 1,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 1,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 76.63
+          }
+        ],
+        "matches": true
+      },
+      "c12_r3_contracts": {
+        "expected": 15,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 15,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 2.52
+          }
+        ],
+        "matches": true
+      },
+      "c12_r3_registry": {
+        "expected": 12,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 12,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.64
+          }
+        ],
+        "matches": true
+      },
+      "c12_r3_stress": {
+        "expected": 5,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 5,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 128.12
+          }
+        ],
+        "matches": true
+      },
+      "c12_r4_closure": {
+        "expected": 4,
+        "observed": [
+          {
+            "state": "ok",
+            "passed": 4,
+            "failed": 0,
+            "ignored": 0,
+            "seconds": 0.54
+          }
+        ],
+        "matches": true
+      }
+    },
+    "allRustMatch": true,
+    "frontend": {
+      "c11-r1-adversarial": {
+        "expected": 6,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T18:59:53.3983010Z  \u2713 src/ipc/c11-r1-adversarial.test.ts (6 tests) 2369ms"
+        ]
+      },
+      "c11-r2-adversarial": {
+        "expected": 9,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T18:59:53.9560940Z  \u2713 src/ipc/c11-r2-adversarial.test.ts (9 tests) 18ms"
+        ]
+      },
+      "c11-r3-adversarial": {
+        "expected": 4,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T18:59:59.1671950Z  \u2713 src/ipc/c11-r3-adversarial.test.ts (4 tests) 9ms"
+        ]
+      },
+      "adversarial": {
+        "expected": 8,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:01:09.4670030Z  \u2713 src/test/adversarial.test.ts (8 tests) 16ms"
+        ]
+      },
+      "c01-r2-node": {
+        "expected": 2,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:00:54.9159760Z  \u2713 src/test/c01-r2-node.test.ts (2 tests) 26980ms"
+        ]
+      },
+      "c01-r2-schema": {
+        "expected": 12,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T18:59:54.8263660Z  \u2713 src/test/c01-r2-schema.test.ts (12 tests) 10ms"
+        ]
+      },
+      "c01-r3-node": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:01:01.7465660Z  \u2713 src/test/c01-r3-node.test.ts (1 test) 5156ms"
+        ]
+      },
+      "c01-r3-schema": {
+        "expected": 14,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T18:59:46.5632180Z  \u2713 src/test/c01-r3-schema.test.ts (14 tests) 21ms"
+        ]
+      },
+      "c01-r4-node": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:01:03.9707920Z  \u2713 src/test/c01-r4-node.test.ts (1 test) 1972ms"
+        ]
+      },
+      "c02-r1-measurement": {
+        "expected": 5,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T18:59:49.4870610Z  \u2713 src/test/c02-r1-measurement.test.tsx (5 tests) 160ms"
+        ]
+      },
+      "c02-r1-tooling": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:01:07.8772930Z  \u2713 src/test/c02-r1-tooling.test.ts (1 test) 3532ms"
+        ]
+      },
+      "c02-r2-tooling": {
+        "expected": 2,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:00:16.0072370Z  \u2713 src/test/c02-r2-tooling.test.ts (2 tests) 5977ms"
+        ]
+      },
+      "c02-r3-tooling": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:00:19.3277680Z  \u2713 src/test/c02-r3-tooling.test.ts (1 test) 333ms"
+        ]
+      },
+      "c03-r1-binary": {
+        "expected": 9,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:00:02.0366890Z  \u2713 src/test/c03-r1-binary.test.ts (9 tests) 2618ms"
+        ]
+      },
+      "c03-r1-tooling": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:00:27.6101820Z  \u2713 src/test/c03-r1-tooling.test.ts (1 test) 8037ms"
+        ]
+      },
+      "c03-r2-binary": {
+        "expected": 9,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:00:09.8459750Z  \u2713 src/test/c03-r2-binary.test.ts (9 tests) 10ms"
+        ]
+      },
+      "c03-r2-page": {
+        "expected": 3,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T18:59:50.7469940Z  \u2713 src/test/c03-r2-page.test.tsx (3 tests) 382ms"
+        ]
+      },
+      "c03-r2-tooling": {
+        "expected": 1,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T19:00:56.3758930Z  \u2713 src/test/c03-r2-tooling.test.ts (1 test) 1026ms"
+        ]
+      },
+      "c03-r3-page": {
+        "expected": 2,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T18:59:48.4955480Z  \u2713 src/test/c03-r3-page.test.tsx (2 tests) 233ms"
+        ]
+      },
+      "boundary.lint": {
+        "expected": 69,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T18:59:38.3846790Z  \u2713 src/ipc/boundary.lint.test.ts (69 tests) 35451ms"
+        ]
+      },
+      "boundary.build": {
+        "expected": 46,
+        "matches": true,
+        "logLines": [
+          "2026-10-29T18:59:01.5814390Z  \u2713 src/ipc/boundary.build.test.ts (46 tests) 7185ms"
+        ]
+      }
+    },
+    "allFrontendMatch": true,
+    "python": {
+      "c02-r1-tooling": true,
+      "c02-r2-tooling": true,
+      "c02-r3-tooling": true,
+      "c03-r1-tooling": true,
+      "c03-r2-tooling": true,
+      "c04-r2-decisions": true,
+      "c04-r3-decisions": true,
+      "c04-r3-page": true,
+      "c04-r5-decisions": true,
+      "c11-r2-review-policy": true,
+      "headless_guard": true
+    },
+    "allPythonPresent": true,
+    "workspacePassed": 551,
+    "workspaceIgnored": 2
+  }
+}

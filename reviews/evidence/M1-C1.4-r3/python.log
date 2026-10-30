@@ -1,0 +1,247 @@
+=== c02-r1-tooling.py
+python : test_C02_R1_02_native_timestamp_association 
+(__main__.ToolingTests.test_C02_R1_02_native_timestamp_association) ... ok
+At line:2 char:103
++ ... .exe).Path; python scripts/run-reviewer-python-suites.py *> reviews/e ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_C02_R1_02_...ciation) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+test_C02_R1_03_native_pose_only_contact_boundaries 
+(__main__.ToolingTests.test_C02_R1_03_native_pose_only_contact_boundaries) ... ok
+test_C02_R1_07_nearest_rank_percentile_matches_frontend 
+(__main__.ToolingTests.test_C02_R1_07_nearest_rank_percentile_matches_frontend) ... ok
+test_C02_R1_08_macos_accessor_contracts (__main__.ToolingTests.test_C02_R1_08_macos_accessor_contracts) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.618s
+
+OK
+=== c02-r2-tooling.py
+test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success 
+(__main__.AnalyzerAttacks.test_C02_R2_01_empty_report_does_not_fabricate_zero_frame_success) ... ok
+test_C02_R2_01_explicit_v1_is_rejected (__main__.AnalyzerAttacks.test_C02_R2_01_explicit_v1_is_rejected) ... ok
+test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly 
+(__main__.AnalyzerAttacks.test_C02_R2_01_successful_v2_run_without_raw_report_fails_loudly) ... ok
+test_C02_R2_02_achieved_rate_is_recomputed_or_rejected 
+(__main__.AnalyzerAttacks.test_C02_R2_02_achieved_rate_is_recomputed_or_rejected) ... ok
+test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold 
+(__main__.AnalyzerAttacks.test_C02_R2_04_offline_stroke_ranges_support_manual_tilt_threshold) ... ok
+test_explicit_failure_without_report_remains_analyzable 
+(__main__.AnalyzerAttacks.test_explicit_failure_without_report_remains_analyzable) ... ok
+test_lossless_stationary_including_down_has_zero_missing 
+(__main__.AnalyzerAttacks.test_lossless_stationary_including_down_has_zero_missing) ... ok
+test_macos_extended_accessor_contracts (__main__.AnalyzerAttacks.test_macos_extended_accessor_contracts) ... ok
+test_pause_segmentation_and_pose_only_native_reference_unknown 
+(__main__.AnalyzerAttacks.test_pause_segmentation_and_pose_only_native_reference_unknown) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.546s
+
+OK
+=== c02-r3-tooling.py
+test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs 
+(__main__.EvidenceClassification.test_C02_R3_01_orphaned_synthetic_reports_are_not_manual_hardware_logs) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.248s
+
+OK
+=== c03-r1-tooling.py
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.998s
+
+OK
+=== c03-r2-tooling.py
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.529s
+
+OK
+=== c04-r2-decisions.py
+test_C04_R2_01_rate_intervals_cover_fractional_hz 
+(__main__.DecisionContracts.test_C04_R2_01_rate_intervals_cover_fractional_hz) ... ok
+test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row 
+(__main__.DecisionContracts.test_C04_R2_02_stationary_instruction_identifies_an_existing_contact_row) ... ok
+test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes 
+(__main__.DecisionContracts.test_C04_R2_03_canvas_has_a_guard_for_analyzer_accepted_missing_scenes) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.033s
+
+OK
+=== c04-r3-decisions.py
+test_C04_R3_01_outside_contact_must_not_flip_candidate 
+(__main__.Regressions.test_C04_R3_01_outside_contact_must_not_flip_candidate) ... ok
+test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected 
+(__main__.Regressions.test_C04_R3_03_overlapping_native_marker_spans_must_be_rejected) ... ok
+test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter 
+(__main__.Regressions.test_C04_R3_04_binding_score_rule_has_no_unruled_core_filter) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.071s
+
+OK
+=== c04-r3-page.py
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c14-r3/desktop
+
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  06:12:39
+   Duration  1.11s (environment 60%, transform 13%, setup 12%, tests 12%, import 3%)
+
+=== c04-r5-decisions.py
+test_outside_packets_cannot_change_action_rate_or_platform_decision 
+(__main__.OutsideNativeClock.test_outside_packets_cannot_change_action_rate_or_platform_decision) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.055s
+
+OK
+=== c11-r2-review-policy.py
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.036s
+
+OK
+=== c14-r1-mcp.py
+elicitation_request_id [{"status": "ok", "result": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-3avsa2r6\\keep.jsonl", "entries": 1, "omitted": []}, "changes": [], "warnings": [], "documentRev": 1}, {"status": "ok", "result": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-3avsa2r6\\keep.jsonl", "entries": 1, "omitted": []}, "changes": [], "warnings": [], "documentRev": 1}]
+test_accepted_elicitation_preserves_request_id_result 
+(__main__.Protocol.test_accepted_elicitation_preserves_request_id_result) ... ok
+dry_activity_replay []
+test_activity_batch_export_does_not_turn_dry_runs_into_edits 
+(__main__.Protocol.test_activity_batch_export_does_not_turn_dry_runs_into_edits) ... ok
+batch_activity_replay {
+  "label": "Agent activity",
+  "atomic": false,
+  "stopOnError": true,
+  "steps": [
+    {
+      "id": "project.create",
+      "params": {
+        "name": "P",
+        "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-n5kkoljb\\P.animpkg"
+      }
+    },
+    {
+      "id": "doc.object.patch",
+      "params": {
+        "targets": [
+          "sc_01M66F1V3T7AVN7NX96Y8M8X2B"
+        ],
+        "props": {
+          "meta": {
+            "replaySentinel": 99
+          }
+        }
+      }
+    }
+  ]
+}
+test_activity_batch_export_keeps_committed_batch_operations 
+(__main__.Protocol.test_activity_batch_export_keeps_committed_batch_operations) ... ok
+atomic_export {"jsonrpc": "2.0", "id": 103, "result": {"content": [{"type": "text", "text": "batch: `batch` failed: batch.stepFailed \u2014 step 2 (`no.such.command`) failed: no command `no.such.command`"}], "structuredContent": {"status": "error", "changes": [], "warnings": [], "documentRev": 1, "error": {"code": "batch.stepFailed", "message": "step 2 (`no.such.command`) failed: no command `no.such.command`", "details": {"stepIndex": 2, "commandId": "no.such.command", "error": {"code": "command.unknown", "message": "no command `no.such.command`", "details": {"commandId": "no.such.command", "suggestions": []}, "hint": "list_commands shows every registered command"}}}, "steps": [{"status": "ok", "result": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-uw_2bhd3\\should-not-exist.jsonl", "entries": 1, "omitted": []}, "changes": [], "warnings": [], "documentRev": 1}, {"status": "error", "changes": [], "warnings": [], "documentRev": 1, "error": {"code": "command.unknown", "message": "no command `no.such.command`", "details": {"commandId": "no.such.command", "suggestions": []}, "hint": "list_commands shows every registered command"}}]}, "isError": true}} file_exists False
+test_atomic_failure_has_no_activity_export_effect 
+(__main__.Protocol.test_atomic_failure_has_no_activity_export_effect) ... ok
+test_closed_stdout_ends_the_unusable_session (__main__.Protocol.test_closed_stdout_ends_the_unusable_session) ... ok
+elicitation_audit [{"seq": 2, "time": "2026-10-30T13:12:42.226Z", "sessionId": "s1-e56a10", "client": "reviewer", "tool": "run_command", "commandId": "agent.activity.export", "params": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-3p79a0ko\\keep.jsonl", "onExists": "overwrite"}, "status": "ok", "undoStepId": null, "changedCount": 0, "documentRev": 1, "durationMs": 3}]
+test_elicitation_is_one_audit_entry_per_tool_call 
+(__main__.Protocol.test_elicitation_is_one_audit_entry_per_tool_call) ... ok
+test_eof_while_eliciting_ends_the_session (__main__.Protocol.test_eof_while_eliciting_ends_the_session) ... ok
+test_filter_has_bounded_runtime (__main__.Protocol.test_filter_has_bounded_runtime) ... ok
+state_wrapper_command {"status": "ok", "result": {"project": null, "scene": null, "frame": null, "element": null, "drawing": null, "mode": null, "activeView": null, "focusedPanel": "cameraView", "activeTool": null, "selection": {"context": "staging", "ids": [], "kinds": []}, "workspace": {"name": "Default", "modified": false}, "playback": {"playing": false}, "startScreenVisible": true, "modal": null, "agentSessions": [{"sessionId": "s1-abfaff", "name": "reviewer", "acting": false}], "fullScreen": false, "agent": {"sessionId": "s1-abfaff", "client": "reviewer", "policy": "assist", "scopes": ["read", "edit", "ui", "input", "files.read", "files.write", "library.global"], "paused": false, "limits": {"policy": "assist", "maxJobs": 2, "maxBatchSteps": 1000, "maxInlineImagePx": 2048, "maxInlineBytes": 52428800, "askInApp": true, "letAgentMoveView": true, "highlightAgentChanges": true}}}, "changes": [], "warnings": [], "documentRev": null} generic {"status": "ok", "result": {"project": null, "scene": null, "frame": null, "element": null, "drawing": null, "mode": null, "activeView": null, "focusedPanel": "cameraView", "activeTool": null, "selection": {"context": "staging", "ids": [], "kinds": []}, "workspace": {"name": "Default", "modified": false}, "playback": {"playing": false}, "startScreenVisible": true, "modal": null, "agentSessions": [{"sessionId": "s1-abfaff", "name": "reviewer", "acting": false}], "fullScreen": false, "agent": {"sessionId": "s1-abfaff", "client": "reviewer", "policy": "assist", "scopes": ["read", "edit", "ui", "input", "files.read", "files.write", "library.global"], "paused": false, "limits": {"policy": "assist", "maxJobs": 2, "maxBatchSteps": 1000, "maxInlineImagePx": 2048, "maxInlineBytes": 52428800, "askInApp": true, "letAgentMoveView": true, "highlightAgentChanges": true}}}, "changes": [], "warnings": [], "documentRev": null}
+test_get_state_matches_the_command_envelope (__main__.Protocol.test_get_state_matches_the_command_envelope) ... ok
+test_invalid_utf8_frame_does_not_destroy_stream (__main__.Protocol.test_invalid_utf8_frame_does_not_destroy_stream) 
+... ok
+malformed_elicitation {"jsonrpc": "2.0", "id": 103, "result": {"content": [{"type": "text", "text": "run_command: `agent.activity.export` failed: confirmation.declined \u2014 the user declined the action"}], "structuredContent": {"status": "error", "changes": [], "warnings": [], "documentRev": 1, "error": {"code": "confirmation.declined", "message": "the user declined the action", "details": {"confirmToken": "cf_debda1d23ef33764730aa89a"}}}, "isError": true}} preserved True
+test_malformed_elicitation_does_not_overwrite (__main__.Protocol.test_malformed_elicitation_does_not_overwrite) ... ok
+wrong_arguments {"jsonrpc": "2.0", "id": 102, "error": {"code": -32602, "message": "`arguments` must be an object (the tool's input schema)"}}
+test_non_object_tool_arguments_are_rejected (__main__.Protocol.test_non_object_tool_arguments_are_rejected) ... ok
+test_nonreading_client_with_eof_does_not_pin_the_session 
+(__main__.Protocol.test_nonreading_client_with_eof_does_not_pin_the_session) ... ok
+project_resource {"jsonrpc": "2.0", "id": 103, "result": {"contents": [{"uri": "app://project", "mimeType": "application/json", "text": "{\n  \"object\": {\n    \"id\": \"pr_01M66F1WZEYG3YGGW32A1SNVWH\",\n    \"type\": \"project\",\n    \"rev\": 1,\n    \"name\": \"P\",\n    \"path\": \"project\",\n    \"createdAt\": \"2026-10-30T13:12:43.758Z\",\n    \"modifiedAt\": \"2026-10-30T13:12:43.758Z\",\n    \"frameRate\": 24.0,\n    \"cameraWidth\": 1920,\n    \"cameraHeight\": 1080,\n    \"autoColourUpdate\": false,\n    \"startTransition\": {\n      \"id\": \"tr_01M66F1WZEYG3YGGW32A1SNW0T\",\n      \"type\": \"transition\"\n    },\n    \"palettes\": [\n      {\n        \"id\": \"pal_01M66F1WZEYG3YGGW32A1SNVWJ\",\n        \"type\": \"palette\",\n        \"name\": \"Default\"\n      }\n    ],\n    \"pens\": [\n      {\n        \"id\": \"pen_01M66F1WZEYG3YGGW32A1SNW0C\",\n        \"type\": \"pen\",\n        \"name\": \"Pen 1\"\n      },\n      {\n        \"id\": \"pen_01M66F1WZEYG3YGGW32A1SNW0D\",\n        \"type\": \"pen\",\n        \"name\": \"Pen 2\"\n      },\n      {\n        \"id\": \"pen_01M66F1WZEYG3YGGW32A1SNW0E\",\n        \"type\": \"pen\",\n        \"name\": \"Pen 3\"\n      },\n      {\n        \"id\": \"pen_01M66F1WZEYG3YGGW32A1SNW0F\",\n        \"type\": \"pen\",\n        \"name\": \"Pen 4\"\n      },\n      {\n        \"id\": \"pen_01M66F1WZEYG3YGGW32A1SNW0G\",\n        \"type\": \"pen\",\n        \"name\": \"Pen 5\"\n      },\n      {\n        \"id\": \"pen_01M66F1WZEYG3YGGW32A1SNW0H\",\n        \"type\": \"pen\",\n        \"name\": \"Eraser 1\"\n      },\n      {\n        \"id\": \"pen_01M66F1WZEYG3YGGW32A1SNW0J\",\n        \"type\": \"pen\",\n        \"name\": \"Eraser 2\"\n      },\n      {\n        \"id\": \"pen_01M66F1WZEYG3YGGW32A1SNW0K\",\n        \"type\": \"pen\",\n        \"name\": \"Eraser 3\"\n      }\n    ],\n    \"assets\": [],\n    \"drawingBanks\": [\n      {\n        \"id\": \"db_01M66F1WZEYG3YGGW32A1SNW0M\",\n        \"type\": \"drawingBank\"\n      }\n    ],\n    \"scenes\": [\n      {\n        \"id\": \"sc_01M66F1WZEYG3YGGW32A1SNW0N\",\n        \"type\": \"scene\",\n        \"name\": \"Scene-1\"\n      }\n    ],\n    \"library\": {\n      \"id\": \"lib_01M66F1WZEYG3YGGW32A1SNW0S\",\n      \"type\": \"library\",\n      \"name\": \"Local\"\n    }\n  }\n}"}]}}
+test_project_resource_is_readable (__main__.Protocol.test_project_resource_is_readable) ... ok
+test_second_initialize_is_rejected (__main__.Protocol.test_second_initialize_is_rejected) ... ok
+same_size_mtime_save {"status": "needs_confirmation", "result": {"status": "needs_confirmation", "confirmToken": "cf_e6302841307e805fd605cf03", "summary": "`C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-1pfzo4xt\\P.animpkg` was changed by another program since it was opened; saving overwrites those changes", "consequences": [{"kind": "overwriteExternalChange", "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-1pfzo4xt\\P.animpkg", "detectedAt": "2026-10-30T13:12:43.918Z"}, {"kind": "alternative", "choice": "reload", "by": "user", "commandId": "project.open", "params": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-1pfzo4xt\\P.animpkg", "onUnsaved": "discard"}}, {"kind": "alternative", "choice": "keepBoth", "commandId": "project.saveAs", "params": {"path": "<another path>"}}], "category": "externalChange"}, "changes": [], "warnings": [], "documentRev": 1}
+test_size_and_mtime_preserving_edit_requires_confirmation 
+(__main__.Protocol.test_size_and_mtime_preserving_edit_requires_confirmation) ... ok
+undo_redo_events ["agent.session.connected", "project.opened", "app.state.changed", "edit.history.changed", "project.dirty.changed", "doc.changed", "app.state.changed", "edit.history.changed", "project.dirty.changed", "doc.changed", "doc.undone", "app.state.changed", "edit.history.changed", "project.dirty.changed", "doc.changed", "doc.redone", "app.state.changed", "edit.history.changed", "project.dirty.changed"]
+test_undo_and_redo_emit_the_declared_events (__main__.Protocol.test_undo_and_redo_emit_the_declared_events) ... ok
+test_unknown_cancellation_does_not_cancel_a_future_request 
+(__main__.Protocol.test_unknown_cancellation_does_not_cancel_a_future_request) ... ok
+unknown_argument {"jsonrpc": "2.0", "id": 102, "result": {"content": [{"type": "text", "text": "get_state: `get_state` failed: arg.unknown \u2014 `tool:get_state`: Additional properties are not allowed ('misspelled' was unexpected)"}], "structuredContent": {"status": "error", "changes": [], "warnings": [], "documentRev": null, "error": {"code": "arg.unknown", "message": "`tool:get_state`: Additional properties are not allowed ('misspelled' was unexpected)", "details": {"pointer": "/misspelled", "message": "Additional properties are not allowed ('misspelled' was unexpected)", "allowed": null, "violations": [{"pointer": "/misspelled", "message": "Additional properties are not allowed ('misspelled' was unexpected)", "allowed": null, "code": "arg.unknown"}]}}}, "isError": true}}
+test_unknown_tool_argument_is_rejected (__main__.Protocol.test_unknown_tool_argument_is_rejected) ... ok
+wrong_dry_run {"jsonrpc": "2.0", "id": 103, "result": {"content": [{"type": "text", "text": "run_command: `run_command` failed: arg.invalid \u2014 `tool:run_command`: \"true\" is not of type \"boolean\""}], "structuredContent": {"status": "error", "changes": [], "warnings": [], "documentRev": null, "error": {"code": "arg.invalid", "message": "`tool:run_command`: \"true\" is not of type \"boolean\"", "details": {"pointer": "/dryRun", "message": "\"true\" is not of type \"boolean\"", "allowed": {"type": "boolean"}, "violations": [{"pointer": "/dryRun", "message": "\"true\" is not of type \"boolean\"", "allowed": {"type": "boolean"}, "code": "arg.invalid"}]}}}, "isError": true}}
+test_wrong_dry_run_type_does_not_commit (__main__.Protocol.test_wrong_dry_run_type_does_not_commit) ... ok
+wrong_expect_rev {"jsonrpc": "2.0", "id": 103, "result": {"content": [{"type": "text", "text": "set_properties: `set_properties` failed: arg.invalid \u2014 `tool:set_properties`: [] is not of type \"object\""}], "structuredContent": {"status": "error", "changes": [], "warnings": [], "documentRev": null, "error": {"code": "arg.invalid", "message": "`tool:set_properties`: [] is not of type \"object\"", "details": {"pointer": "/expectRev", "message": "[] is not of type \"object\"", "allowed": {"type": "object"}, "violations": [{"pointer": "/expectRev", "message": "[] is not of type \"object\"", "allowed": {"type": "object"}, "code": "arg.invalid"}]}}}, "isError": true}}
+test_wrong_expect_rev_type_does_not_commit (__main__.Protocol.test_wrong_expect_rev_type_does_not_commit) ... ok
+test_percentile_evidence_retains_observations (__main__.ReleaseFeature.test_percentile_evidence_retains_observations) 
+... ok
+test_suspension_hooks_are_not_a_normal_dependency_feature 
+(__main__.ReleaseFeature.test_suspension_hooks_are_not_a_normal_dependency_feature) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 3.056s
+
+OK
+=== c14-r2-mcp.py
+test_analyzer_rejects_backwards_time_nonfinite_and_empty_series 
+(__main__.MeasurementValidation.test_analyzer_rejects_backwards_time_nonfinite_and_empty_series) ... ok
+test_all_state_include_combinations_are_command_projections 
+(__main__.Protocol.test_all_state_include_combinations_are_command_projections) ... ok
+test_cancel_live_elicitation_releases_the_call_worker 
+(__main__.Protocol.test_cancel_live_elicitation_releases_the_call_worker) ... ok
+test_close_with_save_offers_external_change_confirmation 
+(__main__.Protocol.test_close_with_save_offers_external_change_confirmation) ... ok
+test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once 
+(__main__.Protocol.test_decline_cancel_and_invalid_accept_settle_request_id_and_audit_once) ... ok
+publication_failure {"status": "error", "changes": [], "warnings": [], "documentRev": 1, "error": {"code": "fs.ioError", "message": "`C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-nf5qiud9\\directory.jsonl` could not be published: Access is denied. (os error 5)", "details": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-nf5qiud9\\directory.jsonl", "reason": "publish", "committed": false, "documentRev": 1}}} target_is_directory True
+test_export_publication_failure_is_not_a_successful_audit_record 
+(__main__.Protocol.test_export_publication_failure_is_not_a_successful_audit_record) ... ok
+retry_replay {"label": "Agent activity", "atomic": false, "stopOnError": true, "steps": [{"id": "project.create", "params": {"name": "P", "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-8l0e_ir4\\P.animpkg"}}, {"id": "doc.object.patch", "params": {"targets": ["sc_01M66F1Z0BGCX5G7XPFTEGY0PE"], "props": {"meta": {"n": 1}}}}, {"id": "doc.object.patch", "params": {"targets": ["sc_01M66F1Z0BGCX5G7XPFTEGY0PE"], "props": {"meta": {"n": 2}}}}, {"id": "edit.undo", "params": {}}]}
+test_idempotent_retry_is_not_a_second_replay_operation 
+(__main__.Protocol.test_idempotent_retry_is_not_a_second_replay_operation) ... ok
+test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded 
+(__main__.Protocol.test_invalid_utf8_at_eof_is_a_parse_error_and_shutdown_is_bounded) ... ok
+test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize 
+(__main__.Protocol.test_invalid_utf8_mid_frame_and_oversized_frames_resynchronize) ... ok
+test_long_unicode_and_nested_globs_keep_the_server_usable 
+(__main__.Protocol.test_long_unicode_and_nested_globs_keep_the_server_usable) ... ok
+test_nested_wrapper_validation_never_edits (__main__.Protocol.test_nested_wrapper_validation_never_edits) ... ok
+test_nonreading_client_without_eof_is_closed_by_pressure_timeout 
+(__main__.Protocol.test_nonreading_client_without_eof_is_closed_by_pressure_timeout) ... ok
+partial_replay {"export": {"status": "ok", "result": {"path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-6nqak1lh\\partial.json", "entries": 3, "omitted": [{"seq": 3, "tool": "run_command", "command_id": "doc.object.get", "reason": "readOnly"}]}, "changes": [], "warnings": [], "documentRev": 2}, "batch": {"label": "Agent activity", "atomic": false, "stopOnError": true, "steps": [{"id": "project.create", "params": {"name": "P", "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-r1-6nqak1lh\\P.animpkg"}}, {"id": "doc.object.patch", "params": {"targets": ["sc_01M66F2A9VYANW2QPMCESYXYWD"], "props": {"meta": {"kept": 1}}}}]}}
+test_partial_sequential_batch_keeps_its_committed_edits_in_replay 
+(__main__.Protocol.test_partial_sequential_batch_keeps_its_committed_edits_in_replay) ... ok
+test_typed_tools_reject_nested_types_and_extra_options 
+(__main__.Protocol.test_typed_tools_reject_nested_types_and_extra_options) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 13.189s
+
+OK
+skip collect_runtime_evidence.py: M0 evidence collector, not a test: needs a release build and writes reviews/evidence/M0-C0.1-r1/
+=== headless_guard.py
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+=== summary
+ok   c02-r1-tooling.py (0.7 s)
+ok   c02-r2-tooling.py (0.6 s)
+ok   c02-r3-tooling.py (0.3 s)
+ok   c03-r1-tooling.py (1.1 s)
+ok   c03-r2-tooling.py (0.6 s)
+ok   c04-r2-decisions.py (0.1 s)
+ok   c04-r3-decisions.py (0.2 s)
+ok   c04-r3-page.py (1.7 s)
+ok   c04-r5-decisions.py (0.1 s)
+ok   c11-r2-review-policy.py (0.1 s)
+ok   c14-r1-mcp.py (3.1 s)
+ok   c14-r2-mcp.py (13.3 s)
+ok   headless_guard.py (0.2 s)
+13/13 reviewer Python suites passed

@@ -1,0 +1,229 @@
+[
+  {
+    "file": "autosave-macos.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "macos",
+      "arch": "aarch64",
+      "cpus": 3,
+      "profile": "debug",
+      "startedAt": "2026-10-30T10:51:03.599Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "longBatchMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 3185.781292,
+        "p90": 3185.781292,
+        "p99": 3185.781292,
+        "max": 3185.781292
+      },
+      "queuedSchedulingDelayMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 36.862249999999996,
+        "p90": 40.646916999999995,
+        "p99": 52.307583,
+        "max": 52.307583
+      },
+      "queuedSnapshotMs": {
+        "unit": "ms",
+        "n": 10,
+        "p50": 0.110541,
+        "p90": 0.13725,
+        "p99": 0.169084,
+        "max": 0.169084
+      },
+      "snapshotAfterLongBatchMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 0.157916,
+        "p90": 0.157916,
+        "p99": 0.157916,
+        "max": 0.157916
+      },
+      "snapshotMs": {
+        "unit": "ms",
+        "n": 15,
+        "p50": 0.109625,
+        "p90": 0.161166,
+        "p99": 0.179041,
+        "max": 0.179041
+      },
+      "waitBehindLongBatchMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 3074.213792,
+        "p90": 3074.213792,
+        "p99": 3074.213792,
+        "max": 3074.213792
+      }
+    },
+    "problems": []
+  },
+  {
+    "file": "cache-bounds-macos.json",
+    "ok": true,
+    "kind": "facts",
+    "problems": []
+  },
+  {
+    "file": "fingerprint-macos.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "macos",
+      "arch": "aarch64",
+      "cpus": 3,
+      "profile": "debug",
+      "startedAt": "2026-10-30T10:51:03.791Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "callerLatencyBackToBackMs": {
+        "unit": "ms",
+        "n": 52,
+        "p50": 44.321417000000004,
+        "p90": 56.801542,
+        "p99": 67.486958,
+        "max": 71.17662499999999
+      },
+      "callerLatencyScheduled2sWatchMs": {
+        "unit": "ms",
+        "n": 507,
+        "p50": 4.407542,
+        "p90": 4.987374999999999,
+        "p99": 8.049125,
+        "max": 78.807875
+      },
+      "openMs": {
+        "unit": "ms",
+        "n": 1,
+        "p50": 403.18370799999997,
+        "p90": 403.18370799999997,
+        "p99": 403.18370799999997,
+        "max": 403.18370799999997
+      },
+      "saveContentCheckMs": {
+        "unit": "ms",
+        "n": 5,
+        "p50": 459.881041,
+        "p90": 525.7111249999999,
+        "p99": 525.7111249999999,
+        "max": 525.7111249999999
+      },
+      "watchPassMs": {
+        "unit": "ms",
+        "n": 20,
+        "p50": 51.67525,
+        "p90": 55.88875,
+        "p99": 56.989375,
+        "max": 56.989375
+      }
+    },
+    "problems": []
+  },
+  {
+    "file": "lock-liveness-macos.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "macos",
+      "arch": "aarch64",
+      "cpus": 3,
+      "profile": "debug",
+      "startedAt": "2026-10-30T10:51:00.138Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "acquireOnHeldMicros": {
+        "unit": "us",
+        "n": 50,
+        "p50": 229.334,
+        "p90": 337.709,
+        "p99": 478.416,
+        "max": 478.416
+      },
+      "crashedHolderTakeoverMs": {
+        "unit": "ms",
+        "n": 5,
+        "p50": 3.372875,
+        "p90": 4.119707999999999,
+        "p99": 4.119707999999999,
+        "max": 4.119707999999999
+      },
+      "probeHeldMicros": {
+        "unit": "us",
+        "n": 500,
+        "p50": 8.125,
+        "p90": 14.625,
+        "p99": 58.334,
+        "max": 155.375
+      },
+      "processAliveFallbackMs": {
+        "unit": "ms",
+        "n": 5,
+        "p50": 36.005959,
+        "p90": 39.239708,
+        "p99": 39.239708,
+        "max": 39.239708
+      }
+    },
+    "problems": []
+  },
+  {
+    "file": "never-block-mcp-macos.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "macos",
+      "arch": "aarch64",
+      "cpus": 3,
+      "profile": "debug",
+      "startedAt": "2026-10-30T10:54:21.966Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "callLatencyMs": {
+        "unit": "ms",
+        "n": 719,
+        "p50": 3.244666,
+        "p90": 4.215041,
+        "p99": 8.270958,
+        "max": 34.794334000000006
+      }
+    },
+    "problems": []
+  },
+  {
+    "file": "queued-calls-macos.json",
+    "ok": true,
+    "kind": "series",
+    "environment": {
+      "os": "macos",
+      "arch": "aarch64",
+      "cpus": 3,
+      "profile": "debug",
+      "startedAt": "2026-10-30T10:54:22.486Z",
+      "timeOrigin": "tMs: milliseconds since startedAt on a monotonic clock",
+      "summaryRule": "nearest rank: sorted[round((n - 1) * q)]"
+    },
+    "series": {
+      "perCallMs": {
+        "unit": "ms",
+        "n": 50,
+        "p50": 199.681667,
+        "p90": 317.07133300000004,
+        "p99": 363.52916600000003,
+        "max": 363.52916600000003
+      }
+    },
+    "problems": []
+  }
+]

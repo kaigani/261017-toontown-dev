@@ -1,0 +1,116 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r2\crates\executor)
+    Finished `test` profile [unoptimized] target(s) in 0.33s
+     Running tests\c14_r2_contracts.rs (target\debug\deps\c14_r2_contracts-046160e4edff6869.exe)
+
+running 3 tests
+test downgrade_and_corrupt_preferences_have_explicit_restart_behaviour ... ok
+test recovered_project_records_original_content_and_autosave_preserves_it ... ok
+test quit_save_and_agent_save_as_current_preserve_external_content ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+
+     Running tests\compile_fail.rs (target\debug\deps\compile_fail-ea015477d1d54add.exe)
+
+running 1 test
+   Compiling cfg-if v1.0.5
+   Compiling memchr v2.8.3
+   Compiling equivalent v1.0.3
+   Compiling allocator-api2 v0.2.21
+   Compiling foldhash v0.2.0
+   Compiling itoa v1.0.18
+   Compiling regex-syntax v0.8.11
+   Compiling scopeguard v1.2.0
+   Compiling windows-link v0.2.1
+   Compiling smallvec v1.16.3
+   Compiling once_cell v1.21.4
+   Compiling bit-vec v0.8.0
+   Compiling borrow-or-share v0.2.4
+   Compiling typenum v1.20.1
+   Compiling vsimd v0.8.0
+   Compiling percent-encoding v2.3.2
+   Compiling bytecount v0.6.9
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling zerocopy v0.8.63
+   Compiling micromap v0.3.0
+   Compiling outref v0.5.2
+   Compiling num-cmp v0.1.0
+   Compiling unicode-general-category v1.1.0
+   Compiling data-encoding v2.11.1
+   Compiling tinyvec v1.13.3
+   Compiling num-traits v0.2.19
+   Compiling dyn-clone v1.0.20
+   Compiling ref-cast v1.0.27
+   Compiling strum v0.28.0
+   Compiling thiserror v2.0.21
+   Compiling adler2 v2.0.1
+   Compiling getrandom v0.3.4
+   Compiling getrandom v0.4.3
+   Compiling lock_api v0.4.14
+   Compiling const-oid v0.10.2
+   Compiling ryu v1.0.23
+   Compiling simd-adler32 v0.3.10
+   Compiling bit-set v0.8.0
+   Compiling parking_lot_core v0.9.12
+   Compiling crc32fast v1.5.2
+   Compiling hashbrown v0.17.1
+   Compiling aho-corasick v1.1.5
+   Compiling cpufeatures v0.3.1
+   Compiling miniz_oxide v0.9.1
+   Compiling uuid-simd v0.8.0
+   Compiling parking_lot v0.12.5
+   Compiling unicode-normalization v0.1.26
+   Compiling num-integer v0.1.47
+   Compiling num-complex v0.4.6
+   Compiling num-bigint v0.4.8
+   Compiling num-iter v0.1.46
+   Compiling hybrid-array v0.4.15
+   Compiling flate2 v1.1.10
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling jsonschema-regex v0.59.0
+   Compiling regex-automata v0.4.18
+   Compiling num-rational v0.4.2
+   Compiling serde v1.0.229
+   Compiling indexmap v2.14.2
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling num v0.4.3
+   Compiling fraction v0.17.0
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling serde_json v1.0.154
+   Compiling ahash v0.8.12
+   Compiling schemars v1.2.3
+   Compiling referencing v0.59.0
+   Compiling jsonschema-value v0.59.0
+   Compiling fancy-regex v0.19.2
+   Compiling regex v1.13.1
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r2\crates\model)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r2\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r2\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r2\crates\executor)
+   Compiling tt-executor-tests v0.0.0 (C:\Users\kaiga\work\review\m1-c14-r2\target\tests\trybuild\tt-executor)
+    Finished `dev` profile [unoptimized] target(s) in 16.65s
+
+
+test tests\ui\core_install.rs [should fail to compile] ... ok
+test tests\ui\cx_clone_default.rs [should fail to compile] ... ok
+test tests\ui\cx_constructor.rs [should fail to compile] ... ok
+test tests\ui\cx_struct_literal.rs [should fail to compile] ... ok
+test tests\ui\document_fields.rs [should fail to compile] ... ok
+test tests\ui\enablement_read_only.rs [should fail to compile] ... ok
+test tests\ui\entity_fields.rs [should fail to compile] ... ok
+test tests\ui\handle_channel.rs [should fail to compile] ... ok
+test tests\ui\job_keeps_context.rs [should fail to compile] ... ok
+test tests\ui\load_grant_forged.rs [should fail to compile] ... ok
+test tests\ui\request_type.rs [should fail to compile] ... ok
+test tests\ui\session_private.rs [should fail to compile] ... ok
+test tests\ui-pass\read_snapshots.rs [should pass] ... ok
+
+
+test exclusive_mutation_capability ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 38.97s
+

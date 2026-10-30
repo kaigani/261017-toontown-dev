@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r3\reviews\evidence\M1-C1.2-r3\audit-ci.py", line 34, in <module>
+    assert set(required) <= set(targets), (job["name"], set(required) - set(targets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('check (macos-latest)', {'adversarial_c01'})

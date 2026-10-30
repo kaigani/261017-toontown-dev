@@ -1,0 +1,35 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\model)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 28.98s
+     Running tests\c12_r1_scale.rs (target\release\deps\c12_r1_scale-92c3818502fbb36d.exe)
+
+running 1 test
+{"profile":"release","cases":[{"fixture":"100000 strokes","objects":100092,"assembleSeconds":4.1463118,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.4331143,"maximumCallSeconds":0.0075754,"create20CheckpointsSeconds":0.0009204,"find100Seconds":0.1193374,"documentRev":1},{"fixture":"10000 drawings","objects":10091,"assembleSeconds":0.1531112,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.5964638,"maximumCallSeconds":0.0030035,"create20CheckpointsSeconds":0.0634071,"find100Seconds":0.0196934,"documentRev":1}]}
+test every_command_rejects_huge_malformed_input_on_large_documents ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.58s
+
+     Running tests\c12_r2_scale.rs (target\release\deps\c12_r2_scale-4d7833ba5ebbd26c.exe)
+
+running 1 test
+test hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.99s
+
+     Running tests\c12_r3_stress.rs (target\release\deps\c12_r3_stress-23a0e56002ffc4d9.exe)
+
+running 5 tests
+test ordinary_dry_run_preserves_exact_history_and_matches_real_result ... ok
+796 entries, 2388 malformed invocations completed under watchdog
+test all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded ... ok
+8 clients, 248 commits, 891 correctly rejected conflicts, documentRev 249
+test eight_clients_cas_commands_and_batches_have_no_lost_updates ... ok
+809 typed examples executed and successful results validated
+test every_executable_typed_example_also_validates_its_result_schema ... ok
+{"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11176,"durationSeconds":9.1254757,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.15s
+
+exit 0

@@ -1,0 +1,74 @@
+{
+  "Windows/sdk-conformance.json": {
+    "sha256": "0d2767ed3e02029b8596ae71e9cc85f5dddcab10cbca8660e73cd94358c5f596",
+    "matchesInherited": true
+  },
+  "Windows/selftest-1.json": {
+    "sha256": "78778d28b3e5f38df2c3129b57b70fa83828539115f5ec5dd57c82efd11204c4",
+    "matchesInherited": true
+  },
+  "Windows/toontown-headless.exe": {
+    "sha256": "70a068cf2add9db1345da63681b2c9cd4f861484ca29fb0e6f11bd4963f2bbbf",
+    "matchesInherited": true
+  },
+  "Windows/c14-measurements/autosave-windows.json": {
+    "sha256": "4b69e316b7bc3d6620ec0f5e0f3d17d9eba33f4531a3e36ddadcf8b0a75b55f0",
+    "matchesInherited": true
+  },
+  "Windows/c14-measurements/cache-bounds-windows.json": {
+    "sha256": "f643aa0a4ffaafc4f7582578f25a426ee82d413a3d1fdfff7cba686501fb1ca6",
+    "matchesInherited": true
+  },
+  "Windows/c14-measurements/fingerprint-windows.json": {
+    "sha256": "9d26d410c8a1cd2a9f387725ec25c710199bac02150a0666b165234f20d80dd2",
+    "matchesInherited": true
+  },
+  "Windows/c14-measurements/lock-liveness-windows.json": {
+    "sha256": "43d235b083828e6553215ae0fa799fa388e4cbca0fa84f02fb61836ffcb98932",
+    "matchesInherited": true
+  },
+  "Windows/c14-measurements/never-block-mcp-windows.json": {
+    "sha256": "aa2286754a7d44f0c9f0f538e152604034ca77d072a2b8781b35aa9ddce11fc6",
+    "matchesInherited": true
+  },
+  "Windows/c14-measurements/queued-calls-windows.json": {
+    "sha256": "24b14ad2a205e17aa97f97086f68aab59cea831977eb5407cb22953cf89d47c8",
+    "matchesInherited": true
+  },
+  "macOS/sdk-conformance.json": {
+    "sha256": "a18676af5daec5da73075489cda431b9ce2c8b0525a21557a77d3299e71dc6a2",
+    "matchesInherited": true
+  },
+  "macOS/selftest-1.json": {
+    "sha256": "535154768e50065b4807b6f4c4975c2910bee7926533851de2dcf7afe525e1a9",
+    "matchesInherited": true
+  },
+  "macOS/toontown-headless": {
+    "sha256": "252e8d434a2e6fb531e63d30244590e820e0fda1f79de2b3652246e7fe6cf448",
+    "matchesInherited": true
+  },
+  "macOS/c14-measurements/autosave-macos.json": {
+    "sha256": "46b606c73236d489bc3d95faaf31227a7e1d3639e89578c04f355820261dca75",
+    "matchesInherited": true
+  },
+  "macOS/c14-measurements/cache-bounds-macos.json": {
+    "sha256": "c0f969baf063c5d3bec14198e5dca6a7254c8fcca75e1c638004d1cca209a951",
+    "matchesInherited": true
+  },
+  "macOS/c14-measurements/fingerprint-macos.json": {
+    "sha256": "fdbde364e6bda22855b65561068c2dcec75007f3cf98296163dac0aa143e716c",
+    "matchesInherited": true
+  },
+  "macOS/c14-measurements/lock-liveness-macos.json": {
+    "sha256": "fe7bb7fa6e6e5959ecc54951ef6906bf79b202275b935b06c2af04d1103ee141",
+    "matchesInherited": true
+  },
+  "macOS/c14-measurements/never-block-mcp-macos.json": {
+    "sha256": "7c2b3c20521973b9b5996202f24f2f6b66cf9bca565835082966270d0131fe13",
+    "matchesInherited": true
+  },
+  "macOS/c14-measurements/queued-calls-macos.json": {
+    "sha256": "87d8351ae004ca0afb16e0618e18a742aa8449e35a7a96442937f933d7e6a17c",
+    "matchesInherited": true
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-model",
+    "--test",
+    "c11_r5_write_bounds",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:30:30.139687+00:00",
+  "elapsed_seconds": 18.047,
+  "exit_code": 0,
+  "log": "logs/r5-regressions.log",
+  "sha256": "d3f9dc9b79c424357313b3a4062b41f9e60e007274546a6c82df5dc97a4b2a15",
+  "env": {}
+}

@@ -1,0 +1,14 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\.t3\worktrees\261017-toontown-dev\m1-core-kernel\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.42s
+     Running tests\c12_r4_probe.rs (target\debug\deps\c12_r4_probe-3c86dfc3b7edba89.exe)
+
+running 5 tests
+test immediately_querying_a_staged_checkpoint_is_empty ... ok
+test single_and_final_batch_checkpoints_are_coherent_before_and_after_later_edits ... ok
+test nested_checkpoints_do_not_reinvalidate_unchanged_drawing_content ... ok
+test drawing_invalidation_survives_the_filter_cartesian_product ... ok
+test sixteen_identical_waiters_keep_the_first_envelope_and_conflict_on_different_params ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.77s
+
+exit 0

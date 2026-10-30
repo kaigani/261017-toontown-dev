@@ -1,0 +1,84 @@
+
+> toontown-workspace@ test C:\Users\kaiga\work\review\m1-c11-r2
+> pnpm -r test && node --test scripts/check-npm-licenses.test.mjs
+
+
+> @toontown/desktop@0.0.1 test C:\Users\kaiga\work\review\m1-c11-r2\desktop
+> vitest run --config vite.config.ts
+
+
+ RUN  v5.0.5 C:/Users/kaiga/work/review/m1-c11-r2/desktop
+
+
+ Test Files  37 passed (37)
+      Tests  313 passed (313)
+   Start at  14:28:44
+   Duration  157.54s (tests 85%, environment 6%, transform 3%, setup 3%, import 2%)
+
+    Isolate  37 workers spawned · ~375ms startup each (spawn + environment, per file)
+             at least ~13.51s faster with isolate: false — reuses workers across files instead of one per file
+
+TAP version 13
+# Subtest: single identifiers
+ok 1 - single identifiers
+  ---
+  duration_ms: 0.8005
+  type: 'test'
+  ...
+# Subtest: OR needs one allowed alternative, AND needs all
+ok 2 - OR needs one allowed alternative, AND needs all
+  ---
+  duration_ms: 0.1956
+  type: 'test'
+  ...
+# Subtest: precedence: AND binds tighter than OR
+ok 3 - precedence: AND binds tighter than OR
+  ---
+  duration_ms: 0.1082
+  type: 'test'
+  ...
+# Subtest: nested groups (C01-R1-01)
+ok 4 - nested groups (C01-R1-01)
+  ---
+  duration_ms: 0.8199
+  type: 'test'
+  ...
+# Subtest: WITH exceptions must be allowed as a whole
+ok 5 - WITH exceptions must be allowed as a whole
+  ---
+  duration_ms: 0.1666
+  type: 'test'
+  ...
+# Subtest: or-later suffix
+ok 6 - or-later suffix
+  ---
+  duration_ms: 0.0666
+  type: 'test'
+  ...
+# Subtest: malformed and non-SPDX strings fail closed
+ok 7 - malformed and non-SPDX strings fail closed
+  ---
+  duration_ms: 0.1101
+  type: 'test'
+  ...
+# Subtest: every operand is validated, even behind an allowed OR branch (C01-R2-03)
+ok 8 - every operand is validated, even behind an allowed OR branch (C01-R2-03)
+  ---
+  duration_ms: 0.157
+  type: 'test'
+  ...
+# Subtest: allow-list is read from deny.toml
+ok 9 - allow-list is read from deny.toml
+  ---
+  duration_ms: 0.3645
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 85.5683

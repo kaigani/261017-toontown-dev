@@ -1,0 +1,22 @@
+{
+  "originalSha256": "cc1f585ce92c2de57b948be17a6f512a64a9c690ddfcb8dada4d8f396114422b",
+  "edits": [
+    "restrict to C1.3 namespace and app.quit",
+    "await every job result",
+    "validate x-jobResult schema",
+    "threshold 140 -> 48 for restricted scope"
+  ],
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-executor",
+    "--locked",
+    "--test",
+    "c13_r1_evidence_examples",
+    "every_example_runs_on_the_fixture_under_the_watchdog",
+    "--",
+    "--nocapture"
+  ],
+  "exitCode": 0
+}

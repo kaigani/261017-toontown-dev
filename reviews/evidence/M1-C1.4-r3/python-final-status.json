@@ -1,0 +1,5 @@
+{
+  "exitCode": 1,
+  "expected": "13 original files pass; two r3 files fail new findings",
+  "binary": "C:\\Users\\kaiga\\work\\review\\m1-c14-r3\\target\\review-ci-r3\\headless-Windows\\toontown-headless.exe"
+}

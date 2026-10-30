@@ -1,0 +1,356 @@
+{
+  "owningSectionDomainsChecked": 21,
+  "checks": [
+    {
+      "id": "print.settings.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "layout"
+      ],
+      "values": [
+        "single",
+        "grid",
+        "flipbook"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "type"
+      ],
+      "values": [
+        "wholeMovie",
+        "currentSceneCamera",
+        "currentSceneXsheet",
+        "element"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "range"
+      ],
+      "values": [
+        "all",
+        "frames",
+        "selection",
+        "playbackRange"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.get",
+      "part": "result",
+      "path": [
+        "properties",
+        "orientation"
+      ],
+      "values": [
+        "portrait",
+        "landscape"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "layout"
+      ],
+      "values": [
+        "single",
+        "grid",
+        "flipbook"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "type"
+      ],
+      "values": [
+        "wholeMovie",
+        "currentSceneCamera",
+        "currentSceneXsheet",
+        "element"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "range"
+      ],
+      "values": [
+        "all",
+        "frames",
+        "selection",
+        "playbackRange"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.set",
+      "part": "result",
+      "path": [
+        "properties",
+        "orientation"
+      ],
+      "values": [
+        "portrait",
+        "landscape"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.set",
+      "part": "params",
+      "path": [
+        "properties",
+        "values",
+        "properties",
+        "layout"
+      ],
+      "values": [
+        "single",
+        "grid",
+        "flipbook"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.set",
+      "part": "params",
+      "path": [
+        "properties",
+        "values",
+        "properties",
+        "type"
+      ],
+      "values": [
+        "wholeMovie",
+        "currentSceneCamera",
+        "currentSceneXsheet",
+        "element"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.set",
+      "part": "params",
+      "path": [
+        "properties",
+        "values",
+        "properties",
+        "range"
+      ],
+      "values": [
+        "all",
+        "frames",
+        "selection",
+        "playbackRange"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.settings.set",
+      "part": "params",
+      "path": [
+        "properties",
+        "values",
+        "properties",
+        "orientation"
+      ],
+      "values": [
+        "portrait",
+        "landscape"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.preview.get",
+      "part": "params",
+      "path": [
+        "properties",
+        "layout"
+      ],
+      "values": [
+        "single",
+        "grid",
+        "flipbook"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.preview.get",
+      "part": "params",
+      "path": [
+        "properties",
+        "type"
+      ],
+      "values": [
+        "wholeMovie",
+        "currentSceneCamera",
+        "currentSceneXsheet",
+        "element"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.preview.get",
+      "part": "params",
+      "path": [
+        "properties",
+        "range"
+      ],
+      "values": [
+        "all",
+        "frames",
+        "selection",
+        "playbackRange"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.preview.get",
+      "part": "params",
+      "path": [
+        "properties",
+        "orientation"
+      ],
+      "values": [
+        "portrait",
+        "landscape"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.run",
+      "part": "params",
+      "path": [
+        "properties",
+        "layout"
+      ],
+      "values": [
+        "single",
+        "grid",
+        "flipbook"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.run",
+      "part": "params",
+      "path": [
+        "properties",
+        "type"
+      ],
+      "values": [
+        "wholeMovie",
+        "currentSceneCamera",
+        "currentSceneXsheet",
+        "element"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.run",
+      "part": "params",
+      "path": [
+        "properties",
+        "range"
+      ],
+      "values": [
+        "all",
+        "frames",
+        "selection",
+        "playbackRange"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "print.run",
+      "part": "params",
+      "path": [
+        "properties",
+        "orientation"
+      ],
+      "values": [
+        "portrait",
+        "landscape"
+      ],
+      "allMembersAccepted": true,
+      "outsideSetRejected": true,
+      "source": "spec/09_playback_export.md:1077"
+    },
+    {
+      "id": "xsheet.lightTable.set",
+      "part": "params",
+      "field": "placement",
+      "values": [
+        "over",
+        "under"
+      ],
+      "source": "spec/04_timeline_xsheet.md:1460",
+      "outsideSetRejected": true
+    }
+  ],
+  "sampleWidening": {
+    "id": "xsheet.lightTable.add",
+    "path": "params/items[]/placement",
+    "ownColumn": "items?: [object]",
+    "formerSetOrigin": "sibling xsheet.lightTable.set parameter",
+    "ruling": "Untyped context-inferred field receives type/structure; the explicitly stated set on the owning .set field remains enforced."
+  }
+}

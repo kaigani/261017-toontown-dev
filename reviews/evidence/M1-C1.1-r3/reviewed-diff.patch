@@ -1,0 +1,1241 @@
+diff --git a/.gitignore b/.gitignore
+index b2cfa18..e3d3fe8 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -14,6 +14,8 @@ Thumbs.db
+ .idea/
+ # Local
+ *.log
++# Raw evidence logs are committed (review hygiene; C11-R2-09)
++!reviews/evidence/**/*.log
+ .env
+ # Python
+ __pycache__/
+diff --git a/crates/model/schema/model-1.0.schema.json b/crates/model/schema/model-1.0.schema.json
+index f34a454..52b7c30 100644
+--- a/crates/model/schema/model-1.0.schema.json
++++ b/crates/model/schema/model-1.0.schema.json
+@@ -1733,7 +1733,7 @@
+           "type": "object",
+           "additionalProperties": false,
+           "patternProperties": {
+-            "^[1-9][0-9]*$": {
++            "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$": {
+               "type": "string",
+               "maxLength": 10000
+             }
+@@ -4044,7 +4044,7 @@
+           "type": "object",
+           "additionalProperties": false,
+           "patternProperties": {
+-            "^\\d+$": {
++            "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$": {
+               "type": "string"
+             }
+           },
+@@ -4065,7 +4065,8 @@
+         "stale": {
+           "type": "boolean",
+           "x-derived": true,
+-          "readOnly": true
++          "readOnly": true,
++          "x-since": "1.0"
+         }
+       },
+       "required": ["mouths", "manual", "source", "producedFor"],
+@@ -5995,16 +5996,20 @@
+       "description": "A stub standing for an object that is not expanded (10 §2.2). A stub has no `rev`.",
+       "properties": {
+         "id": {
+-          "$ref": "#/$defs/Id"
++          "$ref": "#/$defs/Id",
++          "x-since": "1.0"
+         },
+         "colourId": {
+-          "$ref": "#/$defs/Id"
++          "$ref": "#/$defs/Id",
++          "x-since": "1.0"
+         },
+         "type": {
+-          "$ref": "#/$defs/ObjectType"
++          "$ref": "#/$defs/ObjectType",
++          "x-since": "1.0"
+         },
+         "name": {
+-          "type": "string"
++          "type": "string",
++          "x-since": "1.0"
+         }
+       },
+       "required": ["type"],
+diff --git a/crates/model/src/canonical.rs b/crates/model/src/canonical.rs
+index 403be9f..79149c7 100644
+--- a/crates/model/src/canonical.rs
++++ b/crates/model/src/canonical.rs
+@@ -175,10 +175,13 @@ fn write_value(out: &mut String, v: &Value, level: usize, depth: usize) -> Resul
+ /// Writes a JSON value in canonical form (JSON-01…JSON-03), keeping the key order of `value`.
+ ///
+ /// # Errors
+-/// `arg.invalid` for a non-finite number; `doc.limitExceeded` for nesting deeper than [`crate::MAX_JSON_DEPTH`].
++/// `arg.invalid` for a non-finite number; `doc.limitExceeded` for a value deeper than [`crate::MAX_JSON_DEPTH`]
++/// (the root at depth 1, scalars counted: exactly what [`crate::json_text`] reads).
+ pub fn to_canonical_string(value: &Value) -> Result<String, ModelError> {
+     let mut out = String::new();
+-    write_value(&mut out, value, 0, 0)?;
++    // Depth is counted as the readers count it (`json_text`, the front end): the root value at 1, scalars included,
++    // so every text a writer emits is readable (C11-R2-07).
++    write_value(&mut out, value, 0, 1)?;
+     out.push('\n');
+     Ok(out)
+ }
+@@ -495,7 +498,7 @@ pub fn to_compact_string(value: &Value) -> Result<String, ModelError> {
+         Ok(())
+     }
+     let mut out = String::new();
+-    go(&mut out, value, 0)?;
++    go(&mut out, value, 1)?;
+     Ok(out)
+ }
+ 
+diff --git a/crates/model/src/change.rs b/crates/model/src/change.rs
+index d800a03..c931cd7 100644
+--- a/crates/model/src/change.rs
++++ b/crates/model/src/change.rs
+@@ -499,40 +499,72 @@ fn diff_into(a: &Value, b: &Value, path: &str, ty: ObjectType, out: &mut Vec<Pat
+     }
+ }
+ 
+-/// The inverse of a patch: applied after the patch it restores the original exactly (10 §2.6).
++fn new_op(kind: &'static str, path: &str, from: Option<String>, value: Option<Value>, old: Option<Value>) -> PatchOp {
++    PatchOp { op: kind, from, path: path.to_owned(), range: None, value, old_value: old, elided: false }
++}
++
++/// The inverse of a patch computed against the state it applies to (10 §2.6; C11-R2-02): applying the patch to
++/// `before` and then the returned inverse restores `before` exactly. Every operation of the inverse uses concrete
++/// paths (an append `…/-` becomes the index it created; a `move` is resolved after its source was removed, so a
++/// shifted destination is restored where it really is) and carries `oldValue`, so the inverse is itself invertible.
++/// This is how change sets, undo and redo invert patches.
+ ///
+-/// `oldValue` on an `add`, `move` or `copy` records the object member the operation overwrote (RFC 6902 `add` over
+-/// an existing member replaces it); the inverse puts it back. An operation whose inverse needs a value the patch
+-/// does not carry (an elided value, a `remove` without `oldValue`) inverts to an operation without that value, which
+-/// [`apply`] rejects: the caller must reread instead of writing a guess.
++/// # Errors
++/// As [`apply`]: the patch must apply to `before`.
++pub fn invert_against(before: &Value, patch: &[PatchOp]) -> Result<Vec<PatchOp>, ModelError> {
++    apply_with_inverse(before, patch).map(|(_, inverse)| inverse)
++}
++
++/// Applies a patch and returns the result together with its concrete inverse (see [`invert_against`]).
++///
++/// # Errors
++/// As [`apply`].
++pub fn apply_with_inverse(value: &Value, patch: &[PatchOp]) -> Result<(Value, Vec<PatchOp>), ModelError> {
++    let mut v = value.clone();
++    let mut steps: Vec<Vec<PatchOp>> = Vec::with_capacity(patch.len());
++    for op in patch {
++        steps.push(apply_op(&mut v, op)?);
++    }
++    Ok((v, steps.into_iter().rev().flatten().collect()))
++}
++
++/// The inverse of a patch without its pre-state (10 §2.6). Exact for **resolved** patches — concrete array indices
++/// and `oldValue` on every operation that overwrites — which is what [`diff_json`] and [`invert_against`] produce.
++///
++/// An operation whose inverse needs information the patch does not carry inverts to an operation [`apply`] refuses,
++/// never to a guess: an elided value, a `remove` without `oldValue`, an append (`…/-`: only the pre-state knows the
++/// index it created) and a `move` into an ancestor of its source. Use [`invert_against`] for unresolved patches.
+ #[must_use]
+ pub fn invert(patch: &[PatchOp]) -> Vec<PatchOp> {
+-    let op = |kind: &'static str, path: &str, from: Option<String>, value: Option<Value>, old: Option<Value>| PatchOp {
+-        op: kind,
+-        from,
+-        path: path.to_owned(),
+-        range: None,
+-        value,
+-        old_value: old,
+-        elided: false,
+-    };
+     let mut out = Vec::with_capacity(patch.len());
+     for p in patch.iter().rev() {
+         let mut inverse: Vec<PatchOp> = match (p.op, &p.old_value) {
+-            ("add" | "copy", Some(old)) => vec![op("replace", &p.path, None, Some(old.clone()), p.value.clone())],
+-            ("add" | "copy", None) if p.path.is_empty() => vec![op("replace", "", None, None, p.value.clone())],
+-            ("add" | "copy", None) => vec![op("remove", &p.path, None, None, p.value.clone())],
+-            ("remove", old) => vec![op("add", &p.path, None, old.clone(), None)],
++            ("add" | "copy", Some(old)) => vec![new_op("replace", &p.path, None, Some(old.clone()), p.value.clone())],
++            ("add" | "copy", None) if p.path.is_empty() => vec![new_op("replace", "", None, None, p.value.clone())],
++            // An append's `-` stays `-`; `apply` refuses to remove `-` (RFC 6902 §4.2), so this inverse fails loudly.
++            ("add" | "copy", None) => vec![new_op("remove", &p.path, None, None, p.value.clone())],
++            ("remove", old) => vec![new_op("add", &p.path, None, old.clone(), None)],
+             ("replace", _) => vec![PatchOp {
+                 // `to = from + max(|old|, |new|) − 1` is symmetric, so the range is unchanged.
+                 range: p.range,
+-                ..op("replace", &p.path, None, p.old_value.clone(), p.value.clone())
++                ..new_op("replace", &p.path, None, p.old_value.clone(), p.value.clone())
+             }],
+-            ("move", old) => {
+-                let back = op("move", p.from.as_deref().unwrap_or_default(), Some(p.path.clone()), None, None);
+-                match old {
+-                    Some(o) => vec![back, op("add", &p.path, None, Some(o.clone()), None)],
+-                    None => vec![back],
++            ("move", None) => {
++                vec![new_op("move", p.from.as_deref().unwrap_or_default(), Some(p.path.clone()), None, None)]
++            }
++            ("move", Some(old)) => {
++                // The destination was an object member, so its overwrite shifted nothing. Copy the moved value back
++                // to its source first (that insertion may shift the destination's own path), then restore the
++                // destination's old value at its shifted path. A source inside the destination cannot be restored
++                // without the pre-state: moving the destination into its own descendant is refused by `apply`.
++                let from = p.from.clone().unwrap_or_default();
++                if from.starts_with(&format!("{}/", p.path)) {
++                    vec![new_op("move", &from, Some(p.path.clone()), None, None)]
++                } else {
++                    vec![
++                        new_op("copy", &from, Some(p.path.clone()), None, None),
++                        new_op("replace", &shift_after_insert(&p.path, &from), None, Some(old.clone()), None),
++                    ]
+                 }
+             }
+             _ => Vec::new(),
+@@ -547,14 +579,23 @@ pub fn invert(patch: &[PatchOp]) -> Vec<PatchOp> {
+     out
+ }
+ 
+-fn window_len(v: &Value) -> usize {
+-    match v {
+-        Value::String(s) => s.chars().count(),
+-        Value::Array(runs) => {
+-            runs.iter().filter_map(|r| r.get(1).and_then(Value::as_u64)).map(|n| usize::try_from(n).unwrap_or(0)).sum()
+-        }
+-        _ => 0,
++/// `path` after an element was inserted at the array position `inserted`: indices at or after the insertion point
++/// in the same array move up by one.
++fn shift_after_insert(path: &str, inserted: &str) -> String {
++    let (Ok(p), Ok(ins)) = (pointer::parse(path), pointer::parse(inserted)) else { return path.to_owned() };
++    let Some((last, parent)) = ins.split_last() else { return path.to_owned() };
++    let Some(at) = pointer::array_index(last) else { return path.to_owned() };
++    if p.len() <= parent.len() || p.get(..parent.len()) != Some(parent) {
++        return path.to_owned();
++    }
++    let mut tokens = p;
++    if let Some(t) = tokens.get_mut(parent.len())
++        && let Some(i) = pointer::array_index(t)
++        && i >= at
++    {
++        *t = (i + 1).to_string();
+     }
++    pointer::join(&tokens)
+ }
+ 
+ fn patch_err(op: &PatchOp, msg: impl Into<String>) -> ModelError {
+@@ -568,15 +609,15 @@ fn parent_and_last(path: &str) -> Result<(Vec<String>, String), ModelError> {
+ }
+ 
+ /// RFC 6902 `add` semantics at `path` (the root is replaced; an object member is added or replaced; an array element
+-/// is inserted). `oldValue`, when the operation carries one, must be exactly the value overwritten, so the patch
+-/// inverts exactly; an insertion that overwrites nothing must not carry one.
+-fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<(), ModelError> {
++/// is inserted, `-` appending). `oldValue`, when the operation carries one, must be exactly the value overwritten;
++/// an insertion that overwrites nothing must not carry one. Returns the concrete inverse of the insertion.
++fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<Vec<PatchOp>, ModelError> {
+     if path.is_empty() {
+         if op.old_value.as_ref().is_some_and(|o| o != root) {
+             return Err(patch_err(op, "oldValue does not match the replaced document"));
+         }
+-        *root = value;
+-        return Ok(());
++        let old = std::mem::replace(root, value.clone());
++        return Ok(vec![new_op("replace", "", None, Some(old), Some(value))]);
+     }
+     let (parent, last) = parent_and_last(path)?;
+     match pointer::get_mut(root, &parent) {
+@@ -584,8 +625,10 @@ fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<()
+             if op.old_value.is_some() && m.get(&last) != op.old_value.as_ref() {
+                 return Err(patch_err(op, "oldValue does not match the overwritten member"));
+             }
+-            m.insert(last, value);
+-            Ok(())
++            Ok(match m.insert(last, value.clone()) {
++                Some(old) => vec![new_op("replace", path, None, Some(old), Some(value))],
++                None => vec![new_op("remove", path, None, None, Some(value))],
++            })
+         }
+         Some(Value::Array(_)) if op.old_value.is_some() => {
+             Err(patch_err(op, "an array insertion overwrites nothing and carries no oldValue"))
+@@ -599,8 +642,10 @@ fn insert(root: &mut Value, path: &str, value: Value, op: &PatchOp) -> Result<()
+             if i > a.len() {
+                 return Err(patch_err(op, "array index out of range"));
+             }
+-            a.insert(i, value);
+-            Ok(())
++            a.insert(i, value.clone());
++            let mut at = parent;
++            at.push(i.to_string());
++            Ok(vec![new_op("remove", &pointer::join(&at), None, None, Some(value))])
+         }
+         _ => Err(patch_err(op, format!("no container at `{path}`"))),
+     }
+@@ -620,32 +665,58 @@ fn take(root: &mut Value, path: &str, op: &PatchOp) -> Result<Value, ModelError>
+     }
+ }
+ 
++/// Validates and applies a range replace (C11-R2-03): `value` and `oldValue` must have the target's form (strings of
++/// mouth letters for a mouth string, exposure runs for exposure), the range must be `from ≥ 1`,
++/// `to = from + max(|old|, |new|) − 1`, and `oldValue` must be exactly the content of the window it replaces.
+ fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
+     let r = op.range.ok_or_else(|| patch_err(op, "range missing"))?;
+-    if op.value.is_none() || op.old_value.is_none() {
++    let (Some(value), Some(old)) = (op.value.as_ref(), op.old_value.as_ref()) else {
+         return Err(patch_err(op, "a range replace needs value and oldValue"));
++    };
++    if r.from < 1 {
++        return Err(patch_err(op, "range.from is a frame (≥ 1)"));
+     }
+-    let start = (r.from as usize).saturating_sub(1);
+-    let old_len = op.old_value.as_ref().map_or(0, window_len);
++    let start = (r.from as usize) - 1;
++    let check_to = |old_len: usize, new_len: usize| {
++        let len = old_len.max(new_len).max(1);
++        if u64::from(r.to) + 1 == u64::from(r.from) + len as u64 {
++            Ok(())
++        } else {
++            Err(patch_err(op, format!("range.to must be from + {len} − 1 for these values")))
++        }
++    };
+     match target {
+         Value::String(s) => {
++            let (Value::String(new), Value::String(old)) = (value, old) else {
++                return Err(patch_err(op, "a mouth-string range replace takes string value and oldValue"));
++            };
++            let old: Vec<char> = old.chars().collect();
++            let new: Vec<char> = new.chars().collect();
++            if new.iter().any(|c| !"ABCDEFGX".contains(*c)) {
++                return Err(patch_err(op, "a mouth-string value holds only the mouth letters A–G and X (10 §4.14)"));
++            }
++            check_to(old.len(), new.len())?;
+             let mut chars: Vec<char> = s.chars().collect();
+-            if start > chars.len() {
+-                return Err(patch_err(op, "range starts after the end"));
++            if chars.get(start..start + old.len()) != Some(old.as_slice()) {
++                return Err(patch_err(op, "oldValue is not the current content of the range"));
+             }
+-            let end = (start + old_len).min(chars.len());
+-            let new: Vec<char> = op.value.as_ref().and_then(Value::as_str).unwrap_or("").chars().collect();
+-            chars.splice(start..end, new);
++            chars.splice(start..start + old.len(), new);
+             *s = chars.into_iter().collect();
+             Ok(())
+         }
+         Value::Array(_) => {
+             let mut frames = expand_runs(target).ok_or_else(|| patch_err(op, "not exposure runs"))?;
+-            let new = op.value.as_ref().and_then(expand_runs).ok_or_else(|| patch_err(op, "value is not runs"))?;
+-            if frames.len() < start + old_len {
+-                frames.resize(start + old_len, Value::Null);
++            let new = expand_runs(value).ok_or_else(|| patch_err(op, "value is not exposure runs"))?;
++            let old = expand_runs(old).ok_or_else(|| patch_err(op, "oldValue is not exposure runs"))?;
++            check_to(old.len(), new.len())?;
++            // Frames past the end are blank (10 §4.7).
++            if frames.len() < start + old.len() {
++                frames.resize(start + old.len(), Value::Null);
+             }
+-            frames.splice(start..start + old_len, new);
++            if frames.get(start..start + old.len()) != Some(old.as_slice()) {
++                return Err(patch_err(op, "oldValue is not the current content of the range"));
++            }
++            frames.splice(start..start + old.len(), new);
+             let runs: Vec<ExposureRun> =
+                 serde_json::from_value(frames_to_runs(&frames)).map_err(|e| patch_err(op, e.to_string()))?;
+             *target =
+@@ -656,68 +727,84 @@ fn apply_range(target: &mut Value, op: &PatchOp) -> Result<(), ModelError> {
+     }
+ }
+ 
+-/// Applies a patch to a JSON value (RFC 6902 plus the range form). All-or-nothing: on error the input is returned
+-/// unchanged through the error path.
+-///
+-/// # Errors
+-/// `arg.invalid` (with `details.pointer`) for a path that does not exist; `doc.patchTestFailed` for a failing `test`.
+-pub fn apply(value: &Value, patch: &[PatchOp]) -> Result<Value, ModelError> {
+-    let mut v = value.clone();
+-    for op in patch {
+-        // 10 §2.6: an elided value is unknown, never `null`; the receiver rereads the object instead.
+-        if op.elided {
+-            return Err(patch_err(op, "the operation's values were elided; reread the object instead of applying it"));
+-        }
+-        let value = || op.value.clone().ok_or_else(|| patch_err(op, format!("`{}` needs a value", op.op)));
+-        match op.op {
+-            "add" => insert(&mut v, &op.path, value()?, op)?,
+-            "remove" => {
+-                take(&mut v, &op.path, op)?;
+-            }
+-            "replace" if op.range.is_some() => {
+-                let tokens = pointer::parse(&op.path)?;
+-                let target = pointer::get_mut(&mut v, &tokens)
+-                    .ok_or_else(|| patch_err(op, format!("nothing at `{}`", op.path)))?;
+-                apply_range(target, op)?;
+-            }
+-            "replace" => {
+-                let new = value()?;
+-                let tokens = pointer::parse(&op.path)?;
+-                let target = pointer::get_mut(&mut v, &tokens)
+-                    .ok_or_else(|| patch_err(op, format!("nothing at `{}`", op.path)))?;
+-                *target = new;
+-            }
+-            "move" => {
+-                let from = op.from.clone().unwrap_or_default();
+-                if op.path.starts_with(&format!("{from}/")) {
+-                    return Err(patch_err(op, "cannot move a value into itself"));
+-                }
+-                if from.is_empty() || op.path.is_empty() {
+-                    return Err(patch_err(op, "`move` needs non-root paths"));
+-                }
+-                let item = take(&mut v, &from, op)?;
+-                insert(&mut v, &op.path, item, op)?;
++/// Applies one operation and returns its concrete inverse against the state it was applied to.
++fn apply_op(v: &mut Value, op: &PatchOp) -> Result<Vec<PatchOp>, ModelError> {
++    // 10 §2.6: an elided value is unknown, never `null`; the receiver rereads the object instead.
++    if op.elided {
++        return Err(patch_err(op, "the operation's values were elided; reread the object instead of applying it"));
++    }
++    let value = || op.value.clone().ok_or_else(|| patch_err(op, format!("`{}` needs a value", op.op)));
++    // RFC 6902 §4.4/§4.5: `move` and `copy` name their source; a missing `from` is an error, not the root.
++    let from = || op.from.clone().ok_or_else(|| patch_err(op, format!("`{}` needs `from`", op.op)));
++    match op.op {
++        "add" => insert(v, &op.path, value()?, op),
++        "remove" => {
++            let old = take(v, &op.path, op)?;
++            Ok(vec![new_op("add", &op.path, None, Some(old), None)])
++        }
++        "replace" if op.range.is_some() => {
++            let tokens = pointer::parse(&op.path)?;
++            let target =
++                pointer::get_mut(v, &tokens).ok_or_else(|| patch_err(op, format!("nothing at `{}`", op.path)))?;
++            apply_range(target, op)?;
++            Ok(vec![PatchOp {
++                range: op.range,
++                ..new_op("replace", &op.path, None, op.old_value.clone(), op.value.clone())
++            }])
++        }
++        "replace" => {
++            let new = value()?;
++            let tokens = pointer::parse(&op.path)?;
++            let target =
++                pointer::get_mut(v, &tokens).ok_or_else(|| patch_err(op, format!("nothing at `{}`", op.path)))?;
++            let old = std::mem::replace(target, new.clone());
++            Ok(vec![new_op("replace", &op.path, None, Some(old), Some(new))])
++        }
++        "move" => {
++            let from = from()?;
++            if op.path.starts_with(&format!("{from}/")) {
++                return Err(patch_err(op, "cannot move a value into itself"));
+             }
+-            "copy" => {
+-                let from = pointer::parse(op.from.as_deref().unwrap_or_default())?;
+-                let item = pointer::get(&v, &from).cloned().ok_or_else(|| patch_err(op, "nothing to copy"))?;
+-                insert(&mut v, &op.path, item, op)?;
++            if from.is_empty() || op.path.is_empty() {
++                return Err(patch_err(op, "`move` needs non-root paths"));
+             }
+-            "test" => {
+-                let expected = value()?;
+-                let tokens = pointer::parse(&op.path)?;
+-                if pointer::get(&v, &tokens) != Some(&expected) {
+-                    return Err(ModelError::with_details(
+-                        codes::PATCH_TEST_FAILED,
+-                        format!("test failed at `{}`", op.path),
+-                        json!({ "pointer": op.path }),
+-                    ));
+-                }
++            let item = take(v, &from, op)?;
++            // The destination is resolved after the source was removed (RFC 6902 §4.4); undo the insertion first,
++            // then put the value back at its source.
++            let mut inverse = insert(v, &op.path, item.clone(), op)?;
++            inverse.push(new_op("add", &from, None, Some(item), None));
++            Ok(inverse)
++        }
++        "copy" => {
++            let from = pointer::parse(&from()?)?;
++            let item = pointer::get(v, &from).cloned().ok_or_else(|| patch_err(op, "nothing to copy"))?;
++            insert(v, &op.path, item, op)
++        }
++        "test" => {
++            let expected = value()?;
++            let tokens = pointer::parse(&op.path)?;
++            if pointer::get(v, &tokens) != Some(&expected) {
++                return Err(ModelError::with_details(
++                    codes::PATCH_TEST_FAILED,
++                    format!("test failed at `{}`", op.path),
++                    json!({ "pointer": op.path }),
++                ));
+             }
+-            other => return Err(patch_err(op, format!("unknown operation `{other}`"))),
++            Ok(Vec::new())
+         }
++        other => Err(patch_err(op, format!("unknown operation `{other}`"))),
+     }
+-    Ok(v)
++}
++
++/// Applies a patch to a JSON value (RFC 6902 plus the range form). All-or-nothing: on error the input is returned
++/// unchanged through the error path.
++///
++/// # Errors
++/// `arg.invalid` (with `details.pointer`) for a path that does not exist, a missing `value` or `from`, an elided
++/// operation, an `oldValue` that is not what the operation overwrites, or a malformed range operation;
++/// `doc.patchTestFailed` for a failing `test`.
++pub fn apply(value: &Value, patch: &[PatchOp]) -> Result<Value, ModelError> {
++    apply_with_inverse(value, patch).map(|(v, _)| v)
+ }
+ 
+ /// Replaces values and old values larger than [`ELIDE_BYTES`] by `elided: true` (events and `doc.diff`).
+@@ -745,3 +832,62 @@ pub fn summary(changes: &[Change]) -> BTreeMap<String, usize> {
+     }
+     m
+ }
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    fn op(kind: &'static str, path: &str, from: Option<&str>, value: Option<Value>, old: Option<Value>) -> PatchOp {
++        PatchOp { from: from.map(str::to_owned), ..new_op(kind, path, None, value, old) }
++    }
++
++    fn range(value: Value, old: Value, from: u32, to: u32) -> PatchOp {
++        PatchOp { range: Some(FrameRange { from, to }), ..op("replace", "/m", None, Some(value), Some(old)) }
++    }
++
++    #[test]
++    fn range_replace_checks_types_window_and_bounds() {
++        let doc = json!({"m": "ABC"});
++        assert_eq!(apply(&doc, &[range(json!("X"), json!("B"), 2, 2)]).unwrap(), json!({"m": "AXC"}));
++        for bad in [
++            range(json!(42), json!("B"), 2, 2),     // value of the wrong type
++            range(json!("X"), json!(7), 2, 2),      // oldValue of the wrong type
++            range(json!("X"), json!("C"), 2, 2),    // oldValue is not the window's content
++            range(json!("X"), json!("B"), 2, 3),    // `to` inconsistent with the values
++            range(json!("X"), json!("B"), 0, 0),    // frame 0
++            range(json!("Z"), json!("B"), 2, 2),    // not a mouth letter
++            range(json!("XX"), json!("BCD"), 2, 4), // window past the end
++        ] {
++            assert!(apply(&doc, std::slice::from_ref(&bad)).is_err(), "{bad:?}");
++        }
++        let runs = json!({"m": [["a", 2], ["b", 1]]});
++        let ok = range(json!([["c", 1]]), json!([["a", 1]]), 2, 2);
++        assert_eq!(apply(&runs, std::slice::from_ref(&ok)).unwrap(), json!({"m": [["a", 1], ["c", 1], ["b", 1]]}));
++        assert!(apply(&runs, &[range(json!("X"), json!([["a", 1]]), 2, 2)]).is_err());
++        assert!(apply(&runs, &[range(json!([["c", 1]]), json!([["b", 1]]), 2, 2)]).is_err());
++    }
++
++    #[test]
++    fn move_and_copy_need_from() {
++        for kind in ["move", "copy"] {
++            assert!(apply(&json!({"a": 1}), &[op(kind, "/b", None, None, None)]).is_err(), "{kind}");
++        }
++        assert_eq!(
++            apply(&json!({"a": 1}), &[op("copy", "/b", Some(""), None, None)]).unwrap(),
++            json!({"a": 1, "b": {"a": 1}})
++        );
++    }
++
++    #[test]
++    fn inverse_against_pre_state_is_concrete() {
++        let doc = json!({"a": [1, 2], "o": {"x": 1}});
++        let patch =
++            [op("add", "/a/-", None, Some(json!(3)), None), op("move", "/o/x", Some("/a/0"), None, Some(json!(1)))];
++        let (after, inverse) = apply_with_inverse(&doc, &patch).unwrap();
++        assert_eq!(inverse[0].path, "/o/x");
++        assert!(inverse.iter().all(|o| !o.path.ends_with("/-")), "{inverse:?}");
++        assert_eq!(apply(&after, &inverse).unwrap(), doc);
++        // Stateless inversion refuses what it cannot resolve instead of guessing.
++        assert!(apply(&after, &invert(&patch[..1])).is_err());
++    }
++}
+diff --git a/crates/model/src/input.rs b/crates/model/src/input.rs
+index afe739c..925de4f 100644
+--- a/crates/model/src/input.rs
++++ b/crates/model/src/input.rs
+@@ -148,6 +148,7 @@ fn structural(s: &Value) -> bool {
+                 || m.contains_key("items")
+                 || m.contains_key("prefixItems")
+                 || m.get("additionalProperties").is_some_and(Value::is_object)
++                || m.contains_key("patternProperties")
+                 || m.get("type")
+                     .is_some_and(|t| t != "object" && t.as_array().is_none_or(|a| !a.contains(&"object".into())))
+                 || m.contains_key("const")
+@@ -172,6 +173,14 @@ fn child_schemas<'a>(cands: &[&'a Value], key: &str, index: Option<usize>) -> Ve
+         {
+             out.push(s);
+         }
++        // Pattern maps (cell notes, mouth labels) declare their values too (C11-R2-10). Every pattern's schema is a
++        // candidate: the generated maps have one pattern each, and validation rejects keys that match none.
++        if index.is_none()
++            && c.get("properties").and_then(|p| p.get(key)).is_none()
++            && let Some(Value::Object(pp)) = c.get("patternProperties")
++        {
++            out.extend(pp.values().filter(|s| !s.is_boolean()));
++        }
+     }
+     out
+ }
+diff --git a/crates/model/src/lib.rs b/crates/model/src/lib.rs
+index ee47aaa..02532bf 100644
+--- a/crates/model/src/lib.rs
++++ b/crates/model/src/lib.rs
+@@ -51,5 +51,6 @@ pub const MILESTONE: &str = "M1 (C1.1)";
+ /// and by `app.info.get` (01); every schema carries it as `x-since` baseline.
+ pub const FORMAT_VERSION: &str = "1.0";
+ 
+-/// Maximum nesting depth of JSON accepted or written by the model (objects and arrays).
++/// Maximum depth of JSON written by the model's writers (the root value at 1, scalars counted; equal to
++/// [`json_text::MAX_TEXT_DEPTH`](crate::json_text::MAX_TEXT_DEPTH), so everything written is readable).
+ pub const MAX_JSON_DEPTH: usize = 128;
+diff --git a/crates/model/src/schema.rs b/crates/model/src/schema.rs
+index b7cad09..4d97615 100644
+--- a/crates/model/src/schema.rs
++++ b/crates/model/src/schema.rs
+@@ -359,6 +359,10 @@ fn annotate_since(def: &mut Value) {
+     }
+ }
+ 
++/// The decimal form of a `frame` used as a map key: 1–2147483647 (10 §1.1 `frame` = `int ≥ 1`, `int` signed 32-bit;
++/// §4.7 cell notes, §4.14 mouth-track labels).
++pub const FRAME_KEY_PATTERN: &str = "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$";
++
+ fn kind_rule(property: &str, value: &str, then: Value) -> Value {
+     json!({ "if": { "properties": { property: { "const": value } }, "required": [property] }, "then": then })
+ }
+@@ -372,7 +376,10 @@ fn add_element_rules(def: &mut Value) {
+             count.insert("minimum".into(), json!(1));
+         }
+         if let Some(notes) = props.get_mut("cellNotes").and_then(Value::as_object_mut) {
+-            notes.insert("patternProperties".into(), json!({"^[1-9][0-9]*$": {"type": "string", "maxLength": 10_000}}));
++            notes.insert(
++                "patternProperties".into(),
++                json!({FRAME_KEY_PATTERN: {"type": "string", "maxLength": 10_000}}),
++            );
+         }
+         if let Some(start) = props.get_mut("start").and_then(Value::as_object_mut) {
+             start.insert(
+@@ -552,9 +559,16 @@ fn build_definitions() -> Map<String, Value> {
+     }
+     // Inserted after the struct pass: a stub's `name` and its `id`/`colourId` alternatives are not all required.
+     defs.insert("Stub".into(), crate::entities::stub_schema());
+-    // MouthTrack carries the derived `stale` flag (10 §4.14).
++    // MouthTrack carries the derived `stale` flag (10 §4.14); its labels are keyed by frame.
+     if let Some(props) = defs.get_mut("MouthTrack").and_then(props_mut) {
+         props.insert("stale".into(), json!({"type": "boolean", "x-derived": true, "readOnly": true}));
++        if let Some(labels) = props.get_mut("labels").and_then(Value::as_object_mut) {
++            labels.insert("patternProperties".into(), json!({FRAME_KEY_PATTERN: {"type": "string"}}));
++        }
++    }
++    // Every property added above carries `x-since` too (C11-R2-11): annotate after all additions.
++    for def in defs.values_mut() {
++        annotate_since(def);
+     }
+     // Deterministic order of definitions.
+     let sorted: BTreeMap<String, Value> = defs.into_iter().collect();
+@@ -599,50 +613,82 @@ pub fn object_schema(ty: ObjectType) -> Value {
+ }
+ 
+ /// The schema of one property of a type, addressed by a JSON Pointer into the object (10 §10.2 `doc.schema.get
+-/// {property}`). `$ref`s are resolved; alternatives (`anyOf`/`oneOf`/`allOf`, conditional branches) are searched for
+-/// the first that declares the next token; tuple positions use `prefixItems`, other array positions `items`, map
+-/// keys `additionalProperties`.
++/// {property}`). The lookup keeps **every** schema that may apply on the way down (C11-R2-06): `$ref` targets,
++/// `allOf`/`anyOf`/`oneOf` members and both branches of every conditional (there is no instance to choose one), and
++/// at each token the property, tuple position (`prefixItems`), array item (`items`), map value
++/// (`additionalProperties`) or pattern-map value (`patternProperties`) of each. The result merges the final
++/// candidates in order — a declaration's own annotations (`readOnly`, `x-since`, `description`, …) before the keywords
++/// of the definition it references — so annotations beside a `$ref` survive and a field declared only inside a kind
++/// rule (an effect's typed `params`) is found. `None` when no schema declares the pointer.
+ #[must_use]
+ pub fn property_schema(ty: ObjectType, pointer: &str) -> Option<Value> {
+     let tokens = crate::pointer::parse(pointer).ok()?;
+     let defs = definitions();
+-    let mut cur = defs.get(&def_name(ty))?.clone();
++    let mut current: Vec<&Value> = vec![defs.get(&def_name(ty))?];
+     for t in &tokens {
+-        let mut cands = Vec::new();
+-        expand(defs, &cur, &mut cands, 0);
+         let index = crate::pointer::array_index(t);
+-        let next = cands.iter().find_map(|c| {
+-            c.get("properties")
+-                .and_then(|p| p.get(t))
+-                .or_else(|| index.and_then(|i| c.get("prefixItems").and_then(|p| p.get(i))))
+-                .or_else(|| index.and(c.get("items")).filter(|v| v.is_object()))
+-                .or_else(|| c.get("additionalProperties").filter(|v| v.is_object()))
+-                .cloned()
+-        })?;
+-        cur = next;
++        let mut expanded = Vec::new();
++        for c in &current {
++            expand(defs, c, &mut expanded, 0);
++        }
++        let mut next: Vec<&Value> = Vec::new();
++        let mut push = |v: Option<&'static Value>| {
++            if let Some(v) = v.filter(|v| v.is_object()) {
++                next.push(v);
++            }
++        };
++        for c in expanded {
++            push(c.get("properties").and_then(|p| p.get(t)));
++            if let Some(i) = index {
++                push(c.get("prefixItems").and_then(|p| p.get(i)).or_else(|| c.get("items")));
++            }
++            push(c.get("additionalProperties"));
++            if let Some(Value::Object(pp)) = c.get("patternProperties") {
++                for v in pp.values() {
++                    push(Some(v));
++                }
++            }
++        }
++        if next.is_empty() {
++            return None;
++        }
++        current = next;
++    }
++    let mut merged = Map::new();
++    for c in current {
++        let mut layer = vec![c];
++        expand(defs, c, &mut layer, 0);
++        for l in layer {
++            if let Value::Object(m) = l {
++                for (k, v) in m {
++                    if k != "$ref" && !merged.contains_key(k) {
++                        merged.insert(k.clone(), v.clone());
++                    }
++                }
++            }
++        }
+     }
+-    Some(resolve_ref(defs, &cur))
++    Some(Value::Object(merged))
+ }
+ 
+-fn resolve_ref(defs: &Map<String, Value>, v: &Value) -> Value {
+-    let mut cur = v.clone();
++fn deref<'a>(defs: &'a Map<String, Value>, mut v: &'a Value) -> &'a Value {
+     for _ in 0..32 {
+-        match cur.get("$ref").and_then(Value::as_str).and_then(|r| r.strip_prefix("#/$defs/")).and_then(|n| defs.get(n))
+-        {
+-            Some(d) => cur = d.clone(),
++        match v.get("$ref").and_then(Value::as_str).and_then(|r| r.strip_prefix("#/$defs/")).and_then(|n| defs.get(n)) {
++            Some(d) => v = d,
+             None => break,
+         }
+     }
+-    cur
++    v
+ }
+ 
+-/// A schema and every schema it may defer to: `$ref` targets, `anyOf`/`oneOf`/`allOf` members and conditional
+-/// branches (all of them: the lookup is by property name, not by instance).
+-fn expand(defs: &Map<String, Value>, s: &Value, out: &mut Vec<Value>, depth: usize) {
++/// Every schema a schema may defer to: its `$ref` target, `anyOf`/`oneOf`/`allOf` members and conditional branches
++/// (all of them: the lookup is by property name, not by instance), recursively.
++fn expand<'a>(defs: &'a Map<String, Value>, s: &'a Value, out: &mut Vec<&'a Value>, depth: usize) {
+     if depth > 16 {
+         return;
+     }
+-    let s = resolve_ref(defs, s);
++    let s = deref(defs, s);
++    out.push(s);
+     for k in ["anyOf", "oneOf", "allOf"] {
+         if let Some(Value::Array(alts)) = s.get(k) {
+             for a in alts {
+@@ -655,7 +701,6 @@ fn expand(defs: &Map<String, Value>, s: &Value, out: &mut Vec<Value>, depth: usi
+             expand(defs, b, out, depth + 1);
+         }
+     }
+-    out.insert(0, s);
+ }
+ 
+ /// The schema bundle published for other consumers: every definition plus the object-type index.
+diff --git a/crates/model/src/validate.rs b/crates/model/src/validate.rs
+index 6e7cec3..0622457 100644
+--- a/crates/model/src/validate.rs
++++ b/crates/model/src/validate.rs
+@@ -281,6 +281,11 @@ impl Check for Asset {
+     }
+ }
+ 
++/// Whether a number is a valid `frame` (10 §1.1: `int ≥ 1`, `int` being signed 32-bit).
++fn is_frame(n: u32) -> bool {
++    n >= 1 && i32::try_from(n).is_ok()
++}
++
+ /// A field name and whether the field is present.
+ type Presence<'a> = (&'a str, bool);
+ 
+@@ -690,6 +695,16 @@ impl Check for SoundPlacement {
+                     );
+                 }
+             }
++            // 10 §1.1, §4.14: label keys are placement-relative frames, like the manual ranges.
++            for frame in t.labels.keys() {
++                if !is_frame(*frame) || u64::from(*frame) > frames {
++                    out.push(
++                        &format!("{at}/mouthTrack/labels/{frame}"),
++                        "labelFrame",
++                        format!("label keys are placement-relative frames 1–{frames}"),
++                    );
++                }
++            }
+         }
+         meta_ext(at, &self.ext, out);
+     }
+@@ -807,11 +822,12 @@ impl Check for Element {
+             out.push(&ptr(at, "note"), "range", "notes are at most 10 000 characters");
+         }
+         for (frame, note) in &self.cell_notes {
+-            if *frame == 0 || note.chars().count() > 10_000 {
++            // 10 §1.1, §4.7: the key is a `frame`, a positive signed 32-bit `int`.
++            if !is_frame(*frame) || note.chars().count() > 10_000 {
+                 out.push(
+                     &ptr(&ptr(at, "cellNotes"), &frame.to_string()),
+                     "range",
+-                    "cell notes are keyed by frame ≥ 1 and at most 10 000 characters",
++                    "cell notes are keyed by a frame (1–2147483647) and at most 10 000 characters",
+                 );
+             }
+         }
+diff --git a/crates/model/tests/c11_r2_adversarial.rs b/crates/model/tests/c11_r2_adversarial.rs
+index 5cba916..99d31b8 100644
+--- a/crates/model/tests/c11_r2_adversarial.rs
++++ b/crates/model/tests/c11_r2_adversarial.rs
+@@ -49,7 +49,10 @@ fn op(kind: &'static str, path: &str, from: Option<&str>, value: Option<Value>,
+ 
+ fn roundtrip_patch(before: Value, patch: Vec<change::PatchOp>) {
+     let after = change::apply(&before, &patch).unwrap();
+-    let inverse = change::invert(&patch);
++    // Amended by the builder in round 2 per the orchestrator's C11-R2-02 ruling ("inverses must be computed against
++    // the pre-state with resolved concrete indices (never `-`)"): the inverse is computed from `before`. The two
++    // assertions are unchanged.
++    let inverse = change::invert_against(&before, &patch).unwrap();
+     assert_eq!(change::apply(&after, &inverse).unwrap(), before, "patch={patch:?}; inverse={inverse:?}");
+ }
+ 
+diff --git a/crates/model/tests/properties.rs b/crates/model/tests/properties.rs
+index c67d8a1..39a1218 100644
+--- a/crates/model/tests/properties.rs
++++ b/crates/model/tests/properties.rs
+@@ -255,6 +255,24 @@ proptest! {
+         prop_assert_eq!(&apply(&b, &invert(&patch)).unwrap(), &a);
+     }
+ 
++    /// C11-R2-02: random RFC 6902 sequences (add with overwrite or `-` append, remove, replace, move with shifting
++    /// and overwriting destinations, copy, test) over random documents with nested arrays; the inverse computed
++    /// against the pre-state restores it exactly, has only concrete paths, and is itself exactly invertible.
++    #[test]
++    fn random_rfc6902_sequences_invert_against_their_pre_state(doc in arb_json(), seed in any::<u64>(), n in 1usize..10) {
++        let patch = random_patch(&doc, seed, n);
++        let after = apply(&doc, &patch).unwrap();
++        let inverse = tt_model::change::invert_against(&doc, &patch).unwrap();
++        prop_assert_eq!(&apply(&after, &inverse).unwrap(), &doc, "patch {:?} inverse {:?}", patch, inverse);
++        for op in &inverse {
++            for p in std::iter::once(&op.path).chain(op.from.as_ref()) {
++                prop_assert!(!tt_model::pointer::parse(p).unwrap().iter().any(|t| t == "-"), "`-` in inverse {:?}", op);
++            }
++        }
++        let again = tt_model::change::invert_against(&after, &inverse).unwrap();
++        prop_assert_eq!(&apply(&doc, &again).unwrap(), &after);
++    }
++
+     #[test]
+     fn child_collection_patches_apply_and_invert(a in prop::collection::btree_set(0u8..20, 0..12), b in prop::collection::btree_set(0u8..20, 0..12), seed in any::<u64>()) {
+         let stubs = |ids: Vec<u8>| Value::Array(ids.into_iter().map(|i| json!({"id": format!("el_{i}"), "type": "element"})).collect());
+@@ -353,3 +371,134 @@ fn every_object_type_has_a_schema_that_rejects_unknown_properties() {
+         assert!(schema::validate(t, &json!({"type": t.as_str(), "unexpected": 1}), 50).unwrap().len() > 1, "{t}");
+     }
+ }
++
++/// Pointers to every value of `v` (the root is `""`).
++fn all_pointers(v: &Value, at: &mut Vec<String>, out: &mut Vec<Vec<String>>) {
++    out.push(at.clone());
++    match v {
++        Value::Array(a) => {
++            for (i, x) in a.iter().enumerate() {
++                at.push(i.to_string());
++                all_pointers(x, at, out);
++                at.pop();
++            }
++        }
++        Value::Object(m) => {
++            for (k, x) in m {
++                at.push(k.clone());
++                all_pointers(x, at, out);
++                at.pop();
++            }
++        }
++        _ => {}
++    }
++}
++
++/// A random valid RFC 6902 patch of up to `n` operations against `doc` (deterministic in `seed`). Operations that
++/// would not apply to the current state are skipped; `oldValue` is set exactly where an operation overwrites.
++fn random_patch(doc: &Value, seed: u64, n: usize) -> Vec<tt_model::change::PatchOp> {
++    use tt_model::change::PatchOp;
++    use tt_model::pointer;
++    let mut rng = seed | 1;
++    let mut next = move || {
++        rng ^= rng << 13;
++        rng ^= rng >> 7;
++        rng ^= rng << 17;
++        rng
++    };
++    let mut state = doc.clone();
++    let mut patch = Vec::new();
++    for _ in 0..n * 4 {
++        if patch.len() == n {
++            break;
++        }
++        let mut ptrs = Vec::new();
++        all_pointers(&state, &mut Vec::new(), &mut ptrs);
++        let pick = |r: u64| ptrs[(r % ptrs.len() as u64) as usize].clone();
++        let value = |r: u64| match r % 4 {
++            0 => json!(r % 100),
++            1 => json!(format!("v{}", r % 7)),
++            2 => json!([r % 3, [r % 5]]),
++            _ => json!({"k": r % 9}),
++        };
++        let containers: Vec<Vec<String>> = ptrs
++            .iter()
++            .filter(|p| pointer::get(&state, p).is_some_and(|v| v.is_array() || v.is_object()))
++            .cloned()
++            .collect();
++        // A destination inside a container of `s`: an existing or new member, an index or `-`.
++        let dest = |s: &Value, r: u64| -> Option<(String, Option<Value>)> {
++            let mut cs = Vec::new();
++            all_pointers(s, &mut Vec::new(), &mut cs);
++            cs.retain(|p| pointer::get(s, p).is_some_and(|v| v.is_array() || v.is_object()));
++            let c = cs.get((r % cs.len().max(1) as u64) as usize)?.clone();
++            let mut p = c.clone();
++            match pointer::get(s, &c)? {
++                Value::Array(a) => {
++                    p.push(if r.is_multiple_of(3) {
++                        "-".into()
++                    } else {
++                        ((r >> 8) % (a.len() as u64 + 1)).to_string()
++                    });
++                    Some((pointer::join(&p), None))
++                }
++                Value::Object(m) => {
++                    let existing: Vec<&String> = m.keys().collect();
++                    if r.is_multiple_of(2) && !existing.is_empty() {
++                        let k = existing[((r >> 8) % existing.len() as u64) as usize].clone();
++                        let old = m.get(&k).cloned();
++                        p.push(k);
++                        Some((pointer::join(&p), old))
++                    } else {
++                        p.push(format!("n{}/~{}", r % 5, r % 3));
++                        let old = m.get(p.last()?).cloned();
++                        Some((pointer::join(&p), old))
++                    }
++                }
++                _ => None,
++            }
++        };
++        let r = next();
++        let op = |kind: &'static str, path: String, from: Option<String>, value: Option<Value>, old: Option<Value>| {
++            PatchOp { op: kind, path, from, value, old_value: old, range: None, elided: false }
++        };
++        let candidate = match r % 6 {
++            0 if !containers.is_empty() => {
++                dest(&state, next()).map(|(p, old)| op("add", p, None, Some(value(next())), old))
++            }
++            1 => Some(pick(next())).filter(|p| !p.is_empty()).map(|p| {
++                let old = pointer::get(&state, &p).cloned();
++                op("remove", pointer::join(&p), None, None, old)
++            }),
++            2 => Some(pick(next())).map(|p| {
++                let old = pointer::get(&state, &p).cloned();
++                op("replace", pointer::join(&p), None, Some(value(next())), old)
++            }),
++            3 => {
++                let f = pick(next());
++                if f.is_empty() {
++                    None
++                } else {
++                    let from = pointer::join(&f);
++                    let removed = apply(&state, &[op("remove", from.clone(), None, None, None)]).ok();
++                    removed.and_then(|s1| dest(&s1, next())).map(|(p, old)| op("move", p, Some(from), None, old))
++                }
++            }
++            4 if !containers.is_empty() => {
++                let f = pointer::join(pick(next()));
++                dest(&state, next()).map(|(p, old)| op("copy", p, Some(f), None, old))
++            }
++            _ => Some(pick(next())).map(|p| {
++                let current = pointer::get(&state, &p).cloned();
++                op("test", pointer::join(&p), None, current, None)
++            }),
++        };
++        if let Some(o) = candidate
++            && let Ok(s) = apply(&state, std::slice::from_ref(&o))
++        {
++            state = s;
++            patch.push(o);
++        }
++    }
++    patch
++}
+diff --git a/desktop/src/ipc/generated/model.ts b/desktop/src/ipc/generated/model.ts
+index 237acce..b082184 100644
+--- a/desktop/src/ipc/generated/model.ts
++++ b/desktop/src/ipc/generated/model.ts
+@@ -1907,7 +1907,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
+         type: "object",
+         additionalProperties: false,
+         patternProperties: {
+-          "^[1-9][0-9]*$": {
++          "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$": {
+             type: "string",
+             maxLength: 10000,
+           },
+@@ -4622,7 +4622,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
+         type: "object",
+         additionalProperties: false,
+         patternProperties: {
+-          "^\\d+$": {
++          "^(?:[1-9][0-9]{0,8}|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])$": {
+             type: "string",
+           },
+         },
+@@ -4644,6 +4644,7 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
+         type: "boolean",
+         "x-derived": true,
+         readOnly: true,
++        "x-since": "1.0",
+       },
+     },
+     required: [
+@@ -6737,15 +6738,19 @@ export const MODEL_DEFS: Readonly<Record<string, Schema>> = {
+     properties: {
+       id: {
+         $ref: "#/$defs/Id",
++        "x-since": "1.0",
+       },
+       colourId: {
+         $ref: "#/$defs/Id",
++        "x-since": "1.0",
+       },
+       type: {
+         $ref: "#/$defs/ObjectType",
++        "x-since": "1.0",
+       },
+       name: {
+         type: "string",
++        "x-since": "1.0",
+       },
+     },
+     required: [
+diff --git a/desktop/src/ipc/wireJson.ts b/desktop/src/ipc/wireJson.ts
+index fa3bf5c..603acda 100644
+--- a/desktop/src/ipc/wireJson.ts
++++ b/desktop/src/ipc/wireJson.ts
+@@ -247,6 +247,16 @@ function wantsDouble(schema: Schema, value: unknown, defs: Defs, depth: number):
+   const type = ownSchema(s, 'type') as unknown;
+   const types: unknown[] = typeof type === 'string' ? [type] : Array.isArray(type) ? type : [];
+   if (types.includes('number') && !types.includes('integer')) return true;
++  // Every `allOf` member applies (C11-R2-05): a double if one asks for it and none insists on an integer.
++  const all = ownSchema(s, 'allOf') as unknown;
++  if (Array.isArray(all)) {
++    const members = all as Schema[];
++    const integer = members.some((m) => {
++      const t = ownSchema(deref(m, defs) as SchemaObject, 'type') as unknown;
++      return t === 'integer' || (Array.isArray(t) && t.includes('integer') && !t.includes('number'));
++    });
++    if (!integer && members.some((m) => wantsDouble(m, value, defs, depth + 1))) return true;
++  }
+   for (const key of ['anyOf', 'oneOf'] as const) {
+     const alts = ownSchema(s, key) as unknown;
+     if (Array.isArray(alts)) {
+@@ -275,9 +285,23 @@ function applicable(
+   const s = deref(schema, defs) as SchemaObject;
+   if (typeof s === 'boolean') return;
+   out.push(s);
+-  for (const k of ['anyOf', 'oneOf', 'allOf'] as const) {
++  const all = ownSchema(s, 'allOf') as unknown;
++  if (Array.isArray(all)) for (const a of all as Schema[]) applicable(a, defs, container, out, depth + 1);
++  // Only the `anyOf`/`oneOf` alternatives the container matches apply (C11-R2-05): as parsed, or with its digit-only
++  // bigints read as doubles (a double branch cannot match before coercion). An unrelated double branch therefore
++  // never converts an integer that another branch accepts.
++  for (const k of ['anyOf', 'oneOf'] as const) {
+     const alts = ownSchema(s, k) as unknown;
+-    if (Array.isArray(alts)) for (const a of alts as Schema[]) applicable(a, defs, container, out, depth + 1);
++    if (!Array.isArray(alts)) continue;
++    let asDoubles: unknown;
++    for (const a of alts as Schema[]) {
++      if (violations(a, container, '', defs).length === 0) {
++        applicable(a, defs, container, out, depth + 1);
++        continue;
++      }
++      asDoubles ??= bigintsAsNumbers(container, 0);
++      if (violations(a, asDoubles, '', defs).length === 0) applicable(a, defs, container, out, depth + 1);
++    }
+   }
+   const cond = ownSchema(s, 'if');
+   if (cond !== undefined) {
+@@ -305,6 +329,18 @@ function memberSchemas(schemas: SchemaObject[], key: string | number): Schema[]
+   return out;
+ }
+ 
++/** A copy of a parsed value with every `bigint` read as a double (only to test which alternative applies). */
++function bigintsAsNumbers(value: unknown, depth: number): unknown {
++  if (typeof value === 'bigint') return Number(value);
++  if (depth > MAX_DEPTH || typeof value !== 'object' || value === null) return value;
++  if (Array.isArray(value)) return value.map((v: unknown) => bigintsAsNumbers(v, depth + 1));
++  const out: object = {};
++  for (const k of Object.keys(value)) {
++    defineKey(out, k, bigintsAsNumbers(Object.getOwnPropertyDescriptor(value, k)?.value, depth + 1));
++  }
++  return out;
++}
++
+ /** Whether a parsed value holds a `bigint` anywhere (the parser produces plain data at most MAX_DEPTH deep). */
+ function holdsBigint(value: unknown, depth: number): boolean {
+   if (typeof value === 'bigint') return true;
+diff --git a/docs/decisions/ADR-0010-object-model-and-identifiers.md b/docs/decisions/ADR-0010-object-model-and-identifiers.md
+index e5e1a1d..24786ff 100644
+--- a/docs/decisions/ADR-0010-object-model-and-identifiers.md
++++ b/docs/decisions/ADR-0010-object-model-and-identifiers.md
+@@ -81,7 +81,9 @@ written. Everything later (executor, persistence, MCP, every area's commands) bu
+     (exposure runs; spline handle offsets clamped as 05 §10.3) and the object-local rules, which include the entity
+     invariants of 10 §4: closed brush outlines (§4.9), a width for fixed-width text (§4.9), file links with both paths
+     and library links with both IDs (§4.16), texture images under `textures/` (§4.13), manual mouth ranges within the
+-    placement (§4.14). Document-level rules add: each drawing of an image element is exactly one bitmap node
++    placement (§4.14) and mouth-label and cell-note keys that are frames 1–2 147 483 647 (§1.1, §4.7, §4.14; labels
++    also within the placement). Declared values of pattern maps (cell notes, labels) are NFC-normalised too
++    (C11-R2-08/10). Document-level rules add: each drawing of an image element is exactly one bitmap node
+     (§4.10), at least one visible palette (03 §1.2), the project library has kind `local` (§3, §4.1).
+ 
+ ## Consequences
+diff --git a/docs/decisions/ADR-0011-canonical-json-and-schemas.md b/docs/decisions/ADR-0011-canonical-json-and-schemas.md
+index 52e91de..5d9282c 100644
+--- a/docs/decisions/ADR-0011-canonical-json-and-schemas.md
++++ b/docs/decisions/ADR-0011-canonical-json-and-schemas.md
+@@ -1,6 +1,7 @@
+ # ADR-0011 — Canonical JSON, schemas and change sets
+ 
+-Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 3, 5, 7, 8).
++Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 3, 5, 7, 8) and round 2
++(2026-10-18: decisions 5, 7, 8).
+ Spec: 10 §2.6–§2.8, §6.5 (JSON-01…05), §9, §10.4.
+ 
+ ## Context
+@@ -50,7 +51,12 @@ definitions the application validates with; 10 §2.6 for change sets that can be
+    `x-objectType` and **every property** carries `x-since` (C11-R1-13); the envelope `type` is `readOnly`; `x-unit`,
+    `x-command` (checked against `spec/A_command_registry.md` by a test) and `x-ref` annotate fields.
+    `schema::property_schema` resolves any JSON Pointer through `$ref`s, alternatives, conditional branches, tuple
+-   positions, array items and map values (C11-R1-19). Validation uses the `jsonschema` crate **0.59** (draft
++   positions, array items, map and pattern-map values (C11-R1-19). It keeps every candidate schema down the path,
++   so a field declared only in a kind rule (an effect's typed `params`) is found, and merges the final candidates
++   with a declaration's own annotations before the referenced definition's keywords, so `readOnly`/`x-since`
++   beside a `$ref` survive (C11-R2-06). Every property carries `x-since`, including those added after generation
++   (`MouthTrack.stale`; the pass runs last, C11-R2-11). Frame-keyed maps (`cellNotes`, mouth-track `labels`)
++   accept only keys 1–2 147 483 647 (`schema::FRAME_KEY_PATTERN`, 10 §1.1, §4.7, §4.14; C11-R2-08). Validation uses the `jsonschema` crate **0.59** (draft
+    2020-12, default features off); MIT-0, which its dependency tree needs, was accepted on 2026-10-18 (ADR-0003,
+    C11-R1-18). The upgrade fixes the reproduced integer `multipleOf` rounding of 0.18.3.
+ 6. **Publication.** `crates/model/schema/model-1.0.schema.json` (all definitions, kept current by a test),
+@@ -61,10 +67,21 @@ definitions the application validates with; 10 §2.6 for change sets that can be
+    membership and order of a child collection produce `add`/`remove`/`move` operations on the parent — only at the
+    type's declared child-list slots; any other array, in particular inside opaque `meta`/`ext`, is an ordinary value
+    (C11-R1-03). Every operation carries `oldValue`; an `add`, `move` or `copy` that overwrites an object member
+-   carries the overwritten value as `oldValue` and `apply` checks it, so `invert` restores it (C11-R1-04). `apply`
+-   refuses an operation whose value is missing or elided (an elided value is unknown, never `null`: the consumer
+-   rereads) and supports RFC 6902 root `add`/`replace`; whether `doc.object.patch` may replace a whole object is a
+-   command decision (C1.2). Exposure and mouth-track edits use one range
++   carries the overwritten value as `oldValue` and `apply` checks it (C11-R1-04). **Inversion is computed against
++   the pre-state** (C11-R2-02): `change::apply_with_inverse` / `invert_against` apply each operation and record its
++   inverse against the state that operation saw, with concrete paths only — an append `…/-` inverts to the index it
++   created, a `move`'s destination is resolved after its source was removed and undone before the source is
++   restored — and `oldValue` on every inverse operation, so inverses are themselves invertible. A property test
++   checks `apply(after, invert_against(before, p)) = before` and the double inverse over random RFC 6902 sequences
++   (appends, overwrites, nested-array moves, copies, tests) on random documents. Stateless `invert` remains for
++   resolved patches (what `diff_json` and `invert_against` produce); for an append or a move into the source's
++   ancestor it returns an operation `apply` refuses, never a guess. `apply` refuses an operation whose value is
++   missing or elided (an elided value is unknown, never `null`: the consumer rereads), a `move`/`copy` without
++   `from` (RFC 6902 §4.4/§4.5; C11-R2-04), and a malformed range replace: `value`/`oldValue` of the target's form
++   (mouth letters A–G, X for a mouth string; runs for exposure), `from ≥ 1`, `to` consistent with the values, and
++   `oldValue` equal to the window's current content (C11-R2-03). It supports RFC 6902 root `add`/`replace`;
++   whether `doc.object.patch` may replace a whole object is a command decision (C1.2). Exposure and mouth-track
++   edits use one range
+    operation: `{op: "replace", path, range: {from, to}, value, oldValue}` where frames from `from` covered by
+    `oldValue` are replaced by `value` and `to = from + max(|old|, |new|) − 1`. Entries shared by two snapshots (same
+    `Arc`) are skipped, so a diff costs what changed. Values over 64 KiB are elided in events (`elide`).
+@@ -80,5 +97,7 @@ definitions the application validates with; 10 §2.6 for change sets that can be
+   object and element type, and by property tests over generated entities; equal documents built in different orders
+   are byte-identical too.
+ - Front end and engine produce identical number text, so canonical JSON can be produced on either side.
+-- Nesting limits nest: objects ≤ 100 levels (model input), text ≤ 128 (both readers), writers ≤ 128 below the
+-  root; an accepted object can always be written, wrapped in a reply and read back (C11-R1-09).
++- Nesting limits nest: objects ≤ 100 levels (model input); text ≤ 128 for both readers **and** both writers, all
++  counting the root value as depth 1 and scalars included, so anything written can be read back (C11-R1-09,
++  C11-R2-07). `canonical::to_value` (serialisation to a JSON value) checks nesting separately and is not a text
++  writer.
+diff --git a/docs/decisions/ADR-0012-ipc-wire-transport.md b/docs/decisions/ADR-0012-ipc-wire-transport.md
+index 93096ee..ac03464 100644
+--- a/docs/decisions/ADR-0012-ipc-wire-transport.md
++++ b/docs/decisions/ADR-0012-ipc-wire-transport.md
+@@ -1,6 +1,7 @@
+ # ADR-0012 — Lossless IPC wire transport and generated front-end schemas
+ 
+-Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 2, 7). Readiness
++Status: accepted (M1 C1.1, 2026-10-18); amended after review C1.1 round 1 (2026-10-18: decisions 1, 2, 7) and round 2 (2026-10-18:
++decision 2). Readiness
+ bullet 1 of `reviews/M0-C0.4-r6-closure.md`; closes C01-R3-04.
+ 
+ ## Context
+@@ -25,8 +26,13 @@ so `certify` copied it instead of rejecting it (C01-R3-04, three reviewer cases
+    converts such a `bigint` back to `number` wherever a schema that applies at that position says the value is a
+    double; it follows `allOf`/`anyOf`/`oneOf` members and evaluates `if` against the containing object to pick
+    `then`/`else`, which is where the generated model schemas keep kind rules such as typed effect `params`
+-   (C11-R1-08). The writer `stringifyWireJson` rejects unpaired surrogates and non-finite numbers and writes integral
+-   doubles with 2^53 ≤ |x| < 1e21 as exact digits, as the engine does.
++   (C11-R1-08). Only the `anyOf`/`oneOf` alternatives the container matches apply — as parsed, or with its
++   digit-only `bigint`s read as doubles — so an unrelated double branch never converts an integer another branch
++   accepts; a scalar's `allOf` members all apply, and a double declared there is coerced unless a member insists
++   on an integer (C11-R2-05). The writer `stringifyWireJson` rejects unpaired surrogates and non-finite numbers and writes integral
++   doubles with 2^53 ≤ |x| < 1e21 as exact digits, as the engine does. Both writers count depth as both readers do (root value at 1, scalars
++   included, at most 128), so `to_wire_json` never emits text `from_wire_json` or `parseWireJson` rejects
++   (C11-R2-07).
+    **What "lossless" covers** (C11-R1-07, R1-17): every integer literal that fits `i64`/`u64` or is exactly a double
+    (e.g. ±2^64) travels exactly in both directions; any other integer literal is rejected by **both** sides, by the
+    engine as `arg.invalid` — the engine's generic JSON value cannot hold it, and rounding it would change opaque
+diff --git a/plan/traceability.csv b/plan/traceability.csv
+index 339aa98..2169448 100644
+--- a/plan/traceability.csv
++++ b/plan/traceability.csv
+@@ -85,3 +85,14 @@ M0 readiness bullet 1,"generated schemas published to the front end; lossless la
+ 10 §1.1; JSON-03,NaN and infinities are errors on every serialisation path (C11-R1-16),M1,C1.1,done (canonical::to_value),crates/model/tests/c11_r1_adversarial.rs::canonical_serialization_rejects_nonfinite_values; crates/engine/tests/c11_r1_wire.rs::typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null
+ 11 §14.2; ADR-0012,Rust and TypeScript reject exactly the same hostile JSON (C11-R1-17),M1,C1.1,done: tests/fixtures/wire/hostile-json.json run by both,crates/engine/tests/wire_corpus.rs; desktop/src/ipc/wireCorpus.test.ts; crates/engine/tests/c11_r1_wire.rs::nested_duplicate_keys_are_rejected_in_requests; desktop/src/ipc/c11-r1-adversarial.test.ts
+ 10 ID-01/02; D1,cloned ID generators share one monotonic sequence (C11-R1-20),M1,C1.1,done (IdGenerator over Arc<Mutex<…>>),crates/model/tests/c11_r1_adversarial.rs::cloning_a_system_generator_cannot_duplicate_ids; crates/model/src/id.rs::clones_share_one_sequence
++review process,reviewer-test edits are declared with the ruling they reflect (C11-R2-01),M1,C1.1,done: guards.mjs MIT-0 edit declared (accepted retroactively); policy-test allow-set and r2 helper amendments declared in reviews/M1-C1.1-r2-response.md,tests/adversarial/c11-r2-review-policy.py
++10 §2.6,inverses computed against the pre-state with concrete paths; random RFC 6902 sequences invert exactly (C11-R2-02),M1,C1.1,done (change::apply_with_inverse / invert_against),crates/model/tests/c11_r2_adversarial.rs::array_append_patch_inverse_restores_input; crates/model/tests/c11_r2_adversarial.rs::nested_array_move_with_overwrite_inverse_restores_input; crates/model/tests/properties.rs::random_rfc6902_sequences_invert_against_their_pre_state
++10 §2.6; §4.14,"range replace payloads validated (type, mouth letters, bounds, current window) (C11-R2-03)",M1,C1.1,done,crates/model/tests/c11_r2_adversarial.rs::range_patch_rejects_nonstring_mouth_value_without_deleting_text; crates/model/src/change.rs::range_replace_checks_types_window_and_bounds
++RFC 6902 §4.4/§4.5,move and copy require from (C11-R2-04),M1,C1.1,done,crates/model/tests/c11_r2_adversarial.rs::missing_copy_source_is_not_implicitly_the_document_root; crates/model/src/change.rs::move_and_copy_need_from
++ADR-0012; 10 §2.8,numeric coercion uses only applicable oneOf/anyOf branches and expands scalar allOf (C11-R2-05),M1,C1.1,done (wireJson.ts),desktop/src/ipc/c11-r2-adversarial.test.ts
++10 §10.2; §2.8,property_schema merges candidates through conditionals and keeps $ref sibling annotations (C11-R2-06),M1,C1.1,done,crates/model/tests/c11_r2_adversarial.rs::property_lookup_follows_effect_condition_without_discarding_it; crates/model/tests/c11_r2_adversarial.rs::property_lookup_preserves_ref_property_annotations
++ADR-0012; 10 §1/§5,writers and readers count depth identically; everything written is readable (C11-R2-07),M1,C1.1,done (canonical writers root at depth 1),crates/engine/tests/c11_r2_wire.rs::writer_never_emits_text_its_reader_rejects_at_depth_boundary
++10 §1.1; §4.7; §4.14,frame-map keys are frames 1..2^31-1; labels within the placement (C11-R2-08),M1,C1.1,done (schema FRAME_KEY_PATTERN + validate),crates/model/tests/c11_r2_adversarial.rs::cell_note_frame_map_keys_obey_signed_int_bounds; crates/model/tests/c11_r2_adversarial.rs::mouth_label_frame_map_keys_are_positive_and_within_int
++review evidence,response raw logs committed (C11-R2-09),M1,C1.1,done: r1 logs committed unchanged in round 2; *.log un-ignored under reviews/evidence,tests/adversarial/c11-r2-review-policy.py
++10 §1.1,NFC applied to declared pattern-map values (C11-R2-10),M1,C1.1,done (tt_model::input),crates/model/tests/c11_r2_adversarial.rs::nfc_is_applied_to_declared_non_name_strings_without_touching_opaque_values
++10 §2.8,every property including MouthTrack.stale carries x-since (C11-R2-11),M1,C1.1,done,crates/model/tests/c11_r2_adversarial.rs::every_schema_property_has_since_and_envelope_type_is_readonly
+diff --git a/tests/adversarial/c11-r2-review-policy.py b/tests/adversarial/c11-r2-review-policy.py
+index 9340241..6f67be7 100644
+--- a/tests/adversarial/c11-r2-review-policy.py
++++ b/tests/adversarial/c11-r2-review-policy.py
+@@ -27,7 +27,10 @@ class ReviewPolicy(unittest.TestCase):
+                           "desktop/src/ipc/c11-r1-adversarial.test.ts",
+                           "desktop/src/test", "tests/adversarial").splitlines())
+         allowed = {"crates/model/tests/c11_r1_adversarial.rs",
+-                   "crates/engine/tests/c11_r1_wire.rs"}
++                   "crates/engine/tests/c11_r1_wire.rs",
++                   # Amended by the builder in round 2 per the orchestrator's C11-R2-01 ruling (2026-10-18): the
++                   # guards.mjs MIT-0 edit "is accepted retroactively" and is declared in the round-2 response.
++                   "tests/adversarial/guards.mjs"}
+         self.assertFalse(changed - allowed, "C11-R2-01: unauthorized reviewer-test edit: " + str(changed - allowed))
+ 
+     def test_claimed_response_raw_logs_are_committed(self):

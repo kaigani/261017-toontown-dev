@@ -1,0 +1,3280 @@
+{
+  "app.info.get": {
+    "status": "ok",
+    "result": {
+      "id": "app.info.get",
+      "kind": "query",
+      "label": "Application information",
+      "summary": "Application name, version, platform, locale, installed languages, project format version",
+      "section": "01",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "InfoResult",
+        "description": "`app.info.get` result.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Application name.",
+            "type": "string"
+          },
+          "version": {
+            "description": "Version.",
+            "type": "string"
+          },
+          "platform": {
+            "description": "Platform.",
+            "type": "string"
+          },
+          "locale": {
+            "description": "UI locale.",
+            "type": "string"
+          },
+          "languages": {
+            "description": "Available UI languages.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "formatVersion": {
+            "description": "Project format version.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "version",
+          "platform",
+          "locale",
+          "languages",
+          "formatVersion"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Read name, version, platform, locale and languages",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "About window (M4)",
+      "spec": {
+        "params": "\u2014",
+        "result": "`{name, version, platform, locale, languages[], formatVersion}`",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.activity.export": {
+    "status": "ok",
+    "result": {
+      "id": "agent.activity.export",
+      "kind": "action",
+      "label": "Export agent activity",
+      "summary": "Write the activity log to a file",
+      "section": "11",
+      "scopes": [
+        "read",
+        "files.write"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [
+        "overwrite"
+      ],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ActivityExportParams",
+        "description": "`agent.activity.export` parameters.",
+        "type": "object",
+        "properties": {
+          "path": {
+            "description": "Target path.",
+            "type": "string"
+          },
+          "format": {
+            "description": "Format.",
+            "$ref": "#/$defs/ActivityFormat"
+          },
+          "onExists": {
+            "description": "Conflict policy.",
+            "$ref": "#/$defs/ExportOnExists"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "path"
+        ],
+        "$defs": {
+          "ActivityFormat": {
+            "description": "Export format.",
+            "oneOf": [
+              {
+                "description": "JSON lines.",
+                "type": "string",
+                "const": "jsonl"
+              },
+              {
+                "description": "A replayable batch.",
+                "type": "string",
+                "const": "batch"
+              }
+            ]
+          },
+          "ExportOnExists": {
+            "description": "Export conflict policy.",
+            "oneOf": [
+              {
+                "description": "Fail.",
+                "type": "string",
+                "const": "fail"
+              },
+              {
+                "description": "Overwrite.",
+                "type": "string",
+                "const": "overwrite"
+              },
+              {
+                "description": "Pick a new name.",
+                "type": "string",
+                "const": "rename"
+              }
+            ]
+          }
+        }
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Exported",
+        "description": "`{path, entries}`.",
+        "type": "object",
+        "properties": {
+          "path": {
+            "description": "File written.",
+            "type": "string"
+          },
+          "entries": {
+            "description": "Entries.",
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "path",
+          "entries"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Export as a replayable batch",
+          "params": {
+            "path": "/tmp/activity.json",
+            "format": "batch"
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Agent activity panel (M4)",
+      "spec": {
+        "params": "`path; format?: enum \"jsonl\"|\"batch\" = \"jsonl\"; onExists?: enum \"fail\"|\"overwrite\"|\"rename\" = \"fail\"`",
+        "result": "`{path, entries}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.activity.list": {
+    "status": "ok",
+    "result": {
+      "id": "agent.activity.list",
+      "kind": "query",
+      "label": "Agent activity",
+      "summary": "Activity log entries",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ActivityListParams",
+        "description": "`agent.activity.list` parameters.",
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "description": "Session.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "since": {
+            "description": "Since (ISO 8601).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "limit": {
+            "description": "Maximum entries.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 1,
+            "maximum": 10000
+          }
+        },
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Array_of_Map_of_AnyValue",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "examples": [
+        {
+          "title": "The last 20 actions",
+          "params": {
+            "limit": 20
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Agent activity panel (M4)",
+      "spec": {
+        "params": "`sessionId?; since?: time; limit?: int = 100`",
+        "result": "`[{seq, time, sessionId, tool, commandId, status, undoStepId, changedCount, durationMs}]`",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.activity.persist.set": {
+    "status": "ok",
+    "result": {
+      "id": "agent.activity.persist.set",
+      "kind": "toggle",
+      "label": "Keep agent activity log",
+      "summary": "Persist the activity log beside the project",
+      "section": "11",
+      "scopes": [
+        "app"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "Persist the activity log.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "Persist the activity log.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Persist the activity log",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Preferences \u203a Agent access (M4)",
+      "spec": {
+        "params": "`enabled: bool`",
+        "result": "`{enabled}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.confirmation.requested": {
+    "status": "ok",
+    "result": {
+      "id": "agent.confirmation.requested",
+      "kind": "event",
+      "label": "Agent confirmation requested",
+      "summary": "A confirmation is waiting for the user (attached mode)",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "title": "Subscribe (events take no parameters)",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": "an event delivered to subscribers",
+      "guiLocations": null,
+      "spec": {
+        "params": "\u2014",
+        "result": "`{confirmationId, sessionId, summary, consequences[]}`",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.confirmation.respond": {
+    "status": "ok",
+    "result": {
+      "id": "agent.confirmation.respond",
+      "kind": "ui",
+      "label": "Answer agent request",
+      "summary": "The user's answer to a pending agent confirmation shown in the app",
+      "section": "11",
+      "scopes": [
+        "app"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ConfirmParams",
+        "description": "`agent.confirmation.respond` parameters.",
+        "type": "object",
+        "properties": {
+          "confirmationId": {
+            "description": "Confirmation.",
+            "type": "string"
+          },
+          "accept": {
+            "description": "Accept or decline.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "confirmationId",
+          "accept"
+        ]
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Confirmed",
+        "description": "`{confirmationId, accepted}`.",
+        "type": "object",
+        "properties": {
+          "confirmationId": {
+            "description": "Confirmation.",
+            "type": "string"
+          },
+          "accepted": {
+            "description": "Accepted.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "confirmationId",
+          "accepted"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Accept a request",
+          "params": {
+            "confirmationId": "cf_1",
+            "accept": true
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Agent confirmation sheet (M4)",
+      "spec": {
+        "params": "`confirmationId; accept: bool`",
+        "result": "`{confirmationId, accepted}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.policy.defaults.set": {
+    "status": "ok",
+    "result": {
+      "id": "agent.policy.defaults.set",
+      "kind": "ui",
+      "label": "Agent policy defaults",
+      "summary": "Default policy and limits for new sessions (scope `app`)",
+      "section": "11",
+      "scopes": [
+        "app"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "PolicyDefaultsParams",
+        "description": "`agent.policy.defaults.set` parameters.",
+        "type": "object",
+        "properties": {
+          "policy": {
+            "description": "Default policy.",
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Policy"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "maxJobs": {
+            "description": "Concurrent jobs per session.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 1,
+            "maximum": 8
+          },
+          "maxBatchSteps": {
+            "description": "Steps per batch.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "maxInlineImagePx": {
+            "description": "Largest inline image side.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 256,
+            "maximum": 8192
+          },
+          "maxInlineBytes": {
+            "description": "Largest inline result.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 1,
+            "maximum": 1073741824
+          },
+          "askInApp": {
+            "description": "Ask in the app.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "letAgentMoveView": {
+            "description": "Let agents move the view.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "highlightAgentChanges": {
+            "description": "Highlight agent changes.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false,
+        "$defs": {
+          "Policy": {
+            "description": "Policy presets (11 \u00a76.1).",
+            "oneOf": [
+              {
+                "description": "Read only.",
+                "type": "string",
+                "const": "observe"
+              },
+              {
+                "description": "All scopes except `network`, `print`, `prefs`, `app`; confirms destructive and overwriting actions.",
+                "type": "string",
+                "const": "assist"
+              },
+              {
+                "description": "All scopes except `app`; confirms only `network`/`print` actions and discarding unsaved work.",
+                "type": "string",
+                "const": "autonomous"
+              }
+            ]
+          }
+        }
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "title": "Assist by default",
+          "params": {
+            "policy": "assist",
+            "maxJobs": 2
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Preferences \u203a Agent access (M4)",
+      "spec": {
+        "params": "`policy?: enum \"observe\"|\"assist\"|\"autonomous\"; maxJobs?: int (1..8) = 2; maxBatchSteps?: int (1..100000) = 1000; maxInlineImagePx?: int (256..8192) = 2048; maxInlineBytes?: int = 52428800; askInApp?: bool = true; letAgentMoveView?: bool = true; highlightAgentChanges?: bool = true`",
+        "result": "Effective settings",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.server.set": {
+    "status": "ok",
+    "result": {
+      "id": "agent.server.set",
+      "kind": "ui",
+      "label": "Agent server",
+      "summary": "Enable/disable the MCP server and set transport options (scope `app`)",
+      "section": "11",
+      "scopes": [
+        "app"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ServerSetParams",
+        "description": "`agent.server.set` parameters.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "Enable the server.",
+            "type": "boolean"
+          },
+          "http": {
+            "description": "Streamable HTTP transport.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "port": {
+            "description": "Port.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 1024,
+            "maximum": 65535
+          },
+          "allowRemote": {
+            "description": "Accept non-loopback connections.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ServerSetResult",
+        "description": "`agent.server.set` result.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "Enabled.",
+            "type": "boolean"
+          },
+          "endpoint": {
+            "description": "Endpoint URL.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "discoveryFile": {
+            "description": "Discovery file path.",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "enabled"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Enable the local agent server",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Preferences \u203a Agent access (M4)",
+      "spec": {
+        "params": "`enabled: bool; http?: bool = true; port?: int (1024..65535); allowRemote?: bool = false`",
+        "result": "`{enabled, endpoint?, discoveryFile?}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.server.status": {
+    "status": "ok",
+    "result": {
+      "id": "agent.server.status",
+      "kind": "query",
+      "label": "Agent server status",
+      "summary": "Server status, endpoint, connected sessions",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "title": "Endpoint and connected sessions",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Agent indicator (M4)",
+      "spec": {
+        "params": "\u2014",
+        "result": "`{enabled, endpoint, sessions: [{sessionId, client, policy, scopes[], connectedAt, lastActivity}]}`",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.session.connected": {
+    "status": "ok",
+    "result": {
+      "id": "agent.session.connected",
+      "kind": "event",
+      "label": "Agent connected",
+      "summary": "A session connected",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "title": "Subscribe (events take no parameters)",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": "an event delivered to subscribers",
+      "guiLocations": null,
+      "spec": {
+        "params": "\u2014",
+        "result": "`{sessionId, client, policy}`",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.session.disconnect": {
+    "status": "ok",
+    "result": {
+      "id": "agent.session.disconnect",
+      "kind": "ui",
+      "label": "Disconnect agent",
+      "summary": "Disconnect a session",
+      "section": "11",
+      "scopes": [
+        "app"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "SessionParams",
+        "description": "`{sessionId}` parameters.",
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "description": "Session.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "sessionId"
+        ]
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Empty",
+        "description": "An empty result object.",
+        "type": "object"
+      },
+      "examples": [
+        {
+          "title": "Disconnect a session",
+          "params": {
+            "sessionId": "a1"
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Agent activity panel (M4)",
+      "spec": {
+        "params": "`sessionId`",
+        "result": "`{}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.session.disconnected": {
+    "status": "ok",
+    "result": {
+      "id": "agent.session.disconnected",
+      "kind": "event",
+      "label": "Agent disconnected",
+      "summary": "A session disconnected",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "title": "Subscribe (events take no parameters)",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": "an event delivered to subscribers",
+      "guiLocations": null,
+      "spec": {
+        "params": "\u2014",
+        "result": "`{sessionId, reason}`",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.session.grant": {
+    "status": "ok",
+    "result": {
+      "id": "agent.session.grant",
+      "kind": "ui",
+      "label": "Grant agent access",
+      "summary": "Change a session's policy preset or scopes (scope `app`)",
+      "section": "11",
+      "scopes": [
+        "app"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "GrantParams",
+        "description": "`agent.session.grant` parameters.",
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "description": "Session.",
+            "type": "string"
+          },
+          "policy": {
+            "description": "Policy preset.",
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Policy"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "scopes": {
+            "description": "Scopes.",
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "default": null
+          },
+          "roots": {
+            "description": "File-system roots.",
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "default": null
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "sessionId"
+        ],
+        "$defs": {
+          "Policy": {
+            "description": "Policy presets (11 \u00a76.1).",
+            "oneOf": [
+              {
+                "description": "Read only.",
+                "type": "string",
+                "const": "observe"
+              },
+              {
+                "description": "All scopes except `network`, `print`, `prefs`, `app`; confirms destructive and overwriting actions.",
+                "type": "string",
+                "const": "assist"
+              },
+              {
+                "description": "All scopes except `app`; confirms only `network`/`print` actions and discarding unsaved work.",
+                "type": "string",
+                "const": "autonomous"
+              }
+            ]
+          }
+        }
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "title": "Let a session edit",
+          "params": {
+            "sessionId": "a1",
+            "policy": "assist",
+            "scopes": [
+              "read",
+              "edit"
+            ]
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Agent activity panel (M4)",
+      "spec": {
+        "params": "`sessionId; policy?: enum \"observe\"|\"assist\"|\"autonomous\"; scopes?: [string]; roots?: [path]`",
+        "result": "`{sessionId, policy, scopes[], roots[]}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.session.pause": {
+    "status": "ok",
+    "result": {
+      "id": "agent.session.pause",
+      "kind": "ui",
+      "label": "Pause agents",
+      "summary": "Pause an agent session (its calls wait, then fail with `agent.paused`)",
+      "section": "11",
+      "scopes": [
+        "app"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "OptionalSession",
+        "description": "`{sessionId?}` parameters.",
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "description": "Session (default: all).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Paused",
+        "description": "`{paused}`.",
+        "type": "object",
+        "properties": {
+          "paused": {
+            "description": "Paused sessions.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "paused"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Pause every session",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Agent indicator (M4)",
+      "spec": {
+        "params": "`sessionId? (all when omitted)`",
+        "result": "`{paused: [sessionId]}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.session.resume": {
+    "status": "ok",
+    "result": {
+      "id": "agent.session.resume",
+      "kind": "ui",
+      "label": "Resume agents",
+      "summary": "Resume a paused session",
+      "section": "11",
+      "scopes": [
+        "app"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "OptionalSession",
+        "description": "`{sessionId?}` parameters.",
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "description": "Session (default: all).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Resumed",
+        "description": "`{resumed}`.",
+        "type": "object",
+        "properties": {
+          "resumed": {
+            "description": "Resumed sessions.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "resumed"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Resume every session",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Agent indicator (M4)",
+      "spec": {
+        "params": "`sessionId?`",
+        "result": "`{resumed: [sessionId]}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.token.regenerate": {
+    "status": "ok",
+    "result": {
+      "id": "agent.token.regenerate",
+      "kind": "ui",
+      "label": "Regenerate agent token",
+      "summary": "Regenerate the HTTP bearer token, disconnecting HTTP sessions (scope `app`)",
+      "section": "11",
+      "scopes": [
+        "app"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Discovery",
+        "description": "`{discoveryFile}`.",
+        "type": "object",
+        "properties": {
+          "discoveryFile": {
+            "description": "Discovery file path.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "discoveryFile"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Invalidate the bearer token",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Preferences \u203a Agent access (M4)",
+      "spec": {
+        "params": "\u2014",
+        "result": "`{discoveryFile}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "agent.typedTools.set": {
+    "status": "ok",
+    "result": {
+      "id": "agent.typedTools.set",
+      "kind": "ui",
+      "label": "Typed agent tools",
+      "summary": "Expose commands as individual MCP tools (scope `app`)",
+      "section": "11",
+      "scopes": [
+        "app"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "TypedToolsParams",
+        "description": "`agent.typedTools.set` parameters.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "Expose one MCP tool per command.",
+            "type": "boolean"
+          },
+          "namespaces": {
+            "description": "Limit to namespaces.",
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "default": null
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ToolCount",
+        "description": "`{toolCount}`.",
+        "type": "object",
+        "properties": {
+          "toolCount": {
+            "description": "Tools exposed.",
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "toolCount"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Expose doc and edit commands as tools",
+          "params": {
+            "enabled": true,
+            "namespaces": [
+              "doc",
+              "edit"
+            ]
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Preferences \u203a Agent access (M4)",
+      "spec": {
+        "params": "`enabled: bool; namespaces?: [string]`",
+        "result": "`{toolCount}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "inspect.contactSheet.render": {
+    "status": "ok",
+    "result": {
+      "id": "inspect.contactSheet.render",
+      "kind": "query",
+      "label": "Contact sheet",
+      "summary": "Grid image of several frames (same as `render_contact_sheet`)",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": true,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ContactSheetParams",
+        "type": "object",
+        "properties": {
+          "sceneId": {
+            "description": "Scene.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "frames": {
+            "description": "Frames: a list, or `{from, to, step}`.",
+            "$ref": "#/$defs/FrameSelection"
+          },
+          "columns": {
+            "description": "Columns.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 1,
+            "maximum": 64
+          },
+          "cellWidth": {
+            "description": "Cell width.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 16,
+            "maximum": 2048
+          },
+          "labels": {
+            "description": "Frame labels.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "frames"
+        ],
+        "$defs": {
+          "FrameSelection": {
+            "description": "`inspect.contactSheet.render` parameters.\nThe frames of a contact sheet (spec A `inspect.contactSheet.render`): a list, or a stepped range.",
+            "anyOf": [
+              {
+                "description": "The frames listed.",
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "maximum": 100000,
+                  "minimum": 1
+                },
+                "minItems": 1,
+                "maxItems": 1000
+              },
+              {
+                "description": "`from` to `to` every `step` frames.",
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "description": "First frame.",
+                    "type": "integer",
+                    "maximum": 100000,
+                    "minimum": 1
+                  },
+                  "to": {
+                    "description": "Last frame.",
+                    "type": "integer",
+                    "maximum": 100000,
+                    "minimum": 1
+                  },
+                  "step": {
+                    "description": "Step (default 1).",
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "default": null,
+                    "minimum": 1,
+                    "maximum": 100000
+                  }
+                },
+                "required": [
+                  "from",
+                  "to"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "title": "Every fourth frame of 1\u201324",
+          "params": {
+            "frames": {
+              "from": 1,
+              "to": 24,
+              "step": 4
+            }
+          }
+        }
+      ],
+      "status": "notImplemented",
+      "agentOnly": "agents review motion in one image (11 \u00a77.5 render_contact_sheet)",
+      "guiLocations": null,
+      "spec": {
+        "params": "`sceneId?: id; frames: [int] | {from,to,step}; columns?: int; cellWidth?: int = 240; labels?: bool = true`",
+        "result": "`{png, width, height, cells: [{frame, x, y, w, h}]}`",
+        "undo": "n/a"
+      },
+      "milestone": "M3 C3.3"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "inspect.coordinates.convert": {
+    "status": "ok",
+    "result": {
+      "id": "inspect.coordinates.convert",
+      "kind": "query",
+      "label": "Convert coordinates",
+      "summary": "Convert points between coordinate spaces",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": true,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ConvertParams",
+        "description": "`inspect.coordinates.convert` parameters.",
+        "type": "object",
+        "properties": {
+          "from": {
+            "description": "Source space.",
+            "type": "string"
+          },
+          "to": {
+            "description": "Target space.",
+            "type": "string"
+          },
+          "points": {
+            "description": "Points.",
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Point3"
+            },
+            "minItems": 1,
+            "maxItems": 100000
+          },
+          "sceneId": {
+            "description": "Scene.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "frame": {
+            "description": "Frame.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "elementId": {
+            "description": "Element.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "view": {
+            "description": "View.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "from",
+          "to",
+          "points"
+        ],
+        "$defs": {
+          "Point3": {
+            "description": "A point with an optional depth.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "X.",
+                "type": "number"
+              },
+              "y": {
+                "description": "Y.",
+                "type": "number"
+              },
+              "z": {
+                "description": "Z.",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y"
+            ]
+          }
+        }
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Points",
+        "description": "`{points}`.",
+        "type": "object",
+        "properties": {
+          "points": {
+            "description": "Converted points.",
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Point3"
+            }
+          }
+        },
+        "required": [
+          "points"
+        ],
+        "$defs": {
+          "Point3": {
+            "description": "A point with an optional depth.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "X.",
+                "type": "number"
+              },
+              "y": {
+                "description": "Y.",
+                "type": "number"
+              },
+              "z": {
+                "description": "Z.",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "title": "Field units to camera space",
+          "params": {
+            "from": "field",
+            "to": "camera",
+            "points": [
+              {
+                "x": 1,
+                "y": 1
+              }
+            ]
+          }
+        }
+      ],
+      "status": "notImplemented",
+      "agentOnly": "agents convert between coordinate spaces (11 \u00a77.5 convert_coordinates)",
+      "guiLocations": null,
+      "spec": {
+        "params": "`from: string; to: string; points: [{x,y,z?}]; sceneId?: id; frame?: int; elementId?: id; view?: string`",
+        "result": "`{points: [{x,y,z?}]}`",
+        "undo": "n/a"
+      },
+      "milestone": "M3 C3.3"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "inspect.frame.describe": {
+    "status": "ok",
+    "result": {
+      "id": "inspect.frame.describe",
+      "kind": "query",
+      "label": "Describe frame",
+      "summary": "Structured description of what is visible and audible at a frame (same as `describe_frame`)",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": true,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "FrameParams",
+        "description": "`inspect.frame.describe` parameters.",
+        "type": "object",
+        "properties": {
+          "sceneId": {
+            "description": "Scene (default current).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "frame": {
+            "description": "Frame (default current).",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "cameraId": {
+            "description": "Camera (default the scene's current camera).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "detail": {
+            "description": "Detail.",
+            "$ref": "#/$defs/Detail"
+          }
+        },
+        "additionalProperties": false,
+        "$defs": {
+          "Detail": {
+            "description": "Description detail.",
+            "oneOf": [
+              {
+                "description": "Summary.",
+                "type": "string",
+                "const": "summary"
+              },
+              {
+                "description": "Everything.",
+                "type": "string",
+                "const": "full"
+              }
+            ]
+          }
+        }
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "title": "What the current frame shows",
+          "params": {}
+        }
+      ],
+      "status": "notImplemented",
+      "agentOnly": "agents verify frames structurally (11 \u00a77.5 describe_frame)",
+      "guiLocations": null,
+      "spec": {
+        "params": "`sceneId?: id; frame?: int; cameraId?: id; detail?: enum \"summary\"|\"full\" = \"summary\"`",
+        "result": "`{elements: [{elementId, name, drawingId?, worldTransform, cameraBounds, opacity, effects[]}], sounds: [{elementId, level}], mouthShape?, warnings[]}`",
+        "undo": "n/a"
+      },
+      "milestone": "M3 C3.3"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "inspect.hitTest": {
+    "status": "ok",
+    "result": {
+      "id": "inspect.hitTest",
+      "kind": "query",
+      "label": "Hit test",
+      "summary": "Objects under a point, top-most first",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": true,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "HitParams",
+        "description": "`inspect.hitTest` parameters.",
+        "type": "object",
+        "properties": {
+          "space": {
+            "description": "Space of `point`.",
+            "$ref": "#/$defs/Space"
+          },
+          "point": {
+            "description": "The point.",
+            "$ref": "#/$defs/Point"
+          },
+          "sceneId": {
+            "description": "Scene.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "frame": {
+            "description": "Frame.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "view": {
+            "description": "View.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "space",
+          "point"
+        ],
+        "$defs": {
+          "Space": {
+            "description": "Coordinate space.",
+            "oneOf": [
+              {
+                "description": "View pixels.",
+                "type": "string",
+                "const": "view"
+              },
+              {
+                "description": "Drawing space.",
+                "type": "string",
+                "const": "drawing"
+              },
+              {
+                "description": "Scene space.",
+                "type": "string",
+                "const": "scene"
+              },
+              {
+                "description": "Camera space.",
+                "type": "string",
+                "const": "camera"
+              },
+              {
+                "description": "Rendered image pixels.",
+                "type": "string",
+                "const": "image"
+              }
+            ]
+          },
+          "Point": {
+            "description": "A 2-D point.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "X.",
+                "type": "number"
+              },
+              "y": {
+                "description": "Y.",
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y"
+            ]
+          }
+        }
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Hits",
+        "description": "`{hits}`.",
+        "type": "object",
+        "properties": {
+          "hits": {
+            "description": "Hits, front to back.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "required": [
+          "hits"
+        ]
+      },
+      "examples": [
+        {
+          "title": "What is at the camera centre",
+          "params": {
+            "space": "camera",
+            "point": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        }
+      ],
+      "status": "notImplemented",
+      "agentOnly": "agents locate objects by position (11 \u00a77.5 hit_test)",
+      "guiLocations": null,
+      "spec": {
+        "params": "`space: enum \"view\"|\"drawing\"|\"scene\"|\"camera\"|\"image\"; point: point; sceneId?: id; frame?: int; view?: string`",
+        "result": "`{hits: [{elementId, drawingId?, layerId?, objectId?, kind, colourId?}]}`",
+        "undo": "n/a"
+      },
+      "milestone": "M3 C3.3"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "inspect.screenshot": {
+    "status": "ok",
+    "result": {
+      "id": "inspect.screenshot",
+      "kind": "query",
+      "label": "Screenshot",
+      "summary": "PNG of the real GUI (attached) or a virtual view (headless)",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ScreenshotParams",
+        "description": "`inspect.screenshot` parameters.",
+        "type": "object",
+        "properties": {
+          "target": {
+            "description": "Window, view, panel or dialog.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "region": {
+            "description": "Region.",
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Rect"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false,
+        "$defs": {
+          "Rect": {
+            "description": "A rectangle.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "Left.",
+                "type": "number"
+              },
+              "y": {
+                "description": "Top.",
+                "type": "number"
+              },
+              "w": {
+                "description": "Width.",
+                "type": "number"
+              },
+              "h": {
+                "description": "Height.",
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y",
+              "w",
+              "h"
+            ]
+          }
+        }
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "title": "The main window",
+          "params": {}
+        }
+      ],
+      "status": "notImplemented",
+      "agentOnly": "agents look at the GUI (11 \u00a77.8 screenshot)",
+      "guiLocations": null,
+      "spec": {
+        "params": "`target?: string = \"window\"; region?: {x,y,w,h}`",
+        "result": "`{png, width, height, sha256}`",
+        "undo": "n/a"
+      },
+      "milestone": "M4 C4.2"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "inspect.ui.tree": {
+    "status": "ok",
+    "result": {
+      "id": "inspect.ui.tree",
+      "kind": "query",
+      "label": "UI tree",
+      "summary": "UI tree of the window, a view, a panel or the open dialogs (same as `inspect_ui`)",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "UiTreeParams",
+        "description": "`inspect.ui.tree` parameters.",
+        "type": "object",
+        "properties": {
+          "target": {
+            "description": "Window, panel or dialog.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "depth": {
+            "description": "Depth.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 1,
+            "maximum": 32
+          }
+        },
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "title": "The window's accessibility tree, 3 levels",
+          "params": {
+            "depth": 3
+          }
+        }
+      ],
+      "status": "notImplemented",
+      "agentOnly": "agents inspect the GUI (11 \u00a77.8 inspect_ui)",
+      "guiLocations": null,
+      "spec": {
+        "params": "`target?: string = \"window\"; depth?: int = 3`",
+        "result": "`{nodes: [{role, id, label, value?, enabled, visible, commandId?, children[]}]}`",
+        "undo": "n/a"
+      },
+      "milestone": "M4 C4.2"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "checkpoint.create": {
+    "status": "ok",
+    "result": {
+      "id": "checkpoint.create",
+      "kind": "ui",
+      "label": "Create checkpoint",
+      "summary": "Create a named in-memory snapshot of the document",
+      "section": "11",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": true,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NameParams",
+        "description": "`{name}` parameters.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Checkpoint name.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "CheckpointRef",
+        "description": "`{name, documentRev}`.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name.",
+            "type": "string"
+          },
+          "documentRev": {
+            "description": "The document revision it holds.",
+            "type": "integer",
+            "maximum": 18446744073709551615,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "name",
+          "documentRev"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Checkpoint before an experiment",
+          "params": {
+            "name": "experiment-1"
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": "agent safety net (11 \u00a77.7); the GUI's equivalent is the History panel",
+      "guiLocations": null,
+      "spec": {
+        "params": "`name: string`",
+        "result": "`{name, documentRev}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "checkpoint.delete": {
+    "status": "ok",
+    "result": {
+      "id": "checkpoint.delete",
+      "kind": "ui",
+      "label": "Delete checkpoint",
+      "summary": "Delete a checkpoint",
+      "section": "11",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": true,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NameParams",
+        "description": "`{name}` parameters.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Checkpoint name.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Empty",
+        "description": "An empty result object.",
+        "type": "object"
+      },
+      "examples": [
+        {
+          "title": "Delete a checkpoint",
+          "params": {
+            "name": "before-walk"
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": "agent safety net (11 \u00a77.7)",
+      "guiLocations": null,
+      "spec": {
+        "params": "`name: string`",
+        "result": "`{}`",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "checkpoint.list": {
+    "status": "ok",
+    "result": {
+      "id": "checkpoint.list",
+      "kind": "query",
+      "label": "List checkpoints",
+      "summary": "List checkpoints",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": true,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Array_of_CheckpointEntry",
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/CheckpointEntry"
+        },
+        "$defs": {
+          "CheckpointEntry": {
+            "description": "A checkpoint as listed.",
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Name.",
+                "type": "string"
+              },
+              "createdAt": {
+                "description": "Creation time.",
+                "type": "string"
+              },
+              "documentRev": {
+                "description": "Document revision.",
+                "type": "integer",
+                "maximum": 18446744073709551615,
+                "minimum": 0
+              },
+              "origin": {
+                "description": "Who created it.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "createdAt",
+              "documentRev",
+              "origin"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "title": "All checkpoints, oldest first",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": "agent safety net (11 \u00a77.7)",
+      "guiLocations": null,
+      "spec": {
+        "params": "\u2014",
+        "result": "`[{name, createdAt, documentRev, origin}]`",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "checkpoint.restore": {
+    "status": "ok",
+    "result": {
+      "id": "checkpoint.restore",
+      "kind": "action",
+      "label": "Restore checkpoint",
+      "summary": "Restore a checkpoint (one undo step \"Restore checkpoint\")",
+      "section": "11",
+      "scopes": [
+        "edit"
+      ],
+      "undoable": true,
+      "undoLabel": "Restore checkpoint",
+      "confirmation": [],
+      "enablement": "a project is open with at least one checkpoint; not inside an atomic batch",
+      "needsProject": true,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NameParams",
+        "description": "`{name}` parameters.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Checkpoint name.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "CheckpointRef",
+        "description": "`{name, documentRev}`.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name.",
+            "type": "string"
+          },
+          "documentRev": {
+            "description": "The document revision it holds.",
+            "type": "integer",
+            "maximum": 18446744073709551615,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "name",
+          "documentRev"
+        ]
+      },
+      "examples": [
+        {
+          "title": "Restore a checkpoint",
+          "params": {
+            "name": "before-walk"
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": "agent safety net (11 \u00a77.7)",
+      "guiLocations": null,
+      "spec": {
+        "params": "`name: string`",
+        "result": "`{name, documentRev}`",
+        "undo": "yes"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "job.cancel": {
+    "status": "ok",
+    "result": {
+      "id": "job.cancel",
+      "kind": "ui",
+      "label": "Cancel job",
+      "summary": "Cancel a job; partial results are discarded unless the command documents otherwise",
+      "section": "11",
+      "scopes": [
+        "ui"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "JobIdParams",
+        "description": "`{jobId}` parameters.",
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "description": "The job.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "jobId"
+        ]
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "JobRecord",
+        "description": "A job record (11 \u00a77.7 `job_status`).",
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "description": "Job id.",
+            "type": "string"
+          },
+          "commandId": {
+            "description": "The job command.",
+            "type": "string"
+          },
+          "state": {
+            "description": "State.",
+            "$ref": "#/$defs/JobState"
+          },
+          "progress": {
+            "description": "Progress 0..1.",
+            "type": "number"
+          },
+          "message": {
+            "description": "Current step text.",
+            "type": "string"
+          },
+          "startedAt": {
+            "description": "Start time (ISO 8601 UTC).",
+            "type": "string"
+          },
+          "result": {
+            "description": "Final result."
+          },
+          "error": {
+            "description": "Final error.",
+            "anyOf": [
+              {
+                "$ref": "#/$defs/CommandError"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "session": {
+            "description": "Session that started it.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "jobId",
+          "commandId",
+          "state",
+          "progress",
+          "message",
+          "startedAt",
+          "session"
+        ],
+        "$defs": {
+          "JobState": {
+            "description": "Job state (11 \u00a77.7).",
+            "oneOf": [
+              {
+                "description": "Accepted, not started.",
+                "type": "string",
+                "const": "queued"
+              },
+              {
+                "description": "Running.",
+                "type": "string",
+                "const": "running"
+              },
+              {
+                "description": "Finished with a result.",
+                "type": "string",
+                "const": "succeeded"
+              },
+              {
+                "description": "Finished with an error.",
+                "type": "string",
+                "const": "failed"
+              },
+              {
+                "description": "Cancelled.",
+                "type": "string",
+                "const": "cancelled"
+              }
+            ]
+          },
+          "CommandError": {
+            "description": "A typed command error in the `{code, message, details, hint?}` wire form (11 \u00a710).",
+            "type": "object",
+            "properties": {
+              "code": {
+                "description": "Stable dotted code `area.reason`.",
+                "type": "string"
+              },
+              "message": {
+                "description": "Human-readable message.",
+                "type": "string"
+              },
+              "details": {
+                "description": "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small)."
+              },
+              "hint": {
+                "description": "How to fix the call, where known.",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "details"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "title": "Cancel a job",
+          "params": {
+            "jobId": "job-1"
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Cancel button of the progress area (M4)",
+      "spec": {
+        "params": "`jobId: string`",
+        "result": "Job record",
+        "undo": "no"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "job.finished": {
+    "status": "ok",
+    "result": {
+      "id": "job.finished",
+      "kind": "event",
+      "label": "Job finished",
+      "summary": "Job reached a final state",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "JobRecord",
+        "description": "A job record (11 \u00a77.7 `job_status`).",
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "description": "Job id.",
+            "type": "string"
+          },
+          "commandId": {
+            "description": "The job command.",
+            "type": "string"
+          },
+          "state": {
+            "description": "State.",
+            "$ref": "#/$defs/JobState"
+          },
+          "progress": {
+            "description": "Progress 0..1.",
+            "type": "number"
+          },
+          "message": {
+            "description": "Current step text.",
+            "type": "string"
+          },
+          "startedAt": {
+            "description": "Start time (ISO 8601 UTC).",
+            "type": "string"
+          },
+          "result": {
+            "description": "Final result."
+          },
+          "error": {
+            "description": "Final error.",
+            "anyOf": [
+              {
+                "$ref": "#/$defs/CommandError"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "session": {
+            "description": "Session that started it.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "jobId",
+          "commandId",
+          "state",
+          "progress",
+          "message",
+          "startedAt",
+          "session"
+        ],
+        "$defs": {
+          "JobState": {
+            "description": "Job state (11 \u00a77.7).",
+            "oneOf": [
+              {
+                "description": "Accepted, not started.",
+                "type": "string",
+                "const": "queued"
+              },
+              {
+                "description": "Running.",
+                "type": "string",
+                "const": "running"
+              },
+              {
+                "description": "Finished with a result.",
+                "type": "string",
+                "const": "succeeded"
+              },
+              {
+                "description": "Finished with an error.",
+                "type": "string",
+                "const": "failed"
+              },
+              {
+                "description": "Cancelled.",
+                "type": "string",
+                "const": "cancelled"
+              }
+            ]
+          },
+          "CommandError": {
+            "description": "A typed command error in the `{code, message, details, hint?}` wire form (11 \u00a710).",
+            "type": "object",
+            "properties": {
+              "code": {
+                "description": "Stable dotted code `area.reason`.",
+                "type": "string"
+              },
+              "message": {
+                "description": "Human-readable message.",
+                "type": "string"
+              },
+              "details": {
+                "description": "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small)."
+              },
+              "hint": {
+                "description": "How to fix the call, where known.",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "details"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "title": "Subscribe (events take no parameters)",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": "an event delivered to subscribers",
+      "guiLocations": null,
+      "spec": {
+        "params": "\u2014",
+        "result": "Job record",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "job.list": {
+    "status": "ok",
+    "result": {
+      "id": "job.list",
+      "kind": "query",
+      "label": "List jobs",
+      "summary": "Jobs of this session (or all, for the GUI)",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "ListParams",
+        "description": "`job.list` parameters.",
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "description": "One job.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "all": {
+            "description": "Every session's jobs (the GUI only; default: the caller's own).",
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Array_of_JobRecord",
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/JobRecord"
+        },
+        "$defs": {
+          "JobRecord": {
+            "description": "A job record (11 \u00a77.7 `job_status`).",
+            "type": "object",
+            "properties": {
+              "jobId": {
+                "description": "Job id.",
+                "type": "string"
+              },
+              "commandId": {
+                "description": "The job command.",
+                "type": "string"
+              },
+              "state": {
+                "description": "State.",
+                "$ref": "#/$defs/JobState"
+              },
+              "progress": {
+                "description": "Progress 0..1.",
+                "type": "number"
+              },
+              "message": {
+                "description": "Current step text.",
+                "type": "string"
+              },
+              "startedAt": {
+                "description": "Start time (ISO 8601 UTC).",
+                "type": "string"
+              },
+              "result": {
+                "description": "Final result."
+              },
+              "error": {
+                "description": "Final error.",
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/CommandError"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "session": {
+                "description": "Session that started it.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "jobId",
+              "commandId",
+              "state",
+              "progress",
+              "message",
+              "startedAt",
+              "session"
+            ]
+          },
+          "JobState": {
+            "description": "Job state (11 \u00a77.7).",
+            "oneOf": [
+              {
+                "description": "Accepted, not started.",
+                "type": "string",
+                "const": "queued"
+              },
+              {
+                "description": "Running.",
+                "type": "string",
+                "const": "running"
+              },
+              {
+                "description": "Finished with a result.",
+                "type": "string",
+                "const": "succeeded"
+              },
+              {
+                "description": "Finished with an error.",
+                "type": "string",
+                "const": "failed"
+              },
+              {
+                "description": "Cancelled.",
+                "type": "string",
+                "const": "cancelled"
+              }
+            ]
+          },
+          "CommandError": {
+            "description": "A typed command error in the `{code, message, details, hint?}` wire form (11 \u00a710).",
+            "type": "object",
+            "properties": {
+              "code": {
+                "description": "Stable dotted code `area.reason`.",
+                "type": "string"
+              },
+              "message": {
+                "description": "Human-readable message.",
+                "type": "string"
+              },
+              "details": {
+                "description": "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small)."
+              },
+              "hint": {
+                "description": "How to fix the call, where known.",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "details"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "title": "The caller's jobs",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": null,
+      "guiLocations": "Progress area of the status bar (M4)",
+      "spec": {
+        "params": "`jobId?: string; all?: bool = false`",
+        "result": "`[{jobId, commandId, state, progress, message, result?, error?}]`",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "job.progress": {
+    "status": "ok",
+    "result": {
+      "id": "job.progress",
+      "kind": "event",
+      "label": "Job progress",
+      "summary": "Job progress changed",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "JobRecord",
+        "description": "A job record (11 \u00a77.7 `job_status`).",
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "description": "Job id.",
+            "type": "string"
+          },
+          "commandId": {
+            "description": "The job command.",
+            "type": "string"
+          },
+          "state": {
+            "description": "State.",
+            "$ref": "#/$defs/JobState"
+          },
+          "progress": {
+            "description": "Progress 0..1.",
+            "type": "number"
+          },
+          "message": {
+            "description": "Current step text.",
+            "type": "string"
+          },
+          "startedAt": {
+            "description": "Start time (ISO 8601 UTC).",
+            "type": "string"
+          },
+          "result": {
+            "description": "Final result."
+          },
+          "error": {
+            "description": "Final error.",
+            "anyOf": [
+              {
+                "$ref": "#/$defs/CommandError"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "session": {
+            "description": "Session that started it.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "jobId",
+          "commandId",
+          "state",
+          "progress",
+          "message",
+          "startedAt",
+          "session"
+        ],
+        "$defs": {
+          "JobState": {
+            "description": "Job state (11 \u00a77.7).",
+            "oneOf": [
+              {
+                "description": "Accepted, not started.",
+                "type": "string",
+                "const": "queued"
+              },
+              {
+                "description": "Running.",
+                "type": "string",
+                "const": "running"
+              },
+              {
+                "description": "Finished with a result.",
+                "type": "string",
+                "const": "succeeded"
+              },
+              {
+                "description": "Finished with an error.",
+                "type": "string",
+                "const": "failed"
+              },
+              {
+                "description": "Cancelled.",
+                "type": "string",
+                "const": "cancelled"
+              }
+            ]
+          },
+          "CommandError": {
+            "description": "A typed command error in the `{code, message, details, hint?}` wire form (11 \u00a710).",
+            "type": "object",
+            "properties": {
+              "code": {
+                "description": "Stable dotted code `area.reason`.",
+                "type": "string"
+              },
+              "message": {
+                "description": "Human-readable message.",
+                "type": "string"
+              },
+              "details": {
+                "description": "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small)."
+              },
+              "hint": {
+                "description": "How to fix the call, where known.",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "details"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "title": "Subscribe (events take no parameters)",
+          "params": {}
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": "an event delivered to subscribers",
+      "guiLocations": null,
+      "spec": {
+        "params": "\u2014",
+        "result": "Job record",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "job.wait": {
+    "status": "ok",
+    "result": {
+      "id": "job.wait",
+      "kind": "query",
+      "label": "Wait for a job",
+      "summary": "Wait for a job to finish or a timeout",
+      "section": "11",
+      "scopes": [
+        "read"
+      ],
+      "undoable": false,
+      "undoLabel": null,
+      "confirmation": [],
+      "enablement": "always enabled",
+      "needsProject": false,
+      "paramsSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "WaitParams",
+        "description": "`job.wait` parameters.",
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "description": "The job.",
+            "type": "string"
+          },
+          "timeoutMs": {
+            "description": "How long to wait.",
+            "type": "integer",
+            "default": 60000,
+            "minimum": 0,
+            "maximum": 3600000
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "jobId"
+        ]
+      },
+      "resultSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "WaitResult",
+        "description": "`job.wait` result: the job record and whether the wait timed out.",
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "description": "Job id.",
+            "type": "string"
+          },
+          "commandId": {
+            "description": "The job command.",
+            "type": "string"
+          },
+          "state": {
+            "description": "State.",
+            "$ref": "#/$defs/JobState"
+          },
+          "progress": {
+            "description": "Progress 0..1.",
+            "type": "number"
+          },
+          "message": {
+            "description": "Current step text.",
+            "type": "string"
+          },
+          "startedAt": {
+            "description": "Start time (ISO 8601 UTC).",
+            "type": "string"
+          },
+          "result": {
+            "description": "Final result."
+          },
+          "error": {
+            "description": "Final error.",
+            "anyOf": [
+              {
+                "$ref": "#/$defs/CommandError"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "session": {
+            "description": "Session that started it.",
+            "type": "string"
+          },
+          "timedOut": {
+            "description": "`true` when the job was still running when the timeout passed; absent otherwise (A / 11 \u00a715.2 `timedOut?`;\nC12-R1-13).",
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "jobId",
+          "commandId",
+          "state",
+          "progress",
+          "message",
+          "startedAt",
+          "session"
+        ],
+        "$defs": {
+          "JobState": {
+            "description": "Job state (11 \u00a77.7).",
+            "oneOf": [
+              {
+                "description": "Accepted, not started.",
+                "type": "string",
+                "const": "queued"
+              },
+              {
+                "description": "Running.",
+                "type": "string",
+                "const": "running"
+              },
+              {
+                "description": "Finished with a result.",
+                "type": "string",
+                "const": "succeeded"
+              },
+              {
+                "description": "Finished with an error.",
+                "type": "string",
+                "const": "failed"
+              },
+              {
+                "description": "Cancelled.",
+                "type": "string",
+                "const": "cancelled"
+              }
+            ]
+          },
+          "CommandError": {
+            "description": "A typed command error in the `{code, message, details, hint?}` wire form (11 \u00a710).",
+            "type": "object",
+            "properties": {
+              "code": {
+                "description": "Stable dotted code `area.reason`.",
+                "type": "string"
+              },
+              "message": {
+                "description": "Human-readable message.",
+                "type": "string"
+              },
+              "details": {
+                "description": "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small)."
+              },
+              "hint": {
+                "description": "How to fix the call, where known.",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "details"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "title": "Wait up to 5 s",
+          "params": {
+            "jobId": "job-1",
+            "timeoutMs": 5000
+          }
+        }
+      ],
+      "status": "implemented",
+      "agentOnly": "agents wait for jobs; the GUI shows progress",
+      "guiLocations": null,
+      "spec": {
+        "params": "`jobId: string; timeoutMs?: int = 60000`",
+        "result": "Job record, `timedOut?: bool`",
+        "undo": "n/a"
+      }
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  }
+}

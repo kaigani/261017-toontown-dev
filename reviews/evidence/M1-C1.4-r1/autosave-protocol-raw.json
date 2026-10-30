@@ -1,0 +1,412 @@
+[
+  {
+    "round": 0,
+    "queuedProtocolCalls": 50,
+    "backgroundExportAtSnapshot": [
+      {
+        "jobId": "job-2",
+        "commandId": "doc.package.export",
+        "state": "running",
+        "progress": 0.1,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:05.833Z",
+        "session": "agent:s1-8feb33"
+      }
+    ],
+    "maintenanceElapsedMs": 9.6316,
+    "snapshotMs": 0.0722,
+    "heartbeatMs": 9.4377,
+    "watchMs": 0.0958,
+    "export": {
+      "status": "ok",
+      "result": {
+        "jobId": "job-2",
+        "commandId": "doc.package.export",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:05.833Z",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-5aca97a8af69\\export-0.animpkg",
+          "form": "package",
+          "bytes": 525165,
+          "entries": 48
+        },
+        "session": "agent:s1-8feb33"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 51
+    },
+    "committedRevAfterQueue": 51
+  },
+  {
+    "round": 1,
+    "queuedProtocolCalls": 50,
+    "backgroundExportAtSnapshot": [
+      {
+        "jobId": "job-3",
+        "commandId": "doc.package.export",
+        "state": "running",
+        "progress": 0.1,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:08.034Z",
+        "session": "agent:s1-8feb33"
+      }
+    ],
+    "maintenanceElapsedMs": 11.9015,
+    "snapshotMs": 0.068,
+    "heartbeatMs": 11.7436,
+    "watchMs": 0.0669,
+    "export": {
+      "status": "ok",
+      "result": {
+        "jobId": "job-3",
+        "commandId": "doc.package.export",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:08.034Z",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-5aca97a8af69\\export-1.animpkg",
+          "form": "package",
+          "bytes": 525191,
+          "entries": 48
+        },
+        "session": "agent:s1-8feb33"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 101
+    },
+    "committedRevAfterQueue": 101
+  },
+  {
+    "round": 2,
+    "queuedProtocolCalls": 50,
+    "backgroundExportAtSnapshot": [
+      {
+        "jobId": "job-4",
+        "commandId": "doc.package.export",
+        "state": "running",
+        "progress": 0.1,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:10.196Z",
+        "session": "agent:s1-8feb33"
+      }
+    ],
+    "maintenanceElapsedMs": 12.0793,
+    "snapshotMs": 0.0807,
+    "heartbeatMs": 11.8949,
+    "watchMs": 0.0692,
+    "export": {
+      "status": "ok",
+      "result": {
+        "jobId": "job-4",
+        "commandId": "doc.package.export",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:10.196Z",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-5aca97a8af69\\export-2.animpkg",
+          "form": "package",
+          "bytes": 525190,
+          "entries": 48
+        },
+        "session": "agent:s1-8feb33"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 151
+    },
+    "committedRevAfterQueue": 151
+  },
+  {
+    "round": 3,
+    "queuedProtocolCalls": 50,
+    "backgroundExportAtSnapshot": [
+      {
+        "jobId": "job-5",
+        "commandId": "doc.package.export",
+        "state": "running",
+        "progress": 0.1,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:12.397Z",
+        "session": "agent:s1-8feb33"
+      }
+    ],
+    "maintenanceElapsedMs": 17.6766,
+    "snapshotMs": 0.08789999999999999,
+    "heartbeatMs": 16.6064,
+    "watchMs": 0.9545,
+    "export": {
+      "status": "ok",
+      "result": {
+        "jobId": "job-5",
+        "commandId": "doc.package.export",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:12.397Z",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-5aca97a8af69\\export-3.animpkg",
+          "form": "package",
+          "bytes": 525194,
+          "entries": 48
+        },
+        "session": "agent:s1-8feb33"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 201
+    },
+    "committedRevAfterQueue": 201
+  },
+  {
+    "round": 4,
+    "queuedProtocolCalls": 50,
+    "backgroundExportAtSnapshot": [
+      {
+        "jobId": "job-6",
+        "commandId": "doc.package.export",
+        "state": "running",
+        "progress": 0.1,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:14.618Z",
+        "session": "agent:s1-8feb33"
+      }
+    ],
+    "maintenanceElapsedMs": 10.6583,
+    "snapshotMs": 0.06820000000000001,
+    "heartbeatMs": 10.4461,
+    "watchMs": 0.0675,
+    "export": {
+      "status": "ok",
+      "result": {
+        "jobId": "job-6",
+        "commandId": "doc.package.export",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:14.618Z",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-5aca97a8af69\\export-4.animpkg",
+          "form": "package",
+          "bytes": 525194,
+          "entries": 48
+        },
+        "session": "agent:s1-8feb33"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 251
+    },
+    "committedRevAfterQueue": 251
+  },
+  {
+    "round": 5,
+    "queuedProtocolCalls": 50,
+    "backgroundExportAtSnapshot": [
+      {
+        "jobId": "job-7",
+        "commandId": "doc.package.export",
+        "state": "running",
+        "progress": 0.1,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:16.769Z",
+        "session": "agent:s1-8feb33"
+      }
+    ],
+    "maintenanceElapsedMs": 15.138,
+    "snapshotMs": 0.0632,
+    "heartbeatMs": 14.988100000000001,
+    "watchMs": 0.0634,
+    "export": {
+      "status": "ok",
+      "result": {
+        "jobId": "job-7",
+        "commandId": "doc.package.export",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:16.769Z",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-5aca97a8af69\\export-5.animpkg",
+          "form": "package",
+          "bytes": 525194,
+          "entries": 48
+        },
+        "session": "agent:s1-8feb33"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 301
+    },
+    "committedRevAfterQueue": 301
+  },
+  {
+    "round": 6,
+    "queuedProtocolCalls": 50,
+    "backgroundExportAtSnapshot": [
+      {
+        "jobId": "job-8",
+        "commandId": "doc.package.export",
+        "state": "running",
+        "progress": 0.1,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:18.953Z",
+        "session": "agent:s1-8feb33"
+      }
+    ],
+    "maintenanceElapsedMs": 21.4236,
+    "snapshotMs": 0.0701,
+    "heartbeatMs": 21.2229,
+    "watchMs": 0.0657,
+    "export": {
+      "status": "ok",
+      "result": {
+        "jobId": "job-8",
+        "commandId": "doc.package.export",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:18.953Z",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-5aca97a8af69\\export-6.animpkg",
+          "form": "package",
+          "bytes": 525194,
+          "entries": 48
+        },
+        "session": "agent:s1-8feb33"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 351
+    },
+    "committedRevAfterQueue": 351
+  },
+  {
+    "round": 7,
+    "queuedProtocolCalls": 50,
+    "backgroundExportAtSnapshot": [
+      {
+        "jobId": "job-9",
+        "commandId": "doc.package.export",
+        "state": "running",
+        "progress": 0.1,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:21.147Z",
+        "session": "agent:s1-8feb33"
+      }
+    ],
+    "maintenanceElapsedMs": 16.687,
+    "snapshotMs": 0.0694,
+    "heartbeatMs": 16.5088,
+    "watchMs": 0.0708,
+    "export": {
+      "status": "ok",
+      "result": {
+        "jobId": "job-9",
+        "commandId": "doc.package.export",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:21.147Z",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-5aca97a8af69\\export-7.animpkg",
+          "form": "package",
+          "bytes": 525194,
+          "entries": 48
+        },
+        "session": "agent:s1-8feb33"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 401
+    },
+    "committedRevAfterQueue": 401
+  },
+  {
+    "round": 8,
+    "queuedProtocolCalls": 50,
+    "backgroundExportAtSnapshot": [
+      {
+        "jobId": "job-10",
+        "commandId": "doc.package.export",
+        "state": "running",
+        "progress": 0.1,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:23.326Z",
+        "session": "agent:s1-8feb33"
+      }
+    ],
+    "maintenanceElapsedMs": 13.1471,
+    "snapshotMs": 0.064,
+    "heartbeatMs": 12.98,
+    "watchMs": 0.0805,
+    "export": {
+      "status": "ok",
+      "result": {
+        "jobId": "job-10",
+        "commandId": "doc.package.export",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:23.326Z",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-5aca97a8af69\\export-8.animpkg",
+          "form": "package",
+          "bytes": 525192,
+          "entries": 48
+        },
+        "session": "agent:s1-8feb33"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 451
+    },
+    "committedRevAfterQueue": 451
+  },
+  {
+    "round": 9,
+    "queuedProtocolCalls": 50,
+    "backgroundExportAtSnapshot": [
+      {
+        "jobId": "job-11",
+        "commandId": "doc.package.export",
+        "state": "running",
+        "progress": 0.1,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:25.519Z",
+        "session": "agent:s1-8feb33"
+      }
+    ],
+    "maintenanceElapsedMs": 13.8054,
+    "snapshotMs": 0.06420000000000001,
+    "heartbeatMs": 13.607700000000001,
+    "watchMs": 0.0722,
+    "export": {
+      "status": "ok",
+      "result": {
+        "jobId": "job-11",
+        "commandId": "doc.package.export",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "Write",
+        "startedAt": "2026-10-30T07:46:25.519Z",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-5aca97a8af69\\export-9.animpkg",
+          "form": "package",
+          "bytes": 525194,
+          "entries": 48
+        },
+        "session": "agent:s1-8feb33"
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 501
+    },
+    "committedRevAfterQueue": 501
+  }
+]

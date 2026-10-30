@@ -4,7 +4,7 @@
 //! `frontend` and `pending` commands are forwarded to the web front end as a [`MenuCommandEvent`]. From M1 the host
 //! will route every command through the engine's executor instead (11 §2); the event shape stays.
 
-use serde::Serialize;
+use serde_json::{Map, Value};
 use tauri::menu::{AboutMetadata, Menu, MenuBuilder, MenuItemBuilder, SubmenuBuilder};
 use tauri::{AppHandle, Emitter, Manager, Runtime};
 
@@ -13,19 +13,9 @@ use crate::bindings::{CommandItem, Handler, Item, Manifest, Platform, Predefined
 /// Event name of [`MenuCommandEvent`].
 pub const MENU_COMMAND_EVENT: &str = "menu-command";
 
-/// Payload sent to the front end when a menu item it handles (or a pending one) is chosen.
-#[derive(Debug, Clone, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct MenuCommandEvent {
-    /// Command id.
-    pub command: String,
-    /// Fixed parameters from the manifest.
-    pub params: serde_json::Value,
-    /// `frontend` or `pending`.
-    pub handler: &'static str,
-    /// Milestone of a pending command.
-    pub milestone: Option<String>,
-}
+/// Payload sent to the front end when a menu item it handles (or a pending one) is chosen. It is an engine wire type
+/// (schema published to the front end, ADR-0012) and crosses the IPC boundary as JSON text.
+pub use tt_engine::wire::{MenuCommandEvent, MenuHandler};
 
 /// What a menu click resolves to.
 #[derive(Debug, Clone, PartialEq)]
@@ -50,18 +40,17 @@ pub fn resolve(manifest: &Manifest, platform: Platform, id: &str) -> MenuAction 
         (Handler::Host, "app.quit") => MenuAction::Quit,
         (Handler::Host, "window.fullScreen.set") => MenuAction::ToggleFullScreen,
         (Handler::Host, other) => MenuAction::Unbound(other.to_owned()),
-        (Handler::Frontend, _) => MenuAction::Forward(event(item, "frontend")),
-        (Handler::Pending, _) => MenuAction::Forward(event(item, "pending")),
+        (Handler::Frontend, _) => MenuAction::Forward(event(item, MenuHandler::Frontend)),
+        (Handler::Pending, _) => MenuAction::Forward(event(item, MenuHandler::Pending)),
     }
 }
 
-fn event(item: &CommandItem, handler: &'static str) -> MenuCommandEvent {
-    MenuCommandEvent {
-        command: item.command.clone(),
-        params: item.params.clone().unwrap_or_else(|| serde_json::json!({})),
-        handler,
-        milestone: item.milestone.clone(),
-    }
+fn event(item: &CommandItem, handler: MenuHandler) -> MenuCommandEvent {
+    let params = match item.params.clone() {
+        Some(Value::Object(m)) => m,
+        _ => Map::new(),
+    };
+    MenuCommandEvent { command: item.command.clone(), params, handler, milestone: item.milestone.clone() }
 }
 
 /// Builds the native menu bar for the current platform. No project is open in M0, so enablement is
@@ -125,7 +114,12 @@ pub fn on_event<R: Runtime>(app: &AppHandle<R>, manifest: &Manifest, id: &str) {
             }
         }
         MenuAction::Forward(event) => {
-            if let Err(e) = app.emit_to("main", MENU_COMMAND_EVENT, event) {
+            // JSON text, like every product value crossing the boundary (ADR-0012).
+            let payload = match tt_engine::wire::to_wire_json(&event) {
+                Ok(text) => text,
+                Err(e) => return log_error(&format!("cannot serialise menu command: {}", e.message)),
+            };
+            if let Err(e) = app.emit_to("main", MENU_COMMAND_EVENT, payload) {
                 log_error(&format!("cannot forward menu command: {e}"));
             }
         }
@@ -161,8 +155,8 @@ mod tests {
         let MenuAction::Forward(e) = resolve(&manifest(), Platform::Windows, "workspace.reset") else {
             panic!("expected forward");
         };
-        assert_eq!(e.handler, "frontend");
-        assert_eq!(e.params, serde_json::json!({ "name": "Default", "select": true }));
+        assert_eq!(e.handler, MenuHandler::Frontend);
+        assert_eq!(Value::Object(e.params), serde_json::json!({ "name": "Default", "select": true }));
     }
 
     #[test]
@@ -170,7 +164,7 @@ mod tests {
         let MenuAction::Forward(e) = resolve(&manifest(), Platform::Macos, "project.create") else {
             panic!("expected forward");
         };
-        assert_eq!(e.handler, "pending");
+        assert_eq!(e.handler, MenuHandler::Pending);
         assert!(e.milestone.unwrap().contains("M1"));
     }
 
@@ -181,8 +175,10 @@ mod tests {
 
     #[test]
     fn event_serializes_camel_case() {
-        let e = event(manifest().find(Platform::Windows, "project.open").unwrap(), "pending");
-        let v = serde_json::to_value(e).unwrap();
+        let e = event(manifest().find(Platform::Windows, "project.open").unwrap(), MenuHandler::Pending);
+        let v = serde_json::to_value(&e).unwrap();
+        let text = tt_engine::wire::to_wire_json(&e).unwrap();
+        assert_eq!(serde_json::from_str::<MenuCommandEvent>(&text).unwrap(), e);
         assert_eq!(v["command"], "project.open");
         assert_eq!(v["handler"], "pending");
         assert!(v["milestone"].is_string());

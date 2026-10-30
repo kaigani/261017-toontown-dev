@@ -1,0 +1,10 @@
+{
+  "source": "CI release binary on 74fe3a9",
+  "markersFound": {
+    "tt_persist::lock::hooks": false,
+    "tt_persist4lock5hooks": false,
+    "SaveBeforeWrite": false,
+    "SaveWritten": false
+  },
+  "limit": "Optimized/stripped symbol absence alone is not a proof; use product feature graph and cfg gating."
+}

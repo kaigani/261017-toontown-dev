@@ -1,0 +1,1458 @@
+[
+  {
+    "id": "agent.activity.export",
+    "example": "Export as a replayable batch",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.activity.export` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.activity.export",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.activity.list",
+    "example": "The last 20 actions",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.activity.list` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.activity.list",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.activity.persist.set",
+    "example": "Persist the activity log",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.activity.persist.set` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.activity.persist.set",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.confirmation.requested",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`agent.confirmation.requested` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "agent.confirmation.requested",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "agent.confirmation.respond",
+    "example": "Accept a request",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.confirmation.respond` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.confirmation.respond",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.policy.defaults.set",
+    "example": "Assist by default",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.policy.defaults.set` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.policy.defaults.set",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.server.set",
+    "example": "Enable the local agent server",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.server.set` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.server.set",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.server.status",
+    "example": "Endpoint and connected sessions",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.server.status` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.server.status",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.session.connected",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`agent.session.connected` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "agent.session.connected",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "agent.session.disconnect",
+    "example": "Disconnect a session",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.session.disconnect` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.session.disconnect",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.session.disconnected",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`agent.session.disconnected` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "agent.session.disconnected",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "agent.session.grant",
+    "example": "Let a session edit",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.session.grant` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.session.grant",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.session.pause",
+    "example": "Pause every session",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.session.pause` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.session.pause",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.session.resume",
+    "example": "Resume every session",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.session.resume` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.session.resume",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.token.regenerate",
+    "example": "Invalidate the bearer token",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.token.regenerate` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.token.regenerate",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "agent.typedTools.set",
+    "example": "Expose doc and edit commands as tools",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`agent.typedTools.set` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "agent.typedTools.set",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "app.context.set",
+    "example": "Go to frame 12 of the first scene",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "app.context.set",
+    "example": "Make an element current by path",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "app.currentElement.move",
+    "example": "Next element in Timeline order",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "app.currentElement.set",
+    "example": "Make the first element of the first scene current",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "app.frame.move",
+    "example": "Next frame",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "app.frame.move",
+    "example": "Back to the previous drawing change",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "app.frame.set",
+    "example": "Go to frame 1",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "app.info.get",
+    "example": "Read name, version, platform, locale and languages",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`app.info.get` is registered but implemented in M1 C1.4",
+      "details": {
+        "commandId": "app.info.get",
+        "milestone": "M1 C1.4"
+      }
+    }
+  },
+  {
+    "id": "app.mode.set",
+    "example": "Switch to drawing mode",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "app.quit",
+    "example": "Quit, discarding unsaved changes",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "app.state.changed",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`app.state.changed` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "app.state.changed",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "app.state.get",
+    "example": "Read the current project, scene, frame, element, selection and workspace",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "checkpoint.create",
+    "example": "Checkpoint before an experiment",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "checkpoint.delete",
+    "example": "Delete a checkpoint",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "checkpoint.list",
+    "example": "All checkpoints, oldest first",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "checkpoint.restore",
+    "example": "Restore a checkpoint",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.asset.embed",
+    "example": "Embed every linked asset",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.asset.embed` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.asset.embed",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.asset.export",
+    "example": "Write an embedded sound to a file",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.asset.export` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.asset.export",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.asset.list",
+    "example": "Missing assets",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.asset.list` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.asset.list",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.asset.relink",
+    "example": "Search a folder for missing assets",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.asset.relink` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.asset.relink",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.asset.remove",
+    "example": "Remove unused assets",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.asset.remove` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.asset.remove",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.asset.status.changed",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`doc.asset.status.changed` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "doc.asset.status.changed",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "doc.blob.get",
+    "example": "The project thumbnail entry",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.blob.get` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.blob.get",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.changed",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`doc.changed` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "doc.changed",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "doc.diff",
+    "example": "Everything since the project was opened",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.export.json",
+    "example": "The first scene as an inline bundle",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.export.json` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.export.json",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.import.json",
+    "example": "Dry-run an import from a file",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.import.json` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.import.json",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.loadReport.get",
+    "example": "Repairs and issues of the last load",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.loadReport.get` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.loadReport.get",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.object.find",
+    "example": "Every drawing element",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.object.find",
+    "example": "Strokes of the first drawing",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.object.find",
+    "example": "Objects whose name starts with B",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.object.get",
+    "example": "The first scene with its elements as stubs",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.object.get",
+    "example": "The current element with derived properties",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.object.get",
+    "example": "Only names and types of two objects",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.object.patch",
+    "example": "Annotate a scene in meta",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.object.patch",
+    "example": "Mark the first drawing as mouth shape A",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.object.patch",
+    "example": "Set a pen's persisted tip fields (persisted names `tip` and `tipAngle`, SI-004)",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.object.patch",
+    "example": "Persisted element role (superset enum, SI-003)",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.object.refs",
+    "example": "Who uses the first palette",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.object.refs` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.object.refs",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.object.resolve",
+    "example": "Resolve a path and the current element",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.package.changedOnDisk",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`doc.package.changedOnDisk` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "doc.package.changedOnDisk",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "doc.package.export",
+    "example": "Export the folder form",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.package.export` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.package.export",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.package.get",
+    "example": "Inspect a package without opening it",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.package.get` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.package.get",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.repair",
+    "example": "Fix every dangling reference",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.repair` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.repair",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.schema.get",
+    "example": "The element schema",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.schema.get",
+    "example": "The schema of a pen's tip",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.schema.list",
+    "example": "Every object type with its parents and addressing",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.schema.validate",
+    "example": "Check a pen before creating it",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.schema.validate` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.schema.validate",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "doc.state.get",
+    "example": "Revision, dirty flag and diff horizon",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "doc.validate",
+    "example": "Errors only",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`doc.validate` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "doc.validate",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "edit.clipboard.changed",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`edit.clipboard.changed` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "edit.clipboard.changed",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "edit.clipboard.get",
+    "example": "Kind and item count",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "edit.clipboard.set",
+    "example": "Put two element references on the clipboard",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "edit.copy",
+    "example": "Copy the selection of the focused context",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`edit.copy` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "edit.copy",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "edit.cut",
+    "example": "Cut the selection of the focused context",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`edit.cut` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "edit.cut",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "edit.cutSpecial",
+    "example": "Cut the selected cells, keeping exposure",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`edit.cutSpecial` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "edit.cutSpecial",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "edit.delete",
+    "example": "Delete the selection of the focused context",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`edit.delete` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "edit.delete",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "edit.deselectAll",
+    "example": "Clear the selection of the focused context",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "edit.history.changed",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`edit.history.changed` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "edit.history.changed",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "edit.history.get",
+    "example": "The last 20 entries",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "edit.history.move",
+    "example": "Back to the opened state",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "edit.paste",
+    "example": "Paste into the focused context",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`edit.paste` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "edit.paste",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "edit.pasteAsNewElement",
+    "example": "Paste drawing objects as a new element at the current frame",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`edit.pasteAsNewElement` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "edit.pasteAsNewElement",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "edit.pasteSpecial",
+    "example": "Paste with the last options",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`edit.pasteSpecial` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "edit.pasteSpecial",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "edit.redo",
+    "example": "Redo one step",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "edit.selectAll",
+    "example": "Select every element of the current scene",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "edit.selection.changed",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`edit.selection.changed` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "edit.selection.changed",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "edit.selection.get",
+    "example": "Selection of the focused context",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "edit.selection.set",
+    "example": "Select the first element of the first scene",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "edit.undo",
+    "example": "Undo the last step",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "inspect.contactSheet.render",
+    "example": "Every fourth frame of 1–24",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`inspect.contactSheet.render` is registered but implemented in M3 C3.3",
+      "details": {
+        "commandId": "inspect.contactSheet.render",
+        "milestone": "M3 C3.3"
+      }
+    }
+  },
+  {
+    "id": "inspect.coordinates.convert",
+    "example": "Field units to camera space",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`inspect.coordinates.convert` is registered but implemented in M3 C3.3",
+      "details": {
+        "commandId": "inspect.coordinates.convert",
+        "milestone": "M3 C3.3"
+      }
+    }
+  },
+  {
+    "id": "inspect.frame.describe",
+    "example": "What the current frame shows",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`inspect.frame.describe` is registered but implemented in M3 C3.3",
+      "details": {
+        "commandId": "inspect.frame.describe",
+        "milestone": "M3 C3.3"
+      }
+    }
+  },
+  {
+    "id": "inspect.hitTest",
+    "example": "What is at the camera centre",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`inspect.hitTest` is registered but implemented in M3 C3.3",
+      "details": {
+        "commandId": "inspect.hitTest",
+        "milestone": "M3 C3.3"
+      }
+    }
+  },
+  {
+    "id": "inspect.screenshot",
+    "example": "The main window",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`inspect.screenshot` is registered but implemented in M4 C4.2",
+      "details": {
+        "commandId": "inspect.screenshot",
+        "milestone": "M4 C4.2"
+      }
+    }
+  },
+  {
+    "id": "inspect.ui.tree",
+    "example": "The window's accessibility tree, 3 levels",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`inspect.ui.tree` is registered but implemented in M4 C4.2",
+      "details": {
+        "commandId": "inspect.ui.tree",
+        "milestone": "M4 C4.2"
+      }
+    }
+  },
+  {
+    "id": "job.cancel",
+    "example": "Cancel a job",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "job.finished",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`job.finished` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "job.finished",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "job.list",
+    "example": "The caller's jobs",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "job.progress",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`job.progress` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "job.progress",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "job.wait",
+    "example": "Wait up to 5 s",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "project.autosaved",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`project.autosaved` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "project.autosaved",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "project.backup.list",
+    "example": "Backups of the current project",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.backup.list` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.backup.list",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.backup.open",
+    "example": "Open a backup as an untitled copy",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.backup.open` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.backup.open",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.close",
+    "example": "Close, failing if unsaved",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.close` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.close",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.closed",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`project.closed` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "project.closed",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "project.create",
+    "example": "A 1920×1080, 24 fps project",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.create` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.create",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.dirty.changed",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`project.dirty.changed` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "project.dirty.changed",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "project.info.get",
+    "example": "ProjectInfo (01 §12.4)",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.info.get` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.info.get",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.open",
+    "example": "Open a package",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.open` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.open",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.opened",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`project.opened` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "project.opened",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "project.presets.list",
+    "example": "Presets for new projects",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.presets.list` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.presets.list",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.properties.get",
+    "example": "Frame rate and camera size",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.properties.get` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.properties.get",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.properties.set",
+    "example": "25 fps",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.properties.set` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.properties.set",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.recent.list",
+    "example": "Recent projects",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.recent.list` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.recent.list",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.recent.remove",
+    "example": "Clear the list",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.recent.remove` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.recent.remove",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.recovery.delete",
+    "example": "Discard everything",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.recovery.delete` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.recovery.delete",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.recovery.list",
+    "example": "Recoverable sessions",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.recovery.list` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.recovery.list",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.recovery.open",
+    "example": "Recover a session",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.recovery.open` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.recovery.open",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.save",
+    "example": "Save",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.save` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.save",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.saveAs",
+    "example": "Save a copy",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`project.saveAs` is registered but implemented in M1 C1.3",
+      "details": {
+        "commandId": "project.saveAs",
+        "milestone": "M1 C1.3"
+      }
+    }
+  },
+  {
+    "id": "project.saved",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`project.saved` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "project.saved",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "window.floatingPanels.set",
+    "example": "Hide floating panels and palettes",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.fullScreen.set",
+    "example": "Enter full screen",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.fullScreen.set",
+    "example": "Leave full screen",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.geometry.get",
+    "example": "Position, size and screens of the main window",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`window.geometry.get` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "window.geometry.get",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "window.geometry.set",
+    "example": "Resize the main window",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`window.geometry.set` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "window.geometry.set",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "window.minimized.set",
+    "example": "Minimise the main window",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`window.minimized.set` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "window.minimized.set",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "window.panel.list",
+    "example": "Every panel with its visibility, place and focus",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.panel.move",
+    "example": "Dock the History panel as a tab next to Properties",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.panel.set",
+    "example": "Show and focus the History panel",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.panel.set",
+    "example": "Float the Colour panel",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.raiseAll.run",
+    "example": "Raise every application window",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`window.raiseAll.run` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "window.raiseAll.run",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "window.sidePanelsExtended.set",
+    "example": "Let the side areas run full height",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.toolbar.items.reset",
+    "example": "Restore the default main toolbar",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.toolbar.items.set",
+    "example": "Grid and playback only",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.toolbar.list",
+    "example": "The main toolbar and the tool palettes",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "window.toolbar.set",
+    "example": "Hide the bone tools",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "workspace.changed",
+    "example": "Subscribe (events take no parameters)",
+    "status": "error",
+    "error": {
+      "code": "command.disabled",
+      "message": "`workspace.changed` is an event; events are delivered to subscribers and cannot be invoked",
+      "details": {
+        "commandId": "workspace.changed",
+        "reason": "event"
+      }
+    }
+  },
+  {
+    "id": "workspace.create",
+    "example": "Save the current arrangement as a new workspace",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "workspace.delete",
+    "example": "Delete a user workspace (built-in ones cannot be deleted)",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "workspace.export",
+    "example": "Export the Drawing workspace",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`workspace.export` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "workspace.export",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "workspace.get",
+    "example": "The current arrangement",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "workspace.get",
+    "example": "The stored Drawing workspace",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "workspace.import",
+    "example": "Import a workspace file",
+    "status": "error",
+    "error": {
+      "code": "command.notImplemented",
+      "message": "`workspace.import` is registered but implemented in M4 C4.1",
+      "details": {
+        "commandId": "workspace.import",
+        "milestone": "M4 C4.1"
+      }
+    }
+  },
+  {
+    "id": "workspace.layout.set",
+    "example": "Camera view with the Timeline below",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "workspace.list",
+    "example": "Built-in and user workspaces in menu order",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "workspace.rename",
+    "example": "Rename the Staging workspace",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "workspace.reset",
+    "example": "Restore and select the Default workspace",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "workspace.save",
+    "example": "Save the arrangement into the current workspace",
+    "status": "ok",
+    "error": null
+  },
+  {
+    "id": "workspace.select",
+    "example": "Switch to the Drawing workspace",
+    "status": "ok",
+    "error": null
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "receiptHashes": {
+    "gates/build.log": true,
+    "gates/clippy-diag.log": true,
+    "gates/clippy.log": true,
+    "gates/deny.log": true,
+    "gates/fmt.log": true,
+    "gates/headless.log": true,
+    "gates/pnpm-format.log": true,
+    "gates/pnpm-licenses.log": true,
+    "gates/pnpm-lint.log": true,
+    "gates/pnpm-test.log": true,
+    "gates/pnpm-typecheck.log": true,
+    "gates/reviewer-python-suites.log": true,
+    "gates/selftest-1.json": true,
+    "gates/selftest-2.json": true,
+    "gates/selftest-compare.log": true,
+    "gates/test-diag.log": true,
+    "gates/test.log": true
+  },
+  "rustGateCounts": [
+    586,
+    0,
+    3
+  ],
+  "dependencyDiff": "",
+  "productScan": []
+}

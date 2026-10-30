@@ -14,6 +14,7 @@ repository = "https://github.com/kaigani/261017-toontown-dev"
 # Internal crates (plan §3.1). Path dependencies only; never published.
 tt-model = { path = "crates/model" }
 tt-registry = { path = "crates/registry" }
+tt-registry-macros = { path = "crates/registry-macros" }
 tt-executor = { path = "crates/executor" }
 tt-vector = { path = "crates/vector" }
 tt-colour = { path = "crates/colour" }
@@ -30,8 +31,27 @@ tt-engine = { path = "crates/engine" }
 # Third-party crates. Versions are pinned here so every member uses the same one.
 clap = { version = "4.6", default-features = false, features = ["std", "help", "usage", "error-context", "derive"] }
 serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+# preserve_order: object keys keep insertion (= schema) order, which canonical JSON relies on (10 §6.5 JSON-02).
+# float_roundtrip: parse doubles with correct rounding, so text → f64 → canonical text is byte-identical (JSON-03,
+# JSON-05); without it serde_json's fast parser can be off by one ulp (found by crates/model/tests/properties.rs).
+serde_json = { version = "1.0", features = ["preserve_order", "float_roundtrip", "unbounded_depth"] }
+schemars = { version = "1.2", features = ["preserve_order", "indexmap2"] }
+indexmap = { version = "2.14", features = ["serde"] }
+# Current release (MIT-0 accepted for its borrow-or-share dependency, ADR-0003); no network schema resolution.
+jsonschema = { version = "0.59", default-features = false }
+unicode-normalization = "0.1"
+getrandom = "0.4"
+ryu = "1.0"
+proptest = "1.12"
+# Compile-fail tests of the executor's exclusive mutation capability (C1.2).
+trybuild = "1.0"
+# `doc.object.find` regex predicates (10 §10.3); linear-time engine.
+regex = "1"
 sha2 = "0.11"
+# Package containers (10 §6.2): deflate for JSON entries, CRC-32 of zip entries. Our own zip reader/writer (tt-persist)
+# applies the hostile-input rules of ZIP-01/ZIP-06 itself; these crates only compress and checksum.
+flate2 = { version = "1.1", default-features = false, features = ["rust_backend"] }
+crc32fast = "1.5"
 thiserror = "2.0"
 tauri = { version = "2.12", features = [] }
 tauri-build = { version = "2.7", features = [] }

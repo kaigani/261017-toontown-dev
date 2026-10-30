@@ -1,0 +1,5 @@
+{
+  "command": "cargo test --workspace --locked --no-fail-fast",
+  "exitCode": 101,
+  "seconds": 395.04722029995173
+}

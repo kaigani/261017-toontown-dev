@@ -1,0 +1,56 @@
+{
+  "id": "lib_01K742SG01ANF73GC6J3Q45J8B",
+  "type": "library",
+  "rev": 1,
+  "name": "Local",
+  "kind": "local",
+  "formatVersion": "1.0",
+  "children": [
+    {
+      "id": "lf_01K742SG2V7TMPVXNS6995QNAP",
+      "type": "libraryFolder",
+      "rev": 1,
+      "name": "Props",
+      "children": [
+        {
+          "id": "li_01K742SG2WQ62N4J6MKNCBE3Z2",
+          "type": "libraryItem",
+          "rev": 1,
+          "name": "Walk",
+          "itemKind": "template",
+          "file": "walk.animtpl",
+          "thumbnail": null,
+          "versionId": "v-0001",
+          "artist": "Kai",
+          "copyright": "(c) 2026",
+          "createdAt": "2026-10-17T09:30:12.345Z",
+          "modifiedAt": "2026-10-17T09:30:12.345Z",
+          "sizeBytes": 123456,
+          "formatVersion": "1.0",
+          "summary": [
+            {
+              "elementType": "drawing",
+              "name": "Legs",
+              "frameCount": 12,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li_01K742SG2XSWWYNTT82JSTEA6Q",
+      "type": "libraryItem",
+      "rev": 1,
+      "name": "Sky.png",
+      "itemKind": "image",
+      "file": "Sky.png",
+      "thumbnail": {
+        "entry": "library/thumbnails/sky.png",
+        "mediaType": "image/png",
+        "size": 100,
+        "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+      }
+    }
+  ]
+}

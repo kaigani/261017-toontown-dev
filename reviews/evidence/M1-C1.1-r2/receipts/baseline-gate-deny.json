@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cargo",
+    "deny",
+    "--locked",
+    "check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:37:26.265107+00:00",
+  "elapsed_seconds": 10.633388000016566,
+  "exit_code": 0,
+  "log": "logs\\baseline-gate-deny.log",
+  "sha256": "b78ea716bbf8d2c7b03d5231b992e6c8cb4b7d38fe4b77a9972ba0a6de68383e",
+  "proptest_seed": "1182712"
+}

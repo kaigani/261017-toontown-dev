@@ -1,0 +1,166 @@
+[
+  {
+    "id": "C13-R1-01",
+    "priority": "P1",
+    "title": "Save effects escape dry runs and failed atomic batches",
+    "location": "crates/executor/src/persistence.rs:379",
+    "tests": [
+      "dry_run_close_with_save_does_not_write_the_project_or_backups",
+      "failed_atomic_batch_after_save_does_not_leak_disk_or_clean_marker_changes"
+    ]
+  },
+  {
+    "id": "C13-R1-02",
+    "priority": "P1",
+    "title": "Lock ownership is bypassed by same-path Save As and is not exclusive during stale takeover",
+    "location": "crates/persist/src/lock.rs:160",
+    "tests": [
+      "save_as_current_path_does_not_overwrite_another_sessions_lock",
+      "concurrent_stale_lock_takeover_has_only_one_owner"
+    ]
+  },
+  {
+    "id": "C13-R1-03",
+    "priority": "P1",
+    "title": "Interrupted folder-save rollback leaves a mixed version",
+    "location": "crates/persist/src/save.rs:598",
+    "tests": [
+      "partial_folder_rollback_restores_every_already_replaced_entry"
+    ]
+  },
+  {
+    "id": "C13-R1-04",
+    "priority": "P1",
+    "title": "Malformed journals can delete project entries before container validation",
+    "location": "crates/persist/src/save.rs:607",
+    "tests": [
+      "malformed_journal_cannot_delete_an_arbitrary_project_entry"
+    ]
+  },
+  {
+    "id": "C13-R1-05",
+    "priority": "P1",
+    "title": "Unknown newer-minor properties disappear on a frozen entry",
+    "location": "crates/persist/src/repair.rs:272",
+    "tests": [
+      "newer_minor_unknown_properties_survive_on_the_same_frozen_entry"
+    ]
+  },
+  {
+    "id": "C13-R1-06",
+    "priority": "P1",
+    "title": "Folder entry edits are invisible to external-change detection",
+    "location": "crates/executor/src/store.rs:255",
+    "tests": [
+      "folder_entry_change_is_detected_even_when_manifest_is_unchanged"
+    ]
+  },
+  {
+    "id": "C13-R1-07",
+    "priority": "P1",
+    "title": "Failed package export deletes the previous destination",
+    "location": "crates/executor/src/commands/doc_io.rs:1201",
+    "tests": [
+      "failed_package_export_overwrite_keeps_the_previous_destination"
+    ]
+  },
+  {
+    "id": "C13-R1-08",
+    "priority": "P1",
+    "title": "Recovery does not claim an orphaned copy for its new owner",
+    "location": "crates/executor/src/commands/project.rs:1193",
+    "tests": [
+      "recovering_an_untitled_copy_claims_it_before_a_second_session_can_recover"
+    ]
+  },
+  {
+    "id": "C13-R1-09",
+    "priority": "P1",
+    "title": "Repair at revision exhaustion is installed as clean",
+    "location": "crates/persist/src/load.rs:357",
+    "tests": [
+      "repairs_at_exhausted_document_revision_fail_closed"
+    ]
+  },
+  {
+    "id": "C13-R1-10",
+    "priority": "P1",
+    "title": "Nested Windows drive prefixes pass ZIP name validation",
+    "location": "crates/persist/src/zip.rs:85",
+    "tests": [
+      "zip_names_reject_drive_prefixes_in_every_path_component"
+    ]
+  },
+  {
+    "id": "C13-R1-11",
+    "priority": "P1",
+    "title": "Import replace silently behaves as rename for scene-name conflicts",
+    "location": "crates/executor/src/commands/bundle.rs:1021",
+    "tests": [
+      "import_replace_replaces_a_same_named_scene_instead_of_renaming_it"
+    ]
+  },
+  {
+    "id": "C13-R1-14",
+    "priority": "P1",
+    "title": "Package inspection reads the complete archive twice to identify its type",
+    "location": "crates/executor/src/commands/doc_io.rs:1017",
+    "tests": [
+      "package_inspection_reads_a_bounded_header"
+    ]
+  },
+  {
+    "id": "C13-R1-16",
+    "priority": "P1",
+    "title": "Identical embedded media are stored repeatedly",
+    "location": "crates/executor/src/commands/doc_io.rs:724",
+    "tests": [
+      "identical_embedded_asset_content_is_stored_once"
+    ]
+  },
+  {
+    "id": "C13-R1-18",
+    "priority": "P1",
+    "title": "Unreferenced embedded media remain in the saved package",
+    "location": "crates/persist/src/save.rs:95",
+    "tests": [
+      "unreferenced_embedded_media_is_removed_from_the_saved_package"
+    ]
+  },
+  {
+    "id": "C13-R1-12",
+    "priority": "P2",
+    "title": "Folder saves omit the mimetype entry",
+    "location": "crates/persist/src/save.rs:394",
+    "tests": [
+      "folder_has_the_same_mimetype_entry_as_package"
+    ]
+  },
+  {
+    "id": "C13-R1-13",
+    "priority": "P2",
+    "title": "Existing project thumbnails are discarded on save",
+    "location": "crates/persist/src/save.rs:87",
+    "tests": [
+      "existing_project_thumbnail_survives_save"
+    ]
+  },
+  {
+    "id": "C13-R1-15",
+    "priority": "P2",
+    "title": "Default preference values are persisted as overrides",
+    "location": "crates/executor/src/run.rs:552",
+    "tests": [
+      "default_preference_values_are_not_persisted_as_overrides"
+    ]
+  },
+  {
+    "id": "C13-R1-17",
+    "priority": "P2",
+    "title": "Import and repair undo labels differ from the command table",
+    "location": "crates/executor/src/commands/doc_lint.rs:1004",
+    "tests": [
+      "import_and_repair_undo_labels_match_the_command_table"
+    ]
+  }
+]

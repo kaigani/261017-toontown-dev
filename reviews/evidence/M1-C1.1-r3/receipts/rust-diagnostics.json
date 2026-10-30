@@ -1,0 +1,20 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "tt-desktop",
+    "--locked",
+    "--features",
+    "m0-diagnostics"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:56:21.850732+00:00",
+  "elapsed_seconds": 27.826014899997972,
+  "exit_code": 0,
+  "log": "logs/rust-diagnostics.log",
+  "sha256": "f0a08403f7e6ea708d82890b2b6f2808d9ce5afc9a5c6bacf4f81de28e4ae959",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

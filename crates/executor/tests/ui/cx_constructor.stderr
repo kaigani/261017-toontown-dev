@@ -1,0 +1,26 @@
+error[E0624]: associated function `new` is private
+ --> tests/ui/cx_constructor.rs:3:32
+  |
+3 |     let _cx = tt_executor::Cx::new();
+  |                                ^^^ private associated function
+  |
+ ::: src/cx.rs
+  |
+  |     pub(crate) fn new(session: Session, origin: Origin, command: &'static str, dry_run: bool) -> Self {
+  |     ------------------------------------------------------------------------------------------------- private associated function defined here
+
+error[E0061]: this function takes 4 arguments but 0 arguments were supplied
+ --> tests/ui/cx_constructor.rs:3:15
+  |
+3 |     let _cx = tt_executor::Cx::new();
+  |               ^^^^^^^^^^^^^^^^^^^^-- multiple arguments are missing
+  |
+note: associated function defined here
+ --> src/cx.rs
+  |
+  |     pub(crate) fn new(session: Session, origin: Origin, command: &'static str, dry_run: bool) -> Self {
+  |                   ^^^
+help: provide the arguments
+  |
+3 |     let _cx = tt_executor::Cx::new(/* tt_executor::session::Session */, /* Origin */, /* &'static str */, /* bool */);
+  |                                    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

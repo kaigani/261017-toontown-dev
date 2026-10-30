@@ -1,0 +1,16 @@
+{
+  "seed": "0xc12320261019b683",
+  "operations": 10000,
+  "replayOperations": 10000,
+  "editsUndoRedoCreateRestoreDryRun": [
+    5494,
+    3902,
+    470,
+    1,
+    1724,
+    511
+  ],
+  "documentRev": 11177,
+  "durationSeconds": 81.6109423,
+  "oracle": "independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"
+}

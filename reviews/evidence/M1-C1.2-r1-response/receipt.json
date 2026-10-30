@@ -1,0 +1,65 @@
+{
+  "what": "Local gate logs recorded by scripts/record-gates.py.",
+  "commands": {
+    "gates/fmt.log": "cargo fmt --all --check",
+    "gates/clippy.log": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "gates/clippy-diag.log": "cargo clippy -p tt-desktop --all-targets --locked --features m0-diagnostics -- -D warnings",
+    "gates/test.log": "cargo test --workspace --locked --no-fail-fast",
+    "gates/test-diag.log": "cargo test -p tt-desktop --locked --features m0-diagnostics",
+    "gates/deny.log": "cargo deny --locked check",
+    "gates/pnpm-lint.log": "pnpm lint",
+    "gates/pnpm-typecheck.log": "pnpm typecheck",
+    "gates/pnpm-test.log": "pnpm test",
+    "gates/pnpm-format.log": "pnpm format:check",
+    "gates/pnpm-licenses.log": "pnpm licenses:check",
+    "gates/build.log": "pnpm --dir desktop build:diagnostics && pnpm --dir desktop build",
+    "gates/headless.log": "cargo build --release --locked -p tt-headless && \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\" --version && \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\" --selftest && \"C:\\Python313\\python.exe\" scripts/check-headless-deps.py \"C:\\Users\\kaiga\\.t3\\worktrees\\261017-toontown-dev\\m1-core-kernel\\target\\release\\toontown-headless.exe\"",
+    "gates/reviewer-python-suites.log": "\"C:\\Python313\\python.exe\" scripts/run-reviewer-python-suites.py"
+  },
+  "status": {
+    "gates/fmt.log": 0,
+    "gates/clippy.log": 0,
+    "gates/clippy-diag.log": 0,
+    "gates/test.log": 0,
+    "gates/test-diag.log": 0,
+    "gates/deny.log": 0,
+    "gates/pnpm-lint.log": 0,
+    "gates/pnpm-typecheck.log": 0,
+    "gates/pnpm-test.log": 0,
+    "gates/pnpm-format.log": 0,
+    "gates/pnpm-licenses.log": 0,
+    "gates/build.log": 0,
+    "gates/headless.log": 0,
+    "gates/reviewer-python-suites.log": 0
+  },
+  "recordedAt": "2026-10-19T07:42:59+00:00",
+  "baseCommit": "bfa828f2c2246e8ec7842357c88e943c76d1db84",
+  "dirtyFiles": [
+    "reviews/evidence/M1-C1.2-r1-response/gates/clippy.log",
+    "reviews/evidence/M1-C1.2-r1-response/gates/test.log"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "sha256": {
+    "gates/build.log": "8bc01d00fb53277ebac8e83e274719f52743d5783fdeefc1b7d91aee90748058",
+    "gates/clippy-diag.log": "d414e358afce9836f7fde3d1b9ce8612f765821a595ec167c9bfc59242dfac4c",
+    "gates/clippy.log": "cd44dfeb17a481f980a6c216cfd0b285f70c59c0aec1ee573056dfe300fb5cc3",
+    "gates/deny.log": "7249399b7d168f2a0a0534bb3810a3c3c42dd6cc4f67105e47257dff64491c17",
+    "gates/fmt.log": "2a61ce7bea468e00baedfd23fc0b19284c1133ed64f1c6d924efa94d6268f901",
+    "gates/headless.log": "8a353d159e44f846c614bc8153faed01d938aa49721c542dbe205bb623d97982",
+    "gates/pnpm-format.log": "c99d0a6ae963d1c83b01deafa2e993d73d3bdceebbbde9508a83ba7d4b6e4829",
+    "gates/pnpm-licenses.log": "2d685b39a756468ae498f680b9e15748fc8f2db9913b72da6652d7317e37f6ca",
+    "gates/pnpm-lint.log": "27d1c9da90e3723e813f92352b6882884d1a51cd07b90368d3bef605ac09563b",
+    "gates/pnpm-test.log": "eea1ede9d2829e0b1eb2d2246be22b364b600d702e22114a1d1673e44682fcb2",
+    "gates/pnpm-typecheck.log": "aa5a38955f949a6cba31ec0a0ec0aadfb5695da948defb8ab06d14ff2f0b9d24",
+    "gates/reviewer-python-suites.log": "418c1b07c8dfa2433ac84bd4bb510491814b960e40bb3b70a5ba8fc1eb872b7e",
+    "gates/selftest-1.json": "fbeadf361843cb7f2588227a57efb06d55828a6a85eba4a5f4034be7a5c3f3e0",
+    "gates/selftest-2.json": "fbeadf361843cb7f2588227a57efb06d55828a6a85eba4a5f4034be7a5c3f3e0",
+    "gates/selftest-compare.log": "a3c74610f85ff7bc799d3fe52a0393cf36317e861956c5d405fd6c3d3b13ef46",
+    "gates/test-diag.log": "2f7ba6ecd4c27ad095de7f623fe86864fb32fcd8aa364ece0a0cb1df34f788d0",
+    "gates/test.log": "3797a71627ec0bdec883ca858932dc2a3414ddd821f095b9f5afb266899ba4d9"
+  }
+}

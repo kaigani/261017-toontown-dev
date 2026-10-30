@@ -1,0 +1,57 @@
+{
+  "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+  "type": "element",
+  "rev": 1,
+  "name": "Reference",
+  "elementType": "media",
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "visibleInXsheet": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "sequences": [
+    {
+      "id": "ms_01K742SG27RRHRRZ5147YSZD8N",
+      "type": "mediaSequence",
+      "rev": 1,
+      "assetId": "as_01K742SG0HZGBRF7HE49BFXZRC",
+      "startFrame": 1,
+      "stopFrame": 24,
+      "linkOffset": 1
+    }
+  ],
+  "transform": {
+    "offset": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": 0,
+    "skew": 0,
+    "scale": {
+      "x": 1,
+      "y": 1
+    },
+    "keepProportions": false,
+    "rotationPivot": {
+      "x": 0,
+      "y": 0
+    },
+    "scalePivot": {
+      "x": 0,
+      "y": 0
+    },
+    "rotateAboutPivot": false,
+    "lockDepth": false,
+    "orientToPath": false
+  },
+  "channels": {},
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

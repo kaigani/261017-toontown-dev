@@ -1,0 +1,2 @@
+# Preserve exact raw output bytes for receipts.
+* -text -whitespace

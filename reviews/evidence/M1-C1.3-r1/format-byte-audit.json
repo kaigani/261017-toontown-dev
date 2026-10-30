@@ -1,0 +1,25 @@
+{
+  "checks": {
+    "mimetypeFirst": true,
+    "mimetypeStored": true,
+    "mimetypeNoExtra": true,
+    "mimetypeExact": true,
+    "allUTF8": true,
+    "noneEncrypted": true,
+    "manifestComplete": true,
+    "hashesMatch": true,
+    "jsonDeflated": true,
+    "jsonUTF8NoBOMAndLF": true
+  },
+  "entryCount": 46,
+  "folderEntryCount": 45,
+  "nonManifestDifferences": [
+    "mimetype"
+  ],
+  "manifestOtherwiseIdentical": true,
+  "folderControlFiles": [
+    ".gitattributes",
+    ".gitignore"
+  ],
+  "packageSha256": "9abd43c8cea77640fbc078e1633374ffcaf8babd29e1fe3362f5c413125a1efb"
+}

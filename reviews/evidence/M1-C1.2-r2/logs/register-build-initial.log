@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r2\reviews\evidence\M1-C1.2-r2\build-registers.py", line 170, in <module>
+    try:impl[ident]=source(p,needle)
+                    ~~~~~~^^^^^^^^^^
+  File "C:\Users\kaiga\work\review\m1-c12-r2\reviews\evidence\M1-C1.2-r2\build-registers.py", line 13, in source
+    return f"{p}:{next(i for i,l in enumerate(read(p).splitlines(),1) if needle in l)}"
+                  ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m1-c12-r2\reviews\evidence\M1-C1.2-r2\build-registers.py", line 171, in <module>
+    except StopIteration:raise ValueError((ident,p,needle))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: ('R03', 'crates/registry/tests/declared.rs', 'fn every')

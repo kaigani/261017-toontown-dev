@@ -1,0 +1,23 @@
+{
+  "command": [
+    "cargo",
+    "clippy",
+    "-p",
+    "tt-desktop",
+    "--all-targets",
+    "--locked",
+    "--features",
+    "m0-diagnostics",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r5",
+  "base": "9c3f5861bebd00f4d68ebee43a35167452cea615",
+  "started_utc": "2026-10-19T00:38:18.342283+00:00",
+  "elapsed_seconds": 15.826,
+  "exit_code": 0,
+  "log": "logs/clippy-diagnostics.log",
+  "sha256": "cf3849b1979b635fc0d326cde5fda61659a19d440893a989c68234ded00d2fb9",
+  "env": {}
+}

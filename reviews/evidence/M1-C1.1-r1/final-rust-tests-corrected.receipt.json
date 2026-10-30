@@ -1,0 +1,15 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--workspace",
+    "--locked",
+    "--no-fail-fast"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r1",
+  "startedUtc": "2026-10-18T19:53:31.293342+00:00",
+  "seconds": 41.43861300003482,
+  "exit": 101,
+  "logSha256": "11566b33f6bd1f168e574449dc3aac627d142db3898aed8c1fda7ff1b0026fe7",
+  "proptestSeed": "1182711"
+}

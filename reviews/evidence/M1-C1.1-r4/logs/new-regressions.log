@@ -1,0 +1,24 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r4\crates\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.80s
+     Running tests\c11_r4_exposure_bounds.rs (target\debug\deps\c11_r4_exposure_bounds-f7f2fe040f1002b0.exe)
+
+running 2 tests
+
+thread 'exposure_range_rejects_window_past_scene_limit' (860) panicked at crates\model\tests\c11_r4_exposure_bounds.rs:44:5:
+R3-03: patch boundary must reject exposure windows beyond the scene limit before resizing: Ok(Object {"exposure": Array [Array [String("dr_original"), Number(4)], Array [Null, Number(99996)], Array [String("dr_new"), Number(1)]]})
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test exposure_range_rejects_window_past_scene_limit ... FAILED
+
+thread 'exposure_range_rejects_total_above_scene_limit' (26996) panicked at crates\model\tests\c11_r4_exposure_bounds.rs:28:5:
+R3-03: patch boundary must reject exposure totals beyond the scene limit before expansion: Ok(Object {"exposure": Array [Array [String("dr_new"), Number(100001)]]})
+test exposure_range_rejects_total_above_scene_limit ... FAILED
+
+failures:
+
+failures:
+    exposure_range_rejects_total_above_scene_limit
+    exposure_range_rejects_window_past_scene_limit
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+error: test failed, to rerun pass `-p tt-model --test c11_r4_exposure_bounds`

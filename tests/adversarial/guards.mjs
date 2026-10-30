@@ -35,12 +35,15 @@ if (process.argv[2] === "licensing") {
   const table = /^\[licenses\][\s\S]*?^allow\s*=\s*\[([\s\S]*?)\]/m.exec(deny);
   assert(table, "deny.toml must have a [licenses] allow list");
   const rust = [...table[1].replace(/#.*$/gm, "").matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-  const approved = ["MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "MPL-2.0", "Unicode-3.0", "0BSD"];
+  // Amended again by the builder in M1 C1.1 round 1 per the orchestrator's C11-R1-18 ruling (2026-10-18): MIT-0 is
+  // approved (borrow-or-share, needed by current jsonschema releases), so it moves from the rejected controls below
+  // into the approved set; every other control is unchanged.
+  const approved = ["MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "MPL-2.0", "Unicode-3.0", "0BSD", "MIT-0"];
   assert.deepEqual([...ALLOWED].sort(), [...rust].sort(), "C01-R1-01: JS and Rust allow-lists drifted");
   assert.deepEqual([...rust].sort(), [...approved].sort(), "C01-R1-01: allow-list differs from the approved set");
   const adr = readFileSync(new URL("../../docs/decisions/ADR-0003-licensing-policy.md", import.meta.url), "utf8");
   for (const id of approved) assert(adr.includes(id), `ADR-0003 must list ${id}`);
-  for (const outside of ["Unlicense", "CC0-1.0", "MIT-0", "BlueOak-1.0.0", "LGPL-2.1-only", "GPL-3.0-only", "AGPL-3.0-only"]) {
+  for (const outside of ["Unlicense", "CC0-1.0", "BlueOak-1.0.0", "LGPL-2.1-only", "GPL-3.0-only", "AGPL-3.0-only"]) {
     assert.equal(satisfies(outside), false, `C01-R1-01: ${outside} is outside the approved allow-list`);
   }
 } else if (process.argv[2] === "imports") {

@@ -1,0 +1,17 @@
+[
+  {
+    "path": "crates\\registry\\src\\declared.rs",
+    "equal": true,
+    "sha256": "5e2669d2c28dca6c8e826222f444e8497735ed9a2649d04e2be893f5674484d5"
+  },
+  {
+    "path": "crates\\registry\\src\\declared.json",
+    "equal": true,
+    "sha256": "6749f5b2db2977e40b73725ae5e133b9c66403e09664c2ff54dc8bf97ccaee57"
+  },
+  {
+    "path": "plan\\spec-issues.md",
+    "equal": true,
+    "sha256": "e10a843160e17af2e1d67fa66e8e76d0d4902d5e9ea6b44197cb8a4bd1ea7b9c"
+  }
+]

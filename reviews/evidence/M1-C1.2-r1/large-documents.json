@@ -1,0 +1,29 @@
+{
+  "profile": "debug",
+  "cases": [
+    {
+      "fixture": "100000 strokes",
+      "objects": 100092,
+      "assembleSeconds": 19.56602,
+      "malformedInvocations": 796,
+      "inputBytes": 1048599,
+      "sweepSeconds": 0.8451517,
+      "maximumCallSeconds": 0.0184385,
+      "create20CheckpointsSeconds": 0.0039046,
+      "find100Seconds": 0.8982272,
+      "documentRev": 1
+    },
+    {
+      "fixture": "10000 drawings",
+      "objects": 10091,
+      "assembleSeconds": 1.1117626,
+      "malformedInvocations": 796,
+      "inputBytes": 1048599,
+      "sweepSeconds": 2.6256845,
+      "maximumCallSeconds": 0.0220762,
+      "create20CheckpointsSeconds": 0.2745154,
+      "find100Seconds": 25.1603818,
+      "documentRev": 1
+    }
+  ]
+}

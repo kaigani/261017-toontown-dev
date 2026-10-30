@@ -1,0 +1,447 @@
+{
+  "seed": "0xc1222026101a",
+  "rows": [
+    {
+      "id": "app.context.set",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/app.rs:63",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "app.currentElement.move",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/app.rs:178",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "app.frame.move",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/app.rs:293",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "app.frame.set",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/app.rs:238",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "app.quit",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/app.rs:473",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "app.state.changed",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/app.rs:501",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "checkpoint.delete",
+      "status": "divergent",
+      "source": "crates/executor/src/commands/checkpoint.rs:149",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": [
+        "C12-R2-03"
+      ]
+    },
+    {
+      "id": "checkpoint.restore",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/checkpoint.rs:128",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "doc.changed",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/doc.rs:1349",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "doc.object.get",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/doc.rs:137",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "doc.object.resolve",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/doc.rs:566",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "doc.schema.get",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/doc.rs:1065",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "doc.schema.list",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/doc.rs:1016",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "edit.deselectAll",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/edit.rs:572",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "edit.history.changed",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/edit.rs:280",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "edit.history.get",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/edit.rs:182",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "edit.history.move",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/edit.rs:235",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "edit.redo",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/edit.rs:112",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "edit.selectAll",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/edit.rs:550",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "edit.selection.changed",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/edit.rs:587",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "edit.selection.get",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/edit.rs:324",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "edit.selection.set",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/edit.rs:398",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "edit.undo",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/edit.rs:69",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "job.finished",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/job.rs:164",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "job.progress",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/job.rs:152",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "project.opened",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/project.rs:521",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "window.floatingPanels.set",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/window.rs:171",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "window.panel.list",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/window.rs:35",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "window.panel.move",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/window.rs:137",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "window.sidePanelsExtended.set",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/window.rs:184",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "window.toolbar.items.reset",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/window.rs:385",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "window.toolbar.items.set",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/window.rs:349",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "window.toolbar.set",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/window.rs:307",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "workspace.changed",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/workspace.rs:322",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "workspace.create",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/workspace.rs:120",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "workspace.delete",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/workspace.rs:171",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "workspace.get",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/workspace.rs:38",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "workspace.layout.set",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/workspace.rs:226",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "workspace.list",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/workspace.rs:17",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    },
+    {
+      "id": "workspace.save",
+      "status": "implemented",
+      "source": "crates/executor/src/commands/workspace.rs:83",
+      "tests": [
+        "c12_r1_stress::every_executable_typed_example_also_validates_its_result_schema",
+        "c12_r2_registry::independently_validate_every_declared_parameter_example",
+        "c12_registry::ui_binding_manifest_parity"
+      ],
+      "findings": []
+    }
+  ]
+}

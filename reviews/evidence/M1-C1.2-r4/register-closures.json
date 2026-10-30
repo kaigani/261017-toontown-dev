@@ -1,0 +1,266 @@
+{
+  "commands": [
+    {
+      "id": "anim.function.get",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M3 C3.2",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "anim.path.get",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M3 C3.2",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "checkpoint.create",
+      "before": "divergent",
+      "after": "implemented",
+      "owner": "M1 C1.2",
+      "priorFindings": [
+        "C12-R3-02"
+      ],
+      "currentFindings": [],
+      "evidence": "c12_r3_contracts; closure-probe.rs; c12_r4_closure.rs"
+    },
+    {
+      "id": "doc.diff",
+      "before": "divergent",
+      "after": "divergent",
+      "owner": "M1 C1.2",
+      "priorFindings": [
+        "C12-R3-04",
+        "C12-R3-02"
+      ],
+      "currentFindings": [
+        "C12-R4-01"
+      ],
+      "evidence": "c12_r3_contracts; closure-probe.rs; c12_r4_closure.rs"
+    },
+    {
+      "id": "draw.pointSelection.set",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M2 C2.3",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "drawAid.staticLightTable.set",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M5 C5.2",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "export.settings.get",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M10 C10.1",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "job.wait",
+      "before": "divergent",
+      "after": "implemented",
+      "owner": "M1 C1.2",
+      "priorFindings": [
+        "C12-R3-03"
+      ],
+      "currentFindings": [],
+      "evidence": "c12_r3_contracts; closure-probe.rs; c12_r4_closure.rs"
+    },
+    {
+      "id": "keymap.list",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M4 C4.1",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "prefs.list",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M4 C4.1",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "print.settings.set",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M10 C10.2",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "sound.envelope.point.move",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M8 C8.1",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "sound.envelope.point.remove",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M8 C8.1",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "sound.envelope.set",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M8 C8.1",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "tool.pen.set",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M4 C4.2",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "tool.polyline.options.set",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M4 C4.2",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    },
+    {
+      "id": "xsheet.panel.set",
+      "before": "divergent",
+      "after": "deferred-with-owner",
+      "owner": "M5 C5.2",
+      "priorFindings": [
+        "C12-R3-01"
+      ],
+      "currentFindings": [],
+      "evidence": "original14/fresh14 in schema-closure.json"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R02",
+      "requirement": "Every inventory entry has constrained parameter/result schemas (plan 3.2; 11 14.2)",
+      "before": "divergent",
+      "after": "divergent",
+      "findings": [
+        "C12-R4-02"
+      ],
+      "evidence": "rust/gates/test.log; ci-audit.json; logs/closure-probes.log; schema-closure.json; logs/new-regressions.log"
+    },
+    {
+      "id": "R12",
+      "requirement": "Query steps see prior staged changes (11 7.3)",
+      "before": "divergent",
+      "after": "divergent",
+      "findings": [
+        "C12-R4-01"
+      ],
+      "evidence": "rust/gates/test.log; ci-audit.json; logs/closure-probes.log; schema-closure.json; logs/new-regressions.log"
+    },
+    {
+      "id": "R19",
+      "requirement": "Common run_command envelope including job.wait",
+      "before": "divergent",
+      "after": "implemented",
+      "findings": [],
+      "evidence": "rust/gates/test.log; ci-audit.json; logs/closure-probes.log; schema-closure.json; logs/new-regressions.log"
+    },
+    {
+      "id": "R23",
+      "requirement": "Checkpoint created from staged content has coherent rev",
+      "before": "divergent",
+      "after": "implemented",
+      "findings": [],
+      "evidence": "rust/gates/test.log; ci-audit.json; logs/closure-probes.log; schema-closure.json; logs/new-regressions.log"
+    },
+    {
+      "id": "R28",
+      "requirement": "requestId retry same ID returns original without execution",
+      "before": "divergent",
+      "after": "implemented",
+      "findings": [],
+      "evidence": "rust/gates/test.log; ci-audit.json; logs/closure-probes.log; schema-closure.json; logs/new-regressions.log"
+    },
+    {
+      "id": "R34",
+      "requirement": "Every changed revision returned to caller (11 P6)",
+      "before": "divergent",
+      "after": "implemented",
+      "findings": [],
+      "evidence": "rust/gates/test.log; ci-audit.json; logs/closure-probes.log; schema-closure.json; logs/new-regressions.log"
+    },
+    {
+      "id": "R37",
+      "requirement": "Historical doc.diff within retained 10k window",
+      "before": "divergent",
+      "after": "divergent",
+      "findings": [
+        "C12-R4-01"
+      ],
+      "evidence": "rust/gates/test.log; ci-audit.json; logs/closure-probes.log; schema-closure.json; logs/new-regressions.log"
+    },
+    {
+      "id": "R63",
+      "requirement": "Job wait/status/cancel/progress table",
+      "before": "divergent",
+      "after": "implemented",
+      "findings": [],
+      "evidence": "rust/gates/test.log; ci-audit.json; logs/closure-probes.log; schema-closure.json; logs/new-regressions.log"
+    }
+  ]
+}

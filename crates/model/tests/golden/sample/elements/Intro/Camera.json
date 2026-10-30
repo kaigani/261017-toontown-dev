@@ -1,0 +1,42 @@
+{
+  "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+  "type": "element",
+  "rev": 1,
+  "name": "Camera",
+  "elementType": "camera",
+  "start": 1,
+  "duration": 48,
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "transform": {
+    "offset": {
+      "x": 0,
+      "y": 0,
+      "z": 16
+    },
+    "rotation": 0,
+    "skew": 0,
+    "scale": {
+      "x": 1,
+      "y": 1
+    },
+    "keepProportions": false,
+    "lockDepth": false,
+    "orientToPath": false
+  },
+  "camera": {
+    "fovMode": "static",
+    "fov": 41.1121
+  },
+  "channels": {},
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

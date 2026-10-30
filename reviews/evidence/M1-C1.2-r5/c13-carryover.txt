@@ -1,0 +1,9 @@
+- **C1.3 persistence builder:** keep load installation executor-owned; validate every candidate with `issues()`, REV-01..06 and §5 limits before installation, including repair/migration and serde paths.
+- **C1.3 persistence builder:** prove canonical package/folder save/reopen, persisted revisions, atomic saves/backups/autosave/recovery/locks and newer-minor behavior; this review makes no persistence-completion claim.
+- **C1.3 persistence/model builder:** keep unchecked assembly confined to candidate load/repair and retain the accepted C1.1 confinement ticket; passing live-boundary tests does not discharge it.
+- **C1.3 executor integration owner:** preserve exact pre-state inverses, opaque `meta`/`ext`, full staged integrity, revision-exhaustion rollback and coherent checkpoint snapshots when adding persistence effects.
+- **C1.4 MCP/headless owner:** retain protocol scopes, confirmation/audit/subscriptions and explicit durable-session decisions; `--run` remains unavailable until its owned implementation. Preserve identical retry envelopes, different-call conflicts and evicted-ID refusals.
+- **C1.4 host owner:** retain watchdog caller bounds and implement the accepted engine-restart policy for a truly nonreturning handler; timeout is not safe thread cancellation.
+- **M2 C2.1 performance owner:** improve the recorded multi-second 100k-stroke commits through node-granular staging while retaining full integrity and exact undo/redo.
+- **M2/M3/M7/M8 specialty owners and each plan §4 command owner:** preserve the accepted structural-command/derived-field readiness split; replace SI-tagged placeholders when their owned schemas are defined and use declared unavailable results until computations exist.
+- **M4 C4.1/C4.2 shell owners:** retain the native-dispatch readiness split and all three IPC boundary layers; wire real menu/state parity and interactive rendering through the command layer.

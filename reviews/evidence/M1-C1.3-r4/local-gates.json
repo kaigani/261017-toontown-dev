@@ -1,0 +1,17 @@
+{
+  "workspaceCommand": "cargo test --workspace --locked",
+  "workspaceExit": 0,
+  "workspaceTotals": [
+    631,
+    0,
+    2
+  ],
+  "pnpmTestExit": 0,
+  "vitestFiles": 40,
+  "vitestTests": 333,
+  "licenseTests": 9,
+  "contentionRuns": 60,
+  "fmtExit": 0,
+  "closureClippyExit": 0,
+  "lockClippyExit": 0
+}

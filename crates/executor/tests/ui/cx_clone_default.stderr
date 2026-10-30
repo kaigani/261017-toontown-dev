@@ -1,0 +1,11 @@
+error[E0599]: no method named `clone` found for mutable reference `&mut Cx` in the current scope
+ --> tests/ui/cx_clone_default.rs:3:8
+  |
+3 |     cx.clone()
+  |        ^^^^^ method not found in `&mut Cx`
+
+error[E0277]: the trait bound `Cx: Default` is not satisfied
+ --> tests/ui/cx_clone_default.rs:7:5
+  |
+7 |     Default::default()
+  |     ^^^^^^^^^^^^^^^^^^ the trait `Default` is not implemented for `Cx`

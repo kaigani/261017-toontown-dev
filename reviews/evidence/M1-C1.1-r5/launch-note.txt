@@ -1,0 +1,9 @@
+The first command was pnpm install --frozen-lockfile (exit 0); the evidence runner repeated it to retain a raw receipt.
+The reviewer initially invoked guards.mjs using node --test without its required case argument. That invocation
+failed with "expected licensing, allowlist, or imports". The original node-guards.log and receipt are retained.
+The corrected invocations are node tests/adversarial/guards.mjs licensing|allowlist|imports; all three pass.
+The workspace also executes these same three cases through adversarial_c01. This was a reviewer invocation error,
+not a product/test failure. The runner has been corrected to supply the three cases.
+CI audit development corrected two parsing assumptions before producing ci-audit.json: the C0.3 target's external
+source path, and interleaved macOS stdout/stderr. The final audit verifies every named Rust test's successful line
+instead of attaching the next printed summary to a potentially different target.

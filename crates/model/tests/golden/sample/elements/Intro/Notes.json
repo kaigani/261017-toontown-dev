@@ -1,0 +1,48 @@
+{
+  "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+  "type": "element",
+  "rev": 1,
+  "name": "Notes",
+  "elementType": "annotation",
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "visibleInXsheet": false,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "drawingBankId": "db_01K742SG17ZDAHQTMS9MQ7TXWX",
+  "exposure": [],
+  "transform": {
+    "offset": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": 0,
+    "skew": 0,
+    "scale": {
+      "x": 1,
+      "y": 1
+    },
+    "keepProportions": false,
+    "rotationPivot": {
+      "x": 0,
+      "y": 0
+    },
+    "scalePivot": {
+      "x": 0,
+      "y": 0
+    },
+    "rotateAboutPivot": false,
+    "lockDepth": false,
+    "orientToPath": false
+  },
+  "channels": {},
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

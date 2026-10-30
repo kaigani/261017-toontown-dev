@@ -1,0 +1,147 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling serde_core v1.0.229
+   Compiling memchr v2.8.3
+   Compiling serde_json v1.0.154
+   Compiling once_cell v1.21.4
+   Compiling smallvec v1.16.3
+   Compiling serde v1.0.229
+   Compiling aho-corasick v1.1.5
+   Compiling windows-sys v0.61.2
+   Compiling parking_lot_core v0.9.12
+   Compiling getrandom v0.4.3
+   Compiling parking_lot v0.12.5
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling winapi-util v0.1.11
+   Compiling regex-automata v0.4.18
+   Compiling termcolor v1.4.1
+   Compiling indexmap v2.14.2
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling serde_spanned v1.1.2
+   Compiling serde_derive_internals v0.30.0
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling schemars_derive v1.2.3
+   Compiling ref-cast v1.0.27
+   Compiling regex v1.13.1
+   Compiling fancy-regex v0.19.2
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\registry-macros)
+   Compiling thiserror v2.0.21
+   Compiling strum v0.28.0
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling trybuild v1.0.122
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\model)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r2\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.42s
+     Running tests\c12_r2_contracts.rs (target\debug\deps\c12_r2_contracts-27ec0f4f412d609a.exe)
+
+running 17 tests
+test export_registry_for_independent_audit ... ok
+
+thread 'checkpoint_is_visible_to_later_atomic_query' (32644) panicked at crates\executor\tests\c12_r2_contracts.rs:93:5:
+assertion `left == right` failed: 11 §7.3 later queries see staged state
+  left: Null
+ right: "r2-visible"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'deleting_cells_respects_element_lock' (12684) panicked at crates\executor\tests\common\mod.rs:30:5:
+assertion `left == right` failed: doc.object.patch {"targets":["scene:\"Intro\"/element:\"Bob\""],"props":{"locked":true}}: Some(CommandError { code: "command.notImplemented", message: "`/locked` is changed with the semantics of `element.lock.set`, which is implemented in M3 C3.1", details: Object {"commandId": String("element.lock.set"), "milestone": String("M3 C3.1"), "property": String("/locked"), "pointer": String("/ops/0")}, hint: Some("use `element.lock.set` once available") })
+  left: Error
+ right: Ok
+
+thread 'edit_envelopes_report_explicit_or_selection_targets' (20336) panicked at crates\executor\tests\c12_r2_contracts.rs:235:5:
+11 P4: selection-derived actual targets missing from envelope
+
+thread 'sequential_dry_run_simulates_checkpoints' (26632) panicked at crates\executor\tests\c12_r2_contracts.rs:122:5:
+assertion `left == right` failed: 11 §7.2 prediction
+  left: Object {"status": String("ok"), "result": Object {"stepCount": Number(2)}, "changes": Array [], "warnings": Array [], "steps": Array [Object {"status": String("ok"), "result": Object {"name": String("r2-sequential")}, "changes": Array [], "warnings": Array []}, Object {"status": String("ok"), "result": Array [], "changes": Array [], "warnings": Array []}]}
+ right: Object {"status": String("ok"), "result": Object {"stepCount": Number(2)}, "changes": Array [], "warnings": Array [], "steps": Array [Object {"status": String("ok"), "result": Object {"name": String("r2-sequential")}, "changes": Array [], "warnings": Array []}, Object {"status": String("ok"), "result": Array [Object {"name": String("r2-sequential"), "origin": String("user")}], "changes": Array [], "warnings": Array []}]}
+test checkpoint_is_visible_to_later_atomic_query ... FAILED
+test edit_envelopes_report_explicit_or_selection_targets ... FAILED
+test sequential_dry_run_simulates_checkpoints ... FAILED
+test deleting_cells_respects_element_lock ... FAILED
+
+thread 'checkpoint_create_then_delete_in_atomic_batch_succeeds' (31124) panicked at crates\executor\tests\c12_r2_contracts.rs:106:5:
+11 §7.3: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "batch.stepFailed", message: "step 2 (`checkpoint.delete`) failed: no checkpoint `r2-temporary`", details: Object {"stepIndex": Number(2), "commandId": String("checkpoint.delete"), "error": Object {"code": String("checkpoint.notFound"), "message": String("no checkpoint `r2-temporary`"), "details": Object {"name": String("r2-temporary")}}}, hint: None }), dry_run: false, steps: Some([Envelope { status: Ok, result: Some(Object {"name": String("r2-temporary"), "documentRev": Number(1)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: None, dry_run: false, steps: None }, Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "checkpoint.notFound", message: "no checkpoint `r2-temporary`", details: Object {"name": String("r2-temporary")}, hint: None }), dry_run: false, steps: None }]) }
+test checkpoint_create_then_delete_in_atomic_batch_succeeds ... FAILED
+
+thread 'drawing_copy_preserves_object_shaped_opaque_metadata' (10048) panicked at crates\executor\tests\c12_r2_contracts.rs:192:5:
+assertion `left == right` failed: 10 §2.2 opaque data cannot be traversed as model objects
+  left: Object {"shape": Object {"id": String("st_01M59KPJ0EM00ZMR4HJ88T5MSR"), "rev": Number(0), "text": String("keep"), "type": String("stroke")}}
+ right: Object {"shape": Object {"id": String("opaque-literal"), "type": String("stroke"), "rev": Number(432), "text": String("keep")}}
+
+thread 'deleting_keys_respects_element_lock' (28784) panicked at crates\executor\tests\common\mod.rs:30:5:
+assertion `left == right` failed: doc.object.patch {"targets":["scene:\"Intro\"/element:\"Bob\""],"props":{"locked":true}}: Some(CommandError { code: "command.notImplemented", message: "`/locked` is changed with the semantics of `element.lock.set`, which is implemented in M3 C3.1", details: Object {"commandId": String("element.lock.set"), "milestone": String("M3 C3.1"), "property": String("/locked"), "pointer": String("/ops/0")}, hint: Some("use `element.lock.set` once available") })
+  left: Error
+ right: Ok
+test drawing_copy_preserves_object_shaped_opaque_metadata ... FAILED
+
+thread 'malformed_paste_destination_is_rejected_without_fallback' (13284) panicked at crates\executor\tests\c12_r2_contracts.rs:226:5:
+11 §8 wrong-typed explicit target silently fell back to current scene: Envelope { status: Ok, result: Some(Object {"createdIds": Array [String("el_01M59KPJ0EQVE4GTFG7JVQR7H0")], "modifiedIds": Array [], "warnings": Array []}), targets: None, changes: [ChangeRecord { id: "sc_01K742SG0YSRA1305J7887BDVZ", ty: "scene", op: "modified", rev: 2, parent_id: None, index: None, patch: Some([Object {"op": String("add"), "path": String("/tree/11"), "value": Object {"id": String("el_01M59KPJ0EQVE4GTFG7JVQR7H0"), "children": Array []}}, Object {"op": String("add"), "path": String("/elements/20"), "value": Object {"id": String("el_01M59KPJ0EQVE4GTFG7JVQR7H0"), "type": String("element")}}]) }, ChangeRecord { id: "ch_01M59KPJ0ESK295K3J0P5M9419/ky_01K742SG245790JGK2KWB7Z8RK", ty: "key", op: "created", rev: 2, parent_id: Some("ch_01M59KPJ0ESK295K3J0P5M9419"), index: Some(0), patch: None }, ChangeRecord { id: "ch_01M59KPJ0ESK295K3J0P5M9419/ky_01K742SG25VVP67AJQQCV1HDFJ", ty: "key", op: "created", rev: 2, parent_id: Some("ch_01M59KPJ0ESK295K3J0P5M9419"), index: Some(1), patch: None }, ChangeRecord { id: "ch_01M59KPJ0ESK295K3J0P5M9419", ty: "channel", op: "created", rev: 2, parent_id: Some("el_01M59KPJ0EQVE4GTFG7JVQR7H0"), index: Some(0), patch: None }, ChangeRecord { id: "el_01M59KPJ0EQVE4GTFG7JVQR7H0", ty: "element", op: "created", rev: 2, parent_id: Some("sc_01K742SG0YSRA1305J7887BDVZ"), index: Some(20), patch: None }], changes_truncated: false, changes_since: None, undo: Some(UndoRef { step_id: "u-1", label: "Paste" }), warnings: [], document_rev: Some(2), error: None, dry_run: false, steps: None }
+test deleting_keys_respects_element_lock ... FAILED
+test malformed_paste_destination_is_rejected_without_fallback ... FAILED
+
+thread 'paste_dry_run_predicts_created_ids_exactly' (20264) panicked at crates\executor\tests\c12_r2_contracts.rs:155:5:
+assertion `left == right` failed: R1-02/03: predicted IDs must match the real result
+  left: Some(Object {"createdIds": Array [String("el_01M59KPJ0BHA4ZEQTND3F3R7RQ")], "modifiedIds": Array [], "warnings": Array []})
+ right: Some(Object {"createdIds": Array [String("el_01M59KPJ0HG79VY9JWZ4GC8663")], "modifiedIds": Array [], "warnings": Array []})
+test paste_dry_run_predicts_created_ids_exactly ... FAILED
+
+thread 'checkpoint_before_edit_predicts_same_result_in_dry_run' (29116) panicked at crates\executor\tests\c12_r2_contracts.rs:140:5:
+assertion `left == right` failed: checkpoint result revision is not an envelope dry-run field
+  left: Some(Object {"name": String("r2-first"), "documentRev": Number(1)})
+ right: Some(Object {"name": String("r2-first"), "documentRev": Number(2)})
+test checkpoint_before_edit_predicts_same_result_in_dry_run ... FAILED
+
+thread 'element_delete_preserves_opaque_metadata_and_extension_strings' (27092) panicked at crates\executor\tests\c12_r2_contracts.rs:179:5:
+assertion `left == right` failed: 10 §2.2 metadata is never interpreted
+  left: Object {"list": Array [], "literal": Null, "nested": Object {"id": Null}}
+ right: Object {"list": Array [Object {"text": String("el_01K742SG101DH4FAEWCWWK4QXC")}], "literal": String("el_01K742SG101DH4FAEWCWWK4QXC"), "nested": Object {"id": String("el_01K742SG101DH4FAEWCWWK4QXC")}}
+test element_delete_preserves_opaque_metadata_and_extension_strings ... FAILED
+test failed_batch_rolls_back_all_five_effect_classes_together ... ok
+test request_ids_are_session_scoped_and_survive_undo ... ok
+
+thread 'identical_document_and_paste_sequence_produce_identical_ids' (4816) panicked at crates\executor\tests\c12_r2_contracts.rs:167:5:
+assertion `left == right` failed: 11 P7 / 10 AG-06 deterministic ID allocation
+  left: Object {"createdIds": Array [String("el_01M59KPJ0TW4K5KCY4961SFNBX")], "modifiedIds": Array [], "warnings": Array []}
+ right: Object {"createdIds": Array [String("el_01M59KPJ0YAGFXDC4HS9D81MQS")], "modifiedIds": Array [], "warnings": Array []}
+test identical_document_and_paste_sequence_produce_identical_ids ... FAILED
+
+thread 'pending_job_wait_reserves_request_id_against_other_commands' (32164) panicked at crates\executor\tests\c12_r2_contracts.rs:253:5:
+assertion `left == right` failed: pending request ID executed another command: Envelope { status: Ok, result: Some(Object {"frame": Number(37)}), targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(1), error: None, dry_run: false, steps: None }
+  left: None
+ right: Some("request.conflict")
+test pending_job_wait_reserves_request_id_against_other_commands ... FAILED
+test eviction_at_byte_limit_never_reexecutes_oldest_request ... ok
+
+failures:
+
+failures:
+    checkpoint_before_edit_predicts_same_result_in_dry_run
+    checkpoint_create_then_delete_in_atomic_batch_succeeds
+    checkpoint_is_visible_to_later_atomic_query
+    deleting_cells_respects_element_lock
+    deleting_keys_respects_element_lock
+    drawing_copy_preserves_object_shaped_opaque_metadata
+    edit_envelopes_report_explicit_or_selection_targets
+    element_delete_preserves_opaque_metadata_and_extension_strings
+    identical_document_and_paste_sequence_produce_identical_ids
+    malformed_paste_destination_is_rejected_without_fallback
+    paste_dry_run_predicts_created_ids_exactly
+    pending_job_wait_reserves_request_id_against_other_commands
+    sequential_dry_run_simulates_checkpoints
+
+test result: FAILED. 4 passed; 13 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.78s
+
+error: test failed, to rerun pass `-p tt-executor --test c12_r2_contracts`

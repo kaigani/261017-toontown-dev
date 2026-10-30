@@ -1,0 +1,7 @@
+pnpm-lint: exit 0
+pnpm-typecheck: exit 0
+pnpm-test: exit 0
+pnpm-format: exit 0
+pnpm-licenses: exit 0
+reviewer-python-suites: exit 0
+build: exit 0

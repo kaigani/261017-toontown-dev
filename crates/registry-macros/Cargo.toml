@@ -1,0 +1,18 @@
+[package]
+name = "tt-registry-macros"
+description = "Toontown command declaration attribute macro (used through tt-registry)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1.0"
+quote = "1.0"
+syn = { version = "2.0", features = ["full"] }
+
+[lints]
+workspace = true

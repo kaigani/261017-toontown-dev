@@ -1,0 +1,67 @@
+{
+  "host": {
+    "name": "Toontown",
+    "version": "0.0.1",
+    "platform": "macos",
+    "arch": "aarch64",
+    "formatVersion": "1.0",
+    "registryVersion": "0.0.0",
+    "runMode": "attached"
+  },
+  "frontend": {
+    "ok": true,
+    "transport": "tauri",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+    "count": 300,
+    "bursts": [
+      {
+        "payloadBytes": 0,
+        "roundTripMs": {
+          "n": 300,
+          "min": 0,
+          "p50": 1,
+          "p95": 3,
+          "p99": 6,
+          "max": 14,
+          "mean": 1.68
+        }
+      },
+      {
+        "payloadBytes": 1024,
+        "roundTripMs": {
+          "n": 300,
+          "min": 0,
+          "p50": 1,
+          "p95": 3,
+          "p99": 4,
+          "max": 22,
+          "mean": 1.29
+        }
+      },
+      {
+        "payloadBytes": 65536,
+        "roundTripMs": {
+          "n": 300,
+          "min": 0.9999999999995453,
+          "p50": 2,
+          "p95": 4,
+          "p99": 9,
+          "max": 16,
+          "mean": 2.469999999999996
+        }
+      },
+      {
+        "payloadBytes": 1048576,
+        "roundTripMs": {
+          "n": 300,
+          "min": 11,
+          "p50": 16,
+          "p95": 26,
+          "p99": 34,
+          "max": 38.00000000000091,
+          "mean": 17.50666666666665
+        }
+      }
+    ]
+  }
+}

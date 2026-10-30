@@ -1,7 +1,7 @@
 # ADR-0003 — Licensing policy for dependencies and shipped components
 
 Status: accepted (C0.1, 2026-10-17; amended after review round 1: one shared allow-list, 0BSD added, SPDX
-evaluation). The FFmpeg sidecar build/encoder/fetch plan is ADR-0008 (C0.4).
+evaluation; amended in M1 C1.1 round 1, 2026-10-18: MIT-0 added). The FFmpeg sidecar build/encoder/fetch plan is ADR-0008 (C0.4).
 
 ## Context
 
@@ -12,11 +12,14 @@ statically linked into our executables; JavaScript dependencies are bundled into
 ## Decision
 
 1. **One allow-list for both ecosystems.** The approved set is exactly:
-   **MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, Zlib, MPL-2.0, Unicode-3.0, 0BSD.**
+   **MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, Zlib, MPL-2.0, Unicode-3.0, 0BSD, MIT-0.**
    - The first seven are the user's list. **Unicode-3.0** (OSI-approved, permissive) is required by the ICU4X crates
      (`icu_*`, `litemap`, `potential_utf`, `tinystr`, `writeable`, `yoke`, `zerofrom`, `zerovec`, `zerotrie`) that
      Tauri pulls in through `url` → `idna`. **0BSD** (public-domain-equivalent, permissive) appears today only as one
      alternative of multi-licensed crates (e.g. `adler2`: `0BSD OR MIT OR Apache-2.0`) and is common in npm packages. Both additions were accepted by the orchestrator on 2026-10-17 (C0.1 review round 1, C01-R1-01).
+     **MIT-0** (MIT without the attribution condition; OSI-approved, permissive) is required by `borrow-or-share`, a
+     dependency of `fluent-uri` that every `jsonschema` release since 0.26 pulls in; accepted by the orchestrator on
+     2026-10-18 (M1 C1.1 review round 1, C11-R1-18).
    - The list lives in one place, `deny.toml` `[licenses] allow`. `scripts/check-npm-licenses.mjs` reads that array,
      so the two gates cannot drift; `tests/adversarial/guards.mjs allowlist` checks list = this ADR's set.
    - Everything else is rejected, which rejects GPL, AGPL and LGPL. Licence expressions are evaluated as SPDX

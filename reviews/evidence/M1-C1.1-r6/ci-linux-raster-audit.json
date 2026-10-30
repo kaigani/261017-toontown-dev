@@ -1,0 +1,37 @@
+[
+  {
+    "job": "headless without a display (ubuntu)",
+    "verified": true,
+    "relevant_log_lines": [
+      "headless without a display (ubuntu)\tSelf-test with no display server\t2026-10-19T01:15:03.6426104Z [('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('headless.mcpLinked', True)]",
+      "headless without a display (ubuntu)\tSelf-test with no display server\t2026-10-19T01:15:03.8563856Z headless dependency check passed"
+    ]
+  },
+  {
+    "job": "raster determinism (windows-latest)",
+    "verified": true,
+    "relevant_log_lines": [
+      "raster determinism (windows-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T01:16:24.4064086Z for run in 1 2; do",
+      "raster determinism (windows-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T01:16:24.4066627Z     --check crates/render/examples/c03_raster/hashes.json || status=1",
+      "raster determinism (windows-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T01:16:31.6177533Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s"
+    ]
+  },
+  {
+    "job": "raster determinism (macos-latest)",
+    "verified": true,
+    "relevant_log_lines": [
+      "raster determinism (macos-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T01:15:59.3987480Z for run in 1 2; do",
+      "raster determinism (macos-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T01:15:59.3998140Z     --check crates/render/examples/c03_raster/hashes.json || status=1",
+      "raster determinism (macos-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T01:16:07.7161830Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s"
+    ]
+  },
+  {
+    "job": "raster determinism (ubuntu-latest)",
+    "verified": true,
+    "relevant_log_lines": [
+      "raster determinism (ubuntu-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T01:15:20.1077317Z for run in 1 2; do",
+      "raster determinism (ubuntu-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T01:15:20.1078787Z     --check crates/render/examples/c03_raster/hashes.json || status=1",
+      "raster determinism (ubuntu-latest)\tRender fixtures and check committed hashes (two processes)\t2026-10-19T01:15:24.4828890Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s"
+    ]
+  }
+]

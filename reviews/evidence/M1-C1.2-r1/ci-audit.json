@@ -1,0 +1,482 @@
+{
+  "receipts": [
+    {
+      "receipt": "ci-collection.json",
+      "matches": true,
+      "exitCode": 0
+    },
+    {
+      "receipt": "clippy-reviewed.json",
+      "matches": true,
+      "exitCode": 0
+    },
+    {
+      "receipt": "commit-scale.json",
+      "matches": true,
+      "exitCode": 0
+    },
+    {
+      "receipt": "contracts-final.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "contracts-reviewed.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "contracts-v2.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "contracts.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "deny.json",
+      "matches": true,
+      "exitCode": 0
+    },
+    {
+      "receipt": "fmt-final.json",
+      "matches": true,
+      "exitCode": 0
+    },
+    {
+      "receipt": "fmt-reviewed.json",
+      "matches": true,
+      "exitCode": 0
+    },
+    {
+      "receipt": "lint-review.json",
+      "matches": true,
+      "exitCode": 0
+    },
+    {
+      "receipt": "macro-final.json",
+      "matches": true,
+      "exitCode": 0
+    },
+    {
+      "receipt": "macro.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "scale-v2.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "scale-v3.json",
+      "matches": true,
+      "exitCode": 0
+    },
+    {
+      "receipt": "scale.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "stress-v2.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "stress-v3.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "stress.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "workspace-final.json",
+      "matches": true,
+      "exitCode": 101
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2-r1\\baseline\\receipt.json",
+      "log": "gates/build.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2-r1\\baseline\\receipt.json",
+      "log": "gates/pnpm-test.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2-r1\\baseline\\receipt.json",
+      "log": "gates/reviewer-python-suites.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2-r1\\baseline\\receipt.json",
+      "log": "gates/test.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\commit-scale-receipt.json",
+      "log": "commit-scale-windows.json",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\commit-scale-receipt.json",
+      "log": "commit-scale-build.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/build.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/clippy-diag.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/clippy.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/deny.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/executor-counts-nocapture.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/fmt.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/headless.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/pnpm-format.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/pnpm-licenses.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/pnpm-lint.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/pnpm-test.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/pnpm-typecheck.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/reviewer-python-suites.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/selftest-1.json",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/selftest-2.json",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/selftest-compare.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/test-diag.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/test.log",
+      "matches": true
+    },
+    {
+      "receipt": "reviews\\evidence\\M1-C1.2\\receipt.json",
+      "log": "gates/vitest-verbose.log",
+      "matches": true
+    }
+  ],
+  "changedReviewerFiles": [],
+  "ciWorkflowUnchanged": true,
+  "newUnsafeBlocksOrAllowances": [],
+  "cargoLockDelta": "diff --git a/Cargo.lock b/Cargo.lock\nindex 4fec352..d307d7f 100644\n--- a/Cargo.lock\n+++ b/Cargo.lock\n@@ -3834,6 +3834,12 @@ version = \"0.12.16\"\n source = \"registry+https://github.com/rust-lang/crates.io-index\"\n checksum = \"61c41af27dd6d1e27b1b16b489db798443478cef1f06a660c96db617ba5de3b1\"\n \n+[[package]]\n+name = \"target-tuple\"\n+version = \"1.0.2\"\n+source = \"registry+https://github.com/rust-lang/crates.io-index\"\n+checksum = \"876fef147edbcbddc8ac5cbbba92c7b86519e314e86638596c09673b2ed01e7f\"\n+\n [[package]]\n name = \"tauri\"\n version = \"2.12.4\"\n@@ -4071,6 +4077,15 @@ dependencies = [\n  \"new_debug_unreachable\",\n ]\n \n+[[package]]\n+name = \"termcolor\"\n+version = \"1.4.1\"\n+source = \"registry+https://github.com/rust-lang/crates.io-index\"\n+checksum = \"06794f8f6c5c898b3275aebefa6b8a1cb24cd2c6c79397ab15774837a0bc5755\"\n+dependencies = [\n+ \"winapi-util\",\n+]\n+\n [[package]]\n name = \"thiserror\"\n version = \"1.0.69\"\n@@ -4381,6 +4396,21 @@ version = \"0.2.5\"\n source = \"registry+https://github.com/rust-lang/crates.io-index\"\n checksum = \"e421abadd41a4225275504ea4d6566923418b7f05506fbc9c0fe86ba7396114b\"\n \n+[[package]]\n+name = \"trybuild\"\n+version = \"1.0.122\"\n+source = \"registry+https://github.com/rust-lang/crates.io-index\"\n+checksum = \"62db9c92d704393fbf2132041720cc80b689f2d3f28521015c2ac866223c11b8\"\n+dependencies = [\n+ \"glob\",\n+ \"serde\",\n+ \"serde_derive\",\n+ \"serde_json\",\n+ \"target-tuple\",\n+ \"termcolor\",\n+ \"toml 1.1.8+spec-1.1.0\",\n+]\n+\n [[package]]\n name = \"tt-anim\"\n version = \"0.0.1\"\n@@ -4447,6 +4477,12 @@ dependencies = [\n name = \"tt-executor\"\n version = \"0.0.1\"\n dependencies = [\n+ \"jsonschema\",\n+ \"regex\",\n+ \"schemars 1.2.3\",\n+ \"serde\",\n+ \"serde_json\",\n+ \"trybuild\",\n  \"tt-model\",\n  \"tt-registry\",\n ]\n@@ -4522,7 +4558,21 @@ dependencies = [\n name = \"tt-registry\"\n version = \"0.0.1\"\n dependencies = [\n+ \"jsonschema\",\n+ \"schemars 1.2.3\",\n+ \"serde\",\n+ \"serde_json\",\n  \"tt-model\",\n+ \"tt-registry-macros\",\n+]\n+\n+[[package]]\n+name = \"tt-registry-macros\"\n+version = \"0.0.1\"\n+dependencies = [\n+ \"proc-macro2\",\n+ \"quote\",\n+ \"syn 2.0.119\",\n ]\n \n [[package]]\n",
+  "ci": {
+    "39200848231": {
+      "windows-latest": {
+        "rustSteps": {
+          "Run cargo test --workspace --locked": [
+            344,
+            0,
+            1
+          ],
+          "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests": [
+            49,
+            0,
+            0
+          ]
+        },
+        "rustTotalPassed": 393,
+        "rustTotalIgnored": 1,
+        "rustSuites": {},
+        "python11of11": true,
+        "vitest333": true,
+        "exclusiveMutationPassed": true,
+        "reviewerLines": [
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:00.3045333Z  * [new branch]      review/m0-c04-r3 -> origin/review/m0-c04-r3",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:00.3048442Z  * [new branch]      review/m1-c11-r1 -> origin/review/m1-c11-r1",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:00.3049085Z  * [new branch]      review/m1-c11-r2 -> origin/review/m1-c11-r2",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:00.3049723Z  * [new branch]      review/m1-c11-r3 -> origin/review/m1-c11-r3",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:00.3050355Z  * [new branch]      review/m1-c11-r4 -> origin/review/m1-c11-r4",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:00.3052252Z  * [new branch]      review/m1-c11-r5 -> origin/review/m1-c11-r5",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:00.3052924Z  * [new branch]      review/m1-c11-r6 -> origin/review/m1-c11-r6",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:00.3053638Z  * [new branch]      review/m1-c11-r7 -> origin/review/m1-c11-r7",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:45:15.3126134Z  ^[[32m\u2713^[[39m src/ipc/boundary.build.test.ts ^[[2m(^[[22m^[[2m46 tests^[[22m^[[2m)^[[22m^[[33m 7237^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:45:35.9574295Z  ^[[32m\u2713^[[39m src/ipc/boundary.lint.test.ts ^[[2m(^[[22m^[[2m69 tests^[[22m^[[2m)^[[22m^[[33m 19316^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:45:56.2092895Z ^[[90mstdout^[[2m | src/ipc/c11-r1-adversarial.test.ts^[[2m > ^[[22m^[[2mC11 R1 text boundary^[[2m > ^[[22m^[[2mvalidates a representative ten-megabyte drawing",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:45:56.2114854Z  ^[[32m\u2713^[[39m src/ipc/c11-r1-adversarial.test.ts ^[[2m(^[[22m^[[2m6 tests^[[22m^[[2m)^[[22m^[[33m 2818^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:45:57.0632422Z  ^[[32m\u2713^[[39m src/ipc/c11-r2-adversarial.test.ts ^[[2m(^[[22m^[[2m9 tests^[[22m^[[2m)^[[22m^[[32m 18^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:46:04.7088494Z  ^[[32m\u2713^[[39m src/ipc/c11-r3-adversarial.test.ts ^[[2m(^[[22m^[[2m4 tests^[[22m^[[2m)^[[22m^[[32m 18^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:47:35.1135525Z === c04-r3-decisions.py",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:47:35.3452176Z === c04-r3-page.py",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:47:38.3874963Z  ^[[32m\u2713^[[39m src/test/c04-r3-actions.test.tsx ^[[2m(^[[22m^[[2m5 tests^[[22m^[[2m)^[[22m^[[32m 294^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:47:38.6725973Z === c11-r2-review-policy.py",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:47:39.2582574Z ok   c04-r3-decisions.py (0.2 s)",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:47:39.2582980Z ok   c04-r3-page.py (3.1 s)",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:47:39.2583867Z ok   c11-r2-review-policy.py (0.1 s)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:49:49.0849206Z ^[[1m^[[92m     Running^[[0m tests\\c11_r1_wire.rs (target\\debug\\deps\\c11_r1_wire-3f2b46fa85af22f0.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:49:49.1898435Z ^[[1m^[[92m     Running^[[0m tests\\c11_r2_wire.rs (target\\debug\\deps\\c11_r2_wire-5ccfe0323d3f71cb.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:49:49.2066805Z ^[[1m^[[92m     Running^[[0m tests\\c11_r3_wire.rs (target\\debug\\deps\\c11_r3_wire-dc965265034610f8.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:50:02.6932915Z test model_level_staged_commit_of_several_entries_is_atomic ... ok",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:51:23.9720552Z ^[[1m^[[92m     Running^[[0m tests\\c11_r1_adversarial.rs (target\\debug\\deps\\c11_r1_adversarial-75ece51e420e1eb8.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:51:35.1351925Z ^[[1m^[[92m     Running^[[0m tests\\c11_r2_adversarial.rs (target\\debug\\deps\\c11_r2_adversarial-52e9650796c4141a.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:51:49.6070065Z ^[[1m^[[92m     Running^[[0m tests\\c11_r3_adversarial.rs (target\\debug\\deps\\c11_r3_adversarial-abfdbe7c199701e8.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:51:50.4746010Z ^[[1m^[[92m     Running^[[0m tests\\c11_r3_random.rs (target\\debug\\deps\\c11_r3_random-c456b30822b20a4d.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:51:57.6908001Z ^[[1m^[[92m     Running^[[0m tests\\c11_r3_register.rs (target\\debug\\deps\\c11_r3_register-0a850ae49c121317.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:51:59.0845284Z ^[[1m^[[92m     Running^[[0m tests\\c11_r4_exposure_bounds.rs (target\\debug\\deps\\c11_r4_exposure_bounds-d1be6deaf6e5525e.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:51:59.1183910Z ^[[1m^[[92m     Running^[[0m tests\\c11_r5_write_bounds.rs (target\\debug\\deps\\c11_r5_write_bounds-d764ed0af0bb6da5.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:51:59.1328744Z ^[[1m^[[92m     Running^[[0m tests\\c11_r6_staged_inverse.rs (target\\debug\\deps\\c11_r6_staged_inverse-8cfc7ca8077e0d94.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:51:59.7847001Z test staged_inverse_restores_frames_after_runs_merge ... ok",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:52:02.8693662Z ^[[1m^[[92m     Running^[[0m tests\\staged_commit.rs (target\\debug\\deps\\staged_commit-b842d5127ae68552.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:53:02.8857024Z test staged_commit_sweep_commits_and_refuses has been running for over 60 seconds",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:53:25.0901257Z test staged_commit_sweep_commits_and_refuses ... ok",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:53:25.0949022Z ^[[1m^[[92m     Running^[[0m tests\\staged_inverse.rs (target\\debug\\deps\\staged_inverse-252b7c5c52c0eca0.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:54:18.4973518Z test staged_inverse_sweep_covers_merging_and_splitting_runs ... ok"
+        ]
+      },
+      "macos-latest": {
+        "rustSteps": {
+          "Run cargo test --workspace --locked": [
+            338,
+            0,
+            1
+          ],
+          "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests": [
+            43,
+            0,
+            0
+          ]
+        },
+        "rustTotalPassed": 381,
+        "rustTotalIgnored": 1,
+        "rustSuites": {},
+        "python11of11": true,
+        "vitest333": true,
+        "exclusiveMutationPassed": true,
+        "reviewerLines": [
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:10.4619520Z  * [new branch]      review/m0-c04-r3 -> origin/review/m0-c04-r3",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:10.4621190Z  * [new branch]      review/m1-c11-r1 -> origin/review/m1-c11-r1",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:10.4621650Z  * [new branch]      review/m1-c11-r2 -> origin/review/m1-c11-r2",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:10.4622140Z  * [new branch]      review/m1-c11-r3 -> origin/review/m1-c11-r3",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:10.4622660Z  * [new branch]      review/m1-c11-r4 -> origin/review/m1-c11-r4",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:10.4623100Z  * [new branch]      review/m1-c11-r5 -> origin/review/m1-c11-r5",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:10.4623630Z  * [new branch]      review/m1-c11-r6 -> origin/review/m1-c11-r6",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:43:10.4624520Z  * [new branch]      review/m1-c11-r7 -> origin/review/m1-c11-r7",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:44:27.3905170Z  ^[[32m\u2713^[[39m src/ipc/boundary.build.test.ts ^[[2m(^[[22m^[[2m46 tests^[[22m^[[2m)^[[22m^[[33m 7702^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:44:55.8984200Z  ^[[32m\u2713^[[39m src/ipc/boundary.lint.test.ts ^[[2m(^[[22m^[[2m69 tests^[[22m^[[2m)^[[22m^[[33m 27146^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:45:11.1852320Z ^[[90mstdout^[[2m | src/ipc/c11-r1-adversarial.test.ts^[[2m > ^[[22m^[[2mC11 R1 text boundary^[[2m > ^[[22m^[[2mvalidates a representative ten-megabyte drawing",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:45:11.1862600Z  ^[[32m\u2713^[[39m src/ipc/c11-r1-adversarial.test.ts ^[[2m(^[[22m^[[2m6 tests^[[22m^[[2m)^[[22m^[[33m 2352^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:45:11.7504100Z  ^[[32m\u2713^[[39m src/ipc/c11-r2-adversarial.test.ts ^[[2m(^[[22m^[[2m9 tests^[[22m^[[2m)^[[22m^[[32m 8^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:45:17.7022250Z  ^[[32m\u2713^[[39m src/ipc/c11-r3-adversarial.test.ts ^[[2m(^[[22m^[[2m4 tests^[[22m^[[2m)^[[22m^[[32m 7^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:46:20.3787700Z === c04-r3-decisions.py",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:46:20.5682630Z === c04-r3-page.py",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:46:22.0821890Z  ^[[32m\u2713^[[39m src/test/c04-r3-actions.test.tsx ^[[2m(^[[22m^[[2m5 tests^[[22m^[[2m)^[[22m^[[32m 139^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:46:22.2314120Z === c11-r2-review-policy.py",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:46:22.4475350Z ok   c04-r3-decisions.py (0.2 s)",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:46:22.4475790Z ok   c04-r3-page.py (1.5 s)",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:46:22.4476620Z ok   c11-r2-review-policy.py (0.1 s)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:47:25.0767090Z ^[[1m^[[92m     Running^[[0m tests/c11_r1_wire.rs (target/debug/deps/c11_r1_wire-60ce393f4308fda5)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:47:25.1414970Z ^[[1m^[[92m     Running^[[0m tests/c11_r2_wire.rs (target/debug/deps/c11_r2_wire-0e3a354f01f61110)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:47:25.1544290Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_wire.rs (target/debug/deps/c11_r3_wire-c1e122eab76bee3a)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:47:32.6274660Z test model_level_staged_commit_of_several_entries_is_atomic ... ok",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:48:07.0889360Z ^[[1m^[[92m     Running^[[0m tests/c11_r1_adversarial.rs (target/debug/deps/c11_r1_adversarial-8d3716120ee35c46)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:48:12.5373080Z ^[[1m^[[92m     Running^[[0m tests/c11_r2_adversarial.rs (target/debug/deps/c11_r2_adversarial-22448ab8af34c614)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:48:21.3830170Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_adversarial.rs (target/debug/deps/c11_r3_adversarial-0378d3d2cf6f6d31)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:48:21.8374370Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_random.rs (target/debug/deps/c11_r3_random-9f02a27a877ff9a0)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:48:25.0429830Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_register.rs (target/debug/deps/c11_r3_register-a4c8b69bb11f5f41)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:48:25.7636130Z ^[[1m^[[92m     Running^[[0m tests/c11_r4_exposure_bounds.rs (target/debug/deps/c11_r4_exposure_bounds-c6916d797ed9eb5f)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:48:25.7832300Z ^[[1m^[[92m     Running^[[0m tests/c11_r5_write_bounds.rs (target/debug/deps/c11_r5_write_bounds-621bf732ef4bf632)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:48:25.7941190Z ^[[1m^[[92m     Running^[[0m tests/c11_r6_staged_inverse.rs (target/debug/deps/c11_r6_staged_inverse-b2a16e8afb2b2f96)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:48:26.2174660Z test staged_inverse_restores_frames_after_runs_merge ... ok",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:48:27.9820210Z ^[[1m^[[92m     Running^[[0m tests/staged_commit.rs (target/debug/deps/staged_commit-002cf0df12314c33)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:49:09.2782980Z test staged_commit_sweep_commits_and_refuses ... ok",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:49:09.2807470Z ^[[1m^[[92m     Running^[[0m tests/staged_inverse.rs (target/debug/deps/staged_inverse-083757db67cda41d)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:49:39.1738950Z test staged_inverse_sweep_covers_merging_and_splitting_runs ... ok"
+        ]
+      }
+    },
+    "39198980037": {
+      "windows-latest": {
+        "rustSteps": {
+          "Run cargo test --workspace --locked": [
+            344,
+            0,
+            1
+          ],
+          "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests": [
+            49,
+            0,
+            0
+          ]
+        },
+        "rustTotalPassed": 393,
+        "rustTotalIgnored": 1,
+        "rustSuites": {},
+        "python11of11": true,
+        "vitest333": true,
+        "exclusiveMutationPassed": true,
+        "reviewerLines": [
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:46.2164575Z  * [new branch]      review/m0-c04-r3 -> origin/review/m0-c04-r3",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:46.2166981Z  * [new branch]      review/m1-c11-r1 -> origin/review/m1-c11-r1",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:46.2167577Z  * [new branch]      review/m1-c11-r2 -> origin/review/m1-c11-r2",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:46.2168151Z  * [new branch]      review/m1-c11-r3 -> origin/review/m1-c11-r3",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:46.2170135Z  * [new branch]      review/m1-c11-r4 -> origin/review/m1-c11-r4",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:46.2171757Z  * [new branch]      review/m1-c11-r5 -> origin/review/m1-c11-r5",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:46.2172145Z  * [new branch]      review/m1-c11-r6 -> origin/review/m1-c11-r6",
+          "check (windows-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:46.2172506Z  * [new branch]      review/m1-c11-r7 -> origin/review/m1-c11-r7",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:23:01.1130420Z  ^[[32m\u2713^[[39m src/ipc/boundary.build.test.ts ^[[2m(^[[22m^[[2m46 tests^[[22m^[[2m)^[[22m^[[33m 6985^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:23:20.8089482Z  ^[[32m\u2713^[[39m src/ipc/boundary.lint.test.ts ^[[2m(^[[22m^[[2m69 tests^[[22m^[[2m)^[[22m^[[33m 18417^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:23:39.8515042Z ^[[90mstdout^[[2m | src/ipc/c11-r1-adversarial.test.ts^[[2m > ^[[22m^[[2mC11 R1 text boundary^[[2m > ^[[22m^[[2mvalidates a representative ten-megabyte drawing",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:23:39.8538577Z  ^[[32m\u2713^[[39m src/ipc/c11-r1-adversarial.test.ts ^[[2m(^[[22m^[[2m6 tests^[[22m^[[2m)^[[22m^[[33m 2655^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:23:40.6596770Z  ^[[32m\u2713^[[39m src/ipc/c11-r2-adversarial.test.ts ^[[2m(^[[22m^[[2m9 tests^[[22m^[[2m)^[[22m^[[32m 16^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:23:47.9058792Z  ^[[32m\u2713^[[39m src/ipc/c11-r3-adversarial.test.ts ^[[2m(^[[22m^[[2m4 tests^[[22m^[[2m)^[[22m^[[32m 14^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:25:23.5512066Z === c04-r3-decisions.py",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:25:23.7887189Z === c04-r3-page.py",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:25:26.7159624Z  ^[[32m\u2713^[[39m src/test/c04-r3-actions.test.tsx ^[[2m(^[[22m^[[2m5 tests^[[22m^[[2m)^[[22m^[[32m 264^[[2mms^[[22m^[[39m",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:25:26.9997497Z === c11-r2-review-policy.py",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:25:27.6681821Z ok   c04-r3-decisions.py (0.2 s)",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:25:27.6682122Z ok   c04-r3-page.py (3.0 s)",
+          "check (windows-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:25:27.6682737Z ok   c11-r2-review-policy.py (0.1 s)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:27:36.8726158Z ^[[1m^[[92m     Running^[[0m tests\\c11_r1_wire.rs (target\\debug\\deps\\c11_r1_wire-3f2b46fa85af22f0.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:27:36.9768126Z ^[[1m^[[92m     Running^[[0m tests\\c11_r2_wire.rs (target\\debug\\deps\\c11_r2_wire-5ccfe0323d3f71cb.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:27:36.9939308Z ^[[1m^[[92m     Running^[[0m tests\\c11_r3_wire.rs (target\\debug\\deps\\c11_r3_wire-dc965265034610f8.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:27:48.6743050Z test model_level_staged_commit_of_several_entries_is_atomic ... ok",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:30:28.6155714Z ^[[1m^[[92m     Running^[[0m tests\\c11_r1_adversarial.rs (target\\debug\\deps\\c11_r1_adversarial-75ece51e420e1eb8.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:30:38.7602113Z ^[[1m^[[92m     Running^[[0m tests\\c11_r2_adversarial.rs (target\\debug\\deps\\c11_r2_adversarial-52e9650796c4141a.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:30:52.6159383Z ^[[1m^[[92m     Running^[[0m tests\\c11_r3_adversarial.rs (target\\debug\\deps\\c11_r3_adversarial-abfdbe7c199701e8.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:30:53.2755322Z ^[[1m^[[92m     Running^[[0m tests\\c11_r3_random.rs (target\\debug\\deps\\c11_r3_random-c456b30822b20a4d.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:30:59.1880955Z ^[[1m^[[92m     Running^[[0m tests\\c11_r3_register.rs (target\\debug\\deps\\c11_r3_register-0a850ae49c121317.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:31:00.5053473Z ^[[1m^[[92m     Running^[[0m tests\\c11_r4_exposure_bounds.rs (target\\debug\\deps\\c11_r4_exposure_bounds-d1be6deaf6e5525e.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:31:00.5389451Z ^[[1m^[[92m     Running^[[0m tests\\c11_r5_write_bounds.rs (target\\debug\\deps\\c11_r5_write_bounds-d764ed0af0bb6da5.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:31:00.5534851Z ^[[1m^[[92m     Running^[[0m tests\\c11_r6_staged_inverse.rs (target\\debug\\deps\\c11_r6_staged_inverse-8cfc7ca8077e0d94.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:31:01.1763082Z test staged_inverse_restores_frames_after_runs_merge ... ok",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:31:04.1322248Z ^[[1m^[[92m     Running^[[0m tests\\staged_commit.rs (target\\debug\\deps\\staged_commit-b842d5127ae68552.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:32:04.1560245Z test staged_commit_sweep_commits_and_refuses has been running for over 60 seconds",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:32:16.4362695Z test staged_commit_sweep_commits_and_refuses ... ok",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:32:16.4421175Z ^[[1m^[[92m     Running^[[0m tests\\staged_inverse.rs (target\\debug\\deps\\staged_inverse-252b7c5c52c0eca0.exe)",
+          "check (windows-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:33:02.9305238Z test staged_inverse_sweep_covers_merging_and_splitting_runs ... ok"
+        ]
+      },
+      "macos-latest": {
+        "rustSteps": {
+          "Run cargo test --workspace --locked": [
+            338,
+            0,
+            1
+          ],
+          "Desktop host with the M0 diagnostics feature (C0.4 gating) \u2014 clippy and tests": [
+            43,
+            0,
+            0
+          ]
+        },
+        "rustTotalPassed": 381,
+        "rustTotalIgnored": 1,
+        "rustSuites": {},
+        "python11of11": true,
+        "vitest333": true,
+        "exclusiveMutationPassed": true,
+        "reviewerLines": [
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:50.0999460Z  * [new branch]      review/m0-c04-r3 -> origin/review/m0-c04-r3",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:50.1001040Z  * [new branch]      review/m1-c11-r1 -> origin/review/m1-c11-r1",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:50.1001490Z  * [new branch]      review/m1-c11-r2 -> origin/review/m1-c11-r2",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:50.1001890Z  * [new branch]      review/m1-c11-r3 -> origin/review/m1-c11-r3",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:50.1002410Z  * [new branch]      review/m1-c11-r4 -> origin/review/m1-c11-r4",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:50.1002800Z  * [new branch]      review/m1-c11-r5 -> origin/review/m1-c11-r5",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:50.1003190Z  * [new branch]      review/m1-c11-r6 -> origin/review/m1-c11-r6",
+          "check (macos-latest)\tRun actions/checkout@v7\t2026-10-19T04:20:50.1003630Z  * [new branch]      review/m1-c11-r7 -> origin/review/m1-c11-r7",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:22:32.5975430Z  ^[[32m\u2713^[[39m src/ipc/boundary.build.test.ts ^[[2m(^[[22m^[[2m46 tests^[[22m^[[2m)^[[22m^[[33m 7747^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:22:50.6015170Z  ^[[32m\u2713^[[39m src/ipc/boundary.lint.test.ts ^[[2m(^[[22m^[[2m69 tests^[[22m^[[2m)^[[22m^[[33m 16727^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:23:09.5884120Z ^[[90mstdout^[[2m | src/ipc/c11-r1-adversarial.test.ts^[[2m > ^[[22m^[[2mC11 R1 text boundary^[[2m > ^[[22m^[[2mvalidates a representative ten-megabyte drawing",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:23:09.6105940Z  ^[[32m\u2713^[[39m src/ipc/c11-r1-adversarial.test.ts ^[[2m(^[[22m^[[2m6 tests^[[22m^[[2m)^[[22m^[[33m 3500^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:23:11.2557440Z  ^[[32m\u2713^[[39m src/ipc/c11-r2-adversarial.test.ts ^[[2m(^[[22m^[[2m9 tests^[[22m^[[2m)^[[22m^[[32m 32^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tFront end \u2014 lint, type-check, test, format, licences\t2026-10-19T04:23:20.2861900Z  ^[[32m\u2713^[[39m src/ipc/c11-r3-adversarial.test.ts ^[[2m(^[[22m^[[2m4 tests^[[22m^[[2m)^[[22m^[[32m 20^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:24:38.3273490Z === c04-r3-decisions.py",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:24:38.5305180Z === c04-r3-page.py",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:24:40.8753540Z  ^[[32m\u2713^[[39m src/test/c04-r3-actions.test.tsx ^[[2m(^[[22m^[[2m5 tests^[[22m^[[2m)^[[22m^[[32m 251^[[2mms^[[22m^[[39m",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:24:41.1384280Z === c11-r2-review-policy.py",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:24:41.5959340Z ok   c04-r3-decisions.py (0.2 s)",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:24:41.5966390Z ok   c04-r3-page.py (2.4 s)",
+          "check (macos-latest)\tReviewer Python suites (every tests/adversarial/*.py)\t2026-10-19T04:24:41.5967510Z ok   c11-r2-review-policy.py (0.2 s)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:26:10.8146120Z ^[[1m^[[92m     Running^[[0m tests/c11_r1_wire.rs (target/debug/deps/c11_r1_wire-60ce393f4308fda5)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:26:10.9099900Z ^[[1m^[[92m     Running^[[0m tests/c11_r2_wire.rs (target/debug/deps/c11_r2_wire-0e3a354f01f61110)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:26:10.9270430Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_wire.rs (target/debug/deps/c11_r3_wire-c1e122eab76bee3a)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:26:24.2713230Z test model_level_staged_commit_of_several_entries_is_atomic ... ok",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:28:18.2404950Z ^[[1m^[[92m     Running^[[0m tests/c11_r1_adversarial.rs (target/debug/deps/c11_r1_adversarial-8d3716120ee35c46)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:28:25.9472070Z ^[[1m^[[92m     Running^[[0m tests/c11_r2_adversarial.rs (target/debug/deps/c11_r2_adversarial-22448ab8af34c614)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:28:32.9786270Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_adversarial.rs (target/debug/deps/c11_r3_adversarial-0378d3d2cf6f6d31)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:28:33.4743550Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_random.rs (target/debug/deps/c11_r3_random-9f02a27a877ff9a0)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:28:38.9475380Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_register.rs (target/debug/deps/c11_r3_register-a4c8b69bb11f5f41)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:28:40.4176040Z ^[[1m^[[92m     Running^[[0m tests/c11_r4_exposure_bounds.rs (target/debug/deps/c11_r4_exposure_bounds-c6916d797ed9eb5f)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:28:40.4482670Z ^[[1m^[[92m     Running^[[0m tests/c11_r5_write_bounds.rs (target/debug/deps/c11_r5_write_bounds-621bf732ef4bf632)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:28:40.4624880Z ^[[1m^[[92m     Running^[[0m tests/c11_r6_staged_inverse.rs (target/debug/deps/c11_r6_staged_inverse-b2a16e8afb2b2f96)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:28:41.2600870Z test staged_inverse_restores_frames_after_runs_merge ... ok",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:28:44.3107580Z ^[[1m^[[92m     Running^[[0m tests/staged_commit.rs (target/debug/deps/staged_commit-002cf0df12314c33)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:29:44.5081320Z test staged_commit_sweep_commits_and_refuses has been running for over 60 seconds",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:29:57.1367110Z test staged_commit_sweep_commits_and_refuses ... ok",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:29:57.1412340Z ^[[1m^[[92m     Running^[[0m tests/staged_inverse.rs (target/debug/deps/staged_inverse-083757db67cda41d)",
+          "check (macos-latest)\tRun cargo test --workspace --locked\t2026-10-19T04:30:50.1563220Z test staged_inverse_sweep_covers_merging_and_splitting_runs ... ok"
+        ]
+      }
+    }
+  }
+}

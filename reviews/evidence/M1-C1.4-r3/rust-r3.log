@@ -1,0 +1,1034 @@
+cargo :    Compiling proc-macro2 v1.0.107
+At line:2 char:179
++ ... 4-r3).Path; cargo test -p tt-mcp --test c14_r3_replay --test c14_r3_h ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling proc-macro2 v1.0.107:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling serde_core v1.0.229
+   Compiling memchr v2.8.3
+   Compiling serde_json v1.0.154
+   Compiling once_cell v1.21.4
+   Compiling smallvec v1.16.3
+   Compiling simd-adler32 v0.3.10
+   Compiling miniz_oxide v0.9.1
+   Compiling parking_lot_core v0.9.12
+   Compiling parking_lot v0.12.5
+   Compiling aho-corasick v1.1.5
+   Compiling flate2 v1.1.10
+   Compiling quote v1.0.47
+   Compiling regex-automata v0.4.18
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling indexmap v2.14.2
+   Compiling serde_derive_internals v0.30.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling schemars_derive v1.2.3
+   Compiling fancy-regex v0.19.2
+   Compiling regex v1.13.1
+   Compiling ref-cast v1.0.27
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\registry-macros)
+   Compiling thiserror v2.0.21
+   Compiling serde v1.0.229
+   Compiling strum v0.28.0
+   Compiling ahash v0.8.12
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling jsonschema-value v0.59.0
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\persist)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\vector)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\audio)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\registry)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\lipsync)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\render)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\executor)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\io)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m1-c14-r3\crates\mcp)
+warning: unused import: `Duration`
+  --> crates\mcp\tests\c14_r3_history_r1.rs:12:17
+   |
+12 | use std::time::{Duration, Instant};
+   |                 ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Duration`
+  --> crates\mcp\tests\c14_r3_history_r3.rs:13:17
+   |
+13 | use std::time::{Duration, Instant};
+   |                 ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `tt-mcp` (test "c14_r3_history_r1") generated 1 warning (run `cargo fix --test "c14_r3_history_r1" -p tt-mcp` 
+to apply 1 suggestion)
+warning: `tt-mcp` (test "c14_r3_history_r3") generated 1 warning (run `cargo fix --test "c14_r3_history_r3" -p tt-mcp` 
+to apply 1 suggestion)
+    Finished `test` profile [unoptimized] target(s) in 18.61s
+     Running tests\c14_r3_history_r1.rs (target\debug\deps\c14_r3_history_r1-1ed6c2fcda644ded.exe)
+
+running 1 test
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay has been running for over 60 seconds
+{"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11231,"durationSeconds":81.9033838,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 82.16s
+
+     Running tests\c14_r3_history_r3.rs (target\debug\deps\c14_r3_history_r3-d08a44b40e832cc9.exe)
+
+running 1 test
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay has been running for over 60 seconds
+{"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11177,"durationSeconds":81.6109423,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 81.85s
+
+     Running tests\c14_r3_replay.rs (target\debug\deps\c14_r3_replay-92b8d33e9fd9aad5.exe)
+
+running 3 tests
+test sequential_publication_failure_keeps_committed_edits_in_script_replay ... ok
+
+thread 'atomic_publication_failure_keeps_committed_edits_in_script_replay' (20744) panicked at 
+crates\mcp\tests\c14_r3_replay.rs:57:5:
+assertion `left == right` failed: atomic=true: replay lost a committed edit after publication failed
+  left: ["{\n  \"id\": \"pr_01M66FBXBP5K00MPW5RJVEQETP\",\n  \"type\": \"project\",\n  \"rev\": 1,\n  \"name\": 
+\"Replay\",\n  \"createdAt\": \"2026-10-30T13:18:11.830Z\",\n  \"modifiedAt\": \"2026-10-30T13:18:11.830Z\",\n  
+\"frameRate\": 24,\n  \"cameraWidth\": 1920,\n  \"cameraHeight\": 1080,\n  \"autoColourUpdate\": false,\n  
+\"startTransition\": {\n    \"id\": \"tr_01M66FBXBRT540R3DY0HBC9QTP\",\n    \"type\": \"transition\",\n    \"rev\": 
+1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    \"blankDuration\": 0,\n    \"durationRight\": 
+12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    \"direction\": null,\n    \"size\": 25\n  },\n  
+\"palettes\": [\n    {\n      \"id\": \"pal_01M66FBXBP5K00MPW5RJVEQETQ\",\n      \"type\": \"palette\"\n    }\n  ],\n  
+\"pens\": [\n    {\n      \"id\": \"pen_01M66FBXBRT540R3DY0HBC9QT8\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n   
+   \"name\": \"Pen 1\",\n      \"kind\": \"brush\",\n      \"minSize\": 0.5,\n      \"maxSize\": 2,\n      
+\"smoothness\": 3,\n      \"tip\": \"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      
+\"id\": \"pen_01M66FBXBRT540R3DY0HBC9QT9\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 2\",\n 
+     \"kind\": \"brush\",\n      \"minSize\": 1,\n      \"maxSize\": 4,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTA\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 3\",\n      
+\"kind\": \"brush\",\n      \"minSize\": 2,\n      \"maxSize\": 8,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTB\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 4\",\n      
+\"kind\": \"brush\",\n      \"minSize\": 4,\n      \"maxSize\": 16,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTC\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 5\",\n      
+\"kind\": \"brush\",\n      \"minSize\": 8,\n      \"maxSize\": 32,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTD\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Eraser 1\",\n      
+\"kind\": \"eraser\",\n      \"minSize\": 10,\n      \"maxSize\": 10,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTE\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Eraser 2\",\n      
+\"kind\": \"eraser\",\n      \"minSize\": 20,\n      \"maxSize\": 20,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTF\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Eraser 3\",\n      
+\"kind\": \"eraser\",\n      \"minSize\": 40,\n      \"maxSize\": 40,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    }\n  ],\n  \"assets\": [],\n  \"drawingBanks\": [\n  
+  {\n      \"id\": \"db_01M66FBXBRT540R3DY0HBC9QTG\",\n      \"type\": \"drawingBank\"\n    }\n  ],\n  \"scenes\": [\n 
+   {\n      \"id\": \"sc_01M66FBXBRT540R3DY0HBC9QTH\",\n      \"type\": \"scene\"\n    }\n  ],\n  \"library\": {\n    
+\"id\": \"lib_01M66FBXBRT540R3DY0HBC9QTN\",\n    \"type\": \"library\"\n  }\n}\n", "{\n  \"id\": 
+\"pal_01M66FBXBP5K00MPW5RJVEQETQ\",\n  \"type\": \"palette\",\n  \"rev\": 1,\n  \"name\": \"Default\",\n  \"styles\": 
+[\n    {\n      \"id\": \"sty_01M66FBXBP5K00MPW5RJVEQETR\",\n      \"type\": \"paletteStyle\",\n      \"rev\": 1,\n    
+  \"name\": \"Default\"\n    }\n  ],\n  \"swatches\": [\n    {\n      \"colourId\": 
+\"col_01M66FBXBP5K00MPW5RJVEQETS\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Colour 1\",\n   
+   \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#00000000\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETT\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 2\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#000000FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETV\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 3\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#FFFFFFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETW\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 4\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#111111FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETX\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 5\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1E1E1EFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETY\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 6\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#2B2B2BFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETZ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 7\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#383838FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQEV0\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 8\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#454545FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKA\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 9\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#525252FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKB\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 10\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#5F5F5FFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKC\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 11\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#6C6C6CFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKD\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 12\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#797979FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKE\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 13\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#868686FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKF\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 14\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#939393FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKG\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 15\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#A0A0A0FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKH\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 16\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#ADADADFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKJ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 17\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BABABAFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKK\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 18\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#C7C7C7FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKM\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 19\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#D4D4D4FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKN\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 20\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E1E1E1FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKP\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 21\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EEEEEEFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKQ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 22\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#FF0000FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKR\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 23\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#00FF00FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKS\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 24\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#0000FFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKT\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 25\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#00FFFFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKV\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 26\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#FF00FFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKW\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 27\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#FFFF00FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKX\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 28\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#FBE3D3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKY\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 29\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F3CBB0FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKZ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 30\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E8B591FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM0\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 31\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#D69E78FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM1\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 32\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BC845EFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM2\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 33\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#9A6648FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM3\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 34\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#784A32FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM4\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 35\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#55331FFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM5\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 36\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F6BCBCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM6\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 37\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EC7979FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM7\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 38\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E23636FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM8\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 39\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B31A1AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM9\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 40\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#701010FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMA\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 41\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F6D1BCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMB\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 42\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#ECA379FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMC\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 43\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E27536FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMD\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 44\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B3511AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RME\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 45\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#703310FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMF\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 46\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F6E7BCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMG\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 47\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#ECCF79FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMH\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 48\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E2B736FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMJ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 49\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B38C1AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMK\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 50\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#705810FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMM\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 51\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EFF6BCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMN\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 52\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#DEEC79FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMP\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 53\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#CEE236FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMQ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 54\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#A1B31AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMR\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 55\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#647010FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMS\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 56\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#D9F6BCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMT\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 57\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B3EC79FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMV\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 58\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#8CE236FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMW\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 59\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#66B31AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMX\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 60\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#407010FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMY\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 61\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#C4F6BCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMZ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 62\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#88EC79FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN0\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 63\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#4DE236FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN1\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 64\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#2EB31AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN2\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 65\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1D7010FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN3\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 66\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BCF6CAFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN4\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 67\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#79EC96FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN5\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 68\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#36E261FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN6\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 69\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1AB340FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN7\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 70\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#107028FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN8\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 71\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BCF6DFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN9\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 72\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#79ECC0FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNA\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 73\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#36E2A0FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNB\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 74\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1AB378FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNC\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 75\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#10704BFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RND\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 76\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BCF6F6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNE\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 77\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#79ECECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNF\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 78\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#36E2E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNG\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 79\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1AB3B3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNH\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 80\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#107070FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNJ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 81\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BCE0F6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNK\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 82\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#79C2ECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNM\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 83\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#36A3E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNN\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 84\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1A7AB3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNP\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 85\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#104D70FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNQ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 86\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BCCAF6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNR\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 87\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#7996ECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNS\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 88\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#3661E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNT\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 89\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1A40B3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNV\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 90\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#102870FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNW\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 91\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#C3BCF6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNX\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 92\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#8679ECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNY\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 93\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#4A36E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNZ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 94\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#2B1AB3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP0\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 95\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1B1070FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP1\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 96\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#D9BCF6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP2\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 97\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B379ECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP3\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 98\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#8C36E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP4\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 99\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#661AB3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP5\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 100\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#401070FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP6\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 101\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EEBCF6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP7\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 102\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#DC79ECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP8\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 103\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#CB36E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP9\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 104\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#9E1AB3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPA\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 105\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#631070FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPB\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 106\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F6BCE7FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPC\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 107\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EC79CFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPD\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 108\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E236B7FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPE\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 109\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B31A8CFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPF\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 110\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#701058FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPG\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 111\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F6BCD2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPH\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 112\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EC79A5FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPJ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 113\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E23678FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPK\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 114\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B31A54FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPM\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 115\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#701035FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPN\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 116\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#DBCCBDFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPP\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 117\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#C1A68BFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPQ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 118\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#A68059FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPR\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 119\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#74593EFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPS\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 120\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#423324FF\"\n        }\n      }\n    }\n  ],\n  
+\"hidden\": false\n}\n", "{\n  \"id\": \"db_01M66FBXBRT540R3DY0HBC9QTG\",\n  \"type\": \"drawingBank\",\n  \"rev\": 
+1,\n  \"drawings\": []\n}\n", "{\n  \"id\": \"sc_01M66FBXBRT540R3DY0HBC9QTH\",\n  \"type\": \"scene\",\n  \"rev\": 
+2,\n  \"name\": \"Scene-1\",\n  \"visible\": true,\n  \"backgroundColour\": \"#FFFFFFFF\",\n  \"currentCameraId\": 
+\"el_01M66FBXBRT540R3DY0HBC9QTK\",\n  \"paletteStyles\": {\n    \"pal_01M66FBXBP5K00MPW5RJVEQETQ\": 
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01M66FBXBRT540R3DY0HBC9QTQ\",\n    
+\"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    
+\"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    
+\"direction\": null,\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01M66FBXBRT540R3DY0HBC9QTJ\",\n 
+     \"children\": [\n        {\n          \"id\": \"el_01M66FBXBRT540R3DY0HBC9QTK\",\n          \"children\": []\n    
+    }\n      ]\n    },\n    {\n      \"id\": \"el_01M66FBXBRT540R3DY0HBC9QTM\",\n      \"children\": []\n    }\n  ],\n 
+ \"columnOrder\": [\"el_01M66FBXBRT540R3DY0HBC9QTM\"],\n  \"elements\": [\n    {\n      \"id\": 
+\"el_01M66FBXBRT540R3DY0HBC9QTJ\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66FBXBRT540R3DY0HBC9QTK\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66FBXBRT540R3DY0HBC9QTM\",\n      \"type\": \"element\"\n    }\n  ],\n  \"meta\": {\n    \"before\": true\n  
+}\n}\n", "{\n  \"id\": \"el_01M66FBXBRT540R3DY0HBC9QTJ\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": 
+\"Camera Peg\",\n  \"elementType\": \"peg\",\n  \"start\": 1,\n  \"duration\": 1,\n  \"loops\": 1,\n  \"loopType\": 
+\"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": 
+true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  
+\"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    
+},\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    
+\"keepProportions\": false,\n    \"pivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"applyPivotTo\": 
+\"both\",\n    \"useChildDrawingPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  
+\"exportGroup\": {\n    \"groupOnVectorExport\": false,\n    \"addComposite\": true\n  },\n  \"channels\": {},\n  
+\"createdAt\": \"2026-10-30T13:18:11.830Z\"\n}\n", "{\n  \"id\": \"el_01M66FBXBRT540R3DY0HBC9QTK\",\n  \"type\": 
+\"element\",\n  \"rev\": 1,\n  \"name\": \"Camera\",\n  \"elementType\": \"camera\",\n  \"start\": 1,\n  \"duration\": 
+1,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  
+\"deformable\": false,\n  \"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  
+\"markerColour\": null,\n  \"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": 
+{\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 16\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": 
+{\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"lockDepth\": false,\n    
+\"orientToPath\": false\n  },\n  \"camera\": {\n    \"fovMode\": \"static\",\n    \"fov\": 41.1121\n  },\n  
+\"channels\": {},\n  \"createdAt\": \"2026-10-30T13:18:11.830Z\"\n}\n", "{\n  \"id\": 
+\"el_01M66FBXBRT540R3DY0HBC9QTM\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Drawing\",\n  
+\"elementType\": \"drawing\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  
+\"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  \"visibleInXsheet\": true,\n  
+\"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  
+\"columnWidth\": 80,\n  \"drawingBankId\": \"db_01M66FBXBRT540R3DY0HBC9QTG\",\n  \"exposure\": [],\n  \"transform\": 
+{\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 
+0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    \"keepProportions\": false,\n    \"rotationPivot\": 
+{\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    
+\"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"channels\": {},\n  
+\"createdAt\": \"2026-10-30T13:18:11.830Z\"\n}\n", "{\n  \"id\": \"lib_01M66FBXBRT540R3DY0HBC9QTN\",\n  \"type\": 
+\"library\",\n  \"rev\": 1,\n  \"name\": \"Local\",\n  \"kind\": \"local\",\n  \"formatVersion\": \"1.0\",\n  
+\"children\": []\n}\n"]
+ right: ["{\n  \"id\": \"pr_01M66FBXBP5K00MPW5RJVEQETP\",\n  \"type\": \"project\",\n  \"rev\": 1,\n  \"name\": 
+\"Replay\",\n  \"createdAt\": \"2026-10-30T13:18:11.830Z\",\n  \"modifiedAt\": \"2026-10-30T13:18:11.830Z\",\n  
+\"frameRate\": 24,\n  \"cameraWidth\": 1920,\n  \"cameraHeight\": 1080,\n  \"autoColourUpdate\": false,\n  
+\"startTransition\": {\n    \"id\": \"tr_01M66FBXBRT540R3DY0HBC9QTP\",\n    \"type\": \"transition\",\n    \"rev\": 
+1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    \"blankDuration\": 0,\n    \"durationRight\": 
+12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    \"direction\": null,\n    \"size\": 25\n  },\n  
+\"palettes\": [\n    {\n      \"id\": \"pal_01M66FBXBP5K00MPW5RJVEQETQ\",\n      \"type\": \"palette\"\n    }\n  ],\n  
+\"pens\": [\n    {\n      \"id\": \"pen_01M66FBXBRT540R3DY0HBC9QT8\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n   
+   \"name\": \"Pen 1\",\n      \"kind\": \"brush\",\n      \"minSize\": 0.5,\n      \"maxSize\": 2,\n      
+\"smoothness\": 3,\n      \"tip\": \"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      
+\"id\": \"pen_01M66FBXBRT540R3DY0HBC9QT9\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 2\",\n 
+     \"kind\": \"brush\",\n      \"minSize\": 1,\n      \"maxSize\": 4,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTA\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 3\",\n      
+\"kind\": \"brush\",\n      \"minSize\": 2,\n      \"maxSize\": 8,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTB\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 4\",\n      
+\"kind\": \"brush\",\n      \"minSize\": 4,\n      \"maxSize\": 16,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTC\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Pen 5\",\n      
+\"kind\": \"brush\",\n      \"minSize\": 8,\n      \"maxSize\": 32,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTD\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Eraser 1\",\n      
+\"kind\": \"eraser\",\n      \"minSize\": 10,\n      \"maxSize\": 10,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTE\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Eraser 2\",\n      
+\"kind\": \"eraser\",\n      \"minSize\": 20,\n      \"maxSize\": 20,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    },\n    {\n      \"id\": 
+\"pen_01M66FBXBRT540R3DY0HBC9QTF\",\n      \"type\": \"pen\",\n      \"rev\": 1,\n      \"name\": \"Eraser 3\",\n      
+\"kind\": \"eraser\",\n      \"minSize\": 40,\n      \"maxSize\": 40,\n      \"smoothness\": 3,\n      \"tip\": 
+\"round\",\n      \"tipAngle\": 0,\n      \"colourId\": null\n    }\n  ],\n  \"assets\": [],\n  \"drawingBanks\": [\n  
+  {\n      \"id\": \"db_01M66FBXBRT540R3DY0HBC9QTG\",\n      \"type\": \"drawingBank\"\n    }\n  ],\n  \"scenes\": [\n 
+   {\n      \"id\": \"sc_01M66FBXBRT540R3DY0HBC9QTH\",\n      \"type\": \"scene\"\n    }\n  ],\n  \"library\": {\n    
+\"id\": \"lib_01M66FBXBRT540R3DY0HBC9QTN\",\n    \"type\": \"library\"\n  }\n}\n", "{\n  \"id\": 
+\"pal_01M66FBXBP5K00MPW5RJVEQETQ\",\n  \"type\": \"palette\",\n  \"rev\": 1,\n  \"name\": \"Default\",\n  \"styles\": 
+[\n    {\n      \"id\": \"sty_01M66FBXBP5K00MPW5RJVEQETR\",\n      \"type\": \"paletteStyle\",\n      \"rev\": 1,\n    
+  \"name\": \"Default\"\n    }\n  ],\n  \"swatches\": [\n    {\n      \"colourId\": 
+\"col_01M66FBXBP5K00MPW5RJVEQETS\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": \"Colour 1\",\n   
+   \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#00000000\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETT\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 2\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#000000FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETV\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 3\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#FFFFFFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETW\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 4\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#111111FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETX\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 5\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1E1E1EFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETY\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 6\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#2B2B2BFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQETZ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 7\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#383838FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBP5K00MPW5RJVEQEV0\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 8\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#454545FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKA\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 9\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#525252FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKB\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 10\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#5F5F5FFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKC\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 11\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#6C6C6CFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKD\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 12\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#797979FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKE\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 13\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#868686FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKF\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 14\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#939393FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKG\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 15\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#A0A0A0FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKH\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 16\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#ADADADFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKJ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 17\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BABABAFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKK\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 18\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#C7C7C7FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKM\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 19\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#D4D4D4FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKN\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 20\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E1E1E1FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKP\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 21\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EEEEEEFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKQ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 22\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#FF0000FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKR\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 23\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#00FF00FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKS\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 24\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#0000FFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKT\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 25\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#00FFFFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKV\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 26\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#FF00FFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKW\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 27\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#FFFF00FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKX\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 28\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#FBE3D3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKY\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 29\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F3CBB0FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RKZ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 30\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E8B591FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM0\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 31\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#D69E78FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM1\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 32\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BC845EFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM2\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 33\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#9A6648FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM3\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 34\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#784A32FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM4\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 35\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#55331FFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM5\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 36\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F6BCBCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM6\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 37\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EC7979FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM7\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 38\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E23636FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM8\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 39\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B31A1AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RM9\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 40\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#701010FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMA\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 41\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F6D1BCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMB\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 42\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#ECA379FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMC\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 43\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E27536FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMD\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 44\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B3511AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RME\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 45\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#703310FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMF\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 46\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F6E7BCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMG\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 47\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#ECCF79FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMH\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 48\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E2B736FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMJ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 49\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B38C1AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMK\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 50\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#705810FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMM\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 51\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EFF6BCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMN\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 52\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#DEEC79FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMP\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 53\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#CEE236FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMQ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 54\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#A1B31AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMR\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 55\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#647010FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMS\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 56\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#D9F6BCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMT\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 57\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B3EC79FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMV\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 58\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#8CE236FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMW\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 59\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#66B31AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMX\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 60\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#407010FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMY\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 61\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#C4F6BCFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RMZ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 62\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#88EC79FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN0\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 63\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#4DE236FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN1\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 64\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#2EB31AFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN2\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 65\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1D7010FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN3\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 66\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BCF6CAFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN4\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 67\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#79EC96FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN5\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 68\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#36E261FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN6\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 69\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1AB340FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN7\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 70\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#107028FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN8\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 71\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BCF6DFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RN9\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 72\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#79ECC0FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNA\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 73\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#36E2A0FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNB\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 74\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1AB378FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNC\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 75\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#10704BFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RND\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 76\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BCF6F6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNE\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 77\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#79ECECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNF\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 78\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#36E2E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNG\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 79\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1AB3B3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNH\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 80\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#107070FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNJ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 81\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BCE0F6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNK\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 82\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#79C2ECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNM\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 83\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#36A3E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNN\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 84\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1A7AB3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNP\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 85\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#104D70FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNQ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 86\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#BCCAF6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNR\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 87\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#7996ECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNS\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 88\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#3661E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNT\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 89\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1A40B3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNV\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 90\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#102870FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNW\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 91\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#C3BCF6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNX\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 92\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#8679ECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNY\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 93\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#4A36E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RNZ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 94\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#2B1AB3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP0\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 95\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#1B1070FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP1\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 96\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#D9BCF6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP2\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 97\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B379ECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP3\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 98\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#8C36E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP4\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 99\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#661AB3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP5\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 100\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#401070FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP6\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 101\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EEBCF6FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP7\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 102\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#DC79ECFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP8\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 103\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#CB36E2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RP9\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 104\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#9E1AB3FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPA\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 105\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#631070FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPB\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 106\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F6BCE7FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPC\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 107\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EC79CFFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPD\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 108\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E236B7FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPE\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 109\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B31A8CFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPF\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 110\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#701058FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPG\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 111\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#F6BCD2FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPH\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 112\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#EC79A5FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPJ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 113\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#E23678FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPK\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 114\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#B31A54FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPM\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 115\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#701035FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPN\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 116\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#DBCCBDFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPP\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 117\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#C1A68BFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPQ\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 118\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#A68059FF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPR\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 119\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#74593EFF\"\n        }\n      }\n    },\n    {\n      
+\"colourId\": \"col_01M66FBXBQCG6WQ29NP8N03RPS\",\n      \"type\": \"swatch\",\n      \"rev\": 1,\n      \"name\": 
+\"Colour 120\",\n      \"kind\": \"solid\",\n      \"deformable\": false,\n      \"values\": {\n        
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\": {\n          \"rgba\": \"#423324FF\"\n        }\n      }\n    }\n  ],\n  
+\"hidden\": false\n}\n", "{\n  \"id\": \"db_01M66FBXBRT540R3DY0HBC9QTG\",\n  \"type\": \"drawingBank\",\n  \"rev\": 
+1,\n  \"drawings\": []\n}\n", "{\n  \"id\": \"sc_01M66FBXBRT540R3DY0HBC9QTH\",\n  \"type\": \"scene\",\n  \"rev\": 
+3,\n  \"name\": \"Scene-1\",\n  \"visible\": true,\n  \"backgroundColour\": \"#FFFFFFFF\",\n  \"currentCameraId\": 
+\"el_01M66FBXBRT540R3DY0HBC9QTK\",\n  \"paletteStyles\": {\n    \"pal_01M66FBXBP5K00MPW5RJVEQETQ\": 
+\"sty_01M66FBXBP5K00MPW5RJVEQETR\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01M66FBXBRT540R3DY0HBC9QTQ\",\n    
+\"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    
+\"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    
+\"direction\": null,\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01M66FBXBRT540R3DY0HBC9QTJ\",\n 
+     \"children\": [\n        {\n          \"id\": \"el_01M66FBXBRT540R3DY0HBC9QTK\",\n          \"children\": []\n    
+    }\n      ]\n    },\n    {\n      \"id\": \"el_01M66FBXBRT540R3DY0HBC9QTM\",\n      \"children\": []\n    }\n  ],\n 
+ \"columnOrder\": [\"el_01M66FBXBRT540R3DY0HBC9QTM\"],\n  \"elements\": [\n    {\n      \"id\": 
+\"el_01M66FBXBRT540R3DY0HBC9QTJ\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66FBXBRT540R3DY0HBC9QTK\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66FBXBRT540R3DY0HBC9QTM\",\n      \"type\": \"element\"\n    }\n  ],\n  \"meta\": {\n    \"before\": true,\n   
+ \"kept\": 1\n  }\n}\n", "{\n  \"id\": \"el_01M66FBXBRT540R3DY0HBC9QTJ\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  
+\"name\": \"Camera Peg\",\n  \"elementType\": \"peg\",\n  \"start\": 1,\n  \"duration\": 1,\n  \"loops\": 1,\n  
+\"loopType\": \"count\",\n  \"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  
+\"visibleInScene\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  
+\"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      
+\"y\": 0,\n      \"z\": 0\n    },\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      
+\"y\": 1\n    },\n    \"keepProportions\": false,\n    \"pivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    
+\"applyPivotTo\": \"both\",\n    \"useChildDrawingPivot\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": 
+false\n  },\n  \"exportGroup\": {\n    \"groupOnVectorExport\": false,\n    \"addComposite\": true\n  },\n  
+\"channels\": {},\n  \"createdAt\": \"2026-10-30T13:18:11.830Z\"\n}\n", "{\n  \"id\": 
+\"el_01M66FBXBRT540R3DY0HBC9QTK\",\n  \"type\": \"element\",\n  \"rev\": 1,\n  \"name\": \"Camera\",\n  
+\"elementType\": \"camera\",\n  \"start\": 1,\n  \"duration\": 1,\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  
+\"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  
+\"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  \"backgroundColour\": null,\n  
+\"columnWidth\": 80,\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 16\n    
+},\n    \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    
+\"keepProportions\": false,\n    \"lockDepth\": false,\n    \"orientToPath\": false\n  },\n  \"camera\": {\n    
+\"fovMode\": \"static\",\n    \"fov\": 41.1121\n  },\n  \"channels\": {},\n  \"createdAt\": 
+\"2026-10-30T13:18:11.830Z\"\n}\n", "{\n  \"id\": \"el_01M66FBXBRT540R3DY0HBC9QTM\",\n  \"type\": \"element\",\n  
+\"rev\": 1,\n  \"name\": \"Drawing\",\n  \"elementType\": \"drawing\",\n  \"loops\": 1,\n  \"loopType\": \"count\",\n  
+\"positionLoop\": \"cycle\",\n  \"role\": \"normal\",\n  \"deformable\": false,\n  \"visibleInScene\": true,\n  
+\"visibleInXsheet\": true,\n  \"locked\": false,\n  \"collapsed\": false,\n  \"markerColour\": null,\n  
+\"backgroundColour\": null,\n  \"columnWidth\": 80,\n  \"drawingBankId\": \"db_01M66FBXBRT540R3DY0HBC9QTG\",\n  
+\"exposure\": [],\n  \"transform\": {\n    \"offset\": {\n      \"x\": 0,\n      \"y\": 0,\n      \"z\": 0\n    },\n   
+ \"rotation\": 0,\n    \"skew\": 0,\n    \"scale\": {\n      \"x\": 1,\n      \"y\": 1\n    },\n    
+\"keepProportions\": false,\n    \"rotationPivot\": {\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"scalePivot\": 
+{\n      \"x\": 0,\n      \"y\": 0\n    },\n    \"rotateAboutPivot\": false,\n    \"lockDepth\": false,\n    
+\"orientToPath\": false\n  },\n  \"channels\": {},\n  \"createdAt\": \"2026-10-30T13:18:11.830Z\"\n}\n", "{\n  \"id\": 
+\"lib_01M66FBXBRT540R3DY0HBC9QTN\",\n  \"type\": \"library\",\n  \"rev\": 1,\n  \"name\": \"Local\",\n  \"kind\": 
+\"local\",\n  \"formatVersion\": \"1.0\",\n  \"children\": []\n}\n"]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test atomic_publication_failure_keeps_committed_edits_in_script_replay ... FAILED
+
+thread 'two_edits_in_one_atomic_batch_replay_with_the_same_revision' (26688) panicked at 
+crates\mcp\tests\c14_r3_replay.rs:98:9:
+assertion `left == right` failed: atomic replay must retain canonical entry revisions: 
+Scene(Id(sc_01M66FBXBR31ZQ8MSA3Y7DSX9Y))
+  left: "{\n  \"id\": \"sc_01M66FBXBR31ZQ8MSA3Y7DSX9Y\",\n  \"type\": \"scene\",\n  \"rev\": 3,\n  \"name\": 
+\"Scene-1\",\n  \"visible\": true,\n  \"backgroundColour\": \"#FFFFFFFF\",\n  \"currentCameraId\": 
+\"el_01M66FBXBR31ZQ8MSA3Y7DSXA0\",\n  \"paletteStyles\": {\n    \"pal_01M66FBXBPPQH03PGW9WN87B6G\": 
+\"sty_01M66FBXBPPQH03PGW9WN87B6H\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01M66FBXBR31ZQ8MSA3Y7DSXA4\",\n    
+\"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    
+\"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    
+\"direction\": null,\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01M66FBXBR31ZQ8MSA3Y7DSX9Z\",\n 
+     \"children\": [\n        {\n          \"id\": \"el_01M66FBXBR31ZQ8MSA3Y7DSXA0\",\n          \"children\": []\n    
+    }\n      ]\n    },\n    {\n      \"id\": \"el_01M66FBXBR31ZQ8MSA3Y7DSXA1\",\n      \"children\": []\n    }\n  ],\n 
+ \"columnOrder\": [\"el_01M66FBXBR31ZQ8MSA3Y7DSXA1\"],\n  \"elements\": [\n    {\n      \"id\": 
+\"el_01M66FBXBR31ZQ8MSA3Y7DSX9Z\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66FBXBR31ZQ8MSA3Y7DSXA0\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66FBXBR31ZQ8MSA3Y7DSXA1\",\n      \"type\": \"element\"\n    }\n  ],\n  \"meta\": {\n    \"first\": 1,\n    
+\"second\": 2\n  }\n}\n"
+ right: "{\n  \"id\": \"sc_01M66FBXBR31ZQ8MSA3Y7DSX9Y\",\n  \"type\": \"scene\",\n  \"rev\": 2,\n  \"name\": 
+\"Scene-1\",\n  \"visible\": true,\n  \"backgroundColour\": \"#FFFFFFFF\",\n  \"currentCameraId\": 
+\"el_01M66FBXBR31ZQ8MSA3Y7DSXA0\",\n  \"paletteStyles\": {\n    \"pal_01M66FBXBPPQH03PGW9WN87B6G\": 
+\"sty_01M66FBXBPPQH03PGW9WN87B6H\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01M66FBXBR31ZQ8MSA3Y7DSXA4\",\n    
+\"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    
+\"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    
+\"direction\": null,\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01M66FBXBR31ZQ8MSA3Y7DSX9Z\",\n 
+     \"children\": [\n        {\n          \"id\": \"el_01M66FBXBR31ZQ8MSA3Y7DSXA0\",\n          \"children\": []\n    
+    }\n      ]\n    },\n    {\n      \"id\": \"el_01M66FBXBR31ZQ8MSA3Y7DSXA1\",\n      \"children\": []\n    }\n  ],\n 
+ \"columnOrder\": [\"el_01M66FBXBR31ZQ8MSA3Y7DSXA1\"],\n  \"elements\": [\n    {\n      \"id\": 
+\"el_01M66FBXBR31ZQ8MSA3Y7DSX9Z\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66FBXBR31ZQ8MSA3Y7DSXA0\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66FBXBR31ZQ8MSA3Y7DSXA1\",\n      \"type\": \"element\"\n    }\n  ],\n  \"meta\": {\n    \"first\": 1,\n    
+\"second\": 2\n  }\n}\n"
+test two_edits_in_one_atomic_batch_replay_with_the_same_revision ... FAILED
+
+failures:
+
+failures:
+    atomic_publication_failure_keeps_committed_edits_in_script_replay
+    two_edits_in_one_atomic_batch_replay_with_the_same_revision
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+error: test failed, to rerun pass `-p tt-mcp --test c14_r3_replay`
+error: 1 target failed:
+    `-p tt-mcp --test c14_r3_replay`

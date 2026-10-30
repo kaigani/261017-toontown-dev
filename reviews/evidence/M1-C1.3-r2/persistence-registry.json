@@ -1,0 +1,6040 @@
+[
+  {
+    "id": "app.quit",
+    "kind": "action",
+    "label": "Quit",
+    "summary": "Quit the application",
+    "section": "01",
+    "scopes": [
+      "app"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "QuitParams",
+      "description": "`app.quit` parameters.",
+      "type": "object",
+      "properties": {
+        "onUnsaved": {
+          "description": "Unsaved-changes policy.",
+          "$ref": "#/$defs/OnUnsaved"
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "OnUnsaved": {
+          "description": "What to do with unsaved changes (01 §11.2 rule 3).",
+          "oneOf": [
+            {
+              "description": "Fail with `project.unsavedChanges` when something is modified.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Save first.",
+              "type": "string",
+              "const": "save"
+            },
+            {
+              "description": "Discard the changes.",
+              "type": "string",
+              "const": "discard"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "QuitResult",
+      "description": "`{quitting}`.",
+      "type": "object",
+      "properties": {
+        "quitting": {
+          "description": "The application quits.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "quitting"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Quit, discarding unsaved changes",
+        "params": {
+          "onUnsaved": "discard"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": null,
+    "spec": {
+      "params": "`onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"`",
+      "result": "`{quitting: bool}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"`",
+    "specResult": "`{quitting: bool}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.asset.embed",
+    "kind": "action",
+    "label": "Embed Media",
+    "summary": "Copy linked files into the package (\"Embed Media\")",
+    "section": "10",
+    "scopes": [
+      "edit",
+      "files.read"
+    ],
+    "undoable": true,
+    "undoLabel": "Embed Media",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "AssetEmbedParams",
+      "description": "`doc.asset.embed` parameters.",
+      "type": "object",
+      "properties": {
+        "assetIds": {
+          "description": "Assets to embed.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "all": {
+          "description": "Every linked asset.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "EmbedResult",
+      "description": "`doc.asset.embed` result.",
+      "type": "object",
+      "properties": {
+        "embedded": {
+          "description": "Embedded assets.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bytes": {
+          "description": "Bytes added to the package.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "embedded",
+        "bytes"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Embed every linked file",
+        "params": {
+          "all": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Project › Media › Embed (M8)",
+    "spec": {
+      "params": "`assetIds?: [id]; all: bool = false`",
+      "result": "`{embedded: [id], bytes}`",
+      "undo": "yes"
+    },
+    "specParameters": "`assetIds?: [id]; all: bool = false`",
+    "specResult": "`{embedded: [id], bytes}`",
+    "specUndo": "yes"
+  },
+  {
+    "id": "doc.asset.export",
+    "kind": "query",
+    "label": "Export media file",
+    "summary": "Write an asset's file to disk (e.g. to share or edit externally)",
+    "section": "10",
+    "scopes": [
+      "read",
+      "files.write"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "AssetExportParams",
+      "description": "`doc.asset.export` parameters.",
+      "type": "object",
+      "properties": {
+        "assetId": {
+          "description": "The asset.",
+          "type": "string"
+        },
+        "path": {
+          "description": "Absolute target file.",
+          "type": "string"
+        },
+        "onExists": {
+          "description": "Overwrite policy.",
+          "$ref": "#/$defs/OnExists"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "assetId",
+        "path"
+      ],
+      "$defs": {
+        "OnExists": {
+          "description": "What to do when a target file exists (01 §11.2 rule 4).",
+          "oneOf": [
+            {
+              "description": "Fail with `fs.exists` / `project.exists`.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Overwrite.",
+              "type": "string",
+              "const": "overwrite"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PathBytes",
+      "description": "`{path, bytes}`.",
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "Written file.",
+          "type": "string"
+        },
+        "bytes": {
+          "description": "Bytes written.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "path",
+        "bytes"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Write the sample's sound to a file",
+        "params": {
+          "assetId": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+          "path": "/tmp/line1.wav",
+          "onExists": "overwrite"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Project › Media › Export (M8)",
+    "spec": {
+      "params": "`assetId: id; path: path; onExists: enum \"fail\"|\"overwrite\" = \"fail\"`",
+      "result": "`{path, bytes}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`assetId: id; path: path; onExists: enum \"fail\"|\"overwrite\" = \"fail\"`",
+    "specResult": "`{path, bytes}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.asset.list",
+    "kind": "query",
+    "label": "Assets",
+    "summary": "List assets with storage, status and references",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "AssetListParams",
+      "description": "`doc.asset.list` parameters.",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "description": "Kind filter.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AssetKind"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "description": "Status filter.",
+          "$ref": "#/$defs/AssetStatus"
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "AssetKind": {
+          "description": "Asset kinds.",
+          "oneOf": [
+            {
+              "description": "Sound.",
+              "type": "string",
+              "const": "sound"
+            },
+            {
+              "description": "Image.",
+              "type": "string",
+              "const": "image"
+            },
+            {
+              "description": "Movie.",
+              "type": "string",
+              "const": "movie"
+            },
+            {
+              "description": "Vector file.",
+              "type": "string",
+              "const": "vector"
+            }
+          ]
+        },
+        "AssetStatus": {
+          "description": "Asset filter.",
+          "oneOf": [
+            {
+              "description": "Every asset.",
+              "type": "string",
+              "const": "all"
+            },
+            {
+              "description": "Missing files.",
+              "type": "string",
+              "const": "missing"
+            },
+            {
+              "description": "Linked files whose content changed.",
+              "type": "string",
+              "const": "changed"
+            },
+            {
+              "description": "Linked assets.",
+              "type": "string",
+              "const": "linked"
+            },
+            {
+              "description": "Embedded assets.",
+              "type": "string",
+              "const": "embedded"
+            },
+            {
+              "description": "Assets referenced by nothing.",
+              "type": "string",
+              "const": "unused"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "AssetsResult",
+      "description": "`{assets}`.",
+      "type": "object",
+      "properties": {
+        "assets": {
+          "description": "Assets.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssetEntry"
+          }
+        }
+      },
+      "required": [
+        "assets"
+      ],
+      "$defs": {
+        "AssetEntry": {
+          "description": "One asset (10 §10.2).",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Asset id.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Name.",
+              "type": "string"
+            },
+            "kind": {
+              "description": "`sound`, `image`, `movie`, `vector`.",
+              "type": "string"
+            },
+            "storage": {
+              "description": "`embedded`, `linked`.",
+              "type": "string"
+            },
+            "status": {
+              "description": "`ok`, `missing`, `changed`.",
+              "type": "string"
+            },
+            "path": {
+              "description": "The entry (embedded) or the resolved file (linked; the link path when missing).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "size": {
+              "description": "Recorded size.",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            },
+            "refs": {
+              "description": "Number of references (placements, sequences).",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "kind",
+            "storage",
+            "status",
+            "size",
+            "refs"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Missing media",
+        "params": {
+          "status": "missing"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Project › Media (M8)",
+    "spec": {
+      "params": "`kind?: enum \"sound\"|\"image\"|\"movie\"|\"vector\"; status: enum \"all\"|\"missing\"|\"changed\"|\"linked\"|\"embedded\"|\"unused\" = \"all\"`",
+      "result": "`{assets: [{id, name, kind, storage, status, path?, size, refs: int}]}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`kind?: enum \"sound\"|\"image\"|\"movie\"|\"vector\"; status: enum \"all\"|\"missing\"|\"changed\"|\"linked\"|\"embedded\"|\"unused\" = \"all\"`",
+    "specResult": "`{assets: [{id, name, kind, storage, status, path?, size, refs: int}]}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.asset.relink",
+    "kind": "action",
+    "label": "Relink Media",
+    "summary": "Point linked assets to a new file, or search a folder for missing ones (\"Relink Media\"); generic form of `sound.asset.relink` / `media.object.relink` (07)",
+    "section": "10",
+    "scopes": [
+      "edit",
+      "files.read"
+    ],
+    "undoable": true,
+    "undoLabel": "Relink Media",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "AssetRelinkParams",
+      "description": "`doc.asset.relink` parameters.",
+      "type": "object",
+      "properties": {
+        "assetId": {
+          "description": "One linked asset.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "path": {
+          "description": "Its new file (absolute).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "searchFolder": {
+          "description": "A folder to search for missing linked assets (MED-02 step 4).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "recursive": {
+          "description": "Search subfolders.",
+          "type": "boolean",
+          "default": true
+        },
+        "matchBy": {
+          "description": "How a candidate matches.",
+          "$ref": "#/$defs/MatchBy"
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "MatchBy": {
+          "description": "How a search candidate matches a missing asset.",
+          "oneOf": [
+            {
+              "description": "Same file name.",
+              "type": "string",
+              "const": "name"
+            },
+            {
+              "description": "Same name and size.",
+              "type": "string",
+              "const": "nameAndSize"
+            },
+            {
+              "description": "Same SHA-256.",
+              "type": "string",
+              "const": "hash"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RelinkResult",
+      "description": "`doc.asset.relink` result.",
+      "type": "object",
+      "properties": {
+        "relinked": {
+          "description": "Relinked assets.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Relinked"
+          }
+        },
+        "stillMissing": {
+          "description": "Linked assets still missing.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "relinked",
+        "stillMissing"
+      ],
+      "$defs": {
+        "Relinked": {
+          "description": "A relinked asset.",
+          "type": "object",
+          "properties": {
+            "assetId": {
+              "description": "Asset id.",
+              "type": "string"
+            },
+            "path": {
+              "description": "Its file.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "assetId",
+            "path"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Search a folder for missing media",
+        "params": {
+          "searchFolder": "/tmp/media"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Project › Media › Relink (M8)",
+    "spec": {
+      "params": "`assetId?: id; path?: path; searchFolder?: path; recursive: bool = true; matchBy: enum \"name\"|\"nameAndSize\"|\"hash\" = \"nameAndSize\"`",
+      "result": "`{relinked: [{assetId, path}], stillMissing: [id]}`",
+      "undo": "yes"
+    },
+    "specParameters": "`assetId?: id; path?: path; searchFolder?: path; recursive: bool = true; matchBy: enum \"name\"|\"nameAndSize\"|\"hash\" = \"nameAndSize\"`",
+    "specResult": "`{relinked: [{assetId, path}], stillMissing: [id]}`",
+    "specUndo": "yes"
+  },
+  {
+    "id": "doc.asset.remove",
+    "kind": "action",
+    "label": "Remove Media",
+    "summary": "Remove assets; only unreferenced ones unless `force` (\"Remove Media\")",
+    "section": "10",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Remove Media",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "AssetRemoveParams",
+      "description": "`doc.asset.remove` parameters.",
+      "type": "object",
+      "properties": {
+        "assetIds": {
+          "description": "Assets to remove.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "unused": {
+          "description": "Every asset referenced by nothing.",
+          "type": "boolean",
+          "default": false
+        },
+        "force": {
+          "description": "Also remove referenced assets, detaching their references.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RemoveResult",
+      "description": "`doc.asset.remove` result.",
+      "type": "object",
+      "properties": {
+        "removed": {
+          "description": "Removed assets.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bytes": {
+          "description": "Bytes no longer stored (embedded files leave the package at the next save, MED-04).",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "detachedRefs": {
+          "description": "Placements and media sequences removed with them (`force`).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "removed",
+        "bytes",
+        "detachedRefs"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Remove media nothing uses",
+        "params": {
+          "unused": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Project › Media › Remove (M8)",
+    "spec": {
+      "params": "`assetIds?: [id]; unused: bool = false; force: bool = false`",
+      "result": "`{removed: [id], bytes, detachedRefs: [id]}`",
+      "undo": "yes"
+    },
+    "specParameters": "`assetIds?: [id]; unused: bool = false; force: bool = false`",
+    "specResult": "`{removed: [id], bytes, detachedRefs: [id]}`",
+    "specUndo": "yes"
+  },
+  {
+    "id": "doc.asset.status.changed",
+    "kind": "event",
+    "label": "Asset status changed",
+    "summary": "Assets became missing, changed or available again",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "AssetStatusChanged",
+      "description": "`doc.asset.status.changed` payload.",
+      "type": "object",
+      "properties": {
+        "assets": {
+          "description": "`[{assetId, status}]`.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "required": [
+        "assets"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{assets: [{assetId, status}]}`",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`{assets: [{assetId, status}]}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.blob.get",
+    "kind": "query",
+    "label": "Read blob",
+    "summary": "Read a binary payload (asset file, bitmap node pixels, texture) as base64",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "BlobParams",
+      "description": "`doc.blob.get` parameters.",
+      "type": "object",
+      "properties": {
+        "ref": {
+          "description": "An object holding a binary payload: an asset, a bitmap drawing node, a library item (its thumbnail, else its\nfile).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "entry": {
+          "description": "A package entry.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "maxBytes": {
+          "description": "Largest payload returned.",
+          "type": "integer",
+          "default": 8388608,
+          "minimum": 1,
+          "maximum": 67108864
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "BlobResult",
+      "description": "A binary payload.",
+      "type": "object",
+      "properties": {
+        "mediaType": {
+          "description": "IANA media type.",
+          "type": "string"
+        },
+        "size": {
+          "description": "Size in bytes.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "sha256": {
+          "description": "SHA-256 (lower-case hex).",
+          "type": "string"
+        },
+        "base64": {
+          "description": "The bytes, base64.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mediaType",
+        "size",
+        "sha256",
+        "base64"
+      ]
+    },
+    "examples": [
+      {
+        "title": "The embedded sound of the sample",
+        "params": {
+          "ref": "as_01K742SG0G5HPQ0RBF5X4DSR0W"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents read binary package entries",
+    "guiLocations": null,
+    "spec": {
+      "params": "`ref?: id; entry?: string; maxBytes: int = 8388608 (1–67108864)`",
+      "result": "`{mediaType, size, sha256, base64}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`ref?: id; entry?: string; maxBytes: int = 8388608 (1–67108864)`",
+    "specResult": "`{mediaType, size, sha256, base64}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.changed",
+    "kind": "event",
+    "label": "Document changed",
+    "summary": "A transaction was committed (payload defined in 11 §9.2 and §2.6)",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ChangedEvent",
+      "description": "`doc.changed` payload (10 §2.6).",
+      "type": "object",
+      "properties": {
+        "undoStepId": {
+          "description": "The step created or replayed (`null` for a system change without an undo step, e.g. the `modifiedAt` stamp of\na save).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "documentRev": {
+          "description": "The transaction's revision.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "label": {
+          "description": "Label.",
+          "type": "string"
+        },
+        "origin": {
+          "description": "`user`, `agent:<client>`, `system`, `load`.",
+          "type": "string"
+        },
+        "changes": {
+          "description": "Changes (values over 64 KiB elided).",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChangeRecord"
+          }
+        }
+      },
+      "required": [
+        "documentRev",
+        "label",
+        "origin",
+        "changes"
+      ],
+      "$defs": {
+        "ChangeRecord": {
+          "description": "One object change of a committed (or dry-run) transaction (10 §2.6, 11 §7.2).",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Object id (compound for container-local ids).",
+              "type": "string"
+            },
+            "type": {
+              "description": "Object type.",
+              "type": "string"
+            },
+            "op": {
+              "description": "`created`, `modified` or `deleted`.",
+              "type": "string"
+            },
+            "rev": {
+              "description": "The object's `rev` after the transaction (the `documentRev` it would get for a dry run).",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            },
+            "parentId": {
+              "description": "Parent (created and deleted objects).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "index": {
+              "description": "Position in the parent's collection (created objects).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint",
+              "minimum": 0
+            },
+            "patch": {
+              "description": "Own-view RFC 6902 patch with `oldValue` (modified objects).",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": true
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "op",
+            "rev"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{undoStepId, documentRev, label, origin, changes: [change]}`",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`{undoStepId, documentRev, label, origin, changes: [change]}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.diff",
+    "kind": "query",
+    "label": "Changes since",
+    "summary": "Net changes since a revision or checkpoint (= `doc_diff`)",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "DiffParams",
+      "description": "`doc.diff` parameters.",
+      "type": "object",
+      "properties": {
+        "sinceRev": {
+          "description": "Base revision.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "maximum": 18446744073709551615,
+          "minimum": 0,
+          "default": null
+        },
+        "sinceCheckpoint": {
+          "description": "Base checkpoint (by name).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "untilRev": {
+          "description": "End revision (default: current).",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "maximum": 18446744073709551615,
+          "minimum": 0,
+          "default": null
+        },
+        "within": {
+          "description": "Only objects inside this one.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "types": {
+          "description": "Only these types.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "detail": {
+          "description": "With or without patches.",
+          "$ref": "#/$defs/Detail"
+        },
+        "limit": {
+          "description": "Maximum changes.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 1000
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "Detail": {
+          "description": "Detail of `doc.diff`.",
+          "oneOf": [
+            {
+              "description": "Without patches.",
+              "type": "string",
+              "const": "summary"
+            },
+            {
+              "description": "With patches.",
+              "type": "string",
+              "const": "full"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "DiffResult",
+      "description": "`doc.diff` result.",
+      "type": "object",
+      "properties": {
+        "fromRev": {
+          "description": "Base revision.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "toRev": {
+          "description": "End revision.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "changes": {
+          "description": "Net changes.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChangeRecord"
+          }
+        },
+        "truncated": {
+          "description": "More changes than `limit`.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "fromRev",
+        "toRev",
+        "changes",
+        "truncated"
+      ],
+      "$defs": {
+        "ChangeRecord": {
+          "description": "One object change of a committed (or dry-run) transaction (10 §2.6, 11 §7.2).",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Object id (compound for container-local ids).",
+              "type": "string"
+            },
+            "type": {
+              "description": "Object type.",
+              "type": "string"
+            },
+            "op": {
+              "description": "`created`, `modified` or `deleted`.",
+              "type": "string"
+            },
+            "rev": {
+              "description": "The object's `rev` after the transaction (the `documentRev` it would get for a dry run).",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            },
+            "parentId": {
+              "description": "Parent (created and deleted objects).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "index": {
+              "description": "Position in the parent's collection (created objects).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint",
+              "minimum": 0
+            },
+            "patch": {
+              "description": "Own-view RFC 6902 patch with `oldValue` (modified objects).",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": true
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "op",
+            "rev"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Everything since the project was opened",
+        "params": {
+          "sinceRev": 1,
+          "detail": "summary"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents catch up after reconnecting (10 AG-09)",
+    "guiLocations": null,
+    "spec": {
+      "params": "`sinceRev?: int; sinceCheckpoint?: id; untilRev?: int; within?: id; types?: [string]; detail: enum \"summary\"|\"full\" = \"full\"; limit: int = 1000`",
+      "result": "`{fromRev, toRev, changes: [change], truncated}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`sinceRev?: int; sinceCheckpoint?: id; untilRev?: int; within?: id; types?: [string]; detail: enum \"summary\"|\"full\" = \"full\"; limit: int = 1000`",
+    "specResult": "`{fromRev, toRev, changes: [change], truncated}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.export.json",
+    "kind": "query",
+    "label": "Export JSON",
+    "summary": "Export the project, scenes or elements as an interchange bundle (§6.8), inline or to a file",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ExportJsonParams",
+      "description": "`doc.export.json` parameters.",
+      "type": "object",
+      "properties": {
+        "scope": {
+          "description": "Scope.",
+          "$ref": "#/$defs/ExportScope"
+        },
+        "refs": {
+          "description": "Scenes or elements of the scope.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "path": {
+          "description": "Write to this absolute file instead of returning the bundle.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "binaries": {
+          "description": "Binary entries.",
+          "$ref": "#/$defs/Binaries"
+        },
+        "pretty": {
+          "description": "Canonical, indented JSON (else compact) when writing a file.",
+          "type": "boolean",
+          "default": true
+        },
+        "onExists": {
+          "description": "Overwrite policy.",
+          "$ref": "#/$defs/OnExists"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "scope"
+      ],
+      "$defs": {
+        "ExportScope": {
+          "description": "Export scope.",
+          "oneOf": [
+            {
+              "description": "The whole project.",
+              "type": "string",
+              "const": "project"
+            },
+            {
+              "description": "Scenes (`refs`).",
+              "type": "string",
+              "const": "scenes"
+            },
+            {
+              "description": "Elements with their descendants (`refs`).",
+              "type": "string",
+              "const": "elements"
+            }
+          ]
+        },
+        "Binaries": {
+          "description": "What happens to binary entries.",
+          "oneOf": [
+            {
+              "description": "Inline as base64.",
+              "type": "string",
+              "const": "embed"
+            },
+            {
+              "description": "Referenced by entry name (resolved against the bundle's folder or the source project).",
+              "type": "string",
+              "const": "reference"
+            },
+            {
+              "description": "Left out.",
+              "type": "string",
+              "const": "omit"
+            }
+          ]
+        },
+        "OnExists": {
+          "description": "What to do when a target file exists (01 §11.2 rule 4).",
+          "oneOf": [
+            {
+              "description": "Fail with `fs.exists` / `project.exists`.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Overwrite.",
+              "type": "string",
+              "const": "overwrite"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ExportJsonResult",
+      "description": "`doc.export.json` result.",
+      "type": "object",
+      "properties": {
+        "bundle": {
+          "description": "The bundle (without `path`).",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true
+        },
+        "path": {
+          "description": "The written file.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bytes": {
+          "description": "Size of the bundle text.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "objectCount": {
+          "description": "Objects exported (scenes, elements, banks, drawings, palettes, pens, assets).",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "bytes",
+        "objectCount"
+      ]
+    },
+    "examples": [
+      {
+        "title": "The first scene as an inline bundle",
+        "params": {
+          "scope": "scenes",
+          "refs": [
+            "scene:#1"
+          ],
+          "binaries": "omit"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents exchange object-model bundles",
+    "guiLocations": null,
+    "spec": {
+      "params": "`scope: enum \"project\"|\"scenes\"|\"elements\"; refs?: [id]; path?: path; binaries: enum \"embed\"|\"reference\"|\"omit\" = \"reference\"; pretty: bool = true; onExists: enum \"fail\"|\"overwrite\" = \"fail\"`",
+      "result": "`{bundle?: object, path?: path, bytes, objectCount}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`scope: enum \"project\"|\"scenes\"|\"elements\"; refs?: [id]; path?: path; binaries: enum \"embed\"|\"reference\"|\"omit\" = \"reference\"; pretty: bool = true; onExists: enum \"fail\"|\"overwrite\" = \"fail\"`",
+    "specResult": "`{bundle?: object, path?: path, bytes, objectCount}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.import.json",
+    "kind": "action",
+    "label": "Import JSON",
+    "summary": "Import an interchange bundle as new scenes or into a scene (\"Import JSON\")",
+    "section": "10",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Import JSON",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ImportJsonParams",
+      "description": "`doc.import.json` parameters.",
+      "type": "object",
+      "properties": {
+        "source": {
+          "description": "The bundle, or the path of a bundle file.",
+          "$ref": "#/$defs/ImportSource"
+        },
+        "target": {
+          "description": "A scene to import the elements into (omit: the bundle's scenes become new scenes).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "index": {
+          "description": "Position of new scenes in the storyline (default: the end).",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "maximum": 2147483647,
+          "minimum": 0,
+          "default": null
+        },
+        "atFrame": {
+          "description": "First frame of imported elements in the target scene.",
+          "type": "integer",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "idPolicy": {
+          "description": "IDs: fresh (`new`) or kept (`preserve`).",
+          "$ref": "#/$defs/IdPolicy"
+        },
+        "onConflict": {
+          "description": "ID and name conflicts.",
+          "$ref": "#/$defs/OnConflict"
+        },
+        "colours": {
+          "description": "Colours whose ID already exists.",
+          "$ref": "#/$defs/ColourPolicy"
+        },
+        "dryRun": {
+          "description": "Report what would be imported; change nothing.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "source"
+      ],
+      "$defs": {
+        "ImportSource": {
+          "description": "A bundle given inline or as a file.",
+          "anyOf": [
+            {
+              "description": "Absolute path of a bundle file.",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            {
+              "description": "The bundle.",
+              "type": "object",
+              "additionalProperties": true
+            }
+          ]
+        },
+        "IdPolicy": {
+          "description": "ID policy.",
+          "oneOf": [
+            {
+              "description": "Fresh IDs.",
+              "type": "string",
+              "const": "new"
+            },
+            {
+              "description": "Keep the bundle's IDs.",
+              "type": "string",
+              "const": "preserve"
+            }
+          ]
+        },
+        "OnConflict": {
+          "description": "Conflict policy.",
+          "oneOf": [
+            {
+              "description": "Rename the imported object.",
+              "type": "string",
+              "const": "rename"
+            },
+            {
+              "description": "Replace the existing object.",
+              "type": "string",
+              "const": "replace"
+            },
+            {
+              "description": "Fail with `doc.importConflict`.",
+              "type": "string",
+              "const": "fail"
+            }
+          ]
+        },
+        "ColourPolicy": {
+          "description": "Colour policy.",
+          "oneOf": [
+            {
+              "description": "Existing swatches keep their values.",
+              "type": "string",
+              "const": "keepExisting"
+            },
+            {
+              "description": "Existing swatches of the same palette take the imported values.",
+              "type": "string",
+              "const": "updateExisting"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ImportResult",
+      "description": "`doc.import.json` result.",
+      "type": "object",
+      "properties": {
+        "created": {
+          "description": "Objects created.",
+          "$ref": "#/$defs/Created"
+        },
+        "renamed": {
+          "description": "Objects renamed on import.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Renamed"
+          }
+        },
+        "recoveredColourIds": {
+          "description": "Colour IDs used by the bundle that neither the bundle nor the project defines (colour recovery, 03 §11.2, is\nM2 C2.2's; they stay unresolved).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "issues": {
+          "description": "Issues met (unresolved binary entries, conflicts resolved).",
+          "type": "array",
+          "items": true
+        }
+      },
+      "required": [
+        "created",
+        "renamed",
+        "recoveredColourIds",
+        "issues"
+      ],
+      "$defs": {
+        "Created": {
+          "description": "Objects created.",
+          "type": "object",
+          "properties": {
+            "scenes": {
+              "description": "Scenes.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "elements": {
+              "description": "Elements.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "drawings": {
+              "description": "Drawings.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "palettes": {
+              "description": "Palettes.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "assets": {
+              "description": "Assets.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "scenes",
+            "elements",
+            "drawings",
+            "palettes",
+            "assets"
+          ]
+        },
+        "Renamed": {
+          "description": "A renamed object.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Object id.",
+              "type": "string"
+            },
+            "from": {
+              "description": "Name in the bundle.",
+              "type": "string"
+            },
+            "to": {
+              "description": "Name in the project.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "from",
+            "to"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Dry-run an import of an inline bundle",
+        "params": {
+          "source": {
+            "format": "animjson",
+            "formatVersion": "1.0",
+            "scenes": [],
+            "elements": [],
+            "drawingBanks": [],
+            "palettes": [],
+            "pens": [],
+            "assets": [],
+            "blobs": {}
+          },
+          "dryRun": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents exchange object-model bundles",
+    "guiLocations": null,
+    "spec": {
+      "params": "`source: path | object; target?: id (scene; omit = new scenes); index?: int (scene position); atFrame: int = 1; idPolicy: enum \"new\"|\"preserve\" = \"new\"; onConflict: enum \"rename\"|\"replace\"|\"fail\" = \"rename\"; colours: enum \"keepExisting\"|\"updateExisting\" = \"keepExisting\"; dryRun: bool = false`",
+      "result": "`{created: {scenes[], elements[], drawings[], palettes[], assets[]}, renamed: [{id, from, to}], recoveredColourIds[], issues[]}`",
+      "undo": "yes"
+    },
+    "specParameters": "`source: path | object; target?: id (scene; omit = new scenes); index?: int (scene position); atFrame: int = 1; idPolicy: enum \"new\"|\"preserve\" = \"new\"; onConflict: enum \"rename\"|\"replace\"|\"fail\" = \"rename\"; colours: enum \"keepExisting\"|\"updateExisting\" = \"keepExisting\"; dryRun: bool = false`",
+    "specResult": "`{created: {scenes[], elements[], drawings[], palettes[], assets[]}, renamed: [{id, from, to}], recoveredColourIds[], issues[]}`",
+    "specUndo": "yes"
+  },
+  {
+    "id": "doc.loadReport.get",
+    "kind": "query",
+    "label": "Load report",
+    "summary": "The report of the last open (§7.3)",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "LoadReportOut",
+      "description": "`LoadReport` (10 §7.3, §10.4).",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project id.",
+          "type": "string"
+        },
+        "path": {
+          "description": "The path opened (`null` for a project that was not opened from a file).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "form": {
+          "description": "`package` or `folder` (`null` likewise).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "formatVersion": {
+          "description": "The file's format version.",
+          "type": "string"
+        },
+        "migratedFrom": {
+          "description": "The version migrated from.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "readOnly": {
+          "description": "Open read-only.",
+          "type": "boolean"
+        },
+        "durationMs": {
+          "description": "Load time.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "issues": {
+          "description": "Issues found and repaired.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IssueOut"
+          }
+        },
+        "repairedCount": {
+          "description": "Repairs applied.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "projectId",
+        "formatVersion",
+        "readOnly",
+        "durationMs",
+        "issues",
+        "repairedCount"
+      ],
+      "$defs": {
+        "IssueOut": {
+          "description": "An issue (10 §10.4).",
+          "type": "object",
+          "properties": {
+            "issueId": {
+              "description": "`is_<n>`.",
+              "type": "string"
+            },
+            "code": {
+              "description": "Code.",
+              "type": "string"
+            },
+            "severity": {
+              "description": "`info`, `warning`, `error`.",
+              "type": "string"
+            },
+            "objectId": {
+              "description": "The object concerned.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "path": {
+              "description": "Its canonical path.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "entry": {
+              "description": "The package entry concerned (load issues).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "message": {
+              "description": "Message.",
+              "type": "string"
+            },
+            "details": {
+              "description": "Details."
+            },
+            "fixes": {
+              "description": "Machine-applicable fixes.",
+              "type": "array",
+              "items": true
+            }
+          },
+          "required": [
+            "issueId",
+            "code",
+            "severity",
+            "message",
+            "details",
+            "fixes"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Repairs and issues of the last load",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Load report window (M4)",
+    "spec": {
+      "params": "—",
+      "result": "`LoadReport`",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`LoadReport`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.object.find",
+    "kind": "query",
+    "label": "Find objects",
+    "summary": "Find objects by type, name and predicate (= `find_objects` / `query`)",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "FindParams",
+      "description": "`doc.object.find` parameters.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Object type (or alias).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "within": {
+          "description": "Only descendants of this object.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "name": {
+          "description": "Name: exact, or a glob with `*` and `?`.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "where": {
+          "description": "Predicates (10 §10.3).",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true,
+          "default": null
+        },
+        "limit": {
+          "description": "Page size.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 1,
+          "maximum": 1000,
+          "default": 100
+        },
+        "offset": {
+          "description": "First item.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0,
+          "maximum": 100000000,
+          "default": 0
+        },
+        "fields": {
+          "description": "Extra top-level properties per item.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "sort": {
+          "description": "Order.",
+          "$ref": "#/$defs/Sort"
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "Sort": {
+          "description": "Sort order of `doc.object.find`.",
+          "oneOf": [
+            {
+              "description": "Canonical path (AG-06).",
+              "type": "string",
+              "const": "path"
+            },
+            {
+              "description": "Name.",
+              "type": "string",
+              "const": "name"
+            },
+            {
+              "description": "Revision.",
+              "type": "string",
+              "const": "rev"
+            },
+            {
+              "description": "Creation time.",
+              "type": "string",
+              "const": "createdAt"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "FindResult",
+      "description": "`doc.object.find` result.",
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Items `{id, type, name, path, rev, …fields}`.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "total": {
+          "description": "Matches in total.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "nextOffset": {
+          "description": "Offset of the next page (`null` at the end).",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "items",
+        "total"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Every drawing element",
+        "params": {
+          "type": "element",
+          "where": {
+            "elementType": {
+              "op": "in",
+              "value": [
+                "drawing",
+                "image"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "Strokes of the first drawing",
+        "params": {
+          "type": "stroke",
+          "within": "drawingBank:#1/drawing:#1",
+          "limit": 10
+        }
+      },
+      {
+        "title": "Objects whose name starts with B",
+        "params": {
+          "name": "B*"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents query the object model (11 §7.4 find_objects)",
+    "guiLocations": null,
+    "spec": {
+      "params": "`type?: string; within?: id; name?: string (exact or glob); where?: object (§10.3); limit: int = 100 (1–1000); offset: int = 0; fields?: [string]; sort?: enum \"path\"|\"name\"|\"rev\"|\"createdAt\" = \"path\"`",
+      "result": "`{items: [{id, type, name, path, rev, …fields}], total, nextOffset}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`type?: string; within?: id; name?: string (exact or glob); where?: object (§10.3); limit: int = 100 (1–1000); offset: int = 0; fields?: [string]; sort?: enum \"path\"|\"name\"|\"rev\"|\"createdAt\" = \"path\"`",
+    "specResult": "`{items: [{id, type, name, path, rev, …fields}], total, nextOffset}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.object.get",
+    "kind": "query",
+    "label": "Get object",
+    "summary": "Read one or more objects as object-model JSON (= `get_object`)",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "GetParams",
+      "description": "`doc.object.get` parameters.",
+      "type": "object",
+      "properties": {
+        "ref": {
+          "description": "One object (id, compound id, path or special reference).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "refs": {
+          "description": "Several objects (`@selection` expands to the selection).",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "maxItems": 1000,
+          "default": null
+        },
+        "depth": {
+          "description": "Object levels in full: 1 = children as stubs, 0 = the object as a stub, -1 = everything (SI-011).",
+          "type": "integer",
+          "default": 1,
+          "minimum": -1,
+          "maximum": 20
+        },
+        "fields": {
+          "description": "Top-level properties to keep (`id` and `type` are always kept).",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "include": {
+          "description": "Extra data.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Include"
+          }
+        },
+        "page": {
+          "description": "Page through one large array.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Page"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "Include": {
+          "description": "What to add to returned objects.",
+          "oneOf": [
+            {
+              "description": "Derived properties (10 §2.7, AG-04).",
+              "type": "string",
+              "const": "derived"
+            },
+            {
+              "description": "Size statistics, returned beside the object (ADR-0013 §9; SI-015).",
+              "type": "string",
+              "const": "stats"
+            }
+          ]
+        },
+        "Page": {
+          "description": "Paging of one large array inside the object (AG-05).",
+          "type": "object",
+          "properties": {
+            "pointer": {
+              "description": "JSON Pointer of the array inside the object.",
+              "type": "string"
+            },
+            "offset": {
+              "description": "First item.",
+              "type": "integer",
+              "format": "uint",
+              "minimum": 0,
+              "maximum": 100000000,
+              "default": 0
+            },
+            "limit": {
+              "description": "Items.",
+              "type": "integer",
+              "format": "uint",
+              "minimum": 1,
+              "maximum": 100000,
+              "default": 1000
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pointer"
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "GetResult",
+      "description": "`doc.object.get` result.",
+      "type": "object",
+      "properties": {
+        "object": {
+          "description": "The object (single `ref`).",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true
+        },
+        "objects": {
+          "description": "The objects (`refs`).",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "stats": {
+          "description": "Statistics per object (`include: [\"stats\"]`).",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": true
+        },
+        "page": {
+          "description": "Paging of the array named by `page.pointer`, per object.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/PageInfo"
+          }
+        }
+      },
+      "$defs": {
+        "PageInfo": {
+          "description": "Paging information.",
+          "type": "object",
+          "properties": {
+            "pointer": {
+              "description": "The paged array.",
+              "type": "string"
+            },
+            "total": {
+              "description": "Items in the array.",
+              "type": "integer",
+              "format": "uint",
+              "minimum": 0
+            },
+            "nextOffset": {
+              "description": "Offset of the next page (`null` at the end).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "pointer",
+            "total"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "The first scene with its elements as stubs",
+        "params": {
+          "ref": "scene:#1",
+          "depth": 1
+        }
+      },
+      {
+        "title": "The current element with derived properties",
+        "params": {
+          "ref": "@current",
+          "include": [
+            "derived"
+          ]
+        }
+      },
+      {
+        "title": "Only names and types of two objects",
+        "params": {
+          "refs": [
+            "scene:#1",
+            "palette:#1"
+          ],
+          "fields": [
+            "name"
+          ]
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents read the object model; the GUI shows it in its panels (11 §7.4 get_object)",
+    "guiLocations": null,
+    "spec": {
+      "params": "`ref?: id; refs?: [id]; depth: int = 1 (-1 = all, 0–20); fields?: [string]; include?: [enum \"derived\"|\"stats\"]; page?: object {pointer: string, offset: int = 0, limit: int = 1000}`",
+      "result": "`{object}` or `{objects: [object]}`; paged arrays carry `{total, nextOffset}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`ref?: id; refs?: [id]; depth: int = 1 (-1 = all, 0–20); fields?: [string]; include?: [enum \"derived\"|\"stats\"]; page?: object {pointer: string, offset: int = 0, limit: int = 1000}`",
+    "specResult": "`{object}` or `{objects: [object]}`; paged arrays carry `{total, nextOffset}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.object.patch",
+    "kind": "action",
+    "label": "Set properties",
+    "summary": "Generic validated property patch on one or more objects (= `set_properties`)",
+    "section": "10",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Set properties",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PatchParams",
+      "description": "`doc.object.patch` parameters.",
+      "type": "object",
+      "properties": {
+        "targets": {
+          "description": "Objects to patch (ids, paths, `@selection`).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "maxItems": 1000
+        },
+        "props": {
+          "description": "JSON merge patch (RFC 7386) applied to every target.",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true,
+          "default": null
+        },
+        "ops": {
+          "description": "JSON Patch operations (RFC 6902), pointers relative to each target.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/OpParam"
+          },
+          "maxItems": 10000
+        },
+        "expectRev": {
+          "description": "Optimistic concurrency (REV-05).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ExpectRev"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "label": {
+          "description": "Undo label (default \"Set <property>\").",
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 200,
+          "default": null
+        },
+        "dryRun": {
+          "description": "Report the changes without applying them (the executor reads it before the handler runs).",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "targets"
+      ],
+      "$defs": {
+        "OpParam": {
+          "description": "One RFC 6902 operation, pointers relative to the object.",
+          "type": "object",
+          "properties": {
+            "op": {
+              "description": "Operation.",
+              "$ref": "#/$defs/OpKind"
+            },
+            "path": {
+              "description": "Target pointer.",
+              "type": "string",
+              "maxLength": 65536
+            },
+            "value": {
+              "description": "Value (`add`, `replace`, `test`).",
+              "default": null
+            },
+            "from": {
+              "description": "Source pointer (`move`, `copy`).",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "op",
+            "path"
+          ]
+        },
+        "OpKind": {
+          "description": "RFC 6902 operation names.",
+          "oneOf": [
+            {
+              "description": "add.",
+              "type": "string",
+              "const": "add"
+            },
+            {
+              "description": "remove.",
+              "type": "string",
+              "const": "remove"
+            },
+            {
+              "description": "replace.",
+              "type": "string",
+              "const": "replace"
+            },
+            {
+              "description": "move.",
+              "type": "string",
+              "const": "move"
+            },
+            {
+              "description": "copy.",
+              "type": "string",
+              "const": "copy"
+            },
+            {
+              "description": "test.",
+              "type": "string",
+              "const": "test"
+            }
+          ]
+        },
+        "ExpectRev": {
+          "description": "`expectRev`: one revision for every target, or per reference.",
+          "anyOf": [
+            {
+              "description": "Applies to every target.",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            },
+            {
+              "description": "Reference → revision.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "maximum": 18446744073709551615,
+                "minimum": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PatchResult",
+      "description": "`doc.object.patch` result.",
+      "type": "object",
+      "properties": {
+        "changes": {
+          "description": "The changes (also in the envelope).",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChangeRecord"
+          }
+        },
+        "documentRev": {
+          "description": "`documentRev` after the patch (the revision it would get for a dry run).",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "changes",
+        "documentRev"
+      ],
+      "$defs": {
+        "ChangeRecord": {
+          "description": "One object change of a committed (or dry-run) transaction (10 §2.6, 11 §7.2).",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Object id (compound for container-local ids).",
+              "type": "string"
+            },
+            "type": {
+              "description": "Object type.",
+              "type": "string"
+            },
+            "op": {
+              "description": "`created`, `modified` or `deleted`.",
+              "type": "string"
+            },
+            "rev": {
+              "description": "The object's `rev` after the transaction (the `documentRev` it would get for a dry run).",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            },
+            "parentId": {
+              "description": "Parent (created and deleted objects).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "index": {
+              "description": "Position in the parent's collection (created objects).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint",
+              "minimum": 0
+            },
+            "patch": {
+              "description": "Own-view RFC 6902 patch with `oldValue` (modified objects).",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": true
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "op",
+            "rev"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Annotate a scene in meta",
+        "params": {
+          "targets": [
+            "scene:#1"
+          ],
+          "props": {
+            "meta": {
+              "status": "layout"
+            }
+          }
+        }
+      },
+      {
+        "title": "Mark the first drawing as mouth shape A",
+        "params": {
+          "targets": [
+            "drawingBank:#1/drawing:#1"
+          ],
+          "ops": [
+            {
+              "op": "replace",
+              "path": "/mouthShape",
+              "value": "A"
+            }
+          ],
+          "label": "Set mouth shape"
+        }
+      },
+      {
+        "title": "Set a pen's persisted tip fields (persisted names `tip` and `tipAngle`, SI-004)",
+        "params": {
+          "targets": [
+            "pen:#1"
+          ],
+          "props": {
+            "tip": "square",
+            "tipAngle": 30
+          },
+          "dryRun": true
+        }
+      },
+      {
+        "title": "Persisted element role (superset enum, SI-003)",
+        "params": {
+          "targets": [
+            "scene:#1/element:#1"
+          ],
+          "props": {
+            "role": "foreground"
+          },
+          "dryRun": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents patch the object model (11 §7.4 set_properties); the GUI uses the area commands",
+    "guiLocations": null,
+    "spec": {
+      "params": "`targets: [id] (1–1000); props?: object; ops?: [object {op: enum \"add\"|\"remove\"|\"replace\"|\"move\"|\"copy\"|\"test\", path: string, value?: any, from?: string}]; expectRev?: int | object; label?: string; dryRun: bool = false`",
+      "result": "`{changes: [change], documentRev}`",
+      "undo": "yes"
+    },
+    "specParameters": "`targets: [id] (1–1000); props?: object; ops?: [object {op: enum \"add\"|\"remove\"|\"replace\"|\"move\"|\"copy\"|\"test\", path: string, value?: any, from?: string}]; expectRev?: int | object; label?: string; dryRun: bool = false`",
+    "specResult": "`{changes: [change], documentRev}`",
+    "specUndo": "yes"
+  },
+  {
+    "id": "doc.object.refs",
+    "kind": "query",
+    "label": "References",
+    "summary": "List objects that reference an object (incoming) or that it references (outgoing)",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RefsParams",
+      "description": "`doc.object.refs` parameters.",
+      "type": "object",
+      "properties": {
+        "ref": {
+          "description": "The object.",
+          "type": "string"
+        },
+        "direction": {
+          "description": "`incoming`: objects that reference it; `outgoing`: objects it references.",
+          "$ref": "#/$defs/RefDirection"
+        },
+        "limit": {
+          "description": "Largest number of references returned.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 500
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "ref"
+      ],
+      "$defs": {
+        "RefDirection": {
+          "description": "Reference direction.",
+          "oneOf": [
+            {
+              "description": "Objects referencing it.",
+              "type": "string",
+              "const": "incoming"
+            },
+            {
+              "description": "Objects it references.",
+              "type": "string",
+              "const": "outgoing"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RefsResult",
+      "description": "`{refs, total}`.",
+      "type": "object",
+      "properties": {
+        "refs": {
+          "description": "References.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RefEntry"
+          }
+        },
+        "total": {
+          "description": "Total before the limit.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "refs",
+        "total"
+      ],
+      "$defs": {
+        "RefEntry": {
+          "description": "One reference.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "The other object.",
+              "type": "string"
+            },
+            "type": {
+              "description": "Its type.",
+              "type": "string"
+            },
+            "path": {
+              "description": "Its canonical path.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "property": {
+              "description": "The referencing property (JSON Pointer into the referencing object).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "property"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Who uses the first palette",
+        "params": {
+          "ref": "palette:#1"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents inspect references",
+    "guiLocations": null,
+    "spec": {
+      "params": "`ref: id; direction: enum \"incoming\"|\"outgoing\" = \"incoming\"; limit: int = 500`",
+      "result": "`{refs: [{id, type, path, property}], total}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`ref: id; direction: enum \"incoming\"|\"outgoing\" = \"incoming\"; limit: int = 500`",
+    "specResult": "`{refs: [{id, type, path, property}], total}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.object.resolve",
+    "kind": "query",
+    "label": "Resolve references",
+    "summary": "Resolve paths to IDs and IDs to canonical paths",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ResolveParams",
+      "description": "`doc.object.resolve` parameters.",
+      "type": "object",
+      "properties": {
+        "refs": {
+          "description": "References (ids, compound ids, paths, special references).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "maxItems": 1000
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "refs"
+      ]
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ResolveResult",
+      "description": "`doc.object.resolve` result.",
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "One item per reference: `{ref, id, type, name, path, rev}` or `{ref, error}`.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "required": [
+        "items"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Resolve a path and the current element",
+        "params": {
+          "refs": [
+            "scene:#1",
+            "@current"
+          ]
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents translate paths and IDs (10 AG-03)",
+    "guiLocations": null,
+    "spec": {
+      "params": "`refs: [string]`",
+      "result": "`{items: [{ref, id, type, name, path, rev} | {ref, error}]}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`refs: [string]`",
+    "specResult": "`{items: [{ref, id, type, name, path, rev} | {ref, error}]}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.package.changedOnDisk",
+    "kind": "event",
+    "label": "Project changed on disk",
+    "summary": "The open project's file or folder was modified by another process",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ChangedOnDisk",
+      "description": "`doc.package.changedOnDisk` payload.",
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "The project file or folder.",
+          "type": "string"
+        },
+        "detectedAt": {
+          "description": "When the change was noticed.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "detectedAt"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{path, detectedAt}`",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`{path, detectedAt}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.package.export",
+    "kind": "job",
+    "label": "Export a copy",
+    "summary": "Write a copy of the current project in package or folder form without changing the open project's location",
+    "section": "10",
+    "scopes": [
+      "read",
+      "files.write"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PackageExportParams",
+      "description": "`doc.package.export` parameters.",
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "Absolute target path.",
+          "type": "string"
+        },
+        "form": {
+          "description": "Form of the copy.",
+          "$ref": "#/$defs/FormParam"
+        },
+        "onExists": {
+          "description": "Overwrite policy.",
+          "$ref": "#/$defs/OnExists"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "path"
+      ],
+      "$defs": {
+        "FormParam": {
+          "description": "Forms.",
+          "oneOf": [
+            {
+              "description": "One zip file.",
+              "type": "string",
+              "const": "package"
+            },
+            {
+              "description": "A folder.",
+              "type": "string",
+              "const": "folder"
+            }
+          ]
+        },
+        "OnExists": {
+          "description": "What to do when a target file exists (01 §11.2 rule 4).",
+          "oneOf": [
+            {
+              "description": "Fail with `fs.exists` / `project.exists`.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Overwrite.",
+              "type": "string",
+              "const": "overwrite"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Job_PackageExported",
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "description": "The job (11 §7.7).",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "jobId"
+      ],
+      "additionalProperties": false,
+      "x-jobResult": {
+        "$ref": "#/$defs/PackageExported"
+      },
+      "$defs": {
+        "PackageExported": {
+          "description": "The final result of `doc.package.export`.",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "Where.",
+              "type": "string"
+            },
+            "form": {
+              "description": "`package` or `folder`.",
+              "type": "string"
+            },
+            "bytes": {
+              "description": "Bytes written.",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            },
+            "entries": {
+              "description": "Entries written.",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            }
+          },
+          "required": [
+            "path",
+            "form",
+            "bytes",
+            "entries"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "A folder-form copy for version control",
+        "params": {
+          "path": "/tmp/Short-folder",
+          "form": "folder",
+          "onExists": "overwrite"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents copy the project in either form (10 FMT-02)",
+    "guiLocations": null,
+    "spec": {
+      "params": "`path: path; form: enum \"package\"|\"folder\" = \"package\"; onExists: enum \"fail\"|\"overwrite\" = \"fail\"`",
+      "result": "`{jobId}` → `{path, form, bytes, entries}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`path: path; form: enum \"package\"|\"folder\" = \"package\"; onExists: enum \"fail\"|\"overwrite\" = \"fail\"`",
+    "specResult": "`{jobId}` → `{path, form, bytes, entries}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.package.get",
+    "kind": "query",
+    "label": "Inspect package",
+    "summary": "Inspect a package, folder, template or palette file on disk without opening it",
+    "section": "10",
+    "scopes": [
+      "read",
+      "files.read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PackageGetParams",
+      "description": "`doc.package.get` parameters.",
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "Absolute path of a package, folder, template, palette file or library folder.",
+          "type": "string"
+        },
+        "validate": {
+          "description": "Load and validate it completely (10 §7) and report its issues.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "path"
+      ]
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PackageInfo",
+      "description": "What a file on disk is (10 §10.2 `doc.package.get`).",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "description": "`project`, `template`, `palette`, `library`.",
+          "type": "string"
+        },
+        "form": {
+          "description": "`package`, `folder` or `file`.",
+          "type": "string"
+        },
+        "formatVersion": {
+          "description": "Format version.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "minReaderVersion": {
+          "description": "Lowest reader version.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "readable": {
+          "description": "Whether this version can read it.",
+          "type": "boolean"
+        },
+        "projectId": {
+          "description": "Project id (projects).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "Name.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "savedAt": {
+          "description": "Save time.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "entryCount": {
+          "description": "Number of entries.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "issues": {
+          "description": "Issues found (with `validate`; container and version problems always).",
+          "type": "array",
+          "items": true
+        }
+      },
+      "required": [
+        "kind",
+        "form",
+        "readable",
+        "entryCount",
+        "issues"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Inspect a package without opening it",
+        "params": {
+          "path": "/tmp/Short.animpkg",
+          "validate": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents inspect files before opening them",
+    "guiLocations": null,
+    "spec": {
+      "params": "`path: path; validate: bool = false`",
+      "result": "`{kind: enum \"project\"|\"template\"|\"palette\"|\"library\", form, formatVersion, minReaderVersion, readable, projectId?, name, savedAt, entryCount, issues[]}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`path: path; validate: bool = false`",
+    "specResult": "`{kind: enum \"project\"|\"template\"|\"palette\"|\"library\", form, formatVersion, minReaderVersion, readable, projectId?, name, savedAt, entryCount, issues[]}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.repair",
+    "kind": "action",
+    "label": "Repair",
+    "summary": "Apply the default fix of selected issues (\"Repair Project\")",
+    "section": "10",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Repair Project",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RepairParams",
+      "description": "`doc.repair` parameters.",
+      "type": "object",
+      "properties": {
+        "issueIds": {
+          "description": "Issues (from `doc.validate` of the same revision).",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "codes": {
+          "description": "Checks or issue codes.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "within": {
+          "description": "Only this object and what it contains.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "all": {
+          "description": "Every issue with a default fix.",
+          "type": "boolean",
+          "default": false
+        },
+        "dryRun": {
+          "description": "Report what would be fixed; change nothing.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RepairResult",
+      "description": "`doc.repair` result.",
+      "type": "object",
+      "properties": {
+        "fixed": {
+          "description": "Issues fixed.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "skipped": {
+          "description": "Issues not fixed, with the reason.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Skipped"
+          }
+        },
+        "changes": {
+          "description": "The changes made (the envelope carries them too).",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChangeRecord"
+          }
+        }
+      },
+      "required": [
+        "fixed",
+        "skipped",
+        "changes"
+      ],
+      "$defs": {
+        "Skipped": {
+          "description": "A skipped issue.",
+          "type": "object",
+          "properties": {
+            "issueId": {
+              "description": "The issue.",
+              "type": "string"
+            },
+            "reason": {
+              "description": "Why.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "issueId",
+            "reason"
+          ]
+        },
+        "ChangeRecord": {
+          "description": "One object change of a committed (or dry-run) transaction (10 §2.6, 11 §7.2).",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Object id (compound for container-local ids).",
+              "type": "string"
+            },
+            "type": {
+              "description": "Object type.",
+              "type": "string"
+            },
+            "op": {
+              "description": "`created`, `modified` or `deleted`.",
+              "type": "string"
+            },
+            "rev": {
+              "description": "The object's `rev` after the transaction (the `documentRev` it would get for a dry run).",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            },
+            "parentId": {
+              "description": "Parent (created and deleted objects).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "index": {
+              "description": "Position in the parent's collection (created objects).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint",
+              "minimum": 0
+            },
+            "patch": {
+              "description": "Own-view RFC 6902 patch with `oldValue` (modified objects).",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": true
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "op",
+            "rev"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Remove unused media",
+        "params": {
+          "codes": [
+            "unusedAssets"
+          ],
+          "dryRun": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Project › Check Project › Repair (M4)",
+    "spec": {
+      "params": "`issueIds?: [id]; codes?: [string]; within?: id; all: bool = false; dryRun: bool = false`",
+      "result": "`{fixed: [issueId], skipped: [{issueId, reason}], changes: [change]}`",
+      "undo": "yes"
+    },
+    "specParameters": "`issueIds?: [id]; codes?: [string]; within?: id; all: bool = false; dryRun: bool = false`",
+    "specResult": "`{fixed: [issueId], skipped: [{issueId, reason}], changes: [change]}`",
+    "specUndo": "yes"
+  },
+  {
+    "id": "doc.schema.get",
+    "kind": "query",
+    "label": "Get schema",
+    "summary": "JSON Schema of an object type (or of one property)",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SchemaGetParams",
+      "description": "`doc.schema.get` parameters.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Object type (or alias).",
+          "type": "string"
+        },
+        "property": {
+          "description": "JSON Pointer of one property.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SchemaGetResult",
+      "description": "`doc.schema.get` result.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Type name.",
+          "type": "string"
+        },
+        "formatVersion": {
+          "description": "Format version.",
+          "type": "string"
+        },
+        "schema": {
+          "description": "The JSON Schema (draft 2020-12).",
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "type",
+        "formatVersion",
+        "schema"
+      ]
+    },
+    "examples": [
+      {
+        "title": "The element schema",
+        "params": {
+          "type": "element"
+        }
+      },
+      {
+        "title": "The schema of a pen's tip",
+        "params": {
+          "type": "pen",
+          "property": "/tip"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "schema discovery for agents (10 §2.8)",
+    "guiLocations": null,
+    "spec": {
+      "params": "`type: string; property?: string (JSON Pointer)`",
+      "result": "`{type, formatVersion, schema}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`type: string; property?: string (JSON Pointer)`",
+    "specResult": "`{type, formatVersion, schema}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.schema.list",
+    "kind": "query",
+    "label": "List object types",
+    "summary": "List object types with their parents and addressing",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SchemaListResult",
+      "description": "`doc.schema.list` result.",
+      "type": "object",
+      "properties": {
+        "formatVersion": {
+          "description": "Format version.",
+          "type": "string"
+        },
+        "types": {
+          "description": "Types.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TypeInfo"
+          }
+        }
+      },
+      "required": [
+        "formatVersion",
+        "types"
+      ],
+      "$defs": {
+        "TypeInfo": {
+          "description": "One type in `doc.schema.list`.",
+          "type": "object",
+          "properties": {
+            "type": {
+              "description": "Type name.",
+              "type": "string"
+            },
+            "aliases": {
+              "description": "Path aliases.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "parents": {
+              "description": "Possible parent types.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nameAddressable": {
+              "description": "Addressable by quoted name in paths.",
+              "type": "boolean"
+            },
+            "description": {
+              "description": "Description.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "aliases",
+            "parents",
+            "nameAddressable",
+            "description"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Every object type with its parents and addressing",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "schema discovery for agents (10 §2.8)",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{formatVersion, types: [{type, aliases[], parents[], nameAddressable, description}]}`",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`{formatVersion, types: [{type, aliases[], parents[], nameAddressable, description}]}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.schema.validate",
+    "kind": "query",
+    "label": "Validate candidate",
+    "summary": "Validate a candidate object or bundle against the schema and semantic rules without applying it",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SchemaValidateParams",
+      "description": "`doc.schema.validate` parameters.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Object type.",
+          "type": "string"
+        },
+        "object": {
+          "description": "The candidate object.",
+          "type": "object",
+          "additionalProperties": true
+        },
+        "mode": {
+          "description": "`create`: a new object (ID and `rev` may be omitted); `replace`: the object with this ID, replaced.",
+          "$ref": "#/$defs/ValidateMode"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "object"
+      ],
+      "$defs": {
+        "ValidateMode": {
+          "description": "Validation mode.",
+          "oneOf": [
+            {
+              "description": "A new object.",
+              "type": "string",
+              "const": "create"
+            },
+            {
+              "description": "A replacement of an existing object.",
+              "type": "string",
+              "const": "replace"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ValidateResult",
+      "description": "`{valid, errors}`.",
+      "type": "object",
+      "properties": {
+        "valid": {
+          "description": "Whether the candidate is valid.",
+          "type": "boolean"
+        },
+        "errors": {
+          "description": "Errors.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ValidationError"
+          }
+        }
+      },
+      "required": [
+        "valid",
+        "errors"
+      ],
+      "$defs": {
+        "ValidationError": {
+          "description": "One validation error.",
+          "type": "object",
+          "properties": {
+            "pointer": {
+              "description": "JSON Pointer into the candidate.",
+              "type": "string"
+            },
+            "code": {
+              "description": "Code.",
+              "type": "string"
+            },
+            "message": {
+              "description": "Message.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "pointer",
+            "code",
+            "message"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Check a pen before creating it",
+        "params": {
+          "type": "pen",
+          "object": {
+            "name": "Ink",
+            "kind": "brush",
+            "minSize": 1,
+            "maxSize": 4,
+            "smoothness": 3,
+            "tip": "round",
+            "tipAngle": 0,
+            "colourId": null
+          },
+          "mode": "create"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents check candidates before applying them",
+    "guiLocations": null,
+    "spec": {
+      "params": "`type: string; object: object; mode: enum \"create\"|\"replace\" = \"replace\"`",
+      "result": "`{valid: bool, errors: [{pointer, code, message}]}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`type: string; object: object; mode: enum \"create\"|\"replace\" = \"replace\"`",
+    "specResult": "`{valid: bool, errors: [{pointer, code, message}]}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.state.get",
+    "kind": "query",
+    "label": "Document state",
+    "summary": "Document state",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "StateResult",
+      "description": "`doc.state.get` result.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project id.",
+          "type": "string"
+        },
+        "path": {
+          "description": "Package path (`null` until saved).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "form": {
+          "description": "`package` or `folder` (`null` until saved).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "formatVersion": {
+          "description": "Format version.",
+          "type": "string"
+        },
+        "migratedFrom": {
+          "description": "Version migrated from on load (C1.3).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "documentRev": {
+          "description": "Current revision.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "savedRev": {
+          "description": "Revision at the last save.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "dirty": {
+          "description": "Modified since the last save.",
+          "type": "boolean"
+        },
+        "readOnly": {
+          "description": "Read-only.",
+          "type": "boolean"
+        },
+        "lock": {
+          "description": "The lock (10 §8 LOCK-01): `{held: true, …our lock}` while this session holds it, `{held: false, …holder}` when\nthe project opened read-only because someone else holds it, `null` otherwise.",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true
+        },
+        "historyFromRev": {
+          "description": "Oldest revision `doc.diff` accepts.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "projectId",
+        "formatVersion",
+        "documentRev",
+        "dirty",
+        "readOnly",
+        "historyFromRev"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Revision, dirty flag and diff horizon",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents track revisions (10 AG-09)",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{projectId, path, form, formatVersion, migratedFrom, documentRev, savedRev, dirty, readOnly, lock, historyFromRev}`",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`{projectId, path, form, formatVersion, migratedFrom, documentRev, savedRev, dirty, readOnly, lock, historyFromRev}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "doc.validate",
+    "kind": "query",
+    "label": "Validate project",
+    "summary": "Lint the project or a subtree (§10.3)",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ValidateParams",
+      "description": "`doc.validate` parameters.",
+      "type": "object",
+      "properties": {
+        "within": {
+          "description": "Only this object and what it contains.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "checks": {
+          "description": "Checks to run (default: all; 10 §10.3).",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "minSeverity": {
+          "description": "Minimum severity.",
+          "$ref": "#/$defs/SeverityParam"
+        },
+        "limit": {
+          "description": "Largest number of issues.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 500
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "SeverityParam": {
+          "description": "Minimum severity.",
+          "oneOf": [
+            {
+              "description": "Everything.",
+              "type": "string",
+              "const": "info"
+            },
+            {
+              "description": "Warnings and errors.",
+              "type": "string",
+              "const": "warning"
+            },
+            {
+              "description": "Errors only.",
+              "type": "string",
+              "const": "error"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "LintResult",
+      "description": "`doc.validate` result.",
+      "type": "object",
+      "properties": {
+        "documentRev": {
+          "description": "The revision checked.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "issues": {
+          "description": "Issues (10 §10.4).",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IssueOut"
+          }
+        },
+        "counts": {
+          "description": "Counts by severity.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0
+          }
+        },
+        "truncated": {
+          "description": "More issues than `limit`.",
+          "type": "boolean"
+        },
+        "unavailable": {
+          "description": "Checks not run, with their owner.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Unavailable"
+          }
+        }
+      },
+      "required": [
+        "documentRev",
+        "issues",
+        "counts",
+        "truncated",
+        "unavailable"
+      ],
+      "$defs": {
+        "IssueOut": {
+          "description": "An issue (10 §10.4).",
+          "type": "object",
+          "properties": {
+            "issueId": {
+              "description": "`is_<n>`.",
+              "type": "string"
+            },
+            "code": {
+              "description": "Code.",
+              "type": "string"
+            },
+            "severity": {
+              "description": "`info`, `warning`, `error`.",
+              "type": "string"
+            },
+            "objectId": {
+              "description": "The object concerned.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "path": {
+              "description": "Its canonical path.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "entry": {
+              "description": "The package entry concerned (load issues).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "message": {
+              "description": "Message.",
+              "type": "string"
+            },
+            "details": {
+              "description": "Details."
+            },
+            "fixes": {
+              "description": "Machine-applicable fixes.",
+              "type": "array",
+              "items": true
+            }
+          },
+          "required": [
+            "issueId",
+            "code",
+            "severity",
+            "message",
+            "details",
+            "fixes"
+          ]
+        },
+        "Unavailable": {
+          "description": "A check that needs a computation owned by a later milestone.",
+          "type": "object",
+          "properties": {
+            "check": {
+              "description": "The check.",
+              "type": "string"
+            },
+            "owner": {
+              "description": "The owning checkpoint.",
+              "type": "string"
+            },
+            "reason": {
+              "description": "Why.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "check",
+            "owner",
+            "reason"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Errors only",
+        "params": {
+          "minSeverity": "error"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Project › Check Project (M4)",
+    "spec": {
+      "params": "`within?: id; checks?: [string] (default all); minSeverity: enum \"info\"|\"warning\"|\"error\" = \"info\"; limit: int = 500`",
+      "result": "`{documentRev, issues: [issue], counts: {error, warning, info}, truncated}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`within?: id; checks?: [string] (default all); minSeverity: enum \"info\"|\"warning\"|\"error\" = \"info\"; limit: int = 500`",
+    "specResult": "`{documentRev, issues: [issue], counts: {error, warning, info}, truncated}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.autosaved",
+    "kind": "event",
+    "label": "Autosaved",
+    "summary": "A recovery copy was written",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Autosaved",
+      "description": "`project.autosaved` payload.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project id.",
+          "type": "string"
+        },
+        "recoveryId": {
+          "description": "Recovery id.",
+          "type": "string"
+        },
+        "savedAt": {
+          "description": "When.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "projectId",
+        "recoveryId",
+        "savedAt"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "`{projectId, recoveryId, savedAt}`",
+      "result": "—",
+      "undo": "n/a"
+    },
+    "specParameters": "`{projectId, recoveryId, savedAt}`",
+    "specResult": "—",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.backup.list",
+    "kind": "query",
+    "label": "Backups",
+    "summary": "Backups of a project",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "BackupListParams",
+      "description": "`project.backup.list` parameters.",
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "Project path (default: the current project).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Array_of_BackupEntry",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BackupEntry"
+      },
+      "$defs": {
+        "BackupEntry": {
+          "description": "A backup (01 §3.7).",
+          "type": "object",
+          "properties": {
+            "backupId": {
+              "description": "Backup id.",
+              "type": "string"
+            },
+            "savedAt": {
+              "description": "When the backed-up version was saved.",
+              "type": "string"
+            },
+            "sizeBytes": {
+              "description": "Size.",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            },
+            "documentRev": {
+              "description": "Its `documentRev`.",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            }
+          },
+          "required": [
+            "backupId",
+            "savedAt",
+            "sizeBytes",
+            "documentRev"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Backups of the current project",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "File › Open Backup (M4)",
+    "spec": {
+      "params": "`path?: path (default: current project)`",
+      "result": "`[{backupId, savedAt, sizeBytes}]`",
+      "undo": "n/a"
+    },
+    "specParameters": "`path?: path (default: current project)`",
+    "specResult": "`[{backupId, savedAt, sizeBytes}]`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.backup.open",
+    "kind": "action",
+    "label": "Open backup",
+    "summary": "Open a backup as an untitled copy",
+    "section": "01",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "BackupOpenParams",
+      "description": "`project.backup.open` parameters.",
+      "type": "object",
+      "properties": {
+        "backupId": {
+          "description": "Backup id.",
+          "type": "string"
+        },
+        "onUnsaved": {
+          "description": "Unsaved-changes policy.",
+          "$ref": "#/$defs/OnUnsaved"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "backupId"
+      ],
+      "$defs": {
+        "OnUnsaved": {
+          "description": "What to do with unsaved changes (01 §11.2 rule 3).",
+          "oneOf": [
+            {
+              "description": "Fail with `project.unsavedChanges` when something is modified.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Save first.",
+              "type": "string",
+              "const": "save"
+            },
+            {
+              "description": "Discard the changes.",
+              "type": "string",
+              "const": "discard"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ProjectId",
+      "description": "`{projectId}`.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project id.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "projectId"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Open a backup as an untitled copy",
+        "params": {
+          "backupId": "bk_1a2b3c4d"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "File › Open Backup (M4)",
+    "spec": {
+      "params": "`backupId: id; onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"`",
+      "result": "`{projectId}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`backupId: id; onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"`",
+    "specResult": "`{projectId}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.close",
+    "kind": "action",
+    "label": "Close Project",
+    "summary": "Close the current project",
+    "section": "01",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "UnsavedParams",
+      "description": "`{onUnsaved}` parameters.",
+      "type": "object",
+      "properties": {
+        "onUnsaved": {
+          "description": "Unsaved-changes policy.",
+          "$ref": "#/$defs/OnUnsaved"
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "OnUnsaved": {
+          "description": "What to do with unsaved changes (01 §11.2 rule 3).",
+          "oneOf": [
+            {
+              "description": "Fail with `project.unsavedChanges` when something is modified.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Save first.",
+              "type": "string",
+              "const": "save"
+            },
+            {
+              "description": "Discard the changes.",
+              "type": "string",
+              "const": "discard"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ClosedResult",
+      "description": "`{closed}`.",
+      "type": "object",
+      "properties": {
+        "closed": {
+          "description": "The project was closed.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "closed"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Close, failing if unsaved",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": null,
+    "spec": {
+      "params": "`onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"`",
+      "result": "`{closed: bool}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"`",
+    "specResult": "`{closed: bool}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.closed",
+    "kind": "event",
+    "label": "Project closed",
+    "summary": "The project was closed",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ProjectId",
+      "description": "`{projectId}`.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project id.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "projectId"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "`{projectId}`",
+      "result": "—",
+      "undo": "n/a"
+    },
+    "specParameters": "`{projectId}`",
+    "specResult": "—",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.create",
+    "kind": "action",
+    "label": "New Project",
+    "summary": "Create a new project and make it current; if `path` is given it is saved there immediately",
+    "section": "01",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "CreateParams",
+      "description": "`project.create` parameters.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Project name (01 §9.6 shared name rule).",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "path": {
+          "description": "Save immediately at this absolute path (package; a path ending with a separator is the folder form).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "preset": {
+          "description": "Format preset id (`project.presets.list`).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "frameRate": {
+          "description": "Frame rate.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1.0,
+          "maximum": 120.0
+        },
+        "cameraWidth": {
+          "description": "Camera width.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 16,
+          "maximum": 8192
+        },
+        "cameraHeight": {
+          "description": "Camera height.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 16,
+          "maximum": 8192
+        },
+        "onUnsaved": {
+          "description": "Unsaved-changes policy.",
+          "$ref": "#/$defs/OnUnsaved"
+        },
+        "onExists": {
+          "description": "Overwrite policy.",
+          "$ref": "#/$defs/OnExists"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "$defs": {
+        "OnUnsaved": {
+          "description": "What to do with unsaved changes (01 §11.2 rule 3).",
+          "oneOf": [
+            {
+              "description": "Fail with `project.unsavedChanges` when something is modified.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Save first.",
+              "type": "string",
+              "const": "save"
+            },
+            {
+              "description": "Discard the changes.",
+              "type": "string",
+              "const": "discard"
+            }
+          ]
+        },
+        "OnExists": {
+          "description": "What to do when a target file exists (01 §11.2 rule 4).",
+          "oneOf": [
+            {
+              "description": "Fail with `fs.exists` / `project.exists`.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Overwrite.",
+              "type": "string",
+              "const": "overwrite"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "CreateResult",
+      "description": "`project.create` result.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project id.",
+          "type": "string"
+        },
+        "path": {
+          "description": "Saved path.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sceneId": {
+          "description": "First scene.",
+          "type": "string"
+        },
+        "cameraId": {
+          "description": "Its camera.",
+          "type": "string"
+        },
+        "elementId": {
+          "description": "Its drawing element.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "projectId",
+        "sceneId",
+        "cameraId",
+        "elementId"
+      ]
+    },
+    "examples": [
+      {
+        "title": "A 1920×1080, 24 fps project",
+        "params": {
+          "name": "Walk cycle",
+          "frameRate": 24,
+          "cameraWidth": 1920,
+          "cameraHeight": 1080
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": null,
+    "spec": {
+      "params": "`name: string; path?: path; preset?: string; frameRate?: number (1–120); cameraWidth?: int (16–8192); cameraHeight?: int (16–8192); onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"; onExists: enum \"fail\"|\"overwrite\" = \"fail\"`",
+      "result": "`{projectId, path?, sceneId, cameraId, elementId}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`name: string; path?: path; preset?: string; frameRate?: number (1–120); cameraWidth?: int (16–8192); cameraHeight?: int (16–8192); onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"; onExists: enum \"fail\"|\"overwrite\" = \"fail\"`",
+    "specResult": "`{projectId, path?, sceneId, cameraId, elementId}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.dirty.changed",
+    "kind": "event",
+    "label": "Modified state changed",
+    "summary": "Modified state changed",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "DirtyChanged",
+      "description": "`project.dirty.changed` payload.",
+      "type": "object",
+      "properties": {
+        "projectDirty": {
+          "description": "Project modified.",
+          "type": "boolean"
+        },
+        "globalLibraryDirty": {
+          "description": "Global library modified.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "projectDirty",
+        "globalLibraryDirty"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "`{projectDirty, globalLibraryDirty}`",
+      "result": "—",
+      "undo": "n/a"
+    },
+    "specParameters": "`{projectDirty, globalLibraryDirty}`",
+    "specResult": "—",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.info.get",
+    "kind": "query",
+    "label": "Project information",
+    "summary": "Project summary",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ProjectInfo",
+      "description": "`ProjectInfo` (01 §12.4).",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Project id.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name.",
+          "type": "string"
+        },
+        "path": {
+          "description": "Location (`null` when never saved).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "readOnly": {
+          "description": "Opened read-only.",
+          "type": "boolean"
+        },
+        "formatVersion": {
+          "description": "Format version of the project (`MAJOR.MINOR`).",
+          "type": "string"
+        },
+        "dirty": {
+          "description": "Modified.",
+          "type": "boolean"
+        },
+        "globalLibraryDirty": {
+          "description": "The global library is modified (08; M9).",
+          "type": "boolean"
+        },
+        "lastSaved": {
+          "description": "Last save (`null` when never saved).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "frameRate": {
+          "description": "Frame rate.",
+          "type": "number"
+        },
+        "cameraWidth": {
+          "description": "Camera width.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        },
+        "cameraHeight": {
+          "description": "Camera height.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        },
+        "scenes": {
+          "description": "Scenes in storyline order.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SceneInfo"
+          }
+        },
+        "currentSceneId": {
+          "description": "The current scene.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "readOnly",
+        "formatVersion",
+        "dirty",
+        "globalLibraryDirty",
+        "frameRate",
+        "cameraWidth",
+        "cameraHeight",
+        "scenes"
+      ],
+      "$defs": {
+        "SceneInfo": {
+          "description": "A scene in `ProjectInfo`.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Scene id.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Name.",
+              "type": "string"
+            },
+            "frameCount": {
+              "description": "Scene length.",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "frameCount"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "ProjectInfo (01 §12.4)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Project › Properties (M4)",
+    "spec": {
+      "params": "—",
+      "result": "`ProjectInfo` (§12.4)",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`ProjectInfo` (§12.4)",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.open",
+    "kind": "job",
+    "label": "Open…",
+    "summary": "Open a project package",
+    "section": "01",
+    "scopes": [
+      "edit",
+      "files.read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "OpenParams",
+      "description": "`project.open` parameters.",
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "Absolute path of a package, or of a folder-form project.",
+          "type": "string"
+        },
+        "readOnly": {
+          "description": "Open read-only.",
+          "type": "boolean",
+          "default": false
+        },
+        "onUnsaved": {
+          "description": "Unsaved-changes policy.",
+          "$ref": "#/$defs/OnUnsaved"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "path"
+      ],
+      "$defs": {
+        "OnUnsaved": {
+          "description": "What to do with unsaved changes (01 §11.2 rule 3).",
+          "oneOf": [
+            {
+              "description": "Fail with `project.unsavedChanges` when something is modified.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Save first.",
+              "type": "string",
+              "const": "save"
+            },
+            {
+              "description": "Discard the changes.",
+              "type": "string",
+              "const": "discard"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Job_OpenResult",
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "description": "The job (11 §7.7).",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "jobId"
+      ],
+      "additionalProperties": false,
+      "x-jobResult": {
+        "$ref": "#/$defs/OpenResult"
+      },
+      "$defs": {
+        "OpenResult": {
+          "description": "The final result of `project.open`.",
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "description": "Project id.",
+              "type": "string"
+            },
+            "readOnly": {
+              "description": "Opened read-only.",
+              "type": "boolean"
+            },
+            "formatVersion": {
+              "description": "The file's format version.",
+              "type": "string"
+            },
+            "warnings": {
+              "description": "Warnings of the open (load report issues, locks; 01 §12.1 rule 6).",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ResultWarning"
+              }
+            }
+          },
+          "required": [
+            "projectId",
+            "readOnly",
+            "formatVersion",
+            "warnings"
+          ]
+        },
+        "ResultWarning": {
+          "description": "A warning returned in a result (01 §12.1 rule 6).",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Code.",
+              "type": "string"
+            },
+            "message": {
+              "description": "Message.",
+              "type": "string"
+            },
+            "details": {
+              "description": "Details."
+            }
+          },
+          "required": [
+            "id",
+            "message",
+            "details"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Open a package",
+        "params": {
+          "path": "/tmp/Short.animpkg"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": null,
+    "spec": {
+      "params": "`path: path; readOnly: bool = false; onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"`",
+      "result": "`{jobId}` → `{projectId, readOnly, formatVersion, warnings[]}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`path: path; readOnly: bool = false; onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"`",
+    "specResult": "`{jobId}` → `{projectId, readOnly, formatVersion, warnings[]}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.opened",
+    "kind": "event",
+    "label": "Project opened",
+    "summary": "A project was opened or created",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Opened",
+      "description": "`project.opened` payload.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project id.",
+          "type": "string"
+        },
+        "path": {
+          "description": "Path.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "readOnly": {
+          "description": "Read-only.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "projectId",
+        "readOnly"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "`{projectId, path?, readOnly}`",
+      "result": "—",
+      "undo": "n/a"
+    },
+    "specParameters": "`{projectId, path?, readOnly}`",
+    "specResult": "—",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.presets.list",
+    "kind": "query",
+    "label": "Format presets",
+    "summary": "Format presets for new projects",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Array_of_Preset",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Preset"
+      },
+      "$defs": {
+        "Preset": {
+          "description": "A preset (01 §3.1).",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Id: `mostRecent`, `default`, or a bundled preset id.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Display name.",
+              "type": "string"
+            },
+            "kind": {
+              "description": "`mostRecent`, `default`, `bundled`.",
+              "type": "string"
+            },
+            "frameRate": {
+              "description": "Frame rate.",
+              "type": "number"
+            },
+            "width": {
+              "description": "Camera width.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": 0
+            },
+            "height": {
+              "description": "Camera height.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": 0
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "kind",
+            "frameRate",
+            "width",
+            "height"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Presets for new projects",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Start screen new-project form (M4)",
+    "spec": {
+      "params": "—",
+      "result": "`[{id, name, kind: \"mostRecent\"|\"default\"|\"bundled\", frameRate, width, height}]`",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`[{id, name, kind: \"mostRecent\"|\"default\"|\"bundled\", frameRate, width, height}]`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.properties.get",
+    "kind": "query",
+    "label": "Project properties",
+    "summary": "Frame rate and camera size",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Properties",
+      "description": "Project properties.",
+      "type": "object",
+      "properties": {
+        "frameRate": {
+          "description": "Frame rate.",
+          "type": "number"
+        },
+        "cameraWidth": {
+          "description": "Camera width.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        },
+        "cameraHeight": {
+          "description": "Camera height.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "frameRate",
+        "cameraWidth",
+        "cameraHeight"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Frame rate and camera size",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Project › Properties (M4)",
+    "spec": {
+      "params": "—",
+      "result": "`{frameRate, cameraWidth, cameraHeight}`",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`{frameRate, cameraWidth, cameraHeight}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.properties.set",
+    "kind": "action",
+    "label": "Set project properties",
+    "summary": "Change frame rate / camera size (\"Change Project Properties\"); optionally store as defaults for new projects",
+    "section": "01",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Change Project Properties",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PropertiesSetParams",
+      "description": "`project.properties.set` parameters.",
+      "type": "object",
+      "properties": {
+        "frameRate": {
+          "description": "Frame rate.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1.0,
+          "maximum": 120.0
+        },
+        "cameraWidth": {
+          "description": "Camera width.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 16,
+          "maximum": 8192
+        },
+        "cameraHeight": {
+          "description": "Camera height.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 16,
+          "maximum": 8192
+        },
+        "setAsDefault": {
+          "description": "Make these the defaults for new projects (`project.defaults.*`).",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Properties",
+      "description": "Project properties.",
+      "type": "object",
+      "properties": {
+        "frameRate": {
+          "description": "Frame rate.",
+          "type": "number"
+        },
+        "cameraWidth": {
+          "description": "Camera width.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        },
+        "cameraHeight": {
+          "description": "Camera height.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "frameRate",
+        "cameraWidth",
+        "cameraHeight"
+      ]
+    },
+    "examples": [
+      {
+        "title": "25 fps",
+        "params": {
+          "frameRate": 25
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Project › Properties (M4)",
+    "spec": {
+      "params": "`frameRate?: number (1–120); cameraWidth?: int (16–8192); cameraHeight?: int (16–8192); setAsDefault: bool = false`",
+      "result": "`{frameRate, cameraWidth, cameraHeight}`",
+      "undo": "yes"
+    },
+    "specParameters": "`frameRate?: number (1–120); cameraWidth?: int (16–8192); cameraHeight?: int (16–8192); setAsDefault: bool = false`",
+    "specResult": "`{frameRate, cameraWidth, cameraHeight}`",
+    "specUndo": "yes"
+  },
+  {
+    "id": "project.recent.list",
+    "kind": "query",
+    "label": "Recent projects",
+    "summary": "Recent-projects list",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Array_of_RecentEntry",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/RecentEntry"
+      },
+      "$defs": {
+        "RecentEntry": {
+          "description": "A recent project (01 §3.3).",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "Path.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Project name.",
+              "type": "string"
+            },
+            "lastOpened": {
+              "description": "When it was last opened or saved.",
+              "type": "string"
+            },
+            "exists": {
+              "description": "Whether the project still exists.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "path",
+            "name",
+            "lastOpened",
+            "exists"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Recent projects",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "File › Open Recent and the start screen (M4)",
+    "spec": {
+      "params": "—",
+      "result": "`[{path, name, lastOpened, exists}]`",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`[{path, name, lastOpened, exists}]`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.recent.remove",
+    "kind": "ui",
+    "label": "Remove from recent",
+    "summary": "Remove one entry or clear the recent list",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RecentRemoveParams",
+      "description": "`project.recent.remove` parameters.",
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "One entry.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "all": {
+          "description": "Every entry.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Remaining",
+      "description": "`{remaining}`.",
+      "type": "object",
+      "properties": {
+        "remaining": {
+          "description": "Entries left.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "remaining"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Clear the list",
+        "params": {
+          "all": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "File › Open Recent › Clear Menu (M4)",
+    "spec": {
+      "params": "`path?: path; all: bool = false`",
+      "result": "`{remaining: int}`",
+      "undo": "no"
+    },
+    "specParameters": "`path?: path; all: bool = false`",
+    "specResult": "`{remaining: int}`",
+    "specUndo": "no"
+  },
+  {
+    "id": "project.recovery.delete",
+    "kind": "ui",
+    "label": "Discard recovery data",
+    "summary": "Discard recovery data",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RecoveryDeleteParams",
+      "description": "`project.recovery.delete` parameters.",
+      "type": "object",
+      "properties": {
+        "recoveryId": {
+          "description": "One entry.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "all": {
+          "description": "Every entry.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Deleted",
+      "description": "`{deleted}`.",
+      "type": "object",
+      "properties": {
+        "deleted": {
+          "description": "Entries deleted.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "deleted"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Discard everything",
+        "params": {
+          "all": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Recovery dialog at launch (M4)",
+    "spec": {
+      "params": "`recoveryId?: id; all: bool = false`",
+      "result": "`{deleted: int}`",
+      "undo": "no"
+    },
+    "specParameters": "`recoveryId?: id; all: bool = false`",
+    "specResult": "`{deleted: int}`",
+    "specUndo": "no"
+  },
+  {
+    "id": "project.recovery.list",
+    "kind": "query",
+    "label": "Recovery data",
+    "summary": "Autosave recovery data available",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Array_of_RecoveryEntry",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/RecoveryEntry"
+      },
+      "$defs": {
+        "RecoveryEntry": {
+          "description": "Recovery data at launch (REC-01).",
+          "type": "object",
+          "properties": {
+            "recoveryId": {
+              "description": "Recovery id.",
+              "type": "string"
+            },
+            "projectName": {
+              "description": "Project name.",
+              "type": "string"
+            },
+            "originalPath": {
+              "description": "The project's location (`null` for an untitled project).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "savedAt": {
+              "description": "When the copy was written.",
+              "type": "string"
+            },
+            "usable": {
+              "description": "Whether the copy loads (validated like a project, 10 §7).",
+              "type": "boolean"
+            },
+            "reason": {
+              "description": "Why it is not usable.",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "recoveryId",
+            "projectName",
+            "savedAt",
+            "usable"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Recoverable sessions",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Recovery dialog at launch (M4)",
+    "spec": {
+      "params": "—",
+      "result": "`[{recoveryId, projectName, originalPath?, savedAt}]`",
+      "undo": "n/a"
+    },
+    "specParameters": "—",
+    "specResult": "`[{recoveryId, projectName, originalPath?, savedAt}]`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.recovery.open",
+    "kind": "job",
+    "label": "Recover",
+    "summary": "Open recovery data as a modified project targeting its original path",
+    "section": "01",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "RecoveryOpenParams",
+      "description": "`project.recovery.open` parameters.",
+      "type": "object",
+      "properties": {
+        "recoveryId": {
+          "description": "Recovery id.",
+          "type": "string"
+        },
+        "onUnsaved": {
+          "description": "Unsaved-changes policy.",
+          "$ref": "#/$defs/OnUnsaved"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "recoveryId"
+      ],
+      "$defs": {
+        "OnUnsaved": {
+          "description": "What to do with unsaved changes (01 §11.2 rule 3).",
+          "oneOf": [
+            {
+              "description": "Fail with `project.unsavedChanges` when something is modified.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Save first.",
+              "type": "string",
+              "const": "save"
+            },
+            {
+              "description": "Discard the changes.",
+              "type": "string",
+              "const": "discard"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Job_RecoveryOpened",
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "description": "The job (11 §7.7).",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "jobId"
+      ],
+      "additionalProperties": false,
+      "x-jobResult": {
+        "$ref": "#/$defs/RecoveryOpened"
+      },
+      "$defs": {
+        "RecoveryOpened": {
+          "description": "The final result of `project.recovery.open`.",
+          "type": "object",
+          "properties": {
+            "projectId": {
+              "description": "Project id.",
+              "type": "string"
+            },
+            "warnings": {
+              "description": "Warnings (load issues, `project.recoveryOlderThanFile`).",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ResultWarning"
+              }
+            }
+          },
+          "required": [
+            "projectId",
+            "warnings"
+          ]
+        },
+        "ResultWarning": {
+          "description": "A warning returned in a result (01 §12.1 rule 6).",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Code.",
+              "type": "string"
+            },
+            "message": {
+              "description": "Message.",
+              "type": "string"
+            },
+            "details": {
+              "description": "Details."
+            }
+          },
+          "required": [
+            "id",
+            "message",
+            "details"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Recover a session",
+        "params": {
+          "recoveryId": "rc_1a2b3c4d"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Recovery dialog at launch (M4)",
+    "spec": {
+      "params": "`recoveryId: id; onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"`",
+      "result": "`{jobId}` → `{projectId, warnings[]}`",
+      "undo": "n/a"
+    },
+    "specParameters": "`recoveryId: id; onUnsaved: enum \"fail\"|\"save\"|\"discard\" = \"fail\"`",
+    "specResult": "`{jobId}` → `{projectId, warnings[]}`",
+    "specUndo": "n/a"
+  },
+  {
+    "id": "project.save",
+    "kind": "job",
+    "label": "Save",
+    "summary": "Save the project (and the global library if modified) to its location",
+    "section": "01",
+    "scopes": [
+      "edit",
+      "files.write"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SaveParams",
+      "description": "`project.save` parameters.",
+      "type": "object",
+      "properties": {
+        "includeGlobalLibrary": {
+          "description": "Also save the global library (08; libraries arrive with M9: never modified before).",
+          "type": "boolean",
+          "default": true
+        },
+        "allowFormatUpgrade": {
+          "description": "Allow writing a newer format version (VER-03).",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Job_SaveResult",
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "description": "The job (11 §7.7).",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "jobId"
+      ],
+      "additionalProperties": false,
+      "x-jobResult": {
+        "$ref": "#/$defs/SaveResult"
+      },
+      "$defs": {
+        "SaveResult": {
+          "description": "The final result of `project.save`.",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "Where.",
+              "type": "string"
+            },
+            "projectSaved": {
+              "description": "The project was saved.",
+              "type": "boolean"
+            },
+            "globalLibrarySaved": {
+              "description": "The global library was saved.",
+              "type": "boolean"
+            },
+            "backupId": {
+              "description": "The backup of the previous version (BAK-01).",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "path",
+            "projectSaved",
+            "globalLibrarySaved"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Save",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": null,
+    "spec": {
+      "params": "`includeGlobalLibrary: bool = true; allowFormatUpgrade: bool = false`",
+      "result": "`{jobId}` → `{path, projectSaved, globalLibrarySaved, backupId?}`",
+      "undo": "no"
+    },
+    "specParameters": "`includeGlobalLibrary: bool = true; allowFormatUpgrade: bool = false`",
+    "specResult": "`{jobId}` → `{path, projectSaved, globalLibrarySaved, backupId?}`",
+    "specUndo": "no"
+  },
+  {
+    "id": "project.saveAs",
+    "kind": "job",
+    "label": "Save As…",
+    "summary": "Save the project to a new location; the copy becomes current",
+    "section": "01",
+    "scopes": [
+      "edit",
+      "files.write"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SaveAsParams",
+      "description": "`project.saveAs` parameters.",
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "Absolute target path (a path ending with a separator, or an existing folder, is the folder form).",
+          "type": "string"
+        },
+        "onExists": {
+          "description": "Overwrite policy.",
+          "$ref": "#/$defs/OnExists"
+        },
+        "includeGlobalLibrary": {
+          "description": "Also save the global library (08; M9).",
+          "type": "boolean",
+          "default": true
+        },
+        "allowFormatUpgrade": {
+          "description": "Allow writing a newer format version (VER-03).",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "path"
+      ],
+      "$defs": {
+        "OnExists": {
+          "description": "What to do when a target file exists (01 §11.2 rule 4).",
+          "oneOf": [
+            {
+              "description": "Fail with `fs.exists` / `project.exists`.",
+              "type": "string",
+              "const": "fail"
+            },
+            {
+              "description": "Overwrite.",
+              "type": "string",
+              "const": "overwrite"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Job_SaveAsResult",
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "description": "The job (11 §7.7).",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "jobId"
+      ],
+      "additionalProperties": false,
+      "x-jobResult": {
+        "$ref": "#/$defs/SaveAsResult"
+      },
+      "$defs": {
+        "SaveAsResult": {
+          "description": "The final result of `project.saveAs`.",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "Where.",
+              "type": "string"
+            },
+            "projectSaved": {
+              "description": "The project was saved.",
+              "type": "boolean"
+            },
+            "globalLibrarySaved": {
+              "description": "The global library was saved.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "path",
+            "projectSaved",
+            "globalLibrarySaved"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Save a copy",
+        "params": {
+          "path": "/tmp/Copy.animpkg"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": null,
+    "spec": {
+      "params": "`path: path; onExists: enum \"fail\"|\"overwrite\" = \"fail\"; includeGlobalLibrary: bool = true; allowFormatUpgrade: bool = false`",
+      "result": "`{jobId}` → `{path, projectSaved, globalLibrarySaved}`",
+      "undo": "no"
+    },
+    "specParameters": "`path: path; onExists: enum \"fail\"|\"overwrite\" = \"fail\"; includeGlobalLibrary: bool = true; allowFormatUpgrade: bool = false`",
+    "specResult": "`{jobId}` → `{path, projectSaved, globalLibrarySaved}`",
+    "specUndo": "no"
+  },
+  {
+    "id": "project.saved",
+    "kind": "event",
+    "label": "Project saved",
+    "summary": "The project and/or global library was saved",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SavedEvent",
+      "description": "`project.saved` payload.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project id.",
+          "type": "string"
+        },
+        "path": {
+          "description": "Where.",
+          "type": "string"
+        },
+        "projectSaved": {
+          "description": "The project was saved.",
+          "type": "boolean"
+        },
+        "globalLibrarySaved": {
+          "description": "The global library was saved.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "projectId",
+        "path",
+        "projectSaved",
+        "globalLibrarySaved"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "`{projectId, path, projectSaved, globalLibrarySaved}`",
+      "result": "—",
+      "undo": "n/a"
+    },
+    "specParameters": "`{projectId, path, projectSaved, globalLibrarySaved}`",
+    "specResult": "—",
+    "specUndo": "n/a"
+  }
+]

@@ -1,0 +1,19 @@
+headless without a display (ubuntu)	Self-test with no display server	﻿2026-10-18T22:34:46.2173228Z ##[group]Run test -z "${DISPLAY:-}" && test -z "${WAYLAND_DISPLAY:-}"
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2173779Z test -z "${DISPLAY:-}" && test -z "${WAYLAND_DISPLAY:-}"
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2174169Z ! ls /tmp/.X11-unix/X* 2>/dev/null
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2174734Z env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-1.json
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2175488Z env -u DISPLAY -u WAYLAND_DISPLAY target/release/toontown-headless --selftest --json > selftest-2.json
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2176570Z python3 -c "import json,sys; strip=lambda f:[(c['id'],c['ok']) for c in json.load(open(f))['checks']]; a,b=strip('selftest-1.json'),strip('selftest-2.json'); print(a); sys.exit(0 if a==b and all(ok for _,ok in a) else 1)"
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2177909Z python3 scripts/check-headless-deps.py target/release/toontown-headless
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2241689Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2242050Z env:
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2242293Z   CARGO_TERM_COLOR: always
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2242545Z   CARGO_INCREMENTAL: 0
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2242767Z   RUST_BACKTRACE: 1
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2242988Z   CACHE_ON_FAILURE: false
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2243222Z ##[endgroup]
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.2590246Z [('engine.components', True), ('engine.versions', True), ('engine.ping', True), ('determinism.ieee754', True), ('headless.mcpLinked', True)]
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.4700906Z crate graph: 100 crates, forbidden: none
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.4701688Z linked libraries (linux): libgcc_s.so.1, libc.so.6, ld-linux-x86-64.so.2
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.4702353Z forbidden libraries: none
+headless without a display (ubuntu)	Self-test with no display server	2026-10-18T22:34:46.4702763Z headless dependency check passed

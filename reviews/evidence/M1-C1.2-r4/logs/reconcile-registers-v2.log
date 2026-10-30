@@ -1,0 +1,39 @@
+{
+  "requirements": {
+    "implemented": 62,
+    "divergent": 3,
+    "missing": 0,
+    "deferred-with-owner": 7
+  },
+  "commands": {
+    "implemented": 68,
+    "divergent": 3,
+    "missing": 0,
+    "deferred-with-owner": 725
+  },
+  "totalRequirements": 72,
+  "totalCommands": 796,
+  "declaredRuntime": {
+    "notImplemented": 727,
+    "implemented": 69
+  },
+  "previousDivergentCommands": {
+    "closed": 16,
+    "stillDivergent": 1
+  },
+  "previousDivergentRequirements": {
+    "closed": 5,
+    "stillDivergent": 3
+  },
+  "newDivergentCommandRows": [
+    "export.publish.service.list",
+    "storyline.play.changed"
+  ],
+  "schemas": {
+    "generated": 662,
+    "generatedHoleRows": 0,
+    "unresolvedRefs": 0,
+    "examples": 809
+  },
+  "qualification": "Scoped reconciliation of accepted R3 register and fix-induced regressions, not a fourth exhaustive review or a proof of all possible values."
+}

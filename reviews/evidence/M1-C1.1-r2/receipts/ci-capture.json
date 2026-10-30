@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "reviews/evidence/M1-C1.1-r2/capture_ci.py"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:35:05.129223+00:00",
+  "elapsed_seconds": 21.431226999964565,
+  "exit_code": 0,
+  "log": "logs\\ci-capture.log",
+  "sha256": "49905d4b01efb1c66c55c3e1d7d764fe707c60fd707a4ca40146cb604d22cac1",
+  "proptest_seed": "1182712"
+}

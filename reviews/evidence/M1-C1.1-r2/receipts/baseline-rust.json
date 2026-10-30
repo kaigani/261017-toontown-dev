@@ -1,0 +1,17 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--workspace",
+    "--locked",
+    "--no-fail-fast"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r2",
+  "base": "7c5405d6d4cb9016e80a214da6534cb236d01cf6",
+  "started_utc": "2026-10-18T21:28:31.634186+00:00",
+  "elapsed_seconds": 177.78004700003657,
+  "exit_code": 0,
+  "log": "logs\\baseline-rust.log",
+  "sha256": "300993d0a4bb2a3825a49581f44a6fd0d81bb50bc6ac5012e9261564980b7b7b",
+  "proptest_seed": "1182712"
+}

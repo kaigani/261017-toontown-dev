@@ -1,0 +1,407 @@
+diff --git a/bins/headless/tests/cancel_phases.rs b/bins/headless/tests/cancel_phases.rs
+new file mode 100644
+index 0000000..e984493
+--- /dev/null
++++ b/bins/headless/tests/cancel_phases.rs
+@@ -0,0 +1,237 @@
++//! C14-R3-03 closure: cancellation is terminal at every phase of a confirmation asked through MCP elicitation, against
++//! the real binary over stdio:
++//! - before the elicitation is sent (the cancellation in the same write as the call);
++//! - while the elicitation waits for an answer;
++//! - cancellation, then a late `accept` (the reviewer's case, also in `c14-r3-mcp.py`);
++//! - an `accept`, then a cancellation that lands while the answer is being processed (raced repeatedly): the outcome
++//!   is always consistent: either nothing happened and the request gets no response, or the confirmed overwrite
++//!   happened and is answered. Never an overwrite the client was told nothing about, never a response without it.
++#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
++
++use std::io::{BufRead, BufReader, Write};
++use std::path::{Path, PathBuf};
++use std::process::{Child, ChildStdin, Command, Stdio};
++use std::sync::mpsc::{self, Receiver};
++use std::time::{Duration, Instant};
++
++use serde_json::{Value, json};
++
++fn dir() -> PathBuf {
++    static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
++    let n = NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
++    let t = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos();
++    let d = std::env::temp_dir().join(format!("tt-c14-cancel-{}-{t}-{n}", std::process::id()));
++    std::fs::create_dir_all(&d).unwrap();
++    d
++}
++
++struct Session {
++    child: Child,
++    stdin: ChildStdin,
++    rx: Receiver<Value>,
++    seen: Vec<Value>,
++    next: u64,
++    root: PathBuf,
++}
++
++impl Session {
++    fn start() -> Self {
++        let root = dir();
++        let mut child = Command::new(env!("CARGO_BIN_EXE_toontown-headless"))
++            .args(["--mcp-stdio", "--user-dir"])
++            .arg(root.join("user"))
++            .arg("--allow-path")
++            .arg(&root)
++            .stdin(Stdio::piped())
++            .stdout(Stdio::piped())
++            .stderr(Stdio::null())
++            .spawn()
++            .unwrap();
++        let stdin = child.stdin.take().unwrap();
++        let stdout = child.stdout.take().unwrap();
++        let (tx, rx) = mpsc::channel();
++        std::thread::spawn(move || {
++            for line in BufReader::new(stdout).lines() {
++                let Ok(line) = line else { return };
++                if tx.send(serde_json::from_str::<Value>(&line).unwrap()).is_err() {
++                    return;
++                }
++            }
++        });
++        let mut s = Self { child, stdin, rx, seen: Vec::new(), next: 1, root };
++        let init = s.request(
++            "initialize",
++            json!({ "protocolVersion": "2025-06-18", "capabilities": { "elicitation": {} }, "clientInfo": { "name": "phases", "version": "1" } }),
++        );
++        assert!(init.get("result").is_some(), "{init}");
++        s.write(&json!({ "jsonrpc": "2.0", "method": "notifications/initialized" }));
++        s
++    }
++
++    fn write(&mut self, v: &Value) {
++        writeln!(self.stdin, "{v}").unwrap();
++        self.stdin.flush().unwrap();
++    }
++
++    /// Several messages in one write (their order is the order the server reads them).
++    fn write_all(&mut self, vs: &[Value]) {
++        let text: String = vs.iter().map(|v| format!("{v}\n")).collect();
++        self.stdin.write_all(text.as_bytes()).unwrap();
++        self.stdin.flush().unwrap();
++    }
++
++    fn send(&mut self, method: &str, params: Value) -> u64 {
++        let id = self.next;
++        self.next += 1;
++        self.write(&json!({ "jsonrpc": "2.0", "id": id, "method": method, "params": params }));
++        id
++    }
++
++    /// The next message matching `pred`, within `timeout`.
++    fn find(&mut self, timeout: Duration, pred: impl Fn(&Value) -> bool) -> Option<Value> {
++        if let Some(i) = self.seen.iter().position(&pred) {
++            return Some(self.seen.remove(i));
++        }
++        let deadline = Instant::now() + timeout;
++        loop {
++            let left = deadline.checked_duration_since(Instant::now())?;
++            let v = self.rx.recv_timeout(left).ok()?;
++            if pred(&v) {
++                return Some(v);
++            }
++            self.seen.push(v);
++        }
++    }
++
++    fn response(&mut self, id: u64, timeout: Duration) -> Option<Value> {
++        self.find(timeout, |v| v["id"] == id && v.get("method").is_none())
++    }
++
++    fn request(&mut self, method: &str, params: Value) -> Value {
++        let id = self.send(method, params);
++        self.response(id, Duration::from_secs(30)).expect("response")
++    }
++
++    fn run(&mut self, command: &str, params: Value) -> Value {
++        self.request("tools/call", json!({ "name": "run_command", "arguments": { "id": command, "params": params } }))
++            ["result"]["structuredContent"]
++            .clone()
++    }
++
++    /// Starts an overwriting export of the activity log onto `target` (a confirmation under Assist).
++    fn start_overwrite(&mut self, target: &Path) -> u64 {
++        self.send(
++            "tools/call",
++            json!({ "name": "run_command", "arguments": { "id": "agent.activity.export",
++                    "params": { "path": target.to_string_lossy(), "onExists": "overwrite" } } }),
++        )
++    }
++
++    fn cancel(id: u64) -> Value {
++        json!({ "jsonrpc": "2.0", "method": "notifications/cancelled", "params": { "requestId": id } })
++    }
++
++    fn accept(ask: &Value) -> Value {
++        json!({ "jsonrpc": "2.0", "id": ask["id"], "result": { "action": "accept", "content": { "confirm": true } } })
++    }
++
++    /// The worker is free: an ordinary call answers.
++    fn responsive(&mut self) {
++        let id = self.send("tools/call", json!({ "name": "get_state", "arguments": {} }));
++        let r = self.response(id, Duration::from_secs(5)).expect("the call thread is free");
++        assert_eq!(r["result"]["structuredContent"]["status"], "ok", "{r}");
++    }
++}
++
++impl Drop for Session {
++    fn drop(&mut self) {
++        let _ = self.child.kill();
++        let _ = self.child.wait();
++        let _ = std::fs::remove_dir_all(&self.root);
++    }
++}
++
++fn elicitation(v: &Value) -> bool {
++    v["method"] == "elicitation/create"
++}
++
++#[test]
++fn cancellation_before_the_elicitation_is_sent_asks_nothing() {
++    let mut s = Session::start();
++    let target = s.root.join("old.jsonl");
++    std::fs::write(&target, "old").unwrap();
++    for round in 0..10 {
++        // The call and its cancellation in one write: the cancellation lands before the confirmation is asked (no
++        // `elicitation/create` at all) or, when the call thread got there first, while it waits (the ask is
++        // withdrawn). Either way nothing acts and nothing answers.
++        let id = s.next;
++        s.next += 1;
++        let call = json!({ "jsonrpc": "2.0", "id": id, "method": "tools/call",
++            "params": { "name": "run_command", "arguments": { "id": "agent.activity.export",
++                "params": { "path": target.to_string_lossy(), "onExists": "overwrite" } } } });
++        s.write_all(&[call, Session::cancel(id)]);
++        if let Some(ask) = s.find(Duration::from_secs(1), elicitation) {
++            let withdrawn = s.find(Duration::from_secs(2), |v| v["method"] == "notifications/cancelled");
++            assert!(withdrawn.is_some_and(|w| w["params"]["requestId"] == ask["id"]), "round {round}: withdrawn");
++        }
++        assert!(s.response(id, Duration::from_millis(300)).is_none(), "round {round}: no response");
++        s.responsive();
++        assert_eq!(std::fs::read_to_string(&target).unwrap(), "old", "round {round}");
++    }
++}
++
++#[test]
++fn cancellation_while_waiting_and_before_a_late_accept_authorises_nothing() {
++    for late_accept in [false, true] {
++        let mut s = Session::start();
++        let target = s.root.join("old.jsonl");
++        std::fs::write(&target, "old").unwrap();
++        let id = s.start_overwrite(&target);
++        let ask = s.find(Duration::from_secs(10), elicitation).expect("elicitation/create");
++        if late_accept {
++            // Cancellation first, the answer right behind it, in one write (the reviewer's ordering).
++            s.write_all(&[Session::cancel(id), Session::accept(&ask)]);
++        } else {
++            s.write(&Session::cancel(id));
++            let withdrawn = s.find(Duration::from_secs(2), |v| v["method"] == "notifications/cancelled");
++            assert!(withdrawn.is_some_and(|w| w["params"]["requestId"] == ask["id"]));
++        }
++        assert!(s.response(id, Duration::from_millis(800)).is_none(), "late_accept {late_accept}: no response");
++        s.responsive();
++        assert_eq!(std::fs::read_to_string(&target).unwrap(), "old", "late_accept {late_accept}: nothing written");
++        // The token was not consumed: the activity log has no successful export.
++        let log = s.run("agent.activity.list", json!({ "limit": 100 }));
++        let exports: Vec<&Value> =
++            log["result"].as_array().unwrap().iter().filter(|e| e["commandId"] == "agent.activity.export").collect();
++        assert!(exports.iter().all(|e| e["status"] != "ok"), "{exports:?}");
++    }
++}
++
++#[test]
++fn an_accept_racing_a_cancellation_always_ends_consistently() {
++    let mut s = Session::start();
++    let mut outcomes = [0u32; 2];
++    for round in 0..20 {
++        let target = s.root.join(format!("old-{round}.jsonl"));
++        std::fs::write(&target, "old").unwrap();
++        let id = s.start_overwrite(&target);
++        let ask = s.find(Duration::from_secs(10), elicitation).expect("elicitation/create");
++        // The answer first, the cancellation right behind it: the cancellation lands while the answer is processed.
++        s.write_all(&[Session::accept(&ask), Session::cancel(id)]);
++        let answered = s.response(id, Duration::from_secs(2));
++        s.responsive();
++        let written = std::fs::read_to_string(&target).unwrap() != "old";
++        match answered {
++            Some(r) => {
++                assert!(written, "round {round}: answered but nothing written: {r}");
++                assert_eq!(r["result"]["structuredContent"]["status"], "ok", "round {round}: {r}");
++                outcomes[1] += 1;
++            }
++            None => {
++                assert!(!written, "round {round}: the file was overwritten but the request was dropped silently");
++                outcomes[0] += 1;
++            }
++        }
++    }
++    println!("dropped before acting: {}, acted and answered: {}", outcomes[0], outcomes[1]);
++}
+diff --git a/crates/mcp/tests/c14_r3_groups.rs b/crates/mcp/tests/c14_r3_groups.rs
+new file mode 100644
+index 0000000..e450df2
+--- /dev/null
++++ b/crates/mcp/tests/c14_r3_groups.rs
+@@ -0,0 +1,145 @@
++//! C14-R3-02 builder closure: atomic group steps (ADR-0015 §13). Replay keeps transaction and undo boundaries through
++//! undo and redo; a group nested in an atomic batch or a group, or a group that is not atomic, is refused with a typed
++//! error before anything runs.
++#![allow(clippy::unwrap_used, clippy::panic, missing_docs, reason = "test")]
++mod support;
++use serde_json::{Value, json};
++use support::*;
++use tt_executor::{BatchRequest, ExecutorHandle, Invocation, Origin};
++
++fn autonomous_opts(dir: &std::path::Path) -> tt_mcp::ServerOptions {
++    let mut o = opts(dir);
++    o.policy = Some(tt_executor::agents::Policy::Autonomous);
++    o
++}
++
++fn canonical(h: &ExecutorHandle) -> Vec<String> {
++    let d = h.snapshot().unwrap().unwrap();
++    d.entry_keys()
++        .iter()
++        .map(|k| tt_model::canonical::to_canonical_string(&d.entry_raw_json(k).unwrap()).unwrap())
++        .collect()
++}
++
++fn two_edits() -> Value {
++    json!({"label":"two edits", "atomic":true, "steps":[
++        {"id":"doc.object.patch","params":{"targets":["scene:#1"],"props":{"meta":{"first":1}}}},
++        {"id":"doc.object.patch","params":{"targets":["scene:#1"],"props":{"meta":{"second":2}}}}
++    ]})
++}
++
++/// Undo then redo after an atomic batch: the exported script reproduces the document byte for byte, and the batch
++/// is exported as one atomic group step.
++#[test]
++fn undo_then_redo_after_an_atomic_batch_replays_the_same_document() {
++    let dir = tmp();
++    let h = executor(&dir.join("user"));
++    assert!(h.invoke(Invocation::user("project.create", json!({"name":"Replay"}))).is_ok());
++    let initial = h.snapshot().unwrap().unwrap();
++    let (mut c, _) = Client::connect(&h, autonomous_opts(&dir), json!({}));
++    let e = c.call("batch", two_edits());
++    assert_eq!(e["structuredContent"]["status"], "ok", "{e}");
++    assert_eq!(c.run("edit.undo", json!({}))["status"], "ok");
++    assert_eq!(c.run("edit.redo", json!({}))["status"], "ok");
++    let target = dir.join("replay.json");
++    assert_eq!(c.run("agent.activity.export", json!({"path":path(&target),"format":"batch"}))["status"], "ok");
++    let script: Value = serde_json::from_slice(&std::fs::read(&target).unwrap()).unwrap();
++    let groups: Vec<&Value> = script["steps"].as_array().unwrap().iter().filter(|s| s["id"] == "batch").collect();
++    assert_eq!(groups.len(), 1, "{script}");
++    assert_eq!(groups[0]["params"]["atomic"], true);
++    assert_eq!(groups[0]["params"]["label"], "two edits");
++    assert_eq!(groups[0]["params"]["steps"].as_array().unwrap().len(), 2);
++    let fresh = executor(&dir.join("fresh-user"));
++    assert!(fresh.open_document(initial, None, false).is_ok());
++    let outcome = tt_mcp::script::run(&fresh, &opts(&dir), tt_mcp::script::load(&target).unwrap(), None).unwrap();
++    assert!(outcome.ok, "{:?}", outcome.envelope);
++    assert_eq!(canonical(&fresh), canonical(&h));
++    c.close().unwrap();
++    let _ = std::fs::remove_dir_all(&dir);
++}
++
++/// A group is one transaction and one undo step, exactly like `batch {atomic: true}`: the same revisions, and after
++/// one undo the same document; two separate edits followed by one undo give a different document.
++#[test]
++fn a_group_is_one_undo_step_like_an_atomic_batch() {
++    let dir = tmp();
++    let origin = executor(&dir.join("origin"));
++    assert!(origin.invoke(Invocation::user("project.create", json!({"name":"Replay"}))).is_ok());
++    let initial = origin.snapshot().unwrap().unwrap();
++    // Each variant starts from the same saved document; the result is (revision, after, after undo, after redo).
++    let run = |name: &str, f: &dyn Fn(&ExecutorHandle) -> Option<u64>| {
++        let h = executor(&dir.join(name));
++        assert!(h.open_document(initial.clone(), None, false).is_ok());
++        let rev = f(&h);
++        let after = canonical(&h);
++        assert!(h.invoke(Invocation::user("edit.undo", json!({}))).is_ok());
++        let undone = canonical(&h);
++        assert!(h.invoke(Invocation::user("edit.redo", json!({}))).is_ok());
++        (rev, after, undone, canonical(&h))
++    };
++    let batch = |h: &ExecutorHandle, req: Value| {
++        let env = h.batch(serde_json::from_value::<BatchRequest>(req).unwrap(), Origin::User);
++        assert!(env.is_ok(), "{env:?}");
++        env.document_rev
++    };
++    let group = run("group", &|h| {
++        batch(h, json!({"label": "outer", "atomic": false, "steps": [{"id": "batch", "params": two_edits()}]}))
++    });
++    let atomic = run("atomic", &|h| batch(h, two_edits()));
++    let separate = run("separate", &|h| {
++        let steps = two_edits()["steps"].clone();
++        let mut rev = None;
++        for s in steps.as_array().unwrap() {
++            let env = h.invoke(Invocation::user(s["id"].as_str().unwrap(), s["params"].clone()));
++            assert!(env.is_ok(), "{env:?}");
++            rev = env.document_rev;
++        }
++        rev
++    });
++    assert_eq!(group, atomic, "a group and an atomic batch: same revisions and documents through undo and redo");
++    assert_ne!(group.0, separate.0, "two separate edits take two revisions, a group one");
++    assert_ne!(group.2, separate.2, "one undo removes the whole group but only the last of two separate edits");
++    let _ = std::fs::remove_dir_all(&dir);
++}
++
++/// Nested groups and non-atomic groups are refused with typed errors and change nothing.
++#[test]
++fn nested_and_non_atomic_groups_are_refused() {
++    let dir = tmp();
++    let h = executor(&dir.join("user"));
++    assert!(h.invoke(Invocation::user("project.create", json!({"name":"Groups"}))).is_ok());
++    let before = canonical(&h);
++    let edit = json!({"id":"doc.object.patch","params":{"targets":["scene:#1"],"props":{"meta":{"x":1}}}});
++    let cases = [
++        // A group inside an atomic batch.
++        (
++            json!({"label": "outer", "atomic": true, "steps": [edit, {"id": "batch", "params": two_edits()}]}),
++            "batch.nestedGroup",
++        ),
++        // A group inside a group (the outer group is atomic).
++        (
++            json!({"label": "outer", "atomic": false, "steps": [{"id": "batch", "params": {"label": "inner", "steps": [edit, {"id": "batch", "params": two_edits()}]}}]}),
++            "batch.nestedGroup",
++        ),
++        // A group that is not atomic.
++        (
++            json!({"label": "outer", "atomic": false, "steps": [{"id": "batch", "params": {"label": "inner", "atomic": false, "steps": [edit]}}]}),
++            "arg.invalid",
++        ),
++        // A group whose params are not a batch.
++        (json!({"label": "outer", "atomic": false, "steps": [{"id": "batch", "params": {"steps": 3}}]}), "arg.invalid"),
++    ];
++    for (req, code) in cases {
++        let r: BatchRequest = serde_json::from_value(req.clone()).unwrap();
++        let env = h.batch(r, Origin::User);
++        let json = serde_json::to_value(&env).unwrap();
++        let error = if json["error"]["code"] == "batch.stepFailed" {
++            &json["error"]["details"]["error"]
++        } else {
++            &json["error"]
++        };
++        assert_eq!(error["code"], code, "{req} -> {json}");
++        assert_eq!(canonical(&h), before, "{req}: nothing changed");
++    }
++    let _ = std::fs::remove_dir_all(&dir);
++}
+diff --git a/crates/mcp/tests/c14_tickets.rs b/crates/mcp/tests/c14_tickets.rs
+index d9e196c..98d118a 100644
+--- a/crates/mcp/tests/c14_tickets.rs
++++ b/crates/mcp/tests/c14_tickets.rs
+@@ -12,7 +12,7 @@ use support::*;
+ #[test]
+ #[ignore = "C14-R1-16: result.effectiveParams changes the result contract of every command (719 result schemas, the \
+             generated IPC types) and its defaults include the GUI's last-used values, which arrive with the M4 \
+-            dialogs; owner: builder, M4 C4.x (traceability row 11 §8)"]
++            dialogs; owner: builder, M4 C4.1 (traceability row 11 §8)"]
+ fn every_result_lists_its_effective_params() {
+     let dir = tmp();
+     let h = executor(&dir.join("user"));

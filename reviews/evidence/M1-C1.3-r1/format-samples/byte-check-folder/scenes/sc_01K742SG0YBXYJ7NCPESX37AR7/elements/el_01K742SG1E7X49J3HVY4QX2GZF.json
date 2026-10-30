@@ -1,0 +1,25 @@
+{
+  "id": "el_01K742SG1E7X49J3HVY4QX2GZF",
+  "type": "element",
+  "rev": 1,
+  "name": "Clip",
+  "elementType": "clipping",
+  "start": 1,
+  "duration": 48,
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "params": {
+    "inverted": true
+  },
+  "channels": {},
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

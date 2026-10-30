@@ -1,0 +1,25 @@
+{
+  "what": "C1.2 commit path at 100 000 strokes in one layer (release build, single run): model staged commit and its parts, touched-object vs whole-entry change computation, stamping, stored patch sizes, executor round trips.",
+  "command": "cargo run --release --locked -p tt-executor --example commit_scale > reviews/evidence/M1-C1.2/commit-scale-windows.json",
+  "recordedAt": "2026-10-19T04:16:40+00:00",
+  "baseCommit": "4c0bf1a3e4b28d479498f7ffdde9c0cb57a5974a",
+  "dirtyFiles": [
+    "desktop/src/ipc/commands.test.ts",
+    "reviews/evidence/M1-C1.2/",
+    "scripts/record-gates.py"
+  ],
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)"
+  },
+  "timeOrigin": "each value is std::time::Instant elapsed around one operation (wall clock, ms)",
+  "caveats": [
+    "single run, no warm-up repetitions, background load not controlled",
+    "executor* values include the channel round trip to the document thread"
+  ],
+  "sha256": {
+    "commit-scale-windows.json": "1e9b7685e6ce010810d51b161f02481214222911f0cb1e7f5b7ea7ff33a829b2",
+    "commit-scale-build.log": "6ab795be0f38dd19fa648eb5287bc7113c763a200aebba147d33149b7a2ada90"
+  }
+}

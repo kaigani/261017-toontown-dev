@@ -1,0 +1,6765 @@
+[
+  {
+    "id": "app.context.set",
+    "kind": "ui",
+    "label": "Set current context",
+    "summary": "Set several parts of the current context at once",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ContextSetParams",
+      "description": "`app.context.set` parameters.",
+      "type": "object",
+      "properties": {
+        "sceneId": {
+          "description": "Scene to make current (id or path).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "frame": {
+          "description": "Frame (1-based).",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "elementId": {
+          "description": "Element to make current (must belong to the scene).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "drawingId": {
+          "description": "Drawing to make current (must belong to the element's drawing bank).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "AppState",
+      "description": "`AppState` (01 §12.4).",
+      "type": "object",
+      "properties": {
+        "project": {
+          "description": "Open project or `null`.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProjectRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scene": {
+          "description": "Current scene.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SceneRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "frame": {
+          "description": "Current frame (`null` without a scene).",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "maximum": 2147483647,
+          "minimum": 0
+        },
+        "element": {
+          "description": "Current element.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ElementRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "drawing": {
+          "description": "Current drawing.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DrawingRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mode": {
+          "description": "Working mode (`null` without a project).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Mode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "activeView": {
+          "description": "Active view.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ActiveView"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "focusedPanel": {
+          "description": "Focused panel.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "activeTool": {
+          "description": "Active tool.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ActiveTool"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "selection": {
+          "description": "Selection.",
+          "$ref": "#/$defs/SelectionState"
+        },
+        "workspace": {
+          "description": "Workspace.",
+          "$ref": "#/$defs/WorkspaceState"
+        },
+        "playback": {
+          "description": "Playback.",
+          "$ref": "#/$defs/PlaybackState"
+        },
+        "startScreenVisible": {
+          "description": "Start screen shown (no project).",
+          "type": "boolean"
+        },
+        "modal": {
+          "description": "Modal state (always `null` in the kernel).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Modal"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "agentSessions": {
+          "description": "Connected agent sessions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentSessionState"
+          }
+        },
+        "fullScreen": {
+          "description": "Full-screen presentation (01 §5.6; explicit `enabled` state, readiness bullet 4).",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "selection",
+        "workspace",
+        "playback",
+        "startScreenVisible",
+        "agentSessions",
+        "fullScreen"
+      ],
+      "$defs": {
+        "ProjectRef": {
+          "description": "The open project in `AppState`.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Project id.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Name.",
+              "type": "string"
+            },
+            "path": {
+              "description": "File path (`null` for an unsaved project).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "dirty": {
+              "description": "Modified since the last save.",
+              "type": "boolean"
+            },
+            "globalLibraryDirty": {
+              "description": "The global library has unsaved changes (08; always `false` until M9).",
+              "type": "boolean"
+            },
+            "readOnly": {
+              "description": "Opened read-only.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "dirty",
+            "globalLibraryDirty",
+            "readOnly"
+          ]
+        },
+        "SceneRef": {
+          "description": "`{id, name, frameCount}` of a scene.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Scene id.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Name.",
+              "type": "string"
+            },
+            "frameCount": {
+              "description": "Scene length (derived, 10 §4.3).",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "frameCount"
+          ]
+        },
+        "ElementRef": {
+          "description": "`{id, name, type}` of an element.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Element id.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Name.",
+              "type": "string"
+            },
+            "type": {
+              "description": "Element type (01 §12.4 reports `elementType` as `type`).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "type"
+          ]
+        },
+        "DrawingRef": {
+          "description": "`{id, name}` of a drawing.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Drawing id.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Name.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ]
+        },
+        "Mode": {
+          "description": "The working mode (01 §4.4).",
+          "oneOf": [
+            {
+              "description": "Drawing mode.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Staging (animation) mode.",
+              "type": "string",
+              "const": "staging"
+            }
+          ]
+        },
+        "ActiveView": {
+          "description": "The active view.",
+          "type": "object",
+          "properties": {
+            "viewId": {
+              "description": "View id (the kernel has one view per view panel; ids equal panel ids until M4).",
+              "type": "string"
+            },
+            "panelId": {
+              "description": "Panel id.",
+              "type": "string"
+            },
+            "type": {
+              "description": "`camera`, `drawing`, `top`, `side`.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "viewId",
+            "panelId",
+            "type"
+          ]
+        },
+        "ActiveTool": {
+          "description": "The active tool (M4 C4.2 selects tools; `null` until then).",
+          "type": "object",
+          "properties": {
+            "toolId": {
+              "description": "Tool id.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "toolId"
+          ]
+        },
+        "SelectionState": {
+          "description": "The selection in `AppState`.",
+          "type": "object",
+          "properties": {
+            "context": {
+              "description": "Selection context.",
+              "type": "string"
+            },
+            "ids": {
+              "description": "Selected ids.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "kinds": {
+              "description": "Object types present in the selection.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "context",
+            "ids",
+            "kinds"
+          ]
+        },
+        "WorkspaceState": {
+          "description": "The workspace in `AppState`.",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "Current workspace.",
+              "type": "string"
+            },
+            "modified": {
+              "description": "The arrangement differs from the stored one.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "name",
+            "modified"
+          ]
+        },
+        "PlaybackState": {
+          "description": "Playback in `AppState` (M5 drives it; the kernel reports stopped).",
+          "type": "object",
+          "properties": {
+            "playing": {
+              "description": "Playing.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "playing"
+          ]
+        },
+        "Modal": {
+          "description": "A modal GUI state (never set by the kernel: 11 P5).",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "description": "`dialog`, `gesture` or `progress`.",
+              "type": "string"
+            },
+            "title": {
+              "description": "Title.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "title"
+          ]
+        },
+        "AgentSessionState": {
+          "description": "An agent session in `AppState` (C1.4 fills the list).",
+          "type": "object",
+          "properties": {
+            "sessionId": {
+              "description": "Session id.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Client display name.",
+              "type": "string"
+            },
+            "acting": {
+              "description": "Currently running a command.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "sessionId",
+            "name",
+            "acting"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Go to frame 12 of the first scene",
+        "params": {
+          "sceneId": "scene:#1",
+          "frame": 12
+        }
+      },
+      {
+        "title": "Make an element current by path",
+        "params": {
+          "elementId": "scene:#1/element:#1"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "the GUI sets these parts one by one (scene list, frame field, element selection)",
+    "guiLocations": null,
+    "spec": {
+      "params": "`sceneId?: id; frame?: int; elementId?: id; drawingId?: id`",
+      "result": "`AppState`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "app.currentElement.move",
+    "kind": "ui",
+    "label": "Previous/next element",
+    "summary": "Previous/next element (Timeline order, exposure-sheet order, or by mode)",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "a project with a current scene is open",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "CurrentElementMoveParams",
+      "description": "`app.currentElement.move` parameters.",
+      "type": "object",
+      "properties": {
+        "direction": {
+          "description": "Previous or next.",
+          "$ref": "#/$defs/Direction"
+        },
+        "order": {
+          "description": "Which order to follow.",
+          "$ref": "#/$defs/ElementOrder"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "direction"
+      ],
+      "$defs": {
+        "Direction": {
+          "description": "Previous / next.",
+          "oneOf": [
+            {
+              "description": "Backwards.",
+              "type": "string",
+              "const": "previous"
+            },
+            {
+              "description": "Forwards.",
+              "type": "string",
+              "const": "next"
+            }
+          ]
+        },
+        "ElementOrder": {
+          "description": "Element order for `app.currentElement.move`.",
+          "oneOf": [
+            {
+              "description": "Exposure-sheet order when the Exposure Sheet has focus, else Timeline order.",
+              "type": "string",
+              "const": "auto"
+            },
+            {
+              "description": "Timeline order (depth-first, parents first).",
+              "type": "string",
+              "const": "timeline"
+            },
+            {
+              "description": "Exposure Sheet column order (cell-based elements).",
+              "type": "string",
+              "const": "xsheet"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ElementIdResult",
+      "description": "`{elementId}`.",
+      "type": "object",
+      "properties": {
+        "elementId": {
+          "description": "The current element (`null` when the scene has none).",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Next element in Timeline order",
+        "params": {
+          "direction": "next",
+          "order": "timeline"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Keyboard shortcuts in the Timeline and Exposure Sheet (M4)",
+    "spec": {
+      "params": "`direction: enum \"previous\"|\"next\"; order: enum \"auto\"|\"timeline\"|\"xsheet\" = \"auto\"`",
+      "result": "`{elementId}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "app.frame.move",
+    "kind": "ui",
+    "label": "Previous/next frame",
+    "summary": "Previous/next frame, or previous/next different drawing in the current element",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "a project with a current scene is open",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "FrameMoveParams",
+      "description": "`app.frame.move` parameters.",
+      "type": "object",
+      "properties": {
+        "direction": {
+          "description": "Previous or next.",
+          "$ref": "#/$defs/Direction"
+        },
+        "unit": {
+          "description": "Frames or drawings.",
+          "$ref": "#/$defs/FrameUnit"
+        },
+        "count": {
+          "description": "How many steps.",
+          "type": "integer",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 10000
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "direction"
+      ],
+      "$defs": {
+        "Direction": {
+          "description": "Previous / next.",
+          "oneOf": [
+            {
+              "description": "Backwards.",
+              "type": "string",
+              "const": "previous"
+            },
+            {
+              "description": "Forwards.",
+              "type": "string",
+              "const": "next"
+            }
+          ]
+        },
+        "FrameUnit": {
+          "description": "Step unit for `app.frame.move`.",
+          "oneOf": [
+            {
+              "description": "One frame.",
+              "type": "string",
+              "const": "frame"
+            },
+            {
+              "description": "To the next/previous frame where the current element exposes another drawing.",
+              "type": "string",
+              "const": "drawing"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "FrameResult",
+      "description": "`{frame}`.",
+      "type": "object",
+      "properties": {
+        "frame": {
+          "description": "The current frame.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "frame"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Next frame",
+        "params": {
+          "direction": "next"
+        }
+      },
+      {
+        "title": "Back to the previous drawing change",
+        "params": {
+          "direction": "previous",
+          "unit": "drawing"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Playback toolbar and keyboard shortcuts (M4)",
+    "spec": {
+      "params": "`direction: enum \"previous\"|\"next\"; unit: enum \"frame\"|\"drawing\" = \"frame\"; count: int = 1 (1–10000)`",
+      "result": "`{frame}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "app.mode.set",
+    "kind": "ui",
+    "label": "Set working mode",
+    "summary": "Switch to drawing or staging mode by activating (or switching) a view of that type",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ModeSetParams",
+      "description": "`app.mode.set` parameters.",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "description": "Drawing or staging.",
+          "$ref": "#/$defs/ModeParam"
+        },
+        "viewId": {
+          "description": "The view to switch (a view panel id); default the central view.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "mode"
+      ],
+      "$defs": {
+        "ModeParam": {
+          "description": "Working mode parameter.",
+          "oneOf": [
+            {
+              "description": "Drawing mode.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Staging mode.",
+              "type": "string",
+              "const": "staging"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ModeResult",
+      "description": "`{mode, viewId}`.",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "description": "The mode.",
+          "$ref": "#/$defs/Mode"
+        },
+        "viewId": {
+          "description": "The view.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mode",
+        "viewId"
+      ],
+      "$defs": {
+        "Mode": {
+          "description": "The working mode (01 §4.4).",
+          "oneOf": [
+            {
+              "description": "Drawing mode.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Staging (animation) mode.",
+              "type": "string",
+              "const": "staging"
+            }
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Switch to drawing mode",
+        "params": {
+          "mode": "drawing"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Mode switch of the view toolbar (M4)",
+    "spec": {
+      "params": "`mode: enum \"drawing\"|\"staging\"; viewId?: id`",
+      "result": "`{mode, viewId}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "checkpoint.create",
+    "kind": "ui",
+    "label": "Create checkpoint",
+    "summary": "Create a named in-memory snapshot of the document",
+    "section": "11",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NameParams",
+      "description": "`{name}` parameters.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Checkpoint name.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ]
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "CheckpointRef",
+      "description": "`{name, documentRev}`.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name.",
+          "type": "string"
+        },
+        "documentRev": {
+          "description": "The document revision it holds.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "name",
+        "documentRev"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Checkpoint before an experiment",
+        "params": {
+          "name": "experiment-1"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agent safety net (11 §7.7); the GUI's equivalent is the History panel",
+    "guiLocations": null,
+    "spec": {
+      "params": "`name: string`",
+      "result": "`{name, documentRev}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "checkpoint.delete",
+    "kind": "ui",
+    "label": "Delete checkpoint",
+    "summary": "Delete a checkpoint",
+    "section": "11",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NameParams",
+      "description": "`{name}` parameters.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Checkpoint name.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ]
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Empty",
+      "description": "An empty result object.",
+      "type": "object"
+    },
+    "examples": [
+      {
+        "title": "Delete a checkpoint",
+        "params": {
+          "name": "before-walk"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agent safety net (11 §7.7)",
+    "guiLocations": null,
+    "spec": {
+      "params": "`name: string`",
+      "result": "`{}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "doc.object.find",
+    "kind": "query",
+    "label": "Find objects",
+    "summary": "Find objects by type, name and predicate (= `find_objects` / `query`)",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "FindParams",
+      "description": "`doc.object.find` parameters.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Object type (or alias).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "within": {
+          "description": "Only descendants of this object.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "name": {
+          "description": "Name: exact, or a glob with `*` and `?`.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "where": {
+          "description": "Predicates (10 §10.3).",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true,
+          "default": null
+        },
+        "limit": {
+          "description": "Page size.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 1,
+          "maximum": 1000,
+          "default": 100
+        },
+        "offset": {
+          "description": "First item.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0,
+          "maximum": 100000000,
+          "default": 0
+        },
+        "fields": {
+          "description": "Extra top-level properties per item.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "sort": {
+          "description": "Order.",
+          "$ref": "#/$defs/Sort"
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "Sort": {
+          "description": "Sort order of `doc.object.find`.",
+          "oneOf": [
+            {
+              "description": "Canonical path (AG-06).",
+              "type": "string",
+              "const": "path"
+            },
+            {
+              "description": "Name.",
+              "type": "string",
+              "const": "name"
+            },
+            {
+              "description": "Revision.",
+              "type": "string",
+              "const": "rev"
+            },
+            {
+              "description": "Creation time.",
+              "type": "string",
+              "const": "createdAt"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "FindResult",
+      "description": "`doc.object.find` result.",
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "Items `{id, type, name, path, rev, …fields}`.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "total": {
+          "description": "Matches in total.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "nextOffset": {
+          "description": "Offset of the next page (`null` at the end).",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "items",
+        "total"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Every drawing element",
+        "params": {
+          "type": "element",
+          "where": {
+            "elementType": {
+              "op": "in",
+              "value": [
+                "drawing",
+                "image"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "Strokes of the first drawing",
+        "params": {
+          "type": "stroke",
+          "within": "drawingBank:#1/drawing:#1",
+          "limit": 10
+        }
+      },
+      {
+        "title": "Objects whose name starts with B",
+        "params": {
+          "name": "B*"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents query the object model (11 §7.4 find_objects)",
+    "guiLocations": null,
+    "spec": {
+      "params": "`type?: string; within?: id; name?: string (exact or glob); where?: object (§10.3); limit: int = 100 (1–1000); offset: int = 0; fields?: [string]; sort?: enum \"path\"|\"name\"|\"rev\"|\"createdAt\" = \"path\"`",
+      "result": "`{items: [{id, type, name, path, rev, …fields}], total, nextOffset}`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "doc.object.patch",
+    "kind": "action",
+    "label": "Set properties",
+    "summary": "Generic validated property patch on one or more objects (= `set_properties`)",
+    "section": "10",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Set properties",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PatchParams",
+      "description": "`doc.object.patch` parameters.",
+      "type": "object",
+      "properties": {
+        "targets": {
+          "description": "Objects to patch (ids, paths, `@selection`).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "maxItems": 1000
+        },
+        "props": {
+          "description": "JSON merge patch (RFC 7386) applied to every target.",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true,
+          "default": null
+        },
+        "ops": {
+          "description": "JSON Patch operations (RFC 6902), pointers relative to each target.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/OpParam"
+          },
+          "maxItems": 10000
+        },
+        "expectRev": {
+          "description": "Optimistic concurrency (REV-05).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ExpectRev"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "label": {
+          "description": "Undo label (default \"Set <property>\").",
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 200,
+          "default": null
+        },
+        "dryRun": {
+          "description": "Report the changes without applying them (the executor reads it before the handler runs).",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "targets"
+      ],
+      "$defs": {
+        "OpParam": {
+          "description": "One RFC 6902 operation, pointers relative to the object.",
+          "type": "object",
+          "properties": {
+            "op": {
+              "description": "Operation.",
+              "$ref": "#/$defs/OpKind"
+            },
+            "path": {
+              "description": "Target pointer.",
+              "type": "string",
+              "maxLength": 65536
+            },
+            "value": {
+              "description": "Value (`add`, `replace`, `test`).",
+              "default": null
+            },
+            "from": {
+              "description": "Source pointer (`move`, `copy`).",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "op",
+            "path"
+          ]
+        },
+        "OpKind": {
+          "description": "RFC 6902 operation names.",
+          "oneOf": [
+            {
+              "description": "add.",
+              "type": "string",
+              "const": "add"
+            },
+            {
+              "description": "remove.",
+              "type": "string",
+              "const": "remove"
+            },
+            {
+              "description": "replace.",
+              "type": "string",
+              "const": "replace"
+            },
+            {
+              "description": "move.",
+              "type": "string",
+              "const": "move"
+            },
+            {
+              "description": "copy.",
+              "type": "string",
+              "const": "copy"
+            },
+            {
+              "description": "test.",
+              "type": "string",
+              "const": "test"
+            }
+          ]
+        },
+        "ExpectRev": {
+          "description": "`expectRev`: one revision for every target, or per reference.",
+          "anyOf": [
+            {
+              "description": "Applies to every target.",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            },
+            {
+              "description": "Reference → revision.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "maximum": 18446744073709551615,
+                "minimum": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PatchResult",
+      "description": "`doc.object.patch` result.",
+      "type": "object",
+      "properties": {
+        "changes": {
+          "description": "The changes (also in the envelope).",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChangeRecord"
+          }
+        },
+        "documentRev": {
+          "description": "`documentRev` after the patch (the revision it would get for a dry run).",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "changes",
+        "documentRev"
+      ],
+      "$defs": {
+        "ChangeRecord": {
+          "description": "One object change of a committed (or dry-run) transaction (10 §2.6, 11 §7.2).",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Object id (compound for container-local ids).",
+              "type": "string"
+            },
+            "type": {
+              "description": "Object type.",
+              "type": "string"
+            },
+            "op": {
+              "description": "`created`, `modified` or `deleted`.",
+              "type": "string"
+            },
+            "rev": {
+              "description": "The object's `rev` after the transaction (the `documentRev` it would get for a dry run).",
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "minimum": 0
+            },
+            "parentId": {
+              "description": "Parent (created and deleted objects).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "index": {
+              "description": "Position in the parent's collection (created objects).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint",
+              "minimum": 0
+            },
+            "patch": {
+              "description": "Own-view RFC 6902 patch with `oldValue` (modified objects).",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": true
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "op",
+            "rev"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Annotate a scene in meta",
+        "params": {
+          "targets": [
+            "scene:#1"
+          ],
+          "props": {
+            "meta": {
+              "status": "layout"
+            }
+          }
+        }
+      },
+      {
+        "title": "Mark the first drawing as mouth shape A",
+        "params": {
+          "targets": [
+            "drawingBank:#1/drawing:#1"
+          ],
+          "ops": [
+            {
+              "op": "replace",
+              "path": "/mouthShape",
+              "value": "A"
+            }
+          ],
+          "label": "Set mouth shape"
+        }
+      },
+      {
+        "title": "Set a pen's persisted tip fields (persisted names `tip` and `tipAngle`, SI-004)",
+        "params": {
+          "targets": [
+            "pen:#1"
+          ],
+          "props": {
+            "tip": "square",
+            "tipAngle": 30
+          },
+          "dryRun": true
+        }
+      },
+      {
+        "title": "Persisted element role (superset enum, SI-003)",
+        "params": {
+          "targets": [
+            "scene:#1/element:#1"
+          ],
+          "props": {
+            "role": "foreground"
+          },
+          "dryRun": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents patch the object model (11 §7.4 set_properties); the GUI uses the area commands",
+    "guiLocations": null,
+    "spec": {
+      "params": "`targets: [id] (1–1000); props?: object; ops?: [object {op: enum \"add\"|\"remove\"|\"replace\"|\"move\"|\"copy\"|\"test\", path: string, value?: any, from?: string}]; expectRev?: int | object; label?: string; dryRun: bool = false`",
+      "result": "`{changes: [change], documentRev}`",
+      "undo": "yes"
+    }
+  },
+  {
+    "id": "doc.schema.list",
+    "kind": "query",
+    "label": "List object types",
+    "summary": "List object types with their parents and addressing",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SchemaListResult",
+      "description": "`doc.schema.list` result.",
+      "type": "object",
+      "properties": {
+        "formatVersion": {
+          "description": "Format version.",
+          "type": "string"
+        },
+        "types": {
+          "description": "Types.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TypeInfo"
+          }
+        }
+      },
+      "required": [
+        "formatVersion",
+        "types"
+      ],
+      "$defs": {
+        "TypeInfo": {
+          "description": "One type in `doc.schema.list`.",
+          "type": "object",
+          "properties": {
+            "type": {
+              "description": "Type name.",
+              "type": "string"
+            },
+            "aliases": {
+              "description": "Path aliases.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "parents": {
+              "description": "Possible parent types.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nameAddressable": {
+              "description": "Addressable by quoted name in paths.",
+              "type": "boolean"
+            },
+            "description": {
+              "description": "Description.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "aliases",
+            "parents",
+            "nameAddressable",
+            "description"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Every object type with its parents and addressing",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "schema discovery for agents (10 §2.8)",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{formatVersion, types: [{type, aliases[], parents[], nameAddressable, description}]}`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "doc.state.get",
+    "kind": "query",
+    "label": "Document state",
+    "summary": "Document state",
+    "section": "10",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "StateResult",
+      "description": "`doc.state.get` result.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project id.",
+          "type": "string"
+        },
+        "path": {
+          "description": "Package path (`null` until saved).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "form": {
+          "description": "`package` or `folder` (`null` until saved).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "formatVersion": {
+          "description": "Format version.",
+          "type": "string"
+        },
+        "migratedFrom": {
+          "description": "Version migrated from on load (C1.3).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "documentRev": {
+          "description": "Current revision.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "savedRev": {
+          "description": "Revision at the last save.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        },
+        "dirty": {
+          "description": "Modified since the last save.",
+          "type": "boolean"
+        },
+        "readOnly": {
+          "description": "Read-only.",
+          "type": "boolean"
+        },
+        "lock": {
+          "description": "Lock holder (10 §8 LOCK-01; C1.3), `null` while no lock is held.",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true
+        },
+        "historyFromRev": {
+          "description": "Oldest revision `doc.diff` accepts.",
+          "type": "integer",
+          "maximum": 18446744073709551615,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "projectId",
+        "formatVersion",
+        "documentRev",
+        "dirty",
+        "readOnly",
+        "historyFromRev"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Revision, dirty flag and diff horizon",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents track revisions (10 AG-09)",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`{projectId, path, form, formatVersion, migratedFrom, documentRev, savedRev, dirty, readOnly, lock, historyFromRev}`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "edit.clipboard.changed",
+    "kind": "event",
+    "label": "Clipboard changed",
+    "summary": "Clipboard content changed",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ClipboardSummary",
+      "description": "`{kind, itemCount}`.",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "description": "Kind.",
+          "$ref": "#/$defs/ClipboardKind"
+        },
+        "itemCount": {
+          "description": "Items.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "kind",
+        "itemCount"
+      ],
+      "$defs": {
+        "ClipboardKind": {
+          "description": "Clipboard content kinds (01 §12.4).",
+          "oneOf": [
+            {
+              "description": "Drawing objects.",
+              "type": "string",
+              "const": "drawingObjects"
+            },
+            {
+              "description": "Elements.",
+              "type": "string",
+              "const": "elements"
+            },
+            {
+              "description": "Element properties.",
+              "type": "string",
+              "const": "elementProperties"
+            },
+            {
+              "description": "Cells.",
+              "type": "string",
+              "const": "cells"
+            },
+            {
+              "description": "Keyframes.",
+              "type": "string",
+              "const": "keyframes"
+            },
+            {
+              "description": "A motion point.",
+              "type": "string",
+              "const": "motionPoint"
+            },
+            {
+              "description": "Library templates.",
+              "type": "string",
+              "const": "templates"
+            },
+            {
+              "description": "Function points.",
+              "type": "string",
+              "const": "functionPoints"
+            },
+            {
+              "description": "An image from the system clipboard.",
+              "type": "string",
+              "const": "image"
+            }
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "`{kind, itemCount}`",
+      "result": "—",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "edit.clipboard.get",
+    "kind": "query",
+    "label": "Get clipboard",
+    "summary": "Clipboard content as structured data",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ClipboardGetParams",
+      "description": "`edit.clipboard.get` parameters.",
+      "type": "object",
+      "properties": {
+        "includeData": {
+          "description": "Include the items.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Nullable_Clipboard",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Clipboard"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "$defs": {
+        "Clipboard": {
+          "description": "`Clipboard` (01 §12.4).",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "description": "Content kind.",
+              "$ref": "#/$defs/ClipboardKind"
+            },
+            "sourceContext": {
+              "description": "Context it was copied from.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            },
+            "sourceProjectId": {
+              "description": "Project it was copied from.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            },
+            "itemCount": {
+              "description": "Number of items.",
+              "type": "integer",
+              "maximum": 1000000,
+              "minimum": 0
+            },
+            "items": {
+              "description": "Items in the shape of the kind (present only with `includeData`); see `validate_clipboard`.",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "maxItems": 1000000
+            },
+            "options": {
+              "description": "Cut-special options.",
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": true,
+              "default": null
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "itemCount"
+          ]
+        },
+        "ClipboardKind": {
+          "description": "Clipboard content kinds (01 §12.4).",
+          "oneOf": [
+            {
+              "description": "Drawing objects.",
+              "type": "string",
+              "const": "drawingObjects"
+            },
+            {
+              "description": "Elements.",
+              "type": "string",
+              "const": "elements"
+            },
+            {
+              "description": "Element properties.",
+              "type": "string",
+              "const": "elementProperties"
+            },
+            {
+              "description": "Cells.",
+              "type": "string",
+              "const": "cells"
+            },
+            {
+              "description": "Keyframes.",
+              "type": "string",
+              "const": "keyframes"
+            },
+            {
+              "description": "A motion point.",
+              "type": "string",
+              "const": "motionPoint"
+            },
+            {
+              "description": "Library templates.",
+              "type": "string",
+              "const": "templates"
+            },
+            {
+              "description": "Function points.",
+              "type": "string",
+              "const": "functionPoints"
+            },
+            {
+              "description": "An image from the system clipboard.",
+              "type": "string",
+              "const": "image"
+            }
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Kind and item count",
+        "params": {
+          "includeData": false
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "the GUI reads the clipboard implicitly when pasting",
+    "guiLocations": null,
+    "spec": {
+      "params": "`includeData: bool = false`",
+      "result": "`Clipboard` (§12.4)",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "edit.clipboard.set",
+    "kind": "ui",
+    "label": "Set clipboard",
+    "summary": "Put structured content on the clipboard (validated against the schema of its kind)",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ClipboardSetParams",
+      "description": "`edit.clipboard.set` parameters.",
+      "type": "object",
+      "properties": {
+        "content": {
+          "description": "The content.",
+          "$ref": "#/$defs/Clipboard"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "content"
+      ],
+      "$defs": {
+        "Clipboard": {
+          "description": "`Clipboard` (01 §12.4).",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "description": "Content kind.",
+              "$ref": "#/$defs/ClipboardKind"
+            },
+            "sourceContext": {
+              "description": "Context it was copied from.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            },
+            "sourceProjectId": {
+              "description": "Project it was copied from.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            },
+            "itemCount": {
+              "description": "Number of items.",
+              "type": "integer",
+              "maximum": 1000000,
+              "minimum": 0
+            },
+            "items": {
+              "description": "Items in the shape of the kind (present only with `includeData`); see `validate_clipboard`.",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "maxItems": 1000000
+            },
+            "options": {
+              "description": "Cut-special options.",
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": true,
+              "default": null
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "itemCount"
+          ]
+        },
+        "ClipboardKind": {
+          "description": "Clipboard content kinds (01 §12.4).",
+          "oneOf": [
+            {
+              "description": "Drawing objects.",
+              "type": "string",
+              "const": "drawingObjects"
+            },
+            {
+              "description": "Elements.",
+              "type": "string",
+              "const": "elements"
+            },
+            {
+              "description": "Element properties.",
+              "type": "string",
+              "const": "elementProperties"
+            },
+            {
+              "description": "Cells.",
+              "type": "string",
+              "const": "cells"
+            },
+            {
+              "description": "Keyframes.",
+              "type": "string",
+              "const": "keyframes"
+            },
+            {
+              "description": "A motion point.",
+              "type": "string",
+              "const": "motionPoint"
+            },
+            {
+              "description": "Library templates.",
+              "type": "string",
+              "const": "templates"
+            },
+            {
+              "description": "Function points.",
+              "type": "string",
+              "const": "functionPoints"
+            },
+            {
+              "description": "An image from the system clipboard.",
+              "type": "string",
+              "const": "image"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ClipboardSummary",
+      "description": "`{kind, itemCount}`.",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "description": "Kind.",
+          "$ref": "#/$defs/ClipboardKind"
+        },
+        "itemCount": {
+          "description": "Items.",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        }
+      },
+      "required": [
+        "kind",
+        "itemCount"
+      ],
+      "$defs": {
+        "ClipboardKind": {
+          "description": "Clipboard content kinds (01 §12.4).",
+          "oneOf": [
+            {
+              "description": "Drawing objects.",
+              "type": "string",
+              "const": "drawingObjects"
+            },
+            {
+              "description": "Elements.",
+              "type": "string",
+              "const": "elements"
+            },
+            {
+              "description": "Element properties.",
+              "type": "string",
+              "const": "elementProperties"
+            },
+            {
+              "description": "Cells.",
+              "type": "string",
+              "const": "cells"
+            },
+            {
+              "description": "Keyframes.",
+              "type": "string",
+              "const": "keyframes"
+            },
+            {
+              "description": "A motion point.",
+              "type": "string",
+              "const": "motionPoint"
+            },
+            {
+              "description": "Library templates.",
+              "type": "string",
+              "const": "templates"
+            },
+            {
+              "description": "Function points.",
+              "type": "string",
+              "const": "functionPoints"
+            },
+            {
+              "description": "An image from the system clipboard.",
+              "type": "string",
+              "const": "image"
+            }
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Put an element reference on the clipboard",
+        "params": {
+          "content": {
+            "kind": "elements",
+            "sourceContext": "staging",
+            "itemCount": 1,
+            "items": [
+              {
+                "elementId": "scene:#1/element:#1"
+              }
+            ],
+            "options": null
+          }
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents place prepared content on the clipboard; the GUI fills it by cutting and copying",
+    "guiLocations": null,
+    "spec": {
+      "params": "`content: Clipboard`",
+      "result": "`{kind, itemCount}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "edit.copy",
+    "kind": "ui",
+    "label": "Copy",
+    "summary": "Copy the selection (or the given objects) to the clipboard",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ObjectsParams",
+      "description": "`context` + `objectIds` parameters of cut, copy and delete.",
+      "type": "object",
+      "properties": {
+        "context": {
+          "description": "Context; `auto` follows the focused panel.",
+          "$ref": "#/$defs/EditContext",
+          "default": "auto"
+        },
+        "objectIds": {
+          "description": "Objects or cells (default: the selection of the context).",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100000,
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "EditContext": {
+          "description": "Selection / clipboard context (01 §6.2); `auto` follows the focused panel.",
+          "oneOf": [
+            {
+              "description": "The focused panel's context.",
+              "type": "string",
+              "const": "auto"
+            },
+            {
+              "description": "Drawing objects of the current drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Elements in the camera/top/side views.",
+              "type": "string",
+              "const": "staging"
+            },
+            {
+              "description": "Exposure Sheet.",
+              "type": "string",
+              "const": "xsheet"
+            },
+            {
+              "description": "Timeline.",
+              "type": "string",
+              "const": "timeline"
+            },
+            {
+              "description": "Library.",
+              "type": "string",
+              "const": "library"
+            },
+            {
+              "description": "Function editor.",
+              "type": "string",
+              "const": "functionEditor"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ClipResult",
+      "description": "`{clipboard: {kind, itemCount}}`.",
+      "type": "object",
+      "properties": {
+        "clipboard": {
+          "description": "What the clipboard holds now.",
+          "$ref": "#/$defs/ClipboardSummary"
+        }
+      },
+      "required": [
+        "clipboard"
+      ],
+      "$defs": {
+        "ClipboardSummary": {
+          "description": "`{kind, itemCount}`.",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "description": "Kind.",
+              "$ref": "#/$defs/ClipboardKind"
+            },
+            "itemCount": {
+              "description": "Items.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": 0
+            }
+          },
+          "required": [
+            "kind",
+            "itemCount"
+          ]
+        },
+        "ClipboardKind": {
+          "description": "Clipboard content kinds (01 §12.4).",
+          "oneOf": [
+            {
+              "description": "Drawing objects.",
+              "type": "string",
+              "const": "drawingObjects"
+            },
+            {
+              "description": "Elements.",
+              "type": "string",
+              "const": "elements"
+            },
+            {
+              "description": "Element properties.",
+              "type": "string",
+              "const": "elementProperties"
+            },
+            {
+              "description": "Cells.",
+              "type": "string",
+              "const": "cells"
+            },
+            {
+              "description": "Keyframes.",
+              "type": "string",
+              "const": "keyframes"
+            },
+            {
+              "description": "A motion point.",
+              "type": "string",
+              "const": "motionPoint"
+            },
+            {
+              "description": "Library templates.",
+              "type": "string",
+              "const": "templates"
+            },
+            {
+              "description": "Function points.",
+              "type": "string",
+              "const": "functionPoints"
+            },
+            {
+              "description": "An image from the system clipboard.",
+              "type": "string",
+              "const": "image"
+            }
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Copy two cells of a column",
+        "params": {
+          "context": "xsheet",
+          "objectIds": [
+            "scene:#1/element:\"Bob\"/cell:#1",
+            "scene:#1/element:\"Bob\"/cell:#2"
+          ]
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": null,
+    "spec": {
+      "params": "`context: enum (as edit.cut) = \"auto\"; objectIds?: [id]`",
+      "result": "`{clipboard: {kind, itemCount}}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "edit.cutSpecial",
+    "kind": "action",
+    "label": "Cut Special",
+    "summary": "Cut cells with timeline edit options (\"Cut Special\")",
+    "section": "01",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Cut Special",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "CutSpecialParams",
+      "description": "`edit.cutSpecial` parameters.",
+      "type": "object",
+      "properties": {
+        "context": {
+          "description": "Context; `auto` follows the focused panel.",
+          "$ref": "#/$defs/EditContext",
+          "default": "auto"
+        },
+        "objectIds": {
+          "description": "Objects or cells (default: the selection).",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null
+        },
+        "options": {
+          "description": "`TimelineEditOptions` (01 §12.4); omitted fields take the remembered values.",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true,
+          "default": null
+        },
+        "remember": {
+          "description": "Remember the options.",
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "EditContext": {
+          "description": "Selection / clipboard context (01 §6.2); `auto` follows the focused panel.",
+          "oneOf": [
+            {
+              "description": "The focused panel's context.",
+              "type": "string",
+              "const": "auto"
+            },
+            {
+              "description": "Drawing objects of the current drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Elements in the camera/top/side views.",
+              "type": "string",
+              "const": "staging"
+            },
+            {
+              "description": "Exposure Sheet.",
+              "type": "string",
+              "const": "xsheet"
+            },
+            {
+              "description": "Timeline.",
+              "type": "string",
+              "const": "timeline"
+            },
+            {
+              "description": "Library.",
+              "type": "string",
+              "const": "library"
+            },
+            {
+              "description": "Function editor.",
+              "type": "string",
+              "const": "functionEditor"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ClipResult",
+      "description": "`{clipboard: {kind, itemCount}}`.",
+      "type": "object",
+      "properties": {
+        "clipboard": {
+          "description": "What the clipboard holds now.",
+          "$ref": "#/$defs/ClipboardSummary"
+        }
+      },
+      "required": [
+        "clipboard"
+      ],
+      "$defs": {
+        "ClipboardSummary": {
+          "description": "`{kind, itemCount}`.",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "description": "Kind.",
+              "$ref": "#/$defs/ClipboardKind"
+            },
+            "itemCount": {
+              "description": "Items.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": 0
+            }
+          },
+          "required": [
+            "kind",
+            "itemCount"
+          ]
+        },
+        "ClipboardKind": {
+          "description": "Clipboard content kinds (01 §12.4).",
+          "oneOf": [
+            {
+              "description": "Drawing objects.",
+              "type": "string",
+              "const": "drawingObjects"
+            },
+            {
+              "description": "Elements.",
+              "type": "string",
+              "const": "elements"
+            },
+            {
+              "description": "Element properties.",
+              "type": "string",
+              "const": "elementProperties"
+            },
+            {
+              "description": "Cells.",
+              "type": "string",
+              "const": "cells"
+            },
+            {
+              "description": "Keyframes.",
+              "type": "string",
+              "const": "keyframes"
+            },
+            {
+              "description": "A motion point.",
+              "type": "string",
+              "const": "motionPoint"
+            },
+            {
+              "description": "Library templates.",
+              "type": "string",
+              "const": "templates"
+            },
+            {
+              "description": "Function points.",
+              "type": "string",
+              "const": "functionPoints"
+            },
+            {
+              "description": "An image from the system clipboard.",
+              "type": "string",
+              "const": "image"
+            }
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Cut cells and remove their frames",
+        "params": {
+          "context": "xsheet",
+          "objectIds": [
+            "scene:#1/element:\"Bob\"/cell:#1"
+          ],
+          "options": {
+            "createDeleteExposure": true
+          }
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Edit menu (M4)",
+    "spec": {
+      "params": "`objectIds?: [id]; options?: TimelineEditOptions (§12.4); remember: bool = true`",
+      "result": "`{clipboard: {kind, itemCount}}`",
+      "undo": "yes"
+    }
+  },
+  {
+    "id": "edit.delete",
+    "kind": "action",
+    "label": "Delete",
+    "summary": "Delete the selection or the given objects; clears cells in cell contexts (\"Delete\")",
+    "section": "01",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Delete",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ObjectsParams",
+      "description": "`context` + `objectIds` parameters of cut, copy and delete.",
+      "type": "object",
+      "properties": {
+        "context": {
+          "description": "Context; `auto` follows the focused panel.",
+          "$ref": "#/$defs/EditContext",
+          "default": "auto"
+        },
+        "objectIds": {
+          "description": "Objects or cells (default: the selection of the context).",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100000,
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "EditContext": {
+          "description": "Selection / clipboard context (01 §6.2); `auto` follows the focused panel.",
+          "oneOf": [
+            {
+              "description": "The focused panel's context.",
+              "type": "string",
+              "const": "auto"
+            },
+            {
+              "description": "Drawing objects of the current drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Elements in the camera/top/side views.",
+              "type": "string",
+              "const": "staging"
+            },
+            {
+              "description": "Exposure Sheet.",
+              "type": "string",
+              "const": "xsheet"
+            },
+            {
+              "description": "Timeline.",
+              "type": "string",
+              "const": "timeline"
+            },
+            {
+              "description": "Library.",
+              "type": "string",
+              "const": "library"
+            },
+            {
+              "description": "Function editor.",
+              "type": "string",
+              "const": "functionEditor"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "DeleteResult",
+      "description": "`{deletedIds}`.",
+      "type": "object",
+      "properties": {
+        "deletedIds": {
+          "description": "Deleted objects (cells as cell references).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "deletedIds"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Clear the first cell of a column",
+        "params": {
+          "context": "xsheet",
+          "objectIds": [
+            "scene:#1/element:\"Bob\"/cell:#1"
+          ]
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": null,
+    "spec": {
+      "params": "`context: enum (as edit.cut) = \"auto\"; objectIds?: [id]`",
+      "result": "`{deletedIds: [id]}`",
+      "undo": "yes"
+    }
+  },
+  {
+    "id": "edit.deselectAll",
+    "kind": "ui",
+    "label": "Deselect All",
+    "summary": "Clear the selection of an edit context",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ContextParams",
+      "description": "`{context}` parameters.",
+      "type": "object",
+      "properties": {
+        "context": {
+          "description": "Selection context; `auto` follows the focused panel.",
+          "$ref": "#/$defs/EditContext",
+          "default": "auto"
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "EditContext": {
+          "description": "Selection / clipboard context (01 §6.2); `auto` follows the focused panel.",
+          "oneOf": [
+            {
+              "description": "The focused panel's context.",
+              "type": "string",
+              "const": "auto"
+            },
+            {
+              "description": "Drawing objects of the current drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Elements in the camera/top/side views.",
+              "type": "string",
+              "const": "staging"
+            },
+            {
+              "description": "Exposure Sheet.",
+              "type": "string",
+              "const": "xsheet"
+            },
+            {
+              "description": "Timeline.",
+              "type": "string",
+              "const": "timeline"
+            },
+            {
+              "description": "Library.",
+              "type": "string",
+              "const": "library"
+            },
+            {
+              "description": "Function editor.",
+              "type": "string",
+              "const": "functionEditor"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ContextResult",
+      "description": "`{context}`.",
+      "type": "object",
+      "properties": {
+        "context": {
+          "description": "The resolved context.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "context"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Clear the selection of the focused context",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Edit menu and Escape in views (M4)",
+    "spec": {
+      "params": "`context: enum (as edit.cut) = \"auto\"`",
+      "result": "`{context}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "edit.history.changed",
+    "kind": "event",
+    "label": "History changed",
+    "summary": "Undo history changed",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "HistoryChanged",
+      "description": "`edit.history.changed` payload.",
+      "type": "object",
+      "properties": {
+        "position": {
+          "description": "Position.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "entryCount": {
+          "description": "Entries.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "lastLabel": {
+          "description": "Label of the top step.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "description": "`user` or `agent`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "position",
+        "entryCount"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "`{position, entryCount, lastLabel, source}`",
+      "result": "—",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "edit.history.get",
+    "kind": "query",
+    "label": "History",
+    "summary": "Undo history with attribution",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "HistoryGetParams",
+      "description": "`edit.history.get` parameters.",
+      "type": "object",
+      "properties": {
+        "offset": {
+          "description": "Entries to skip (from the oldest).",
+          "type": "integer",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "limit": {
+          "description": "Entries to return.",
+          "type": "integer",
+          "default": 100,
+          "minimum": 1,
+          "maximum": 1000
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "HistoryGetResult",
+      "description": "`edit.history.get` result.",
+      "type": "object",
+      "properties": {
+        "entries": {
+          "description": "Entries, oldest first.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HistoryEntry"
+          }
+        },
+        "position": {
+          "description": "Steps applied.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        },
+        "cleanPosition": {
+          "description": "Position of the last save (`null` if unreachable).",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0
+        },
+        "total": {
+          "description": "Total entries.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "entries",
+        "position",
+        "total"
+      ],
+      "$defs": {
+        "HistoryEntry": {
+          "description": "One history entry (01 §12.1).",
+          "type": "object",
+          "properties": {
+            "index": {
+              "description": "1-based position of the step (position `n` = steps 1…n applied).",
+              "type": "integer",
+              "format": "uint",
+              "minimum": 0
+            },
+            "stepId": {
+              "description": "Step id (`u-<n>`), as in envelopes' `undo.stepId`.",
+              "type": "string"
+            },
+            "label": {
+              "description": "Label.",
+              "type": "string"
+            },
+            "source": {
+              "description": "`user` or `agent`.",
+              "type": "string"
+            },
+            "agentSessionId": {
+              "description": "Agent session id.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "agentName": {
+              "description": "Agent display name.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "time": {
+              "description": "Commit time (ISO 8601 UTC).",
+              "type": "string"
+            },
+            "objectCount": {
+              "description": "Changed objects.",
+              "type": "integer",
+              "format": "uint",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "index",
+            "stepId",
+            "label",
+            "source",
+            "time",
+            "objectCount"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "The last 20 entries",
+        "params": {
+          "limit": 20
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "History panel (M4)",
+    "spec": {
+      "params": "`offset: int = 0; limit: int = 100 (1–1000)`",
+      "result": "`{entries: [{index, label, source: \"user\"|\"agent\", agentSessionId?, agentName?, time}], position, cleanPosition}`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "edit.pasteSpecial",
+    "kind": "action",
+    "label": "Paste Special",
+    "summary": "Paste with timeline or motion-point options; `useLast` = paste special again (\"Paste Special\")",
+    "section": "01",
+    "scopes": [
+      "edit"
+    ],
+    "undoable": true,
+    "undoLabel": "Paste Special",
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PasteSpecialParams",
+      "description": "`edit.pasteSpecial` parameters.",
+      "type": "object",
+      "properties": {
+        "context": {
+          "description": "Context; `auto` follows the focused panel.",
+          "$ref": "#/$defs/EditContext",
+          "default": "auto"
+        },
+        "destination": {
+          "description": "Where to paste (as `edit.paste`).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Destination"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "options": {
+          "description": "`TimelineEditOptions` or `MotionPointPasteOptions` (01 §12.4), by clipboard content.",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true,
+          "default": null
+        },
+        "useLast": {
+          "description": "Paste special again: the last options of this session.",
+          "type": "boolean",
+          "default": false
+        },
+        "remember": {
+          "description": "Remember the options.",
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "EditContext": {
+          "description": "Selection / clipboard context (01 §6.2); `auto` follows the focused panel.",
+          "oneOf": [
+            {
+              "description": "The focused panel's context.",
+              "type": "string",
+              "const": "auto"
+            },
+            {
+              "description": "Drawing objects of the current drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Elements in the camera/top/side views.",
+              "type": "string",
+              "const": "staging"
+            },
+            {
+              "description": "Exposure Sheet.",
+              "type": "string",
+              "const": "xsheet"
+            },
+            {
+              "description": "Timeline.",
+              "type": "string",
+              "const": "timeline"
+            },
+            {
+              "description": "Library.",
+              "type": "string",
+              "const": "library"
+            },
+            {
+              "description": "Function editor.",
+              "type": "string",
+              "const": "functionEditor"
+            }
+          ]
+        },
+        "Destination": {
+          "description": "Paste destination (01 §12.1): `{drawingId}`, `{elementId, frame}`, `{catalogId}`, `{functionId, frame}`,\n`{objectIds}` or `{sceneId}`. Typed and closed: a wrong-typed or unknown field is refused by the parameter schema\nbefore any default applies (C12-R2-09).",
+          "type": "object",
+          "properties": {
+            "drawingId": {
+              "description": "Drawing to paste drawing objects into (default: the current drawing).",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            },
+            "elementId": {
+              "description": "Element (column) to paste cells into (default: the current element).",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            },
+            "frame": {
+              "description": "First frame (default: the current frame).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "default": null,
+              "minimum": 1,
+              "maximum": 100000
+            },
+            "catalogId": {
+              "description": "Library or folder to paste templates into (default: the project library).",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            },
+            "functionId": {
+              "description": "Function (channel) to paste keys into (default: the same-named channel of the current element).",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            },
+            "objectIds": {
+              "description": "Objects to paste onto (motion points, element properties; default: the selection).",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 100000,
+              "default": null
+            },
+            "sceneId": {
+              "description": "Scene to paste elements into (default: the current scene).",
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PasteResult",
+      "description": "What a paste created and modified.",
+      "type": "object",
+      "properties": {
+        "createdIds": {
+          "description": "Created objects.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "modifiedIds": {
+          "description": "Modified objects.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "warnings": {
+          "description": "Warnings (options that do not apply).",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Warning"
+          }
+        }
+      },
+      "required": [
+        "createdIds",
+        "modifiedIds",
+        "warnings"
+      ],
+      "$defs": {
+        "Warning": {
+          "description": "A warning (11 §6.3, §10): same code space as errors, never aborts.",
+          "type": "object",
+          "properties": {
+            "code": {
+              "description": "Code.",
+              "type": "string"
+            },
+            "message": {
+              "description": "Message.",
+              "type": "string"
+            },
+            "objectIds": {
+              "description": "Affected objects.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Insert copied cells at frame 1 of a column",
+        "params": {
+          "context": "xsheet",
+          "destination": {
+            "elementId": "scene:#1/element:\"Bob\"",
+            "frame": 1
+          },
+          "options": {
+            "createDeleteExposure": true
+          }
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Edit menu (M4)",
+    "spec": {
+      "params": "`destination?: object; options?: TimelineEditOptions | MotionPointPasteOptions; useLast: bool = false; remember: bool = true`",
+      "result": "`{createdIds: [id], modifiedIds: [id], warnings[]}`",
+      "undo": "yes"
+    }
+  },
+  {
+    "id": "edit.selection.changed",
+    "kind": "event",
+    "label": "Selection changed",
+    "summary": "A selection changed",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SelectionResult",
+      "description": "`{context, ids}`.",
+      "type": "object",
+      "properties": {
+        "context": {
+          "description": "The resolved context.",
+          "type": "string"
+        },
+        "ids": {
+          "description": "The selection.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "context",
+        "ids"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "`{context, ids: [id]}`",
+      "result": "—",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "edit.selection.get",
+    "kind": "query",
+    "label": "Get selection",
+    "summary": "Selection of an edit context",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": true,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ContextParams",
+      "description": "`{context}` parameters.",
+      "type": "object",
+      "properties": {
+        "context": {
+          "description": "Selection context; `auto` follows the focused panel.",
+          "$ref": "#/$defs/EditContext",
+          "default": "auto"
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "EditContext": {
+          "description": "Selection / clipboard context (01 §6.2); `auto` follows the focused panel.",
+          "oneOf": [
+            {
+              "description": "The focused panel's context.",
+              "type": "string",
+              "const": "auto"
+            },
+            {
+              "description": "Drawing objects of the current drawing.",
+              "type": "string",
+              "const": "drawing"
+            },
+            {
+              "description": "Elements in the camera/top/side views.",
+              "type": "string",
+              "const": "staging"
+            },
+            {
+              "description": "Exposure Sheet.",
+              "type": "string",
+              "const": "xsheet"
+            },
+            {
+              "description": "Timeline.",
+              "type": "string",
+              "const": "timeline"
+            },
+            {
+              "description": "Library.",
+              "type": "string",
+              "const": "library"
+            },
+            {
+              "description": "Function editor.",
+              "type": "string",
+              "const": "functionEditor"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SelectionGetResult",
+      "description": "`edit.selection.get` result.",
+      "type": "object",
+      "properties": {
+        "context": {
+          "description": "The resolved context.",
+          "type": "string"
+        },
+        "ids": {
+          "description": "Selected ids.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "kinds": {
+          "description": "Object types present.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "context",
+        "ids",
+        "kinds"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Selection of the focused context",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "the GUI shows the selection directly",
+    "guiLocations": null,
+    "spec": {
+      "params": "`context: enum (as edit.cut) = \"auto\"`",
+      "result": "`{context, ids: [id], kinds: [string]}`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "job.finished",
+    "kind": "event",
+    "label": "Job finished",
+    "summary": "Job reached a final state",
+    "section": "11",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "JobRecord",
+      "description": "A job record (11 §7.7 `job_status`).",
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "description": "Job id.",
+          "type": "string"
+        },
+        "commandId": {
+          "description": "The job command.",
+          "type": "string"
+        },
+        "state": {
+          "description": "State.",
+          "$ref": "#/$defs/JobState"
+        },
+        "progress": {
+          "description": "Progress 0..1.",
+          "type": "number"
+        },
+        "message": {
+          "description": "Current step text.",
+          "type": "string"
+        },
+        "startedAt": {
+          "description": "Start time (ISO 8601 UTC).",
+          "type": "string"
+        },
+        "result": {
+          "description": "Final result."
+        },
+        "error": {
+          "description": "Final error.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CommandError"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "session": {
+          "description": "Session that started it.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "jobId",
+        "commandId",
+        "state",
+        "progress",
+        "message",
+        "startedAt",
+        "session"
+      ],
+      "$defs": {
+        "JobState": {
+          "description": "Job state (11 §7.7).",
+          "oneOf": [
+            {
+              "description": "Accepted, not started.",
+              "type": "string",
+              "const": "queued"
+            },
+            {
+              "description": "Running.",
+              "type": "string",
+              "const": "running"
+            },
+            {
+              "description": "Finished with a result.",
+              "type": "string",
+              "const": "succeeded"
+            },
+            {
+              "description": "Finished with an error.",
+              "type": "string",
+              "const": "failed"
+            },
+            {
+              "description": "Cancelled.",
+              "type": "string",
+              "const": "cancelled"
+            }
+          ]
+        },
+        "CommandError": {
+          "description": "A typed command error in the `{code, message, details, hint?}` wire form (11 §10).",
+          "type": "object",
+          "properties": {
+            "code": {
+              "description": "Stable dotted code `area.reason`.",
+              "type": "string"
+            },
+            "message": {
+              "description": "Human-readable message.",
+              "type": "string"
+            },
+            "details": {
+              "description": "Structured details (boxed: the error travels in every `Result` of the command path, so it stays small)."
+            },
+            "hint": {
+              "description": "How to fix the call, where known.",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "details"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "Job record",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "project.dirty.changed",
+    "kind": "event",
+    "label": "Modified state changed",
+    "summary": "Modified state changed",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "DirtyChanged",
+      "description": "`project.dirty.changed` payload.",
+      "type": "object",
+      "properties": {
+        "projectDirty": {
+          "description": "Project modified.",
+          "type": "boolean"
+        },
+        "globalLibraryDirty": {
+          "description": "Global library modified.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "projectDirty",
+        "globalLibraryDirty"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "`{projectDirty, globalLibraryDirty}`",
+      "result": "—",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "project.opened",
+    "kind": "event",
+    "label": "Project opened",
+    "summary": "A project was opened or created",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Opened",
+      "description": "`project.opened` payload.",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "description": "Project id.",
+          "type": "string"
+        },
+        "path": {
+          "description": "Path.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "readOnly": {
+          "description": "Read-only.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "projectId",
+        "readOnly"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Subscribe (events take no parameters)",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "an event delivered to subscribers",
+    "guiLocations": null,
+    "spec": {
+      "params": "`{projectId, path?, readOnly}`",
+      "result": "—",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "window.panel.list",
+    "kind": "query",
+    "label": "List panels",
+    "summary": "Panels with visibility, dock area, tab group, floating geometry and focus",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Array_of_PanelEntry",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PanelEntry"
+      },
+      "$defs": {
+        "PanelEntry": {
+          "description": "A panel as listed by `window.panel.list` (01 A).",
+          "type": "object",
+          "properties": {
+            "panelId": {
+              "description": "Panel id.",
+              "type": "string"
+            },
+            "title": {
+              "description": "Title.",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "floating": {
+              "description": "Floating.",
+              "type": "boolean"
+            },
+            "area": {
+              "description": "Dock area (`left` … `bottom`, `central`).",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "tabGroup": {
+              "description": "Index of its tab group within the area.",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint",
+              "minimum": 0
+            },
+            "current": {
+              "description": "In front of its tab group.",
+              "type": "boolean"
+            },
+            "geometry": {
+              "description": "Floating geometry.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Geometry"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "focused": {
+              "description": "Has focus.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "panelId",
+            "title",
+            "visible",
+            "floating",
+            "current",
+            "focused"
+          ]
+        },
+        "Geometry": {
+          "description": "A geometry in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "width": {
+              "description": "Width.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            },
+            "height": {
+              "description": "Height.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "width",
+            "height"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Every panel with its visibility, place and focus",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "the GUI shows the panels themselves",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`[{panelId, title, visible, floating, area?, tabGroup?, current, geometry?, focused}]`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "window.panel.move",
+    "kind": "ui",
+    "label": "Move panel",
+    "summary": "Dock a panel into an area, next to or tabbed with another panel",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "PanelMoveParams",
+      "description": "`window.panel.move` parameters.",
+      "type": "object",
+      "properties": {
+        "panelId": {
+          "description": "Panel id.",
+          "type": "string"
+        },
+        "area": {
+          "description": "Target area.",
+          "$ref": "#/$defs/Area"
+        },
+        "relativeTo": {
+          "description": "A panel docked in the area.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "position": {
+          "description": "Placement.",
+          "$ref": "#/$defs/Placement"
+        },
+        "size": {
+          "description": "Area width or height.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1,
+          "maximum": 32767
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "panelId",
+        "area"
+      ],
+      "$defs": {
+        "Area": {
+          "description": "Dock area.",
+          "oneOf": [
+            {
+              "description": "Left.",
+              "type": "string",
+              "const": "left"
+            },
+            {
+              "description": "Right.",
+              "type": "string",
+              "const": "right"
+            },
+            {
+              "description": "Top.",
+              "type": "string",
+              "const": "top"
+            },
+            {
+              "description": "Bottom.",
+              "type": "string",
+              "const": "bottom"
+            },
+            {
+              "description": "The central view.",
+              "type": "string",
+              "const": "central"
+            }
+          ]
+        },
+        "Placement": {
+          "description": "Placement relative to `relativeTo`.",
+          "oneOf": [
+            {
+              "description": "As a tab.",
+              "type": "string",
+              "const": "tab"
+            },
+            {
+              "description": "Before.",
+              "type": "string",
+              "const": "before"
+            },
+            {
+              "description": "After.",
+              "type": "string",
+              "const": "after"
+            },
+            {
+              "description": "Above.",
+              "type": "string",
+              "const": "above"
+            },
+            {
+              "description": "Below.",
+              "type": "string",
+              "const": "below"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Layout",
+      "description": "A workspace layout on the wire (01 §12.4 `Layout`): the normal arrangement's fields plus the separate\nfull-screen arrangement (01 §5.6). Panels not mentioned are hidden.",
+      "type": "object",
+      "properties": {
+        "centralPanel": {
+          "description": "The central view.",
+          "type": "string"
+        },
+        "corners": {
+          "description": "Corner ownership.",
+          "$ref": "#/$defs/Corners"
+        },
+        "docks": {
+          "description": "Dock areas.",
+          "$ref": "#/$defs/Docks"
+        },
+        "floating": {
+          "description": "Floating panels.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Floating"
+          },
+          "default": []
+        },
+        "toolPalettes": {
+          "description": "Tool palettes.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ToolPalette"
+          },
+          "default": []
+        },
+        "mainToolbar": {
+          "description": "Main toolbar.",
+          "$ref": "#/$defs/MainToolbar"
+        },
+        "fullScreen": {
+          "description": "Full-screen arrangement (same shape without `fullScreen`).",
+          "$ref": "#/$defs/Arrangement"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "centralPanel",
+        "corners",
+        "docks",
+        "mainToolbar",
+        "fullScreen"
+      ],
+      "$defs": {
+        "Corners": {
+          "description": "Corner ownership (01 §5.4 *Extend side panels*).",
+          "oneOf": [
+            {
+              "description": "Left and right areas run full height.",
+              "type": "string",
+              "const": "sides"
+            },
+            {
+              "description": "Top and bottom areas run full width.",
+              "type": "string",
+              "const": "topBottom"
+            }
+          ]
+        },
+        "Docks": {
+          "description": "The four dock areas, each an ordered stack of tab groups.",
+          "type": "object",
+          "properties": {
+            "left": {
+              "description": "Left area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "right": {
+              "description": "Right area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "top": {
+              "description": "Top area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "bottom": {
+              "description": "Bottom area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            }
+          },
+          "additionalProperties": false
+        },
+        "TabGroup": {
+          "description": "One tab group of a dock area.",
+          "type": "object",
+          "properties": {
+            "tabs": {
+              "description": "Panel ids, in tab order.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "current": {
+              "description": "The tab in front.",
+              "type": "string"
+            },
+            "size": {
+              "description": "On the first group of an area: the area's width (left/right) or height (top/bottom).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "maximum": 2147483647,
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "tabs",
+            "current"
+          ]
+        },
+        "Floating": {
+          "description": "A floating panel.",
+          "type": "object",
+          "properties": {
+            "panelId": {
+              "description": "Panel id.",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "geometry": {
+              "description": "Window geometry.",
+              "$ref": "#/$defs/Geometry"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "panelId",
+            "visible",
+            "geometry"
+          ]
+        },
+        "Geometry": {
+          "description": "A geometry in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "width": {
+              "description": "Width.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            },
+            "height": {
+              "description": "Height.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "width",
+            "height"
+          ]
+        },
+        "ToolPalette": {
+          "description": "A tool palette.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Palette id (`drawingTools`, …).",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "floating": {
+              "description": "Floating (else docked with the main toolbar).",
+              "type": "boolean"
+            },
+            "position": {
+              "description": "Floating position.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Position"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "visible",
+            "floating"
+          ]
+        },
+        "Position": {
+          "description": "A point in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "MainToolbar": {
+          "description": "The main toolbar configuration (01 §5.7).",
+          "type": "object",
+          "properties": {
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "items": {
+              "description": "Items: command references, group ids, `separator`, `space`, `flexibleSpace`.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "items"
+          ]
+        },
+        "Arrangement": {
+          "description": "An arrangement of the main window (01 §12.4 `Layout`, without the nested full-screen arrangement).",
+          "type": "object",
+          "properties": {
+            "centralPanel": {
+              "description": "The central view.",
+              "type": "string"
+            },
+            "corners": {
+              "description": "Corner ownership.",
+              "$ref": "#/$defs/Corners"
+            },
+            "docks": {
+              "description": "Dock areas.",
+              "$ref": "#/$defs/Docks"
+            },
+            "floating": {
+              "description": "Floating panels.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Floating"
+              },
+              "default": []
+            },
+            "toolPalettes": {
+              "description": "Tool palettes.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ToolPalette"
+              },
+              "default": []
+            },
+            "mainToolbar": {
+              "description": "Main toolbar.",
+              "$ref": "#/$defs/MainToolbar"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "centralPanel",
+            "corners",
+            "docks",
+            "mainToolbar"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Dock the History panel as a tab next to Properties",
+        "params": {
+          "panelId": "history",
+          "area": "right",
+          "relativeTo": "properties",
+          "position": "tab"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Dragging panel tabs (M4)",
+    "spec": {
+      "params": "`panelId: string; area: enum \"left\"|\"right\"|\"top\"|\"bottom\"|\"central\"; relativeTo?: string; position: enum \"tab\"|\"before\"|\"after\"|\"above\"|\"below\" = \"tab\"; size?: int`",
+      "result": "`Layout`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "window.sidePanelsExtended.set",
+    "kind": "toggle",
+    "label": "Extend side panels",
+    "summary": "Side dock areas own the corners (true) or top/bottom areas do (false)",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Enabled",
+      "description": "`{enabled}` parameters and result.",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "The state to set (explicit, never a toggle; readiness bullet 4).",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "enabled"
+      ]
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Enabled",
+      "description": "`{enabled}` parameters and result.",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "The state to set (explicit, never a toggle; readiness bullet 4).",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "enabled"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Let the side areas run full height",
+        "params": {
+          "enabled": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Windows menu (M4)",
+    "spec": {
+      "params": "`enabled: bool`",
+      "result": "`{enabled}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "window.toolbar.items.reset",
+    "kind": "ui",
+    "label": "Reset toolbar",
+    "summary": "Restore the default main toolbar items",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ToolbarResetParams",
+      "description": "`window.toolbar.items.reset` parameters.",
+      "type": "object",
+      "properties": {
+        "toolbarId": {
+          "description": "The main toolbar.",
+          "$ref": "#/$defs/MainOnly"
+        }
+      },
+      "additionalProperties": false,
+      "$defs": {
+        "MainOnly": {
+          "description": "Only the main toolbar is configurable.",
+          "oneOf": [
+            {
+              "description": "The main toolbar.",
+              "type": "string",
+              "const": "main"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ItemsResult",
+      "description": "`{items}`.",
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "The toolbar's items.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "items"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Restore the default main toolbar",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Toolbar customisation sheet (M4)",
+    "spec": {
+      "params": "`toolbarId: enum \"main\" = \"main\"`",
+      "result": "`{items: [string]}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "window.toolbar.items.set",
+    "kind": "ui",
+    "label": "Customise toolbar",
+    "summary": "Customise the main toolbar (stored in the current workspace)",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ToolbarItemsParams",
+      "description": "`window.toolbar.items.set` parameters.",
+      "type": "object",
+      "properties": {
+        "toolbarId": {
+          "description": "The main toolbar.",
+          "$ref": "#/$defs/MainOnly"
+        },
+        "items": {
+          "description": "Items: command references, group ids, `separator`, `space`, `flexibleSpace`.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 200
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "items"
+      ],
+      "$defs": {
+        "MainOnly": {
+          "description": "Only the main toolbar is configurable.",
+          "oneOf": [
+            {
+              "description": "The main toolbar.",
+              "type": "string",
+              "const": "main"
+            }
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ItemsResult",
+      "description": "`{items}`.",
+      "type": "object",
+      "properties": {
+        "items": {
+          "description": "The toolbar's items.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "items"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Grid and playback only",
+        "params": {
+          "items": [
+            "drawAid.grid.set",
+            "separator",
+            "playStop",
+            "playback.loop.set"
+          ]
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Toolbar customisation sheet (M4)",
+    "spec": {
+      "params": "`toolbarId: enum \"main\" = \"main\"; items: [string] (command references, group IDs, \"separator\", \"space\", \"flexibleSpace\")`",
+      "result": "`{items: [string]}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "window.toolbar.list",
+    "kind": "query",
+    "label": "List toolbars",
+    "summary": "Toolbars and tool palettes with visibility, items and allowed items",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Array_of_ToolbarEntry",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ToolbarEntry"
+      },
+      "$defs": {
+        "ToolbarEntry": {
+          "description": "A toolbar as listed (01 §5.7).",
+          "type": "object",
+          "properties": {
+            "toolbarId": {
+              "description": "`main` or a tool palette id.",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "floating": {
+              "description": "Floating.",
+              "type": "boolean"
+            },
+            "position": {
+              "description": "Floating position.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Position"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "items": {
+              "description": "Items (main toolbar).",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "allowedItems": {
+              "description": "Items that may be placed (main toolbar).",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "toolbarId",
+            "visible",
+            "floating",
+            "items",
+            "allowedItems"
+          ]
+        },
+        "Position": {
+          "description": "A point in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "The main toolbar and the tool palettes",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "the GUI shows the toolbars themselves",
+    "guiLocations": null,
+    "spec": {
+      "params": "—",
+      "result": "`[{toolbarId, visible, floating, position?, items: [string], allowedItems: [string]}]`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "window.toolbar.set",
+    "kind": "toggle",
+    "label": "Show/hide toolbar",
+    "summary": "Show/hide (and float/position) the main toolbar or a tool palette",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ToolbarSetParams",
+      "description": "`window.toolbar.set` parameters.",
+      "type": "object",
+      "properties": {
+        "toolbarId": {
+          "description": "The toolbar.",
+          "$ref": "#/$defs/ToolbarId"
+        },
+        "visible": {
+          "description": "Shown.",
+          "type": "boolean"
+        },
+        "floating": {
+          "description": "Floating (tool palettes).",
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null
+        },
+        "position": {
+          "description": "Floating position.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "toolbarId",
+        "visible"
+      ],
+      "$defs": {
+        "ToolbarId": {
+          "description": "Toolbar ids.",
+          "oneOf": [
+            {
+              "description": "The main toolbar.",
+              "type": "string",
+              "const": "main"
+            },
+            {
+              "description": "Drawing tools palette.",
+              "type": "string",
+              "const": "drawingTools"
+            },
+            {
+              "description": "Animation tools palette.",
+              "type": "string",
+              "const": "animationTools"
+            },
+            {
+              "description": "Bone tools palette.",
+              "type": "string",
+              "const": "boneTools"
+            },
+            {
+              "description": "Effect tools palette.",
+              "type": "string",
+              "const": "effectTools"
+            },
+            {
+              "description": "Sound tools palette.",
+              "type": "string",
+              "const": "soundTools"
+            }
+          ]
+        },
+        "Position": {
+          "description": "A point in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ToolbarEntry",
+      "description": "A toolbar as listed (01 §5.7).",
+      "type": "object",
+      "properties": {
+        "toolbarId": {
+          "description": "`main` or a tool palette id.",
+          "type": "string"
+        },
+        "visible": {
+          "description": "Shown.",
+          "type": "boolean"
+        },
+        "floating": {
+          "description": "Floating.",
+          "type": "boolean"
+        },
+        "position": {
+          "description": "Floating position.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "items": {
+          "description": "Items (main toolbar).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowedItems": {
+          "description": "Items that may be placed (main toolbar).",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "toolbarId",
+        "visible",
+        "floating",
+        "items",
+        "allowedItems"
+      ],
+      "$defs": {
+        "Position": {
+          "description": "A point in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Hide the bone tools",
+        "params": {
+          "toolbarId": "boneTools",
+          "visible": false
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Windows › Toolbars menu (M4)",
+    "spec": {
+      "params": "`toolbarId: enum \"main\"|\"drawingTools\"|\"animationTools\"|\"boneTools\"|\"effectTools\"|\"soundTools\"; visible: bool; floating?: bool; position?: point`",
+      "result": "toolbar entry",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "workspace.create",
+    "kind": "ui",
+    "label": "New workspace",
+    "summary": "Create a workspace from the current arrangement or a given layout",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "CreateParams",
+      "description": "`workspace.create` parameters.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "New workspace name.",
+          "type": "string"
+        },
+        "position": {
+          "description": "1-based position in the list (default: last).",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 1,
+          "maximum": 1000,
+          "default": null
+        },
+        "layout": {
+          "description": "Layout (default: the current arrangement).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Layout"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "$defs": {
+        "Layout": {
+          "description": "A workspace layout on the wire (01 §12.4 `Layout`): the normal arrangement's fields plus the separate\nfull-screen arrangement (01 §5.6). Panels not mentioned are hidden.",
+          "type": "object",
+          "properties": {
+            "centralPanel": {
+              "description": "The central view.",
+              "type": "string"
+            },
+            "corners": {
+              "description": "Corner ownership.",
+              "$ref": "#/$defs/Corners"
+            },
+            "docks": {
+              "description": "Dock areas.",
+              "$ref": "#/$defs/Docks"
+            },
+            "floating": {
+              "description": "Floating panels.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Floating"
+              },
+              "default": []
+            },
+            "toolPalettes": {
+              "description": "Tool palettes.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ToolPalette"
+              },
+              "default": []
+            },
+            "mainToolbar": {
+              "description": "Main toolbar.",
+              "$ref": "#/$defs/MainToolbar"
+            },
+            "fullScreen": {
+              "description": "Full-screen arrangement (same shape without `fullScreen`).",
+              "$ref": "#/$defs/Arrangement"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "centralPanel",
+            "corners",
+            "docks",
+            "mainToolbar",
+            "fullScreen"
+          ]
+        },
+        "Corners": {
+          "description": "Corner ownership (01 §5.4 *Extend side panels*).",
+          "oneOf": [
+            {
+              "description": "Left and right areas run full height.",
+              "type": "string",
+              "const": "sides"
+            },
+            {
+              "description": "Top and bottom areas run full width.",
+              "type": "string",
+              "const": "topBottom"
+            }
+          ]
+        },
+        "Docks": {
+          "description": "The four dock areas, each an ordered stack of tab groups.",
+          "type": "object",
+          "properties": {
+            "left": {
+              "description": "Left area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "right": {
+              "description": "Right area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "top": {
+              "description": "Top area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "bottom": {
+              "description": "Bottom area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            }
+          },
+          "additionalProperties": false
+        },
+        "TabGroup": {
+          "description": "One tab group of a dock area.",
+          "type": "object",
+          "properties": {
+            "tabs": {
+              "description": "Panel ids, in tab order.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "current": {
+              "description": "The tab in front.",
+              "type": "string"
+            },
+            "size": {
+              "description": "On the first group of an area: the area's width (left/right) or height (top/bottom).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "maximum": 2147483647,
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "tabs",
+            "current"
+          ]
+        },
+        "Floating": {
+          "description": "A floating panel.",
+          "type": "object",
+          "properties": {
+            "panelId": {
+              "description": "Panel id.",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "geometry": {
+              "description": "Window geometry.",
+              "$ref": "#/$defs/Geometry"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "panelId",
+            "visible",
+            "geometry"
+          ]
+        },
+        "Geometry": {
+          "description": "A geometry in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "width": {
+              "description": "Width.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            },
+            "height": {
+              "description": "Height.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "width",
+            "height"
+          ]
+        },
+        "ToolPalette": {
+          "description": "A tool palette.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Palette id (`drawingTools`, …).",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "floating": {
+              "description": "Floating (else docked with the main toolbar).",
+              "type": "boolean"
+            },
+            "position": {
+              "description": "Floating position.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Position"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "visible",
+            "floating"
+          ]
+        },
+        "Position": {
+          "description": "A point in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "MainToolbar": {
+          "description": "The main toolbar configuration (01 §5.7).",
+          "type": "object",
+          "properties": {
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "items": {
+              "description": "Items: command references, group ids, `separator`, `space`, `flexibleSpace`.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "items"
+          ]
+        },
+        "Arrangement": {
+          "description": "An arrangement of the main window (01 §12.4 `Layout`, without the nested full-screen arrangement).",
+          "type": "object",
+          "properties": {
+            "centralPanel": {
+              "description": "The central view.",
+              "type": "string"
+            },
+            "corners": {
+              "description": "Corner ownership.",
+              "$ref": "#/$defs/Corners"
+            },
+            "docks": {
+              "description": "Dock areas.",
+              "$ref": "#/$defs/Docks"
+            },
+            "floating": {
+              "description": "Floating panels.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Floating"
+              },
+              "default": []
+            },
+            "toolPalettes": {
+              "description": "Tool palettes.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ToolPalette"
+              },
+              "default": []
+            },
+            "mainToolbar": {
+              "description": "Main toolbar.",
+              "$ref": "#/$defs/MainToolbar"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "centralPanel",
+            "corners",
+            "docks",
+            "mainToolbar"
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "CreateResult",
+      "description": "`{name, position}`.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name.",
+          "type": "string"
+        },
+        "position": {
+          "description": "Position.",
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "name",
+        "position"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Save the current arrangement as a new workspace",
+        "params": {
+          "name": "Compositing"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Windows › Workspace › Workspace Manager (M4)",
+    "spec": {
+      "params": "`name: string; position?: int (1–n+1); layout?: Layout`",
+      "result": "`{name, position}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "workspace.delete",
+    "kind": "ui",
+    "label": "Delete workspace",
+    "summary": "Delete a user workspace",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NameParams",
+      "description": "`{name}` parameters.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Workspace name.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ]
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "DeleteResult",
+      "description": "`{deleted}`.",
+      "type": "object",
+      "properties": {
+        "deleted": {
+          "description": "Deleted workspace.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "deleted"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Delete a user workspace (built-in ones cannot be deleted)",
+        "params": {
+          "name": "Inking"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Workspace Manager (M4)",
+    "spec": {
+      "params": "`name: string`",
+      "result": "`{deleted: string}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "workspace.get",
+    "kind": "query",
+    "label": "Get workspace layout",
+    "summary": "Full layout of a workspace (default: the current arrangement)",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "OptionalName",
+      "description": "`{name?}` parameters.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Workspace name (default: the current arrangement).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Layout",
+      "description": "A workspace layout on the wire (01 §12.4 `Layout`): the normal arrangement's fields plus the separate\nfull-screen arrangement (01 §5.6). Panels not mentioned are hidden.",
+      "type": "object",
+      "properties": {
+        "centralPanel": {
+          "description": "The central view.",
+          "type": "string"
+        },
+        "corners": {
+          "description": "Corner ownership.",
+          "$ref": "#/$defs/Corners"
+        },
+        "docks": {
+          "description": "Dock areas.",
+          "$ref": "#/$defs/Docks"
+        },
+        "floating": {
+          "description": "Floating panels.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Floating"
+          },
+          "default": []
+        },
+        "toolPalettes": {
+          "description": "Tool palettes.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ToolPalette"
+          },
+          "default": []
+        },
+        "mainToolbar": {
+          "description": "Main toolbar.",
+          "$ref": "#/$defs/MainToolbar"
+        },
+        "fullScreen": {
+          "description": "Full-screen arrangement (same shape without `fullScreen`).",
+          "$ref": "#/$defs/Arrangement"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "centralPanel",
+        "corners",
+        "docks",
+        "mainToolbar",
+        "fullScreen"
+      ],
+      "$defs": {
+        "Corners": {
+          "description": "Corner ownership (01 §5.4 *Extend side panels*).",
+          "oneOf": [
+            {
+              "description": "Left and right areas run full height.",
+              "type": "string",
+              "const": "sides"
+            },
+            {
+              "description": "Top and bottom areas run full width.",
+              "type": "string",
+              "const": "topBottom"
+            }
+          ]
+        },
+        "Docks": {
+          "description": "The four dock areas, each an ordered stack of tab groups.",
+          "type": "object",
+          "properties": {
+            "left": {
+              "description": "Left area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "right": {
+              "description": "Right area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "top": {
+              "description": "Top area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "bottom": {
+              "description": "Bottom area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            }
+          },
+          "additionalProperties": false
+        },
+        "TabGroup": {
+          "description": "One tab group of a dock area.",
+          "type": "object",
+          "properties": {
+            "tabs": {
+              "description": "Panel ids, in tab order.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "current": {
+              "description": "The tab in front.",
+              "type": "string"
+            },
+            "size": {
+              "description": "On the first group of an area: the area's width (left/right) or height (top/bottom).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "maximum": 2147483647,
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "tabs",
+            "current"
+          ]
+        },
+        "Floating": {
+          "description": "A floating panel.",
+          "type": "object",
+          "properties": {
+            "panelId": {
+              "description": "Panel id.",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "geometry": {
+              "description": "Window geometry.",
+              "$ref": "#/$defs/Geometry"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "panelId",
+            "visible",
+            "geometry"
+          ]
+        },
+        "Geometry": {
+          "description": "A geometry in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "width": {
+              "description": "Width.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            },
+            "height": {
+              "description": "Height.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "width",
+            "height"
+          ]
+        },
+        "ToolPalette": {
+          "description": "A tool palette.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Palette id (`drawingTools`, …).",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "floating": {
+              "description": "Floating (else docked with the main toolbar).",
+              "type": "boolean"
+            },
+            "position": {
+              "description": "Floating position.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Position"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "visible",
+            "floating"
+          ]
+        },
+        "Position": {
+          "description": "A point in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "MainToolbar": {
+          "description": "The main toolbar configuration (01 §5.7).",
+          "type": "object",
+          "properties": {
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "items": {
+              "description": "Items: command references, group ids, `separator`, `space`, `flexibleSpace`.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "items"
+          ]
+        },
+        "Arrangement": {
+          "description": "An arrangement of the main window (01 §12.4 `Layout`, without the nested full-screen arrangement).",
+          "type": "object",
+          "properties": {
+            "centralPanel": {
+              "description": "The central view.",
+              "type": "string"
+            },
+            "corners": {
+              "description": "Corner ownership.",
+              "$ref": "#/$defs/Corners"
+            },
+            "docks": {
+              "description": "Dock areas.",
+              "$ref": "#/$defs/Docks"
+            },
+            "floating": {
+              "description": "Floating panels.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Floating"
+              },
+              "default": []
+            },
+            "toolPalettes": {
+              "description": "Tool palettes.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ToolPalette"
+              },
+              "default": []
+            },
+            "mainToolbar": {
+              "description": "Main toolbar.",
+              "$ref": "#/$defs/MainToolbar"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "centralPanel",
+            "corners",
+            "docks",
+            "mainToolbar"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "The current arrangement",
+        "params": {}
+      },
+      {
+        "title": "The stored Drawing workspace",
+        "params": {
+          "name": "Drawing"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "the GUI shows the arrangement itself",
+    "guiLocations": null,
+    "spec": {
+      "params": "`name?: string`",
+      "result": "`Layout` (§12.4)",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "workspace.layout.set",
+    "kind": "ui",
+    "label": "Apply layout",
+    "summary": "Apply a layout to the window without saving it to a workspace",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "LayoutParams",
+      "description": "`{layout}` parameters.",
+      "type": "object",
+      "properties": {
+        "layout": {
+          "description": "The layout to apply (not saved).",
+          "$ref": "#/$defs/Layout"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "layout"
+      ],
+      "$defs": {
+        "Layout": {
+          "description": "A workspace layout on the wire (01 §12.4 `Layout`): the normal arrangement's fields plus the separate\nfull-screen arrangement (01 §5.6). Panels not mentioned are hidden.",
+          "type": "object",
+          "properties": {
+            "centralPanel": {
+              "description": "The central view.",
+              "type": "string"
+            },
+            "corners": {
+              "description": "Corner ownership.",
+              "$ref": "#/$defs/Corners"
+            },
+            "docks": {
+              "description": "Dock areas.",
+              "$ref": "#/$defs/Docks"
+            },
+            "floating": {
+              "description": "Floating panels.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Floating"
+              },
+              "default": []
+            },
+            "toolPalettes": {
+              "description": "Tool palettes.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ToolPalette"
+              },
+              "default": []
+            },
+            "mainToolbar": {
+              "description": "Main toolbar.",
+              "$ref": "#/$defs/MainToolbar"
+            },
+            "fullScreen": {
+              "description": "Full-screen arrangement (same shape without `fullScreen`).",
+              "$ref": "#/$defs/Arrangement"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "centralPanel",
+            "corners",
+            "docks",
+            "mainToolbar",
+            "fullScreen"
+          ]
+        },
+        "Corners": {
+          "description": "Corner ownership (01 §5.4 *Extend side panels*).",
+          "oneOf": [
+            {
+              "description": "Left and right areas run full height.",
+              "type": "string",
+              "const": "sides"
+            },
+            {
+              "description": "Top and bottom areas run full width.",
+              "type": "string",
+              "const": "topBottom"
+            }
+          ]
+        },
+        "Docks": {
+          "description": "The four dock areas, each an ordered stack of tab groups.",
+          "type": "object",
+          "properties": {
+            "left": {
+              "description": "Left area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "right": {
+              "description": "Right area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "top": {
+              "description": "Top area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "bottom": {
+              "description": "Bottom area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            }
+          },
+          "additionalProperties": false
+        },
+        "TabGroup": {
+          "description": "One tab group of a dock area.",
+          "type": "object",
+          "properties": {
+            "tabs": {
+              "description": "Panel ids, in tab order.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "current": {
+              "description": "The tab in front.",
+              "type": "string"
+            },
+            "size": {
+              "description": "On the first group of an area: the area's width (left/right) or height (top/bottom).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "maximum": 2147483647,
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "tabs",
+            "current"
+          ]
+        },
+        "Floating": {
+          "description": "A floating panel.",
+          "type": "object",
+          "properties": {
+            "panelId": {
+              "description": "Panel id.",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "geometry": {
+              "description": "Window geometry.",
+              "$ref": "#/$defs/Geometry"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "panelId",
+            "visible",
+            "geometry"
+          ]
+        },
+        "Geometry": {
+          "description": "A geometry in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "width": {
+              "description": "Width.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            },
+            "height": {
+              "description": "Height.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "width",
+            "height"
+          ]
+        },
+        "ToolPalette": {
+          "description": "A tool palette.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Palette id (`drawingTools`, …).",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "floating": {
+              "description": "Floating (else docked with the main toolbar).",
+              "type": "boolean"
+            },
+            "position": {
+              "description": "Floating position.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Position"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "visible",
+            "floating"
+          ]
+        },
+        "Position": {
+          "description": "A point in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "MainToolbar": {
+          "description": "The main toolbar configuration (01 §5.7).",
+          "type": "object",
+          "properties": {
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "items": {
+              "description": "Items: command references, group ids, `separator`, `space`, `flexibleSpace`.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "items"
+          ]
+        },
+        "Arrangement": {
+          "description": "An arrangement of the main window (01 §12.4 `Layout`, without the nested full-screen arrangement).",
+          "type": "object",
+          "properties": {
+            "centralPanel": {
+              "description": "The central view.",
+              "type": "string"
+            },
+            "corners": {
+              "description": "Corner ownership.",
+              "$ref": "#/$defs/Corners"
+            },
+            "docks": {
+              "description": "Dock areas.",
+              "$ref": "#/$defs/Docks"
+            },
+            "floating": {
+              "description": "Floating panels.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Floating"
+              },
+              "default": []
+            },
+            "toolPalettes": {
+              "description": "Tool palettes.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ToolPalette"
+              },
+              "default": []
+            },
+            "mainToolbar": {
+              "description": "Main toolbar.",
+              "$ref": "#/$defs/MainToolbar"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "centralPanel",
+            "corners",
+            "docks",
+            "mainToolbar"
+          ]
+        }
+      }
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Layout",
+      "description": "A workspace layout on the wire (01 §12.4 `Layout`): the normal arrangement's fields plus the separate\nfull-screen arrangement (01 §5.6). Panels not mentioned are hidden.",
+      "type": "object",
+      "properties": {
+        "centralPanel": {
+          "description": "The central view.",
+          "type": "string"
+        },
+        "corners": {
+          "description": "Corner ownership.",
+          "$ref": "#/$defs/Corners"
+        },
+        "docks": {
+          "description": "Dock areas.",
+          "$ref": "#/$defs/Docks"
+        },
+        "floating": {
+          "description": "Floating panels.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Floating"
+          },
+          "default": []
+        },
+        "toolPalettes": {
+          "description": "Tool palettes.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ToolPalette"
+          },
+          "default": []
+        },
+        "mainToolbar": {
+          "description": "Main toolbar.",
+          "$ref": "#/$defs/MainToolbar"
+        },
+        "fullScreen": {
+          "description": "Full-screen arrangement (same shape without `fullScreen`).",
+          "$ref": "#/$defs/Arrangement"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "centralPanel",
+        "corners",
+        "docks",
+        "mainToolbar",
+        "fullScreen"
+      ],
+      "$defs": {
+        "Corners": {
+          "description": "Corner ownership (01 §5.4 *Extend side panels*).",
+          "oneOf": [
+            {
+              "description": "Left and right areas run full height.",
+              "type": "string",
+              "const": "sides"
+            },
+            {
+              "description": "Top and bottom areas run full width.",
+              "type": "string",
+              "const": "topBottom"
+            }
+          ]
+        },
+        "Docks": {
+          "description": "The four dock areas, each an ordered stack of tab groups.",
+          "type": "object",
+          "properties": {
+            "left": {
+              "description": "Left area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "right": {
+              "description": "Right area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "top": {
+              "description": "Top area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            },
+            "bottom": {
+              "description": "Bottom area.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TabGroup"
+              },
+              "default": []
+            }
+          },
+          "additionalProperties": false
+        },
+        "TabGroup": {
+          "description": "One tab group of a dock area.",
+          "type": "object",
+          "properties": {
+            "tabs": {
+              "description": "Panel ids, in tab order.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "current": {
+              "description": "The tab in front.",
+              "type": "string"
+            },
+            "size": {
+              "description": "On the first group of an area: the area's width (left/right) or height (top/bottom).",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "maximum": 2147483647,
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "tabs",
+            "current"
+          ]
+        },
+        "Floating": {
+          "description": "A floating panel.",
+          "type": "object",
+          "properties": {
+            "panelId": {
+              "description": "Panel id.",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "geometry": {
+              "description": "Window geometry.",
+              "$ref": "#/$defs/Geometry"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "panelId",
+            "visible",
+            "geometry"
+          ]
+        },
+        "Geometry": {
+          "description": "A geometry in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "width": {
+              "description": "Width.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            },
+            "height": {
+              "description": "Height.",
+              "type": "integer",
+              "maximum": 32767,
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "width",
+            "height"
+          ]
+        },
+        "ToolPalette": {
+          "description": "A tool palette.",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Palette id (`drawingTools`, …).",
+              "type": "string"
+            },
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "floating": {
+              "description": "Floating (else docked with the main toolbar).",
+              "type": "boolean"
+            },
+            "position": {
+              "description": "Floating position.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Position"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "visible",
+            "floating"
+          ]
+        },
+        "Position": {
+          "description": "A point in logical pixels.",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "Left.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            },
+            "y": {
+              "description": "Top.",
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": -2147483648
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        "MainToolbar": {
+          "description": "The main toolbar configuration (01 §5.7).",
+          "type": "object",
+          "properties": {
+            "visible": {
+              "description": "Shown.",
+              "type": "boolean"
+            },
+            "items": {
+              "description": "Items: command references, group ids, `separator`, `space`, `flexibleSpace`.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "items"
+          ]
+        },
+        "Arrangement": {
+          "description": "An arrangement of the main window (01 §12.4 `Layout`, without the nested full-screen arrangement).",
+          "type": "object",
+          "properties": {
+            "centralPanel": {
+              "description": "The central view.",
+              "type": "string"
+            },
+            "corners": {
+              "description": "Corner ownership.",
+              "$ref": "#/$defs/Corners"
+            },
+            "docks": {
+              "description": "Dock areas.",
+              "$ref": "#/$defs/Docks"
+            },
+            "floating": {
+              "description": "Floating panels.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Floating"
+              },
+              "default": []
+            },
+            "toolPalettes": {
+              "description": "Tool palettes.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ToolPalette"
+              },
+              "default": []
+            },
+            "mainToolbar": {
+              "description": "Main toolbar.",
+              "$ref": "#/$defs/MainToolbar"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "centralPanel",
+            "corners",
+            "docks",
+            "mainToolbar"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Camera view with the Timeline below",
+        "params": {
+          "layout": {
+            "centralPanel": "cameraView",
+            "corners": "sides",
+            "docks": {
+              "bottom": [
+                {
+                  "tabs": [
+                    "timeline"
+                  ],
+                  "current": "timeline",
+                  "size": 200
+                }
+              ]
+            },
+            "floating": [],
+            "toolPalettes": [],
+            "mainToolbar": {
+              "visible": true,
+              "items": []
+            },
+            "fullScreen": {
+              "centralPanel": "cameraView",
+              "corners": "sides",
+              "docks": {},
+              "floating": [],
+              "toolPalettes": [],
+              "mainToolbar": {
+                "visible": false,
+                "items": []
+              }
+            }
+          }
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": "agents apply prepared layouts; users arrange panels by dragging",
+    "guiLocations": null,
+    "spec": {
+      "params": "`layout: Layout`",
+      "result": "`Layout`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "workspace.list",
+    "kind": "query",
+    "label": "List workspaces",
+    "summary": "Workspaces",
+    "section": "01",
+    "scopes": [
+      "read"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NoParams",
+      "description": "No parameters.",
+      "type": "object",
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Array_of_WorkspaceEntry",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/WorkspaceEntry"
+      },
+      "$defs": {
+        "WorkspaceEntry": {
+          "description": "A workspace as listed by `workspace.list`.",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "Name.",
+              "type": "string"
+            },
+            "builtIn": {
+              "description": "Built in (cannot be deleted).",
+              "type": "boolean"
+            },
+            "modified": {
+              "description": "The current arrangement differs from the stored one (current workspace only).",
+              "type": "boolean"
+            },
+            "position": {
+              "description": "Position in the list (1-based).",
+              "type": "integer",
+              "format": "uint",
+              "minimum": 0
+            },
+            "current": {
+              "description": "The current workspace.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "name",
+            "builtIn",
+            "modified",
+            "position",
+            "current"
+          ]
+        }
+      }
+    },
+    "examples": [
+      {
+        "title": "Built-in and user workspaces in menu order",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Workspace drop-down of the main toolbar (M4)",
+    "spec": {
+      "params": "—",
+      "result": "`[{name, builtIn, modified, position, current}]`",
+      "undo": "n/a"
+    }
+  },
+  {
+    "id": "workspace.reset",
+    "kind": "ui",
+    "label": "Reset workspace",
+    "summary": "Restore built-in workspace(s) to the bundled arrangement; `select` also applies it (restore default workspace = `name: \"Default\", select: true`)",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ResetParams",
+      "description": "`workspace.reset` parameters.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Built-in workspace (default: current).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "all": {
+          "description": "Every built-in workspace.",
+          "type": "boolean",
+          "default": false
+        },
+        "select": {
+          "description": "Select it afterwards.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "ResetResult",
+      "description": "`{reset}`.",
+      "type": "object",
+      "properties": {
+        "reset": {
+          "description": "Reset workspaces.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "reset"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Restore and select the Default workspace",
+        "params": {
+          "name": "Default",
+          "select": true
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": null,
+    "spec": {
+      "params": "`name?: string; all: bool = false; select: bool = false`",
+      "result": "`{reset: [string]}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "workspace.save",
+    "kind": "ui",
+    "label": "Save workspace",
+    "summary": "Store the current arrangement into a workspace",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "OptionalName",
+      "description": "`{name?}` parameters.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Workspace name (default: the current arrangement).",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NameResult",
+      "description": "`{name}`.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Workspace name.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Save the arrangement into the current workspace",
+        "params": {}
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Windows › Workspace › Save Workspace (M4)",
+    "spec": {
+      "params": "`name?: string (default: current)`",
+      "result": "`{name}`",
+      "undo": "no"
+    }
+  },
+  {
+    "id": "workspace.select",
+    "kind": "ui",
+    "label": "Select workspace",
+    "summary": "Switch workspace",
+    "section": "01",
+    "scopes": [
+      "ui"
+    ],
+    "undoable": false,
+    "undoLabel": null,
+    "confirmation": [],
+    "enablement": "always enabled",
+    "needsProject": false,
+    "paramsSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "SelectParams",
+      "description": "`workspace.select` parameters.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Workspace name.",
+          "type": "string"
+        },
+        "saveCurrent": {
+          "description": "Save the current arrangement into the current workspace first (default: the preference\n`general.workspace.autoSave`, whose default is on, 01 §7; preferences arrive in M4).",
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ]
+    },
+    "resultSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "NameResult",
+      "description": "`{name}`.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Workspace name.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Switch to the Drawing workspace",
+        "params": {
+          "name": "Drawing"
+        }
+      }
+    ],
+    "status": "implemented",
+    "agentOnly": null,
+    "guiLocations": "Windows › Workspace menu and the workspace drop-down (M4)",
+    "spec": {
+      "params": "`name: string; saveCurrent?: bool (default: general.workspace.autoSave)`",
+      "result": "`{name}`",
+      "undo": "no"
+    }
+  }
+]

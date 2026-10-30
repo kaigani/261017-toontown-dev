@@ -1,0 +1,17 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--workspace",
+    "--locked",
+    "--no-fail-fast"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:40:00.310625+00:00",
+  "elapsed_seconds": 67.297,
+  "exit_code": 101,
+  "log": "logs/final-workspace.log",
+  "sha256": "ec1ad8eceb35d0e4825000f5c48059c348e1baa2d7710e8beff8bf6254e55192",
+  "env": {}
+}

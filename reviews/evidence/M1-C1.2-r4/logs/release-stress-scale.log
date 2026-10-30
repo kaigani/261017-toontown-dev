@@ -1,0 +1,138 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling serde_core v1.0.229
+   Compiling autocfg v1.5.1
+   Compiling memchr v2.8.3
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.3
+   Compiling windows-link v0.2.1
+   Compiling zmij v1.0.23
+   Compiling foldhash v0.2.0
+   Compiling cfg-if v1.0.5
+   Compiling allocator-api2 v0.2.21
+   Compiling serde_json v1.0.154
+   Compiling version_check v0.9.5
+   Compiling itoa v1.0.18
+   Compiling zerocopy v0.8.63
+   Compiling getrandom v0.3.4
+   Compiling ref-cast v1.0.27
+   Compiling regex-syntax v0.8.11
+   Compiling parking_lot_core v0.9.12
+   Compiling scopeguard v1.2.0
+   Compiling once_cell v1.21.4
+   Compiling smallvec v1.16.3
+   Compiling bit-vec v0.8.0
+   Compiling jsonschema-value v0.59.0
+   Compiling borrow-or-share v0.2.4
+   Compiling heck v0.5.0
+   Compiling unicode-general-category v1.1.0
+   Compiling outref v0.5.2
+   Compiling bytecount v0.6.9
+   Compiling micromap v0.3.0
+   Compiling percent-encoding v2.3.2
+   Compiling vsimd v0.8.0
+   Compiling getrandom v0.4.3
+   Compiling thiserror v2.0.21
+   Compiling lock_api v0.4.14
+   Compiling num-cmp v0.1.0
+   Compiling tinyvec v1.13.3
+   Compiling dyn-clone v1.0.20
+   Compiling data-encoding v2.11.1
+   Compiling ahash v0.8.12
+   Compiling hashbrown v0.17.1
+   Compiling num-traits v0.2.19
+   Compiling bit-set v0.8.0
+   Compiling windows-sys v0.61.2
+   Compiling target-tuple v1.0.2
+   Compiling winnow v1.0.4
+   Compiling aho-corasick v1.1.5
+   Compiling ryu v1.0.23
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling uuid-simd v0.8.0
+   Compiling glob v0.3.4
+   Compiling unicode-normalization v0.1.26
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling parking_lot v0.12.5
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling winapi-util v0.1.11
+   Compiling termcolor v1.4.1
+   Compiling jsonschema-regex v0.59.0
+   Compiling regex-automata v0.4.18
+   Compiling num-integer v0.1.47
+   Compiling num-complex v0.4.6
+   Compiling num-bigint v0.4.8
+   Compiling num-iter v0.1.46
+   Compiling indexmap v2.14.2
+   Compiling serde_spanned v1.1.2
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling serde_derive_internals v0.30.0
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling serde_derive v1.0.229
+   Compiling ref-cast-impl v1.0.27
+   Compiling thiserror-impl v2.0.21
+   Compiling schemars_derive v1.2.3
+   Compiling num-rational v0.4.2
+   Compiling num v0.4.3
+   Compiling fraction v0.17.0
+   Compiling strum_macros v0.28.0
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r4\crates\registry-macros)
+   Compiling regex v1.13.1
+   Compiling fancy-regex v0.19.2
+   Compiling strum v0.28.0
+   Compiling fluent-uri v0.4.1
+   Compiling email_address v0.2.9
+   Compiling schemars v1.2.3
+   Compiling trybuild v1.0.122
+   Compiling referencing v0.59.0
+   Compiling jsonschema v0.59.0
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r4\crates\model)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r4\crates\registry)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m1-c12-r4\crates\executor)
+    Finished `release` profile [optimized + debuginfo] target(s) in 40.43s
+     Running tests\c12_r1_scale.rs (target\release\deps\c12_r1_scale-92c3818502fbb36d.exe)
+
+running 1 test
+{"profile":"release","cases":[{"fixture":"100000 strokes","objects":100092,"assembleSeconds":4.0435881,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.4085841,"maximumCallSeconds":0.0081286,"create20CheckpointsSeconds":0.0009089,"find100Seconds":0.1146013,"documentRev":1},{"fixture":"10000 drawings","objects":10091,"assembleSeconds":0.1512083,"malformedInvocations":796,"inputBytes":1048599,"sweepSeconds":0.5957539,"maximumCallSeconds":0.002537,"create20CheckpointsSeconds":0.0630553,"find100Seconds":0.0229359,"documentRev":1}]}
+test every_command_rejects_huge_malformed_input_on_large_documents ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.45s
+
+     Running tests\c12_r1_stress.rs (target\release\deps\c12_r1_stress-9484cd89e37b55a3.exe)
+
+running 5 tests
+test ordinary_dry_run_preserves_exact_history_and_matches_real_result ... ok
+796 entries, 2388 malformed invocations completed under watchdog
+test all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded ... ok
+8 clients, 200 commits, 706 correctly rejected conflicts, documentRev 201
+test eight_clients_cas_commands_and_batches_have_no_lost_updates ... ok
+809 typed examples executed and successful results validated
+test every_executable_typed_example_also_validates_its_result_schema ... ok
+{"seed":"0xc12020261019a571","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5472,3911,528,1,1690,534],"documentRev":11230,"durationSeconds":9.83126,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.86s
+
+     Running tests\c12_r2_scale.rs (target\release\deps\c12_r2_scale-4d7833ba5ebbd26c.exe)
+
+running 1 test
+test hundred_thousand_stroke_change_reports_drawing_in_envelope_event_and_diff ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.46s
+
+     Running tests\c12_r3_stress.rs (target\release\deps\c12_r3_stress-23a0e56002ffc4d9.exe)
+
+running 5 tests
+test ordinary_dry_run_preserves_exact_history_and_matches_real_result ... ok
+796 entries, 2388 malformed invocations completed under watchdog
+test all_inventory_entries_reject_malformed_params_under_watchdog_and_catalogue_is_recorded ... ok
+8 clients, 248 commits, 790 correctly rejected conflicts, documentRev 249
+test eight_clients_cas_commands_and_batches_have_no_lost_updates ... ok
+809 typed examples executed and successful results validated
+test every_executable_typed_example_also_validates_its_result_schema ... ok
+{"seed":"0xc12320261019b683","operations":10000,"replayOperations":10000,"editsUndoRedoCreateRestoreDryRun":[5494,3902,470,1,1724,511],"documentRev":11176,"durationSeconds":10.329795,"oracle":"independent before/after metadata stack; exact canonical all-entry byte checks every 100 operations; full fresh executor replay"}
+test ten_thousand_history_operations_match_independent_content_oracle_and_replay ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.36s
+

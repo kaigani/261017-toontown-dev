@@ -1,0 +1,1 @@
+raster determinism (windows-latest)	Render fixtures and check committed hashes (two processes)	2026-10-18T22:35:56.4886187Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s

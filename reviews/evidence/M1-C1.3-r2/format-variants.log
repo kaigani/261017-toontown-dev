@@ -1,0 +1,47 @@
+cargo :    Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r2\crates\persist)
+At line:24 char:1
++ cargo test -p tt-persist --test c13_r1_format --test c13_r2_format -- ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...crates\persist):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.50s
+     Running tests\c13_r1_format.rs (target\debug\deps\c13_r1_format-fad8e891f3b3702e.exe)
+
+running 8 tests
+test zip_names_reject_drive_prefixes_in_every_path_component ... ok
+test malformed_journal_cannot_delete_an_arbitrary_project_entry ... ok
+test partial_folder_rollback_restores_every_already_replaced_entry ... ok
+test folder_has_the_same_mimetype_entry_as_package ... ok
+test repairs_at_exhausted_document_revision_fail_closed ... ok
+test existing_project_thumbnail_survives_save ... ok
+test newer_minor_unknown_properties_survive_on_the_same_frozen_entry ... ok
+test package_and_folder_round_trip_all_fixture_entries_and_binary_bytes ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+     Running tests\c13_r2_format.rs (target\debug\deps\c13_r2_format-1fcc6f81da314318.exe)
+
+running 6 tests
+test portable_entry_names_reject_windows_special_forms ... ok
+test overlong_component_is_not_a_portable_folder_entry ... FAILED
+test crash_before_journal_publication_leaves_old_document_loadable ... ok
+test recovery_claim_expires_when_actual_child_owner_exits_and_release_restores_metadata ... ok
+test frozen_entry_nested_unknown_data_survives_other_entry_edit_both_forms_and_reopen ... ok
+test document_revision_boundaries_with_and_without_repairs ... ok
+
+failures:
+
+---- overlong_component_is_not_a_portable_folder_entry stdout ----
+
+thread 'overlong_component_is_not_a_portable_folder_entry' (33704) panicked at crates\persist\tests\c13_r2_format.rs:47:5:
+a component beyond 255 characters cannot be written in the Windows folder form
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    overlong_component_is_not_a_portable_folder_entry
+
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+
+error: test failed, to rerun pass `-p tt-persist --test c13_r2_format`

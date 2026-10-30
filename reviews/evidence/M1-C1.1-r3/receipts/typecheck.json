@@ -1,0 +1,15 @@
+{
+  "command": [
+    "pnpm",
+    "typecheck"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r3",
+  "base": "eb54b55b44d6e744ab5f2b0d74b4213b604798f3",
+  "started_utc": "2026-10-18T22:54:29.681687+00:00",
+  "elapsed_seconds": 3.536080399993807,
+  "exit_code": 0,
+  "log": "logs/typecheck.log",
+  "sha256": "6ba5b8a64de44c0ecc31dfb57208f4ac4425c5b3b40b51eb2ab2a1fec628b0ef",
+  "proptest_seed": "202610180311",
+  "proptest_cases": null
+}

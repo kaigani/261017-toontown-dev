@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cmd",
+    "/c",
+    "pnpm",
+    "licenses:check"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r7",
+  "base": "01591796452bbea5333cc9121c00857456519daf",
+  "started_utc": "2026-10-19T02:21:02.121679+00:00",
+  "elapsed_seconds": 0.805,
+  "exit_code": 0,
+  "log": "logs/pnpm-licenses-check.log",
+  "sha256": "9cd0114d47c2fa8afad88ee74eae7da0956ce93f2309e6185f45aac1e69cd251",
+  "env": {}
+}

@@ -1,0 +1,12 @@
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m1-c11-r2\crates\engine)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.76s
+     Running tests\c11_r1_wire.rs (target\debug\deps\c11_r1_wire-b7aa83c72e6ee927.exe)
+
+running 4 tests
+test typed_nonfinite_wire_numbers_are_rejected_not_changed_to_null ... ok
+test nested_duplicate_keys_are_rejected_in_requests ... ok
+test opaque_json_integer_outside_u64_is_not_silently_rounded ... ok
+test supported_integer_boundaries_and_utf8_controls ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

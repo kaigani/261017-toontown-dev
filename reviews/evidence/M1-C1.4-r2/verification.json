@@ -1,0 +1,147 @@
+{
+  "productCommit": "74fe3a956ea1c9a044095fdd3e17bb48520a1da5",
+  "receipt": {
+    "baseCommit": "836de8ca8d85c1fa53224a61606ada7ead0a767c",
+    "logsMatch": {
+      "gates/build.log": true,
+      "gates/clippy-diag.log": true,
+      "gates/clippy.log": true,
+      "gates/declarations.log": true,
+      "gates/deny.log": true,
+      "gates/fmt.log": true,
+      "gates/headless.log": true,
+      "gates/mcp-conformance.log": true,
+      "gates/measurements.log": true,
+      "gates/pnpm-format.log": true,
+      "gates/pnpm-licenses.log": true,
+      "gates/pnpm-lint.log": true,
+      "gates/pnpm-test.log": true,
+      "gates/pnpm-typecheck.log": true,
+      "gates/release-features.log": true,
+      "gates/reviewer-python-suites.log": true,
+      "gates/selftest-1.json": true,
+      "gates/selftest-2.json": true,
+      "gates/selftest-compare.log": true,
+      "gates/test-diag.log": true,
+      "gates/test.log": true
+    },
+    "statuses": {
+      "gates/fmt.log": 0,
+      "gates/declarations.log": 0,
+      "gates/clippy.log": 0,
+      "gates/clippy-diag.log": 0,
+      "gates/deny.log": 0,
+      "gates/pnpm-lint.log": 0,
+      "gates/pnpm-typecheck.log": 0,
+      "gates/pnpm-test.log": 0,
+      "gates/pnpm-format.log": 0,
+      "gates/pnpm-licenses.log": 0,
+      "gates/build.log": 0,
+      "gates/headless.log": 0,
+      "gates/mcp-conformance.log": 0,
+      "gates/reviewer-python-suites.log": 0,
+      "gates/test.log": 0,
+      "gates/test-diag.log": 0,
+      "gates/release-features.log": 0,
+      "gates/measurements.log": 0
+    },
+    "workspaceTotals": {
+      "passed": 683,
+      "failed": 0,
+      "ignored": 5
+    }
+  },
+  "freshCIArtifactComparison": {
+    "headless-Windows/measurement-analysis.json": {
+      "sha256": "20cc0e4dbed5b393bb9a360d3e555ade6896361aca82323ac9eddfcda4b7e27f",
+      "matchesPriorDownload": true
+    },
+    "headless-Windows/release-features.log": {
+      "sha256": "9df73506074cdb4f92571662d55e13709f2beba11308f1b50fce132807016b09",
+      "matchesPriorDownload": true
+    },
+    "headless-Windows/sdk-conformance.json": {
+      "sha256": "15dd02254fdd57046198df07f4f48f0ede3a495fce7f1043dbccb7d617371e31",
+      "matchesPriorDownload": true
+    },
+    "headless-Windows/selftest-1.json": {
+      "sha256": "fbeadf361843cb7f2588227a57efb06d55828a6a85eba4a5f4034be7a5c3f3e0",
+      "matchesPriorDownload": true
+    },
+    "headless-Windows/toontown-headless.exe": {
+      "sha256": "1b6555016f8525aa075f44e15c7afb26eeb13a1d8f6207c71763d684342aefbe",
+      "matchesPriorDownload": true
+    },
+    "headless-Windows/c14-measurements/autosave-windows.json": {
+      "sha256": "cd04ebf8f17677c4687e4005e85ec64f547a6e45600cebac3873e7fda9c58985",
+      "matchesPriorDownload": true
+    },
+    "headless-Windows/c14-measurements/cache-bounds-windows.json": {
+      "sha256": "f643aa0a4ffaafc4f7582578f25a426ee82d413a3d1fdfff7cba686501fb1ca6",
+      "matchesPriorDownload": true
+    },
+    "headless-Windows/c14-measurements/fingerprint-windows.json": {
+      "sha256": "a2c02216a9314e8a53c80f94f742b1fb47d2862a7f66d50655da1d759294ee65",
+      "matchesPriorDownload": true
+    },
+    "headless-Windows/c14-measurements/lock-liveness-windows.json": {
+      "sha256": "2a7646e0ce2afa31f3010ae00a7979f780616688090e3b0305ffc89f7e6b51e8",
+      "matchesPriorDownload": true
+    },
+    "headless-Windows/c14-measurements/never-block-mcp-windows.json": {
+      "sha256": "00c79a8a0ad6420ab99223483c30ed3fee68631634cd1b9053b6756b7fde1c68",
+      "matchesPriorDownload": true
+    },
+    "headless-Windows/c14-measurements/queued-calls-windows.json": {
+      "sha256": "f2d440d833a3c55e3a58a75231879f3d509ad82940761081ed4f247bca3df92e",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/measurement-analysis.json": {
+      "sha256": "3cd33e4595047103e949e2ba056e2d634d55ed288c778388a1db98a15da2aacb",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/release-features.log": {
+      "sha256": "5d2bfa3d5f9d6b28985daf42bedad2d02b4df3bc2781b3ebf967afe794887cd0",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/sdk-conformance.json": {
+      "sha256": "2e59b2d746960f86191bece9e9aa900d988ac2178a80f66590008df5b32765e5",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/selftest-1.json": {
+      "sha256": "b8467c977ede07ccb3d7a11602dd2ae33e8b2a161cb506be651db5d8b485b3c3",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/toontown-headless": {
+      "sha256": "77563051f9aada47ee06f34a08e87a77b1ef76ff58b05995aae1d67e44702d04",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/c14-measurements/autosave-macos.json": {
+      "sha256": "40e8ae2ede8330de2f7668fe7348fa340b960a026c23014f75d3a01290fb78a7",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/c14-measurements/cache-bounds-macos.json": {
+      "sha256": "c0f969baf063c5d3bec14198e5dca6a7254c8fcca75e1c638004d1cca209a951",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/c14-measurements/fingerprint-macos.json": {
+      "sha256": "15dc594eaf4dd7b0da6e53bcd5b6966dbda663172beb2c4096195cb243f740f6",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/c14-measurements/lock-liveness-macos.json": {
+      "sha256": "f13a81edb2d267116dd25cbc262526b0d4cc29c529ee372d50eb48507f226bd0",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/c14-measurements/never-block-mcp-macos.json": {
+      "sha256": "8f5d1f1141e05bae3afea9d9e31bc4e4e6d5b31c86b5fb0331863e88ba62ba87",
+      "matchesPriorDownload": true
+    },
+    "headless-macOS/c14-measurements/queued-calls-macos.json": {
+      "sha256": "e5298f6696bbbd63fbcba22c022099d02a70b224bb1a93419e73b64c10e8578f",
+      "matchesPriorDownload": true
+    }
+  },
+  "reviewerOwnedBuilderDiffEmpty": true,
+  "dependencyDiff": "",
+  "ticketBodiesUnchangedSinceIntroduction": true
+}

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python",
+    "scripts/check-headless-deps.py",
+    "target/release/toontown-headless.exe"
+  ],
+  "cwd": "C:\\Users\\kaiga\\work\\review\\m1-c11-r6",
+  "base": "fb31cfea1031d5ae610137b12205f9eb43e07545",
+  "started_utc": "2026-10-19T01:37:03.086212+00:00",
+  "elapsed_seconds": 0.188,
+  "exit_code": 0,
+  "log": "logs/headless-guard.log",
+  "sha256": "1c23b08865763141f439c6491308481393b5d084a146a7c704dde31bec927295",
+  "env": {}
+}

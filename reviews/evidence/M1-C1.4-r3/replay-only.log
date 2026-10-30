@@ -1,0 +1,84 @@
+
+running 3 tests
+c14_r3_replay-92b8d33e9fd9aad5.exe : 
+At line:2 char:90
++ ... t -First 1; & $testExe.FullName --nocapture *> reviews/evidence/M1-C1 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+thread 'sequential_publication_failure_keeps_committed_edits_in_script_replay' (35736) panicked at 
+crates\mcp\tests\c14_r3_replay.rs:28:5:
+assertion `left == right` failed: {"content":[{"type":"text","text":"batch: `batch` failed: batch.stepFailed — step 2 
+(`doc.export.json`) failed: `C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-282f896757e7\\blocked.json` could not 
+be published: Access is denied. (os error 5)"}],"structuredContent":{"status":"error","changes":[{"id":"sc_01M66F87P4GQ
+SMJJGTQ3HJB5D1","type":"scene","op":"modified","rev":2,"patch":[{"op":"add","path":"/meta","value":{"kept":1}}]}],"warn
+ings":[],"documentRev":2,"error":{"code":"batch.stepFailed","message":"step 2 (`doc.export.json`) failed: 
+`C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-282f896757e7\\blocked.json` could not be published: Access is 
+denied. (os error 5)","details":{"stepIndex":2,"commandId":"doc.export.json","error":{"code":"fs.ioError","message":"`C
+:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-282f896757e7\\blocked.json` could not be published: Access is 
+denied. (os error 5)","details":{"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-282f896757e7\\blocked.json"
+,"reason":"publish","committed":false,"documentRev":2}}}},"steps":[{"status":"ok","result":{"changes":[{"id":"sc_01M66F
+87P4GQSMJJGTQ3HJB5D1","type":"scene","op":"modified","rev":2,"patch":[{"op":"add","path":"/meta","value":{"kept":1}}]}]
+,"documentRev":2},"targets":{"ids":["sc_01M66F87P4GQSMJJGTQ3HJB5D1"]},"changes":[{"id":"sc_01M66F87P4GQSMJJGTQ3HJB5D1",
+"type":"scene","op":"modified","rev":2,"patch":[{"op":"add","path":"/meta","value":{"kept":1}}]}],"undo":{"stepId":"u-1
+","label":"Set meta"},"warnings":[],"documentRev":2},{"status":"error","changes":[],"warnings":[],"documentRev":2,"erro
+r":{"code":"fs.ioError","message":"`C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c14-mcp-282f896757e7\\blocked.json` 
+could not be published: Access is denied. (os error 5)","details":{"path":"C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-c
+14-mcp-282f896757e7\\blocked.json","reason":"publish","committed":false,"documentRev":2}}}]},"isError":true}
+  left: Null
+ right: "publish"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test sequential_publication_failure_keeps_committed_edits_in_script_replay ... FAILED
+
+thread 'atomic_publication_failure_keeps_committed_edits_in_script_replay' (2104) panicked at 
+crates\mcp\tests\c14_r3_replay.rs:38:5:
+Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, 
+undo: None, warnings: [], document_rev: Some(1), error: Some(CommandError { code: "arg.invalid", message: "a batch has 
+1–1000 steps", details: Object {"pointer": String("/steps"), "limit": Number(1000), "actual": Number(0)}, hint: None 
+}), dry_run: false, steps: None }
+test atomic_publication_failure_keeps_committed_edits_in_script_replay ... FAILED
+
+thread 'two_edits_in_one_atomic_batch_replay_with_the_same_revision' (21468) panicked at 
+crates\mcp\tests\c14_r3_replay.rs:87:9:
+assertion `left == right` failed: atomic replay must retain canonical entry revisions: 
+Scene(Id(sc_01M66F87P48DB7H35S3FDXRBKB))
+  left: "{\n  \"id\": \"sc_01M66F87P48DB7H35S3FDXRBKB\",\n  \"type\": \"scene\",\n  \"rev\": 3,\n  \"name\": 
+\"Scene-1\",\n  \"visible\": true,\n  \"backgroundColour\": \"#FFFFFFFF\",\n  \"currentCameraId\": 
+\"el_01M66F87P48DB7H35S3FDXRBKD\",\n  \"paletteStyles\": {\n    \"pal_01M66F87P39HNFEGQ971XDJWWQ\": 
+\"sty_01M66F87P39HNFEGQ971XDJWWR\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01M66F87P48DB7H35S3FDXRBKH\",\n    
+\"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    
+\"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    
+\"direction\": null,\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01M66F87P48DB7H35S3FDXRBKC\",\n 
+     \"children\": [\n        {\n          \"id\": \"el_01M66F87P48DB7H35S3FDXRBKD\",\n          \"children\": []\n    
+    }\n      ]\n    },\n    {\n      \"id\": \"el_01M66F87P48DB7H35S3FDXRBKE\",\n      \"children\": []\n    }\n  ],\n 
+ \"columnOrder\": [\"el_01M66F87P48DB7H35S3FDXRBKE\"],\n  \"elements\": [\n    {\n      \"id\": 
+\"el_01M66F87P48DB7H35S3FDXRBKC\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66F87P48DB7H35S3FDXRBKD\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66F87P48DB7H35S3FDXRBKE\",\n      \"type\": \"element\"\n    }\n  ],\n  \"meta\": {\n    \"first\": 1,\n    
+\"second\": 2\n  }\n}\n"
+ right: "{\n  \"id\": \"sc_01M66F87P48DB7H35S3FDXRBKB\",\n  \"type\": \"scene\",\n  \"rev\": 2,\n  \"name\": 
+\"Scene-1\",\n  \"visible\": true,\n  \"backgroundColour\": \"#FFFFFFFF\",\n  \"currentCameraId\": 
+\"el_01M66F87P48DB7H35S3FDXRBKD\",\n  \"paletteStyles\": {\n    \"pal_01M66F87P39HNFEGQ971XDJWWQ\": 
+\"sty_01M66F87P39HNFEGQ971XDJWWR\"\n  },\n  \"outTransition\": {\n    \"id\": \"tr_01M66F87P48DB7H35S3FDXRBKH\",\n    
+\"type\": \"transition\",\n    \"rev\": 1,\n    \"transitionType\": \"none\",\n    \"durationLeft\": 12,\n    
+\"blankDuration\": 0,\n    \"durationRight\": 12,\n    \"colour\": \"#000000FF\",\n    \"angle\": 0,\n    
+\"direction\": null,\n    \"size\": 25\n  },\n  \"tree\": [\n    {\n      \"id\": \"el_01M66F87P48DB7H35S3FDXRBKC\",\n 
+     \"children\": [\n        {\n          \"id\": \"el_01M66F87P48DB7H35S3FDXRBKD\",\n          \"children\": []\n    
+    }\n      ]\n    },\n    {\n      \"id\": \"el_01M66F87P48DB7H35S3FDXRBKE\",\n      \"children\": []\n    }\n  ],\n 
+ \"columnOrder\": [\"el_01M66F87P48DB7H35S3FDXRBKE\"],\n  \"elements\": [\n    {\n      \"id\": 
+\"el_01M66F87P48DB7H35S3FDXRBKC\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66F87P48DB7H35S3FDXRBKD\",\n      \"type\": \"element\"\n    },\n    {\n      \"id\": 
+\"el_01M66F87P48DB7H35S3FDXRBKE\",\n      \"type\": \"element\"\n    }\n  ],\n  \"meta\": {\n    \"first\": 1,\n    
+\"second\": 2\n  }\n}\n"
+test two_edits_in_one_atomic_batch_replay_with_the_same_revision ... FAILED
+
+failures:
+
+failures:
+    atomic_publication_failure_keeps_committed_edits_in_script_replay
+    sequential_publication_failure_keeps_committed_edits_in_script_replay
+    two_edits_in_one_atomic_batch_replay_with_the_same_revision
+
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+

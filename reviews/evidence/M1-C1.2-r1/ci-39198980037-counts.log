@@ -1,0 +1,209 @@
+check (windows-latest)	Run actions/checkout@v7	2026-10-19T04:20:46.2163352Z  * [new branch]      review/m0-c04-r1 -> origin/review/m0-c04-r1
+check (windows-latest)	Run actions/checkout@v7	2026-10-19T04:20:46.2163971Z  * [new branch]      review/m0-c04-r2 -> origin/review/m0-c04-r2
+check (windows-latest)	Run actions/checkout@v7	2026-10-19T04:20:46.2164575Z  * [new branch]      review/m0-c04-r3 -> origin/review/m0-c04-r3
+check (windows-latest)	Run actions/checkout@v7	2026-10-19T04:20:46.2165189Z  * [new branch]      review/m0-c04-r4 -> origin/review/m0-c04-r4
+check (windows-latest)	Front end — lint, type-check, test, format, licences	2026-10-19T04:25:12.8554939Z ^[[2m Test Files ^[[22m ^[[1m^[[32m40 passed^[[39m^[[22m^[[90m (40)^[[39m
+check (windows-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:25:23.4033543Z === c04-r2-decisions.py
+check (windows-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:25:23.5512066Z === c04-r3-decisions.py
+check (windows-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:25:23.7887189Z === c04-r3-page.py
+check (windows-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:25:26.7159624Z  ^[[32m✓^[[39m src/test/c04-r3-actions.test.tsx ^[[2m(^[[22m^[[2m5 tests^[[22m^[[2m)^[[22m^[[32m 264^[[2mms^[[22m^[[39m
+check (windows-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:25:26.7257234Z ^[[2m Test Files ^[[22m ^[[1m^[[32m1 passed^[[39m^[[22m^[[90m (1)^[[39m
+check (windows-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:25:27.6681525Z ok   c04-r2-decisions.py (0.2 s)
+check (windows-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:25:27.6681821Z ok   c04-r3-decisions.py (0.2 s)
+check (windows-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:25:27.6682122Z ok   c04-r3-page.py (3.0 s)
+check (windows-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:25:27.6683706Z 11/11 reviewer Python suites passed
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:34.6402453Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:34.6516620Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:34.6630265Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:35.4174112Z test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:35.4322440Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:36.2382285Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:36.8667382Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:36.8726158Z ^[[1m^[[92m     Running^[[0m tests\c11_r1_wire.rs (target\debug\deps\c11_r1_wire-3f2b46fa85af22f0.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:36.9742114Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:36.9768126Z ^[[1m^[[92m     Running^[[0m tests\c11_r2_wire.rs (target\debug\deps\c11_r2_wire-5ccfe0323d3f71cb.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:36.9919483Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:36.9939308Z ^[[1m^[[92m     Running^[[0m tests\c11_r3_wire.rs (target\debug\deps\c11_r3_wire-dc965265034610f8.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:37.0258319Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:37.1312293Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:37.1493554Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:37.8937468Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:46.7783930Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.87s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:47.6206307Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:47.7711926Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:48.6743050Z test model_level_staged_commit_of_several_entries_is_atomic ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:50.3211054Z test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.53s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:50.3590493Z test exclusive_mutation_capability has been running for over 60 seconds
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:11.1148139Z test exclusive_mutation_capability ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:11.1149385Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 140.78s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:11.1285364Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:11.7928502Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:17.5606536Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.75s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:18.4531819Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.88s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:27.8233373Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.36s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:27.8360728Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:27.8487799Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:27.8613427Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:28.6106092Z test result: ok. 41 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:28.6155714Z ^[[1m^[[92m     Running^[[0m tests\c11_r1_adversarial.rs (target\debug\deps\c11_r1_adversarial-75ece51e420e1eb8.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:38.7507146Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.12s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:38.7602113Z ^[[1m^[[92m     Running^[[0m tests\c11_r2_adversarial.rs (target\debug\deps\c11_r2_adversarial-52e9650796c4141a.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:52.6075085Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.84s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:52.6159383Z ^[[1m^[[92m     Running^[[0m tests\c11_r3_adversarial.rs (target\debug\deps\c11_r3_adversarial-abfdbe7c199701e8.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:53.2704515Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:53.2755322Z ^[[1m^[[92m     Running^[[0m tests\c11_r3_random.rs (target\debug\deps\c11_r3_random-c456b30822b20a4d.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:59.1858088Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.90s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:59.1880955Z ^[[1m^[[92m     Running^[[0m tests\c11_r3_register.rs (target\debug\deps\c11_r3_register-0a850ae49c121317.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:00.5002544Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.30s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:00.5053473Z ^[[1m^[[92m     Running^[[0m tests\c11_r4_exposure_bounds.rs (target\debug\deps\c11_r4_exposure_bounds-d1be6deaf6e5525e.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:00.5367538Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:00.5389451Z ^[[1m^[[92m     Running^[[0m tests\c11_r5_write_bounds.rs (target\debug\deps\c11_r5_write_bounds-d764ed0af0bb6da5.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:00.5515244Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:00.5534851Z ^[[1m^[[92m     Running^[[0m tests\c11_r6_staged_inverse.rs (target\debug\deps\c11_r6_staged_inverse-8cfc7ca8077e0d94.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:01.1763082Z test staged_inverse_restores_frames_after_runs_merge ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:01.1763798Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:01.9032509Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:02.8604106Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.94s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:04.1266013Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.25s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:04.1322248Z ^[[1m^[[92m     Running^[[0m tests\staged_commit.rs (target\debug\deps\staged_commit-b842d5127ae68552.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:32:04.1560245Z test staged_commit_sweep_commits_and_refuses has been running for over 60 seconds
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:32:16.4362695Z test staged_commit_sweep_commits_and_refuses ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:32:16.4363503Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 72.29s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:32:16.4421175Z ^[[1m^[[92m     Running^[[0m tests\staged_inverse.rs (target\debug\deps\staged_inverse-252b7c5c52c0eca0.exe)
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:02.9305238Z test staged_inverse_sweep_covers_merging_and_splitting_runs ... ok
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:02.9306473Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 46.48s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:02.9460514Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:02.9581925Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:02.9865447Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:03.0503516Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:03.0633685Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:15.4707379Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.39s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:32.2255081Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 16.74s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:40.3194896Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.08s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:40.3330811Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:40.4133507Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:40.4538472Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:40.4929593Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:40.7417675Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:40.8719423Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:42.2800398Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:42.3248315Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:42.3665455Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:42.4075231Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:42.4479683Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:44.0183494Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:44.0693721Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:44.1919678Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:44.2631961Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:44.3055810Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Run cargo test --workspace --locked	2026-10-19T04:33:44.3478993Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-19T04:34:46.0976193Z test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-19T04:34:46.1144204Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-19T04:34:46.9093809Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+check (windows-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-19T04:34:47.2697056Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+raster determinism (macos-latest)	Render fixtures and check committed hashes (two processes)	2026-10-19T04:22:04.7531860Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+raster determinism (ubuntu-latest)	Render fixtures and check committed hashes (two processes)	2026-10-19T04:21:22.9215514Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+check (macos-latest)	Run actions/checkout@v7	2026-10-19T04:20:50.0998580Z  * [new branch]      review/m0-c04-r1 -> origin/review/m0-c04-r1
+check (macos-latest)	Run actions/checkout@v7	2026-10-19T04:20:50.0998990Z  * [new branch]      review/m0-c04-r2 -> origin/review/m0-c04-r2
+check (macos-latest)	Run actions/checkout@v7	2026-10-19T04:20:50.0999460Z  * [new branch]      review/m0-c04-r3 -> origin/review/m0-c04-r3
+check (macos-latest)	Run actions/checkout@v7	2026-10-19T04:20:50.0999910Z  * [new branch]      review/m0-c04-r4 -> origin/review/m0-c04-r4
+check (macos-latest)	Front end — lint, type-check, test, format, licences	2026-10-19T04:24:29.0160520Z ^[[2m Test Files ^[[22m ^[[1m^[[32m40 passed^[[39m^[[22m^[[90m (40)^[[39m
+check (macos-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:24:38.1737630Z === c04-r2-decisions.py
+check (macos-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:24:38.3273490Z === c04-r3-decisions.py
+check (macos-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:24:38.5305180Z === c04-r3-page.py
+check (macos-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:24:40.8753540Z  ^[[32m✓^[[39m src/test/c04-r3-actions.test.tsx ^[[2m(^[[22m^[[2m5 tests^[[22m^[[2m)^[[22m^[[32m 251^[[2mms^[[22m^[[39m
+check (macos-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:24:40.8956940Z ^[[2m Test Files ^[[22m ^[[1m^[[32m1 passed^[[39m^[[22m^[[90m (1)^[[39m
+check (macos-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:24:41.5958410Z ok   c04-r2-decisions.py (0.2 s)
+check (macos-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:24:41.5959340Z ok   c04-r3-decisions.py (0.2 s)
+check (macos-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:24:41.5966390Z ok   c04-r3-page.py (2.4 s)
+check (macos-latest)	Reviewer Python suites (every tests/adversarial/*.py)	2026-10-19T04:24:41.5968510Z 11/11 reviewer Python suites passed
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:08.8226330Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:08.8349780Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:08.8471720Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:09.4749440Z test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:09.4753250Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:10.1013770Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:10.8146120Z ^[[1m^[[92m     Running^[[0m tests/c11_r1_wire.rs (target/debug/deps/c11_r1_wire-60ce393f4308fda5)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:10.8148540Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:10.9098380Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:10.9099900Z ^[[1m^[[92m     Running^[[0m tests/c11_r2_wire.rs (target/debug/deps/c11_r2_wire-0e3a354f01f61110)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:10.9270430Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_wire.rs (target/debug/deps/c11_r3_wire-c1e122eab76bee3a)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:10.9271330Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:10.9617730Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:11.1299590Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:11.1455970Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:11.7148480Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:21.6327050Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.91s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:22.8005520Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.14s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:23.0428750Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:24.2713230Z test model_level_staged_commit_of_several_entries_is_atomic ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:26:26.6893940Z test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.60s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:27:26.7311060Z test exclusive_mutation_capability has been running for over 60 seconds
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:08.0803570Z test exclusive_mutation_capability ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:08.0813190Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 101.34s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:08.0957770Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:08.7825640Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:13.7466860Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.93s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:14.4427540Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:17.5305510Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.07s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:17.5414550Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:17.5530730Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:17.5658140Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:18.2404950Z ^[[1m^[[92m     Running^[[0m tests/c11_r1_adversarial.rs (target/debug/deps/c11_r1_adversarial-8d3716120ee35c46)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:18.2406870Z test result: ok. 41 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:25.9447270Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.68s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:25.9472070Z ^[[1m^[[92m     Running^[[0m tests/c11_r2_adversarial.rs (target/debug/deps/c11_r2_adversarial-22448ab8af34c614)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:32.9786270Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_adversarial.rs (target/debug/deps/c11_r3_adversarial-0378d3d2cf6f6d31)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:32.9804580Z test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:33.4739810Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:33.4743550Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_random.rs (target/debug/deps/c11_r3_random-9f02a27a877ff9a0)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:38.9464500Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.46s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:38.9475380Z ^[[1m^[[92m     Running^[[0m tests/c11_r3_register.rs (target/debug/deps/c11_r3_register-a4c8b69bb11f5f41)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:40.4176040Z ^[[1m^[[92m     Running^[[0m tests/c11_r4_exposure_bounds.rs (target/debug/deps/c11_r4_exposure_bounds-c6916d797ed9eb5f)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:40.4378620Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.45s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:40.4482670Z ^[[1m^[[92m     Running^[[0m tests/c11_r5_write_bounds.rs (target/debug/deps/c11_r5_write_bounds-621bf732ef4bf632)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:40.4511910Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:40.4618260Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:40.4624880Z ^[[1m^[[92m     Running^[[0m tests/c11_r6_staged_inverse.rs (target/debug/deps/c11_r6_staged_inverse-b2a16e8afb2b2f96)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:41.2600870Z test staged_inverse_restores_frames_after_runs_merge ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:41.2602800Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:42.0396160Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:42.9771990Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.94s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:44.3107580Z ^[[1m^[[92m     Running^[[0m tests/staged_commit.rs (target/debug/deps/staged_commit-002cf0df12314c33)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:28:44.3171600Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.31s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:29:44.5081320Z test staged_commit_sweep_commits_and_refuses has been running for over 60 seconds
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:29:57.1367110Z test staged_commit_sweep_commits_and_refuses ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:29:57.1368730Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 72.77s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:29:57.1412340Z ^[[1m^[[92m     Running^[[0m tests/staged_inverse.rs (target/debug/deps/staged_inverse-083757db67cda41d)
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:50.1563220Z test staged_inverse_sweep_covers_merging_and_splitting_runs ... ok
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:50.1583660Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 52.96s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:50.1702130Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:50.1826540Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:50.2045670Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:50.2235050Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:50.2351810Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:30:59.7579680Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.50s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:13.0417620Z test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 13.27s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:20.1456930Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.09s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:20.1605400Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:20.7415050Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:20.7755910Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:20.8018750Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:21.7981830Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:21.9686020Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:22.9790430Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:23.0209920Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:23.0705540Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:23.1038990Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:23.1323060Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:24.0204870Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:24.0576560Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:24.1493010Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:24.2332080Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:24.2681860Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Run cargo test --workspace --locked	2026-10-19T04:31:24.3071780Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-19T04:32:09.7271660Z test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+check (macos-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-19T04:32:09.7357490Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check (macos-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-19T04:32:10.2560060Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+check (macos-latest)	Desktop host with the M0 diagnostics feature (C0.4 gating) — clippy and tests	2026-10-19T04:32:10.5985810Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+raster determinism (windows-latest)	Render fixtures and check committed hashes (two processes)	2026-10-19T04:22:46.6419392Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s

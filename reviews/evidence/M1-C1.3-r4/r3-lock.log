@@ -1,0 +1,16 @@
+cargo :    Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m1-c13-r4\crates\persist)
+At line:2 char:1
++ cargo test -p tt-persist --locked --test c13_r3_format *> reviews/evi ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...crates\persist):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.16s
+     Running tests\c13_r3_format.rs (target\debug\deps\c13_r3_format-984503e5da64857d.exe)
+
+running 3 tests
+test heartbeat_refuses_an_unreadable_replacement_lock ... ok
+test two_hundred_byte_unicode_components_work_in_windows_folder_form ... ok
+test a_live_writer_paused_beyond_two_seconds_is_not_taken_over ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.20s
