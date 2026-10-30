@@ -1,0 +1,4 @@
+Declared test diff matches exactly (UTF-8).
+Readiness sections: 51 SI rows (4 open), 5 ignored-test rows, 24 known-gap rows, 12 M2 obligations. All cited Cx.y checkpoints exist in the implementation plan.
+Linux SDK log: 24 passed, 0 failed.
+Generated declarations regenerated without diff; release graphs exclude test-hooks.
