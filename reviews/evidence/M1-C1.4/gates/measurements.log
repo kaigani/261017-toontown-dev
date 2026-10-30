@@ -1,27 +1,27 @@
 $ "C:\Python313\python.exe" scripts/analyse-measurements.py target/evidence/c14
 ok   autosave-windows.json (series)
-       longBatchMs: n=1 p50=1754.4171 p99=1754.4171 max=1754.4171 ms
-       queuedSchedulingDelayMs: n=10 p50=23.1418 p99=24.3711 max=24.3711 ms
-       queuedSnapshotMs: n=10 p50=0.07160000000000001 p99=0.0771 max=0.0771 ms
-       snapshotAfterLongBatchMs: n=1 p50=0.0891 p99=0.0891 max=0.0891 ms
-       snapshotMs: n=15 p50=0.0621 p99=0.1821 max=0.1821 ms
-       waitBehindLongBatchMs: n=1 p50=1750.205 p99=1750.205 max=1750.205 ms
+       longBatchMs: n=1 p50=1734.5741 p99=1734.5741 max=1734.5741 ms
+       queuedSchedulingDelayMs: n=10 p50=23.497899999999998 p99=24.5318 max=24.5318 ms
+       queuedSnapshotMs: n=10 p50=0.06810000000000001 p99=0.0756 max=0.0756 ms
+       snapshotAfterLongBatchMs: n=1 p50=0.0648 p99=0.0648 max=0.0648 ms
+       snapshotMs: n=15 p50=0.0634 p99=0.13119999999999998 max=0.13119999999999998 ms
+       waitBehindLongBatchMs: n=1 p50=1727.4787000000001 p99=1727.4787000000001 max=1727.4787000000001 ms
 ok   cache-bounds-windows.json (facts)
 ok   fingerprint-windows.json (series)
-       callerLatencyBackToBackMs: n=164 p50=15.9795 p99=17.2339 max=17.9201 ms
-       callerLatencyScheduled2sWatchMs: n=2872 p50=1.1219 p99=1.6474 max=18.2623 ms
-       openMs: n=1 p50=370.2525 p99=370.2525 max=370.2525 ms
-       saveContentCheckMs: n=5 p50=282.497 p99=282.8981 max=282.8981 ms
-       watchPassMs: n=20 p50=17.4046 p99=18.782 max=18.782 ms
+       callerLatencyBackToBackMs: n=162 p50=16.2466 p99=17.434 max=19.386 ms
+       callerLatencyScheduled2sWatchMs: n=2868 p50=1.119 p99=1.6441999999999999 max=19.0403 ms
+       openMs: n=1 p50=378.00030000000004 p99=378.00030000000004 max=378.00030000000004 ms
+       saveContentCheckMs: n=5 p50=282.18339999999995 p99=282.76430000000005 max=282.76430000000005 ms
+       watchPassMs: n=20 p50=17.8644 p99=19.7757 max=19.7757 ms
 ok   lock-liveness-windows.json (series)
-       acquireOnHeldMicros: n=50 p50=66.9 p99=480.2 max=480.2 us
-       crashedHolderTakeoverMs: n=5 p50=16.4451 p99=17.0061 max=17.0061 ms
-       probeHeldMicros: n=500 p50=4.4 p99=8.8 max=39.199999999999996 us
-       processAliveFallbackMs: n=5 p50=24.5015 p99=25.8193 max=25.8193 ms
+       acquireOnHeldMicros: n=50 p50=74.9 p99=104.2 max=104.2 us
+       crashedHolderTakeoverMs: n=5 p50=15.9078 p99=16.22 max=16.22 ms
+       probeHeldMicros: n=500 p50=5.4 p99=6.8 max=29.5 us
+       processAliveFallbackMs: n=5 p50=24.3811 p99=26.6134 max=26.6134 ms
 ok   never-block-mcp-windows.json (series)
-       callLatencyMs: n=719 p50=2.1546 p99=4.5456 max=25.5095 ms
+       callLatencyMs: n=719 p50=2.1351999999999998 p99=4.517099999999999 max=25.1543 ms
 ok   queued-calls-windows.json (series)
-       perCallMs: n=50 p50=64.0573 p99=121.85650000000001 max=121.85650000000001 ms
+       perCallMs: n=50 p50=64.4806 p99=120.2978 max=120.2978 ms
 6 file(s), 0 rejected
 
 [exit 0]
