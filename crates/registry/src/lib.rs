@@ -504,7 +504,21 @@ impl Entry {
             "paramsSchema": self.params_schema(),
             "resultSchema": self.result_schema(),
             "examples": self.command.map_or(Vec::new(), |c| {
-                c.decl.examples.iter().map(|e| json!({ "title": e.title, "params": parse_example(e.params) })).collect()
+                c.decl
+                    .examples
+                    .iter()
+                    .map(|e| {
+                        let mut ex = json!({ "title": e.title, "params": parse_example(e.params) });
+                        if let (Some(r), Some(m)) = (example_result(self.spec.id, e.title), ex.as_object_mut()) {
+                            for (from, to) in [("result", "result"), ("resultDigest", "resultDigest"), ("varies", "resultVaries")] {
+                                if let Some(v) = r.get(from) {
+                                    m.insert(to.into(), v.clone());
+                                }
+                            }
+                        }
+                        ex
+                    })
+                    .collect()
             }),
             "status": status,
             "agentOnly": self.command.and_then(|c| c.decl.agent_only),
@@ -519,6 +533,17 @@ impl Entry {
         }
         v
     }
+}
+
+/// The executed result of an implemented command's example, retained in `example-results.json` (M2 C2.1 obligation 1;
+/// 11 §13): `{title, result | resultDigest, varies}` (a digest `{bytes, sha256}` for results over 32 KiB), where `varies` lists the JSON Pointers whose values differ between executions
+/// (generated ids, times, tokens). `crates/executor/tests/c21_example_results.rs` records the file and checks on every
+/// OS that each example still reproduces it.
+#[must_use]
+pub fn example_result(id: &str, title: &str) -> Option<&'static Value> {
+    static ALL: OnceLock<Value> = OnceLock::new();
+    let all = ALL.get_or_init(|| serde_json::from_str(include_str!("example-results.json")).unwrap_or(Value::Null));
+    all.get(id)?.as_array()?.iter().find(|r| r.get("title").and_then(Value::as_str) == Some(title))
 }
 
 /// The entries of `declared.json`, parsed once.

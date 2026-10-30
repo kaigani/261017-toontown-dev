@@ -1,0 +1,1716 @@
+{
+  "project": {
+    "title": "Create, inspect, save and close a project",
+    "steps": [
+      {
+        "note": "Create a project (it becomes the open project)",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.create",
+            "params": {
+              "name": "Demo",
+              "path": "/tmp/Demo.animpkg"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "projectId": "pr_01M674QJBS3E60T171E9G9BNH1",
+            "path": "/tmp/Demo.animpkg",
+            "sceneId": "sc_01M674QJBTKZN9ARV60ZXBJSF9",
+            "cameraId": "el_01M674QJBTKZN9ARV60ZXBJSFB",
+            "elementId": "el_01M674QJBTKZN9ARV60ZXBJSFC"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/projectId",
+          "/result/sceneId",
+          "/result/cameraId",
+          "/result/elementId"
+        ]
+      },
+      {
+        "note": "Read its summary",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.info.get",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "id": "pr_01M674QJBS3E60T171E9G9BNH1",
+            "name": "Demo",
+            "path": "/tmp/Demo.animpkg",
+            "readOnly": false,
+            "formatVersion": "1.0",
+            "dirty": false,
+            "globalLibraryDirty": false,
+            "lastSaved": "2026-10-30T19:31:33.881Z",
+            "frameRate": 24.0,
+            "cameraWidth": 1920,
+            "cameraHeight": 1080,
+            "scenes": [
+              {
+                "id": "sc_01M674QJBTKZN9ARV60ZXBJSF9",
+                "name": "Scene-1",
+                "frameCount": 1
+              }
+            ],
+            "currentSceneId": "sc_01M674QJBTKZN9ARV60ZXBJSF9"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/id",
+          "/result/lastSaved",
+          "/result/scenes/0/id",
+          "/result/currentSceneId"
+        ]
+      },
+      {
+        "note": "Change its frame rate",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.properties.set",
+            "params": {
+              "frameRate": 25
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "frameRate": 25.0,
+            "cameraWidth": 1920,
+            "cameraHeight": 1080
+          },
+          "changes": [
+            {
+              "id": "pr_01M674QJBS3E60T171E9G9BNH1",
+              "type": "project",
+              "op": "modified",
+              "rev": 2,
+              "patch": [
+                {
+                  "op": "replace",
+                  "path": "/frameRate",
+                  "value": 25.0,
+                  "oldValue": 24.0
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-1",
+            "label": "Change Project Properties"
+          },
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": [
+          "/changes/0/id"
+        ]
+      },
+      {
+        "note": "Save it (a job)",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.save",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "jobId": "job-1"
+          },
+          "changes": [
+            {
+              "id": "pr_01M674QJBS3E60T171E9G9BNH1",
+              "type": "project",
+              "op": "modified",
+              "rev": 3,
+              "patch": [
+                {
+                  "op": "replace",
+                  "path": "/modifiedAt",
+                  "value": "2026-10-30T19:31:34.147Z",
+                  "oldValue": "2026-10-30T19:31:33.881Z"
+                }
+              ]
+            }
+          ],
+          "warnings": [],
+          "documentRev": 3
+        },
+        "varies": [
+          "/changes/0/id",
+          "/changes/0/patch/0/value",
+          "/changes/0/patch/0/oldValue"
+        ]
+      },
+      {
+        "note": "Wait for the save",
+        "request": {
+          "tool": "job_wait",
+          "arguments": {
+            "jobId": "job-1",
+            "timeoutMs": 30000
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "jobId": "job-1",
+            "commandId": "project.save",
+            "state": "succeeded",
+            "progress": 1.0,
+            "message": "Replace",
+            "startedAt": "2026-10-30T19:31:34.148Z",
+            "result": {
+              "path": "/tmp/Demo.animpkg",
+              "projectSaved": true,
+              "globalLibrarySaved": false,
+              "backupId": "bk_730c25d1732b4638"
+            },
+            "session": "agent:s1-a46ffc"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        "varies": [
+          "/result/startedAt",
+          "/result/result/backupId",
+          "/result/session"
+        ]
+      },
+      {
+        "note": "Close it",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.close",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "closed": true
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        "varies": []
+      },
+      {
+        "note": "It is now in the recent list",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.recent.list",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": [
+            {
+              "path": "/tmp/Demo.animpkg",
+              "name": "Demo",
+              "lastOpened": "2026-10-30T19:31:34.168Z",
+              "exists": true
+            }
+          ],
+          "changes": [],
+          "warnings": [],
+          "documentRev": null
+        },
+        "varies": [
+          "/result/0/lastOpened"
+        ]
+      }
+    ]
+  },
+  "doc": {
+    "title": "Find, read, patch, diff and validate objects",
+    "steps": [
+      {
+        "note": "Create a project (it becomes the open project)",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.create",
+            "params": {
+              "name": "Demo",
+              "path": "/tmp/Demo.animpkg"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "projectId": "pr_01M674QJVN00SZPDRXQ48QW49A",
+            "path": "/tmp/Demo.animpkg",
+            "sceneId": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+            "cameraId": "el_01M674QJVPDJGZJ01RXJ8CBS3B",
+            "elementId": "el_01M674QJVPDJGZJ01RXJ8CBS3C"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/projectId",
+          "/result/sceneId",
+          "/result/cameraId",
+          "/result/elementId"
+        ]
+      },
+      {
+        "note": "Find the scenes",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "doc.object.find",
+            "params": {
+              "type": "scene"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "items": [
+              {
+                "id": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+                "type": "scene",
+                "name": "Scene-1",
+                "path": "scene:\"Scene-1\"",
+                "rev": 1
+              }
+            ],
+            "total": 1,
+            "nextOffset": null
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/items/0/id"
+        ]
+      },
+      {
+        "note": "Read the first scene with its elements as stubs",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "doc.object.get",
+            "params": {
+              "ref": "scene:#1",
+              "depth": 1
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "object": {
+              "id": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+              "type": "scene",
+              "rev": 1,
+              "name": "Scene-1",
+              "path": "scene:\"Scene-1\"",
+              "visible": true,
+              "backgroundColour": "#FFFFFFFF",
+              "currentCameraId": "el_01M674QJVPDJGZJ01RXJ8CBS3B",
+              "paletteStyles": {
+                "pal_01M674QJVN00SZPDRXQ48QW49B": "sty_01M674QJVN00SZPDRXQ48QW49C"
+              },
+              "outTransition": {
+                "id": "tr_01M674QJVPDJGZJ01RXJ8CBS3F",
+                "type": "transition"
+              },
+              "tree": [
+                {
+                  "id": "el_01M674QJVPDJGZJ01RXJ8CBS3A",
+                  "children": [
+                    {
+                      "id": "el_01M674QJVPDJGZJ01RXJ8CBS3B",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "el_01M674QJVPDJGZJ01RXJ8CBS3C",
+                  "children": []
+                }
+              ],
+              "columnOrder": [
+                "el_01M674QJVPDJGZJ01RXJ8CBS3C"
+              ],
+              "elements": [
+                {
+                  "id": "el_01M674QJVPDJGZJ01RXJ8CBS3A",
+                  "type": "element",
+                  "name": "Camera Peg"
+                },
+                {
+                  "id": "el_01M674QJVPDJGZJ01RXJ8CBS3B",
+                  "type": "element",
+                  "name": "Camera"
+                },
+                {
+                  "id": "el_01M674QJVPDJGZJ01RXJ8CBS3C",
+                  "type": "element",
+                  "name": "Drawing"
+                }
+              ]
+            }
+          },
+          "targets": {
+            "ids": [
+              "sc_01M674QJVPDJGZJ01RXJ8CBS39"
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/object/id",
+          "/result/object/currentCameraId",
+          "/result/object/paletteStyles",
+          "/result/object/outTransition/id",
+          "/result/object/tree/0/id",
+          "/result/object/tree/0/children/0/id",
+          "/result/object/tree/1/id",
+          "/result/object/columnOrder/0",
+          "/result/object/elements/0/id",
+          "/result/object/elements/1/id",
+          "/result/object/elements/2/id",
+          "/targets/ids/0"
+        ]
+      },
+      {
+        "note": "Annotate it in meta",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "doc.object.patch",
+            "params": {
+              "targets": [
+                "scene:#1"
+              ],
+              "props": {
+                "meta": {
+                  "status": "layout"
+                }
+              }
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "changes": [
+              {
+                "id": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+                "type": "scene",
+                "op": "modified",
+                "rev": 2,
+                "patch": [
+                  {
+                    "op": "add",
+                    "path": "/meta",
+                    "value": {
+                      "status": "layout"
+                    }
+                  }
+                ]
+              }
+            ],
+            "documentRev": 2
+          },
+          "targets": {
+            "ids": [
+              "sc_01M674QJVPDJGZJ01RXJ8CBS39"
+            ]
+          },
+          "changes": [
+            {
+              "id": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+              "type": "scene",
+              "op": "modified",
+              "rev": 2,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/meta",
+                  "value": {
+                    "status": "layout"
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-1",
+            "label": "Set meta"
+          },
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": [
+          "/result/changes/0/id",
+          "/targets/ids/0",
+          "/changes/0/id"
+        ]
+      },
+      {
+        "note": "What changed since revision 1",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "doc.diff",
+            "params": {
+              "sinceRev": 1
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "fromRev": 1,
+            "toRev": 2,
+            "changes": [
+              {
+                "id": "sc_01M674QJVPDJGZJ01RXJ8CBS39",
+                "type": "scene",
+                "op": "modified",
+                "rev": 2,
+                "patch": [
+                  {
+                    "op": "add",
+                    "path": "/meta",
+                    "value": {
+                      "status": "layout"
+                    }
+                  }
+                ]
+              }
+            ],
+            "truncated": false
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": [
+          "/result/changes/0/id"
+        ]
+      },
+      {
+        "note": "Validate the document (errors only)",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "doc.validate",
+            "params": {
+              "minSeverity": "error"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "documentRev": 1,
+            "issues": [],
+            "counts": {
+              "error": 0,
+              "info": 0,
+              "warning": 0
+            },
+            "truncated": false,
+            "unavailable": [
+              {
+                "check": "unpaintedZones",
+                "owner": "M2 C2.2",
+                "reason": "zones are derived by the planar map"
+              },
+              {
+                "check": "staleLipSync",
+                "owner": "M8 C8.2",
+                "reason": "lip-sync tracks and their timing"
+              },
+              {
+                "check": "transitionPadding",
+                "owner": "M9 C9.2",
+                "reason": "storyline timing (08 §16.5)"
+              },
+              {
+                "check": "missingFonts",
+                "owner": "M2 C2.1",
+                "reason": "text nodes and font discovery"
+              },
+              {
+                "check": "outdatedTemplateLinks",
+                "owner": "M9 C9.1",
+                "reason": "library template versions"
+              }
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": []
+      }
+    ]
+  },
+  "edit": {
+    "title": "Undo and redo an edit, reading the history",
+    "steps": [
+      {
+        "note": "Create a project (it becomes the open project)",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.create",
+            "params": {
+              "name": "Demo",
+              "path": "/tmp/Demo.animpkg"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "projectId": "pr_01M674QK3EFWZG92EVKS7RS1NN",
+            "path": "/tmp/Demo.animpkg",
+            "sceneId": "sc_01M674QK3GMNCBC0FWXBV3JYSP",
+            "cameraId": "el_01M674QK3GMNCBC0FWXBV3JYSR",
+            "elementId": "el_01M674QK3GMNCBC0FWXBV3JYSS"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/projectId",
+          "/result/sceneId",
+          "/result/cameraId",
+          "/result/elementId"
+        ]
+      },
+      {
+        "note": "Edit the first scene",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "doc.object.patch",
+            "params": {
+              "targets": [
+                "scene:#1"
+              ],
+              "props": {
+                "meta": {
+                  "take": 1
+                }
+              },
+              "label": "Mark take"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "changes": [
+              {
+                "id": "sc_01M674QK3GMNCBC0FWXBV3JYSP",
+                "type": "scene",
+                "op": "modified",
+                "rev": 2,
+                "patch": [
+                  {
+                    "op": "add",
+                    "path": "/meta",
+                    "value": {
+                      "take": 1
+                    }
+                  }
+                ]
+              }
+            ],
+            "documentRev": 2
+          },
+          "targets": {
+            "ids": [
+              "sc_01M674QK3GMNCBC0FWXBV3JYSP"
+            ]
+          },
+          "changes": [
+            {
+              "id": "sc_01M674QK3GMNCBC0FWXBV3JYSP",
+              "type": "scene",
+              "op": "modified",
+              "rev": 2,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/meta",
+                  "value": {
+                    "take": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-1",
+            "label": "Mark take"
+          },
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": [
+          "/result/changes/0/id",
+          "/targets/ids/0",
+          "/changes/0/id"
+        ]
+      },
+      {
+        "note": "Read the history",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "edit.history.get",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "entries": [
+              {
+                "index": 1,
+                "stepId": "u-1",
+                "label": "Mark take",
+                "source": "agent",
+                "agentSessionId": "s1-1bf8dd",
+                "agentName": "c14-test",
+                "time": "2026-10-30T19:31:34.679Z",
+                "objectCount": 1
+              }
+            ],
+            "position": 1,
+            "cleanPosition": 0,
+            "total": 1
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": [
+          "/result/entries/0/agentSessionId",
+          "/result/entries/0/time"
+        ]
+      },
+      {
+        "note": "Undo the edit",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "edit.undo",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "undone": [
+              "Mark take"
+            ],
+            "position": 0
+          },
+          "changes": [
+            {
+              "id": "sc_01M674QK3GMNCBC0FWXBV3JYSP",
+              "type": "scene",
+              "op": "modified",
+              "rev": 3,
+              "patch": [
+                {
+                  "op": "remove",
+                  "path": "/meta",
+                  "oldValue": {
+                    "take": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "warnings": [],
+          "documentRev": 3
+        },
+        "varies": [
+          "/changes/0/id"
+        ]
+      },
+      {
+        "note": "Redo it",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "edit.redo",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "redone": [
+              "Mark take"
+            ],
+            "position": 1
+          },
+          "changes": [
+            {
+              "id": "sc_01M674QK3GMNCBC0FWXBV3JYSP",
+              "type": "scene",
+              "op": "modified",
+              "rev": 4,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/meta",
+                  "value": {
+                    "take": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "warnings": [],
+          "documentRev": 4
+        },
+        "varies": [
+          "/changes/0/id"
+        ]
+      }
+    ]
+  },
+  "checkpoint": {
+    "title": "Try an edit and return to a checkpoint",
+    "steps": [
+      {
+        "note": "Create a project (it becomes the open project)",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.create",
+            "params": {
+              "name": "Demo",
+              "path": "/tmp/Demo.animpkg"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "projectId": "pr_01M674QKAM6R7H9R65S6CFJPT2",
+            "path": "/tmp/Demo.animpkg",
+            "sceneId": "sc_01M674QKAP94X48ZDHMTPVZRC8",
+            "cameraId": "el_01M674QKAP94X48ZDHMTPVZRCA",
+            "elementId": "el_01M674QKAP94X48ZDHMTPVZRCB"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/projectId",
+          "/result/sceneId",
+          "/result/cameraId",
+          "/result/elementId"
+        ]
+      },
+      {
+        "note": "Checkpoint before experimenting",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "checkpoint.create",
+            "params": {
+              "name": "before"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "name": "before",
+            "documentRev": 1
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": []
+      },
+      {
+        "note": "Experiment",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "doc.object.patch",
+            "params": {
+              "targets": [
+                "scene:#1"
+              ],
+              "props": {
+                "meta": {
+                  "experiment": true
+                }
+              }
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "changes": [
+              {
+                "id": "sc_01M674QKAP94X48ZDHMTPVZRC8",
+                "type": "scene",
+                "op": "modified",
+                "rev": 2,
+                "patch": [
+                  {
+                    "op": "add",
+                    "path": "/meta",
+                    "value": {
+                      "experiment": true
+                    }
+                  }
+                ]
+              }
+            ],
+            "documentRev": 2
+          },
+          "targets": {
+            "ids": [
+              "sc_01M674QKAP94X48ZDHMTPVZRC8"
+            ]
+          },
+          "changes": [
+            {
+              "id": "sc_01M674QKAP94X48ZDHMTPVZRC8",
+              "type": "scene",
+              "op": "modified",
+              "rev": 2,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/meta",
+                  "value": {
+                    "experiment": true
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-1",
+            "label": "Set meta"
+          },
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": [
+          "/result/changes/0/id",
+          "/targets/ids/0",
+          "/changes/0/id"
+        ]
+      },
+      {
+        "note": "List checkpoints",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "checkpoint.list",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": [
+            {
+              "name": "before",
+              "createdAt": "2026-10-30T19:31:34.911Z",
+              "documentRev": 1,
+              "origin": "agent:c14-test"
+            }
+          ],
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": [
+          "/result/0/createdAt"
+        ]
+      },
+      {
+        "note": "Restore the checkpoint (one undoable step)",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "checkpoint.restore",
+            "params": {
+              "name": "before"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "name": "before",
+            "documentRev": 3
+          },
+          "changes": [
+            {
+              "id": "sc_01M674QKAP94X48ZDHMTPVZRC8",
+              "type": "scene",
+              "op": "modified",
+              "rev": 3,
+              "patch": [
+                {
+                  "op": "remove",
+                  "path": "/meta",
+                  "oldValue": {
+                    "experiment": true
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-2",
+            "label": "Restore checkpoint before"
+          },
+          "warnings": [],
+          "documentRev": 3
+        },
+        "varies": [
+          "/changes/0/id"
+        ]
+      },
+      {
+        "note": "Delete it",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "checkpoint.delete",
+            "params": {
+              "name": "before"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {},
+          "changes": [],
+          "warnings": [],
+          "documentRev": 3
+        },
+        "varies": []
+      }
+    ]
+  },
+  "job": {
+    "title": "Start a job, wait for it and list jobs",
+    "steps": [
+      {
+        "note": "Create a project (it becomes the open project)",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.create",
+            "params": {
+              "name": "Demo",
+              "path": "/tmp/Demo.animpkg"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "projectId": "pr_01M674QKJ5V8KBX5483ME7J3VK",
+            "path": "/tmp/Demo.animpkg",
+            "sceneId": "sc_01M674QKJ639QG01M78YWB213A",
+            "cameraId": "el_01M674QKJ639QG01M78YWB213C",
+            "elementId": "el_01M674QKJ639QG01M78YWB213D"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/projectId",
+          "/result/sceneId",
+          "/result/cameraId",
+          "/result/elementId"
+        ]
+      },
+      {
+        "note": "Saving is a job: the call returns its id at once",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.save",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "jobId": "job-1"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": []
+      },
+      {
+        "note": "Wait for it",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "job.wait",
+            "params": {
+              "jobId": "job-1",
+              "timeoutMs": 30000
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "jobId": "job-1",
+            "commandId": "project.save",
+            "state": "succeeded",
+            "progress": 1.0,
+            "message": "",
+            "startedAt": "2026-10-30T19:31:35.152Z",
+            "result": {
+              "path": "/tmp/Demo.animpkg",
+              "projectSaved": true,
+              "globalLibrarySaved": false
+            },
+            "session": "agent:s1-509c6a"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/startedAt",
+          "/result/session"
+        ]
+      },
+      {
+        "note": "The caller's jobs",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "job.list",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": [
+            {
+              "jobId": "job-1",
+              "commandId": "project.save",
+              "state": "succeeded",
+              "progress": 1.0,
+              "message": "",
+              "startedAt": "2026-10-30T19:31:35.152Z",
+              "result": {
+                "path": "/tmp/Demo.animpkg",
+                "projectSaved": true,
+                "globalLibrarySaved": false
+              },
+              "session": "agent:s1-509c6a"
+            }
+          ],
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/0/startedAt",
+          "/result/0/session"
+        ]
+      }
+    ]
+  },
+  "agent": {
+    "title": "Inspect the server, then read and export this session's activity",
+    "steps": [
+      {
+        "note": "Create a project (it becomes the open project)",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.create",
+            "params": {
+              "name": "Demo",
+              "path": "/tmp/Demo.animpkg"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "projectId": "pr_01M674QKS9HE3FNG3J17M54C13",
+            "path": "/tmp/Demo.animpkg",
+            "sceneId": "sc_01M674QKSBF7EN7REF6ZWNYPJ6",
+            "cameraId": "el_01M674QKSBF7EN7REF6ZWNYPJ8",
+            "elementId": "el_01M674QKSBF7EN7REF6ZWNYPJ9"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/projectId",
+          "/result/sceneId",
+          "/result/cameraId",
+          "/result/elementId"
+        ]
+      },
+      {
+        "note": "Edit something",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "doc.object.patch",
+            "params": {
+              "targets": [
+                "scene:#1"
+              ],
+              "props": {
+                "meta": {
+                  "by": "agent"
+                }
+              }
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "changes": [
+              {
+                "id": "sc_01M674QKSBF7EN7REF6ZWNYPJ6",
+                "type": "scene",
+                "op": "modified",
+                "rev": 2,
+                "patch": [
+                  {
+                    "op": "add",
+                    "path": "/meta",
+                    "value": {
+                      "by": "agent"
+                    }
+                  }
+                ]
+              }
+            ],
+            "documentRev": 2
+          },
+          "targets": {
+            "ids": [
+              "sc_01M674QKSBF7EN7REF6ZWNYPJ6"
+            ]
+          },
+          "changes": [
+            {
+              "id": "sc_01M674QKSBF7EN7REF6ZWNYPJ6",
+              "type": "scene",
+              "op": "modified",
+              "rev": 2,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/meta",
+                  "value": {
+                    "by": "agent"
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-1",
+            "label": "Set meta"
+          },
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": [
+          "/result/changes/0/id",
+          "/targets/ids/0",
+          "/changes/0/id"
+        ]
+      },
+      {
+        "note": "Endpoint and sessions",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "agent.server.status",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "stdio",
+            "sessions": [
+              {
+                "sessionId": "s1-de9e3f",
+                "client": "c14-test",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-10-30T19:31:35.335Z",
+                "lastActivity": "2026-10-30T19:31:35.381Z",
+                "paused": false,
+                "transport": "stdio"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": [
+          "/result/sessions/0/sessionId",
+          "/result/sessions/0/connectedAt",
+          "/result/sessions/0/lastActivity"
+        ]
+      },
+      {
+        "note": "The activity of this session",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "agent.activity.list",
+            "params": {
+              "limit": 5
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": [
+            {
+              "seq": 1,
+              "time": "2026-10-30T19:31:35.377Z",
+              "sessionId": "s1-de9e3f",
+              "client": "c14-test",
+              "tool": "run_command",
+              "commandId": "project.create",
+              "params": {
+                "name": "Demo",
+                "path": "/tmp/Demo.animpkg"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 1,
+              "durationMs": 40
+            },
+            {
+              "seq": 2,
+              "time": "2026-10-30T19:31:35.381Z",
+              "sessionId": "s1-de9e3f",
+              "client": "c14-test",
+              "tool": "run_command",
+              "commandId": "doc.object.patch",
+              "params": {
+                "targets": [
+                  "scene:#1"
+                ],
+                "props": {
+                  "meta": {
+                    "by": "agent"
+                  }
+                }
+              },
+              "status": "ok",
+              "undoStepId": "u-1",
+              "changedCount": 1,
+              "documentRev": 2,
+              "durationMs": 2
+            },
+            {
+              "seq": 3,
+              "time": "2026-10-30T19:31:35.384Z",
+              "sessionId": "s1-de9e3f",
+              "client": "c14-test",
+              "tool": "run_command",
+              "commandId": "agent.server.status",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 2,
+              "durationMs": 1
+            }
+          ],
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": [
+          "/result/0/time",
+          "/result/0/sessionId",
+          "/result/1/time",
+          "/result/1/sessionId",
+          "/result/2/time",
+          "/result/2/sessionId"
+        ]
+      },
+      {
+        "note": "Export the committed edits as a replayable batch",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "agent.activity.export",
+            "params": {
+              "path": "/tmp/activity.json",
+              "format": "batch"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "path": "/tmp/activity.json",
+            "entries": 4,
+            "omitted": [
+              {
+                "seq": 3,
+                "tool": "run_command",
+                "command_id": "agent.server.status",
+                "reason": "readOnly"
+              },
+              {
+                "seq": 4,
+                "tool": "run_command",
+                "command_id": "agent.activity.list",
+                "reason": "readOnly"
+              }
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 2
+        },
+        "varies": []
+      }
+    ]
+  },
+  "app": {
+    "title": "Read the application state and move the context",
+    "steps": [
+      {
+        "note": "Create a project (it becomes the open project)",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "project.create",
+            "params": {
+              "name": "Demo",
+              "path": "/tmp/Demo.animpkg"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "projectId": "pr_01M674QM0RAFD618541GE7N45G",
+            "path": "/tmp/Demo.animpkg",
+            "sceneId": "sc_01M674QM0SPX3RFX7XWK5JPW01",
+            "cameraId": "el_01M674QM0SPX3RFX7XWK5JPW03",
+            "elementId": "el_01M674QM0SPX3RFX7XWK5JPW04"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/projectId",
+          "/result/sceneId",
+          "/result/cameraId",
+          "/result/elementId"
+        ]
+      },
+      {
+        "note": "Application information",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "app.info.get",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "name": "Toontown",
+            "version": "0.0.1",
+            "platform": "windows-x86_64",
+            "locale": "en",
+            "languages": [
+              "en"
+            ],
+            "formatVersion": "1.0"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": []
+      },
+      {
+        "note": "Go to frame 12 of the first scene",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "app.context.set",
+            "params": {
+              "sceneId": "scene:#1",
+              "frame": 12
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M674QM0RAFD618541GE7N45G",
+              "name": "Demo",
+              "path": "/tmp/Demo.animpkg",
+              "dirty": false,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M674QM0SPX3RFX7XWK5JPW01",
+              "name": "Scene-1",
+              "frameCount": 1
+            },
+            "frame": 12,
+            "element": {
+              "id": "el_01M674QM0SPX3RFX7XWK5JPW02",
+              "name": "Camera Peg",
+              "type": "peg"
+            },
+            "drawing": null,
+            "mode": "staging",
+            "activeView": {
+              "viewId": "cameraView",
+              "panelId": "cameraView",
+              "type": "camera"
+            },
+            "focusedPanel": "cameraView",
+            "activeTool": null,
+            "selection": {
+              "context": "staging",
+              "ids": [],
+              "kinds": []
+            },
+            "workspace": {
+              "name": "Default",
+              "modified": false
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [],
+            "fullScreen": false
+          },
+          "targets": {
+            "sceneId": "sc_01M674QM0SPX3RFX7XWK5JPW01",
+            "frame": 12,
+            "elementId": "el_01M674QM0SPX3RFX7XWK5JPW02"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/project/id",
+          "/result/scene/id",
+          "/result/element/id",
+          "/targets/sceneId",
+          "/targets/elementId"
+        ]
+      },
+      {
+        "note": "Step one frame back",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "app.frame.move",
+            "params": {
+              "direction": "previous"
+            }
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "frame": 1
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": []
+      },
+      {
+        "note": "The state now",
+        "request": {
+          "tool": "run_command",
+          "arguments": {
+            "id": "app.state.get",
+            "params": {}
+          }
+        },
+        "response": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M674QM0RAFD618541GE7N45G",
+              "name": "Demo",
+              "path": "/tmp/Demo.animpkg",
+              "dirty": false,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M674QM0SPX3RFX7XWK5JPW01",
+              "name": "Scene-1",
+              "frameCount": 1
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01M674QM0SPX3RFX7XWK5JPW02",
+              "name": "Camera Peg",
+              "type": "peg"
+            },
+            "drawing": null,
+            "mode": "staging",
+            "activeView": {
+              "viewId": "cameraView",
+              "panelId": "cameraView",
+              "type": "camera"
+            },
+            "focusedPanel": "cameraView",
+            "activeTool": null,
+            "selection": {
+              "context": "staging",
+              "ids": [],
+              "kinds": []
+            },
+            "workspace": {
+              "name": "Default",
+              "modified": false
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-ad2e89",
+                "name": "c14-test",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s1-ad2e89",
+              "client": "c14-test",
+              "policy": "assist",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "library.global"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "assist",
+                "maxJobs": 2,
+                "maxBatchSteps": 1000,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": true,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 1
+        },
+        "varies": [
+          "/result/project/id",
+          "/result/scene/id",
+          "/result/element/id",
+          "/result/agentSessions/0/sessionId",
+          "/result/agent/sessionId"
+        ]
+      }
+    ]
+  }
+}

@@ -28,10 +28,6 @@ fn every_result_lists_its_effective_params() {
 /// 11 §13: "`describe_command` includes at least one example request and its result; docs resources include a worked
 /// end-to-end example per namespace".
 #[test]
-#[ignore = "C14-R1-16: executed example results need each namespace's commands, most of which arrive with later \
-            milestones (M2-M9); the kernel namespaces (project, doc, edit, checkpoint, job, agent, app) get recorded \
-            worked examples with the M2 agent-workflow follow-up; owner: builder, before M2 C2.1 (traceability row \
-            11 §13)"]
 fn namespace_docs_carry_a_worked_example_with_executed_results() {
     let dir = tmp();
     let h = executor(&dir.join("user"));

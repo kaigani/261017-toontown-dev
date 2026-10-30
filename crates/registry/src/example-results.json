@@ -1,0 +1,6152 @@
+{
+  "agent.activity.export": [
+    {
+      "title": "Export as a replayable batch",
+      "result": {
+        "path": "/tmp/activity.json",
+        "entries": 0,
+        "omitted": []
+      },
+      "varies": []
+    }
+  ],
+  "agent.activity.list": [
+    {
+      "title": "The last 20 actions",
+      "result": [],
+      "varies": []
+    }
+  ],
+  "agent.activity.persist.set": [
+    {
+      "title": "Persist the activity log",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    }
+  ],
+  "agent.confirmation.respond": [
+    {
+      "title": "Accept a request",
+      "result": {
+        "confirmationId": "cf_27e3a52afbcb1003d6423c07",
+        "accepted": true
+      },
+      "varies": [
+        "/confirmationId"
+      ]
+    }
+  ],
+  "agent.policy.defaults.set": [
+    {
+      "title": "Assist by default",
+      "result": {
+        "policy": "assist",
+        "maxJobs": 2,
+        "maxBatchSteps": 1000,
+        "maxInlineImagePx": 2048,
+        "maxInlineBytes": 52428800,
+        "askInApp": true,
+        "letAgentMoveView": true,
+        "highlightAgentChanges": true
+      },
+      "varies": []
+    }
+  ],
+  "agent.server.set": [
+    {
+      "title": "Enable the local agent server",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    }
+  ],
+  "agent.server.status": [
+    {
+      "title": "Endpoint and connected sessions",
+      "result": {
+        "enabled": true,
+        "endpoint": null,
+        "sessions": [
+          {
+            "sessionId": "s1-2abb04",
+            "client": "Example agent",
+            "policy": "assist",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "library.global"
+            ],
+            "connectedAt": "2026-10-30T19:28:58.679Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": ""
+          }
+        ],
+        "pendingConfirmations": [
+          {
+            "confirmationId": "cf_18dd70a49a48444ae8ecd41e",
+            "sessionId": "s1-2abb04",
+            "commandId": "project.saveAs",
+            "summary": "Overwrite `/tmp/Short.animpkg`",
+            "consequences": [
+              {
+                "kind": "overwrite",
+                "path": "/tmp/Short.animpkg",
+                "bytes": 28439
+              }
+            ],
+            "category": "overwrite",
+            "decision": null
+          }
+        ]
+      },
+      "varies": [
+        "/sessions/0/sessionId",
+        "/sessions/0/connectedAt",
+        "/pendingConfirmations/0/confirmationId",
+        "/pendingConfirmations/0/sessionId"
+      ]
+    }
+  ],
+  "agent.session.disconnect": [
+    {
+      "title": "Disconnect a session",
+      "result": {},
+      "varies": []
+    }
+  ],
+  "agent.session.grant": [
+    {
+      "title": "Let a session edit",
+      "result": {
+        "sessionId": "s1-d9afab",
+        "policy": "assist",
+        "scopes": [
+          "read",
+          "edit"
+        ],
+        "roots": []
+      },
+      "varies": [
+        "/sessionId"
+      ]
+    }
+  ],
+  "agent.session.pause": [
+    {
+      "title": "Pause every session",
+      "result": {
+        "paused": [
+          "s1-f0caa1"
+        ]
+      },
+      "varies": [
+        "/paused/0"
+      ]
+    }
+  ],
+  "agent.session.resume": [
+    {
+      "title": "Resume every session",
+      "result": {
+        "resumed": []
+      },
+      "varies": []
+    }
+  ],
+  "agent.token.regenerate": [
+    {
+      "title": "Invalidate the bearer token",
+      "result": {
+        "discoveryFile": "/tmp/user/Settings/agent-discovery.json"
+      },
+      "varies": []
+    }
+  ],
+  "agent.typedTools.set": [
+    {
+      "title": "Expose doc and edit commands as tools",
+      "result": {
+        "toolCount": 40
+      },
+      "varies": []
+    }
+  ],
+  "app.context.set": [
+    {
+      "title": "Go to frame 12 of the first scene",
+      "result": {
+        "project": {
+          "id": "pr_01K742SG00BK0VXTWDM5JRXV37",
+          "name": "Sample",
+          "path": null,
+          "dirty": true,
+          "globalLibraryDirty": false,
+          "readOnly": false
+        },
+        "scene": {
+          "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "name": "Intro",
+          "frameCount": 48
+        },
+        "frame": 12,
+        "element": {
+          "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+          "name": "Camera",
+          "type": "camera"
+        },
+        "drawing": null,
+        "mode": "staging",
+        "activeView": {
+          "viewId": "cameraView",
+          "panelId": "cameraView",
+          "type": "camera"
+        },
+        "focusedPanel": "cameraView",
+        "activeTool": null,
+        "selection": {
+          "context": "staging",
+          "ids": [],
+          "kinds": []
+        },
+        "workspace": {
+          "name": "Default",
+          "modified": false
+        },
+        "playback": {
+          "playing": false
+        },
+        "startScreenVisible": false,
+        "modal": null,
+        "agentSessions": [],
+        "fullScreen": false
+      },
+      "varies": []
+    },
+    {
+      "title": "Make an element current by path",
+      "result": {
+        "project": {
+          "id": "pr_01K742SG00BK0VXTWDM5JRXV37",
+          "name": "Sample",
+          "path": null,
+          "dirty": true,
+          "globalLibraryDirty": false,
+          "readOnly": false
+        },
+        "scene": {
+          "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "name": "Intro",
+          "frameCount": 48
+        },
+        "frame": 1,
+        "element": {
+          "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+          "name": "Camera",
+          "type": "camera"
+        },
+        "drawing": null,
+        "mode": "staging",
+        "activeView": {
+          "viewId": "cameraView",
+          "panelId": "cameraView",
+          "type": "camera"
+        },
+        "focusedPanel": "cameraView",
+        "activeTool": null,
+        "selection": {
+          "context": "staging",
+          "ids": [],
+          "kinds": []
+        },
+        "workspace": {
+          "name": "Default",
+          "modified": false
+        },
+        "playback": {
+          "playing": false
+        },
+        "startScreenVisible": false,
+        "modal": null,
+        "agentSessions": [],
+        "fullScreen": false
+      },
+      "varies": []
+    }
+  ],
+  "app.currentElement.move": [
+    {
+      "title": "Next element in Timeline order",
+      "result": {
+        "elementId": "el_01K742SG101DH4FAEWCWWK4QXC"
+      },
+      "varies": []
+    }
+  ],
+  "app.currentElement.set": [
+    {
+      "title": "Make the first element of the first scene current",
+      "result": {
+        "elementId": "el_01K742SG0ZZYY8HE4MW501XMJV"
+      },
+      "varies": []
+    }
+  ],
+  "app.frame.move": [
+    {
+      "title": "Next frame",
+      "result": {
+        "frame": 2
+      },
+      "varies": []
+    },
+    {
+      "title": "Back to the previous drawing change",
+      "result": {
+        "frame": 1
+      },
+      "varies": []
+    }
+  ],
+  "app.frame.set": [
+    {
+      "title": "Go to frame 1",
+      "result": {
+        "frame": 1
+      },
+      "varies": []
+    }
+  ],
+  "app.info.get": [
+    {
+      "title": "Read name, version, platform, locale and languages",
+      "result": {
+        "name": "Toontown",
+        "version": "0.0.1",
+        "platform": "windows-x86_64",
+        "locale": "en",
+        "languages": [
+          "en"
+        ],
+        "formatVersion": "1.0"
+      },
+      "varies": []
+    }
+  ],
+  "app.mode.set": [
+    {
+      "title": "Switch to drawing mode",
+      "result": {
+        "mode": "drawing",
+        "viewId": "drawingView"
+      },
+      "varies": []
+    }
+  ],
+  "app.quit": [
+    {
+      "title": "Quit, discarding unsaved changes",
+      "result": {
+        "quitting": true
+      },
+      "varies": []
+    }
+  ],
+  "app.state.get": [
+    {
+      "title": "Read the current project, scene, frame, element, selection and workspace",
+      "result": {
+        "project": {
+          "id": "pr_01K742SG00BK0VXTWDM5JRXV37",
+          "name": "Sample",
+          "path": null,
+          "dirty": true,
+          "globalLibraryDirty": false,
+          "readOnly": false
+        },
+        "scene": {
+          "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "name": "Intro",
+          "frameCount": 48
+        },
+        "frame": 1,
+        "element": {
+          "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+          "name": "Camera",
+          "type": "camera"
+        },
+        "drawing": null,
+        "mode": "staging",
+        "activeView": {
+          "viewId": "cameraView",
+          "panelId": "cameraView",
+          "type": "camera"
+        },
+        "focusedPanel": "cameraView",
+        "activeTool": null,
+        "selection": {
+          "context": "staging",
+          "ids": [],
+          "kinds": []
+        },
+        "workspace": {
+          "name": "Default",
+          "modified": false
+        },
+        "playback": {
+          "playing": false
+        },
+        "startScreenVisible": false,
+        "modal": null,
+        "agentSessions": [],
+        "fullScreen": false
+      },
+      "varies": []
+    }
+  ],
+  "checkpoint.create": [
+    {
+      "title": "Checkpoint before an experiment",
+      "result": {
+        "name": "experiment-1",
+        "documentRev": 4
+      },
+      "varies": []
+    }
+  ],
+  "checkpoint.delete": [
+    {
+      "title": "Delete a checkpoint",
+      "result": {},
+      "varies": []
+    }
+  ],
+  "checkpoint.list": [
+    {
+      "title": "All checkpoints, oldest first",
+      "result": [
+        {
+          "name": "before-walk",
+          "createdAt": "2026-10-30T19:28:59.976Z",
+          "documentRev": 1,
+          "origin": "user"
+        }
+      ],
+      "varies": [
+        "/0/createdAt"
+      ]
+    }
+  ],
+  "checkpoint.restore": [
+    {
+      "title": "Restore a checkpoint",
+      "result": {
+        "name": "before-walk",
+        "documentRev": 5
+      },
+      "varies": []
+    }
+  ],
+  "doc.asset.embed": [
+    {
+      "title": "Embed every linked file",
+      "result": {
+        "embedded": [],
+        "bytes": 0
+      },
+      "varies": []
+    }
+  ],
+  "doc.asset.export": [
+    {
+      "title": "Write the sample's sound to a file",
+      "result": {
+        "path": "/tmp/line1.wav",
+        "bytes": 352844
+      },
+      "varies": []
+    }
+  ],
+  "doc.asset.list": [
+    {
+      "title": "Missing media",
+      "result": {
+        "assets": [
+          {
+            "id": "as_01K742SG0HZGBRF7HE49BFXZRC",
+            "name": "reference.mov",
+            "kind": "movie",
+            "storage": "linked",
+            "status": "missing",
+            "path": "../ref/reference.mov",
+            "size": 5000000000,
+            "refs": 1
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "doc.asset.relink": [
+    {
+      "title": "Search a folder for missing media",
+      "result": {
+        "relinked": [],
+        "stillMissing": [
+          "as_01K742SG0HZGBRF7HE49BFXZRC"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "doc.asset.remove": [
+    {
+      "title": "Remove media nothing uses",
+      "result": {
+        "removed": [],
+        "bytes": 0,
+        "detachedRefs": []
+      },
+      "varies": []
+    }
+  ],
+  "doc.blob.get": [
+    {
+      "title": "The embedded sound of the sample",
+      "resultDigest": {
+        "bytes": 470587,
+        "sha256": "d8068c38eba9ecd6ebc6605a58434d510fe5f7c0823011758754e8aaaba1f047"
+      },
+      "varies": []
+    }
+  ],
+  "doc.diff": [
+    {
+      "title": "Everything since the project was opened",
+      "result": {
+        "fromRev": 1,
+        "toRev": 4,
+        "changes": [
+          {
+            "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+            "type": "scene",
+            "op": "modified",
+            "rev": 4
+          }
+        ],
+        "truncated": false
+      },
+      "varies": []
+    }
+  ],
+  "doc.export.json": [
+    {
+      "title": "The first scene as an inline bundle",
+      "result": {
+        "bundle": {
+          "format": "animjson",
+          "formatVersion": "1.0",
+          "generator": {
+            "name": "Toontown",
+            "version": "0.0.1",
+            "platform": "windows-x64"
+          },
+          "exportedAt": "2026-10-30T19:29:00.898Z",
+          "sourceProjectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
+          "scope": {
+            "kind": "scenes",
+            "ids": [
+              "sc_01K742SG0YSRA1305J7887BDVZ"
+            ]
+          },
+          "settings": {
+            "frameRate": 23.976,
+            "cameraWidth": 1920,
+            "cameraHeight": 1080
+          },
+          "scenes": [
+            {
+              "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+              "type": "scene",
+              "rev": 4,
+              "name": "Intro",
+              "visible": true,
+              "backgroundColour": "#FFFFFFFF",
+              "currentCameraId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+              "paletteStyles": {
+                "pal_01K742SG02PPWW6K8BZY81A0M0": "sty_01K742SG047PMCPGTWHST62SWP",
+                "pal_01K742SG0AGX319NWQ7HE2MH4W": "sty_01K742SG0BHZ6HZ10GCCZF61NC"
+              },
+              "outTransition": {
+                "id": "tr_01K742SG2KA0JQ0743D7J833ZK",
+                "type": "transition",
+                "rev": 1,
+                "transitionType": "clockWipe",
+                "durationLeft": 12,
+                "blankDuration": 0,
+                "durationRight": 12,
+                "colour": "#000000FF",
+                "angle": 90.0,
+                "direction": "counterclockwise",
+                "size": 25
+              },
+              "tree": [
+                {
+                  "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+                  "children": []
+                },
+                {
+                  "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+                  "children": [
+                    {
+                      "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+                  "children": []
+                },
+                {
+                  "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+                  "children": []
+                },
+                {
+                  "id": "el_01K742SG18FWWKH14N0RFB0V71",
+                  "children": []
+                },
+                {
+                  "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+                  "children": []
+                },
+                {
+                  "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+                  "children": [
+                    {
+                      "id": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+                      "children": [
+                        {
+                          "id": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "el_01K742SG1E231F7W54P5SD2AAB",
+                  "children": [
+                    {
+                      "id": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+                  "children": [
+                    {
+                      "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+                      "children": []
+                    },
+                    {
+                      "id": "el_01K742SG1J3M0SDFTX818N3V2K",
+                      "children": [
+                        {
+                          "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "el_01K742SG1M9CJZV12YYC0CWB8B",
+                  "children": [
+                    {
+                      "id": "el_01K742SG1N7SQGF0AQF87N7SEP",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+                  "children": []
+                }
+              ],
+              "columnOrder": [
+                "el_01K742SG11W3SGB8Q1H50W74VB",
+                "el_01K742SG12CTMHXEB7TY99G4XV",
+                "el_01K742SG16N99XRCS0QEBWMRXY",
+                "el_01K742SG18FWWKH14N0RFB0V71",
+                "el_01K742SG1997BY67AWW1M4Q0ZJ"
+              ],
+              "elements": [
+                {
+                  "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Camera",
+                  "elementType": "camera",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "transform": {
+                    "offset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 16.0
+                    },
+                    "rotation": 0.0,
+                    "skew": 0.0,
+                    "scale": {
+                      "x": 1.0,
+                      "y": 1.0
+                    },
+                    "keepProportions": false,
+                    "lockDepth": false,
+                    "orientToPath": false
+                  },
+                  "camera": {
+                    "fovMode": "static",
+                    "fov": 41.1121
+                  },
+                  "channels": {},
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Bob-P",
+                  "elementType": "peg",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "transform": {
+                    "offset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0
+                    },
+                    "rotation": 0.0,
+                    "skew": 0.0,
+                    "scale": {
+                      "x": 1.0,
+                      "y": 1.0
+                    },
+                    "keepProportions": false,
+                    "pivot": {
+                      "x": 0.25,
+                      "y": -1.5
+                    },
+                    "applyPivotTo": "both",
+                    "useChildDrawingPivot": false,
+                    "lockDepth": false,
+                    "orientToPath": false
+                  },
+                  "exportGroup": {
+                    "groupOnVectorExport": false,
+                    "addComposite": true
+                  },
+                  "channels": {
+                    "skew": {
+                      "id": "ch_01K742SG233AAGQYCZWV5XVRPP",
+                      "type": "channel",
+                      "rev": 1,
+                      "name": "skew",
+                      "curveType": "spline",
+                      "keys": [
+                        {
+                          "id": "ky_01K742SG245790JGK2KWB7Z8RK",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 1,
+                          "value": 0.0,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        },
+                        {
+                          "id": "ky_01K742SG25VVP67AJQQCV1HDFJ",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 48,
+                          "value": 5.0,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        }
+                      ]
+                    }
+                  },
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Bob",
+                  "elementType": "drawing",
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "visibleInXsheet": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": "#9DC3E6FF",
+                  "backgroundColour": null,
+                  "note": "main character",
+                  "columnWidth": 80,
+                  "drawingBankId": "db_01K742SG0JW3TVZ32SQC03AMY1",
+                  "exposure": [
+                    [
+                      "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                      6
+                    ],
+                    [
+                      null,
+                      2
+                    ],
+                    [
+                      "dr_01K742SG0M5J3BAJSW8241WA87",
+                      12
+                    ],
+                    [
+                      "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                      24
+                    ]
+                  ],
+                  "cellNotes": {
+                    "3": "fix hand",
+                    "12": "hold"
+                  },
+                  "transform": {
+                    "offset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0
+                    },
+                    "rotation": 0.0,
+                    "skew": 0.0,
+                    "scale": {
+                      "x": 1.0,
+                      "y": 1.0
+                    },
+                    "keepProportions": false,
+                    "rotationPivot": {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    "scalePivot": {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    "rotateAboutPivot": false,
+                    "lockDepth": false,
+                    "orientToPath": false
+                  },
+                  "channels": {
+                    "position": {
+                      "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G",
+                      "type": "channel",
+                      "rev": 1,
+                      "name": "position",
+                      "points": [
+                        {
+                          "id": "mp_01K742SG1YDDR34S3G0DS5PVPK",
+                          "type": "motionPoint",
+                          "rev": 1,
+                          "frame": 1,
+                          "position": {
+                            "x": -4.0,
+                            "y": 0.0,
+                            "z": 0.0
+                          },
+                          "tension": 0.0,
+                          "continuity": 0.0,
+                          "bias": 0.0,
+                          "constantSegment": false,
+                          "lockDepth": false
+                        },
+                        {
+                          "id": "mp_01K742SG1Z9PEPA9753ZZ77JT4",
+                          "type": "motionPoint",
+                          "rev": 1,
+                          "frame": null,
+                          "position": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                          },
+                          "tension": 0.0,
+                          "continuity": 0.0,
+                          "bias": 0.0,
+                          "constantSegment": false,
+                          "lockDepth": false
+                        },
+                        {
+                          "id": "mp_01K742SG20TE2N53WY0C9CNKZR",
+                          "type": "motionPoint",
+                          "rev": 1,
+                          "frame": 24,
+                          "position": {
+                            "x": 4.0,
+                            "y": 0.0,
+                            "z": 0.0
+                          },
+                          "tension": 0.0,
+                          "continuity": 0.0,
+                          "bias": 0.0,
+                          "constantSegment": false,
+                          "lockDepth": false
+                        }
+                      ]
+                    },
+                    "rotation": {
+                      "id": "ch_01K742SG1QFHD2CCT6MTEX2H16",
+                      "type": "channel",
+                      "rev": 1,
+                      "name": "rotation",
+                      "curveType": "spline",
+                      "keys": [
+                        {
+                          "id": "ky_01K742SG1R4DF9HWRAYHFSFV52",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 1,
+                          "value": 0.0,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        },
+                        {
+                          "id": "ky_01K742SG1SKWBHK8Y5J227CEGJ",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 12,
+                          "value": 45.0,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        },
+                        {
+                          "id": "ky_01K742SG1TD4QPFJQ4CNK9WK64",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 24,
+                          "value": -10.5,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        }
+                      ]
+                    },
+                    "scale.x": {
+                      "id": "ch_01K742SG1VM41901DYSMMVJQDV",
+                      "type": "channel",
+                      "rev": 1,
+                      "name": "scale.x",
+                      "curveType": "spline",
+                      "keys": [
+                        {
+                          "id": "ky_01K742SG1W88HBTZF8Y8YFYY6Y",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 1,
+                          "value": 1.0,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        }
+                      ]
+                    },
+                    "velocity": {
+                      "id": "ch_01K742SG21WVPRAB3YJD7ZJTMP",
+                      "type": "channel",
+                      "rev": 1,
+                      "name": "velocity",
+                      "curveType": "interpolation",
+                      "keys": [
+                        {
+                          "id": "ky_01K742SG22N9R180HJWCAM4TT0",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 12,
+                          "value": 0.5,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": "easeInOut"
+                        }
+                      ]
+                    }
+                  },
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Background",
+                  "elementType": "image",
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "background",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "visibleInXsheet": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "drawingBankId": "db_01K742SG134NGX5HGYXCKT44C7",
+                  "exposure": [
+                    [
+                      "dr_01K742SG14TNTV1TR99SQHVKVK",
+                      48
+                    ]
+                  ],
+                  "importOptions": {
+                    "premultiplied": false
+                  },
+                  "transform": {
+                    "offset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0
+                    },
+                    "rotation": 0.0,
+                    "skew": 0.0,
+                    "scale": {
+                      "x": 1.0,
+                      "y": 1.0
+                    },
+                    "keepProportions": false,
+                    "rotationPivot": {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    "scalePivot": {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    "rotateAboutPivot": false,
+                    "lockDepth": false,
+                    "orientToPath": false
+                  },
+                  "channels": {},
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Notes",
+                  "elementType": "annotation",
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "visibleInXsheet": false,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "drawingBankId": "db_01K742SG17ZDAHQTMS9MQ7TXWX",
+                  "exposure": [],
+                  "transform": {
+                    "offset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0
+                    },
+                    "rotation": 0.0,
+                    "skew": 0.0,
+                    "scale": {
+                      "x": 1.0,
+                      "y": 1.0
+                    },
+                    "keepProportions": false,
+                    "rotationPivot": {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    "scalePivot": {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    "rotateAboutPivot": false,
+                    "lockDepth": false,
+                    "orientToPath": false
+                  },
+                  "channels": {},
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG18FWWKH14N0RFB0V71",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Dialogue",
+                  "elementType": "sound",
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "visibleInXsheet": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "streamed": false,
+                  "showMouthShapes": true,
+                  "placements": [
+                    {
+                      "id": "pl_01K742SG26M7NBT20KCAM2NWXK",
+                      "type": "soundPlacement",
+                      "rev": 1,
+                      "assetId": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+                      "startFrame": 1,
+                      "stopFrame": 8,
+                      "inPoint": 0.0,
+                      "outPoint": 2.5,
+                      "loops": 1,
+                      "volume": -3,
+                      "envelope": [
+                        {
+                          "time": 0.0,
+                          "left": 0.0,
+                          "right": 0.0
+                        },
+                        {
+                          "time": 0.5,
+                          "left": 1.0,
+                          "right": 1.0
+                        }
+                      ],
+                      "mouthTrack": {
+                        "mouths": "XABBCDEX",
+                        "manual": [
+                          {
+                            "from": 3,
+                            "to": 4
+                          }
+                        ],
+                        "labels": {
+                          "1": "rest"
+                        },
+                        "source": "detected",
+                        "producedFor": {
+                          "assetId": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+                          "inPoint": 0.0,
+                          "outPoint": 2.5,
+                          "loops": 1,
+                          "stopFrame": 8,
+                          "frameRate": 23.976
+                        }
+                      }
+                    }
+                  ],
+                  "lipSyncMappings": [
+                    {
+                      "drawingElementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+                      "mapping": {
+                        "A": "dr_01K742SG0M5J3BAJSW8241WA87",
+                        "B": null,
+                        "C": null,
+                        "D": null,
+                        "E": null,
+                        "F": null,
+                        "G": null,
+                        "X": "dr_01K742SG0NG5HTFZRD7238FZXJ"
+                      },
+                      "autoReapply": true
+                    }
+                  ],
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Reference",
+                  "elementType": "media",
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "visibleInXsheet": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "sequences": [
+                    {
+                      "id": "ms_01K742SG27RRHRRZ5147YSZD8N",
+                      "type": "mediaSequence",
+                      "rev": 1,
+                      "assetId": "as_01K742SG0HZGBRF7HE49BFXZRC",
+                      "startFrame": 1,
+                      "stopFrame": 24,
+                      "linkOffset": 1
+                    }
+                  ],
+                  "transform": {
+                    "offset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0
+                    },
+                    "rotation": 0.0,
+                    "skew": 0.0,
+                    "scale": {
+                      "x": 1.0,
+                      "y": 1.0
+                    },
+                    "keepProportions": false,
+                    "rotationPivot": {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    "scalePivot": {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    "rotateAboutPivot": false,
+                    "lockDepth": false,
+                    "orientToPath": false
+                  },
+                  "channels": {},
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Rig",
+                  "elementType": "skeleton",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "transform": {
+                    "offset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0
+                    },
+                    "rotation": 0.0,
+                    "skew": 0.0,
+                    "scale": {
+                      "x": 1.0,
+                      "y": 1.0
+                    },
+                    "keepProportions": false,
+                    "pivot": {
+                      "x": 0.0,
+                      "y": 0.0
+                    },
+                    "applyPivotTo": "rotation",
+                    "lockDepth": false,
+                    "orientToPath": false
+                  },
+                  "skeleton": {
+                    "boneColour": null,
+                    "showTrack": false,
+                    "showRoot": true,
+                    "showBones": true,
+                    "showInfluence": false,
+                    "vectorQuality": "medium",
+                    "deformationEnabled": true
+                  },
+                  "channels": {},
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Rig-bones",
+                  "elementType": "effectParameter",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "slot": "bones",
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Rig-skin",
+                  "elementType": "effectParameter",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "slot": "skin",
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Arm",
+                  "elementType": "bone",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "bone": {
+                    "rest": {
+                      "x": 0.0,
+                      "y": 1.0,
+                      "rotation": 90.0,
+                      "length": 1.5
+                    },
+                    "influence": {
+                      "type": "elliptical",
+                      "lengthRadius": 1.125,
+                      "widthRadius": 0.525,
+                      "region": [
+                        {
+                          "x": 0.0,
+                          "y": 0.0
+                        },
+                        {
+                          "x": 1.0,
+                          "y": 0.0
+                        },
+                        {
+                          "x": 1.0,
+                          "y": 1.0
+                        }
+                      ]
+                    }
+                  },
+                  "channels": {
+                    "rotation": {
+                      "id": "ch_01K742SG28JT6KZZDQ7TWV0TF4",
+                      "type": "channel",
+                      "rev": 1,
+                      "name": "rotation",
+                      "curveType": "spline",
+                      "keys": [
+                        {
+                          "id": "ky_01K742SG29KYYRPTXV1PA56RKZ",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 1,
+                          "value": 0.0,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        }
+                      ]
+                    }
+                  },
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1E231F7W54P5SD2AAB",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Clip",
+                  "elementType": "clipping",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "params": {
+                    "inverted": true
+                  },
+                  "channels": {},
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Clip-mask",
+                  "elementType": "effectParameter",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "slot": "mask",
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Fade",
+                  "elementType": "colourTransform",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "params": {
+                    "multRed": 1,
+                    "multGreen": 1,
+                    "multBlue": 1,
+                    "multAlpha": 0.5,
+                    "addRed": 0,
+                    "addGreen": 0,
+                    "addBlue": 0,
+                    "addAlpha": 0,
+                    "flatten": true
+                  },
+                  "channels": {
+                    "multAlpha": {
+                      "id": "ch_01K742SG2A902410YTC6YNB8CP",
+                      "type": "channel",
+                      "rev": 1,
+                      "name": "multAlpha",
+                      "curveType": "spline",
+                      "keys": [
+                        {
+                          "id": "ky_01K742SG2B0EFR540R9PQNAKNH",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 1,
+                          "value": 0.0,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        },
+                        {
+                          "id": "ky_01K742SG2CZK3CXVCMK8QF2AZC",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 12,
+                          "value": 1.0,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        }
+                      ]
+                    }
+                  },
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Shadow",
+                  "elementType": "dropShadow",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "params": {
+                    "parentColourTransformMode": "drawingsOnly",
+                    "colour": "#000000FF",
+                    "opacity": 50,
+                    "hideElements": false,
+                    "transform": {
+                      "xAxis": {
+                        "x": 1,
+                        "y": 0
+                      },
+                      "yAxis": {
+                        "x": 0,
+                        "y": 1
+                      },
+                      "origin": {
+                        "x": 0.2,
+                        "y": -0.2
+                      }
+                    }
+                  },
+                  "channels": {},
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1J3M0SDFTX818N3V2K",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Soft",
+                  "elementType": "blur",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "params": {
+                    "radial": false,
+                    "radius": 4,
+                    "angle": 30
+                  },
+                  "channels": {
+                    "radius": {
+                      "id": "ch_01K742SG2DZXM4KT9CZ6ANRKCP",
+                      "type": "channel",
+                      "rev": 1,
+                      "name": "radius",
+                      "curveType": "spline",
+                      "keys": [
+                        {
+                          "id": "ky_01K742SG2E256MQK6T8DN2VPX9",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 1,
+                          "value": 0.0,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        },
+                        {
+                          "id": "ky_01K742SG2F3QTEYV49GAK0E9H4",
+                          "type": "key",
+                          "rev": 1,
+                          "frame": 24,
+                          "value": 8.0,
+                          "constantSegment": false,
+                          "handles": {
+                            "left": {
+                              "dt": -4.0,
+                              "dv": 0.0
+                            },
+                            "right": {
+                              "dt": 4.0,
+                              "dv": 0.0
+                            },
+                            "mode": "smooth"
+                          },
+                          "easing": null
+                        }
+                      ]
+                    }
+                  },
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Quake",
+                  "elementType": "shake",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 2,
+                  "loopType": "fill",
+                  "positionLoop": "offset",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "params": {
+                    "axis": "xy",
+                    "waveTime": 4,
+                    "decayHalfLifeFrames": 6,
+                    "amplitude": 0.5
+                  },
+                  "channels": {},
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1M9CJZV12YYC0CWB8B",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Snow",
+                  "elementType": "particleNature",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "params": {},
+                  "blocks": [
+                    {
+                      "id": "blk_01K742SG2GAF82J6A55D2DPMT0",
+                      "type": "particleBlock",
+                      "rev": 1,
+                      "particleType": "snow",
+                      "variant": null,
+                      "presetId": "builtin.snow.normal",
+                      "seed": 184467,
+                      "spriteSetId": null,
+                      "static": {
+                        "background": "transparent",
+                        "simulationStart": -19,
+                        "firstFrame": 1,
+                        "duration": 24,
+                        "maxParticles": 1500,
+                        "lifetimeFrames": -1,
+                        "fade": true,
+                        "areaWidth": 1400.0,
+                        "areaHeight": 1000.0,
+                        "areaDepth": 600.0,
+                        "floorLevel": 0.0
+                      },
+                      "dynamic": {
+                        "bounciness": {
+                          "value": 0.0
+                        },
+                        "directionEW": {
+                          "value": 150.0
+                        },
+                        "directionFB": {
+                          "value": 0.0
+                        },
+                        "directionNS": {
+                          "value": -1000.0
+                        },
+                        "intensity": {
+                          "keyframes": [
+                            {
+                              "frame": 1,
+                              "value": 20.0
+                            },
+                            {
+                              "frame": 24,
+                              "value": 60.0
+                            }
+                          ]
+                        },
+                        "scale": {
+                          "value": 100.0
+                        },
+                        "speedMax": {
+                          "value": 5.0
+                        },
+                        "speedMin": {
+                          "value": 2.0
+                        }
+                      }
+                    },
+                    {
+                      "id": "blk_01K742SG2HA6NWCNFE7TT60BEF",
+                      "type": "particleBlock",
+                      "rev": 1,
+                      "particleType": "fog",
+                      "variant": null,
+                      "presetId": "builtin.fog.normal",
+                      "seed": 7,
+                      "spriteSetId": null,
+                      "static": {
+                        "background": "transparent",
+                        "simulationStart": 5,
+                        "firstFrame": 25,
+                        "duration": 24,
+                        "maxParticles": 40,
+                        "lifetimeFrames": -1,
+                        "fade": true,
+                        "areaWidth": 1400.0,
+                        "areaHeight": 1000.0,
+                        "areaDepth": 600.0,
+                        "floorLevel": 0.0
+                      },
+                      "dynamic": {
+                        "bounciness": {
+                          "value": 0.0
+                        },
+                        "directionEW": {
+                          "value": 150.0
+                        },
+                        "directionFB": {
+                          "value": 0.0
+                        },
+                        "directionNS": {
+                          "value": -1000.0
+                        },
+                        "intensity": {
+                          "keyframes": [
+                            {
+                              "frame": 25,
+                              "value": 20.0
+                            },
+                            {
+                              "frame": 48,
+                              "value": 60.0
+                            }
+                          ]
+                        },
+                        "scale": {
+                          "value": 100.0
+                        },
+                        "speedMax": {
+                          "value": 5.0
+                        },
+                        "speedMin": {
+                          "value": 2.0
+                        }
+                      }
+                    }
+                  ],
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1N7SQGF0AQF87N7SEP",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Snow-sprites",
+                  "elementType": "effectParameter",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "slot": "sprites",
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+                  "type": "element",
+                  "rev": 1,
+                  "name": "Boom",
+                  "elementType": "particleImpact",
+                  "start": 1,
+                  "duration": 48,
+                  "loops": 1,
+                  "loopType": "count",
+                  "positionLoop": "cycle",
+                  "role": "normal",
+                  "deformable": false,
+                  "visibleInScene": true,
+                  "locked": false,
+                  "collapsed": false,
+                  "markerColour": null,
+                  "backgroundColour": null,
+                  "columnWidth": 80,
+                  "params": {},
+                  "blocks": [
+                    {
+                      "id": "blk_01K742SG2JC5D5MT11TFA41DD7",
+                      "type": "particleBlock",
+                      "rev": 1,
+                      "particleType": "explosion",
+                      "variant": null,
+                      "presetId": "builtin.explosion.normal",
+                      "seed": 99,
+                      "spriteSetId": null,
+                      "static": {
+                        "background": "transparent",
+                        "simulationStart": -19,
+                        "firstFrame": 1,
+                        "duration": 48,
+                        "maxParticles": 3000,
+                        "lifetimeFrames": -1,
+                        "fade": true,
+                        "areaWidth": 1400.0,
+                        "areaHeight": 1000.0,
+                        "areaDepth": 600.0,
+                        "floorLevel": 0.0
+                      },
+                      "dynamic": {
+                        "bounciness": {
+                          "value": 0.0
+                        },
+                        "directionEW": {
+                          "value": 150.0
+                        },
+                        "directionFB": {
+                          "value": 0.0
+                        },
+                        "directionNS": {
+                          "value": -1000.0
+                        },
+                        "intensity": {
+                          "keyframes": [
+                            {
+                              "frame": 1,
+                              "value": 20.0
+                            },
+                            {
+                              "frame": 48,
+                              "value": 60.0
+                            }
+                          ]
+                        },
+                        "scale": {
+                          "value": 100.0
+                        },
+                        "speedMax": {
+                          "value": 5.0
+                        },
+                        "speedMin": {
+                          "value": 2.0
+                        }
+                      }
+                    }
+                  ],
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                }
+              ],
+              "meta": {
+                "p": 1
+              }
+            }
+          ],
+          "elements": [],
+          "drawingBanks": [
+            {
+              "id": "db_01K742SG0JW3TVZ32SQC03AMY1",
+              "type": "drawingBank",
+              "rev": 1,
+              "drawings": [
+                {
+                  "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+                  "type": "drawing",
+                  "rev": 1,
+                  "name": "1",
+                  "locked": false,
+                  "pivot": {
+                    "x": 0.0,
+                    "y": -50.0
+                  },
+                  "mouthShape": null,
+                  "nodes": [
+                    {
+                      "id": "nd_01K742SG0PC20XDQKASM9CGZHR",
+                      "type": "drawingNode",
+                      "rev": 1,
+                      "name": "Body",
+                      "kind": "layer",
+                      "hint": "brush",
+                      "strokes": [
+                        {
+                          "id": "st_01K742SG0QD1F2HFZSX8R4V7WP",
+                          "type": "stroke",
+                          "rev": 1,
+                          "kind": "brush",
+                          "closed": true,
+                          "points": [
+                            [
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0,
+                              10.5,
+                              0.0
+                            ],
+                            [
+                              100.0,
+                              0.0,
+                              -10.0,
+                              0.0,
+                              0.0,
+                              10.0
+                            ],
+                            [
+                              100.0,
+                              100.0,
+                              0.0,
+                              -10.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              100.0,
+                              0.0,
+                              0.0,
+                              0.0,
+                              -10.0
+                            ]
+                          ],
+                          "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+                          "fillMatrix": null,
+                          "lineStyle": null,
+                          "spine": {
+                            "points": [
+                              [
+                                10.0,
+                                50.0,
+                                0.0,
+                                0.0,
+                                20.0,
+                                0.0
+                              ],
+                              [
+                                90.0,
+                                50.0,
+                                -20.0,
+                                0.0,
+                                0.0,
+                                0.0
+                              ]
+                            ],
+                            "pressure": [
+                              [
+                                0.0,
+                                0.2
+                              ],
+                              [
+                                0.5,
+                                1.0
+                              ],
+                              [
+                                1.0,
+                                0.4
+                              ]
+                            ],
+                            "pen": {
+                              "penId": null,
+                              "tip": "round",
+                              "minSize": 0.5,
+                              "maxSize": 2.0
+                            }
+                          },
+                          "sides": {
+                            "left": {
+                              "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+                              "matrix": null
+                            },
+                            "right": null
+                          }
+                        },
+                        {
+                          "id": "st_01K742SG0R61SYK9GG0HGYVNBT",
+                          "type": "stroke",
+                          "rev": 1,
+                          "kind": "pencil",
+                          "closed": false,
+                          "points": [
+                            [
+                              -50.0,
+                              -50.0,
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              50.0,
+                              50.0,
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ]
+                          ],
+                          "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+                          "fillMatrix": null,
+                          "lineStyle": {
+                            "thickness": 1.5,
+                            "lineType": "solid"
+                          },
+                          "spine": null,
+                          "sides": {
+                            "left": null,
+                            "right": null
+                          }
+                        },
+                        {
+                          "id": "st_01K742SG0S0NT23BWCZN64SFQ5",
+                          "type": "stroke",
+                          "rev": 1,
+                          "kind": "invisible",
+                          "closed": false,
+                          "points": [
+                            [
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              100.0,
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ]
+                          ],
+                          "colourId": null,
+                          "fillMatrix": null,
+                          "lineStyle": null,
+                          "spine": null,
+                          "sides": {
+                            "left": {
+                              "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
+                              "matrix": [
+                                1.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                0.0
+                              ]
+                            },
+                            "right": {
+                              "colourId": null,
+                              "matrix": null
+                            }
+                          },
+                          "meta": {
+                            "note": "closes the sky zone"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "nd_01K742SG0TX3WF1BSWWGMWM5WG",
+                      "type": "drawingNode",
+                      "rev": 1,
+                      "kind": "group",
+                      "children": [
+                        {
+                          "id": "nd_01K742SG0V9A7HCXC74WKN3V5F",
+                          "type": "drawingNode",
+                          "rev": 1,
+                          "kind": "layer",
+                          "hint": "pencil",
+                          "strokes": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "nd_01K742SG0WFAQJFKAZKV4CD56C",
+                      "type": "drawingNode",
+                      "rev": 1,
+                      "name": "Caption",
+                      "kind": "text",
+                      "transform": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -100.0,
+                        200.0
+                      ],
+                      "widthMode": "fixed",
+                      "width": 400.0,
+                      "text": "Héllo",
+                      "runs": [
+                        {
+                          "start": 0,
+                          "length": 5,
+                          "font": "Inter",
+                          "size": 24.0,
+                          "bold": false,
+                          "italic": true,
+                          "script": "normal",
+                          "kerning": 0.0,
+                          "autoKerning": true,
+                          "colourId": "col_01K742SG09H7QE4RRR6XSYYS88"
+                        }
+                      ],
+                      "paragraphs": [
+                        {
+                          "start": 0,
+                          "length": 5,
+                          "alignment": "centre",
+                          "marginLeft": 0.0,
+                          "marginRight": 0.0,
+                          "indent": 0.0,
+                          "lineSpacing": 1.2
+                        }
+                      ]
+                    }
+                  ],
+                  "colourRecovery": [
+                    {
+                      "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+                      "paletteId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+                      "paletteName": "Main",
+                      "styles": [
+                        {
+                          "styleId": "sty_01K742SG037JJRBSXV1W92F1BN",
+                          "styleName": "Day"
+                        },
+                        {
+                          "styleId": "sty_01K742SG047PMCPGTWHST62SWP",
+                          "styleName": "Night"
+                        }
+                      ],
+                      "swatch": {
+                        "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+                        "type": "swatch",
+                        "rev": 1,
+                        "name": "Skin",
+                        "kind": "solid",
+                        "deformable": false,
+                        "values": {
+                          "sty_01K742SG037JJRBSXV1W92F1BN": {
+                            "rgba": "#F2D3B4FF"
+                          },
+                          "sty_01K742SG047PMCPGTWHST62SWP": {
+                            "rgba": "#8C7A8AFF"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "createdAt": "2026-10-17T09:30:12.345Z",
+                  "ext": {
+                    "com.example.tool": {
+                      "pass": 2,
+                      "stage": "clean-up"
+                    }
+                  }
+                },
+                {
+                  "id": "dr_01K742SG0M5J3BAJSW8241WA87",
+                  "type": "drawing",
+                  "rev": 1,
+                  "name": "2",
+                  "locked": true,
+                  "pivot": {
+                    "x": 0.0,
+                    "y": 0.0
+                  },
+                  "mouthShape": "A",
+                  "nodes": [
+                    {
+                      "id": "nd_01K742SG0XC99E0A2JJ9D4VJ2J",
+                      "type": "drawingNode",
+                      "rev": 1,
+                      "kind": "bitmap",
+                      "transform": [
+                        2.0,
+                        0.0,
+                        0.0,
+                        2.0,
+                        -32.0,
+                        16.0
+                      ],
+                      "width": 32.0,
+                      "height": 16.0,
+                      "image": {
+                        "entry": "banks/db_01K742SG0JW3TVZ32SQC03AMY1/dr_01K742SG0M5J3BAJSW8241WA87/nd_01K742SG0XC99E0A2JJ9D4VJ2J.png",
+                        "mediaType": "image/png",
+                        "size": 2048,
+                        "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+                      }
+                    }
+                  ],
+                  "colourRecovery": [],
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                },
+                {
+                  "id": "dr_01K742SG0NG5HTFZRD7238FZXJ",
+                  "type": "drawing",
+                  "rev": 1,
+                  "name": "10",
+                  "locked": false,
+                  "pivot": {
+                    "x": 0.0,
+                    "y": 0.0
+                  },
+                  "mouthShape": "X",
+                  "nodes": [],
+                  "colourRecovery": [],
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                }
+              ]
+            },
+            {
+              "id": "db_01K742SG134NGX5HGYXCKT44C7",
+              "type": "drawingBank",
+              "rev": 1,
+              "drawings": [
+                {
+                  "id": "dr_01K742SG14TNTV1TR99SQHVKVK",
+                  "type": "drawing",
+                  "rev": 1,
+                  "name": "1",
+                  "locked": false,
+                  "pivot": {
+                    "x": 0.0,
+                    "y": 0.0
+                  },
+                  "mouthShape": null,
+                  "nodes": [
+                    {
+                      "id": "nd_01K742SG156C77GY438XM6D1T3",
+                      "type": "drawingNode",
+                      "rev": 1,
+                      "kind": "bitmap",
+                      "transform": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -960.0,
+                        540.0
+                      ],
+                      "width": 1920.0,
+                      "height": 1080.0,
+                      "image": {
+                        "entry": "banks/db_01K742SG134NGX5HGYXCKT44C7/dr_01K742SG14TNTV1TR99SQHVKVK/nd_01K742SG156C77GY438XM6D1T3.png",
+                        "mediaType": "image/png",
+                        "size": 4096,
+                        "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+                      }
+                    }
+                  ],
+                  "colourRecovery": [],
+                  "createdAt": "2026-10-17T09:30:12.345Z"
+                }
+              ]
+            },
+            {
+              "id": "db_01K742SG17ZDAHQTMS9MQ7TXWX",
+              "type": "drawingBank",
+              "rev": 1,
+              "drawings": []
+            }
+          ],
+          "palettes": [
+            {
+              "id": "pal_01K742SG02PPWW6K8BZY81A0M0",
+              "type": "palette",
+              "rev": 1,
+              "name": "Main",
+              "styles": [
+                {
+                  "id": "sty_01K742SG037JJRBSXV1W92F1BN",
+                  "type": "paletteStyle",
+                  "rev": 1,
+                  "name": "Day"
+                },
+                {
+                  "id": "sty_01K742SG047PMCPGTWHST62SWP",
+                  "type": "paletteStyle",
+                  "rev": 1,
+                  "name": "Night"
+                }
+              ],
+              "swatches": [
+                {
+                  "colourId": "col_01K742SG059XGSNZ6M9MACZ2ZY",
+                  "type": "swatch",
+                  "rev": 1,
+                  "name": "Skin",
+                  "kind": "solid",
+                  "deformable": false,
+                  "values": {
+                    "sty_01K742SG037JJRBSXV1W92F1BN": {
+                      "rgba": "#F2D3B4FF"
+                    },
+                    "sty_01K742SG047PMCPGTWHST62SWP": {
+                      "rgba": "#8C7A8AFF"
+                    }
+                  }
+                },
+                {
+                  "colourId": "col_01K742SG06BQ08FCT1TT8DF8MA",
+                  "type": "swatch",
+                  "rev": 1,
+                  "name": "Sky",
+                  "kind": "linearGradient",
+                  "deformable": false,
+                  "values": {
+                    "sty_01K742SG037JJRBSXV1W92F1BN": {
+                      "stops": [
+                        {
+                          "position": 0.0,
+                          "rgba": "#70C8F0FF"
+                        },
+                        {
+                          "position": 1.0,
+                          "rgba": "#FFFFFFFF"
+                        }
+                      ]
+                    },
+                    "sty_01K742SG047PMCPGTWHST62SWP": {
+                      "stops": [
+                        {
+                          "position": 0.0,
+                          "rgba": "#10084AFF"
+                        },
+                        {
+                          "position": 1.0,
+                          "rgba": "#300448FF"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "colourId": "col_01K742SG09H7QE4RRR6XSYYS88",
+                  "type": "swatch",
+                  "rev": 1,
+                  "name": "Ink",
+                  "kind": "solid",
+                  "deformable": false,
+                  "values": {
+                    "sty_01K742SG037JJRBSXV1W92F1BN": {
+                      "rgba": "#000000FF"
+                    },
+                    "sty_01K742SG047PMCPGTWHST62SWP": {
+                      "rgba": "#101010FF"
+                    }
+                  }
+                }
+              ],
+              "hidden": false
+            }
+          ],
+          "pens": [],
+          "assets": [
+            {
+              "id": "as_01K742SG0G5HPQ0RBF5X4DSR0W",
+              "type": "asset",
+              "rev": 1,
+              "name": "line1.wav",
+              "kind": "sound",
+              "mediaType": "audio/wav",
+              "storage": "embedded",
+              "entry": "media/as_01K742SG0G5HPQ0RBF5X4DSR0W.wav",
+              "link": null,
+              "size": 352844,
+              "sha256": "abababababababababababababababababababababababababababababababab",
+              "importedAt": "2026-10-17T09:30:12.345Z",
+              "sourcePath": "C:/audio/line1.wav"
+            },
+            {
+              "id": "as_01K742SG0HZGBRF7HE49BFXZRC",
+              "type": "asset",
+              "rev": 1,
+              "name": "reference.mov",
+              "kind": "movie",
+              "mediaType": "video/quicktime",
+              "storage": "linked",
+              "entry": null,
+              "link": {
+                "kind": "file",
+                "path": "../ref/reference.mov",
+                "absolutePath": "C:/ref/reference.mov",
+                "libraryId": null,
+                "itemId": null,
+                "versionId": null
+              },
+              "size": 5000000000,
+              "sha256": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+              "importedAt": "2026-10-17T09:30:12.345Z",
+              "sourcePath": null
+            }
+          ],
+          "blobs": {}
+        },
+        "bytes": 25880,
+        "objectCount": 7
+      },
+      "varies": [
+        "/bundle/exportedAt"
+      ]
+    }
+  ],
+  "doc.import.json": [
+    {
+      "title": "Dry-run an import of an inline bundle",
+      "result": {
+        "created": {
+          "scenes": [],
+          "elements": [],
+          "drawings": [],
+          "palettes": [],
+          "assets": []
+        },
+        "renamed": [],
+        "recoveredColourIds": [],
+        "issues": []
+      },
+      "varies": []
+    }
+  ],
+  "doc.loadReport.get": [
+    {
+      "title": "Repairs and issues of the last load",
+      "result": {
+        "projectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
+        "path": null,
+        "form": null,
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "readOnly": false,
+        "durationMs": 0,
+        "issues": [],
+        "repairedCount": 0
+      },
+      "varies": []
+    }
+  ],
+  "doc.object.find": [
+    {
+      "title": "Every drawing element",
+      "result": {
+        "items": [
+          {
+            "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "type": "element",
+            "name": "Background",
+            "path": "scene:\"Intro\"/element:\"Background\"",
+            "rev": 1
+          },
+          {
+            "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "type": "element",
+            "name": "Bob",
+            "path": "scene:\"Intro\"/element:\"Bob\"",
+            "rev": 1
+          },
+          {
+            "id": "el_01K742SG2PA6VE2W9T5930NH2F",
+            "type": "element",
+            "name": "Drawing",
+            "path": "scene:\"Scene-2\"/element:\"Drawing\"",
+            "rev": 1
+          }
+        ],
+        "total": 3,
+        "nextOffset": null
+      },
+      "varies": []
+    },
+    {
+      "title": "Strokes of the first drawing",
+      "result": {
+        "items": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0QD1F2HFZSX8R4V7WP",
+            "type": "stroke",
+            "name": null,
+            "path": "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"/drawingNode:\"Body\"/stroke:@st_01K742SG0QD1F2HFZSX8R4V7WP",
+            "rev": 1
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0R61SYK9GG0HGYVNBT",
+            "type": "stroke",
+            "name": null,
+            "path": "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"/drawingNode:\"Body\"/stroke:@st_01K742SG0R61SYK9GG0HGYVNBT",
+            "rev": 1
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/st_01K742SG0S0NT23BWCZN64SFQ5",
+            "type": "stroke",
+            "name": null,
+            "path": "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"/drawingNode:\"Body\"/stroke:@st_01K742SG0S0NT23BWCZN64SFQ5",
+            "rev": 1
+          }
+        ],
+        "total": 3,
+        "nextOffset": null
+      },
+      "varies": []
+    },
+    {
+      "title": "Objects whose name starts with B",
+      "result": {
+        "items": [
+          {
+            "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+            "type": "element",
+            "name": "Background",
+            "path": "scene:\"Intro\"/element:\"Background\"",
+            "rev": 1
+          },
+          {
+            "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+            "type": "element",
+            "name": "Bob",
+            "path": "scene:\"Intro\"/element:\"Bob\"",
+            "rev": 1
+          },
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW/nd_01K742SG0PC20XDQKASM9CGZHR",
+            "type": "drawingNode",
+            "name": "Body",
+            "path": "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"/drawingNode:\"Body\"",
+            "rev": 1
+          },
+          {
+            "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+            "type": "element",
+            "name": "Bob-P",
+            "path": "scene:\"Intro\"/element:\"Bob-P\"",
+            "rev": 1
+          },
+          {
+            "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+            "type": "element",
+            "name": "Boom",
+            "path": "scene:\"Intro\"/element:\"Boom\"",
+            "rev": 1
+          }
+        ],
+        "total": 5,
+        "nextOffset": null
+      },
+      "varies": []
+    }
+  ],
+  "doc.object.get": [
+    {
+      "title": "The first scene with its elements as stubs",
+      "result": {
+        "object": {
+          "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+          "type": "scene",
+          "rev": 4,
+          "name": "Intro",
+          "path": "scene:\"Intro\"",
+          "visible": true,
+          "backgroundColour": "#FFFFFFFF",
+          "currentCameraId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+          "paletteStyles": {
+            "pal_01K742SG02PPWW6K8BZY81A0M0": "sty_01K742SG047PMCPGTWHST62SWP",
+            "pal_01K742SG0AGX319NWQ7HE2MH4W": "sty_01K742SG0BHZ6HZ10GCCZF61NC"
+          },
+          "outTransition": {
+            "id": "tr_01K742SG2KA0JQ0743D7J833ZK",
+            "type": "transition"
+          },
+          "tree": [
+            {
+              "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+              "children": []
+            },
+            {
+              "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+              "children": [
+                {
+                  "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+              "children": []
+            },
+            {
+              "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+              "children": []
+            },
+            {
+              "id": "el_01K742SG18FWWKH14N0RFB0V71",
+              "children": []
+            },
+            {
+              "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+              "children": []
+            },
+            {
+              "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+              "children": [
+                {
+                  "id": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+                  "children": [
+                    {
+                      "id": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "el_01K742SG1E231F7W54P5SD2AAB",
+              "children": [
+                {
+                  "id": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+              "children": [
+                {
+                  "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+                  "children": []
+                },
+                {
+                  "id": "el_01K742SG1J3M0SDFTX818N3V2K",
+                  "children": [
+                    {
+                      "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "el_01K742SG1M9CJZV12YYC0CWB8B",
+              "children": [
+                {
+                  "id": "el_01K742SG1N7SQGF0AQF87N7SEP",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+              "children": []
+            }
+          ],
+          "columnOrder": [
+            "el_01K742SG11W3SGB8Q1H50W74VB",
+            "el_01K742SG12CTMHXEB7TY99G4XV",
+            "el_01K742SG16N99XRCS0QEBWMRXY",
+            "el_01K742SG18FWWKH14N0RFB0V71",
+            "el_01K742SG1997BY67AWW1M4Q0ZJ"
+          ],
+          "elements": [
+            {
+              "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+              "type": "element",
+              "name": "Camera"
+            },
+            {
+              "id": "el_01K742SG101DH4FAEWCWWK4QXC",
+              "type": "element",
+              "name": "Bob-P"
+            },
+            {
+              "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+              "type": "element",
+              "name": "Bob"
+            },
+            {
+              "id": "el_01K742SG12CTMHXEB7TY99G4XV",
+              "type": "element",
+              "name": "Background"
+            },
+            {
+              "id": "el_01K742SG16N99XRCS0QEBWMRXY",
+              "type": "element",
+              "name": "Notes"
+            },
+            {
+              "id": "el_01K742SG18FWWKH14N0RFB0V71",
+              "type": "element",
+              "name": "Dialogue"
+            },
+            {
+              "id": "el_01K742SG1997BY67AWW1M4Q0ZJ",
+              "type": "element",
+              "name": "Reference"
+            },
+            {
+              "id": "el_01K742SG1AC44Z1PPR4WQ603NH",
+              "type": "element",
+              "name": "Rig"
+            },
+            {
+              "id": "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+              "type": "element",
+              "name": "Rig-bones"
+            },
+            {
+              "id": "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+              "type": "element",
+              "name": "Rig-skin"
+            },
+            {
+              "id": "el_01K742SG1DA6M66PRBFSTF1J1Y",
+              "type": "element",
+              "name": "Arm"
+            },
+            {
+              "id": "el_01K742SG1E231F7W54P5SD2AAB",
+              "type": "element",
+              "name": "Clip"
+            },
+            {
+              "id": "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+              "type": "element",
+              "name": "Clip-mask"
+            },
+            {
+              "id": "el_01K742SG1G9A0XG0WHZYSGT4WG",
+              "type": "element",
+              "name": "Fade"
+            },
+            {
+              "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+              "type": "element",
+              "name": "Shadow"
+            },
+            {
+              "id": "el_01K742SG1J3M0SDFTX818N3V2K",
+              "type": "element",
+              "name": "Soft"
+            },
+            {
+              "id": "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+              "type": "element",
+              "name": "Quake"
+            },
+            {
+              "id": "el_01K742SG1M9CJZV12YYC0CWB8B",
+              "type": "element",
+              "name": "Snow"
+            },
+            {
+              "id": "el_01K742SG1N7SQGF0AQF87N7SEP",
+              "type": "element",
+              "name": "Snow-sprites"
+            },
+            {
+              "id": "el_01K742SG1PHXPEHSG259WYPMBV",
+              "type": "element",
+              "name": "Boom"
+            }
+          ],
+          "meta": {
+            "p": 1
+          }
+        }
+      },
+      "varies": []
+    },
+    {
+      "title": "The current element with derived properties",
+      "result": {
+        "object": {
+          "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+          "type": "element",
+          "rev": 1,
+          "name": "Camera",
+          "path": "scene:\"Intro\"/element:\"Camera\"",
+          "elementType": "camera",
+          "start": 1,
+          "duration": 48,
+          "loops": 1,
+          "loopType": "count",
+          "positionLoop": "cycle",
+          "role": "normal",
+          "deformable": false,
+          "visibleInScene": true,
+          "locked": false,
+          "collapsed": false,
+          "markerColour": null,
+          "backgroundColour": null,
+          "columnWidth": 80,
+          "transform": {
+            "offset": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 16.0
+            },
+            "rotation": 0.0,
+            "skew": 0.0,
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "keepProportions": false,
+            "lockDepth": false,
+            "orientToPath": false
+          },
+          "camera": {
+            "fovMode": "static",
+            "fov": 41.1121
+          },
+          "channels": {},
+          "createdAt": "2026-10-17T09:30:12.345Z",
+          "parentId": null,
+          "childIds": [],
+          "depth": 0,
+          "timelineIndex": 0,
+          "xsheetIndex": null,
+          "hiddenByParent": false,
+          "cloneGroupId": null,
+          "cloneIds": [],
+          "drawingCount": 0
+        }
+      },
+      "varies": []
+    },
+    {
+      "title": "Only names and types of two objects",
+      "result": {
+        "objects": [
+          {
+            "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+            "type": "scene",
+            "name": "Intro"
+          },
+          {
+            "id": "pal_01K742SG02PPWW6K8BZY81A0M0",
+            "type": "palette",
+            "name": "Main"
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "doc.object.patch": [
+    {
+      "title": "Annotate a scene in meta",
+      "result": {
+        "changes": [
+          {
+            "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+            "type": "scene",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/meta/status",
+                "value": "layout"
+              }
+            ]
+          }
+        ],
+        "documentRev": 5
+      },
+      "varies": []
+    },
+    {
+      "title": "Mark the first drawing as mouth shape A",
+      "result": {
+        "changes": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/mouthShape",
+                "value": "A",
+                "oldValue": null
+              }
+            ]
+          }
+        ],
+        "documentRev": 5
+      },
+      "varies": []
+    },
+    {
+      "title": "Set a pen's persisted tip fields (persisted names `tip` and `tipAngle`, SI-004)",
+      "result": {
+        "changes": [
+          {
+            "id": "pen_01K742SG0DE4TVDEDEXW6JVXXB",
+            "type": "pen",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/tip",
+                "value": "square",
+                "oldValue": "round"
+              },
+              {
+                "op": "replace",
+                "path": "/tipAngle",
+                "value": 30.0,
+                "oldValue": 0.0
+              }
+            ]
+          }
+        ],
+        "documentRev": 5
+      },
+      "varies": []
+    },
+    {
+      "title": "Persisted element role (superset enum, SI-003)",
+      "result": {
+        "changes": [
+          {
+            "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+            "type": "element",
+            "op": "modified",
+            "rev": 5,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/role",
+                "value": "foreground",
+                "oldValue": "normal"
+              }
+            ]
+          }
+        ],
+        "documentRev": 5
+      },
+      "varies": []
+    }
+  ],
+  "doc.object.refs": [
+    {
+      "title": "Who uses the first palette",
+      "result": {
+        "refs": [
+          {
+            "id": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+            "type": "drawing",
+            "path": "scene:\"Intro\"/element:\"Bob\"/drawing:\"1\"",
+            "property": "/colourRecovery/0/paletteId"
+          },
+          {
+            "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+            "type": "scene",
+            "path": "scene:\"Intro\"",
+            "property": "/paletteStyles/pal_01K742SG02PPWW6K8BZY81A0M0"
+          },
+          {
+            "id": "sc_01K742SG2M2H2H02X6D97DG7DN",
+            "type": "scene",
+            "path": "scene:\"Scene-2\"",
+            "property": "/paletteStyles/pal_01K742SG02PPWW6K8BZY81A0M0"
+          }
+        ],
+        "total": 3
+      },
+      "varies": []
+    }
+  ],
+  "doc.object.resolve": [
+    {
+      "title": "Resolve a path and the current element",
+      "result": {
+        "items": [
+          {
+            "ref": "scene:#1",
+            "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+            "type": "scene",
+            "name": "Intro",
+            "path": "scene:\"Intro\"",
+            "rev": 4
+          },
+          {
+            "ref": "@current",
+            "id": "el_01K742SG0ZZYY8HE4MW501XMJV",
+            "type": "element",
+            "name": "Camera",
+            "path": "scene:\"Intro\"/element:\"Camera\"",
+            "rev": 1
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "doc.package.export": [
+    {
+      "title": "A folder-form copy for version control",
+      "result": {
+        "jobId": "job-3"
+      },
+      "varies": []
+    }
+  ],
+  "doc.package.get": [
+    {
+      "title": "Inspect a package without opening it",
+      "result": {
+        "kind": "project",
+        "form": "package",
+        "formatVersion": "1.0",
+        "minReaderVersion": "1.0",
+        "readable": true,
+        "projectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
+        "name": "Sample",
+        "savedAt": "2026-10-01T09:00:00Z",
+        "entryCount": 39,
+        "issues": [
+          {
+            "issueId": "is_1",
+            "code": "project.mediaMissing",
+            "severity": "warning",
+            "objectId": null,
+            "path": null,
+            "message": "8 media file(s) referenced by the project are missing",
+            "details": {
+              "missing": [
+                {
+                  "objectId": "dr_01K742SG0M5J3BAJSW8241WA87",
+                  "location": "banks/db_01K742SG0JW3TVZ32SQC03AMY1/dr_01K742SG0M5J3BAJSW8241WA87/nd_01K742SG0XC99E0A2JJ9D4VJ2J.png",
+                  "kind": "pixels"
+                },
+                {
+                  "objectId": "dr_01K742SG14TNTV1TR99SQHVKVK",
+                  "location": "banks/db_01K742SG134NGX5HGYXCKT44C7/dr_01K742SG14TNTV1TR99SQHVKVK/nd_01K742SG156C77GY438XM6D1T3.png",
+                  "kind": "pixels"
+                },
+                {
+                  "objectId": "li_01K742SG2XSWWYNTT82JSTEA6Q",
+                  "location": "library/files/Sky.png",
+                  "kind": "libraryFile"
+                },
+                {
+                  "objectId": "li_01K742SG2WQ62N4J6MKNCBE3Z2",
+                  "location": "library/files/walk.animtpl",
+                  "kind": "libraryFile"
+                },
+                {
+                  "objectId": "li_01K742SG2XSWWYNTT82JSTEA6Q",
+                  "location": "library/thumbnails/sky.png",
+                  "kind": "libraryFile"
+                },
+                {
+                  "objectId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+                  "location": "textures/fabric-day.png",
+                  "kind": "texture"
+                },
+                {
+                  "objectId": "pal_01K742SG02PPWW6K8BZY81A0M0",
+                  "location": "textures/fabric-night.png",
+                  "kind": "texture"
+                },
+                {
+                  "objectId": "as_01K742SG0HZGBRF7HE49BFXZRC",
+                  "location": "../ref/reference.mov",
+                  "kind": "linked"
+                }
+              ]
+            },
+            "fixes": []
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "doc.repair": [
+    {
+      "title": "Remove unused media",
+      "result": {
+        "fixed": [],
+        "skipped": [],
+        "changes": []
+      },
+      "varies": []
+    }
+  ],
+  "doc.schema.get": [
+    {
+      "title": "The element schema",
+      "resultDigest": {
+        "bytes": 133355,
+        "sha256": "2cb7f6838655bd9ee4e50a509a1f41f299b64954b8e6b02703f6b092be1c3ade"
+      },
+      "varies": []
+    },
+    {
+      "title": "The schema of a pen's tip",
+      "result": {
+        "type": "pen",
+        "formatVersion": "1.0",
+        "schema": {
+          "description": "Tip shape.",
+          "x-since": "1.0",
+          "oneOf": [
+            {
+              "type": "string",
+              "const": "round",
+              "description": "Round nib (default)."
+            },
+            {
+              "type": "string",
+              "const": "oval",
+              "description": "Oval nib."
+            },
+            {
+              "type": "string",
+              "const": "square",
+              "description": "Square nib."
+            },
+            {
+              "type": "string",
+              "const": "flat",
+              "description": "Flat nib."
+            }
+          ]
+        }
+      },
+      "varies": []
+    }
+  ],
+  "doc.schema.list": [
+    {
+      "title": "Every object type with its parents and addressing",
+      "result": {
+        "formatVersion": "1.0",
+        "types": [
+          {
+            "type": "project",
+            "aliases": [],
+            "parents": [],
+            "nameAddressable": false,
+            "description": "The project: settings, palettes, pens, assets, drawing banks, scenes, local library."
+          },
+          {
+            "type": "palette",
+            "aliases": [],
+            "parents": [
+              "project"
+            ],
+            "nameAddressable": true,
+            "description": "An ordered set of swatches with one value per palette style (03)."
+          },
+          {
+            "type": "paletteStyle",
+            "aliases": [
+              "style"
+            ],
+            "parents": [
+              "palette"
+            ],
+            "nameAddressable": true,
+            "description": "An alternative set of values for all swatches of a palette (03)."
+          },
+          {
+            "type": "swatch",
+            "aliases": [],
+            "parents": [
+              "palette"
+            ],
+            "nameAddressable": true,
+            "description": "A colour, gradient or texture identified by its colour ID (03)."
+          },
+          {
+            "type": "pen",
+            "aliases": [],
+            "parents": [
+              "project"
+            ],
+            "nameAddressable": true,
+            "description": "A brush or eraser size/shape preset (02)."
+          },
+          {
+            "type": "asset",
+            "aliases": [],
+            "parents": [
+              "project"
+            ],
+            "nameAddressable": true,
+            "description": "A media file used by the project, embedded or linked (07, 09)."
+          },
+          {
+            "type": "drawingBank",
+            "aliases": [],
+            "parents": [
+              "project"
+            ],
+            "nameAddressable": false,
+            "description": "The drawings of one clone group (04)."
+          },
+          {
+            "type": "drawing",
+            "aliases": [],
+            "parents": [
+              "drawingBank"
+            ],
+            "nameAddressable": true,
+            "description": "A vector or bitmap drawing (02, 04)."
+          },
+          {
+            "type": "drawingNode",
+            "aliases": [
+              "layer"
+            ],
+            "parents": [
+              "drawing",
+              "drawingNode"
+            ],
+            "nameAddressable": true,
+            "description": "A layer, group, text or bitmap node of a drawing (02)."
+          },
+          {
+            "type": "stroke",
+            "aliases": [],
+            "parents": [
+              "drawingNode"
+            ],
+            "nameAddressable": false,
+            "description": "A brush, pencil or invisible stroke of a layer (02)."
+          },
+          {
+            "type": "scene",
+            "aliases": [],
+            "parents": [
+              "project"
+            ],
+            "nameAddressable": true,
+            "description": "A scene: elements, Timeline tree and Exposure Sheet order (04, 08)."
+          },
+          {
+            "type": "transition",
+            "aliases": [],
+            "parents": [
+              "project",
+              "scene"
+            ],
+            "nameAddressable": false,
+            "description": "A storyline transition at an edit point (08)."
+          },
+          {
+            "type": "element",
+            "aliases": [],
+            "parents": [
+              "scene"
+            ],
+            "nameAddressable": true,
+            "description": "An element of a scene (04)."
+          },
+          {
+            "type": "channel",
+            "aliases": [],
+            "parents": [
+              "element"
+            ],
+            "nameAddressable": true,
+            "description": "An animation channel of an element (05)."
+          },
+          {
+            "type": "key",
+            "aliases": [
+              "keyframe"
+            ],
+            "parents": [
+              "channel"
+            ],
+            "nameAddressable": true,
+            "description": "A key of a 1-D channel (05)."
+          },
+          {
+            "type": "motionPoint",
+            "aliases": [],
+            "parents": [
+              "channel"
+            ],
+            "nameAddressable": false,
+            "description": "A keyframe or control point of a motion path (05)."
+          },
+          {
+            "type": "particleBlock",
+            "aliases": [],
+            "parents": [
+              "element"
+            ],
+            "nameAddressable": false,
+            "description": "A simulation block of a particle effect (06)."
+          },
+          {
+            "type": "soundPlacement",
+            "aliases": [
+              "placement"
+            ],
+            "parents": [
+              "element"
+            ],
+            "nameAddressable": false,
+            "description": "A placement of a sound asset in a sound element (07)."
+          },
+          {
+            "type": "mediaSequence",
+            "aliases": [],
+            "parents": [
+              "element"
+            ],
+            "nameAddressable": false,
+            "description": "A run of frames of a media element showing one linked source (07)."
+          },
+          {
+            "type": "library",
+            "aliases": [],
+            "parents": [
+              "project"
+            ],
+            "nameAddressable": true,
+            "description": "A library of templates and media items (08)."
+          },
+          {
+            "type": "libraryFolder",
+            "aliases": [
+              "folder"
+            ],
+            "parents": [
+              "library",
+              "libraryFolder"
+            ],
+            "nameAddressable": true,
+            "description": "A folder of a library (08)."
+          },
+          {
+            "type": "libraryItem",
+            "aliases": [
+              "template",
+              "item"
+            ],
+            "parents": [
+              "library",
+              "libraryFolder"
+            ],
+            "nameAddressable": true,
+            "description": "A template, image, movie or sound item of a library (08)."
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "doc.schema.validate": [
+    {
+      "title": "Check a pen before creating it",
+      "result": {
+        "valid": true,
+        "errors": []
+      },
+      "varies": []
+    }
+  ],
+  "doc.state.get": [
+    {
+      "title": "Revision, dirty flag and diff horizon",
+      "result": {
+        "projectId": "pr_01K742SG00BK0VXTWDM5JRXV37",
+        "path": null,
+        "form": null,
+        "formatVersion": "1.0",
+        "migratedFrom": null,
+        "documentRev": 4,
+        "savedRev": null,
+        "dirty": true,
+        "readOnly": false,
+        "lock": null,
+        "historyFromRev": 1
+      },
+      "varies": []
+    }
+  ],
+  "doc.validate": [
+    {
+      "title": "Errors only",
+      "result": {
+        "documentRev": 3,
+        "issues": [],
+        "counts": {
+          "error": 0,
+          "info": 0,
+          "warning": 0
+        },
+        "truncated": false,
+        "unavailable": [
+          {
+            "check": "unpaintedZones",
+            "owner": "M2 C2.2",
+            "reason": "zones are derived by the planar map"
+          },
+          {
+            "check": "staleLipSync",
+            "owner": "M8 C8.2",
+            "reason": "lip-sync tracks and their timing"
+          },
+          {
+            "check": "transitionPadding",
+            "owner": "M9 C9.2",
+            "reason": "storyline timing (08 §16.5)"
+          },
+          {
+            "check": "missingFonts",
+            "owner": "M2 C2.1",
+            "reason": "text nodes and font discovery"
+          },
+          {
+            "check": "outdatedTemplateLinks",
+            "owner": "M9 C9.1",
+            "reason": "library template versions"
+          }
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "edit.clipboard.get": [
+    {
+      "title": "Kind and item count",
+      "result": null,
+      "varies": []
+    }
+  ],
+  "edit.clipboard.set": [
+    {
+      "title": "Put an element reference on the clipboard",
+      "result": {
+        "kind": "elements",
+        "itemCount": 1
+      },
+      "varies": []
+    }
+  ],
+  "edit.copy": [
+    {
+      "title": "Copy two cells of a column",
+      "result": {
+        "clipboard": {
+          "kind": "cells",
+          "itemCount": 2
+        }
+      },
+      "varies": []
+    }
+  ],
+  "edit.cut": [
+    {
+      "title": "Cut the first scene's first element",
+      "result": {
+        "clipboard": {
+          "kind": "elements",
+          "itemCount": 1
+        }
+      },
+      "varies": []
+    }
+  ],
+  "edit.cutSpecial": [
+    {
+      "title": "Cut cells and remove their frames",
+      "result": {
+        "clipboard": {
+          "kind": "cells",
+          "itemCount": 1
+        }
+      },
+      "varies": []
+    }
+  ],
+  "edit.delete": [
+    {
+      "title": "Clear the first cell of a column",
+      "result": {
+        "deletedIds": [
+          "element:@el_01K742SG11W3SGB8Q1H50W74VB/cell:#1"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "edit.deselectAll": [
+    {
+      "title": "Clear the selection of the focused context",
+      "result": {
+        "context": "staging"
+      },
+      "varies": []
+    }
+  ],
+  "edit.history.get": [
+    {
+      "title": "The last 20 entries",
+      "result": {
+        "entries": [
+          {
+            "index": 1,
+            "stepId": "u-1",
+            "label": "Set meta",
+            "source": "user",
+            "time": "2026-10-30T19:29:02.335Z",
+            "objectCount": 1
+          },
+          {
+            "index": 2,
+            "stepId": "u-2",
+            "label": "Set meta",
+            "source": "user",
+            "time": "2026-10-30T19:29:02.338Z",
+            "objectCount": 1
+          }
+        ],
+        "position": 1,
+        "cleanPosition": 0,
+        "total": 2
+      },
+      "varies": [
+        "/entries/0/time",
+        "/entries/1/time"
+      ]
+    }
+  ],
+  "edit.history.move": [
+    {
+      "title": "Back to the opened state",
+      "result": {
+        "position": 0
+      },
+      "varies": []
+    }
+  ],
+  "edit.paste": [
+    {
+      "title": "Paste copied cells at frame 30 of a column",
+      "result": {
+        "createdIds": [],
+        "modifiedIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "warnings": []
+      },
+      "varies": []
+    }
+  ],
+  "edit.pasteAsNewElement": [
+    {
+      "title": "A new element from the copied cells, starting at frame 1",
+      "result": {
+        "elementId": "el_01K7JJN8023FJ8358KMGS10XYV"
+      },
+      "varies": []
+    }
+  ],
+  "edit.pasteSpecial": [
+    {
+      "title": "Insert copied cells at frame 1 of a column",
+      "result": {
+        "createdIds": [],
+        "modifiedIds": [
+          "el_01K742SG11W3SGB8Q1H50W74VB"
+        ],
+        "warnings": []
+      },
+      "varies": []
+    }
+  ],
+  "edit.redo": [
+    {
+      "title": "Redo one step",
+      "result": {
+        "redone": [
+          "Set meta"
+        ],
+        "position": 2
+      },
+      "varies": []
+    }
+  ],
+  "edit.selectAll": [
+    {
+      "title": "Select every element of the current scene",
+      "result": {
+        "context": "staging",
+        "ids": [
+          "el_01K742SG0ZZYY8HE4MW501XMJV",
+          "el_01K742SG101DH4FAEWCWWK4QXC",
+          "el_01K742SG11W3SGB8Q1H50W74VB",
+          "el_01K742SG12CTMHXEB7TY99G4XV",
+          "el_01K742SG16N99XRCS0QEBWMRXY",
+          "el_01K742SG18FWWKH14N0RFB0V71",
+          "el_01K742SG1997BY67AWW1M4Q0ZJ",
+          "el_01K742SG1AC44Z1PPR4WQ603NH",
+          "el_01K742SG1BRDWJ0WNJDQZ83WKE",
+          "el_01K742SG1DA6M66PRBFSTF1J1Y",
+          "el_01K742SG1C65EBSWTVDPTZ7EJ0",
+          "el_01K742SG1E231F7W54P5SD2AAB",
+          "el_01K742SG1FGTQ1G2HBTRT3T0FR",
+          "el_01K742SG1G9A0XG0WHZYSGT4WG",
+          "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+          "el_01K742SG1J3M0SDFTX818N3V2K",
+          "el_01K742SG1KNSDQQH1EG9W2NJWJ",
+          "el_01K742SG1M9CJZV12YYC0CWB8B",
+          "el_01K742SG1N7SQGF0AQF87N7SEP",
+          "el_01K742SG1PHXPEHSG259WYPMBV"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "edit.selection.get": [
+    {
+      "title": "Selection of the focused context",
+      "result": {
+        "context": "staging",
+        "ids": [],
+        "kinds": []
+      },
+      "varies": []
+    }
+  ],
+  "edit.selection.set": [
+    {
+      "title": "Select the first element of the first scene",
+      "result": {
+        "context": "staging",
+        "ids": [
+          "el_01K742SG0ZZYY8HE4MW501XMJV"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "edit.undo": [
+    {
+      "title": "Undo the last step",
+      "result": {
+        "undone": [
+          "Set meta"
+        ],
+        "position": 0
+      },
+      "varies": []
+    }
+  ],
+  "job.cancel": [
+    {
+      "title": "Cancel a job",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "test.job",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "",
+        "startedAt": "2026-10-30T19:29:02.738Z",
+        "result": {},
+        "session": "user"
+      },
+      "varies": [
+        "/startedAt"
+      ]
+    }
+  ],
+  "job.list": [
+    {
+      "title": "The caller's jobs",
+      "result": [
+        {
+          "jobId": "job-1",
+          "commandId": "test.job",
+          "state": "succeeded",
+          "progress": 1.0,
+          "message": "",
+          "startedAt": "2026-10-30T19:29:02.775Z",
+          "result": {},
+          "session": "user"
+        }
+      ],
+      "varies": [
+        "/0/startedAt"
+      ]
+    }
+  ],
+  "job.wait": [
+    {
+      "title": "Wait up to 5 s",
+      "result": {
+        "jobId": "job-1",
+        "commandId": "test.job",
+        "state": "succeeded",
+        "progress": 1.0,
+        "message": "",
+        "startedAt": "2026-10-30T19:29:02.813Z",
+        "result": {},
+        "session": "user"
+      },
+      "varies": [
+        "/startedAt"
+      ]
+    }
+  ],
+  "project.backup.list": [
+    {
+      "title": "Backups of the current project",
+      "result": [
+        {
+          "backupId": "bk_1a2b3c4d",
+          "savedAt": "2026-10-01T09:00:00Z",
+          "sizeBytes": 1,
+          "documentRev": 1
+        }
+      ],
+      "varies": []
+    }
+  ],
+  "project.backup.open": [
+    {
+      "title": "Open a backup as an untitled copy",
+      "result": {
+        "projectId": "pr_01K742SG00BK0VXTWDM5JRXV37"
+      },
+      "varies": []
+    }
+  ],
+  "project.close": [
+    {
+      "title": "Close, failing if unsaved",
+      "result": {
+        "closed": true
+      },
+      "varies": []
+    }
+  ],
+  "project.create": [
+    {
+      "title": "A 1920×1080, 24 fps project",
+      "result": {
+        "projectId": "pr_01M674JZGVBV8DJ8MPPH9QFDT9",
+        "sceneId": "sc_01M674JZGXWDHX6D6GQ6EH0KJH",
+        "cameraId": "el_01M674JZGXWDHX6D6GQ6EH0KJK",
+        "elementId": "el_01M674JZGXWDHX6D6GQ6EH0KJM"
+      },
+      "varies": [
+        "/projectId",
+        "/sceneId",
+        "/cameraId",
+        "/elementId"
+      ]
+    }
+  ],
+  "project.info.get": [
+    {
+      "title": "ProjectInfo (01 §12.4)",
+      "result": {
+        "id": "pr_01K742SG00BK0VXTWDM5JRXV37",
+        "name": "Sample",
+        "path": "/tmp/Sample.animpkg",
+        "readOnly": false,
+        "formatVersion": "1.0",
+        "dirty": true,
+        "globalLibraryDirty": false,
+        "lastSaved": "2026-10-01T09:00:00Z",
+        "frameRate": 23.976,
+        "cameraWidth": 1920,
+        "cameraHeight": 1080,
+        "scenes": [
+          {
+            "id": "sc_01K742SG0YSRA1305J7887BDVZ",
+            "name": "Intro",
+            "frameCount": 48
+          },
+          {
+            "id": "sc_01K742SG2M2H2H02X6D97DG7DN",
+            "name": "Scene-2",
+            "frameCount": 48
+          }
+        ],
+        "currentSceneId": "sc_01K742SG0YSRA1305J7887BDVZ"
+      },
+      "varies": []
+    }
+  ],
+  "project.open": [
+    {
+      "title": "Open a package",
+      "result": {
+        "jobId": "job-4"
+      },
+      "varies": []
+    }
+  ],
+  "project.presets.list": [
+    {
+      "title": "Presets for new projects",
+      "result": [
+        {
+          "id": "default",
+          "name": "Default",
+          "kind": "default",
+          "frameRate": 24.0,
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "id": "web-small-4x3",
+          "name": "Web small 4:3",
+          "kind": "bundled",
+          "frameRate": 12.0,
+          "width": 480,
+          "height": 360
+        },
+        {
+          "id": "web-medium-4x3",
+          "name": "Web medium 4:3",
+          "kind": "bundled",
+          "frameRate": 12.0,
+          "width": 640,
+          "height": 480
+        },
+        {
+          "id": "web-16x9",
+          "name": "Web 16:9",
+          "kind": "bundled",
+          "frameRate": 24.0,
+          "width": 960,
+          "height": 540
+        },
+        {
+          "id": "sd-ntsc-4x3",
+          "name": "SD NTSC 4:3 (square pixels)",
+          "kind": "bundled",
+          "frameRate": 29.97,
+          "width": 720,
+          "height": 540
+        },
+        {
+          "id": "sd-ntsc-16x9",
+          "name": "SD NTSC 16:9 (square pixels)",
+          "kind": "bundled",
+          "frameRate": 29.97,
+          "width": 854,
+          "height": 480
+        },
+        {
+          "id": "sd-pal-4x3",
+          "name": "SD PAL 4:3 (square pixels)",
+          "kind": "bundled",
+          "frameRate": 25.0,
+          "width": 768,
+          "height": 576
+        },
+        {
+          "id": "sd-pal-16x9",
+          "name": "SD PAL 16:9 (square pixels)",
+          "kind": "bundled",
+          "frameRate": 25.0,
+          "width": 1024,
+          "height": 576
+        },
+        {
+          "id": "hd-720p-24",
+          "name": "HD 720p 24",
+          "kind": "bundled",
+          "frameRate": 24.0,
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "id": "hd-720p-25",
+          "name": "HD 720p 25",
+          "kind": "bundled",
+          "frameRate": 25.0,
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "id": "hd-720p-30",
+          "name": "HD 720p 30",
+          "kind": "bundled",
+          "frameRate": 30.0,
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "id": "hd-1080p-24",
+          "name": "HD 1080p 24",
+          "kind": "bundled",
+          "frameRate": 24.0,
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "id": "hd-1080p-25",
+          "name": "HD 1080p 25",
+          "kind": "bundled",
+          "frameRate": 25.0,
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "id": "hd-1080p-30",
+          "name": "HD 1080p 30",
+          "kind": "bundled",
+          "frameRate": 30.0,
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "id": "uhd-4k-24",
+          "name": "UHD 4K 24",
+          "kind": "bundled",
+          "frameRate": 24.0,
+          "width": 3840,
+          "height": 2160
+        },
+        {
+          "id": "uhd-4k-25",
+          "name": "UHD 4K 25",
+          "kind": "bundled",
+          "frameRate": 25.0,
+          "width": 3840,
+          "height": 2160
+        },
+        {
+          "id": "uhd-4k-30",
+          "name": "UHD 4K 30",
+          "kind": "bundled",
+          "frameRate": 30.0,
+          "width": 3840,
+          "height": 2160
+        },
+        {
+          "id": "dci-2k",
+          "name": "DCI 2K",
+          "kind": "bundled",
+          "frameRate": 24.0,
+          "width": 2048,
+          "height": 1080
+        },
+        {
+          "id": "dci-4k",
+          "name": "DCI 4K",
+          "kind": "bundled",
+          "frameRate": 24.0,
+          "width": 4096,
+          "height": 2160
+        },
+        {
+          "id": "social-square",
+          "name": "Social square",
+          "kind": "bundled",
+          "frameRate": 30.0,
+          "width": 1080,
+          "height": 1080
+        },
+        {
+          "id": "social-vertical",
+          "name": "Social vertical",
+          "kind": "bundled",
+          "frameRate": 30.0,
+          "width": 1080,
+          "height": 1920
+        }
+      ],
+      "varies": []
+    }
+  ],
+  "project.properties.get": [
+    {
+      "title": "Frame rate and camera size",
+      "result": {
+        "frameRate": 23.976,
+        "cameraWidth": 1920,
+        "cameraHeight": 1080
+      },
+      "varies": []
+    }
+  ],
+  "project.properties.set": [
+    {
+      "title": "25 fps",
+      "result": {
+        "frameRate": 25.0,
+        "cameraWidth": 1920,
+        "cameraHeight": 1080
+      },
+      "varies": []
+    }
+  ],
+  "project.recent.list": [
+    {
+      "title": "Recent projects",
+      "result": [
+        {
+          "path": "/tmp/Sample.animpkg",
+          "name": "Sample",
+          "lastOpened": "2026-10-30T19:29:04.297Z",
+          "exists": true
+        }
+      ],
+      "varies": [
+        "/0/lastOpened"
+      ]
+    }
+  ],
+  "project.recent.remove": [
+    {
+      "title": "Clear the list",
+      "result": {
+        "remaining": 0
+      },
+      "varies": []
+    }
+  ],
+  "project.recovery.delete": [
+    {
+      "title": "Discard everything",
+      "result": {
+        "deleted": 1
+      },
+      "varies": []
+    }
+  ],
+  "project.recovery.list": [
+    {
+      "title": "Recoverable sessions",
+      "result": [
+        {
+          "recoveryId": "rc_1a2b3c4d",
+          "projectName": "Sample",
+          "originalPath": "/tmp/Sample.animpkg",
+          "savedAt": "2026-10-01T09:00:00Z",
+          "usable": true
+        }
+      ],
+      "varies": []
+    }
+  ],
+  "project.recovery.open": [
+    {
+      "title": "Recover a session",
+      "result": {
+        "jobId": "job-4"
+      },
+      "varies": []
+    }
+  ],
+  "project.save": [
+    {
+      "title": "Save",
+      "result": {
+        "jobId": "job-3"
+      },
+      "varies": []
+    }
+  ],
+  "project.saveAs": [
+    {
+      "title": "Save a copy",
+      "result": {
+        "jobId": "job-3"
+      },
+      "varies": []
+    }
+  ],
+  "window.floatingPanels.set": [
+    {
+      "title": "Hide floating panels and palettes",
+      "result": {
+        "visible": false
+      },
+      "varies": []
+    }
+  ],
+  "window.fullScreen.set": [
+    {
+      "title": "Enter full screen",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    },
+    {
+      "title": "Leave full screen",
+      "result": {
+        "enabled": false
+      },
+      "varies": []
+    }
+  ],
+  "window.panel.list": [
+    {
+      "title": "Every panel with its visibility, place and focus",
+      "result": [
+        {
+          "panelId": "cameraView",
+          "title": "Camera view",
+          "visible": true,
+          "floating": false,
+          "area": "central",
+          "current": true,
+          "focused": true
+        },
+        {
+          "panelId": "drawingView",
+          "title": "Drawing view",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "topView",
+          "title": "Top view",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "sideView",
+          "title": "Side view",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "timeline",
+          "title": "Timeline",
+          "visible": true,
+          "floating": false,
+          "area": "bottom",
+          "tabGroup": 0,
+          "current": true,
+          "focused": false
+        },
+        {
+          "panelId": "xsheet",
+          "title": "Exposure sheet",
+          "visible": true,
+          "floating": false,
+          "area": "bottom",
+          "tabGroup": 0,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "functionEditor",
+          "title": "Function editor",
+          "visible": true,
+          "floating": false,
+          "area": "bottom",
+          "tabGroup": 0,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "properties",
+          "title": "Properties",
+          "visible": true,
+          "floating": false,
+          "area": "right",
+          "tabGroup": 0,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "colour",
+          "title": "Colour",
+          "visible": true,
+          "floating": false,
+          "area": "right",
+          "tabGroup": 0,
+          "current": true,
+          "focused": false
+        },
+        {
+          "panelId": "pen",
+          "title": "Pen",
+          "visible": true,
+          "floating": false,
+          "area": "right",
+          "tabGroup": 1,
+          "current": true,
+          "focused": false
+        },
+        {
+          "panelId": "text",
+          "title": "Text",
+          "visible": true,
+          "floating": false,
+          "area": "right",
+          "tabGroup": 1,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "cells",
+          "title": "Cells",
+          "visible": true,
+          "floating": false,
+          "area": "right",
+          "tabGroup": 1,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "library",
+          "title": "Library",
+          "visible": true,
+          "floating": false,
+          "area": "right",
+          "tabGroup": 0,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "storyline",
+          "title": "Storyline",
+          "visible": true,
+          "floating": false,
+          "area": "bottom",
+          "tabGroup": 0,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "sceneManager",
+          "title": "Scene manager",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "effectPreview",
+          "title": "Effect preview",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "motionRecording",
+          "title": "Motion recording",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "lipSync",
+          "title": "Lip-sync",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "history",
+          "title": "History",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "soundEditor",
+          "title": "Sound element editor",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        },
+        {
+          "panelId": "capture",
+          "title": "Capture window",
+          "visible": false,
+          "floating": false,
+          "current": false,
+          "focused": false
+        }
+      ],
+      "varies": []
+    }
+  ],
+  "window.panel.move": [
+    {
+      "title": "Dock the History panel as a tab next to Properties",
+      "result": {
+        "centralPanel": "cameraView",
+        "corners": "sides",
+        "docks": {
+          "left": [],
+          "right": [
+            {
+              "tabs": [
+                "colour",
+                "properties",
+                "library",
+                "history"
+              ],
+              "current": "history",
+              "size": 330
+            },
+            {
+              "tabs": [
+                "pen",
+                "text",
+                "cells"
+              ],
+              "current": "pen"
+            }
+          ],
+          "top": [],
+          "bottom": [
+            {
+              "tabs": [
+                "timeline",
+                "xsheet",
+                "functionEditor",
+                "storyline"
+              ],
+              "current": "timeline",
+              "size": 190
+            }
+          ]
+        },
+        "floating": [],
+        "toolPalettes": [
+          {
+            "id": "drawingTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 120
+            }
+          },
+          {
+            "id": "animationTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 160
+            }
+          },
+          {
+            "id": "boneTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 200
+            }
+          },
+          {
+            "id": "effectTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 240
+            }
+          },
+          {
+            "id": "soundTools",
+            "visible": false,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 280
+            }
+          }
+        ],
+        "mainToolbar": {
+          "visible": true,
+          "items": [
+            "drawAid.grid.set",
+            "gridType",
+            "gridOverlay",
+            "separator",
+            "drawAid.onionSkin.set",
+            "onionSkinPrevious",
+            "onionSkinNext",
+            "drawAid.autoLightTable.set",
+            "separator",
+            "firstFrame",
+            "playStop",
+            "lastFrame",
+            "playback.loop.set",
+            "space",
+            "lipsync.panel.open",
+            "flexibleSpace",
+            "cameraList",
+            "sceneList",
+            "workspaceList"
+          ]
+        },
+        "fullScreen": {
+          "centralPanel": "cameraView",
+          "corners": "sides",
+          "docks": {
+            "left": [],
+            "right": [],
+            "top": [],
+            "bottom": []
+          },
+          "floating": [],
+          "toolPalettes": [
+            {
+              "id": "drawingTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 120
+              }
+            },
+            {
+              "id": "animationTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 160
+              }
+            },
+            {
+              "id": "boneTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 200
+              }
+            },
+            {
+              "id": "effectTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 240
+              }
+            },
+            {
+              "id": "soundTools",
+              "visible": false,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 280
+              }
+            }
+          ],
+          "mainToolbar": {
+            "visible": true,
+            "items": [
+              "drawAid.grid.set",
+              "gridType",
+              "gridOverlay",
+              "separator",
+              "drawAid.onionSkin.set",
+              "onionSkinPrevious",
+              "onionSkinNext",
+              "drawAid.autoLightTable.set",
+              "separator",
+              "firstFrame",
+              "playStop",
+              "lastFrame",
+              "playback.loop.set",
+              "space",
+              "lipsync.panel.open",
+              "flexibleSpace",
+              "cameraList",
+              "sceneList",
+              "workspaceList"
+            ]
+          }
+        }
+      },
+      "varies": []
+    }
+  ],
+  "window.panel.set": [
+    {
+      "title": "Show and focus the History panel",
+      "result": {
+        "panelId": "history",
+        "title": "History",
+        "visible": true,
+        "floating": false,
+        "area": "right",
+        "tabGroup": 2,
+        "current": true,
+        "focused": true
+      },
+      "varies": []
+    },
+    {
+      "title": "Float the Colour panel",
+      "result": {
+        "panelId": "colour",
+        "title": "Colour",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 100,
+          "y": 100,
+          "width": 320,
+          "height": 480
+        },
+        "focused": true
+      },
+      "varies": []
+    }
+  ],
+  "window.sidePanelsExtended.set": [
+    {
+      "title": "Let the side areas run full height",
+      "result": {
+        "enabled": true
+      },
+      "varies": []
+    }
+  ],
+  "window.toolbar.items.reset": [
+    {
+      "title": "Restore the default main toolbar",
+      "result": {
+        "items": [
+          "drawAid.grid.set",
+          "gridType",
+          "gridOverlay",
+          "separator",
+          "drawAid.onionSkin.set",
+          "onionSkinPrevious",
+          "onionSkinNext",
+          "drawAid.autoLightTable.set",
+          "separator",
+          "firstFrame",
+          "playStop",
+          "lastFrame",
+          "playback.loop.set",
+          "space",
+          "lipsync.panel.open",
+          "flexibleSpace",
+          "cameraList",
+          "sceneList",
+          "workspaceList"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "window.toolbar.items.set": [
+    {
+      "title": "Grid and playback only",
+      "result": {
+        "items": [
+          "drawAid.grid.set",
+          "separator",
+          "playStop",
+          "playback.loop.set"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "window.toolbar.list": [
+    {
+      "title": "The main toolbar and the tool palettes",
+      "result": [
+        {
+          "toolbarId": "main",
+          "visible": true,
+          "floating": false,
+          "items": [
+            "drawAid.grid.set",
+            "gridType",
+            "gridOverlay",
+            "separator",
+            "drawAid.onionSkin.set",
+            "onionSkinPrevious",
+            "onionSkinNext",
+            "drawAid.autoLightTable.set",
+            "separator",
+            "firstFrame",
+            "playStop",
+            "lastFrame",
+            "playback.loop.set",
+            "space",
+            "lipsync.panel.open",
+            "flexibleSpace",
+            "cameraList",
+            "sceneList",
+            "workspaceList"
+          ],
+          "allowedItems": [
+            "separator",
+            "space",
+            "flexibleSpace",
+            "gridType",
+            "gridOverlay",
+            "onionSkinPrevious",
+            "onionSkinNext",
+            "firstFrame",
+            "previousFrame",
+            "playStop",
+            "nextFrame",
+            "lastFrame",
+            "cameraList",
+            "sceneList",
+            "workspaceList",
+            "agent.activity.export",
+            "agent.activity.list",
+            "agent.activity.persist.set",
+            "agent.confirmation.respond",
+            "agent.policy.defaults.set",
+            "agent.server.set",
+            "agent.server.status",
+            "agent.session.disconnect",
+            "agent.session.grant",
+            "agent.session.pause",
+            "agent.session.resume",
+            "agent.token.regenerate",
+            "agent.typedTools.set",
+            "anim.bone.create",
+            "anim.bone.delete",
+            "anim.bone.influence.set",
+            "anim.bone.parent.set",
+            "anim.bone.pose.set",
+            "anim.bone.reach.apply",
+            "anim.bone.rest.set",
+            "anim.camera.create",
+            "anim.camera.current.get",
+            "anim.camera.current.set",
+            "anim.camera.delete",
+            "anim.camera.get",
+            "anim.camera.list",
+            "anim.camera.select",
+            "anim.camera.set",
+            "anim.channel.copy",
+            "anim.channel.cut",
+            "anim.channel.paste",
+            "anim.depth.move",
+            "anim.display.allPegs.set",
+            "anim.display.antialiasToolOverlays.set",
+            "anim.display.arms.set",
+            "anim.display.envelopes.set",
+            "anim.display.frameMarkers.set",
+            "anim.display.get",
+            "anim.display.pegGhosts.set",
+            "anim.display.pivotPath.set",
+            "anim.display.smoothPaths.set",
+            "anim.evaluate",
+            "anim.flip.apply",
+            "anim.function.curveType.set",
+            "anim.function.get",
+            "anim.function.key.add",
+            "anim.function.key.duplicate",
+            "anim.function.key.remove",
+            "anim.function.key.set",
+            "anim.function.list",
+            "anim.function.preset.apply",
+            "anim.function.sample",
+            "anim.function.set",
+            "anim.functionEditor.get",
+            "anim.functionEditor.open",
+            "anim.functionEditor.syncFrame.set",
+            "anim.functionEditor.view.set",
+            "anim.hierarchy.attach",
+            "anim.hierarchy.detach",
+            "anim.hierarchy.get",
+            "anim.hierarchy.select",
+            "anim.key.add",
+            "anim.key.list",
+            "anim.key.move",
+            "anim.key.remove",
+            "anim.loop.set",
+            "anim.node.get",
+            "anim.node.options.set",
+            "anim.node.pathDisplay.set",
+            "anim.path.get",
+            "anim.path.lockDepth.set",
+            "anim.path.point.add",
+            "anim.path.point.remove",
+            "anim.path.point.select",
+            "anim.path.point.set",
+            "anim.path.sample",
+            "anim.path.set",
+            "anim.peg.create",
+            "anim.pegOnlyMode.set",
+            "anim.point.copy",
+            "anim.point.paste",
+            "anim.prefs.get",
+            "anim.prefs.set",
+            "anim.projection.get",
+            "anim.record.options.get",
+            "anim.record.options.set",
+            "anim.record.run",
+            "anim.reset.apply",
+            "anim.segment.set",
+            "anim.segment.uniform.apply",
+            "anim.skeleton.create",
+            "anim.skeleton.deform.get",
+            "anim.skeleton.delete",
+            "anim.skeleton.get",
+            "anim.skeleton.restPose.apply",
+            "anim.skeleton.root.select",
+            "anim.skeleton.set",
+            "anim.skeleton.skin.add",
+            "anim.skeleton.skin.remove",
+            "anim.snapLastKey.set",
+            "anim.stretch.apply",
+            "anim.tool.get",
+            "anim.tool.set",
+            "anim.transform.set",
+            "anim.view.coords.get",
+            "anim.view.get",
+            "anim.view.slot.select",
+            "anim.view.type.set",
+            "app.context.set",
+            "app.currentElement.move",
+            "app.currentElement.set",
+            "app.frame.move",
+            "app.frame.set",
+            "app.info.get",
+            "app.mode.set",
+            "app.quit",
+            "app.state.get",
+            "capture.auto.start",
+            "capture.auto.stop",
+            "capture.device.dialog.open",
+            "capture.device.get",
+            "capture.device.list",
+            "capture.device.select",
+            "capture.device.settings.set",
+            "capture.display.set",
+            "capture.frame.add",
+            "capture.frame.addFromFile",
+            "capture.inputLock.set",
+            "capture.keyColour.set",
+            "capture.keying.set",
+            "capture.lightTable.references.list",
+            "capture.lightTable.set",
+            "capture.preview.get",
+            "capture.session.close",
+            "capture.session.get",
+            "capture.session.open",
+            "capture.source.set",
+            "capture.target.set",
+            "cell.blank.add",
+            "cell.blank.remove",
+            "cell.clipboard.apply",
+            "cell.clipboard.set",
+            "cell.columnate.apply",
+            "cell.cycle.create",
+            "cell.drawing.duplicate",
+            "cell.exposure.add",
+            "cell.exposure.remove",
+            "cell.exposure.set",
+            "cell.fill.apply",
+            "cell.label.set",
+            "cell.note.set",
+            "cell.range.add",
+            "cell.range.delete",
+            "cell.range.move",
+            "cell.select",
+            "cell.selection.get",
+            "checkpoint.create",
+            "checkpoint.delete",
+            "checkpoint.list",
+            "checkpoint.restore",
+            "colour.autoColourUpdate.set",
+            "colour.current.get",
+            "colour.current.set",
+            "colour.editor.close",
+            "colour.editor.open",
+            "colour.fillMapping.get",
+            "colour.fillMapping.set",
+            "colour.gap.close",
+            "colour.gapClosing.get",
+            "colour.gapClosing.set",
+            "colour.missing.list",
+            "colour.paint.apply",
+            "colour.paint.remove",
+            "colour.paintUnpainted.apply",
+            "colour.palette.create",
+            "colour.palette.delete",
+            "colour.palette.duplicate",
+            "colour.palette.export",
+            "colour.palette.get",
+            "colour.palette.import",
+            "colour.palette.list",
+            "colour.palette.rename",
+            "colour.palette.select",
+            "colour.palette.set",
+            "colour.pick",
+            "colour.recolour.apply",
+            "colour.recovery.run",
+            "colour.sceneStyles.get",
+            "colour.selection.apply",
+            "colour.style.delete",
+            "colour.style.duplicate",
+            "colour.style.list",
+            "colour.style.rename",
+            "colour.style.select",
+            "colour.swatch.create",
+            "colour.swatch.delete",
+            "colour.swatch.get",
+            "colour.swatch.list",
+            "colour.swatch.move",
+            "colour.swatch.set",
+            "colour.swatchNames.set",
+            "colour.tintBlend.apply",
+            "colour.tintDialog.open",
+            "colour.tintOffset.apply",
+            "colour.usage.list",
+            "doc.asset.embed",
+            "doc.asset.export",
+            "doc.asset.list",
+            "doc.asset.relink",
+            "doc.asset.remove",
+            "doc.blob.get",
+            "doc.diff",
+            "doc.export.json",
+            "doc.import.json",
+            "doc.loadReport.get",
+            "doc.object.find",
+            "doc.object.get",
+            "doc.object.patch",
+            "doc.object.refs",
+            "doc.object.resolve",
+            "doc.package.export",
+            "doc.package.get",
+            "doc.repair",
+            "doc.schema.get",
+            "doc.schema.list",
+            "doc.schema.validate",
+            "doc.state.get",
+            "doc.validate",
+            "draw.arrange.apply",
+            "draw.bounds.get",
+            "draw.breakApart.apply",
+            "draw.centreLine.apply",
+            "draw.content.add",
+            "draw.current.get",
+            "draw.cut.apply",
+            "draw.drawing.get",
+            "draw.drawing.rename",
+            "draw.drawing.render",
+            "draw.ellipse.add",
+            "draw.envelope.apply",
+            "draw.erase.apply",
+            "draw.feather.apply",
+            "draw.flatten.apply",
+            "draw.flip.apply",
+            "draw.group.create",
+            "draw.group.delete",
+            "draw.hitTest.get",
+            "draw.inspectorPreview.set",
+            "draw.line.add",
+            "draw.linesToBrush.apply",
+            "draw.lock.set",
+            "draw.object.delete",
+            "draw.optimize.apply",
+            "draw.pivot.set",
+            "draw.point.add",
+            "draw.point.delete",
+            "draw.point.move",
+            "draw.point.set",
+            "draw.pointSelection.set",
+            "draw.polyline.add",
+            "draw.rectangle.add",
+            "draw.repositionAll.apply",
+            "draw.rotate.apply",
+            "draw.segment.move",
+            "draw.selection.get",
+            "draw.selection.set",
+            "draw.smooth.apply",
+            "draw.stroke.add",
+            "draw.stroke.set",
+            "draw.text.add",
+            "draw.text.set",
+            "draw.textFormat.set",
+            "draw.transform.apply",
+            "draw.vectorFile.import",
+            "draw.vectorize.preview",
+            "draw.vectorize.run",
+            "draw.viewMapping.get",
+            "drawAid.autoLightTable.set",
+            "drawAid.background.set",
+            "drawAid.currentOnTop.set",
+            "drawAid.grid.set",
+            "drawAid.lightTableShade.set",
+            "drawAid.onionSkin.set",
+            "drawAid.onionSkinCycle.run",
+            "drawAid.onionSkinStyle.set",
+            "drawAid.selectionDisplay.set",
+            "drawAid.state.get",
+            "drawAid.staticLightTable.add",
+            "drawAid.staticLightTable.list",
+            "drawAid.staticLightTable.remove",
+            "drawAid.staticLightTable.set",
+            "drawAid.staticLightTablePanel.set",
+            "drawAid.strokes.set",
+            "edit.clipboard.get",
+            "edit.clipboard.set",
+            "edit.copy",
+            "edit.cut",
+            "edit.cutSpecial",
+            "edit.delete",
+            "edit.deselectAll",
+            "edit.history.get",
+            "edit.history.move",
+            "edit.paste",
+            "edit.pasteAsNewElement",
+            "edit.pasteSpecial",
+            "edit.redo",
+            "edit.selectAll",
+            "edit.selection.get",
+            "edit.selection.set",
+            "edit.undo",
+            "element.annotation.set",
+            "element.childExposure.apply",
+            "element.clone",
+            "element.collapsed.set",
+            "element.colour.set",
+            "element.create",
+            "element.current.move",
+            "element.current.set",
+            "element.delete",
+            "element.drawing.create",
+            "element.drawing.delete",
+            "element.drawing.duplicate",
+            "element.drawing.list",
+            "element.drawing.rename",
+            "element.drawingContent.delete",
+            "element.drawingLock.set",
+            "element.duplicate",
+            "element.get",
+            "element.hierarchy.get",
+            "element.hierarchy.select",
+            "element.list",
+            "element.lock.set",
+            "element.mediaLength.set",
+            "element.note.set",
+            "element.order.move",
+            "element.order.set",
+            "element.parent.remove",
+            "element.parent.set",
+            "element.parentPeg.create",
+            "element.properties.set",
+            "element.rename",
+            "element.select",
+            "element.solo.set",
+            "element.timing.set",
+            "element.typeColour.get",
+            "element.typeColour.set",
+            "element.unusedDrawing.list",
+            "element.visibility.set",
+            "export.drawingPdf.run",
+            "export.formats.list",
+            "export.movie.defaults.get",
+            "export.movie.defaults.set",
+            "export.movie.run",
+            "export.movie.validate",
+            "export.publish.account.close",
+            "export.publish.account.get",
+            "export.publish.account.open",
+            "export.publish.categories.list",
+            "export.publish.run",
+            "export.publish.service.list",
+            "export.publish.validate",
+            "export.report.get",
+            "export.settings.get",
+            "export.settings.set",
+            "export.snapshot.run",
+            "fx.allEffects.get",
+            "fx.allEffects.set",
+            "fx.block.add",
+            "fx.block.defaults.apply",
+            "fx.block.get",
+            "fx.block.list",
+            "fx.block.remove",
+            "fx.block.seed.set",
+            "fx.block.set",
+            "fx.block.type.set",
+            "fx.create",
+            "fx.curve.get",
+            "fx.dropShadow.transform.set",
+            "fx.get",
+            "fx.hitTest.run",
+            "fx.keyframe.add",
+            "fx.keyframe.list",
+            "fx.keyframe.remove",
+            "fx.list",
+            "fx.paramElement.add",
+            "fx.paramElement.list",
+            "fx.paramElement.remove",
+            "fx.paramRows.get",
+            "fx.paramRows.set",
+            "fx.params.get",
+            "fx.params.set",
+            "fx.particles.get",
+            "fx.preset.apply",
+            "fx.preset.create",
+            "fx.preset.delete",
+            "fx.preset.export",
+            "fx.preset.get",
+            "fx.preset.import",
+            "fx.preset.list",
+            "fx.preset.rename",
+            "fx.preview.cache.delete",
+            "fx.preview.close",
+            "fx.preview.frame.get",
+            "fx.preview.open",
+            "fx.preview.options.get",
+            "fx.preview.options.set",
+            "fx.preview.render",
+            "fx.preview.status.get",
+            "fx.preview.stop",
+            "fx.renderList.get",
+            "fx.renderer.capabilities.get",
+            "fx.renderer.options.get",
+            "fx.renderer.options.set",
+            "fx.shake.displacement.get",
+            "fx.simulation.run",
+            "fx.spriteSet.get",
+            "fx.spriteSet.list",
+            "fx.timing.set",
+            "fx.types.get",
+            "fx.types.list",
+            "import.file.get",
+            "import.file.run",
+            "import.formats.list",
+            "import.keyedImage.get",
+            "import.keyedImages.run",
+            "import.movie.run",
+            "import.options.get",
+            "import.options.set",
+            "import.vectorize.settings.get",
+            "import.vectorize.settings.set",
+            "inspect.contactSheet.render",
+            "inspect.coordinates.convert",
+            "inspect.frame.describe",
+            "inspect.hitTest",
+            "inspect.screenshot",
+            "inspect.ui.tree",
+            "job.cancel",
+            "job.list",
+            "job.wait",
+            "keymap.export",
+            "keymap.get",
+            "keymap.import",
+            "keymap.list",
+            "keymap.remove",
+            "keymap.reset",
+            "keymap.set",
+            "library.close",
+            "library.create",
+            "library.drawing.insert",
+            "library.element.duplicate",
+            "library.folder.create",
+            "library.folder.delete",
+            "library.folder.rename",
+            "library.item.delete",
+            "library.item.duplicate",
+            "library.item.get",
+            "library.item.import",
+            "library.item.list",
+            "library.item.move",
+            "library.item.rename",
+            "library.item.thumbnail.get",
+            "library.list",
+            "library.node.get",
+            "library.open",
+            "library.preview.get",
+            "library.preview.set",
+            "library.project.get",
+            "library.refresh.run",
+            "library.save",
+            "library.selection.get",
+            "library.selection.set",
+            "library.starter.open",
+            "library.template.create",
+            "library.template.edit.get",
+            "library.template.edit.start",
+            "library.template.edit.stop",
+            "library.template.export",
+            "library.template.frame.render",
+            "library.template.get",
+            "library.template.insert",
+            "library.template.search",
+            "library.templateUpdate.apply",
+            "library.templateUpdate.list",
+            "library.tree.get",
+            "library.view.get",
+            "library.view.set",
+            "library.writeAccess.set",
+            "lipsync.apply",
+            "lipsync.detect",
+            "lipsync.display.set",
+            "lipsync.mapping.get",
+            "lipsync.mapping.mouth.set",
+            "lipsync.mapping.set",
+            "lipsync.mouth.set",
+            "lipsync.panel.close",
+            "lipsync.panel.open",
+            "lipsync.panel.state.set",
+            "lipsync.settings.get",
+            "lipsync.settings.set",
+            "lipsync.shapes.list",
+            "lipsync.template.import",
+            "lipsync.template.list",
+            "lipsync.track.clear",
+            "lipsync.track.get",
+            "lipsync.track.set",
+            "media.movie.import",
+            "media.movie.probe",
+            "media.object.list",
+            "media.object.relink",
+            "media.sequence.add",
+            "media.sequence.get",
+            "media.sequence.list",
+            "media.sequence.move",
+            "media.sequence.naturalTiming.apply",
+            "media.sequence.remove",
+            "media.sequence.set",
+            "media.sound.play",
+            "media.sound.stop",
+            "playback.forceRate.set",
+            "playback.loop.set",
+            "playback.player.close",
+            "playback.player.get",
+            "playback.player.open",
+            "playback.player.set",
+            "playback.preview.run",
+            "playback.range.get",
+            "playback.range.mode.set",
+            "playback.range.set",
+            "playback.rate.set",
+            "playback.start",
+            "playback.state.get",
+            "playback.stop",
+            "prefs.get",
+            "prefs.list",
+            "prefs.reset",
+            "prefs.set",
+            "print.pageSetup.get",
+            "print.pageSetup.set",
+            "print.preview.get",
+            "print.printer.list",
+            "print.run",
+            "print.settings.get",
+            "print.settings.set",
+            "project.backup.list",
+            "project.backup.open",
+            "project.close",
+            "project.create",
+            "project.info.get",
+            "project.open",
+            "project.presets.list",
+            "project.properties.get",
+            "project.properties.set",
+            "project.recent.list",
+            "project.recent.remove",
+            "project.recovery.delete",
+            "project.recovery.list",
+            "project.recovery.open",
+            "project.save",
+            "project.saveAs",
+            "render.frame.run",
+            "render.limits.get",
+            "render.range.run",
+            "sound.asset.get",
+            "sound.asset.import",
+            "sound.asset.list",
+            "sound.asset.probe",
+            "sound.asset.relink",
+            "sound.editor.close",
+            "sound.editor.open",
+            "sound.editor.state.get",
+            "sound.editor.state.set",
+            "sound.element.streamed.set",
+            "sound.envelope.clear",
+            "sound.envelope.get",
+            "sound.envelope.point.add",
+            "sound.envelope.point.move",
+            "sound.envelope.point.remove",
+            "sound.envelope.set",
+            "sound.fade.apply",
+            "sound.import",
+            "sound.placement.add",
+            "sound.placement.get",
+            "sound.placement.list",
+            "sound.placement.move",
+            "sound.placement.remove",
+            "sound.placement.set",
+            "sound.placement.split",
+            "sound.placement.trim",
+            "sound.play",
+            "sound.playback.set",
+            "sound.range.delete",
+            "sound.range.select",
+            "sound.recent.list",
+            "sound.scrubbing.set",
+            "sound.settings.get",
+            "sound.silence.list",
+            "sound.stop",
+            "sound.waveform.get",
+            "sound.waveforms.set",
+            "storyline.currentScene.get",
+            "storyline.currentScene.set",
+            "storyline.frame.get",
+            "storyline.frame.render",
+            "storyline.get",
+            "storyline.play.start",
+            "storyline.play.stop",
+            "storyline.playhead.get",
+            "storyline.playhead.set",
+            "storyline.scene.create",
+            "storyline.scene.delete",
+            "storyline.scene.get",
+            "storyline.scene.list",
+            "storyline.scene.move",
+            "storyline.scene.rename",
+            "storyline.scene.set",
+            "storyline.scene.visible.set",
+            "storyline.selection.get",
+            "storyline.selection.set",
+            "storyline.transition.get",
+            "storyline.transition.list",
+            "storyline.transition.remove",
+            "storyline.transition.set",
+            "storyline.transition.types.list",
+            "storyline.view.get",
+            "storyline.view.set",
+            "timeline.backgroundColour.set",
+            "timeline.currentFrame.move",
+            "timeline.currentFrame.set",
+            "timeline.effectParameterRows.set",
+            "timeline.frameLabel.get",
+            "timeline.playbackRange.get",
+            "timeline.playbackRange.set",
+            "timeline.rows.list",
+            "timeline.singleCellSelection.set",
+            "timeline.soundWaveforms.set",
+            "timeline.timeDisplay.set",
+            "timeline.transferOptions.get",
+            "timeline.transferOptions.set",
+            "timeline.view.set",
+            "tool.active.get",
+            "tool.active.set",
+            "tool.brush.options.set",
+            "tool.drawTopLayer.set",
+            "tool.eraser.options.set",
+            "tool.group.select",
+            "tool.list",
+            "tool.options.get",
+            "tool.options.set",
+            "tool.pen.create",
+            "tool.pen.delete",
+            "tool.pen.list",
+            "tool.pen.rename",
+            "tool.pen.select",
+            "tool.pen.set",
+            "tool.pencil.options.set",
+            "tool.placeBehind.set",
+            "tool.polyline.options.set",
+            "tool.select.options.set",
+            "tool.settings.get",
+            "tool.snapToContour.set",
+            "tool.symmetry.set",
+            "tool.tablet.set",
+            "tool.text.options.set",
+            "ui.contextHelpMode.set",
+            "ui.help.get",
+            "ui.help.open",
+            "ui.preferences.open",
+            "ui.startScreen.set",
+            "ui.statusBar.get",
+            "ui.statusBar.set",
+            "ui.theme.list",
+            "ui.tips.list",
+            "ui.tips.reset",
+            "ui.tips.set",
+            "view.active.set",
+            "view.coordinates.convert",
+            "view.list",
+            "view.pan.set",
+            "view.rotation.set",
+            "view.transform.get",
+            "view.transform.reset",
+            "view.type.set",
+            "view.zoom.set",
+            "window.floatingPanels.set",
+            "window.fullScreen.set",
+            "window.geometry.get",
+            "window.geometry.set",
+            "window.minimized.set",
+            "window.panel.list",
+            "window.panel.move",
+            "window.panel.set",
+            "window.raiseAll.run",
+            "window.sidePanelsExtended.set",
+            "window.toolbar.items.reset",
+            "window.toolbar.items.set",
+            "window.toolbar.list",
+            "window.toolbar.set",
+            "workspace.create",
+            "workspace.delete",
+            "workspace.export",
+            "workspace.get",
+            "workspace.import",
+            "workspace.layout.set",
+            "workspace.list",
+            "workspace.rename",
+            "workspace.reset",
+            "workspace.save",
+            "workspace.select",
+            "xsheet.columnWidth.set",
+            "xsheet.currentCell.set",
+            "xsheet.display.set",
+            "xsheet.exposures.get",
+            "xsheet.exposures.set",
+            "xsheet.lightTable.add",
+            "xsheet.lightTable.list",
+            "xsheet.lightTable.move",
+            "xsheet.lightTable.remove",
+            "xsheet.lightTable.set",
+            "xsheet.panel.set"
+          ]
+        },
+        {
+          "toolbarId": "drawingTools",
+          "visible": true,
+          "floating": false,
+          "position": {
+            "x": 10,
+            "y": 120
+          },
+          "items": [],
+          "allowedItems": []
+        },
+        {
+          "toolbarId": "animationTools",
+          "visible": true,
+          "floating": false,
+          "position": {
+            "x": 10,
+            "y": 160
+          },
+          "items": [],
+          "allowedItems": []
+        },
+        {
+          "toolbarId": "boneTools",
+          "visible": true,
+          "floating": false,
+          "position": {
+            "x": 10,
+            "y": 200
+          },
+          "items": [],
+          "allowedItems": []
+        },
+        {
+          "toolbarId": "effectTools",
+          "visible": true,
+          "floating": false,
+          "position": {
+            "x": 10,
+            "y": 240
+          },
+          "items": [],
+          "allowedItems": []
+        },
+        {
+          "toolbarId": "soundTools",
+          "visible": false,
+          "floating": false,
+          "position": {
+            "x": 10,
+            "y": 280
+          },
+          "items": [],
+          "allowedItems": []
+        }
+      ],
+      "varies": []
+    }
+  ],
+  "window.toolbar.set": [
+    {
+      "title": "Hide the bone tools",
+      "result": {
+        "toolbarId": "boneTools",
+        "visible": false,
+        "floating": false,
+        "position": {
+          "x": 10,
+          "y": 200
+        },
+        "items": [],
+        "allowedItems": []
+      },
+      "varies": []
+    }
+  ],
+  "workspace.create": [
+    {
+      "title": "Save the current arrangement as a new workspace",
+      "result": {
+        "name": "Compositing",
+        "position": 6
+      },
+      "varies": []
+    }
+  ],
+  "workspace.delete": [
+    {
+      "title": "Delete a user workspace (built-in ones cannot be deleted)",
+      "result": {
+        "deleted": "Inking"
+      },
+      "varies": []
+    }
+  ],
+  "workspace.get": [
+    {
+      "title": "The current arrangement",
+      "result": {
+        "centralPanel": "cameraView",
+        "corners": "sides",
+        "docks": {
+          "left": [],
+          "right": [
+            {
+              "tabs": [
+                "colour",
+                "properties",
+                "library"
+              ],
+              "current": "colour",
+              "size": 330
+            },
+            {
+              "tabs": [
+                "pen",
+                "text",
+                "cells"
+              ],
+              "current": "pen"
+            }
+          ],
+          "top": [],
+          "bottom": [
+            {
+              "tabs": [
+                "timeline",
+                "xsheet",
+                "functionEditor",
+                "storyline"
+              ],
+              "current": "timeline",
+              "size": 190
+            }
+          ]
+        },
+        "floating": [],
+        "toolPalettes": [
+          {
+            "id": "drawingTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 120
+            }
+          },
+          {
+            "id": "animationTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 160
+            }
+          },
+          {
+            "id": "boneTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 200
+            }
+          },
+          {
+            "id": "effectTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 240
+            }
+          },
+          {
+            "id": "soundTools",
+            "visible": false,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 280
+            }
+          }
+        ],
+        "mainToolbar": {
+          "visible": true,
+          "items": [
+            "drawAid.grid.set",
+            "gridType",
+            "gridOverlay",
+            "separator",
+            "drawAid.onionSkin.set",
+            "onionSkinPrevious",
+            "onionSkinNext",
+            "drawAid.autoLightTable.set",
+            "separator",
+            "firstFrame",
+            "playStop",
+            "lastFrame",
+            "playback.loop.set",
+            "space",
+            "lipsync.panel.open",
+            "flexibleSpace",
+            "cameraList",
+            "sceneList",
+            "workspaceList"
+          ]
+        },
+        "fullScreen": {
+          "centralPanel": "cameraView",
+          "corners": "sides",
+          "docks": {
+            "left": [],
+            "right": [],
+            "top": [],
+            "bottom": []
+          },
+          "floating": [],
+          "toolPalettes": [
+            {
+              "id": "drawingTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 120
+              }
+            },
+            {
+              "id": "animationTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 160
+              }
+            },
+            {
+              "id": "boneTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 200
+              }
+            },
+            {
+              "id": "effectTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 240
+              }
+            },
+            {
+              "id": "soundTools",
+              "visible": false,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 280
+              }
+            }
+          ],
+          "mainToolbar": {
+            "visible": true,
+            "items": [
+              "drawAid.grid.set",
+              "gridType",
+              "gridOverlay",
+              "separator",
+              "drawAid.onionSkin.set",
+              "onionSkinPrevious",
+              "onionSkinNext",
+              "drawAid.autoLightTable.set",
+              "separator",
+              "firstFrame",
+              "playStop",
+              "lastFrame",
+              "playback.loop.set",
+              "space",
+              "lipsync.panel.open",
+              "flexibleSpace",
+              "cameraList",
+              "sceneList",
+              "workspaceList"
+            ]
+          }
+        }
+      },
+      "varies": []
+    },
+    {
+      "title": "The stored Drawing workspace",
+      "result": {
+        "centralPanel": "drawingView",
+        "corners": "sides",
+        "docks": {
+          "left": [],
+          "right": [
+            {
+              "tabs": [
+                "xsheet"
+              ],
+              "current": "xsheet",
+              "size": 330
+            },
+            {
+              "tabs": [
+                "colour",
+                "pen",
+                "text"
+              ],
+              "current": "colour"
+            }
+          ],
+          "top": [],
+          "bottom": []
+        },
+        "floating": [],
+        "toolPalettes": [
+          {
+            "id": "drawingTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 120
+            }
+          },
+          {
+            "id": "animationTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 160
+            }
+          },
+          {
+            "id": "boneTools",
+            "visible": false,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 200
+            }
+          },
+          {
+            "id": "effectTools",
+            "visible": false,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 240
+            }
+          },
+          {
+            "id": "soundTools",
+            "visible": false,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 280
+            }
+          }
+        ],
+        "mainToolbar": {
+          "visible": true,
+          "items": [
+            "drawAid.grid.set",
+            "gridType",
+            "gridOverlay",
+            "separator",
+            "drawAid.onionSkin.set",
+            "onionSkinPrevious",
+            "onionSkinNext",
+            "drawAid.autoLightTable.set",
+            "separator",
+            "firstFrame",
+            "playStop",
+            "lastFrame",
+            "playback.loop.set",
+            "space",
+            "lipsync.panel.open",
+            "flexibleSpace",
+            "cameraList",
+            "sceneList",
+            "workspaceList"
+          ]
+        },
+        "fullScreen": {
+          "centralPanel": "drawingView",
+          "corners": "sides",
+          "docks": {
+            "left": [],
+            "right": [],
+            "top": [],
+            "bottom": []
+          },
+          "floating": [],
+          "toolPalettes": [
+            {
+              "id": "drawingTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 120
+              }
+            },
+            {
+              "id": "animationTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 160
+              }
+            },
+            {
+              "id": "boneTools",
+              "visible": false,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 200
+              }
+            },
+            {
+              "id": "effectTools",
+              "visible": false,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 240
+              }
+            },
+            {
+              "id": "soundTools",
+              "visible": false,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 280
+              }
+            }
+          ],
+          "mainToolbar": {
+            "visible": true,
+            "items": [
+              "drawAid.grid.set",
+              "gridType",
+              "gridOverlay",
+              "separator",
+              "drawAid.onionSkin.set",
+              "onionSkinPrevious",
+              "onionSkinNext",
+              "drawAid.autoLightTable.set",
+              "separator",
+              "firstFrame",
+              "playStop",
+              "lastFrame",
+              "playback.loop.set",
+              "space",
+              "lipsync.panel.open",
+              "flexibleSpace",
+              "cameraList",
+              "sceneList",
+              "workspaceList"
+            ]
+          }
+        }
+      },
+      "varies": []
+    }
+  ],
+  "workspace.layout.set": [
+    {
+      "title": "Camera view with the Timeline below",
+      "result": {
+        "centralPanel": "cameraView",
+        "corners": "sides",
+        "docks": {
+          "left": [],
+          "right": [],
+          "top": [],
+          "bottom": [
+            {
+              "tabs": [
+                "timeline"
+              ],
+              "current": "timeline",
+              "size": 200
+            }
+          ]
+        },
+        "floating": [],
+        "toolPalettes": [],
+        "mainToolbar": {
+          "visible": true,
+          "items": []
+        },
+        "fullScreen": {
+          "centralPanel": "cameraView",
+          "corners": "sides",
+          "docks": {
+            "left": [],
+            "right": [],
+            "top": [],
+            "bottom": []
+          },
+          "floating": [],
+          "toolPalettes": [],
+          "mainToolbar": {
+            "visible": false,
+            "items": []
+          }
+        }
+      },
+      "varies": []
+    }
+  ],
+  "workspace.list": [
+    {
+      "title": "Built-in and user workspaces in menu order",
+      "result": [
+        {
+          "name": "Default",
+          "builtIn": true,
+          "modified": false,
+          "position": 1,
+          "current": true
+        },
+        {
+          "name": "Staging",
+          "builtIn": true,
+          "modified": false,
+          "position": 2,
+          "current": false
+        },
+        {
+          "name": "Drawing",
+          "builtIn": true,
+          "modified": false,
+          "position": 3,
+          "current": false
+        },
+        {
+          "name": "Focused drawing",
+          "builtIn": true,
+          "modified": false,
+          "position": 4,
+          "current": false
+        },
+        {
+          "name": "Inking",
+          "builtIn": false,
+          "modified": false,
+          "position": 5,
+          "current": false
+        }
+      ],
+      "varies": []
+    }
+  ],
+  "workspace.rename": [
+    {
+      "title": "Rename the Staging workspace",
+      "result": {
+        "name": "Layout"
+      },
+      "varies": []
+    }
+  ],
+  "workspace.reset": [
+    {
+      "title": "Restore and select the Default workspace",
+      "result": {
+        "reset": [
+          "Default"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "workspace.save": [
+    {
+      "title": "Save the arrangement into the current workspace",
+      "result": {
+        "name": "Default"
+      },
+      "varies": []
+    }
+  ],
+  "workspace.select": [
+    {
+      "title": "Switch to the Drawing workspace",
+      "result": {
+        "name": "Drawing"
+      },
+      "varies": []
+    }
+  ]
+}

@@ -179,5 +179,61 @@ pub fn namespace(reg: &Registry, ns: &str) -> String {
             );
         }
     }
+    worked_example(&mut s, ns);
     s
+}
+
+/// The worked end-to-end examples, executed through the MCP server and retained (M2 C2.1 obligation 1; recorded and
+/// re-checked by `tests/c21_worked_examples.rs`).
+fn worked_examples() -> &'static Value {
+    static ALL: std::sync::OnceLock<Value> = std::sync::OnceLock::new();
+    ALL.get_or_init(|| serde_json::from_str(include_str!("worked-examples.json")).unwrap_or(Value::Null))
+}
+
+/// Appends a namespace's worked example: each step's tool call and its executed response (11 §13).
+fn worked_example(s: &mut String, ns: &str) {
+    let Some(w) = worked_examples().get(ns) else { return };
+    let _ = write!(
+        s,
+        "## Worked example
+
+{}. Each step is a tool call an agent made and the response it received, recorded          from a real run (values listed under \"varies\" — generated ids, times, tokens — differ from run to run;          paths are shown under `/tmp`).
+
+",
+        w.get("title").and_then(Value::as_str).unwrap_or("Worked example")
+    );
+    for (i, st) in w.get("steps").and_then(Value::as_array).into_iter().flatten().enumerate() {
+        let _ = write!(
+            s,
+            "### Step {}: {}
+
+Request:
+
+```json
+{}
+```
+
+Response:
+
+```json
+{}
+```
+
+",
+            i + 1,
+            st.get("note").and_then(Value::as_str).unwrap_or_default(),
+            serde_json::to_string_pretty(st.get("request").unwrap_or(&Value::Null)).unwrap_or_default(),
+            serde_json::to_string_pretty(st.get("response").unwrap_or(&Value::Null)).unwrap_or_default(),
+        );
+        if let Some(v) = st.get("varies").and_then(Value::as_array).filter(|v| !v.is_empty()) {
+            let list: Vec<&str> = v.iter().filter_map(Value::as_str).collect();
+            let _ = write!(
+                s,
+                "Varies: `{}`
+
+",
+                list.join("`, `")
+            );
+        }
+    }
 }
