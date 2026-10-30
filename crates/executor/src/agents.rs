@@ -281,6 +281,13 @@ pub struct ActivityEntry {
     /// The call was a dry run (it changed nothing; a replay must not turn it into an edit; C14-R1-15).
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub dry_run: bool,
+    /// The answer came from the `requestId` cache: a retry of an earlier call, which executed nothing (C14-R2-03).
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub cached_retry: bool,
+    /// A batch: the indexes of the steps it committed (all or none for an atomic batch; the successful ones of a
+    /// sequential batch, which commits step by step; C14-R2-02).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub committed_steps: Option<Vec<usize>>,
     /// Document revision after the call.
     pub document_rev: Option<u64>,
     /// Duration.

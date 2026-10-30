@@ -95,6 +95,15 @@ pub(crate) struct FileWrite {
     pub bytes: Vec<u8>,
     /// The temporary sibling holding the content once staged.
     pub staged: Option<std::path::PathBuf>,
+    /// Readable by its owner only once published (POSIX `0600`; the agent discovery file).
+    pub private: bool,
+}
+
+impl FileWrite {
+    /// A file write to stage.
+    pub(crate) fn new(path: std::path::PathBuf, bytes: Vec<u8>) -> Self {
+        Self { path, bytes, staged: None, private: false }
+    }
 }
 
 /// The state of a context a step can be rolled back to (a step with its own `dryRun` inside an atomic batch).

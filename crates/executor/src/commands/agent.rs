@@ -397,29 +397,17 @@ pub(crate) fn agent_token_regenerate(cx: &mut Cx, _p: NoParams) -> Result<Discov
     // The bearer token of the Streamable HTTP endpoint (11 §4), kept in the discovery file in the per-user settings
     // folder. HTTP sessions arrive with attached mode (M4); stdio sessions are not affected.
     let dir = cx.session().env.dirs.settings.clone();
-    std::fs::create_dir_all(&dir).map_err(|e| CommandError::from(fsx::fs_error(&e, &dir, "cannot create")))?;
     let path = dir.join("agent-discovery.json");
     let text = serde_json::to_vec_pretty(&json!({
         "format": "toontown-agent-discovery", "formatVersion": "1.0",
         "endpoint": Value::Null, "token": fsx::random_token(24), "processId": std::process::id(),
     }))
     .map_err(|e| CommandError::internal(e.to_string()))?;
-    if !cx.dry_run() {
-        fsx::write_atomic(&path, &text, fsx::fs_error)?;
-        restrict_to_user(&path);
-    }
+    // Published only when the call commits (C14-R2-05): a failing batch keeps the previous discovery file.
+    let mut write = crate::cx::FileWrite::new(path.clone(), text);
+    write.private = true;
+    cx.defer(Effect::WriteFile(Box::new(write)));
     Ok(Discovery { discovery_file: path.to_string_lossy().into_owned() })
-}
-
-/// Makes a file readable by its owner only (POSIX); on Windows the per-user settings folder is already private.
-fn restrict_to_user(path: &Path) {
-    #[cfg(unix)]
-    {
-        use std::os::unix::fs::PermissionsExt;
-        let _ = std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o600));
-    }
-    #[cfg(not(unix))]
-    let _ = path;
 }
 
 /// `agent.typedTools.set` parameters.
@@ -614,8 +602,9 @@ pub(crate) struct Omitted {
     tool: String,
     /// Its command.
     command_id: String,
-    /// `notCompleted` (an error or a confirmation that was not given), `dryRun` (it changed nothing), `readOnly` (a
-    /// query), `notACommand` (a discovery tool such as `list_commands`), `redacted` (inline data replaced by its hash).
+    /// `notCompleted` (it committed nothing: an error, or a confirmation that was not given), `cachedRetry` (a
+    /// `requestId` retry answered from the cache), `dryRun` (it changed nothing), `readOnly` (a query), `notACommand`
+    /// (a discovery tool such as `list_commands`), `redacted` (inline data replaced by its hash).
     reason: &'static str,
 }
 
@@ -629,41 +618,61 @@ fn redacted(v: &Value) -> bool {
     }
 }
 
-/// Renumbers `$<n>.` references of a batch's steps placed at `offset` and renames its step names that are taken.
-fn relocate(v: &mut Value, offset: usize, names: &BTreeMap<String, String>) {
+/// Rewrites the step references of a batch's kept steps: `$<n>` (1-based) through `index` (old 0-based step → new
+/// 0-based position in the export) and renamed `$<name>`s through `names`.
+fn relocate(v: &mut Value, index: &BTreeMap<usize, usize>, names: &BTreeMap<String, String>) {
     match v {
         Value::String(s) if s.starts_with('$') => {
             let rest = &s[1..];
             let (head, tail) = rest.split_once('.').map_or((rest, ""), |(h, t)| (h, t));
             let dot = if rest.contains('.') { "." } else { "" };
             if let Ok(n) = head.parse::<usize>() {
-                *s = format!("${}{dot}{tail}", n + offset);
+                if let Some(new) = n.checked_sub(1).and_then(|i| index.get(&i)) {
+                    *s = format!("${}{dot}{tail}", new + 1);
+                }
             } else if let Some(new) = names.get(head) {
                 *s = format!("${new}{dot}{tail}");
             }
         }
-        Value::Array(a) => a.iter_mut().for_each(|x| relocate(x, offset, names)),
-        Value::Object(m) => m.values_mut().for_each(|x| relocate(x, offset, names)),
+        Value::Array(a) => a.iter_mut().for_each(|x| relocate(x, index, names)),
+        Value::Object(m) => m.values_mut().for_each(|x| relocate(x, index, names)),
         _ => {}
     }
 }
 
-/// The replayable batch of an activity log (11 §11, §3): committed edits only, in order. A committed batch contributes
-/// its steps (references renumbered); dry runs, queries, discovery tools, incomplete and redacted calls are left out
-/// and reported (C14-R1-15).
+/// The replayable batch of an activity log (11 §11, §3; SI-051): every committed edit, in order. A batch contributes
+/// the steps it committed (all of an atomic batch that succeeded; each successful step of a sequential batch, which
+/// commits step by step; C14-R2-02), with references renumbered and clashing names renamed. Left out and reported:
+/// cached `requestId` retries, which executed nothing (C14-R2-03), dry runs, queries, discovery tools, calls that
+/// committed nothing, and redacted parameters.
 fn replay_batch(entries: &[crate::agents::ActivityEntry]) -> (Vec<Value>, Vec<Omitted>) {
     let reg = crate::registry().ok();
     let mut steps: Vec<Value> = Vec::new();
     let mut omitted = Vec::new();
     let mut used: std::collections::BTreeSet<String> = std::collections::BTreeSet::new();
     for e in entries {
-        let reason = if e.status != "ok" {
-            Some("notCompleted")
-        } else if e.dry_run {
+        let is_batch = e.command_id == "batch";
+        let batch_dry = is_batch && e.params.get("dryRun").and_then(Value::as_bool) == Some(true);
+        // The steps a batch committed; older entries without the record: all when it succeeded, none otherwise.
+        let committed: Vec<usize> = if is_batch {
+            e.committed_steps.clone().unwrap_or_else(|| {
+                let n = e.params.get("steps").and_then(Value::as_array).map_or(0, Vec::len);
+                if e.status == "ok" { (0..n).collect() } else { Vec::new() }
+            })
+        } else {
+            Vec::new()
+        };
+        let reason = if e.cached_retry {
+            Some("cachedRetry")
+        } else if e.dry_run || batch_dry {
             Some("dryRun")
+        } else if is_batch && committed.is_empty() {
+            Some("notCompleted")
+        } else if !is_batch && e.status != "ok" {
+            Some("notCompleted")
         } else if redacted(&e.params) {
             Some("redacted")
-        } else if e.command_id == "batch" {
+        } else if is_batch {
             None
         } else {
             match reg.and_then(|r| r.get(&e.command_id)) {
@@ -676,24 +685,16 @@ fn replay_batch(entries: &[crate::agents::ActivityEntry]) -> (Vec<Value>, Vec<Om
             omitted.push(Omitted { seq: e.seq, tool: e.tool.clone(), command_id: e.command_id.clone(), reason });
             continue;
         }
-        if e.command_id != "batch" {
+        if !is_batch {
             steps.push(json!({ "id": e.command_id, "params": e.params }));
             continue;
         }
         let batch_steps = e.params.get("steps").and_then(Value::as_array).cloned().unwrap_or_default();
-        if e.params.get("dryRun").and_then(Value::as_bool) == Some(true) {
-            omitted.push(Omitted {
-                seq: e.seq,
-                tool: e.tool.clone(),
-                command_id: e.command_id.clone(),
-                reason: "dryRun",
-            });
-            continue;
-        }
-        let offset = steps.len();
+        let index: BTreeMap<usize, usize> =
+            committed.iter().enumerate().map(|(k, old)| (*old, steps.len() + k)).collect();
         let mut names = BTreeMap::new();
-        for s in &batch_steps {
-            if let Some(n) = s.get("as").and_then(Value::as_str) {
+        for i in &committed {
+            if let Some(n) = batch_steps.get(*i).and_then(|s| s.get("as")).and_then(Value::as_str) {
                 let mut new = n.to_owned();
                 let mut k = 2;
                 while used.contains(&new) {
@@ -704,9 +705,10 @@ fn replay_batch(entries: &[crate::agents::ActivityEntry]) -> (Vec<Value>, Vec<Om
                 names.insert(n.to_owned(), new);
             }
         }
-        for mut s in batch_steps {
+        for i in &committed {
+            let Some(mut s) = batch_steps.get(*i).cloned() else { continue };
             if let Some(p) = s.get_mut("params") {
-                relocate(p, offset, &names);
+                relocate(p, &index, &names);
             }
             if let Some(m) = s.as_object_mut() {
                 let renamed: Option<String> = m.get("as").and_then(Value::as_str).and_then(|n| names.get(n).cloned());
@@ -775,11 +777,7 @@ pub(crate) fn agent_activity_export(cx: &mut Cx, p: ActivityExportParams) -> Res
         }
     };
     // Written only when the call commits (C14-R1-03): a later failing step of the same batch leaves no file.
-    cx.defer(Effect::WriteFile(Box::new(crate::cx::FileWrite {
-        path: path.clone(),
-        bytes: text.into_bytes(),
-        staged: None,
-    })));
+    cx.defer(Effect::WriteFile(Box::new(crate::cx::FileWrite::new(path.clone(), text.into_bytes()))));
     Ok(Exported {
         path: path.to_string_lossy().into_owned(),
         entries: u32::try_from(entries.len()).unwrap_or(u32::MAX),

@@ -377,9 +377,11 @@ pub(crate) fn doc_export_json(cx: &mut Cx, p: ExportJsonParams) -> Result<Export
             } else {
                 tt_model::canonical::to_compact_string(&bundle)?
             };
-            if !cx.dry_run() {
-                fsx::write_atomic(&target, text.as_bytes(), fsx::fs_error)?;
-            }
+            // Published only when the call commits (C14-R2-05).
+            cx.defer(crate::cx::Effect::WriteFile(Box::new(crate::cx::FileWrite::new(
+                target.clone(),
+                text.as_bytes().to_vec(),
+            ))));
             Ok(ExportJsonResult {
                 bundle: None,
                 path: Some(target.to_string_lossy().into_owned()),

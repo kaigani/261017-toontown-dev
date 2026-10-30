@@ -376,7 +376,12 @@ pub(crate) fn resolve_unsaved(cx: &mut Cx, policy: crate::commands::common::OnUn
                 None,
             )
         }
-        OnUnsaved::Save => save_now(cx, false).map(|_| ()),
+        // The same RO-02 boundary as project.save (SI-047 ruling, C14-R2-07): an agent gets the bound
+        // `externalChange` confirmation of this call (close, quit, open, …), the user `project.changedOnDisk`.
+        OnUnsaved::Save => {
+            let external_ok = guard_external_change(cx)?;
+            save_now(cx, false, external_ok)
+        }
     }
 }
 
@@ -576,8 +581,8 @@ pub(crate) fn unsaved(cx: &Cx) -> Result<bool, CommandError> {
 ///
 /// # Errors
 /// As [`check_saveable`].
-pub(crate) fn save_now(cx: &mut Cx, allow_upgrade: bool) -> Result<(), CommandError> {
-    let (path, form) = check_saveable(cx.project()?, allow_upgrade, false)?;
+pub(crate) fn save_now(cx: &mut Cx, allow_upgrade: bool, external_ok: bool) -> Result<(), CommandError> {
+    let (path, form) = check_saveable(cx.project()?, allow_upgrade, external_ok)?;
     let now = crate::time::now_iso();
     let in_batch = cx.in_atomic_batch();
     if !in_batch && unsaved(cx)? {

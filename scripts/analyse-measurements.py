@@ -6,8 +6,9 @@ Usage: python scripts/analyse-measurements.py <dir-or-file> [...] [--out report.
 Every measurement file written by `crates/executor/tests/c14_evidence` holds an `environment` (OS, architecture, CPUs,
 profile, start time and the time origin of `tMs`) and `series`, each with its `samples` (`tMs`, `value`, optional
 `label`) and a `summary`. This script recomputes every summary with the same nearest-rank rule
-(`sorted[round((n - 1) * q)]`) and fails when a file is malformed, a series has no observations, a sample is not
-numeric, times go backwards within a series, or a stored summary differs from the recomputed one. Files that hold only
+(`sorted[round((n - 1) * q)]`) and fails (exit 1) when a file is malformed, the series collection is missing or empty,
+a series has no observations, a sample is not a finite number, times go backwards within a series, or a stored summary
+differs from the recomputed one (C14-R2-06). Files that hold only
 facts (no percentiles) are listed separately and must be declared in SCALAR_ONLY.
 """
 import json
@@ -52,21 +53,36 @@ def check_file(path):
         if not isinstance(env, dict) or key not in env:
             problems.append(f"environment.{key} missing")
     series_out = {}
-    for name, s in (doc.get("series") or {}).items():
+    series = doc.get("series")
+    if not isinstance(series, dict) or not series:
+        problems.append("series must be a non-empty object of named series")
+        series = {}
+    for name, s in series.items():
+        if not isinstance(s, dict):
+            problems.append(f"{name}: a series must be an object")
+            continue
         samples = s.get("samples")
         if not isinstance(samples, list) or not samples:
             problems.append(f"{name}: no samples")
             continue
-        values, last_t = [], -1.0
+        values, last_t = [], None
         for i, x in enumerate(samples):
+            if not isinstance(x, dict):
+                problems.append(f"{name}[{i}]: a sample must be an object")
+                continue
             t, v = x.get("tMs"), x.get("value")
             if not isinstance(t, (int, float)) or not isinstance(v, (int, float)) or isinstance(t, bool) or isinstance(v, bool):
                 problems.append(f"{name}[{i}]: tMs and value must be numbers")
                 continue
+            if not math.isfinite(t) or not math.isfinite(v):
+                problems.append(f"{name}[{i}]: tMs and value must be finite")
+                continue
             if t < 0:
                 problems.append(f"{name}[{i}]: negative tMs")
+            if last_t is not None and t < last_t:
+                problems.append(f"{name}[{i}]: tMs {t} goes back before {last_t} (observations are kept in time order)")
             values.append(float(v))
-            last_t = max(last_t, float(t))
+            last_t = float(t)
         recomputed = summarise(values)
         stored = s.get("summary", {})
         for k, v in recomputed.items():

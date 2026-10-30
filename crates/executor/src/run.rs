@@ -288,6 +288,8 @@ pub(crate) struct Core {
     simulating: bool,
     /// The watchdog budget of one call (bounds waits on the document thread).
     budget: Duration,
+    /// The last `invoke` was answered from the `requestId` cache (read and cleared by `take_served_from_cache`).
+    served_from_cache: bool,
 }
 
 fn unknown(id: &str, registry: &Registry) -> CommandError {
@@ -580,6 +582,13 @@ fn stage_files(effects: &mut [Effect]) -> Result<(), CommandError> {
             && failure.is_none()
         {
             let tmp = tt_persist::fsx::temp_sibling(&w.path);
+            if let Some(dir) = w.path.parent()
+                && !dir.as_os_str().is_empty()
+                && let Err(err) = std::fs::create_dir_all(dir)
+            {
+                failure = Some(CommandError::from(tt_persist::fsx::fs_error(&err, dir, "cannot create the folder")));
+                continue;
+            }
             let written = std::fs::OpenOptions::new()
                 .write(true)
                 .create_new(true)
@@ -614,11 +623,14 @@ fn discard_files(effects: &[Effect]) {
     }
 }
 
-/// Applies the deferred effects of a committed call. A simulation applies none.
-fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin: &Origin) {
+/// Applies the deferred effects of a committed call. A simulation applies none. A file that cannot be published
+/// (moved from its stage onto its target) after the commit is the call's error (C14-R2-01, ADR-0015 §12): every
+/// other effect still applies, the target keeps what it had, and the stage is removed.
+fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin: &Origin) -> Result<(), CommandError> {
     if simulating {
-        return;
+        return Ok(());
     }
+    let mut failure: Option<CommandError> = None;
     for e in effects {
         match e {
             Effect::CancelJob(id) => {
@@ -635,11 +647,25 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
             Effect::Save(p) => crate::persistence::apply_pending(s, &p),
             Effect::WriteFile(w) => {
                 // The content is complete beside its target; a rename that fails after the commit leaves the target
-                // as it was and removes the staged copy.
-                if let Some(tmp) = &w.staged
-                    && std::fs::rename(tmp, &w.path).is_err()
-                {
-                    let _ = std::fs::remove_file(tmp);
+                // as it was, removes the staged copy and fails the call.
+                if let Some(tmp) = &w.staged {
+                    match std::fs::rename(tmp, &w.path) {
+                        Ok(()) => {
+                            if w.private {
+                                restrict_to_user(&w.path);
+                            }
+                        }
+                        Err(err) => {
+                            let _ = std::fs::remove_file(tmp);
+                            failure.get_or_insert_with(|| {
+                                CommandError::with_details(
+                                    tt_persist::codes::FS_IO,
+                                    format!("`{}` could not be published: {err}", w.path.display()),
+                                    json!({ "path": w.path.to_string_lossy(), "reason": "publish" }),
+                                )
+                            });
+                        }
+                    }
                 }
             }
             Effect::Prefs(values) => {
@@ -655,6 +681,33 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
             }
         }
     }
+    failure.map_or(Ok(()), Err)
+}
+
+/// Makes a file readable by its owner only (POSIX); on Windows the per-user settings folder is already private.
+fn restrict_to_user(path: &std::path::Path) {
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        let _ = std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o600));
+    }
+    #[cfg(not(unix))]
+    let _ = path;
+}
+
+/// The envelope of a call whose transaction committed but whose file could not be published (C14-R2-01): an error
+/// that keeps the commit's `changes`, `undo` and `documentRev`, and says in `details.committed` whether the document
+/// changed (the change stays; undo reverts it).
+fn publish_failed(mut env: Envelope, mut e: CommandError) -> Envelope {
+    let committed = !env.changes.is_empty();
+    if let Some(m) = e.details.as_object_mut() {
+        m.insert("committed".into(), json!(committed));
+        m.insert("documentRev".into(), json!(env.document_rev));
+    }
+    env.status = crate::types::Status::Error;
+    env.result = None;
+    env.error = Some(e);
+    env
 }
 
 /// Two preference values are the same (numbers compare by value: `24` and `24.0` are one frame rate).
@@ -743,7 +796,19 @@ pub(crate) fn unsaved_changes(p: &OpenProject) -> CommandError {
 
 impl Core {
     pub(crate) fn new(registry: &'static Registry, session: Session, budget: Duration) -> Self {
-        Self { session: Some(session), requests: RequestCache::default(), registry, simulating: false, budget }
+        Self {
+            session: Some(session),
+            requests: RequestCache::default(),
+            registry,
+            simulating: false,
+            budget,
+            served_from_cache: false,
+        }
+    }
+
+    /// Whether the last `invoke` was answered from the `requestId` cache (C14-R2-03); clears the flag.
+    pub(crate) fn take_served_from_cache(&mut self) -> bool {
+        std::mem::take(&mut self.served_from_cache)
     }
 
     /// The origin a call runs with: an agent session registered in the hub gets its current name and grant.
@@ -872,6 +937,7 @@ impl Core {
 
     /// One invocation, with `requestId` idempotency (C12-R1-06/22).
     pub(crate) fn invoke(&mut self, inv: &Invocation) -> Envelope {
+        self.served_from_cache = false;
         let Some(id) = inv.options.request_id.clone().filter(|_| !self.simulating) else { return self.run(inv) };
         let session = inv.origin.session_key();
         let fp = fingerprint(inv);
@@ -889,7 +955,10 @@ impl Core {
                 self.requests.settle(&session, &id, settled.clone());
                 settled
             }
-            Lookup::Hit(env) => *env,
+            Lookup::Hit(env) => {
+                self.served_from_cache = true;
+                *env
+            }
             Lookup::Refused(e) => Envelope::error(e, self.rev()),
             // Only `job.wait` is in flight across calls, and it is answered by `wait_begin`; an identical call that
             // reaches this route while its twin is pending is told so rather than run twice.
@@ -1015,7 +1084,9 @@ impl Core {
                         Ok(u) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
-                            apply_effects(&mut session, effects, self.simulating, &inv.origin);
+                            if let Err(e) = apply_effects(&mut session, effects, self.simulating, &inv.origin) {
+                                env = publish_failed(env, e);
+                            }
                         }
                         Err(e) => {
                             discard_files(&effects);
@@ -1280,7 +1351,9 @@ impl Core {
                         Ok(u) => {
                             env.undo = u;
                             env.document_rev = last_rev.or(rev_before);
-                            apply_effects(&mut session, effects, self.simulating, origin);
+                            if let Err(e) = apply_effects(&mut session, effects, self.simulating, origin) {
+                                env = publish_failed(env, e);
+                            }
                         }
                         Err(e) => {
                             discard_files(&effects);
@@ -1410,18 +1483,22 @@ impl Core {
     fn save_open_project(&mut self, origin: &Origin) -> Result<(), CommandError> {
         let session = self.take_session();
         let mut cx = Cx::new(session, origin.clone(), "project.save", false);
-        let outcome = crate::persistence::save_now(&mut cx, false);
+        // The load path's internal save has no call of its own to confirm: an external change refuses it
+        // (`project.changedOnDisk`); the commands that offer `onUnsaved: "save"` confirm before reaching it.
+        let outcome = crate::persistence::save_now(&mut cx, false, false);
         let txns = cx.take_txns();
         let mut effects = cx.take_effects();
         let mut session = cx.into_session();
         let committed = outcome
             .and_then(|()| self.write_pending(&session, txns.last().map(|t| &t.after), &mut effects))
             .and_then(|()| commit(&mut session, txns, origin).map(|_| ()));
-        if committed.is_ok() {
-            apply_effects(&mut session, effects, self.simulating, origin);
-        } else {
-            discard_files(&effects);
-        }
+        let committed = match committed {
+            Ok(()) => apply_effects(&mut session, effects, self.simulating, origin),
+            Err(e) => {
+                discard_files(&effects);
+                Err(e)
+            }
+        };
         self.session = Some(session);
         committed
     }

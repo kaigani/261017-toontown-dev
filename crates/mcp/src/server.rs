@@ -208,8 +208,16 @@ impl Shared {
         lock(&self.cancelled).contains(&id.to_string())
     }
 
-    /// Sends a request to the client and waits for its answer; `None` on timeout or when the session closes.
-    fn ask(&self, method: &str, params: Value, timeout: Duration) -> Option<Result<Value, Value>> {
+    /// Sends a request to the client and waits for its answer. `None` on timeout, when the session closes, or when the
+    /// client cancels `owner`, the request this ask serves (C14-R2-04): the ask is then withdrawn with
+    /// `notifications/cancelled`, so the call thread is free at once.
+    fn ask(
+        &self,
+        method: &str,
+        params: Value,
+        timeout: Duration,
+        owner: Option<&Value>,
+    ) -> Option<Result<Value, Value>> {
         if self.closing() {
             return None;
         }
@@ -218,15 +226,28 @@ impl Shared {
         lock(&self.pending).insert(id, tx);
         self.send(&jsonrpc::request(id, method, params));
         let deadline = Instant::now() + timeout;
+        let mut withdrawn = false;
         let r = loop {
-            match rx.recv_timeout(Duration::from_millis(100)) {
+            match rx.recv_timeout(Duration::from_millis(50)) {
+                // An answer that arrives while closing is the shutdown's wake-up, not the client's decision.
+                Ok(_) if self.closing() => break None,
                 Ok(r) => break Some(r),
                 Err(RecvTimeoutError::Disconnected) => break None,
+                Err(RecvTimeoutError::Timeout) if owner.is_some_and(|o| self.is_cancelled(o)) => {
+                    withdrawn = true;
+                    break None;
+                }
                 Err(RecvTimeoutError::Timeout) if self.closing() || Instant::now() >= deadline => break None,
                 Err(RecvTimeoutError::Timeout) => {}
             }
         };
         lock(&self.pending).remove(&id);
+        if withdrawn {
+            self.send(&jsonrpc::notification(
+                "notifications/cancelled",
+                json!({ "requestId": id, "reason": "the request that asked was cancelled" }),
+            ));
+        }
         r
     }
 
@@ -530,7 +551,7 @@ fn notification(shared: &Arc<Shared>, method: &str, params: &Value) {
 
 /// The client's roots join the launch roots of the session (11 §6.2).
 fn refresh_roots(shared: &Shared) {
-    let Some(Ok(r)) = shared.ask("roots/list", json!({}), Duration::from_secs(30)) else { return };
+    let Some(Ok(r)) = shared.ask("roots/list", json!({}), Duration::from_secs(30), None) else { return };
     let Some(session) = shared.session_id() else { return };
     let mut roots = shared.opts.roots.clone();
     for root in r.get("roots").and_then(Value::as_array).into_iter().flatten() {
@@ -907,7 +928,7 @@ fn call_tool(
             }
             let options = InvokeOptions { dry_run, expect_rev: expect, request_id, confirm_token, confirm };
             let inv = Invocation { command: id.clone(), params: params.clone(), options, origin: origin.clone() };
-            let mut env = shared.handle.invoke(inv.clone());
+            let (mut env, mut cached) = shared.handle.invoke_served(inv.clone());
             if name == "get_state" {
                 env = project_state(env, args);
             }
@@ -917,7 +938,7 @@ fn call_tool(
             if env.status == Status::NeedsConfirmation
                 && let Some(token) =
                     env.result.as_ref().and_then(|r| r.get("confirmToken")).and_then(Value::as_str).map(str::to_owned)
-                && let Some(accepted) = elicit(shared, &env)
+                && let Some(accepted) = elicit(shared, &env, rid)
             {
                 if !accepted {
                     let _ = shared.handle.invoke(Invocation::user(
@@ -927,10 +948,11 @@ fn call_tool(
                 }
                 let mut again = inv;
                 again.options.confirm_token = Some(token);
-                env = shared.handle.invoke(again);
+                (env, cached) = shared.handle.invoke_served(again);
             }
             // One activity entry for the logical call, with its final status and whole duration (C14-R1-12).
-            shared.handle.audit_call(&origin, name, &id, &params, &env, started.elapsed());
+            // A requestId retry answered from the cache is recorded as such: it executed nothing (C14-R2-03).
+            shared.handle.audit_logical_call(&origin, name, &id, &params, &env, started.elapsed(), cached);
             (id, env, true)
         }
         Plan::Server => match name {
@@ -1043,7 +1065,7 @@ fn project_state(mut env: Envelope, args: &Map<String, Value>) -> Envelope {
 
 /// Asks the user through the client (MCP elicitation) when the client offers it (11 §6.3 rule 1). `None`: no
 /// elicitation (the agent gets `needs_confirmation`).
-fn elicit(shared: &Shared, env: &Envelope) -> Option<bool> {
+fn elicit(shared: &Shared, env: &Envelope, rid: &Value) -> Option<bool> {
     if !shared.client_can("elicitation") {
         return None;
     }
@@ -1062,6 +1084,7 @@ fn elicit(shared: &Shared, env: &Envelope) -> Option<bool> {
             },
         }),
         ELICIT_TIMEOUT,
+        Some(rid),
     )?;
     // An error answer, or anything but `accept` with the boolean `confirm: true`, does not authorise the action.
     let Ok(v) = answer else { return Some(false) };

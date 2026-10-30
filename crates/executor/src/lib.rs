@@ -111,7 +111,7 @@ pub fn registry() -> Result<&'static Registry, AssemblyError> {
 }
 
 enum Request {
-    Invoke(Invocation, Sender<Envelope>),
+    Invoke(Invocation, Sender<(Envelope, bool)>),
     Batch(BatchRequest, Origin, Sender<Envelope>),
     Open(Box<Document>, OpenOptions, Origin, Sender<Envelope>),
     WaitBegin(Invocation, Sender<run::WaitStart>),
@@ -341,8 +341,18 @@ impl ExecutorHandle {
         if inv.command == "job.wait" {
             return self.job_wait(inv);
         }
+        self.invoke_served(inv).0
+    }
+
+    /// [`ExecutorHandle::invoke`], also saying whether the answer came from the `requestId` cache: a retry that
+    /// executed nothing (C14-R2-03; the envelope is the remembered one, identical to the first answer).
+    #[must_use]
+    pub fn invoke_served(&self, inv: Invocation) -> (Envelope, bool) {
+        if inv.command == "job.wait" {
+            return (self.job_wait(inv), false);
+        }
         let what = inv.command.clone();
-        self.call(&what, |r| Request::Invoke(inv, r)).unwrap_or_else(|e| Envelope::error(e, None))
+        self.call(&what, |r| Request::Invoke(inv, r)).unwrap_or_else(|e| (Envelope::error(e, None), false))
     }
 
     /// Runs a batch (11 §7.3).
@@ -438,7 +448,37 @@ impl ExecutorHandle {
         env: &Envelope,
         took: Duration,
     ) {
+        self.audit_logical_call(origin, tool, command, params, env, took, false);
+    }
+
+    /// [`ExecutorHandle::audit_call`] for a call whose answer may have come from the `requestId` cache (`cached`):
+    /// the entry is marked, and a replay leaves it out (C14-R2-03). A batch records the steps it committed
+    /// (C14-R2-02).
+    #[allow(clippy::too_many_arguments, reason = "one activity entry")]
+    pub fn audit_logical_call(
+        &self,
+        origin: &Origin,
+        tool: &str,
+        command: &str,
+        params: &Value,
+        env: &Envelope,
+        took: Duration,
+        cached: bool,
+    ) {
         let Origin::Agent { session, name, .. } = origin else { return };
+        // Steps that committed: an atomic batch commits all of them or none; a sequential batch commits each
+        // successful step on its own (11 §7.3). A dry run commits nothing.
+        let committed_steps = (command == "batch").then(|| {
+            let atomic = params.get("atomic").and_then(Value::as_bool).unwrap_or(true);
+            let steps = env.steps.as_deref().unwrap_or_default();
+            if env.dry_run || params.get("dryRun").and_then(Value::as_bool) == Some(true) {
+                Vec::new()
+            } else if atomic {
+                if env.status == Status::Ok { (0..steps.len()).collect() } else { Vec::new() }
+            } else {
+                steps.iter().enumerate().filter(|(_, s)| s.status == Status::Ok && !s.dry_run).map(|(i, _)| i).collect()
+            }
+        });
         let entry = agents::ActivityEntry {
             seq: 0,
             time: time::now_iso(),
@@ -457,6 +497,8 @@ impl ExecutorHandle {
             undo_step_id: env.undo.as_ref().map(|u| u.step_id.clone()),
             changed_count: env.changes.len(),
             dry_run: env.dry_run,
+            cached_retry: cached,
+            committed_steps,
             document_rev: env.document_rev,
             duration_ms: u64::try_from(took.as_millis()).unwrap_or(u64::MAX),
         };
@@ -553,8 +595,9 @@ fn document_thread(mut core: run::Core, rx: &Receiver<Request>, subscribers: &Mu
         match req {
             Request::Invoke(inv, reply) => {
                 let env = core.invoke(&inv);
+                let cached = core.take_served_from_cache();
                 flush(&mut core);
-                let _ = reply.send(env);
+                let _ = reply.send((env, cached));
             }
             Request::Batch(b, origin, reply) => {
                 let env = core.batch(&b, &origin);

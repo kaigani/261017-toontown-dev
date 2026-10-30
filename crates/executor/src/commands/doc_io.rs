@@ -817,10 +817,10 @@ pub(crate) fn doc_asset_export(cx: &mut Cx, p: AssetExportParams) -> Result<Path
     persistence::confirm_overwrite(cx, &target)?;
     let (src, _) = asset_source(cx, &key)?;
     let bytes = read_source(cx, &src, 1 << 40)?;
-    if !cx.dry_run() {
-        fsx::write_atomic(&target, &bytes, fsx::fs_error)?;
-    }
-    Ok(PathBytes { path: target.to_string_lossy().into_owned(), bytes: bytes.len() as u64 })
+    let len = bytes.len() as u64;
+    // Published only when the call commits (C14-R2-05).
+    cx.defer(crate::cx::Effect::WriteFile(Box::new(crate::cx::FileWrite::new(target.clone(), bytes))));
+    Ok(PathBytes { path: target.to_string_lossy().into_owned(), bytes: len })
 }
 
 /// `doc.asset.remove` parameters.
