@@ -487,3 +487,53 @@ fn replacing_a_used_asset_repoints_its_placements_and_undo_restores_them() {
         }
     }
 }
+
+#[test]
+fn replacing_a_pen_repoints_typed_stroke_references_only() {
+    let h = fixture();
+    let pens = |h: &tt_executor::ExecutorHandle| {
+        ok(h, "doc.object.find", json!({ "type": "pen", "limit": 100 }))["items"].clone()
+    };
+    let pen = pens(&h)[0]["id"].as_str().unwrap().to_owned();
+    // A brush stroke records its pen on its spine (`spine.pen.penId`, `x-ref: "pen"`).
+    let strokes = ok(&h, "doc.object.find", json!({ "type": "stroke", "limit": 100 }))["items"].clone();
+    let stroke = strokes
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|s| s["id"].as_str().unwrap().to_owned())
+        .find(|s| get(&h, s)["spine"].is_object())
+        .unwrap();
+    let mut spine = get(&h, &stroke)["spine"].clone();
+    spine["pen"]["penId"] = json!(pen);
+    ok(&h, "doc.object.patch", json!({ "targets": [stroke], "props": { "spine": spine } }));
+    // A free string equal to the pen's ID: a scene named after it (imported; renames are later milestones' commands)
+    // is not a reference.
+    let dir = tmp();
+    let src = spawn(&dir.join("src"));
+    ok(&src, "project.create", json!({ "name": "Names" }));
+    let s0 = first(&src, "scene");
+    let mut named =
+        ok(&src, "doc.export.json", json!({ "scope": "scenes", "refs": [s0], "binaries": "omit" }))["bundle"].clone();
+    named["scenes"][0]["name"] = json!(pen);
+    named["palettes"] = json!([]);
+    named["pens"] = json!([]);
+    let r = ok(&h, "doc.import.json", json!({ "source": named }));
+    let other = r["created"]["scenes"][0].as_str().unwrap().to_owned();
+    assert_eq!(get(&h, &other)["name"], pen.as_str());
+    let mut bundled = get(&h, &pen);
+    bundled.as_object_mut().unwrap().shift_remove("path");
+    let bundle = json!({ "format": "animjson", "formatVersion": "1.0", "scenes": [], "elements": [], "drawingBanks": [],
+        "palettes": [], "assets": [], "blobs": {}, "pens": [bundled] });
+    ok(&h, "doc.import.json", json!({ "source": bundle, "onConflict": "replace" }));
+    let now = pens(&h);
+    assert!(now.as_array().unwrap().iter().all(|p| p["id"] != pen.as_str()), "{now}");
+    let new_pen = get(&h, &stroke)["spine"]["pen"]["penId"].as_str().unwrap().to_owned();
+    assert_ne!(new_pen, pen, "the stroke follows the replacement");
+    assert!(now.as_array().unwrap().iter().any(|p| p["id"] == new_pen.as_str()));
+    assert_eq!(get(&h, &other)["name"], pen.as_str(), "a name equal to the old ID is not a reference");
+    ok(&h, "edit.undo", json!({}));
+    assert_eq!(get(&h, &stroke)["spine"]["pen"]["penId"], pen.as_str());
+    drop(src);
+    let _ = std::fs::remove_dir_all(&dir);
+}

@@ -863,25 +863,49 @@ fn replace_conflicting(
     Ok(Replaced { removals: changes, gone, scene_index, inline })
 }
 
-/// Replaces every string equal to a key of `map` (an object ID) by its value, outside the opaque `meta` and `ext`.
+/// The object type of an entry (the schema its JSON follows).
+fn entry_type(key: &EntryKey) -> ObjectType {
+    match key {
+        EntryKey::Project => ObjectType::Project,
+        EntryKey::Palette(_) => ObjectType::Palette,
+        EntryKey::Bank(_) => ObjectType::DrawingBank,
+        EntryKey::Drawing(_) => ObjectType::Drawing,
+        EntryKey::Scene(_) => ObjectType::Scene,
+        EntryKey::Element(_) => ObjectType::Element,
+        EntryKey::Library => ObjectType::Library,
+    }
+}
+
+/// Repoints references (C13-R3-02): a string is replaced only where the entry's schema declares a reference to the
+/// replaced object's kind (`x-ref`, the knowledge the integrity gate and `doc.object.refs` use) — asset references
+/// of placements and media sequences, pen references of strokes. Names, labels and every other string stay as they
+/// are, even when equal to an ID; opaque `meta`/`ext` data is never entered. `map`: old ID → (new ID, `x-ref` kind).
 /// Returns whether anything changed.
-fn substitute(v: &mut Value, map: &BTreeMap<String, String>, depth: usize) -> bool {
+fn repoint_refs(
+    v: &mut Value,
+    map: &BTreeMap<String, (String, &'static str)>,
+    ty: ObjectType,
+    at: &str,
+    depth: usize,
+) -> bool {
     if depth > 200 {
         return false;
     }
     match v {
-        Value::String(s) => match map.get(s.as_str()) {
-            Some(n) => {
-                *s = n.clone();
-                true
+        Value::String(s) => {
+            let Some((new, kind)) = map.get(s.as_str()) else { return false };
+            let declared = tt_model::schema::property_schema(ty, at)
+                .is_some_and(|x| x.get("x-ref").and_then(Value::as_str) == Some(*kind));
+            if declared {
+                *s = new.clone();
             }
-            None => false,
-        },
+            declared
+        }
         // Every member is visited (no short-circuit).
         Value::Array(a) => {
             let mut changed = false;
-            for x in a {
-                changed |= substitute(x, map, depth + 1);
+            for (i, x) in a.iter_mut().enumerate() {
+                changed |= repoint_refs(x, map, ty, &format!("{at}/{i}"), depth + 1);
             }
             changed
         }
@@ -889,7 +913,7 @@ fn substitute(v: &mut Value, map: &BTreeMap<String, String>, depth: usize) -> bo
             let mut changed = false;
             for (k, x) in m.iter_mut() {
                 if k != "meta" && k != "ext" {
-                    changed |= substitute(x, map, depth + 1);
+                    changed |= repoint_refs(x, map, ty, &format!("{at}/{}", tt_model::pointer::escape(k)), depth + 1);
                 }
             }
             changed
@@ -1006,11 +1030,14 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
     }
     // References to replaced assets and pens follow their replacements (fresh IDs: entry names embed asset IDs, and
     // undo must find the old bytes under the old name).
-    let repoint: BTreeMap<String, String> = replaced
+    let repoint: BTreeMap<String, (String, &'static str)> = replaced
         .inline
         .iter()
-        .map(|(old, bid)| (old.clone(), map.get(bid).cloned().unwrap_or_else(|| bid.clone())))
-        .filter(|(old, new)| old != new)
+        .map(|(old, bid)| {
+            let kind = if doc.project().assets().iter().any(|a| a.id().as_str() == old) { "asset" } else { "pen" };
+            (old.clone(), (map.get(bid).cloned().unwrap_or_else(|| bid.clone()), kind))
+        })
+        .filter(|(old, (new, _))| old != new)
         .collect();
     // Palettes.
     let mut palette_first_style: BTreeMap<String, String> = BTreeMap::new();
@@ -1372,13 +1399,13 @@ fn import(cx: &mut Cx, p: ImportJsonParams) -> Result<ImportResult, CommandError
         }
     }
     if !repoint.is_empty() {
-        project_changed |= substitute(&mut project, &repoint, 0);
+        project_changed |= repoint_refs(&mut project, &repoint, ObjectType::Project, "", 0);
         for key in doc.entry_keys() {
             if key == EntryKey::Project || changes.iter().any(|(k, _)| *k == key) {
                 continue;
             }
             let mut v = doc.entry_raw_json(&key)?;
-            if substitute(&mut v, &repoint, 0) {
+            if repoint_refs(&mut v, &repoint, entry_type(&key), "", 0) {
                 changes.push((key, vec![replace_op("", v)]));
             }
         }
