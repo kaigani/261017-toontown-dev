@@ -15,7 +15,7 @@ dist/assets/TabletSpike-BylTc5LY.js       25.01 kB │ gzip:   8.57 kB │ map: 
 dist/assets/CanvasSpike-B4GpwOmh.js       33.25 kB │ gzip:  12.58 kB │ map:   148.64 kB
 dist/assets/index-hYdkgbDA.js            641.30 kB │ gzip: 169.27 kB │ map: 2,510.03 kB
 
-[32m✓ built in 1.10s[39m
+[32m✓ built in 1.11s[39m
 [33m[plugin builtin:vite-reporter] 
 (!) Some chunks are larger than 500 kB after minification. Consider:
 - Using dynamic import() to code-split the application
@@ -39,7 +39,7 @@ dist/assets/index-B2rIT20y.css           137.08 kB │ gzip:  11.42 kB
 dist/assets/tauri-transport-CqPEAjyd.js    3.35 kB │ gzip:   1.45 kB │ map:    36.54 kB
 dist/assets/index-DqcFgMN1.js            632.42 kB │ gzip: 165.97 kB │ map: 2,489.83 kB
 
-[32m✓ built in 876ms[39m
+[32m✓ built in 875ms[39m
 [33m[plugin builtin:vite-reporter] 
 (!) Some chunks are larger than 500 kB after minification. Consider:
 - Using dynamic import() to code-split the application

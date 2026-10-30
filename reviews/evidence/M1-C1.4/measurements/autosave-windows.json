@@ -4,16 +4,16 @@
   "fixture": "sample_document(901) (36 entries, embedded media 60 KiB each) + a 64 MiB preserved entry (extras/media.bin)",
   "snapshotMs": {
     "n": 15,
-    "p50": 0.0639,
-    "p90": 0.0878,
-    "p99": 0.1349,
-    "max": 0.1349
+    "p50": 0.0608,
+    "p90": 0.0983,
+    "p99": 0.2122,
+    "max": 0.2122
   },
   "duringLongBatch": {
     "batchSteps": 1000,
-    "batchMs": 1753.4174999999998,
-    "maintenanceWaitedMs": 1748.2159,
-    "snapshotMs": 0.0758,
+    "batchMs": 1752.4334999999999,
+    "maintenanceWaitedMs": 1746.1200999999999,
+    "snapshotMs": 0.0712,
     "committedRev": 17,
     "recoveryRevs": [
       17
@@ -23,17 +23,17 @@
     "threads": 8,
     "snapshotMs": {
       "n": 10,
-      "p50": 0.0733,
-      "p90": 0.0771,
-      "p99": 0.16699999999999998,
-      "max": 0.16699999999999998
+      "p50": 0.0697,
+      "p90": 0.07490000000000001,
+      "p99": 0.0862,
+      "max": 0.0862
     },
     "schedulingDelayMs": {
       "n": 10,
-      "p50": 22.5003,
-      "p90": 23.703,
-      "p99": 24.2491,
-      "max": 24.2491
+      "p50": 22.0382,
+      "p90": 23.5838,
+      "p99": 24.2362,
+      "max": 24.2362
     }
   },
   "maximumSchedulingDelay": "one maintenance tick (1 s) plus the document-thread work queued ahead of it; an atomic batch is one request, so the autosave waits for the whole batch"

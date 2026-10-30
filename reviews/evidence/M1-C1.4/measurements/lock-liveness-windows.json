@@ -5,15 +5,15 @@
   "probeHeldMicros": {
     "n": 500,
     "p50": 4.300000000000001,
-    "p99": 8.3
+    "p99": 6.8
   },
   "acquireOnHeldMicros": {
     "n": 50,
-    "p50": 65.7,
-    "p99": 76.60000000000001
+    "p50": 66.69999999999999,
+    "p99": 152.10000000000002
   },
-  "crashedHolderTakeoverMs": 8.0018,
-  "processAliveFallbackMs": 26.279500000000002,
+  "crashedHolderTakeoverMs": 8.0146,
+  "processAliveFallbackMs": 25.006899999999998,
   "bounds": {
     "protectedLiveHolder": "never stale (probe), whatever heartbeat, clock or process id say",
     "protectedDeadHolderSameHost": "at once (first open after the process ends)",
