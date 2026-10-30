@@ -1,0 +1,700 @@
+c13_r1_persistence iteration 1:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.55s
+
+c13_r1_persistence iteration 2:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.55s
+
+c13_r1_persistence iteration 3:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.55s
+
+c13_r1_persistence iteration 4:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.53s
+
+c13_r1_persistence iteration 5:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.54s
+
+c13_r1_persistence iteration 6:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 7:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.54s
+
+c13_r1_persistence iteration 8:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.54s
+
+c13_r1_persistence iteration 9:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 10:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.55s
+
+c13_r1_persistence iteration 11:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.54s
+
+c13_r1_persistence iteration 12:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 13:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.54s
+
+c13_r1_persistence iteration 14:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 15:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 16:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 17:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 18:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 19:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 20:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 21:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 22:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 23:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 24:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 25:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 26:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 27:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 28:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 29:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 30:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 31:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.53s
+
+c13_r1_persistence iteration 32:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.57s
+
+c13_r1_persistence iteration 33:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.55s
+
+c13_r1_persistence iteration 34:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.53s
+
+c13_r1_persistence iteration 35:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 36:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 37:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 38:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.53s
+
+c13_r1_persistence iteration 39:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 40:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 41:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 42:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 43:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 44:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.51s
+
+c13_r1_persistence iteration 45:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.50s
+
+c13_r1_persistence iteration 46:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 47:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 48:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.50s
+
+c13_r1_persistence iteration 49:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.52s
+
+c13_r1_persistence iteration 50:
+
+running 1 test
+test concurrent_stale_lock_takeover_has_only_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.50s
+
+c13_r2_persistence iteration 1:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.08s
+
+c13_r2_persistence iteration 2:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.06s
+
+c13_r2_persistence iteration 3:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.08s
+
+c13_r2_persistence iteration 4:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.21s
+
+c13_r2_persistence iteration 5:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.22s
+
+c13_r2_persistence iteration 6:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.09s
+
+c13_r2_persistence iteration 7:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.10s
+
+c13_r2_persistence iteration 8:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.18s
+
+c13_r2_persistence iteration 9:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.07s
+
+c13_r2_persistence iteration 10:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.06s
+
+c13_r2_persistence iteration 11:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.11s
+
+c13_r2_persistence iteration 12:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.11s
+
+c13_r2_persistence iteration 13:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.12s
+
+c13_r2_persistence iteration 14:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.10s
+
+c13_r2_persistence iteration 15:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.21s
+
+c13_r2_persistence iteration 16:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.09s
+
+c13_r2_persistence iteration 17:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.07s
+
+c13_r2_persistence iteration 18:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.13s
+
+c13_r2_persistence iteration 19:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.15s
+
+c13_r2_persistence iteration 20:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.10s
+
+c13_r2_persistence iteration 21:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.21s
+
+c13_r2_persistence iteration 22:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.24s
+
+c13_r2_persistence iteration 23:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.09s
+
+c13_r2_persistence iteration 24:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.13s
+
+c13_r2_persistence iteration 25:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.11s
+
+c13_r2_persistence iteration 26:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.23s
+
+c13_r2_persistence iteration 27:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.12s
+
+c13_r2_persistence iteration 28:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.11s
+
+c13_r2_persistence iteration 29:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.13s
+
+c13_r2_persistence iteration 30:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.11s
+
+c13_r2_persistence iteration 31:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.12s
+
+c13_r2_persistence iteration 32:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.23s
+
+c13_r2_persistence iteration 33:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.12s
+
+c13_r2_persistence iteration 34:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.21s
+
+c13_r2_persistence iteration 35:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.15s
+
+c13_r2_persistence iteration 36:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.15s
+
+c13_r2_persistence iteration 37:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.18s
+
+c13_r2_persistence iteration 38:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.15s
+
+c13_r2_persistence iteration 39:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.25s
+
+c13_r2_persistence iteration 40:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.14s
+
+c13_r2_persistence iteration 41:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.13s
+
+c13_r2_persistence iteration 42:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.16s
+
+c13_r2_persistence iteration 43:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.12s
+
+c13_r2_persistence iteration 44:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.12s
+
+c13_r2_persistence iteration 45:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.11s
+
+c13_r2_persistence iteration 46:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.17s
+
+c13_r2_persistence iteration 47:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.15s
+
+c13_r2_persistence iteration 48:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.25s
+
+c13_r2_persistence iteration 49:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.15s
+
+c13_r2_persistence iteration 50:
+
+running 1 test
+test thirty_two_concurrent_lock_acquisitions_keep_exactly_one_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 1.13s
+

@@ -1,0 +1,100 @@
+{
+  "protectedPaths": [
+    "tests/adversarial",
+    "desktop/src/test",
+    ":(glob)crates/**/tests/c0*",
+    ":(glob)crates/**/tests/c11*",
+    ":(glob)crates/**/tests/c12_r*",
+    "crates/executor/tests/c13_r1_persistence.rs",
+    "crates/executor/tests/c13_r2_persistence.rs",
+    "crates/persist/tests/c13_r1_format.rs",
+    "crates/persist/tests/c13_r2_format.rs",
+    "reviews/M1-C1.3-r1.md",
+    "reviews/M1-C1.3-r2.md",
+    "reviews/evidence/M1-C1.3-r1",
+    "reviews/evidence/M1-C1.3-r2",
+    ":(glob)reviews/evidence/M0*",
+    ":(glob)reviews/evidence/M1-C1.1*",
+    ":(glob)reviews/evidence/M1-C1.2*",
+    "crates/model/tests/staged_commit.rs",
+    "crates/model/tests/staged_inverse.rs"
+  ],
+  "protectedDiffEmpty": true,
+  "specDiffEmpty": true,
+  "dependenciesDiff": "",
+  "builderGateBase": "caf9c062d1e92378ca468217e980c60e6b8b0af9",
+  "builderGateHashes": {
+    "gates/build.log": true,
+    "gates/clippy-diag.log": true,
+    "gates/clippy.log": true,
+    "gates/deny.log": true,
+    "gates/fmt.log": true,
+    "gates/headless.log": true,
+    "gates/pnpm-format.log": true,
+    "gates/pnpm-licenses.log": true,
+    "gates/pnpm-lint.log": true,
+    "gates/pnpm-test.log": true,
+    "gates/pnpm-typecheck.log": true,
+    "gates/reviewer-python-suites.log": true,
+    "gates/selftest-1.json": true,
+    "gates/selftest-2.json": true,
+    "gates/selftest-compare.log": true,
+    "gates/test-diag.log": true,
+    "gates/test.log": true
+  },
+  "builderGateRustCounts": [
+    611,
+    0,
+    2
+  ],
+  "builderGateStatuses": {
+    "gates/fmt.log": 0,
+    "gates/clippy.log": 0,
+    "gates/clippy-diag.log": 0,
+    "gates/deny.log": 0,
+    "gates/test.log": 0,
+    "gates/test-diag.log": 0,
+    "gates/pnpm-lint.log": 0,
+    "gates/pnpm-typecheck.log": 0,
+    "gates/pnpm-test.log": 0,
+    "gates/pnpm-format.log": 0,
+    "gates/pnpm-licenses.log": 0,
+    "gates/build.log": 0,
+    "gates/headless.log": 0,
+    "gates/reviewer-python-suites.log": 0
+  },
+  "addedPolicyMatchesIncludingTests": [
+    {
+      "path": "crates/persist/src/lock.rs",
+      "line": "+        fs::create_dir_all(&dir).unwrap();"
+    },
+    {
+      "path": "crates/persist/src/lock.rs",
+      "line": "+        fs::write(&project, b\"x\").unwrap();"
+    },
+    {
+      "path": "crates/persist/src/lock.rs",
+      "line": "+        fs::write(&path, b\"\").unwrap();"
+    },
+    {
+      "path": "crates/persist/src/lock.rs",
+      "line": "+                fs::write(&path, serde_json::to_vec(&owner).unwrap()).unwrap();"
+    },
+    {
+      "path": "crates/persist/src/lock.rs",
+      "line": "+            other => panic!(\"a lock being written was taken over: {other:?}\"),"
+    },
+    {
+      "path": "crates/persist/src/lock.rs",
+      "line": "+        writer.join().unwrap();"
+    },
+    {
+      "path": "crates/persist/src/lock.rs",
+      "line": "+        fs::write(&path, b\"\").unwrap();"
+    },
+    {
+      "path": "crates/persist/src/lock.rs",
+      "line": "+        let Locked::Acquired { handle, .. } = acquire(&project) else { panic!(\"an abandoned empty lock is stale\") };"
+    }
+  ]
+}

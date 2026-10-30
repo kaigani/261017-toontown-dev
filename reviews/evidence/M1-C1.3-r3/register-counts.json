@@ -1,0 +1,19 @@
+{
+  "requirements": {
+    "implemented": 101,
+    "deferred-with-owner": 14,
+    "divergent": 4
+  },
+  "supplement": {
+    "implemented": 4
+  },
+  "combined": {
+    "implemented": 105,
+    "deferred-with-owner": 14,
+    "divergent": 4
+  },
+  "declarations": {
+    "implemented": 47,
+    "divergent": 1
+  }
+}

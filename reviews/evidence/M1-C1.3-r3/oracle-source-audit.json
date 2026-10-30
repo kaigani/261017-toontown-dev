@@ -1,0 +1,10 @@
+[
+  {
+    "seedSuite": "r1",
+    "oracleAssertionsAndBodyPreservedExceptFixtureCalls": true
+  },
+  {
+    "seedSuite": "r3",
+    "oracleAssertionsAndBodyPreservedExceptFixtureCalls": true
+  }
+]

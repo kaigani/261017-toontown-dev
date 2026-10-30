@@ -1,0 +1,628 @@
+{
+  "headSha": "4333ff13fc12db1e871d0b3cd088a88b4f11adb6",
+  "conclusion": "success",
+  "jobs": {
+    "check (macos-latest)": {
+      "minutes": 21.833333333333332,
+      "conclusion": "success",
+      "suites": {
+        "unittests src/lib.rs": [
+          0,
+          0,
+          0
+        ],
+        "../../tests/adversarial/c03-r2-encoder.rs": [
+          11,
+          0,
+          0
+        ],
+        "tests/c11_r1_wire.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/c11_r2_wire.rs": [
+          6,
+          0,
+          0
+        ],
+        "tests/c11_r3_wire.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/frontend_schemas.rs": [
+          3,
+          0,
+          0
+        ],
+        "tests/wire_corpus.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/c12_checkpoint_property.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c12_edit_ops.rs": [
+          16,
+          0,
+          0
+        ],
+        "tests/c12_invalidation_property.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c12_kernel_state.rs": [
+          7,
+          0,
+          0
+        ],
+        "tests/c12_never_block.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c12_policy.rs": [
+          11,
+          0,
+          0
+        ],
+        "tests/c12_r1_contracts.rs": [
+          36,
+          0,
+          0
+        ],
+        "tests/c12_r1_macro.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/c12_r1_scale.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c12_r1_stress.rs": [
+          5,
+          0,
+          0
+        ],
+        "tests/c12_r2_contracts.rs": [
+          40,
+          0,
+          0
+        ],
+        "tests/c12_r2_registry.rs": [
+          7,
+          0,
+          0
+        ],
+        "tests/c12_r2_scale.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c12_r3_contracts.rs": [
+          15,
+          0,
+          0
+        ],
+        "tests/c12_r3_registry.rs": [
+          12,
+          0,
+          0
+        ],
+        "tests/c12_r3_stress.rs": [
+          5,
+          0,
+          0
+        ],
+        "tests/c12_r4_closure.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/c12_registry.rs": [
+          6,
+          0,
+          0
+        ],
+        "tests/c12_transactions.rs": [
+          14,
+          0,
+          0
+        ],
+        "tests/c13_doc.rs": [
+          8,
+          0,
+          0
+        ],
+        "tests/c13_projects.rs": [
+          12,
+          0,
+          0
+        ],
+        "tests/c13_r1_persistence.rs": [
+          18,
+          0,
+          0
+        ],
+        "tests/c13_r2_persistence.rs": [
+          14,
+          0,
+          0
+        ],
+        "tests/compile_fail.rs": [
+          1,
+          0,
+          0
+        ],
+        "unittests src/main.rs": [
+          7,
+          0,
+          0
+        ],
+        "../../tests/adversarial/c01.rs": [
+          7,
+          0,
+          0
+        ],
+        "tests/cli.rs": [
+          5,
+          0,
+          0
+        ],
+        "tests/guard_fixtures.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c11_r1_adversarial.rs": [
+          39,
+          0,
+          0
+        ],
+        "tests/c11_r2_adversarial.rs": [
+          39,
+          0,
+          0
+        ],
+        "tests/c11_r3_adversarial.rs": [
+          11,
+          0,
+          0
+        ],
+        "tests/c11_r3_random.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c11_r3_register.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/c11_r4_exposure_bounds.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/c11_r5_write_bounds.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/c11_r6_staged_inverse.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/c12_kernel_support.rs": [
+          6,
+          0,
+          0
+        ],
+        "tests/conformance.rs": [
+          15,
+          0,
+          0
+        ],
+        "tests/properties.rs": [
+          18,
+          0,
+          0
+        ],
+        "tests/staged_commit.rs": [
+          3,
+          0,
+          0
+        ],
+        "tests/staged_inverse.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/c13_r1_format.rs": [
+          8,
+          0,
+          0
+        ],
+        "tests/c13_r2_format.rs": [
+          7,
+          0,
+          0
+        ],
+        "tests/hostile.rs": [
+          14,
+          0,
+          0
+        ],
+        "tests/journal.rs": [
+          3,
+          0,
+          0
+        ],
+        "tests/migrations.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/round_trip.rs": [
+          3,
+          0,
+          0
+        ],
+        "tests/zip64.rs": [
+          1,
+          0,
+          1
+        ],
+        "tests/declared.rs": [
+          9,
+          0,
+          0
+        ],
+        "tests/inventory.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c03_fixed_configurations.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/c03_r1_stress.rs": [
+          2,
+          0,
+          1
+        ],
+        "tests/c03_r2_quality.rs": [
+          1,
+          0,
+          0
+        ]
+      },
+      "aggregate": [
+        606,
+        0,
+        2
+      ]
+    },
+    "check (windows-latest)": {
+      "minutes": 32.4,
+      "conclusion": "success",
+      "suites": {
+        "unittests src/lib.rs": [
+          0,
+          0,
+          0
+        ],
+        "unittests src/main.rs": [
+          7,
+          0,
+          0
+        ],
+        "../../tests/adversarial/c03-r2-encoder.rs": [
+          11,
+          0,
+          0
+        ],
+        "tests/c11_r1_wire.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/c11_r2_wire.rs": [
+          6,
+          0,
+          0
+        ],
+        "tests/c11_r3_wire.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/frontend_schemas.rs": [
+          3,
+          0,
+          0
+        ],
+        "tests/wire_corpus.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/c12_checkpoint_property.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c12_edit_ops.rs": [
+          16,
+          0,
+          0
+        ],
+        "tests/c12_invalidation_property.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c12_kernel_state.rs": [
+          7,
+          0,
+          0
+        ],
+        "tests/c12_never_block.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c12_policy.rs": [
+          11,
+          0,
+          0
+        ],
+        "tests/c12_r1_contracts.rs": [
+          36,
+          0,
+          0
+        ],
+        "tests/c12_r1_macro.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/c12_r1_scale.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c12_r1_stress.rs": [
+          5,
+          0,
+          0
+        ],
+        "tests/c12_r2_contracts.rs": [
+          40,
+          0,
+          0
+        ],
+        "tests/c12_r2_registry.rs": [
+          7,
+          0,
+          0
+        ],
+        "tests/c12_r2_scale.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c12_r3_contracts.rs": [
+          15,
+          0,
+          0
+        ],
+        "tests/c12_r3_registry.rs": [
+          12,
+          0,
+          0
+        ],
+        "tests/c12_r3_stress.rs": [
+          5,
+          0,
+          0
+        ],
+        "tests/c12_r4_closure.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/c12_registry.rs": [
+          6,
+          0,
+          0
+        ],
+        "tests/c12_transactions.rs": [
+          14,
+          0,
+          0
+        ],
+        "tests/c13_doc.rs": [
+          8,
+          0,
+          0
+        ],
+        "tests/c13_projects.rs": [
+          12,
+          0,
+          0
+        ],
+        "tests/c13_r1_persistence.rs": [
+          18,
+          0,
+          0
+        ],
+        "tests/c13_r2_persistence.rs": [
+          14,
+          0,
+          0
+        ],
+        "tests/compile_fail.rs": [
+          1,
+          0,
+          0
+        ],
+        "../../tests/adversarial/c01.rs": [
+          7,
+          0,
+          0
+        ],
+        "tests/cli.rs": [
+          5,
+          0,
+          0
+        ],
+        "tests/guard_fixtures.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c11_r1_adversarial.rs": [
+          39,
+          0,
+          0
+        ],
+        "tests/c11_r2_adversarial.rs": [
+          39,
+          0,
+          0
+        ],
+        "tests/c11_r3_adversarial.rs": [
+          11,
+          0,
+          0
+        ],
+        "tests/c11_r3_random.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c11_r3_register.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/c11_r4_exposure_bounds.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/c11_r5_write_bounds.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/c11_r6_staged_inverse.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/c12_kernel_support.rs": [
+          6,
+          0,
+          0
+        ],
+        "tests/conformance.rs": [
+          15,
+          0,
+          0
+        ],
+        "tests/properties.rs": [
+          18,
+          0,
+          0
+        ],
+        "tests/staged_commit.rs": [
+          3,
+          0,
+          0
+        ],
+        "tests/staged_inverse.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/c13_r1_format.rs": [
+          8,
+          0,
+          0
+        ],
+        "tests/c13_r2_format.rs": [
+          7,
+          0,
+          0
+        ],
+        "tests/hostile.rs": [
+          13,
+          0,
+          0
+        ],
+        "tests/journal.rs": [
+          3,
+          0,
+          0
+        ],
+        "tests/migrations.rs": [
+          4,
+          0,
+          0
+        ],
+        "tests/round_trip.rs": [
+          3,
+          0,
+          0
+        ],
+        "tests/zip64.rs": [
+          1,
+          0,
+          1
+        ],
+        "tests/declared.rs": [
+          9,
+          0,
+          0
+        ],
+        "tests/inventory.rs": [
+          1,
+          0,
+          0
+        ],
+        "tests/c03_fixed_configurations.rs": [
+          2,
+          0,
+          0
+        ],
+        "tests/c03_r1_stress.rs": [
+          2,
+          0,
+          1
+        ],
+        "tests/c03_r2_quality.rs": [
+          1,
+          0,
+          0
+        ]
+      },
+      "aggregate": [
+        611,
+        0,
+        2
+      ]
+    }
+  }
+}
