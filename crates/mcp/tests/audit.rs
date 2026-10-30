@@ -78,7 +78,7 @@ fn one_entry_per_call_and_reproducible_from_the_committed_fixture() {
         ("describe_command", json!({ "id": "doc.diff" })),
         ("list_commands", json!({ "namespace": "edit" })),
         ("get_docs", json!({ "topic": "errors" })),
-        ("pointer", json!({})),
+        ("pointer", json!({ "view": "camera", "events": [{ "type": "down", "x": 1, "y": 1 }] })),
         ("checkpoint", json!({ "action": "create", "name": "audit" })),
         (
             "run_command",

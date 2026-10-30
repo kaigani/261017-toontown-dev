@@ -81,6 +81,20 @@ pub(crate) enum Effect {
     /// A save of the open project (`onUnsaved: "save"`): written after every step succeeded and before the commit,
     /// applied to the project after it (C13-R1-01).
     Save(Box<crate::persistence::PendingSave>),
+    /// A file the call writes outside the project (`agent.activity.export`; C14-R1-03): staged next to its target
+    /// only when every step succeeded, moved into place after the commit, discarded when the call rolls back.
+    WriteFile(Box<FileWrite>),
+}
+
+/// A staged file write (see [`Effect::WriteFile`]).
+#[derive(Debug, Clone)]
+pub(crate) struct FileWrite {
+    /// Target.
+    pub path: std::path::PathBuf,
+    /// Content.
+    pub bytes: Vec<u8>,
+    /// The temporary sibling holding the content once staged.
+    pub staged: Option<std::path::PathBuf>,
 }
 
 /// The state of a context a step can be rolled back to (a step with its own `dryRun` inside an atomic batch).

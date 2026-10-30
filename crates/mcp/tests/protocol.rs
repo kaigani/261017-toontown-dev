@@ -110,7 +110,7 @@ fn tools_list_schemas_and_structured_content_validate() {
         ("list_commands", json!({ "namespace": "doc" })),
         ("describe_command", json!({ "id": "doc.object.patch" })),
         ("get_docs", json!({ "topic": "errors" })),
-        ("pointer", json!({ "action": "click", "view": "camera", "x": 1, "y": 1 })),
+        ("pointer", json!({ "view": "camera", "events": [{ "type": "down", "x": 1, "y": 1 }] })),
         ("run_command", json!({ "id": "no.such.command" })),
     ] {
         let r = c.call(tool, args);
@@ -120,7 +120,7 @@ fn tools_list_schemas_and_structured_content_validate() {
         assert_eq!(r["isError"], sc["status"] == "error", "{tool}: {r}");
         assert!(r["content"][0]["text"].as_str().unwrap().starts_with(tool), "{tool}: {r}");
     }
-    let pointer = c.call("pointer", json!({}));
+    let pointer = c.call("pointer", json!({ "view": "camera", "events": [{ "type": "down", "x": 1, "y": 1 }] }));
     assert_eq!(pointer["structuredContent"]["error"]["code"], "command.notImplemented");
     assert_eq!(pointer["structuredContent"]["error"]["details"]["milestone"], "M2 C2.3");
     let state = c.call("get_state", json!({ "include": ["agent", "project"] }))["structuredContent"]["result"].clone();

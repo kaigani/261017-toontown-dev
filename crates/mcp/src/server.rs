@@ -1,18 +1,26 @@
 //! The MCP server over one JSON-RPC stream (stdio in headless mode): lifecycle, dispatch, tools, resources,
 //! subscriptions, events, prompts, completions, logging, progress, cancellation and elicitation (11 §4, §7, §9, §12).
 //!
-//! Threads: a reader turns input lines into messages; requests run in arrival order on one call thread, except
-//! `job_wait`, which waits on its own thread (so a long wait does not hold up other calls); `notifications/cancelled`
-//! reaches queued and waiting requests; an event pump receives the executor's events, keeps
-//! the numbered event buffer of `app://events`, sends coalesced `notifications/resources/updated` (at most one per
-//! resource per 100 ms), log notifications and progress, and polls the session's state (disconnected by the user,
-//! typed tools changed). All output goes through one locked writer, one JSON object per line.
+//! Threads (C14-R1-13/14):
+//! - a **reader** cuts the input into frames of at most `maxInlineBytes` without allocating more (a longer frame is
+//!   skipped up to its newline and answered with an error; invalid UTF-8 is a parse error of that frame only) and hands
+//!   them over through a bounded queue;
+//! - the **main loop** answers `initialize` and `ping` itself and admits the other requests (at most 64 in flight);
+//! - one **call thread** runs them in arrival order, except `job_wait`, which waits on its own thread;
+//! - an **event pump** keeps the numbered event buffer of `app://events`, sends coalesced
+//!   `notifications/resources/updated` (one per resource per 100 ms), log notifications and progress, and polls the
+//!   session (disconnected by the user, typed tools changed);
+//! - one **writer** owns the output: every message goes through a bounded queue, nothing writes under the state lock,
+//!   and a write or flush failure, or a client that stops reading for 10 s, closes the session.
+//!
+//! Closing (input EOF, output failure, a user disconnect) fails the pending requests to the client, skips queued
+//! requests, waits a bounded time for the running one, and returns without waiting for a blocked writer.
 
 use std::collections::{BTreeSet, HashMap, HashSet, VecDeque};
 use std::io::{BufRead, Write};
 use std::path::PathBuf;
-use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
-use std::sync::mpsc::{self, RecvTimeoutError, Sender};
+use std::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
+use std::sync::mpsc::{self, RecvTimeoutError, Sender, SyncSender, TrySendError};
 use std::sync::{Arc, Mutex, MutexGuard, PoisonError};
 use std::time::{Duration, Instant};
 
@@ -37,6 +45,16 @@ const EVENT_BUFFER: usize = 10_000;
 const COALESCE: Duration = Duration::from_millis(100);
 /// Concurrent requests in flight.
 const MAX_INFLIGHT: usize = 64;
+/// Messages waiting for the writer.
+const OUT_QUEUE: usize = 4096;
+/// Frames waiting for the main loop.
+const IN_QUEUE: usize = 256;
+/// How long a full output queue may stay full before the client counts as not reading.
+const STALL: Duration = Duration::from_secs(10);
+/// Watchdog of the work the server does itself (`list_commands`, `describe_command`, `get_docs`; C14-R1-05).
+const SERVER_WORK_BUDGET: Duration = Duration::from_secs(5);
+/// How long closing waits for the running request and for the writer.
+const SHUTDOWN_GRACE: Duration = Duration::from_secs(1);
 
 /// How the server runs.
 #[derive(Debug, Clone)]
@@ -85,17 +103,25 @@ struct State {
     typed_version: u64,
     progress: HashMap<String, Value>,
     inflight: usize,
+    /// `initialize` was answered: the lifecycle transition happens once (C14-R1-17).
+    initialized: bool,
 }
 
 struct Shared {
     handle: ExecutorHandle,
     opts: ServerOptions,
-    out: Mutex<Box<dyn Write + Send>>,
+    /// The writer's queue.
+    out: SyncSender<String>,
+    /// Messages queued and not yet written.
+    queued: Arc<AtomicUsize>,
     st: Mutex<State>,
     next_id: AtomicU64,
     pending: Mutex<HashMap<u64, Sender<Result<Value, Value>>>>,
+    /// Requests admitted and not answered yet (keys: the JSON text of their ids).
+    live: Mutex<HashSet<String>>,
+    /// Live requests the client cancelled (a subset of `live`, so bounded by `MAX_INFLIGHT`).
     cancelled: Mutex<HashSet<String>>,
-    closing: AtomicBool,
+    closing: Arc<AtomicBool>,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
@@ -103,11 +129,52 @@ fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
 }
 
 impl Shared {
+    fn closing(&self) -> bool {
+        self.closing.load(Ordering::Relaxed)
+    }
+
+    /// Queues a message for the writer. A queue that stays full for [`STALL`] means the client stopped reading: the
+    /// session closes. Never called with the state lock held.
     fn send(&self, v: &Value) {
+        let Ok(mut text) = serde_json::to_string(v) else { return };
+        let deadline = Instant::now() + STALL;
+        loop {
+            self.queued.fetch_add(1, Ordering::Relaxed);
+            match self.out.try_send(text) {
+                Ok(()) => return,
+                Err(TrySendError::Disconnected(_)) => {
+                    self.queued.fetch_sub(1, Ordering::Relaxed);
+                    self.closing.store(true, Ordering::Relaxed);
+                    return;
+                }
+                Err(TrySendError::Full(t)) => {
+                    self.queued.fetch_sub(1, Ordering::Relaxed);
+                    if self.closing() || Instant::now() >= deadline {
+                        self.closing.store(true, Ordering::Relaxed);
+                        return;
+                    }
+                    text = t;
+                    std::thread::sleep(Duration::from_millis(5));
+                }
+            }
+        }
+    }
+
+    /// Queues an advisory notification without waiting (used under the state lock): dropped when the queue is full.
+    fn send_now(&self, v: &Value) {
         let Ok(text) = serde_json::to_string(v) else { return };
-        let mut out = lock(&self.out);
-        let _ = writeln!(out, "{text}");
-        let _ = out.flush();
+        self.queued.fetch_add(1, Ordering::Relaxed);
+        if self.out.try_send(text).is_err() {
+            self.queued.fetch_sub(1, Ordering::Relaxed);
+        }
+    }
+
+    /// Wakes every request waiting for the client with a failure (closing).
+    fn fail_pending(&self) {
+        let waiting: Vec<_> = lock(&self.pending).drain().collect();
+        for (_, tx) in waiting {
+            let _ = tx.send(Err(json!({ "code": jsonrpc::INTERNAL_ERROR, "message": "the session is closing" })));
+        }
     }
 
     fn origin(&self) -> Option<Origin> {
@@ -141,13 +208,24 @@ impl Shared {
         lock(&self.cancelled).contains(&id.to_string())
     }
 
-    /// Sends a request to the client and waits for its answer.
+    /// Sends a request to the client and waits for its answer; `None` on timeout or when the session closes.
     fn ask(&self, method: &str, params: Value, timeout: Duration) -> Option<Result<Value, Value>> {
+        if self.closing() {
+            return None;
+        }
         let id = self.next_id.fetch_add(1, Ordering::Relaxed);
         let (tx, rx) = mpsc::channel();
         lock(&self.pending).insert(id, tx);
         self.send(&jsonrpc::request(id, method, params));
-        let r = rx.recv_timeout(timeout).ok();
+        let deadline = Instant::now() + timeout;
+        let r = loop {
+            match rx.recv_timeout(Duration::from_millis(100)) {
+                Ok(r) => break Some(r),
+                Err(RecvTimeoutError::Disconnected) => break None,
+                Err(RecvTimeoutError::Timeout) if self.closing() || Instant::now() >= deadline => break None,
+                Err(RecvTimeoutError::Timeout) => {}
+            }
+        };
         lock(&self.pending).remove(&id);
         r
     }
@@ -157,46 +235,130 @@ impl Shared {
     }
 }
 
-/// Serves one MCP client on `input`/`output` until the input ends or the user disconnects the session.
+/// A frame of input: one line without its newline.
+enum Frame {
+    Line(Vec<u8>),
+    /// A line longer than the limit (skipped up to its newline without keeping it).
+    TooLarge,
+    Eof,
+}
+
+/// Cuts the input into frames of at most `max` bytes, allocating no more than that per frame (C14-R1-14).
+fn read_frames<R: BufRead>(mut input: R, max: usize, tx: &SyncSender<Frame>) {
+    let mut buf: Vec<u8> = Vec::new();
+    let mut over = false;
+    loop {
+        let (complete, used) = match input.fill_buf() {
+            Ok([]) => {
+                if !buf.is_empty() && !over {
+                    let _ = tx.send(Frame::Line(std::mem::take(&mut buf)));
+                }
+                let _ = tx.send(Frame::Eof);
+                return;
+            }
+            Ok(chunk) => {
+                let end = chunk.iter().position(|b| *b == b'\n');
+                let part = &chunk[..end.unwrap_or(chunk.len())];
+                if !over {
+                    if buf.len() + part.len() <= max {
+                        buf.extend_from_slice(part);
+                    } else {
+                        over = true;
+                        buf = Vec::new();
+                    }
+                }
+                (end.is_some(), end.map_or(chunk.len(), |i| i + 1))
+            }
+            Err(e) if e.kind() == std::io::ErrorKind::Interrupted => continue,
+            Err(_) => {
+                let _ = tx.send(Frame::Eof);
+                return;
+            }
+        };
+        input.consume(used);
+        if complete {
+            let frame = if over { Frame::TooLarge } else { Frame::Line(std::mem::take(&mut buf)) };
+            over = false;
+            if tx.send(frame).is_err() {
+                return;
+            }
+        }
+    }
+}
+
+/// Waits up to `limit` for a thread to finish; `false` when it is still running.
+fn finished_within(h: &std::thread::JoinHandle<()>, limit: Duration) -> bool {
+    let deadline = Instant::now() + limit;
+    while !h.is_finished() {
+        if Instant::now() >= deadline {
+            return false;
+        }
+        std::thread::sleep(Duration::from_millis(5));
+    }
+    true
+}
+
+/// Serves one MCP client on `input`/`output` until the input ends, the output fails, the client stops reading or the
+/// user disconnects the session.
 ///
 /// # Errors
-/// A message when the executor cannot be reached at all.
+/// A message when a thread cannot be started.
+#[allow(clippy::too_many_lines, reason = "the main loop")]
 pub fn serve<R, W>(handle: ExecutorHandle, opts: ServerOptions, input: R, output: W) -> Result<(), String>
 where
     R: BufRead + Send + 'static,
     W: Write + Send + 'static,
 {
+    let closing = Arc::new(AtomicBool::new(false));
+    let queued = Arc::new(AtomicUsize::new(0));
+    let stop_writer = Arc::new(AtomicBool::new(false));
+    // Writer: the only place that writes output.
+    let (out_tx, out_rx) = mpsc::sync_channel::<String>(OUT_QUEUE);
+    let writer = {
+        let (closing, queued, stop) = (closing.clone(), queued.clone(), stop_writer.clone());
+        std::thread::Builder::new()
+            .name("mcp-writer".into())
+            .spawn(move || {
+                let mut output = output;
+                loop {
+                    match out_rx.recv_timeout(Duration::from_millis(50)) {
+                        Ok(line) => {
+                            let written = writeln!(output, "{line}").and_then(|()| output.flush());
+                            queued.fetch_sub(1, Ordering::Relaxed);
+                            if written.is_err() {
+                                // The client cannot receive any more: the session is unusable (C14-R1-14).
+                                closing.store(true, Ordering::Relaxed);
+                                return;
+                            }
+                        }
+                        Err(RecvTimeoutError::Timeout) if stop.load(Ordering::Relaxed) => return,
+                        Err(RecvTimeoutError::Timeout) => {}
+                        Err(RecvTimeoutError::Disconnected) => return,
+                    }
+                }
+            })
+            .map_err(|e| e.to_string())?
+    };
     let shared = Arc::new(Shared {
         handle: handle.clone(),
         opts,
-        out: Mutex::new(Box::new(output)),
+        out: out_tx,
+        queued: queued.clone(),
         st: Mutex::new(State { protocol: DEFAULT_PROTOCOL.to_owned(), ..State::default() }),
         next_id: AtomicU64::new(1),
         pending: Mutex::new(HashMap::new()),
+        live: Mutex::new(HashSet::new()),
         cancelled: Mutex::new(HashSet::new()),
-        closing: AtomicBool::new(false),
+        closing: closing.clone(),
     });
-    // Reader.
-    let (line_tx, line_rx) = mpsc::channel::<Option<String>>();
+    // Reader: frames no longer than the session's maxInlineBytes.
+    let max = handle
+        .agent_status("")
+        .map_or(50 * 1024 * 1024, |s| usize::try_from(s.limits.max_inline_bytes).unwrap_or(usize::MAX));
+    let (frame_tx, frame_rx) = mpsc::sync_channel::<Frame>(IN_QUEUE);
     std::thread::Builder::new()
         .name("mcp-reader".into())
-        .spawn(move || {
-            let mut input = input;
-            loop {
-                let mut line = String::new();
-                match input.read_line(&mut line) {
-                    Ok(0) | Err(_) => {
-                        let _ = line_tx.send(None);
-                        return;
-                    }
-                    Ok(_) => {
-                        if line_tx.send(Some(line)).is_err() {
-                            return;
-                        }
-                    }
-                }
-            }
-        })
+        .spawn(move || read_frames(input, max, &frame_tx))
         .map_err(|e| e.to_string())?;
     // Event pump.
     let events = handle.subscribe();
@@ -221,32 +383,42 @@ where
             })
             .map_err(|e| e.to_string())?
     };
-    let mut waits = Vec::new();
-    while !shared.closing.load(Ordering::Relaxed) {
-        let line = match line_rx.recv_timeout(Duration::from_millis(100)) {
-            Ok(Some(l)) => l,
-            Ok(None) | Err(RecvTimeoutError::Disconnected) => break,
+    let mut waits: Vec<std::thread::JoinHandle<()>> = Vec::new();
+    while !shared.closing() {
+        let bytes = match frame_rx.recv_timeout(Duration::from_millis(100)) {
+            Ok(Frame::Line(b)) => b,
+            Ok(Frame::TooLarge) => {
+                shared.send(&jsonrpc::error(
+                    &Value::Null,
+                    jsonrpc::INVALID_REQUEST,
+                    "message exceeds the session's maxInlineBytes",
+                    Some(json!({ "code": "limit.exceeded", "limit": "maxInlineBytes", "value": max })),
+                ));
+                continue;
+            }
+            Ok(Frame::Eof) | Err(RecvTimeoutError::Disconnected) => break,
             Err(RecvTimeoutError::Timeout) => continue,
         };
-        let line = line.trim();
-        if line.is_empty() {
-            continue;
-        }
-        let max = shared.status().map_or(50 * 1024 * 1024, |s| s.limits.max_inline_bytes);
-        if line.len() as u64 > max {
+        // Invalid UTF-8 is a parse error of this frame; the stream continues at the next newline (C14-R1-13).
+        let Ok(text) = std::str::from_utf8(&bytes) else {
             shared.send(&jsonrpc::error(
                 &Value::Null,
-                jsonrpc::INVALID_REQUEST,
-                "message exceeds the session's maxInlineBytes",
-                Some(json!({ "code": "limit.exceeded", "limit": "maxInlineBytes", "value": max })),
+                jsonrpc::PARSE_ERROR,
+                "parse error: the message is not UTF-8",
+                None,
             ));
+            continue;
+        };
+        let line = text.trim();
+        if line.is_empty() {
             continue;
         }
         match jsonrpc::parse(line) {
             Err(response) => shared.send(&response),
             Ok(Incoming::Response { id, outcome }) => {
                 let key = id.as_u64().unwrap_or(0);
-                if let Some(tx) = lock(&shared.pending).remove(&key) {
+                let waiter = lock(&shared.pending).remove(&key);
+                if let Some(tx) = waiter {
                     let _ = tx.send(outcome);
                 }
             }
@@ -258,14 +430,24 @@ where
                     }
                     continue;
                 }
-                {
+                let key = id.to_string();
+                let refused = {
                     let mut st = lock(&shared.st);
+                    let mut live = lock(&shared.live);
                     if st.inflight >= MAX_INFLIGHT {
-                        drop(st);
-                        shared.send(&jsonrpc::error(&id, jsonrpc::INTERNAL_ERROR, "too many requests in flight", None));
-                        continue;
+                        Some("too many requests in flight")
+                    } else if !live.insert(key) {
+                        Some("a request with this id is already in progress")
+                    } else {
+                        st.inflight += 1;
+                        None
                     }
-                    st.inflight += 1;
+                };
+                if let Some(why) = refused {
+                    let code =
+                        if why.starts_with("too many") { jsonrpc::INTERNAL_ERROR } else { jsonrpc::INVALID_REQUEST };
+                    shared.send(&jsonrpc::error(&id, code, why, None));
+                    continue;
                 }
                 // `job_wait` blocks on the caller's side (11 P5) and gets its own thread; everything else runs in
                 // arrival order.
@@ -285,28 +467,42 @@ where
             }
         }
     }
-    drop(work_tx);
-    let _ = worker.join();
-    for w in waits {
-        let _ = w.join();
-    }
+    // Closing: nothing waits for a client that is gone (C14-R1-14). Queued requests are skipped; the running one gets
+    // a bounded time (a document-thread call is itself bounded by the executor's budget and is not cancelled).
     shared.closing.store(true, Ordering::Relaxed);
+    shared.fail_pending();
+    drop(work_tx);
+    let _ = finished_within(&worker, SHUTDOWN_GRACE * 5);
+    for w in &waits {
+        let _ = finished_within(w, SHUTDOWN_GRACE);
+    }
     if let Some(id) = shared.session_id() {
         let _ = handle.disconnect_agent(&id, "client closed the connection");
     }
-    let _ = pump.join();
+    let _ = finished_within(&pump, SHUTDOWN_GRACE);
+    // The writer gets a short time to deliver what is queued; a client that does not read does not hold us.
+    let deadline = Instant::now() + SHUTDOWN_GRACE;
+    while queued.load(Ordering::Relaxed) > 0 && Instant::now() < deadline && !writer.is_finished() {
+        std::thread::sleep(Duration::from_millis(5));
+    }
+    stop_writer.store(true, Ordering::Relaxed);
+    let _ = finished_within(&writer, Duration::from_millis(200));
     Ok(())
 }
 
-/// Answers one request unless the client cancelled it (11 §4: no response to a cancelled request).
+/// Answers one admitted request unless the client cancelled it or the session is closing (11 §4: no response to a
+/// cancelled request).
 fn answer(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) {
     if !shared.is_cancelled(id)
+        && !shared.closing()
         && let Some(r) = request(shared, id, method, params)
         && !shared.is_cancelled(id)
     {
         shared.send(&r);
     }
-    lock(&shared.cancelled).remove(&id.to_string());
+    let key = id.to_string();
+    lock(&shared.cancelled).remove(&key);
+    lock(&shared.live).remove(&key);
     lock(&shared.st).inflight -= 1;
 }
 
@@ -318,9 +514,14 @@ fn notification(shared: &Arc<Shared>, method: &str, params: &Value) {
                 let _ = std::thread::Builder::new().name("mcp-roots".into()).spawn(move || refresh_roots(&s));
             }
         }
+        // Only a request in progress can be cancelled; an unknown or finished id is ignored (C14-R1-17).
         "notifications/cancelled" => {
             if let Some(id) = params.get("requestId") {
-                lock(&shared.cancelled).insert(id.to_string());
+                let key = id.to_string();
+                let live = lock(&shared.live);
+                if live.contains(&key) {
+                    lock(&shared.cancelled).insert(key);
+                }
             }
         }
         _ => {}
@@ -360,6 +561,9 @@ fn request(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) -> Op
         return Some(jsonrpc::result(id, json!({})));
     }
     if method == "initialize" {
+        if lock(&shared.st).initialized {
+            return Some(jsonrpc::error(id, jsonrpc::INVALID_REQUEST, "the session is already initialized", None));
+        }
         return Some(initialize(shared, id, params));
     }
     if lock(&shared.st).session.is_none() {
@@ -374,7 +578,11 @@ fn request(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) -> Op
             let Some(name) = params.get("name").and_then(Value::as_str) else {
                 return Some(invalid_params(id, "`name` is required"));
             };
-            let args = params.get("arguments").and_then(Value::as_object).cloned().unwrap_or_default();
+            let args = match params.get("arguments") {
+                None | Some(Value::Null) => Map::new(),
+                Some(Value::Object(m)) => m.clone(),
+                Some(_) => return Some(invalid_params(id, "`arguments` must be an object (the tool's input schema)")),
+            };
             let token = params.get("_meta").and_then(|m| m.get("progressToken")).cloned();
             match call_tool(shared, id, name, &args, token) {
                 ToolOutcome::Result(v) => jsonrpc::result(id, v),
@@ -469,6 +677,7 @@ fn initialize(shared: &Arc<Shared>, id: &Value, params: &Value) -> Value {
         }
     }
     st.client_caps = caps;
+    st.initialized = true;
     protocol.clone_into(&mut st.protocol);
     let session = st.session.clone();
     drop(st);
@@ -636,6 +845,17 @@ fn call_tool(
     }
     let Some(origin) = shared.current_origin() else { return ToolOutcome::UnknownTool };
     let started = Instant::now();
+    // The complete wrapper input is validated against the published input schema before it is converted: options,
+    // projections, pagination, types and unknown fields (C14-R1-01). Typed tools take the command's own parameters,
+    // which the executor validates.
+    if typed_id.is_none()
+        && let Some(def) = tools::generic().into_iter().find(|t| t.name == name)
+        && let Err(e) = tt_registry::validate_params(&format!("tool:{name}"), &def.input, &Value::Object(args.clone()))
+    {
+        let env = Envelope::error(e, None);
+        shared.handle.audit_call(&origin, name, name, &Value::Object(args.clone()), &env, started.elapsed());
+        return ToolOutcome::Result(tool_result(name, name, &env));
+    }
     let plan = match typed_id {
         Some(id) => Plan::Command {
             id,
@@ -685,46 +905,43 @@ fn call_tool(
                     }
                 }
             }
-            if let Some(env) = job_limit(shared, reg, &origin, &id) {
-                shared.handle.audit_call(&origin, name, &id, &params, &env, started.elapsed());
-                return ToolOutcome::Result(tool_result(name, &id, &env));
-            }
             let options = InvokeOptions { dry_run, expect_rev: expect, request_id, confirm_token, confirm };
-            let inv = Invocation { command: id.clone(), params, options, origin: origin.clone() };
-            let mut env = shared.handle.invoke_audited(inv.clone(), name);
+            let inv = Invocation { command: id.clone(), params: params.clone(), options, origin: origin.clone() };
+            let mut env = shared.handle.invoke(inv.clone());
             if name == "get_state" {
-                env = with_agent_state(shared, env, args);
+                env = project_state(env, args);
             }
+            // A confirmation the client can ask its user for (11 §6.3 rule 1). The answer settles the same logical
+            // call: it is re-invoked with its token and its requestId, so the executor remembers the final outcome
+            // under that id (C14-R1-04). Anything but an explicit `accept` with `confirm: true` declines (C14-R1-02).
             if env.status == Status::NeedsConfirmation
-                && let Some(decided) = elicit(shared, &env)
+                && let Some(token) =
+                    env.result.as_ref().and_then(|r| r.get("confirmToken")).and_then(Value::as_str).map(str::to_owned)
+                && let Some(accepted) = elicit(shared, &env)
             {
-                env = if decided {
-                    let token = env
-                        .result
-                        .as_ref()
-                        .and_then(|r| r.get("confirmToken"))
-                        .and_then(Value::as_str)
-                        .map(str::to_owned);
-                    let mut again = inv;
-                    again.options.confirm_token = token;
-                    again.options.request_id = None;
-                    shared.handle.invoke_audited(again, name)
-                } else {
-                    envelope_error(
-                        "confirmation.declined",
-                        "the user declined the action".to_owned(),
-                        json!({ "commandId": id }),
-                        None,
-                    )
-                };
+                if !accepted {
+                    let _ = shared.handle.invoke(Invocation::user(
+                        "agent.confirmation.respond",
+                        json!({ "confirmationId": token, "accept": false }),
+                    ));
+                }
+                let mut again = inv;
+                again.options.confirm_token = Some(token);
+                env = shared.handle.invoke(again);
             }
+            // One activity entry for the logical call, with its final status and whole duration (C14-R1-12).
+            shared.handle.audit_call(&origin, name, &id, &params, &env, started.elapsed());
             (id, env, true)
         }
         Plan::Server => match name {
-            "list_commands" => ("list_commands".to_owned(), list_commands(shared, &origin, args), false),
+            "list_commands" => {
+                let (h, o, a) = (shared.handle.clone(), origin.clone(), args.clone());
+                ("list_commands".to_owned(), bounded("list_commands", move || list_commands(&h, &o, &a)), false)
+            }
             "describe_command" => {
-                let cid = args.get("id").and_then(Value::as_str).unwrap_or_default();
-                let env = match shared.handle.describe_command(cid) {
+                let cid = args.get("id").and_then(Value::as_str).unwrap_or_default().to_owned();
+                let h = shared.handle.clone();
+                let env = bounded("describe_command", move || match h.describe_command(&cid) {
                     Some(d) => Envelope::ok(d, None),
                     None => envelope_error(
                         "command.unknown",
@@ -732,12 +949,12 @@ fn call_tool(
                         json!({ "id": cid }),
                         Some("list_commands lists the ids"),
                     ),
-                };
+                });
                 ("describe_command".to_owned(), env, false)
             }
             "get_docs" => {
-                let topic = args.get("topic").and_then(Value::as_str).unwrap_or("agent-guide");
-                let env = match docs::topic(reg, topic) {
+                let topic = args.get("topic").and_then(Value::as_str).unwrap_or("agent-guide").to_owned();
+                let env = bounded("get_docs", move || match docs::topic(reg, &topic) {
                     Some(md) => Envelope::ok(json!({ "topic": topic, "markdown": md }), None),
                     None => envelope_error(
                         "arg.invalid",
@@ -745,29 +962,20 @@ fn call_tool(
                         json!({ "pointer": "/topic", "allowed": docs::TOPICS.iter().map(|s| (*s).to_owned()).chain(docs::namespaces(reg)).collect::<Vec<_>>() }),
                         None,
                     ),
-                };
+                });
                 ("get_docs".to_owned(), env, false)
             }
             "batch" => {
                 let req: Result<BatchRequest, _> = serde_json::from_value(Value::Object(args.clone()));
                 let env = match req {
                     Err(e) => envelope_error("arg.invalid", format!("not a batch: {e}"), json!({}), None),
+                    // Session limits are admitted by the executor for every entry point (C14-R1-11).
                     Ok(req) => {
-                        let max = shared.status().map_or(1000, |s| s.limits.max_batch_steps);
-                        if req.steps.len() > max as usize {
-                            envelope_error(
-                                "limit.exceeded",
-                                format!("a batch of this session has at most {max} steps"),
-                                json!({ "limit": "maxBatchSteps", "value": max, "actual": req.steps.len() }),
-                                None,
-                            )
-                        } else {
-                            return ToolOutcome::Result(tool_result(
-                                name,
-                                "batch",
-                                &shared.handle.batch_audited(req, origin, name),
-                            ));
-                        }
+                        return ToolOutcome::Result(tool_result(
+                            name,
+                            "batch",
+                            &shared.handle.batch_audited(req, origin, name),
+                        ));
                     }
                 };
                 ("batch".to_owned(), env, false)
@@ -786,44 +994,29 @@ fn call_tool(
     ToolOutcome::Result(tool_result(name, &command, &env))
 }
 
-/// `limit.exceeded` when a job command would exceed the session's concurrent jobs (11 §6.5).
-fn job_limit(shared: &Shared, reg: &tt_registry::Registry, origin: &Origin, id: &str) -> Option<Envelope> {
-    if reg.get(id).map(|e| e.spec.kind) != Some(tt_registry::Kind::Job) {
-        return None;
+/// Runs work the server does itself under [`SERVER_WORK_BUDGET`] (C14-R1-05): the call thread is free again when
+/// the budget passes, whatever the work does.
+fn bounded(what: &str, work: impl FnOnce() -> Envelope + Send + 'static) -> Envelope {
+    let (tx, rx) = mpsc::channel();
+    let spawned = std::thread::Builder::new().name("mcp-server-work".into()).spawn(move || {
+        let _ = tx.send(work());
+    });
+    if let Err(e) = spawned {
+        return Envelope::error(CommandError::internal(format!("cannot start `{what}`: {e}")), None);
     }
-    let max = shared.status().map_or(2, |s| s.limits.max_jobs);
-    let listed = shared.handle.invoke(Invocation {
-        command: "job.list".into(),
-        params: json!({}),
-        options: InvokeOptions::default(),
-        origin: origin.clone(),
-    });
-    let running = listed.result.as_ref().and_then(Value::as_array).map_or(0, |a| {
-        a.iter().filter(|j| matches!(j.get("state").and_then(Value::as_str), Some("queued" | "running"))).count()
-    });
-    (running >= max as usize).then(|| {
+    rx.recv_timeout(SERVER_WORK_BUDGET).unwrap_or_else(|_| {
         envelope_error(
-            "limit.exceeded",
-            format!("this session already runs {running} job(s); the limit is {max}"),
-            json!({ "limit": "maxJobs", "value": max }),
-            Some("wait for a job with job_wait, or cancel one"),
+            "command.timeout",
+            format!("`{what}` did not finish within {} ms", SERVER_WORK_BUDGET.as_millis()),
+            json!({ "tool": what, "budgetMs": u64::try_from(SERVER_WORK_BUDGET.as_millis()).unwrap_or(u64::MAX) }),
+            Some("narrow the request"),
         )
     })
 }
 
-/// `get_state` with the session (11 §7.1: "session scopes and policy") and the `include` projection.
-fn with_agent_state(shared: &Shared, mut env: Envelope, args: &Map<String, Value>) -> Envelope {
+/// `get_state` is `app.state.get` (which reports the calling session; C14-R1-16), narrowed by `include` when given.
+fn project_state(mut env: Envelope, args: &Map<String, Value>) -> Envelope {
     let Some(Value::Object(m)) = env.result.as_mut() else { return env };
-    let session = lock(&shared.st).session.clone();
-    if let (Some(s), Some(st)) = (session, shared.status()) {
-        m.insert(
-            "agent".into(),
-            json!({
-                "sessionId": s.session_id, "client": s.client, "policy": st.policy.as_str(),
-                "scopes": st.scopes.iter().map(|x| x.as_str()).collect::<Vec<_>>(), "paused": st.paused, "limits": st.limits,
-            }),
-        );
-    }
     if let Some(include) = args.get("include").and_then(Value::as_array) {
         let keys: BTreeSet<&str> = include
             .iter()
@@ -870,16 +1063,16 @@ fn elicit(shared: &Shared, env: &Envelope) -> Option<bool> {
         }),
         ELICIT_TIMEOUT,
     )?;
-    let v = answer.ok()?;
-    match v.get("action").and_then(Value::as_str) {
-        Some("accept") => Some(v.pointer("/content/confirm").and_then(Value::as_bool).unwrap_or(true)),
-        Some("decline" | "cancel") => Some(false),
-        _ => None,
-    }
+    // An error answer, or anything but `accept` with the boolean `confirm: true`, does not authorise the action.
+    let Ok(v) = answer else { return Some(false) };
+    Some(
+        v.get("action").and_then(Value::as_str) == Some("accept")
+            && v.pointer("/content/confirm") == Some(&Value::Bool(true)),
+    )
 }
 
-fn list_commands(shared: &Shared, origin: &Origin, args: &Map<String, Value>) -> Envelope {
-    let listed = match shared.handle.list_commands(origin.clone()) {
+fn list_commands(handle: &ExecutorHandle, origin: &Origin, args: &Map<String, Value>) -> Envelope {
+    let listed = match handle.list_commands(origin.clone()) {
         Ok(l) => l,
         Err(e) => return Envelope::error(e, None),
     };
@@ -916,7 +1109,7 @@ fn list_commands(shared: &Shared, origin: &Origin, args: &Map<String, Value>) ->
         .take(limit)
         .map(|mut c| {
             if with_schema
-                && let Some(d) = c.get("id").and_then(Value::as_str).and_then(|id| shared.handle.describe_command(id))
+                && let Some(d) = c.get("id").and_then(Value::as_str).and_then(|id| handle.describe_command(id))
                 && let Some(m) = c.as_object_mut()
             {
                 m.insert("paramsSchema".into(), d.get("paramsSchema").cloned().unwrap_or(Value::Null));
@@ -934,16 +1127,29 @@ fn matches_filter(id: &str, f: &str) -> bool {
     if !f.contains(['*', '?']) {
         return id.contains(f);
     }
-    fn glob(p: &[u8], s: &[u8]) -> bool {
-        match (p.first(), s.first()) {
-            (None, None) => true,
-            (Some(b'*'), _) => glob(&p[1..], s) || (!s.is_empty() && glob(p, &s[1..])),
-            (Some(b'?'), Some(_)) => glob(&p[1..], &s[1..]),
-            (Some(a), Some(b)) if a == b => glob(&p[1..], &s[1..]),
-            _ => false,
+    // Iterative matching with one backtrack point (the last `*`): O(len(f) × len(id)) at worst (C14-R1-05).
+    let (p, s) = (f.as_bytes(), id.as_bytes());
+    let (mut pi, mut si) = (0, 0);
+    let mut star: Option<(usize, usize)> = None;
+    while si < s.len() {
+        if pi < p.len() && (p[pi] == b'?' || p[pi] == s[si]) {
+            pi += 1;
+            si += 1;
+        } else if pi < p.len() && p[pi] == b'*' {
+            star = Some((pi, si));
+            pi += 1;
+        } else if let Some((sp, ss)) = star {
+            pi = sp + 1;
+            si = ss + 1;
+            star = Some((sp, ss + 1));
+        } else {
+            return false;
         }
     }
-    glob(f.as_bytes(), id.as_bytes())
+    while pi < p.len() && p[pi] == b'*' {
+        pi += 1;
+    }
+    pi == p.len()
 }
 
 /// `job_wait`: waits in short slices (so cancellation and progress work), reporting progress to the client.
@@ -980,19 +1186,18 @@ fn job_wait(
         }
     }
     // A final notification whatever the job's own reports were (it may have finished before the wait began). The
-    // token is unregistered and the final notification sent under the state lock, which the event pump also holds
-    // while it sends progress: no progress for this token can follow the final one (or the response).
+    // event pump queues progress for a token only while holding the state lock in which the token is registered;
+    // once it is unregistered here, every progress of this token is already queued, so the final notification and
+    // the response follow them in the writer's order (no output is written under the lock; C14-R1-14).
     let finished = last.status == Status::Ok
         && last.result.as_ref().and_then(|r| r.get("timedOut")).and_then(Value::as_bool) != Some(true);
-    let mut st = lock(&shared.st);
-    st.progress.remove(&job);
+    lock(&shared.st).progress.remove(&job);
     if let (Some(token), true) = (progress, finished) {
         shared.send(&jsonrpc::notification(
             "notifications/progress",
             json!({ "progressToken": token, "progress": 1000, "total": 1000, "message": "finished" }),
         ));
     }
-    drop(st);
     Some(last)
 }
 
@@ -1202,7 +1407,8 @@ fn on_event(shared: &Shared, ev: &tt_executor::Event) {
             if let (Some(m), Some(msg)) = (n.as_object_mut(), ev.payload.get("message").and_then(Value::as_str)) {
                 m.insert("message".into(), json!(msg));
             }
-            shared.send(&jsonrpc::notification("notifications/progress", n));
+            // Queued without waiting, under the lock (see `job_wait`); dropped only when the client is not reading.
+            shared.send_now(&jsonrpc::notification("notifications/progress", n));
         }
         drop(st);
     }

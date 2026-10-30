@@ -59,6 +59,8 @@ fn replay(cx: &mut Cx, steps: u32, undo: bool) -> Result<(Vec<String>, usize), C
         let step =
             cx.project()?.history.steps().get(index).cloned().ok_or_else(|| CommandError::internal("history step"))?;
         cx.replay(index, undo, &step.edit, &step.touched, step.structural, &step.label)?;
+        // 11 §9.2: `doc.undone` / `doc.redone {undoStepId, label}`, delivered with the commit (C14-R1-16).
+        cx.emit(if undo { "doc.undone" } else { "doc.redone" }, json!({ "undoStepId": step.id, "label": step.label }));
         labels.push(step.label);
         position = if undo { index } else { index + 1 };
     }

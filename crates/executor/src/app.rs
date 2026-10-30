@@ -220,6 +220,27 @@ pub struct AppState {
     pub agent_sessions: Vec<AgentSessionState>,
     /// Full-screen presentation (01 §5.6; explicit `enabled` state, readiness bullet 4).
     pub full_screen: bool,
+    /// The calling agent session (11 §7.1 `get_state`: "session scopes and policy"); absent for the user.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub agent: Option<CallerAgentState>,
+}
+
+/// The calling agent session in `AppState` (C14-R1-16: one state shape for `get_state` and `app.state.get`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct CallerAgentState {
+    /// Session id.
+    pub session_id: String,
+    /// Client name.
+    pub client: String,
+    /// Policy preset.
+    pub policy: String,
+    /// Granted scopes.
+    pub scopes: Vec<String>,
+    /// Paused by the user.
+    pub paused: bool,
+    /// Session limits (11 §6.5).
+    pub limits: serde_json::Value,
 }
 
 fn first_element(doc: &Document, scene: &Id) -> Option<Id> {
@@ -349,6 +370,7 @@ impl AppContext {
             start_screen_visible: project.is_none(),
             modal: None,
             agent_sessions: Vec::new(),
+            agent: None,
             full_screen: ui.full_screen(),
         };
         let Some((doc, info)) = project else { return st };

@@ -278,6 +278,9 @@ pub struct ActivityEntry {
     pub undo_step_id: Option<String>,
     /// Changed objects.
     pub changed_count: usize,
+    /// The call was a dry run (it changed nothing; a replay must not turn it into an edit; C14-R1-15).
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub dry_run: bool,
     /// Document revision after the call.
     pub document_rev: Option<u64>,
     /// Duration.

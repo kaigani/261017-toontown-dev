@@ -3,13 +3,14 @@
 //! commands are how the user (GUI, M4) and agents read and control it. Commands with the `app` scope cannot be granted
 //! to an agent session (11 §6.1), so an agent can neither widen its own grant nor answer its own confirmations.
 
+use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value, json};
 use tt_persist::fsx;
-use tt_registry::{CommandError, command};
+use tt_registry::{CommandError, Kind, command};
 
 use super::common::{Empty, NoParams, event_not_invocable, invalid};
 use crate::agents::{Category, Policy, parse_scope, scope_name};
@@ -593,13 +594,135 @@ pub(crate) struct ActivityExportParams {
     on_exists: ExportOnExists,
 }
 
-/// `{path, entries}`.
+/// `{path, entries, omitted?}`.
 #[derive(Debug, Serialize, JsonSchema)]
 pub(crate) struct Exported {
     /// File written.
     path: String,
     /// Entries.
     entries: u32,
+    /// `format: "batch"`: the entries left out of the replayable batch, with the reason (C14-R1-15).
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    omitted: Vec<Omitted>,
+}
+
+/// An activity entry a replayable batch leaves out.
+#[derive(Debug, Serialize, JsonSchema)]
+pub(crate) struct Omitted {
+    /// The entry's sequence number.
+    seq: u64,
+    /// Its tool.
+    tool: String,
+    /// Its command.
+    command_id: String,
+    /// `notCompleted` (an error or a confirmation that was not given), `dryRun` (it changed nothing), `readOnly` (a
+    /// query), `notACommand` (a discovery tool such as `list_commands`), `redacted` (inline data replaced by its hash).
+    reason: &'static str,
+}
+
+/// Whether a value holds a redacted (`sha256:`) string.
+fn redacted(v: &Value) -> bool {
+    match v {
+        Value::String(s) => s.starts_with("sha256:"),
+        Value::Array(a) => a.iter().any(redacted),
+        Value::Object(m) => m.values().any(redacted),
+        _ => false,
+    }
+}
+
+/// Renumbers `$<n>.` references of a batch's steps placed at `offset` and renames its step names that are taken.
+fn relocate(v: &mut Value, offset: usize, names: &BTreeMap<String, String>) {
+    match v {
+        Value::String(s) if s.starts_with('$') => {
+            let rest = &s[1..];
+            let (head, tail) = rest.split_once('.').map_or((rest, ""), |(h, t)| (h, t));
+            let dot = if rest.contains('.') { "." } else { "" };
+            if let Ok(n) = head.parse::<usize>() {
+                *s = format!("${}{dot}{tail}", n + offset);
+            } else if let Some(new) = names.get(head) {
+                *s = format!("${new}{dot}{tail}");
+            }
+        }
+        Value::Array(a) => a.iter_mut().for_each(|x| relocate(x, offset, names)),
+        Value::Object(m) => m.values_mut().for_each(|x| relocate(x, offset, names)),
+        _ => {}
+    }
+}
+
+/// The replayable batch of an activity log (11 §11, §3): committed edits only, in order. A committed batch contributes
+/// its steps (references renumbered); dry runs, queries, discovery tools, incomplete and redacted calls are left out
+/// and reported (C14-R1-15).
+fn replay_batch(entries: &[crate::agents::ActivityEntry]) -> (Vec<Value>, Vec<Omitted>) {
+    let reg = crate::registry().ok();
+    let mut steps: Vec<Value> = Vec::new();
+    let mut omitted = Vec::new();
+    let mut used: std::collections::BTreeSet<String> = std::collections::BTreeSet::new();
+    for e in entries {
+        let reason = if e.status != "ok" {
+            Some("notCompleted")
+        } else if e.dry_run {
+            Some("dryRun")
+        } else if redacted(&e.params) {
+            Some("redacted")
+        } else if e.command_id == "batch" {
+            None
+        } else {
+            match reg.and_then(|r| r.get(&e.command_id)) {
+                None => Some("notACommand"),
+                Some(entry) if matches!(entry.spec.kind, Kind::Query | Kind::Event) => Some("readOnly"),
+                Some(_) => None,
+            }
+        };
+        if let Some(reason) = reason {
+            omitted.push(Omitted { seq: e.seq, tool: e.tool.clone(), command_id: e.command_id.clone(), reason });
+            continue;
+        }
+        if e.command_id != "batch" {
+            steps.push(json!({ "id": e.command_id, "params": e.params }));
+            continue;
+        }
+        let batch_steps = e.params.get("steps").and_then(Value::as_array).cloned().unwrap_or_default();
+        if e.params.get("dryRun").and_then(Value::as_bool) == Some(true) {
+            omitted.push(Omitted {
+                seq: e.seq,
+                tool: e.tool.clone(),
+                command_id: e.command_id.clone(),
+                reason: "dryRun",
+            });
+            continue;
+        }
+        let offset = steps.len();
+        let mut names = BTreeMap::new();
+        for s in &batch_steps {
+            if let Some(n) = s.get("as").and_then(Value::as_str) {
+                let mut new = n.to_owned();
+                let mut k = 2;
+                while used.contains(&new) {
+                    new = format!("{n}_{k}");
+                    k += 1;
+                }
+                used.insert(new.clone());
+                names.insert(n.to_owned(), new);
+            }
+        }
+        for mut s in batch_steps {
+            if let Some(p) = s.get_mut("params") {
+                relocate(p, offset, &names);
+            }
+            if let Some(m) = s.as_object_mut() {
+                let renamed: Option<String> =
+                    m.get("as").and_then(Value::as_str).and_then(|n| names.get(n)).map(String::clone);
+                if let Some(n) = renamed {
+                    m.insert("as".into(), json!(n));
+                }
+                if m.get("as").is_some_and(Value::is_null) {
+                    m.remove("as");
+                }
+            }
+            steps.push(s);
+        }
+    }
+    (steps, omitted)
 }
 
 #[command(
@@ -633,6 +756,7 @@ pub(crate) fn agent_activity_export(cx: &mut Cx, p: ActivityExportParams) -> Res
         }
     }
     let entries = cx.session().agents.activity.clone();
+    let mut omitted = Vec::new();
     let text = match p.format {
         ActivityFormat::Jsonl => {
             let mut t = String::new();
@@ -643,24 +767,25 @@ pub(crate) fn agent_activity_export(cx: &mut Cx, p: ActivityExportParams) -> Res
             t
         }
         ActivityFormat::Batch => {
-            // A replayable batch (11 §11): the calls that ran, in order (sequential, so each step stands alone).
-            let steps: Vec<Value> = entries
-                .iter()
-                .filter(|e| e.status == "ok" && e.command_id != "batch")
-                .map(|e| json!({ "id": e.command_id, "params": e.params }))
-                .collect();
+            // A replayable batch (11 §11): the committed edits, in order (sequential, so each step stands alone).
+            let (steps, left_out) = replay_batch(&entries);
+            omitted = left_out;
             serde_json::to_string_pretty(
                 &json!({ "label": "Agent activity", "atomic": false, "stopOnError": true, "steps": steps }),
             )
             .map_err(|e| CommandError::internal(e.to_string()))?
         }
     };
-    if !cx.dry_run() {
-        fsx::write_atomic(&path, text.as_bytes(), fsx::fs_error)?;
-    }
+    // Written only when the call commits (C14-R1-03): a later failing step of the same batch leaves no file.
+    cx.defer(Effect::WriteFile(Box::new(crate::cx::FileWrite {
+        path: path.clone(),
+        bytes: text.into_bytes(),
+        staged: None,
+    })));
     Ok(Exported {
         path: path.to_string_lossy().into_owned(),
         entries: u32::try_from(entries.len()).unwrap_or(u32::MAX),
+        omitted,
     })
 }
 

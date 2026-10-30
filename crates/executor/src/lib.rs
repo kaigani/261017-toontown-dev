@@ -456,6 +456,7 @@ impl ExecutorHandle {
             error_code: env.error.as_ref().map(|e| e.code.clone()),
             undo_step_id: env.undo.as_ref().map(|u| u.step_id.clone()),
             changed_count: env.changes.len(),
+            dry_run: env.dry_run,
             document_rev: env.document_rev,
             duration_ms: u64::try_from(took.as_millis()).unwrap_or(u64::MAX),
         };

@@ -2,7 +2,7 @@
 {"seq":2,"documentRev":1,"changedCount":0,"client":"c14-test","tool":"get_state","commandId":"app.state.get","params":{},"status":"ok","undoStepId":null}
 {"seq":3,"documentRev":1,"changedCount":0,"client":"c14-test","tool":"get_object","commandId":"doc.object.get","params":{"ref":"<id1>"},"status":"ok","undoStepId":null}
 {"seq":4,"documentRev":2,"changedCount":1,"client":"c14-test","tool":"set_properties","commandId":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"audit":1}}},"status":"ok","undoStepId":"u-1"}
-{"seq":5,"documentRev":2,"changedCount":1,"client":"c14-test","tool":"set_properties","commandId":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"audit":2}}},"status":"ok","undoStepId":null}
+{"seq":5,"documentRev":2,"dryRun":true,"client":"c14-test","tool":"set_properties","commandId":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"audit":2}}},"status":"ok","undoStepId":null,"changedCount":1}
 {"seq":6,"documentRev":3,"changedCount":1,"client":"c14-test","tool":"batch","commandId":"batch","params":{"label":"Pair","steps":[{"id":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"b":1}}},"as":null},{"id":"doc.object.patch","params":{"targets":["<id1>"],"props":{"meta":{"b":2}}},"as":null}],"atomic":true,"stopOnError":true,"dryRun":false},"status":"ok","undoStepId":"u-2"}
 {"seq":7,"documentRev":4,"changedCount":1,"client":"c14-test","tool":"undo","commandId":"edit.undo","params":{},"status":"ok","undoStepId":null}
 {"seq":8,"documentRev":5,"changedCount":1,"client":"c14-test","tool":"redo","commandId":"edit.redo","params":{},"status":"ok","undoStepId":null}
@@ -11,6 +11,6 @@
 {"seq":11,"documentRev":null,"changedCount":0,"client":"c14-test","tool":"describe_command","commandId":"describe_command","params":{"id":"doc.diff"},"status":"ok","undoStepId":null}
 {"seq":12,"documentRev":null,"changedCount":0,"client":"c14-test","tool":"list_commands","commandId":"list_commands","params":{"namespace":"edit"},"status":"ok","undoStepId":null}
 {"seq":13,"documentRev":null,"changedCount":0,"client":"c14-test","tool":"get_docs","commandId":"get_docs","params":{"topic":"errors"},"status":"ok","undoStepId":null}
-{"seq":14,"documentRev":null,"changedCount":0,"client":"c14-test","tool":"pointer","commandId":"pointer","params":{},"status":"error","errorCode":"command.notImplemented","undoStepId":null}
+{"seq":14,"documentRev":null,"changedCount":0,"client":"c14-test","tool":"pointer","commandId":"pointer","params":{"view":"camera","events":[{"type":"down","x":1,"y":1}]},"status":"error","errorCode":"command.notImplemented","undoStepId":null}
 {"seq":15,"documentRev":5,"changedCount":0,"client":"c14-test","tool":"checkpoint","commandId":"checkpoint.create","params":{"name":"audit"},"status":"ok","undoStepId":null}
 {"seq":16,"documentRev":6,"changedCount":1,"client":"c14-test","tool":"run_command","commandId":"project.saveAs","params":{"path":"<dir>/Audit.animpkg","onExists":"overwrite"},"status":"ok","undoStepId":null}

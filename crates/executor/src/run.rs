@@ -160,6 +160,18 @@ impl RequestCache {
         }
     }
 
+    /// Replaces the remembered `needs_confirmation` of an id by the call's final outcome (C14-R1-04).
+    fn settle(&mut self, session: &str, id: &str, envelope: Envelope) {
+        let bytes = serde_json::to_vec(&envelope).map_or(0, |v| v.len());
+        if let Some(s) = self.sessions.get_mut(session)
+            && let Some(c) = s.entries.get_mut(id)
+        {
+            s.bytes = s.bytes.saturating_sub(c.bytes).saturating_add(bytes);
+            c.bytes = bytes;
+            c.envelope = envelope;
+        }
+    }
+
     fn insert(&mut self, session: &str, id: &str, fp: u64, command: &str, envelope: Envelope) {
         let bytes = serde_json::to_vec(&envelope).map_or(0, |v| v.len());
         let s = self.sessions.entry(session.to_owned()).or_default();
@@ -558,6 +570,50 @@ fn commit(s: &mut Session, txns: Vec<Txn>, origin: &Origin) -> Result<Option<Und
     Ok(undo_ref)
 }
 
+/// Stages the file writes of a call about to commit: each is written to a temporary sibling of its target (C14-R1-03).
+/// A failure removes what was staged and fails the call.
+fn stage_files(effects: &mut [Effect]) -> Result<(), CommandError> {
+    let mut failure = None;
+    for e in effects.iter_mut() {
+        if let Effect::WriteFile(w) = e
+            && w.staged.is_none()
+            && failure.is_none()
+        {
+            let tmp = tt_persist::fsx::temp_sibling(&w.path);
+            let written = std::fs::OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .open(&tmp)
+                .and_then(|mut f| std::io::Write::write_all(&mut f, &w.bytes).and_then(|()| f.sync_all()));
+            match written {
+                Ok(()) => w.staged = Some(tmp),
+                Err(err) => {
+                    let _ = std::fs::remove_file(&tmp);
+                    failure = Some(CommandError::from(tt_persist::fsx::fs_error(&err, &w.path, "cannot write")));
+                }
+            }
+        }
+    }
+    match failure {
+        Some(err) => {
+            discard_files(effects);
+            Err(err)
+        }
+        None => Ok(()),
+    }
+}
+
+/// Removes the staged file writes of a call that did not commit.
+fn discard_files(effects: &[Effect]) {
+    for e in effects {
+        if let Effect::WriteFile(w) = e
+            && let Some(tmp) = &w.staged
+        {
+            let _ = std::fs::remove_file(tmp);
+        }
+    }
+}
+
 /// Applies the deferred effects of a committed call. A simulation applies none.
 fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin: &Origin) {
     if simulating {
@@ -577,6 +633,15 @@ fn apply_effects(s: &mut Session, effects: Vec<Effect>, simulating: bool, origin
                 }
             }
             Effect::Save(p) => crate::persistence::apply_pending(s, &p),
+            Effect::WriteFile(w) => {
+                // The content is complete beside its target; a rename that fails after the commit leaves the target
+                // as it was and removes the staged copy.
+                if let Some(tmp) = &w.staged
+                    && std::fs::rename(tmp, &w.path).is_err()
+                {
+                    let _ = std::fs::remove_file(tmp);
+                }
+            }
             Effect::Prefs(values) => {
                 // Only values that differ from the defaults are stored (01 §11; C13-R1-15).
                 for (k, v) in values {
@@ -811,6 +876,19 @@ impl Core {
         let session = inv.origin.session_key();
         let fp = fingerprint(inv);
         match self.requests.lookup(&session, &id, fp) {
+            // The remembered outcome is a confirmation and this retry carries its token (by the agent, or by the
+            // server after an accepted or declined elicitation): the logical call is settled now, and its final
+            // outcome replaces the remembered one, so a later retry of the requestId returns it (C14-R1-04).
+            Lookup::Hit(env)
+                if env.status == crate::types::Status::NeedsConfirmation
+                    && inv.options.confirm_token.is_some()
+                    && env.result.as_ref().and_then(|r| r.get("confirmToken")).and_then(Value::as_str)
+                        == inv.options.confirm_token.as_deref() =>
+            {
+                let settled = self.run(inv);
+                self.requests.settle(&session, &id, settled.clone());
+                settled
+            }
             Lookup::Hit(env) => *env,
             Lookup::Refused(e) => Envelope::error(e, self.rev()),
             // Only `job.wait` is in flight across calls, and it is answered by `wait_begin`; an identical call that
@@ -940,6 +1018,7 @@ impl Core {
                             apply_effects(&mut session, effects, self.simulating, &inv.origin);
                         }
                         Err(e) => {
+                            discard_files(&effects);
                             rollback.apply(&mut session);
                             env = Envelope::error(e, rev_before);
                         }
@@ -1204,6 +1283,7 @@ impl Core {
                             apply_effects(&mut session, effects, self.simulating, origin);
                         }
                         Err(e) => {
+                            discard_files(&effects);
                             rollback.apply(&mut session);
                             env = Envelope::error(e, rev_before);
                         }
@@ -1311,7 +1391,11 @@ impl Core {
         final_doc: Option<&Document>,
         effects: &mut [Effect],
     ) -> Result<(), CommandError> {
-        if self.simulating || !effects.iter().any(|e| matches!(e, Effect::Save(_))) {
+        if self.simulating {
+            return Ok(());
+        }
+        stage_files(effects)?;
+        if !effects.iter().any(|e| matches!(e, Effect::Save(_))) {
             return Ok(());
         }
         let live = s.project.as_ref().map(|p| p.doc.clone());
@@ -1335,6 +1419,8 @@ impl Core {
             .and_then(|()| commit(&mut session, txns, origin).map(|_| ()));
         if committed.is_ok() {
             apply_effects(&mut session, effects, self.simulating, origin);
+        } else {
+            discard_files(&effects);
         }
         self.session = Some(session);
         committed

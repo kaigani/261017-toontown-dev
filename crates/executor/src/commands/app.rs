@@ -50,6 +50,19 @@ pub(crate) fn app_state_get(cx: &mut Cx, _p: NoParams) -> Result<AppState, Comma
             acting: false,
         })
         .collect();
+    if let crate::types::Origin::Agent { session, .. } = cx.origin().clone() {
+        let hub = &cx.session().agents;
+        if let Some(s) = hub.sessions.get(&session) {
+            st.agent = Some(crate::app::CallerAgentState {
+                session_id: s.session_id.clone(),
+                client: s.client.clone(),
+                policy: s.policy.as_str().to_owned(),
+                scopes: s.scopes.iter().map(|x| crate::agents::scope_name(*x).to_owned()).collect(),
+                paused: s.paused,
+                limits: serde_json::to_value(&hub.limits).unwrap_or(serde_json::Value::Null),
+            });
+        }
+    }
     Ok(st)
 }
 
