@@ -29,7 +29,9 @@ jobs:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     # C1.3: the workspace tests took 17-20 min of the former 30-min budget on 2026-10-26 (run 40419016272).
-    timeout-minutes: 45
+    # C1.4: on Windows they took 32.7 min and the job hit 45 min in the release build that follows (run 41003361353,
+    # every step green until the cancellation); the race, liveness and measurement suites and the SDK step need 60.
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
         with:
