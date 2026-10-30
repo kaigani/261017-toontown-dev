@@ -554,4 +554,13 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
     `cachedRetry`);
   - replay through batch-script mode into the same initial document reproduces every document entry
     (`crates/mcp/tests/c14_r2_replay.rs`).
-- **Question:** confirm, or define the representation in 11 §11 (for example nested transactions in the batch format).
+- **Round 3 (C14-R3-01, -02; orchestrator ruling on the representation):**
+  - commit facts in the audit record come from the actual commit, not the answer's status: a batch that committed and
+    then failed to publish is audited `error` with its committed steps, and replay includes them;
+  - the batch-script format gains an **atomic group step** (`{"id": "batch", "params": {label, steps, expectRev}}`
+    inside a sequential batch), run as one transaction with the semantics of `batch {atomic: true}`; nested groups are
+    refused with `batch.nestedGroup` (ADR-0015 §13);
+  - the export writes every committed atomic batch as one group, so replay reproduces revisions and undo boundaries
+    byte for byte (`crates/mcp/tests/c14_r3_replay.rs`, `crates/mcp/tests/c14_r3_groups.rs`).
+- **Question:** confirm, or define the representation in 11 §11. The orchestrator's ruling (atomic group step) is the
+  M1 representation until the spec owner decides otherwise.

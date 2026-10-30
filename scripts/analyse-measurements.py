@@ -7,7 +7,8 @@ Every measurement file written by `crates/executor/tests/c14_evidence` holds an 
 profile, start time and the time origin of `tMs`) and `series`, each with its `samples` (`tMs`, `value`, optional
 `label`) and a `summary`. This script recomputes every summary with the same nearest-rank rule
 (`sorted[round((n - 1) * q)]`) and fails (exit 1) when a file is malformed, the series collection is missing or empty,
-a series has no observations, a sample is not a finite number, times go backwards within a series, or a stored summary
+a series has no observations, a sample is not a finite number, times go backwards within a series, a stored summary
+field has the wrong type (an integer `n`, finite numbers for the quantiles and `max`; C14-R3-04), or a stored summary
 differs from the recomputed one (C14-R2-06). Files that hold only
 facts (no percentiles) are listed separately and must be declared in SCALAR_ONLY.
 """
@@ -84,9 +85,21 @@ def check_file(path):
             values.append(float(v))
             last_t = float(t)
         recomputed = summarise(values)
-        stored = s.get("summary", {})
+        stored = s.get("summary")
+        if not isinstance(stored, dict):
+            problems.append(f"{name}: summary is not an object")
+            stored = {}
         for k, v in recomputed.items():
-            if stored.get(k) != v:
+            got = stored.get(k)
+            # Type before value (C14-R3-04): `True == 1` in Python, so a boolean would otherwise pass as a count.
+            if k == "n":
+                if not isinstance(got, int) or isinstance(got, bool):
+                    problems.append(f"{name}: summary.n={got!r} is not an integer")
+                    continue
+            elif not isinstance(got, (int, float)) or isinstance(got, bool) or not math.isfinite(got):
+                problems.append(f"{name}: summary.{k}={got!r} is not a finite number")
+                continue
+            if got != v:
                 problems.append(f"{name}: stored {k}={stored.get(k)} but the samples give {v}")
         series_out[name] = {"unit": s.get("unit"), **recomputed}
     return {"file": path.name, "ok": not problems, "kind": "series", "environment": env, "series": series_out,

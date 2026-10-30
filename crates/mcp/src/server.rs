@@ -26,7 +26,7 @@ use std::time::{Duration, Instant};
 
 use serde_json::{Map, Value, json};
 use tt_executor::agents::{AgentConnect, AgentSession, AgentStatus, Category, Policy};
-use tt_executor::{BatchRequest, Envelope, ExecutorHandle, Invocation, InvokeOptions, Origin, Status};
+use tt_executor::{AuditCall, BatchRequest, Envelope, ExecutorHandle, Invocation, InvokeOptions, Origin, Status};
 use tt_registry::{CommandError, Scope};
 
 use crate::jsonrpc::{self, Incoming};
@@ -985,7 +985,10 @@ fn call_tool(
             }
             // One activity entry for the logical call, with its final status and whole duration (C14-R1-12).
             // A requestId retry answered from the cache is recorded as such: it executed nothing (C14-R2-03).
-            shared.handle.audit_logical_call(&origin, name, &id, &params, &env, started.elapsed(), cached);
+            shared.handle.audit_logical_call(
+                &origin,
+                &AuditCall { tool: name, command: &id, params: &params, env: &env, took: started.elapsed(), cached },
+            );
             (id, env, true)
         }
         Plan::Server => match name {

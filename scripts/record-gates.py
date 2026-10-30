@@ -46,7 +46,10 @@ GATES = {
     "release-features": [f'"{PY}" scripts/check-release-features.py'],
     # C14-R1-07: the C1.4 measurement summaries recomputed from their observations (after the test gate).
     "measurements": [f'"{PY}" scripts/analyse-measurements.py target/evidence/c14'],
+    # Declared changes: generated declarations are current, and no product `allow` attribute appeared outside the
+    # reviewed inventory `scripts/product-allows.json` (C14-R3-05).
     "declarations": [
+        f'"{PY}" scripts/check-product-allows.py',
         f'"{PY}" scripts/gen-command-declarations.py',
         "git diff --exit-code -- crates/registry/src/declared.rs crates/registry/src/declared.json plan/spec-issues.md",
     ],

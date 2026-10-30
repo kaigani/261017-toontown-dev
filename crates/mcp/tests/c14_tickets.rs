@@ -12,7 +12,7 @@ use support::*;
 #[test]
 #[ignore = "C14-R1-16: result.effectiveParams changes the result contract of every command (719 result schemas, the \
             generated IPC types) and its defaults include the GUI's last-used values, which arrive with the M4 \
-            dialogs; owner: builder, M4 C4.x (traceability row 11 §8)"]
+            dialogs; owner: builder, M4 C4.1 (traceability row 11 §8)"]
 fn every_result_lists_its_effective_params() {
     let dir = tmp();
     let h = executor(&dir.join("user"));

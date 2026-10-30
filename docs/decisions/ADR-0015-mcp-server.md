@@ -168,6 +168,41 @@ transactions, idempotent requests and the never-block watchdog.
       the bound `externalChange` token of that call; users get `project.changedOnDisk`. The load path's internal
       save, which has no call of its own to confirm, refuses a changed file.
 
+13. **Changes from review round 3** (`reviews/M1-C1.4-r3.md`; response `reviews/M1-C1.4-r3-response.md`; orchestrator
+    rulings on C14-R3-01..05).
+    - **Commit facts come from the commit** (C14-R3-01). The envelope carries an internal `committed` flag (not
+      serialized, not in any schema), set when the call's transaction committed outside a dry run. The activity
+      entry's `committedSteps` is computed from it: an atomic batch that committed and then failed to publish its file
+      is audited `error` and still lists all its steps, and replay includes them. The answer's status no longer
+      decides what committed.
+    - **The batch-script format gains an atomic group step** (C14-R3-02, the orchestrator's ruled representation).
+      - Shape: a step of a sequential batch whose `id` is `batch` and whose `params` are a batch
+        (`{label, steps, expectRev}`, `atomic` absent or `true`). It runs as one transaction and one undo step with
+        exactly the semantics of `batch {atomic: true}`, including `expectRev`, rollback and `$<n>` references relative
+        to the group. The group's envelope is the step's envelope, so a later step can refer to it.
+      - Refusals: a group cannot appear inside an atomic batch or inside another group (`batch.nestedGroup`,
+        `details.stepIndex` and `pointer`); a group with `atomic: false` or params that are not a batch is
+        `arg.invalid`. Nothing runs when the request is refused.
+      - Export: `agent.activity.export {format: "batch"}` writes every committed atomic batch as one group (with its
+        label), and the steps of a partially committed sequential batch inline as before. Replaying the export in
+        script mode into the same initial document reproduces every entry byte for byte, including the revisions and
+        undo boundaries of atomic batches.
+      - `batch` is not a command id, so the step id cannot clash with a registered command.
+    - **Cancellation is terminal for a confirmation** (C14-R3-03). A request that asks its client to confirm has a
+      commit point: the moment it acts on an `accept`, it is marked committed under the same lock that records
+      `notifications/cancelled`, so exactly one of the two wins.
+      - Cancelled before the ask: nothing is asked.
+      - Cancelled while waiting, or before the answer is processed: the ask is withdrawn
+        (`notifications/cancelled` for the server's `elicitation/create`), a late answer is discarded, the token stays
+        pending (unused, never authorising), nothing is invoked again and the request gets no response.
+      - Cancelled after the commit point: the cancellation arrives too late and is ignored (the protocol allows it);
+        the confirmed call completes and is answered.
+    - **Evidence typing** (C14-R3-04). The measurement analyzer requires an integer `n` and finite numbers for the
+      quantiles and `max` (booleans are rejected) before comparing a stored summary with the recomputed one.
+    - **No new product lint allows** (C14-R3-05). `audit_logical_call` takes an `AuditCall` struct instead of seven
+      arguments. `scripts/check-product-allows.py` (run by the recorder's `declarations` gate) compares every product
+      `allow` attribute with the inventory `scripts/product-allows.json`, so a new one fails the gate.
+
 ## Consequences
 
 - A command added to the registry is reachable by agents at once (through `run_command`, the docs and the typed

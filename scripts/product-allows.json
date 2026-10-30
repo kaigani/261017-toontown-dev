@@ -1,0 +1,142 @@
+{
+  "crates/executor/src/align.rs": {
+    "clippy::unwrap_used": 1
+  },
+  "crates/executor/src/commands/bundle.rs": {
+    "clippy::too_many_lines": 2,
+    "dead_code": 1
+  },
+  "crates/executor/src/commands/doc.rs": {
+    "dead_code": 1
+  },
+  "crates/executor/src/commands/doc_lint.rs": {
+    "clippy::too_many_arguments": 1,
+    "clippy::too_many_lines": 1,
+    "dead_code": 1
+  },
+  "crates/executor/src/commands/edit_ops.rs": {
+    "clippy::too_many_lines": 1
+  },
+  "crates/executor/src/commands/inspect.rs": {
+    "dead_code": 2
+  },
+  "crates/executor/src/commands/project.rs": {
+    "clippy::too_many_arguments": 1,
+    "dead_code": 2
+  },
+  "crates/executor/src/commands/window.rs": {
+    "dead_code": 1
+  },
+  "crates/executor/src/commands/workspace.rs": {
+    "dead_code": 2
+  },
+  "crates/executor/src/run.rs": {
+    "clippy::expect_used": 1,
+    "clippy::panic": 1,
+    "clippy::unwrap_used": 1
+  },
+  "crates/mcp/src/jsonrpc.rs": {
+    "clippy::panic": 1,
+    "clippy::unwrap_used": 1
+  },
+  "crates/mcp/src/prompts.rs": {
+    "clippy::panic": 1,
+    "clippy::unwrap_used": 1
+  },
+  "crates/mcp/src/resources.rs": {
+    "clippy::panic": 1,
+    "clippy::unwrap_used": 1
+  },
+  "crates/mcp/src/server.rs": {
+    "clippy::too_many_lines": 3
+  },
+  "crates/mcp/src/tools.rs": {
+    "clippy::panic": 1,
+    "clippy::too_many_lines": 1,
+    "clippy::unwrap_used": 1
+  },
+  "crates/model/src/canonical.rs": {
+    "clippy::cast_possible_truncation": 1
+  },
+  "crates/model/src/defaults.rs": {
+    "clippy::unwrap_used": 1
+  },
+  "crates/model/src/document/mod.rs": {
+    "clippy::too_many_arguments": 1,
+    "clippy::too_many_lines": 1
+  },
+  "crates/model/src/document/paths.rs": {
+    "clippy::too_many_lines": 2
+  },
+  "crates/model/src/document/render.rs": {
+    "clippy::too_many_arguments": 1
+  },
+  "crates/model/src/entities/library.rs": {
+    "clippy::large_enum_variant": 1
+  },
+  "crates/model/src/fixture.rs": {
+    "clippy::too_many_lines": 1
+  },
+  "crates/persist/src/fsx.rs": {
+    "clippy::unwrap_used": 1
+  },
+  "crates/persist/src/load.rs": {
+    "clippy::cast_precision_loss": 1,
+    "clippy::too_many_lines": 1
+  },
+  "crates/persist/src/lock.rs": {
+    "clippy::cast_possible_wrap": 1,
+    "clippy::large_enum_variant": 1,
+    "clippy::panic": 1,
+    "clippy::unwrap_used": 1
+  },
+  "crates/persist/src/manifest.rs": {
+    "clippy::unwrap_used": 1
+  },
+  "crates/persist/src/recovery.rs": {
+    "clippy::cast_possible_wrap": 1
+  },
+  "crates/persist/src/repair.rs": {
+    "clippy::cast_possible_truncation": 1,
+    "clippy::too_many_arguments": 2,
+    "clippy::too_many_lines": 3
+  },
+  "crates/persist/src/report.rs": {
+    "clippy::too_many_arguments": 1
+  },
+  "crates/persist/src/save.rs": {
+    "clippy::too_many_lines": 1
+  },
+  "crates/persist/src/settings.rs": {
+    "clippy::unwrap_used": 1
+  },
+  "crates/persist/src/time.rs": {
+    "clippy::unwrap_used": 1
+  },
+  "crates/persist/src/zip.rs": {
+    "clippy::panic": 1,
+    "clippy::too_many_lines": 1,
+    "clippy::unwrap_used": 1
+  },
+  "crates/registry-macros/src/lib.rs": {
+    "dead_code": 1
+  },
+  "desktop/src-tauri/src/bindings.rs": {
+    "clippy::large_enum_variant": 1
+  },
+  "desktop/src-tauri/src/spikes/canvas/renderlist.rs": {
+    "missing_docs": 1
+  },
+  "desktop/src-tauri/src/spikes/tablet/native_macos.rs": {
+    "unsafe_code": 3
+  },
+  "desktop/src-tauri/src/spikes/tablet/native_windows.rs": {
+    "unsafe_code": 1
+  },
+  "desktop/src-tauri/src/spikes/tablet/probe_windows.rs": {
+    "unsafe_code": 20
+  },
+  "desktop/src-tauri/src/spikes/tablet/simulate_windows.rs": {
+    "unsafe_code": 8
+  }
+}

@@ -189,6 +189,23 @@ impl Default for ExecutorConfig {
     }
 }
 
+/// One logical call to record in the activity log ([`ExecutorHandle::audit_logical_call`]).
+#[derive(Debug, Clone, Copy)]
+pub struct AuditCall<'a> {
+    /// The MCP tool the client called.
+    pub tool: &'a str,
+    /// The command it ran (the tool's name for a server-side tool; `batch` for a batch).
+    pub command: &'a str,
+    /// The call's parameters (redacted before they are stored).
+    pub params: &'a Value,
+    /// The final answer.
+    pub env: &'a Envelope,
+    /// The whole call's duration.
+    pub took: Duration,
+    /// The answer came from the `requestId` cache: nothing executed (C14-R2-03).
+    pub cached: bool,
+}
+
 /// A handle to the document thread. Cloning shares the thread; the thread ends when the last handle is dropped.
 #[derive(Clone)]
 pub struct ExecutorHandle {
@@ -448,24 +465,15 @@ impl ExecutorHandle {
         env: &Envelope,
         took: Duration,
     ) {
-        self.audit_logical_call(origin, tool, command, params, env, took, false);
+        self.audit_logical_call(origin, &AuditCall { tool, command, params, env, took, cached: false });
     }
 
     /// [`ExecutorHandle::audit_call`] for a call whose answer may have come from the `requestId` cache (`cached`):
     /// the entry is marked, and a replay leaves it out (C14-R2-03). A batch records the steps it committed
     /// (C14-R2-02).
-    #[allow(clippy::too_many_arguments, reason = "one activity entry")]
-    pub fn audit_logical_call(
-        &self,
-        origin: &Origin,
-        tool: &str,
-        command: &str,
-        params: &Value,
-        env: &Envelope,
-        took: Duration,
-        cached: bool,
-    ) {
+    pub fn audit_logical_call(&self, origin: &Origin, call: &AuditCall<'_>) {
         let Origin::Agent { session, name, .. } = origin else { return };
+        let AuditCall { tool, command, params, env, took, cached } = *call;
         // Steps that committed: an atomic batch commits all of them or none; a sequential batch commits each
         // successful step on its own (11 §7.3). A dry run commits nothing.
         // Commit facts come from the commits themselves, not from the answer's status (C14-R3-01): an atomic batch

@@ -53,6 +53,12 @@ confirmation conditions, undo label).\n\
 - `run_command {{id, params}}` runs any command; `batch {{label, steps}}` runs several as one transaction and one undo \
 step (`$<n>.result.<field>` or `$<name>…` refer to earlier steps). The generic tools (`get_object`, `find_objects`, \
 `set_properties`, `doc_diff`, `undo`, `redo`, `history`, `checkpoint`, `job_*`) wrap commands and return the same data.\n\
+- In a sequential batch (`atomic: false`, also the batch-script format of `--run` and of \
+`agent.activity.export {{format: \"batch\"}}`), a step `{{\"id\": \"batch\", \"params\": {{label, steps, expectRev}}}}` is an \
+**atomic group**: its steps run as one transaction and one undo step, exactly like `batch {{atomic: true}}`, and its \
+`$<n>` references count from the group's first step. Groups do not nest: a group inside an atomic batch or another \
+group is `batch.nestedGroup`. The activity export writes every committed atomic batch as one group, so a replay keeps \
+its revisions and undo boundary.\n\
 - Address objects by id or by path: `scene:\"Intro\"/element:\"Bob\"`, `type:#index`, `type:@id`; special references \
 `@current`, `@selection`, `@activeView`, `@activeCamera`.\n\
 - Every mutating call returns an envelope: `status`, `result`, `changes` (ids, ops, new revisions), `undo`, \
