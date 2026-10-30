@@ -1,8 +1,8 @@
 # C1.4 scoped closure conformance register
 
-Product: `5c46aa6`. Original r3 unit boundaries, accepted closures and owned deferrals retained. Two cancellation requirement rows promoted. S11-L26 and S11-L505 plus agent.activity.export retain divergence because C14-R3-02 group expectRev is unsupported; S11-L96 (SI-049, spec owner) is unchanged.
+Product: `5c46aa6`. Original r3 unit boundaries, accepted closures and owned deferrals retained. The four original closure rows and activity export promote on their actual passing contracts. S11-L81 is divergent for the incomplete ruled script-group expectRev contract; S11-L96 (SI-049, spec owner) is unchanged.
 
-Requirements: **151 / 3 / 0 / 72**. Declarations: **20 / 1 / 0 / 11** (implemented / divergent / missing / deferred-with-owner).
+Requirements: **152 / 2 / 0 / 72**. Declarations: **21 / 0 / 0 / 11** (implemented / divergent / missing / deferred-with-owner).
 
 ## requirements
 
@@ -15,7 +15,7 @@ Requirements: **151 / 3 / 0 / 72**. Declarations: **20 / 1 / 0 / 11** (implement
 | S11-L23 | implemented | Round-one fix verified on 39ea1b2; proving tests listed. |
 | S11-L24 | deferred-with-owner | Builder: GUI parity/gestures M4, render and scene determinism M3; kernel determinism already tested. Explicit implementing owner checkpoints: builder M3 C3.3, M4 C4.2. |
 | S11-L25 | deferred-with-owner | Builder: GUI parity/gestures M4, render and scene determinism M3; kernel determinism already tested. Explicit implementing owner checkpoints: builder M3 C3.3, M4 C4.2. |
-| S11-L26 | divergent | C14-R3-01 commit accounting closes, and atomic revisions/history replay passes; C14-R3-02 remains divergent: group expectRev is rejected as an unknown field. Owner builder C1.4 before M1 merge. |
+| S11-L26 | implemented | The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81. |
 | S11-L27 | implemented | Within the implemented M1 kernel; domain operations keep their declared later owners. |
 | S11-L57 | implemented | Within the implemented M1 kernel; domain operations keep their declared later owners. |
 | S11-L62 | deferred-with-owner | Builder: M4 GUI binding and M3 rendering (plan §4). Explicit implementing owner checkpoints: builder M3 C3.3, M4 C4.2. |
@@ -23,7 +23,7 @@ Requirements: **151 / 3 / 0 / 72**. Declarations: **20 / 1 / 0 / 11** (implement
 | S11-L69 | deferred-with-owner | Builder: M4 GUI binding and M3 rendering (plan §4). Explicit implementing owner checkpoints: builder M3 C3.3, M4 C4.2. |
 | S11-L79 | deferred-with-owner | Builder M4: ADR-0015 §10, attached HTTP and independent sessions. Explicit implementing owner checkpoints: builder M4 C4.1. |
 | S11-L80 | deferred-with-owner | Headless kernel works now; builder M3 renderer and M4 virtual UI/input remain. Explicit implementing owner checkpoints: builder M3 C3.3, M4 C4.2. |
-| S11-L81 | implemented | Round-one fix verified on 39ea1b2; proving tests listed. |
+| S11-L81 | divergent | C14-R3-02 binding atomic-group script extension is incomplete: both matching and mismatching group expectRev are rejected as unknown fields. Owner builder C1.4 before M1 merge. |
 | S11-L84 | implemented | Within the implemented M1 kernel; domain operations keep their declared later owners. |
 | S11-L86 | deferred-with-owner | Builder M4: ADR-0015 §10, attached HTTP and independent sessions. Explicit implementing owner checkpoints: builder M4 C4.1. |
 | S11-L88 | implemented | Within the implemented M1 kernel; domain operations keep their declared later owners. |
@@ -74,7 +74,7 @@ Requirements: **151 / 3 / 0 / 72**. Declarations: **20 / 1 / 0 / 11** (implement
 | S11-L207 | implemented | Round-one fix verified on 39ea1b2; proving tests listed. |
 | S11-L211 | deferred-with-owner | Builder M2/M8/M10 media ingestion; existing doc.import.json respects roots and scopes. Explicit implementing owner checkpoints: builder M2 C2.3, M8 C8.2, M10 C10.2. |
 | S11-L216 | implemented | Round-two fix verified on 39ea1b2 by unchanged reviewer suites; staged effects and external-change confirmation are implemented. |
-| S11-L219 | implemented | Scoped closure on 5c46aa6: C14-R3-01/02/03 closed by unchanged r3 suites, r4 closure probes and cancellation phase tests. |
+| S11-L219 | implemented | The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81. |
 | S11-L222 | implemented | Fallback tokens are single-use, session/params/revision bound, five-minute TTL; attached askInApp portion deferred to builder M4. |
 | S11-L227 | implemented | Within the implemented M1 kernel; domain operations keep their declared later owners. |
 | S11-L229 | implemented | Within the implemented M1 kernel; domain operations keep their declared later owners. |
@@ -196,7 +196,7 @@ Requirements: **151 / 3 / 0 / 72**. Declarations: **20 / 1 / 0 / 11** (implement
 | S11-L494 | implemented | Protocol numeric JSON-RPC codes and documented command dotted codes; inherited extra codes are adjudicated in SI-020, SI-046 and SI-048. See report inventory. |
 | S11-L495 | implemented | Protocol numeric JSON-RPC codes and documented command dotted codes; inherited extra codes are adjudicated in SI-020, SI-046 and SI-048. See report inventory. |
 | S11-L497 | implemented | Protocol numeric JSON-RPC codes and documented command dotted codes; inherited extra codes are adjudicated in SI-020, SI-046 and SI-048. See report inventory. |
-| S11-L505 | divergent | C14-R3-01 commit accounting closes, and atomic revisions/history replay passes; C14-R3-02 remains divergent: group expectRev is rejected as an unknown field. Owner builder C1.4 before M1 merge. |
+| S11-L505 | implemented | The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81. |
 | S11-L508 | deferred-with-owner | Builder M4 live panel. Existing batch export is divergent (C14-R1-15: drops batches, turns dry runs into edits). Explicit implementing owner checkpoints: builder M4 C4.2. |
 | S11-L511 | implemented | Within the implemented M1 kernel; domain operations keep their declared later owners. |
 | S11-L518 | implemented | All ten prompts and arguments exist; test verifies referenced ids. Text is hand-authored with a checked command list, not mechanically generated; domain procedures remain future milestones. |
@@ -225,7 +225,7 @@ Requirements: **151 / 3 / 0 / 72**. Declarations: **20 / 1 / 0 / 11** (implement
 | S11-L568 | deferred-with-owner | Builder: M2 E2/gestures; M3/M10 E1/render; M6 E4; M8 E3; M9 E5; M4 E6 (plan §4). Explicit implementing owner checkpoints: builder M2 C2.3, M3 C3.3, M4 C4.2, M6 C6.2, M8 C8.2, M9 C9.1, M10 C10.2. |
 | S11-L569 | deferred-with-owner | Builder: M2 E2/gestures; M3/M10 E1/render; M6 E4; M8 E3; M9 E5; M4 E6 (plan §4). Explicit implementing owner checkpoints: builder M2 C2.3, M3 C3.3, M4 C4.2, M6 C6.2, M8 C8.2, M9 C9.1, M10 C10.2. |
 | S11-L571 | implemented | Round-one fix verified on 39ea1b2; proving tests listed. Document-thread restart remains builder M4; a never-returning handler still occupies its worker. |
-| S11-L573 | implemented | Scoped closure on 5c46aa6: C14-R3-01/02/03 closed by unchanged r3 suites, r4 closure probes and cancellation phase tests. |
+| S11-L573 | implemented | The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81. |
 | S11-L575 | implemented | Within the implemented M1 kernel; domain operations keep their declared later owners. |
 | S11-L576 | deferred-with-owner | Builder: M2 E2/gestures; M3/M10 E1/render; M6 E4; M8 E3; M9 E5; M4 E6 (plan §4). Explicit implementing owner checkpoints: builder M2 C2.3, M3 C3.3, M4 C4.2, M6 C6.2, M8 C8.2, M9 C9.1, M10 C10.2. |
 | S11-L578 | deferred-with-owner | Builder: M2 E2/gestures; M3/M10 E1/render; M6 E4; M8 E3; M9 E5; M4 E6 (plan §4). Explicit implementing owner checkpoints: builder M2 C2.3, M3 C3.3, M4 C4.2, M6 C6.2, M8 C8.2, M9 C9.1, M10 C10.2. |
@@ -240,7 +240,7 @@ Requirements: **151 / 3 / 0 / 72**. Declarations: **20 / 1 / 0 / 11** (implement
 | Unit | Status | Evidence and owner disposition |
 |---|---|---|
 | app.info.get | implemented | Typed params/result schema, scopes, kind, undo metadata and example assembled; M1 examples execute with mapped session/token/path fixture. Event rows are non-invocable. |
-| agent.activity.export | divergent | Atomic group export and history pass, but ruled group expectRev unsupported; C14-R3-02 remains open. Owner builder C1.4 before M1 merge. |
+| agent.activity.export | implemented | Original divergence closes: committed edits survive publication errors; atomic groups preserve exact revisions and undo history. Group expectRev omission belongs to script execution row S11-L81. |
 | agent.activity.list | implemented | Typed params/result schema, scopes, kind, undo metadata and example assembled; M1 examples execute with mapped session/token/path fixture. Event rows are non-invocable. |
 | agent.activity.persist.set | implemented | Typed params/result schema, scopes, kind, undo metadata and example assembled; M1 examples execute with mapped session/token/path fixture. Event rows are non-invocable. |
 | agent.confirmation.requested | deferred-with-owner | Builder M4: HTTP/attached user confirmation remains deferred; implemented in-memory parts do not complete this declaration's contract. Explicit implementing owner checkpoints: builder M4 C4.1. |

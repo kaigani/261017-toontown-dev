@@ -1,12 +1,11 @@
 {
   "counts": {
     "deferred-with-owner": 72,
-    "implemented": 151,
-    "divergent": 3
+    "implemented": 152,
+    "divergent": 2
   },
   "declarationCounts": {
-    "implemented": 20,
-    "divergent": 1,
+    "implemented": 21,
     "deferred-with-owner": 11
   },
   "requirements": [
@@ -108,10 +107,10 @@
       "section": "1",
       "line": 26,
       "requirement": "| P8 | **Safe and attributable** | Agent sessions run under explicit permission scopes. Destructive, file-overwriting and outward-facing (network) actions require confirmation according to policy. Every agent action is logged, attributed in undo history, and can be undone. The user can pause or disconnect an agent at any time. |",
-      "status": "divergent",
+      "status": "implemented",
       "implementation": "crates/executor/src/agents.rs:47",
-      "test": "crates/mcp/tests/c14_r4_closure.rs",
-      "note": "C14-R3-01 commit accounting closes, and atomic revisions/history replay passes; C14-R3-02 remains divergent: group expectRev is rejected as an unknown field. Owner builder C1.4 before M1 merge.",
+      "test": "crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs",
+      "note": "The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81.",
       "kind": "table row"
     },
     {
@@ -211,10 +210,10 @@
       "section": "3",
       "line": 81,
       "requirement": "| **Batch script** | `app --headless --run <batch.json> [--project <path>] [--out <log.jsonl>]` | Executes a JSON file with the same structure as the `batch` tool (\u00a77.3) without an MCP client, then exits with status 0 (all steps ok) or non-zero. Lets an agent-authored procedure be replayed in CI. |",
-      "status": "implemented",
+      "status": "divergent",
       "implementation": "bins/headless/src/cli.rs:149",
-      "test": "crates/mcp/tests/c14_r1_limits.rs::configured_batch_limit_applies_to_batch_script",
-      "note": "Round-one fix verified on 39ea1b2; proving tests listed.",
+      "test": "crates/mcp/tests/c14_r4_closure.rs",
+      "note": "C14-R3-02 binding atomic-group script extension is incomplete: both matching and mismatching group expectRev are rejected as unknown fields. Owner builder C1.4 before M1 merge.",
       "kind": "table row"
     },
     {
@@ -815,8 +814,8 @@
       "requirement": "1. If the client supports **elicitation**, the server sends an elicitation request summarising the action (what will be lost or written, object counts, paths) and waits for accept/decline. Decline \u2192 error `confirmation.declined`.",
       "status": "implemented",
       "implementation": "crates/executor/src/cx.rs:214",
-      "test": "crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs; tests/adversarial/c14-r3-mcp.py",
-      "note": "Scoped closure on 5c46aa6: C14-R3-01/02/03 closed by unchanged r3 suites, r4 closure probes and cancellation phase tests.",
+      "test": "crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs",
+      "note": "The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81.",
       "kind": "list rule"
     },
     {
@@ -2335,10 +2334,10 @@
       "section": "11",
       "line": 505,
       "requirement": "- Every agent call (tool name, command id, parameters with inline media replaced by a hash, result status, changed object count, undo step id, duration, session/client name) is appended to an **activity log** kept per project session and, optionally, persisted next to the project as `agent-activity.jsonl` (preference, default off).",
-      "status": "divergent",
+      "status": "implemented",
       "implementation": "crates/executor/src/lib.rs:422",
-      "test": "crates/mcp/tests/c14_r4_closure.rs",
-      "note": "C14-R3-01 commit accounting closes, and atomic revisions/history replay passes; C14-R3-02 remains divergent: group expectRev is rejected as an unknown field. Owner builder C1.4 before M1 merge.",
+      "test": "crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs",
+      "note": "The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81.",
       "kind": "list rule"
     },
     {
@@ -2688,8 +2687,8 @@
       "requirement": "7. **Protocol tests.** MCP compliance (initialize, tools, resources, subscriptions, prompts, progress, cancellation, elicitation fallback) against the reference MCP inspector/clients.",
       "status": "implemented",
       "implementation": "crates/mcp/src/server.rs:580",
-      "test": "crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs; tests/adversarial/c14-r3-mcp.py",
-      "note": "Scoped closure on 5c46aa6: C14-R3-01/02/03 closed by unchanged r3 suites, r4 closure probes and cancellation phase tests.",
+      "test": "crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs",
+      "note": "The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81.",
       "kind": "list rule"
     },
     {
@@ -2849,10 +2848,10 @@
       "id": "agent.activity.export",
       "spec": "spec/A_command_registry.md:1035",
       "declaration": "| `agent.activity.export` | action | Write the activity log to a file | `path; format?: enum \"jsonl\"\\|\"batch\" = \"jsonl\"; onExists?: enum \"fail\"\\|\"overwrite\"\\|\"rename\" = \"fail\"` | `{path, entries}` | no |",
-      "status": "divergent",
+      "status": "implemented",
       "implementation": "crates/executor/src/commands/agent.rs:728",
-      "note": "Atomic group export and history pass, but ruled group expectRev unsupported; C14-R3-02 remains open. Owner builder C1.4 before M1 merge.",
-      "test": "crates/mcp/tests/c14_r4_closure.rs"
+      "note": "Original divergence closes: committed edits survive publication errors; atomic groups preserve exact revisions and undo history. Group expectRev omission belongs to script execution row S11-L81.",
+      "test": "crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs"
     },
     {
       "id": "agent.activity.list",

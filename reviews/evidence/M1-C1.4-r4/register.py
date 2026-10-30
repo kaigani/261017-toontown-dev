@@ -2,15 +2,17 @@ import pathlib,json,collections,subprocess,re
 R=pathlib.Path.cwd(); E=R/'reviews/evidence/M1-C1.4-r4'
 d=json.loads((R/'reviews/evidence/M1-C1.4-r3/conformance.json').read_text())
 for r in d['requirements']:
- if r['line'] in [26,505]: r.update(note='C14-R3-01 commit accounting closes, and atomic revisions/history replay passes; C14-R3-02 remains divergent: group expectRev is rejected as an unknown field. Owner builder C1.4 before M1 merge.',test='crates/mcp/tests/c14_r4_closure.rs')
- if r['line'] in [219,573]:
-  r.update(status='implemented',note='Scoped closure on 5c46aa6: C14-R3-01/02/03 closed by unchanged r3 suites, r4 closure probes and cancellation phase tests.',test='crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs; tests/adversarial/c14-r3-mcp.py')
+ if r['line'] in [26,219,505,573]:
+  r.update(status='implemented',note='The original audit/replay/cancellation divergence closes on 5c46aa6. Commit facts, exact atomic replay/history and terminal cancellation pass the unchanged r3 suites and scoped r4 probes. The remaining group expectRev omission is registered at S11-L81.',test='crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs; bins/headless/tests/cancel_phases.rs')
+ if r['line']==81:
+  r.update(status='divergent',note='C14-R3-02 binding atomic-group script extension is incomplete: both matching and mismatching group expectRev are rejected as unknown fields. Owner builder C1.4 before M1 merge.',test='crates/mcp/tests/c14_r4_closure.rs')
 for r in d['declarations']:
- if r['id']=='agent.activity.export': r.update(note='Atomic group export and history pass, but ruled group expectRev unsupported; C14-R3-02 remains open. Owner builder C1.4 before M1 merge.',test='crates/mcp/tests/c14_r4_closure.rs')
+ if r['id']=='agent.activity.export':
+  r.update(status='implemented',note='Original divergence closes: committed edits survive publication errors; atomic groups preserve exact revisions and undo history. Group expectRev omission belongs to script execution row S11-L81.',test='crates/mcp/tests/c14_r3_replay.rs; crates/mcp/tests/c14_r4_closure.rs')
 d['counts']=dict(collections.Counter(r['status'] for r in d['requirements']));d['declarationCounts']=dict(collections.Counter(r['status'] for r in d['declarations']))
-assert [r['id'] for r in d['requirements'] if r['status']=='divergent']==['S11-L26', 'S11-L96', 'S11-L505']
+assert [r['id'] for r in d['requirements'] if r['status']=='divergent']==['S11-L81', 'S11-L96']
 (E/'conformance.json').write_text(json.dumps(d,indent=2)+'\n')
-md='# C1.4 scoped closure conformance register\n\nProduct: `5c46aa6`. Original r3 unit boundaries, accepted closures and owned deferrals retained. Two cancellation requirement rows promoted. S11-L26 and S11-L505 plus agent.activity.export retain divergence because C14-R3-02 group expectRev is unsupported; S11-L96 (SI-049, spec owner) is unchanged.\n\nRequirements: **151 / 3 / 0 / 72**. Declarations: **20 / 1 / 0 / 11** (implemented / divergent / missing / deferred-with-owner).\n\n'
+md='# C1.4 scoped closure conformance register\n\nProduct: `5c46aa6`. Original r3 unit boundaries, accepted closures and owned deferrals retained. The four original closure rows and activity export promote on their actual passing contracts. S11-L81 is divergent for the incomplete ruled script-group expectRev contract; S11-L96 (SI-049, spec owner) is unchanged.\n\nRequirements: **152 / 2 / 0 / 72**. Declarations: **21 / 0 / 0 / 11** (implemented / divergent / missing / deferred-with-owner).\n\n'
 for key in ['requirements','declarations']:
  md+='## '+key+'\n\n| Unit | Status | Evidence and owner disposition |\n|---|---|---|\n'
  for r in d[key]: md+='| '+r['id']+' | '+r['status']+' | '+r['note'].replace('|','\\|').replace('\n',' ')+' |\n'
